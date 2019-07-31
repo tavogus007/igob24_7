@@ -1,0 +1,164 @@
+<link href="../../view/registro_ciudadano/documentos_Apk/css/style.css" rel="stylesheet">
+<script src="../../view/registro_ciudadano/documentos_Apk/appDocumentos.js"></script>
+
+<link rel="stylesheet" type="text/css" href="../../view/registro_ciudadano/documentos_Apk/carousel/_shared/css/style.css">
+<link rel="stylesheet" type="text/css" href="../../view/registro_ciudadano/documentos_Apk/carousel/jcarousel/jcarousel.responsive.css">
+
+<script type="text/javascript" src="../../view/registro_ciudadano/documentos_Apk/carousel/dist/jquery.jcarousel.min.js"></script>
+<script type="text/javascript" src="../../view/registro_ciudadano/documentos_Apk/carousel/jcarousel/jcarousel.responsive.js"></script>
+
+
+<div id="apk" ng-controller="documentosAPKController" data-ng-init="inicioDocumentosAPK()">
+  <form>
+  <div class="container" style="width: 100%">
+      <div class="row">
+          <!-- Caja izquierda -->
+          <div class="col-xs-12 col-md-8 well" 
+               style="margin-bottom: 30px; 
+                      border-radius: 10px 10px 10px 10px;
+                      background: #fff none repeat scroll 0 0;
+                      border: 1px solid #959595;
+                      box-shadow: 0 0 20px;
+                      transition: 0.3s color;">
+              <div class="col-xs-12 col-md-2 well">
+                  <img src="{{imagen0}}">
+              </div>
+              <div class="col-xs-12 col-md-10 well">
+                  <u><h4><span>{{titulo}}</span></h4></u>
+                  <input type="hidden" value="{{idApp}}">  
+                  <div style="/*border: 1px solid black;*/
+                      padding-top: 0px;
+                      padding-right: 0px;
+                      padding-bottom: 10px;
+                      padding-left: 1px;">
+                      <span>
+                          <a style="pointer-events: none; cursor: default;" class="">{{descripcion_corta}}</a>
+                      </span>
+                      <span><br><br><br><br>
+                          <a ng-show="verdescargaandroid" href="{{descarga}}" class="btn btn-primary">Descargar <i class="fa fa-android"></i></a>
+                          <a ng-show="verdescargaios" href="{{descargaios}}" class="btn btn-primary">Descargar <i class="fa fa-apple"></i></a>
+                      </span>
+                  </div>
+              </div>
+              <div class="col-xs-12 col-md-12 well">
+                 <div class="jcarousel-wrapper">
+                      <div class="jcarousel">
+                          <ul>
+                            <button class="NIc6yf">
+                              <img src="{{imagen1}}" class="T75of lxGQyd" aria-hidden="true" alt="Captura de pantalla" itemprop="image">
+                            </button>
+                        
+                            <button class="NIc6yf">
+                                <img src="{{imagen2}}" class="T75of lxGQyd" aria-hidden="true" alt="Captura de pantalla" itemprop="image">
+                            </button>
+
+                            <button class="NIc6yf">
+                                <img src="{{imagen3}}" class="T75of lxGQyd" aria-hidden="true" alt="Captura de pantalla" itemprop="image">
+                            </button>
+                          
+                            <button class="NIc6yf">
+                                <img src="{{imagen4}}" class="T75of lxGQyd" aria-hidden="true" alt="Captura de pantalla" itemprop="image">
+                            </button>
+
+                            <button class="NIc6yf">
+                                <img src="{{imagen5}}" class="T75of lxGQyd" aria-hidden="true" alt="Captura de pantalla" itemprop="image">
+                            </button>
+                          </ul>
+                      </div>
+                      <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+                      <a href="#" class="jcarousel-control-next">&rsaquo;</a>
+
+                      <p class="jcarousel-pagination"></p>
+                  </div>
+              </div>
+              <div class="col-xs-12 col-md-12 well">
+                  <div>
+                      <div class="more">
+                          <p>{{descripcion_larga}}.</p>
+                      </div>
+                      <div></div>
+                  </div>
+              </div>
+              <div class="col-xs-12 col-md-12 well">
+                  <div class="xyOfqd">
+                      <table>
+                          <tbody>
+                            <tr>
+                              <td><b>Desarrollado</b></td>
+                              <td>: </td>
+                              <td>{{desarrollado}}</td>
+                            </tr>
+                            <tr>
+                              <td><b>Versión</b></td>
+                              <td>: </td>
+                              <td>{{version}}</td>
+                            </tr>
+                            <tr>
+                              <td><b>Informe</b></td>
+                              <td>: </td>
+                              <td>{{informe}}</td>
+                            </tr>
+                            <tr>
+                              <td><b>Clasificacion</b></td>
+                              <td>: </td>
+                              <td>{{clasificacion}}</td>
+                            </tr>
+                            <tr>
+                              <td><b>Actualizado</b></td>
+                              <td>: </td>
+                              <td>{{actualizado}}</td>
+                            </tr>
+                            <tr>
+                              <td><b>Tamaño</b></td>
+                              <td>: </td>
+                              <td>{{tamanio}}</td>
+                            </tr>
+                            <tr>
+                              <td><b>Ofrecido por</b></td>
+                              <td>: </td>
+                              <td>{{ofrecido}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                       <hr>
+                  </div>    
+              </div>
+          </div>
+          
+          <!-- caja derecha ng-if="objs.idApp != 1" -->
+          <div id="value" class="col-xs-12 col-md-4R well" ng-repeat="objs in obj | orderBy:'+idApp'"
+               style="float: left; 
+                      border-radius: 10px 10px 10px 10px black;
+                      background: #fff none repeat scroll 0 0;
+                      border: 1px solid #959595;
+                      box-shadow: 0 0 20px;
+                      transition: 0.3s color;" ng-show="{{objs.idApp}}!={{idApp}}">
+              <input type="hidden" name="{{objs.idApp}}" id="{{objs.idApp}}" value="{{objs.idApp}}"> 
+              <input type="hidden" name="{{idApp}}" id="{{idApp}}" value="{{idApp}}"> 
+              <div class="col-xs-12 col-md-12 well">
+                  <div class="col-xs-12 col-md-7">
+                      <div>
+                          <div>
+                              <h4><center><a ng-click="renderApkIGOB(objs.idApp);">{{objs.titulo}}</a></center></h4>
+                              <p>{{objs.descripcion_corta}}</p>
+                          </div>
+                          <div>    
+                              <span>
+                                  <center><a class="btn btn-redondo" href="{{objs.descarga}}" title="Descargar Apk de {{ objs.titulo }}"><i class="fa fa-download"></i></a></center>
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-md-5">
+                    <div class="postImg1">
+                      <a ng-click="renderApkIGOB(objs.idApp);">
+                        <img src="{{objs.imagen0}}" alt="">  
+                      </a>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  </form>
+</div>

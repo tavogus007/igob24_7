@@ -1,0 +1,384 @@
+<head>      
+      <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+      <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>     
+      <meta content="width=device-width, initial-scale=1.0" name=viewport> 
+      <script type="text/javascript" src="../../../../libs/js/jquery-1.11.2.min.js"></script>
+      <script type="text/javascript" src="../../../../controller/autenticacion/config.js"></script>        
+      <script type="text/javascript" src="../../../../libs/login/login.js"></script>  
+</head>
+<body>  
+	<style>
+#pagewrap { 
+width: 94%:
+} 
+#content { 
+width: 80%;
+} 
+#asunto { 
+width: 100%;
+}
+</style>
+<script>
+  var numero = "";
+  var captchaerror=""; 
+  var tiemporespuesta = null;
+    var ErrorCapchasXX  = "";
+    var SuccesCapchasxx = "";
+    var habGuardar1 = ""; 
+  function resetPassword()
+  {    
+    var captch  = $("#resultadoC").val();
+    var id = numero;
+    var verCaptcha = new captcha();
+    verCaptcha.identificador = id;
+    verCaptcha.respuesta = captch;
+    verCaptcha.verificarCaptcha(function(resultado)
+    {
+      json = JSON.parse(resultado);
+      if(json.success[0] == undefined)
+      {
+          sweetAlert("", "Error en el captcha intentar de nuevo por favor", "warning");
+          obtCaptha();
+      }
+      else
+      {
+          guardarDatos2();
+      }
+    });
+  }
+  function noVacio()
+   {
+      var correo2  = $("#correo").val();    
+      var estadoDenuncia  = $("#detalleDenuncia").val(); 
+    if( estadoDenuncia != "" && correo2 != "" )
+    {
+       document.getElementById("resultadoC").disabled = false;
+
+    }
+    else
+    {
+      document.getElementById("resultadoC").disabled = true;
+    }
+   }
+  function getlimpiareRROR()
+  {   
+    //var correo = $("#prsCorreo").val();
+    var captch  = $("#resultadoC").val();    
+    if( captch != "")
+    {
+       document.getElementById("EnvRes").disabled = false;
+    }
+    else
+    {
+      document.getElementById("EnvRes").disabled = true;
+    }
+  }
+  function obtCaptha()
+  { 
+  	$("#resultadoC").val('');
+    var objCaptcha = new captcha();
+    objCaptcha.obtcaptcha(function(resultado)
+    {
+      json = JSON.parse(resultado);
+      partes = json.success[0].sp_captcha_porx1.split(',');
+      numero = partes[0].substring(1);
+      i1=(partes[2]+ "," + partes[3]);
+      i2=(partes[4] + "," + partes[5]);
+      document.getElementById('img2').src = i1.substring(1, i1.length - 1);
+      document.getElementById('img1').src = i2.substring(1, i2.length - 2);
+      var lengua = "";
+      if(partes[1] == 'A') {
+          lengua = 'AYMARA';
+      } else if(partes[1] == 'Q') {
+          lengua = 'QUECHUA';
+      } else if(partes[1] == 'G'){
+          lengua = 'GUARANI';
+      } else if(partes[1] == 'C'){
+          lengua = 'CASTELLANO';
+      } else {
+      }
+      document.getElementById('img1').title = "Palabra en " + lengua;
+      document.getElementById('resultadoC').placeholder = "Capcha: " + lengua + " CASTELLANO";      
+    });
+  } 
+  function verificarKeyPress(captch)
+  {
+    var id = numero;
+    var verCaptcha = new captcha();
+    verCaptcha.identificador = id;
+    verCaptcha.respuesta = captch;
+    verCaptcha.verificarCaptcha(function(resultado)
+    {
+        json = JSON.parse(resultado);
+        var nroregsitros = json.success.length;
+        if(nroregsitros == 0)
+        {
+            habGuardar1 = true;
+            ErrorCapchasXX = "Verifique el Capcha";
+            SuccesCapchasxx="";
+            document.getElementById("msg_capcha").innerHTML = ErrorCapchasXX;            
+            document.getElementById("EnvRes").disabled = true;
+        }
+        else
+        {
+            habGuardar1 = false;
+            ErrorCapchasXX = "";
+            SuccesCapchasxx="Capcha correcto";
+            document.getElementById("msg_capcha").innerHTML = SuccesCapchasxx;           
+            document.getElementById("EnvRes").disabled = false;                     
+        }
+    });
+  }
+  function VerificarCapchaa (datos)
+  {
+      document.getElementById("EnvRes").disabled = true;
+      var captch  = $("#resultadoC").val();
+      if(captch.length == 0)
+          ErrorCapchasXX = "";
+      if(captch.length > 3)
+      {
+          clearTimeout(tiemporespuesta);
+          tiemporespuesta = setTimeout(verificarKeyPress.bind(undefined, captch), 1500);
+      }
+  };
+   function limpiarCamposRecuperacion()
+  {    
+    document.getElementById("resultadoC").disabled = true;
+    document.getElementById("EnvRes").disabled = true;  
+    document.getElementById("resultadoC").value = '';
+    document.getElementById("resultadoC").value = '';
+  }
+  $(document).ready(function() {
+      obtCaptha();     
+      getlimpiareRROR();
+      noVacio();
+
+}); 
+</script>
+  <link rel="stylesheet" href="../../../../libs/css/sweetalert.min.css"/>
+  <link href="img/bootstrap.min.css" rel="stylesheet"> 
+<script >  
+function tipoOpcion(v){
+  if (v.value==1) {
+   document.getElementById("datosPersonales").style="display:none;";  
+ }
+ if (v.value==2) {
+   document.getElementById("datosPersonales").style="display:block;";  
+ }                   
+}    	
+function guardarDatos2(){
+ 
+  var tipoForm = $("#tipoForm").val(); 
+  var fromIn = $("#fromIn").val();
+  var procedencia = $("#procedencia").val();
+  var asunto = $("#asunto").val();
+  var nombreCompleto = $("#nombreCompleto").val();
+  var documento = $("#documento").val();
+  var expedido= $("#expedido").val(); 
+  var direccion = $("#direccion").val(); 
+  var telefono = $("#telefono").val();
+  var correo = $("#correo").val();
+  var tipoIdentidad = $("#tipoIdentidad").val();
+  var prueba = $("#esLibres").val();
+  var detalleDenuncia = $("#detalleDenuncia").val();
+  if(documento ==  '')
+  {    
+    documento = 0;    
+  }
+   if(telefono ==  '')
+  {    
+    telefono = 0;    
+  }
+   var xdts_datos = '{ "tipoForm":"'+tipoForm+'",  "procedencia": "'+procedencia+'", "nombreCompleto": "'+nombreCompleto+'", "documento":"'+documento+'",   "direccion":"'+direccion+'", "telefono": "'+telefono+'", "correo":"'+correo+'", "tipoIdentidad":"'+tipoIdentidad+'", "prueba": "'+prueba+'", "detalleDenuncia":"'+detalleDenuncia+'" }'; 
+    var xdts_datos = JSON.stringify(xdts_datos);  
+     $.ajax({
+    type        : 'POST',
+    url         : jsonURLS.CONEXION_MOTOR_SERVICIO + 'api/apiLogin', 
+    data        : '{"usr_usuario":"administrador", "usr_clave":123456}',
+    headers: {
+          'Content-type': 'application/json'
+        },
+    success: function(token) { 
+      token = token.token; 
+     var formData = {"identificador": 'RCCIUDADANO_INSERTA_CASOS',"parametros": '{"xdts_tipo":"'+tipoForm+'", "xdts_nombre_completo":"'+nombreCompleto+'", "xdts_fono":'+telefono+', "xdts_referencia":"'+asunto+'", "xdts_contenido":"'+asunto+'", "xdts_url_evidencia":"'+prueba+'", "xdts_usr_id":1, "xdts_tipo_detalle":"'+detalleDenuncia+'", "xdts_datos":'+xdts_datos+'}'};    
+      $.ajax({   
+        type        : 'POST',            
+        url         : jsonURLS.CONEXION_MOTOR_SERVICIO + 'api/reglaNegocio/ejecutarWeb',  
+        data        : formData,
+        dataType    : 'json',
+        crossDomain : true,
+         headers: {
+         'authorization': 'Bearer '+token,         
+       },
+        success: function(dataIN) {  
+          limpiar(); 
+          obtCaptha();           
+          document.getElementById("EnvRes").disabled = true;
+          noVacio();
+          document.getElementById("escrito").checked = false;
+          document.getElementById("correo1").checked = false;
+		  document.getElementById("digital").checked = false;
+          swal("Enviado!", "Su solicitud fue enviada correctamente", "success");                         
+        },
+        error: function(result) {
+          
+        }
+      });
+  },   
+  });   
+} 
+function limpiar()
+{ 
+  $("#nombreCompleto").val('');
+  $("#documento").val(''); 
+  $("#direccion").val(''); 
+  $("#telefono").val('');
+  $("#correo").val('');  
+  //$("#esLibres").val('');
+  $("#detalleDenuncia").val('');
+}
+function solonumeros(e)
+                    {
+         var key = window.event ? e.which : e.keyCode;
+                        if(key < 48 || key > 57)
+                            e.preventDefault();
+                    }
+
+
+function controlaCheck(v){
+	if(v.id == 'escrito')
+	{		 
+		  document.getElementById("correo1").checked = false;
+		  document.getElementById("digital").checked = false;		 
+	}
+	if(v.id == 'correo1')
+	{
+		  document.getElementById("escrito").checked = false;
+		  document.getElementById("digital").checked = false; 		 
+	}
+	if(v.id == 'digital')
+	{
+		  document.getElementById("escrito").checked = false;
+		  document.getElementById("correo1").checked = false;			  
+	} 
+  
+ } 
+</script>
+<div style="max-width:960px; min-width:320px; margin:auto" id="content" class="border border-warning rounded"> 
+  <br>
+  <div class="form-group">
+    <label  class="col-sm-12 control-label"><center><H2>Formulario de Solicitud de Información (F.S.I.) </H2></center></label>
+    <input   id="esLibres"  hidden>
+  </div> 
+  <center> <div class="col-sm-11">
+   <label  class="col-sm-12 control-label text-justify" >Permite solicitar información institucional del GAMLP.</label>
+  </div></center>
+   <br> 
+      <div class="form-group row"> 
+      
+        <select class="form-control" id="fromIn" hidden>
+                        <option value="FORMULARIO" selected="selected" > FORMULARIO</option>                                                                
+        </select>
+          <select class="form-control" id="procedencia" hidden>
+                        <option value="EXTERNA" selected="selected" > EXTERNA</option>                                                                
+            </select>
+            <select class="form-control" id="tipoForm" hidden>
+                        <option value="SOLICITUD" selected="selected" >SOLICITUD</option>                                           
+            </select>         
+    </div>    
+  <div class="form-group row">
+  	<label  class="col-sm-1 col-form-label"></label>
+    <label  class="col-sm-3 control-label">Nombre Completo:</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="nombreCompleto" placeholder="Nombre Completo" >
+    </div>
+  </div>
+  <div class="form-group row">
+  	<label  class="col-sm-1 col-form-label"></label>
+    <label  class="col-sm-3 control-label">Numero C.I.:</label>
+    <div class="col-sm-6">
+      <input type="number" class="form-control" id="documento" placeholder="numero Carnet" onkeypress="solonumeros(event);">
+    </div>
+  </div> 
+   <div class="form-group row">
+   	<label  class="col-sm-1 col-form-label"></label>
+    <label  class="col-sm-3 control-label">Teléfono/Celular:</label>
+    <div class="col-sm-6">
+      <input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" onkeypress="solonumeros(event);">
+    </div>
+  </div>
+   <div class="form-group row">
+   	<label  class="col-sm-1 col-form-label"></label>
+    <label  class="col-sm-3 control-label">Correo Electrónico: *</label>
+    <div class="col-sm-6">
+      <input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" onKeyPress="noVacio()">
+    </div>  
+  </div> 
+ <div class="form-group row">
+ 	<label  class="col-sm-1 col-form-label"></label>
+    <label  class="col-sm-3 control-label">Unidad Organizacional:</label>
+    <div class="col-sm-6" id="select3" >
+      <select class="form-control" id="asunto" >
+                        <option value="CONCEJO MUNICIPAL" selected="selected" >Consejo municipal</option>
+                        <option value="DESPACHO ALCALDE MUNICIPAL">Despacho alcalde municipal</option>   
+                        <option value="SECRETARÍA EJECUTIVA">Secretaria ejecutiva</option> 
+                        <option value="DIRECCIÓN ESPECIAL DE FINANZAS .">Direccion especial de finanzas</option> 
+                        <option value="DIRECCIÓN ESPECIAL DE GESTIÓN INTEGRAL DE RIESGOS ">Direccion especial de gestion integral de riesgos</option> 
+                        <option value="DIRECCIÓN ESPECIAL DE MOVILIDAD, TRANSPORTE Y VIALIDAD">Direccion especial de movilidad, transporte y vialidad</option> 
+                        <option value="OFICIALÍA MAYOR DE DESARROLLO HUMANO">Oficialia mayor de desarrollo humano</option> 
+                        <option value="OFICIALÍA MAYOR DE INFRAESTRUCTURA PÚBLICA">Oficialia mayor de infraestructura pública</option> 
+                        <option value="OFICIALÍA MAYOR DE PLANIFICACIÓN PARA EL DESARROLLO.">Oficialia mayor de planificacionpara el desarrollo</option> 
+                        <option value="OFICIALÍA MAYOR DE PROMOCIÓN ECONÓMICA">Oficialia mayor de promocion economica</option> 
+                        <option value="OFICIALÍA MAYOR DE CULTURAS">Oficialia mayor de culturas</option>                      
+
+            </select>
+    </div>
+  </div>
+  <div class="form-group row">
+  	<label  class="col-sm-1 col-form-label"></label>
+    <label  class="col-sm-3 control-label">Detalle de la solicitud :   *</label>
+    <div class="col-sm-6">
+      <textarea type="text" class="form-control" id="detalleDenuncia" placeholder="Detalle Solicitud" onKeyPress="noVacio()"></textarea>
+    </div>
+  </div> 
+   <div class="form-group row">
+  	<label  class="col-sm-1 col-form-label"></label>
+    <label  class="col-sm-3 control-label">Medio de Entrega de la Respuesta:</label>
+    <div class="col-sm-6">    
+		<div id="product1">
+		    <input type="checkbox" value="" id="escrito" name="check" onClick="controlaCheck(this)"/> Escrito<br/>
+		    <input type="checkbox" value="true" id="correo1" name="check" onClick="controlaCheck(this)"/> Correo Electrónico<br/>
+		    <input type="checkbox" value="" id="digital" name="check" onClick="controlaCheck(this)"/> Digital /CD / DVD/ Flash<br/>
+		</div>
+    </div>
+  </div> 
+<center><div class="container" >
+  <div  class="center-block">
+    <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table users table-hover border border-warning " >           
+              <tbody>       
+        <tr> 
+            <th class="border border-warning"><img id="img1" class="img-responsive" src="" title="" width="200" height="35"></th>   
+           <th class="border border-warning"> <img id="img2" class="img-responsive" src=""  title="" width="200" height="35"></th>  
+        </tr>
+        <tr> 
+           <th class=""><input   size="34"  id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> </th>
+           <th class=""> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="img/recarga.png"  width="20" height="20" title=""> </button> </th> 
+        </tr>
+         </tbody>
+          </table>  
+           <p id="msg_capcha"></p>             
+        </div>
+    </div>
+  </div>
+</div></center>
+
+        <div class="modal-footer">        
+          <button id= "EnvRes"  onClick="resetPassword();" disabled="true" type="submit"  onclick="guardarDatos2()" class="btn btn-warning text-white"  >Enviar</button>        
+        </div>  
+<center><img src="img/logo.png" width="250" height="100"/></center>
+</div>
+<script type="text/javascript" src="../../../../libs/js/jquery.blockUI.min.js"></script>
+<script type="text/javascript" src="../../../../libs/js_one/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../../libs/js/sweetalert.min.js"></script>

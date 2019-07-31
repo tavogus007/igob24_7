@@ -1,0 +1,278 @@
+<!--for Catcha-->
+<style>
+
+table.one 
+ {border-collapse:collapse;
+            width:100%;
+            border-spacing:10px;
+             /*border-color:#6F7072;*/
+        }
+ tr.color {
+       background-color:#6F7072;
+        /*border: green 5px solid; */
+       }
+    td.color2 {
+       border:  #0ACC9E 5px solid;
+       background-color: #0ACC9E;
+       border-width:5px;
+       padding:1px;
+   }
+   td.colorCA {
+       border:  #0ACC9E 5px solid;
+       background-color:#FFFFFF;
+        border-width:5px;
+        
+        padding:1px;
+    }
+    td.color22 {
+       border:  #0ACC9E 5px solid;
+       background-color: #0ACC9E;
+       border-width:5px;
+       
+       padding:1px;
+    }
+     input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+     .box2{
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+</style>
+
+
+<!--end catcha-->
+
+<script type="text/javascript">
+  function valor(a)
+  {
+    $("#titulo").text(a);
+          //var a = $("boton").val();  
+        }
+      </script>
+      <script type="text/javascript">
+        function clearTxt()
+        {
+          document.getElementById('usuario').value    = '';
+          document.getElementById('clave').value      = '';
+        }
+      </script>
+
+      <style type="text/css">
+        /* Reset CSS **/
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, font, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td {
+          margin: 0;
+          padding: 0;
+          border: 0;
+          outline: 0;
+          font-size: 100%;
+          vertical-align: baseline;
+          background: transparent;
+        }
+        body {
+          background-image:  url(../../libs/img/2.jpg);
+          background-size: cover;
+          color: #000;
+          margin: 0 auto;
+          padding: 0;
+          position: relative;
+          background-repeat:no-repeat;
+          background-color:rgb(255, 189, 1) !important;
+        }
+        .contenedor_log{
+          margin: 7% auto;
+          position: relative;
+
+        }
+        .over{
+          margin: 0px;
+          padding: 0px;
+          position: fixed;
+          left: 0px;
+          top: 0px;
+          width: 100%;
+          height: 100%;
+          background-image: url(../../libs/img/overlays/05.png);
+        }
+      </style>
+
+
+      <!-- /.page-content -->
+
+      <html onload="clearTxt();">
+      <head></head>
+      <body>
+        <div class="over">
+          <div class="contenedor_log" >
+            <div class="middle-box text-center loginscreen  animated fadeInDown">
+             <form name="loginForm" class="bs-component" role="form" >
+              <div class="row">
+               <div class="col-md-12">
+                <div class="logo_integra">
+                 <img src="../../libs/img/logo.png" class="img-responsive center-block" alt="" class="img-responsive img-rounded"/>
+               </div>
+             </div>
+           </div>
+
+           <div>
+             <h3 style="color: white; padding: 0px 0px 30px 0px">Iniciar sesión</h3>
+             <div style="text-align: left;">
+               <div class="form-group label-floating is-empty">
+                <label style="color: white" class="control-label" for="focusedInput1" placeholder="Usuario" >USUARIO:</label>
+                <input class="form-control" type="text" id="usuario" name="usuario" ng-model="login.usuario" placeholder="Ingrese su Carnet de Identidad">
+                <!-- <span class="material-input"></span> -->
+              </div>
+              <div class="form-group label-floating is-empty">
+                <label style="color: white" class="control-label" for="focusedInput1" for="clave">PIN:</label>
+                <input type="password" id="clave" name="clave" class="form-control"  type="text" ng-model="login.clave" placeholder="Ingrese su PIN" required>
+                <!-- <span class="material-input"></span> -->
+              </div>
+            </div>     
+            <!-- ........ -->
+            <button type="submit" class="btn btn-sm btn-white btn-block" ng-click="doLogin(login);" data-ng-disabled="loginForm.$invalid" style="color: #fff; background-color: rgb(254, 191, 0); border: 2px solid rgb(254, 191, 0); padding: 5px; font-size: 18px;">Ingresar<div class="ripple-container"></div>
+            </button>
+            <br>
+
+            <p><a style="color: white !important; " data-toggle="modal" data-target="#password" ng-click="inicioCapcha();"> <small>¿Olvido su pin?</small></a></p>
+            <p><a href="../../../index.html" ui-sref="forgot_password" href="/forgot_password" style="color: white !important" ><small>Volver al inicio</small><div class="ripple-container"></div></a></p>
+
+          </div>
+        </form>
+      </div>
+
+      
+    </div>
+
+    <!-- Modal olvido contraseña-->
+
+  </div>
+  <div class="modal fade" id="password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+       <form name="signupForm" readOnly="true" novalidate>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+          <h4 class="modal-title" id="myModalLabel">Envio de Mensaje</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+
+            <div class="col-md-8">
+              <div class="form-group" >
+                <label for="url" >USUARIO:</label>
+                <div class="controls">
+                  <input ng-model="prsCI" id="prsCI" name="prsCI" class="form-control" type="text" placeholder="ingrese usuario" required/>
+                  <span style="color:red" ng-show="signupForm.prsCI.$invalid">
+                    <span ng-show="signupForm.prsCI.$error.required">Usuario requerido
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group" >
+                <label for="url" >Correo:</label>
+                <div class="controls">
+                  <input ng-model="prsCorreo" id="prsCorreo" name="prsCorreo" class="form-control" type="email" placeholder="ingrese e-mail" required/>
+                  <span style="color:red" ng-show="signupForm.prsCorreo.$invalid">
+                    <span ng-show="signupForm.prsCorreo.$error.required">Correo requerido
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- GNERADOR DE CAPCHA -->
+            <div class="col-md-12" >
+              <div class="col-md-12" align="center" >                          
+                <table width="50%" border="3" cellspacing="0" cellpadding="2"  class="one">
+                  <tr class="color">
+                    <div><!--cambios-->
+                      <div class="box2">
+                        <img class="img-responsive" src="{{imageLNG}}" title="{{toltipT}}">
+                      </div>
+                      <div class="box2">
+                        <img class="img-responsive" src="{{imageCST}}"  title="Palabra en CASTELLANO">
+                      </div>
+                    </div>
+                  </tr>                              
+                  <tr class="color"> 
+                    <td class="color22" colspan="3" width="70"  align="center">                                                
+                      <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" placeholder="{{palabraT}}" ng-model="resultadoC"  required/>
+                      <span  ng-show="formulario.resultadoC.$invalid">
+                        <span ng-show="formulario.resultadoC.$error.required">{{palabraT}}.</span>
+                      </span>                                                                                            
+                    </td>   
+                    <td class="color2" width="30"  align="center">
+                      <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                      </a>
+                    </td>                                              
+                  </tr>                                            
+                </table>
+              </div>
+            </div>
+            <!-- ********************* -->
+
+
+
+          </div>  
+        </div>
+        <div class="modal-footer"> 
+          <button data-toggle="modal" ng-click="VerificarCapcha(prsCI,prsCorreo);" data-target="#formModal" type="submit" class="btn btn-primary" ng-disabled="signupForm.prsCI.$invalid || signupForm.prsCorreo.$error.required||formulario.resultadoC.$invalid" data-dismiss="modal">Enviar</button> 
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>   
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>        
+<script type="text/javascript">
+  try{
+    $(function () {            
+     $.material.init();
+     $(".shor").noUiSlider({
+       start: 40,
+       connect: "lower",
+       range: {
+         min: 0,
+         max: 100
+       }
+     });
+
+     $(".svert").noUiSlider({
+       orientation: "vertical",
+       start: 40,
+       connect: "lower",
+       range: {
+         min: 0,
+         max: 100
+       }
+     });
+   });
+  }catch(e){}
+</script> 
+

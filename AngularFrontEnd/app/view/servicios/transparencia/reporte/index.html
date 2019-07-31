@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+<html >
+<head>
+    <style>
+
+#content { 
+width: 90%;
+} 
+ .modal-header, h4, .close {
+      background-color: #ffd338;
+      color:white !important;
+      text-align: center;
+      font-size: 20px;
+  }
+  .modal-footer {
+      background-color: #f9f9f9;
+  }
+</style>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>  
+  <meta content="width=device-width, initial-scale=1.0" name=viewport> 
+</head>
+<script type="text/javascript" src="../../libs/js/Chart.min.js"></script>
+<!--
+<script type="text/javascript" src="../../controller/autenticacion/config.js"></script>        
+<script type="text/javascript" src="../../libs/login/login.js"></script>  
+<link rel="stylesheet" type="text/css" href="../../libs/js/jquery.dataTables.min.css">
+<link rel="stylesheet" href="../../libs/css/sweetalert.min.css"/>
+<script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+
+<script type="text/javascript"  src="../../libs/js/angular.min.js"></script>
+<script type="text/javascript" src="../../libs/js_one/bootstrap.min.js"></script> 
+-->
+<script type="text/javascript"  src="../../libs/js/jquery.dataTables.min.js"></script>
+ <!-- <link rel="stylesheet" href="../../libs/css_one/bootstrap.min.css"/> -->
+
+<body>  
+<div style="max-width:1500px; min-width:320px" id="content" > 
+<div id="pagInicio">
+  <br>
+  <div class="form-group">
+    <label  class="col-sm-12 control-label"><center><H2>REPORTE SOLICITUDES</H2></center></label>
+    <input   id="INICIO"  hidden>
+  </div>   
+   <br> 
+   <div class="form-group row">
+    <label  class="col-sm-1 col-form-label"></label>       
+  </div>    
+   <center> <div  >
+          <br>         
+            <div class="btn-group col-md-12">            
+             <div class="form-group col-md-6">
+             <button   type="button" value="DENUNCIA" onclick="tipoOpcion(this)" > <img src="../servicios/transparencia/reporte/img/Denuncias.png" width="100%" height="100%"  /> </button>              
+             </div> 
+             <div class="form-group col-md-6">
+             <button   type="button"  value="SOLICITUD DE INFORMACION" onclick="tipoOpcion(this)" > <img src="../servicios/transparencia/reporte/img/Solicitud.png" width="100%" height="100%" />  </button>
+            </div> 
+           </div>        
+       </div></center>  
+         <br>   
+         <center> <div  >
+          <br>         
+            <div class="btn-group col-md-12">            
+             <div class="form-group col-md-6">
+             <button   type="button"  value="RECLAMO" onclick="tipoOpcion(this)" > <img src="../servicios/transparencia/reporte/img/reclamos.png" width="100%" height="100%"  /> </button>               
+             </div> 
+             <div class="form-group col-md-6">
+             <button   type="button"  value="SOPORTE" onclick="tipoOpcion(this)" > <img src="../servicios/transparencia/reporte/img/soporte.png" width="100%" height="100%" />  </button>
+            </div> 
+           </div>        
+       </div></center>  
+         <br>  
+ </div>
+<!--PANTALLA DENUNCIAS -->
+
+<div id="pagDenuncias" style="display: none"> 
+  <br>
+   <div class="btn-group col-md-2">    
+    <button   type="button" class="btn btn-warning text-white" value="0" onclick="tipoOpcion(this)">VOLVER</button>
+   </div> 
+  <div class="form-group">
+    <div class="form-group col-md-12 " id="nombreP">  </div>    
+  </div>   
+   <br>         
+  <div class="form-group row">    
+    <label  class="col-sm-3 control-label">Rango de Fechas:</label>
+    <div class="col-sm-3">
+      <input type="date" class="form-control"  id="fecha_inicio" value="2018-01-01" >
+    </div>
+    <div class="col-sm-3">
+      <input type="date" class="form-control"  id="fecha_fin"  value="2018-12-30">
+    </div>
+    <div class="col-sm-2">      
+      <button id="registrar" class="btn btn-warning text-white" value="" onclick='listar(this.value)' type="button" >Buscar 
+    </div>         
+  </div>      
+  <div class="box-body col-sm-12 ">
+        <div id="no-more-tables">
+          <div id="listPagos" class="table-responsive">
+          </div>
+        </div>
+      </div> 
+   <center><div class="col-sm-3">
+      <select class="form-control" id="tipoGrafico" onclick="tipoOpcion2(this)">
+                        <option value="tortas" selected="selected" > TORTAS</option>
+                        <option value="barras">BARRAS</option>                                                            
+            </select>
+    </div></center> 
+   <div id="pagTortas">  
+   <center><canvas id="pie-chart" width="400" height="250"></canvas></center>
+  </div>
+  <div id="pagBarras" style="display: none">  
+   <center><canvas id="bar-chart" width="400" height="250"></canvas></center>
+  </div>   
+         <br> 
+         <br> 
+</div>
+<div class="container">
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="padding:35px 50px;">
+          Detalle Casos<button type="button" class="close" data-dismiss="modal">&times;</button>         
+        </div>
+        <div class="modal-body" style="padding:40px 50px;">
+          <form role="form">
+             <div class="form-group row">           
+            <label  class="col-sm-2 control-label red"><span class="fa fa-thumb-tack"></span> Tipologia </label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control" id="referencia" > 
+            </div>           
+            <div class="col-sm-3">
+             <input type="text" class="form-control" id="fecha" > 
+            </div>
+          </div>           
+            <div class="form-group">
+              <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Asunto</label>
+              <input type="text" class="form-control" id="asunto" >
+            </div> 
+            <div class="form-group">
+              <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Descripcion</label> 
+              <textarea type="text" class="form-control" id="detalle" placeholder="Detalle Denuncia" onKeyPress="noVacio()"></textarea> 
+            </div>             
+         <div class="form-group row">           
+            <label  class="col-sm-2 control-label red"><span class="glyphicon glyphicon-user"></span> Nombre </label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="nombre" > 
+            </div>
+            <label  class="col-sm-1 control-label red">CI </label>
+            <div class="col-sm-4">
+             <input type="text" class="form-control" id="documento" > 
+            </div>
+          </div>
+           <div class="form-group row">           
+            <label  class="col-sm-2 control-label red"><span class="fa fa-at"></span> Correo </label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="correo" > 
+            </div>
+            <label  class="col-sm-1 control-label red">Telefono </label>
+            <div class="col-sm-4">
+             <input type="text" class="form-control" id="telefono" > 
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger  pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cerrar</button>  
+        </div>
+      </div>      
+    </div>
+  </div> 
+</div>
+</div>
+</body>
+</html>
+<script>
+var tipoT = '';
+function tipoOpcion2(v){
+if (v.value=='tortas') {
+   document.getElementById("pagTortas").style="display:block;";
+   document.getElementById("pagBarras").style="display:none;";     
+ }
+ if (v.value=='barras') {
+   document.getElementById("pagTortas").style="display:none;";
+   document.getElementById("pagBarras").style="display:block;";   
+ }             
+}    
+function tipoOpcion(v){
+if (v.value==0) {
+   document.getElementById("pagInicio").style="display:block;";
+   document.getElementById("pagDenuncias").style="display:none;";      
+ }
+  if (v.value=='DENUNCIA') {
+   document.getElementById("pagInicio").style="display:none;";
+   document.getElementById("pagDenuncias").style="display:block;"; 
+   tipoT = v.value;
+   htmlTitulo = '<center><label class="control-spam col-md-12" ><h3>'+tipoT+'</h3></label></center>';
+   $('#nombreP').html(htmlTitulo);
+   $('#registrar').val(tipoT);
+   listar(tipoT);   
+ }
+ if (v.value=='SOLICITUD DE INFORMACION') {
+   document.getElementById("pagInicio").style="display:none;";
+   document.getElementById("pagDenuncias").style="display:block;";
+   tipoT = v.value;
+   htmlTitulo = '<center><label class="control-spam col-md-12" ><h3>'+tipoT+'</h3></label></center>';
+   $('#nombreP').html(htmlTitulo);
+   var tipoT = tipoT.split(" ");
+   var tipolista = tipoT[0];   
+   $('#registrar').val(tipolista);
+   listar(tipolista); 
+ } 
+ if (v.value=='RECLAMO') {
+   document.getElementById("pagInicio").style="display:none;";
+   document.getElementById("pagDenuncias").style="display:block;"; 
+   tipoT = v.value;
+   htmlTitulo = '<center><label class="control-spam col-md-12" ><h3>'+tipoT+'</h3></label></center>';
+   $('#nombreP').html(htmlTitulo);
+   $('#registrar').val(tipoT);
+   listar(tipoT);       
+
+ }
+  if (v.value=='SOPORTE') { 
+   document.getElementById("pagInicio").style="display:none;";
+   document.getElementById("pagDenuncias").style="display:block;"; 
+   tipoT = v.value;
+   htmlTitulo = '<center><label class="control-spam col-md-12" ><h3>'+tipoT+'</h3></label></center>';
+   $('#nombreP').html(htmlTitulo);
+   $('#registrar').val(tipoT);
+   listar(tipoT);     
+ }               
+}    
+var numeroA = 0;
+var numeroB = 0;
+function listar(v){   
+  verificarFechas=false;
+  verificarRango=true;
+  htmlListaFac = '';
+  htmlListaFac+='<div class="row">';
+  htmlListaFac+='<div class="col-md-12" >' ;
+  htmlListaFac+='<table id="lts-fum" class="table table-striped" cellspacing="0" width="100%"  >';
+  htmlListaFac+='<thead><tr>';
+  htmlListaFac+='<th align="left">N°</th>'; 
+  htmlListaFac+='<th align="left">Referencia</th>'; 
+  htmlListaFac+='<th align="left">Nomnbre</th>'; 
+  htmlListaFac+='<th align="left">Estado</th>'; 
+  htmlListaFac+='<th align="left">Fecha</th>';
+   htmlListaFac+='<th align="left">Opcion</th>'; 
+  htmlListaFac+='</ tr></thead>';  
+  var fecha_inicio =$("#fecha_inicio").val();
+  var fecha_fin = $("#fecha_fin").val();
+  var tipolista = v; 
+   
+  $.ajax({
+    type        : 'POST',
+    url         : jsonURLS.CONEXION_MOTOR_SERVICIO + 'api/apiLogin', 
+    data        : '{"usr_usuario":"administrador", "usr_clave":123456}',
+    headers: {
+          'Content-type': 'application/json'
+        },
+    success: function(token) { 
+      token = token.token; 
+      var formData = {"identificador": 'RCCIUDADANO_REPORTE',"parametros": '{"xfecha":"'+fecha_inicio+'", "yfecha":"'+fecha_fin+'", "yestado":"A", "ytipo":"'+tipolista+'"}'};    
+      $.ajax({   
+        type        : 'POST',            
+        url         : jsonURLS.CONEXION_MOTOR_SERVICIO + 'api/reglaNegocio/ejecutarWeb',  
+        data        : formData,
+        dataType    : 'json',
+        crossDomain : true,
+         headers: {
+         'authorization': 'Bearer '+token,         
+       },
+        success: function(dataIN) {         
+          console.log(dataIN,911);
+        numeroA = JSON.parse(dataIN[0].data).numeroa;
+        numeroB = JSON.parse(dataIN[0].data).numerob;
+        tortas(numeroA,numeroB); 
+        barras(numeroA,numeroB);
+       
+           if (dataIN!= "[{ }]") 
+          {
+            verificarFechas=verificarCampos(fecha_inicio,fecha_fin);
+            var tam= dataIN.length; 
+            
+          }            
+           if(dataIN == "[{ }]"){
+            htmlListaFac+='<td align="left"> </td>';
+            htmlListaFac+='<td align="left"> </td>'+
+                          '<td align="left"> </td>'+
+                          '<td align="left"> </td>'+
+                          '<td align="left"> </td>'+   '</tr>';          
+           }
+           else{
+             var numero = 0;             
+          for (var i = 0; i < dataIN.length; i++) {                      
+            numero = numero + 1;
+            var estado = JSON.parse(dataIN[i].data).dts_estado;
+            if(estado == 'A')
+            {
+              estado = 'Pendiente';
+            }
+            else
+            {
+              estado = 'Atendido';
+            }
+            htmlListaFac+='<td align="left">'+ numero+'</td>';                    
+            htmlListaFac+='<td align="left">'+ JSON.parse(dataIN[i].data).dts_referencia+'</td>'+
+                          '<td align="left">'+ JSON.parse(dataIN[i].data).dts_nombre_completo+'</td>'+
+                          '<td align="left">'+ estado+'</td>'+
+                          '<td align="left">'+ JSON.parse(dataIN[i].data).dts_registrado+'</td>';                    
+            htmlListaFac+='<td class="form-nobajas"><button type="button" class="btn btn-info glyphicon glyphicon-eye-open" fa fa-plus-square pull-right"  id="myBtn"   onClick= "llenarModal(\''+JSON.parse(dataIN[i].data).dts_id+'\',\''+JSON.parse(dataIN[i].data).dts_nombre_completo+'\',\''+JSON.parse(dataIN[i].data).dts_fono+'\',\''+JSON.parse(dataIN[i].data).dts_contenido+'\',\''+JSON.parse(dataIN[i].data).dts_referencia+'\',\''+JSON.parse(dataIN[i].data).dts_estado+'\',\''+JSON.parse(dataIN[i].data).dts_tipo_detalle+'\',\''+JSON.parse(dataIN[i].data).dts_registrado+'\');" ></button> </td>'+ '</tr>';     
+             //<button type="button" class="btn btn-default btn-lg" id="myBtn">Login</button>                     
+          }  
+      }
+          htmlListaFac +='</table></div></div>';
+          htmlListaFac +='<div>';
+          htmlListaFac +='<ul class="pager">';         
+          htmlListaFac +='</ul>';
+          htmlListaFac +='</div>';
+          $('#listPagos').html(htmlListaFac);  
+          $('#lts-fum').DataTable(
+          {
+          
+           "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+         }
+         );                 
+        },
+        error: function(result) {
+          
+        }
+      });
+  },   
+  }); 
+}
+function casoAtendido(id){  
+id=id.value;   
+   
+  $.ajax({
+    type        : 'POST',
+    url         : jsonURLS.CONEXION_MOTOR_SERVICIO + 'api/apiLogin', 
+    data        : '{"usr_usuario":"administrador", "usr_clave":123456}',
+    headers: {
+          'Content-type': 'application/json'
+        },
+    success: function(token) { 
+      token = token.token; 
+      var formData = {"identificador": 'RCCIUDADANO_ESTADO',"parametros": '{"caso_id":'+id+'}'};    
+      $.ajax({   
+        type        : 'POST',            
+        url         : jsonURLS.CONEXION_MOTOR_SERVICIO + 'api/reglaNegocio/ejecutarWeb',  
+        data        : formData,
+        dataType    : 'json',
+        crossDomain : true,
+         headers: {
+         'authorization': 'Bearer '+token,         
+       },
+        success: function(dataIN) {           
+          listar($('#registrar').val()); 
+            swal("Atendido!", "El caso fue  atendido.", "success");                           
+        },
+        error: function(result) {          
+        }
+      });
+  },   
+  }); 
+}
+function llenarModal(id, nomnbre, telefono, contenido, asunto, estado, detalle, fecha)
+{
+  
+  console.log(id, nomnbre, telefono, contenido, asunto, estado, detalle, fecha);
+        $("#myModal").modal();
+        $('#referencia').val(asunto);
+        $('#detalle').val(detalle);
+        $('#atendido').val(id); 
+        $("#fecha").val(fecha);
+        $('#asunto').val(contenido);
+        $('#nombre').val(nomnbre);telefono
+        $('#telefono').val(telefono);
+       
+}
+
+function tortas(numeroA,numeroB)
+{   
+new Chart(document.getElementById("pie-chart"), {
+    type: 'pie',
+    data: {
+      labels: ["Pendientes", "Atendidos"],
+      datasets: [{
+        label: "Numero de casos",
+        backgroundColor: ["#3e95cd", "#8e5ea2"],
+        data: [numeroA,numeroB]
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Estado de atencion'
+      }
+    }
+});
+}
+function verificarCampos(xf,yf)
+{
+  if(xf =="")
+    return false;
+  if(yf=="")
+    return false;
+  return true;
+};
+function barras(numeroA,numeroB){ 
+new Chart(document.getElementById("bar-chart"), {
+    type: 'bar',
+    data: {
+      labels: ["Pendientes", "Atendidos"],
+      datasets: [
+        {
+          label: "Numero de Casos",
+          backgroundColor: ["#3e95cd", "#8e5ea2"],
+          data: [numeroA, numeroB]
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Estado de atencion'
+      }
+    }
+});
+}
+$(document).ready(function(){
+    $("#myBtn").click(function(){
+        $("#myModal").modal();
+    });
+});
+</script>
+
+

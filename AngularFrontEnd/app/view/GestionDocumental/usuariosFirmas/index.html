@@ -1,0 +1,175 @@
+<style>
+    .column {cursor: move;}
+    .column header {color: #fff;}
+</style>
+<div class="col-md-12" ng-controller="UsuariosFirmasController" data-ng-init="inicioUsuariosRoles()">
+    <legend><H3> <label for="title">Administracion de Usuarios Firmas</label> </H3></legend>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Usuarios
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <th>ID&nbsp;</th>
+                                <th>Nombre&nbsp;</th>
+                                <th>Codigo&nbsp;</th>
+                                <th>Clave&nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr class="column" ng-repeat="usuario in usuarios" ng-click="seleccionarUsuario(usuario.usrId,usuario.usrNombre)">
+                                    <td>{{usuario.usrId}}</td>
+                                    <td>{{usuario.usrNombre}}</td>
+                                    <td>{{usuario.usrUsuario}}</td>
+                                    <td>{{usuario.usrClave}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading" ng-show = "cargarInformacionvista12 != null">
+                    Firmas Asignados {{nombre_usuario}}
+                    <a class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro" ng-click="cargarComboDocumentacion();limpiar()"><i class="fa fa-upload fa-2x" style="color:#249FE6" title="Subir Documento"></i></a>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive"> 
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <th>SELECCIONAR&nbsp;</th>
+                                <th>ID&nbsp;</th>
+                                
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="usuariosRol in usuariosRoles">
+                                    <td><div class="ngSelectionCell">
+                                        <input tabindex="-1" class="ngSelectionCheckbox" type="checkbox" ng-checked="row.selected" ng-model="checkboxesi.items[usuariosRol.usrlsid]" /></div></td>
+                                    <td>{{usuariosRol.frm_usr_firma_id}}</td>                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- MODAL -->
+        <div class="modal fade" id="registro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{{titulo}}</h4><b style="color:#249FE6">Fecha de adjunto: </b>{{fechadeadjunto}}
+                 </div>
+                    <div class="modal-body" >
+                        <form name="formulario" novalidate>
+                            <div class="row">
+                            <div >
+                            <!-- <div ng-show="opcionAdjunto == null"> -->
+                            <div class="col-md-12" >
+                                <label for="url" >Adjuntar Archivo:</label>
+                                <input type="file" nv-file-select="" ng-model="noticia.cntimagen"  uploader="uploader"/>
+                            </div>  
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                        <th width="50%">Nombre</th>
+                                            <th ng-show="uploader.isHTML5">Tamano</th>
+                                            <th>Estado</th>
+                                            <th>Opción</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="datos in uploader.queue ">
+                                            <td><strong>{{datos.file.name }}</strong></td>
+                                                <td ng-show="uploader.isHTML5" nowrap>{{ datos.file.size/1024/1024|number:2 }} MB</td>
+                                                <td class="text-center">
+                                                <span ng-show="datos.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <span ng-show="datos.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                </td>
+                                                <td nowrap>
+                                                <button ng-show="botonSubirOriginal == null"  type="button" class="btn btn-success btn-xs" ng-click="datos.upload();guardarSerializacion(dispocicion1);" ng-disabled="datos.isReady || datos.isUploading || datos.isSuccess ">
+                                                <span class="glyphicon glyphicon-upload"></span> Subir 
+                                                </button>
+                                                <button ng-show="botonSubirError == null" type="button" class="btn btn-success btn-xs" ng-click="falla();" ng-disabled="datos.isReady || datos.isUploading">
+                                                <span class="glyphicon glyphicon-upload"></span> Subir 
+                                                </button>
+                                                <button ng-show="botonSubireliminar == null" type="button" class="btn btn-danger btn-xs" ng-click="datos.remove()">
+                                                <span class="glyphicon glyphicon-trash"></span> Eliminar 
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                </table>
+                                </div> 
+                            </div> 
+                            </div>
+                            <div ng-show="opciontiposDocumentacion != null">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label for="url" >Tipos de Documentación:</label>
+                                        <div class="controls">
+                                        <select id="vtps_doc_id" name="vtps_doc_id" ng-model="datosRol.vtps_doc_id" class="form-control" ng-options="datadocumentacion.vtps_doc_id as datadocumentacion.vtps_doc_tipo_doc for datadocumentacion in datadocumentaciones"  ng-change="documentacion(datosRol.vtps_doc_id)" >
+                                            <option style="display:none" value="">-- Seleccione Tipo --</option>
+                                        </select>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div  ng-bind-html="get_pre(html)">                             
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >Públicación:</label>
+                                        <div class="controls">
+                                            <select id="vdoc_acceso" class="form-control" ng-model="datosRol.vdoc_acceso" ng-disabled="desabilitado" name="vdoc_acceso">
+                                                <option value="PUBLICO">PUBLICO</option>
+                                                <option value="PRIVADO">PRIVADO</option>                                            
+                                            </select>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >Tiempo de públicación en días :</label>
+                                        <div class="controls">
+                                        <input  ng-model="datosRol.vdoc_tiempo" id="vdoc_tiempo" name="vdoc_tiempo" class="form-control" type="number" placeholder="ingrese tiempo de publicación" required>
+                                                            <p class="help-block"><b>Ejemplo:</b>       1 o 0 para infinito </p>
+                                        </div>
+                                    </div>
+                             </div>
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label for="url" >Dirección de almacenamiento:</label>
+                                        <div class="controls">
+                                            <input  ng-model="datosRol.vdoc_url" id="vdoc_url" name="vdoc_url" class="form-control" type="text" placeholder="ingrese la direccion a almacenar" required>
+                                            <p class="help-block"><b>Ejemplo:</b> C://GestionDocumental//temporal//DMS//INFORME//1</p>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </form>
+                    </div>
+               
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button data-dismiss="modal" ng-click="guardar(datosRol)" type="button" class="btn btn-primary"  >Guardar</button>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,1741 @@
+<!-- TIPOS OBLIGATORIO -->
+
+<style>
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {        
+        padding-left: 8px;
+    }    
+</style>
+
+<style>
+    .custom-upload {
+        position: relative;
+        height: 40px;
+        width: 100%;
+
+    }
+    .custom-upload input[type=file]
+    {
+        outline:none;
+        position: relative;
+        text-align: right;    
+        -moz-opacity:0 ;
+        filter:alpha(opacity: 0);
+        opacity: 0;
+        z-index: 2;
+        width:85%;
+        height:100%;
+
+    }
+    .custom-upload .fake-file
+    {
+        background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 85%;
+        padding: 0;
+        margin: 0;
+        z-index: 1;
+        line-height: 100%;
+    }
+    .custom-upload .fake-file input
+    {
+        font-size:16px;
+        height:40px;
+        width:85%;
+    }
+</style>
+
+<script type="text/javascript">
+    $('.custom-upload input[type=file]').change(function(){        
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+</script>
+
+<script type="text/javascript">
+    function soloNumericoCelular(sValor){
+        Numer=parseInt(sValor);
+        if (isNaN(Numer)){
+            return "";
+        }else{
+            var digits = ("" + Numer).split("");   
+            if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6)){              
+                return Numer;
+            }else{
+                return "";
+            }
+        }
+    }    
+    function valNumeroCelular(Control){
+        Control.value = soloNumericoCelular(Control.value);
+    }
+    //VALORES NUMERICOS
+    function soloNumerico(variable){
+        Numer=parseInt(variable);
+        if (isNaN(Numer)){
+            return "";
+        }
+        return Numer;
+    }    
+    
+    function valNumero(Control){
+        Control.value=soloNumerico(Control.value);
+    }    
+</script>
+
+<script type="text/javascript">
+    function soloNumericoTelefono(sValor){
+        Numer=parseInt(sValor);
+        if (isNaN(Numer)){
+            return "";
+        }else{
+            var digits = ("" + Numer).split("");   
+            if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){              
+                return Numer;
+            }else{
+                return "";
+            }
+        }
+    }    
+    function valNumeroTelefono(Control){
+        Control.value = soloNumericoTelefono(Control.value);
+    }
+    //VALORES NUMERICOS
+    function soloNumerico(variable){
+        Numer=parseInt(variable);
+        if (isNaN(Numer)){
+            return "";
+        }
+        return Numer;
+    }    
+    
+    function valNumero(Control){
+        Control.value=soloNumerico(Control.value);
+    }    
+</script>
+
+
+<script type="text/javascript">
+    function desactivar() {
+    //INT_ACTIVIDAD_DESCRIPCION
+    var denominacion = document.getElementById('INT_ACTIVIDAD').options[document.getElementById('INT_ACTIVIDAD').selectedIndex].text;
+    document.getElementById('INT_ACTIVIDAD_DESCRIPCION').value = denominacion;
+    if($("#INT_ACTIVIDAD").val()=="INTB_COM" || $("#INT_ACTIVIDAD").val()=="INTB_PUB" || $("#INT_ACTIVIDAD").val()=="INTJ_MCE" || $("#INT_ACTIVIDAD").val()=="INTJ_MEC") {
+        $("#TIPO").empty();
+        $("#TIPO").append('<option value="">--Seleccionar--</option>');
+        $("#TIPO").append('<option value="EMISION">EMISIÓN</option>');
+        $("#TIPO").append('<option value="RENOVACION">RENOVACIÓN</option>');
+    }else if($("#INT_ACTIVIDAD").val()==""){
+        $("#TIPO").empty();
+        $("#TIPO").append('<option value="">--Seleccionar--</option>');            
+    }else {
+        $("#TIPO").empty();
+        $("#TIPO").append('<option value="">--Seleccionar--</option>');
+        $("#TIPO").append('<option value="EMISION">EMISIÓN</option>');
+        $("#TIPO").append('<option value="RENOVACION">RENOVACIÓN</option>');
+        $("#TIPO").append('<option value="MODIFICACION">MODIFICACIÓN</option>');        
+        //$("#TIPO").append('<option value="CANCELACION">CANCELACIÓN</option>');
+        //}
+    }
+}
+</script>
+<script>
+    $(function () {
+        $('#FECHAINICIO').fdatepicker({
+            closeButton: true
+        });
+        $('#FECHAFIN').fdatepicker({
+            closeButton: true
+        });
+    });
+</script>
+<!-- OCULTANDO COMBO TIPO DE PERSONA -->
+<script type="text/javascript">
+    var cboTipoCon = document.getElementById("tipo_contribuyente");
+    if(cboTipoCon){
+        cboTipoCon.style.display = 'none';
+    }
+    
+    function accessScope(node, func) {
+        var scope = angular.element(document.querySelector(node)).scope();
+        scope.$apply(func);
+    }
+
+    function initMap()
+    {
+      accessScope('#outerMapaActividad', function (scope) {
+        scope.initMap();
+      });
+        
+    }  
+</script>
+
+<div id="outerMapaActividad" ng-controller="internetController" data-ng-init="cargarDatos();">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">            
+            <h5>{{translateTitulos.lbl_12_01}}</h5><!--cambios-->
+            <!--<h5>REQUISITOS SOLICITADOS : AUTORIZACIÓN DE JUEGOS MECÁNICOS Y ELECTROMECÁNICOS</h5>-->
+        </div>
+        <div class="ibox-content">
+            <form name="signupForm"  ng-controller="serviciosController"   class="form-horizontal" role="form" novalidate>        
+                <div ng-show = "formulario != null">            
+                       <div >
+                            <!--<div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >OID:</label>
+                                    <div class="controls">
+                                        <input type="hidden" ng-model="datos.CI_BIGDATA" id="CI_BIGDATA" name="CI_BIGDATA" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        <input type="hidden" ng-model="datos.AE_ORD_DEM" id="AE_ORD_DEM" name="AE_ORD_DEM" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                </div>
+                            </div>-->
+                            <!--<div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >Fecha de Solicitud:</label>
+                                    <div class="controls">
+                                        <input  type="hidden" ng-model="datos.INT_FEC_SOLICITUD" id="INT_FEC_SOLICITUD" name="INT_FEC_SOLICITUD" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                </div>
+                            </div>-->
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >{{translateTitulos.lbl_12_02}}:</label>
+                                    <div class="controls">
+                                        <select id="INT_ACTIVIDAD" class="form-control" name="INT_ACTIVIDAD" ng-model="datos.INT_ACTIVIDAD" ng-disabled="desabilitado" ng-change="seleccionarTipoCategoria(datos.INT_ACTIVIDAD)" ng-click="cambiar(datos.INT_ACTIVIDAD)" onchange="desactivar();" required>
+                                            <option value="">--Seleccionar--</option>
+                                          <!--  <option value="INTA_INT_JUE">Licencia. Juegos de entretenimiento y centros de telecomunicaciones</option>
+                                            <option value="INTB_COM">Autorización. Internet gratuito como servicio complementario</option>
+                                            <option value="INTB_PUB">Autorización. Internet gratuito en espacios públicos</option> -->
+                                            <option value="INTJ_MCE">Autorización. Juegos mecánicos/Electromecánicos en espacios públicos</option>
+                                            <option value="INTJ_MEC">Autorización. Juegos mecánicos/Electromecánicos como actividad complementaria</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="INT_ACTIVIDAD_DESCRIPCION" id="INT_ACTIVIDAD_DESCRIPCION" value="" ng-model="datos.INT_ACTIVIDAD_DESCRIPCION">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >{{translateTitulos.lbl_12_03}}:</label>
+                                    <div class="controls">
+                                        <!-- validarActividadEco(datos.TIPO); -->
+                                        <select id="TIPO" class="form-control" name="TIPO" ng-model="datos.TIPO" ng-change="validarActividadEco(datos.TIPO, datos.INT_ACTIVIDAD);" ng-disabled="desabilitado" required>
+                                            <option value="">--Seleccionar--</option>
+                                            <option value="EMISION">EMISIÓN</option>
+                                            <option value="RENOVACION">RENOVACIÓN</option>
+                                            <option value="MODIFICACION">MODIFICACIÓN</option>
+                                            <!--<option value="CANCELACION">CANCELACIÓN</option>-->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" id="tipo_contribuyente">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_04}}:</label>
+                                    <div class="controls">
+                                        <select id="INT_TIPO_CONTRIBUYENTE" class="form-control" name="INT_TIPO_CONTRIBUYENTE" ng-model="datos.INT_TIPO_CONTRIBUYENTE" ng-disabled="desabilitado" ng-change="tipoPersona(datos.INT_TIPO_CONTRIBUYENTE)" required>
+                                            <option value=""></option>
+                                            <option value="NATURAL">PERSONA NATURAL</option>
+                                            <option value="JURIDICO">PERSONA JURIDICA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- MENSAJES ACTIVIDAD ECONÓMICA -->
+                            <div class="col-md-12" ng-show="mostrarMsgActividadTrue">
+                                <div class="form-group" >
+                                    <label class="col-sm-12 control-label no-padding-right" for="url" ><font color="#FF0000" size="5px"></font></label>
+                                    <div class="col-sm-12" align="left">
+                                        <div class="alert alert-success fade in">
+                                            <a href="" class="close" data-dismiss="alert">&times;</a>
+                                            <strong></strong>{{translateMensajes.txt_12_05}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" ng-show="mostrarMsgActividadFalse">
+                                <div class="form-group" >
+                                    <label class="col-sm-12 control-label no-padding-right" for="url" ><font color="#FF0000" size="5px"></font></label>
+                                    <div class="col-sm-12" align="left">
+                                        <div class="alert alert-danger fade in">
+                                            <a href="" class="close" data-dismiss="alert">&times;</a>
+                                            {{txtMsgDataRenovacion}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="col-md-12" ng-show="formDatosAE">
+                            <div  class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><B>{{translateTitulos.lbl_12_06}}</B></div>
+                                    <div class="panel-body">
+                                        <table  ng-table="tblTramites" class="table  table-hover">
+                                            <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgba(151, 244, 198, 0.73)','font-color':'#A2D5AE'}">
+                                                <td data-title="'Nº'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td> 
+                                                <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td> 
+                                                <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td> 
+                                                <td data-title="'Descripcion'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>     
+                                                <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <!-- datos persona natural -->
+                            <div ng-show="divNatural != null">
+                            <div class="col-md-12">     
+                                <legend>{{translateTitulos.lbl_12_07}}:</legend>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_08}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_SOLICITANTE" id="INT_SOLICITANTE" name="INT_SOLICITANTE" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_09}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_TIPO_DOC_IDENTIDAD" id="INT_TIPO_DOC_IDENTIDAD" name="INT_TIPO_DOC_IDENTIDAD" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_10}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_NUM_DOC" id="INT_NUM_DOC" name="INT_NUM_DOC" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_11}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_EXP" id="INT_EXP" name="INT_EXP" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_12}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_CORREO" id="INT_CORREO" name="INT_CORREO" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_13}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_TEL_CELULAR" id="INT_TEL_CELULAR" name="INT_TEL_CELULAR" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- datos de la direccion del contribuyente-->
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_MACRO_DESC" id="INT_MACRO_DESC" name="INT_MACRO_DESC" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        <input type="hidden" ng-model="datos.INT_MACRO" id="INT_MACRO" name="INT_MACRO" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_MACRO.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_MACRO.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_16}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_DISTRITO_DESC" id="INT_DISTRITO_DESC" name="INT_DISTRITO_DESC" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        <input  type="hidden"  ng-model="datos.INT_DISTRITO" id="INT_DISTRITO" name="INT_DISTRITO" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_DISTRITO.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_DISTRITO.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_ZONA_DESC" id="INT_ZONA_DESC" name="INT_ZONA_DESC" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        <input  type="hidden" ng-model="datos.INT_ZONA" id="INT_ZONA" name="INT_ZONA" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_ZONA.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_ZONA.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_TIP_VIA" id="INT_TIP_VIA" name="INT_TIP_VIA" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_TIP_VIA.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_TIP_VIA.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_NOMBRE_VIA" id="INT_NOMBRE_VIA" name="INT_NOMBRE_VIA" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_NOMBRE_VIA.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_NOMBRE_VIA.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_20}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_NUM" id="INT_NUM" name="INT_NUM" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_NUM.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_NUM.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                                                   <!-- Datos persona juridica -->
+                            <div ng-show="divJuridico != null">
+                            <div class="col-md-12">     
+                                <legend>{{translateTitulos.lbl_12_21}}</legend>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_22}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_RL_NIT" id="INT_RL_NIT" name="INT_RL_NIT" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"/>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_23}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_RL_RAZON_SOCIAL" id="INT_RL_RAZON_SOCIAL" name="INT_RL_RAZON_SOCIAL" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_24}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_RL_NUM_DOCUMENTO" id="INT_RL_NUM_DOCUMENTO" name="INT_RL_NUM_DOCUMENTO" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_25}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_NUM_NOTARIA" id="INT_NUM_NOTARIA" name="INT_NUM_NOTARIA" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_MACRO_DESC" id="INT_MACRO_DESC" name="INT_MACRO_DESC" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        <input type="hidden" ng-model="datos.INT_MACRO" id="INT_MACRO" name="INT_MACRO" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_MACRO.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_MACRO.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_16}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_DISTRITO_DESC" id="INT_DISTRITO_DESC" name="INT_DISTRITO_DESC" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        <input  type="hidden"  ng-model="datos.INT_DISTRITO" id="INT_DISTRITO" name="INT_DISTRITO" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_DISTRITO.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_DISTRITO.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_ZONA_DESC" id="INT_ZONA_DESC" name="INT_ZONA_DESC" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        <input  type="hidden" ng-model="datos.INT_ZONA" id="INT_ZONA" name="INT_ZONA" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_ZONA.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_ZONA.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_TIP_VIA" id="INT_TIP_VIA" name="INT_TIP_VIA" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_TIP_VIA.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_TIP_VIA.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_NOMBRE_VIA" id="INT_NOMBRE_VIA" name="INT_NOMBRE_VIA" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_NOMBRE_VIA.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_NOMBRE_VIA.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_20}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_NUM" id="INT_NUM" name="INT_NUM" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.INT_NUM.$invalid">
+                                        <span class="error" ng-show="signupForm.INT_NUM.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">     
+                                <legend>{{translateTitulos.lbl_12_26}}</legend>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_RL_PRIMER_NOMBRE" id="INT_RL_PRIMER_NOMBRE" name="INT_RL_PRIMER_NOMBRE" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_RL_PATERNO" id="INT_RL_PATERNO" name="INT_RL_PATERNO" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_RL_MATERNO" id="INT_RL_MATERNO" name="INT_RL_MATERNO" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_30}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_RL_CASADA" id="INT_RL_CASADA" name="INT_RL_CASADA" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"/>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_31}}:</label>
+                                    <div class="controls">
+                                        <p class="input-group"><input name="INT_RL_FEC_NACIMIENTO" id="INT_RL_FEC_NACIMIENTO" type="text" class="form-control" datepicker-popup="" ng-model="datos.INT_RL_FEC_NACIMIENTO" is-open="startDateOpened2" close-text="Close" ng-disabled="true" required/> 
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="startDateOpen2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>     
+                        </div>
+
+                            <div class="col-md-12">
+                                <legend>{{translateTitulos.lbl_12_32}}:</legend>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >{{translateTitulos.lbl_12_33}}:</label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.INT_DENOMINACION" id="INT_DENOMINACION" name="INT_DENOMINACION" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >{{translateTitulos.lbl_12_34}}: </label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.INT_AC_SUPERFICIE" id="INT_AC_SUPERFICIE" name="INT_AC_SUPERFICIE" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" ng-change="verificarSuperficie(datos.INT_AC_SUPERFICIE)" onkeyUp="return valNumero(this);" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >{{translateTitulos.lbl_12_35}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.INT_AC_CAPACIDAD" id="INT_AC_CAPACIDAD" name="INT_AC_CAPACIDAD" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" onkeyUp="return valNumero(this);" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >{{translateTitulos.lbl_12_36}}:</label>
+                                    <div class="controls">
+                                        <select id="INT_AC_HR_INICIO" class="form-control" ng-model="datos.INT_AC_HR_INICIO"  name="INT_AC_HR_INICIO" ng-disabled="desabilitado" required>
+                                            <option value="">--Seleccionar--</option>
+                                        <!--option value="12:00AM"> 12:00AM </option>
+                                        <option value="1:00AM"> 1:00AM </option>
+                                        <option value="2:00AM"> 2:00AM </option>
+                                        <option value="3:00AM"> 3:00AM </option>
+                                        <option value="4:00AM"> 4:00AM </option>
+                                        <option value="5:00AM"> 5:00AM </option>
+                                        <option value="6:00AM"> 6:00AM </option-->
+                                            <option value="7:00AM"> 7:00AM </option>
+                                            <option value="8:00AM"> 8:00AM </option>
+                                            <option value="9:00AM"> 9:00AM </option>
+                                            <option value="10:00AM"> 10:00AM </option>
+                                            <option value="11:00AM"> 11:00AM </option>
+                                            <option value="12:00PM"> 12:00PM </option>
+                                            <option value="1:00PM"> 1:00PM </option>
+                                            <option value="2:00PM"> 2:00PM </option>
+                                            <option value="3:00PM"> 3:00PM </option>
+                                            <option value="4:00PM"> 4:00PM </option>
+                                            <option value="5:00PM"> 5:00PM </option>
+                                            <option value="6:00PM"> 6:00PM </option>
+                                            <option value="7:00PM"> 7:00PM </option>
+                                            <option value="8:00PM"> 8:00PM </option>
+                                            <option value="9:00PM"> 9:00PM </option>
+                                            <option value="10:00PM"> 10:00PM </option>
+                                            <option value="11:00PM"> 11:00PM </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >{{translateTitulos.lbl_12_37}}:</label>
+                                    <div class="controls">
+                                        <select id="INT_AC_HR_FINAL" class="form-control" ng-model="datos.INT_AC_HR_FINAL"  name="INT_AC_HR_FINAL" ng-disabled="desabilitado" required>
+                                            <option value="">--Seleccionar--</option>
+                                        <!--option value="12:00AM"> 12:00AM </option>
+                                        <option value="1:00AM"> 1:00AM </option>
+                                        <option value="2:00AM"> 2:00AM </option>
+                                        <option value="3:00AM"> 3:00AM </option>
+                                        <option value="4:00AM"> 4:00AM </option>
+                                        <option value="5:00AM"> 5:00AM </option>
+                                        <option value="6:00AM"> 6:00AM </option-->
+                                            <option value="7:00AM"> 7:00AM </option>
+                                            <option value="8:00AM"> 8:00AM </option>
+                                            <option value="9:00AM"> 9:00AM </option>
+                                            <option value="10:00AM"> 10:00AM </option>
+                                            <option value="11:00AM"> 11:00AM </option>
+                                            <option value="12:00PM"> 12:00PM </option>
+                                            <option value="1:00PM"> 1:00PM </option>
+                                            <option value="2:00PM"> 2:00PM </option>
+                                            <option value="3:00PM"> 3:00PM </option>
+                                            <option value="4:00PM"> 4:00PM </option>
+                                            <option value="5:00PM"> 5:00PM </option>
+                                            <option value="6:00PM"> 6:00PM </option>
+                                            <option value="7:00PM"> 7:00PM </option>
+                                            <option value="8:00PM"> 8:00PM </option>
+                                            <option value="9:00PM"> 9:00PM </option>
+                                            <option value="10:00PM"> 10:00PM </option>
+                                            <option value="11:00PM"> 11:00PM </option>                                
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--HABILITAR PARA EL CASO DE INTERNET -->
+                            <div class="col-md-4">
+                                <div class="form-group" ng-show="divOcultarJuegos">
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >{{translateTitulos.lbl_12_38}}:</label>
+                                    <div class="controls">
+                                        <select id="INT_AC_ESTADO" class="form-control" ng-model="datos.INT_AC_ESTADO"  name="INT_AC_ESTADO" ng-disabled="desabilitado" ng-change="verificarEstablecimiento(datos.INT_AC_ESTADO)">
+                                            <option value="">--Seleccionar--</option>
+                                            <option value="PROPIO"> PROPIO </option>
+                                            <option value="ALQUILADO"> ALQUILADO </option>
+                                            <option value="ANTICRÉTICO"> ANTICRÉTICO </option>
+                                            <option value="OTRO"> OTRO </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--HABILITAR PARA EL CASO DE JUEGOS -->
+                        </div>
+
+                        <!-- fin datos persona juridica -->
+
+                        <!--<div class="col-md-4">
+                            <div class="form-group" >
+                                <div class="controls">
+                                <select id="INT_AC_ESTADO" class="form-control" ng-model="datos.INT_AC_ESTADO"  name="INT_AC_ESTADO" ng-disabled="desabilitado" ng-change="verificarEstablecimiento(datos.INT_AC_ESTADO)" style="visibility:hidden">
+                                        <option value="">--Seleccionar--</option>
+                                        <option value="PROPIO"> PROPIO </option>
+                                        <option value="ALQUILADO"> ALQUILADO </option>
+                                        <option value="ANTICRÉTICO"> ANTICRÉTICO </option>
+                                        <option value="OTRO"> OTRO </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>-->
+
+                        <!-- Ubicacion de actividada economica -->
+                        <div class="col-md-12">
+                            <legend>{{translateTitulos.lbl_12_39}}: </legend>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" >
+                                <font color="#FF0000" size="4px"> * </font>
+                                <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
+                                <div class="controls">
+                                    <!--input ng-model="datos.dtsintMacrodistrito" id="dtsintMacrodistrito" name="dtsintMacrodistrito" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input-->
+                                    <select  id="INT_AC_MACRO" name="INT_AC_MACRO"  placeholder="Macrodistrito" ng-model="datos.INT_AC_MACRO"  class="form-control" ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos" required ng-change="distritoZonas(datos.INT_AC_MACRO)" ng-disabled="desabilitado" required>
+                                        <option value="">--Seleccionar--</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">      
+                            <div class="form-group" >
+                                <font color="#FF0000" size="4px"> * </font>
+                                <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
+                                <div class="controls">
+                                    <select id="INT_AC_ZONA" name="INT_AC_ZONA"  placeholder="Distrito - Zona" ng-model="datos.INT_AC_ZONA"  class="form-control" ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZona" ng-change="actulizarIdDistrito();" ng-disabled="desabilitadoZ || desabilitado"  required>
+                                        <option value="">--Seleccionar--</option>
+                                    </select>
+                                    <!--<select  id="INT_AC_ZONA" name="INT_AC_ZONA" class="form-control" ng-model="datos.INT_AC_ZONA" ng-change="actulizarIdDistrito({{disZona}});" required>
+                                      <option ng-repeat="disZona in aDistritoZona" value="{{disZona.dist_nombre}}">{{disZona.dist_nombre}}</option>
+                                  </select>-->
+                              </div>
+                          </div>
+                      </div>
+                        <div class="col-md-6">      
+                        <div class="form-group" >
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
+                            <div class="controls">
+                                <select id="INT_AC_TIP_VIA" class="form-control" ng-model="datos.INT_AC_TIP_VIA"  name="INT_AC_TIP_VIA" ng-disabled="desabilitadoV || desabilitado" required  ng-change="vias(datos.INT_AC_ID_ZONA,datos.INT_AC_TIP_VIA);">
+                                    <option value="">--Seleccionar--</option>
+                                    <option value="AV">AVENIDA</option>
+                                    <option value="CA">CALLE</option>
+                                    <option value="CL">CALLEJON</option>
+                                    <option value="PL">PLAZA</option>
+                                    <option value="CN">CANCHA</option>
+                                    <option value="PR">PARQUE</option>
+                                    <option value="PA">PASAJE</option>
+                                    <option value="ND">NO DEFINIDO</option>
+                                </select>
+                            </div>
+                        </div>
+                      </div>      
+
+                        <div class="col-md-6">
+                            <div class="form-group" >
+                                <font color="#FF0000" size="4px"> * </font>
+                                <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
+                                <div class="controls">
+                                        <!--<select  id="INT_AC_NOMBRE_VIA"  ng-model="datos.INT_AC_NOMBRE_VIA" class="form-control" name="INT_AC_NOMBRE_VIA" width="30%" height="30" ng-click="vesavilirat(datos.INT_AC_NOMBRE_VIA)" ng-disabled="desabilitadoNo"  ng-change="deszavilitar" required>
+                                        <option value="">--Seleccionar--</option>
+                                        <option ng-repeat="dato in tip_vias" value="{{dato.nombrev}}">{{dato.nombrev}}</option>
+                                        <option value="OTROS">OTROS</option>                                        
+                                    </select>-->
+                                    <select id="INT_AC_NOMBRE_VIA" ng-model="datos.INT_AC_NOMBRE_VIA" name="INT_AC_NOMBRE_VIA"  class="form-control" ng-options="tipvia.nombrev as tipvia.nombrev for tipvia in tip_vias" ng-disabled="desabilitadoNo || desabilitado" ng-click="" ng-change="vesavilirat(datos.INT_AC_NOMBRE_VIA)" required>
+                                        <option value="">--Seleccionar--</option>
+                                        <option value="OTROS">OTRO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div> 
+                        <div ng-show="datos.INT_AC_NOMBRE_VIA == 'OTRO'">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url" >{{translateTitulos.lbl_12_40}} :</label>
+                                <div class="controls">
+                                    <input type="text" ng-model="datos.OTRO_VIA" id="OTRO_VIA" name="OTRO_VIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                        <div class="col-md-6">
+                        <div class="form-group" ng-show="divOcultarJuegos">
+                            <label for="url" >{{translateTitulos.lbl_12_41}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.INT_AC_NUMERO" id="INT_AC_NUMERO" name="INT_AC_NUMERO" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-md-6">
+                        <div class="form-group" ng-show="divOcultarJuegos">
+                            <label for="url" >{{translateTitulos.lbl_12_42}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.INT_AC_EDIFICIO" id="INT_AC_EDIFICIO" name="INT_AC_EDIFICIO" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-md-6">
+                        <div class="form-group" ng-show="divOcultarJuegos">
+                            <label for="url" >{{translateTitulos.lbl_12_43}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.INT_AC_BLOQUE" id="INT_AC_BLOQUE" name="INT_AC_BLOQUE" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-md-6">
+                            <div class="form-group" ng-show="divOcultarJuegos">
+                                <label for="url" >{{translateTitulos.lbl_12_44}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.INT_AC_PISO" id="INT_AC_PISO" name="INT_AC_PISO" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" ng-show="divOcultarJuegos">
+                                <label for="url" >{{translateTitulos.lbl_12_45}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.INT_AC_NUME" id="INT_AC_NUME" name="INT_AC_NUME" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" >
+                                <label for="url" >{{translateTitulos.lbl_12_46}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.INT_AC_CEL" id="INT_AC_CEL" name="INT_AC_CEL" placeholder="Celular ej. 73245867 , 65512667" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" onkeyUp="valNumeroCelular(this);"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" >
+                                <label for="url" >{{translateTitulos.lbl_12_47}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.INT_AC_TEL" id="INT_AC_TEL" name="INT_AC_TEL" placeholder="Teléfono ej.22451630" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" onkeyUp=" valNumeroTelefono(this);"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" >
+                                <label for="url" >{{translateTitulos.lbl_12_48}}:</label>
+                                <div class="controls">
+                                    <input  style="border:1;border-color: #DDDDDD;" pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" type="email" ng-model="datos.INT_AC_COR" id="INT_AC_COR" name="INT_AC_COR" placeholder="ejemplo@gmail.com" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required title="ejemplo@gmail.com"/>
+                                </div>
+                                <span style="color:red" ng-show="signupForm.INT_AC_COR.$invalid">
+                                    <span class="error" ng-show="signupForm.INT_AC_COR.$error.email">{{translateMensajes.txt_12_49}}"</span>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Fin Ubicacion de actividada economica -->
+                        <!-- PUBLICIDADA DE LA ACTIVIDADA ECONOMICA -->   
+                        <div class="col-md-12" ng-show="false">
+                            <legend> {{translateTitulos.lbl_12_50}}: </legend>
+                        </div>
+                        <div class="col-md-6" ng-show="false">
+                        <div class="form-group" >
+                            <div class="controls" >
+                                <input type="radio" ng-model="datos.swpublicidad" name="swpublicidad" value="CP" ng-change="" ng-disabled="only" ng-required="true" required>{{translateTitulos.lbl_12_51}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" ng-model="datos.swpublicidad" name="swpublicidad" value="SP" ng-change="" ng-disabled="only" ng-required="true" required>{{translateTitulos.lbl_12_52}}<br>
+                                <span style="color:red" ng-show="formularioRegistro.swpublicidad.$invalid">
+                                    <span ng-show="formularioRegistro.swpublicidad.$error.required">{{translateTitulos.lbl_12_53}}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                        <div ng-show="datos.swpublicidad =='CP'" ng-show="false">
+                                    <div class="col-md-12">
+                                        <div class="panel panel-default">
+                                        <div class="panel-heading"><b>{{translateTitulos.lbl_12_71}}:</b></div>
+                                        <div class="panel-body">
+                                            <form id="myPublicidad" name="myPublicidad">
+                                            <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label for="url" >{{translateTitulos.lbl_12_72}}</label>
+                                        <div class="controls">
+                                          <select id="INT_TIPO_LETRE" name="INT_TIPO_LETRE"  placeholder="Tipo de Letrero" ng-model="publi.INT_TIPO_LETRE"  class="form-control" 
+                                          ng-options="tletre.p_descripcion as tletre.p_descripcion for tletre in TipoLetrero"  ng-change="ltCaracteristica(publi.INT_TIPO_LETRE);" ng-disabled="only" required>
+                                          <option value=""></option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div> 
+                                            <div class="col-md-4">
+                                    
+                                    <div class="form-group" >
+                                      <label for="url" >{{translateTitulos.lbl_12_73}}:</label>
+                                      <div class="controls">
+                                        <select id="INT_CARA" name="INT_CARA"  placeholder="Distrito - Zona" ng-model="publi.INT_CARA"  class="form-control" ng-options="tletr.p_caracteristica as tletr.p_caracteristica for tletr in lCaracteristica" ng-change="actulizarCaracteristica();" ng-disabled="only" required>
+                                          <option value=""></option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                            <div class="col-md-4">
+                                            <label for="url" >{{translateTitulos.lbl_12_74}}:</label>
+                                            <input name="FECHAINICIO" id="FECHAINICIO"  type="text" placeholder="dd/mm/yyyy" class="form-control" ng-model="publi.FECHAINICIO"  close-text="Close"  ng-change ="changeHandler()"   required/> 
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="startDateOpenIni($event)" >
+                                                    <i class="glyphicon glyphicon-calendar" ></i>
+                                                </button>
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control" name="FECHAINICIO" data-date-format="yyyy/mm/dd" ng-model="publi.FECHAINICIO" id="FECHAINICIO" close-text="Close" ng-disabled="only">
+                                                </p>
+                                            </span>
+                                            </div>
+                                            <div class="col-md-6">
+                                          <label for="url" >{{translateTitulos.lbl_12_75}}:</label>
+                                            <p class="input-group">
+                                                <input type="text" class="form-control" name="FECHAFIN"  data-date-format="yyyy/mm/dd"  ng-model="publi.FECHAFIN" id="FECHAFIN" ng-disabled="desabilitado">
+                                            </p>
+                                          </div>
+                                            <div class="col-md-12">
+                                                <div class="panel panel-default">
+                                                <div class="panel-heading"><B>{{translateTitulos.lbl_12_76}} </B>({{translateTitulos.lbl_12_77}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.5)
+                                                </div>
+                                                <div class="panel-body">
+                                                    <form id="myForm" name="myForm">
+                                                        <table class="table table-responsive">
+                                                            <tr>
+                                                              <th>
+                                                                <input class="form-control" type="text"  id="INT_DESC" name="INT_DESC" placeholder="Descripción" ng-model="publi.INT_DESC" ng-disabled="only" required>
+                                                              </th>
+                                                                <th>
+                                                                <input class="form-control" type="text" min="1" max="1500" id="INT_ALTO" name="INT_ANCHO" placeholder="Alto" ng-model="publi.INT_ALTO" ng-disabled="only" ng-change="NumericoAlto(publi.INT_ALTO);" required>
+                                                                </th>
+                                                                <th>
+                                                                <input class="form-control" type="text" min="1" max="1500" id="INT_ANCHO" name="INT_ANCHO" placeholder="Ancho" ng-model="publi.INT_ANCHO" ng-disabled="only" ng-change="NumericoAncho(publi.INT_ANCHO);" required>
+                                                                </th>
+                                                                <th>
+                                                                    <input class="btn btn-primary" type="button" value="Añadir" ng-class="{'disabled': myForm.$invalid}" ng-click="addUser(detalle);">
+                                                                </th>
+                                                            </tr>
+                                                        </table>
+                                                    </form>
+                                                    <table class="table table-striped table-bordered">
+                                                    <tr ng-repeat="descrip in carass" >
+                                                        <td data-title="'#'">{{$index+1}}</td>
+                                                        <td data-title="'Descripción'" sortable="'desc'" filter="{'desc':'text'}">
+                                                            <span ng-hide="edit[descrip.id]" ng-dblclick="showEdition($event, descrip.id)">{{descrip.desc}}</span>
+                                                            <input type="text" class="form-control" ng-model="descrip.desc" ng-show="edit[descrip.id]" value="{{descrip.desc}}">
+                                                        </td>
+                                                        <td data-title="'Sup.'">
+                                                            <span ng-hide="edit[descrip.id]" ng-dblclick="showEdition($event, descrip.id)">{{descrip.sup}}</span>
+                                                            <input type="number" class="form-control" ng-model="descrip.sup" ng-show="edit[descrip.id]" min="1" max="1500" value="{{descrip.sup}}">
+                                                        </td>
+                                                        <td data-title="'Acción'">
+                                                            <button type="button" class="btn btn-primary" ng-hide="edit[descrip.id]" ng-click="deleteUser(descrip);">Eliminar</button>
+                                                            <button type="button" class="btn btn-warning" ng-show="edit[descrip.id]" ng-click="editUser(descrip);">Editar</button>
+                                                        </td>
+                                                    </tr>
+                                                  </table>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <input type="hidden" ng-model="publi.idcate" id="idcate" name="idcate" class="form-control"/>
+                                            <input type="hidden" ng-model="publi.idcarac" id="idcarac" name="idcarac" class="form-control"/>
+                                            <input type="hidden" ng-model="publi.id_cara" id="id_cara" name="id_cara" class="form-control"/>
+                                            
+                                            <div class="col-md-3">
+                                              <a class="btn btn-primary" ng-click="adicionarpublicidad(publi)" ng-class="{'disabled': myPublicidad.$invalid}" ng-show="botonn=='new'" ng-hide="botonn=='upd'" >
+                                                <i class="glyphicon glyphicon-plus-sign"></i>Adicionar
+                                              </a>
+                                              <a class="btn btn-primary" ng-click="modificarpublicidad(publi)" ng-show="botonn=='upd'" ng-hide="botonn=='new'">
+                                                <i class="glyphicon glyphicon-plus-sign"></i>Modificar
+                                              </a>
+                                            </div>
+                                            </form>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-12">
+                                      <table ng-table="tablaRoles" show-filter="true" class="table table-striped table-bordered">
+                                        <tr ng-repeat="pup in publicid" >
+                                          <td align="center" data-title="'Opciones'">
+                                            <a class="btn btn-default btn-circle" ng-click="modificarPlubli(pup)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
+                                            <a class="btn btn-default btn-circle" ng-hide="edit[pup.id]" ng-click="eliminarPubli(pup)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
+                                          </td>
+                                          <td data-title="'ID'">{{$index+1}}</td>
+                                          <td data-title="'TIPO LETRE'" sortable="'INT_TIPO_LETRE'" filter="{'INT_TIPO_LETRE':'text'}">{{pup.INT_TIPO_LETRE}}</td>
+                                          <td data-title="'CARACTERISTICA'" sortable="'INT_CARA'" filter="{'INT_CARA':'text'}">{{pup.INT_CARA}}</td>
+                                          <td data-title="'FECHA INICIO'" sortable="'FECHAINICIO'" filter="{'FECHAINICIO':'text'}">{{pup.FECHAINICIO}}</td>
+                                          <td data-title="'FECHA FIN'" sortable="'FECHAFIN'" filter="{'FECHAFIN':'text'}">{{pup.FECHAFIN}}</td>>
+                                          <td data-title="'DESCRIPCIÓN'" sortable="'INT_DESC'" filter="{'INT_DESC':'text'}">{{pup.INT_DESC}}</td>
+                                          <td data-title="'ALTO'" sortable="'INT_ALTO'" filter="{'INT_ALTO':'text'}">{{pup.INT_ALTO}}</td>
+                                          <td data-title="'ANCHO'" sortable="'INT_ANCHO'" filter="{'INT_ANCHO':'text'}">{{pup.INT_ANCHO}}</td>
+                                            <td data-title="'SUPERFICIE'" sortable="'caras'" filter="{'caras':'text'}">
+                                            <table>
+                                                <tr ng-repeat="pupp in pup.caras" >
+                                                    <td> {{pupp.desc}} ( {{pupp.sup}} )</td>
+                                                </tr>
+                                            </table>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                    <input type="hidden" ng-model="datos.publicidad" id="publicidad" name="publicidad" class="form-control"/>
+                                    <input type="hidden" ng-model="datos.publicidad_grilla" id="publicidad_grilla" name="publicidad_grilla" class="form-control"/>
+                            </div>
+                        <!-- ************************************************************************************************************************************************************** -->                        
+                        <div class="col-md-12">
+                            <legend>{{translateTitulos.lbl_12_54}}: </legend>
+                        </div>
+                        <!-- +++++++++++++++++++++++++++++   MAPA ++++++++++++++++++++++++++++++++++++++-->
+                        <!-- mapa  -->
+                        <div class="col-md-12" >
+                            <!--<div class="col-md-2">
+                            </div>
+                            <div class="col-md-8">
+                                    <div id="datamapaimagen" width='250' height='50' align="center">
+                                            <ui-gmap-google-map id="map"
+                                            center="map.center"
+                                            pan="map.pan"
+                                            zoom="map.zoom"
+                                            draggable="true"
+                                            refresh="map.refresh"
+                                            options="map.options"
+                                            events="map.events"
+                                            bounds="map.bounds"
+                                            control="map.control">
+                                            <ui-gmap-markers 
+                                            models="map.markers3" 
+                                            coords="'self'" 
+                                            icon="'icon'" title="'title'"
+                                            options="'options'" 
+                                            events="map.marker.events"    
+                                            control="map.control" ng-cloak>
+                                            </ui-gmap-markers>
+                                            </ui-gmap-google-map>
+                                    </div>
+                            </div>
+                            <div class="col-md-2">
+                            </div>-->
+                            <div class="col-md-1" >
+                                &nbsp;
+                            </div>
+                            <div class="col-md-10">
+                                <div id="mapActividad" style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
+                            </div>
+                            <div class="col-md-1">
+                                &nbsp;
+                            </div>                            
+                        </div>
+                        <div class="tab-pane" id="tab-docs" ng-show="datos.INT_ACTIVIDAD != null">
+                            <!-- DOCUMENTOS ADJUNTOS -->
+                            <!--div class="ng-binding"-->
+                            <!--div class="docsFormTam"-->
+                            <div class="col-md-12" ><br>
+                                <legend>{{translateTitulos.lbl_12_55}}:</legend>
+                            </div>      
+                            <!-- CÉDULA DE IDENTIDAD O CARNET DE EXTRANJERÍA DIGITALIZADA-->
+                            <div ng-show="divCISolicitante != null">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-4">{{translateTitulos.lbl_12_56}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoCI == null" ng-mouseleave="verficaAdjuntos();" >
+                                                <input type="file" name="FILE_FOTOCOPIA_CI" uploader-model="FILE_FOTOCOPIA_CI" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div  class="fake-file">
+                                                    <input id="FILE_FOTOCOPIA_CI" name="FILE_FOTOCOPIA_CI" ng-model="registro.FILE_FOTOCOPIA_CI" type="text" ng-disabled="desabilitado" required/>
+                                                </div>
+                                            </div>
+                                            <div ng-show="validadoCI != null">
+                                                <input ng-model="registro.FILE_FOTOCOPIA_CI" type="text" ng-disabled="false" required class="form-control" readonly="readonly"  >
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fo" >ver <i class="fa fa-eye fa-lg"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_57}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoCI}}" width="100%" height="100%">
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- SERVICIO DIGITALIZADO-->
+                            <div ng-show="divServicio != null">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-4">{{translateTitulos.lbl_12_58}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_FACTURA_SERVICIO" uploader-model="FILE_FACTURA_SERVICIO" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_FACTURA_SERVICIO" name="FILE_FACTURA_SERVICIO" ng-model="registro.FILE_FACTURA_SERVICIO" type="text" ng-disabled="desabilitado" required/>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_FACTURA_SERVICIO" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_58}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoLuz}}" width="100%" height="100%">
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                                <!-- <button ng-click="validarCiCiudadano(registro);" data-dismiss="modal" type="button" class="btn btn-success">Guardar</button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CROQUIS DIGITALIZADO-->
+                            <div ng-show="divSuperficie != null">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-4">{{translateTitulos.lbl_12_59}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_CROQUIS" uploader-model="FILE_CROQUIS" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_CROQUIS" name="FILE_CROQUIS" ng-model="registro.FILE_CROQUIS" type="text" ng-disabled="desabilitado" required>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_CROQUIS" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label for="url">Croquis o plano de distribución digitalizado</label>
+                                        <div class="custom-upload" ng-show="validadoNac == null">
+                                            <input type="file" name="FILE_CROQUIS" uploader-model="FILE_CROQUIS" accept="image/*"/>
+                                            <div class="fake-file">
+                                                <input id="FILE_CROQUIS" name="FILE_CROQUIS" ng-model="registro.FILE_CROQUIS" type="text" required>
+                                            </div>                
+                                        </div>
+                                        <div ng-show="validadoNac != null">
+                                            <input ng-model="registro.FILE_CROQUIS" type="text" required class="form-control" readonly="readonly">
+                                        </div>
+                                        <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button>  
+                                    </div>
+                                </div> -->
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_59}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoCroquis}}" width="100%" height="100%">
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                                <!-- <button ng-click="validarCiCiudadano(registro);" data-dismiss="modal" type="button" class="btn btn-success">Guardar</button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CERTIFICADO DE REGISTRO DE ANTECEDENTES PENALES DEL SOLICITANTE DIGITALIZADO-->
+                            <div ng-show="divAntecedentesS != null">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-4">{{translateTitulos.lbl_12_60}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_ANTECEDENTES" uploader-model="FILE_ANTECEDENTES" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_ANTECEDENTES" name="FILE_ANTECEDENTES" ng-model="registro.FILE_ANTECEDENTES" type="text" ng-disabled="desabilitado" required>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_ANTECEDENTES" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label for="url">Certificado de registro de antecedentes penales del solicitante digitalizado</label>
+                                        <div class="custom-upload" ng-show="validadoNac == null">
+                                            <input type="file" name="FILE_ANTECEDENTES" uploader-model="FILE_ANTECEDENTES" accept="image/*"/>
+                                            <div class="fake-file">
+                                                <input id="FILE_ANTECEDENTES" name="FILE_ANTECEDENTES" ng-model="registro.FILE_ANTECEDENTES" type="text" required>
+                                            </div>                
+                                        </div>
+                                        <div ng-show="validadoNac != null">
+                                            <input ng-model="registro.FILE_ANTECEDENTES" type="text" required class="form-control" readonly="readonly">
+                                        </div>
+                                        <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button>  
+                                    </div>
+                                </div>-->
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_60}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoAntecedentes}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                                <!-- <button ng-click="validarCiCiudadano(registro);" data-dismiss="modal" type="button" class="btn btn-success">Guardar</button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CERTIFICADO DE REGISTRO DE ANTECEDENTES PENALES DEL PRESTATARIO DIGITALIZADO-->
+                            <div ng-show="divAntecedentesP != null">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label class="col-sm-4" for="url">{{translateTitulos.lbl_12_61}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_ANTECEDENTES1" uploader-model="FILE_ANTECEDENTES1" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_ANTECEDENTES1" name="FILE_ANTECEDENTES1" ng-model="registro.FILE_ANTECEDENTES1" type="text" ng-disabled="desabilitado" required>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_ANTECEDENTES1" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_61}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoAntecedentes1}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                                <!-- <button ng-click="validarCiCiudadano(registro);" data-dismiss="modal" type="button" class="btn btn-success">Guardar</button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--DOCUMENTO DE CONSTITUCIÓN EXPEDIDO POR FUNDAEMPRESA-->
+                            <div ng-show="divConstitucion != null">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label class="col-sm-4" for="url">{{translateTitulos.lbl_12_62}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_CONSTITUCION" uploader-model="FILE_CONSTITUCION" accept="image/*" ng-disabled="desabilitado" />
+                                                <div class="fake-file">
+                                                    <input id="FILE_CONSTITUCION" name="FILE_CONSTITUCION" ng-model="registro.FILE_CONSTITUCION" type="text" ng-disabled="desabilitado" required>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_CONSTITUCION" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button> 
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_62}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoConstitucion}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- PODER DEL REPRESENTANTE LEGAL-->
+                            <div ng-show="divPoder != null">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label class="col-sm-4" for="url">{{translateTitulos.lbl_12_63}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_PODER" uploader-model="FILE_PODER" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_PODER" name="FILE_PODER" ng-model="registro.FILE_PODER" type="text" ng-disabled="desabilitado" required>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_PODER" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_63}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoPoder}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CEDULA DE IDENTIDAD DEL REPRESENTANTE-->
+                            <div ng-show="divCIRepresentante != null">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label class="col-sm-4" for="url">{{translateTitulos.lbl_12_64}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_FOTOCOPIA_CI_REP" uploader-model="FILE_FOTOCOPIA_CI_REP" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_FOTOCOPIA_CI_REP" name="FILE_FOTOCOPIA_CI_REP" ng-model="registro.FILE_FOTOCOPIA_CI_REP" type="text" ng-disabled="desabilitado" required>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_FOTOCOPIA_CI_REP" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_64}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoCIRep}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                                <!-- <button ng-click="validarCiCiudadano(registro);" data-dismiss="modal" type="button" class="btn btn-success">Guardar</button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- LICENCIA DE FUNCIONAMIENTO-->
+                            <div ng-show="divLicenciaFuncionamiento != null">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-4">{{translateTitulos.lbl_12_65}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_LICENCIA" uploader-model="FILE_LICENCIA" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_LICENCIA" name="FILE_LICENCIA" ng-model="registro.FILE_LICENCIA" type="text" ng-disabled="desabilitado" required>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_LICENCIA" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label for="url">Licencia de funcionamiento digitalizado</label>
+                                        <div class="custom-upload" ng-show="validadoNac == null">
+                                            <input type="file" name="FILE_LICENCIA" uploader-model="FILE_LICENCIA" accept="image/*"/>
+                                            <div class="fake-file">
+                                                <input id="FILE_LICENCIA" name="FILE_LICENCIA" ng-model="registro.FILE_LICENCIA" type="text" required>
+                                            </div>                
+                                        </div>
+                                        <div ng-show="validadoNac != null">
+                                            <input ng-model="registro.FILE_LICENCIA" type="text" required class="form-control" readonly="readonly">
+                                        </div>
+                                        <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button>  
+                                    </div>
+                                </div>-->
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_65}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoLicencia}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                                <!-- <button ng-click="validarCiCiudadano(registro);" data-dismiss="modal" type="button" class="btn btn-success">Guardar</button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- PÓLIZA DE SEGURO CONTRA ACCIDENTES DIGITALIZADO-->
+                            <div ng-show="divPoliza != null">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label class="col-sm-4" for="url">{{translateTitulos.lbl_12_66}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_POLIZA" uploader-model="FILE_POLIZA" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_POLIZA" name="FILE_POLIZA" ng-model="registro.FILE_POLIZA" type="text" ng-disabled="desabilitado" required>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_POLIZA" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_66}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoPoliza}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                                <!-- <button ng-click="validarCiCiudadano(registro);" data-dismiss="modal" type="button" class="btn btn-success">Guardar</button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CERTIFICACIÓN ACÚSTICA CUANDO ASÍ LO REQUIERA-->
+                            <div ng-show="divCertificacionAcustica != null">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label class="col-sm-4" for="url">{{translateTitulos.lbl_12_67}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_CERTIFICACION" uploader-model="FILE_CERTIFICACION" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_CERTIFICACION" name="FILE_CERTIFICACION" ng-model="registro.FILE_CERTIFICACION" type="text" ng-disabled="desabilitado" required>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_CERTIFICACION" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_67}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoCertificacionAcustica}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                                <!-- <button ng-click="validarCiCiudadano(registro);" data-dismiss="modal" type="button" class="btn btn-success">Guardar</button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  DOCUMENTO SUSCRITO DONDE EL PROPIETARIO SE COMPROMETA AL MANTENIMIENTO DE LOS EQUIPOS-->
+                            <div ng-show="divDocumentoMantenimiento != null">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label class="col-sm-4" for="url">{{translateTitulos.lbl_12_56}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_COMPROMISO" uploader-model="FILE_COMPROMISO" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_COMPROMISO" name="FILE_COMPROMISO" ng-model="registro.FILE_COMPROMISO" type="text" ng-disabled="desabilitado" required>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_COMPROMISO" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button> 
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_56}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoCompromiso}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Certificado IBNORCA de Aplicación de las normas técnicas adoptadas en la disposición final primera de la Ley Municipal N° 57 por juego empleado o instalado-->
+                            <div ng-show="divCertificacionIBNORCA != null">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label class="col-sm-4" for="url">{{translateTitulos.lbl_12_68}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_IBNORCA" uploader-model="FILE_IBNORCA" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_IBNORCA" name="FILE_IBNORCA" ng-model="registro.FILE_IBNORCA" type="text" ng-disabled="desabilitado" required/>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_IBNORCA" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_68}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoCertificadoIbnorca}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Declaración jurada donde se comprometa a realizar mantenimientos a los juegos autorizados y asumir responsabilidad emergente para posibles daños a terceros-->
+                            <div ng-show="divDeclaracionJurada != null">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label class="col-sm-4" for="url">{{translateTitulos.lbl_12_69}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_DECLARACION_JURADA" uploader-model="FILE_DECLARACION_JURADA" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_DECLARACION_JURADA" name="FILE_DECLARACION_JURADA" ng-model="registro.FILE_DECLARACION_JURADA" type="text" ng-disabled="desabilitado" required/>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_DECLARACION_JURADA" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button> 
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_69}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoDeclaracionJurada}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="divContratoalquiler != null">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label class="col-sm-4" for="url">{{translateTitulos.lbl_12_70}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-upload" ng-show="validadoNac == null" ng-mouseleave="verficaAdjuntos();">
+                                                <input type="file" name="FILE_ALQUILER_ANTICRETICO" uploader-model="FILE_ALQUILER_ANTICRETICO" accept="image/*" ng-disabled="desabilitado"/>
+                                                <div class="fake-file">
+                                                    <input id="FILE_ALQUILER_ANTICRETICO" name="FILE_ALQUILER_ANTICRETICO" ng-model="registro.FILE_ALQUILER_ANTICRETICO" type="text" ng-disabled="desabilitado" required>
+                                                </div>                
+                                            </div>
+                                            <div ng-show="validadoNac != null">
+                                                <input ng-model="registro.FILE_ALQUILER_ANTICRETICO" type="text" required class="form-control" readonly="readonly">
+                                            </div>
+                                            <button ng-show="btover1 != null" data-toggle="modal"  data-target="#fot">ver <i class="fa fa-eye fa-lg"></i></button>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateBotones.btn_01_05}}</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_12_70}}</h4>
+                                            </div>
+                                            <img id="imgSalida" ng-src="{{archivoDeclaracionJurada}}" width="100%" height="100%">
+
+                                            <div class="modal-footer">
+                                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateBotones.btn_01_05}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                <input type="hidden" ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control" />
+                <input type="hidden" ng-model="datos.ARCHIVOS_MULTIPLES_MAPA" id="ARCHIVOS_MULTIPLES_MAPA" name="ARCHIVOS_MULTIPLES_MAPA" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_AC_direccionImagenmapa" id="INT_AC_direccionImagenmapa" name="INT_AC_direccionImagenmapa" class="form-control" />
+                <!-- +++++++++++++++++++++++++++++   END MAPA ++++++++++++++++++++++++++++++++++++++   -->
+                <input type="hidden" ng-model="datos.INT_AC_MACRO_ID" id="INT_AC_MACRO_ID" name="INT_AC_MACRO_ID" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_MACRO" id="INT_MACRO" name="INT_MACRO" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_ZONA" id="INT_ZONA" name="INT_ZONA" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_MACRO_DESC" id="INT_MACRO_DESC" name="INT_MACRO_DESC" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_ZONA_DESC" id="INT_ZONA_DESC" name="INT_ZONA_DESC" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_VIA" id="INT_VIA" name="INT_VIA" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_NOMBRE_VIA" id="INT_NOMBRE_VIA" name="INT_NOMBRE_VIA" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_NUM" id="INT_NUM" name="INT_NUM" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_EDIF" id="INT_EDIF" name="INT_EDIF" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_BLOQUE" id="INT_BLOQUE" name="INT_BLOQUE" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_PISO" id="INT_PISO" name="INT_PISO" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_NUM_DEP" id="INT_NUM_DEP" name="INT_NUM_DEP" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_DIR_DET" id="INT_DIR_DET" name="INT_DIR_DET" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_RL_FEC_EMISION_DOCUMENTO"  id="INT_RL_FEC_EMISION_DOCUMENTO" name="INT_RL_FEC_EMISION_DOCUMENTO" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_NUM_NOTARIA" id="INT_NUM_NOTARIA" name="INT_NUM_NOTARIA" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_NACIONALIDAD" id="INT_NACIONALIDAD" name="INT_NACIONALIDAD" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_RL_FEC_NACIMIENTO" id="INT_RL_FEC_NACIMIENTO" name="INT_RL_FEC_NACIMIENTO" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_NIT" id="INT_NIT" name="INT_NIT" class="form-control"  width="30%" height="30" />
+                <input type="hidden" ng-model="datos.INT_AC_DISTRITO" id="INT_AC_DISTRITO" name="INT_AC_DISTRITO" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_AC_ID_ZONA" id="INT_AC_ID_ZONA" name="INT_AC_ID_ZONA" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_ID_ZONA" id="INT_ID_ZONA" name="INT_ID_ZONA" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_TIPO_LICENCIA" id="INT_TIPO_LICENCIA" name="INT_TIPO_LICENCIA" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_TIPO_LICENCIA_DESCRIPCION" id="INT_TIPO_LICENCIA_DESCRIPCION" name="INT_TIPO_LICENCIA_DESCRIPCION" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_CAT_AGRUPADA" id="INT_CAT_AGRUPADA" name="INT_CAT_AGRUPADA" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_CAT_AGRUPADA_DESCRIPCION" id="INT_CAT_AGRUPADA_DESCRIPCION" name="INT_CAT_AGRUPADA_DESCRIPCION" class="form-control" />
+
+                <input type="hidden" ng-model="datos.INT_FEC_NACIMIENTO" id="INT_FEC_NACIMIENTO" name="INT_FEC_NACIMIENTO" class="form-control" /><input type="hidden" ng-model="datos.INT_TIP_VIA" id="INT_TIP_VIA" name="INT_TIP_VIA" class="form-control" />
+
+                <input type="hidden" ng-model="datos.INT_TRAMITE_RENOVA" id="INT_TRAMITE_RENOVA" name="INT_TRAMITE_RENOVA" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_TEL" id="INT_TEL" name="INT_TEL" class="form-control" />
+
+                <input type="hidden" ng-model="datos.INT_NRO_PODER" id="INT_NRO_PODER" name="INT_NRO_PODER" class="form-control" />
+                <input type="hidden" ng-model="datos.INT_RL_FECHA_NAC" id="INT_RL_FECHA_NAC" name="INT_RL_FECHA_NAC" class="form-control" />
+
+                <div class="col-md-12" align="right" ng-if = "botones == null"></div>
+                <div class="hr-line-dashed"></div>
+                <div>&nbsp;<br><br>                
+                </div>
+                <div class="col-md-6" align="center" ng-show = "botones != null">
+                    <!-- GNERADOR DE CAPCHA -->
+                    <div class="col-md-12" align="center" >
+                        <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                            <tr class="color">
+                                <div style="background: #ffffff;" >
+                                    <div class="box2">
+                                        <img class="img-responsive" src="{{imageCSTT}}" title="{{toltipT}}">
+                                    </div>
+                                    <div class="box2">
+                                        <img class="img-responsive" src="{{imageLNGG}}"  title="Palabra en CASTELLANO">
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr class="color">
+                                <td class="color22" colspan="3" width="70"  align="center">
+                                    <input id="resultadoCC"  name="resultadoCC" type="text" style="border: 0px !important;" class="form-control"  placeholder="{{palabraT}}" ng-model="resultadoCC" ng-keyup="VerificarCapchaa()" required/>
+                                    <span  ng-show="formulario.palabraT.$invalid">
+                                        <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                    </span>
+                                    <label >{{palabraT}}</label>
+                                </td>
+                                <td class="color2" width="30"  align="center">
+                                    <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasXX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
+                        <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b>
+                    </div>
+                    <!-- ********************* -->
+                </div> 
+                <br><br><br><br>
+                <div class="col-md-12" ng-show = "validacionDireccion == true">
+                    <span> <font color="#FF0000"> * {{translateTitulos.lbl_12_80}}</font> </span>
+                </div>
+                <br><br><br><br>
+                <div class="col-md-12" align="right" ng-show = "botones != null">
+                    <button id="miFormGuardar"  ng-click="serializarInformacion(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little fa-lg" name="formEnviar" ng-disabled=" validacionDireccion || signupForm.INT_ACTIVIDAD.$invalid || signupForm.TIPO.$invalid || signupForm.INT_DENOMINACION.$invalid || signupForm.INT_AC_SUPERFICIE.$invalid || signupForm.INT_AC_CAPACIDAD.$invalid || signupForm.INT_AC_CAPACIDAD.$invalid || signupForm.INT_AC_HR_FINAL.$invalid || signupForm.INT_AC_ESTADO.$invalid || signupForm.INT_AC_MACRO.$invalid || signupForm.INT_AC_ZONA.$invalid || signupForm.INT_AC_TIP_VIA.$invalid || signupForm.INT_AC_NOMBRE_VIA.$invalid || validarAdjuntos || superfcat || alqant || habGuardar1"><!--{{translateTitulos.lbl_016_29}}--></button><!--cambios-->
+                    <button id="miFormulario"  ng-click="enviarFormProcesosLinea(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little fa-lg" ng-disabled="btnEnviarForm"><!--{{translateTitulos.lbl_016_30}}--></button><!--cambios-->
+                </div>    
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script async defer 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfKWci28piaE9q8Or0DzmUUJXbbdja54&callback=initMap">
+</script>
+                      
+                     

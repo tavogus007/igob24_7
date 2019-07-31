@@ -1,0 +1,286 @@
+<style>
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+    .box2 {
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+</style>
+
+<script type="text/javascript">
+  $(document).ready(function()
+  {
+    var ca = $("#prsPinA").val();
+    var cn = $("#prsPinN").val();
+    var cc = $("#prsPinC").val();
+    if(ca == 0 &&  cn == 0 &&  cc == 0)
+    {
+      $("#btnprsCI").css("display","none");
+      $("#btnprsPinN").css("display","none");
+      $("#btnprsPinC").css("display","none");
+    }
+    $("#prsPinA").keyup(function()
+    {
+      var va = $(this).val();
+      $("#prsPinAV").val(va);
+      ca = $("#prsPinA").val();
+
+      if(ca.length==0)
+      {
+        $("#prsPinAV").css({'display': 'none'});
+        $("#btnprsCI").css("display","none");
+        $('#btnprsCI').html('Mostrar');
+        $("#btnprsCI").css({'color': 'green'});
+        $("#btnprsCI").val(1);
+      }
+      else
+      {
+        $("#btnprsCI").css({'display': 'block'});
+      }
+    });
+    
+    $("#prsPinN").keyup(function()
+    {
+      var vn = $(this).val();
+      $("#prsPinNV").val(vn);
+      cn = $("#prsPinN").val();
+
+      if(cn.length==0)
+      {
+        $("#prsPinNV").css({'display': 'none'});
+        $("#btnprsPinN").css("display","none");
+        $("#btnprsPinN").css("display","none");
+        $('#btnprsPinN').html('Mostrar');
+        $("#btnprsPinN").css({'color': 'green'});
+        $("#btnprsPinN").val(1);
+      }
+      else
+      {
+        $("#btnprsPinN").css({'display': 'block'});
+      }
+    });
+    
+    $("#prsPinC").keyup(function()
+    {
+      var vc = $(this).val();
+      $("#prsPinCV").val(vc);
+      cn = $("#prsPinC").val();
+
+      if(cn.length==0)
+      {
+        $("#prsPinCV").css({'display': 'none'});
+        $("#btnprsPinC").css("display","none");
+        $('#btnprsPinC').html('Mostrar');
+        $("#btnprsPinC").css({'color': 'green'});
+        $("#btnprsPinC").val(1);
+      }
+      else
+      {
+        $("#btnprsPinC").css({'display': 'block'});
+      }
+    });
+  }); 
+  
+  function FunctionprsCI()
+  {
+    var btnprsCI = $("#btnprsCI").val();
+    if(btnprsCI == 1)
+    { 
+      $("#prsPinAV").fadeIn( "slow", function()
+      {
+        $("#prsPinAV").css("display","block");
+        $('#btnprsCI').val(0);
+        $('#btnprsCI').html('Ocultar');
+        $("#btnprsCI").css({'color': 'red'});
+      });
+    }
+    else
+    {
+      $("#prsPinAV").fadeOut( "slow", function() 
+      {
+        $("#prsPinAV").css("display","none");
+        $('#btnprsCI').val(1);
+        $('#btnprsCI').html('Mostrar');
+        $("#btnprsCI").css({'color': 'green'});
+      });
+    }
+  }
+  function FunctionprsPinN()
+  {
+    var btnprsPinN = $("#btnprsPinN").val();
+    if(btnprsPinN == 1)
+    { 
+      $("#prsPinNV").fadeIn( "slow", function() 
+      {
+        $("#prsPinNV").css("display","block");
+        $("#btnprsPinN").val(0);
+        $("#btnprsPinN").html('Ocultar');
+        $("#btnprsPinN").css({'color': 'red'});
+      });
+    }
+    else
+    {
+      $("#prsPinNV").fadeOut( "slow", function() 
+      {
+        $("#prsPinNV").css("display","none");
+        $('#btnprsPinN').val(1);
+        $('#btnprsPinN').html('Mostrar');
+        $("#btnprsPinN").css({'color': 'green'});
+      });
+    }
+  }
+  function FunctionprsPinC()
+  {
+    var btnprsPinC = $("#btnprsPinC").val();
+    if(btnprsPinC == 1)
+    { 
+      $("#prsPinCV").fadeIn( "slow", function() 
+      {
+        $("#prsPinCV").css("display","block");
+        $("#btnprsPinC").val(0);
+        $("#btnprsPinC").html('Ocultar');
+        $("#btnprsPinC").css({'color': 'red'});
+      });
+    }
+    else
+    {
+      $("#prsPinCV").fadeOut( "slow", function() 
+      {
+        $("#prsPinCV").css("display","none");
+        $('#btnprsPinC').val(1);
+        $('#btnprsPinC').html('Mostrar');
+        $("#btnprsPinC").css({'color': 'green'});
+      });
+    }
+  }
+</script>
+
+
+
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <script type="text/javascript" src="../../view/registro_ciudadano/cambio/appCambioPin.js"></script>
+    <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+  </head>
+  <div class="page-content" ng-controller="cambioPinController" ng-init="inicioCapcha();">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>{{translateTitulos.lbl_05_01}}</h5>
+        </div>
+        <div class="ibox-content">
+          <form method="get" class="form-horizontal ng-pristine ng-valid" name="formulario" readOnly="true" novalidate>
+            <div class="form-group">
+              <label for="url">{{translateTitulos.lbl_05_02}}</label> 
+                <button id="btnprsCI" name="btnprsCI" onClick="FunctionprsCI();" value="1" 
+                  style="float: right; color: rgb(21, 32, 48);
+                  background-color: rgb(255, 255, 255);
+                  border: 0px solid rgb(60, 52, 27);
+                  padding: 0px;
+                  font-size: 12px;
+                  color: green;">Mostrar</button>
+
+              <input  cols="10" rows="5" ng-model="prsCI" id="prsCI" name="prsCI" class="form-control" type="hidden" placeholder="ingrese CI" ng-disabled="desabilitado" required value="{$scope.ci}">
+              <div class="controls">
+                <input  ng-model="datos.prsPinA" id="prsPinA" name="prsPinA" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_02}}" ng-disabled="desabilitado" required ng-keyup="">
+                <span style="color:red" ng-show="formulario.prsPinA.$invalid">
+                  <span ng-show="formulario.prsPinA.$error.required">{{translateTitulos.lbl_05_04}}</span>
+                </span>
+                <input style="display:none;" type="" id="prsPinAV" name="prsPinAV" class="form-control"  type="text" placeholder="" maxlength="" disabled>
+              </div>
+            </div>      
+            <div class="row">
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label for="url">{{translateTitulos.lbl_05_05}}</label>
+                    <button id="btnprsPinN" name="btnprsPinN" onClick="FunctionprsPinN();" value="1" 
+                      style="float: right; color: rgb(21, 32, 48);
+                      background-color: rgb(255, 255, 255);
+                      border: 0px solid rgb(60, 52, 27);
+                      padding: 0px;
+                      font-size: 12px;
+                      color: green;">Mostrar</button>
+                  <div class="controls">
+                    <input  ng-model="datos.prsPinN" id="prsPinN" name="prsPinN" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_05}}" ng-disabled="desabilitado" required>
+                    <span style="color:red" ng-show="formulario.prsPinN.$invalid">
+                      <span ng-show="formulario.prsPinN.$error.required">{{translateTitulos.lbl_05_07}}</span>
+                    </span>
+                    <input style="display:none;" type="" id="prsPinNV" name="prsPinNV" class="form-control"  type="text" placeholder="" maxlength="" disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="url">{{translateTitulos.lbl_05_08}}</label>
+                     <button id="btnprsPinC" name="btnprsPinC" onClick="FunctionprsPinC();" value="1" 
+                      style="float: right; color: rgb(21, 32, 48);
+                      background-color: rgb(255, 255, 255);
+                      border: 0px solid rgb(60, 52, 27);
+                      padding: 0px;
+                      font-size: 12px;
+                      color: green;">Mostrar</button>
+                  <div class="controls">
+                    <input  ng-model="datos.prsPinC" id="prsPinC" name="prsPinC" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_08}}" ng-disabled="desabilitado" required>
+                    <span style="color:red" ng-show="formulario.prsPinC.$invalid">
+                      <span ng-show="formulario.prsPinC.$error.required">{{translate.Titulo.lbl_05_10}}</span>
+                    </span>
+                    <input style="display:none;" type="" id="prsPinCV" name="prsPinCV" class="form-control"  type="text" placeholder="" maxlength="" disabled>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>                
+            <!-- GENERADOR DE CAPCHA -->
+            <div class="col-md-12" align="center" >
+              <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                <tr class="color">
+                  <div style="background: #ffffff;" >
+                    <div class="box2">
+                      <img class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
+                    </div>
+                    <div class="box2">
+                      <img class="img-responsive" src="{{imageLNG}}"  title="Palabra en CASTELLANO">
+                    </div>
+                  </div>
+                </tr>
+                <tr class="color">
+                  <td class="color22" colspan="3" width="70"  align="center">
+                    <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" placeholder="{{palabraT}}" ng-model="resultadoC" ng-keyup="VerificarCapcha()" required/>
+                    <label >{{palabraT}}</label>
+                    <span  ng-show="formulario.palabraT.$invalid">
+                      <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                    </span>
+                  </td>
+                  <td class="color2" width="30"  align="center">
+                    <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
+              <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b>
+            </div>
+            <!-- ********************* -->
+            <div class="hr-line-dashed"></div>
+            <div class="form-group" align="right">
+              <a class="btn btn-default" style="color:#ffffff" href="#/dashboard">{{translateTitulos.lbl_05_12}}</a>
+              <button ng-click="cambioPin(datos, prsCI)" data-dismiss="modal" type="button" class="btn btn-success" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'" ng-disabled="formulario.prsCI.$invalid || formulario.prsPinA.$invalid || formulario.prsPinN.$invalid || formulario.prsPinC.$invalid || formulario.resultadoC.$invalid || btnCambiar" class="btn btn-success">{{translateTitulos.lbl_05_13}}</button>
+            </div>
+          </form> 
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <link href="../../libs/css/sweetalert.css" rel="stylesheet">
+    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+    <script type="text/javascript" src="../../view/servicios/varios/formularios/ambiental/ambiental.js"></script>
+    <script src="../../libs/loading/loadingoverlay.js"></script>
+    <script type="text/javascript" src="../../libs/js/jic.js"></script>
+ 
+    <link rel="stylesheet" href="../../libs/Librerias/ol_4.6.5_dist/ol.css" type="text/css">
+    <link rel="stylesheet" href="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css" type="text/css">
+    <script src="../../libs/Librerias/ol_4.6.5_dist/ol.js"></script>
+    <script src="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
+    <script src="../../libs/Librerias/proj_4/proj4.js"></script>
+  
+  </head>
+  <style type="text/css">
+
+   
+  </style>
+
+
+
+
+  <div class="page-content" ng-controller="ambientalController" data-ng-init="inicioServiciosAmbiental();">
+      <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="col-md-11 control-label">
+                <div id="mostrar" class="ibox-title">
+                    <h5>GESTIÓN AMBIENTAL</h5>
+                </div>
+            </div>
+            <div class="col-sm-12">
+              <div style="background-color: white; padding: 20px">
+                  <p align="justify">
+                      Mediante este servicio podra saber la ubicación y cantidad de arboles plantados a su alrededor.
+                  </p>
+              </div>
+            </div>  
+            
+             <div class="col-md-12">
+              <div class="col-md-2">
+                  <br><br><br><br><br><br><br><br><br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  
+              </div>
+              
+              <div class="col-md-8">
+                <div id="map" class="map"></div></br>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="col-md-2">
+                  <br><br><br><br><br><br><br><br><br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  
+              </div>
+              <div class="col-md-1">
+                <div class="form-group" >
+                    <label for="url" >NRO. DE ARBOLES ENCONTRADOS:</label>
+
+                    <div class="controls">
+                        <input ng-model="datosarbol.nroArboles" id="nroArboles" name="nroArboles" class="form-control"  width="30%" height="30" ng-disabled="true" ng-value="NRO_ARBOLES">
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+  </div>
+</html>

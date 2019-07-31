@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"></meta>
+    <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+     <title>AUTOCONSULTA SITRAM</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style type="text/css">#free-flash-intro a,#free-flash-intro a:hover {color:#615d5d;}#free-flash-intro a:hover {text-decoration:none}</style>
+    <style>
+        #menu {
+            float:left;
+            width:100%;
+            margin:0px;
+            padding:0px;
+            background-color:#F8B95A;
+        }
+        
+
+        #menu li {
+            float:left;
+            list-style:none;
+        }
+
+        #menu li a {
+            background-color: #F8B95A;
+            color: #FFFFFF;
+            padding: 10px 20px;
+            text-decoration: none;
+            width: 100%;
+            float:left;
+        }
+
+        #menu li a:hover {
+            background-color: #EEEEEE;
+            color: #000000;
+        }
+
+        .menu_select {
+            width:97%;
+            float:left;
+            display:none;
+            position:relative;
+        }
+
+        #selectme {
+            width:100%;
+            background-color:#F8B95A;
+            color:#ffffff;
+            padding:3px;
+            font-weight: bold;
+            text-align:left;
+            float:left;
+        }
+
+        ul#options {
+            width:100%;
+            float:left;
+            margin:0px;
+            padding:0px;
+        }
+
+        ul#options li {
+            width:98%;
+            float:left;
+        }
+
+        ul#options li a {
+            color: #ffffff;
+            padding:10px;
+            font-weight: bold;
+            text-align:left;
+            text-decoration:none;
+            width:100%;
+            float:left;
+        }
+
+        ul#options li a:hover {
+            color:#000000;
+            background-color:#EEEEEE;
+            text-decoration: none;
+        }
+
+        ul#options li:hover {
+
+        }
+
+        #arrow {
+            position: absolute;
+            right: 10px;
+            top: 12px;
+        }
+
+        .down {
+            background-image:url("../images/plus-white.png");
+            background-repeat:no-repeat;
+            height:20px;
+            width:20px;
+        }
+
+        .up {
+            background-image:url("../images/minus-white.png");
+            background-repeat:no-repeat;
+            height:20px;
+            width:20px;
+        }
+        .btnopcion {
+            display: inline;
+            background-color: #F8B95A;
+
+        }
+        .btnopcion,
+        .btnopcion:hover,
+        .btnopcion:active {
+          display: inline;
+          color: white;
+          text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+          background-color: #F8B95A;
+        }
+
+        .menublock {
+            position: relative;
+            margin-left: 1px;
+            margin-top: 1px;
+            padding-bottom: 7;
+            z-index: 1;
+            font-size: 11px;
+        }
+
+        .bodytipoletra {
+          font-family: 'Open Sans', sans-serif !important;
+          line-height: 1.42857143;
+
+        }
+
+        .logositram_head {
+             display: inline-block;
+        }
+        .logositram_foot {
+            display: none;
+        }
+        .logo_gamlp_mobile{
+         display: none;
+        }
+
+
+   @media only screen and (max-width: 980px) {
+        nav ul {
+            display: none;
+            }
+        nav select {
+            display: inline-block; width:10%; background-color: #F8B95A; color:#FFF; font-size: 16px; font-weight: bold;
+        }
+        nav .menu_select {
+            display: inline-block; width:100%; background-color: #F8B95A; color:#FFF; font-size: 16px; font-weight: bold;margin-bottom: 20px;
+        }
+        .btnopcion {
+           display: none;
+        }
+        .bodytipoletra {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 10.5px;
+            line-height: 1.42857143;
+            color: #555555;
+            background-color: #ffffff;
+         }
+         .logositram_foot {
+            display: inline-block;
+         }
+         .logo_gamlp_mobile{
+            position: relative;
+            top: 0px;
+            left: 57%;
+            display: inline-block;
+         }
+         .logogamlp{
+            display: none;
+         }
+         .logositram_head {
+            display: none;
+         }
+         .hrpiepagina {
+            width: 100%;
+         }
+         .tblpiepagina {
+            width: 100%;
+         }
+      }
+   </style>
+
+<style>
+.cssSlideUp {
+    transition: .5s linear all;
+    height: 80px;
+    overflow: hidden;
+}
+.cssSlideUp.ng-hide {
+    height:0;
+}
+</style>
+
+
+<style type="text/css">
+    .main1
+    {
+        padding-bottom: 20px;
+        padding-top: 20px;
+        background: rgba(49, 212, 200, 0.15);
+        padding-left: 15px;
+        padding-right: 15px;
+        /*color: #fff;*/
+        border-radius: 10px;
+    }
+}
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#selectme').on('click', function() {
+            if ($('ul#options').is(':hidden')) {
+               $('ul#options').show();
+               $('#arrow').removeClass('down');
+               $('#arrow').addClass('up');
+            }
+            else {
+                $('ul#options').hide();
+                $('#arrow').removeClass('up');
+                $('#arrow').addClass('down');
+            }
+        });
+
+        $('#arrow').on('click', function() {
+            if ($(this).hasClass('down')) {
+               $('ul#options').show();
+               $(this).removeClass('down');
+               $(this).addClass('up');
+            }
+            else {
+                $('ul#options').hide();
+                $(this).removeClass('up');
+                $(this).addClass('down');
+            }
+        });
+
+        $('#options li a').on('click', function() {
+            var value = $(this).text();
+            $('#selectme').text(value);
+            $('ul#options').hide();
+        });
+    });
+</script>
+
+    <!-- Libs -->       
+    <link href="../../libs/css/sweetalert.css" rel="stylesheet">
+    <!--ngSweetAlert-->
+    <script src="../../libs/js/prism.js"></script>
+    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+    <script type="text/javascript" src="../../view/servicios/varios/formularios/sigueTuTramite/sigueTuTramite.js"></script>
+   
+</head>
+
+    <div id="example" ng-controller="siguetutramiteController" ng-init="inicioSigueTuTramite();">
+
+        <!-- Bandeja de inicio (busqueda) -->
+        <div class="col-md-12" class="row" style="padding-top: 5px;">
+            <div class="row" >
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="col-md-1    " style ="padding-right:0px; width:4%;" ng-show="grillaHistorialAE != null || grillaHistorialTerr != null || grillaHistorialSitram247 != null || grillaHistorialLotus != null" >
+                            <a class="btn btn-redondo" data-toggle="modal" tooltip = "Volver" ng-click="volverLimpiar();">
+                                <div class="shake-slow"><i class="fa fa-mail-reply"></i></div>
+                            </a>                            
+                        </div>
+                        <div class="col-md-11 control-label">
+                            <div id="mostrar" class="ibox-title">
+                                <h5>CONSULTE SU TRÁMITE O SERVICIO</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div style="background-color: white; padding: 15px">
+                        <!--p align=justify>
+                            El Gobierno Autónomo Municipal de La Paz, con el objeto de brindar un servicio de calidad a la ciudadanía, pone a su disposición el servicio de AUTOCONSULTA, mediante el cual podrá saber la ubicación y estado actual de su trámite.
+                        </p>                        
+                        <p align=justify>
+                            Para cualquier pregunta, por favor comuníquese con los teléfonos 2650329 – 2651446 o 2651447, o diríjase a las cualquier plataforma de servicio y atención ciudadana del GAMLP.
+                        </p-->
+                        <p align=justify>
+                            Mediante este servicio podra saber la ubicación y estado actual de su Tramite.
+                        </p>
+                    </div>                     
+                </div><br><br>
+
+                <div ng-show="tramitesciudadano == 0">
+                    <div class="col-sm-12" id="divMsj" style="padding: 20px 27px 9px 25px; display: none;">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8">
+                            <div class="main1" id="main1" style="font-size: 20px;">
+                                <center><i class="fa fa-warning" style="color: #4bafb4;"></i> {{msj}}</center>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>                     
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <div ng-if="grillaTramitesLineaAE != null" class="col-md-12" class="row">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div align="left">
+                        <p align="left"> <h4>TRÁMITES EN LINEA</h4></p>
+                    </div>                        
+                </div>
+            </div>
+            <div class="row" >
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                        <th scope="col">#&nbsp;</th>
+                                        <th scope="col">CODIGO  TRÁMITE&nbsp;</th>
+                                        <th scope="col">ASUNTO&nbsp;</th>
+                                        <th scope="col">FECHA&nbsp;</th>
+                                        <th scope="col">VER&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="datos in tramitesciudadano">
+                                            <td data-title="#">{{$index+1}}</td>
+                                            <td data-title="CODIGO">{{datos.tcorrelativo}}</td>
+                                            <td data-title="ASUNTO">{{datos.tasunto}}</td>
+                                            <td data-title="FECHA">{{datos.tfregistro | date : 'dd/MM/yyyy'}}</td>
+                                            <td data-title="VER ESTADO"><center><a tooltip="Ver tramite" ng-click="verTramite(datos)" class="btn btn-default btn-transfer" data-toggle="modal" data-target="#registro"><i class="fa fa-external-link" ></i></a></center></td>
+                                        </tr>
+                                    </tbody> 
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div ng-show="grillaHistorialAE != null" class="col-md-12" class="row" align="center">
+            <div class="panel-body" >
+                <br>
+                <div align="left">
+                    <h4>ASUNTO: <strong> {{historialAE[0].asunto}} </strong></h4>
+                </div>
+                <hr width="100%">
+
+                <div class="container-fluid">
+                    <section id="no-more-tables">
+                        <table class="table table-bordered table-striped table-condensed cf">
+                            <thead class="cf">
+                                  <tr>
+                                    <th>NÚMERO DE TRÁMITE</th>
+                                    <th>CONTRIBUYENTE</th>
+                                    <th>TIPO TRÁMITE</th>
+                                    <th>FECHA DE INGRESO</th>
+                                  </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-title="NÚMERO DE TRÁMITE" ><center><strong> {{historialAE[0].numero_tramite}} </strong></center></td>
+                                    <td data-title="SOLICITANTE"><center><img src="../../libs/img/iconos/usuario.png" width="50" height="50" alt="Inicio"><br><strong> {{historialAE[0].solicitante}} </strong></center></td>
+                                    <td data-title="TIPO TRAMITE"><center><img src="../../libs/img/iconos/tramite.png" width="50" height="50" alt="Inicio"><br>{{historialAE[0].proceso}}</center></td>
+                                    <td data-title="FECHA INGRESO"><center><img src="../../libs/img/iconos/calendario.png" width="50" height="50" alt="Inicio"><br>{{historialAE[0].fecha_ingreso}}</center></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <div align="left">
+                    <p align="left"> <h4>ESTADO DEL TRÁMITE</h4></p>
+                </div>
+                <hr width="100%">
+                <div class="container-fluid">
+                    <section id="no-more-tables">
+                        <table class="table table-bordered table-striped table-condensed cf">
+                              <thead class="cf">
+                                  <tr>
+                                    <th>#&nbsp;</th>
+                                    <th>UBICACIÓN&nbsp;</th>
+                                    <th>FECHA REMISION&nbsp;</th>
+                                  </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="datos in historialAE">
+                                    <td data-title="#">{{$index+1}}</td>
+                                    <td data-title="UBICACIÓN">{{datos.rol}}</td>
+                                    <td data-title="FECHA">{{datos.fec_remision | date: 'dd/MM/yyyy'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <div ng-show="grillaHistorialTerr != null" class="col-md-12" class="row" align="center">
+            <div class="panel-body" >
+                <br>
+                <div align="left">
+                    <h4>ASUNTO: <strong> {{historialTerr[0].asunto}} </strong></h4>
+                </div>
+                <hr width="100%">
+
+                <div class="container-fluid">
+                    <section id="no-more-tables">
+                        <table class="table table-bordered table-striped table-condensed cf">
+                            <thead class="cf ">
+                                  <tr>
+                                    <th>NÚMERO DE TRÁMITE</th>
+                                    <th>CONTRIBUYENTE</th>
+                                    <th>TIPO TRÁMITE</th>
+                                    <th>FECHA DE INGRESO</th>
+                                  </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-title="NÚMERO DE TRÁMITE" ><center><strong> {{historialTerr[0].numero_tramite}} </strong></center></td>
+                                    <td data-title="SOLICITANTE"><center><img src="../../libs/img/iconos/usuario.png" width="50" height="50" alt="Inicio"><br><strong> {{historialTerr[0].solicitante}} </strong></center></td>
+                                    <td data-title="TIPO TRAMITE"><center><img src="../../libs/img/iconos/tramite.png" width="50" height="50" alt="Inicio"><br>{{historialTerr[0].proceso}}</center></td>
+                                    <td data-title="FECHA INGRESO"><center><img src="../../libs/img/iconos/calendario.png" width="50" height="50" alt="Inicio"><br>{{historialTerr[0].fecha_ingreso}}</center></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <div align="left">
+                    <p align="left"> <h4>ESTADO DEL TRÁMITE</h4></p>
+                </div>
+                <hr width="100%">
+                <div class="container-fluid">
+                    <section id="no-more-tables">
+                        <table class="table table-bordered table-striped table-condensed cf">
+                              <thead class="cf">
+                                    <tr>
+                                        <th>#&nbsp;</th>
+                                        <th>UBICACIÓN&nbsp;</th>
+                                        <th>FECHA REMISION&nbsp;</th>
+                                    </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="datos in historialTerr">
+                                    <td data-title="#">{{$index+1}}</td>
+                                    <td data-title="UBICACIÓN">{{datos.rol}}</td>
+                                    <td data-title="FECHA">{{datos.fec_remision | date: 'dd/MM/yyyy'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <!-- * AUTOCONSULTA AL CIUDADANO - SITRAM 247 -->
+        <div ng-show="grillaHistorialSitram247 != null" class="col-md-12" class="row" align="center">
+            <div class="panel-body" >
+                <br>
+                <div align="left">
+                    <h4>ASUNTO : <strong> {{historialsitram247[0].asunto}} </strong></h4>
+                </div>
+                <hr width="100%">
+
+                <div class="container-fluid">
+                    <section id="no-more-tables">
+                        <table class="table table-bordered table-striped table-condensed cf">
+                            <thead class="cf">
+                                  <tr>
+                                    <th>NÚMERO DE TRÁMITE</th>
+                                    <th>TIPO TRÁMITE</th>
+                                    <th>FECHA DE INGRESO</th>
+                                  </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-title="#" ><center><strong> {{historialsitram247[0].correlativo}} </strong></center></td>
+                                    <td data-title="TIPO TRAMITE"><center><img src="../../libs/img/iconos/tramite.png" width="50" height="50" alt="Inicio"><br>{{historialsitram247[0].tptrnombre}}</center></td>
+                                    <td data-title="FECHA INGRESO"><center><img src="../../libs/img/iconos/calendario.png" width="50" height="50" alt="Inicio"><br>{{historialsitram247[0].tsd}}</center></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <div align="left">
+                    <p align="left"> <h4>ESTADO DEL TRÁMITE </h4></p>
+                </div>
+                <hr width="100%">
+                <div class="container-fluid">
+                    <section id="no-more-tables">
+                        <table class="table table-bordered table-striped table-condensed cf">
+                              <thead class="cf">
+                                  <tr>
+                                    <th>#&nbsp;</th>
+                                    <th>UBICACIÓN&nbsp;</th>
+                                    <th>FECHA REMISION--&nbsp;</th>
+                                  </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="datos in historialsitram247">
+                                    <td data-title="#">{{$index+1}}</td>
+                                    <td data-title="UBICACIÓN">{{datos.tno}}</td>
+                                    <td data-title="FECHA">{{datos.trd | date: 'dd/MM/yyyy'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <!-- * AUTOCONSULTA AL CIUDADANO - LOTUS 247 -->
+        <div ng-show="grillaHistorialLotus != null" class="col-md-12" class="row" align="center">
+            <div class="panel-body" >
+                <br>
+                <div align="left">
+                    <h4>ASUNTO : <strong> {{historialLotus[0].tasunto}} </strong></h4>
+                </div>
+                <hr width="100%">
+
+                <div class="container-fluid">
+                    <section id="no-more-tables">
+                        <table class="table table-bordered table-striped table-condensed cf">
+                            <thead class="cf">
+                                  <tr>
+                                    <th>NÚMERO DE TRÁMITE</th>
+                                    <th>TIPO TRÁMITE</th>
+                                    <th>FECHA DE INGRESO</th>
+                                  </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-title="#" ><center><strong> {{historialLotus[0].tcorrelativo}} </strong></center></td>
+                                    <td data-title="TIPO TRAMITE"><center><img src="../../libs/img/iconos/tramite.png" width="50" height="50" alt="Inicio"><br>{{historialLotus[0].tasunto}}</center></td>
+                                    <td data-title="FECHA INGRESO"><center><img src="../../libs/img/iconos/calendario.png" width="50" height="50" alt="Inicio"><br>{{historialLotus[0].tfecha  | date: 'dd/MM/yyyy'}}</center></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <div align="left">
+                    <p align="left"> <h4>ESTADO DEL TRÁMITE </h4></p>
+                </div>
+                <hr width="100%">
+                <div class="container-fluid">
+                    <section id="no-more-tables">
+                        <table class="table table-bordered table-striped table-condensed cf">
+                              <thead class="cf">
+                                  <tr>
+                                    <th>#&nbsp;</th>
+                                    <th>UBICACIÓN&nbsp;</th>
+                                    <th>FECHA REMISION&nbsp;</th>
+                                  </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="datos in historialLotus">
+                                    <td data-title="#">{{$index+1}}</td>
+                                    <td data-title="UBICACIÓN">{{datos.tnodonombre}}</td>
+                                    <td data-title="FECHA">{{datos.tfecha | date: 'dd/MM/yyyy'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" class="row" align="center">
+            <hr class="hrpiepagina" width="80%">
+            <table class="tblpiepagina" width= "80%" align="center" cellspacing="3" cellpadding="3">
+
+            </table>
+        </div>
+    </div>
+</html>

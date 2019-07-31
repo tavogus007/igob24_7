@@ -1,0 +1,593 @@
+<link href="../../libs/css/sweetalert.css" rel="stylesheet">
+    <!--ngSweetAlert-->
+<script src="../../libs/js/prism.js"></script>
+<script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+<script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+<style type "text/css">
+/**#hearts { color: #ee8b2d;}
+#hearts-existing { color: #ee8b2d;}
+img.resize{
+   max-width:70%;
+   max-height:50%;
+}
+a { margin: 1em 0; }
+ 	.alternativo {color: white; text-decoration: none;}
+	.simple {color: #249FE6;}
+	.importante {font-weight: bold; font-size: 1.3em;}
+	.raro {text-decoration:overline;}*/
+
+.custom-upload {
+    position: relative;
+    height: 40px;
+    width: 100%;
+    margin:30px;
+}
+.custom-upload input[type=file]
+{
+    outline:none;
+    position: relative;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width:85%;
+    height:100%;
+}
+.custom-upload .fake-file
+{
+    background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 85%;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    line-height: 100%;
+}
+.custom-upload .fake-file input
+{
+    font-size:16px;
+    height:40px;
+    width:85%;
+}
+/*aqui estaba el captcha*/
+     input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+     .box2{
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+</style>
+<script type="text/javascript">
+// Starrr plugin (https://github.com/dobtco/starrr)
+var __slice = [].slice;
+(function($, window) {
+  	var Starrr;
+  	Starrr = (function() {
+    	Starrr.prototype.defaults = {
+      		rating: void 0,
+      		numStars: 5,
+      		change: function(e, value) {}
+    	};
+    	function Starrr($el, options) {
+      		var i, _, _ref,
+        	_this = this;
+      		this.options = $.extend({}, this.defaults, options);
+      		this.$el = $el;
+      		_ref = this.defaults;
+      		for (i in _ref) {
+        		_ = _ref[i];
+        		if (this.$el.data(i) != null) {
+          			this.options[i] = this.$el.data(i);
+        		}
+      		}
+	      	this.createStars();
+	      	this.syncRating();
+	      	this.$el.on('mouseover.starrr', 'span', function(e) {
+	        	return _this.syncRating(_this.$el.find('span').index(e.currentTarget) + 1);
+	      	});
+      		this.$el.on('mouseout.starrr', function() {
+        		return _this.syncRating();
+      		});
+      		this.$el.on('click.starrr', 'span', function(e) {
+        		return _this.setRating(_this.$el.find('span').index(e.currentTarget) + 1);
+      		});
+      		this.$el.on('starrr:change', this.options.change);
+    	}
+    	Starrr.prototype.createStars = function() {
+	      		var _i, _ref, _results;
+	      		_results = [];
+	      		for (_i = 1, _ref = this.options.numStars; 1 <= _ref ? _i <= _ref : _i >= _ref; 1 <= _ref ? _i++ : _i--) {
+	       		_results.push(this.$el.append("<span class='glyphicon .glyphicon-star-empty'></span>"));
+	      	}
+	      	return _results;
+	    };
+	    Starrr.prototype.setRating = function(rating) {
+	      	if (this.options.rating === rating) {
+	        	rating = void 0;
+	      	}
+	      	this.options.rating = rating;
+	      	this.syncRating();
+	      	return this.$el.trigger('starrr:change', rating);
+	    };
+	    Starrr.prototype.syncRating = function(rating) {
+	      	var i, _i, _j, _ref;
+	      	rating || (rating = this.options.rating);
+	      	if (rating) {
+	        	for (i = _i = 0, _ref = rating - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+	          		this.$el.find('span').eq(i).removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+	        	}
+	      	}
+	      	if (rating && rating < 5) {
+	        	for (i = _j = rating; rating <= 4 ? _j <= 4 : _j >= 4; i = rating <= 4 ? ++_j : --_j) {
+	          		this.$el.find('span').eq(i).removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+	        	}
+	      	}
+	      	if (!rating) {
+	        	return this.$el.find('span').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+	      	}
+	    };
+	    return Starrr;
+	})();
+ 	return $.fn.extend({
+    	starrr: function() {
+      		var args, option;
+      		option = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      		return this.each(function() {
+        		var data;
+        		data = $(this).data('star-rating');
+        		if (!data) {
+          			$(this).data('star-rating', (data = new Starrr($(this), option)));
+        		}
+	        	if (typeof option === 'string') {
+	          		return data[option].apply(data, args);
+	       		}
+      		});
+    	}
+	});
+})(window.jQuery, window);
+
+$(function() {
+  	return $(".starrr").starrr();
+});
+$( document ).ready(function() {  
+  	$('#hearts').on('starrr:change', function(e, value){
+    if(value)
+    {
+    	$('#count').html(value);	
+    	accessScope('#outer', function (scope) {
+			scope.adicionarCalificacion(value);
+		});
+    }
+    else{
+    	$('#count').html(0);
+    }   
+});
+  	$('#hearts-existing').on('starrr:change', function(e, value){
+    	$('#count-existing').html(value);
+  	});
+});
+</script>
+<script type="text/javascript">
+// When the document is ready
+	var respuestaPadre=0;
+		function conMayusculas(field) {
+		field.value = field.value.toUpperCase()
+	};
+	function soloNumerico(variable){
+		Numer=parseInt(variable);
+		if (isNaN(Numer)){
+			return "";
+		}
+		return Numer;
+	}
+	function valNumero(Control){
+		Control.value=soloNumerico(Control.value);
+	}
+	function respuestaGen(idRespuesta)
+	{
+		document.formularioRespuesta.reset();
+		$('#responderTema').modal('show'); 
+		
+		document.getElementById("rtmid_respuesta_hijo").value = idRespuesta;
+		
+	}
+	function accessScope(node, func) {
+		var scope = angular.element(document.querySelector(node)).scope();
+		scope.$apply(func);
+	}
+	function meGusta(idRespuesta)
+	{
+		//alert("a");
+		accessScope('#outer', function (scope) {
+			scope.meGustaRespuesta(idRespuesta);
+		});
+	}
+	function cargarTema(idGrupo, nombGrupo)
+	{
+		//console.log(idGrupo);
+		accessScope('#outer', function (scope) {
+			scope.getDocumento(idGrupo,nombGrupo);
+		});	
+	}
+	function cargarRespuestas(a,b,c,d,e,f,g,h,i,j,k,l,m)
+	{
+		accessScope('#outer', function (scope) {
+			scope.mostrarRespuesta(a,b,c,d,e,f,g,h,i,j,k,l,m);
+		});	
+	}
+</script>
+
+
+<style type="text/css">
+	.foro_textos{
+		background: white;
+		border-top: solid 5px #6F7072;
+		padding: 15px;
+		margin-top: 30px;/*cambios*/
+	}
+	.foro_titulo{
+		font-weight: bold;
+		font-size: 16px;
+		padding: 15px 0px;
+	}
+	.foro_descripcion{
+		font-size: 14px;
+		padding: 15px 0px;
+	}
+	.volver_foro_t{
+		font-size: 30px;
+   	position: relative;
+   	top: 0px;
+   	left: 15px;
+}
+.imagen_foro_list{
+	padding: 15px;
+}
+/*
+ * JULIO 
+ */
+.titulo_f_list{
+	font-size: 18px;
+	font-weight: bold;
+	padding: 5px;
+	color: #222831;
+}
+.por_f_list{
+	font-size: 18px;
+	font-weight: normal;
+	padding: 5px;
+	color: #535E65;
+}
+.descripcion_f_list{
+	font-size: 14px;
+	padding: 5px;
+}
+.calificacion{
+	position: relative;
+   top: 25px;
+   text-align: center;
+}
+/*
+ * JULIO
+ */
+.btn_participa{
+   top: 35px;
+   left: 0px;
+   text-align: center;
+}
+</style>
+<div id="outer" ng-controller="foroController" data-ng-init="inicioDocumentos()">
+	<!-- /////// /////// ///////////////// /////// ///////-->
+	<!-- /////// /////// LISTADO DE GRUPOS /////// ///////-->
+	<!-- /////// /////// ///////////////// /////// ///////-->
+	<!-- ui atns -->
+	<div ng-show = "gruposTema != null">
+		<div class="row" >
+			<div class="col-md-12" style="background: white; height: 40px; padding: 10px;margin-bottom: 15px; position: relative;top:25px;">
+				<div class="col-md-6"><span style="font-size: 16px; font-weight: bold;">{{translateTitulos.lbl_020_01}}</span></div>
+				<div class="col-md-6" style="text-align: right;"><span> {{translateTitulos.lbl_020_02}}</span></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div ng-bind-html="get_renderizarGrupos(htmlGrupo)"></div>
+			</div>
+		</div>
+	</div>
+	<!-- /ui atns -->
+	<!-- /////// /////// //////////////// /////// ///////-->
+	<!-- /////// /////// LISTADO DE TEMAS /////// ///////-->
+	<!-- /////// /////// //////////////// /////// ///////-->
+	<!-- ui atns -->
+	<div class="col-sm-12" ng-show = "listadoTemas != null">
+		<div class="row" >
+			<div class="col-md-12" style="background: white; height: 57px; padding: 10px; color: #00ADB5 !important;margin-bottom: 15px;  position: relative;top: 17px">
+				<div class="col-md-1"><!--cambios-->
+					<div class="volver_foro_t">
+						<a ng-click="volverGrupo();"><i class="fa fa-reply" style="color:#0ACC9E !important;"></i></a><!--cambios-->
+					</div>
+				</div>
+				<div class="col-md-9">
+					<span style="font-size: 16px" >{{translateTitulos.lbl_020_03}} <strong>{{nombreGrupoTema}}</strong></span>
+					<div>{{translateTitulos.lbl_020_04}}: {{nroTemas}} {{translateTitulos.lbl_020_05}}</div>
+				</div>
+				<div class="col-md-2" style="text-align: right;position: relative;top: 10px;" >
+					<span>
+					<a ng-click="limpiarTema();"
+					   data-target="#registrarTema"
+					   data-toggle="modal" class="btn btn-primary">{{translateTitulos.lbl_020_06}}
+					</a>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div ng-bind-html="get_renderizarTemas(htmlTema)"></div>
+			</div>
+		</div>
+	</div>
+	<!-- /ui atns -->
+	<!-- /////// /////// ////// RESPONDER ////////// /////// ///////-->
+	<!-- /////// /////// //////////////// /////// ///////-->
+	<div class="col-sm-12" ng-show = "respuestasTema != null">
+		<div class="row" >
+			<div class="col-md-12" style="background: white; padding: 10px; color: #00ADB5 !important;margin-bottom: 15px; position: relative;top: 17px;">
+				<div class="col-md-1"><!--cambios-->
+					<div class="volver_foro_t">
+						<a ng-click="volverTemas();"><i class="fa fa-reply" style="color: #0ACC9E!important;"></i></a><!--cambios-->
+					</div>
+				</div>
+				<div class="col-md-9">
+					<span style="font-size: 16px" >{{translateTitulos.lbl_020_03}}</span>/ {{nombreGrupoTema}}<span><strong>/ {{tituloTema}}</strong></span>
+					<div>{{translateTitulos.lbl_020_04}} {{nroTemas}} {{translateTitulos.lbl_020_05}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="row" style="background: white; padding: 15px;">
+				<div class="col-md-2">
+					<div class="imagen_foro_list">
+						<img src="../GestionDocumental/foro/imagenes/silueta_1.png" width="100" height="100" class="img-circle">
+					</div>
+				</div>
+				<div class="col-md-10">
+					<div class="imagen_foro_list">
+						<div class="titulo_f_list">{{tituloTema}}</div>
+						<div class="por_f_list">{{nombreTema}}</div>
+						<div class="descripcion_f_list">{{descripcionTema}}</div>
+					</div>
+				</div>
+			</div>
+			<div class="row" style=" background:#C5C5C5; padding: 3px 0px 10px 0px;">	
+				<div class="col-md-12" style="font-size:15px; height: auto">
+					<div class="col-md-2" style="position: relative;top:4px;">
+						<button type="button" data-toggle="modal" data-target="#responderTema" class="btn btn-primary" ng-click="limpiarRespuesta();">&nbsp;&nbsp;{{translateTitulos.lbl_09_09_09}}&nbsp;&nbsp;</button>
+					</div>
+					<div class="col-md-2" style="color:#535E65;text-align:left; padding: 12px 0px 0px 0px">
+						<span style="font-size: 15px !important;">{{translateTitulos.lbl_020_08}}:</span>
+						<i class="fa fa-star">
+							<i class="fa fa-star-o"></i>
+							<i class="fa fa-star-o"></i>
+							<i class="fa fa-star-o"></i>
+							<i class="fa fa-star-o"></i>
+						</i>
+					</div>
+					<span>&nbsp;&nbsp;&nbsp;</span>	
+					<div class="col-md-3"  style="color:#535E65;text-align:left; padding: 12px 0px 0px 0px">
+						<span style="color:#535E65;">
+							<span style="font-size: 14px !important;">
+								<a ng-click="meGustaTema();">
+									<i class="fa fa-heart" style="font-size:16px;color: #535E65 !important;"></i>
+										<span style="padding: 0px 10px;color: #535E65 !important;">{{nroLikesTema}} {{translateTitulos.lbl_020_09}}</span>
+								</a>
+									</span>
+									<span style="font-size: 14px !important;">
+										<i class="fa fa-eye" style="font-size:18px;"></i>
+										<span style="padding: 0px 10px;">{{nroVisto}}</span>
+									</span>
+						</div>
+						<div class="col-md-3"  style="color:#535E65;text-align:left; padding: 12px 0px 0px 0px">
+									<span style="font-size: 14px !important;">
+										<i class="fa fa-comments" style="font-size:18px;"></i>
+										<span style="padding: 0px 10px;">{{nroRespuestas}}</span>
+									</span>
+								</span>
+						</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-12">
+			<table width="100%">
+				<tr>
+					<td valign="top" class="col-md-8">
+						<div  ng-bind-html="get_renderizarRespuestas(html)"></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<!-- /////// /////// ////////////// /////// ///////-->
+	<!-- /////// /////// REGISTRAR TEMA /////// ///////-->
+	<!-- /////// /////// ////////////// /////// ///////-->
+	<div class="modal fade" id="registrarTema" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+					<h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_020_10}}</h4>
+				</div>
+				<div class="modal-body" >
+					<form name="formularioRoles" novalidate>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="url" >{{translateTitulos.lbl_020_11}}:</label>
+									<div class="controls">
+										<input  ng-value="&nbsp;" ng-model="datosRol.ftmtema" name="ftmtema" id="ftmtema" class="form-control" type="text" placeholder="Ingrese el tema" ng-disabled="only" ng-required="true" >
+										<span style="color:red" ng-show="formularioRoles.ftmtema.$invalid">
+											<span ng-show="formularioRoles.ftmtema.$error.required">{{translateTitulos.lbl_020_12}}
+											</span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="url" >{{translateTitulos.lbl_020_13}}:</label>
+									<div class="controls">
+										<textarea  ng-value="&nbsp;" ng-model="datosRol.ftmdescripciontema" name="ftmdescripciontema" id="ftmdescripciontema" class="form-control" type="text" placeholder="Escriba la descripcion del tema" ng-disabled="only" ng-required="true" />
+										<span style="color:red" ng-show="formularioRoles.ftmdescripciontema.$invalid">
+											<span ng-show="formularioRoles.ftmdescripciontema.$error.required">{{translateTitulos.lbl_020_14}}
+											</span>
+										</span>
+									</div>
+								</div>
+							</div>
+							
+							
+                             <!-- GNERADOR DE CAPCHA -->
+	                        <div class="col-md-12" align="center" >
+                            <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                                <tr class="color">
+                                    <div style="background: #ffffff;" >
+                                        <div class="box2">
+                                            <img class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
+                                        </div>
+                                        <div class="box2">
+                                            <img class="img-responsive" src="{{imageLNG}}"  title="Palabra en CASTELLANO">
+                                        </div>
+                                    </div>
+                                </tr>
+                                <tr class="color">
+                                    <td class="color22" colspan="3" width="70"  align="center">
+                                        <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" ng-change ="lmpCaptcha()" placeholder="{{palabraT}}" ng-model="resultadoC"  required/>
+                                            <span  ng-show="formulario.palabraT.$invalid">
+                                                <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                            </span>
+                                            <label >{{palabraT}}</label>
+                                    </td>
+                                        <td class="color2" width="30"  align="center">
+                                            <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                            </table>
+                            <b><font SIZE=3 color="red">{{ErrorCapcha}}</font></b>
+                         </div>
+                        <!-- ********************* -->
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br> 
+                            <br>
+                            <br>
+                            <br>  							
+						</div>
+					</form>
+				</div>                
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+					<button  ng-click="VerificarCapcha(datosRol)" ng-disabled="formularioRoles.resultadoC.$invalid" type="button" class="btn btn-primary">{{translateTitulos.lbl_020_10}}</button><!-- 
+					<button data-dismiss="modal" ng-click="adicionarTema(datosRol)" ng-disabled="formularioRoles.resultadoC.$invalid" type="button" class="btn btn-primary">Registrar Tema</button> -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- /////// /////// ///////////////// /////// ///////-->
+	<!-- /////// /////// VENTANA RESPUESTA /////// ///////-->
+	<!-- /////// /////// ///////////////// /////// ///////-->
+	<div class="modal fade" id="responderTema" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+					<h4 class="modal-title" id="myModalLabel"></h4>
+				</div>
+				<div class="modal-body" >
+					<form name="formularioRespuesta" novalidate>
+						<div class="row">
+							<div class="col-md-12" ng-show="campoResp = null">
+								<div class="form-group">
+									<label for="url" >{{translateTitulos.lbl_020_19}}</label>
+									<div class="controls">
+										<input  ng-value="&nbsp;" ng-model="datosRespuesta.rtmid_respuesta_hijo" name="rtmid_respuesta_hijo" id="rtmid_respuesta_hijo" class="form-control" type="text" placeholder="" ng-disabled="only" ng-required="true" >
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="url" >{{translateTitulos.lbl_020_15}}:</label>
+									<div class="controls">
+										<textarea  ng-value="&nbsp;" ng-model="datosRespuesta.rtmrespuesta" name="rtmrespuesta" id="rtmrespuesta" class="form-control" type="text" placeholder="Escriba su respuesta " ng-disabled="only" ng-required="true" />
+										<span style="color:red" ng-show="formularioRespuesta.rtmrespuesta.$invalid">
+											<span ng-show="formularioRespuesta.rtmrespuesta.$error.required">{{translateTitulos.lbl_020_16}}
+											</span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<!-- GNERADOR DE CAPCHA -->
+	                        <div class="col-md-12" align="center" >
+                            <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                                <tr class="color">
+                                    <div style="background: #ffffff;" >
+                                        <div class="box2">
+                                            <img class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
+                                        </div>
+                                        <div class="box2">
+                                            <img class="img-responsive" src="{{imageLNG}}"  title="Palabra en CASTELLANO">
+                                        </div>
+                                    </div>
+                                </tr>
+                                <tr class="color">
+                                    <td class="color22" colspan="3" width="70"  align="center">
+                                        <input id="resultadoCC" name="resultadoCC" type="text" style="border: 0px !important;" class="form-control" ng-change ="lmpCaptcha()" placeholder="{{palabraT}}" ng-model="resultadoCC"  required/>
+                                            <span  ng-show="formulario.palabraT.$invalid">
+                                                <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                            </span>
+                                            <label >{{palabraT}}</label>
+                                    </td>
+                                        <td class="color2" width="30"  align="center">
+                                            <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasXX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                            </table>
+                            <b><font SIZE=3 color="red">{{ErrorCapcha}}</font></b>
+                         </div>
+	                        <!-- ********************* -->
+						</div>
+					</form>
+				</div>                
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+					<!-- <button data-dismiss="modal" ng-click="adicionarRespuesta(datosRespuesta)" type="button" class="btn btn-primary">Responder</button> -->
+					<button  ng-disabled="formularioRespuesta.resultadoCC.$invalid || formularioRespuesta.rtmrespuesta.$invalid " ng-click="VerificarCapchaa(datosRespuesta)" type="button" class="btn btn-primary">{{translateTitulos.lbl_09_09_09}}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</font> 

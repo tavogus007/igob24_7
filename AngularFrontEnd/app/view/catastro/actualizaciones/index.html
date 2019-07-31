@@ -1,0 +1,973 @@
+<style>
+    /*para quitar las flechas en buscador*/
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button
+    {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number]{
+        -moz-appearance: textfield;
+    }
+    .editable-checklist label {
+        display: block;
+    }
+    .img1{
+        position: absolute;
+        top:  65%;
+        left: 45%;
+    }
+    {box-sizing: border-box;}
+    .pdf-controls { width: 100%; display: block; background: #eee; padding: 1em;}
+    .rotate0 {-webkit-transform: rotate(0deg); transform: rotate(0deg);}
+    .rotate90 {-webkit-transform: rotate(90deg); transform: rotate(90deg);}
+    .rotate180 {-webkit-transform: rotate(180deg); transform: rotate(180deg);}
+    .rotate270 {-webkit-transform: rotate(270deg); transform: rotate(270deg);}
+    .fixed { position: fixed; top: 0; left: calc(50% - 480px); z-index: 100; width: 100%; padding: 1em; background: rgba(238, 238, 238,.9); width: 960px;}
+    /*si necesitas que sea responsive*/
+    canvas {
+        width: 100%;
+        height: auto;
+    }
+    #caja {
+        display: block;
+    }
+    a{
+        color: #000000;
+    }
+    #mostrar{
+        display:block;
+    }
+    .div1{
+        width: 1000px;
+        height: 100px;
+        border: 1px solid black;
+        padding: 5px;
+    }
+
+/*    td:first-child {
+        width: 10%;
+    }*/
+
+    #formAct{
+        background: #ffffff;
+    }
+    #img1{
+        position: relative;
+    }
+    #codCat{
+        position: absolute;
+        top: 135pt;
+        left: 450pt;
+        font-size: 260%;
+    }
+    #matricula{
+        position: absolute;
+        top: 190pt;
+        left: 200pt;
+    }
+    #numInmueble{
+        position: absolute;
+        top: 190pt;
+        left: 440pt;
+    }
+    #modNombres{
+        position: absolute;
+        top: 220pt;
+        left: 200pt;
+    }
+    #tabla1{
+        position: absolute;
+        top: 228pt;
+        left: 55pt;
+        width: 650pt;
+    }
+    #nroPuerta{
+        position: absolute;
+        top: 347pt;
+        left: 445pt;
+    }
+    #ubicacion{
+        position: absolute;
+        top: 347pt;
+        left: 180pt;
+    }
+    #superficies{
+         position: absolute;
+         top: 812pt;
+         left: 420pt;
+        font-size: 115%;
+    }
+    #obs{
+        position: absolute;
+        top: 925pt;
+        left: 200pt;
+
+    }
+    #valor{
+        position: absolute;
+        top: 1070pt;
+        left: 520pt;
+        font-size: 130%;
+    }
+    td{
+        min-width:100px; /* force table to be oversize */
+    }
+    input:disabled {
+        background: #f9f9f9;
+    }
+    option:disabled {
+        background: #f9f9f9;
+    }
+
+    /*ESTILOS PROPIOS DE CODIGO CAPTCHA*/
+    
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+    .box2{
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+/*    table { table-layout: fixed; }
+    table th, table td { overflow: hidden; }*/
+    /*ESTILOS PROPIOS DE CODIGO CAPTCHA FIN*/
+</style>
+
+<script type="text/javascript" class="ng-scope">
+//    $('#divPopup2').modal('show');
+</script>
+<div ng-controller="ActController" ng-init="inicioSolicitudes();" >
+
+    <!--PRINCIPAL-->
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <!--<div class="ibox-title">
+                <h5><strong>PASO 1. </strong>SOLICITUD DE ACTUALIZACI&Oacute;N</h5>
+            </div>
+            <div class="container-fluid">
+                <h3>Si desea solicitar una actualizaci&oacute;n de su Certificado de Registro Catastral, presione el bot&oacute;n SOLICITAR ACTUALIZACI&Oacute;N.</h3>
+            </div>-->
+            <div class="cafeSuave" style="padding: 1px 10px 1px 10px;">
+                <h4 class="blanco" ><strong>SOLICITUD DE ACTUALIZACI&Oacute;N</strong></h4>
+            </div>
+
+            <div style="background-color: white; padding: 15px">
+                <!--<div style="float: left; margin: 2px 15px 0px 0px;"><img src="../../libs/img/logo_sitram2.png"></div>-->                        
+                <p align=justify>
+                    Si desea solicitar una actualizaci&oacute;n de su Certificado de <strong>REGISTRO CATASTRAL</strong>.
+                    presione el bot&oacute;n <strong>SOLICITAR ACTUALIZACI&Oacute;N</strong>.
+                </p>
+            </div>  
+
+
+            
+            <br>
+            <div id="divBuscador" > <!--class="text-center"-->
+                <!--<button class="btn btn-primary " data-toggle="modal" data-target="#divPopup1" ng-click="CargarPopupBuscador()"><span class="glyphicon glyphicon-file"></span> SOLICITAR ACTUALIZACI&Oacute;N</button>
+                <button class="btn btn-success " data-toggle="modal" data-target="#divPopupGuia" ng-click="cambiarImagen(0)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Guía de tramite"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>-->
+
+
+                <div class="col-md-3"></div>
+                <div class="col-md-2">
+                    <button class="btn btn-success " data-toggle="modal" data-target="#divPopup1" ng-click="CargarPopupBuscador()"><span class="glyphicon glyphicon-file"></span> ACTUALIZACI&Oacute;N</button>
+                </div>
+                <div class="col-md-2">
+                     <button class="btn btn-success " data-toggle="modal" data-target="#divPopupGuia" ng-click="cambiarImagen(0)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Guía de tramite"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>                
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div>
+            <div id= "mostrar" class="ibox-title">
+                <a ng-click="solicitudesCiudadano()"><h5>MIS TR&Aacute;MITES</h5></a>
+                &nbsp;&nbsp;
+                <!--<button type="button" class="close" style="font-size:110%; color: #222831; opacity: 1 !important" ng-click="solicitudesCiudadano()"><span class="fa fa-refresh" title="Actualizar"></span>&nbsp;ACTUALIZAR</button>--><!--cambios-->
+
+                <button type="button" class="close" style="font-size:20px; color: #222831; opacity: 1 !important" ng-click="solicitudesCiudadano()"><span class="fa fa-refresh fa-spin" title="Actualizar"></span></button>
+            </div>
+            <div class="ibox-content" id="caja">
+                <div>
+                    <div class="panel ">
+                        <table  ng-table="tablaSolicitudes"  class="table table-striped">
+                            <tr class="text-center" ng-repeat="solicitud in $data  | filter:query " ng-style="solicitud.idEstado === '5' && {'background-color':'#fdeedc'} || solicitud.idEstado === '2' && {'background-color':'#ccf5f6'}" >
+                                <td data-title="'Nro.'" >{{$index+1}}</td>
+                                <!--<td data-title="'Tipo de Trámite'" sortable="'TipoTra'">{{solicitud.TipoTra}}</td>-->
+                                <td data-title="'Código Catastral'" sortable="'CodigoCatastral'">{{solicitud.codigocatastral | FormatoSercat}}</td>
+                                <td data-title="'Número de Solicitud'" sortable="'NumeroSolicitud'" >{{solicitud.NumeroSolicitud}} / {{solicitud.Gestion}}</td>
+                                <td data-title="'Fecha de Solicitud'" sortable="'FechaRegistro'" >{{solicitud.FechaRegistro}} </td>
+                                <td data-title="'Estado'" sortable="'Estado'" >{{solicitud.Estado}}</td>
+                                <td data-title="'Acciones'">
+                                    <div id="divAcciones{{solicitud.IdRegistro}}">
+                                        <button class="btn btn-warning" ng-show="solicitud.idEstado == 5" data-toggle="modal" data-target="#divPopup" ng-click="obtenerDatosTramite(solicitud,1)"><span class="glyphicon glyphicon-pencil" aria-hidden="true" title="Modificar Solicitud" ></span>&emsp;Modificar Solicitud </button>
+                                        <button class="btn btn-info" ng-show="solicitud.idEstado == 6" ng-click="obtenerDatosTramite(solicitud,2)" ><span class="glyphicon glyphicon-print" aria-hidden="true" title="Imprimir Solicitud" ></span>&emsp;Imprimir Solicitud</button> <!--data-toggle="modal" data-target="#divPopupReporte"-->
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+
+    <!-- Modal 1: Buscador-->
+    <div id="divPopup1" class="modal fade" tabindex="-1" data-focus-on="input:first" role="dialog">
+        <div class="modal-dialog" style="width:600px">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title"><button class="btn-warning">PASO 1</button> &nbsp; Ingrese su C&oacute;digo Catastral y el texto de la imagen.</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" ng-submit="VerificarCapcha(codigoCatastral)" id="frmCodCat" name="frmCodCat">
+                        <div class="form-group">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-2 col-lg-offset-1">
+                                        <label class="control-label" style="color:black;">Distrito</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="control-label" style="color:black;">Manzana</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="control-label" style="color:black;">Predio</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="control-label" style="color:black;">Subpredio</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="control-label" ></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2 col-lg-offset-1">
+                                        <input class="form-control" id="ccDistrito" name="ccDistrito" type="number" placeholder="Distrito" ng-model="codigoCatastral.distrito" required/>
+                                        <span ng-show="frmCodCat.ccDistrito.$error.required" style="color:red"> Requerido</span>
+                                    </div>
+                                    <div class="col-sm-2 col-lg-offset-0">
+                                        <input class="form-control" id="ccManzana" name="ccManzana" type="number" placeholder="Manzana" ng-model="codigoCatastral.manzana" required/>
+                                        <span ng-show="frmCodCat.ccManzana.$error.required" style="color:red"> Requerido</span>
+                                    </div>
+                                    <div class="col-sm-2 col-lg-offset-0">
+                                        <input class="form-control" id="ccPredio" name="ccPredio" type="number" placeholder="Predio" ng-model="codigoCatastral.predio" required/>
+                                        <span ng-show="frmCodCat.ccPredio.$error.required" style="color:red"> Requerido</span>
+                                    </div>
+                                    <div class="col-sm-2 col-lg-offset-0">
+                                        <input class="form-control" id="ccSubpredio" name="ccSubpredio" type="number" placeholder="Subpredio" ng-model="codigoCatastral.subpredio" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" align="center">
+                            <table width="50%" border="3" cellspacing="0" cellpadding="2"  class="one">
+                                <tr class="color">
+                                    <div><!--cambios-->
+                                        <div class="box2">
+                                            <img id="img1" class="img-responsive" src="" title="">
+                                        </div>
+                                        <div class="box2">
+                                            <img id="img2" class="img-responsive" src=""  title="Palabra en CASTELLANO">
+                                        </div>
+                                    </div>
+                                </tr>
+                                <tr class="color">
+                                    <td class="color22" colspan="3" width="70"  align="center">
+                                        <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" placeholder="" ng-model="resultadoC" ng-change="getlimpiareRROR()" required/>
+                                        <span  ng-show="formulario.resultadoC.$invalid">
+                                            <span ng-show="formulario.resultadoC.$error.required">
+                                                <input id="lbllengua" name="lbllengua" type="text" size="50" disabled="disabled"/>
+                                            </span>
+                                        </span>
+                                    </td>
+                                    <td class="color2" width="30"  align="center">
+                                        <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasX();" ><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <b><font SIZE=3 color="red">{{ErrorCapcha}}</font></b>
+
+                        </div>
+                        <br><br><br><br><br><br><br>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info pull-left" data-dismiss="modal" data-toggle="modal" href="#divPopupGuia" ng-click="cambiarImagen(1)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Buscar por "  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="frmCodCat" class="btn btn-primary"  ng-disabled="frmCodCat.$invalid"> Solicitar Actualización<span class="glyphicon glyphicon-chevron-right " aria-hidden="true" title="Siguiente"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: formulario de actualización Certificado-->
+    <div id="divPopup" class="modal fade" role="dialog" tabindex="-1">
+        <div class="modal-dialog" style="width:1130px; height: 500px;">
+            &lt;!&ndash; Modal content&ndash;&gt;
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="guardarTramite()">&times;</button>
+                    <h3 class="modal-title"><button class="btn-warning">PASO 2</button>&nbsp; FORMULARIO DE ACTUALIZACI&Oacute;N DE CERTIFICADO CATASTRAL</h3>
+                </div>
+                <div class="modal-body" style="overflow: auto;height: 650px">
+                    <img src="../catastro/img/certificado_catastral1.jpg"  alt="imagen no cargada" style="width:800pt;height:1200pt;">
+                    <div id="codCat">
+                        {{codCat}}
+                    </div>
+                    <div id="matricula">
+                        <a href="#" style="color: white;font-style: normal" editable-text="registro.matricula" title="Cambio de número de matricula" class="btn-primary" e-placeholder="Inserte número de partida" e-style="width: 250px"><strong>{{registro.matricula || 'Modificar'}}</strong></a>
+                        <br>
+                        <a href="#" style="color: white;font-style: normal" editable-text="registro.testimonio" title="Cambio de número de testimonio" class="btn-primary" e-style="width: 250px"><strong>{{registro.testimonio || 'Modificar'}}</strong></a>
+                    </div>
+                    <div id="numInmueble">
+                        <a href="#" style="color: white;font-style: normal" editable-text="registro.numInmueble" title="Cambio de número de Inmueble" e-placeholder="Inserte número de inmueble" e-style="width: 250px" class="btn-primary" ><strong>{{registro.numInmueble || 'Modificar'}}</strong></a>
+                    </div>
+                    <div id="modNombres">
+                        <a  data-toggle="modal" data-target="#divPopup2" data-dismiss="modal" ng-click="modNombres(rowform)" title="Cambio de nombres de propietario" class="btn-primary"><strong>Modificar</strong></a>
+                    </div>
+                    <div id="tabla1" style="width: 550px;max-height: 128px;overflow-y: auto">
+                        <table class="table">
+                            <tr ng-repeat="us in users">
+                                <td>{{us.nombres}} {{us.ap}} {{us.am}}</td>&emsp;
+                                <td>{{us.porc}}&emsp;%</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="ubicacion">
+                        <a data-toggle="modal" data-target="#divPopup3" data-dismiss="modal" title="Cambio de vías y material de vías" class="btn-primary" ng-click="limpiar()"><strong>Cambiar material en vía</strong></a>
+                        <br>
+                        <a data-toggle="modal" data-target="#divPopup5" data-dismiss="modal" title="Cambio de vías y material de vías" class="btn-primary" ng-click="limpiar()"><strong>Cambiar orden de vía</strong></a>
+                    </div>
+                    <div id="nroPuerta">
+                        <a href="#" style="color: white;font-style: normal" editable-text="registro.numPuerta" title="Cambio de número de puerta" class="btn-primary" e-placeholder="Inserte el número de puerta" ><strong>{{registro.numPuerta || 'Modificar'}}</strong></a>
+                    </div>
+                    <div id="superficies" >
+                        <a href="#" style="color: white;font-style: normal" editable-text="registro.superficies" onaftersave="validarSup()" title="Cambio de superficie" e-placeholder="Superficie en [m2]" class="btn-primary" ><strong>{{registro.superficies +' [m2]' || 'Modificar'}}</strong></a>
+                    </div>
+                    <div id="obs">
+                        <br>
+                        <div class="btn-group">
+                            <label><button ng-click="changeOb(1)" class=" btn-primary"><span ng-show="!checks.zona">&emsp;</span><span ng-show="checks.zona" class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>&emsp;{{listaObs[0].Descripcion}}</label>&emsp;&emsp;&emsp;
+                            <label><button ng-click="changeOb(2)" class=" btn-primary"><span ng-show="!checks.suelo">&emsp;</span><span ng-show="checks.suelo" class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>&emsp;{{listaObs[1].Descripcion}}</label><br>
+                            <label><button ng-click="changeOb(3)" class=" btn-primary"><span ng-show="!checks.area">&emsp;</span><span ng-show="checks.area" class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>&emsp;{{listaObs[2].Descripcion}}</label>&emsp;&emsp;
+                            <label><button ng-click="changeOb(4)" class=" btn-primary"><span ng-show="!checks.predioADM">&emsp;</span><span ng-show="checks.predioADM" class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>&emsp;{{listaObs[3].Descripcion}}</label><br>
+                            <label><button ng-click="changeOb(5)" class=" btn-primary"><span ng-show="!checks.predioPatr">&emsp;</span><span ng-show="checks.predioPatr" class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>&emsp;{{listaObs[4].Descripcion}}</label>&emsp;&emsp; &emsp;
+                            <label><button ng-click="changeOb(6)" class=" btn-primary"><span ng-show="!checks.plazo">&emsp;</span><span ng-show="checks.plazo" class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>&emsp;{{listaObs[5].Descripcion}}</label><br>
+
+                        <!--<label ><input type="checkbox" class="btn btn-primary" ng-model="checks.zona" ng-change="changeObs()" >&emsp;{{listaObs[0].Descripcion}}</label>&emsp;
+                            <label ><input type="checkbox" class="btn btn-primary" ng-model="checks.suelo" ng-change="changeObs()" >&emsp;{{listaObs[1].Descripcion}}</label><br>
+                            <label class="btn-primary"><input type="checkbox" ng-model="checks.area" ng-change="changeObs()">&emsp;{{listaObs[2].Descripcion}}</label>&emsp;
+                            <label class="btn-primary"><input type="checkbox" ng-model="checks.predioADM" ng-change="changeObs()">&emsp;{{listaObs[3].Descripcion}}</label><br>
+                            <label class="btn-primary"><input type="checkbox" ng-model="checks.predioPatr" ng-change="changeObs()">&emsp;{{listaObs[4].Descripcion}}</label>&emsp;&emsp;
+                            <label class="btn-primary"><input type="checkbox" ng-model="checks.plazo" ng-change="changeObs()">&emsp;{{listaObs[5].Descripcion}}</label><br>-->
+
+                            <!--<a href="#" editable-checklist="obs.status" e-ng-options="s.IdObs as s.Descripcion for s in listaObs">
+                                {{ showObs() }}
+                            </a>-->
+                        </div>
+                        <br>
+                    </div>
+
+                    <div id="valor">
+                        <label>Valoraci&oacute;n &emsp;<button ng-click="changeOb(7)" class=" btn-primary"><span ng-show="!checks.valor">&emsp;</span><span ng-show="checks.valor" class="glyphicon glyphicon-ok" aria-hidden="true"></span></button></label><br>
+                        <!--<label class="btn btn-primary"><input type="checkbox" ng-model="checks.valor" >&emsp;Valoraci&oacute;n</label>-->
+
+                        <!--<a href="#" style="color: white;font-style: normal" class="btn btn-primary" editable-checkbox="checks.valor" e-title="Actualizar?">
+                            {{ checks.valor && "Actualizar" || "No actualizar" }}
+                        </a>-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info pull-left" data-dismiss="modal" data-toggle="modal" href="#divPopupGuia" ng-click="cambiarImagen(2)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Buscar por "  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                    <button type="button" class="btn btn-default" ng-click="guardarTramite()" data-dismiss="modal" >Cancelar</button> <!--ng-click="guardarModificaciones()"-->
+                    <button type="button" class="btn btn-primary" ng-click="procesarTramite()" data-dismiss="modal" data-toggle="modal"  data-target="#divPopup4">Siguiente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: formulario de registro de propietarios -->
+    <div id="divPopup2" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg" style="width:1200px;">
+            &lt;!&ndash; Modal content&ndash;&gt;
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" ng-click="validarPorc()" class="close" ng-disabled="mod">&times;</button>
+                    <h3 class="modal-title">&nbsp;REGISTRO DE PROPIETARIOS.</h3>
+                </div>
+                <div class="modal-body">
+                    <!--<div ng-show="datospersonaNatural == null">-->
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th style="width:5%">Nro.</th>
+                                        <th style="width:25%">Tipo de Documento</th>
+                                        <th style="width:16%">Nro. Documento</th>
+                                        <th style="width:16%">Expedido</th>
+                                        <th style="width:20%">Fecha de nacimiento</th>
+                                        <th style="width:16%">Apellido paterno</th>
+                                        <th style="width:16%">Apellido materno</th>
+                                        <th style="width:35%">Nombres</th>
+                                        <th style="width:35%">Direcci&oacute;n</th>
+                                        <th style="width:20%">N&uacute;mero PMC</th>
+                                        <th style="width:20%">Telefono</th>
+                                        <th style="width:20%">Correo</th>
+                                        <th style="width:25%">Porcentaje participaci&oacute;n</th>
+                                        <th style="width:25%">Acci&oacute;n</th>
+                                    </tr>
+                                    <!--ng-show="datospersonaNatural ==null"-->
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="user in users">
+                                        <td >{{$index+1}}</td>
+                                        <td>
+                                            <span editable-select="user.tipoDoc" e-name="tipoDoc" e-form="rowform" e-ng-options="s.id as s.Desc for s in listaTipoDoc" e-placeholder="Seleccione">
+                                              {{showTipoDoc(user)}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span editable-text="user.ci" e-name="ci" e-form="rowform" e-placeholder="CI o NIT">
+                                              {{ user.ci || 'vacio' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span editable-select="user.expedido" e-name="expedido" e-form="rowform" e-ng-options="s.IdExpedido as s.DescCorta for s in listaExp" e-placeholder="Seleccione">
+                                              {{showExp(user)}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                        <span editable-text="user.fechaNac" e-name="fechaNac" e-form="rowform"  e-placeholder="día/mes/año">  <!--e-datepicker-popup="dd/MM/yyyy"-->
+                                          {{ (user.fechaNac ) || 'vacio' }} <!--| date:"dd/MM/yyyy"-->
+                                        </span>
+                                        </td>
+
+                                        <td>
+                                        <span editable-text="user.ap" e-name="ap" e-form="rowform" e-placeholder="Paterno">
+                                          {{ user.ap || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span editable-text="user.am" e-name="am" e-form="rowform" e-placeholder="Materno">
+                                          {{ user.am || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span editable-text="user.nombres" e-name="nombres" e-form="rowform" e-placeholder="Nombres">
+                                          {{ user.nombres || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span editable-text="user.dir" e-name="dir" e-form="rowform" e-placeholder="Domicilio">
+                                          {{ user.dir || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span editable-text="user.pmc" e-name="pmc" e-form="rowform" e-placeholder="Padron Municipal del Contribuyente">
+                                          {{ user.pmc || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                            <!-- editable username (text with validation) -->
+                                        <span editable-text="user.cel" e-name="cel" e-form="rowform" >
+                                          {{ user.cel || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                            <!-- editable username (text with validation) -->
+                                        <span editable-text="user.correo" e-name="correo" e-form="rowform" e-placeholder="e-mail">
+                                          {{ user.correo || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                            <!-- editable username (text with validation) -->
+                                        <span editable-text="user.porc" e-name="porc" e-form="rowform" e-placeholder="Propiedad">
+                                          {{ user.porc || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td style="white-space: nowrap">
+                                            <!-- form -->
+                                            <form editable-form name="rowform" ng-show="rowform.$visible" onbeforesave="validar($data,$index)" onaftersave="saveUser($index)" class="form-buttons form-inline" shown="inserted == user">
+                                                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary" > <!--ng-click="modificarDatosPropietario(rowform,user,$index,$data)"-->
+                                                    Guardar
+                                                </button>
+                                                <button type="button" ng-disabled="rowform.$waiting" ng-click="cancelMod(rowform,$index)" class="btn btn-default">
+                                                    Cancelar
+                                                </button>
+                                            </form>
+                                            <div class="buttons" ng-show="!rowform.$visible">
+                                                <button class="btn btn-default" ng-click="modUsr(rowform)" ng-disabled="mod">Modificar</button>
+                                                <button class="btn btn-danger" ng-click="removeUser($index)" ng-show="verEliminarUsr($index)">Eliminar</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    <div>
+                        <button class="btn btn-default" ng-click="addUsuario()" ng-disabled="mod" style="margin-top: 15px;" title="Nuevo Propietario"><span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>&emsp;Añadir propietario</button>
+                        &emsp;&emsp;&emsp;&emsp;<label ng-show="varError" style="color: red">{{msgError}}</label>
+                    </div>
+                    <br>
+                    <div>
+                        <p style="font-size: 120%"><strong>NOTA: </strong>El "PORCENTAJE DE PARTICIPACI&Oacute;N" se refiere a la proporci&oacute;n de tenencia de cada propietario. La suma siempre debe ser igual a 100%.</p>
+                    </div>
+                    <!--</div>-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="validarPorc()" ng-disabled="mod">Cerrar</button>
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup8" ng-click="guardarDatos()">Aceptar</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Modificacion material de via -->
+    <div id="divPopup3" class="modal fade" role="dialog">
+        <div class="modal-dialog" >
+            &lt;!&ndash; Modal content&ndash;&gt;
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" data-toggle="modal" data-target="#divPopup">&times;</button>
+                    <h3 class="modal-title">Modificar v&iacute;as </h3><!--y material de v&iacute;a-->
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <td style="width:5%">Nro.</td>
+                                    <td style="width:25%">Nombre de v&iacute;a</td>
+                                    <td style="width:16%">Material de v&iacute;a</td>
+                                    <!--<td style="width:20%">v&iacute;a principal</td>-->
+                                    <td >Acci&oacute;n</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="via in vias">
+                                    <td >{{$index+1}}</td>
+                                    <td>
+                                        <!-- editable username (text with validation) -->
+                                        <span  e-name="nombre"  >
+                                          {{ via.nombreVia || 'vacio' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span editable-select="via.idMatCalle" e-name="material" e-form="rowform1" e-ng-options="s.value as s.text for s in listaMaterial" > <!--e-ng-options="s.value as s.text for s in listaMaterial"-->
+                                          {{ showMaterial(via) }}
+                                        </span>
+                                    </td>
+                                    <!--<td>
+                                        &lt;!&ndash; editable username (text with validation) &ndash;&gt;
+                                        <span editable-checkbox="via.valor"  e-name="fechaNac" e-form="rowform" >
+                                          {{ via.viaPrincipal || 'vacio' }}
+                                        </span>
+                                    </td>-->
+                                    <td style="white-space: nowrap">
+                                        <!-- form -->
+                                        <form editable-form name="rowform1" onaftersave="modificarVia($index)" ng-show="rowform1.$visible" class="form-buttons form-inline" shown="inserted == via">
+                                            <button type="submit" ng-disabled="rowform1.$waiting" class="btn btn-primary">
+                                                Guardar
+                                            </button>
+                                            <button type="button" ng-disabled="rowform1.$waiting" ng-click="cancelVia(rowform1,$index)" class="btn btn-default">
+                                                Cancelar
+                                            </button>
+                                        </form>
+                                        <div class="buttons" ng-show="!rowform1.$visible">
+                                            <button class="btn btn-default" ng-click="modVia(rowform1)">Modificar</button>
+                                           <!-- <button class="btn btn-danger" ng-click="removeVia($index)">Eliminar</button>-->
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--<button class="btn btn-default" ng-click="addVia()" style="margin-top: 15px;">Añadir</button>-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup">Continuar</button>
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup8" ng-click="guardarDatos()">Aceptar</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Modificacion de orden de via.-->
+    <div id="divPopup5"  class="modal fade" role="dialog" tabindex="-1" >
+        <div class="modal-dialog" >
+            &lt;!&ndash; Modal content&ndash;&gt;
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" data-toggle="modal" data-target="#divPopup">&times;</button>
+                    <h3 class="modal-title">Modificaci&oacute;n de orden de v&iacute;a.</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td style="width:5%">Nro.</td>
+                            <td style="width:25%">Nombre de v&iacute;a</td>
+                            <td style="width:16%">v&iacute;a principal</td>
+                            <!--<td style="width:20%">v&iacute;a principal</td>-->
+                            <!--<td >Acci&oacute;n</td>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="via in vias">
+                            <td >{{$index+1}}</td>
+                            <td>
+                                <!-- editable username (text with validation) -->
+                                <span  e-name="nombre"  >
+                                  {{ via.nombreVia || 'vacio' }}
+                                </span>
+                            </td>
+                            <td>
+                                <span > <!--e-ng-options="s.value as s.text for s in listaMaterial"-->
+                                  <a href="" class="btn btn-primary" ng-click="cambiarOrden($index)">{{ showOrdenVia($index) }}</a>
+                                </span>
+                            </td>
+                            <!--<td>
+                                &lt;!&ndash; editable username (text with validation) &ndash;&gt;
+                                <span editable-checkbox="via.valor"  e-name="fechaNac" e-form="rowform" >
+                                  {{ via.viaPrincipal || 'vacio' }}
+                                </span>
+                            </td>-->
+                            <td style="white-space: nowrap">
+                                <!-- form -->
+                                <form editable-form name="rowform1" onaftersave="modificarVia($index)" ng-show="rowform1.$visible" class="form-buttons form-inline" shown="inserted == via">
+                                    <button type="submit" ng-disabled="rowform1.$waiting" class="btn btn-primary">
+                                        Guardar
+                                    </button>
+                                    <button type="button" ng-disabled="rowform1.$waiting" ng-click="cancelVia(rowform1,$index)" class="btn btn-default">
+                                        Cancelar
+                                    </button>
+                                </form>
+                                <div class="buttons" ng-show="!rowform1.$visible">
+                                    <!--<button class="btn btn-default" ng-click="modVia(rowform1)">Modificar</button>-->
+                                    <!-- <button class="btn btn-danger" ng-click="removeVia($index)">Eliminar</button>-->
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3:  aviso de reporte-->
+    <div id="divPopup4" class="modal fade" role="dialog" tabindex="-1" >
+        <div class="modal-dialog modal-lg" >
+            &lt;!&ndash; Modal content&ndash;&gt;
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="limpiarDatos()" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title"><button class="btn-warning">PASO 3</button>&nbsp; INFORMACI&Oacute;N A REGISTRAR (POR FAVOR VERIFIQUE)</h3>
+                </div>
+                <div class="modal-body" style="max-height: 700px;overflow-y: auto">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal"  data-target="#divPopup">Atr&aacute;s</button>
+                        <button type="button" class="btn btn-info " data-dismiss="modal" data-toggle="modal" href="#divPopupGuia" ng-click="cambiarImagen(3)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Buscar por "  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+
+                        <button type="button" class="btn btn-primary"   ng-click="guardarDatos()"  data-dismiss="modal" data-toggle="modal" ng-disabled="!btnValidar"  data-target="#divPopupReporte" >Enviar Solicitud</button> 
+                        <!--ng-disabled="!btnValidar"  data-toggle="modal" data-target="divPopupReporte" ng-show="validarSolicitud()"-->
+                        <!--<button type="button" class="btn btn-info" ng-show="!atras"   ng-click="openJSPdf()" >Guardar Reporte</button>--> <!--data-toggle="modal" data-target="divPopupReporte"-->
+                    </div>
+                    <div>
+                        <label ng-show="!btnValidar" style="color: red;">{{msgError1}}</label>
+                    </div>
+                    <br>
+                    <div  class="form-group" style="font-size: 110%">
+                        <div class="row" style="border-bottom: 1px solid;" >
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label >Partida de matricula:</label>
+                                    <input  type="text"  class="form-control" style="background-color: white; font-size: 120%" value="{{registro.matricula  || 'Sin cambios'}}" disabled>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label >N&uacute;mero de testimonio:</label>
+                                    <input type="text"  class="form-control" style="background-color: white; font-size: 120%" value="{{registro.testimonio  || 'Sin cambios'}}" disabled>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label >N&uacute;mero de inmueble:</label>
+                                    <input type="text"  class="form-control" style="background-color: white; font-size: 120%" value="{{registro.numInmueble || 'Sin cambios'}}" disabled>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label >Superficie Registrada:</label>
+                                    <input type="text"  class="form-control" style="background-color: white; font-size: 120%" value="{{(registro.superficies==0)?'Sin cambios':registro.superficies}}" disabled>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                       <div class="row" style="border-bottom: 1px solid;"> <!--style="border-bottom: 1px solid;"-->
+                       <label>DATOS DE PROPIETARIO(S):</label>
+                            <div class="table-responsive">
+                                <table class="table" style="font-size: 85%">
+                                    <thead>
+                                    <tr>
+                                        <td >Nro.</td>
+                                        <td >Nro. Documento</td>
+                                        <td >Expedido</td>
+                                        <td >Tipo de Documento</td>
+                                        <td >Fecha de nacimiento</td>
+                                        <td >Apellido paterno</td>
+                                        <td >Apellido materno</td>
+                                        <td >Nombres</td>
+                                        <td >Direcci&oacute;n</td>
+                                        <td >N&uacute;mero PMC</td>
+                                        <td >Telefono</td>
+                                        <td >Correo</td>
+                                        <td >% Participaci&oacute;n</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="user in users">
+                                        <td >{{$index+1}}</td>
+                                        <td>
+                                        <span >
+                                          {{ user.ci || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span >
+                                          {{showExp(user)}}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span  >
+                                          {{showTipoDoc(user)}}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span  >
+                                          {{ (user.fechaNac | date:"dd-MM-yyyy") || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span >
+                                          {{ user.ap || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span >
+                                          {{ user.am || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span  >
+                                          {{ user.nombres || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span  >
+                                          {{ user.dir || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span >
+                                          {{ user.pmc || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+
+                                        <span  >
+                                          {{ user.cel || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+
+                                        <span  >
+                                          {{ user.correo || 'vacio' }}
+                                        </span>
+                                        </td>
+                                        <td>
+                                        <span   >
+                                          {{ user.porc || 'vacio' }}
+                                        </span>
+                                        </td>
+<!--                                        <td style="white-space: nowrap">
+                                            <form editable-form name="rowform" ng-show="rowform.$visible" onbeforesave="validar($data)" onaftersave="saveUser($index)" class="form-buttons form-inline" shown="inserted == user">
+                                            </form>
+                                        </td>-->
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                           <br>
+                        </div>
+                        <!--<hr>-->
+                        <div class="row" >
+                            <br>
+                            <div class="col-xs-8">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label >ORDEN DE V&Iacute;AS:</label>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label >N&uacute;mero de puerta</label>
+                                        <input type="text"  class="form-control" style="background-color: white; font-size: 120%" value="{{registro.numPuerta || 'Sin cambios'}}" disabled>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table" style="font-size: 85%">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 10px;">Nro.</th>
+                                            <th >Nombre de v&iacute;a</th>
+                                            <th >Material de v&iacute;a</th>
+                                            <th >v&iacute;a principal</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="via in vias">
+                                            <td>{{$index+1}}</td>
+                                            <td>
+                                            <span  e-name="nombre">
+                                              {{ via.nombreVia  }}
+                                            </span>
+                                            </td>
+                                            <td>
+                                            <span> <!--e-ng-options="s.value as s.text for s in listaMaterial"-->
+                                              {{ showMaterial(via) }}
+                                            </span>
+                                            </td>
+                                            <td>
+                                            <span > <!--e-ng-options="s.value as s.text for s in listaMaterial"-->
+                                              <a href="">{{ showOrdenVia($index) }}</a>
+                                            </span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <label><STRONG>OBSERVACIONES:</STRONG></label><br>
+                                <a ng-show="checks.zona">- {{listaObs[0].Descripcion}}<br></a>
+                                <a ng-show="checks.suelo">- {{listaObs[1].Descripcion}}<br></a>
+                                <a ng-show="checks.area">- {{listaObs[2].Descripcion}}<br></a>
+                                <a ng-show="checks.predioADM">- {{listaObs[3].Descripcion}}<br></a>
+                                <a ng-show="checks.predioPatr">- {{listaObs[4].Descripcion}}<br></a>
+                                <a ng-show="checks.plazo">- {{listaObs[5].Descripcion}}<br></a>
+                            </div>
+                            <div class="col-xs-12" style="border-top: 1px solid;">
+                                <br>
+                                <label>ACTUALIZAR VALORACI&Oacute;N: </label> <label ng-show="checks.valor">SI</label><label ng-show="!checks.valor">NO</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: mensaje 2  mostrar reporte-->
+    <div id="divPopupReporte"  class="modal fade " role="dialog" tabindex="-1" >
+        <div class="modal-dialog" style="width:700px">
+            &lt;!&ndash; Modal content&ndash;&gt;
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="limpiarDatos()" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title"><button class="btn-warning">PASO 4</button>&nbsp;ATENCI&Oacute;N</h3>
+                </div>
+                <div class="modal-body">
+<!--                    <div class="text-center">
+                        <button type="button" class="btn btn-info" data-toggle="modal" href="#divPopupGuia" ng-click="cambiarImagen(4)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Buscar por "  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                        <button type="button" class="btn btn-primary"  ng-click="mostrarPDF()" >Generar Formulario de solicitud</button>
+                        <button type="button" class="btn btn-default" ng-click="limpiarDatos()" data-dismiss="modal">Aceptar</button>
+                    </div>-->
+                    <br>
+                    <div  class="form-group">
+                        <label style="font-size: 115%">Por favor imprima su "Formulario de solicitud de Actualizaci&oacute;n" y visite cualquiera de nuestras oficinas:</label>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Oficina</th>
+                                <th>Direcci&oacute;n</th>
+                                <th>Tel&eacute;fono</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="sucursal in sucursales">
+                                <td>{{sucursal.Descripcion}}</td>
+                                <td>{{sucursal.direccion}}</td>
+                                <td>{{sucursal.telefono}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div  class="form-group">
+                        <label style="font-size: 115%">para proseguir con su tramite.</label>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-info" data-dismiss="modal" data-toggle="modal" href="#divPopupGuia" ng-click="cambiarImagen(4)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Buscar por "  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                        <button type="button" class="btn btn-primary"  ng-click="mostrarPDF()" >Generar Formulario de solicitud</button>
+                        <button type="button" class="btn btn-default" ng-click="limpiarDatos()" data-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--ultimo modal: mantener al ultimo por la sobreposicion-->
+    <!-- Modal 2: Guía de Tramite  -->
+    <div id="divPopupGuia"  class="modal fade" role="dialog" tabindex="-1" data-focus-on="input:first">
+        <div class="modal-dialog" >
+            &lt;!&ndash; Modal content&ndash;&gt;
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="navegarGuiaTramite()">&times;</button>
+                    <h3 class="modal-title">Gu&iacute;a de tr&aacute;mite.</h3>
+                </div>
+                <div class="modal-body">
+                    <img src="{{srcTutorial}}" class="img-responsive" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="navegarGuiaTramite()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<script type="text/javascript">
+            // When the document is ready
+      function conMayusculas(field) {
+        field.value = field.value.toUpperCase()
+      };
+      //*** Este Codigo permite Validar que sea un campo Numerico
+            function soloNumerico(variable){
+                Numer=parseInt(variable);
+                if (isNaN(Numer)){
+                    return "";
+                }
+                return Numer;
+            }
+            function valNumero(Control){
+                Control.value=soloNumerico(Control.value);
+            }
+            //*** Fin del Codigo para Validar que sea un campo Numerico
+</script>
+<div  class="col-md-12" ng-controller="tipoDocumentacionPlantillaController" data-ng-init="inicioDocumentos()">
+    <table width="100%">
+        <td><h3>Tipo Documentación</h3></td>
+    </table>
+    <br/>                            
+    <div class="col-md-3" >
+      <div class="row" > <!-- class="row panel panel-default"  -->
+        <table ng-table="tablaRoles" class="table table-striped table-bordered">
+            <tr ng-repeat="rol in obtDatos" ng-class="{'colorInactivo': rol.rlsEstado == 'INACTIVO'}">
+                <td data-title="'#'" >{{$index+1}}</td>
+                <td data-title="'Descripción'" sortable="'rlsRol'"  filter="{'vtps_doc_tipo_doc':'text'}">{{rol.vtps_doc_tipo_doc}} {{rol.vtps_doc_descripcion}}</td>
+                <td data-title="'Plantilla'" align="center"> <a type="button"  class="btn btn-default btn-circle" data-toggle="modal" data-target="" ng-click="getDocumentacion(rol.vtps_doc_id,rol.vtps_doc_tipo_doc + ' ' + rol.vtps_doc_descripcion);" ><i class="fa fa-info fa-2x" style="color:#249FE6" title="Información de Documentación"></i></a></td>
+                <!--  ng-click="modificarElaboracion(rol);"-->
+            </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-sm-9" ng-show = "elaboracionFor != null">
+    <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">{{titulo}} {{tipoDocumentacion}}
+            <div class="row" >
+             <div width="40%" align="right"  class="col-md-12">
+                <a align="right" ng-show = "elaboracionFor!= null" type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target=""  ng-click="volver();"><i class="fa fa-mail-reply fa-2x" style="color:#249FE6" title="Volver"></i></a>
+              </div>
+            </div>
+          </div>          
+          <!-- formulario de elaboración******************* -->
+           <div class="panel-body">            
+            <form name="formulario1" novalidate>             
+                <div class="panel panel-default">
+                    <div class="panel-body">                        
+                            <div ng-cloak ng-hide="isReady" class="highlight">
+                                Initialising ...
+                            </div>
+                            <div ng-cloak ng-show="isReady">
+                                <textarea ckeditor="editorOptions" name="editor" ng-model="datosRol.vpltlla_plantilla" ng-change="save()"></textarea>
+                            </div>                                                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" ng-click="volver()" data-dismiss="modal">Cerrar</button>
+                        <button data-dismiss="modal" ng-click="guardarElaboracion(datosRol)" type="button" class="btn btn-primary" ng-show="boton1=='new'">Grabar</button>
+                        <button ng-click="modificar(datosRol)" type="button" class="btn btn-primary" ng-show="boton1=='upd'">Grabar</button> 
+                    </div>
+                    {{frm.editor.$dirty}}
+                    {{frm.$dirty}}
+                </div>
+          </form>
+          </div>
+        </div>
+    </div>
+   
+</div>

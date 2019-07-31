@@ -1,0 +1,477 @@
+<div ng-controller="internetController" ng-init="inicioRegInternet()">
+    <div class="col-md-12">
+        <div class="col-lg-3"> 
+      
+            <div class="panel panel-default">
+            <div class="panel-heading">
+                <td align="right">
+                    <a ng-click="" data-toggle="modal" data-target="">        
+                    <i confirm-button="confirmarServicioGamlp(sTipoServicio);" message="Esta seguro de crear el tramite ?" yes="Si" no="No" data-dismiss="modal" class="btn btn-success center-block fa fa-plus ">Crear Nuevo Trámite</i>
+                    </a>
+                </td>
+            </div>
+                <table show-filter="true" class="table table-striped table-bordered" width="80%">
+                    <thead>
+                        <th>ID&nbsp;</th>
+                        <th>Nombre&nbsp;</th>
+                        <th>Fecha&nbsp;</th>
+                        <th>Enviado&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr class="column" ng-repeat="tramites in obtTramites" ng-click="seleccionarTramite(tramites)" ng-class="{'colorInactivo': tramites.venviado == 'NO', 'colorBloqueado': tramites.venviado == 'SI'}">
+                            <td>{{tramites.vtra_id}}</td>
+                            <td>{{tramites.vservicio}}</td>
+                            <td>{{tramites.vfecha}}</td>
+                            <td>{{tramites.venviado}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+             <!-- modal -->
+            <div class="modal fade" id="registroServicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                            <h4 class="modal-title" id="myModalLabel">{{titulo}}</h4>
+                        </div>
+                        <div class="modal-body" >
+                            <form name="formularioServicios"  class="form-horizontal" role="form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group" >
+                                            <label for="url" >Servicio:</label>
+                                            <span class="block input-icon input-icon-right">
+                                            <div class="controls">
+                                                <select class="form-control" ng-required="true" 
+                                                    ng-model="datosServicios.idServicioGamlp"                                                
+                                                    ng-change="actulizarDescripcion(datosServicios.idServicioGamlp)"
+                                                    ng-options="datos.serdv_id as datos.serdv_servicio for datos in aServiciosGamlp">                                               
+                                                </select>
+                                            </div>
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group" >
+                                            <label for="url" >Detalle Servicio:</label>
+                                            <div class="controls">
+                                                <textarea style="resize: none;"  class="form-control" readonly ng-model = "datosServicios.detalle" rows="4" cols="50"></textarea>                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>                
+                        <!--<button confirm-button="talk('Hello, WegnerDesign!');" message="Realmente desea continuar?" yes="Si" no="No">Guardar</button>-->                
+                        <div class="modal-footer">
+                            <button id="demo2" type="button" class="width-35 btn btn-sm btn-success" data-dismiss="modal">Cerrar </button>
+                            <button  confirm-button="confirmarServicioGamlp(datosServicios);" message="Realmente desea continuar?" yes="Si" no="No" data-dismiss="modal" type="button" class="width-35 pull-right btn btn-sm btn-success" ng-disabled="formularioServicios.$invalid">Guardar</button>
+                        </div>                
+                        <!--<div class="modal-footer">
+                            <button  confirm-button="talk('Hello, WegnerDesign!');" ng-click="adicionarServicioGamlp(datosServicios);" data-dismiss="modal" type="button" class="width-35 pull-right btn btn-sm btn-success" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'" ng-disabled="formularioServicios.$invalid">Guardar</button>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+
+        <div class="col-lg-9"ng-show = "formulario != null">
+            <div >
+                <legend>REQUISITOS SOLICITADOS..</legend>
+                <div class="col-md-12">
+                    
+                    <div class="form-group" >
+                        <label for="url" >Tipo Licencia:</label>
+                        <div class="controls">
+                              <text ng-model="datos.titulo" id="titulo" name="titulo" class="form-control"  width="30%" height="30">JUEGOS DE ENTRETENIMIENTO Y CENTRO DE TELECOMUNICACIONES</text>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="form-group" >
+                        <label for="url" >Tipo Categoría:</label>
+                        <div class="controls">
+                        <select id="dtsintTipoCategoria" class="form-control" name="dtsintTipoCategoria" ng-model="datos.dtsintTipoCategoria" ng-disabled="desabilitado">
+                                <option value="IJR">Internet y Juegos en Red</option>
+                                <option value="IJRO">Internet, Juegos en Red y Otros</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >REQUISITOS DOCUMENTALES:</label>
+                        <div class="controls">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <th>&nbsp;&nbsp;&nbsp;</th>
+                                    <th>Nro&nbsp;</th>
+                                    <th>Descripción&nbsp;</th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="req in reqDocumentales">
+                                        <td><div class="ngSelectionCell">
+                                            <input tabindex="-1" class="ngSelectionCheckbox" type="checkbox" ng-checked="row.selected" ng-model="checkboxes.items[req.id]" /></div></td>
+                                        <td>{{req.nro}}</td>
+                                        <td>{{req.descripcion}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >REQUISITOS TECNICOS:</label>
+                        <div class="controls">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <th>&nbsp;&nbsp;&nbsp;</th>
+                                    <th>Nro&nbsp;</th>
+                                    <th>Descripción&nbsp;</th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="req in reqTecnicos">
+                                        <td><div class="ngSelectionCell">
+                                            <input tabindex="-1" class="ngSelectionCheckbox" type="checkbox" ng-checked="row.selected" ng-model="checkboxes.items[req.id]" /></div></td>
+                                        <td>{{req.nro}}</td>
+                                        <td>{{req.descripcion}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>    
+                <div class="col-md-12">     
+                   <legend>DATOS TECNICOS ACTIVIDAD</legend>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group" >
+                        <label for="url" >ACTIVIDADES ECONOMICAS REFERENCIALES:</label>
+                        <div class="controls">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <th>Nro&nbsp;</th>
+                                    <th>Nro Actividad&nbsp;</th>
+                                    <th>Descripción&nbsp;</th>
+                                    <th>Domicilio&nbsp;</th>
+                                    <th>Fecha Inicio&nbsp;</th>
+                                    <th>Fecha Fin&nbsp;</th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="actividad in actividadesReferenciales">                          
+                                        <td>{{actividad.nro}}</td>
+                                        <td>{{actividad.nroActividad}}</td>
+                                        <td>{{actividad.descripcion}}</td>
+                                        <td>{{actividad.direccion}}</td>
+                                        <td>{{actividad.fechaInicio}}</td>
+                                        <td>{{actividad.fechaFin}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-12">
+                <label for="url" >DATOS GENERALES:</label>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >NIT:</label>
+                        <div class="controls">
+                              <input ng-model="datos.dtsintnit" id="dtsintnit" name="dtsintnit" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group" >
+                        <label for="url" >DENOMINACIÓN:</label>
+                        <div class="controls">
+                              <input ng-model="datos.dtsintdenominacion" id="dtsintdenominacion" name="dtsintdenominacion" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group" >
+                        <label for="url" >SUPERFICIE M2:</label>
+                        <div class="controls">
+                              <input ng-model="datos.dtsintsuperficie" id="dtsintsuperficie" name="dtsintsuperficie" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >HORA INICIO ATENCIÓN:</label>
+                        <div class="controls">
+                            <select id="dtsintHoraAtencion" class="form-control" ng-model="datos.dtsintHoraAtencion"  name="dtsintHoraAtencion" ng-disabled="desabilitado">
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >HORA FIN ATENCIÓN:</label>
+                        <div class="controls">
+                            <select id="dtsintHoraAtencionFin" class="form-control" ng-model="datos.dtsintHoraAtencionFin"  name="dtsintHoraAtencionFin" ng-disabled="desabilitado">
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="00">00</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >ESTABLECIMIENTO:</label>
+                        <div class="controls">
+                        <select id="dtsintEstablecimiento" class="form-control" ng-model="datos.dtsintEstablecimiento"  name="dtsintEstablecimiento" ng-disabled="desabilitado">
+                                <option value="E1">Establecimiento1</option>
+                                <option value="E2">Establecimiento2</option>
+                                <option value="E2">Establecimiento2</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >PRODUCTOS ELABORADOS:</label>
+                        <div class="controls">
+                            <textarea ng-model="datos.dtsintProductos" id="dtsintProductos" name="dtsintProductos" class="form-control" placeholder="....."  width="30%" height="30" ng-disabled="desabilitado"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >ACTIVIDADES SECUNDARIAS:</label>
+                        <div class="controls">
+                            <textarea ng-model="datos.dtsintActSecundarias" id="dtsintActSecundarias" name="dtsintActSecundarias" class="form-control" placeholder="....."  width="30%" height="30" ng-disabled="desabilitado"></textarea>
+                        </div>
+                    </div>
+                </div>      
+                <legend> UBICACIÓN DE LA ACTIVIDAD ECONÓMICA: </legend>
+                <div class="col-md-4">      
+                <label for="url" >Zona Actividad:</label>
+                    <div class="form-group" >
+                        <label for="url" >ZONA:</label>
+                        <div class="controls">
+                        <select id="dtsintZona" class="form-control" ng-model="datos.dtsintZona"  name="dtsintZona" ng-disabled="desabilitado">
+                                <option value="E1">ZONA1</option>
+                                <option value="E2">ZONA2</option>
+                                <option value="E2">ZONA3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >DISTRITO:</label>
+                        <div class="controls">
+                              <input ng-model="datos.dtsintDistrito" id="dtsintDistrito" name="dtsintDistrito" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >MACRO DISTRITO:</label>
+                        <div class="controls">
+                              <input ng-model="datos.dtsintMacrodistrito" id="dtsintMacrodistrito" name="dtsintMacrodistrito" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>      
+                <legend>VIA ACTIVIDAD:</legend>
+                <div class="col-md-3">      
+
+                    <div class="form-group" >
+                        <label for="url" >VIA:</label>
+                        <div class="controls">
+                        <select id="dtsintVia" class="form-control" ng-model="datos.dtsintVia"  name="dtsintVia" ng-disabled="desabilitado">
+                                <option value="E1">VIA1</option>
+                                <option value="E2">VIA2</option>
+                                <option value="E2">VIA3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>      
+                <div class="col-md-3">      
+                    <div class="form-group" >
+                        <label for="url" >TIPO VÍA:</label>
+                        <div class="controls">
+                        <select id="dtsintTipoVia" class="form-control" ng-model="datos.dtsintTipoVia"  name="dtsintTipoVia" ng-disabled="desabilitado">
+                                <option value="E1">AVENIDA</option>
+                                <option value="E2">CALLE</option>
+                                <option value="E2">PASAJE</option>
+                                <option value="E2">PLAZA</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>      
+                <div class="col-md-3">
+                    <div class="form-group" >
+                        <label for="url" >NOMBRE DE VÍA:</label>
+                        <div class="controls">
+                              <input ng-model="datos.dtsintNombreVia" id="dtsintNombreVia" name="dtsintNombreVia" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-3">
+                    <div class="form-group" >
+                        <label for="url" >NÚMERO:</label>
+                        <div class="controls">
+                              <input ng-model="datos.dtsintNumero" id="dtsintNumero" name="dtsintNumero" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>  
+                <legend>  DATOS  UBICACIÓN DE  ACTIVIDAD:</legend>
+                <div class="col-md-3">      
+                    <div class="form-group" >
+                        <label for="url" >CTA. ENERGIA ELÉCTRICA:</label>
+                        <div class="controls">
+                            <input ng-model="datos.dtsintCuentaElectrica" id="dtsintCuentaElectrica" name="dtsintCuentaElectrica" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>  
+                
+                <div class="col-md-4">      
+                    <div class="form-group" >
+                        <label for="url" >EDIFICIO:</label>
+                        <div class="controls">
+                            <input ng-model="datos.dtsintEdificio" id="dtsintEdificio" name="dtsintEdificio" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-2">      
+                    <div class="form-group" >
+                        <label for="url" >BLOQUE:</label>
+                        <div class="controls">
+                            <input ng-model="datos.dtsintBloque" id="dtsintBloque" name="dtsintBloque" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-2">      
+                    <div class="form-group" >
+                        <label for="url" >PISO:</label>
+                        <div class="controls">
+                            <input ng-model="datos.dtsintPiso" id="dtsintPiso" name="dtsintPiso" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-3">      
+                    <div class="form-group" >
+                        <label for="url" >DEPTO/OF/LOCAL:</label>
+                        <div class="controls">
+                            <input ng-model="datos.dtsintDptoOfiLocal" id="dtsintDptoOfiLocal" name="dtsintDptoOfiLocal" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-3">      
+                    <div class="form-group" >
+                        <label for="url" >TELÉFONO:</label>
+                        <div class="controls">
+                            <input ng-model="datos.dtsintTelefono" id="dtsintTelefono" name="dtsintTelefono" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-3">      
+                    <div class="form-group" >
+                        <label for="url" >CASILLA:</label>
+                        <div class="controls">
+                            <input ng-model="datos.dtsintCasilla" id="dtsintCasilla" name="dtsintCasilla" class="form-control"  width="30%" height="30" ng-disabled="desabilitado"></input>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-12">   
+                    <legend>ADJUNTOS ACTIVIDAD</legend>
+                </div>
+                <div class="col-md-12">     
+                    <div class="form-group" >
+                            <div class="controls">
+                                <div class="col-md-7">
+                                    <label for="url" >Adjuntar documentos:</label>
+                                    <input type="file" nv-file-select="" uploader="uploader"/>
+                                </div>
+                                <div class="col-md-12">
+                                    <p>Queue length: {{ uploader.queue.length }}</p>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th width="50%">Name</th>
+                                                <th ng-show="uploader.isHTML5">Size</th>
+                                                <th ng-show="uploader.isHTML5">Progress</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="item in uploader.queue">
+                                                <td><strong>{{ item.file.name }}</strong></td>
+                                                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                <td ng-show="uploader.isHTML5">
+                                                    <div class="progress" style="margin-bottom: 0;">
+                                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                    
+                                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                </td>
+                                                <td nowrap>
+                                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                        <span class="glyphicon glyphicon-upload"></span> Subir
+                                                    </button>
+                                                    
+                                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                        <span class="glyphicon glyphicon-trash"></span> Eliminar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </br>
+                                </br>
+                        <!--select id="dtsintAdjunto" class="form-control" ng-model="datos.dtsintAdjunto"  name="dtsintAdjunto" ng-disabled="desabilitado">
+                                <option value="E1">CEDULA DE IDENTIDAD O CARNET EXTRANJERO</option>
+                                <option value="E2">ULTIMA FACTURA DE ALGUN SERVICIO QUE ACREDITE LA DIRECCION DEL INMUEBLE DONDE FUNCIONE LA ACTIVIDAD</option>
+                                <option value="E2">PASAJE</option>
+                                <option value="E2">PLAZA</option>
+                            </select-->
+                        </div>
+                    </div>
+                </div>  
+                
+            <div class="col-md-12" align="right" ng-show = "botones != null">
+                <button id="miFormulario"  ng-click="serializarInformacion(datos)" data-dismiss="modal" type="button" class="btn btn-success  fa fa-save ">  Guardar Formulario</button>
+                <button id="miFormulario"  ng-click="enviarInformacion()" data-dismiss="modal" type="button" class="btn btn-success fa fa-mail-forward">  Enviar Formulario</button>
+            </div>
+            </div>
+        </div>
+    </div>   
+</div>

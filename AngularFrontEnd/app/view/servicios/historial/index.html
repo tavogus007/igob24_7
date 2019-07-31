@@ -1,0 +1,56 @@
+<div ng-controller="historicoController" ng-init="inicioHistorial()">
+        <!--<input type="file" id="file" name="file" multiple onchange="angular.element(this).scope().getFileDetails(this)" />
+        <input type="button" ng-click="uploadFiles()" value="Upload" />-->
+        <!--ADD A PROGRESS BAR ELEMENT.-->
+        <!--<p><progress id="pro" value="0"></progress></p>-->    
+        <div ng-show="grillaHistorialNEXO != null" class="col-md-12" class="row" align="center">
+            <div class="panel-body" >
+                <div class="table-responsive">
+                    <div align="center">
+                        <table width="80%" border="0" cellspacing="3" cellpadding="3">
+                          <tr>
+                            <td colspan="2">Número de Trámite: <strong> {{historial[0].CT_CORRELATIVO}} </strong></td>
+                            <td colspan="2">&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td><img src="../../libs/img/iconos/tramite.png" width="70" height="70" alt="Inicio"></td>
+                            <td>Tipo de Trámite:<br />
+                            {{historial[0].CT_TIPO_TRAMITE_LABEL}}</td>
+                            <td><img src="../../libs/img/iconos/calendario.png" width="70" height="70" alt="Inicio"></td>
+                            <td>Fecha de Ingreso: <br />
+                            {{historial[0].CT_FEC_RECEPCION}}</td>
+                          </tr>
+                        </table>
+                    </div>
+                    <hr width="80%">
+                    <div align="left">
+                        Asunto: <strong> {{historial[0].CT_HOJA_ASUNTO}} </strong>
+                    </div>
+                    <br>
+
+                    <br>
+                    <div align="left">
+                        <p align="left"> <h4>Estado de Trámite </h4></p>
+                    </div>
+                    <br>
+
+                    <table class="table table-hover table-striped table-bordered todolist" width="80%">
+                        <thead>
+                            <th>#&nbsp;</th>
+                            <th>NODO&nbsp;</th>
+                            <th>FECHA REMISIÓN&nbsp;</th>
+                        </thead>
+                        <tbody>
+                            <tr class="column" ng-repeat="datos in historial">
+                                <td>{{$index+1}}</td>
+                                <td>{{datos.CT_NODO}}</td>
+                                <td>{{datos.CT_FEC_RECEPCION}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+</div>

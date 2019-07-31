@@ -1,0 +1,933 @@
+<style type="text/css">
+    .iui-treegrid-column-header-cell
+    {padding: 0 1px;}
+    .iui-treegrid-row-cell-content
+    {padding: 1px 1px;}
+    .iui-treegrid-column-reorder-mark-left
+    {background-image: url(../../../resources/move-left-white.png);}
+    .iui-treegrid-column-reorder-mark-right
+    {background-image: url(../../../resources/move-right-white.png);}
+    .control-panel
+    {width: 17px;}
+    .feature-content
+    {width: 85px;}
+    .feature-list
+    {width: 30px;}
+    .directive
+    {border: thin solid #cecece; width: 6px; height: 5px;}
+    .alignBlock
+    {margin: 1px 0 3px 0; padding: 0;}
+
+    .content {
+    width:4px;
+    margin:2px auto 0;
+}
+    tr.color {
+       background-color:#249FE6;
+       }
+    td.color2 {
+       border: white 2px solid;}
+</style>
+<link rel="stylesheet" href="../../libs/tree/otro/treeGrid.css"> 
+
+<script type="text/javascript">
+            // When the document is ready
+      function conMayusculas(field) {
+        field.value = field.value.toUpperCase()
+      };
+      //*** Este Codigo permite Validar que sea un campo Numerico
+            function soloNumerico(variable){
+                Numer=parseInt(variable);
+                if (isNaN(Numer)){
+                    return "";
+                }
+                return Numer;
+            }
+            function valNumero(Control){
+                Control.value=soloNumerico(Control.value);
+            }
+            //*** Fin del Codigo para Validar que sea un campo Numerico
+</script>
+
+<div  class="col-md-12" ng-controller="documentosController_eliminar" data-ng-init="inicioDocumentos()">
+    <div class="col-md-3">
+        <div class="panel panel-default"><!-- Default panel contents -->
+            <div class="panel-heading">
+                <div class="row" >
+                    
+                    <div width="40%" align="left"  class="col-md-8" ng-show = "opcnuevacapeta == null">
+                        <a name="btnNuevoEje" id="btnNuevoEje" ng-click="nuevoCarpeta('Nueva Carpeta')" data-toggle="modal" data-target="#formModalEj" class="btn btn-default btn-circle " title="Nueva Carpeta"><i class="fa fa-plus fa-lg" style="color:#249FE6"></i></a>
+                        <a name="btnNuevoEje" id="btnLIMBIAR" ng-click="reset()" data-toggle="modal" data-target="" class="btn btn-default btn-circle " title="Reset"><i class="fa fa-eraser fa-lg" style="color:#249FE6"></i></a>
+                    </div>
+                    <div width="40%" align="left"  class="col-md-8" ng-show = "opcnuevasubcapeta != null">
+                        <a name="btnNuevoEje" id="btnNuevoEje" ng-click="nuevoSubCarpeta('Nueva Subcarpeta')" data-toggle="modal" data-target="#formModalEj" class="btn btn-default btn-circle " title="Nueva Subcarpeta"><i class="fa fa-plus fa-lg" style="color:#249FE6"></i></a>
+                        <a name="btnNuevoEje" id="btnLIMBIAR" ng-click="reset()" data-toggle="modal" data-target="" class="btn btn-default btn-circle " title="Reset"><i class="fa fa-eraser fa-lg" style="color:#249FE6"></i></a>
+                    </div>
+                    <div width="40%" align="right"  class="col-md-4">
+                        <a align="right" ng-show = "Adjuntar!= null" type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target=""  ng-click="volverBandeja2();"><i class="fa fa-mail-reply fa-lg" style="color:#249FE6" title="Volver"></i></a>
+                        <a align="right" ng-show = "elaboracionFor!= null" type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target=""  ng-click="volverBandeja();"><i class="fa fa-mail-reply fa-lg" style="color:#249FE6" title="Volver"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <tree-grid tree-data="tree_data" tree-control="my_tree" col-defs="col_defs" expand-on="expanding_property" on-select="my_tree_handler(branch)" expand-level="2" icon-leaf= "glyphicon glyphicon-file" data-ng-init="getArboll()" ></tree-grid>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <!-- *************************************************** PROPIEDADES DE OBJETOS 1***************************************  -->
+        <div   class="{{clase222}}" ng-show = "personaNatural1 == null">
+            <div class="row">
+                <!-- <div class="col-md-4">
+                    <tree-grid tree-data="tree_data" tree-control="my_tree" col-defs="col_defs" expand-on="expanding_property" on-select="my_tree_handler(branch)" expand-level="2" icon-leaf= "glyphicon glyphicon-file" data-ng-init="getArboll()" ></tree-grid>
+
+                    <div class="row">
+                        <input type="file" file-model="myFile"/>
+                        <button ng-click="uploadFile()">upload me</button>
+                    </div>
+                </div> -->
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                            <div class="panel-heading"><B> Mis Documentos </B></div>
+                            <div class="panel-body"  >
+                                <div ng-show = "personaNatural1 == null">
+                                   <form name="formularioBuscar" readOnly="true" novalidate>
+                                        <div class="row" ng-show = "frmPersonaNatural1 == null">
+                                            <div class="col-md-3">
+                                                <div class="form-group" >
+                                                    <label for="url" >Sistema:</label>
+                                                    <input  ng-model="busqueda.sistema" id="sistema" name="sistema" class="form-control" type="text" placeholder="Ingrese Nro. Sistema" ng-disabled="desabilitado"
+                                                    size="10" onkeyup="deshabilita(this.form);valNumero(this);" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group" >
+                                                    <label for="url" >Proceso:</label>
+                                                    <input  ng-model="busqueda.proceso" id="proceso" name="proceso" class="form-control" type="text" placeholder="Ingrese Nro. Proceso" size="10" >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group" >
+                                                    <label for="url" >Nodo/CI:</label>
+                                                    <input  ng-model="busqueda.nodo" id="nodo" name="nodo" class="form-control" type="text" placeholder="Ingrese Nro. Nodo" size="10" >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                              <div class="form-group" >
+                                                <!--   <button  name="btnBuscar" ng-click="buscarDocumentos(busqueda)" data-dismiss="modal" type="button" class="btn btn-default btn-circle">
+                                                  <i class="fa fa-search fa-2x" style="color:#249FE6" title="Buscar"></i> </button>  -->
+                                                  <a class="btn btn-default btn-circle"  ng-click="buscarDocumentos(busqueda)"><i class="fa fa-search fa-2x" style="color:#249FE6" title="Buscar Documento"></i></a>&nbsp;&nbsp;                                        
+                                                  <a class="btn btn-default btn-circle" data-toggle="modal" data-target="" ng-click="cargarComboDocumentacion();limpiar()" ng-show="btnSubir"><i class="fa fa-upload fa-2x" style="color:#249FE6" title="Subir Documento"></i></a>&nbsp;&nbsp;  
+                                                  <a class="btn btn-default btn-circle btn-large" data-toggle="modal" ng-click="eleborar()" ng-show="btnCrear"><i class="fa fa-file-text fa-2x" style="color:#249FE6" title="Elaborar Documento"></i></a>
+                                                  </br>         
+                                                  </br> 
+                                            
+                                              </div>
+                                              
+                                            </div>                        
+                                        </div>
+                                    </form>
+                                </div>
+                                <div>       
+                                      <!-- <br>  
+                                    <a class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro" ng-click="cargarComboDocumentacion();limpiar()"><i class="fa fa-upload fa-2x" style="color:#249FE6" title="Subir Documento"></i></a>&nbsp;&nbsp;  
+                                    <a class="btn btn-default btn-circle" data-toggle="modal"  ng-click="eleborar()"><i class="fa fa-pencil fa-2x" style="color:#249FE6" title="Elaborar Documento"></i></a>
+                                    </br>         
+                                    </br>    -->              
+                                    <div class="table-responsive">                          
+                                        <table show-filter="true" class="table">
+                                            <thead>                       
+                                                  <th class="text-center" style="width:8%">&nbsp;</th>
+                                                  <th class="text-center" style="width:5%">#&nbsp;</th>                                  
+                                                  <!-- <th class="text-center" style="width:10%">SISTEMA&nbsp;</th>
+                                                  <th class="text-center" style="width:10%">PROCESO&nbsp;</th>  -->                                 
+                                                  <th class="text-center" style="width:10%">CI/Nodo&nbsp;</th>
+                                                  <th class="text-center" style="width:10%">TIPO DE DOCUMENTO&nbsp;</th>                        
+                                                  <th class="text-center" style="width:10%">URL&nbsp;</th>                         
+                                                  <th class="text-center" style="width:10%">ACCESO&nbsp;</th>                         
+                                                  <th class="text-center" style="width:10%">DIAS DE PUBLICACIÓN&nbsp;</th>                         
+                                                  <th class="text-center" style="width:10%">FECHA FIN &nbsp;</th>                         
+                                                  <th class="text-center" style="width:10%">FIRMA &nbsp;</th>                         
+                                                  <th class="text-center" style="width:10%">CORRELATIVO &nbsp;</th>                         
+                                                  <th class="text-center" style="width:10%">OPCIONES&nbsp;</th>
+                                                  <th class="text-center" style="width:10%">COMPARTIR&nbsp;</th>
+                                            </thead>
+                                            <tbody>
+                                                  <tr class="column" ng-repeat="obtObejtoDeposi1 in obtDatos" ng-style="obtObejtoDeposi1.vtiempo=='HOY' && {'background-color':'#EDDADA','font-color':'#EDDADA'}  || obtObejtoDeposi1.vtiempo=='CERCA' && {'background-color':'#EDDADA','font-color':'#EDDADA'}" ng-show="obtObejtoDeposi1.vtiempo !='VENCIDO' || obtObejtoDeposi1.vdoc_acceso !='PUBLICO' ">
+                                                      <td align="center">
+                                                                          <a ng-show="obtObejtoDeposi1.vdoc_tipo_documentacion=='E' && obtObejtoDeposi1.vdoc_firma_digital=='0'" class="btn btn-default btn-circle"   ng-click="modificarElaboracion(obtObejtoDeposi1)"><i class="fa fa-pencil fa-2x" style="color:#249FE6" title="Modificar Elaboración"></i></a>
+                                                        <a ng-show="obtObejtoDeposi1.vdoc_tipo_documentacion=='U' && obtObejtoDeposi1.vdoc_firma_digital=='0'" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro" ng-click="modificarDocumentoCargar(rol)"><i class="fa fa-pencil fa-2x" style="color:#249FE6"></i></a>
+
+                                                        <a ng-show="obtObejtoDeposi1.vdoc_firma_digital=='0'" data-toggle="modal" data-target="#registro" ng-click="eliminarDocumentoCargar(rol)" class="btn btn-default btn-circle" ><i class="fa fa-trash-o fa-2x" style="color:#249FE6"></i></a>
+                                                        
+                                                        <a ng-show="obtObejtoDeposi1.vdoc_firma_digital=='1'" data-toggle="modal" data-target="#modalImprimir" ng-click="cargarenvio(obtObejtoDeposi1)" class="btn btn-default btn-circle" ><i class="fa fa-paper-plane fa-2x" style="color:#249FE6" title="Enviar el Documento"></i></a>
+                                                      </td>
+                                                      <!-- paper-plane -->
+                                                      <td>&nbsp; {{$index+1}}</td>                                      
+                                                      <!-- <td>&nbsp; {{obtObejtoDeposi1.vdoc_sistema}}</td>
+                                                      <td>&nbsp; {{obtObejtoDeposi1.vdoc_proceso}} </td>  -->                                     
+                                                      <td>&nbsp; {{obtObejtoDeposi1.vdoc_ci_nodo}}</td> 
+                                                      <td>&nbsp; {{obtObejtoDeposi1.vtps_doc_tipo_doc}}</td>                          
+                                                                               
+                                                      <!-- <td>&nbsp; {{obtObejtoDeposi1.vdoc_url}} </td> -->
+                                                        <td align="center">
+                                                        <!--  <a onclick="" data-toggle="modal" data-target="#modalImprimir" ng-click="VistapreviaDoc(obtObejtoDeposi1)" class="btn btn-default btn-circle" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a> -->
+                                                        <a href="{{obtObejtoDeposi1.vdoc_url_logica}}" target="_black"><img ng-show="adjunto.vdoc_tipo_documento=='jpeg' || adjunto.vdoc_tipo_documento=='jpg' || adjunto.vdoc_tipo_documento=='png'" ng-src="{{adjunto.vdoc_url_logica}}" width="75px" height="75px" title="Descargar"><i class="fa fa-download fa-2x" style="color:#249FE6" title="Descargar"></i></a>                                                                     
+                                                        </td> 
+                                                        <td>&nbsp; {{obtObejtoDeposi1.vdoc_acceso}}</td> 
+                                                        <td class="text-center">&nbsp; {{obtObejtoDeposi1.vdoc_tiempo}}</td> 
+                                                        <td>&nbsp; {{obtObejtoDeposi1.vfechafinpublicacion}}</td> 
+                                                        <td align="center"> 
+                                                         <!--  <a  ng-show="obtObejtoDeposi1.vdoc_firma_digital=='1'" data-toggle="modal" class="btn btn-default btn-circle" ><i class="fa fa-key fa-2x" style="color:#249FE6" title="Documento Firmado"></i></a>  -->
+                                                          <a  ng-show="obtObejtoDeposi1.vdoc_firma_digital=='0'" data-toggle="modal" data-target="#modalFirmar" class="btn btn-default btn-circle" ng-click="getFirmar(obtObejtoDeposi1);"><i class="fa fa-pencil-square-o fa-2x" style="color:#249FE6" title="Firmar Documento"></i></a>
+                                                        </td>
+                                                        <td> 
+                                                            &nbsp; {{obtObejtoDeposi1.vdoc_correlativo}}
+                                                        </td>
+                                                        <td align="center"> <a type="button"  class="btn btn-default btn-circle" data-toggle="modal" data-target=""  ng-click="cargarInformacion2(obtObejtoDeposi1);"><i class="fa fa-info fa-2x" style="color:#249FE6" title="Información de Documento"></i></a>&nbsp;&nbsp;                                      
+                                                        </td>
+                                                        <td align="center"> <a type="button"  class="btn btn-default btn-circle" ng-show="obtObejtoDeposi1.vdoc_tipo_documentacion=='E'" data-toggle="modal" data-target="#modalCompartir" ng-click="cargarcompartir(obtObejtoDeposi1);"  ><i class="fa fa-users fa-2x" style="color:#249FE6" title="Compartir Documento"></i></a>&nbsp;&nbsp;                                      
+                                                        </td>  
+                                                        </tr>
+                                              </tbody>
+                                          </table>            
+                                    </div>
+                                </div>
+                          </div>      
+                    </div>
+                </div>
+            </div>
+        </div>   
+        <!-- ****************************************** FIN VISTA DE`PROPIEDADES **************************************************** -->
+        <div   class="{{clase22}}" ng-show = "cargarInformacionvista12 != null">
+            <div class="row" >
+                <div width="40%" align="right"  class="col-md-12">
+                    <a align="right" ng-show = "cargarInformacionvista12!= null" type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target=""  ng-click="volver();"><i class="fa fa-mail-reply fa-2x" style="color:#249FE6" title="Volver"></i></a>                       
+                </div>
+            </div>       
+            <div class="row panel panel-default" ng-show = "cargarInformacionvista12!= null">
+                <table class="table table-hover">
+                    <thead>
+                        <tr >
+                            <th><br>DATOS DEL ADJUNTO</th>
+                        </tr>
+                    </thead>                           
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="col-sm-4" style="color:#249FE6"><b>Sistema:</b></div>
+                                <div class="col-sm-7" style="color:#777">{{sistema}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="col-sm-4" style="color:#249FE6"><b>Proceso:</b></div>
+                                <div class="col-sm-7" style="color:#777">{{proceso}}</div>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="datop in datos2">                            
+                            <td>
+                                <div class="col-sm-4" style="color:#249FE6"><b>{{datop.clave}}:</b></div>                                        
+                                <div class="col-sm-4" style="color:#777"><b>{{datop.valor}}</b></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </br>
+            </div>
+        </div>
+    </div>
+    <!-- //************************************inicio de la elaboracion de ****************************************** -->
+    <div class="col-md-9" ng-show = "elaboracionFor != null">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-target="#tab-one" data-toggle="tab" >Elaboración del Documento</a>
+            </li>
+            <li>
+                <a data-target="#tab-two" data-toggle="tab" ng-click="getconfiguracion()">Configuración de Impresión</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-one" class="tab-pane active">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form name="formulario1" readOnly="true" novalidate>
+                            <div class="row"> 
+                                <div class="col-md-3">
+                                    <div class="form-group" >
+                                        <label for="url" >Fecha de Elaboración</label>
+                                        <div class="controls">
+                                            <input  ng-model="datosRol.vfechaElavoracion" id="vdoc_url" name="vdoc_url" class="form-control" type="text" placeholder="{{fechadeadjunto}}" ng-disabled="true" required>                                                                
+                                        </div>                          
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" >
+                                        <label for="url" >Tipificacíon:</label>
+                                        <div class="controls">
+                                            <select id="vtps_doc_id" name="vtps_doc_id" ng-model="datosRol.vtps_doc_id" class="form-control" ng-options="datadocumentacion.vtps_doc_id as datadocumentacion.vtps_doc_tipo_doc for datadocumentacion in datadocumentaciones"  ng-change="documentacion(datosRol.vtps_doc_id)" ng-disabled="desabilitado" ng-required="true">
+                                            <option style="display:none" value="">-- Seleccione Tipo --</option>
+                                            </select> 
+                                            <span style="color:red" ng-show="formulario1.vtps_doc_id.$invalid">
+                                            <span ng-show="formulario1.vtps_doc_id.$error.required">Tipificación es requerido.
+                                            </span>
+                                            </span>
+                                        </div>                                       
+                                    </div>
+                                </div>
+                                <!-- ****renderizacion de HTML *************** -->
+                                <div  ng-bind-html="get_pre(html)">               
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" >
+                                        <label for="url" >Públicación:</label>
+                                        <div class="controls">
+                                            <select id="vdoc_acceso" class="form-control" ng-model="datosRol.vdoc_acceso" ng-disabled="desabilitado" name="vdoc_acceso">  <option style="display:none" value="">-- Seleccione Publicación --</option>
+                                                <option value="PUBLICO">PUBLICO</option>
+                                                <option value="PRIVADO">PRIVADO</option>                                            
+                                            </select>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" >
+                                        <label for="url" >Tiempo de públicación en días :</label>
+                                        <div class="controls">
+                                            <input  ng-model="datosRol.vdoc_tiempo" id="vdoc_tiempo" name="vdoc_tiempo" class="form-control" type="number" placeholder="ingrese tiempo de publicación" required>
+                                            <p class="help-block"><b>Ejemplo:</b>0 para infinito </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" >
+                                        <label for="url" >Correlativo:</label>
+                                        <div class="controls">
+                                            <input  ng-model="datosRol.vdoc_correlativo" id="vdoc_correlativo" name="vdoc_correlativo" class="form-control" type="text" placeholder="Generaciòn automatica" ng-disabled="true" required>
+                                            <p class="help-block"><b>Ejemplo:</b>  PT 25/23</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" >
+                                        <label for="url" >Aplicar Plantilla:</label>
+                                        <div class="controls" >
+                                            <input type="radio" ng-model="datosRol.si" name="si" value="S" ng-click="cargarplantilla('S')" ng-disabled="desabilitado" ng-required="true">Inflexible&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" ng-model="datosRol.si" name="si" value="N" ng-click="cargarplantilla('N')" ng-disabled="desabilitado" ng-required="true">Flexible<br>                          
+                                        </div>
+                                    </div>
+                                </div>                
+                            <div class="col-md-12" ng-show="opcionrecuperacion != null">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="url" >Version a recuperar:</label>
+                                        <div class="controls">
+                                            <select id="vrecuperacion" name="vrecuperacion" ng-model="datosRol.vrecuperacion" class="form-control" ng-options="datacomboversio.vlog_doc_idd as datacomboversio.vlog_doc_registro_l for datacomboversio in datacomboversion"  ng-change="recuperalogelevaciones(datosRol.vrecuperacion)" >
+                                            <option style="display:none" value="">-- Seleccione Versión --</option>
+                                            </select>                                        
+                                        </div>
+                                    </div>
+                                </div>                  
+                            </div>
+                            <div class="panel-body">
+                            <div class="col-md-12">
+                                <div ng-cloak ng-hide="isReady" class="highlight">
+                                    Initialising ...
+                                </div>
+                                <div ng-cloak ng-show="isReady">
+                                    <textarea ckeditor="editorOptions" name="editor" ng-model="datosRol.vdoc_cuerpo" ng-change="save()"></textarea>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" ng-click="volverBandeja()" data-dismiss="modal">Cerrar</button>
+                                <button data-dismiss="modal" ng-click="guardarElaboracion(datosRol)" type="button" class="btn btn-primary" ng-show="boton1=='new'" >Grabar</button>
+                                <button ng-click="modificar(datosRol)" type="button" class="btn btn-primary" ng-show="boton1=='upd'">Grabar</button>
+                                <!--  <button ng-click="eliminarII(datos)" type="button" class="btn btn-primary" ng-show="boton=='del'">Eliminar</button>    -->               
+                            </div>
+                            {{frm.editor.$dirty}}
+                            {{frm.$dirty}}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> <!-- fin de tab one  -->
+            <div id="tab-two" class="tab-pane">
+                55555555
+                55555555
+                55555555
+                55555555
+            </div> <!-- fin de tab two  -->
+        </div>  <!-- fin de tab content  -->
+    </div> <!-- fin de elaboracionFor  -->
+
+    <!-- **************************************inicio del adjuntar archivo************************************************** -->
+    <!-- //************************************inicio de la elaboracion de ****************************************** -->
+    <div class="col-md-8" ng-show = "Adjuntar != null">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-target="#tab-one" data-toggle="tab" >Subir Documento</a>
+            </li>          
+        </ul>
+        <div class="tab-content">
+            <div id="tab-one" class="tab-pane active">
+                <div class="col-sm-12" >
+                    <div class="col-sm-12" ng-show = "Adjuntardoc != null"><br><br>
+                        
+                        
+                        <form name="formulario11" readOnly="true" novalidate>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label for="url" >Directorios</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.direccion" id="vsuario" name="vsuario" class="form-control" type="text" placeholder="{{direccionvirtual}}"  ng-disabled="true" required>        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <label for="url" >Subir documentos</label>
+                                        <div class="controls">
+                                            <input type="file"  file-model="myFile"/>
+                                            <!--button type="button" class="btn btn-primary" ng-click="uploadFile()">Subir</button--> 
+                                        </div>
+                                    </div>
+                                </div>                              
+                                <div class="col-md-4">
+                                    <div class="form-group" >
+                                        <label for="url" >Tipificacíon:</label>
+                                        <div class="controls">
+                                            <select id="vtps_doc_id" name="vtps_doc_id" ng-model="datosRol.vtps_doc_id" class="form-control" ng-options="datadocumentacion.vtps_doc_id as datadocumentacion.vtps_doc_tipo_doc for datadocumentacion in datadocumentaciones"  ng-change="documentacion(datosRol.vtps_doc_id)" ng-disabled="desabilitado" ng-required="true">
+                                            <option style="display:none" value="">-- Seleccione Tipo --</option>
+                                            </select> 
+                                            <span style="color:red" ng-show="formulario1.vtps_doc_id.$invalid">
+                                            <span ng-show="formulario1.vtps_doc_id.$error.required">Tipificación es requerido.
+                                            </span>
+                                            </span>
+                                        </div>                                       
+                                    </div>
+                                </div>
+                                <!-- ****renderizacion de HTML *************** -->
+                                <div  ng-bind-html="get_pre(html)">               
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" >
+                                        <label for="url" >Públicación:</label>
+                                        <div class="controls">
+                                            <select id="vdoc_acceso" class="form-control" ng-model="datosRol.vdoc_acceso" ng-disabled="desabilitado" name="vdoc_acceso">  <option style="display:none" value="">-- Seleccione Publicación --</option>
+                                                <option value="PUBLICO">PUBLICO</option>
+                                                <option value="PRIVADO">PRIVADO</option>                                            
+                                            </select>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" >
+                                        <label for="url" >Tiempo de públicación en días :</label>
+                                        <div class="controls">
+                                            <input  ng-model="datosRol.vdoc_tiempo" id="vdoc_tiempo" name="vdoc_tiempo" class="form-control" type="number" placeholder="ingrese tiempo de publicación" required>
+                                            <p class="help-block"><b>Ejemplo:</b>0 para infinito </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button data-dismiss="modal" ng-click="guardar(datosRol)" type="button" class="btn btn-primary"  >Grabar</button>
+                                
+                                <!--  <button ng-click="eliminarII(datos)" type="button" class="btn btn-primary" ng-show="boton=='del'">Eliminar</button>    -->               
+                            </div>
+                        </form>
+                    </div>
+                </div> 
+            </div> <!-- fin de tab one  -->
+        </div>  <!-- fin de tab content  -->
+    </div> <!-- fin de elaboracionFor  -->
+    <!-- ******************************************************************************************************************* -->
+    <!-- MODAL -->
+    <!--  ***********************************        MODAL DE IMPRESION Y GENERACIÓN DE PDF     ************************************    -->
+
+
+    <div class="modal fade" id="formModalEj" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{tituloVentanaCa}}  </h4>
+                </div>
+                <div class="modal-body" >
+                    <form name="formularioUsuarios" novalidate>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >Directorios</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.direccion" id="vsuario" name="vsuario" class="form-control" type="text" placeholder="{{direccionvirtual}}"  ng-disabled="true" required>        
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >Nombre de la carpeta</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.vdir_nombre_carpeta" id="vdir_nombre_carpeta" name="vdir_nombre_carpeta" class="form-control" type="text" placeholder="Ingrese nombre de la carpeta"   required>        
+                                        </div>
+                                </div>
+                            </div>
+                                                    
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="cerrarAR" name="cerrarAR" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button ng-click="guardarCarpeta(datos,0)" type="button" class="btn btn-primary" data-dismiss="modal" ng-show="boton=='new'">Guardar</button>
+                    <button ng-click="guardarCarpeta(datos,1)" type="button" class="btn btn-primary" data-dismiss="modal" ng-show="boton=='news'">Guardar</button>
+                    <button ng-click="ModificarCarpeta(datos) " data-dismiss="modal" type="button" class="btn btn-primary" ng-show="boton=='upd'">Modificar</button>
+                    <button ng-click="EliminarCarpeta()" type="button" class="btn btn-primary" ng-show="boton=='del'">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ****************************************************************************************************************************** -->
+    <div class="modal fade" id="modalImprimir" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{titulo}}</h4><b style="color:#249FE6">Fecha de Envio: </b>{{fechadeadjunto}}
+                </div>
+                  <div class="modal-body" >
+                    <form name="formularioenvio" novalidate>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >De:</label>
+                                    <div class="controls">
+                                        <input ng-model="datosRol1.vsuario" id="vsuario" name="vsuario" class="form-control" type="text" placeholder="{{paramuser}}"  ng-disabled="true" required>                                                                           
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >Origen:</label>
+                                     <div class="controls">
+                                       <select id="viduo" name="viduo" ng-model="datosRol1.viduo" class="form-control" ng-options="datauo.NODO_ID as datauo.NODO_NOMBRE for datauo in datauos" ng-change="obtenerValorEnvioNodo()"  >
+                                        <option style="display:none" value="">-- Seleccione Origen --</option>
+                                       </select>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                       
+                            <!-- <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >De:</label>
+                                    <div class="controls">
+                                        <input ng-model="datosRol1.vsuario" id="vsuario" name="vsuario" class="form-control" type="text" placeholder="Ingrese usuario" ng-change="uousus(datosRol1.vsuario)" required>
+                                        <p class="help-block"><b>Ejemplo:</b> Solicitud de Ambiente</p>                                        
+                                    </div>
+                                </div>
+                            </div> -->                          
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >Asunto:</label>
+                                    <div class="controls">
+                                        <input ng-model="datosRol1.vAsunto" id="vAsunto" name="vAsunto" class="form-control" type="text" placeholder="Ingrese Asunto" required>
+                                        <p class="help-block"><b>Ejemplo:</b> Solicitud de Ambiente</p>                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >Descripción:</label>
+                                    <div class="controls">
+                                        <input ng-model="datosRol1.vDescripcion" id="vDescripcion" name="vDescripcion" class="form-control" type="text" placeholder="Ingrese Descripción" required>
+                                        <p class="help-block"><b>Ejemplo:</b> Ambiente para la campacitación</p>                                        
+                                    </div>
+                                </div>
+                            </div> 
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="demo2" type="button" class="btn btn-default" data-dismiss="modal">Cancelar </button>
+                    <button data-dismiss="modal" ng-click="enviarr(datosRol1)" type="button" class="btn btn-primary">Enviar</button>
+                </div>   
+            
+            </div>
+        </div>   
+    </div>
+    <!--  ***********************************        MODAL DE IMPRESION Y GENERACIÓN DE PDF     ************************************    -->
+    <!--  ***********************************        MODAL   MODAL COMPARTIR    ************************************    -->
+    <div class="modal fade" id="modalCompartir" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{tituloCompartir}}</h4>
+                </div>
+                  <div class="modal-body" >
+                    <form name="formulariocompartir" novalidate>
+                        <div class="row"> 
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >Personas:</label>
+                                     <div class="controls">
+                                       <select id="vusr_id" name="vusr_id" ng-model="datosUsuarios.vusr_id" class="form-control" ng-options="datauario.vusrid as datauario.vusrnombre for datauario in datauarios">
+                                        <option style="display:none" value="">-- Seleccione Persona a compartir --</option>
+                                       </select>
+                                        
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" ></label>
+                                     <div class="controls">
+                                       <select id="vatbt_id" name="vatbt_id" ng-model="datosUsuarios.vatbt_id" class="form-control" ng-options="dataatributo.vatbt_id as dataatributo.vatbt_descripcion for dataatributo in dataatributos">
+                                        <option style="display:none" value="">-- Seleccione tipo --</option>
+                                       </select>                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >Añade una nota</label>
+                                     <div class="controls">
+                                        <textarea ng-model="datosUsuarios.vcmtd_nota" class="form-control" ng-disabled="desabilitado" placeholder="Añade una nota"  height="5"></textarea>                                       
+                                    </div>
+                                </div>
+                            </div>  
+                             <div class="col-md-12">
+                                <div class="row" >
+                                    <div width="40%" align="right"  class="col-md-12">
+                                        <a align="right"  type="button" class="btn btn-default btn-circle" data-toggle="modal" ng-show = "botonnewuser!= null"  ng-click="adicionarUsuarioCompartir(datosUsuarios);"><i class="fa fa-floppy-o fa-2x" style="color:#249FE6" title="Guardar"></i></a>
+                                        <a align="right"  type="button" class="btn btn-default btn-circle" data-toggle="modal"   ng-click="limpiarf();"><i class="fa fa-eraser fa-2x" style="color:#249FE6" title="Limpiar"></i></a>
+                                        <a align="right"  type="button" class="btn btn-default btn-circle" data-toggle="modal" ng-show = "botonnewuser1!= null" ng-click="modificarusuarioCompartido(datosUsuarios);"><i class="fa fa-floppy-o  fa-2x" style="color:#249FE6" title="Modificar"></i></a>
+                                        <a align="right"  type="button" class="btn btn-default btn-circle" data-toggle="modal" ng-show = "botonnewuser2!= null" ng-click="eliminarusuarioCompartido(datosUsuarios);"><i class="fa fa-trash-o  fa-2x" style="color:#249FE6" title="Eliminar"></i></a>
+                                    </div>
+                                </div>           
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <th>
+                                            <div class="col-sm-2">Opciones</div>
+                                            <div class="col-sm-4">Persona</div>
+                                            <div class="col-sm-2">Atributo</div>
+                                            <div class="col-sm-2">Nota</div> 
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="dataDocCompartido in dataDocCompartidos" >
+                                            <td>
+                                                 <div class="col-sm-2">
+                                                    <a ng-click="modificarCargarusuarioCompartido(dataDocCompartido)" class="btn btn-default btn-circle" data-toggle="modal" ><i class="fa fa-pencil" style="color:#249FE6"></i></a>
+                                                    <a ng-click="eliminarCargarusuarioCompartido(dataDocCompartido)" class="btn btn-default btn-circle" data-toggle="modal" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
+                                                </div> 
+                                                <div class="col-sm-4">{{dataDocCompartido.vpersona}}</div>
+                                                <div class="col-sm-2">{{dataDocCompartido.vatbt_descripcion}}</div>
+                                                <div class="col-sm-2">{{dataDocCompartido.vcmtd_nota}}</div>                                            
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="demo2" type="button" class="btn btn-default" data-dismiss="modal">Cancelar </button>
+                    
+                </div>   
+            
+            </div>
+        </div>   
+    </div>
+    <!--  ***********************************        FIN DEL MODAL COMPARTIR ************************************    -->
+
+    <!-- MODAL -->
+    <!--  ***********************************        MODAL DE FIRMAR***************************     ************************************    -->
+    <div class="modal fade" id="modalFirmar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{titulo}}</h4>
+                </div>
+                <div class="modal-body" >
+                    <form name="formularioOperativo" readOnly="true" novalidate>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group" >
+                                    <label for="url" >USUARIO:</label>
+                                    <div class="controls">
+                                        <input  ng-model="datosFirma.usuario" id="usuario" name="usuario" class="form-control" type="password" placeholder="{{usuario}}" ng-disabled="true" >
+                                        <span style="color:red" ng-show="formularioOperativo.pwd.$invalid">
+                                            <span ng-show="formularioOperativo.pwd.$error.required">Pasword es requerido.
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group" >
+                                    <label for="url" >PIN:</label>
+                                    <div class="controls">
+                                        <input  ng-model="pwd1" id="pwd1" name="pwd1" class="form-control" type="password" placeholder="" ng-disabled="true">
+                                        <span style="color:red" ng-show="formularioOperativo.pwd.$invalid">
+                                            <span ng-show="formularioOperativo.pwd.$error.required">PIN es requerido.
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                     
+
+                            <div class="col-md-8" width="50%" align="center">
+                                <table border="1" width="50%" height="30"> 
+                                    <!-- <tr class="color">
+                                        <td class="color2" colspan="4">                                             
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<div class="controls">
+                                                <textarea ng-model="resultadoo" class="form-control" ng-disabled="desabilitado" placeholder="Ingrese formula"  height="5"></textarea>                                                
+                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <br>
+                                        </td>
+                                     </tr> -->
+                                    <tr class="color">
+                                        <td class="color2" align="center"><a name="" id="" data-toggle="modal" data-target="" type="button" class="btn btn-default" ng-click="valores('1')"><i style="color:#183F56" title="1"><b>1&nbsp;&nbsp;</b></i></a><br></td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('2')"><i style="color:#183F56" title="1"><b>2&nbsp;&nbsp;</b></i></a></td>
+                                        <td  class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('3')"><i style="color:#183F56" title="1"><b>3&nbsp;&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('4')"><i style="color:#183F56" title="1"><b>4&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('5')"><i style="color:#183F56" title="1"><b>5&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('6')"><i style="color:#183F56" title="1"><b>6&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('7')"><i style="color:#183F56" title="1"><b>7&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('8')"><i style="color:#183F56" title="1"><b>8&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('9')"><i style="color:#183F56" title="1"><b>9&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('0')"><i style="color:#183F56" title="1"><b>0&nbsp;</b></i></a> </td>
+                                    </tr>
+                                    <tr class="color">
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="" type="button" class="btn btn-default" ng-click="valores('q')"><i style="color:#183F56" title="1"><b>q&nbsp;&nbsp;</b></i></a><br></td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('w')"><i style="color:#183F56" title="1"><b>w&nbsp;</b></i></a></td>
+                                        <td  class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('e')"><i style="color:#183F56" title="1"><b>e&nbsp;&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('r')"><i style="color:#183F56" title="1"><b>r&nbsp;&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('t')"><i style="color:#183F56" title="1"><b>t&nbsp;&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('y')"><i style="color:#183F56" title="1"><b>y&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('u')"><i style="color:#183F56" title="1"><b>u&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('i')"><i style="color:#183F56" title="1"><b>i&nbsp;&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('o')"><i style="color:#183F56" title="1"><b>o&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('p')"><i style="color:#183F56" title="1"><b>p&nbsp;</b></i></a> </td>
+                                    </tr>
+                                    <tr class="color">
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="" type="button" class="btn btn-default" ng-click="valores('a')"><i style="color:#183F56" title="1"><b>a&nbsp;&nbsp;</b></i></a><br></td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('s')"><i style="color:#183F56" title="1"><b>s&nbsp;&nbsp;</b></i></a></td>
+                                        <td  class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('d')"><i style="color:#183F56" title="1"><b>d&nbsp;&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('f')"><i style="color:#183F56" title="1"><b>f&nbsp;&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('g')"><i style="color:#183F56" title="1"><b>g&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('h')"><i style="color:#183F56" title="1"><b>h&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('j')"><i style="color:#183F56" title="1"><b>j&nbsp;&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('k')"><i style="color:#183F56" title="1"><b>k&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('l')"><i style="color:#183F56" title="1"><b>l&nbsp;&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('ñ')"><i style="color:#183F56" title="1"><b>ñ&nbsp;</b></i></a> </td>
+                                    </tr>   
+                                    <tr class="color">
+                                        
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('z')"><i style="color:#183F56" title="1"><b>z&nbsp;&nbsp;</b></i></a></td>
+                                        <td  class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('x')"><i style="color:#183F56" title="1"><b>x&nbsp;&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('c')"><i style="color:#183F56" title="1"><b>c&nbsp;&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('v')"><i style="color:#183F56" title="1"><b>v&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('b')"><i style="color:#183F56" title="1"><b>b&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('n')"><i style="color:#183F56" title="1"><b>n&nbsp;</b></i></a> </td>
+                                        <td class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="valores('m')"><i style="color:#183F56" title="1"><b>m</b></i></a> </td>
+                                      
+                                        <td colspan="3" class="color2" align="center"> <a name="" id="" data-toggle="modal" data-target="#" type="button" class="btn btn-default" ng-click="elmiminarcaracter()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-reply fa-lg" style="color:#249FE6" title="Borrar caracter"></i><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></i></a> </td>
+                                    </tr>                           
+                                   
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="demo2" type="button" class="btn btn-default" data-dismiss="modal">Cerrar </button>
+
+                    <button ng-click="updFirmar(datosFirma);" data-dismiss="modal" type="button" class="btn btn-primary" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'" ng-disabled="formularioOperativo.$invalid">Firmar</button>
+
+                    <!-- <button ng-click="modificarUniMedida(datosUniMedida.undsmdd_id,datosUniMedida);" data-dismiss="modal" type="button" class="btn btn-primary" ng-show="boton=='upd'" ng-hide="boton=='new' || boton=='del'" ng-disabled="formularioOperativo.$invalid">Modificar</button>
+
+                    <button ng-click="eliminarRaSocial(datosUniMedida.undsmdd_id)" data-dismiss="modal" type="button" class="btn btn-primary" ng-show="boton=='del'" ng-hide="boton=='new' || boton=='upd'">Eliminar</button> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="modal fade" id="registro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{titulo}}</h4><b style="color:#249FE6">Fecha de adjunto: </b>{{fechadeadjunto}}
+                </div>
+                <div class="modal-body" >
+                    <form name="formulario" novalidate>
+                        <div class="row">
+                          <div >
+                          <!-- <div ng-show="opcionAdjunto == null"> -->
+                          <!-- <div class="col-md-12" >
+                            <label for="url" >Adjuntar Archivo:</label>
+                            <input type="file" uploader="uploader"  nv-file-select="" multiple>
+                          </div>  
+                          <div class="col-md-12">
+                            <div class="table-responsive">
+                              <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th width="50%">Nombre</th>
+                                        <th ng-show="uploader.isHTML5">Tamano</th>
+                                        <th>Estado</th>
+                                        <th>Opción</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr ng-repeat="datos in uploader.queue ">
+                                        <td><strong>{{datos.file.name }}</strong></td>
+                                            <td ng-show="uploader.isHTML5" nowrap>{{ datos.file.size/1024/1024|number:2 }} MB</td>
+                                            <td class="text-center">
+                                            <span ng-show="datos.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                            <span ng-show="datos.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                            </td>
+                                            <td nowrap>
+                                            <button ng-show="botonSubirOriginal == null"  type="button" class="btn btn-success btn-xs" ng-click="datos.upload();guardarSerializacion(dispocicion1);" ng-disabled="datos.isReady || datos.isUploading || datos.isSuccess ">
+                                            <span class="glyphicon glyphicon-upload"></span> Subir 
+                                             </button>
+                                            <button ng-show="botonSubirError == null" type="button" class="btn btn-success btn-xs" ng-click="falla();" ng-disabled="datos.isReady || datos.isUploading">
+                                            <span class="glyphicon glyphicon-upload"></span> Subir 
+                                            </button>
+                                            <button ng-show="botonSubireliminar == null" type="button" class="btn btn-danger btn-xs" ng-click="datos.remove()">
+                                            <span class="glyphicon glyphicon-trash"></span> Eliminar 
+                                            </button>
+                                         </td>
+                                      </tr>
+                                    </tbody>
+                              </table>
+                            </div> 
+                          </div> 
+                          </div>
+                          <div ng-show="opciontiposDocumentacion != null">
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >Tipos de Documentación:</label>
+                                     <div class="controls">
+                                       <select id="vtps_doc_id" name="vtps_doc_id" ng-model="datosRol.vtps_doc_id" class="form-control" ng-options="datadocumentacion.vtps_doc_id as datadocumentacion.vtps_doc_tipo_doc for datadocumentacion in datadocumentaciones"  ng-change="documentacion(datosRol.vtps_doc_id)" >
+                                        <option style="display:none" value="">-- Seleccione Tipo --</option>
+                                       </select>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div  ng-bind-html="get_pre(html)">                             
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >Públicación:</label>
+                                     <div class="controls">
+                                        <select id="vdoc_acceso" class="form-control" ng-model="datosRol.vdoc_acceso" ng-disabled="desabilitado" name="vdoc_acceso">
+                                            <option value="PUBLICO">PUBLICO</option>
+                                            <option value="PRIVADO">PRIVADO</option>                                            
+                                        </select>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" >
+                                    <label for="url" >Tiempo de públicación en días :</label>
+                                     <div class="controls">
+                                       <input  ng-model="datosRol.vdoc_tiempo" id="vdoc_tiempo" name="vdoc_tiempo" class="form-control" type="number" placeholder="ingrese tiempo de publicación" required>
+                                                            <p class="help-block"><b>Ejemplo:</b>0 para infinito </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >Dirección de almacenamiento:</label>
+                                    <div class="controls">
+                                        <input  ng-model="datosRol.vdoc_url" id="vdoc_url" name="vdoc_url" class="form-control" type="text" placeholder="ingrese la direccion a almacenar" required>
+                                        <p class="help-block"><b>Ejemplo:</b> C://GestionDocumental//temporal//DMS//INFORME//1</p>                                        
+                                    </div>
+                                </div>
+                            </div>
+                           </div>
+                        </div>
+                    </form>
+                </div>               
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button data-dismiss="modal" ng-click="guardar(datosRol)" type="button" class="btn btn-primary"  >Grabar</button>                    
+                </div>
+            </div>
+        </div>
+        </div>
+    </div> --> 
+    <!-- MODAL DE ENVIO  -->
+    <div class="modal fade" id="envio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{titulo}}</h4><b style="color:#249FE6">Fecha de Envio: </b>{{fechadeadjunto}}
+                </div>
+                <div class="modal-body" >
+                    <form name="formulario" novalidate>
+                        <div class="row"> 
+                              <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >uos:</label>
+                                     <div class="controls">
+                                       <select id="viduo" name="viduo" ng-model="datauo.viduo" class="form-control" ng-options="datauo.NODO_ID as datauo.NODO_NOMBRE for datauo in datauos"   >
+                                        <option style="display:none" value="">-- Seleccione Tipo --</option>
+                                       </select>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                          <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >Enviar A:</label>
+                                    <div class="controls">
+                                        <input  ng-model="datosRol.vdoc_url" id="vdoc_url" name="vdoc_url" class="form-control" type="text" placeholder="ingrese la direccion a almacenar" required>
+                                        <p class="help-block"><b>Ejemplo:</b> Julio Apaza</p>                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label for="url" >De:</label>
+                                    <div class="controls">
+                                        <input ng-model="datosRol.vdoc_url" id="vdoc_url" name="vdoc_url" class="form-control" type="text" placeholder="ingrese la direccion a almacenar" required>
+                                        <p class="help-block"><b>Ejemplo:</b> C:Rosmery Mamani</p>                                        
+                                    </div>
+                                </div>
+                            </div>                       
+                        </div>
+                    </form>
+                </div>
+               
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <a data-dismiss="modal" ng-click="enviarr()" type="button" class="btn btn-primary"  >Grabar</a>
+                </div>
+            </div>
+        </div>
+                    
+    </div>
+    <!--fin del div-->
+</div>

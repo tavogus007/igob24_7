@@ -1,0 +1,358 @@
+<!-- TIPOS OBLIGATORIO -->
+ <head>
+
+<style>
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+</style>
+
+<style>
+.custom-upload {
+    position: relative;
+    height: 40px;
+    width: 100%;
+    
+}
+.custom-upload input[type=file]
+{
+    outline:none;
+    position: relative;
+    text-align: right;    
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width:85%;
+    height:100%;
+    
+}
+
+.custom-upload .fake-file
+{
+    background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 85%;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    line-height: 100%;
+}
+
+.custom-upload .fake-file input
+{
+    font-size:16px;
+    height:40px;
+    width:85%;
+}
+
+</style>
+
+
+
+
+<script type="text/javascript">
+$('.modal').on('shown.bs.modal', function() {
+  //Make sure the modal and backdrop are siblings (changes the DOM)
+  $(this).before($('.modal-backdrop'));
+  //Make sure the z-index is higher than the backdrop
+  $(this).css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 1);
+});
+
+    $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+</script>
+
+<script type="text/javascript">
+    function soloNumericoCelular(sValor){
+        Numer=parseInt(sValor);
+        if (isNaN(Numer)){
+            return "";
+        }else{
+            var digits = ("" + Numer).split("");
+            if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6)){
+                return Numer;
+            }else{
+                return "";
+            }
+        }
+    }
+    function valNumeroCelular(Control){
+        Control.value = soloNumericoCelular(Control.value);
+    }
+    //VALORES NUMERICOS
+    function soloNumerico(variable){
+        Numer=parseInt(variable);
+        if (isNaN(Numer)){
+                return "";
+        }
+        return Numer;
+    }
+
+    function valNumero(Control){
+        Control.value=soloNumerico(Control.value);
+    }
+</script>
+
+<!-- OCULTANDO COMBO TIPO DE PERSONA -->
+<script type="text/javascript">
+    var cboTipoCon = document.getElementById("tipo_contribuyente");
+    if(cboTipoCon){
+        cboTipoCon.style.display = 'none';
+    }
+</script>
+<script>
+    $(function () {
+		var nowTemp = new Date();
+        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate());
+		$('#fecha1').fdatepicker({onRender: function (date) {return date.valueOf() > now.valueOf() ? 'disabled' : '';}}).data('datepicker');
+		$('#fecha2').fdatepicker({onRender: function (date) {return date.valueOf() > now.valueOf() ? 'disabled' : '';}}).data('datepicker');
+    });
+
+</script>
+
+<script type="text/javascript">
+	function impresionAl(nombre) {
+	  var ficha = document.getElementById(nombre);
+	  var ventimp = window.open(' ', 'popimpr');
+	  ventimp.document.write( ficha.innerHTML );
+	  ventimp.document.close();
+	  ventimp.print( );
+	  ventimp.close();
+	}
+
+  function soloNumericoTelefono(sValo){
+        Numer=parseInt(sValo);
+        if (isNaN(Numer)){
+            return "";
+        }else{
+            var digits = ("" + Numer).split("");
+            if(digits.length < 9 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+                return Numer;
+            }else{
+                return "";
+            }
+        }
+    }
+    function valNumeroTelefono(Control){
+        Control.value = soloNumericoTelefono(Control.value);
+    }
+	</script>
+
+
+    <link href="../../libs/css/sweetalert.css" rel="stylesheet">
+    <!--ngSweetAlert-->
+    <script src="../../libs/js/prism.js"></script>
+    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+
+
+
+</head>
+<div ng-controller="pagosLineaController" data-ng-init="iniciarDataCiudadano();">
+    <div ng-controller="serviciosObitoController" class="ibox float-e-margins">
+        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+            <h4>SOLICITUD : PAGO EN LINEA</h4>
+        </div>
+        <div>
+            &nbsp;<br>
+        </div>
+        <div class="col-md-12">
+        <div class="row">
+            <form id="frmVPOS2" action="https://vpayment.verifika.com/VPOS2/faces/pages/startPayme.xhtml" class="form-horizontal" method="post" name="frmVPOS2" target="_blank">
+                
+        <div class="col-md-12" ng-show="false">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                    acquirerId:
+                </label>
+                <div class="col-sm-4">
+                    <input ng-model="datosCiudadano.acquirerId" id="acquirerId" class="form-control" name="acquirerId" type="text"/>
+                </div>
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                    idCommerce:
+                </label>
+                <div class="col-sm-4">
+                    <input ng-model="datosCiudadano.idCommerce" id="idCommerce" class="form-control" name="idCommerce" type="text"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                    purchaseOperationNumber:
+                </label>
+                <div class="col-sm-4">
+                    <input ng-model="datosCiudadano.purchaseOperationNumber" id="purchaseOperationNumber" class="form-control" name="purchaseOperationNumber" type="text"/>
+                </div>
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                    purchaseAmount:
+                </label>
+                <div class="col-sm-4">
+                    <input ng-model="datosCiudadano.purchaseAmount" id="purchaseAmount" class="form-control" name="purchaseAmount" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                    purchaseCurrencyCode:
+                </label>
+                <div class="col-sm-4">
+                    <input ng-model="datosCiudadano.purchaseCurrencyCode" id="purchaseCurrencyCode" class="form-control" name="purchaseCurrencyCode" type="text"/>
+                </div>
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                    language
+                </label>
+                <div class="col-sm-4">
+                    <input  ng-model="datosCiudadano.language" id="language"  class="form-control" name="language" type="text"/>
+                </div>
+            </div>
+        </div>
+                
+        <div class="col-md-12">
+            <div class="hr-line-dashed">                    
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                    Nombres:
+                </label>
+                <div class="col-sm-4">
+                   <input ng-model="datosCiudadano.shippingFirstName" id="shippingFirstName" class="form-control" name="shippingFirstName" type="text" readonly/>
+                </div>
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                    Apellidos:
+                </label>
+                <div class="col-sm-4">
+                   <input ng-model="datosCiudadano.shippingLastName" id="shippingLastName" class="form-control" name="shippingLastName" type="text" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                    Email:
+                </label>
+                <div class="col-sm-4">
+                   <input ng-model="datosCiudadano.shippingEmail" id="shippingEmail" class="form-control" name="shippingEmail" type="text" readonly/>
+                </div>
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                    Direccion:
+                </label>
+                <div class="col-sm-4">
+                    <input ng-model="datosCiudadano.shippingAddress" id="shippingAddress" class="form-control" name="shippingAddress" type="text" readonly/>
+                </div>
+            </div> 
+        </div>   
+                
+        <div class="col-md-12">
+            <div class="hr-line-dashed">                    
+            </div>
+            <div class="form-group">
+                 <label class="col-sm-2 control-label" for="inputEmail3">
+                    Codigo postal:
+                </label>
+                <div class="col-sm-4">
+                   <input ng-model="datosCiudadano.shippingZIP" id="shippingZIP" class="form-control" name="shippingZIP" type="text" readonly/>
+                </div>
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                    Ciudad:
+                </label>
+                <div class="col-sm-4">
+                     <input ng-model="datosCiudadano.shippingCity" id="shippingCity" class="form-control" name="shippingCity" type="text" readonly/>
+                </div>
+            </div>            
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                Departamento:
+                </label>
+                <div class="col-sm-4">
+                  <input ng-model="datosCiudadano.shippingState" id="shippingState" class="form-control" name="shippingState" type="text" readonly/>
+                </div>
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                Pais:
+                </label>
+                <div class="col-sm-4">
+                 <input ng-model="datosCiudadano.shippingCountry" id="shippingCountry" class="form-control" name="shippingCountry" type="text" readonly/>
+                </div>         
+            </div>
+            <div class="form-group">
+                 <label class="col-sm-2 control-label" for="inputEmail3">
+                     Comercio:
+                </label>
+                <div class="col-sm-4">
+                     <input ng-model="datosCiudadano.userCommerce" id="userCommerce" class="form-control" name="userCommerce" type="text" readonly/>
+                </div>
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                     Payme:
+                </label>
+                <div class="col-sm-4">
+                     <input ng-model="datosCiudadano.userCodePayme" id="userCodePayme" class="form-control" name="userCodePayme" type="text" readonly/>
+                </div>
+            </div>           
+        </div>
+        <div class="col-md-12">
+            <div class="hr-line-dashed">
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                     Descripcion del producto:
+                </label>
+                <div class="col-sm-10">
+                     <input ng-model="datosCiudadano.descriptionProducts" id="descriptionProducts" class="form-control" name="descriptionProducts" />
+                </div>
+            </div>
+        </div>        
+        <div class="col-md-12" ng-show="false">
+            <div class="hr-line-dashed">
+            </div>  
+            <div class="form-group">
+                 <label class="col-sm-2 control-label" for="inputEmail3">
+                     programmingLanguage:
+                </label>
+                <div class="col-sm-4">
+                      <input ng-model="datosCiudadano.programmingLanguage" id="programmingLanguage" class="form-control" name="programmingLanguage" type="text"/>
+                </div>
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                      reserved1:
+                </label>
+                <div class="col-sm-4">
+                       <input ng-model="datosCiudadano.reserved1" id="reserved1" class="form-control" name="reserved1" type="text"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" ng-show="false">
+            <div class="hr-line-dashed">
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="inputEmail3">
+                      purchaseVerification:
+                </label>
+                <div class="col-sm-10">
+                       <input ng-model="datosCiudadano.purchaseVerification" id="purchaseVerification" class="form-control" name="purchaseVerification" type="text" readonly/>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" align="right">
+            <a ng-show="sDatosCompletos" type="button" class="btn btn-default" data-dismiss="modal" ng-click="pagarCertificado()"><span><img src="../../libs/img/visa_mastercard.png" height="30"></span></a>
+            <!--
+            <button id="miFormulario" type="submit" class="btn btn-default" data-dismiss="modal" type="button" ng-disabled="btnPagarForm"><img src="../../libs/img/visa_mastercard.png" height="30"></button>
+            -->
+        </div>                 
+    </form>
+</div>
+</div>
+</div>
+</div>
+                    

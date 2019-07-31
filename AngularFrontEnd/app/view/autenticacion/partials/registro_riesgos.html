@@ -1,0 +1,952 @@
+<head>      
+      <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+      <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>     
+      <meta content="width=device-width, initial-scale=1.0" name=viewport> 
+      <script type="text/javascript" src="../../../libs/js/jquery-1.11.2.min.js"></script>
+      <script type="text/javascript" src="../../../libs/js/bootstrap-clockpicker.min.js"></script>
+      <script type="text/javascript" src="../../../controller/autenticacion/config.js"></script>        
+      <script type="text/javascript" src="../../../libs/login/login.js"></script>     
+      <script type="text/javascript" src="../../../libs/apiIF/api_if.js"></script>
+
+      <link rel="stylesheet" href="../../../libs/Librerias/ol_4.6.5_dist/ol.css"/>
+      <link rel="stylesheet" href="../../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css"/>
+
+      <script type="text/javascript" src="../../../libs/Librerias/ol_4.6.5_dist/ol.js"></script>
+      <script type="text/javascript" src="../../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
+      <script type="text/javascript" src="../../../libs/Librerias/proj_4/proj4.js"></script>
+      <script type="text/javascript" src="../../../libs/Librerias/busqueda/geo_zonas.js"></script>
+      <script type="text/javascript" src="../../../libs/Librerias/busqueda/geo_zonas_centroides.js"></script>
+      <script type="text/javascript" src="../../../libs/Librerias/busqueda/nombre_calles.js"></script>
+      <script type="text/javascript" src="../../../libs/Librerias/busqueda/nombre_lugares.js"></script>
+      <script type="text/javascript" src="../../../libs/Librerias/busqueda/mapa.js"></script>
+
+</head>
+<body>
+
+
+    <style>
+#pagewrap { 
+width: 94%;
+} 
+#content { 
+width: 80%;
+}  
+#asunto { 
+width: 100%;
+}
+
+.caja { 
+   font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; 
+   color: #4e5b57; 
+   font-size: 18px; 
+   font-weight: 400; 
+   text-align: left; 
+
+   margin: 0 0 25px; 
+   overflow: hidden; 
+   padding: 20px; 
+   border-radius: 10px 10px 10px 10px; 
+   -moz-border-radius: 10px 10px 10px 10px; 
+   -webkit-border-radius: 10px 10px 10px 10px;  
+   border: 2px solid #afcde3;}
+</style>
+<script>  
+
+  var numero = "";
+  var captchaerror=""; 
+  var tiemporespuesta = null;
+    var ErrorCapchasXX  = "";
+    var SuccesCapchasxx = "";
+    var habGuardar1 = ""; 
+    var urlImagen = "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";
+  function resetPassword()
+  {    
+    var captch  = $("#resultadoC").val();
+    var id = numero;
+    var verCaptcha = new captcha();
+    verCaptcha.identificador = id;
+    verCaptcha.respuesta = captch;
+    verCaptcha.verificarCaptcha(function(resultado)
+    {
+      json = JSON.parse(resultado);
+      if(json.success[0] == undefined)
+      {
+          sweetAlert("", "Error en el captcha intentar de nuevo por favor", "warning");
+          obtCaptha();
+      }
+      else
+      {
+          subirimagen();
+      }
+    });
+  }
+   function noVacio()
+   {
+      var estadoDenuncia  = $("#detalleDenuncia").val();    
+    if( estadoDenuncia != "" )
+    {
+       document.getElementById("resultadoC").disabled = false;
+
+    }
+    else
+    {
+      document.getElementById("resultadoC").disabled = true;
+    }
+   }
+  function getlimpiareRROR()
+  {   
+    //var detalle = $("#detalleDenuncia").val();
+    var captch  = $("#resultadoC").val();    
+    if( captch != "" )
+    {
+       document.getElementById("EnvRes").disabled = false;
+
+    }
+    else
+    {
+      document.getElementById("EnvRes").disabled = true;
+    }
+  }
+  function obtCaptha()
+  {     
+    $("#resultadoC").val('');
+    var objCaptcha = new captcha();
+    objCaptcha.obtcaptcha(function(resultado)
+    {
+      json = JSON.parse(resultado);
+      partes = json.success[0].sp_captcha_porx1.split(',');
+      numero = partes[0].substring(1);
+      i1=(partes[2]+ "," + partes[3]);
+      i2=(partes[4] + "," + partes[5]);
+      document.getElementById('img2').src = i1.substring(1, i1.length - 1);
+      document.getElementById('img1').src = i2.substring(1, i2.length - 2);
+      var lengua = "";
+      if(partes[1] == 'A') {
+          lengua = 'AYMARA';
+      } else if(partes[1] == 'Q') {
+          lengua = 'QUECHUA';
+      } else if(partes[1] == 'G'){
+          lengua = 'GUARANI';
+      } else if(partes[1] == 'C'){
+          lengua = 'CASTELLANO';
+      } else {
+      }
+      document.getElementById('img1').title = "Palabra en " + lengua;
+      document.getElementById('resultadoC').placeholder = "Capcha: " + lengua + " CASTELLANO";      
+    });
+  } 
+  function verificarKeyPress(captch)
+  {
+    var id = numero;
+    var verCaptcha = new captcha();
+    verCaptcha.identificador = id;
+    verCaptcha.respuesta = captch;
+    verCaptcha.verificarCaptcha(function(resultado)
+    {
+        json = JSON.parse(resultado);
+        var nroregsitros = json.success.length;
+        if(nroregsitros == 0)
+        {
+            habGuardar1 = true;
+            ErrorCapchasXX = "Verifique el Capcha";
+            SuccesCapchasxx="";
+            document.getElementById("msg_capcha").innerHTML = ErrorCapchasXX;            
+            document.getElementById("EnvRes").disabled = true;
+        }
+        else
+        {
+            habGuardar1 = false;
+            ErrorCapchasXX = "";
+            SuccesCapchasxx="Capcha correcto";
+            document.getElementById("msg_capcha").innerHTML = SuccesCapchasxx;           
+            document.getElementById("EnvRes").disabled = false;                     
+        }
+    });
+  }
+  function VerificarCapchaa (datos)
+  {
+      document.getElementById("EnvRes").disabled = true;
+      var captch  = $("#resultadoC").val();
+      if(captch.length == 0)
+          ErrorCapchasXX = "";
+      if(captch.length > 3)
+      {
+          clearTimeout(tiemporespuesta);
+          tiemporespuesta = setTimeout(verificarKeyPress.bind(undefined, captch), 1500);
+      }
+  };
+   function limpiarCamposRecuperacion()
+  {
+    
+    document.getElementById("resultadoC").disabled = true;
+    document.getElementById("EnvRes").disabled = true;  
+    document.getElementById("resultadoC").value = '';
+    document.getElementById("resultadoC").value = '';
+  }
+  function solonumeros(e)
+                    {
+         var key = window.event ? e.which : e.keyCode;
+                        if(key < 48 || key > 57)
+                            e.preventDefault();
+                    }
+  $(document).ready(function() {
+      obtCaptha();     
+      getlimpiareRROR(); 
+      noVacio();    
+ 
+  $(document).on('change', 'input[type=file]', function(e) {   
+    var TmpPath = URL.createObjectURL(e.target.files[0]);  
+    $( "#esLibres" ).val(TmpPath);    
+    $('span').html(TmpPath);
+    $("#prueba").attr('src', TmpPath);
+  });
+}); 
+</script>
+  <link rel="stylesheet" href="../../../libs/css/sweetalert.min.css"/>
+  <link href="../../../libs/css/bootstrap.min.css" rel="stylesheet"> 
+  <link href="../../../libs/css/bootstrap-clockpicker.css" rel="stylesheet">
+<script >  
+function tipoOpcion(v){
+  if (v.value==1) {
+   document.getElementById("datosPersonales").style="display:none;";  
+ }
+ if (v.value==2) {
+   document.getElementById("datosPersonales").style="display:block;";
+  
+ }                   
+}     
+function subirimagen()
+{  
+  if($("#prueba2").val() != "")
+  {
+    formData = '{ "oid": "57798c372f59181eb279fe5f",       "imagen": "'+urlImagen+'",     "ci": "10000000",         "nombre": "denuncia"   }';
+   $.ajax({
+    type        : 'POST',
+    url         : 'http://192.168.5.141/dreamfactory/igob/igob247imagenes.php', 
+    data        : formData,
+    headers: {
+          'Content-type': 'application/json'
+        },
+    success: function(data) { 
+     var urlDenuncias = data;
+     guardarDatos2(urlDenuncias);      
+  },   
+  });  
+  }
+  else
+  { 
+    var urlDenuncias = " "; 
+    guardarDatos2(urlDenuncias);   
+  } 
+}
+function guardarDatos2(url){
+  setTimeout(function(){  
+  //$.blockUI({ message: '<h1><img src="img/cargando.gif" width="45" height="45" /></h1>' });
+  }, 200);
+  var tipoForm = $("#tipoForm").val(); 
+  var fromIn = $("#fromIn").val();
+  var procedencia = $("#procedencia").val();
+  var asunto = $("#asunto").val();
+  var nombreCompleto = $("#nombreCompleto").val();
+  var documento = $("#documento").val();
+  var expedido= $("#expedido").val(); 
+  var direccion = $("#direccion").val(); 
+  var telefono = $("#telefono").val();
+  var correo = $("#correo").val();
+  var tipoIdentidad = $("#identidad").val(); 
+  var prueba = url;
+  var detalleDenuncia = $("#detalleDenuncia").val(); 
+  var  idUsusario = '1';
+  if(tipoIdentidad ==  1)
+  {
+    nombreCompleto = 'Anonimo';
+    documento = 0;
+    direccion = 's/d';
+    telefono = 0;
+    correo = 'sin correo';
+  }
+   if(documento ==  '')
+  {   
+    documento = 0;  
+  }
+   if(telefono ==  '')
+  {   
+    telefono = 0;  
+  }
+    var xdts_datos = '{  "tipoForm":"'+tipoForm+'", "idUsusario":"'+idUsusario+'", "procedencia": "'+procedencia+'", "asunto":"'+asunto+'",  "nombreCompleto": "'+nombreCompleto+'", "documento":"'+documento+'",  "expedido": "'+expedido+'", "direccion":"'+direccion+'", "telefono": "'+telefono+'", "correo":"'+correo+'", "tipoIdentidad":"'+tipoIdentidad+'", "prueba": "'+prueba+'", "detalleDenuncia":"'+detalleDenuncia+'" }'; 
+    var xdts_datos = JSON.stringify(xdts_datos); 
+
+
+
+ $.ajax({
+    type        : 'POST',
+    url         : jsonURLS.CONEXION_MOTOR_SERVICIO + 'api/apiLogin', 
+    data        : '{"usr_usuario":"administrador", "usr_clave":123456}',
+    headers: {
+          'Content-type': 'application/json'
+        },
+    success: function(token) { 
+      token = token.token; 
+      var formData = {"identificador": 'RCCIUDADANO_INSERTA_CASOS',"parametros": '{"xdts_tipo":"'+tipoForm+'", "xdts_nombre_completo":"'+nombreCompleto+'", "xdts_fono":'+telefono+', "xdts_referencia":"'+asunto+'", "xdts_contenido":"'+procedencia+'", "xdts_url_evidencia":"'+prueba+'", "xdts_usr_id":1, "xdts_tipo_detalle":"'+detalleDenuncia+'", "xdts_datos":'+xdts_datos+'}'};  
+
+
+  },   
+  });  
+} 
+
+var fechax = new Date();
+function limpiar_riesgos(){
+  $("#riesgo_nivel").val("");
+  $("#riesgo_nombre").val("");
+  $("#riesgo_paterno").val("");
+  $("#riesgo_materno").val("");
+  $("#riesgo_ci").val("");
+  $("#riesgo_direccion").val("");
+  $("#riesgo_barrio").val("");
+  $("#riesgo_zona").val("");
+  $("#riesgo_tel_contacto").val("");
+  $("#riesgo_cel_contacto").val("");
+  $("#riesgo_nro_familia").val("");
+  $("#riesgo_hora_visita").val("");
+  $("#riesgo_prop_vivienda").val("");
+  $("#riesgo_correo").val("");
+  $("#riesgo_latitud").val("");
+  $("#riesgo_longitud").val("");
+
+};
+
+function crearCasoLotus()
+{
+  var dataForm = {};
+  dataForm['riesgo_nivel']        =   $("#riesgo_nivel").val();
+  dataForm['riesgo_nombre']       =   $("#riesgo_nombre").val();
+  dataForm['riesgo_paterno']      =   $("#riesgo_paterno").val();
+  dataForm['riesgo_materno']      =   $("#riesgo_materno").val();
+  dataForm['riesgo_barrio']       =   $("#riesgo_barrio").val();
+  dataForm['riesgo_ci']           =   $("#riesgo_ci").val();
+  dataForm['riesgo_direccion']    =   $("#riesgo_direccion").val();
+  dataForm['riesgo_macrodistrito']=   $("#riesgo_macrodistrito").val();
+  dataForm['riesgo_zona']         =   $("#riesgo_zona").val();
+  dataForm['riesgo_tel_contacto'] =   $("#riesgo_tel_contacto").val();
+  dataForm['riesgo_cel_contacto'] =   $("#riesgo_cel_contacto").val();
+  dataForm['riesgo_nro_familia']  =   $("#riesgo_nro_familia").val();
+  dataForm['riesgo_hora_visita']  =   $("#riesgo_hora_visita").val();
+  dataForm['riesgo_prop_vivienda']=   $("#riesgo_prop_vivienda").val();
+  dataForm['riesgo_correo']       =   $("#riesgo_correo").val();
+  dataForm['riesgo_observacion']  =   $("#riesgo_observacion").val();
+  dataForm['riesgo_latitud']      =   $("#riesgo_latitud").val();
+  dataForm['riesgo_longitud']     =   $("#riesgo_longitud").val();
+  dataForm['riesgo_rol']    =   "INTERNET";
+//console.log('xxx',dataForm['riesgo_nivel'] );
+
+  if(dataForm['riesgo_nivel'] == "4" || dataForm['riesgo_nivel'] == "3")
+  {
+      if(dataForm['riesgo_nombre'] != "" && dataForm['riesgo_ci'] != "") 
+      {
+        if(dataForm['riesgo_paterno'] == "" && dataForm['riesgo_materno'] == "") 
+        {
+           swal('Estimado Ciudadano', 'Debe introducir al menos un Apellido', 'warning');
+        }
+        else
+        {
+          data_json = JSON.stringify(dataForm);
+          //var formData = '{"data_json":"{\"name\":\"lggggg\"}"}'; 
+          formData = JSON.stringify(data_json);
+          //console.log(formData,2233);
+          
+          $.ajax({
+                  type        : 'POST',
+                  url         : 'http://192.168.5.141:8003/wsRCPG/registroriesgo', 
+                  data        : '{"data_json":'+formData+'}',
+                  headers: {'Content-type': 'application/json'},
+                  success: function(resultado)
+                  { 
+                    //console.log(resultado.success[0].sp_crear_datos_riesgo);
+                    if (resultado.success[0].sp_crear_datos_riesgo === true)
+                    {
+                        swal('Estimado Ciudadano', 'Ud. se registro correctamente', 'success'); 
+                        limpiar_riesgos();
+                    }
+                    else{}
+                  },   
+                });
+
+          $.ajax({
+                  type        : 'POST',
+                  url         : 'http://serigobv2.lapaz.bo/wsCC/registroriesgo_1', 
+                  data        : '{"data_json":'+formData+'}',
+                  headers: {'Content-type': 'application/json'},
+                  success: function(resultado)
+                  { 
+                    
+                  },   
+              });
+          
+        }
+      }
+      else
+      {
+        swal('Estimado Ciudadano', 'Debe introducir su Nombre y CI', 'warning');
+      } 
+  }
+  else
+  {
+    swal('Estimado Ciudadano', 'Ud. no se encuentra en una Zona de Riesgo', 'warning'); 
+  }  
+  //$.unblockUI();
+};
+
+function soloNumericoTelefono(sValo){
+      Numer=parseInt(sValo);
+      if (isNaN(Numer)){
+          return "";
+      }else{
+          var digits = ("" + Numer).split("");
+          if(digits.length < 8 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+              return Numer;
+          }else{
+              return "";
+          }
+      }
+};
+function valNumeroTelefono(Control){
+      Control.value = soloNumericoTelefono(Control.value);
+};
+function soloNumericoCelular(sValor){
+      Numer=parseInt(sValor);
+      if (isNaN(Numer)){
+          return "";
+      }else{
+          var digits = ("" + Numer).split("");
+          if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6) && digits.length < 9){
+              return Numer;
+          }else{
+              return "";
+          }
+      }
+};
+function valNumeroCelular(Control){
+    Control.value = soloNumericoCelular(Control.value);
+};
+
+function conMayusculas(field) {
+    field.value = field.value.toUpperCase()
+};
+function validaCorreo (){ 
+  var correo_riesgo       =   $("#riesgo_correo").val();
+  //console.log("hola", correo_riesgo);
+  var indices = [];
+  if(correo_riesgo != undefined){                  
+      for (var i2 =0; i2 < correo_riesgo.length; i2++) {
+        if (correo_riesgo[i2].toLowerCase() == "@") {
+          indices.push(i2);
+        } 
+      } 
+  }
+  //console.log("hola", indices.length);
+  if (indices.length != 1) {$("#riesgo_correo").val("");}
+}; 
+
+</script>
+
+<script type="text/javascript">
+  var map = new ol.Map();
+
+  var epsg32719 = 'EPSG:32719';
+  var epsg4326 = 'EPSG:4326';
+  proj4.defs(epsg32719, '+proj=utm +zone=19 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs');
+  proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');
+
+
+  var vectorSourceB = new ol.source.Vector({});
+  var vectorLayerZonas = new ol.layer.Vector();
+
+  var vectorSource = new ol.source.Vector();
+  var vectorLayer = new ol.layer.Vector({source: vectorSource});
+
+  //map.addLayer(vectorLayerZonas);
+
+  var myStyleZonas = new ol.style.Style({
+           stroke : new ol.style.Stroke({color : 'blue',width : 1}),
+           fill : new ol.style.Fill({color: 'transparent'})
+  });
+
+  var view = new ol.View({
+                          //projection: projection19,
+                          center: ol.proj.fromLonLat([ -68.122455, -16.498960]), 
+                          zoom: 16
+                          //minZoom: 2,
+                          //maxZoom: 20
+  });
+
+  var buscar = document.getElementById('buscar');
+  var vectorLayer_inci_alta = new ol.layer.Vector();
+  var vectorLayer_inci_media = new ol.layer.Vector();
+  var vectorLayer_inci_baja = new ol.layer.Vector();
+
+  var vectorLayer_ambulancias = new ol.layer.Vector();
+  var vectorLayer_gruas = new ol.layer.Vector();
+  var vectorLayer_motos = new ol.layer.Vector();
+  var vectorLayer_patrullas = new ol.layer.Vector();
+  var vectorLayer_camionetas = new ol.layer.Vector();
+
+  var vectorLayer_poligonos = new ol.layer.Vector();
+  map.addLayer(vectorLayer_poligonos);
+  var vectorLayer_lineas = new ol.layer.Vector();
+  map.addLayer(vectorLayer_lineas);
+
+  var geojson_empiezo = '{"type":"FeatureCollection","name":"puntos_geo_3857","crs":{"type":"name","properties":{"name": "urn:ogc:def:crs:EPSG::3857"}},"features": [';
+  var geojson_cuerpo ='';
+  var geojson_fin = ']}';
+  var geojson_c = '';
+  var centro = '';
+  var geo_cuerpo_l = '';
+  var geo_cuerpo_p = '';
+
+  var geo_empiezo = '{"type":"FeatureCollection","name":"puntos_geo_3857","crs":{"type":"name","properties":{"name": "urn:ogc:def:crs:EPSG::3857"}},"features": [';
+  var geo_fin = ']}';
+
+  var coord ='';
+  //$scope.popup = ''; 
+
+  var popup = document.getElementById('popup');
+  var popup_closer = document.getElementById('popup-closer');
+  var popup_content = document.getElementById('popup-content');
+  var olpopup = new ol.Overlay({element: popup,autoPan: false});
+
+
+  var iconStyle_riesgo = new ol.style.Style({
+              image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                  color: 'blue'
+                })
+              })
+  });
+
+  var iconStyle = new ol.style.Style({
+              image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                  color: 'red'
+                })
+              })
+  });
+
+  var osm_udit = new ol.layer.Tile({
+                              title: 'OSM',
+                              visible: true,
+                              //render: 'canvas',
+                              source: new ol.source.TileWMS({
+                                                              url: 'http://192.168.6.46:8080/geoserver/DEGEM/wms',
+                                                              //url: 'http://localhost:8090/geoserver/DEGEM/wms',
+                                                              params: {'LAYERS': 'DEGEM:osm_udit', 'VERSION': '1.1.1','FORMAT': 'image/png','TILED': true},
+                                                              serverType: 'geoserver'
+                                                              ,crossOrigin: 'Anonymous'
+                                                            })
+  });
+
+  var municipios = new ol.layer.Tile({
+    title: 'Municipio',
+        visible: true,
+        source: new ol.source.TileWMS({
+            url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+            params: { 'LAYERS': 'g_municipio', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+            serverType: 'geoserver',
+            crossOriginKeyword: 'anonymous'
+    })
+  });
+
+  var img_sat_2018 = new ol.layer.Tile({
+                                          title: 'Kompsat 2018',
+                                          visible: false,
+                                          //render: 'canvas',
+                                          source: new ol.source.TileWMS({
+                                                                          url: 'http://192.168.5.94:8080/geoserver/wms',
+                                                                          params: {'LAYERS': 'raster:kompsat_2018', 'VERSION': '1.1.1','FORMAT': 'image/png','TILED': true},
+                                                                          serverType: 'geoserver',
+                                                                          crossOrigin: '*'
+                                                                        })
+  });
+
+  var macrodistritos = new ol.layer.Tile({
+    title: 'Macrodistritos 2017',
+    visible: false,
+    source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: {'LAYERS': 'lapaz:macrodistritos_2017', 'VERSION': '1.1.0','FORMAT': 'image/png','STYLES':'lp_macrodistritos2017','TILED': true},
+        crossOriginKeyword: 'anonymous'
+    })
+  });
+
+  var riesgos_2011 = new ol.layer.Tile({
+        title: 'Zonas de Riesgo',
+        opacity: 0.5,
+        visible: true,
+        source: new ol.source.TileWMS({
+            url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+            params: { 'LAYERS': 'g_riesgos_2011', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+            serverType: 'geoserver',
+            crossOriginKeyword: 'anonymous'
+        })
+  });
+  
+  var distritos_m_2017 = new ol.layer.Tile({
+                          title: 'Distritos Municipales 2017',
+                          visible: false,
+                          //render: 'canvas',
+                          source: new ol.source.TileWMS({
+                                                         url: 'http://192.168.5.94:8080/geoserver/wms',
+                                                          params: {'LAYERS': 'lapaz:distritos_2017', 'VERSION': '1.1.0','FORMAT': 'image/png','STYLES':'lp_distritos2017','TILED': true},
+                                                          serverType: 'geoserver',
+                                                          crossOrigin: '1'
+                                                        })
+  });
+  
+  var restitucion_2006 = new ol.layer.Tile({
+                          title: 'Restitucion 2006',
+                          visible: false,
+                          //render: 'canvas',
+                          source: new ol.source.TileWMS({
+                                                          url: 'http://192.168.5.94:8080/geoserver/wms',
+                                                          params: {'LAYERS': 'g_restitucion_2006', 'VERSION': '1.1.0','FORMAT': 'image/png','TILED': true},
+                                                          serverType: 'geoserver',
+                                                          crossOrigin: '1'
+                                                        })
+  });
+  
+  var planimetria = new ol.layer.Tile({
+                          title: 'Planimetria',
+                          visible: false,
+                          //render: 'canvas',
+                          source: new ol.source.TileWMS({
+                                                          url: 'http://192.168.5.94:8080/geoserver/wms',
+                                                          params: {'LAYERS': 'archivo:planimetrias', 'VERSION': '1.1.0','FORMAT': 'image/png','STYLES':'planimetrias_desc','TILED': true},
+                                                          serverType: 'geoserver',
+                                                          crossOrigin: '1'
+                                                        })
+  });
+
+  var ortofotos_2006 = new ol.layer.Tile({
+                          title: 'Ortofotos 2006',
+                          visible: false,
+                          //render: 'canvas',
+                          source: new ol.source.TileWMS({
+                                                         url: 'http://192.168.5.94:8080/geoserver/wms',
+                                                          params: {'LAYERS': 'lapaz:ortofotos2006', 'VERSION': '1.1.0','FORMAT': 'image/jpeg','TILED': true},
+                                                          serverType: 'geoserver',
+                                                          crossOrigin: '1'
+                                                        })
+  });
+
+  function buscar_ubicacion()
+  {
+    var nombre_1 = new Array();
+    var f = '';
+    var nombre = document.getElementById('busqueda').value;
+    nombre = nombre.toUpperCase();
+    var ca = "CALLE ";
+    ca = ca.concat(nombre);
+    var c = 0;
+    /////////////////////////////
+    var tipo = "lugares";
+    var data = '';
+    ///////////////////////////////
+    if(nombre==='')
+    {
+      var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
+      console.log("Vacio :",obj);
+      map.removeLayer(vectorLayerZonas);
+    }
+    else
+    {  
+      if(tipo == 'lugares')
+      {
+        map.removeLayer(vectorLayerZonas);
+        for (var i=0;i<geo_zonas.features.length;i++)
+        {
+          var nombre_zona =  geo_zonas.features[i].properties.zonaref;
+          var x_c = geo_zonas_centroides.features[i].geometry.coordinates[0];
+          var y_c = geo_zonas_centroides.features[i].geometry.coordinates[1];
+          if(nombre === nombre_zona)
+          {
+            c=c+1;
+            var geo_zona =  geo_zonas.features[i];
+            var xx = x_c;
+            var yy = y_c;
+          }
+        }
+        if(c>0)
+        {
+          geo_zona = JSON.stringify(geo_zona);
+          vectorLayerZonas.setSource(new ol.source.Vector({
+                                                       features: (new ol.format.GeoJSON({defaultDataProjection:'EPSG:3857'})).readFeatures(geo_zona)
+          }));
+
+          vectorLayerZonas.setStyle(myStyleZonas);
+
+          map.addLayer(vectorLayerZonas);
+          map.getView().setCenter([xx,yy]);
+          map.getView().setZoom(15);
+        }
+      }
+      if(c==0)
+      {
+        var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
+        console.log("Vacio :",obj);
+      }
+    }    
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+</script>
+
+
+<div style="max-width:960px; min-width:320px; margin:auto" id="content" class="border border-warning rounded caja">
+  <br>
+  <div class="form-group">
+    <label  class="col-sm-12 control-label"><center><H2> FORMULARIO DE REGISTRO VOLUNTARIO DE
+HOGARES EN ZONA DE RIESGO </H2></center></label>
+    <input   id="esLibres"  hidden>
+  </div> 
+  <center> <div class="col-sm-11">
+   <label  class="col-sm-12 control-label text-justify" > Este es un registro voluntario para recibir asesoramiento sobre posibles mejoras a
+implementar en las viviendas, para mitigar los factores de riesgo. El
+asesoramiento será brindado por la Secretaria Municipal de Gestión Integral de
+Riesgos.<br> <br></label>
+  </div></center>
+
+  <center> <div class="col-sm-11">
+   <label  class="col-sm-12 control-label text-justify" > 
+    PASO 1: Seleccione la ubicación de su vivienda en el mapa!
+    <image src="../../../libs/Librerias/busqueda/manito.png" style="width:25px !important; height:30px !important"/>  
+    <br><br>
+    </label>
+  </div></center>
+      
+   
+      <div class="form-group row">
+         <div id="map_principal" style="width: 100%; height: 400px; float:left;"></div>
+      </div>
+
+      <div class="form-group row">
+          <label class="col-sm-3 control-label" >Nombre de Zona:</label>                                                   
+          <div class="col-sm-6">
+            <input  name="busqueda" id="busqueda" class="form-control" type="text" onkeyUp="return conMayusculas(this);">
+            <span class="input-group-btn"><br>
+              <button class="btn btn-info" type="button" onclick="buscar_ubicacion();"><i class="fa fa-search">Buscar</i></button>
+            </span>
+          </div>
+      </div>
+ 
+
+      <center> <div class="col-sm-11">
+       <label  class="col-sm-12 control-label text-justify" > 
+        PASO 2: Ingrese sus datos en el siguiente formulario:
+        <br><br>
+        </label>
+      </div></center>
+
+      <div class="form-group row"> 
+          <label  class="col-sm-3 control-label">Riesgo:</label>
+          <div class="col-sm-6">
+           
+            <select class="form-control" id="riesgo_nivel" onclick="tipoOpcion(this);">
+                              <option value="" selected="Seleccione" >--Seleccione--</option>
+                              <option value="2">SIN RIESGO</option>
+                              <option value="3">ALTO</option>
+                              <option value="4">MUY ALTO</option>   
+            </select>
+            
+            <!--
+            <input  name="riesgo_nivel" id="riesgo_nivel" class="form-control" type="text" onkeyUp="return conMayusculas(this);">
+            -->
+          </div>
+      </div>
+      <div class="form-group row">
+
+          <label class="col-sm-3 control-label" >Nombre:</label>                                                    
+          <div class="col-sm-6">
+            <input  name="riesgo_nombre" id="riesgo_nombre" class="form-control" type="text" onkeyUp="return conMayusculas(this);">
+            <input  name="riesgo_latitud" id="riesgo_latitud" class="form-control" type="hidden">
+            <input  name="riesgo_longitud" id="riesgo_longitud" class="form-control" type="hidden">
+          </div>
+      </div>
+
+      <div class="form-group row">
+          <label class="col-sm-3 control-label" >Apellido Paterno:</label>                                                    
+          <div class="col-sm-6">
+            <input  name="riesgo_paterno" id="riesgo_paterno" class="form-control" type="text" onkeyUp="return conMayusculas(this);">
+          </div>
+      </div>
+
+      <div class="form-group row">
+          <label class="col-sm-3 control-label" >Apellido Materno:</label>                                                    
+          <div class="col-sm-6">
+            <input  name="riesgo_materno" id="riesgo_materno" class="form-control" type="text" onkeyUp="return conMayusculas(this);">
+          </div>
+      </div>
+
+      <div class="form-group row">
+          <label class="col-sm-3 control-label" >Número C.I.:</label>                                                    
+          <div class="col-sm-6">
+              <input name="riesgo_ci" id="riesgo_ci" class="form-control" type="text" onkeyUp="return conMayusculas(this);">
+          </div> 
+      </div>
+      <!--div class="form-group row">
+          <label class="col-sm-3 control-label" >Expedido:</label> 
+              <div class="col-sm-6">           
+                                <select id="riesgo_expedido" name="riesgo_expedido" class="form-control" >
+                                    <option value="">--Seleccione--</option>
+                                    <option value="LPZ">LA PAZ</option>
+                                    <option value="ORU">ORURO</option>
+                                    <option value="PTS">POTOSI</option>
+                                    <option value="CBB">COCHABAMBA</option>
+                                    <option value="CHQ">CHUQUISACA</option>
+                                    <option value="TJA">TARIJA</option>
+                                    <option value="BNI">BENI</option>
+                                    <option value="PND">PANDO</option>
+                                    <option value="SCZ">SANTA CRUZ</option>
+                                    <option value="EXT">EXTERIOR</option>
+                                </select>
+              </div>
+      </div-->
+      <div class="form-group row">
+          <label class="col-sm-3 control-label" >Dirección:</label>                                                    
+          <div class="col-sm-6">
+              <input  ng-model="datos.riesgo_direccion" name="riesgo_direccion" id="riesgo_direccion" class="form-control" type="text" onkeyUp="return conMayusculas(this);">
+          </div>
+      </div>
+
+
+      <div class="form-group row">
+        <label class="col-sm-3 control-label" >Barrio:</label>                                                    
+          <div class="col-sm-6">
+              <input  ng-model="datos.riesgo_barrio" name="riesgo_barrio" id="riesgo_barrio" class="form-control" type="text" onkeyUp="return conMayusculas(this);">
+          </div> 
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 control-label" >Macrodistrito:</label>                                                    
+          <div class="col-sm-6">
+              <input  ng-model="datos.riesgo_macrodistrito" name="riesgo_macrodistrito" id="riesgo_macrodistrito" class="form-control" type="text" onkeyUp="return conMayusculas(this);" disabled>
+          </div> 
+      </div>
+            
+      <div class="form-group row">
+      <label class="col-sm-3 control-label" >Zona:</label>                                                    
+          <div class="col-sm-6">  
+              <input  ng-model="datos.riesgo_zona" name="riesgo_zona" id="riesgo_zona" class="form-control" type="text" onkeyUp="return conMayusculas(this);" disabled>
+          </div>
+      </div>
+      <div class="form-group row">
+          <label class="col-sm-3 control-label" >Teléfono de Contacto:</label>                                                    
+          <div class="col-sm-6">
+              <input  ng-model="datos.riesgo_tel_contacto" name="riesgo_tel_contacto" id="riesgo_tel_contacto" class="form-control" type="number" onkeyUp="return valNumeroTelefono(this);">
+          </div>
+      </div>
+
+
+      <div class="form-group row">
+          <label class="col-sm-3 control-label" >Celular de Contacto:</label>                                                    
+          <div class="col-sm-6">
+              <input  ng-model="datos.riesgo_cel_contacto" name="riesgo_cel_contacto" id="riesgo_cel_contacto" class="form-control" type="number"  onkeyUp="return valNumeroCelular(this);">
+          </div>
+      </div>
+
+      <div class="form-group row">
+          <label class="col-sm-3 control-label" >Nro. de miembros en la familia:</label>                                    
+          <div class="col-sm-6">
+              <input  ng-model="datos.riesgo_nro_familia" name="riesgo_nro_familia" id="riesgo_nro_familia" class="form-control" type="number">
+          </div> 
+      </div>
+
+      <div class="form-group row">
+          <label class="col-sm-3 control-label" >Horario de preferencia de visita:</label> 
+          <!--                               
+          <div class="col-sm-2 input-group clockpicker"  data-align="top" data-autoclose="true">
+              <input  ng-model="datos.riesgo_hora_visita" name="riesgo_hora_visita" id="riesgo_hora_visita" class="form-control" type="text" placeholder="HH:mm" disabled="true">
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+                </span>
+                
+                    <script type="text/javascript">
+                    $('.clockpicker').clockpicker();
+                     //placement: 'top',
+                     //align: 'left',
+                     //donetext: 'Done'                 
+                    </script>
+          </div>
+        -->
+        <div class="col-sm-6">                                                 
+            <select ng-model="datos.riesgo_hora_visita" id="riesgo_hora_visita" name="riesgo_hora_visita" class="form-control">
+              <option value="">--Seleccione--</option>
+                <option value="MAÑANA">MAÑANA</option>
+                <option value="TARDE">TARDE</option>
+                <option value="NOCHE">NOCHE</option>
+            </select> 
+        </div>
+      </div>
+
+      <div class="form-group row">
+          <label class="col-sm-3 control-label" >¿Propietario de la vivienda?:</label>   
+          <div class="col-sm-6">                                                 
+              <select id="riesgo_prop_vivienda" name="riesgo_prop_vivienda" class="form-control" >
+                    <option value="">--Seleccione--</option>
+                    <option value="SI">SI</option>
+                    <option value="NO">NO</option>
+              </select> 
+
+          </div>
+      </div>
+
+
+      <div class="form-group row">
+          <label class="col-sm-3 control-label" >Correo Electronico:</label>                                                    
+              <div class="col-sm-6">
+                  <input  ng-model="datos.riesgo_correo" name="riesgo_correo" id="riesgo_correo" class="form-control" type="text" onchange="validaCorreo();">
+              </div> 
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 control-label">Observación:</label>                                                    
+          <div class="col-sm-6">
+            <textarea ng-model="datos.riesgo_observacion" name="riesgo_observacion" id="riesgo_observacion" class="form-control rounded-0" rows="3"  onkeyup="return conMayusculas(this);"></textarea>
+          </div> 
+      </div>
+
+
+<div id="datosPersonales" style="display: none;"> 
+
+
+
+
+</div> 
+
+
+ 
+<center><div class="container" >
+  <div  class="center-block">
+    <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table users table-hover border border-warning " > 
+            <tr> 
+                <th class="border border-warning"><img id="img1" class="img-responsive" src="" title="" width="200" height="35"></th>   
+               <th class="border border-warning"> <img id="img2" class="img-responsive" src=""  title="" width="200" height="35"></th>  
+            </tr>        
+          </table>  
+               <input   size="50"  id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="../../servicios/transparencia/reporte/img/recarga.png"  width="20" height="20" title=""> </button>
+           <p id="msg_capcha"></p>             
+        </div>
+    </div>
+  </div>
+</div></center>
+
+        <div class="modal-footer col-md-12" align="center">  
+          <button id= "EnvRes"  onClick="resetPassword();crearCasoLotus();" disabled="true" type="submit"  onclick="subirimagen();" class="btn btn-warning text-white"  >Enviar</button>        
+        </div>
+<center><img src="../../../img/logoPeque.png" width="250" height="100"/></center>
+</div>
+<script type="text/javascript" src="../../../libs/js/jquery.blockUI.min.js"></script>
+<script type="text/javascript" src="../../../libs/js_one/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../libs/js/sweetalert.min.js"></script>

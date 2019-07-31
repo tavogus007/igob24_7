@@ -1,0 +1,308 @@
+<script type="text/javascript">
+    function conMayusculas(field) {
+        field.value = field.value.toUpperCase()
+    };
+    function soloNumerico(variable){
+        Numer=parseInt(variable);
+        if (isNaN(Numer)){
+            return "";
+        }
+        return Numer;
+    }
+    function valNumero(Control){
+        Control.value=soloNumerico(Control.value);
+    }
+</script>
+<div class="col-md-12" class="row" ng-controller="busquedaController">
+    <table  width="100%">
+        <td><h3> Busqueda </h3></td> 
+    </table>
+    <div class="modal-body">
+        <!--  ng-show = "encontrado == null"-->
+        <form name="formulario" readOnly="true" novalidate>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >Nro CI:</label>
+                        <input  ng-model="datos.vci" id="vci" name="vci" class="form-control" type="text" placeholder="Ingrese Nro. CI" ng-disabled="desabilitado" onkeyUp="return valNumero(this);">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >Fecha Nacimiento:</label>
+                        <p class="input-group">                                    
+                        <span class="block input-icon input-icon-right">    
+                            <input name="vfechanacimiento" id="vfechanacimiento" type="text" placeholder="Fecha nacimiento"   class="form-control" datepicker-popup="" ng-model="datos.vfechanacimiento" is-open="startDateOpened" ng-required="true" close-text="Close" ng-disabled="desabilitado"/>                                        
+                        </span>                                        
+                          <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="startDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                          </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group" >
+                        <label for="url" >Nombre:</label>
+                        <input  ng-model="datos.vnombre" id="vnombre" name="vnombre"class="form-control" type="text" placeholder="Ingrese Nombre" ng-disabled="desabilitado" onkeyUp="return conMayusculas(this);">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >Apellido Paterno:</label>
+                        <input  ng-model="datos.vappaterno" id="vappaterno" name="vappaterno" class="form-control" type="text" placeholder="Ingrese Apellido Paterno" ng-disabled="desabilitado" onkeyUp="return conMayusculas(this);" >
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="category">Apellido Materno</label>
+                        <input  ng-model="datos.vapmaterno" id="vapmaterno" name="vapmaterno" class="form-control" type="text" placeholder="Ingrese Apellido Materno" ng-disabled="desabilitado" onkeyUp="return conMayusculas(this);">
+                    </div>
+                </div>
+            </div>
+            <span>{{msg}}</span>
+            <br>
+            <div ng-show="nuevaBusqueda == null">
+                <a ng-click="buscarPersona(datos)" data-dismiss="modal" class="btn btn-primary"> Buscar</a>
+                <a name="btnNumeroRegistro" id="btnNumeroRegistro" onclick="location.href='#registro'" data-dismiss="modal" class="btn btn-primary"> Nuevo Registro</a>
+            </div>
+            <div ng-show="nuevaBusqueda != null">
+                <a name="btnNuevaBusqueda" id="btnNuevaBusqueda" ng-click="restaurarBusqueda()" data-dismiss="modal" class="btn btn-primary"> Nueva Busqueda</a>
+                <a name="btnNumeroRegistro" id="btnNumeroRegistro" onclick="location.href='#registro'" data-dismiss="modal" class="btn btn-primary"> Nuevo Registro</a>
+            </div>           
+
+        </form>
+
+        <!--  ng-show = "encontrado == null"-->
+        <div class="row" ng-show="tablaCiudadanos != null"> 
+            <br>
+            <table show-filter="true" class="table table-striped table-bordered">
+                <!--tr ng-repeat="datos in obtDatos" ng-class="{'colorInactivo': datos.prs_estado == 'I'}">
+                    <td align="center" data-title="'Opciones'">
+                        <a ng-click="verOpciones(datos)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i class="fa fa-folder-open fa-lg" style="color:#249FE6"></i></a>
+                    </td>
+                    <td data-title="'C.I.'" sortable="'vci'" filter="{'vci':'text'}">{{datos.vci}} </td>
+                    <td data-title="'Nombre'" sortable="'vnombre'" filter="{'vnombre':'text'}">{{datos.vnombre}}</td>
+                    <td data-title="'Apellido Paterno'" sortable="'vappaterno'" filter="{'vappaterno':'text'}">{{datos.vappaterno}}</td>
+                    <td data-title="'Apellido Materno'" sortable="'vapmaterno'" filter="{'vapmaterno':'text'}">{{datos.vapmaterno}}</td>
+                    <td data-title="'Fecha Nacimiento'" sortable="'vfechanacimiento'" filter="{'vfechanacimiento':'text'}">{{datos.vfechanacimiento}}</td>
+                </tr-->
+                <thead>
+                    <th>Opciones&nbsp;</th>
+                    <th>C.I.&nbsp;</th>
+                    <th>Nombre&nbsp;</th>
+                    <th>Apellido Paterno&nbsp;</th>
+                    <th>Apellido Materno&nbsp;</th>
+                    <th>Fecha Nacimiento&nbsp;</th>
+                </thead>
+                <tbody>
+                    <tr class="column" ng-repeat="datos in obtDatos" ng-click="seleccionarUsuario(usuario.usrId,usuario.usrNombre)">
+                           <td> <a ng-click="verOpciones(datos)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i class="fa fa-folder-open fa-lg" style="color:#249FE6"></i></a></td>
+                        <td>{{datos.vci}}</td>
+                        <td>{{datos.vnombre}}</td>
+                        <td>{{datos.vappaterno}}</td>
+                        <td>{{datos.vapmaterno}}</td>
+                        <td>{{datos.vfechanacimiento}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row" ng-show="opciones != null"> 
+            <br>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <th>Modificar&nbsp;</th>
+                    <th>Cambio PIN&nbsp;</th>
+                    <th>Registro Salud&nbsp;</th>
+                    <th>Activación Lógica&nbsp;</th>
+                    <th>Activación Física&nbsp;</th>
+                    <th>Estado &nbsp;</th>
+                </thead>
+                <tbody>
+                    <tr class="column" ng-repeat="datos2 in dataP">
+                           <td align="center" data-title="'Modificar'"> 
+                            <a ng-click="modificarDatosRegistro(datos2)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i class="fa fa-edit fa-lg" style="color:#249FE6"></i> </a>
+                        </td>
+                        <td align="center" data-title="'Cambio PIN'">
+                            <a ng-click="cambioPin(datos2)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i class="fa fa-exchange fa-lg" style="color:#249FE6"></i> </a>
+                        </td>
+                        <td align="center" data-title="'Registro Salud'">
+                            <a ng-click="registroMedico(datos2.vid)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i class="fa fa-heart fa-lg" style="color:#249FE6"></i> </a>
+                        </td>
+                        <td align="center" data-title="'Activación Digital'">
+                            <a ng-click="cambioEstado(datos2)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i ng-class="{'fa fa-thumbs-o-down fa-lg': datos2.vactivaciond == 'NO', 'fa fa-thumbs-o-up fa-lg': datos2.vactivaciond == 'SI'}" style="color:#249FE6"></i> </a>
+                        </td>
+                        <td align="center" data-title="'Activación Física'">
+                            <a ng-click="activacionFisica(datos2)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i ng-class="datos2.iconoAF" style="color:#249FE6"></i> </a>
+                        </td>
+                        <td align="center" data-title="'Estado'">
+                            <a ng-click="cambioEstado(datos2)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i ng-class="datos2.icono" style="color:#249FE6"></i> </a>
+                        </td>
+                    </tr>
+                </tbody>
+                <!--tr ng-repeat="datos2 in dataP" ng-class="{'colorInactivo': datos.vestado_activacion == 'BLOQUEADO', 'colorBloqueado': datos.vestado_activacion == 'DESBLOQUEADO'}">
+                    <td align="center" data-title="'Modificar'"> 
+                        <a ng-click="modificarDatosRegistro(datos2)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i class="fa fa-edit fa-lg" style="color:#249FE6"></i> </a>
+                    </td>
+                    <td align="center" data-title="'Cambio PIN'">
+                        <a ng-click="cambioPin(datos2)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i class="fa fa-exchange fa-lg" style="color:#249FE6"></i> </a>
+                    </td>
+                    <td align="center" data-title="'Registro Salud'">
+                        <a ng-click="registroMedico(datos2.vid)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i class="fa fa-heart fa-lg" style="color:#249FE6"></i> </a>
+                    </td>
+                    <td align="center" data-title="'Activación Lógica'">{{datos2.vactivaciond}}</td>
+                    <td align="center" data-title="'Activación Física'">{{datos2.vctivacionf}}</td>
+                    <td align="center" data-title="'Estado'">
+                        <a ng-click="cambioEstado(datos2)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#registro"><i ng-class="{'fa fa-lock fa-lg': datos.vestado_activacion == 'BLOQUEADO', 'fa fa-unlock fa-lg': datos.vestado_activacion == 'DESBLOQUEADO'}" style="color:#249FE6"></i> </a>
+                    </td>
+                </tr-->
+            </table>
+        </div>
+        <!-- formulario de cambio de pin -->
+        <div class="container" ng-show="formCambioPin != null">
+            <h2> <center> Cambio de PIN </center> </h2>
+            <form name="formulario" readOnly="true" novalidate>
+                <div class="form-group" >
+                    <label for="url" >Usuario:</label>
+                    <input  cols="10" rows="5" ng-model="prsCI" id="prsCI" name="prsCI" class="form-control" type="text" ng-disabled="desabilitado" required onkeyUp="return valNumero(this);" value = "{{prsCI}}" >
+                </div>
+                <div class="form-group" >
+                    <label for="url" >PIN Anterior:</label>
+                    <div class="controls">
+                        <input  ng-model="datosCambioPin.prsPinA" id="prsPinA" name="prsPinA" class="form-control" type="text" placeholder="ingrese PIN Anterior" required>
+                        <span style="color:red" ng-show="formulario.prsPinA.$invalid">
+                            <span ng-show="formulario.prsPinA.$error.required">PIN Anterior es requerido.
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <label for="url" >PIN Nuevo:</label>
+                    <div class="controls">
+                        <input  ng-model="datosCambioPin.prsPinN" id="prsPinN" name="prsPinN" class="form-control" type="text" placeholder="ingrese PIN Nuevo" required>
+                        <span style="color:red" ng-show="formulario.prsPinN.$invalid">
+                            <span ng-show="formulario.prsPinN.$error.required">PIN Nuevo es requerido.
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <label for="url" >PIN Confirmado:</label>
+                    <div class="controls">
+                        <input  ng-model="datosCambioPin.prsPinC" id="prsPinC" name="prsPinC" class="form-control" type="text" placeholder="ingrese PIN Confirmado" required>
+                        <span style="color:red" ng-show="formulario.prsPinC.$invalid">
+                            <span ng-show="formulario.prsPinC.$error.required">PIN Confirmado es requerido.
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <span>{{msgPIN}}</span>
+                <br>
+                <button ng-click="restaurarPin(datosCambioPin, prsCI)" data-dismiss="modal" type="button" class="btn btn-primary fa fa-check fa-lg" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'" ng-disabled="formulario.prsCI.$invalid || formulario.prsPinA.$invalid || formulario.prsPinN.$invalid || formulario.prsPinC.$invalid">  Cambiar </button>
+            </form>
+        </div>
+        <div class="container" ng-show="regMedico !=null">
+            <form name="formularioRegMedico" novalidate>
+                <legend>Formulario de Registro de Salud</legend>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="category">Grupo Sanguíneo</label>
+                            <div class="controls">
+                                <select id="dtsmdcgrpsanguineo" class="form-control" ng-model="datosMedicos.dtsmdcgrpsanguineo" name="dtsmdcgrpsanguineo">
+                                    <option value="ORH+">ORH+</option>
+                                    <option value="A+">A+</option>
+                                    <option value="B+">B+</option>
+                                    <option value="ORH-">ORH-</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B-">B-</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="category">Cobertura Médica</label>
+                            <div class="controls">
+                                <select id="dtsmdcsbtmedica" class="form-control" ng-model="datosMedicos.dtsmdcsbtmedica" name="dtsmdcsbtmedica">
+                                    <option value="SUMI">SUMI</option>
+                                    <option value="SPAM">SPAM</option>
+                                    <option value="PARTICULAR">PARTICULAR</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >Fecha de Alta:</label>
+                            <div class="controls">
+                                <p class="input-group"><input name="dtsmdcfechaalta" id="dtsmdcfechaalta" type="text" class="form-control" datepicker-popup="" ng-model="datosMedicos.dtsmdcfechaalta" is-open="startDateOpened" ng-required="true" close-text="Close"/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="startDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span></p>
+                                <!--span style="color:red" ng-show="formularioPersonas.prsfecnmt.$invalid">
+                                    <span ng-show="formularioPersonas.prsfecnmt.$error.required">Fecha de Nacimiento es requerido.
+                                    </span>
+                                </span-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >Antecedentes Personales:</label>
+                            <div class="controls">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <th>&nbsp;&nbsp;&nbsp;</th>
+                                        <th>Antecedentes&nbsp;</th>
+                                        <th>Detalle&nbsp;</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="antecedente in antecedentes">
+                                            <td><div class="ngSelectionCell">
+                                                <input tabindex="-1" class="ngSelectionCheckbox" type="checkbox" ng-checked="row.selected" ng-model="checkboxes.items[antecedente.id]" /></div></td>
+                                            <td>{{antecedente.ant}}</td>
+                                            <td>{{antecedente.det}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >Antecedentes Familiares:</label>
+                            <div class="controls">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <th>&nbsp;&nbsp;&nbsp;</th>
+                                        <th>Antecedentes&nbsp;</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="antecedenteF in antecedentesFamiliares">
+                                            <td><div class="ngSelectionCell">
+                                                <input tabindex="-1" class="ngSelectionCheckbox" type="checkbox" ng-checked="row.selected" ng-model="checkboxesi.items[antecedenteF.id]" /></div></td>
+                                            <td>{{antecedenteF.ante}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group" >
+                            <label for="url" >Observaciones:</label>
+                            <div class="controls">
+                                <textarea ng-model="datosMedicos.dtsmdcobservaciones" id="dtsmdcobservaciones" name="dtsmdcobservaciones" class="form-control" placeholder="ingrese e-mail" width="30%" height="30">{{datosMedicos.dtsmdcobservaciones}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <button ng-click="guardarDatosMedicos('new',datosMedicos)" data-dismiss="modal" type="button" class="btn btn-primary" ng-show="boton=='new'" ng-hide="boton=='upd'">Guardar</button>
+                        <button ng-click="guardarDatosMedicos('upd', datosMedicos)" data-dismiss="modal" type="button" class="btn btn-primary" ng-show="boton=='upd'" ng-hide="boton=='new'">Modificar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

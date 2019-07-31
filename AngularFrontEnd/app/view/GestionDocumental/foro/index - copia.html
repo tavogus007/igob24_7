@@ -1,0 +1,366 @@
+<script type="text/javascript">
+			// When the document is ready
+	var respuestaPadre=0;
+	
+	function conMayusculas(field) {
+		field.value = field.value.toUpperCase()
+	};
+	  
+	function soloNumerico(variable){
+		Numer=parseInt(variable);
+		if (isNaN(Numer)){
+			return "";
+		}
+		return Numer;
+	}
+	
+	function valNumero(Control){
+		Control.value=soloNumerico(Control.value);
+	}
+			
+	function respuestaGen(idRespuesta)
+	{
+		document.formularioRespuesta.reset();
+		$('#responderTema').modal('show'); 
+		document.getElementById("rtmid_respuesta_hijo").value = idRespuesta;
+	}
+
+	function accessScope(node, func) {
+		var scope = angular.element(document.querySelector(node)).scope();
+		scope.$apply(func);
+	}
+
+	function meGusta(idRespuesta)
+	{
+		//alert("a");
+		accessScope('#outer', function (scope) {
+			scope.meGustaRespuesta(idRespuesta);
+		});
+	}
+
+	function cargarTema(idGrupo, nombGrupo)
+	{
+		//console.log(idGrupo);
+		accessScope('#outer', function (scope) {
+			scope.getDocumento(idGrupo,nombGrupo);
+		});	
+	}
+
+	function cargarRespuestas(a,b,c,d,e,f,g,h,i,j,k,l,m)
+	{
+		accessScope('#outer', function (scope) {
+			scope.mostrarRespuesta(a,b,c,d,e,f,g,h,i,j,k,l,m);
+		});	
+	}
+</script>
+
+<font face="Comic Sans MS">
+<div id="outer" ng-controller="foroController" data-ng-init="inicioDocumentos()">
+	
+	<!-- /////// /////// ///////////////// /////// ///////-->
+	<!-- /////// /////// LISTADO DE GRUPOS /////// ///////-->
+	<!-- /////// /////// ///////////////// /////// ///////-->
+	<div class="col-sm-12" ng-show = "gruposTema != null">
+		<div class="col-sm-12">
+			<table width="100%">
+				<tr>
+					<td valign="top" class="col-md-3">
+						<img src="../GestionDocumental/foro/imagenes/gmlp.jpg" width="150" height="120" alt="Foto perfil">
+						<h2>MISIÓN Y VISIÓN</h2>
+						<br>
+						Misión
+						<br>
+						«Somos una entidad pública municipal autónoma progresista y generadora de valor público, cuya misión es mejorar la calidad de vida de los habitantes del Municipio de La Paz, generando y ejecutando políticas de desarrollo integral en corresponsabilidad con su comunidad, administrando su territorio y prestando servicios con transparencia, equidad, calidad y calidez; con servidores públicos municipales motivados, comprometidos y con solvencia técnica» Fuente: Plan Estratégico Institucional (PEI) del GAMLP.» 
+						<br>
+						<br>
+						Visión
+						<br>
+						«El Gobierno Autónomo Municipal de La Paz es una entidad vanguardista, moderna y competitiva, referente a nivel nacional e internacional en la prestación de servicios públicos, que mejoran la calidad de vida y promueve el desarrollo integral de sus habitantes y su entorno; reconociendo, respetando y gestionando su diversidad e interculturalidad; con talento humano solidario, motivado, comprometido y competente, que forma parte de una institucionalidad fortalecida, con práctica democrática y participativa, y que ejerce plenamente su autonomía.»
+						<br>
+						<br>
+					</td>
+					<td valign="top" class="col-md-">
+						<div  ng-bind-html="get_renderizarGrupos(htmlGrupo)"></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+
+	<!-- /////// /////// //////////////// /////// ///////-->
+	<!-- /////// /////// LISTADO DE TEMAS /////// ///////-->
+	<!-- /////// /////// //////////////// /////// ///////-->
+	<div class="col-sm-12" ng-show = "listadoTemas != null">
+		<table width="100%">
+			<tr>
+				<td>
+					<h3> FORO DE:  {{nombreGrupoTema}} </h3> Hemos registrado: {{nroTemas}} temas
+				</td>
+				<td>
+					<a align="right" ng-show = "listadoTemas!= null" type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target=""  ng-click="volverGrupo();"><i class="fa fa-mail-reply" style="color:#249FE6" title="Volver a listado de temas"></i></a>
+				</td>
+			</tr>
+		</table>
+
+		<br/>
+		<div class="row">
+			<div>
+				<a class="btn btn-primary" ng-click="limpiarTema()" data-toggle="modal" data-target="#registrarTema">
+					<i class="glyphicon glyphicon-plus-sign"></i> Nuevo Tema
+				</a>
+			</div>
+			<br/>
+			<!--<table ng-table="tablaForoTema" class="table table-striped table-bordered">
+				<tr ng-repeat="datoTema in obtDatos" ng-class="{'colorInactivo': datoTema.ftmestado == 'INACTIVO'}">               
+					<td data-title="'#'" >{{$index+1}}</td> 
+					<td data-title="'TEMA'" sortable="'rlsDatoTema'"  filter="{'ftmTema':'text'}">
+						<a ng-click="mostrarRespuesta(datoTema)">{{datoTema.ftmtema}}</a>
+					</td>
+					<td data-title="'AUTOR'" sortable="'rlsDatoTema'"  filter="{'ftmAutor':'text'}">{{datoTema.ftmautor}}</td>
+					<td data-title="'NRO. RESPUESTAS'" sortable="'rlsDatoTema'">{{datoTema.ftmnrorespuestas}}</td>
+					<td data-title="'NRO. VISITAS'" sortable="'rlsDatoTema'">{{datoTema.ftmnrovisitas}}</td>
+					<td data-title="'REGISTRO'" sortable="'rlsDatoTema'">{{datoTema.ftmregistro}}</td>
+					<td data-title="'MODIFICACION'" sortable="'rlsDatoTema'">{{datoTema.ftmmodificacion}}</td>
+					<td data-title="'ESTADO'" sortable="'rlsDatoTema'"  filter="{'ftmEstado':'text'}">{{datoTema.ftmestado}}</td>
+				</tr>
+			</table>-->
+			<div  ng-bind-html="get_renderizarTemas(htmlTema)"></div>
+		</div>
+	</div>
+
+	
+
+	<div class="col-sm-12" ng-show = "respuestasTema != null">
+		<table width="100%">
+			<tr>
+				<td>
+					<h2>TEMA: {{tituloTema}}</h2>
+				</td>
+				<td>
+					<a align="right" ng-show = "respuestasTema!= null" type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target=""  ng-click="volverTemas();"><i class="fa fa-mail-reply" style="color:#249FE6" title="Volver a listado de temas"></i></a>
+				</td>
+			</tr>
+			
+		</table>
+		<br/>  
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row" >
+					<div class="col-md-10">
+						<div class="form-group" >
+							<img src="../GestionDocumental/foro/imagenes/{{imagenTema}}" width="45" height="45" alt="Foto perfil"><h4>{{nombreTema}}</h4>
+							<!--<p><textarea readonly cols="170" rows="5">{{descripcionTema}}</textarea></p>-->
+							<span style="color:black">{{descripcionTema}}</span>
+						</div>
+						<button data-toggle="modal" data-target="#responderTema" ng-click="limpiarRespuesta();" > Responder </button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a type="button" data-toggle="modal" data-target=""  ng-click="meGustaTema();"><img src="../GestionDocumental/foro/imagenes/meGusta1.png" alt="Me gusta">{{nroLikesTema}}</a>
+
+					</div>
+				</div>
+			</div>
+		</div> 
+		</br>  
+
+		<div class="col-sm-12">
+			<table width="100%">
+				<tr>
+					<td valign="top" class="col-md-2">
+							<h2>ACTIVIDAD</h2>
+							<table width="100%">
+								<!--<tr>
+									<td>PUBLICADO: {{fechaPublicacion}}</td>
+								</tr>-->
+								<tr>
+									<td>VISTO: {{nroVisto}}</td>
+								</tr>
+								<tr>
+									<td>RESPUESTAS: {{nroRespuestas}}</td>
+								</tr>
+								<tr>
+									<td>ME GUSTA: {{nroMeGusta}}</td>
+								</tr>
+							</table>
+							<br>
+							<h2>PROGRAMA DE GOBIERNO</h2>
+							<img align="center" src="../GestionDocumental/foro/imagenes/10tareas.png" alt="Foto perfil">
+							<br>
+							
+
+
+					</td>
+					<td valign="top" class="col-md-7">
+						<div  ng-bind-html="get_renderizarRespuestas(html)"></div>
+					</td>
+					<td valign="top" class="col-md-3">
+						<div class="panel panel-default">
+							<h2>PROYECTOS DE LA CIUDAD</h2>
+								28 grandes proyectos
+								Como ocurrió durante estos 10 años, no ofrecemos “obras estrella” inventadas, comprometemos por el contrario la ejecución de más obras estratégicas, muchas de las cuales cuentan con proyectos a diseño final, que atienden las verdaderas necesidades de nuestra comunidad y son respuestas efectivas para mejorar nuestra calidad de vida:
+								<OL>
+								<LI>    BusLaPaz, el nuevo sistema de transporte masivo
+								<LI>    Modernización de la Terminal de Buses Departamental - Central
+								<LI>    Nuevo Complejo Hospitalario Miraflores
+								<LI>    Puente Gemelo Las Américas
+								<LI>    Techo retráctil del Teatro al Aire Libre Jaime Laredo
+								<LI>    Terminal de Buses y Minubuses a los Yungas - Minasa
+								<LI>    Parque Ecológico de Pura Pura – Fase2
+								<LI>    Hospital de 2do. Nivel San Antonio
+								<LI>    Hospital de 2do. Nivel Cotahuma
+								<LI>    Nuevo Hospital del Niño Mallasa
+								<LI>    Albergue Transitorio en Mallasa para Niños(as) víctimas de Violencia
+								<LI>    Programa de Drenaje Pluvial con más bóvedas y canales
+								<LI>    Ampliación Av. Costanera c. 37 hasta el puente Apaña – Zona Sur
+								<LI>    Construcción de la Canalización del Río Huayñajahuira desde la calle 37 hasta el puente Apaña
+								<LI>    Embovedado del Rio San Pedro desde la Plaza Líbano hasta la 20 de Octubre
+								<LI>    Puente Ferrobeni para unir los distritos Max Paredes y Periférica
+								<LI>    Nuevo Complejo de Mercados Rodríguez – Amapola - Belén
+								<LI>    Nuevo Mercado Uruguay
+								<LI>    Gran Complejo Cultural “Las Cholas”, por fases
+								<LI>    Transporte Escolar Municipal
+								<LI>    Distribuidor de transito Bajo Següencoma - Gramadal
+								<LI>    Av. Rene Zavaleta (prolongación hacia Villa Fatima) por fases.
+								<LI>    Complejo Turístico Zongo-Hampaturi
+								<LI>    Modernización y ampliación Av. Segundo Bascones
+								<LI>    Conexion Killman-Gutierrez-Tacagua
+								<LI>    Cinturon Vial Periférico SUR (Amor de Dios – Gramadal - Alto Següencoma - calle 17 de Obrajes - Bella Vista - Bolognia - Alto Obrajes)
+								<LI>    4to. Carril Av. Libertadores (gruta de Lourdes – Calle 0 de Obrajes)
+								<LI>    Gran Centro Cultural San Pedro (en el área del penal de San Pedro)
+								</OL>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		
+			
+			<!--<div>
+				<h2>My Note</h2>
+				<p><textarea ng-model="message" cols="40" rows="10"></textarea></p>
+				<p>
+					<button ng-click="save()">Save</button>
+					<button ng-click="clear()">Clear</button>
+				</p>
+				<p>Number of characters left: <span ng-bind="left()"></span></p>
+			</div>-->
+	</div>
+	
+	<!-- /////// /////// ////////////// /////// ///////-->
+	<!-- /////// /////// REGISTRAR TEMA /////// ///////-->
+	<!-- /////// /////// ////////////// /////// ///////-->
+	<div class="modal fade" id="registrarTema" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+					<h4 class="modal-title" id="myModalLabel">REGISTRAR TEMA</h4>
+				</div>
+				<div class="modal-body" >
+					<form name="formularioRoles" novalidate>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="url" >NOMBRE COMPLETO:</label>
+									<div class="controls">
+										<input  ng-value="&nbsp;" ng-model="datosRol.ftmautor" name="ftmautor" id="ftmautor" class="form-control" type="text" placeholder="Ingrese su nombre completo" ng-disabled="only" ng-required="true" >
+										<span style="color:red" ng-show="formularioRoles.ftmautor.$invalid">
+											<span ng-show="formularioRoles.ftmautor.$error.required">Nombre es requerido.
+											</span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="url" >TEMA:</label>
+									<div class="controls">
+										<input  ng-value="&nbsp;" ng-model="datosRol.ftmtema" name="ftmtema" id="ftmtema" class="form-control" type="text" placeholder="Ingrese el tema" ng-disabled="only" ng-required="true" >
+										<span style="color:red" ng-show="formularioRoles.ftmtema.$invalid">
+											<span ng-show="formularioRoles.ftmtema.$error.required">Tema es requerido
+											</span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="url" >DESCRIPCION TEMA:</label>
+									<div class="controls">
+										<textarea  ng-value="&nbsp;" ng-model="datosRol.ftmdescripciontema" name="ftmdescripciontema" id="ftmdescripciontema" class="form-control" type="text" placeholder="Escriba la descripcion del tema" ng-disabled="only" ng-required="true" />
+										<span style="color:red" ng-show="formularioRoles.ftmdescripciontema.$invalid">
+											<span ng-show="formularioRoles.ftmdescripciontema.$error.required">Descripcion tema es requerido
+											</span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>                
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+					<button data-dismiss="modal" ng-click="adicionarTema(datosRol)" type="button" class="btn btn-primary">Registrar Tema</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- /////// /////// ///////////////// /////// ///////-->
+	<!-- /////// /////// VENTANA RESPUESTA /////// ///////-->
+	<!-- /////// /////// ///////////////// /////// ///////-->
+	<div class="modal fade" id="responderTema" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+					<h4 class="modal-title" id="myModalLabel"></h4>
+				</div>
+				<div class="modal-body" >
+					<form name="formularioRespuesta" novalidate>
+						<div class="row">
+							<div class="col-md-12" ng-show="campoResp = null">
+								<div class="form-group">
+									<label for="url" >id respuesta padre</label>
+									<div class="controls">
+										<input  ng-value="&nbsp;" ng-model="datosRespuesta.rtmid_respuesta_hijo" name="rtmid_respuesta_hijo" id="rtmid_respuesta_hijo" class="form-control" type="text" placeholder="" ng-disabled="only" ng-required="true" >
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="url" >NOMBRE COMPLETO:</label>
+									<div class="controls">
+										<input  ng-value="&nbsp;" ng-model="datosRespuesta.rtmnombrerespuesta" name="rtmnombrerespuesta" id="rtmnombrerespuesta" class="form-control" type="text" placeholder="Ingrese su nombre completo" ng-disabled="only" ng-required="true" >
+										<span style="color:red" ng-show="formularioRespuesta.rtmnombrerespuesta.$invalid">
+											<span ng-show="formularioRespuesta.rtmnombrerespuesta.$error.required">Nombre es requerido.
+											</span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="url" >RESPUESTA:</label>
+									<div class="controls">
+										<textarea  ng-value="&nbsp;" ng-model="datosRespuesta.rtmrespuesta" name="rtmrespuesta" id="rtmrespuesta" class="form-control" type="text" placeholder="Escriba su respuesta " ng-disabled="only" ng-required="true" />
+										<span style="color:red" ng-show="formularioRespuesta.rtmrespuesta.$invalid">
+											<span ng-show="formularioRespuesta.rtmrespuesta.$error.required">Respuesta es requerido
+											</span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>                
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+					<button data-dismiss="modal" ng-click="adicionarRespuesta(datosRespuesta)" type="button" class="btn btn-primary">Responder</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</font> 

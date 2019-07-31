@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+      
+        <style type="text/css">
+            #mapa1
+            {
+                width: 900px;
+                height: 500px;
+            }
+
+            /* round corners of layer switcher, and make it transparent */
+            .olControlLayerSwitcher .layersDiv {
+                border-radius: 10px 0 0 10px;
+                opacity: 0.75;
+                filter: alpha(opacity=75);
+            }
+
+            .customEditingToolbar
+            {
+                top: -2px !important;
+                float: right;
+                right: 0px;
+                height: 30px;
+                /*width: 220px;*/
+            }
+            .customEditingToolbar div
+            {
+                float: right;
+                margin: 3px;
+                width: 24px;
+                height: 24px; /* background-color:#F0F0F0; */
+            }
+            .olControlNavigationItemActive
+            {
+                background-image: url("../../libs/img/editing_tool_bar.png");
+                background-repeat: no-repeat;
+                background-position: -103px -23px;
+            }
+            .olControlNavigationItemInactive
+            {
+                background-image: url("../../libs/img/editing_tool_bar.png");
+                background-repeat: no-repeat;
+                background-position: -103px -0px;
+            }
+
+            .olControlClickInfoItemInactive
+            {
+                background-image: url("../../libs/img/stuff_tool_bar.png");
+                background-repeat: no-repeat;
+                background-position: -27px 0px;
+            }
+            .olControlClickInfoItemActive
+            {
+                background-image: url("../../libs/img/stuff_tool_bar.png");
+                background-repeat: no-repeat;
+                background-position: -27px -23px;
+            }
+
+            .olControlDrawFeaturePointItemInactive
+            {
+                background-image: url("../../libs/img/editing_tool_bar.png");
+                background-repeat: no-repeat;
+                background-position: -77px 0px;
+            }
+
+            .olControlDrawFeaturePointItemActive
+            {
+                background-image: url("../../libs/img/editing_tool_bar.png");
+                background-repeat: no-repeat;
+                background-position: -77px -23px;
+            }
+
+            .olControlDrawFeatureLineItemInactive
+            {
+                background-image: url("../../libs/img/editing_tool_bar.png");
+                background-repeat: no-repeat;
+                background-position: -51px 0px;
+            }
+
+            .olControlDrawFeatureLineItemActive
+            {
+                background-image: url("../../libs/img/editing_tool_bar.png");
+                background-repeat: no-repeat;
+                background-position: -51px -23px;
+            }
+
+            .olControlDrawFeaturePolygonItemInactive
+            {
+                background-image: url("../../libs/img/editing_tool_bar.png");
+                background-repeat: no-repeat;
+                background-position: -26px 0px;
+            }
+
+            .olControlDrawFeaturePolygonItemActive
+            {
+                background-image: url("../../libs/img/editing_tool_bar.png");
+                background-repeat: no-repeat;
+                background-position: -26px -23px;
+            }
+
+            .olControlMapSearchBotonBuscar, .olControlMapSearchBotonLimpiar, .olControlMapSearchBotonVer {
+                width: 51px;
+                height: 22px;
+                cursor: pointer;
+                margin-left:3px;
+                font-size:11px;
+                border: 1px outset buttonface;
+            }
+
+            .olControlMapSearchBotonVer {
+                width: 100px;
+                padding:3px;
+            }
+            .container{
+                width: 100%;
+                text-align: right;
+            }
+            .outset{
+               border-style: outset;
+            }
+
+
+            table.olControlMapSearchTable
+            {
+                border-collapse: collapse;
+            }
+
+            table.olControlMapSearchTable, th.olControlMapSearchTableTH, td.olControlMapSearchTableTD, td.olControlMapSearchTableTD2
+            {
+                border: 1px solid gray;
+                font-size:11px;
+            }
+
+            th.olControlMapSearchTableTH
+            {
+                background-color:#909090;
+                color:#FFF;
+            }
+
+            td.olControlMapSearchTableTD
+            {
+                background-color:#E0E0E0;
+            }
+
+            td.olControlMapSearchTableTD2
+            {
+                background-color:#FFFFFF;
+            }
+
+            .olControlMapSearchTableCampo
+            {
+                color:#606060;
+                font-style: italic;
+            }
+
+            td.olControlMapSearchTableTD a, td.olControlMapSearchTableTD2 a
+            {
+                color:#00F;
+            }
+
+            .ui-dialog .ui-dialog-titlebar { padding: .1em 1em; position: relative;  }
+            .modal {
+              text-align: center;
+              padding: 0!important;
+            }
+
+            .modal::before {
+              content: '';
+              display: inline-block;
+              height: 100%;
+              vertical-align: middle;
+              margin-right: -4px;
+            }
+            .modal-dialog {
+              display: inline-block;
+              text-align: left;
+              vertical-align: middle;
+              height: 50%;
+              width: 50%;
+            }
+            .focus {
+              outline: 2px solid #FF0000 !important;
+            }
+        </style>    
+      <script type="text/javascript" src="../../view/servicios/varios/formularios/solicitudAntenas/juridico/solicitudAntenasJ.js"></script>
+
+        <!-- open layer inicio-->
+        <script src="../../libs/OpenLayers-2.13/OpenLayers.js" type="text/javascript"></script> 
+        <script src="../../libs/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script> 
+        <script src="../../libs/MapSearch.js" type="text/javascript"></script> 
+        <script src="../../libs/CatastroTools.js" type="text/javascript"></script> 
+        <script src="../../element/map_geoserver.js" type="text/javascript"></script>
+
+
+
+        <!-- opne layer fin-->
+     
+    </head>
+    <script type="text/javascript">
+        $('.modal').on('shown.bs.modal', function() {
+            $(this).before($('.modal-backdrop'));
+            $(this).css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 1);
+        });
+
+        $('.custom-upload input[type=file]').change(function(){
+            if($(this).val() != '' || $(this).val() != ""){
+                $(this).next().find('input').val($(this).val());
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+            }
+        });
+    </script>
+    
+    <div class="row principal" id = "outerMapaActividad" ng-controller="solicitudJAntenasController" ng-init="iniAntenas()" >
+        <form class="form-horizontal ng-pristine ng-valid" name="antenasform"> 
+
+            <div class="col-md-12" ng-show="mostrardiv != null">
+                <div class="col-md-12" >
+                        <legend>REGISTRO DE RADIOBASE Y GABINETES:</legend>
+                </div>
+                <br>
+                <div class="col-sm-2"  >
+                    <h3><input type="radio" name="r_tipo" value="RU" ng-click="habilitarR('RU');">  Radiobase Única</h3>
+                </div>
+                <div class="col-sm-2"  >
+                    <h3><input type="radio" name="r_tipo" value="RM" ng-click="habilitarR('RM');"> Radiobase Multiple</h3> 
+                </div>
+                <div class="col-sm-2"  >
+
+                    <h3><input type="radio" name="r_tipo" value="GU" ng-click="habilitarR('GU');"> Gabinete Único</h3>
+                </div>
+                <div class="col-sm-2"  >
+                    <h3><input type="radio" name="r_tipo" value="GM" ng-click="habilitarR('GM');" > Gabinete Multiple</h3>  
+                </div>
+                <div class="col-md-12" ng-hide="requisitosOcultar">
+                        <!--legend>REQUISITO OBLIGATORIO:</legend-->
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-3">
+                            
+                        </div>
+                        <div class="col-sm-3" align="right" ng-show = "requisito == null">
+                            <button id="miFormVerif"  ng-click="cert_difusion('Licencia de radiodifusión y/o licencia vigente de uso de frecuencias del espectro radioeléctrico emitida por la Autoridad de Regulación y Fiscalización de Telecomunicaciones y Transportes.');" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida6">VALIDAR/CONTINUAR</button>                        
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="mostrardivform != null">
+                <div>
+                    <div class="col-md-12">
+                        <legend>PERSONA JURÍDICA</legend>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_22}}:</label>
+
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_num_doc_per_jur" id="f01_num_doc_per_jur" name="f01_num_doc_per_jur" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_23}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_raz_soc_per_jur" id="f01_raz_soc_per_jur" name="f01_raz_soc_per_jur" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_24}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_ges_vig_pod" id="f01_ges_vig_pod" name="f01_ges_vig_pod" class="form-control" onkeyUp="checkInput(this);"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_25}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_num_notaria" id="f01_num_notaria" name="f01_num_notaria" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="col-md-6" ng-show="false">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_macro_des" id="f01_macro_des" name="f01_macro_des" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                <input type="hidden" ng-model="datosIniciales.f01_macro" id="f01_macro" name="f01_macro" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                            <span style="color:red" ng-show="signupForm.f01_macro.$invalid">
+                                <span class="error" ng-show="signupForm.f01_macro.$invalid">{{translateMensajes.txt_12_15}}</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" ng-show ="false" >
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_16}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_distrito_desc" id="f01_distrito_desc" name="f01_distrito_desc" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                <input  type="hidden"  ng-model="datosIniciales.f01_distrito" id="f01_distrito" name="f01_distrito" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_zon_rep_valor" id="f01_zon_rep_valor" name="f01_zon_rep_valor" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                <input  type="hidden" ng-model="datosIniciales.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_tipo_viarep" id="f01_tipo_viarep" name="f01_tipo_viarep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_nom_via_rep" id="f01_nom_via_rep" name="f01_nom_via_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="url" >{{translateTitulos.lbl_12_20}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_num_rep" id="f01_num_rep" name="f01_num_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <legend>{{translateTitulos.lbl_12_26}}</legend>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_pri_nom_rep" id="f01_pri_nom_rep" name="f01_pri_nom_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_ape_pat_rep" id="f01_ape_pat_rep" name="f01_ape_pat_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_ape_mat_rep" id="f01_ape_mat_rep" name="f01_ape_mat_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_30}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_ape_cas_rep" id="f01_ape_cas_rep" name="f01_ape_cas_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >Número de documento:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_num_doc_rep" id="f01_num_doc_rep" name="f01_num_doc_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_31}}:</label>
+                            <div class="controls">
+                                <p class="input-group"><input name="INT_RL_FEC_NACIMIENTO" id="INT_RL_FEC_NACIMIENTO" type="text" class="form-control" ng-model="datosIniciales.INT_RL_FEC_NACIMIENTO" is-open="startDateOpened2" close-text="Close" ng-disabled="true" required>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="startDateOpen2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url">Expedido:</label>
+                            <div class="controls">
+                                <select id="f01_expedido_rep" name="f01_expedido_rep" placeholder="expedido" ng-model="datosIniciales.f01_expedido_rep" class="form-control" ng-disabled="true" required>
+                                    <option value="">--Seleccione--</option>
+                                    <option value="LPZ">LA PAZ</option>
+                                    <option value="CBB">COCHABAMBA</option>
+                                    <option value="SCZ">SANTA CRUZ</option>
+                                    <option value="CHQ">CHUQUISACA</option>
+                                    <option value="TJA">TARIJA</option>
+                                    <option value="PTS">POTOSI</option>
+                                    <option value="ORU">ORURO</option>
+                                    <option value="BNI">BENI</option>
+                                    <option value="PND">PANDO</option>
+                                    <option value="OTR">OTRO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             
+                <div class="col-md-12"  ng-hide="botones">
+                    <legend>  DATOS DE LA SOLICITUD A ENVIAR:</legend>
+                </div>
+                <div class="col-md-12"  ng-hide="botonesrodolfo">
+                    <legend>  DATOS DE LA SOLICITUD ENVIADA:</legend>
+                </div>
+                <div class="row"  class="ibox-content"> 
+                <!--div  class="col-md-12" ng-hide="n_autorizacion">
+                    <div ng-hide="chec_autorizacion">
+                        <h3> Tiene Autorización   <input type="checkbox" name="condiciones" id = "condiciones" value="1" ng-click ="recuperacheck()"> </h3>
+                    </div>
+                    <div class= "col-md-1">
+                    </div>
+                    <div class= "col-md-3" ng-show="autoriza != null">
+                    <label for="url" >Número de Autorización:</label>
+                    <input ng-model="dataAnt.den_auto" id="den_auto" name="den_auto" class="form-control ng-pristine ng-invalid ng-invalid-required" type="text" placeholder="Nro. de Autorizacion" ng-disabled="false" ng-value="den_auto_r" required="" onkeyup="return conMayusculas(this);">
+                    </div>
+                </div-->
+                <!--div  class="col-md-12" ng-hide="n_autorizacion_1">
+                    <div class= "col-md-6">
+                    <label for="url" >Número de Autorización:</label>
+                    <input ng-model="dataAnt.den_auto1" id="den_auto1" name="den_auto1" class="form-control ng-pristine ng-invalid ng-invalid-required" type="text" placeholder="Nro. de Autorizacion" ng-disabled="true" ng-value="den_auto_r1" required="" onkeyup="return conMayusculas(this);">
+                    </div>
+                </div-->
+
+                    <div class="col-md-12">
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel with-nav-tabs panel-default" id = "tab-antenas">
+                                    <div class="panel-heading">
+                                            <ul class="nav nav-tabs">
+                                                <li class="active"><a data-target="#tab1-registro" data-toggle="tab" >Registro</a></li>
+                                                <li><a data-target="#tab-adjuntos" data-toggle="tab" ng-click  = "" ng-hide = "tabAdj">Requisitos</a></li>
+                                                 
+                                            </ul>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="tab1-registro">
+                                                
+
+                                                <!-- Inicio radio base unico> <-->
+                                                <input ng-model="dataAnt.idtramite" id="idtramite" name="idtramite" class="form-control" ng-hide="true">
+                                                <div ng-show="mostrarRUGU != null">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-4">
+                                                            <div class="col-sm-10" >
+                                                                <div class="form-group" >
+                                                                    <label for="url" >Denominación:</label>
+                                                                    <div class="controls">
+                                                                      <input  ng-model="dataAnt.den_rbase" id="den_rbase" name="den_rbase" class="form-control" type="text" placeholder="Denominación del Registro" ng-disabled="false" ng-value="den_rbase" required onkeyUp="return conMayusculas(this);">
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-10"  >
+                                                                <div class="form-group" >
+                                                                    <label for="url" >Ubicación:</label>
+                                                                    <div class="controls">
+                                                                      <input  ng-model="dataAnt.ub_rbase" id="ub_rbase" name="ub_rbase" class="form-control" type="text" placeholder="Ubicación del Registro" ng-disabled="false" required onkeyUp="return conMayusculas(this);">
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-10">
+                                                                <label for="url" >Tipo de Propiedad:</label>
+                                                                <select id="tp_prop" class="form-control" ng-model="dataAnt.tp_prop" placeholder="Tipo de Propiedad" required ng-change="reqPropiedad(dataAnt.tp_prop)">
+                                                                    <option value=""> -- Seleccione -- </option>
+                                                                    <option value="PRIVADA">PRIVADA</option>
+                                                                    <option value="HORIZONTAL">HORIZONTAL</option>
+                                                                    <option value="DOMINIO MUNICIPAL">DOMINIO MUNICIPAL</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-10"  >
+                                                                <div class="form-group" >
+                                                                    <div class="controls">
+                                                                      <input  ng-model="dataAnt.ln_ubicacion" id="ln_ubicacion" name="ln_ubicacion" class="form-control" type="text" placeholder="Longitud Ubicación" required onkeyUp="return conMayusculas(this);" ng-hide="true">
+                                                                    </div>
+                                                                    <label for="url" >Macrodistrito:</label>
+                                                                    <div class="controls">
+                                                                      <input  ng-model="dataAnt.macrodistrito" id="macrodistrito" name="macrodistrito" class="form-control" type="text" placeholder="Macrodistrito" required onkeyUp="return conMayusculas(this);" ng-disabled="true" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-10"  >
+                                                                <div class="form-group" >
+                                                                    <label for="url" >Zona:</label>
+                                                                    <div class="controls">
+                                                                      <input  ng-model="dataAnt.zona" id="zona" name="zona" class="form-control" type="text" placeholder="Zona" ng-disabled="true" required onkeyUp="return conMayusculas(this);">
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                                 <input  ng-model="dataAnt.cod_catastral" id="cod_catastral" name="cod_catastral" class="form-control" type="text" placeholder="Codigo Catastral" required onkeyUp="return conMayusculas(this);" ng-hide="true">
+                                                                     
+                                                            </div>
+                                                             
+                                                                  
+                                                            <div class="col-sm-10" >
+                                                                <div class="form-group" >
+                                                                    <label for="url" >Total Número de Gabinetes:</label>
+                                                                    <div class="controls">
+                                                                      <input  ng-model="dataAnt.den_ngabinete" id="den_ngabinete" name="den_ngabinete" class="form-control" type="number" placeholder="Total Número de Gabinete" ng-disabled="false" required onkeyUp="return conMayusculas(this);" min="1">
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-10"  >
+                                                                <div class="form-group" >
+                                                                    <label for="url" >Observación:</label>
+                                                                    <div class="controls">
+                                                                      <input  ng-model="dataAnt.observacion" id="observacion" name="observacion" class="form-control" type="text" placeholder="Observación"   onkeyUp="return conMayusculas(this);">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            
+                                                            <div id="mapa1">
+                                                            </div>
+                                                            <div id="ctlBusquedas"><strong>BUSQUEDA</strong></div>
+                                                            <div id="msg1" style="color: Blue;">
+                                                                ...</div>
+                                                            <div id="results">
+                                                                ...</div>
+                                                            <div id="dlgBusquedas">
+                                                                <div id="resultBusquedas">...</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div  class="col-md-12" ng-hide="n_autorizacion">
+                                                    <div ng-hide="chec_autorizacion">
+                                                        <h3> Tiene Autorización   <input type="checkbox" name="condiciones" id = "condiciones" value="1" ng-click ="recuperacheck()"> </h3>
+                                                    </div>
+                                                    <div class= "col-md-1">
+                                                    </div>
+                                                    <div class= "col-md-3" ng-show="autoriza != null">
+                                                    <label for="url" >Número de Autorización:</label>
+                                                    <input ng-model="dataAnt.den_auto" id="den_auto" name="den_auto" class="form-control ng-pristine ng-invalid ng-invalid-required" type="text" placeholder="Nro. de Autorizacion" ng-disabled="false" ng-value="den_auto_r" required="" onkeyup="return conMayusculas(this);">
+                                                    </div>
+                                                </div>
+
+                                                <div ng-show = "resGabineteMultiple != null">
+                                                    
+                                                    <div ng-hide="hab_boton_guardar" class="container">
+                                                       <button  type="button" class="btn btn-primary btn-inverse" ng-click= "close_data_multiple()" >Cancelar</button>
+                                                       <button ng-show = "guardarbtn1 != null " ng-click="reg_radiantes_multiple(dataAnt)" type="button" class="btn btn-primary"> <i class="glyphicon fa fa-save"></i> Registrar</button>
+                                                    </div> 
+                                                    <div  ng-hide="actualizarbtn_multiple"  class="container">
+                                                       <button  type="button" class="btn btn-success fa fa-close" ng-click= "close_editar_multiple()" >Cancelar</button>
+                                                       <button ng-show = "guardarbtn1 != null " ng-click="actualizar_multiple(dataAnt)" type="button" class="btn btn-success fa fa-save"> </i> Actualizar</button>
+                                                    </div> 
+                                                </div>
+                                                    
+                                                    <hr>
+                                                </div>
+
+                                                <div ng-hide="mostrarRU">
+
+                                                    <div ng-hide="soporteRU">
+                                                        
+
+                                                        <div class="">
+                                                            
+                                                            <div class="col-md-12">
+                                                                <div class="col-md-1">
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label> <h2>Registro de los Soportes:</h2></label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <div class="col-md-1">
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <label for="url" >Tipo de Soporte:</label>
+                                                                    <select class="form-control"  name="tipo_sop" id="tipo_sop" ng-model="dataAnt.tipo_sop">
+                                                                       <option value="">--Elige opcion--</option>
+                                                                      <option ng-repeat="option in datasoporte.availableOptions" value="{{option.id}}">{{option.name}}</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-1">
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <label for="url" >Categoria:</label>
+                                                                    <select class="form-control"  name="categoria" id="categoria" ng-model="dataAnt.categoria">
+                                                                       <option value="">--Elige opcion--</option>
+                                                                      <option ng-repeat="option in datacategoria.availableOptions" value="{{option.id}}">{{option.name}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="col-md-1">
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <label for="url" >Forma de Sujecion:</label>
+                                                                    <select class="form-control"  name="forma_sj" id="forma_sj" ng-model="dataAnt.forma_sj">
+                                                                       <option value="">--Elige opcion--</option>
+                                                                      <option ng-repeat="option in dataforma_sj.availableOptions" value="{{option.id}}">{{option.name}}</option>
+                                                                    </select>
+                                                                </div>
+                                                                
+                                                                <div class="col-md-1">
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group" >
+                                                                        <label for="url" >Altura(Mts.):</label>
+                                                                        <div class="controls">
+                                                                          <input  ng-model="dataAnt.altura" id="altura" name="altura" class="form-control" type="number" placeholder="Altura metros" ng-disabled="false"  min="1" required>
+                                                                          
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="col-md-1">
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group" >
+                                                                        <label for="url" >NRO. ANTENAS:</label>
+                                                                        <div class="controls">
+                                                                          <input  ng-model="dataAnt.n_antenas" id="n_antenas" name="n_antenas" class="form-control" type="number" placeholder="Nro. Antenas" ng-disabled="false" required min="1">
+                                                                          
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-5" ng-hide="guardar_soporte">
+                                                                    <div class="container">
+                                                                      <button ng-click="close_datos()" type="button" class="btn btn-success fa fa-close">Cancelar</button>
+                                                                      <button ng-click="reg_soporte(dataAnt)" type="button" class="btn btn-success fa fa-save"></i> Registrar Soporte Antena</button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-5" ng-hide="actualizar_soporte">
+                                                                    <div class="container">
+                                                                      <button ng-click="close_datos()" type="button" class="btn btn-success fa fa-close">Cancelar</button>
+                                                                      <button ng-click="act_datasoporte(dataAnt)" type="button" class="btn btn-success fa fa-save"> Actualizar Soporte Antena</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12"  ng-show="radiobase_simple != null">
+                                                        
+                                                        <div class="col-md-12" ng-hide = "botonesrodo">
+                                                            <legend> Detalles de los Soportes:</legend>
+                                                            <div align=right >
+                                                                <a class="btn btn-info btn-circle"  ng-click = "habilitaSoprteRU()" ><i class="fa fa-plus"  title="Registrar un nuevo soporte" style="text-align:center;" ></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" ng-hide = "botonesrodolfo">
+                                                            <legend> Detalles de los Soportes:</legend>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading"><B></B></div>
+                                                                <div class="panel-body"  >
+                                                                  
+                                                                  
+                                                                    <div class="table-responsive">
+                                                                        <table ng-table="tablalstSoporte" show-filter="true" class="table table-striped table-bordered">
+                                                                            <tr ng-repeat="lstGrilla in $data" style="background-color:mintcream">
+                                                                                <td align="center" style="width:5%" data-title="'#'">{{$index+1}}</td>
+                                                                                <td class="text-center" style="width:15%" data-title="'TIPO SOPORTE'" >
+                                                                                {{lstGrilla.tipoSoporte}}
+                                                                                </td>
+                                                                                <td class="text-center" style="width:15%" data-title="'CATEGORIA'"  >
+                                                                                {{lstGrilla.categoria}}
+                                                                                </td>
+                                                                                <td class="text-center" style="width:15%" data-title="'FORMA DE SUJECION'">
+                                                                                {{lstGrilla.frmSujecion}}
+                                                                                </td>
+                                                                                <td class="text-center" style="width:15%" data-title="'ALTURA(Mts.)'">
+                                                                                {{lstGrilla.altura}}
+                                                                                </td>
+                                                                                <td class="text-center" style="width:15%" data-title="'NRO. ANTENAS'">
+                                                                                {{lstGrilla.nro_antenas}}
+                                                                                </td>
+
+                                                                                <td data-title="'OPCIONES'" class="text-center" style="width:10%">
+                                                                                <!--a class="btn btn-primary" data-toggle="modal" data-target="#detallesRadianes"  ng-click="detalleradianes(lstGrilla)" ><i class="fa fa-eye"  title="Ver radianes del Soporte"></i></a-->
+                                                                                <a class="btn btn-info btn-circle" ng-click="editaSoporte(lstGrilla)"  ng-hide = "botones"><i class="fa fa-pencil"  title="editar Registro del soporte" ></i></a>
+                                                                                <a class="btn btn-primary" ng-click="eliminarSoporte(lstGrilla,$index)" ng-hide = "botones"><i class="fa fa-trash "  title="Eliminar registro Antena" ></i></a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>  
+                                                                    </div>
+                                                                    <div ng-hide="mostrarbtn_multiple" class="container">
+                                                                      <button  type="button" class="btn btn-success fa fa-close" ng-click= "close_data_multiple()"  ng-show = "guardarbtn1 != null " >Cancelar</button>
+                                                                      <button ng-show = "guardarbtn1 != null " ng-click="reg_radiantes_multiple(dataAnt)" type="button" class="btn btn-success fa fa-save"> Registrar Antena</button>
+                                                                    </div>
+                                                                    <div ng-hide="actualizarbtn_multiple" class="container">
+                                                                      <button  type="button" class="btn btn-success fa fa-close" ng-click= "close_editar_multiple()" ng-show = "guardarbtn1 != null " >Cancelar</button>
+                                                                      <button ng-show = "guardarbtn1 != null " ng-click="actualizar_multiple(dataAnt)" type="button" class="btn btn-success fa fa-save">  Actualizar Antena</button>
+                                                                    </div>
+
+                                                                </div>  
+                                                            </div>
+                                                        </div>
+                                                   </div>                        
+                                                    <div ng-hide="observarData" class="container">
+                                                         <!--BOTON DE ENVIAR PARA LAS GRILLAS MULTIPLES><-->
+
+                                                        <div class="col-md-12" align="right" ng-hide = "!enviarTRamiteRBM">
+                                                            <button id="miFormGuardar"  ng-click="serializarInformacionMultiple(dataAnt);" type="button" class="btn btn-success fa fa-save" name="formEnviar" ng-disabled="btnGuardarRegistro" >{{translateTitulos.lbl_016_29}}</button>                        
+                                                            <button id="btnFormLicencia" ng-click="enviarData_multiple();" type="button" class="btn btn-success fa fa-mail-forward" ng-disabled="btnEnviarFormLinea">{{translateTitulos.lbl_016_30}}</button>
+                                                            <button   ng-click="close_editar_multiple();" type="button" class="btn btn-success fa fa-times" > Cancelar Envío</button>
+                                                        </div>
+                                                        <div class="col-md-12" align="right" ng-hide = "!verTRamiteRBM">
+                                                            <button  type="button" class="btn btn-success fa fa-reply" ng-click= "close_editar_multiple()" >Volver</button>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                                
+
+
+                                                <!-- Inicio Grilla para registrar gabinetes multiples> <-->
+                                                <div ng-hide="mostrarRMGM">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-12" ng-hide = "botones">
+                                                            <div align=right>
+                                                                <a class="btn btn-info btn-circle" data-toggle="modal" ng-click = "inireg_rbMultiple()" ><i class="fa fa-plus"  title="Registrar nuevo Radio Base" style="text-align:center;"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" >
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading"><B></B></div>
+                                                                <div class="panel-body"  >
+                                                                  <div>
+                                                                    <div class="table-responsive">
+                                                                        <table ng-table="tb_grilla_multiple" show-filter="true" class="table table-striped table-bordered">
+                                                                            <tr ng-repeat="lstGrilla in $data" style="background-color:mintcream">
+                                                                                <td align="center" style="width:5%" data-title="'#'">{{$index+1}}</td>
+                                                                                <td class="text-center" style="width:15%" data-title="'DENOMINACIÓN'" >
+                                                                                {{lstGrilla.f01_DENOMINACION}}
+                                                                                </td>
+                                                                                <td class="text-center" style="width:15%" data-title="'UBICACIÓN'"  >
+                                                                                {{lstGrilla.f01_UBI_RB}}
+                                                                                </td>
+                                                                                <td class="text-center" style="width:10%" data-title="'TIPO DE UBICACIÓN'">
+                                                                                {{lstGrilla.f01_TIPO_UBIC}}
+                                                                                </td>
+                                                                                <td class="text-center" style="width:10%" data-title="'NRO. GABINETE'">
+                                                                                {{lstGrilla.f01_NRO_GABINETE}}
+                                                                                </td>
+                                                                                <td class="text-center" style="width:10%" data-title="'NRO. DE AUTORIZACIÓN'">
+                                                                                {{lstGrilla.f01_NRO_AUTORIZACION}}
+                                                                                </td>
+                                                                                <td class="text-center" style="width:10%" data-title="'ESTADO TRAMITE'">
+                                                                                {{lstGrilla.estadoTramite}}
+                                                                                </td>
+                                                                                <td class="text-center" style="width:10%" data-title="'FECHA DE ENVIÓ'">
+                                                                                {{lstGrilla.fecha_envio}}
+                                                                                </td>
+                                                                                <td data-title="'OPCIONES'" class="text-center" style="width:10%">
+                                                                                <a ng-hide = "!botones" class="btn btn-info btn-circle" ng-click="det_grilla_multiple_vista(lstGrilla)" ><i class="fa fa-eye"  title="ver Registro"></i></a>
+                                                                                <a ng-show="lstGrilla.estadoTramite != 'ENVIADO' && estadoTramite != 'NO' && lstGrilla.fecha_envio == fechaVerifica"  class="btn btn-info btn-circle" ng-click="registro_i_data_multiple(lstGrilla)" ><i class="fa fa-share" title="Enviar Tramite"></i></a>
+
+                                                                                <a ng-hide = "botones" class="btn btn-info btn-circle" ng-click="det_grilla_multiple(lstGrilla)" ><i class="fa fa-pencil"  title="editar Registro"></i></a>
+                                                                                <a ng-hide = "botones" class="btn btn-info btn-circle" ng-click="elim_reg_radiobase(lstGrilla,$index)" ><i class="fa fa-trash"  title="Eliminar registro que esta realizando"></i></a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>  
+                                                                    </div>
+                                                                  </div>
+                                                                </div>  
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Inicio Grilla para registrar gabinetes multiples> <-->
+                                            </div>
+                                            <div class="tab-pane fade" id="tab-adjuntos" >
+
+                                            <!--           Inicio de Adjuntos...><-->
+
+
+                                                <div ng-hide = "requistosfile">
+                                                    <!--Tipo de Documento propiedad><-->
+                                                    <div class="col-md-12" ng-show = "ANTT_CON_ARR != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Contrato de Arrendamiento.</label>
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_CON_ARR" target="_blank" ng-click = "mosDetAdj('btn_ANTT_CON_ARR')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_CON_ARR" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign"></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_CON_ARR" name="ANTT_CON_ARR" uploader-model="ANTT_CON_ARR" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_CON_ARR_campo" name="ANTT_CON_ARR_campo" ng-model="datos.ANTT_CON_ARR_campo" type="text" class="form-control input-lg" required disabled="true" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="href_ANTT_CON_ARR"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_CON_ARR');">
+                                                                    file
+                                                                    <button id="btn_ANTT_CON_ARR" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                    </a>
+                                                                    <button id="btn_ANTT_CON_ARR" ng-click="ejecutarFile('ANTT_CON_ARR', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                    </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_CART_NOTARIADA != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Carta Notariada de Autorización que garantice el acceso irrestricto al sitio del emplazamiento.</label>
+                                                            <div class="col-md-1">
+                                                                <div class="input-group-btn" align="right">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_CART_NOTARIADA" target="_blank" ng-click = "mosDetAdj('btn_ANTT_CART_NOTARIADA')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_CART_NOTARIADA" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_CART_NOTARIADA" name="ANTT_CART_NOTARIADA" uploader-model="ANTT_CART_NOTARIADA" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_CART_NOTARIADA_campo" name="ANTT_CART_NOTARIADA_campo" ng-model="datos.ANTT_CART_NOTARIADA_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_CART_NOTARIADA"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_CART_NOTARIADA');">
+                                                                   file
+                                                                  <button id="btn_ANTT_CART_NOTARIADA" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_CART_NOTARIADA" ng-click="ejecutarFile('ANTT_CART_NOTARIADA', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_AUT_ESC_COPROP != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Autorización escrita de los Copropietarios.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_AUT_ESC_COPROP" target="_blank" ng-click = "mosDetAdj('btn_ANTT_AUT_ESC_COPROP')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_AUT_ESC_COPROP" class="browse btn btn-primary input-lg" type="button" ><i class="glyphicon glyphicon-info-sign"></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_AUT_ESC_COPROP" name="ANTT_AUT_ESC_COPROP" uploader-model="ANTT_AUT_ESC_COPROP" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_AUT_ESC_COPROP_campo" name="ANTT_AUT_ESC_COPROP_campo" ng-model="datos.ANTT_AUT_ESC_COPROP_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_AUT_ESC_COPROP"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_AUT_ESC_COPROP');">
+                                                                   file
+                                                                  <button id="btn_ANTT_AUT_ESC_COPROP" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_AUT_ESC_COPROP" ng-click="ejecutarFile('ANTT_AUT_ESC_COPROP', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_DOC_AUT_LUG_ESP_PUB != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Documento que autorice el tiempo y lugar del uso del espacio público.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_DOC_AUT_LUG_ESP_PUB_ANT" target="_blank" ng-click = "mosDetAdj('btn_ANTT_DOC_AUT_LUG_ESP_PUB_ANT')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_DOC_AUT_LUG_ESP_PUB_ANT" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_DOC_AUT_LUG_ESP_PUB" name="ANTT_DOC_AUT_LUG_ESP_PUB" uploader-model="ANTT_DOC_AUT_LUG_ESP_PUB" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_DOC_AUT_LUG_ESP_PUB_campo" name="ANTT_DOC_AUT_LUG_ESP_PUB_campo" ng-model="datos.ANTT_DOC_AUT_LUG_ESP_PUB_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_DOC_AUT_LUG_ESP_PUB"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_DOC_AUT_LUG_ESP_PUB');">
+                                                                   file
+                                                                  <button id="btn_ANTT_DOC_AUT_LUG_ESP_PUB" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_DOC_AUT_LUG_ESP_PUB" ng-click="ejecutarFile('ANTT_DOC_AUT_LUG_ESP_PUB', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--Tipo de Documento propiedad><-->
+                                                    <div class="col-md-12" ng-show = "ANTT_LIC_AMB != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Licencia Ambiental vigente.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_LIC_AMB" target="_blank" ng-click = "mosDetAdj('btn_ANTT_LIC_AMB')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_LIC_AMB" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign"  ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_LIC_AMB" name="ANTT_LIC_AMB" uploader-model="ANTT_LIC_AMB" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_LIC_AMB_campo" name="ANTT_LIC_AMB_campo" ng-model="datos.ANTT_LIC_AMB_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_LIC_AMB"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_LIC_AMB');">
+                                                                   file
+                                                                  <button id="btn_ANTT_LIC_AMB" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_LIC_AMB" ng-click="ejecutarFile('ANTT_LIC_AMB', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_CAL_ESTRUC_SOP != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Cálculo estructural del o de los soportes específicos.</label>
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_CAL_ESTRUC_SOP" target="_blank" ng-click = "mosDetAdj('btn_ANTT_CAL_ESTRUC_SOP')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_CAL_ESTRUC_SOP" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_CAL_ESTRUC_SOP" name="ANTT_CAL_ESTRUC_SOP" uploader-model="ANTT_CAL_ESTRUC_SOP" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_CAL_ESTRUC_SOP_campo" name="ANTT_CAL_ESTRUC_SOP_campo" ng-model="datos.ANTT_CAL_ESTRUC_SOP_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_CAL_ESTRUC_SOP"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_CAL_ESTRUC_SOP');">
+                                                                   file
+                                                                  <button id="btn_ANTT_CAL_ESTRUC_SOP" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_CAL_ESTRUC_SOP" ng-click="ejecutarFile('ANTT_CAL_ESTRUC_SOP', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_POL_SEG != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Póliza de Seguro.</label>
+                                                          
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_POL_SEG" target="_blank" ng-click = "mosDetAdj('btn_ANTT_POL_SEG')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_POL_SEG" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_POL_SEG" name="ANTT_POL_SEG" uploader-model="ANTT_POL_SEG" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_POL_SEG_campo" name="ANTT_POL_SEG_campo" ng-model="datos.ANTT_POL_SEG_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_POL_SEG"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_POL_SEG');">
+                                                                   file
+                                                                  <button id="btn_ANTT_POL_SEG" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_POL_SEG" ng-click="ejecutarFile('ANTT_POL_SEG', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_CERT_AUT_TRIB != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Certificación de la Autoridad Tributaria Municipal sobre la inexistencia de deudas pendientes de pago con el municipio.</label>
+                                                           
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_CERT_AUT_TRIB" target="_blank" ng-click = "mosDetAdj('btn_ANTT_CERT_AUT_TRIB')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_CERT_AUT_TRIB" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_CERT_AUT_TRIB" name="ANTT_CERT_AUT_TRIB" uploader-model="ANTT_CERT_AUT_TRIB" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_CERT_AUT_TRIB_campo" name="ANTT_CERT_AUT_TRIB_campo" ng-model="datos.ANTT_CERT_AUT_TRIB_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_CERT_AUT_TRIB"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_CERT_AUT_TRIB');">
+                                                                   file
+                                                                  <button id="btn_ANTT_CERT_AUT_TRIB" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_CERT_AUT_TRIB" ng-click="ejecutarFile('ANTT_CERT_AUT_TRIB', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_CART_NOT != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Carta Notariada del solicitante señalando que el o los soportes para los cuales se gestiona autorización no cuentan con sanciones pendientes de cumplimiento</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_CART_NOT" target="_blank" ng-click = "mosDetAdj('btn_ANTT_CART_NOT')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_CART_NOT" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_CART_NOT" name="ANTT_CART_NOT" uploader-model="ANTT_CART_NOT" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_CART_NOT_campo" name="ANTT_CART_NOT_campo" ng-model="datos.ANTT_CART_NOT_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_CART_NOT" href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_CART_NOT');">
+                                                                   file
+                                                                  <button id="btn_ANTT_CART_NOT" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_CART_NOT" ng-click="ejecutarFile('ANTT_CART_NOT', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_PLAN_MIME != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Plan de mimetización.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_PLAN_MIME" target="_blank" ng-click = "mosDetAdj('btn_ANTT_PLAN_MIME')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_PLAN_MIME" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_PLAN_MIME" name="ANTT_PLAN_MIME" uploader-model="ANTT_PLAN_MIME" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_PLAN_MIME_campo" name="ANTT_PLAN_MIME_campo" ng-model="datos.ANTT_PLAN_MIME_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_PLAN_MIME"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_PLAN_MIME');">
+                                                                   file
+                                                                  <button id="btn_ANTT_PLAN_MIME" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_PLAN_MIME" ng-click="ejecutarFile('ANTT_PLAN_MIME', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload" tooltip = "Descripción del requisito"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_PLAN_MANT != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Plan de mantenimiento.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_PLAN_MANT" target="_blank" ng-click = "mosDetAdj('btn_ANTT_PLAN_MANT')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_PLAN_MANT" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_PLAN_MANT" name="ANTT_PLAN_MANT" uploader-model="ANTT_PLAN_MANT" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_PLAN_MANT_campo" name="ANTT_PLAN_MANT_campo" ng-model="datos.ANTT_PLAN_MANT_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_PLAN_MANT"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_PLAN_MANT');">
+                                                                   file
+                                                                  <button id="btn_ANTT_PLAN_MANT" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_PLAN_MANT" ng-click="ejecutarFile('ANTT_PLAN_MANT', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_EST_GEOLOGICO != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Estudio Geológico Geotécnico que detalle las obras civiles específicas que deberán realizarse.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_EST_GEOLOGICO" target="_blank" ng-click = "mosDetAdj('btn_ANTT_EST_GEOLOGICO')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_EST_GEOLOGICO" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_EST_GEOLOGICO" name="ANTT_EST_GEOLOGICO" uploader-model="ANTT_EST_GEOLOGICO" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_EST_GEOLOGICO_campo" name="ANTT_EST_GEOLOGICO_campo" ng-model="datos.ANTT_EST_GEOLOGICO_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_EST_GEOLOGICO"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_EST_GEOLOGICO');">
+                                                                   file
+                                                                  <button id="btn_ANTT_EST_GEOLOGICO" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_EST_GEOLOGICO" ng-click="ejecutarFile('ANTT_EST_GEOLOGICO', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_INF_TEC_EMITIDO != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Para soportes a ser emplazados en predios declarados y valorados con la cargoria "C".</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_INF_TEC_EMITIDO" target="_blank" ng-click = "mosDetAdj('btn_ANTT_INF_TEC_EMITIDO')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_INF_TEC_EMITIDO" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_INF_TEC_EMITIDO" name="ANTT_INF_TEC_EMITIDO" uploader-model="ANTT_INF_TEC_EMITIDO" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_INF_TEC_EMITIDO_campo" name="ANTT_INF_TEC_EMITIDO_campo" ng-model="datos.ANTT_INF_TEC_EMITIDO_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_INF_TEC_EMITIDO"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_INF_TEC_EMITIDO');">
+                                                                   file
+                                                                  <button id="btn_ANTT_INF_TEC_EMITIDO" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_INF_TEC_EMITIDO" ng-click="ejecutarFile('ANTT_INF_TEC_EMITIDO', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload" tooltip = "Descripción del requisito"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_PLAN_FORM_DIG != null">
+                                                        <div class="form-group">
+
+                                                            <legend class="col-sm-4">PLANOS EN FORMATO DIGITAL (PDF).</legend>
+
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_PLAN_FORM_DIG" target="_blank" ng-click = "mosDetAdj('btn_ANTT_PLAN_FORM_DIG')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_PLAN_FORM_DIG" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-show = "FORMATO_DIG_ADJ != null">
+                                                                <div class="col-sm-6">
+                                                                    <div class="custom-upload">
+                                                                        <input type="file" id="ANTT_PLAN_FORM_DIG" name="ANTT_PLAN_FORM_DIG" uploader-model="ANTT_PLAN_FORM_DIG" style="display: none;" accept="image/*"/>
+                                                                        <div class="input-group">
+                                                                        <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                            <input id="ANTT_PLAN_FORM_DIG_campo" name="ANTT_PLAN_FORM_DIG_campo" ng-model="datos.ANTT_PLAN_FORM_DIG_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-1">
+                                                                      <div class="input-group-btn">
+                                                                          <p>
+                                                                               <a id="href_ANTT_PLAN_FORM_DIG"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_PLAN_FORM_DIG');">
+                                                                       file
+                                                                      <button id="btn_ANTT_PLAN_FORM_DIG" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                      </a>
+                                                                      <button id="btn_ANTT_PLAN_FORM_DIG" ng-click="ejecutarFile('ANTT_PLAN_FORM_DIG', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload" tooltip = "Descripción del requisito"></i> Subir</button>
+                                                                          </p>
+                                                                      </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                    <div  class="col-md-12" ng-show = "ANTT_INF_TEC_EMITIDO_GAB != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Para gabinetes a ser emplazados en predios declarados y valorados con la categoria "C".</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_INF_TEC_EMITIDO_GAB" target="_blank" ng-click = "mosDetAdj('btn_ANTT_INF_TEC_EMITIDO_GAB')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_INF_TEC_EMITIDO_GAB" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_INF_TEC_EMITIDO_GAB" name="ANTT_INF_TEC_EMITIDO_GAB" uploader-model="ANTT_INF_TEC_EMITIDO_GAB" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_INF_TEC_EMITIDO_GAB_campo" name="ANTT_INF_TEC_EMITIDO_GAB_campo" ng-model="datos.ANTT_INF_TEC_EMITIDO_GAB_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_INF_TEC_EMITIDO_GAB"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_INF_TEC_EMITIDO_GAB');">
+                                                                   file
+                                                                  <button id="btn_ANTT_INF_TEC_EMITIDO_GAB" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_INF_TEC_EMITIDO_GAB" ng-click="ejecutarFile('ANTT_INF_TEC_EMITIDO_GAB', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload" tooltip = "Descripción del requisito"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-md-12" ng-show = "ANTT_PLAN_ALT_SOPORTE != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Plano de altura del o de los soportes.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_PLAN_ALT_SOPORTE" target="_blank" ng-click = "mosDetAdj('btn_ANTT_PLAN_ALT_SOPORTE')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_PLAN_ALT_SOPORTE" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_PLAN_ALT_SOPORTE" name="ANTT_PLAN_ALT_SOPORTE" uploader-model="ANTT_PLAN_ALT_SOPORTE" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_PLAN_ALT_SOPORTE_campo" name="ANTT_PLAN_ALT_SOPORTE_campo" ng-model="datos.ANTT_PLAN_ALT_SOPORTE_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_PLAN_ALT_SOPORTE"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_PLAN_ALT_SOPORTE');">
+                                                                   file
+                                                                  <button id="btn_ANTT_PLAN_ALT_SOPORTE" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_PLAN_ALT_SOPORTE" ng-click="ejecutarFile('ANTT_PLAN_ALT_SOPORTE', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_PLAN_SITIO != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Plano del sitio.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_PLAN_SITIO" target="_blank" ng-click = "mosDetAdj('btn_ANTT_PLAN_SITIO')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_PLAN_SITIO" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_PLAN_SITIO" name="ANTT_PLAN_SITIO" uploader-model="ANTT_PLAN_SITIO" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_PLAN_SITIO_campo" name="ANTT_PLAN_SITIO_campo" ng-model="datos.ANTT_PLAN_SITIO_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_PLAN_SITIO"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_PLAN_SITIO');">
+                                                                   file
+                                                                  <button id="btn_ANTT_PLAN_SITIO" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_PLAN_SITIO" ng-click="ejecutarFile('ANTT_PLAN_SITIO', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_PLAN_MED_PREV_SEG != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Plano en el que se identifiquen las medidas de prevención y seguridad.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_PLAN_MED_PREV_SEG" target="_blank" ng-click = "mosDetAdj('btn_ANTT_PLAN_MED_PREV_SEG')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_PLAN_MED_PREV_SEG" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_PLAN_MED_PREV_SEG" name="ANTT_PLAN_MED_PREV_SEG" uploader-model="ANTT_PLAN_MED_PREV_SEG" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_PLAN_MED_PREV_SEG_campo" name="ANTT_PLAN_MED_PREV_SEG_campo" ng-model="datos.ANTT_PLAN_MED_PREV_SEG_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_PLAN_MED_PREV_SEG"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_PLAN_MED_PREV_SEG');">
+                                                                   file
+                                                                  <button id="btn_ANTT_PLAN_MED_PREV_SEG" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_PLAN_MED_PREV_SEG" ng-click="ejecutarFile('ANTT_PLAN_MED_PREV_SEG', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_DESC_ESQ_BALIZAMIENTO != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Descripción esquemática del balizamiento.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_DESC_ESQ_BALIZAMIENTO" target="_blank" ng-click = "mosDetAdj('btn_ANTT_DESC_ESQ_BALIZAMIENTO')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_DESC_ESQ_BALIZAMIENTO" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_DESC_ESQ_BALIZAMIENTO" name="ANTT_DESC_ESQ_BALIZAMIENTO" uploader-model="ANTT_btn_ANTT_DESC_ESQ_BALIZAMIENTO" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_DESC_ESQ_BALIZAMIENTO_campo" name="ANTT_DESC_ESQ_BALIZAMIENTO_campo" ng-model="datos.ANTT_DESC_ESQ_BALIZAMIENTO_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_DESC_ESQ_BALIZAMIENTO"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_DESC_ESQ_BALIZAMIENTO');">
+                                                                   file
+                                                                  <button id="btn_ANTT_DESC_ESQ_BALIZAMIENTO" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_DESC_ESQ_BALIZAMIENTO" ng-click="ejecutarFile('ANTT_DESC_ESQ_BALIZAMIENTO', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_INF_TEC_POS != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Informe Técnico Positivo.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_INF_TEC_POS" target="_blank" ng-click = "mosDetAdj('btn_ANTT_INF_TEC_POS')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_INF_TEC_POS" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_INF_TEC_POS" name="ANTT_INF_TEC_POS" uploader-model="ANTT_INF_TEC_POS" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_INF_TEC_POS_campo" name="ANTT_INF_TEC_POS_campo" ng-model="datos.ANTT_INF_TEC_POS_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_INF_TEC_POS"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_INF_TEC_POS');">
+                                                                   file
+                                                                  <button id="btn_ANTT_INF_TEC_POS" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_INF_TEC_POS" ng-click="ejecutarFile('ANTT_INF_TEC_POS', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_PLAN_DET_CONST_CAT != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Planos de detalles constructivos, características.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_PLAN_DET_CONST_CAT" target="_blank" ng-click = "mosDetAdj('btn_ANTT_PLAN_DET_CONST_CAT')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_PLAN_DET_CONST_CAT" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_PLAN_DET_CONST_CAT" name="ANTT_PLAN_DET_CONST_CAT" uploader-model="ANTT_PLAN_DET_CONST_CAT" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_PLAN_DET_CONST_CAT_campo" name="ANTT_PLAN_DET_CONST_CAT_campo" ng-model="datos.ANTT_PLAN_DET_CONST_CAT_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_PLAN_DET_CONST_CAT"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_PLAN_DET_CONST_CAT');">
+                                                                   file
+                                                                  <button id="btn_ANTT_PLAN_DET_CONST_CAT" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_PLAN_DET_CONST_CAT" ng-click="ejecutarFile('ANTT_PLAN_DET_CONST_CAT', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_PLAN_CAR_GAB != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Planos de las caracteristicas de los gabinetes.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_PLAN_CAR_GAB" target="_blank" ng-click = "mosDetAdj('btn_ANTT_PLAN_CAR_GAB')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_PLAN_CAR_GAB" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_PLAN_CAR_GAB" name="ANTT_PLAN_CAR_GAB" uploader-model="ANTT_PLAN_CAR_GAB" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_PLAN_CAR_GAB_campo" name="ANTT_PLAN_CAR_GAB_campo" ng-model="datos.ANTT_PLAN_CAR_GAB_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_PLAN_CAR_GAB"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_PLAN_CAR_GAB');">
+                                                                   file
+                                                                  <button id="btn_ANTT_PLAN_CAR_GAB" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_PLAN_CAR_GAB" ng-click="ejecutarFile('ANTT_PLAN_CAR_GAB', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_PLAN_ELEM_COMPL != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Planos de elementos complementarios como el sistema eléctrico.</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_PLAN_ELEM_COMPL" target="_blank" ng-click = "mosDetAdj('btn_ANTT_PLAN_ELEM_COMPL')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_PLAN_ELEM_COMPL" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_PLAN_ELEM_COMPL" name="ANTT_PLAN_ELEM_COMPL" uploader-model="ANTT_PLAN_ELEM_COMPL" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_PLAN_ELEM_COMPL_campo" name="ANTT_PLAN_ELEM_COMPL_campo" ng-model="datos.ANTT_PLAN_ELEM_COMPL_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_PLAN_ELEM_COMPL"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_PLAN_ELEM_COMPL');">
+                                                                   file
+                                                                  <button id="btn_ANTT_PLAN_ELEM_COMPL" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_PLAN_ELEM_COMPL" ng-click="ejecutarFile('ANTT_PLAN_ELEM_COMPL', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "ANTT_ADJ_AUTORIZACION != null">
+                                                        <div class="form-group">
+
+                                                            <label class="col-sm-4" id="lbl_f01_req13">Documento de la autorización</label>
+                                                            
+                                                            <div class="col-md-1" align="right">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                    <a id="btn_ANTT_ADJ_AUTORIZACION" target="_blank" ng-click = "mosDetAdj('btn_ANTT_ADJ_AUTORIZACION')" tooltip = "Descripción del requisito">
+                                                                        <button id="btn_ANTT_ADJ_AUTORIZACION" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-info-sign" ></i></button>
+                                                                    </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="ANTT_ADJ_AUTORIZACION" name="ANTT_ADJ_AUTORIZACION" uploader-model="ANTT_ADJ_AUTORIZACION" style="display: none;" accept="image/*"/>
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="ANTT_ADJ_AUTORIZACION_campo" name="ANTT_ADJ_AUTORIZACION_campo" ng-model="datos.ANTT_ADJ_AUTORIZACION_campo" type="text" class="form-control input-lg" required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-1">
+                                                                  <div class="input-group-btn">
+                                                                      <p>
+                                                                           <a id="href_ANTT_ADJ_AUTORIZACION"  href="" target="_blank" ng-click="mostrarimgjuridico('ANTT_ADJ_AUTORIZACION');">
+                                                                   file
+                                                                  <button id="btn_ANTT_ADJ_AUTORIZACION" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                  </a>
+                                                                  <button id="btn_ANTT_ADJ_AUTORIZACION" ng-click="ejecutarFile('ANTT_ADJ_AUTORIZACION', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                                      </p>
+                                                                  </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <!--           Fin de Adjuntos......><-->
+
+                                                <!-- Inicio requisitos Gabinete ><-->
+                                               
+                                                <!-- Inicio Grilla visualizacion de requistos a enviar ><-->
+                                                <div class="col-md-12" >
+                                                        <legend> Requisitos del Ciudadano:</legend>
+                                                        
+                                                        <div class="col-lg-12">
+                                                            <div class="tab-content">
+                                                                <div id="tab-one" class="tab-pane active">
+                                                                    <div class="row">
+                                                                      <div class="col-md-12">
+                                                                        <br>
+                                                                        <br>
+                                                                        <table class="table table-striped table-bordered" id="tablaAdjuntos">
+                                                                            <thead>
+                                                                                <th>#&nbsp;</th>
+                                                                                <th>Opciones&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; </th>
+                                                                                <th>Archivo&nbsp;</th>
+                                                                                <th>Descripción&nbsp;</th>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr class="column" ng-repeat="archivo in obtArchivosAdjuntos">
+                                                                                    <td>{{$index+1}}</td>
+                                                                                    
+                                                                                    <td>
+                                                                                    <a target="_blank" tooltip = "Ver" ng-click="imprimirArchivo(archivo.url)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#docsVisor"><i class="fa fa-eye" style="color:#249FE6"></i></a>
+                                                                                    <a ng-if = "$index > 3" tooltip = "Eliminar" ng-click="eliminarArchivo(archivo, $index)" class="btn btn-default btn-circle" ng-hide = "botones"><i class="fa fa-trash-o " style="color:#249FE6"></i></a>
+                                                                                    </td>
+                                                                                    <td>{{archivo.campo}}</td>
+                                                                                    <td>{{archivo.nombre}}</td>
+                                                                                    <!--td>{{archivo.url}}</td-->
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                      </div>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>    
+                                                </div>
+                                                <!-- Fin Grilla visualizacion de requistos a enviar> <-->
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!-- Fin Grilla para registrar gabinetes multiples ><-->
+                    <br>
+                    <br>
+                    <div class="col-md-12" align="right" ng-hide = "botones">
+                        <button id="miFormGuardar"  ng-click="serializarInformacion(dataAnt);" type="button" class="btn btn-success fa fa-save" name="formEnviar" ng-disabled="btnGuardarRegistro" >{{translateTitulos.lbl_016_29}}</button>                        
+                        <button id="btnFormLicencia"  ng-click="enviarData();" type="button" class="btn btn-success fa fa-mail-forward" ng-disabled="btnEnviarFormLinea" ng-disabled="desabilitado">{{translateTitulos.lbl_016_30}}</button>
+                        <!--button id="btnFormLicencia" ng-click="enviarData();" type="button" class="btn btn-success fa fa-mail-forward">{{translateTitulos.lbl_016_30}}</button-->
+                    </div>
+                </div>    
+            </div>
+            <div class="modal fade" id="fotpod" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+                            <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_09_03_1}} (Reverso)</h4>
+                        </div>
+                        <img id="imgSalida" ng-src="{{archivoPOD}}" width="100%" height="100%">
+                        <div class="modal-footer">
+                            <button id="{{translateTitulos.lbl_05_05_05}}" name="{{translateTitulos.lbl_05_05_05}}" type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+           
+    </div>
+<!--script async defer
+         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfKWci28piaE9q8Or0DzmUUJXbbdja54&callback=initMap">
+</script-->
+</html>
+

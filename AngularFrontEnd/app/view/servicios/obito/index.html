@@ -1,0 +1,913 @@
+<!-- TIPOS OBLIGATORIO -->
+
+<style>
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+</style>
+
+<style>
+.custom-upload {
+    position: relative;
+    height: 40px;
+    width: 100%;
+    
+}
+
+.custom-upload input[type=file]
+{
+    outline:none;
+    position: relative;
+    text-align: right;    
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width:85%;
+    height:100%;
+    
+}
+
+.custom-upload .fake-file
+{
+    background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 85%;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    line-height: 100%;
+}
+
+.custom-upload .fake-file input
+{
+    font-size:16px;
+    height:40px;
+    width:85%;
+}
+
+</style>
+
+<script type="text/javascript">
+$('.modal').on('shown.bs.modal', function() {
+  //Make sure the modal and backdrop are siblings (changes the DOM)
+  $(this).before($('.modal-backdrop'));
+  //Make sure the z-index is higher than the backdrop
+  $(this).css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 1);
+});
+
+    $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+</script>
+
+<script type="text/javascript">
+    function soloNumericoCelular(sValor){
+        Numer=parseInt(sValor);
+        if (isNaN(Numer)){
+            return "";
+        }else{
+            var digits = ("" + Numer).split("");
+            if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6)){
+                return Numer;
+            }else{
+                return "";
+            }
+        }
+    }
+    function valNumeroCelular(Control){
+        Control.value = soloNumericoCelular(Control.value);
+    }
+    //VALORES NUMERICOS
+    function soloNumerico(variable){
+        Numer=parseInt(variable);
+        if (isNaN(Numer)){
+                return "";
+        }
+        return Numer;
+    }
+
+    function valNumero(Control){
+        Control.value=soloNumerico(Control.value);
+    }
+</script>
+
+<!-- OCULTANDO COMBO TIPO DE PERSONA -->
+<script type="text/javascript">
+    var cboTipoCon = document.getElementById("tipo_contribuyente");
+    if(cboTipoCon){
+        cboTipoCon.style.display = 'none';
+    }
+</script>
+<script>
+    $(function () {
+        var nowTemp = new Date();
+        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate());
+        $('#fecha1').fdatepicker({onRender: function (date) {return date.valueOf() > now.valueOf() ? 'disabled' : '';}}).on('changeDate', function (ev) {  var d = fecha2.value; dArr = d.split('/');    ts = new Date(dArr[1] + "-" + dArr[0] + "-" + dArr[2]).getTime(); 
+        if (ev.date.valueOf() > ts.valueOf()) {
+            $('#alert').show().find('strong').text('ERROR');
+            mes = parseInt(nowTemp.getMonth()) + 1;
+            var mesa = mes;
+            if(mes < 10){
+                mesa = '0'+mes;
+            }
+            var fec = nowTemp.getDate()+'/'+mes+'/'+ nowTemp.getFullYear();
+            fecha2.value = '';
+        } else {
+            cambio = true;
+            $('#alert').hide();
+        }
+    }).data('datepicker');
+        $('#fecha2').fdatepicker({onRender: function (date) {  return  date.valueOf() > now.valueOf()  ? 'disabled' : ''}}).on('changeDate', function (ev) {  var d = fecha1.value; dArr = d.split('/');    ts = new Date(dArr[1] + "-" + dArr[0] + "-" + dArr[2]).getTime(); 
+        if (ev.date.valueOf() < ts.valueOf()) {
+            $('#alert').show().find('strong').text('ERROR');
+            mes = parseInt(nowTemp.getMonth()) + 1;
+            var mesa = mes;
+            if(mes < 10){
+                mesa = '0'+mes;
+            }
+            var fec = nowTemp.getDate()+'/'+mes+'/'+ nowTemp.getFullYear();
+            fecha2.value = '';
+        } else {
+            cambio = true;
+            $('#alert').hide();
+        }
+    }).data('datepicker');
+    });
+
+</script>
+
+<script type="text/javascript">
+    function impresionAl(nombre) {
+      var ficha = document.getElementById(nombre);
+      var ventimp = window.open(' ', 'popimpr');
+      ventimp.document.write( ficha.innerHTML );
+      ventimp.document.close();
+      ventimp.print( );
+      ventimp.close();
+    }
+
+  function soloNumericoTelefono(sValo){
+        Numer=parseInt(sValo);
+        if (isNaN(Numer)){
+            return "";
+        }else{
+            var digits = ("" + Numer).split("");
+            if(digits.length < 9 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+                return Numer;
+            }else{
+                return "";
+            }
+        }
+    }
+    function valNumeroTelefono(Control){
+        Control.value = soloNumericoTelefono(Control.value);
+    }
+
+    </script>
+
+    <script>
+        function checkLetras(ob){
+            var invalidChars = /[ÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùüÜ¡!@#\$%\^&\*\¿?_~();:{}'"|<>´,.?`=|0-9]/;
+            if(invalidChars.test(ob.value)) {
+              ob.value = ob.value.replace(invalidChars,"");
+            }
+         };
+    </script>
+
+<div ng-controller="obitoController" data-ng-init="cargarDatos();">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;"><!--cambios-->
+            <h4>{{translateTitulos.lbl_016_1_1}} </h4>
+        </div>
+        <form ng-controller="serviciosObitoController" name="formularioRegistro" id="formularioRegistro" class="form-horizontal" role="form" novalidate>
+            <div class="tab-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="registro_ciudadano|servicios|index3.html#tabDatos" data-toggle="tab">{{translateTitulos.lbl_016_01}}</a></li>
+                    <li><a href="registro_ciudadano|servicios|index3.html#tabFallecido" data-toggle="tab">{{translateTitulos.lbl_016_19}}</a></li>
+                    <li><a href="registro_ciudadano|servicios|index3.html#tabDocumentos" data-toggle="tab">{{translateTitulos.lbl_016_31}}</a></li>
+                    <li><a href="registro_ciudadano|servicios|index3.html#tabAviso" data-toggle="tab">{{translateTitulos.lbl_016_37}}</a></li>
+                </ul>
+                <div class="tab-content">
+                    <!-- ////////////////////////////////////////////////////// -->
+                    <!-- /////// TAB datos requiriente                  /////// -->
+                    <!-- ////////////////////////////////////////////////////// -->
+                    <div class="tab-pane active cont" id="tabDatos">
+                        <div class="col-lg-12" class="tab">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title_2">
+                                    <h4>{{translateTitulos.lbl_016_02}}</h4>
+                                </div>
+                                <div class="row">
+                                    <input type="hidden" ng-model="datos.ci_bigdata" id="ci_bigdata" name="ci_bigdata" class="form-control"  width="30%" height="30" ng-disabled="true"></input>
+                                    <input type="hidden" ng-model="datos.fec_solicitud" id="fec_solicitud" name="int_fec_solicitud" class="form-control"  width="30%" height="30" ng-disabled="true"></input>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_03}}: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <input  ng-model="datos.nombres_t" name="nombres_t" id="nombres_t" class="form-control" type="text" placeholder="Ingrese nombres" ng-disabled="true" onkeyUp="return conMayusculas(this);" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.nombres_t.$invalid">
+                                                        <span ng-show="formularioRegistro.nombres_t.$error.required">{{translateTitulos.lbl_016_03_1}}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_04}}: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <input  ng-model="datos.primer_apellido_t" name="primer_apellido_t" id="primer_apellido_t" class="form-control" type="text" placeholder="Ingrese primer apellido" ng-disabled="true" onkeyUp="return conMayusculas(this);" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.primer_apellido_t.$invalid && formularioRegistro.segundo_apellido_t.$invalid">
+                                                        <span>** Es requerido Paterno o Materno</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_05}}:</label>
+                                                <div class="controls">
+                                                    <input  ng-model="datos.segundo_apellido_t" name="segundo_apellido_t" id="segundo_apellido_t" class="form-control" type="text" placeholder="Ingrese segundo apellido" ng-disabled="true" onkeyUp="return conMayusculas(this);" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.primer_apellido_t.$invalid && formularioRegistro.segundo_apellido_t.$invalid">
+                                                        <span>** Es requerido Paterno o Materno</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_06}}: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <input  ng-model="datos.carnet_t" name="carnet_t" id="carnet_t" class="form-control" type="text" placeholder="Ingrese Carnet de Identidad" ng-disabled="true" onkeyUp="return valNumero(this);" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.carnet_t.$invalid">
+                                                        <span ng-show="formularioRegistro.carnet_t.$error.required">{{translateTitulos.lbl_016_06_1}}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_07}}: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <select id="ci_expedido_t" name="ci_expedido_t"  ng-model="datos.ci_expedido_t"  class="form-control" placeholder="-- Seleccione --" ng-disabled="true" required>
+                                                        <option value="LP"> LA PAZ  </option>
+                                                        <option value="OR"> ORURO  </option>
+                                                        <option value="PO"> POTOSI  </option>
+                                                        <option value="CO"> COCHABAMBA  </option>
+                                                        <option value="TA"> TARIJA  </option>
+                                                        <option value="CH"> CHUQUISACA  </option>
+                                                        <option value="SC"> SANTA CRUZ  </option>
+                                                        <option value="PA"> PANDO  </option>
+                                                        <option value="BE"> BENI  </option>
+                                                    </select>
+                                                    <span style="color:red" ng-show="formularioRegistro.ci_expedido_t.$invalid">
+                                                        <span ng-show="formularioRegistro.ci_expedido_t.$error.required">{{transalteTitulos.lbl_016_07_1}}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_08}}: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <select id="parentesco" name="parentesco"  ng-model="datos.parentesco"  class="form-control" placeholder="-- Seleccione el parentesco --" ng-disabled="desabilitado" required ng-change="selParentesco(datos.parentesco)">
+                                                        <option value="1">HIJO (A)</option>
+                                                        <option value="2">PADRE / MADRE</option>
+                                                        <option value="3">ABUELO (A)</option>
+                                                        <option value="4">NIETO (A)</option>
+                                                        <option value="6">ESPOSO(A)</option>
+                                                        <option value="7">CONVIVIENTE</option>
+                                                        <option value="9">TUTOR(A)</option>
+                                                        <option value="10">HERMANO(A)</option>
+                                                        <option value="13">TIO (A)</option>
+                                                        <option value="14">PRIMO(A)</option>
+                                                        <option value="15">SOBRINO(A)</option>
+                                                        <option value="16">SUEGRO(A)</option>
+                                                        <option value="17">HIJO POLÍTICO</option>
+                                                        <option value="18">CUÑADO (A)</option>
+                                                        <option value="19">ORDEN JUDICIAL</option>
+                                                    </select>
+                                                    <span style="color:red" ng-show="formularioRegistro.parentesco.$invalid">
+                                                        <span ng-show="formularioRegistro.parentesco.$error.required">{{translateTitulos.lbl_016_08_1}}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_09}}: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <select id="motivo" name="motivo"  ng-model="datos.motivo"  class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
+                                                        <option value="1">DECLARATORIA DE HEREDEROS</option>
+                                                        <option value="2">SOLICITAR EL CERTIFICADO DE DEFUNCIÓN </option>
+                                                        <option value="3">TRÁMITES - AFP's</option>
+                                                        <option value="4">TRÁMITES - SENASIR</option>
+                                                        <option value="5">TRÁMITES - INSTITUCIONES BANCARIAS</option>
+                                                        <option value="6">TRÁMITES ANTE SEGIP</option>
+                                                    </select>
+                                                    <span style="color:red" ng-show="formularioRegistro.motivo.$invalid">
+                                                        <span ng-show="formularioRegistro.motivo.$error.required">{{translateTitulos.lbl_016_09_1}}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ibox-title_2">
+                                    <h4>{{translateTitulos.lbl_016_10}}</h4>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_11}}: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <input  ng-model="datos.titular_zona" name="titular_zona" id="titular_zona" class="form-control" type="text" placeholder="Ingrese zona" ng-disabled="true" onkeyUp="return conMayusculas(this);" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.titular_zona.$invalid">
+                                                        <span ng-show="formularioRegistro.titular_zona.$error.required">{{translateTitulos.lbl_016_11_1}}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_12}}: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <input  ng-model="datos.titular_nro" name="titular_nro" id="titular_nro" class="form-control" type="text" placeholder="Ingrese número" ng-disabled="true" onkeyUp="return valNumero(this);" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.titular_nro.$invalid">
+                                                        <span>{{translateTitulos.lbl_016_12_1}}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_13}}: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <select id="tipo_via" name="tipo_via"  ng-model="datos.tipo_via"  class="form-control" placeholder="-- Seleccione --" ng-disabled="true" required>
+                                                        <option value="AV"> AVENIDA  </option>
+                                                        <option value="CA"> CALLE  </option>
+                                                        <option value="CL"> CALLEJON  </option>
+                                                        <option value="CN"> CANCHA  </option>
+                                                        <option value="PR"> PARQUE  </option>
+                                                        <option value="PL"> PLAZA  </option>
+                                                        <option value="PA"> PASAJE  </option>
+                                                    </select>
+                                                    <span style="color:red" ng-show="formularioRegistro.tipo_via.$invalid  && formularioRegistro.tipo_via.$invalid">
+                                                        <span>{{translateTitulos.lbl_016_13_1}}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_14}}: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <input  ng-model="datos.titular_via" name="titular_via" id="titular_via" class="form-control" type="text" placeholder="Ingrese Nombre de la calle" ng-disabled="true" onkeyUp="return conMayusculas(this);" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.titular_via.$invalid  && formularioRegistro.titular_via.$invalid">
+                                                        <span>{{translateTitulos.lbl_016_14_1}}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_15}}: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <input  ng-model="datos.titular_fono" name="titular_fono" id="titular_fono" class="form-control" type="text" placeholder="Ingrese teléfono" ng-disabled="true" maxlength="7" onkeyUp="valNumeroTelefono(this);" style="text-transform:uppercase;" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.titular_fono.$invalid  && formularioRegistro.titular_fono.$invalid">
+                                                        <span>{{translateTitulos.lbl_016_15_1}}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >{{translateTitulos.lbl_016_16}}: <font color="#f3ff17"> * (Para Pago En línea) </font></label>
+                                                <div class="controls">
+                                                    <input  ng-model="datos.titular_correo" name="titular_correo" id="titular_correo" class="form-control" type="email" placeholder="Ingrese correo electrónico" ng-disabled="true" onkeyUp="" >
+                                                    <span style="color:red" ng-show="formularioRegistro.titular_correo.$invalid">
+                                                    <span class="error" ng-show="formularioRegistro.titular_correo.$error.email">{{translateTitulos.lbl_016_16_1}}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" ng-show="datosNatural!=null">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >Razón Social: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <input  ng-model="datos.razon_social" name="razon_social" id="razon_social" class="form-control" type="text" placeholder="Ingrese primer apellido" ng-disabled="true" onkeyUp="return conMayusculas(this);" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.razon_social.$invalid && formularioRegistro.segundo_apellido_t.$invalid">
+                                                        <span>*Razón Social es requerido</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" ng-show="datosNatural!=null">
+                                        <div class="col-md-12" align="left">
+                                            <div class="form-group" class="col-md-12">
+                                                <label for="url" >NIT: <font color="#FF0000"> * </font></label>
+                                                <div class="controls">
+                                                    <input  ng-model="datos.nit" name="nit" id="nit" class="form-control" type="text" placeholder="Ingrese Carnet de Identidad" ng-disabled="true" onkeyUp="return valNumero(this);" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.nit.$invalid">
+                                                        <span ng-show="formularioRegistro.nit.$error.required">* NIT es requerido
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ////////////////////////////////////////////////////// -->
+                    <!-- /////// TAB datos fallecido                    /////// -->
+                    <!-- ////////////////////////////////////////////////////// -->
+                    <div class="tab-pane" id="tabFallecido">
+                        <div class="ibox-title_2">
+                            <h4>{{translateTitulos.lbl_016_20}}</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="col-md-12" align="left">
+                                    <div class="form-group" class="col-md-12">
+                                        <label for="url" >{{translateTitulos.lbl_016_21}}: <font color="#FF0000"> * </font></label>
+                                        <div class="controls">
+                                            <input  ng-model="datos.nombre" name="nombre_fallecido" id="nombre_fallecido" class="form-control" type="text" placeholder="{{translateTitulos.lbl_016_21}}" ng-disabled="desabilitado" onkeyUp="return checkLetras(this);" style="text-transform: uppercase;" required>
+                                            <span style="color:red" ng-show="formularioRegistro.nombre_fallecido.$invalid">
+                                                <span ng-show="formularioRegistro.nombre_fallecido.$error.required">{{translateTitulos.lbl_016_20_1}}
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12" align="left">
+                                    <div class="form-group" class="col-md-12">
+                                        <label for="url" >{{translateTitulos.lbl_016_22}}: <font color="#FF0000"> * </font></label>
+                                        <div class="controls">
+                                            <input  ng-model="datos.paterno" name="paterno" id="paterno" class="form-control" type="text" placeholder="{{translateTitulos.lbl_016_22}}" ng-disabled="desabilitado" onkeyUp="return checkLetras(this);" style="text-transform: uppercase;" required>
+                                            <span style="color:red" ng-show="formularioRegistro.paterno.$invalid && formularioRegistro.materno.$invalid">
+                                                <span>** Es requerido Primer o Segundo Apellido</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12" align="left">
+                                    <div class="form-group" class="col-md-12">
+                                        <label for="url" >{{translateTitulos.lbl_016_23}}: </label>
+                                        <div class="controls">
+                                            <input  ng-model="datos.materno" name="materno" id="materno" class="form-control" type="text" placeholder="{{translateTitulos.lbl_016_23}}" ng-disabled="desabilitado" onkeyUp="return checkLetras(this);" style="text-transform: uppercase;" required>
+                                            <span style="color:red" ng-show="formularioRegistro.paterno.$invalid && formularioRegistro.materno.$invalid">
+                                                <span>** Es requerido Primer o Segundo Apellido</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="col-md-12" align="left">
+                                    <div class="form-group" class="col-md-12">
+                                        <label for="url" >{{translateTitulos.lbl_016_24}}: </label>
+                                        <div class="controls">
+                                            <input  ng-model="datos.apellido_casada" name="apellido_casada" id="apellido_casada" class="form-control" type="text" placeholder="{{translateTitulos.lbl_016_24}}" ng-disabled="desabilitado" onkeyUp="return checkLetras(this);" style="text-transform: uppercase;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12" align="left">
+                                    <div class="form-group" class="col-md-12">
+                                        <label for="url" >{{translateTitulos.lbl_016_25}}:</label>
+                                        <div class="controls">
+                                            <input  ng-model="datos.ci_fallecido" name="ci_fallecido" id="ci_fallecido" class="form-control" type="text" placeholder="{{translateTitulos.lbl_016_25}}" ng-disabled="desabilitado" onkeyUp="return valNumero(this);">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ibox-title_2">
+                            <h4>{{translateTitulos.lbl_016_26}}</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="col-md-12" align="left">
+                                    <div class="form-group" class="col-md-12">
+                                        <label for="url" >{{translateTitulos.lbl_016_27}}:</label>
+                                        <div class="controls">
+                                            <input ng-disabled="desabilitado" class="form-control" data-date-format="yyyy-mm-dd" id="fecha1" name="fecha1" placeholder="dd/mm/yyyy" ng-model="datos.fecha1" required>
+                                            <span style="color:red" ng-show="formularioRegistro.fecha1.$invalid">
+                                                <span ng-show="formularioRegistro.fecha1.$error.required">{{translateTitulos.lbl_016_27_1}}
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12" align="left">
+                                    <div class="form-group" class="col-md-12">
+                                        <label for="url" >{{translateTitulos.lbl_016_28}}:</label>
+                                        <div class="controls">
+                                            <input ng-disabled="desabilitado" class="form-control" data-date-format="yyyy-mm-dd" id="fecha2" name="fecha2" placeholder="dd/mm/yyyy" ng-model="datos.fecha2" required>
+                                            <div class="alert alert-box"  style="display:none;" id="alert"> 
+                                                <span style="color:red" >
+                                                    {{translateTitulos.lbl_28_1}}
+                                                   
+                                                </span>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-12" align="left">
+                                    <div class="form-group" class="col-md-12">
+                                        <label for="url" >{{translateTitulos.lbl_016_28_2}}</label>
+                                
+                                    </div>
+                                </div>
+                            </div>
+                            </p>
+                        </div>
+
+                    </div>
+                    <!-- ////////////////////////////////////////////////////// -->
+                    <!-- /////// TAB documentos                         /////// -->
+                    <!-- ////////////////////////////////////////////////////// -->
+                    <div class="tab-pane" id="tabDocumentos">
+                    <br>
+                    <br>
+                        <div class="ibox-title_2">
+                             <h4>{{translateTitulos.lbl_016_32}}</h4>
+                         </div>
+                    <br>
+                    <div class="ng-binding">
+                        <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12">
+                            <div class="col-md-8" ng-show="archivoDivCI==true && datosNatural==null">
+                                <label  class="col-sm-3 col-lg-3 col-xs-6 col-md-3" for="url">{{translateTitulos.lbl_016_33}}</label>
+                                <div class="form-group custom-upload">
+                                    <div ng-show = "cibloq != null">
+                                        <input type="file" id="FILE_FOTOCOPIA_CI" name="FILE_FOTOCOPIA_CI" uploader-model="FILE_FOTOCOPIA_CI" accept="image/*" style="display: none;">                                        
+                                        <div class="input-group">                                                                            
+                                            <input id="txt_FILE_FOTOCOPIA_CI" name="txt_FILE_FOTOCOPIA_CI" ng-model="datos.FILE_FOTOCOPIA_CI" type="text" class="form-control input-lg" required>                                            
+                                            <span class="input-group-btn">
+                                                <a id="FILE_FOTOCOPIA_CI"  href="">
+                                                    <button id="href_FILE_FOTOCOPIA_CI" class="browse btn btn-primary input-lg" type="button" ng-click="mostrarimg();" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                </a>
+                                                <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FOTOCOPIA_CI');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                            </span>
+                                        </div> 
+                                    </div>
+                                    <div class="alert alert-box"> 
+                                        <span style="color:red" >
+                                            Cédula de Identidad debe ser un archivo .jpg o .png 
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="fo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_016_34}}</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_016_34_1}}</h4>
+                                        </div>
+                                        <img id="imgSalida" ng-src="{{archivoCI}}" width="100%" height="100%">
+                                        <div class="modal-footer">
+                                            <button id="{{translateTitulos.lbl_05_05_05}}" name="{{translateTitulos.lbl_05_05_05}}" type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div ng-show="archivoDivCI==true">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 col-lg-3 col-xs-6 col-md-3" for="url">{{translateTitulos.lbl_016_33}}</label>
+                                    <div class="col-sm-6 col-lg-6 col-xs-4 col-md-6 ">
+                                        <div class="custom-upload" ng-show = "cibloq != null" >
+                                            <input  type="file" name="FILE_FOTOCOPIA_CI" uploader-model="FILE_FOTOCOPIA_CI" accept="image/*" class="file-loading"/>
+                                            <div class="alert alert-box"> 
+                                                <span style="color:red" >
+                                                    Cédula de Identidad debe ser un archivo .jpg o .png 
+                                                </span>
+                                            </div>
+
+                                            <div class="fake-file" >
+                                                <input id = "FILE_FOTOCOPIA_CI" ng-model="datos.FILE_FOTOCOPIA_CI" type="text" ng-disabled="desabilitado" required />
+                                            </div>
+                                        </div>
+                                        <div ng-show="cibloq == null">
+                                            <input ng-model="datos.FILE_FOTOCOPIA_CI" type="text" ng-disabled="false" required class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class = "col-sm-3 col-lg-3 col-xs-2 col-md-3 ">
+                                        <button  ng-click="mostrarimg();"   data-toggle="modal" data-target="#myModal">{{translateTitulos.lbl_016_34}} <i class="fa fa-eye fa-lg"></i></button>
+                                    </div>                                    
+                                    <div  id="myModal" class="modal fade" tabindex="-1"  role="dialog" aria-hidden="true" labelledby="myModalLabel">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                                    <h4 class="modal-title" labelledby="myModalLabel">{{translateTitulos.lbl_016_34_1}}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img id="imgSalida" ng-src="{{archivoCI}}" width="100%" height="100%">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button  name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>-->
+
+                            <div class="col-md-8" ng-show="archivoDivOJ==true">
+                                <label  class="col-sm-3 col-lg-3 col-xs-6 col-md-3" for="url">{{translateTitulos.lbl_016_34_2}}</label>
+                                <div class="form-group custom-upload">
+                                    <div ng-show = "cibloq != null">
+                                        <input type="file" id="FILE_ORDEN_JUDICIAL" name="FILE_ORDEN_JUDICIAL" uploader-model="FILE_ORDEN_JUDICIAL" accept="image/*" style="display: none;">                                        
+                                        <div class="input-group">                                                                            
+                                            <input id="txt_FILE_ORDEN_JUDICIAL" name="txt_FILE_ORDEN_JUDICIAL" ng-model="datos.FILE_ORDEN_JUDICIAL" type="text" class="form-control input-lg" required>                                            
+                                            <span class="input-group-btn">
+                                                <a id="FILE_ORDEN_JUDICIAL"  href="">
+                                                    <button id="href_FILE_ORDEN_JUDICIAL" class="browse btn btn-primary input-lg" type="button" ng-click="mostrarimg();" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                </a>
+                                                <button id="btn_FILE_ORDEN_JUDICIAL" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_ORDEN_JUDICIAL');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                            </span>
+                                        </div> 
+                                    </div>
+                                    <div class="alert alert-box"> 
+                                        <span style="color:red">
+                                            Orden Judicial debe ser un archivo .jpg o .png 
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="fot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_016_34}}</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_016_34_2}}</h4>
+                                        </div>
+                                        <img id="imgSalida" ng-src="{{archivoOrdenJ}}" width="100%" height="100%">
+                                        <div class="modal-footer">
+                                            <button id="{{translateTitulos.lbl_05_05_05}}" name="{{translateTitulos.lbl_05_05_05}}" type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8" ng-show="archivoDivPJ==true && datosNatural!=null">
+                                <label  class="col-sm-3 col-lg-3 col-xs-6 col-md-3" for="url">PODER DEL REPRESENTANTE LEGAL</label>
+                                <div class="form-group custom-upload">
+                                    <div ng-show = "cibloq != null">
+                                        <input type="file" id="FILE_PODER_LEGAL" name="FILE_PODER_LEGAL" uploader-model="FILE_PODER_LEGAL" accept="image/*" style="display: none;">                                        
+                                        <div class="input-group">                                                                            
+                                            <input id="txt_FILE_FOTOCOPIA_CI" name="txt_FILE_FOTOCOPIA_CI" ng-model="datos.FILE_PODER_LEGAL" type="text" class="form-control input-lg" required>                                            
+                                            <span class="input-group-btn">
+                                                <a id="FILE_PODER_LEGAL"  href="">
+                                                    <button id="href_FILE_PODER_LEGAL" class="browse btn btn-primary input-lg" type="button" ng-click="mostrarimg();" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                </a>
+                                                <button id="btn_FILE_PODER_LEGAL" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_PODER_LEGAL');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                            </span>
+                                        </div> 
+
+                                    </div>
+                                    <div class="alert alert-box"> 
+                                        <span style="color:red" >
+                                            Poder del Representante Legal debe ser un archivo .jpg o .png 
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="foot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">PODER DEL REPRESENTANTE LEGAL</h4>
+                                        </div>
+                                        <img id="imgSalida" ng-src="{{archivoPODERLEGAL}}" width="100%" height="100%">
+                                        <div class="modal-footer">
+                                            <button id="{{translateTitulos.lbl_05_05_05}}" name="{{translateTitulos.lbl_05_05_05}}" type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--<div ng-show="archivoDivOJ==true">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 col-lg-3 col-xs-6 col-md-3" for="url">{{translateTitulos.lbl_016_34_2}}</label>
+                                    <div class="col-sm-6 col-lg-6 col-xs-4 col-md-6 ">
+                                        <div class="custom-upload" ng-show = "cibloq != null" >
+                                            <input  type="file" name="FILE_ORDEN_JUDICIAL" uploader-model="FILE_ORDEN_JUDICIAL" accept="image/*" class="file-loading"/>
+                                            <div class="alert alert-box"> 
+                                                <span style="color:red" >
+                                                    Orden Judicial debe ser un archivo .jpg o .png           
+                                                </span>
+                                            </div>
+                                            <div class="fake-file" >
+                                                <input id = "FILE_ORDEN_JUDICIAL" ng-model="datos.FILE_ORDEN_JUDICIAL" type="text" ng-disabled="desabilitado" required />
+                                            </div>
+                                        </div>
+                                        <div ng-show="cibloq == null">
+                                            <input ng-model="datos.FILE_ORDEN_JUDICIAL" type="text" ng-disabled="false" required class="form-control" readonly="readonly" />
+                                        </div>                                        
+                                    </div>
+                                    <div class = "col-sm-3 col-lg-3 col-xs-2 col-md-3 ">
+                                        <button  ng-click="mostrarimg();"   data-toggle="modal" data-target="#myModal1">{{translateTitulos.lbl_016_34}} <i class="fa fa-eye fa-lg"></i></button>
+                                    </div>                                    
+                                    <div  id="myModal1" class="modal fade" tabindex="-1"  role="dialog" aria-hidden="true" labelledby="myModalLabel">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                                    <h4 class="modal-title" labelledby="myModalLabel">{{translateTitulos.lbl_016_34_2}}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img id="imgSalida" ng-src="{{archivoOrdenJ}}" width="100%" height="100%">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button  name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>-->
+
+
+                        </div>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    </div>
+                    </div>
+                   
+                    <!-- ////////////////////////////////////////////////////// -->
+                    <!-- /////// TAB Aviso legal                        /////// -->
+                    <!-- ////////////////////////////////////////////////////// -->
+                    <div class="tab-pane" id="tabAviso">
+                        <div class="col-md-12">
+                            <div class="col-md-12" align="left">
+                                <div id="avisolegal">
+                                  <div class="form-group" class="col-md-10">
+                                    <div class="controls">
+                                        <p align="center"><a href="javascript:impresionAl('avisolegal')">
+                                          <i  class="fa fa-print" title="Ver"></i>
+                                        </a></p>
+                                        <font style=" color: #333; font-family: Verdana,Arial,sans-serif; font-size: 1.0em;">
+                                        <p align="center"><strong>{{translateTitulos.lbl_016_35}} </strong></p>
+                                        <div class="col-md-11" name="obito_aviso" id="obito_aviso" align="justify">
+                                        <p>{{translateTitulos.lbl_016_35_2}}<br>
+                                        <p>{{translateContenidos.cnt_016_35_3}}<br>
+                                        <p>{{translateContenidos.cnt_016_35_4}} <br>
+                                        <p>{{translateContenidos.cnt_016_35_5}}</p>
+                                        <p>{{translateContenidos.cnt_016_35_6}} </p>
+                                        <p>{{translateContenidos.cnt_016_35_7}}</p>
+                                        <p>{{translateContenidos.cnt_016_35_8}} </p>
+                                        <p>{{translateContenidos.cnt_016_35_9}}</p>
+                                        <p>{{translateContenidos.cnt_016_35_10}}</p>
+                                        <p>{{translateContenidos.cnt_016_35_11}}</p>
+                                       </div>
+                                       <div class="col-md-10">
+                                        <p>
+                                        {{translateTitulos.lbl_016_35_12}}
+                                        </p>
+                                        <p>
+                                        {{transalateTitulos.lbl_016_35_13}}
+                                        </p>
+                                      </font>
+                                        <div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <H3><label class="col-sm-10 control-label no-padding-left" for="ocupacion">
+                                    {{translateTitulos.lbl_016_35_14}}
+                                </label></H3>
+                                <div class="col-sm-2">
+                                    <span class="block input-icon input-icon-right">
+                                        <input id="obito_condiciones" ng-disabled="desabilitado" name="obito_condiciones" type="checkbox" onchange="" ng-model="datos.obito_condiciones" required/>
+                                        <span style="color:red" ng-show="formularioRegistro.obito_condiciones.$invalid">
+                                            <span ng-show="formularioRegistro.obito_condiciones.$error.required">{{translateTitulos.lbl_016_35_15}}
+                                            </span>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" align="center" ng-show = "botones != null">
+                          <!-- GENERADOR DE CAPCHA -->
+                            <div class="col-md-6" align="center" >
+                            <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                                <tr class="color">
+                                    <div style="background: #ffffff;" >
+                                        <div class="box2">
+                                            <img id = "imageCST" class="img-responsive" src="{{imageCSTT}}" title="{{toltipT}}">
+                                        </div>
+                                        <div class="box2">
+                                            <img id = "imageLNG" class="img-responsive" src="{{imageLNGG}}"  title="Palabra en CASTELLANO">
+                                        </div>
+                                    </div>
+                                </tr>           
+
+                                <tr class="color">
+                                    <td class="color22" colspan="3" width="70"  align="center">
+                                        <input id="resultadoCC" name="resultadoCC" type="text" style="border: 0px !important;" class="form-control" placeholder="{{palabraT}}" ng-model="resultadoCC"  ng-keyup="VerificarCapchaa()"/>
+                                            <span  ng-show="formulario.palabraT.$invalid">
+                                                <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                            </span>
+                                            <label id="palabraT" >{{palabraT}}</label>
+                                    </td>                                   
+                                    <td class="color2" width="30"  align="center">
+                                        <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasXX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
+                            <b><font SIZE=3 color="red"> {{ErrorCapchasXX2}}</font></b>
+                            <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b> 
+                            <b><font SIZE=3 color="red">{{ErrorCapcha}}</font></b>
+                         </div>
+                        </div>
+                         <br><br><br><br>
+                        <div class="col-md-12" ng-show = "validacionDireccion == true">
+                          <span> <font color="#FF0000"> {{translateTitulos.lbl_016_35_16}}</font> </span>
+                        </div>
+                         <!-- FIN DE CAPCHA -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-12" align="right" ng-show = "botones != null">
+                <button id="miFormGuardar"  ng-click="serializarInformacion(datos);" type="button" class="btn btn-success1 fa fab fa-save fa-lg shake-little" name="formEnviar" ng-disabled="formularioRegistro.nombres_t.$invalid || (formularioRegistro.primer_apellido_t.$invalid && formularioRegistro.segundo_apellido_t.$invalid) || formularioRegistro.carnet_t.$invalid || formularioRegistro.ci_expedido_t.$invalid || formularioRegistro.parentesco.$invalid || formularioRegistro.motivo.$invalid || formularioRegistro.titular_zona.$invalid || formularioRegistro.titular_via.$invalid || formularioRegistro.titular_fono.$invalid || formularioRegistro.nombre.$invalid || (formularioRegistro.paterno.$invalid && formularioRegistro.materno.$invalid) || formularioRegistro.fecha1.$invalid || formularioRegistro.fecha2.$invalid || formularioRegistro.obito_condiciones.$invalid || habGuardar1" tooltip="Guardar Formulario"><!--  {{translateTitulos.lbl_016_40}}--></button><!--cambios-->
+                <button id="miFormulario"  ng-click="enviarFormProcesosObito(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward fa-lg shake-little" ng-disabled="formularioRegistro.nombres_t.$invalid || (formularioRegistro.primer_apellido_t.$invalid && formularioRegistro.segundo_apellido_t.$invalid) || formularioRegistro.carnet_t.$invalid || formularioRegistro.ci_expedido_t.$invalid || formularioRegistro.parentesco.$invalid || formularioRegistro.motivo.$invalid || formularioRegistro.titular_zona.$invalid || formularioRegistro.titular_via.$invalid || formularioRegistro.titular_fono.$invalid || formularioRegistro.nombre.$invalid || (formularioRegistro.paterno.$invalid && formularioRegistro.materno.$invalid) || formularioRegistro.fecha1.$invalid || formularioRegistro.fecha2.$invalid || formularioRegistro.obito_condiciones.$invalid || habGuardar1 || btnEnviarFormObito" tooltip="Enviar Formulario"><!--  {{translateTitulos.lbl_016_41}}--></button><!--cambios-->
+
+            </div>
+        </form>
+    </div>
+</div>

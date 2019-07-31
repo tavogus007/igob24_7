@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+        <script type="text/javascript" src="../../view/registro_ciudadano/documentos/appDocumentos.js"></script>
+        <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+        <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+        <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+        <style type="text/css">
+            .main1
+            {
+                padding-bottom: 20px;
+                padding-top: 20px;
+                background: rgba(49, 212, 200, 0.15);
+                padding-left: 15px;
+                padding-right: 15px;
+                /*color: #fff;*/
+                border-radius: 10px;
+            }
+        </style>
+    </head>
+    <div class="col-md-12" ng-controller="documentosController" ng-init="inicioDocumentos();">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>{{translateTitulos.lbl_022_01}}</h5>
+                <button type="button" class="close" style="color:#222831; opacity: 1 !important"  data-dismiss="modal" ng-click="refrescar();">
+                    <span class="fa fa-refresh fa-spin"></span>
+                </button>
+            </div>
+            <br>
+            <div class="col-md-12 control-label">{{translateMensajes.txt_022_02}}</div>
+            <br><br><br>
+            <div  ng-show="valida == 0">
+                <div class="col-sm-12" id="divMsj" style="padding: 20px 27px 9px 25px; display: none;">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <div class="main1" id="main1" style="font-size: 20px;">
+                            <center><i class="fa fa-warning" style="color: #4bafb4;"></i> {{msj1}}</center>
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>                     
+                </div>
+            </div>
+            <div  ng-show="valida == 1">
+                <label class="col-md-2 control-label">{{translateTitulos.lbl_022_03}}:</label>
+                <div class="col-md-10">
+                    <input ng-model = "query1" id ="busca2" class="form-control" placeholder="" >
+                </div>
+                <div>
+                  <br><br><br>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table ng-table="tablaDocumentos" class="table table-striped responsive">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr class="column" ng-repeat="documento in $data | filter:query1 " ng-style="documento.vtiempo=='VENCIDO' && {'background-color':'#EDDADA','font-color':'#EDDADA'} || documento.vtiempo=='HOY' && {'background-color':'##E5A21D','font-color':'##E5A21D'}">
+                                    <td data-title="'#'" class="text-center">&nbsp; {{$index+1}}</td>
+                                    <td data-title="'Código'" class="text-left">&nbsp; {{documento.vdoc_id_codigo}}</td>
+                                    <td data-title="'Servicio'" class="text-left">&nbsp; {{documento.vdoc_proceso}}</td>
+                                    <td data-title="'Documento'" class="text-left">&nbsp; {{documento.vdoc_nombre}}</td>
+                                    <td data-title="'Fecha creación'" class="text-center">&nbsp; {{documento.vdoc_registro}}</td>
+                                    <td data-title="'Fecha expiraci&oacute;n'" class="text-center">&nbsp; {{documento.vfechafinpublicacion}}</td>
+                                    <td data-title="'Estado'" class="text-center">&nbsp;
+                                        <div ng-show="documento.vtiempo=='VENCIDO'">
+                                          <a class="btn btn-default" ng-click="Documentoarchivado(documento.vdoc_idd)" title="ARCHIVAR">
+                                              VENCIDO
+                                          </a>
+                                        </div>
+                                        <div ng-show="documento.vtiempo=='HOY'">
+                                                VENCE HOY
+                                        </div>
+                                        <div ng-show="documento.vtiempo=='CERCA'">
+                                                VIGENTE
+                                        </div>
+                                        <div ng-show="documento.vtiempo=='NINGUNO'">
+                                                NINGUNO
+                                        </div>
+                                    </td>
+                                    <td data-title="'Ver'" class="text-center" align="center">
+                                        <div ng-show="documento.vtiempo=='VENCIDO'">
+                                            <a  ng-click="mensajeVencido()" target="_black" style="color: #E91E63" title="Documento no visible">
+                                                <i class="fa fa-eye-slash fa-2x flechaOscura" title="Vencido"></i>
+                                            </a>
+                                        </div>
+                                        <div ng-show="documento.vtiempo=='HOY'">
+                                            <a ng-click="ImprimirProforma(documento.vdoc_url_logica)" data-toggle="modal" data-target="#divPopup4" style="color: #E91E63">
+                                                <i class="fa fa-eye fa-2x flechaOscura"></i>
+                                            </a>
+                                            <a ng-show="adjunto.vdoc_tipo_documento=='pdf'" name="btnIImprmir" id="btnIImprmir" type="button" class="btn btn-default btn-circle"  href="{{adjunto.vdoc_url_logica}}" target="_black">
+                                              <i  class="fa fa-print flechaOscura" title="Ver"></i>
+                                            </a>
+                                        </div>
+                                        <div ng-show="documento.vtiempo=='CERCA'">
+                                            <a ng-click="ImprimirProforma(documento.vdoc_url_logica)" data-toggle="modal" data-target="#divPopup4" style="color: #E91E63">
+                                                <i class="fa fa-eye fa-2x flechaOscura"></i>
+                                            </a>
+                                            <a ng-show="adjunto.vdoc_tipo_documento=='pdf'" name="btnIImprmir" id="btnIImprmir" type="button" class="btn btn-default btn-circle"  href="{{adjunto.vdoc_url_logica}}" target="_black">
+                                              <i  class="fa fa-print flechaOscura" title="Ver"></i>
+                                            </a>
+                                        </div>
+                                        <div ng-show="documento.vtiempo=='NINGUNO' || adjunto.vdoc_tiempo=='0'">
+                                            <a ng-click="ImprimirProforma(documento.vdoc_url_logica)" data-toggle="modal" data-target="#divPopup4" style="color: #ffbf01">
+                                                <i class="fa fa-eye fa-2x flechaOscura"></i>
+                                            </a>
+                                            <a ng-show="adjunto.vdoc_tipo_documento=='pdf'" name="btnIImprmir" id="btnIImprmir" type="button" class="btn btn-default btn-circle"  href="{{adjunto.vdoc_url_logica}}" target="_black">
+                                              <i  class="fa fa-print flechaOscura" title="Ver"></i>
+                                            </a>
+                                        </div>
+                                    </td>                        
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="divPopup4" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="width:700px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="visorFum" ng-show="true">
+                            <object data="" type="application/pdf" width="650" height="500"></object>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>

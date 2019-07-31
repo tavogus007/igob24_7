@@ -1,0 +1,350 @@
+<style>
+.ng-table-rowselected tr {
+    cursor: pointer;
+}
+</style>
+
+<div class="page-content" ng-controller="regMedicoController" ng-init="inicioRegMedico()">    
+
+    <div class="row">
+    <div class="col-sm-12 col-sm-offset-1">
+    <div id="login-box" class="login-box visible widget-box no-border">
+        <h3 class="header blue lighter bigger">    Formulario de registro de salud</h3>
+        <ul class="nav nav-tabs" role="tablist" class="header blue lighter bigger">
+                    <li role="presentation" class="active"><a data-target="#consultaExterna" aria-controls="profile" role="tab" data-toggle="tab"><img src="../../libs/img/iconos/consulta_externa.jpg" height="30px" width="30px" /> Consulta Externa</a></li>
+                    <li role="presentation"  ><a data-target="#antecedentesClinicos" aria-controls="profile" role="tab" data-toggle="tab" ng-click="mostrarDescripcion"><img src="../../libs/img/iconos/antecedentes.jpg" height="30px" width="30px" /> Antecedentes Clínicos</a></li> 
+                  
+                    <li role="presentation" ><a data-target="#recetamedica" aria-controls="profile" role="tab" data-toggle="tab" ><img src="../../libs/img/iconos/receta.jpg" height="30px" width="30px" /> Receta Médica</a></li>                 
+              
+        <h3 class="header blue lighter bigger">.</h3><br/>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active"  id="consultaExterna">
+                <div id="contenedorPrincipal" class="slide-animation">    
+                    <div class="page-content">
+                       
+                            <div class="space-6"></div>
+                                <div class="col-sm-10 col-sm-offset-0">
+                                    <div id="login-box" class="login-box visible widget-box no-border">
+                                     <div class="widget-body">
+                                        <div class="widget-main">                   
+                                        <div class="col-lg-6">
+                                            <div class="widget-body">
+                                                <div class="widget-main">           
+                                                
+                                                    <!--ng-submit="mensajeInterno(this)"-->
+                                                    <form name="formularioRegMedico" novalidate>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group" >
+                                                                    <label for="category">Grupo Sanguíneo</label>
+                                                                    <div class="controls">
+                                                                        <select id="dtsmdcgrpsanguineo" class="form-control"  ng-required="true"  ng-model="datosMedicos.dtsmdcgrpsanguineo" name="dtsmdcgrpsanguineo">
+                                                                            <option value="ORH+">ORH+</option>
+                                                                            <option value="A+">A+</option>
+                                                                            <option value="B+">B+</option>
+                                                                            <option value="ORH-">ORH-</option>
+                                                                            <option value="A-">A-</option>
+                                                                            <option value="B-">B-</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group" >
+                                                                    <label for="category">Cobertura Médica</label>
+                                                                    <div class="controls">
+                                                                        <select id="dtsmdcsbtmedica" class="form-control"  ng-required="true"  ng-model="datosMedicos.dtsmdcsbtmedica" name="dtsmdcsbtmedica">
+                                                                            <option value="SUMI">SUMI</option>
+                                                                            <option value="SPAM">SPAM</option>
+                                                                            <option value="PARTICULAR">PARTICULAR</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group" >
+                                                                    <label for="url" >Fecha de alta:</label>
+                                                                    <div class="controls">
+                                                                        <p class="input-group"><input name="dtsmdcfechaalta" id="dtsmdcfechaalta" type="text" class="form-control" datepicker-popup="" ng-model="datosMedicos.dtsmdcfechaalta" is-open="startDateOpened" ng-required="true" close-text="Close"  ng-disabled="true"/>
+                                                                        <span class="input-group-btn">
+                                                                            <button type="button" class="btn btn-default" ng-click="startDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                                        </span></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                           
+                                                            <div class="col-md-10">
+                                                                <div class="form-group" >
+                                                                    <label for="url" >Motivo de Consulta:</label>
+                                                                    <div class="controls">
+                                                                        <textarea ng-model="datosMedicos.dtsmdcobservaciones" id="dtsmdcobservaciones" name="dtsmdcobservaciones" class="form-control" placeholder="Motivo de consulta" width="30%" height="30">{{datosMedicos.dtsmdcobservaciones}}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-10">
+                                                                <div class="form-group" >
+                                                                    <label for="url" >Síntomas:</label>
+                                                                    <div class="controls">
+                                                                        <textarea ng-model="datosMedicos.dtsmdsintomas" id="dtsmdsintomas" name="dtsmdsintomas" class="form-control" placeholder="Ingrese síntomas" width="30%" height="30">{{datosMedicos.dtsmdsintomas}}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-10">
+                                                                <div class="form-group" >
+                                                                    <label for="url" >Diagnósticos:</label>
+                                                                    <div class="controls">
+                                                                        <textarea ng-model="datosMedicos.dtsmdiagnostico" id="dtsmdcobservaciones" name="dtsmdiagnostico" class="form-control" placeholder="Ingrese diagnóstico" width="30%" height="30">{{datosMedicos.dtsmdiagnostico}}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                           
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6"> 
+                                        <div class="col-md-6">
+                                                <div class="form-group" >
+                                                    <label for="url" >Antecedentes Personales:</label>
+                                                    <div class="controls">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <th>&nbsp;&nbsp;&nbsp;</th>
+                                                                <th>Antecedentes&nbsp;</th>
+                                                                <th>Detalle&nbsp;</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="ngSelectionCell">
+                                                                            <input tabindex="-1" id="chkpenicilina" name="chkpenicilina" class="ngSelectionCheckbox" type="checkbox" ng-checked="row.selected" ng-model="datosMedicos.chkpenicilina" />
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>Alergias o medicamentos</td>
+                                                                    <td>Penicilina</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="ngSelectionCell">
+                                                                            <input tabindex="-1" id="chkasma" name="chkasma" class="ngSelectionCheckbox" type="checkbox" ng-checked="row.selected" ng-model="datosMedicos.asma" />
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>Problemas respiratorios</td>
+                                                                    <td>Asma</td>                                                        
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="ngSelectionCell">
+                                                                            <input tabindex="-1" id="chkmalformaciones" name="chkmalformaciones" class="ngSelectionCheckbox" type="checkbox" ng-checked="row.selected" ng-model="datosMedicos.malformaciones" />
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>Problemas congenitos</td>
+                                                                    <td>Malformaciones</td>                                                        
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" >
+                                            <label for="url" >Antecedentes Familiares:</label>
+                                            <div class="controls">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <th>&nbsp;&nbsp;&nbsp;</th>
+                                                        <th>Antecedentes&nbsp;</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="ngSelectionCell">
+                                                                    <input tabindex="-1" id="chkdiabetes" name="chkdiabetes" class="ngSelectionCheckbox" type="checkbox" ng-checked="row.selected" ng-model="datosMedicos.diabetes" />
+                                                                </div>
+                                                            </td>
+                                                            <td>Diabetes</td>
+                                                        </tr>                                                      
+                                                        <tr>
+                                                            <td>
+                                                                <div class="ngSelectionCell">
+                                                                    <input tabindex="-1" id="chkcirrocis" name="chkcirrocis" class="ngSelectionCheckbox" type="checkbox" ng-checked="row.selected" ng-model="datosMedicos.cirrocis" />
+                                                                </div>
+                                                            </td>
+                                                            <td>Cirrocis</td>
+                                                        </tr>                                                      
+                                                        <tr>
+                                                            <td>
+                                                                <div class="ngSelectionCell">
+                                                                    <input tabindex="-1" id="chkcancer" name="chkcancer" class="ngSelectionCheckbox" type="checkbox" ng-checked="row.selected" ng-model="datosMedicos.cancer" />
+                                                                </div>
+                                                            </td>
+                                                            <td>Cáncer</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                      
+                         </div>
+                    </div>
+            </div>
+            <div role="tabpanel"  class="tab-pane" id="recetamedica">
+                    <div class="col-md-3">
+                            <div class="form-group" >
+                                <label for="url" >Descripción:</label>
+                                <div class="cdontrols">
+                                <textarea ng-model="datosMedicos.dtsmdrecetadesc" id="dtsmdrecetadesc" name="dtsmdrecetadesc" class="form-control" placeholder="Ingrese descripción" width="30%" height="30">{{datosMedicos.dtsmdrecetadesc}}</textarea>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" >
+                            <label for="url" >Dosis:</label>
+                                <div class="cdontrols">
+                                <textarea ng-model="datosMedicos.dtsmdrecetadosis" id="dtsmdrecetadosis" name="dtsmdrecetadosis" class="form-control" placeholder="Ingrese dosis" width="30%" height="30">{{datosMedicos.dtsmdrecetadosis}}</textarea>
+                                </div>
+                                </div>
+                    </div>  
+                    <div class="col-md-3">
+                                                <div class="form-group" >
+                                                    <label for="url" >Cantidad:</label>
+                                                    <div class="cdontrols">
+                                                    <textarea ng-model="datosMedicos.dtsmdrecetacantidad" id="dtsmdrecetacantidad" name="dtsmdrecetacantidad" class="form-control" placeholder="Ingrese cantidad" width="30%" height="30">{{datosMedicos.dtsmdrecetacantidad}}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>  
+            </div>    
+            <div role="tabpanel"  class="tab-pane" id="antecedentesClinicos">
+                <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-lg-2">                
+                                  <div class="panel panel-default">
+                                            <div class="panel-heading"><H5>Tipo de Antecedentes</H5></div>
+                                            
+                                        <table  class="table ng-table-rowselected" .ng-table-rowselected>
+                                            <tr  ng-click="changeSelection()">
+                                                <td><i class="fa   fa-users" style="color:#249FE6"></i> Heredo Familiares </td>
+                                            </tr>                              
+                                            <tr  ng-click="changeSelection2()">
+                                                <td><i class="fa fa-th-list"  style="color:#249FE6"></i> Personales Patológicos </td>
+                                            </tr>
+                                            <tr  ng-click="personelesnoPatolo()">
+                                                <td><i class="fa fa-th-list" style="color:#249FE6"></i> Personales no Patológicos </td>
+                                            </tr>
+                                             <tr  ng-click="quirurgico()">
+                                                <td><i class="fa fa-plus-square"  style="color:#249FE6"></i> Quirúrgicos </td>
+                                            </tr>
+                   
+
+                                        </table>
+                                  </div>
+                                </div>
+
+                                <div class="col-lg-7">
+                                        <form ng-show="heredoFamiliares==null" >
+                                            <h4 class="header blue lighter bigger"> Antecedentes Heredo Familiares</h4>
+                                            <div class="col-md-10">
+                                                <div class="form-group" >
+                                                    <label for="url" >Descripcion:</label>
+                                                    <div class="cdontrols">
+                                                    <textarea ng-model="datosMedicos.dtsmdescheredofamiliar" id="dtsmdescheredofamiliar" name="dtsmdescheredofamiliar" class="form-control" placeholder="Ingrese descripción" width="30%" height="30">{{datosMedicos.dtsmdescheredofamiliar}}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="form-group" >
+                                                    <label for="url" >Estado:</label>
+                                                    <div class="cdontrols">
+                                                    <textarea ng-model="datosMedicos.dtsmestadoheredofamiliar" id="dtsmestadoheredofamiliar" name="dtsmestadoheredofamiliar" class="form-control" placeholder="Ingrese estado" width="30%" height="30">{{datosMedicos.dtsmestadoheredofamiliar}}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>  
+                                        </form> 
+                               
+                                    
+                                        <form ng-show="personalesPatologicos==null" >
+                                            <h4 class="header blue lighter bigger"> Personales Patológicos</h4>
+                                            <div class="col-md-10">
+                                                <div class="form-group" >
+                                                    <label for="url" >Descripcion:</label>
+                                                    <div class="cdontrols">
+                                                    <textarea ng-model="datosMedicos.dtsmdescperspatologicos" id="dtsmdescperspatologicos" name="dtsmdescperspatologicos" class="form-control" placeholder="Ingrese descripción" width="30%" height="30">{{datosMedicos.dtsmdescperspatologicos}}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="form-group" >
+                                                    <label for="url" >Estado:</label>
+                                                    <div class="cdontrols">
+                                                    <textarea ng-model="datosMedicos.dtsmestadoperspatologicos" id="dtsmestadoperspatologicos" name="dtsmestadoperspatologicos" class="form-control" placeholder="Ingrese estado" width="30%" height="30">{{datosMedicos.dtsmestadoperspatologicos}}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>   
+                                        </form> 
+                                  
+                                        <form ng-show="personalesnoPatologicos==null" >
+                                            <h4 class="header blue lighter bigger"> Personales no Patológicos</h4>
+                                            <div class="col-md-10">
+                                                <div class="form-group" >
+                                                    <label for="url" >Descripción:</label>
+                                                    <div class="cdontrols">
+                                                    <textarea ng-model="datosMedicos.dtsmdescpersnopatologicos" id="dtsmdescpersnopatologicos" name="dtsmdescpersnopatologicos" class="form-control" placeholder="Ingrese descripción" width="30%" height="30">{{datosMedicos.dtsmdescpersnopatologicos}}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                             <div class="col-md-10">
+                                                <div class="form-group" >
+                                                    <label for="url" >Estado:</label>
+                                                    <div class="cdontrols">
+                                                    <textarea ng-model="datosMedicos.dtsmestadonoperspatologicos" id="dtsmestadonoperspatologicos" name="dtsmestadonoperspatologicos" class="form-control" placeholder="Ingrese estado" width="30%" height="30">{{datosMedicos.dtsmestadonoperspatologicos}}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </form> 
+
+                                        <form ng-show="personaquirurgico==null" >
+                                            <h4 class="header blue lighter bigger">Quirúrgicos</h4>
+                                            <div class="col-md-10">
+                                                <div class="form-group" >
+                                                    <label for="url" >Descripción:</label>
+                                                    <div class="cdontrols">
+                                                    <textarea ng-model="datosMedicos.dtsmdescquirurgicos" id="dtsmdescquirurgicos" name="dtsmdescquirurgicos" class="form-control" placeholder="Ingrese descripción" width="30%" height="30">{{datosMedicos.dtsmdescquirurgicos}}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-10">
+                                                    <div class="form-group" >
+                                                        <label for="url" >Estado:</label>
+                                                        <div class="cdontrols">
+                                                        <textarea ng-model="datosMedicos.dtsmestadoquirurgicos" id="dtsmestadoquirurgicos" name="dtsmestadoquirurgicos" class="form-control" placeholder="Ingrese estado" width="30%" height="30">{{datosMedicos.dtsmestadoquirurgicos}}</textarea>
+                                                        </div>
+                                                    </div>
+                                            </div> 
+                                            
+                                        </form> 
+                            
+                                      
+                                 
+                                </div>
+                            </div>
+                        </div>
+                  
+                </div>
+        </div>
+        <div class="col-md-10" align="right">
+                <a href="#/registro_ciudadano|busqueda" style="color:#ffffff" class="btn btn-success fa fa-reply"><font color="#ffffff">Volver</font></a>                                
+                <button id="miFormulario"  ng-click="serializarInformacion(datosMedicos)" data-dismiss="modal" type="button" class="btn  btn-success fa fa-save " ng-show="boton=='upd'" ng-hide="boton=='new'" data-ng-disabled="formularioRegMedico.$invalid">  Guardar formulario</button>
+        </div>
+
+    </div>     
+    </div>
+    </div>
+    </div>
+</div>

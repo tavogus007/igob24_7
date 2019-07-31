@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+        <!--<link href="../../libs/css/sweetalert.css" rel="stylesheet" async>-->
+        <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css" async>
+        <!--<script type="text/javascript" src="../../libs/js/sweetalert.min.js" async></script>-->
+        <!--<script type="text/javascript" src="../../libs/js/ngSweetAlert.js" async></script>-->
+        <link href="../../libs/css/select2.min.css" rel="stylesheet" async/>
+        <script src="../../libs/js/select2.min.js" async></script>
+        <script src="../../libs/js/prism.js" async></script>
+        <script type="text/javascript" src="../../libs/js/bootstrap-clockpicker.min.js" async></script>
+    </head>    
+  <body>
+<script type="text/javascript">
+    var icon= 0;  
+       $('#mostrar').click(function(event) {          
+           event.preventDefault();
+           $("#caja").slideToggle();
+                  
+           if (icon==0) {
+             $("#cerrar_i").removeClass("fa fa-sort-asc");
+             $("#cerrar_i").addClass("fa fa-sort-desc");
+             $("#cerrar_rc").css({'position' : 'absolute', 'top' : '-11px' });
+             icon=icon + 1;
+           }
+           else{
+              $("#cerrar_i").addClass("fa fa-sort-asc");
+              $("#cerrar_rc").css({'position' : 'absolute', 'top' : '5px' });
+              icon= 0;
+           }
+       });
+       $('#ibox-title').click(function(event) {
+           event.preventDefault();
+           $('#caja').slideUp();
+       });   
+    </script>
+   <script type="text/javascript">
+       $(document).ready(function() {
+         $(".js-example-basic-single").select2();
+         $('html,body').scrollTop(0);
+       });
+   </script>
+ 
+<div ng-controller="serviciosAtmController" ng-init="inicioServiciosAtm();">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div id="mostrar" class="ibox-title">
+                <h5>ADMINISTRACIÓN TRIBUTARIA MUNICIPAL - VEHÍCULOS</h5>
+                <a href="#" id="cerrar_rc" ><i class="fa fa-sort-asc flechaOscura" id="cerrar_i"></i></a>
+            </div>
+            <div class="ibox-content" id="caja">
+                <div class="row">
+                    <div class="col-sm-12">
+                    <form class="form-horizontal ng-pristine ng-valid">
+                            <div class="form-group">                    
+                                <div class="col-lg-3">
+                                <div style="text-align:center;">
+                                    <a class="btn btn-success" tooltip = "Crear el trámite" data-toggle="modal" data-target="#seleccionarTramiteVI"><i class="fa fa-file blanco shake-slow"></i><!--cambios-->
+                                        {{translateTitulos.lbl_10_02}}
+                                    </a>
+                                </div>
+                                </div>
+                            <label class="col-lg-3 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
+                            <div class="col-lg-6">
+                                <input ng-model = "query" id ="busca1" class="form-control" placeholder="">
+                            </div>
+                        </div>
+                    </form>
+                    <table ng-table="tablaTramites"  class="table table-striped">
+                        <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                            <td data-title="'Código'" ng-click="seleccionarTramiteAtm(tramite)">{{tramite.vcodigo}}</td>
+                            <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramiteAtm(tramite)" >{{tramite.vservicio}}</td>  
+                            <td data-title="'Fecha'" ng-click="seleccionarTramiteAtm(tramite)">{{tramite.vfecha}} </td>
+                            <td data-title="'Enviado'" ng-click="seleccionarTramiteAtm(tramite)">{{tramite.venviado}}</td> 
+                        </tr>
+                    </table> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--cambios magali-->
+        <!-- Modal -->
+        <div class="col-lg-12">
+            <div ng-include="template.url" class="animated fadeInUp" ></div>
+         </div>
+   
+    <div class="modal fade" id="seleccionarTramiteVI" role="dialog">
+            <div class="modal-dialog">
+            
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Servicios</h4>
+                </div>
+                <div class="modal-body">
+                <p>Seleccione el tipo de trámite que desea realizar.</p>
+                <div class="row">
+                        <table class="table table-striped">
+                            <thead style="background: #6F7072;color: #F5F5F6;">
+                                <th>#&nbsp;</th>
+                                <th>Tipo de Trámites&nbsp;</th>                                            
+                            </thead>
+                            <tbody>
+                                <tr  style="cursor: pointer;" class="column" ng-repeat="proceso in serivicosInternetVehiculos" ng-click="seleccionarProceso(proceso)" ng-style="proceso.id==procesoSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{proceso.name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button class="btn btn-default" ng-click="crearTramiteAE();" data-dismiss="modal">Crear</button>                                  
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EMISION NATURAL -->
+
+    <div class="modal fade" id="declaracionJV" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #ffcb05;" >
+                    <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO 409</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form name="formulario" readOnly="true" novalidate>
+                            <div class="row">
+                                <div id="msgformularioJV">
+                                    {{msgformularioJV}}
+                                </div>
+                            </div>          
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="generarDocumentoPhpV();" data-dismiss="modal">Aceptar</button>
+                    <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>

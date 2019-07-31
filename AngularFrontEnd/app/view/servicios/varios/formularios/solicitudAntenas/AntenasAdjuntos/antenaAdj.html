@@ -1,0 +1,222 @@
+   <style type="text/css">
+      #caja {
+         display: block;
+      }
+      #mostrar{
+         display:block;
+      }
+      #cerrar_rc{
+         position: absolute;
+         top: 5px;
+         left: 92%;
+         font-size: 38px;
+         color: #FFCB05 !important;
+      }
+      
+   </style>
+  <style>
+   .ejemplo3 {
+      background-color: #6F7072;
+      color: #6F7072;
+      margin: 1px auto;
+      padding: 4px;
+      text-align: center;
+      width: 350px;
+    }
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+     .box2{
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+    .ng-table th {
+        text-align: left!important;
+    }
+    .image-preview-input {
+      position: relative;
+    overflow: hidden;
+    margin: 5px;    
+      color: #333;
+      background-color: #fff;
+      border-color: #ccc;    
+  }       
+   </style>
+   <!--      -->
+   <body>
+       <!-- Libs -->       
+    <link href="../../libs/css/sweetalert.css" rel="stylesheet">
+    <!--ngSweetAlert-->
+  <script type="text/javascript">
+      $('#FILE_LIC_RADIODIFUSION').change(function(e) {
+      var id = 0;
+      angular.element(this).scope().addImage(e,id);
+      });
+  </script>
+    <script src="../../libs/js/prism.js"></script>
+    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+    <script type="text/javascript" src="../../view/servicios/varios/formularios/solicitudAntenas/AntenasAdjuntos/antenaAdj.js"></script>
+   
+  </body>
+
+<div ng-controller="solicitudJAntenasController" ng-init="iniAntenasAdjuntos();">
+   <div class="col-lg-12">
+      <div  class="ibox float-e-margins">
+        <div id="mostrar" class="ibox-title">
+            <h5>ADJUNTAR DOCUMENTOS PARA EL REGISTRO DE RADIO BASES Y/O GABINETES</h5>
+        </div>
+
+        <form name="signupFormJuridico" class="form-horizontal" role="form" novalidate>
+        <div >
+            <div class="form-group" >
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-5">
+                    <label class="fecha">LICENCIA DE RADIODIFUSIÓN Y/O LICENCIA VIGENTE DE USO DE FRECUENCIAS DEL ESPECTRO RADIOELÉCTRICO EMITIDA POR LA AUTORIDAD DE REGULACIÓN Y FISCALIZACIÓN DE TELECOMUNICACIONES Y TRANSPORTES:</label>
+                </div>
+                <div class="col-md-3">
+
+                    <div class="controls">
+                        <div class="btn btn-default1 image-preview-input">
+                            <span class="glyphicon glyphicon-paperclip"></span>
+                           <input name="FILE_LIC_RADIODIFUSION" id="FILE_LIC_RADIODIFUSION" type="file" value="Subir" 
+                            file-model="FILE_LIC_RADIODIFUSION" accept="image/*" class="file-loading" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="fecha">Visualizacion del Documento:</label>
+                    <div class="controls">
+                        <img class="img-responsive img-thumbnail"  id="imgSalida"  ng-src="{{imagenPortada}}" >    
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="form-group" align="right">
+              <div class="col-md-10">
+                <span class="lbl col-sm-10"> </span>
+                <tr>
+                <!--td>
+                    <a class="btn btn-default" style="color:#ffffff" href="#/dashboard">{{translateTitulos.lbl_01_01_01}}</a>
+                </td-->
+                 
+                <td >
+                    <button id="grabar" data-toggle="modal" data-target="#formModal" type="submit" ng-click="validacamposJuridico();"  class="btn btn-success" >
+                        Grabar ó Actualizar Documento.
+                    </button>
+                </td>
+                </tr>
+               </div>
+            </div>
+            
+        </div>
+        </form>
+      </div>
+   </div>
+   <!--inicio del modal capcha-->
+    <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+                  <center><h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_09_08_1}}</h4></center>
+              </div>
+              <div class="modal-body" >
+                  <form name="formulario" readOnly="true" novalidate>
+                      <div class="row">
+                        <div class="col-md-12" ng-show="opcionpersonaNatural != null">
+                          <div class="form-group">
+                            <div class="col-sm-12">
+                              <label class="col-sm-12" for="cedula">{{translateTitulos.lbl_09_22}}</label>
+                            </div>
+                          </div>
+                          <div class="hr-line-dashed"></div>
+                                                 
+              <div class="form-group">  
+                
+                <div class="col-sm-12">
+                <input id="prsCi" name="prsCi" type="text" class="form-control" maxlength="12" minlength="7" placeholder="No. De Documento" ng-model="registro.cedula2" required/>
+                <span style="color:red" ng-show="signupForm.prsCi.$invalid">
+                  <span ng-show="signupForm.prsCi.$error.required">{{translateIdioma.lbl_09_23}}.
+                  </span>
+                </span>
+                <font color="#FF0000" >
+                  Si su C.I. tiene complemento, introducir Ej.654321-1A(Mayúscula), si es Extranjero E-654321
+                </font>
+                </div>
+                
+              </div>  
+                        </div>            
+              
+                        <div class="col-md-12" ng-show = "opcionpersonaJuridico != null">
+                          <div class="form-group">
+                            <label class="col-sm-12" for="cedula">Introducir Nro. N.I.T.:</label>
+                            <div class="col-sm-12">
+                              <input id="nit2" name="nit2" type="text" class="form-control" placeholder="NIT" minlength="7" maxlength="15" ng-model="registro.nit2" onkeyUp="return valNumero(this);" required/>
+                              <span style="color:red" ng-show="formulario.nit2.$invalid">
+                                <span ng-show="formulario.nit2.$error.required">{{translateIdioma.lbl_09_25}}
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+              
+              
+                          <!-- GNERADOR DE CAPCHA -->
+                      <div class="col-md-12" align="center" >
+                          <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">           
+                            <tr class="color">
+                                <div style="background: #ffffff;" >
+                                    <div class="box2">
+                                        <img id="img1" class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
+                                    </div>
+                                    <div class="box2">
+                                        <img id="img2"class="img-responsive" src="{{imageLNG}}"  title="Palabra en CASTELLANO">
+                                    </div>
+                                </div>
+                            </tr>             
+                            <tr class="color">
+                                <td class="color22" colspan="3" width="70"  align="center">
+                                    <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" ng-change ="lmpCaptcha()" placeholder="{{palabraT}}" ng-model="resultadoC" ng-keyup="VerificarCapcha();" required/>
+                                        <span  ng-show="formulario.palabraT.$invalid">
+                                            <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                        </span>
+                                        <label >{{palabraT}}</label>
+                               </td>
+                                  <td class="color2" width="30"  align="center">
+                                  <img type ="button"src="data:image/png;base64,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" style="color:#6F7072" class="btn btn-default btn-circle" ng-click="getCaptchasX()">
+                                  </td>
+                             </tr>                
+                          </table>
+                          <!--b><font SIZE=3 color="red">{{ErrorCapcha}}</font></b-->
+              <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
+                          <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b>
+                       </div>
+                      <!-- ********************* -->
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+                  <button ng-click="VerificarCapchaR(registro);" ng-disabled="habGuardarMod || (formulario.prsCi.$invalid && formulario.nit2.$invalid) || formulario.resultadoC.$invalid" ng-model="isDisabled" type="button" class="btn btn-success" >{{translateTitulos.lbl_11_11_11}}</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+

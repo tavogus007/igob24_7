@@ -1,0 +1,402 @@
+   <style type="text/css">
+      #caja {
+         display: block;
+      }
+      #mostrar{
+         display:block;
+      }
+      #cerrar_rc{
+         position: absolute;
+         top: 5px;
+         left: 92%;
+         font-size: 38px;
+         color: #FFCB05 !important;
+      }
+      @media (min-width: 768px)
+        .modal-dialog {
+        width: 1000px;
+        margin: 30px auto;
+      }
+   </style>
+  <style>
+   .ejemplo3 {
+      background-color: #6F7072;
+      color: #6F7072;
+      margin: 1px auto;
+      padding: 4px;
+      text-align: center;
+      width: 350px;
+    }
+  
+      input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+     .box2{
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+    .ng-table th {
+        text-align: left!important;
+    }
+   </style>
+   <!--      -->
+   <script type="text/javascript">
+   var icon= 0;
+      $('#mostrar').click(function(event) {
+          event.preventDefault();
+          $("#caja").slideToggle();
+
+          if (icon==0) {
+            $("#cerrar_i").removeClass("fa fa-sort-asc");
+            $("#cerrar_i").addClass("fa fa-sort-desc");
+            $("#cerrar_rc").css({'position' : 'absolute', 'top' : '-11px' });
+            icon=icon + 1;
+          }
+          else{
+             $("#cerrar_i").addClass("fa fa-sort-asc");
+             $("#cerrar_rc").css({'position' : 'absolute', 'top' : '5px' });
+             icon= 0;
+          }
+      });
+      $('#ibox-title').click(function(event) {
+          event.preventDefault();
+          $('#caja').slideUp();
+      });
+   </script>
+<div ng-controller="serviciosObitoController" ng-init="inicioServicios();">
+   <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+          <div id="mostrar" class="ibox-title">
+              <h5>{{translateTitulos.lbl_015_01}}</h5>
+              <a href="#" id="cerrar_rc" ><i class="fa fa-sort-asc flechaOscura"  id="cerrar_i"></i></a>
+          </div>
+         <div class="ibox-content" id="caja">
+            <div class="row">
+              <div class="col-sm-12 b-r">
+                  <form class="form-horizontal ng-pristine ng-valid">
+                        <div class="form-group">
+                           <div class="col-lg-5">
+                              <div>                                
+                                 <a class="btn btn-redondo" data-toggle="modal" tooltip = "Iniciar trámite" ng-click="crearTramiteObito()">
+                                   <i class="fa fa-file blanco shake-slow"></i><!--{{translateTitulos.lbl_015_02}}-->
+                                 </a><!--cambios-->
+                                <a data-toggle="modal" tooltip = "Ayuda para crear el trámite" data-target="#guiatramite">
+                                    <span class="btn btn-redondo"><div class="shake-slow"><i class="fa fa-question-circle blanco"></i></div><!--{{translateTitulos.lbl_15_15_15}}--></span><!--cambios-->
+                                 </a>                                  
+                              </div>
+                           </div>
+
+                        <label class="col-lg-2 control-label">{{translateTitulos.lbl_015_03}}</label>
+                        <div class="col-lg-5">
+                           <input ng-model = "query" id ="busca1" class="form-control" placeholder="">
+                        </div>
+                     </div>
+                  </form>
+                  <button type="button" class="close" style="color: #222831; opacity: 1 !important"  data-dismiss="modal" ng-click="refrescar();">
+                      <span class="fa fa-refresh fa-spin"></span><!--cambios-->
+                  </button>
+                  <br><br>
+                  <table  ng-table="tablaTramites"  class="table table-striped">
+                    <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                      <td data-title="'Código'" ng-click="seleccionarTramite(tramite)" align="left">{{tramite.vcodigo}}</td>
+                      <td data-title="'Nro. Proforma'" ng-click="seleccionarTramite(tramite)" align="left">{{tramite.vnroproforma}}</td>
+                      <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite)" align="left">{{tramite.vservicio}}</td>
+                      <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)" align="left">{{tramite.vfecha}} </td>
+                      <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)" align="left">{{tramite.venviado}}</td>
+                      <!-- pago en line con envio al IF
+                      <td data-title="'Estado'"> 
+                        <span ng-if="tramite.vpago=='PENDIENTE'&&tramite.venviado=='SI'">VERIFICANDO SOLICITUD </span>
+                        <span ng-if="tramite.vpago=='POR PAGAR'&&tramite.venviado=='SI'">PENDIENTE DE PAGO </span>
+                        <span ng-if="tramite.vpago=='PAGADO'&&tramite.venviado=='SI'">PAGADO </span>
+                      </td>
+                      <td data-title="'Pago En Línea'"> 
+                         <a data-toggle="modal" data-target="#datosFallecido" type="button" class="btn btn-default" data-dismiss="modal" ng-click="obtDatosFallecido(tramite)" ng-if="tramite.vpago=='POR PAGAR'&&tramite.venviado=='SI'"><span>Pagar Certificado</span></a>
+                        <a   data-toggle="modal" data-target="#guiatramite1" type="button" class="btn btn-default" data-dismiss="modal" ng-click="verConcepto(tramite)" ng-if="tramite.vpago=='PAGADO'&&tramite.venviado=='SI'&&email!=null"><span></span> Ver Concepto</a>
+                      </td>
+                      -->
+                      <td data-title="'Estado'"> 
+                        <span ng-if="tramite.vcodigo==null&&tramite.vnroproforma!=null&&tramite.venviado=='NO'">PENDIENTE DE PAGO </span>
+                        <span ng-if="tramite.vcodigo!=null&&tramite.vnroproforma!=null&&tramite.venviado=='SI'">PAGADO</span>
+                      </td>
+                      <td data-title="'Pago En Línea'"> 
+                        <a type="button" class="btn btn-default" data-dismiss="modal" ng-if="tramite.vcodigo==null&&tramite.vnroproforma!=null&&tramite.venviado=='NO'&&email!=null" ng-click="subirSesionFum(tramite.vnroproforma)"><span><img src="../../libs/img/visa_mastercard.png" height="30"></span></a>
+                        <a type="button" class="btn btn-default" data-dismiss="modal" ng-if="tramite.vcodigo==null&&tramite.vnroproforma!=null&&tramite.venviado=='NO'" ng-click="imprimirProforma(tramite.vnroproforma)"><span><i class="fa fa-print fa-2x" aria-hidden="true"></i> Proforma</span></a>
+
+                        <a   data-toggle="modal" data-target="#guiatramite1" type="button" class="btn btn-default" data-dismiss="modal" ng-click="verConcepto(tramite)" ng-if="tramite.vcodigo!=null&&tramite.vnroproforma!=null&&tramite.venviado=='SI'&&email!=null"><span></span> Ver Concepto</a>
+                      </td>
+                    </tr>
+                  </table>
+              </div>
+               <!--div class="col-sm-6">
+                  <form class="form-horizontal ng-pristine ng-valid">
+                     <div class="form-group">
+                        <label class="col-lg-2 control-label" for="paterno">Observaciones:</label>
+                        <div class="col-lg-10">
+                           <input ng-model = "queryObs" id ="busca1" class="form-control" placeholder="">
+                        </div>
+                     </div>
+                  </form>
+                  <table  ng-table="tablaNoticias"  class="table table-striped table-bordered">
+                     <tr ng-repeat="tramite in $data  | filter:queryObs " ng-click= "seleccionarTramite(observaciones)">
+                        <td data-title="'Tipo de Trámite'">{{tramite.vservicio}}</td>
+                        <td data-title="'Fecha'">{{tramite.vfecha}} </td>
+                        <td data-title="'Enviado'">{{tramite.venviado}}</td>
+                     </tr>
+                  </table>
+               </div-->
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- modall -->
+<!-- .guia de tramites -->
+<div class="modal fade" id="guiatramite" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+                <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_015_03_1}}</h4>
+            </div>
+            <div class="modal-body" style="background:#ffffff" >
+              <img class="img-responsive" src="{{translateImagenes.img_015_09}}">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /guia de tramites -->
+
+<div class="modal fade" id="guiatramite1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+                <h4 class="modal-title" id="myModalLabel"><legend class="text-center header">Detalle de Compra</legend></h4>
+            </div>
+            <div class="container">
+                <div class="form-group">
+                    <span class="col-md-4">Nro. Proforma : </span>
+                    <div class="col-md-8">
+                        <input id="conceptoIdFum" name="conceptoIdFum" type="text" placeholder="Nro. Proforma." class="form-control" ng-model="conceptoIdFum" ng-disabled="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="col-md-4">Item Recaudador : </span>
+                    <div class="col-md-8">
+                        <input id="conceptoItemRecaudador" name="conceptoItemRecaudador" type="text" placeholder="Item." class="form-control" ng-model="conceptoItemRecaudador" ng-disabled="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="col-md-4">Recaudador : </span>
+                    <div class="col-md-8">
+                        <input id="conceptoCabecera" name="conceptoCabecera" type="text" placeholder="Recaudador." class="form-control" ng-model="conceptoCabecera" ng-disabled="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="col-md-4">Fecha Registro : </span>
+                    <div class="col-md-8">
+                        <input id="conceptoFechaRegistro" name="conceptoFechaRegistro" type="text" placeholder="Fecha Registro." class="form-control" ng-model="conceptoFechaRegistro" ng-disabled="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="col-md-4">Descripción : </span>
+                    <div class="col-md-8">
+                        <input id="conceptoDescripcion" name="conceptoDescripcion" type="text" placeholder="Monto Comprado." class="form-control" ng-model="conceptoDescripcion" ng-disabled="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="col-md-4">Total : </span>
+                    <div class="col-md-8">
+                        <textarea class="form-control" id="conceptoTotalGeneral" name="conceptoTotalGeneral" placeholder="Detalle de compra." rows="7" ng-model="conceptoTotalGeneral" ng-disabled="true"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Validacion de los campos listos para el pago-->
+<div class="modal fade" id="datosFallecido" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+               <h4 class="modal-title" id="myModalLabel">Los datos correctos del certificado son correctos?</h4>
+           </div>
+           <div class="container" >
+              <div class="form-group">
+                  <span class="col-md-4">Nro Proforma: </span>
+                  <div class="col-md-8">
+                      <input id="dtFallecidoNroProforma" name="dtFallecidoNroProforma" type="text" class="form-control" ng-model="dtFallecidoNroProforma" ng-disabled="true">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <span class="col-md-4">Nombre: </span>
+                  <div class="col-md-8">
+                      <input id="dtFallecidoNombre" name="dtFallecidoNombre" type="text" class="form-control" ng-model="dtFallecidoNombre" ng-disabled="true">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <span class="col-md-4">Edad : </span>
+                  <div class="col-md-8">
+                      <input id="dtFallecidoEdad" name="dtFallecidoEdad" type="text" class="form-control" ng-model="dtFallecidoEdad" ng-disabled="true">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <span class="col-md-4">Estado Civil : </span>
+                  <div class="col-md-8">
+                      <input id="dtFallecidoEstado" name="dtFallecidoEstado" type="text" class="form-control" ng-model="dtFallecidoEstado" ng-disabled="true">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <span class="col-md-4">Fecha de muerte : </span>
+                  <div class="col-md-8">
+                      <input id="dtFallecidoFecha" name="dtFallecidoFecha" type="text" class="form-control" ng-model="dtFallecidoFecha" ng-disabled="true">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <span class="col-md-4">Causa de muerte : </span>
+                  <div class="col-md-8">
+                      <input id="dtFallecidoCausa" name="dtFallecidoCausa" type="text" class="form-control" ng-model="dtFallecidoCausa" ng-disabled="true">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <span class="col-md-4">Nacionalidad : </span>
+                  <div class="col-md-8">
+                      <input class="form-control" id="dtFallecidoNacionalidad" name="dtFallecidoNacionalidad" ng-model="dtFallecidoNacionalidad" ng-disabled="true">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <span class="col-md-4">Libro : </span>
+                  <div class="col-md-8">
+                      <input class="form-control" id="dtFallecidoCarpeta" name="dtFallecidoCarpeta" ng-model="dtFallecidoCarpeta" ng-disabled="true">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <span class="col-md-4">Folio : </span>
+                  <div class="col-md-8">
+                      <input class="form-control" id="dtFallecidoFolio" name="dtFallecidoFolio" ng-model="dtFallecidoFolio" ng-disabled="true">
+                  </div>
+              </div>  
+           </div>
+           <div class="modal-footer">
+                <br>
+                <p>
+                  Estimado Ciudadano, para poder realizar el pago en línea, su tarjeta de débito o crédito, debe estar activado para compras por Internet
+                </p>
+                <br>
+                <br>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> <span> <i class="fa fa-remove fa-2x" aria-hidden="true"></i>{{translateTitulos.lbl_05_05_05}}</span></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="subirSesionFum(dtFallecidoNroProforma)" ng-if="email!=null"><span><img src="../../libs/img/visa_mastercard.png" height="30"></span></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="imprimirProforma(dtFallecidoNroProforma)"><span> <i class="fa fa-print fa-2x" aria-hidden="true"></i>Imprimir Proforma</span></button>
+
+                <!--a href="http://obito.lapaz.bo/wsProforma/proforma.asmx/obtenerProforma?idFum={{dtFallecidoNroProforma}}" target="_blank" type="button" class="btn btn-default" data-dismiss="modal"><span>Imprimir Proforma</span></a-->
+           </div>
+       </div>
+   </div>
+</div>
+
+<div class="modal fade" id="registro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+               <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_015_03_3}}</h4>
+           </div>
+           <div class="modal-body" >
+               <form name="formularioCasos"  readOnly="true" novalidate>
+                   <div class="row">
+                       <table class="table table-striped">
+                           <thead style="background: #6F7072;color: #F5F5F6;">
+                               <th>#&nbsp;</th>
+                               <th>{{translateTitulos.lbl_015_06}}&nbsp;</th>
+                           </thead>
+                           <tbody>
+                               <tr  style="cursor: pointer;" class="column" ng-repeat="proceso in serivicosInternet" ng-click="seleccionarProceso(proceso)" ng-style="proceso.id==procesoSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}">
+                                   <td>{{$index+1}}</td>
+                                   <td>{{proceso.name}}</td>
+                               </tr>
+                           </tbody>
+                       </table>
+                   </div>
+                   <!-- GNERADOR DE CAPCHA -->
+                            <div class="col-md-12" align="center" >
+              <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                  <tr class="color">
+                      <div style="background: #ffffff;" >
+                          <div class="box2">
+                              <img class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
+                          </div>
+                          <div class="box2">
+                              <img class="img-responsive" src="{{imageLNG}}"  title="Palabra en CASTELLANO">
+                          </div>
+                      </div>
+                  </tr>
+                    <tr class="color">
+                        <td class="color22" colspan="3" width="70"  align="center">
+                            <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" ng-change ="lmpCaptcha()" placeholder="{{palabraT}}" ng-model="resultadoC"  required/>
+                                <span  ng-show="formulario.ResultadoC.$invalid">
+                                    <span ng-show="formulario.ResultadoC.$error.required">{{palabraT}}.</span>
+                                </span>
+                                <label >{{palabraT}}</label>
+                        </td>
+                          <td class="color2" width="30"  align="center">
+                              <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                              </a>
+                          </td>
+                        </tr>
+              </table>
+              <b><font SIZE=3 color="red">{{ErrorCapcha}}</font></b>
+           </div>
+
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+               </form>
+           </div>
+
+           <div class="modal-footer">
+
+               <button type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+           <!--     <button ng-click="VerificarCapcha(data);"  ng-disabled="btnNuevoTramtite || formularioCasos.resultadoC.$invalid" type="button" class="btn btn-primary"  ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'">{{translateTitulos.lbl_04_04_04}}</button>       -->
+               <!-- <button type="button" class="btn btn-default" data-dismiss="modal">cerrar</button> -->
+               <button ng-click="VerificarCapcha(data);" data-dismiss="modal" ng-disabled="btnNuevoTramtite || formularioCasos.resultadoC.$invalid" type="button" class="btn btn-primary"  ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'">{{translateTitulos.lbl_04_04_04}}</button>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+
+
+      <div class="col-lg-12">
+         <div ng-include="template.url" class="animated fadeInUp" ></div><!--cambios-->
+      </div>
+
+</div>

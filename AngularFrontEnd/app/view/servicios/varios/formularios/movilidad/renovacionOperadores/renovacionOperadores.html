@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <script src="../../libs/apiMov/api_mov.js"></script>
+    <link href="../../libs/css/sweetalert.css" rel="stylesheet"></link>
+    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+    <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/renovacionOperadores/renovacionOperadores.js"></script>
+    <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script> 
+    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" /> 
+    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS"/>
+  </head>
+<style>
+  
+#caja {
+  display: block;
+}
+#mostrar{
+  display:block;
+}
+#cerrar_rc{
+  position: absolute;
+  top: 5px;
+  left: 92%;
+  font-size: 38px;
+  color: #FFCB05 !important;
+}
+input:required:invalid {
+  border: 1px solid red;
+}
+input:required:valid {
+  border: 1px solid green;
+}
+select:required:invalid {
+  border: 1px solid red;
+}
+select:required:valid {
+  border: 1px solid green;
+}
+body{
+  background: #ecf0f1;
+}
+
+.table1 th {
+  background-color: #fff !important;
+}
+
+#cerrar_rc{
+  position: absolute;
+  top: 5px;
+  left: 92%;
+  font-size: 38px;
+  color: #FFCB05 !important;
+}
+.accordion-titulo {
+  position: relative;
+  display: block;
+  padding: 20px;
+  font-size: 20px;
+  font-weight: 300;
+  background: #2c3e50;
+  color: #fff;
+  text-decoration: none;
+}
+.accordion-titulo.open {
+  background: #16a085;
+  color: #fff;
+}
+.accordion-titulo:hover {
+  background: #1abc9c;
+}
+.accordion-titulo span.toggle-icon:before {
+  content:"+";
+}
+.accordion-titulo.open span.toggle-icon:before {
+  content:"-";
+}
+.accordion-titulo span.toggle-icon {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight:bold;
+}
+
+.tableE > thead > tr > th {
+    border-bottom: 1px solid #FFFFE0;
+    vertical-align: bottom;
+    background: #FFEFD5;
+    color: black;
+}
+</style>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfKWci28piaE9q8Or0DzmUUJXbbdja54&callback=initMap">
+</script>
+<script type="text/javascript">
+$('.custom-upload input[type=file]').change(function(){
+    $(this).next().find('input').val($(this).val());
+    angular.element(this).scope().cambiarFile(this, $(this).val());
+});
+
+function initMap()
+{
+  accessScope('#principalMod', function (scope) {
+    scope.initMap();
+  });
+}
+
+function iniciarLoadFyle(){
+  $('.custom-upload input[type=file]').change(function(){
+  $(this).next().find('input').val($(this).val());
+  angular.element(this).scope().cambiarFile(this, $(this).val());
+  });
+}
+var icon= 0;
+$('#mostrar').click(function(event) {
+  event.preventDefault();
+  $("#caja").slideToggle();
+  if (icon==0) {
+    $("#cerrar_i").removeClass("fa fa-sort-asc");
+    $("#cerrar_i").addClass("fa fa-sort-desc");
+    $("#cerrar_rc").css({'position' : 'absolute', 'top' : '-11px' });
+    icon=icon + 1;
+  }
+  else{
+    $("#cerrar_i").addClass("fa fa-sort-asc");
+    $("#cerrar_rc").css({'position' : 'absolute', 'top' : '5px' });
+    icon= 0;
+  }
+});
+function accessScope(node, func) {
+  var scope = angular.element(document.querySelector(node)).scope();
+  scope.$apply(func);
+}
+
+function areaMul(){
+  var area = $("#INT_ALTO").val()*$("#INT_ANCHO").val();
+  $("#INT_AREA").val(area);
+}
+
+function valNumeroTelefono(Control){
+  Control.value = soloNumericoTelefono(Control.value);
+}
+
+function soloNumericoTelefono(sValo){
+  Numer=parseInt(sValo);
+  if (isNaN(Numer)){
+    return "";
+  }else{
+    var digits = ("" + Numer).split("");
+    if(digits.length < 9 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+      return Numer;
+    }else{
+      return "";
+    }
+  }
+}
+
+function validaLetras(campo){
+  console.log(campo.name);
+  var color = campo.value;
+  emailRegex = /^[a-zA-Z ]+$/;
+  if (emailRegex.test(color)) {
+  }
+  else{
+    $("#"+campo.name).val('');
+  }
+}
+
+</script>          
+  <div class="page-content" ng-controller="renovacionOperadoresController" data-ng-init="inicio();">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div id="mostrar" class="ibox-title">
+          <h5 class="ng-binding">RENOVACIÓN DE OPERADORES </h5>
+          <a id="cerrar_rc" style="position: absolute; top: 5px;"><i class="fa-sort-desc fa fa-sort-asc" style="color: #00adb5" id="cerrar_i"></i></a>
+        </div>
+        <div class="ibox-content" id="caja">
+          <div class="row">
+            <div class="col-md-12 b-r">
+              <form class="form-horizontal ng-pristine ng-valid">
+                <legend class="ng-binding">Operadores Habilitados</legend>
+                <div class="table-responsive col-md-12">
+                  <table  ng-table="tablaOperadores"  class="table table-striped table-hover">
+                    <tr style="cursor: pointer;text-align: center;" ng-repeat="operadores in $data  | filter:query " ng-style="operadores.xope_id==operadorSeleccionado && {'background-color':'#F5E2CE','font-color':'#337ab7'}" ng-click="seleccionarOperador(operadores.xope_id)" ng-show = "operadores.xope_datos.RO_MOD_VALUE=='1'">
+                      <td data-title="'Denominación'" style="width:10%" ng-click="listaDatosOperador(operadores)">{{operadores.xope_denominacion}}</td>
+                      <td data-title="'Tipo de Operador'" style="width:10%" ng-click="listaDatosOperador(operadores)">{{operadores.xope_tipo_operador}}</td> 
+                      <td data-title="'Tipo de Modalidad'" style="width:10%" ng-click="listaDatosOperador(operadores)">{{operadores.xope_datos.RO_MOD}}</td>
+                      <td data-title="'Fecha Emision de Resolucion'" style="width:10%" ng-click="listaDatosOperador(operadores)">{{operadores.xope_fecha_resolucion | date:'dd-MM-yyyy'}} </td>
+                      <td data-title="'Fecha Vigencia de Resolucion'" style="width:10%" ng-click="listaDatosOperador(operadores)">{{operadores.xope_fecha_vigencia | date:'dd-MM-yyyy'}}</td>
+                      <td data-title="'Estado de Resolucion'" style="width:10%" ng-click="listaDatosOperador(operadores)">{{operadores.estadores}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div ng-show="mostrar_formulario == true" class="col-lg-12">
+      <div  class="ibox-content" id="caja"> 
+        <div  class="row">                
+          <form name="signupForm" class="" role="form" novalidate>
+            <div id="container-main" class="ibox float-e-margins">  
+              <div class="ibox-title" style="background-color: #FFEFB0 !important; border-bottom: solid 0px !important;">
+                <strong><h3 style="color:black";>DATOS DEL OPERADOR</h3></strong>
+              </div><br>
+              <div class="col-md-12">
+                <div id="representante">
+                  <legend>Datos del Solicitante:</legend>
+                  <div ng-show = "tipo_persona == 'NATURAL'">
+                    <div class="row" >
+                      <div class="col-md-12"><br>  
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_27}}:</label>   
+                            <div class="controls">
+                              <input ng-model="datos.MO_NOM_RL" id="MO_NOM_RL" name="MO_NOM_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                            <div class="controls">
+                              <input ng-model="datos.MO_PAT_RL" id="MO_PAT_RL" name="MO_PAT_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                            <div class="controls">
+                              <input ng-model="datos.MO_MAT_RL" id="MO_MAT_RL" name="MO_MAT_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Ap. Casada:</label>
+                            <div class="controls">
+                              <input ng-model="datos.MO_CAS_RL" id="MO_CAS_RL" name="MO_CAS_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>                             
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Número de documento:</label>
+                            <div class="controls">
+                              <input ng-model="datos.MO_CI_RL" id="MO_CI_RL" name="MO_CI_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Expedido:</label>
+                            <div class="controls">
+                              <input ng-model="datos.MO_EXP_RL" id="MO_EXP_RL" name="MO_EXP_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>                                                                                       
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url">Celular:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_CEL_RL" id="MO_CEL_RL" name="MO_CEL_RL" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url">Correo:</label>
+                            <div class="controls">
+                              <input type="email" ng-model="datos.MO_CORR_RL" id="MO_CORR_RL" name="MO_CORR_RL" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Zona:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_ZONA_RL" id="MO_ZONA_RL" name="MO_ZONA_RL" class="form-control"   width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Tipo de Via:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_TIP_VIA_RL" id="MO_TIP_VIA_RL" name="MO_TIP_VIA_RL" class="form-control"   width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Nombre de Via:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_CALL_RL" id="MO_CALL_RL" name="MO_CALL_RL" class="form-control"    width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>                        
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Nro. de Vivienda:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_NRO_RL" id="MO_NRO_RL" name="MO_NRO_RL" class="form-control"   width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div ng-show = "tipo_persona == 'JURIDICO'">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">NIT:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_NIT" id="MO_NIT" name="MO_NIT" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Razón Social:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_RZ" id="MO_RZ" name="MO_RZ" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Poder de Representante Legal(Nro):</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_POD_RL" id="MO_POD_RL" name="MO_POD_RL" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Nro de la Notaría:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_NOT_RL" id="MO_NOT_RL" name="MO_NOT_RL" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>                         
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Zona:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_ZON_OF" id="MO_ZON_OF" name="MO_ZON_OF" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Tipo de Via:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_TIP_VIA_OF" id="MO_TIP_VIA_OF" name="MO_TIP_VIA_OF" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Nombre de Via:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_NOM_VIA_OF" id="MO_NOM_VIA_OF" name="MO_NOM_VIA_OF" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Nro de Vivienda:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_NUM_DOM_OF" id="MO_NUM_DOM_OF" name="MO_NUM_DOM_OF" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12"><h3>DATOS DEL REPRESENTANTE LEGAL</h3></div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_27}}:</label>   
+                            <div class="controls">
+                              <input ng-model="datos.MO_NOM_RLJ" id="MO_NOM_RLJ" name="MO_NOM_RLJ" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                            <div class="controls">
+                              <input ng-model="datos.MO_PAT_RLJ" id="MO_PAT_RLJ" name="MO_PAT_RLJ" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                            <div class="controls">
+                              <input ng-model="datos.MO_MAT_RLJ" id="MO_MAT_RLJ" name="MO_MAT_RLJ" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>                           
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Número de documento:</label>
+                            <div class="controls">
+                              <input ng-model="datos.MO_CI_RLJ" id="MO_CI_RLJ" name="MO_CI_RLJ" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Expedido:</label>
+                            <div class="controls">
+                              <input ng-model="datos.MO_EXP_RLJ" id="MO_EXP_RLJ" name="MO_EXP_RLJ" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>  
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url">Celular:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.MO_CEL_RLJ" id="MO_CEL_RLJ" name="MO_CEL_RLJ" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>   
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="operador">
+                  <legend class="ng-binding">Datos del Operador:</legend>
+                  <div class="col-md-4">
+                    <div class="form-group" >
+                      <label for="url">Tipo de Operador:</label>   
+                      <div class="controls">
+                        <input ng-model="datos.MO_OPE" id="MO_OPE" name="MO_OPE" class="form-control"  width="30%" height="30" ng-disabled="true">
+                      </div>
+                    </div>
+                  </div>                
+                  <div class="col-md-4">
+                    <div class="form-group" >
+                      <label for="url">Modalidad:</label>   
+                      <div class="controls">
+                        <input ng-model="datos.MO_MOD" id="MO_MOD" name="MO_MOD" class="form-control"  width="30%" height="30" ng-disabled="true">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group" >
+                      <label for="url">Tipo de Servicio:</label>   
+                      <div class="controls">
+                        <input ng-model="datos.MO_TIP_SER" id="MO_TIP_SER" name="MO_TIP_SER" class="form-control"  width="30%" height="30" ng-disabled="true">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="oficinas">
+                  <legend>Oficinas Habilitadas:</legend>
+                  <div class="table-responsive col-md-12">
+                    <table  ng-table="tablaOficinas"  class="table table-striped table-hover">
+                      <tr style="cursor: pointer;text-align: center;" ng-repeat="oficinas in $data  | filter:query " ng-style="oficinas.xofi_id==oficinaSeleccionada && {'background-color':'#FAF6D3','font-color':'#337ab7'}" ng-click="seleccionarOficinas(oficinas.xofi_id)">
+                        <td data-title="'Opciones'" style="width:5%">
+                          <a class="btn btn-default btn-circle"   ng-click="verOficina(oficinas);" tooltip="Renovación de Licencia">
+                            <div class="shake-slow">
+                              <i class="fa fa-refresh" style="color:#249FE6"></i>
+                            </div>
+                          </a>                          
+                        </td>
+                        <td data-title="'Tipo Actividad'" style="width:10%" >{{oficinas.xofi_datos.RO_TIP_ACT_SUC}}</td>
+                        <td data-title="'Macrodistrito'" style="width:15%" >{{oficinas.xofi_oficina}}</td>
+                        <td data-title="'Zona'" style="width:10%" >{{oficinas.xofi_datos.RO_ZONA_OF_VALUE}}</td> 
+                        <td data-title="'Superficie'" style="width:10%">{{oficinas.xofi_datos.RO_SUP_SUC}}</td>
+                        <td data-title="'Teléfono'" style="width:10%">{{oficinas.xofi_datos.RO_TEL_SUC}}</td>
+                        <td data-title="'Publicidad'" style="width:10%">{{oficinas.xofi_datos.RO_VIAE}}</td>
+                        <td data-title="'Nro. Trámite Renovación'" style="width:10%"></td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="modal fade" id="verOficina">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                          <center>
+                            <h2  class="modal-title" id="myModalLabel"><strong>DATOS DE LA OFICINA</strong></h2>
+                          </center>
+                        </div>
+                        <div class="modal-body">
+                          <form novalidate>
+                            <div class="row">
+                              <div id="ubicacion">
+                                <div class="col-md-12">
+                                  <legend>  
+                                    Datos de la Oficina:
+                                  </legend>
+                                </div>
+                                <div class="col-md-12">
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Superficie m2: </label>
+                                      <div class="form-controls">
+                                        <input id="RO_SUP_SUC" type="number" name="RO_SUP_SUC" ng-disabled="true"  ng-model="datosOficina.xofi_datos.RO_SUP_SUC"  class="form-control" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                        <font color="#FF0000" size="4px"> * </font>
+                                        <label for="url" >Establecimiento:</label>
+                                        <div class="controls">
+                                            <select id="RO_EST_SUC" class="form-control" ng-model="datosOficina.xofi_datos.RO_EST_SUC"  name="RO_EST_SUC" ng-disabled="true" required>
+                                                <option value="">--Seleccionar--</option>
+                                                <option value="PROPIO"> PROPIO </option>
+                                                <option value="ALQUILADO"> ALQUILADO </option>
+                                                <option value="ANTICRÉTICO"> ANTICRÉTICO </option>
+                                                <option value="OTRO"> OTRO </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                  </div> 
+                                </div>
+                                <div class="col-md-12">
+                                  <legend>
+                                    Datos de la Ubicación de la Oficina:
+                                  </legend>
+                                </div>
+                                <div class="col-md-12">                                  
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Tipo de Actividad:</label>
+                                      <div class="controls">
+                                        <select id="RO_TIP_ACT" name="RO_TIP_ACT" ng-model="datosOficina.xofi_datos.RO_TIP_ACT" class="form-control" ng-disabled="true" required >
+                                            <option value="">Seleccionar</option>
+                                            <option value="MA"> MATRIZ (Oficina Central)</option>
+                                            <option value="SU"> SUCURSAL  </option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>  
+                                  <div class="col-md-4">
+                                    <div class="form-group" >
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Macrodistrito:</label>
+                                      <div class="controls">
+                                        <select id="RO_MAC_OF_VALUE" 
+                                                  name="RO_MAC_OF_VALUE"
+                                                  placeholder="Macrodistrito" 
+                                                  ng-model="datosOficina.xofi_datos.RO_MAC_OF_VALUE"
+                                                  class="form-control"
+                                                  ng-disabled="true"
+                                                  ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
+                                                  required ng-change="distritoZonas(datosOficina.xofi_datos.RO_MAC_OF_VALUE)">
+                                            <option value="">Seleccionar</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                  <div class="col-md-4">
+                                    <div class="form-group" >
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Zona:</label>
+                                      <div class="controls">
+                                        <select id="RO_ZONA_OF_VALUE"
+                                                name="RO_ZONA_OF_VALUE"
+                                                placeholder="Distrito - Zona"
+                                                ng-model="datosOficina.xofi_datos.RO_ZONA_OF_VALUE"
+                                                class="form-control"
+                                                ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZona | orderBy:['nombre','dist_nombre']"
+                                                ng-change="actulizarIdDistrito(this);" ng-disabled="true" required>
+                                          <option value="">Seleccionar</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group" >
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Tipo de Via:</label>
+                                      <div class="controls">
+                                        <select id="RO_TIPO_VIA_SUC"
+                                                name="RO_TIPO_VIA_SUC"
+                                                ng-model="datosOficina.xofi_datos.RO_TIPO_VIA_SUC"
+                                                class="form-control" ng-disabled="true" required>
+                                          <option value="">Seleccionar</option>
+                                          <option value="AV">AVENIDA</option>
+                                          <option value="CA">CALLE</option>
+                                          <option value="CL">CALLEJON</option>
+                                          <option value="PA">PASAJE</option>
+                                          <option value="ND">NO DEFINIDO</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">  
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Nombre de Via: </label>
+                                      <div class="controls">
+                                        <input id="RO_NOM_VIA_SUC" type="text" name="RO_NOM_VIA_SUC" ng-model="datosOficina.xofi_datos.RO_NOM_VIA_SUC" ng-disabled="true" class="form-control" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Entre calles: </label>
+                                      <div class="controls">  
+                                        <input id="RO_ENT_CALL_SUC" type="text" min="1" max="1500" name="RO_ENT_CALL_SUC"  ng-model="datosOficina.xofi_datos.RO_ENT_CALL_SUC" ng-disabled="true" ng-model="datos.RO_ENT_CALL" class="form-control" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Número: </label>
+                                      <div class="form-controls">
+                                        <input id="RO_NRO_SUC" type="number" name="RO_NRO_SUC" ng-disabled="true"  ng-model="datosOficina.xofi_datos.RO_NRO_SUC"  class="form-control" required>
+                                      </div>
+                                    </div>
+                                  </div>                                                     
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Nro. Factura Electrica: </label>
+                                      <div class="form-controls">
+                                        <input id="RO_FAC_ELE" type="text" name="RO_FAC_ELE" ng-disabled="true"  ng-model="datosOficina.xofi_datos.RO_FAC_ELE"  class="form-control" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Teléfono: </label>
+                                      <div class="controls">
+                                        <input type="number" id="RO_TEL_SUC" type="text" name="RO_TEL_SUC"  ng-model="datosOficina.xofi_datos.RO_TEL_SUC" ng-disabled="true" class="form-control" placeholder="Teléfono ej.22451630" onkeyUp="valNumeroTelefono(this);" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Cantidad de vehículos disponibles: </label>
+                                      <div class="form-controls">
+                                        <input id="RO_CAN_VEH_SUC" type="number" min="20" title="La cantidad de vehículos debe ser mayor a 20" name="RO_CAN_VEH_SUC"  ng-model="datosOficina.xofi_datos.RO_CAN_VEH_SUC"  class="form-control" ng-disabled="true" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Dirección garaje: </label>
+                                      <div class="form-controls">
+                                        <input id="RO_DIR_GAR_SUC" type="text"  name="RO_DIR_GAR_SUR" ng-model="datosOficina.xofi_datos.RO_DIR_GAR_SUC" ng-disabled="true" class="form-control" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Nro de garaje: </label>
+                                      <div class="form-controls">
+                                        <input id="RO_PAR_NRO_SUC" type="number" name="RO_PAR_NRO_SUC" ng-model="datosOficina.xofi_datos.RO_PAR_NRO_SUC"  class="form-control" ng-disabled="true" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Espacios Reales Disponibles Garage: </label>
+                                      <div class="form-controls">
+                                        <input id="RO_ESP_DIS" type="number" min="1" max="" name="RO_ESP_DIS" ng-model="datosOficina.xofi_datos.RO_ESP_DIS" ng-disabled="true" class="form-control" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Vía para parada momentánea: </label>
+                                      <div class="form-controls">
+                                        <input id="RO_VIA_PAR_MOM" type="text" min="1" max="1500" name="RO_VIA_PAR_MOM" ng-disabled="true" ng-model="datosOficina.xofi_datos.RO_VIA_PAR_MOM"  class="form-control"  required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Entre calles (Parada Momentanea): </label>
+                                      <div class="form-controls">
+                                        <input id="RO_ENT_CALL_PM" type="text" min="1" max="1500" name="RO_ENT_CALL_PM" ng-model="datosOficina.xofi_datos.RO_ENT_CALL_PM" ng-disabled="true" class="form-control" required>
+                                      </div>
+                                    </div>
+                                  </div>   
+                                </div>
+                              </div>
+                              <div id="croquis">
+                                <div class="col-md-12"><legend>Croquis de la Ubicación:</legend></div>
+                                <div class="col-md-12" >
+                                  <div class="col-md-1" >
+                                    <br><br><br><br><br><br><br><br><br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <font color="#FF0000" size="4px" align="center"> * </font>
+                                  </div>
+                                  <div class="col-md-10">
+                                    <img ng-src="{{datosOficina.xofi_datos.RO_CROQUIS_OFI}}">
+                                  </div>
+                                  <div class="col-md-1">
+                                      &nbsp;
+                                  </div>
+                                </div><br>
+                              </div>
+                              <div id="publicidad" ng-show="datos.MO_MOD_VALUE==1">
+                                <div class="col-md-12">
+                                  <legend>
+                                    Datos de la Publicidad:
+                                  </legend>
+                                </div>
+                                <div class="col-md-12">
+                                  <div class="form-group" >
+                                    <div class="controls" ng-show="desabilitaViae == false">
+                                      <font color="#FF0000" size="4px">* </font>
+                                      <input type="radio" ng-model="datosOficina.rdTipoTramite1" name="rdTipoTramite1" value="CON PUBLICIDAD" ng-change="cambioToggle1(datosOficina.rdTipoTramite1);" ng-disabled="true" required />Con Elementos Publicitarios
+                                      <input type="radio" ng-model="datosOficina.rdTipoTramite1.rdTipoTramite1" name="rdTipoTramite1" value="SIN PUBLICIDAD" ng-change="cambioToggle1(datosOficina.rdTipoTramite1);"  ng-disabled="true" required/>Sin Elementos Publicitarios<br>
+                                    </div><br>
+                                    <div class="col-md-12">
+                                      <table ng-table="tablaRoles" show-filter="true" class="table table-striped table-bordered">
+                                        <tr ng-repeat="pup in datosOficina.xofi_viae" >
+                                          <td data-title="'VIAE'">{{$index+1}}</td>
+                                          <td data-title="'TIPO'" sortable="'descripcionTipoLetrero'">{{pup.descripcionTipoLetrero}}</td>
+                                          <td data-title="'CARACTERÍSTICA'" sortable="'caracteristica'">{{pup.caracteristica}}</td>
+                                          <td data-title="'CARAS'" sortable="'CARAS'">{{pup.cara}}</td>
+                                          <td data-title="'DESCRIPCIÓN'" sortable="'descripcion'">{{pup.descripcion}}</td>
+                                          <td data-title="'ALTO'" sortable="'alto'">{{pup.alto}}</td>
+                                          <td data-title="'ANCHO'" sortable="'ancho'">{{pup.ancho}}</td>
+                                          <td data-title="'SUPERFICIE'" sortable="'superficie'">{{pup.superficie}}</td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>    
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>          
+                          <button type="button" ng-show ="renovacion=='RENOVACION'" data-dismiss="modal" class="btn btn-primary" ng-click="validarEnvio(datosOficina);">Renovar Licencia</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>                             
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

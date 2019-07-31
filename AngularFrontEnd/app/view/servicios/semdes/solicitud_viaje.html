@@ -1,0 +1,1269 @@
+
+<!-- TIPOS OBLIGATORIO -->
+<script type="text/javascript">
+$('.modal').on('shown.bs.modal', function() {
+  //Make sure the modal and backdrop are siblings (changes the DOM)
+  $(this).before($('.modal-backdrop'));
+  //Make sure the z-index is higher than the backdrop
+  $(this).css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 1);
+});
+
+    $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+</script>
+<style>
+/* 
+    Document   : no-more-tables
+    Created on : 28/02/2012, 11:01:54 AM
+    Author     : Simon Elvery
+    Description:
+        Demonstration of the responsive tables method described at by Chris Coyier
+		at http://css-tricks.com/responsive-data-tables/
+*/
+
+@media only screen and (max-width: 800px) {
+	
+	/* Force table to not be like tables anymore */
+	#no-more-tables table, 
+	#no-more-tables thead, 
+	#no-more-tables tbody, 
+	#no-more-tables th, 
+	#no-more-tables td, 
+	#no-more-tables tr { 
+		display: block; 
+	}
+
+	/* Hide table headers (but not display: none;, for accessibility) */
+	#no-more-tables thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	#no-more-tables tr { border: 1px solid #ccc; }
+
+	#no-more-tables td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 35%; 
+		white-space: normal;
+		text-align:left;
+	}
+
+	#no-more-tables td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+		text-align:left;
+		font-weight: bold;
+	}
+
+	/*
+	Label the data
+	*/
+	#no-more-tables td:before { content: attr(data-title); }
+}
+	
+</style>
+
+<style>
+///////////////////////////////////// style //////////////////////////////
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+</style>
+
+<style>
+.caja {
+position: relative;
+margin: 5px auto;
+height:10px;
+}
+.info {
+position: absolute; /*Info sobre la imagen*/
+top: 20%;
+left: 70%; /*Desplazamos a partir de la esquina superior izquierda*/
+zoom: 1;
+filter: alpha(opacity=0); /*Opacidad Para IE */
+opacity: 0; /*Inicialmente transparente */
+padding: 5px;
+background: black;
+border:#FFA533 2px solid;
+padding: 20px;
+font-size:16px;
+-moz-transition:all ease .8s;
+-webkit-transition:all ease .8s ;
+transition:all ease .8s;
+z-index:1;
+}
+.caja:hover .info {
+filter: alpha(opacity=80);
+opacity: .8;
+}
+
+.caja1 {
+position: relative;
+margin: 10px auto;
+}
+.info {
+position: absolute; /*Info sobre la imagen*/
+top: 20%;
+left: 70%; /*Desplazamos a partir de la esquina superior izquierda*/
+zoom: 1;
+filter: alpha(opacity=0); /*Opacidad Para IE */
+opacity: 0; /*Inicialmente transparente */
+padding: 5px;
+background: black;
+border:#FFA533 2px solid;
+padding: 20px;
+font-size:16px;
+-moz-transition:all ease .8s;
+-webkit-transition:all ease .8s;
+transition:all ease .8s;
+z-index:1;
+}
+.caja1:hover .info {
+filter: alpha(opacity=80);
+opacity: .8;
+}
+
+.caja2 {
+position: relative;
+margin: 10px auto;
+}
+.info {
+position: absolute; /*Info sobre la imagen*/
+top: 20%;
+left: 70%; /*Desplazamos a partir de la esquina superior izquierda*/
+zoom: 1;
+filter: alpha(opacity=0); /*Opacidad Para IE */
+opacity: 0; /*Inicialmente transparente */
+padding: 5px;
+background: black;
+border:#FFA533 2px solid;
+padding: 20px;
+font-size:16px;
+-moz-transition:all ease .8s;
+-webkit-transition:all ease .8s ;
+transition:all ease .8s;
+z-index:1;
+}
+.caja2:hover .info {
+filter: alpha(opacity=80);
+opacity: .8;
+}
+///////////////////////////////////// style //////////////////////////////
+.custom-upload {
+    position: relative;
+    height: 40px;
+    width: 100%;
+    margin:30px;
+}
+.custom-upload input[type=file]
+{
+    outline:none;
+    position: relative;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width:85%;
+    height:100%;
+
+}
+.custom-upload .fake-file
+{
+    background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 85%;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    line-height: 100%;
+}
+.custom-upload .fake-file input
+{
+    font-size:16px;
+    height:40px;
+    width:85%;
+}
+</style>
+
+<style>
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {        
+        padding-left: 8px;
+    }    
+</style>
+
+
+
+<style>
+.custom-upload {
+    position: relative;
+    height: 40px;
+    width: 100%;
+    margin:30px;
+}
+
+.custom-upload input[type=file]
+{
+    outline:none;
+    position: relative;
+    text-align: right;    
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width:85%;
+    height:100%;
+    
+}
+
+.custom-upload .fake-file
+{
+    background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 85%;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    line-height: 100%;
+}
+
+.custom-upload .fake-file input
+{
+    font-size:16px;
+    height:40px;
+    width:85%;
+}
+.box2{
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+
+.ejemplo3 {
+        background-color:white;
+        border: 2px solid ;
+        color: #6F7072;
+        margin: 1px auto;
+        padding: 10px;
+        text-align: center;
+        width: 350px;
+
+        }
+ table.one 
+ {border-collapse:collapse;
+            width:100%;
+            border-spacing:10px;
+             /*border-color:#6F7072;*/
+        }
+ tr.color {
+       background-color:#6F7072;
+        /*border: green 5px solid; */
+       }
+    td.color2 {
+       border: #FEBF00 5px solid;
+       background-color:#FEBF00;
+       border-width:5px;
+       padding:1px;
+   }
+   td.colorCA {
+       border: #FEBF00 5px solid;
+       background-color:#FFFFFF;
+        border-width:5px;
+        
+        padding:1px;
+    }
+    td.color22 {
+       border: #FEBF00 5px solid;
+       background-color:#FEBF00;
+       border-width:5px;
+       
+       padding:1px;
+    }
+
+</style>
+   
+
+<script type="text/javascript">
+    var textCambio = "0";
+
+    $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+
+    function cambioTexto(){
+      textCambio = "1";
+    }
+	function pagoOnChange(sel) {
+      if (sel.value=="1"){
+           divC = document.getElementById("nAmbos");
+           divC.style.display = "";
+           divT = document.getElementById("nUn");
+           divT.style.display = "none";
+           divE = document.getElementById("nOtr");
+           divE.style.display = "none";
+      }else{
+	   if (sel.value=="2"){
+           divC = document.getElementById("nAmbos");
+           divC.style.display = "none";
+
+           divT = document.getElementById("nUn");
+           divT.style.display = "";
+
+           divE = document.getElementById("nOtr");
+           divE.style.display = "none";
+	   }
+	   else
+          {
+           divC = document.getElementById("nAmbos");
+           divC.style.display = "none";
+           divT = document.getElementById("nUn");
+           divT.style.display = "none";
+           divE = document.getElementById("nOtr");
+           divE.style.display = "";
+	   }
+	}
+}
+    function ConsultarRCJavaScript(carnet, opcion, fila){
+      if(textCambio == "1"){
+        angular.element(document.getElementById("renderFormulario")).scope().consultaRC_CI('NATURAL', carnet, opcion, fila, textCambio);
+        textCambio = "0";
+      }
+    }
+
+    function addRow(cadena,tableID) {
+        var matriz = cadena.split(',');
+        var table = document.getElementById('tabla_'+tableID);
+        var rowCount = table.rows.length;
+        var row = table.insertRow(rowCount);
+        row.id=tableID+"_row"+rowCount;
+        var newdiv = document.createElement('td');
+        newdiv.innerHTML = '<button id="save_btn_' + row.id +'"  onclick="guardarGrid(\'' + rowCount +'\',\'' + cadena +'\',\'' + tableID +'\');">Guardar </button></td>';//
+        newdiv.id="c_btn_"+row.id;
+        document.getElementById(row.id).appendChild(newdiv);
+        var element1;
+        for(var i = matriz.length-4; i >=0 ;i=i-4){
+           cell1 = row.insertCell(0);
+           cell1.id="c_"+matriz[i+1]+rowCount;
+           var combo = matriz[i+2].split(':');
+           if(matriz[i+2]=='TXT'){
+                element1 = document.createElement("input");
+                element1.size = matriz[i+3];//alert(matriz[i+3]);
+                element1.type = "text";
+                if(matriz[i+1]=='f01_ADUL_G_CI'){
+                  element1.setAttribute("onblur", "ConsultarRCJavaScript(this.value, '100' ,'" + rowCount + "')");
+                  element1.setAttribute("onchange", "cambioTexto()");
+                }else if(matriz[i+1]=='f01_NNA_G_CI'){
+                  element1.setAttribute("onblur", "ConsultarRCJavaScript(this.value, '101' ,'" + rowCount + "')");
+                  element1.setAttribute("onchange", "cambioTexto()");
+                }
+           } else if(matriz[i+2]=='CHK'){
+                element1 = document.createElement("input");
+                element1.type = "checkbox";
+          }else if(matriz[i+2]=='FEC'){
+                    element1 = document.createElement("input");
+                    element1.setAttribute("type", "date");
+                    element1.type = "date";
+                    element1.size = "10";
+                    element1.name = "datepicker";
+                    element1.setAttribute("onClick", "NewCal('"+ matriz[i+1]+rowCount +"', \'yyyymmdd\')");
+
+           }else if(combo[0]=='SPAN') {
+                element1 = document.createElement('span');
+                element1.innerHTML = combo[1];
+            }
+            else if(combo[0]=='CBO') {
+                element1 = document.createElement('select');
+                filas = combo[1].split('#');
+                element1.setAttribute('id','idsel1');
+                for(var j = 0; j < filas.length ;j++){
+                    columna= filas[j].split('|')
+                    element1.options[j] = new Option(columna[1],columna[0] + "-" + columna[1]);
+                }
+            }
+            element1.id = matriz[i+1]+rowCount;
+           cell1.appendChild(element1);
+        }
+    }
+    function guardarGrid(id,cadena,tabla)
+    {   fila = id - 1;
+        var matriz = cadena.split(','); //console.log(matriz);
+        var table = document.getElementById('tabla_'+tabla);
+        var row;
+        var cell1;
+        row = table.rows[id];
+        row.id=tabla+"_row"+id;
+        var newdiv = document.createElement('td');
+        var jsonSting="{";
+        newdiv.innerHTML = '<button id="del_btn_' + row.id +'"  onclick="eliminarTabla(\'' + id +'\',\'' + tabla +'\');">Eliminar </button></td>';//
+         document.getElementById("c_btn_"+row.id).appendChild(newdiv);
+        var element;
+        for(var i = matriz.length-4; i >=0 ;i=i-4){
+            cell1 = row.insertCell(0);
+            var componente = matriz[i+2].split(':');
+            if( componente[0] == 'CHK'){
+                if(document.getElementById(matriz[i+1]+id).checked){
+                    currenttext = document.createTextNode("SI");
+                    jsonSting=jsonSting+'"'+matriz[i+1]+'":"SI",';
+                }
+                else {
+                    currenttext = document.createTextNode("NO");
+                    jsonSting=jsonSting+'"'+matriz[i+1]+'":"NO",';
+                }
+            }
+            else if(componente[0] == 'SPAN'){
+                    currenttext = document.createTextNode(document.getElementById(matriz[i+1]+id).innerText);
+                    jsonSting=jsonSting+'"'+matriz[i+1]+'":"'+document.getElementById(matriz[i+1]+id).innerText+'",';
+                    }
+
+            else {
+            jsonSting=jsonSting+'"'+matriz[i+1]+'":"'+document.getElementById(matriz[i+1]+id).value+'",';
+            currenttext = document.createTextNode(document.getElementById(matriz[i+1]+id).value); }
+            cell1.appendChild(currenttext);
+            element = document.getElementById("c_"+matriz[i+1]+id);
+            element.parentNode.removeChild(element);
+        }
+        jsonSting = jsonSting.substring(0,jsonSting.length-1);
+        jsonSting = jsonSting + "}";
+        element = document.getElementById("save_btn_"+row.id);
+        element.parentNode.removeChild(element);
+        addRowJson(jsonSting,tabla);
+    }
+    function guardarGridLoad(id,cadena,tabla)
+    {   fila = id - 1;
+        var matriz = cadena.split(','); //console.log(matriz);
+        var table = document.getElementById('tabla_'+tabla);
+        var row;
+        var cell1;
+        row = table.rows[id];
+        row.id=tabla+"_row"+id;
+        var newdiv = document.createElement('td');
+        var jsonSting="{";
+        var element;
+        for(var i = matriz.length-3; i >=0 ;i=i-3){
+            cell1 = row.insertCell(0);
+            var componente = matriz[i+2].split(':');    //alert(matriz[i+1]+id);
+            if( componente[0] == 'CHK'){
+                if(document.getElementById(matriz[i+1]+id).checked){
+                    currenttext = document.createTextNode("SI");
+                    jsonSting=jsonSting+'"'+matriz[i+1]+'":"SI",';
+                }
+                else {
+                    currenttext = document.createTextNode("NO");
+                    jsonSting=jsonSting+'"'+matriz[i+1]+'":"NO",';
+                }
+            }
+            else if(componente[0] == 'SPAN'){
+                    currenttext = document.createTextNode(document.getElementById(matriz[i+1]+id).innerText);
+                    jsonSting=jsonSting+'"'+matriz[i+1]+'":"'+document.getElementById(matriz[i+1]+id).innerText+'",';
+                    }
+
+            else {
+            jsonSting=jsonSting+'"'+matriz[i+1]+'":"'+document.getElementById(matriz[i+1]+id).value+'",';
+            currenttext = document.createTextNode(document.getElementById(matriz[i+1]+id).value); }
+            cell1.appendChild(currenttext);
+            element = document.getElementById("c_"+matriz[i+1]+id);
+            element.parentNode.removeChild(element);
+        }
+        jsonSting = jsonSting.substring(0,jsonSting.length-1);
+        jsonSting = jsonSting + "}";
+        console.log(jsonSting);
+        addRowJson(jsonSting,tabla);
+        eliminarTablaLoad(id, tabla);
+    }
+    function addRowJson(fila, campo){
+        datos=[];
+        nuevaFila= JSON.parse(fila);
+        if(document.getElementById(campo).value)
+            datos = JSON.parse(document.getElementById(campo).value);
+
+        datos.push(nuevaFila);
+        nuevosDatos = JSON.stringify(datos,null);
+        document.getElementById(campo).value = nuevosDatos;
+        document.getElementById(campo).innerText = nuevosDatos;
+    }
+    function eliminarTabla(id, campo){
+        datos = JSON.parse(document.getElementById(campo).value);//alert(id);
+        delete datos[id];
+        nuevosDatos = JSON.stringify(datos);
+		nuevosDatos=nuevosDatos.replace("null,","");
+		nuevosDatos=nuevosDatos.replace(",null","");
+		nuevosDatos=nuevosDatos.replace("null","");
+        document.getElementById(campo).value = nuevosDatos;
+        cambiarDisplay(campo+'_row'+ id);
+    }
+    function eliminarTablaLoad(id, campo){//alert(id);
+        datos = JSON.parse(document.getElementById(campo).value);
+        delete datos[id];
+		nuevosDatos=nuevosDatos.replace("null,","");
+		nuevosDatos=nuevosDatos.replace(",null","");
+		nuevosDatos=nuevosDatos.replace("null","");
+        nuevosDatos = JSON.stringify(datos); //alert(nuevosDatos);
+        document.getElementById(campo).value = nuevosDatos;
+    }
+    function cambiarDisplay(id) {
+      if (!document.getElementById) return false;
+      fila = document.getElementById(id);
+      if (fila.style.display != "none") {
+        fila.style.display = "none";
+      } else {
+        fila.style.display = "";
+      }
+    }
+    function f_obtener_valor(id){
+        if (document.getElementById){
+            var val = document.getElementById(id).value;
+            return val;
+        }
+    }
+    function f_obtener_texto(id){
+        var combo = document.getElementById(id);
+        var selected = combo.options[combo.selectedIndex].text;
+        document.getElementById(id+'_VALOR').value = selected;
+    }
+	function f_validar_numero(id){
+        var combo = document.getElementById(id);
+        var selected = combo.options[combo.selectedIndex].text;
+        document.getElementById(id+'_VALOR').value = selected;
+    }
+</script>
+
+<script type="text/javascript">
+    function soloNumericoCelular(sValor){
+        Numer=parseInt(sValor);
+        if (isNaN(Numer)){
+            return "";
+        }else{
+            var digits = ("" + Numer).split("");
+            if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6)){
+                return Numer;
+            }else{
+                return "";
+            }
+        }
+    }
+    function valNumeroCelular(Control){
+        Control.value = soloNumericoCelular(Control.value);
+    }
+    //VALORES NUMERICOS
+    function soloNumerico(variable){
+        console.log(variable);
+        Numer=parseInt(variable);
+        console.log(Numer);
+        if (isNaN(Numer)){
+                return "";
+        }
+        return Numer;
+    }
+
+    function valNumero(Control){
+        console.log("control", Control.value);
+        Control.value=soloNumerico(Control.value);
+        verificar(Control.value)
+    }
+
+
+    function verificarnronn(){
+        tipo = f_obtener_valor('NNA_CANT_FEM');
+        if(tipo == '')
+            tipo = 0;
+        tipo2 = f_obtener_valor('NNA_CANT_MAS');
+        if(tipo2=='')
+            tipo2=0;
+        resultado = parseInt(tipo)+parseInt(tipo2);
+        document.getElementById('NNA_CANT_NN').value = resultado;
+    }
+
+    function verificarnroa(){
+        tipo = f_obtener_valor('NNA_CAN_MAS');
+        if(tipo == '')
+            tipo = 0;
+        tipo2 = f_obtener_valor('NNA_CAN_FEM');
+        if(tipo2=='')
+            tipo2=0;
+        resultado = parseInt(tipo)+parseInt(tipo2);
+        document.getElementById('NNA_NRO_ADO').value = resultado;
+    }
+
+    function verificartotal(){
+        tipo = f_obtener_valor('NNA_CANT_NN');
+        if(tipo == '')
+            tipo = 0;
+        tipo2 = f_obtener_valor('NNA_NRO_ADO');
+        if(tipo2=='')
+            tipo2=0;
+        resultado = parseInt(tipo)+parseInt(tipo2);
+        document.getElementById('NNA_CANT_TOTAL').value = resultado;
+    }
+</script>
+<!-- OCULTANDO COMBO TIPO DE PERSONA -->
+<script type="text/javascript">
+    var cboTipoCon = document.getElementById("tipo_contribuyente");
+    if(cboTipoCon){
+        cboTipoCon.style.display = 'none';
+    }
+</script>
+<script>
+    $(function () {
+        $('#FECHAINICIO').fdatepicker({
+            closeButton: true
+        });
+        $('#FECHAFIN').fdatepicker({
+            closeButton: true
+        });
+    });
+	
+	$(function () {
+    $(":file").change(function () {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = imageIsLoaded;
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+});
+
+function imageIsLoaded(e) {
+    $('#myImg').attr('src', e.target.result);
+};
+</script>
+
+<div ng-controller="serviciosSemdesController" ng-init="inicioServicios();">
+  <div class="ibox float-e-margins">
+        <div class="ibox-title" style="background: #ffdd79; border-bottom: solid 0px #E2E2E2 !important;">
+            <h5>{{translateTitulos.lbl_018_01_1}}</h5>
+        </div>
+        <div class="ibox-content">
+            <form name="signupForm" class="form-horizontal" role="form" novalidate >
+                <div ng-show = "formulario != null">
+                    <div class="col-md-12">
+                        <div class="col-md-8">
+                            <div class="form-group" >
+                                <label class=" col-sm-2 control-label"><font color="#FF0000" size="4px"> * </font> {{translateTitulos.lbl_018_01}}:</label>
+                                <div class="col-sm-10">
+                                    <select id="TER_TIP_PERMISO" class="form-control" name="TER_TIP_PERMISO" ng-model="datos.TER_TIP_PERMISO" ng-change="formTipoPermiso(datos.TER_TIP_PERMISO);" ng-disabled="desabilitado" required>
+                                        <option style="display:none" value="">--Seleccionar--</option>
+                                        <option value="1-F">En caso Matrimonio Vigente</option>
+                                        <option value="2-F">En caso de Divorcio</option>
+                                        <option value="3-F">En caso fallecimiento del padre o madre</option>
+                                        <option value="4-F">En caso del padre o madre Solos</option>
+                                        <option value="5-D">En caso de delegaciones</option> 
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <a class="btn btn-primary" data-toggle="modal" tooltip = "Atender Caso" ng-click="TipoAutorizacion1(datos.TER_TIP_PERMISO);" ng-disabled="btnHelp1"  data-target="#guiatramite1">{{translateTitulos.lbl_018_02}}</a>
+                        </div>
+                    </div>
+                    <div class="modal" id="guiatramite1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Ayuda para crear el caso</h4>
+                                </div>
+                                <div class="modal-body" >
+                                    <div >
+                                        <img src="{{ooooo}}" style="width: 100%; height: 100%" />
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_TER_TIP_SOL" name="componentes"  ng-show = "TER_TIP_PERMISO == 'R'">
+                        <div class="form-group" >
+                            <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_2_1}}:</label>
+                            <div class="col-sm-10">
+                                <select id="TER_TIP_SOL" class="form-control" name="TER_TIP_SOL" ng-model="datos.TER_TIP_SOL" ng-disabled="desabilitado" ng-change="formTipoSolicitud(datos.TER_TIP_SOL);" required>
+                                    <option value="1">{{translateTitulos.lbl_018_2_2}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show = "FALSE" >    <!-- ***"******  -->
+                        <div id="div_G_CI" name="componentes" style="display: block;">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{transalateTitulos.lbl_018_2_3}}:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" placeholder="Cédula de Identidad" class="form-control" id="G_CI" name="G_CI" onkeyup="return conMayusculas(this)" value="" ng-model="datos.G_CI" ng-blur="consultaRC_CI('NATURAL', datos.G_CI, '99', 1, textCambio);" ng-change="cambioTexto()"/>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                        <div id="div_G_NNA_NOM" name="componentes" style="display: block;">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_2_4}}:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" placeholder="Nombre responsable de la Solicitud" class="form-control" id="G_NNA_NOM" name="G_NNA_NOM" onkeyup="return conMayusculas(this)" value="" ng-model="datos.G_NNA_NOM" ng-disabled="opcion99"/>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                        <div id="div_G_NNA_PAT" name="componentes" style="display: block;">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_19}}:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" placeholder="Apellido paterno" class="form-control" id="G_NNA_PAT" name="G_NNA_PAT" onkeyup="return conMayusculas(this)" value="" ng-model="datos.G_NNA_PAT" ng-disabled="opcion99"/>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                        <div id="div_G_NNA_MAT" name="componentes" style="display: block;">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_20}}:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" placeholder="Apellido materno" class="form-control" id="G_NNA_MAT" name="G_NNA_MAT" onkeyup="return conMayusculas(this)" value="" ng-model="datos.G_NNA_MAT" ng-disabled="opcion99"/>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                    </div>
+                    <div ng-show = "PERMISO == 'D'">
+                        <legend>{{translateTitulos.lbl_018_2_5}}:</legend>
+                        <div class="form-group"><label class="col-sm-2 control-label">{{translateTitulos.lbl_018_2_6}}:</label>
+                            <div class="col-sm-10"><input type="text" ng-disable="false" placeholder="{{datos.TER_NOM_INST}}" name = "TER_NOM_INST" class="form-control" ng-model="datos.TER_NOM_INST" id = "TER_NOM_INST" required />
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label">{{translateTitulos.lbl_018_25}}:</label>
+                            <div class="col-sm-10"><input type="text" ng-disable="false" placeholder="{{datos.TER_INST_DIR}}" name = "TER_INST_DIR" class="form-control" ng-model="datos.TER_INST_DIR" id = "TER_INST_DIR" required />
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label">{{translateTitulo.lbl_018_2_7}}:</label>
+                            <div class="col-sm-10"><input type="text" ng-disable="false" placeholder="{{datos.TER_INST_TELF}}" name = "TER_INST_TELF" class="form-control" ng-model="datos.TER_INST_TELF" id = "TER_INST_TELF" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ><label class="col-sm-2 control-label">{{translateTitulos.lbl_018_09}}:</label>
+                    <p class="input-group"><input name="TER_FEC_RET" id="TER_FEC_RET" type="date" placeholder="2016-01-01"  class="form-control" datepicker-popup="" ng-model="datos.TER_FEC_RET" is-open="startDateOpened1" close-text="Close" ng-disabled="desabilitado"  required min-date="modelFecha.endDate">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="startDateOpen1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span></p>
+                    </div>
+
+                    <div class="form-group" ><label class="col-sm-2 control-label">{{translateTitulos.lbl_018_10}}:</label>
+                    <p class="input-group"><input name="TER_FEC_FIN" id="TER_FEC_FIN" type="date" placeholder="2016-01-01" class="form-control" datepicker-popup="" ng-model="datos.TER_FEC_FIN" is-open="startDateOpened2" close-text="Close" ng-disabled="desabilitado"  required min-date="modelFecha.endDate">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="startDateOpen2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span></p>
+                    </div>                    
+
+					<div ng-show = "PERMISO == 'D'">
+                        <legend>{{translateTitulos.lbl_018_10_1}}:</legend>
+                        <div id="div_TER_NNA_DEL" name="componentes">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_10_2}}:</label>
+                                <div class="col-sm-10">
+                                    <select id="TER_NNA_DEL" class="form-control" name="TER_NNA_DEL" ng-model="datos.TER_NNA_DEL" ng-disabled="desabilitado" ng-change="formViajan(datos.TER_NNA_DEL);" required>
+                                        <option style="display:none" value="">--Seleccionar--</option>
+                                        <option value="1">NIÑOS NIÑAS</option>
+                                        <option value="2">ADOLESCENTES</option>
+                                        <option value="3">NIÑOS NIÑAS Y ADOLESCENTES</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div id="div_NNA_CANT_MAS" name="div_NNA_CANT_MAS" style="display: block;" ng-show = "TER_NNA_DEL == 1 || TER_NNA_DEL == 3">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_10_3}}:</label>
+                                <div class="col-sm-10">
+                                    <input  type="text" placeholder="cantidad de niños" class="form-control" id="NNA_CANT_MAS" name="NNA_CANT_MAS" onkeyup="tipo=f_obtener_valor('NNA_CANT_FEM'); if(tipo=='') tipo=0; tipo2 =f_obtener_valor('NNA_CANT_MAS'); if(tipo2=='') tipo2=0; resultado=parseInt(tipo)+parseInt(tipo2); document.getElementById('NNA_CANT_NN').value=resultado;valNumero(this);" maxlength="2" ng-model="datos.NNA_CANT_MAS">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                        <div id="div_NNA_CANT_FEM" name="div_NNA_CANT_FEM" style="display: block;" ng-show = "TER_NNA_DEL == 1 || TER_NNA_DEL == 3">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_10_4}}:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" placeholder="cantidad de niñas"  class="form-control" id="NNA_CANT_FEM" name="NNA_CANT_FEM" value="" ng-model="datos.NNA_CANT_FEM" onkeyup="tipo=f_obtener_valor('NNA_CANT_FEM'); if(tipo=='') tipo=0; tipo2 =f_obtener_valor('NNA_CANT_MAS'); if(tipo2=='') tipo2=0; resultado=parseInt(tipo)+parseInt(tipo2); document.getElementById('NNA_CANT_NN').value=resultado;valNumero(this);">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                        <div id="div_NNA_CANT_NN" name="div_NNA_CANT_NN" style="display: block;" ng-show = "TER_NNA_DEL == 1 || TER_NNA_DEL == 3">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_10_5}}:</label>
+                                <div class="col-sm-10">
+                                    <input onkeyup="tipo=f_obtener_valor('NNA_CANT_NN'); if(tipo=='') tipo=0; tipo2 =f_obtener_valor('NNA_NRO_ADO'); if(tipo2=='') tipo2=0; resultado=parseInt(tipo)+parseInt(tipo2); document.getElementById('NNA_CANT_TOTAL').value=resultado; " placeholder="NRO NIÑOS(AS)" class="form-control" id="NNA_CANT_NN" name="NNA_CANT_NN" value="" ng-model="datos.NNA_CANT_NN" readonly="readonly" type="text" placeholder="NRO NIÑOS(AS)">
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                        <div id="div_NNA_CAN_MAS" name="div_NNA_CAN_MAS" style="display: block;" ng-show = "TER_NNA_DEL == 2 || TER_NNA_DEL == 3">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_10_6}}:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" placeholder="ADOLESCENTE MASCULINO" class="form-control" id="NNA_CAN_MAS" name="NNA_CAN_MAS" value="" ng-model="datos.NNA_CAN_MAS" onkeyup="tipoa=f_obtener_valor('NNA_CAN_FEM'); if(tipoa=='') tipoa=0; tipo2a =f_obtener_valor('NNA_CAN_MAS'); if(tipo2a=='') tipo2a=0; resultado=parseInt(tipoa)+parseInt(tipo2a); document.getElementById('NNA_NRO_ADO').value=resultado;valNumero(this);">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                        <div id="div_NNA_CAN_FEM" name="div_NNA_CAN_FEM" style="display: block;" ng-show = "TER_NNA_DEL == 2 || TER_NNA_DEL == 3">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_10_7}}:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" placeholder="ADOLESCENTE FEMENINO" class="form-control" id="NNA_CAN_FEM" name="NNA_CAN_FEM"value="" ng-model="datos.NNA_CAN_FEM" onkeyup="tipo=f_obtener_valor('NNA_CAN_FEM'); if(tipo=='') tipo=0; tipo2 =f_obtener_valor('NNA_CAN_MAS'); if(tipo2=='') tipo2=0; resultado=parseInt(tipo)+parseInt(tipo2); document.getElementById('NNA_NRO_ADO').value=resultado;valNumero(this);">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                        <div id="div_NNA_NRO_ADO" name="div_NNA_NRO_ADO" style="display: block;" ng-show = "TER_NNA_DEL == 2 || TER_NNA_DEL == 3">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_10_8}}:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" placeholder="NRO. DE ADOLESCENTE" class="form-control" id="NNA_NRO_ADO" name="NNA_NRO_ADO" value="" ng-model="datos.NNA_NRO_ADO" readonly="readonly"  onkeyup="tipo=f_obtener_valor('NNA_CANT_NN'); if(tipo=='') tipo=0; tipo2 =f_obtener_valor('NNA_NRO_ADO'); if(tipo2=='') tipo2=0; resultado=parseInt(tipo)+parseInt(tipo2);document.getElementById('NNA_CANT_TOTAL').value=resultado;">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                        <div id="div_NNA_CANT_TOTAL" name="div_NNA_CANT_TOTAL" style="display: block;" ng-show = "TER_NNA_DEL == 3">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_10_9}}:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" placeholder="TOTALES" class="form-control" id="NNA_CANT_TOTAL" name="NNA_CANT_TOTAL" value="" ng-model="datos.NNA_CANT_TOTAL" readonly="readonly" onclick="tipo=f_obtener_valor('NNA_CANT_NN'); if(tipo=='') tipo=0; tipo2 =f_obtener_valor('NNA_NRO_ADO'); if(tipo2=='') tipo2=0; resultado=parseInt(tipo)+parseInt(tipo2); document.getElementById('NNA_CANT_TOTAL').value=resultado;">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                    </div>
+					
+					<div >
+						<div class="ibox-title" style="background: #ffdd79; border-bottom: solid 0px #E2E2E2 !important;">
+							<h5 style="
+						background: #ffdd79;
+						border-bottom: solid 0px #E2E2E2 !important;
+						padding: 5px;
+						width: 100%;">{{translateTitulos.lbl_018_11}}</h5>
+						<!--a class="btn btn-primary" ng-click="addnna()">Nuevo</a-->
+						</div>
+						<div class="table-responsive" style="width:100%">                    
+							<section id="no-more-tables">
+							<table class="table table-bordered">
+								<thead  class="cf">
+									<th ><a class="btn btn-primary" ng-click="addnna()" ng-disabled="desabilitado" >{{translateTitulos.lbl_018_12}}</a></th>		
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_36}}</th> 
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_37}}</th>
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_38}}</th>								
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_40}}</th>
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_41}}</th>
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_42}}</th>
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_43}}</th>
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_44}}</th>
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_45}}</th>
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_46}}</th>
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_47}}</th>
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_48}}</th>
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_49}}</th>
+									<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_51}}</th>
+								</thead>
+								<tbody>
+									<!--tr ng-repeat="nna in datos.TER_NNA_VIAJAN" ng-include="getTemplate(nna)"-->
+									<tr ng-repeat="nna in ninosviajan.TER_NNA_VIAJAN" ng-include="getTemplate(nna)">
+									</tr>
+								</tbody>
+							</table>
+							</section>
+						</div>    
+					</div>  
+
+    <!--TABLA RESPONSIVE-->
+					<script type="text/ng-template" id="display">
+						<td  data-title=""				class="table_resp1"><a class="btn btn-primary" ng-click="editnna(nna)" ng-disabled="desabilitado">Editar</a></td >	
+						<td  data-title="Tipo de Doc."  class="table_resp1"><div class="content">{{nna.f01_NNA_TIP_DOC}}</div></td>
+						<td  data-title="Nro Doc."  	class="table_resp1"><div class="content">{{nna.f01_NNA_G_CI}}</div></td>
+						<td  data-title="Exp."  		class="table_resp1"><div class="content">{{nna.f01_NNA_EXP_CIUD}}</div></td>									
+						<td  data-title="Nombres"  		class="table_resp1"><div class="content">{{nna.f01_NNA_G_NOM}}</div></td>
+						<td  data-title="Ap. Paterno" 	class="table_resp1"><div class="content">{{nna.f01_NNA_G_APAT}}</div></td>
+						<td  data-title="Ap. Materno" 	class="table_resp1"><div class="content">{{nna.f01_NNA_G_AMAT}}</div></td>
+						<td  data-title="Fecha Nac."  	class="table_resp1"><div class="content">{{nna.f01_NNA_G_FEC_NAC}}</div></td>
+						<td  data-title="Género"  		class="table_resp1"><div class="content">{{nna.f01_NNA_G_GEN}}</div></td>
+						<td  data-title="Ciudad Res."   class="table_resp1"><div class="content">{{nna.f01_NNA_G_CIUD}}</div></td>
+						<td  data-title="Exterior"  	class="table_resp1"><div class="content">{{nna.f01_NNA_DEP_OTRO}}</div></td>
+						<td  data-title="Dirección"  	class="table_resp1"><div class="content">{{nna.f01_NNA_DIR}}</div></td>
+						<td  data-title="Telf. 1"  		class="table_resp1"><div class="content">{{nna.f01_NNA_TER_TEL}}</div></td>
+						<td  data-title="Cel. 2"  		class="table_resp1"><div class="content">{{nna.f01_NNA_G_TELF}}</div></td>
+						<td  data-title="Adjunto"  		class="table_resp1"><a lass="content"  target="_blank">Adjunto</a></td>									
+					</script>
+    <!--TABLA RESPONSIVE FIN LECTURA-->
+
+
+
+    <!--TABLA RESPONSIVE INICIO ESCRITURA-->
+					<script type="text/ng-template" id="edit">
+						<td data-title="" ng-show="datosGuardados == false">
+							<a class="btn btn-primary" ng-click="savenna($index)">{{translateTitulos.lbl_018_13}}</a>
+							<a class="btn btn-primary" ng-click="reset()">{{translateTitulos.lbl_018_14}}</a>
+						</td>	
+						<td data-title="Tipo de Doc." width="0%" ng-show="datosGuardados == false">
+							<select id="f01_NNA_TIP_DOC" name="f01_NNA_TIP_DOC" ng-model="model.selected.f01_NNA_TIP_DOC" ng-show="datosGuardados == false">
+								<option value="CI">CEDULA DE IDENTIDAD</option>
+								<option value="CN">CERTIFICADO DE NACIMIENTO</option>
+								<option value="PAS">PASAPORTE</option>
+								<option value="DN">DNI</option>
+							</select>
+						</td>
+						<td data-title="Nro Doc." width="0%" ng-show="datosGuardados == false"><!--input id="f01_NNA_G_CI"  type="text" ng-model="model.selected.f01_NNA_G_CI" /-->
+						<input id="f01_NNA_G_CI" ng-blur="consultaRC_CI('NATURAL', model.selected.f01_NNA_G_CI, '101', 1, textCambio,model.selected.f01_NNA_TIP_DOC);" ng-change="cambioTexto()" type="text" ng-model="model.selected.f01_NNA_G_CI" />
+						</td>
+						<td data-title="Exp." width="0%" ng-show="datosGuardados == false"><select id="f01_NNA_EXP_CIUD" ng-model="model.selected.f01_NNA_EXP_CIUD" >
+							<option value="LPZ">LA PAZ</option>
+							<option value="ORU">ORURO</option>
+							<option value="PTS">POTOSI</option>
+							<option value="CBB">COCHABAMBA</option>
+							<option value="CHQ">CHUQUISACA</option>
+							<option value="TJA">TARIJA</option>
+							<option value="BNI">BENI</option>
+							<option value="PND">PANDO</option>
+							<option value="SCZ">SANTA CRUZ</option>
+							</select>
+						</td>        
+						<td data-title="Nombres" width="0%" ng-show="datosGuardados == false"><input id="f01_NNA_G_NOM" type="text" ng-model="model.selected.f01_NNA_G_NOM"/></td>
+						<td data-title="Ap. Paterno" width="0%" ng-show="datosGuardados == false"><input id="f01_NNA_G_APAT" type="text" ng-model="model.selected.f01_NNA_G_APAT"/></td>
+						<td data-title="Ap. Materno" width="0%" ng-show="datosGuardados == false"><input id="f01_NNA_G_AMAT" type="text" ng-model="model.selected.f01_NNA_G_AMAT"/></td>
+						<td data-title="Fecha Nac." width="0%" ng-show="datosGuardados == false"><!--input id="f01_NNA_G_FEC_NAC" type="text" ng-model="model.selected.f01_NNA_G_FEC_NAC"/-->		
+								<div class="form-group" >
+									<p class="input-group"><input name="f01_NNA_G_FEC_NAC" id="f01_NNA_G_FEC_NAC" type="date" placeholder="1900-01-01"  class="form-control" datepicker-popup="" ng-model="model.selected.f01_NNA_G_FEC_NAC"  close-text="Close" ng-disabled="desabilitado"  required min-date="modelFecha.startDate">
+										<span class="input-group-btn">
+											<!--button type="button" class="btn btn-default" ng-click="startDateOpen1($event)"><i class="glyphicon glyphicon-calendar"></i></button-->
+										</span></p>
+								</div>					
+						</td>
+						<td data-title="Género" width="0%" ng-show="datosGuardados == false"><select id="f01_NNA_G_GEN" ng-model="model.selected.f01_NNA_G_GEN">
+								<option value="F">FEMENINO</option>
+								<option value="M">MASCULINO</option>
+							</select>
+						</td>
+						<td data-title="Ciudad Res." width="0%" ng-show="datosGuardados == false"><select id="f01_NNA_G_CIUD"  ng-model="model.selected.f01_NNA_G_CIUD">
+								<option value="LPZ">LA PAZ</option>
+								<option value="ORU">ORURO</option>
+								<option value="PTS">POTOSI</option>
+								<option value="CBB">COCHABAMBA</option>
+								<option value="CHQ">CHUQUISACA</option>
+								<option value="TJA">TARIJA</option>
+								<option value="BNI">BENI</option>
+								<option value="PND">PANDO</option>
+								<option value="SCZ CRUZ">SANTA CRUZ</option>
+								<option value="10">EXTERIOR</option>
+							</select>
+						</td>
+						<td data-title="Exterior" width="0%" ng-show="datosGuardados == false"><input id="f01_NNA_DEP_OTRO" type="text" ng-model="model.selected.f01_NNA_DEP_OTRO" value ="."/></td>
+						<td data-title="Dirección" width="0%" ng-show="datosGuardados == false"><input id="f01_NNA_DIR" type="text" ng-model="model.selected.f01_NNA_DIR" value ="."/></td><!--CAMPO LARGO-->		
+						<td data-title="Telf. 1" width="0%" ng-show="datosGuardados == false"><input id="f01_NNA_TER_TEL" type="text" ng-model="model.selected.f01_NNA_TER_TEL" value ="0" /></td>
+						<td data-title="Cel. 2" width="0%" ng-show="datosGuardados == false"><input id="f01_NNA_G_TELF" type="text" ng-model="model.selected.f01_NNA_G_TELF" value ="0" /></td>	
+						<td data-title="Adjunto" width="0%" ng-show="datosGuardados == false">	
+							<input id="f01_NNA_G_ARCH" type='file'  />
+							<img id="myImg" width="0%"  alt="your image" ng-model="model.selected.f01_NNA_G_ARCH" />					
+							<div style='position:fixed;bottom:0;left:0; background:lightgray;width:100%;'>	</div>			
+						</td>			
+					</script>
+				<!--TABLA RESPONSIVE FIN ESCRITURA-->
+				</div>
+
+				<div class="form-group" ng-show = "PERMISO == 'F'">
+					<label class="col-sm-2 control-label"><font color="#FF0000" size="4px"> * </font> {{translateTitulos.lbl_018_30}}:</label>
+					<div class="col-sm-10">
+						<select id="TER_SOLOS" class="form-control" name="TER_SOLOS" ng-model="datos.TER_SOLOS" ng-change="formSolos(daStos.TER_SOLOS);mensajevs();" ng-disabled="desabilitado"   required>
+							<option style="display:none" value="">--Seleccionar--</option>
+							<option value="1">SI</option>
+							<option value="2">NO</option>
+						</select> 
+					</div>
+					
+
+				</div>
+				<div class="col-md-12" ng-show="mostrarMsgActividadTrue">
+					<div class="form-group" >
+					<label class="col-sm-12 control-label no-padding-right" for="url" ></label>
+						<div class="col-sm-12" align="left">
+							<div class="alert alert-danger fade in">
+								<!--<a href="" class="close" data-dismiss="alert">&times;</a>-->
+								<strong>{{translateTitulos.lbl_018_14_1}}</strong> 
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="table-responsive" style="width:100%">                    
+					<section id="no-more-tables">
+					<table class="table table-bordered">
+						<thead class="cf" >
+							<th><a class="btn btn-primary" ng-click="addresp()" ng-disabled="desabilitado" >{{translateTitulos.lbl_018_12}}</a></th>	
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_36}}</th> 
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_37}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_38}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_39}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_40}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_41}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_42}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_43}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_44}}</th>                                  
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_45}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_46}}</th>									
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_47}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_48}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_49}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_50}}</th>
+							<th style="background-color: #6f7072 !important;color: white !important;">{{translateTitulos.lbl_018_51}}</th>
+						</thead>
+						<tbody>
+							<!--tr ng-repeat="resp in datos.TER_RESP" ng-include="getTemplateResp(resp)"-->
+							<tr ng-repeat="resp in ninosviajan.TER_RESP" ng-include="getTemplateResp(resp)">
+							</tr>
+						</tbody>
+					</table>
+					</section>
+				</div>
+				<script type="text/ng-template" id="displayR">
+					<td>
+						<a class="btn btn-primary" id="displayR_editar" ng-click="editresp(resp)" ng-disabled="desabilitado" >Editar</a>
+					</td>  
+					<td  data-title="Tipo de Doc."  class="table_resp1"><div class="content">{{resp.f01_ADUL_TIP_DOC}}</div></td>
+					<td  data-title="Nro Doc."  	class="table_resp1"><div class="content">{{resp.f01_ADUL_G_CI}}</div></td>
+					<td  data-title="Exp."  		class="table_resp1"><div class="content">{{resp.f01_ADUL_EXP_CIUD}}</div></td>
+					<td  data-title="Parentesco"	class="table_resp1"><div class="content">{{resp.f01_ADUL_G_PARE_COND}}</div></td><!--parentezco-->
+					<td  data-title="Nombres"  		class="table_resp1"><div class="content">{{resp.f01_ADUL_G_NOM}}</div></td>
+					<td  data-title="Ap. Paterno" 	class="table_resp1"><div class="content">{{resp.f01_ADUL_G_APAT}}</div></td>
+					<td  data-title="Ap. Materno" 	class="table_resp1"><div class="content">{{resp.f01_ADUL_G_AMAT}}</div></td>
+					<td  data-title="Fecha Nac."  	class="table_resp1"><div class="content">{{resp.f01_ADUL_G_FEC_NAC}}</div></td>
+					<td  data-title="Género"  		class="table_resp1"><div class="content">{{resp.f01_ADUL_G_GEN}}</div></td>										
+					<td  data-title="Ciudad Res."   class="table_resp1"><div class="content">{{resp.f01_ADUL_TER_CIUD}}</div></td>
+					<td  data-title="Exterior"  	class="table_resp1"><div class="content">{{resp.f01_ADUL_DEPA_OTRO}}</div></td>
+					<td  data-title="Dirección"  	class="table_resp1"><div class="content">{{resp.f01_ADUL_DIR}}</div></td>
+					<td  data-title="Telf. 1"  		class="table_resp1"><div class="content">{{resp.f01_ADUL_TER_TEL}}</div></td>
+					<td  data-title="Cel. 2"  		class="table_resp1"><div class="content">{{resp.f01_ADUL_G_TELF}}</div></td>
+					<td  data-title="Viaja/Autoriza"class="table_resp1"><div class="content">{{resp.f01_ADUL_G_VA}}</div></td>
+					<td  data-title="Adjunto"  		class="table_resp1"><a  target="_blank">CI</a></td>										
+				</script>
+				<script type="text/ng-template" id="editR">
+					<td data-title="" ng-show="datosGuardados == false">
+						<a class="btn btn-primary" id="displayR_grabar" ng-click="saveresp($index)">{{translateTitulos.lbl_018_13}}</a>
+						<a class="btn btn-primary" id="displayR_editar" ng-click="resetresp()">{{translateTitulos.lbl_018_14}}</a>
+					</td>	
+					<td data-title="Tipo de Doc." width="0%" ng-show="datosGuardados == false">
+						<select id="f01_ADUL_TIP_DOC" name="f01_ADUL_TIP_DOC" ng-model="modelResp.selectedR.f01_ADUL_TIP_DOC" >
+							<option value="CI">CEDULA DE IDENTIDAD</option>
+							<option value="CN">CERTIFICADO DE NACIMIENTO</option>
+							<option value="PAS">PASAPORTE</option>
+							<option value="DN">DNI</option>
+						</select>
+					</td>
+					<td data-title="Nro de Doc." width="0%" ng-show="datosGuardados == false"><!--input id="f01_NNA_G_CI"  type="text" ng-model="model.selected.f01_NNA_G_CI" /-->
+					<input id="f01_ADUL_G_CI" ng-blur="consultaRC_CI('NATURAL', modelResp.selectedR.f01_ADUL_G_CI, '100', 1, textCambio,modelResp.selectedR.f01_ADUL_TIP_DOC);" ng-change="cambioTexto()" type="text" ng-model="modelResp.selectedR.f01_ADUL_G_CI" />{{resp.f01_ADUL_G_CI}}
+					</td>
+					<td data-title="Exp." width="0%" ng-show="datosGuardados == false">
+						<select id="f01_ADUL_EXP_CIUD" ng-model="modelResp.selectedR.f01_ADUL_EXP_CIUD" >
+							<option value="LPZ">LA PAZ</option>
+							<option value="ORU">ORURO</option>
+							<option value="PTS">POTOSI</option>
+							<option value="CBB">COCHABAMBA</option>
+							<option value="CHQ">CHUQUISACA</option>
+							<option value="TJA">TARIJA</option>
+							<option value="BNI">BENI</option>
+							<option value="PND">PANDO</option>
+							<option value="SCZ">SANTA CRUZ</option>
+						</select>
+					</td>
+					<td data-title="Parentesco." width="0%" ng-show="datosGuardados == false">
+						<select id="f01_ADUL_G_PARE_COND" ng-model="modelResp.selectedR.f01_ADUL_G_PARE_COND" >
+							<option value="1-PADRE">'PADRE'</option>
+							<option value="2-MADRE">'MADRE'</option>
+							<option value="3-HERMANO(A)">'HERMANO(A)'</option>
+							<option value="4-ABUELO(A)">'ABUELO(A)'</option>
+							<option value="5-TIO(A)">'TIO(A)'</option>
+							<option value="6-CUÑADO(A)">'CUÑADO(A)'</option>
+							<option value="7-PRIMO(A)">'PRIMO(A)'</option>
+							<option value="8-SOBRINO(A)">'SOBRINO(A)'</option>
+							<option value="9-TUTOR(A)/APODERADO(A)/REP. LEGAL">'TUTOR(A)/APODERADO(A)/REP. LEGAL'</option>
+							<option value="10-GARANTE">'GARANTE'</option>
+						</select>
+					</td>
+					<td data-title="Nombre" width="0%" ng-show="datosGuardados == false"><input id="f01_ADUL_G_NOM" type="text" ng-model="modelResp.selectedR.f01_ADUL_G_NOM"/></td>
+					<td data-title="Paterno" width="0%" ng-show="datosGuardados == false"><input id="f01_ADUL_G_APAT" type="text" ng-model="modelResp.selectedR.f01_ADUL_G_APAT"/></td>
+					<td data-title="Materno" width="0%" ng-show="datosGuardados == false"><input id="f01_ADUL_G_AMAT" type="text" ng-model="modelResp.selectedR.f01_ADUL_G_AMAT"/></td>
+					<td data-title="Fec. Nac." width="0%" ng-show="datosGuardados == false"><!--input id="f01_ADUL_G_FEC_NAC" type="text" ng-model="modelResp.selectedR.f01_ADUL_G_FEC_NAC"/-->		
+							<div class="form-group" >
+								<p class="input-group"><input name="f01_ADUL_G_FEC_NAC" id="f01_ADUL_G_FEC_NAC" type="date" placeholder="2016-01-01"  class="form-control" datepicker-popup="" ng-model="modelResp.selectedR.f01_ADUL_G_FEC_NAC"  close-text="Close" ng-disabled="desabilitado"  required min-date="modelFecha.startDate">
+									<span class="input-group-btn">
+										<!--button type="button" class="btn btn-default" ng-click="startDateOpen1($event)"><i class="glyphicon glyphicon-calendar"></i></button-->
+									</span></p>
+							</div>					
+					</td>
+					<td data-title="Genero" width="0%" ng-show="datosGuardados == false"><select id="f01_ADUL_G_GEN" ng-model="modelResp.selectedR.f01_ADUL_G_GEN">
+							<option value="F">FEMENINO</option>
+							<option value="M">MASCULINO</option>
+						</select>
+					</td>
+					<td data-title="Ciudad Res." width="0%" ng-show="datosGuardados == false"><select id="f01_ADUL_TER_CIUD"  ng-model="modelResp.selectedR.f01_ADUL_TER_CIUD">
+							<option value="LPZ">LA PAZ</option>
+							<option value="ORU">ORURO</option>
+							<option value="PTS">POTOSI</option>
+							<option value="CBB">COCHABAMBA</option>
+							<option value="CHQ">CHUQUISACA</option>
+							<option value="TJA">TARIJA</option>
+							<option value="BNI">BENI</option>
+							<option value="PND">PANDO</option>
+							<option value="SCZ">SANTA CRUZ</option>
+							<option value="10">EXTERIOR</option>
+						</select>
+					</td>
+					<td data-title="Otro" width="0%" ng-show="datosGuardados == false"><input id="f01_ADUL_DEPA_OTRO" type="text" ng-model="modelResp.selectedR.f01_ADUL_DEPA_OTRO" /></td>
+					<td data-title="Direccion" width="0%" ng-show="datosGuardados == false"><input id="f01_ADUL_DIR" type="text" ng-model="modelResp.selectedR.f01_ADUL_DIR"/></td>		
+					<td data-title="Celular" width="0%" ng-show="datosGuardados == false"><input id="f01_ADUL_TER_TEL" type="text" ng-model="modelResp.selectedR.f01_ADUL_TER_TEL"/></td>
+					<td data-title="Telefono fijo" width="0%" ng-show="datosGuardados == false"><input id="f01_ADUL_G_TELF" type="text" ng-model="modelResp.selectedR.f01_ADUL_G_TELF"/></td>	
+					<td data-title="Viaja/Autoriza" width="0%" ng-show="datosGuardados == false"><select id="f01_ADUL_G_VA" ng-model="modelResp.selectedR.f01_ADUL_G_VA">
+							<option value="1-VIAJA">'VIAJA'</option>
+							<option value="2-AUTORIZA">'AUTORIZA'</option>
+							<option value="3-GARANTIZA">'GARANTIZA'</option>
+						</select>
+					</td>
+					<td data-title="Adjuntos." width="0%" ng-show="datosGuardados == false">	
+						<input id="f01_ADUL_G_ARCH" type='file'  />
+						<img id="myImg" width="10%" alt="your image" ng-model="model.selected.f01_ADUL_G_ARCH" />					
+						<div style='position:fixed;bottom:0;left:0; background:lightgray;width:100%;'>	</div>			
+					</td>		
+				</script>					
+			
+                    <div class="col-md-12">
+                        <h5>{{translateTitulos.lbl_018_52}} </h5>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><font color="#FF0000" size="4px"> * </font>{{translateTitulos.lbl_018_53}}:</label>
+                        <div class="col-sm-10">
+                            <select id="TER_DEST" class="form-control" ng-model="datos.TER_DEST" name="TER_DEST" ng-change="getProvinciasDepto(datos.TER_DEST);" ng-disabled="desabilitado" required>
+                                <option style="display:none" value=""> -- Seleccione -- </option>
+                                <option value="BNI-Beni">Beni</option>
+                                <option value="CBB-Cochabamba">Cochabamba</option>
+                                <option value="LPZ-La Paz">La Paz</option>
+                                <option value="ORU-Oruro">Oruro</option>
+                                <option value="PND-Pando">Pando</option>
+                                <option value="PTS-Potosi">Potosi</option>
+                                <option value="SCZ-Santa Cruz">Santa Cruz</option>
+                                <option value="CHQ-Chuquisaca">Chuquisaca</option>
+                                <option value="TJA-Tarija">Tarija</option>
+                                <option value="10-Exterior">Exterior</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show = "datos.TER_DEST != '10-Exterior'">
+                    <label class="col-sm-2 control-label">{{translateTitulos.lbl_018_54}}:</label>
+                        <div class="col-sm-10">         
+                            <select id="TER_MIN" class="form-control" ng-model="datos.TER_MIN" name="TER_MIN" ng-change="getSeleccionaMunicipios(datos.TER_MIN);" ng-disabled="desabilitado" required>
+                                <option ng-repeat = "datos in obtDatos" value="{{datos.prv_codigo_compuesto}}-{{datos.prv_provincia}}">{{datos.prv_provincia}}</option>
+                            </select>
+                            <!--<select id="TER_MIN" class="form-control" ng-model="datos.TER_MIN" name="registro[]" ng-option = "datos.prv_id as datos.prv_provincia for datos in obtDatos">
+                                <option style="display:none" value="">-- Seleccione --</option>
+                            </select>-->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label"><font color="#FF0000" size="4px"> * </font>{{translateTitulos.lbl_018_55}}:</label>
+                        <div class="col-sm-10">
+                            <select id="TER_MOT" class="form-control" ng-model="datos.TER_MOT" name="TER_MOT" ng-disabled="desabilitado" required>
+                                <option style="display:none" value=""> -- Seleccione -- </option>
+                                <option value="CULTURAL" ng-show = "PERMISO == 'D'">CULTURAL</option>
+                                <option value="DEPORTIVO" ng-show = "PERMISO == 'D'">DEPORTIVO</option>
+                                <option value="PASEO" ng-show = "PERMISO == 'D'">PASEO</option>
+                                <option value="OTRO" >OTRO</option>
+
+                                <option value="FAMILIAR" ng-show = "PERMISO == 'F'">FAMILIAR</option>
+                                <option value="VACACIONES" ng-show = "PERMISO == 'F'">VACACIONES</option>
+                                <option value="SALUD" ng-show = "PERMISO == 'F' ">SALUD</option>
+                                <option value="TRAMITES" ng-show = "PERMISO == 'F' ">TRAMITES</option>
+                                <option value="RETORNO" ng-show = "PERMISO == 'F' ">RETORNO</option>
+                            </select>
+                        </div>
+                    </div>
+						
+					<div id="div_TER_OTRO_MOTIVO"  name="componentes" style="display: block;" ng-show = "TER_MOT == 'OTRO'">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Descripcion Otro:</label>
+                            <div class="col-sm-10">
+                                <input type="text" placeholder="Descripcion Otro" class="form-control" id="TER_OTRO_MOT" name="TER_OTRO_MOT" onkeyup="return conMayusculas(this)" value="" ng-model="datos.TER_OTRO_MOT" />
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                    </div>   
+                    <div id="div_TER_ESP_RESP" name="div_TER_ESP_RESP" >
+                        <div class="form-group">
+                            <!-- label class="col-sm-2 control-label">Otros Documentos Adjuntos:</label-->
+                            <div class="col-sm-10">
+                                <!-- input type="text" placeholder="Otros Documentos Adjuntos" class="form-control" id="TER_ESP_RESP" name="TER_ESP_RESP" onkeyup="return conMayusculas(this)" value="" ng-model="datos.TER_ESP_RESP"/-->
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                    </div>
+                    <div id="div_TER_OBS" name="componentes">
+                        <div class="form-group">
+                            <!-- label class="col-sm-2 control-label">Observaciones:</label-->
+                            <div class="col-sm-10">
+                                <!-- input type="text" placeholder="Observaciones" class="form-control" id="TER_OBS" name="TER_OBS" onkeyup="return conMayusculas(this)" value="" ng-model="datos.TER_OBS"/-->
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                    </div> 
+                    <!-- GNERADOR DE CAPCHA -->
+                        <!-- ********************* -->
+                    <BR>
+                    <BR>
+                 <!-- ********************* -->  
+                    <div class="col-md-12" align="right" ng-show = "btnViajes != null">
+                        <!--<button id="miFormulario"  ng-click="serializarInformacion(datos)" data-dismiss="modal" type="button" class="btn btn-success  fa fa-save" ng-disabled="signupForm.INT_ACTIVIDAD.$invalid || signupForm.TIPO.$invalid || signupForm.INT_TIPO_CONTRIBUYENTE.$invalid || signupForm.INT_DENOMINACION.$invalid || signupForm.INT_AC_SUPERFICIE.$invalid || signupForm.INT_AC_CAPACIDAD.$invalid || signupForm.INT_AC_HR_INICIO.$invalid || signupForm.INT_AC_HR_FINAL.$invalid || signupForm.INT_AC_ESTADO.$invalid || signupForm.INT_AC_MACRO.$invalid || signupForm.INT_AC_ZONA.$invalid || signupForm.INT_AC_TIP_VIA.$invalid || signupForm.INT_AC_NOMBRE_VIA.$invalid" name="formEnviar">  Guardar formulario</button>-->
+                        <button id="miFormGuardar"  type="button" class="btn btn-primary fa fa-save" name="formEnviar" ng-click="VerificarCapchaaViajes(datos);" ng-disabled="signupForm.TER_TIP_PERMISO.$invalid ||signupForm.TER_FEC_RET.$invalid ||signupForm.TER_FEC_FIN.$invalid ||signupForm.TER_SOLOS.$invalid ||signupForm.TER_DEST.$invalid ||signupForm.TER_MOT.$invalid ">{{translateTitulos.lbl_018_56}}</button>
+                          <!-- <button id="miFormGuardar"  type="button" class="btn btn-primary fa fa-save" name="formEnviar" ng-click="serializarInfViajes(datos);habilitarEnvioTramite();" ng-disabled="btnGuardarForm">  Guardar Formularioffff</button> -->
+                        <button id="miFormulario" name = "miFormulario" ng-click="enviarFormPermisoViajes(datos);" type="button" class="btn btn-primary fa fa-mail-forward" ng-disabled="btnEnviarFormPermisos">  {{translateTitulos.lbl_018_57}}</button>                        <!--<button id="miFormulario"  ng-click="validarBtnForm();" data-dismiss="modal" type="button" class="btn btn-success fa fa-mail-forward" ng-disabled="btnEnviar">  Enviar Formulario</button>-->
+                    </div>
+            </form>
+		</div>	
+    </div>
+</div>

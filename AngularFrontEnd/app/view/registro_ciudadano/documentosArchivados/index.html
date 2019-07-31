@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+        <script type="text/javascript" src="../../view/registro_ciudadano/documentosArchivados/appDocumentosArchivados.js"></script>
+        <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+        <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+        <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+        <style type="text/css">
+            .main1
+            {
+                padding-bottom: 20px;
+                padding-top: 20px;
+                background: rgba(49, 212, 200, 0.15);
+                padding-left: 15px;
+                padding-right: 15px;
+                /*color: #fff;*/
+                border-radius: 10px;
+            }
+        </style>
+    </head>
+    <div class="col-md-12" ng-controller="documentosArchivadosController" ng-init="inicioDocumentosArchivados();">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>{{translateTitulos.lbl_022_11}}</h5>
+                <button type="button" class="close" style="color: #222831; opacity: 1 !important"  data-dismiss="modal" ng-click="refrescar();">
+                    <span class="fa fa-refresh fa-spin"></span>
+                </button>
+            </div>
+            <br>
+            <div class="col-md-12">{{translateTitulos.lbl_022_12}}<br><br></div>
+            <div  ng-show="valida == 0">
+                <div class="col-sm-12" id="divMsj" style="padding: 20px 27px 9px 25px; display: none;">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <div class="main1" id="main1" style="font-size: 20px;">
+                            <center><i class="fa fa-warning" style="color: #4bafb4;"></i> {{msj1}}</center>
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>                     
+                </div>
+            </div>
+            <div ng-show="valida == 1">
+              <label class="col-md-2 control-label">{{translateTitulos.lbl_022_13}}:</label>
+              <div class="col-md-10">
+                <input ng-model = "query1" id ="busca2" class="form-control" placeholder="" >
+              </div>
+              <br><br><br><br><br>
+              <div class="ibox-content">
+                  <div class="table-responsive">
+                    <table ng-table="tablaDocumentos" class="table table-striped responsive">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr class="column" ng-repeat="documento in $data | filter:query1 " ng-style="documento.vtiempo=='VENCIDO' && {'background-color':'#EDDADA','font-color':'#EDDADA'} || documento.vtiempo=='HOY' && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'##E5A21D'}">
+                                <td data-title="'#'" class="text-center">&nbsp; {{$index+1}}</td>
+                                <td data-title="'Código'" class="text-left">&nbsp; {{documento.vdoc_id_codigo}}</td>
+                                <td data-title="'Servicio'" class="text-left">&nbsp; {{documento.vdoc_proceso}}</td>
+                                <td data-title="'Documento'" class="text-left">&nbsp; {{documento.vdoc_nombre}}</td>
+                                <td data-title="'Fecha creación'" class="text-center">&nbsp; {{documento.vdoc_registro}}</td>
+                                <td data-title="'Fecha expiraci&oacute;n'" class="text-center">&nbsp; {{documento.vfechafinpublicacion}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</html>

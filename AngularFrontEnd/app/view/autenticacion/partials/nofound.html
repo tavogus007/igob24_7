@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>404 | Pagina no encontrada</title>
+		<style>       
+ .padre {
+  margin: 1rem;
+  padding: 1rem;
+  text-align: center;
+  border-radius:8px;
+}
+</style>
+  	</head>
+	<body>
+		<div class="wrap padre">
+			<div class="header">
+				<div class="logo">
+					<h1>404</h1> 
+					<h1><a href="#registro_ciudadano|datosCiudadano">Pagina no encontrada</a></h1>
+				</div>
+			</div>
+			<div class="content">
+				<img src="../../img/cholita.png"/></img>
+				<h5><span><label>O</label>hh.....</span>La pagina se ha estido</h5>
+				<a href="#registro_ciudadano|datosCiudadano">Volver a Inicio</a>
+   			</div>
+		</div>
+		<script language="JavaScript">
+			var URLactual = window.location.toString();
+			url = URLactual.split('#');
+			dashboard = "location.href='"+ url[0]+"#/dashboard'"
+			setTimeout(dashboard, 100);
+		</script>
+	</body>
+</html>

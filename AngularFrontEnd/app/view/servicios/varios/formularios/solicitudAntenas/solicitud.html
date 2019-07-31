@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+    <meta charset="UTF-8">
+    <!--link rel="stylesheet" href="http://bootstrapdocs.com/v3.1.1/docs/dist/css/bootstrap.min.css"/-->
+
+    <style type="text/css">
+        .modal {
+          text-align: center;
+          padding: 0!important;
+        }
+
+        .modal::before {
+          content: '';
+          display: inline-block;
+          height: 100%;
+          vertical-align: middle;
+          margin-right: -4px;
+        }
+        .modal-dialog {
+          display: inline-block;
+          text-align: left;
+          vertical-align: middle;
+          height: 50%;
+          width: 50%;
+        }
+        .focus {
+          outline: 2px solid #FF0000 !important;
+        }
+         
+    </style>
+        <link href="../../libs/css/sweetalert.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css">
+        <script type="text/javascript" src="../../libs/js/bootstrap-clockpicker.min.js"></script>
+        <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+        <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+        <script type="text/javascript" src="../../view/servicios/varios/formularios/solicitudAntenas/solicitudAntenas.js"></script>
+        <script type="text/javascript">
+            function accessScope(node, func) {
+                var scope = angular.element(document.querySelector(node)).scope();
+                scope.$apply(func);
+            }
+            function initMap()
+            {
+              accessScope('#outerMapaActividad', function (scope) {
+                scope.initMap();
+              });
+            }
+        </script>
+    </head>
+    <script type="text/javascript">
+        $('.modal').on('shown.bs.modal', function() {
+            $(this).before($('.modal-backdrop'));
+            $(this).css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 1);
+        });
+    </script>
+    <div class="row principal" id = "outerMapaActividad" ng-controller="solicitudAntenasController" ng-init="iniAntenas()" >
+        <form class="form-horizontal ng-pristine ng-valid" > 
+            <div class="col-md-12" ng-show="mostrardiv != null">
+                <div class="col-md-12" >
+                        <legend>REGISTRO DE RADIOBASE Y GABINETES:</legend>
+                </div>
+                <br>
+                <div class="col-sm-2"  >
+                    <h3><input type="radio" name="r_tipo" value="RU" ng-click="habilitarR('RU');">  Radiobase Único</h3>
+                </div>
+                <div class="col-sm-2"  >
+                    <h3><input type="radio" name="r_tipo" value="RM" ng-click="habilitarR('RM');"> Radiobase Multiple</h3> 
+                </div>
+                <div class="col-sm-2"  >
+
+                    <h3><input type="radio" name="r_tipo" value="GU" ng-click="habilitarR('GU');"> Gabinete Único </h3>
+                </div>
+                <div class="col-sm-2"  >
+                    <h3><input type="radio" name="r_tipo" value="GM" ng-click="habilitarR('GM');" > Gabinete Multiple </h3>  
+                </div>
+                <div class="col-md-12" ng-hide="requisitosOcultar">
+                        <!--legend>REQUISITO OBLIGATORIO:</legend-->
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                        
+                            <!--label id="lbl_f01_uploadaaa" class="col-sm-6" ng-hide="requisitosOcultar">Licencia de radiodifusión y/o licencia vigente de uso de frecuencias del espectro radioeléctrico emitida por la Autoridad de Regulación y Fiscalización de Telecomunicaciones y Transportes.</label-->
+                        </div>
+                        <div class="col-sm-3">
+                            <!--input type="file" id = "requisito" file-model="myFile" ng-hide="requisitosOcultar"/-->
+                        </div>
+                        <div class="col-sm-3" align="right" ng-show = "requisito == null">
+                            <button id="miFormVerif"  ng-click="cert_difusion('Licencia de radiodifusión y/o licencia vigente de uso de frecuencias del espectro radioeléctrico emitida por la Autoridad de Regulación y Fiscalización de Telecomunicaciones y Transportes.');" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida6">VALIDAR/CONTINUAR</button>                        
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div ng-show="mostrardivform != null" >
+                
+                <div >
+                    <div class="col-md-12" ng-show="mostrarRU != null">
+                        <legend>REGISTRO DE RADIOBASE UNICO:</legend>
+                    </div>
+                    <div class="col-md-12" ng-show="mostrarRM != null">
+                        <legend>REGISTRO DE RADIOBASE MULTIPLE:</legend>
+                    </div>
+                    <div class="col-md-12" ng-show="mostrarGU != null">
+                        <legend>REGISTRO DE GABINETE UNICO:</legend>
+                    </div>
+                    <div class="col-md-12">
+                        <legend>DATOS DEL SOLICITANTE:</legend>
+                    </div>
+                    <div class="col-md-4" ng-show="divnomcomp!= null">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_08}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.f01_nom_completo" id="f01_nom_completo" name="f01_nom_completo" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.ANT_NOM" id="ANT_NOM" name="ANT_NOM" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.ANT_PAT" id="ANT_PAT" name="ANT_PAT" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.ANT_MAT" id="ANT_MAT" name="ANT_MAT" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >Tercer Apellido:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.ANT_CAS" id="ANT_CAS" name="ANT_CAS" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                            </div>
+                        </div>
+                    </div-->
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_10}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.ANT_NUM_CI" id="ANT_NUM_CI" name="ANT_NUM_CI" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_11}}:</label>
+                            <div class="controls">
+                                <select id="ANT_EXP_CI" class="form-control" name="ANT_EXP_CI" ng-model="datosIniciales.ANT_EXP_CI" ng-disabled="true">
+                                    <option value="LPZ">LA PAZ</option>
+                                    <option value="CBB">COCHABAMBA</option>
+                                    <option value="SCZ">SANTA CRUZ</option>
+                                    <option value="CHQ">CHUQUISACA</option>
+                                    <option value="TJA">TARIJA</option>
+                                    <option value="PTS">POTOSI</option>
+                                    <option value="ORU">ORURO</option>
+                                    <option value="BNI">BENI</option>
+                                    <option value="PND">PANDO</option>
+                                    <option value="OTR">OTRO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_12}}:</label>
+                            <div class="controls">
+                                <input ng-model="datosIniciales.ANT_MAIL" id="ANT_MAIL" name="ANT_MAIL" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-show="mostrarRU != null">
+                    <legend>DETALLE DE RADIOBASE:</legend>
+                </div>
+                <div class="col-md-12" ng-show="mostrarRM != null">
+                    <legend>DETALLE DE RADIOBASE MULTIPLE:</legend>
+                </div>
+                <div class="col-md-12" ng-show="mostrarGU != null">
+                    <legend>  DETALLE DE GABINETE:</legend>
+                </div>
+                <div class="col-md-12" ng-show="mostrarGM != null">
+                    <legend>  DETALLE DE GABINETE MULTIPLE:</legend>
+                </div>
+
+
+                <div class="row"  class="ibox-content"> 
+                <div  class="col-md-12" ng-hide="n_autorizacion">
+                    <div ng-hide="chec_autorizacion">
+                        <h3> Tiene Autorización   <input type="checkbox" name="condiciones" id = "condiciones" value="1" ng-click ="recuperacheck()"> </h3>
+                    </div>
+                    <div class= "col-md-1">
+                    </div>
+                    <div class= "col-md-3" ng-show="autoriza != null">
+                    <label for="url" >Número de Autorización:</label>
+                    <input ng-model="dataAnt.den_auto" id="den_auto" name="den_auto" class="form-control ng-pristine ng-invalid ng-invalid-required" type="text" placeholder="Nro. de Autorizacion" ng-disabled="false" ng-value="den_auto_r" required="" onkeyup="return conMayusculas(this);">
+                    </div>
+                </div>
+                <div  class="col-md-12" ng-hide="n_autorizacion_1">
+                    <div class= "col-md-6">
+                    <label for="url" >Número de Autorización:</label>
+                    <input ng-model="dataAnt.den_auto1" id="den_auto1" name="den_auto1" class="form-control ng-pristine ng-invalid ng-invalid-required" type="text" placeholder="Nro. de Autorizacion" ng-disabled="true" ng-value="den_auto_r1" required="" onkeyup="return conMayusculas(this);">
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel with-nav-tabs panel-default">
+                                <div class="panel-heading">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a data-target="#tab1-registro" data-toggle="tab" >Registro</a></li>
+                                            <li><a data-target="#tab-adjuntos" data-toggle="tab" ng-click  = "" ng-hide = "tabAdj">Adjuntos</a></li>
+                                            
+                                        </ul>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade in active" id="tab1-registro">
+                                            
+                                            <!-- Inicio radio base unico> <-->
+
+                                            <div ng-show="mostrarRUGU != null">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <div class="col-sm-10" >
+                                                            <div class="form-group" >
+                                                                <label for="url" >Denominación:</label>
+                                                                <div class="controls">
+                                                                  <input  ng-model="dataAnt.den_rbase" id="den_rbase" name="den_rbase" class="form-control" type="text" placeholder="Denominación de la Radio Base" ng-disabled="false" ng-value="den_rbase_r" required onkeyUp="return conMayusculas(this);">
+                                                                  
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-10"  >
+                                                            <div class="form-group" >
+                                                                <label for="url" >Ubicación Radio Base:</label>
+                                                                <div class="controls">
+                                                                  <input  ng-model="dataAnt.ub_rbase" id="ub_rbase" name="ub_rbase" class="form-control" type="text" placeholder="Ubicación de la radio base" ng-disabled="false" required onkeyUp="return conMayusculas(this);">
+                                                                  
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-10">
+                                                            <label for="url" >Tipo de Propiedad:</label>
+                                                            <select id="tp_prop" class="form-control" ng-model="dataAnt.tp_prop" placeholder="Tipo de Propiedad">
+                                                                <option value=""> -- Seleccione -- </option>
+                                                                <option value="PRIVADA">PRIVADA</option>
+                                                                <option value="HORIZONTAL">HORIZONTAL</option>
+                                                                <option value="DOMINIO MUNICIPAL">DOMINIO MUNICIPAL</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-10"  >
+                                                            <div class="form-group" >
+                                                                <label for="url" >Latitud Ubicación:</label>
+                                                                <div class="controls">
+                                                                  <input  ng-model="dataAnt.lt_ubicacion" id="lt_ubicacion" name="lt_ubicacion" class="form-control" type="text" placeholder="Latitud Ubicación de la radio base" ng-disabled="true" required onkeyUp="return conMayusculas(this);">
+                                                                  
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-10"  >
+                                                            <div class="form-group" >
+                                                                <label for="url" >Longitud Ubicación:</label>
+                                                                <div class="controls">
+                                                                  <input  ng-model="dataAnt.ln_ubicacion" id="ln_ubicacion" name="ln_ubicacion" class="form-control" type="text" placeholder="Longitud Ubicación de la radio base" ng-disabled="true" required onkeyUp="return conMayusculas(this);">
+                                                                  
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-10" >
+                                                            <div class="form-group" >
+                                                                <label for="url" >Total Número de Gabinetes:</label>
+                                                                <div class="controls">
+                                                                  <input  ng-model="dataAnt.den_ngabinete" id="den_ngabinete" name="den_ngabinete" class="form-control" type="number" placeholder="Total Número de Gabinete" ng-disabled="false" min="1" required onkeyUp="return conMayusculas(this);">
+                                                                  
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="col-md-12" >Mapa de ubicacion</div>
+                                                        <div id="mapActividad"   style="height: 400px; width:1000px; margin: 10px 5px 5px 5px">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div ng-show=" mostrarRU != null ">
+                                                <div class="col-md-12"  ng-show="radiobase_simple != null">
+                                                    
+                                                    <div class="col-md-12" ng-show = "botones != null">
+                                                        <legend> Detalles de los Soportes:</legend>
+                                                        <div align=right >
+                                                            <a class="btn btn-info btn-circle"  ng-click = "" data-toggle="modal" data-target="#regSoporte"><i class="fa fa-plus"  title="Registrar un nuevo soporte" style="text-align:center;" ></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" ng-show = "botones == null">
+                                                        <legend> Detalles de los Soportes:</legend>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading"><B></B></div>
+                                                            <div class="panel-body"  >
+                                                              
+                                                              <div>
+                                                                <div class="table-responsive">
+                                                                    <table ng-table="tablalstSoporte" show-filter="true" class="table table-striped table-bordered">
+                                                                        <tr ng-repeat="lstGrilla in $data" style="background-color:mintcream">
+                                                                            <td align="center" style="width:5%" data-title="'#'">{{$index+1}}</td>
+                                                                            <td class="text-center" style="width:15%" data-title="'TIPO SOPORTE'" >
+                                                                            {{lstGrilla.tipoSoporte}}
+                                                                            </td>
+                                                                            <td class="text-center" style="width:15%" data-title="'CATEGORIA'"  >
+                                                                            {{lstGrilla.categoria}}
+                                                                            </td>
+                                                                            <td class="text-center" style="width:15%" data-title="'FORMA DE SUJECION'">
+                                                                            {{lstGrilla.frmSujecion}}
+                                                                            </td>
+                                                                            <td class="text-center" style="width:15%" data-title="'ALTURA(Mts.)'">
+                                                                            {{lstGrilla.altura}}
+                                                                            </td>
+                                                                            <td class="text-center" style="width:15%" data-title="'NRO. ANTENAS'">
+                                                                            {{lstGrilla.nro_antenas}}
+                                                                            </td>
+
+                                                                            <td data-title="'OPCIONES'" class="text-center" style="width:10%">
+                                                                            <!--a class="btn btn-primary" data-toggle="modal" data-target="#detallesRadianes"  ng-click="detalleradianes(lstGrilla)" ><i class="fa fa-eye"  title="Ver radianes del Soporte"></i></a-->
+                                                                            <a class="btn btn-primary" ng-click="eliminarSoporte(lstGrilla,$index)" ng-show = "botones != null"><i class="fa fa-trash "  title="Eliminar registro Antena" ></i></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>  
+                                                                </div>
+                                                              </div>
+
+                                                            </div>  
+                                                        </div>
+                                                    </div>
+
+                                               </div>                        
+                                            </div>
+                                            <!-- Fin radio base unico> <-->
+
+
+                                            <!-- Inicio Grilla para registrar gabinetes multiples> <-->
+                                            <div ng-show="mostrarRMGM != null">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-12" ng-show = "botones != null">
+                                                        <div align=right>
+                                                            <a class="btn btn-info btn-circle" data-toggle="modal" data-target="#registroRBM" ng-click = "inireg_rbMultiple()"><i class="fa fa-plus"  title="Registrar nuevo Radio Base" style="text-align:center;"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" >
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading"><B></B></div>
+                                                            <div class="panel-body"  >
+                                                              <div>
+                                                                <div class="table-responsive">
+                                                                    <table ng-table="tb_grilla_multiple" show-filter="true" class="table table-striped table-bordered">
+                                                                        <tr ng-repeat="lstGrilla in $data" style="background-color:mintcream">
+                                                                            <td align="center" style="width:5%" data-title="'#'">{{$index+1}}</td>
+                                                                            <td class="text-center" style="width:15%" data-title="'DENOMINACIÓN'" >
+                                                                            {{lstGrilla.f01_DENOMINACION}}
+                                                                            </td>
+                                                                            <td class="text-center" style="width:15%" data-title="'UBICACIÓN RADIO BASE'"  >
+                                                                            {{lstGrilla.f01_UBI_RB}}
+                                                                            </td>
+                                                                            <td class="text-center" style="width:15%" data-title="'TIPO DE UBICACIÓN'">
+                                                                            {{lstGrilla.f01_TIPO_UBIC}}
+                                                                            </td>
+                                                                            <td class="text-center" style="width:15%" data-title="'NRO. GABINETE'">
+                                                                            {{lstGrilla.f01_NRO_GABINETE}}
+                                                                            </td>
+                                                                            <td data-title="'OPCIONES'" class="text-center" style="width:10%">
+                                                                            <a class="btn btn-info btn-circle" data-toggle="modal" data-target="#registroRBM"  ng-click="det_grilla_multiple(lstGrilla)" ><i class="fa fa-eye"  title="Ver radianes del Soporte"></i></a>
+                                                                            <a ng-show = "botones != null" class="btn btn-info btn-circle" ng-click="elim_reg_radiobase(lstGrilla,$index)" ><i class="fa fa-trash"  title="Eliminar registro Antena"></i></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>  
+                                                                </div>
+                                                              </div>
+                                                            </div>  
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Inicio Grilla para registrar gabinetes multiples> <-->
+                                        </div>
+                                        <div class="tab-pane fade" id="tab-adjuntos" >
+
+                                            
+
+                                            <!-- Inicio requisitos Gabinete ><-->
+                                            <div ng-show="{{mostrarGU != null || requisitos7 != null}}  && gabineteEnvio != null">
+                                                <div class="col-md-8" ng-show = "requisitos7 != null">
+                                                    <legend>Requisitos Documentales: </legend>
+                                                </div>
+                                                <div class="col-md-12" ng-show = "botones49 != null">
+                                                    <div class="form-group" >
+                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">Fotografia del predio donde se ubica la radio base.</label>
+                                                        <div class="col-sm-2">
+                                                            <input type="file" id = "requisito49" file-model="myFile49" ng-click="obtenerNomArchivo();"/>
+                                                        </div>
+                                                        <div class="col-md-1" align="right" >
+                                                            <button id="miFormVerif49"  ng-click="vald_requisitos(49,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida49">OK</button>                        
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <br>
+                                                </div>
+
+                                                <div class="col-sm-12" ng-show = "requisitos7 != null">
+                                                    <div class="col-sm-3">
+                                                    </div>
+                                                    <label for="url" class="col-sm-4">GABINETE A SER UBICADO EN PROPIEDAD PRIVADA:</label>
+                                                    <div class="col-sm-3">
+                                                        <select id="tipo_propiedad" class="form-control" ng-model="dataAnt.tipo_propiedad" ng-click="verfifcarTipo()" placeholder="Tipo de Propiedad">
+                                                            <option value=""> -- Seleccione -- </option>
+                                                            <option value="SI">SI</option>
+                                                            <option value="NO">NO</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-md-12" ng-show = "opcion1 != null && botones1 != null">
+                                                    <div class="form-group" >
+                                                        <hr>
+                                                        <br>
+                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">a) Documento vigente suscrito entre el propietario del sitio y el solicitante, que establezca tiempo, lugar y la autorización para el emplazamiento del gabinete</label>
+                                                        <div class="col-sm-2">
+                                                            <input type="file" id = "requisito1" file-model="myFile1" ng-click="obtenerNomArchivo()"/>
+                                                        </div>
+                                                        <div class="col-md-1" align="right" ng-show = "botones1 != null">
+                                                            <button id="miFormVerif1"  ng-click="vald_requisitos(1,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida1">OK</button>                        
+                                                        </div>
+                                                        <div class="col-md-1" align="right" ng-show = "continuar1 != null">
+                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-chek">OK</button>
+                                                        </div>
+
+                                                    </div>
+                                                   
+                                                </div>
+                                                <div class="col-md-12" ng-show = "opcion2 != null && botones2 != null ">
+                                                    <div class="form-group" >
+                                                        <hr>
+                                                        <br>
+                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">b) Autorización para el emplazamiento del o los soportes de antenas en propiedad municipal emitida por la Dirección de Administración General.</label>
+                                                        <div class="col-sm-2">
+                                                            <input type="file" id = "requisito2" file-model="myFile2" ng-click="obtenerNomArchivo()"/>
+                                                        </div>
+                                                        <div class="col-md-1" align="right">
+                                                            <button id="miFormVerif2"  ng-click="vald_requisitos(2,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida2">OK</button>                        
+                                                        </div>
+                                                        <div class="col-md-1" align="right" ng-show = "continuar2 != null">
+                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-chek">OK</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12" ng-show = "botones3 != null" >
+                                                    <div class="form-group" ng-show = "opciones != null">
+                                                        <hr>
+                                                        <br>
+                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">c) Licencia Ambiental vigente extendida por la autoridad ambiental competente, para el emplazamiento específico solicitado.</label>
+                                                        <div class="col-sm-2">
+                                                            <input type="file" id = "requisito3" file-model="myFile3" ng-click="obtenerNomArchivo()"/>
+                                                        </div>
+                                                        <div class="col-md-1" align="right" >
+                                                            <button id="miFormVerif3"  ng-click="vald_requisitos(3,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida3">OK</button>                        
+                                                        </div>
+                                                        <div class="col-md-1" align="right" ng-show = "continuar3 != null">
+                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-chek">OK</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12" ng-show = "botones4 != null">
+                                                    <div class="form-group" ng-show = "opciones != null">
+                                                        <hr>
+                                                        <br>
+                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">d) Plano de detalles constructivos, características de los gabinetes y elementos complementarios (Ej. Sistema eléctrico)</label>
+                                                        <div class="col-sm-2">
+                                                            <input type="file" id = "requisito4" file-model="myFile4" ng-click="obtenerNomArchivo()"/>
+                                                        </div>
+                                                        <div class="col-md-1" align="right" >
+                                                            <button id="miFormVerif4"  ng-click="vald_requisitos(4,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida4">OK</button>                        
+                                                        </div>
+                                                        <div class="col-md-1" align="right" ng-show = "continuar4 != null">
+                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-chek">OK</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12" ng-show = "botones5 != null">
+                                                    <div class="form-group" ng-show = "opciones != null">
+                                                        <hr>
+                                                        <br>
+                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">e) Póliza de Seguro, que cubra al titular de la solicitud sobre posibles daños a terceros durante la instalación, construcción, funcionamiento y/o vida útil de los gabinetes.</label>
+                                                        <div class="col-sm-2">
+                                                            <input type="file" id = "requisito5" file-model="myFile5" ng-click="obtenerNomArchivo()"/>
+                                                        </div>
+
+                                                        <div class="col-md-1" align="right" >
+                                                            <button id="miFormVerif5"  ng-click="vald_requisitos(5,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida5">OK</button>                        
+                                                        </div>
+                                                        <div class="col-md-1" align="right" ng-show = "continuar5 != null">
+                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-chek">OK</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12" ng-show = "botones6 != null">
+                                                    <div class="form-group" ng-show = "opciones != null">
+                                                        <hr>
+                                                        <br>
+                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">f) Certificación de la Autoridad Tributaria Municipal sobre la inexistencia de deudas pendientes de pago con el municipio, respecto a obligaciones pendientes de pago por gestiones vencidas o deudas de cualquier tipo provenientes de resoluciones o sentencias ejecutoriadas.</label>
+                                                        <div class="col-sm-2">
+                                                            <input type="file" id = "requisito6" file-model="myFile6" ng-click="obtenerNomArchivo()"/>
+                                                        </div>
+                                                        <div class="col-md-1" align="right" >
+                                                            <button id="miFormVerif6"  ng-click="vald_requisitos(6,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida6">OK</button>                        
+                                                        </div>
+                                                        <div class="col-md-1" align="right" ng-show = "continuar6 != null">
+                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-chek">OK</button>
+                                                        </div>
+                                                    </div>
+                                                </div>    
+                                            </div>
+                                            <!-- Fin requisitos Gabinete ><-->
+
+                                            <div class="col-md-12" ng-show = "requisitosrbase != null">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading"><B></B></div>
+                                                        <div class="panel-body"  >
+
+                                                            <!-- inicio Adjuntos fijos en radiobase simple tablalstSoporte><-->
+                                                            <div ng-show = "requisitos != null && radiobas_env != null">
+                                                                <legend> Requisitos de Solicitud:</legend>
+                                                                
+                                                                <div class="col-md-12" ng-show = "botones12 != null">
+                                                                    <div class="form-group" >
+                                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">Fotografia del predio donde se ubica la radio base.</label>
+                                                                        <div class="col-sm-2">
+                                                                            <input type="file" id = "requisito12" file-model="myFile12" ng-click="obtenerNomArchivo();"/>
+                                                                        </div>
+                                                                        <div class="col-md-1" align="right" >
+                                                                            <button id="miFormVerif12"  ng-click="vald_requisitos(12,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida12">OK</button>                        
+                                                                        </div>
+                                                                        <!--div class="col-md-1" align="right" ng-show = "continuar12 != null">
+                                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                        </div-->
+                                                                    </div>
+                                                                <hr>
+                                                                <br>
+                                                                </div>
+                                                                <div class="col-md-12" ng-show = "botones7 != null">
+                                                                    <div class="form-group" >
+                                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">Documento vigente suscrito entre el propietario del sitio y el solicitante.</label>
+                                                                        <div class="col-sm-2">
+                                                                            <input type="file" id = "requisito7" file-model="myFile7" ng-click="obtenerNomArchivo()"/>
+                                                                        </div>
+                                                                        <div class="col-md-1" align="right" >
+                                                                            <button id="miFormVerif7"  ng-click="vald_requisitos(7,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida7">OK</button>                        
+                                                                        </div>
+                                                                        <div class="col-md-1" align="right" ng-show = "continuar7 != null">
+                                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                        </div>
+                                                                    </div>
+                                                                <hr>
+                                                                <br>
+                                                                </div>
+                                                                <div class="col-md-12" ng-show = "botones8 != null">
+                                                                    <div class="form-group" >
+                                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">Manifestación expresa por parte del solicitante, garantizando el acceso al sitio del emplazamiento a los servidores públicos del Gobierno Autónomo Municipal de La Paz para fines de inspección durante el proceso de solicitud de autorización.</label>
+                                                                        <div class="col-sm-2">
+                                                                            <input type="file" id = "requisito8" file-model="myFile8" ng-click="obtenerNomArchivo()"/>
+                                                                        </div>
+                                                                        <div class="col-md-1" align="right" >
+                                                                            <button id="miFormVerif8"  ng-click="vald_requisitos(8,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida8">OK</button>                        
+                                                                        </div>
+                                                                        <div class="col-md-1" align="right" ng-show = "continuar8 != null">
+                                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                        </div>
+                                                                    </div>
+                                                                <hr>
+                                                                <br>
+                                                                </div>
+                                                                <div class="col-md-12" ng-show = "botones9 != null">
+                                                                    <div class="form-group" >
+                                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">Autorización para el emplazamiento del o los soportes de antenas en propiedad municipal emitida por la Dirección de Administración General.</label>
+                                                                        <div class="col-sm-2">
+                                                                            <input type="file" id = "requisito9" file-model="myFile9" ng-click="obtenerNomArchivo()"/>
+                                                                        </div>
+                                                                        <div class="col-md-1" align="right" >
+                                                                            <button id="miFormVerif9"  ng-click="vald_requisitos(9,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida9">OK</button>                        
+                                                                        </div>
+                                                                        <div class="col-md-1" align="right" ng-show = "continuar9 != null">
+                                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                        </div>
+                                                                    </div>
+                                                                <hr>
+                                                                <br>
+                                                                </div>
+                                                                <div class="col-md-12" ng-show = "botones10 != null">
+                                                                    <div class="form-group" >
+                                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">Autorización escrita de los copropietarios, sea a través de la Asociación de Copropietarios, la Directiva o el representante legítimo de los mismos.</label>
+                                                                        <div class="col-sm-2">
+                                                                            <input type="file" id = "requisito10" file-model="myFile10" ng-click="obtenerNomArchivo()"/>
+                                                                        </div>
+                                                                        <div class="col-md-1" align="right" >
+                                                                            <button id="miFormVerif10"  ng-click="vald_requisitos(10,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida10">OK</button>                        
+                                                                        </div>
+                                                                        <div class="col-md-1" align="right" ng-show = "continuar10 != null">
+                                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                        </div>
+                                                                    </div>
+                                                                <hr>
+                                                                <br>
+                                                                </div>
+                                                                <div class="col-md-12" ng-show = "botones11 != null">
+                                                                    <div class="form-group" >
+                                                                        <label id="lbl_f01_uploadaaa" class="col-sm-9">Licencia Ambiental vigente extendida por la autoridad competente, para el emplazamiento específico solicitado.</label>
+                                                                        <div class="col-sm-2">
+                                                                            <input type="file" id = "requisito11" file-model="myFile11" ng-click="obtenerNomArchivo()"/>
+                                                                        </div>
+
+                                                                        <div class="col-md-1" align="right" >
+                                                                            <button id="miFormVerif11"  ng-click="vald_requisitos(11,0);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida11">OK</button>                        
+                                                                        </div>
+                                                                        <div class="col-md-1" align="right" ng-show = "continuar11 != null">
+                                                                            <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                        </div>
+                                                                    </div>
+                                                                <hr>
+                                                                <br>
+                                                                </div>
+                                                            </div>
+                                                            <!-- FIN Adjuntos fijos en radiobase simple tablalstSoporte><-->
+                                                            <div >
+                                              
+
+                                                                <!--Adjuntos fijos en radiobase simple caso TORRES TORRETAS MONO POSTE><-->
+                                                                <div ng-show = "requisitos2 != null">
+                                                                    <div class="col-md-12" ng-show = "torres_torretas_monoposte != null || mastiles_postes != null" >
+                                                                        <legend> Para TORRRES, TORRETAS, MONOPOSTES, MASTILES y POSTES:</legend>
+                                                                        <div class="col-md-12" ng-show = "botones13 != null" >
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano de altura del o los soportes (a escala 1:1 y acotado), que muestre el número de elementos radiantes que serán instalados por soporte.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito13" file-model="myFile13" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif13"  ng-click="vald_requisitos(13,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida13">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar13 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <hr>
+                                                                        <br>
+                                                                        <div class="col-md-12" ng-show = "botones14 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano del sitio.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito14" file-model="myFile14" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif14"  ng-click="vald_requisitos(14,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida14">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar14 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <hr>
+                                                                        <br>
+                                                                    </div>
+                                                                </div>
+                                                                <div ng-show = "requisitos3 != null">
+                                                                    <div class="col-md-12"  ng-show = "torres_torretas_monoposte != null" >
+                                                                        <!--Adjuntos FIJOS TORRES TORRETAS MONO POSTE MASTILES POSTES -->
+                                                                        <legend> Para TORRES TORRETAS y MONOPOSTES:</legend>
+
+                                                                        <div class="col-md-12"  ng-show = "botones15 != null" >
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano de la radio base.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito15" file-model="myFile15" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif15"  ng-click="vald_requisitos(15,1);" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida15">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar15 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-chek">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones16 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Planos de elevaciones del sitio en los cuales se vean los soportes (2).</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito16" file-model="myFile16" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif16"  ng-click="vald_requisitos(16,1);" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida16">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar16 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-chek">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones17 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano de corte del sitio en el cual se vea la radio base.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito17" file-model="myFile17" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif17"  ng-click="vald_requisitos(17,1);" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida17">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar17 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-chek">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones18 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano de corte del sitio en el cual se vea la radio base.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito18" file-model="myFile18" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif18"  ng-click="vald_requisitos(18,1);" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida18">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar18 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-chek">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones19 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Planos del sistema eléctrico y aterramiento (2).</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito19" file-model="myFile19" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif19"  ng-click="vald_requisitos(19,1);" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida19">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar19 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12"  ng-show = "botones20 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano en el que se identifiquen las medidas de prevención y seguridad a ser implementadas así como la ubicación de señalización y otros.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito20" file-model="myFile20" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right">
+                                                                                    <button id="miFormVerif20"  ng-click="vald_requisitos(20,1);" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida20">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar20 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+                                                                            <hr>
+                                                                        </div>
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group" ng-show = "botones21 != null" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano que muestre las normas de seguridad establecidas por la Dirección General de Aeronáutica Civil que deben implementarse.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito21" file-model="myFile21" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif21"  ng-click="vald_requisitos(21,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida21">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar21 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones22 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Planos de detalles constructivos de los soportes y equipos (2)</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito22" file-model="myFile22" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif22"  ng-click="vald_requisitos(22,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida22">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar22 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12"  ng-show = "botones23 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Cálculo estructural del soporte ó documento equivalente.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito23" file-model="myFile23" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right">
+                                                                                    <button id="miFormVerif23"  ng-click="vald_requisitos(23,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida23">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar23 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--Adjuntos fijos en radiobase simple caso MASTILES POSTES><-->
+                                                                <div ng-show = "requisitos4 != null">
+                                                                    <div class="col-md-12" ng-show = "mastiles_postes != null">
+                                                                        <legend> Para MASTILES Y POSTES:</legend>
+                                                                        <div class="col-md-12" ng-show = "botones24 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Planos de planta del sitio.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito24" file-model="myFile24" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif24"  ng-click="vald_requisitos(24,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida24">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar24 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones25 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano de planta de la radio base.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito25" file-model="myFile25" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif25"  ng-click="vald_requisitos(25,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida25">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar25 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones26 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Planos de elevaciones (2).</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito26" file-model="myFile26" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif26"  ng-click="vald_requisitos(26,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida26">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar26 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones27 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano de corte del sitio.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito27" file-model="myFile27" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif27"  ng-click="vald_requisitos(27,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida27">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar27 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones28 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9"> Planos de detalles constructivos de los soportes y equipos (2).</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito28" file-model="myFile28" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif28"  ng-click="vald_requisitos(28,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida28">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar28 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones29 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano en el que se identifiquen las medidas de prevención y seguridad a ser implementadas así como la ubicación de señalización y otros.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito29" file-model="myFile29" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif29"  ng-click="vald_requisitos(29,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida29">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar29 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones30 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Descripción esquemática del balizamiento, de acuerdo a las normas de seguridad establecidas por la Dirección General de Aeronáutica Civil.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito30" file-model="myFile30" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif30"  ng-click="vald_requisitos(30,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida30">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar30 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones31 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Póliza de Seguro que cubra al titular de la solicitud sobre posibles daños a terceros durante la instalación, construcción, funcionamiento y/o vida útil del soporte de antenas de telecomunicaciones.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito31" file-model="myFile31" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif31"  ng-click="vald_requisitos(31,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida31">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar31 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones32 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Certificación de la Autoridad Tributaria Municipal sobre la inexistencia de deudas pendientes de pago con el municipio, respecto a obligaciones pendientes de pago por gestiones vencidas o deudas de cualquier tipo provenientes de resoluciones o sentencias ejecutoriadas.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito32" file-model="myFile32" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif32"  ng-click="vald_requisitos(32,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida32">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar32 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones33 != null"> 
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Certificación con criterio técnico positivo emitido por la instancia competente encargada y especializada en el tema patrimonial del Gobierno Autónomo Municipal de La Paz, para soportes a ser emplazados en predios declarados y valorados con la Categoría “C” Valor de Integración.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito33" file-model="myFile33" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif33"  ng-click="vald_requisitos(33,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida33">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar33 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones34 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Certificación con criterio técnico positivo emitido por la instancia competente encargada y especializada en el tema patrimonial del Gobierno Autónomo Municipal de La Paz, para soportes a ser emplazados en alguno de los Conjuntos Patrimoniales de Interés Histórico y Urbano, identificados y delimitados en el Mapa de Administración Patrimonial de la Ley de Uso de Suelos.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito34" file-model="myFile34" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif34"  ng-click="vald_requisitos(34,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida34">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar34 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--Adjuntos fijos en  COW 34 -35 ><-->
+                                                                <div ng-show = "requisitos5 != null">
+                                                                    <div class="col-md-12" ng-show = "cow != null">
+                                                                        <legend> Para COW:</legend>
+
+                                                                        <div class="col-md-12"  ng-show = "botones35 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">SOPORTE A SER UBICADO EN PROPIEDAD PRIVADA: a) Documento vigente suscrito entre el propietario del sitio y el solicitante, que establezca tiempo, lugar y la autorización para el emplazamiento del soporte de antenas.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito35" file-model="myFile35" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif35"  ng-click="vald_requisitos(35,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida35">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar35 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones36 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">SOPORTE A SER UBICADO EN PROPIEDAD PRIVADA: b) Manifestación expresa por parte del solicitante, garantizando el acceso al sitio del emplazamiento a los servidores públicos del Gobierno Autónomo Municipal de La Paz para fines de inspección durante el proceso de solicitud de autorización.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito36" file-model="myFile36" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif36"  ng-click="vald_requisitos(36,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida36">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar36 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                        <div class="col-md-12" ng-show = "botones37 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">SOPORTE NO UBICADO EN PROPIEDAD PRIVADA:c) Autorización para el emplazamiento del o los soportes de antenas en propiedad municipal emitida por la Dirección de Administración General.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito37" file-model="myFile37" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif37"  ng-click="vald_requisitos(37,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida37">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar37 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones38 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">SOPORTE NO UBICADO EN PROPIEDAD PRIVADA:b) Manifestación expresa por parte del solicitante, garantizando el acceso al sitio del emplazamiento a los servidores públicos del Gobierno Autónomo Municipal de La Paz para fines de inspección durante el proceso de solicitud de autorización.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito38" file-model="myFile38" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif38"  ng-click="vald_requisitos(38,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida38">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar38 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones39 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano en formato digital (autocad) del diseño esquemático del soporte y de la radio base, incluyendo alturas y número de elementos radiantes que se adosaran al soporte.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito39" file-model="myFile39" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif39"  ng-click="vald_requisitos(39,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida39">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar39 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones40 != null">
+                                                                            <div class="form-group">
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Plano en formato digital (autocad) de detalles constructivos de la celda (Ej. Sistema eléctrico).</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito40" file-model="myFile40" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif40"  ng-click="vald_requisitos(40,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida40">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar40 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones41 != null">
+                                                                            <div class="form-group">
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">En caso de soporte permanecera instalado por mas de 15 dias calendarios: e) Póliza de Seguro, que cubra al titular de la solicitud sobre posibles daños a terceros durante la instalación, construcción, funcionamiento y/o vida útil del soporte de antenas de telecomunicaciones.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito41" file-model="myFile41" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif41"  ng-click="vald_requisitos(41,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida41">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar41 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                        </div>
+                                                                        <div class="col-md-12" ng-show = "botones42 != null">
+                                                                            <div class="form-group" >
+                                                                                <label id="lbl_f01_uploadaaa" class="col-sm-9">Certificación de la Autoridad Tributaria Municipal sobre la inexistencia de deudas pendientes de pago con el municipio, respecto a obligaciones pendientes de pago por gestiones vencidas o deudas de cualquier tipo provenientes de resoluciones o sentencias ejecutoriadas.</label>
+                                                                                <div class="col-sm-2">
+                                                                                    <input type="file" id = "requisito42" file-model="myFile42" ng-click="obtenerNomArchivo()"/>
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" >
+                                                                                    <button id="miFormVerif42"  ng-click="vald_requisitos(42,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida42">OK</button>                        
+                                                                                </div>
+                                                                                <div class="col-md-1" align="right" ng-show = "continuar42 != null">
+                                                                                    <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- 43 ><-->
+                                                                <div ng-show = "requisitos6 != null">
+                                                                    <div class="col-md-12" ng-show = "antsatelites != null">
+                                                                        <legend> Para Gabinetes:</legend>
+
+                                                                            <div class="col-md-8">
+                                                                                <legend>Requisitos Documentales para Gabinetes: </legend>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <div class="col-sm-3">
+                                                                                </div>
+                                                                                <label for="url" class="col-sm-4">GABINETE A SER UBICADO EN PROPIEDAD PRIVADA:</label>
+                                                                                <div class="col-sm-3">
+                                                                                    <select id="tipo_propiedad" class="form-control" ng-model="dataAnt.tipo_propiedad" ng-click="verfifcarTipo()" placeholder="Tipo de Propiedad">
+                                                                                        <option value=""> -- Seleccione -- </option>
+                                                                                        <option value="SI">SI</option>
+                                                                                        <option value="NO">NO</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-sm-2">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <div class="col-md-8">
+                                                                                <legend></legend>
+                                                                            </div>
+                                                                            </div>
+
+                                                                            <div class="col-md-12" ng-show = "opcion1 != null && botones43 != null">
+                                                                                <div class="form-group" >
+                                                                                    <label id="lbl_f01_uploadaaa" class="col-sm-9">a) Documento vigente suscrito entre el propietario del sitio y el solicitante, que establezca tiempo, lugar y la autorización para el emplazamiento del gabinete.</label>
+                                                                                    <div class="col-sm-2">
+                                                                                        <input type="file" id = "requisito43" file-model="myFile43" ng-click="obtenerNomArchivo()"/>
+                                                                                    </div>
+                                                                                    <div class="col-md-1" align="right" ng-show = "botones43 != null">
+                                                                                        <button id="miFormVerif43"  ng-click="vald_requisitos(43,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida43">OK</button>                        
+                                                                                    </div>
+                                                                                    <div class="col-md-1" align="right" ng-show = "continuar43 != null">
+                                                                                        <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                            <div class="col-md-12" ng-show = "opcion2 != null && botones44 != null">
+                                                                                <div class="form-group" >
+                                                                                    <label id="lbl_f01_uploadaaa" class="col-sm-9">b) Autorización para el emplazamiento del o los soportes de antenas en propiedad municipal emitida por la Dirección de Administración General.</label>
+                                                                                    <div class="col-sm-2">
+                                                                                        <input type="file" id = "requisito44" file-model="myFile44" ng-click="obtenerNomArchivo()"/>
+                                                                                    </div>
+                                                                                    <div class="col-md-1" align="right" ng-show = "botones44 != null">
+                                                                                        <button id="miFormVerif44"  ng-click="vald_requisitos(44,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida44">OK</button>                        
+                                                                                    </div>
+                                                                                    <div class="col-md-1" align="right" ng-show = "continuar44 != null">
+                                                                                        <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr width="20%">
+                                                                            <br>
+                                                                            <div class="col-md-12" ng-show = "botones45 != null" >
+                                                                                <div class="form-group" ng-show = "opciones != null">
+                                                                                    <label id="lbl_f01_uploadaaa" class="col-sm-9">c) Licencia Ambiental vigente extendida por la autoridad ambiental competente, para el emplazamiento específico solicitado.</label>
+                                                                                    <div class="col-sm-2">
+                                                                                        <input type="file" id = "requisito45" file-model="myFile45" ng-click="obtenerNomArchivo()"/>
+                                                                                    </div>
+                                                                                    <div class="col-md-1" align="right" >
+                                                                                        <button id="miFormVerif45"  ng-click="vald_requisitos(45,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida45">OK</button>                        
+                                                                                    </div>
+                                                                                    <div class="col-md-1" align="right" ng-show = "continuar45 != null">
+                                                                                        <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            <br>
+                                                                            <div class="col-md-12" ng-show = "botones46 != null">
+                                                                                <div class="form-group" ng-show = "opciones != null">
+                                                                                    <label id="lbl_f01_uploadaaa" class="col-sm-9">d) Plano de detalles constructivos, características de los gabinetes y elementos complementarios (Ej. Sistema eléctrico)</label>
+                                                                                    <div class="col-sm-2">
+                                                                                        <input type="file" id = "requisito46" file-model="myFile46" ng-click="obtenerNomArchivo()"/>
+                                                                                    </div>
+                                                                                    <div class="col-md-1" align="right" >
+                                                                                        <button id="miFormVerif46"  ng-click="vald_requisitos(46,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida46">OK</button>                        
+                                                                                    </div>
+                                                                                    <div class="col-md-1" align="right" ng-show = "continuar46 != null" >
+                                                                                        <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <hr>
+                                                                                <br>
+                                                                            </div>
+                                                                            <div class="col-md-12" ng-show = "botones47 != null">
+                                                                                <div class="form-group" ng-show = "opciones != null">
+                                                                                    <label id="lbl_f01_uploadaaa" class="col-sm-9">e) Póliza de Seguro, que cubra al titular de la solicitud sobre posibles daños a terceros durante la instalación, construcción, funcionamiento y/o vida útil de los gabinetes.</label>
+                                                                                    <div class="col-sm-2">
+                                                                                        <input type="file" id = "requisito47" file-model="myFile47" ng-click="obtenerNomArchivo()"/>
+                                                                                    </div>
+
+                                                                                    <div class="col-md-1" align="right" >
+                                                                                        <button id="miFormVerif47"  ng-click="vald_requisitos(47,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida47">OK</button>                        
+                                                                                    </div>
+                                                                                    <div class="col-md-1" align="right" ng-show = "continuar47 != null">
+                                                                                        <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <hr>
+                                                                                <br>
+                                                                            </div>
+                                                                            <div class="col-md-12" ng-show = "botones48 != null">
+                                                                                <div class="form-group" ng-show = "opciones != null">
+                                                                                    <label id="lbl_f01_uploadaaa" class="col-sm-9">f) Certificación de la Autoridad Tributaria Municipal sobre la inexistencia de deudas pendientes de pago con el municipio, respecto a obligaciones pendientes de pago por gestiones vencidas o deudas de cualquier tipo provenientes de resoluciones o sentencias ejecutoriadas.</label>
+                                                                                    <div class="col-sm-2">
+                                                                                        <input type="file" id = "requisito48" file-model="myFile48" ng-click="obtenerNomArchivo()"/>
+                                                                                    </div>
+                                                                                    <div class="col-md-1" align="right" >
+                                                                                        <button id="miFormVerif48"  ng-click="vald_requisitos(48,1);verif_req();" type="button" class="btn btn-success fa fa-check" name="formEnviar" ng-disabled="btnValida48">OK</button>                      
+                                                                                    </div>
+                                                                                    <div class="col-md-1" align="right" ng-show = "continuar48 != null">
+                                                                                        <button type="button" class="btn btn-primary btn-inverse fa fa-check">OK</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>    
+                                                                    </div>
+                                                                </div> 
+                                                            </div>
+
+                                                        </div>  
+                                                </div>
+                                            </div>
+
+                                            <!-- Inicio Grilla visualizacion de requistos a enviar ><-->
+                                            <div class="col-md-12" >
+                                                    <legend> Requisitos a Enviar:</legend>
+                                                    
+                                                    <div class="col-lg-12">
+                                                        <div class="tab-content">
+                                                            <div id="tab-one" class="tab-pane active">
+                                                                <div class="row">
+                                                                  <div class="col-md-12">
+                                                                    <br>
+                                                                    <br>
+                                                                    <table class="table table-striped table-bordered" id="tablaAdjuntos">
+                                                                        <thead>
+                                                                            <th>#&nbsp;</th>
+                                                                            <th>Opciones&nbsp;</th>
+                                                                            <th>Archivo&nbsp;</th>
+                                                                            <th>Descripción&nbsp;</th>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr class="column" ng-repeat="archivo in obtArchivosAdjuntos">
+                                                                                <td>{{$index+1}}</td>
+                                                                                <td>
+                                                                                <a tooltip = "Eliminar" ng-click="eliminarArchivo(archivo, $index)" class="btn btn-default btn-circle" ng-show = "botones != null"><i class="fa fa-trash-o " style="color:#249FE6"></i></a>
+                                                                              <a target="_blank" tooltip = "Ver" ng-click="imprimirArchivo(archivo.url)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#docsVisor"><i class="fa fa-eye" style="color:#249FE6"></i></a>
+                                                                                </td>
+                                                                                <td>{{archivo.campo}}</td>
+                                                                                <td>{{archivo.nombre}}</td>
+                                                                                <!--td>{{archivo.url}}</td-->
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                  </div>
+                                                              </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>    
+                                            </div>
+                                            <!-- Fin Grilla visualizacion de requistos a enviar> <-->
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <!-- Fin Grilla para registrar gabinetes multiples ><-->
+                <br>
+                <br>
+                <div class="col-md-12" align="right" ng-show = "botones != null">
+                    <button id="miFormGuardar"  ng-click="serializarInformacion(dataAnt);" type="button" class="btn btn-success fa fa-save" name="formEnviar" >{{translateTitulos.lbl_016_29}}</button>                        
+                    <button id="btnFormLicencia"  ng-click="enviarData();" data-dismiss="modal" type="button" class="btn btn-success fa fa-mail-forward" ng-disabled="btnEnviarFormLinea">{{translateTitulos.lbl_016_30}}</button>
+                </div>
+            </div>    
+        </div>
+
+    </form>
+
+        <div class="modal fade" id="docsVisor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content">
+                   <div class="modal-header">
+                       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                   </div>
+                   <div class="modal-body">
+                       <!--pdf-->
+                       <div id="visorFum" ng-show="archpdf">
+                           <object data="" type="application/pdf" width="650" height="500"></object>
+                       </div>
+                       <!--imagen-->
+                       <div ng-show="archotro">
+                            <img id="imgSalida" ng-src="{{archivoP}}" onerror="angular.element(this).scope().imgError()" width="100%" height="100%">
+                       </div>
+                   </div>
+                   <div class="modal-footer">
+                       <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                   </div>
+               </div>
+            </div>
+        </div>
+
+
+<!--div class="modal fade" id="Internación" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <form name="formModalInternacion" class="form-horizontal" role="form" novalidate>
+                            <div class="modal-dialogTurno">
+                                <div class="modal-content"-->
+
+
+        <div class="modal fade" id="regSoporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="margin-top: 200px" scroll-to-top-when="items_changed">
+            <div class="modal-dialog" class="form-horizontal" role="form" novalidate>
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Cerrar</span></button>
+                        <h4 class="modal-title ng-binding" id="myModalLabel">Registro de los Soportes</h4>
+                    </div>
+                    <div class="modal-body">
+
+                
+                        <div class="col-md-12">
+                            <div class="col-sm-5">
+                                <label for="url" >Tipo de Soporte:</label>
+                                <select   id="tipo_sop" name="tipo_sop"  class="form-control" ng-model="dataAnt.tipo_sop" ng-change="">
+                                    <option value=""> -- Seleccione -- </option>
+                                    <option value="MÁSTILES">MÁSTILES</option>
+                                    <option value="MONOPOSTES">MONOPOSTES (Postes mayores)</option>
+                                    <option value="TORRES">TORRES</option>
+                                    <option value="POSTES">POSTES</option>
+                                    <option value="TORRETAS">TORRETAS</option>
+                                    <option value="COW">COW (Celdas sobre ruedas) ó COLT (Celdas en camiones de luz)</option>
+                                    <option value="GABINETES">GABINETES</option>
+                                    <option value="PARA ANTENAS SATELITALES">PARA ANTENAS SATELITALES</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-sm-5">
+                                <label for="url" >Categoria:</label>
+                                <select id="categoria" name="categoria" class="form-control" ng-model="dataAnt.categoria" >
+                                    <option value=""> -- Seleccione -- </option>
+                                    <option value="I. GRAN ESCALA">I. GRAN ESCALA</option>
+                                    <option value="II. ESCALA MEDIA">II. ESCALA MEDIA</option>
+                                    <option value="III. ESCALA MENOR">III. ESCALA MENOR</option>
+                                    <option value="IV.  ESCALA DOMÉSTICA">IV.  ESCALA DOMÉSTICA</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-sm-5">
+                                <label for="url" >Forma de Sujecion:</label>
+                                <select id="forma_sj" name="forma_sj" class="form-control" ng-model="dataAnt.forma_sj" >
+                                    <option value=""> -- Seleccione -- </option>
+                                    <option value="AUTOSOPORTADOS">AUTOSOPORTADOS</option>
+                                    <option value="ARRIOSTRADOS">ARRIOSTRADOS</option>
+                                    <option value="ADOSADOS">ADOSADOS</option>
+                                </select>
+
+                            </div>
+                            
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="form-group" >
+                                    <label for="url" >Altura(Mts.):</label>
+                                    <div class="controls">
+                                      <input  ng-model="dataAnt.altura" id="altura" name="altura" class="form-control" type="number" placeholder="Altura metros" ng-disabled="false" min="1" required>
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="col-sm-5">
+                                <div class="form-group" >
+                                    <label for="url" >NRO. ANTENAS:</label>
+                                    <div class="controls">
+                                      <input  ng-model="dataAnt.n_antenas" id="n_antenas" name="n_antenas" class="form-control" type="number" placeholder="Altura metros" ng-disabled="false" min="1" required>
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                            <!--div class="row">
+                              <div class="col-md-11">
+                                <H4>Registro de un nuevo Soporte</H4>
+                              </div>
+                              <div class="col-md-1">
+                              <a class="btn btn-info btn-circle" ng-click="addRadianes()" ng-disabled="" ><i class="fa fa-plus"  title="Nuevo" style="text-align:center;"></i></a>
+                              </div>
+                            </div>
+                            <table ng-table="tablaOpcion "  class="table table-hover table-striped table-bordered todolist" >
+                              <tr ng-repeat="radian in radianes" >
+                                <td data-title="'OPCIONES'" >
+                                  <div align="center">
+                                    <a type="button" class="btn btn-default btn-circle" ng-click="eliminar($index,radian)" ng-disabled="" ng-show="radian.vsca_datos.btneliminar">
+                                    <i class="fa fa-trash" style="color:#F70202" title="Eliminar">
+                                    </i>
+                                    </a>
+                                    <a type="button" class="btn btn-default btn-circle" ng-click="editarData(radian,$index)" ng-show="radian.vsca_datos.btneditar" >
+                                      <i class="fa fa-edit fa-2x" style="color:#48c9b0" title="Editar">
+                                      </i>
+                                    </a>
+                                    <a type="button" class="btn btn-info btn-circle" ng-click="eliminarPosicion(radian,$index)" ng-show="radian.vsca_datos.btneliminarpos">
+                                      <i class="fa fa-trash" style="text-align:center;" title="eliminar">
+                                      </i>
+                                    </a>
+                                  </div>
+                                </td> 
+                                <td  data-title="'DESCRIPCION'" > 
+                                  <div class="col-md-12">
+                                     <input value="radian.descripcion" ng-model = "radian.descripcion" id ="radian.descripcion"  name ="radian.descripcion" class="form-control" placeholder="" ng-change="mostartData()" ng-disabled="radian.vsca_datos.mostrar" onkeyUp="return conMayusculas(this);"/>
+                                  </div>
+                                </td>
+                                <td  data-title="'TAMAÑO(Mts)'" > 
+                                  <div class="col-md-12">
+                                     <input value="radian.tamanio" ng-model = "radian.tamanio" id ="radian.tamanio"  name ="radian.tamanio" class="form-control" placeholder="" ng-change="mostartData()" ng-disabled="radian.vsca_datos.mostrar" onkeyUp="return conMayusculas(this);" type="number" />
+                                  </div>
+                                </td>
+                              </tr>
+                            </table-->
+                        </div>
+                    <div class="modal-footer">
+                      <button data-dismiss="modal" ng-click="reg_soporte(dataAnt)" type="button" class="btn btn-primary"> <i class="glyphicon fa fa-save"></i> Registrar</button>
+                      <button data-dismiss="modal" type="button" class="btn btn-primary btn-inverse"><i class="glyphicon fa fa-close"></i>Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+        
+
+
+        <div class="modal fade" id="registroRBM" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Cerrar</span></button>
+                        <h4 class="modal-title ng-binding" id="myModalLabel">REGISTRO DE RADIO BASE.</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="col-md-12">
+                            <div>
+                                
+                                <div class="col-md-4">
+                                    
+                                    <div class="col-sm-10" >
+                                        <div class="form-group" >
+                                            <label for="url" >Denominación:</label>
+                                            <div class="controls">
+                                              <input  ng-model="dataAnt.den_rbase_m" id="den_rbase_m" name="den_rbase_m" class="form-control" type="text" placeholder="Denominacion de la Radio Base" ng-disabled="false" required onkeyUp="return conMayusculas(this);">
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10"  >
+                                        <div class="form-group" >
+                                            <label for="url" >Ubicación Radio Base:</label>
+                                            <div class="controls">
+                                              <input  ng-model="dataAnt.ub_rbase_m" id="ub_rbase_m" name="ub_rbase_m" class="form-control" type="text" placeholder="Ubicación de la radio base" ng-disabled="false" required onkeyUp="return conMayusculas(this);">
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <label for="url" >Tipo de Propiedad:</label>
+                                        <select id="tp_prop_m" class="form-control" ng-model="dataAnt.tp_prop_m" placeholder="Tipo de Propiedad">
+                                            <option value=""> -- Seleccione -- </option>
+                                            <option value="PRIVADA">PRIVADA</option>
+                                            <option value="HORIZONTAL">HORIZONTAL</option>
+                                            <option value="DOMINIO MUNICIPAL">DOMINIO MUNICIPAL</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-10"  >
+                                        <div class="form-group" >
+                                            <label for="url" >Latitud Ubicación:</label>
+                                            <div class="controls">
+                                              <input  ng-model="dataAnt.lt_ubicacion_m" id="lt_ubicacion_m" name="lt_ubicacion_m" class="form-control" type="text" placeholder="Latitud Ubicación de la radio base" ng-disabled="true" required onkeyUp="return conMayusculas(this);">
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10"  >
+                                        <div class="form-group" >
+                                            <label for="url" >Longitud Ubicación:</label>
+                                            <div class="controls">
+                                              <input  ng-model="dataAnt.ln_ubicacion_m" id="ln_ubicacion_m" name="ln_ubicacion_m" class="form-control" type="text" placeholder="Longitud Ubicación de la radio base" ng-disabled="true" required onkeyUp="return conMayusculas(this);">
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10" >
+                                        <div class="form-group" >
+                                            <label for="url" >Total Número de Gabinetes:</label>
+                                            <div class="controls">
+                                              <input  ng-model="dataAnt.den_ngabinete_m" id="den_ngabinete_m" name="den_ngabinete_m" class="form-control" type="number" placeholder="Denominacion de la Radio Base" ng-disabled="false" min="1" required onkeyUp="return conMayusculas(this);">
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="col-md-12" >Mapa de ubicacion</div>
+                                    <div id="mapActividad2"   style="height: 500px; width:500px; margin: 10px 5px 5px 5px">
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="grillaRM != null">
+                                
+                                <div ng-show="soporteRM != null">
+                                    <div class="row">
+                                        <br>
+                                        <legend> Registro de los Soportes:</legend>
+                                        <div class="col-md-12">
+                                            <div class="col-sm-5">
+                                                <label for="url" >Tipo de Soporte:</label>
+                                                <select   id="tipo_sop_m" name="tipo_sop_m" class="form-control" ng-model="dataAnt.tipo_sop_m" ng-change="">
+                                                    <option value=""> -- Seleccione -- </option>
+                                                    <option value="MÁSTILES">MÁSTILES</option>
+                                                    <option value="MONOPOSTES">MONOPOSTES (Postes mayores)</option>
+                                                    <option value="TORRES">TORRES</option>
+                                                    <option value="POSTES">POSTES</option>
+                                                    <option value="TORRETAS">TORRETAS</option>
+                                                    <option value="COW">COW (Celdas sobre ruedas) ó COLT (Celdas en camiones de luz)</option>
+                                                    <option value="PARA ANTENAS SATELITALES">PARA ANTENAS SATELITALES</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-1">
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <label for="url" >Categoria:</label>
+                                                <select id="categoria_m" name="categoria_m" class="form-control" ng-model="dataAnt.categoria_m" >
+                                                    <option value=""> -- Seleccione -- </option>
+                                                    <option value="I. GRAN ESCALA">I. GRAN ESCALA</option>
+                                                    <option value="II. ESCALA MEDIA">II. ESCALA MEDIA</option>
+                                                    <option value="III. ESCALA MENOR">III. ESCALA MENOR</option>
+                                                    <option value="IV.  ESCALA DOMÉSTICA">IV.  ESCALA DOMÉSTICA</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-sm-5">
+                                                <label for="url" >Forma de Sujecion:</label>
+                                                <select id="forma_sj_m" name="forma_sj_m" class="form-control" ng-model="dataAnt.forma_sj_m" >
+                                                    <option value=""> -- Seleccione -- </option>
+                                                    <option value="AUTOSOPORTADOS">AUTOSOPORTADOS</option>
+                                                    <option value="ARRIOSTRADOS">ARRIOSTRADOS</option>
+                                                    <option value="ADOSADOS">ADOSADOS</option>
+                                                </select>
+
+                                            </div>
+                                            
+                                            <div class="col-md-1">
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="form-group" >
+                                                    <label for="url" >Altura Mts.:</label>
+                                                    <div class="controls">
+                                                      <input  ng-model="dataAnt.altura_m" id="altura_m" name="altura_m" class="form-control" type="number" placeholder="Altura metros" min="1" ng-disabled="false" required>
+                                                      
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-sm-5">
+                                                <div class="form-group" >
+                                                    <label for="url" >NRO. ANTENAS:</label>
+                                                    <div class="controls">
+                                                      <input  ng-model="dataAnt.n_antenas_m" id="n_antenas_m" name="n_antenas_m" class="form-control" type="number" placeholder="Altura metros" ng-disabled="false" min="1" required>
+                                                      
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                      <button ng-click="guardar_data(dataAnt)" type="button" class="btn btn-primary"> <i class="glyphicon fa fa-save"></i> Registrar</button>
+                                      <button ng-click="close_datos()" type="button" class="btn btn-primary btn-inverse">Cancelar</button>
+                                    </div>
+                                </div>
+                                <br><br>
+                                <div ng-show="rbase != null"> 
+                                    <div class="col-md-12" ng-show = "botones != null">
+                                        <legend> Detalles de los Soportes:</legend>
+                                        <div align=right >
+                                            <a class="btn btn-info btn-circle"  ng-click = "mostrarDet_m()" ><i class="fa fa-plus"  title="Registrar un nuevo soporte" style="text-align:center;" ></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" ng-show = "botones == null">
+                                        <legend> Detalles de los Soportes:</legend>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><B></B></div>
+                                            <div class="panel-body"  >
+                                              <div>
+                                                <div class="table-responsive">
+                                                    <table ng-table="tb_lstSoporte_m" show-filter="true" class="table table-striped table-bordered">
+                                                        <tr ng-repeat="lstGrilla in $data" style="background-color:mintcream">
+                                                            <td align="center" style="width:5%" data-title="'#'">{{$index+1}}</td>
+                                                            <td class="text-center" style="width:15%" data-title="'TIPO SOPORTE'" >
+                                                            {{lstGrilla.tipoSoporte}}
+                                                            </td>
+                                                            <td class="text-center" style="width:15%" data-title="'CATEGORIA'"  >
+                                                            {{lstGrilla.categoria}}
+                                                            </td>
+                                                            <td class="text-center" style="width:15%" data-title="'FORMA DE SUJECION'">
+                                                            {{lstGrilla.frmSujecion}}
+                                                            </td>
+                                                            <td class="text-center" style="width:15%" data-title="'ALTURA(Mts.)'">
+                                                            {{lstGrilla.altura}}
+                                                            </td>
+                                                            <td class="text-center" style="width:15%" data-title="'NRO. ANTENAS'">
+                                                            {{lstGrilla.nro_antenas}}
+                                                            </td>
+
+                                                            <td data-title="'OPCIONES'" class="text-center" style="width:10%">
+                                                            <!--a class="btn btn-primary" data-toggle="modal" data-target="#detallesRadianes"  ng-click="detalleradianes(lstGrilla)" ><i class="fa fa-eye"  title="Ver radianes del Soporte"></i></a-->
+                                                            <a class="btn btn-primary" ng-click="eliminarSoporte(lstGrilla,$index)" ng-show = "botones != null"><i class="fa fa-trash "  title="Eliminar registro Antena" ></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>  
+                                                </div>
+                                              </div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                      <button ng-show = "guardarbtn1 != null " data-dismiss="modal" ng-click="reg_radiantes_multiple(dataAnt)" type="button" class="btn btn-primary"> <i class="glyphicon fa fa-save"></i> Registrar</button>
+                      <button data-dismiss="modal" type="button" class="btn btn-primary btn-inverse">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="regSoporte_M" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Cerrar</span></button>
+                        <h4 class="modal-title ng-binding" id="myModalLabel">DETALLE DE SOPORTES..</h4>
+                    </div>
+                    <!--><los campos del modalllll-->
+
+                    <br>
+                    <br>
+                    <div class="modal-footer">
+                      <button data-dismiss="modal" ng-click="guardar_data(dataAnt)" type="button" class="btn btn-primary"> <i class="glyphicon fa fa-save"></i> Registrar</button>
+                      <button data-dismiss="modal" type="button" class="btn btn-primary btn-inverse">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div class="modal fade" id="detallesRadianes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Cerrar</span></button>
+                            <h4 class="modal-title ng-binding" id="myModalLabel">RADIANES REGISTRADOS..</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table ng-table="tablalstradianes" show-filter="true" class="table table-striped table-bordered">
+                                    <tr ng-repeat="lstGrilla in $data" style="background-color:mintcream">
+                                        <td align="center" style="width:5%" data-title="'#'">{{$index+1}}</td>
+                                        <td class="text-center" style="width:15%" data-title="'DESCRIPCION'" >
+                                        {{lstGrilla.descripcion}}
+                                        </td>
+                                        <td class="text-center" style="width:15%" data-title="'ALTURA'"  >
+                                        {{lstGrilla.tamanio}}
+                                        </td>
+                                    </tr>
+                                </table>  
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button data-dismiss="modal" type="button" class="btn btn-primary btn-inverse">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        
+    </div>
+<script async defer
+         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfKWci28piaE9q8Or0DzmUUJXbbdja54&callback=initMap">
+</script>
+</html>

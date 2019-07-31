@@ -1,0 +1,762 @@
+
+<script type="text/javascript">
+	function display(obj,id1,id2) {
+		txt = obj.options[obj.selectedIndex].value;
+		document.getElementById(id1).style.display = 'block';
+		console.log(document.getElementById(id1));
+		document.getElementById(id1).style.display = 'none';
+		document.getElementById(id2).style.display = 'none';
+		if ( txt.match(id1) ) {
+		document.getElementById(id1).style.display = 'block';
+		}
+		if ( txt.match(id2) ) {
+		document.getElementById(id2).style.display = 'block';
+		}
+	}
+	$('#categoria> option[value="Natural"]').attr('selected', 'selected'); // valor por de3fecto en el select de un combo
+</script>
+
+<div class="page-content" ng-controller="registroCiudadanoController" onchange="display(this,'Juridica','Natural');" data-ng-init="inicioEstadoCivil()">
+	<div class="row">
+		<div class="col-sm-9 col-sm-offset-1">
+			<div id="login-box" class="login-box visible widget-box no-border">
+				<div class="widget-body">
+					<div class="widget-main">
+						<div class="form-group" align="center">
+							<tr>
+								<td>
+								<div class="row">
+                                    </p><p>
+                                    </p><p>
+                                    </p><p>
+									<!--div class="col-md-9">
+										<div class="form-group">
+											<label class="col-sm-3 control-label no-padding-right" for="tipo_persona">Seleccione tipo persona: </label>
+											<div class="col-sm-3">
+											   <select  onchange="display(this,'Juridica','Natural');" ng-click="getTipoPersona(selecteIdi);" ng-model="selecteIdi" class="form-control">
+													<option   value="Natural" >Persona Natural</option>
+													<option  value="Juridica">Persona Jurídica</option>
+												</select>
+											</div>
+										</div>
+									</div-->
+									<div  class="col-md-9">
+										<div class="form-group">
+											<div class="col-sm-7">
+											 <h3 class="header blue lighter bigger"> Formulario de Registro  Persona {{tipo}}</h3>
+											</div>
+										</div>
+									</div>
+								</div>
+								</td>
+							</tr>
+						</div>
+						<div  ng-show="mostrarNatural == null" id="Natural">
+							<form name="signupForm" class="form-horizontal" role="form" novalidate>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="nombre"> Nombre <font color="#FF0000" size="5px"> * </font></label>
+											<div class="col-sm-8">
+												<input id="prsNom" name="prsNom" type="text" class="form-control" placeholder="Nombre" ng-model="registro.nombre"  onkeyUp="return conMayusculas(this);" required/>
+												<span style="color:red" ng-show="signupForm.prsNom.$invalid">
+													<span ng-show="signupForm.prsNom.$error.required">Nombre es requerido.
+													</span>
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="paterno">Paterno </label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" placeholder="Paterno" ng-model="registro.paterno" onkeyUp="return conMayusculas(this);" />
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="materno">Materno </label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" placeholder="Materno" ng-model="registro.materno" onkeyUp="return conMayusculas(this);" />
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="cedula">C.I. <font color="#FF0000" size="5px"> * </font></label>
+											<div class="col-sm-4">
+												<input id="prsCi" name="prsCi" type="text" class="form-control" placeholder="C.I." ng-model="registro.cedula" onkeyUp="return valNumero(this);" required/>
+												<span style="color:red" ng-show="signupForm.prsCi.$invalid">
+													<span ng-show="signupForm.prsCi.$error.required">Nro de Carnet es requerido.
+													</span>
+												</span>
+											</div>
+											<div class="col-sm-4">
+												<div class="form-group" ng-show="mostrarNumComplemento">
+													<label class="col-sm-6 control-label no-padding-right" for="ciComplementario">Nro Complemento</label>
+													<div class="col-sm-6">
+														<input id="complemento" name="complemento" type="text" class="form-control" placeholder="Nro" ng-model="registro.complemento" maxlength="5" />
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-10 control-label no-padding-right" for="sexo">Marque este campo si tiene duplicación de número de CI </label>
+												<div class="col-sm-2">
+													<span class="block input-icon input-icon-right">
+														<input type="checkbox" ng-model="mostrarNumComplemento" value="">
+													</span>
+												</div>
+										</div>
+									</div>
+								   	<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right"  for="estado_civil">Expedido <font color="#FF0000" size="5px"> * </font></label>
+											<div class="col-sm-8">
+												<select id="expedido" class="form-control" ng-model="registro.expedido" name="expedido" placeholder="Expedido" required>
+													<option value="1">BENI</option>
+													<option value="2">COCHABAMBA</option>
+													<option value="3">CHUQUISACA</option>
+													<option value="4">LA PAZ</option>
+													<option value="5">ORURO</option>
+													<option value="6">PANDO</option>
+													<option value="7">POTOSI</option>
+													<option value="8">SANTA CRUZ</option>
+													<option value="9">TARIJA</option>
+												</select>
+												<span style="color:red" ng-show="signupForm.expedido.$invalid">
+													<span ng-show="signupForm.expedido.$error.required">Expedido es requerido.
+													</span>
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right"  for="estado_civil">Estado civil <font color="#FF0000" size="5px"> * </font></label>
+											<div class="col-sm-8">
+												<select  id="estCivil" name="estCivil"  placeholder="Estado Civil" ng-model="registro.estado_civil"  class="form-control" ng-options="datos.estcivil_id as datos.estcivil for datos in aEstadoCivil" required>
+												</select>
+												<span style="color:red" ng-show="signupForm.estCivil.$invalid">
+													<span ng-show="signupForm.estCivil.$error.required">Estado civil es requerido.
+													</span>
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="fecNacimiento">Fecha Nacimiento <font color="#FF0000" size="5px"> * </font></label>
+											<div class="col-sm-8">
+												<p class="input-group"><input name="fechaNac" id="fechaNac" type="text" placeholder="Fecha nacimiento"   class="form-control" datepicker-popup="" ng-model="registro.fecha_nacimiento" is-open="startDateOpened" close-text="Close" ng-disabled="true" required/>
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-default" ng-click="startDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+												</span></p>
+												<span style="color:red" ng-show="signupForm.fechaNac.$invalid">
+													<span ng-show="signupForm.fechaNac.$error.required">Fecha de Nacimiento es requerido.
+													</span>
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="sexo">Género <font color="#FF0000" size="5px"> * </font></label>
+											<div class="col-sm-8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												<input type="radio" ng-model="registro.sexo" name="genero" value="M" ng-change="" ng-disabled="desabilitado" required> Masculino&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												<input type="radio" ng-model="registro.sexo" name="genero" value="F" ng-change="" ng-disabled="desabilitado" required> Femenino</p><p>
+												<span style="color:red" ng-show="signupForm.genero.$invalid">
+													<span ng-show="signupForm.genero.$error.required">Género es requerido.
+													</span>
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="direccion">Domicilio </label>
+											<div class="col-sm-8">
+												<span class="block input-icon input-icon-right">
+													<input type="text" class="form-control" placeholder="Domicilio" ng-model="registro.direccion" onkeyUp="return conMayusculas(this);" />
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="telefono">Teléfono </label>
+											<div class="col-sm-8">
+												<span class="block input-icon input-icon-right">
+													<input type="text" class="form-control" placeholder="Teléfono" ng-model="registro.telefono" onkeyUp="return valNumero(this);" />
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="celular">Celular </label>
+											<div class="col-sm-8">
+												<span class="block input-icon input-icon-right">
+													<input type="text" class="form-control" placeholder="Celular" ng-model="registro.celular" onkeyUp="return valNumero(this);" />
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="correo">Correo <font color="#FF0000" size="5px"> * </font></label>
+											<div class="col-sm-8">
+												<input id="correo" name="correo" type="email" class="form-control" placeholder="Correo" ng-model="registro.correo" required/>
+												<span style="color:red" ng-show="signupForm.correo.$invalid">
+													<span ng-show="signupForm.correo.$error.required">Correo es requerido.
+													</span>
+													<span class="error" ng-show="signupForm.correo.$error.email">Este campo debe ser una dirección de correo electrónico en el formato "usuario@ejemplo.com"</span>
+												</span>
+
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="ocupacion">Ocupación </label>
+											<div class="col-sm-8">
+												<span class="block input-icon input-icon-right">
+													<input type="text" class="form-control" placeholder="Ocupación" ng-model="registro.ocupacion" onkeyUp="return conMayusculas(this);" />
+												</span>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="col-sm-10 control-label no-padding-right" for="ocupacion">
+												<font color="#FF0000" size="5px"> * </font> Acepto los <a data-toggle="modal" data-target="#formModalTrm">términos y condiciones de uso </a> y las <a data-toggle="modal" data-target="#formModalPlt">políticas de privacidad </a>.
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											</label>
+											<div class="col-sm-2">
+												<span class="block input-icon input-icon-right">
+													<input id="chkCondiciones" name="chkCondiciones" type="checkbox" onchange="" ng-model="registro.chkCondiciones" required/>
+													<span style="color:red" ng-show="signupForm.chkCondiciones.$invalid">
+														<span ng-show="signupForm.chkCondiciones.$error.required">Debe aceptar los terminos y condiciones
+														</span>
+													</span>
+												</span>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group" align="right">
+										<span class="lbl col-sm-5"> </span>
+										<tr>
+										<td>
+											<a href="#/REGISTRO_CIUDADANO|BUSQUEDA" style="color:#ffffff" class="btn btn-success fa fa-reply"><font color="#ffffff">Volver</font></a>
+										</td>
+										 <td>
+											<button data-toggle="modal" ng-click="validacamposJuridico();" data-target="#formModal" type="submit" class="btn btn-success center-block fa fa-save "  ng-disabled="signupForm.prsNom.$invalid || signupForm.prsCi.$error.required || signupForm.estCivil.$invalid || signupForm.fechaNac.$invalid || signupForm.genero.$invalid || signupForm.chkCondiciones.$invalid">
+												Registrar
+											</button>
+										</td>
+										</tr>
+									</div>
+								</div>
+							</form>
+						</div>  <!--   id="Natural"    -->
+
+						<!--   formulario juridico  -->
+						<div id="Juridica" style="display:none" >
+						  <form name="signupFormJuridico" class="form-horizontal"  role="form"  novalidate>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="nombre">  Nombre<font color="#FF0000" size="5px"> * </font></label>
+										<div class="col-sm-8">
+											<input id="prsNom" name="prsNom" ype="text" class="form-control" placeholder="Nombre" ng-model="registro.nombre"  onkeyUp="return conMayusculas(this);" required/>
+											<span style="color:red" ng-show="signupFormJuridico.prsNom.$invalid">
+												<span ng-show="signupFormJuridico.prsNom.$error.required">Nombre es requerido.
+												</span>
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="paterno">Paterno </label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" placeholder="Paterno" ng-model="registro.paterno" onkeyUp="return conMayusculas(this);" />
+											 <span style="color:red" ng-show="signupFormJuridico.paterno.$invalid">
+												<span ng-show="signupFormJuridico.paterno.$error.required">Paterno es requerido.
+												</span>
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="materno">Materno </label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" placeholder="Materno" ng-model="registro.materno" onkeyUp="return conMayusculas(this);" />
+										</div>
+									</div>
+								</div>
+
+
+
+								<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-sm-4 control-label no-padding-right" for="cedula">  C.I. <font color="#FF0000" size="5px"> * </font></label>
+											<div class="col-sm-4">
+												<input id="repCi" name="repCi" type="text" class="form-control" placeholder="C.I." ng-model="registro.cedula" onkeyUp="return valNumero(this);" required/>
+												<span style="color:red" ng-show="signupFormJuridico.repCi.$invalid">
+													<span ng-show="signupFormJuridico.repCi.$error.required">Nro de Carnet es requerido.
+													</span>
+												</span>
+											</div>
+											<div class="col-sm-4">
+												<div class="form-group" ng-show="mostrarNumComplemento">
+													<label class="col-sm-6 control-label no-padding-right" for="ciComplementario">Número Complemento </label>
+													<div class="col-sm-6">
+														<input id="complemento" name="complemento" type="text" class="form-control" placeholder="Nro" ng-model="registro.complemento" maxlength="5" />
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-sm-10 control-label no-padding-right" for="sexo">Marque este campo si tiene duplicación de número de CI </label>
+												<div class="col-sm-2">
+													<span class="block input-icon input-icon-right">
+														<input type="checkbox" ng-model="mostrarNumComplemento" value="">
+													</span>
+												</div>
+										</div>
+									</div>
+
+								  <div class="col-md-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="repLegal">Poder del Representante Legal </label>
+										<div class="col-sm-8">
+											<span class="block input-icon input-icon-right">
+												<input type="text" class="form-control" placeholder="Representante Legal" ng-model="registro.repLegal" value="" />
+											</span>
+										</div>
+									</div>
+								</div>
+								<!--div class="col-md-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="nroDocumento">Nro de Documento </label>
+										<div class="col-sm-8">
+											<span class="block input-icon input-icon-right">
+												<input type="text" class="form-control" placeholder="Nro de Documento" ng-model="registro.nroDocumento"  />
+											</span>
+										</div>
+									</div>
+								</div-->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="nroNotaria">Nro de la Notaría </label>
+										<div class="col-sm-8">
+											<span class="block input-icon input-icon-right">
+												<input type="text" class="form-control" placeholder="Nro Notaría" ng-model="registro.nroNotaria" />
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="nit">NIT <font color="#FF0000" size="5px"> * </font></label>
+										<div class="col-sm-8">
+											<span class="block input-icon input-icon-right">
+												<input id="nit" name="nit" type="text" class="form-control" placeholder="NIT" ng-model="registro.nit" onkeyUp="return valNumero(this);" required />
+											</span>
+											<span style="color:red" ng-show="signupFormJuridico.nit.$invalid">
+												<span ng-show="signupFormJuridico.nit.$error.required">Nro de Nit es requerido.
+												</span>
+											</span>
+										</div>
+
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="razonSocial">Razón Social </label>
+										<div class="col-sm-8">
+											<span class="block input-icon input-icon-right">
+												<input type="text" class="form-control" placeholder="Razón" ng-model="registro.razonSocial" />
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="telefono">Teléfono </label>
+										<div class="col-sm-8">
+											<span class="block input-icon input-icon-right">
+												<input type="text" class="form-control" placeholder="Teléfono" ng-model="registro.telefono" onkeyUp="return valNumero(this);" />
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="celular">Celular </label>
+										<div class="col-sm-8">
+											<span class="block input-icon input-icon-right">
+												<input type="text" class="form-control" placeholder="Celular" ng-model="registro.celular" onkeyUp="return valNumero(this);" />
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="correo">Correo<font color="#FF0000" size="5px"> * </font></label>
+										<div class="col-sm-8">
+											<span class="block input-icon input-icon-right">
+												<input type="email" class="form-control" placeholder="Correo" id="correo_juridico" name="correo_juridico" ng-model="registro.correo" required/>
+												<span ng-show="signupForm.correo_juridico.$error.email" class="help-inline">Correo no validao :</span>
+											</span>
+											<span style="color:red" ng-show="signupFormJuridico.correo_juridico.$invalid">
+												<span ng-show="signupFormJuridico.correo_juridico.$error.required">Correo es requerido.
+												</span>
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="col-sm-10 control-label no-padding-right" for="ocupacion">
+											<font color="#FF0000" size="5px"> * </font> Acepto los <a data-toggle="modal" data-target="#formModalTrm">términos y condiciones de uso </a> y las <a data-toggle="modal" data-target="#formModalPlt">políticas de privacidad </a>.
+										</label>
+										<div class="col-sm-2">
+											<span class="block input-icon input-icon-right">
+												<input id="chkCondiciones_juridico" name="chkCondiciones_juridico" type="checkbox" onchange="" ng-model="registro.chkCondiciones_juridico" required/>
+												<span style="color:red" ng-show="signupFormJuridico.chkCondiciones_juridico.$invalid">
+													<span ng-show="signupFormJuridico.chkCondiciones_juridico.$error.required">Debe aceptar los terminos y condiciones
+													</span>
+												</span>
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group" align="right">
+											<span class="lbl col-sm-5"> </span>
+											<div class="col-sm-7">
+											</div>
+								</div>
+
+								<div class="form-group" align="right">
+									<span class="lbl col-sm-5"> </span>
+									<tr>
+									<td>
+										<a href="#/REGISTRO_CIUDADANO|BUSQUEDA" style="color:#ffffff" class="btn btn-success fa fa-reply"><font color="#ffffff">Volver</font></a>
+									</td>
+									 <td>
+										<button  data-toggle="modal" data-target="#formModal" type="submit" ng-click="validacamposJuridico();"  class="btn btn-success fa fa-save"  ng-disabled="signupFormJuridico.prsNom.$invalid||signupFormJuridico.paterno.$invalid||  signupFormJuridico.repCi.$invalid || signupFormJuridico.nit.$invalid || signupFormJuridico.chkCondiciones_juridico.$invalid">
+											Registrar
+										</button>
+									</td>
+									</tr>
+								</div>
+							</form>   <!--  formulario de persona juridica  -->
+						</div> <!-- end id Juridica  -->
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+	   <!-- MODAL -->
+	<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+					<h4 class="modal-title" id="myModalLabel">{{tituloVentana}} </h4>
+				</div>
+				<div class="modal-body" >
+					<form name="formularioUsuarios" readOnly="true" novalidate>
+						<div class="row">
+
+						<div class="col-md-12" ng-show = "opcionpersonaNatural != null">
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="cedula">Vuelva a ingresar C.I. </label>
+								<div class="col-sm-3">
+									<input id="prsCi" name="prsCi" type="text" class="form-control" placeholder="C.I." ng-model="registro.cedula2" onkeyUp="return valNumero(this);" required/>
+									<span style="color:red" ng-show="signupForm.prsCi.$invalid">
+										<span ng-show="signupForm.prsCi.$error.required">Nro de Carnet es requerido.
+										</span>
+									</span>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group" ng-show="mostrarNumComplemento2">
+										<label class="col-sm-6 control-label no-padding-right" for="ciComplementario">Nro Complemento</label>
+										<div class="col-sm-6">
+											<input type="text" class="form-control" placeholder="Nro" type="text" ng-model="registro.complemento2" maxlength="7" />
+										</div>
+									</div>
+								</div>
+							</div>
+							</p><p>
+							</p><p>
+							<div class="form-group">
+								<label class="col-sm-10 control-label no-padding-right" for="sexo">Marque este campo si tiene duplicación de número de C.I. </label>
+								<div class="col-sm-2">
+									<span class="block input-icon input-icon-right">
+										<input type="checkbox" ng-model="mostrarNumComplemento2" value="">
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12" ng-show = "opcionpersonaJuridico != null">
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="cedula">Vuelva a ingresar NIT </label>
+								<div class="col-sm-3">
+									<input id="nit2" name="nit2" type="text" class="form-control" placeholder="NIT" ng-model="registro.nit2" onkeyUp="return valNumero(this);" required/>
+									<span style="color:red" ng-show="signupForm.nit2.$invalid">
+										<span ng-show="signupForm.nit2.$error.required">Nro de Nit es requerido.
+										</span>
+									</span>
+								</div>
+
+							</div>
+						</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button id="cerrar" name="cerrar" type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+					<button ng-click="validarCiCiudadano(registro);" data-dismiss="modal" type="button" class="btn btn-success">Guardar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- MODAL DE TERMINOS Y CONDICIONES DE USO -->
+    <div class="modal fade" id="formModalTrm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <h4 class="modal-title" id="myModalLabel"> Términos y Condiciones de Uso </h4>
+                </div>
+                <div class="modal-body" >
+                    <form name="formularioUsuarios" readOnly="true" novalidate>
+                        <div class="row">
+                             <div class="col-md-12">
+                                <div class="form-group">
+                                    <p>
+                                        La Plataforma 24/7,con dominio https://24_7.lapaz.bo; es creada y puesta a disposición de manera gratuita a los usuarios de Internet y administrado por el Gobierno Autónomo Municpal de La Paz.
+                                        </p><p>
+										La Plataforma tecnológica tiene como principal objetivo, brindar al ciudadano de la Ciudad de La Paz, en adelante Usuario, el acceso a las aplicaciones informáticas que brinden servicios “on line”.
+                                        </p><p>
+										Las aplicaciones informáticas, que soliciten datos del ciudadano, lo realizan mediante los servicios brindados por la plataforma del Ciudadano, siendo ésta la única administradora de dicha información.
+                                        </p><p>
+										El uso de la Plataforma presupone la plena aceptación de las Condiciones de Uso y Políticas de Privacidad, por lo que se recomienda al Usuario su lectura atenta, previa a la navegación.
+                                        </p><p>
+										El Administrador se reserva el derecho de cambiar las Condiciones de Uso y Políticas de Privacidad en cualquier momento, sin comunicación previa. Su uso continuo significa la aceptación de esos cambios.
+                                    </p>
+										<h4>
+											I. REGISTRACIÓN
+										</h4>
+										<h5>
+											CLAVES DE ACCESO Y NIVELES DE SEGURIDAD.
+										</h5>
+									<p>
+										Para obtener la clave de acceso a la Plataforma de Servicios Digitales Tecnológica – Ciudadano Digital, es necesaria su registración a través del Portal.
+										<ol>
+											<li>Nivel de Seguridad 1 – REGISTRADO. La registración se constituye consignando los datos solicitados y validándolos, habilitando así su clave Ciudadano Digital.</li>
+											<li>Nivel de Seguridad 2 – VERIFICADO. La obtención por parte del ciudadano de éste nivel, es necesario para acceder a servicios específicos que brinda la Plataforma, y que exigen un nivel de verificación y autenticación de los datos ingresados. Para la obtención de esta clave el ciudadano interesado, deberá presentarse a cualquier plataforma de atención, donde se verificarán sus datos e identidad, se registrará su fotografía y se anexará una copia digital del C.I. </li>
+										</ol>
+									</p>
+										<h5>CONFIDENCIALIDAD Y RESPONSABILIDAD.</h5>
+									<p>
+										El Usuario Registrado es responsable por la confidencialidad de su clave.
+										</p><p>
+										El Administrador, aunque garantiza la seguridad informática de las contraseñas mediante protocolos de encriptación alineados a los estándares informáticos del Gobierno de la Provincia, no se responsabiliza por los daños ocasionados por el mal uso, uso indebido y/o fraudulento por parte terceros y de los Usuarios, de las claves registradas.
+										</p><p>
+										Es responsabilidad del Usuario Registrado, la efectiva y fehaciente comunicación al Administrador, de la existencia del uso no autorizado de su clave.
+										</p><p>
+										El Portal de la Plataforma, al igual que la mayoría de los sitios en Internet, usa Cookies para mejorar la experiencia del usuario. Las Cookies son archivos que el portal o la aplicación que utilice instala en su navegador o en su dispositivo (Smartphone, tableta o televisión conectada) durante su recorrido por las páginas o por la aplicación, y sirven para almacenar información sobre su visita. El uso de las Cookies en este Portal es necesario para utilizar la característica “Mantener la sesión iniciada”.
+									</p>
+										<h4>II. ENLACES (Links).</h4>
+									<p>
+										Solamente se enlazan Sitios pertenecientes a la plataforma, por lo que se presume la inexistencia de material inadecuado.
+										</p><p>
+										Asimismo, la Plataforma presume que la información que se encuentra en Internet es de pública disposición.
+										</p><p>
+										El enlace a otros sitios de Internet desde la Plataforma es legal. Si el acceso a algunos de los sitios enlazados en particular es restricto, su administrador deberá notificar fehacientemente a nuestro Administrador.
+										</p><p>
+										Por lo descripto en los párrafos precedentes El Usuario deberá verificar por sí mismo la Política de Uso de cada Sitio Web enlazado.
+									</p>
+										<h4>III. LIMITACION DE RESPONSABILIDAD</h4>
+									<p>
+
+										El Administrador realiza un esfuerzo razonable por incluir información exacta, completa y actual. No obstante, no garantiza que el contenido del portal sea exacto, completo, actual o libre de errores técnicos o tipográficos.
+										</p><p>
+										El Administrador se reserva el derecho de realizar cambios y/o actualizaciones de cualquier información contenida en el Portal sin previo aviso.
+										</p><p>
+										El Administrador no se responsabiliza por cualquier daño que resultara por el uso o la inhabilidad en el uso del Portal o cualquiera de los sitios enlazados, o descarga de cualquier información, dato, texto, imagen, video, audio, software u otros materiales accesibles a través del mismo.
+										</p><p>
+										El Administrador emplea programas de Software para la seguridad del portal y protección contra virus, pero no garantiza su ausencia ni la de otros elementos de naturaleza dañina o destructiva, en el Portal y/o en el servidor que lo hace disponible, que pudieran ocasionar alteraciones en el Sistema Informático del Usuario, tanto software como hardware, o en documentos electrónicos, archivos o directorios de archivos almacenados en su equipo informático. En consecuencia, el Usuario tiene la responsabilidad de tomar todas las precauciones necesarias para su protección y seguridad.
+										</p><p>
+										El Administrador no garantiza que las funciones contenidas en el Portal estarán libres de interrupciones en el servicio o libres de error, tampoco garantiza inmediatez en la corrección de los defectos.
+										</p><p>
+										El Administrador no se responsabiliza por el uso indebido que hagan los Usuarios de los contenidos del portal; entendiéndose por contenidos toda información, dato, texto, imagen, video, audio, software u otros materiales multimedia accesibles a través del mismo.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">Atras</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN DE MODAL DE TERMINOS Y CONDICIONES DE USO -->
+    <!-- MODAL DE POLITICAS -->
+    <div class="modal fade" id="formModalPlt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <h4 class="modal-title" id="myModalLabel"> Política de Privacidad de Ciudadano Digital </h4>
+                </div>
+                <div class="modal-body" >
+                    <form name="formularioUsuarios" readOnly="true" novalidate>
+                        <div class="row">
+                             <div class="col-md-12">
+                                <div class="form-group">
+                                    <p>
+                                       <h4>INTRODUCCIÓN.</h4>
+                                       <p>
+										Por medio de la Política de Privacidad se determina el tratamiento que La Plataforma de Servicios Digitales, en adelante Plataforma Ciudadano, dará a los datos recibidos por parte de los usuarios, y que estará en un todo de acuerdo a lo establecido en la Ley Nacional N° 1.2 de Habeas Data.
+										</p><p>
+										El Gobierno Autónomo Municipal de La Paz proporciona a los usuarios los recursos técnicos adecuados para que tomen conocimiento de las presentes Políticas de Privacidad y Protección de Datos Personales, y de cualquier otra información que pueda ser relevante.
+									</p><p>
+										Asimismo, las mismas tienen por objeto establecer los criterios para el uso del Portal por medio del cual se podrán utilizar los servicios que brinda el Gobierno de la Provincia de Córdoba que incluyen desde la comunicación hasta la realización de trámites en línea.
+									</p><p>
+										Las presentes políticas describen:
+										<ol>
+										<li>Cuáles serán los datos recolectados, cómo serán utilizados y la finalidad para los que serán tratados.</li>
+										<li>Las consecuencias que deriven de proporcionar los datos o de la inexactitud de los mismos.</li>
+										<li>Facultad y modo de ejercer los derechos de acceso, rectificación, actualización y supresión de los datos.</li>
+										<li>La existencia de archivo, registro, base o banco de datos, electrónico o de cualquier otro tipo de que se trate y la identidad y domicilio de su responsable.</li>
+										</ol>
+									</p><p>
+										<h5>1.- Cuáles serán los datos recolectados, cómo serán utilizados y la finalidad para la que serán tratados:</h5>
+									<p>
+										Plataforma Ciudadano no recoge ningún tipo de información personal por parte de los usuarios sin que la misma sea explícitamente provista voluntariamente.
+									</p><p>
+										Al crear su cuenta de Plataforma Ciudadano el usuario deberá consignar sus datos en un formulario que contiene campos obligatorios y campos opcionales.
+									</p><p>
+										Los datos solicitados serán utilizados exclusivamente para su inclusión en una base de datos de la Plataforma Ciudadano Digital.
+									</p><p>
+
+										Campos Obligatorios:
+										<ul>
+											<li>Nombres.</li>
+											<li>Apellidos.</li>
+											<li>Nro. De C.I.</li>
+											<li>Dirección de correo electrónico (E-mail).</li>
+											<li>Fecha de Nacimiento.</li>
+											<li>Género.</li>
+										</ul>
+										<br>
+										Campos No Obligatorios
+										<br>
+										<ul>
+											<li>Teléfono fijo.</li>
+											<li>Teléfono celular.</li>
+											<li>Ocupación.</li>
+											<li>Domicilio.</li>
+										</ul>
+									</p><p>
+										Toda información que sea recibida por Ciudadano Digital, determinada por ley y referida a los usuarios, es confidencial y no puede hacerse pública sin el consentimiento previo de aquellos, salvo que sea requerida por la autoridad competente, cumpliendo con las normas y recaudos establecidos para la protección de datos personales.
+									</p><p>
+										Los datos recolectados podrán ser utilizados para:
+										<br>
+										<br>
+										<ul>
+											<li>Satisfacer y optimizar los servicios prestados por el G.A.M.L.P.</li>
+											<li>Acceder de una manera centralizada a los trámites en curso.</li>
+											<li>Personalizar el perfil de cada usuario.</li>
+											<li>Obtener métricas de uso y niveles de servicio.</li>
+										</ul>
+									</p>
+
+										<h5>2. Las consecuencias que deriven de proporcionar los datos o de la inexactitud de los mismos:</h5>
+										<p>
+										La Ley Nacional Nro. 1.2 establece que ninguna persona puede ser obligada a proporcionar datos sensibles, entendiendo por tales a aquellos datos personales que revelan origen racial y étnico, opiniones políticas, convicciones religiosas, filosóficas o morales, afiliación sindical e información referente a la salud o a la vida sexual, pudiendo ser objeto de tratamiento cuando medien razones de interés general o autorizadas por ley. Del mismo modo esta ley, tiene por objeto la protección integral de los datos personales asentados en archivos, registros, bancos de datos u otros medios técnicos sean públicos o privados, garantizando el derecho al honor y a la intimidad de las personas, conforme art. 43 tercer párrafo de la Constitución Nacional.
+										</p><p>
+										La información que se reciba será tratada en forma confidencial. Sólo podrán darse a conocer los datos que el marco normativo autorice y aquellos que expresamente consienta el usuario, a excepción de:
+										<ol>
+											<li>Un pedido formal de autoridades judiciales.</li>
+											<li>Un pedido formal de otras autoridades con competencia suficiente.</li>
+										</ol>
+										</p>
+
+										<h5>3. Facultad y modo de ejercer los derechos de acceso, rectificación, actualización y supresión de los datos:</h5>
+										<p>
+										El derecho de acceso es uno de los derechos establecidos por la Ley Nacional Nro. 1.3 – Protección de Datos Personales, que permite a los ciudadanos (usuarios en este caso), acceder a la información registrada, pudiendo administrar así, el uso que se hace de sus datos personales.
+										</p><p>
+										El usuario podrá ejercer los siguientes derechos ante el Gobierno Provincial y a través del Portal:
+										</p><p>
+										<ol>
+											<li>Solicitar información al organismo de control, relativa a la existencia de archivos, registros, bases o bancos de datos personales, sus finalidades y la identidad de sus responsables. El registro que se lleve al efecto será de consulta pública y gratuita.</li>
+											<li>Solicitar y obtener información de sus datos personales incluidos en los bancos de datos públicos, o privados destinados a proveer informes.</li>
+											<li>Solicitar la modificación de sus datos personales cuando ellos no sean correctos o no estén actualizados, si fuere procedente.</li>
+											<li>Solicitar la rectificación, actualización, supresión, confidencialidad de los datos personales de los que sea titular y que se encuentren incluidos en un banco de datos.</li>
+										</ol>
+										</p>
+
+										<h5>4. La existencia del archivo, registro, base o banco de datos, electrónico o de cualquier otro tipo de que se trate y la identidad y domicilio de su responsable:</h5>
+										<p>
+
+										En cada oportunidad en que el usuario haga uso de los servicios incluidos en el Portal, existe la posibilidad que de manera automática, obtenga y almacene información en los registros del servidor. Estos datos podrán incluir:
+										<ol>
+											<li>Información detallada sobre utilización del servicio.</li>
+											<li>Dirección de IP</li>
+											<li>Cookies, que permitirán identificar tu navegador o tu cuenta Ciudadano</li>
+										</ol>
+										</p><p>
+
+										El G.A.M.L.P aplica medidas de seguridad, destinadas a diseñar procedimientos, métodos y técnicas a los fines de conseguir un sistema de información seguro y confiable.
+										</p><p>
+
+										Se establecen una serie de estándares, protocolos, métodos, reglas, herramientas y leyes concebidas para minimizar los posibles riesgos a la infraestructura o a la información. Se pretende con ello la protección de la infraestructura y todo lo relacionado con esta y, especialmente, la información contenida o circulante.
+										</p><p>
+										A los fines de contactarse con el G.A.M.L.P. a cerca de los alcances de las presentes Políticas de Privacidad, tendrá a disposición los siguientes medios de comunicación:
+										</p><p>
+
+										Por teléfono: 800-10-1112
+										</p><p>
+
+										Por e-mail: gamlp@lapaz.bo
+										</p><p>
+										Personalmente: ante una Plataforma de Atención al Ciudadano.
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">Atras</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN DE MODAL POLITICAS -->
+
+</div><!-- cierra  el page content  -->
+
+<!-- /.page-content -->

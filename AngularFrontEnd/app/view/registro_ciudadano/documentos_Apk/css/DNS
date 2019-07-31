@@ -1,0 +1,45 @@
+/*
+ * Conexion a red
+ */
+
+ipv4 				192.168.33.201
+ipv6 				fe80::aa10:714:3e0d:ea04
+direccion fisica    E8:40:F2:09:B9:A7
+ruta predeterminada 192.168.32.1
+DNS  				192.168.5.204 192.168.5.203
+
+
+localhost, 127.0.0.0/8, ::1
+
+Eg31qe
+
+
+DNS
+192.168.5.203
+192.168.5.204
+
+
+
+@media (min-width: 1200px)
+.container {
+    width: 100%;
+}
+
+
+
+
+.Eg31qe {
+/*display: inline-block;
+height: 100%;
+overflow: scroll;
+white-space: nowrap;
+width: 644px;*/
+/*width:100%;*/
+/*max-width:600px;*/
+
+height: 50px;
+margin-bottom: 35px;
+position: absolute;
+width: 720px
+
+}

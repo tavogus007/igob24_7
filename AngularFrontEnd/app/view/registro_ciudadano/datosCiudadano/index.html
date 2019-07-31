@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+      <script type="text/javascript" src="../../view/registro_ciudadano/datosCiudadano/appDatosCiudadano.js"></script>
+      <script type="text/javascript" src="../../libs/js/jic.js"></script>
+      <script type="text/javascript" src="../../libs/js/jszip.js"></script> 
+      <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+      <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+      <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+  </head>    
+<style>
+#summary1 p.extendido{
+    height: 85px !important;
+    overflow: hidden;  
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+}
+
+#summary1 p.colapsado{
+    height: 55px !important;
+    overflow: hidden;  
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+}
+
+#summary1 {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+#summary1 p.collapse:not(.show) {
+    height: 55px !important;
+    overflow: hidden;  
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+}
+
+
+.img_thumb{
+    float: left;
+    padding: 10px 10px 10px 10px;
+    padding-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    margin-bottom: 35px;
+    position: relative;
+}
+
+.img_desc{
+
+  position: absolute;
+  z-index: 2;
+  opacity: 0.9;
+  padding: 30px 30px 30px 30px;
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+ 
+}
+.img_thumb img{
+    z-index: -1;
+}
+
+
+.img_thumb1{
+    float: left;
+    padding: 10px 10px 10px 10px;
+    padding-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    margin-bottom: 35px;
+    position: relative;
+}
+
+.img_desc1{
+
+  position: absolute;
+  z-index: 2;
+  opacity: 0.9;
+  padding: 30px 30px 30px 30px;
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+ 
+}
+.img_thumb1 img{
+    z-index: -1;
+}
+
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('html, body').animate({scrollTop:0},200);       
+    });
+    $(function(civil){
+        console.log(civil);
+        $('#escala').change(function() {
+            $('#descripcion').text( $(this).val() );
+        });
+    });
+    function recargar1()
+    {
+        document.getElementById('tab2').contentWindow.location.reload();
+    }
+
+
+     ///////////////////////////////////upload/////////////////////////////////////
+    $(document).on('click', '#close-preview', function(){ 
+      alert(1111);
+        $('.image-preview').popover('hide');
+        $('.image-preview').hover(
+            function () {
+               $('.image-preview').popover('show');
+            }, 
+             function () {
+               $('.image-preview').popover('hide');
+            }
+        );    
+    });
+
+    $(function() {
+        var closebtn = $('<button/>', {
+            type:"button",
+            text: 'x',
+            id: 'close-preview',
+            style: 'font-size: initial;',
+        });
+        closebtn.attr("class","close pull-right");
+        $('.image-preview').popover({
+            trigger:'manual',
+            html:true,
+            title: "<strong>Preview</strong>"+$(closebtn)[0].outerHTML,
+            content: "There's no image",
+            placement:'bottom'
+        });
+        $('.image-preview-clear').click(function(){
+            $('.image-preview').attr("data-content","").popover('hide');
+            $('.image-preview-filename').val("");
+            $('.image-preview-clear').hide();
+            $('.image-preview-input input:file').val("");
+            $(".image-preview-input-title").text("Browse"); 
+        }); 
+
+        $(".image-preview-input input:file").change(function (){     
+            var img = $('<img/>', {
+                id: 'dynamic',
+                width:250,
+                height:200
+            });      
+            var file = this.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(".image-preview-input-title").text("");
+                $(".image-preview-clear").show();
+                $(".image-preview-filename").val(file.name);            
+                img.attr('src', e.target.result);
+                $(".image-preview").attr("data-content",$(img)[0].outerHTML).popover("show");
+            }        
+            reader.readAsDataURL(file);
+        });  
+    });
+
+    $(window).load(function(){
+
+     $(function() {
+      $('#file-input1').change(function(e) {
+          addImage(e); 
+         });
+
+         function addImage(e){
+          var file = e.target.files[0],
+          imageType = /image.*/;
+        
+          if (!file.type.match(imageType))
+           return;
+      
+          var reader = new FileReader();
+          reader.onload = fileOnload;
+          reader.readAsDataURL(file);
+         }
+      
+         function fileOnload(e) {
+          var result=e.target.result;
+          $('#imgSalida1').attr("src",result);
+         }
+        });
+      });
+
+
+    $('#file-input').change(function(e) {
+        var id = 0;
+        angular.element(this).scope().addImage(e,id);
+    });
+
+    $('#file-input1').change(function(e) {
+        var id = 0;
+        angular.element(this).scope().addImage(e,id);
+    });
+
+
+
+    /////////////////////////////////// fin upload/////////////////////////////////////
+
+
+
+    var target = null;
+    $('.img_thumb').hover(function(e){
+        target = $(this);
+        $(target[0].firstElementChild).fadeIn(200);
+        $("#imgSalida").css("width", "150px");
+        $("#imgSalida").css("height", "150px");
+    }, function(){
+        $(target[0].firstElementChild).fadeOut(200);
+        $("#imgSalida").css("width", "120px");
+        $("#imgSalida").css("height", "120px");
+    });
+
+    var target = null;
+    $('.img_thumb1').hover(function(e){
+        target = $(this);
+        $(target[0].firstElementChild).fadeIn(200);
+        $("#imgSalida1").css("width", "150px");
+        $("#imgSalida1").css("height", "150px");
+    }, function(){
+        $(target[0].firstElementChild).fadeOut(200);
+        $("#imgSalida1").css("width", "120px");
+        $("#imgSalida1").css("height", "120px");
+    });
+
+    $('.custom-upload input[type=file]').change(function(){
+      $(this).next().find('input').val($(this).val());
+      angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+</script>
+<div ng-controller="datosCiudadanoController" data-ng-init="inicioDatosCiudadano();">
+      <div class="col-md-12">
+        <div class="col-md-5">
+            <!-- profilee -->
+            <div class="row" ng-show="datospersonaNatural ==null">
+               <div class="col-md-12">
+                  <div class="row contenedorVerde2">
+                     <div class="col-md-4" style="padding:10px 20px; text-align: center;" >
+                        <!-- src="../../libs/img/anonimo_user.png" -->
+                        <div class="img_thumb">
+                          <div class="img_desc">
+                            <div class="btn-circle btn btn-primary image-preview-input " >
+                              <center><span class=" glyphicon glyphicon-plus"></span></center>
+                              <center>
+                                <span class="image-preview-input-title"></span>
+                                <input name="file-input" id="file-input" type="file" value="Subir" "files[0]" nv-file-select="" uploader="uploader" file-model="myFile1" accept="image/*" class="file-loading"  />
+                              </center>
+                            </div>                          
+                          </div>
+                          <img id="imgSalida"  ng-src="{{imagenPortada}}" align="center" width="120px" height="120px" class="img-circle" style="box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.19), 0 3px 1px -2px rgba(0, 0, 0, 0.27), 0 1px 5px 0 rgba(0, 0, 0, 0.26); ">
+                        </div>
+                     </div>
+                     <br>
+                     <div class="col-md-8">
+                        <ul class="datos1">
+                           <li class="nombre_ci">{{registro.nombre}}&nbsp {{registro.paterno}}&nbsp {{registro.materno}}</li>
+                           <li><span>{{translateTitulos.lbl_04_18}}: </span><span>{{registro.telefono}}</span></li>
+                           <li><span>{{translateTitulos.lbl_04_19}}: </span><span>{{registro.celular}}</span></li>
+                           <li><span>{{translateTitulos.lbl_016_16}}: </span><span> {{registro.correo}}</span></li>
+                        </ul>
+                     </div>
+                  </div>
+
+                  <div class="row" style="background: white; ">
+                    <div class="col-md-3 negrita user">{{translateTitulos.lbl_04_21}}</div>
+                    <div class="col-md-3 user">{{registro.cedula}}</div>
+                    <div class="col-md-3 negrita user">{{translateTitulos.lbl_04_22}}</div>
+                    <div class="col-md-3 user">{{registro.estado_civil_total}}</div>
+                  </div>
+                  <div class="row" style="background: white; ">
+                    <div class="col-md-3 negrita user">{{translateTitulos.lbl_04_23}}</div>
+                    <div class="col-md-3 user">{{registro.sexo}}</div>
+                    <div class="col-md-3 negrita user">{{translateTitulos.lbl_04_24}}</div>
+                    <div class="col-md-3 user">{{registro.fecha_nacimiento}}</div>
+                  </div>
+                  <div class="row" style="background: white; ">
+                    <div class="col-md-3 negrita user">{{translateTitulos.lbl_04_25}}</div>
+                    <div class="col-md-9 user">{{registro.direccion}}</div>
+                  </div>
+
+
+
+
+                  <!--<div class="row" style="background: white; ">
+                     
+                            <div class="col-md-12">
+                        <ul class="datos2">
+                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_21}}: </span><span> {{registro.cedula}}</span></li>
+                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_22}}: </span><span> {{registro.estado_civil_total}}</span></li>
+                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_23}}: </span><span> {{registro.sexo}}</span></li>
+                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_24}}: </span><span> {{registro.fecha_nacimiento}}</span></li>
+                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_25}}: </span><span> {{registro.direccion}}</span></li>
+                        </ul>
+                     
+                     <div class="table-responsive">                       
+                          <table class="userAdm">
+                              <tr>
+                                <td class="user"><span class="negrita">{{translateTitulos.lbl_04_22}}: </span></td>
+                                <td class="user"><span> {{registro.estado_civil_total}}</span></td>
+                              </tr>
+                              <tr>
+                                <td class="user"><span class="negrita">{{translateTitulos.lbl_04_23}}: </span></td>
+                                <td class="user"><span> {{registro.sexo}}</span></td>
+                              </tr>
+                              <tr>
+                                <td class="user"><span class="negrita">{{translateTitulos.lbl_04_24}}: </span></td>
+                                <td class="user"><span> {{registro.fecha_nacimiento}}</span></td>
+                              </tr>
+                              <tr>
+                                <td class="user"><span class="negrita">{{translateTitulos.lbl_04_25}}: </span></td>
+                                <td class="user"><span> {{registro.direccion}}</span></td>
+                              </tr>
+                            </table>
+                      </div>
+                  </div>-->
+
+                  <div class="row">
+                     <div  class="contenedorVerdeUser">
+                        <span><a href="#servicios|varios|index.html?url='app/view/registro_ciudadano/cambio/index.html" class="btn btn-oscuro">{{translateTitulos.lbl_04_26}}</a></span>
+                        <span><a href="#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html" class="btn btn-oscuro">{{translateTitulos.lbl_04_27}}</a></span>
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+            <div class="row" ng-show="datospersonaJuridica == null">
+               <div class="col-md-12">
+                  <div class="row contenedorVerde2">
+                     <div class="col-md-4" style="padding:10px 20px;text-align: center;">
+                        <div class="img_thumb1">
+                          <div class="img_desc1">
+                            <div class="btn-circle btn btn-primary image-preview-input " >
+                              <center><span class=" glyphicon glyphicon-plus"></span></center>
+                              <center>
+                                <span class="image-preview-input-title"></span>
+                                <input name="file-input1" id="file-input1" type="file" value="Subir" "files[0]" nv-file-select="" uploader="uploader" file-model="myFile2" accept="image/*" class="file-loading"  />
+                              </center>
+                            </div>                          
+                          </div>
+                          <img id="imgSalida1"  ng-src="{{imagenPortada}}" align="center" width="120px" height="120px" class="img-circle" style="box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.19), 0 3px 1px -2px rgba(0, 0, 0, 0.27), 0 1px 5px 0 rgba(0, 0, 0, 0.26); ">
+                        </div>
+                     </div>
+                     <br>
+                     <div class="col-md-8">
+                        <ul class="datos1">
+                           <li class="nombre_ci"><span>Razón Social &nbsp: </span>{{registro.razonSocial}}</li>
+                           <li><span>{{translateTitulos.lbl_04_18}}: </span><span>{{registro.telefono}}</span></li>
+                           <li><span>{{translateTitulos.lbl_04_19}}: </span><span>{{registro.celular}}</span></li>
+                        </ul>
+                     </div>
+                  </div>
+                  <!--<div class="row" style="background: white; ">
+                     <div class="col-md-12">
+                        <ul class="datos2">
+                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_50}}: </span><span> {{registro.nit}}</span></li>
+                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_51}}: </span><span> {{registro.direccion}}</span></li>
+                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_52}}: </span><span> {{registro.nrocasa}}</span></li>
+                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_53}}: </span><span> {{registro.nrooficina}}</span></li>
+                        </ul>
+                     </div>
+                  </div>-->
+
+                    <div class="row" style="background: white;">
+                          <div class="col-md-3 negrita user">{{translateTitulos.lbl_04_50}}</div>
+                          <div class="col-md-9 user">{{registro.nit}}</div>
+                          
+                    </div>
+                    <div class="row" style="background: white; ">
+                        <div class="col-md-3 negrita user">{{translateTitulos.lbl_04_51}}</div>
+                        <div class="col-md-9 user"> {{registro.aMacrodistrito}}</div>
+                        
+                    </div>
+                    <div class="row" style="background: white;">
+                      <div class="col-md-2 negrita user">Zona</div>
+                      <div class="col-md-3 user">{{registro.azona}}</div>
+                      <div class="col-md-3 negrita user">{{translateTitulos.lbl_04_52}}</div>
+                      <div class="col-md-3 user">{{registro.nrocasa}}</div>
+                    </div>
+                   
+                    
+                  <div class="row">
+                     <div  class="contenedorVerdeUser"><!--Cambios-->
+                        <span><a href="#servicios|varios|index.html?url='app/view/registro_ciudadano/cambio/index.html" class="btn btn-oscuro">{{translateTitulos.lbl_04_26}}</a></span>
+                        <span><a href="#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html" class="btn btn-success">{{translateTitulos.lbl_04_27}}</a></span>
+                     </div>
+                  </div>
+                  
+               </div>
+            </div>
+            <!--Contenido Izquierdo-->            
+            <div class="row">
+              <div class="bandejaUser"><p class="blanco"><strong>ALERTAS</strong></p></div>
+              <div class="ibox-content2">
+                  <div class="vertical-timeline-block" ng-show="vercorreo == null">
+                     <div class="vertical-timeline-icon2 blue-bg timeLineIcon"><!--Cambios-->
+                        <i class="fa fa-envelope-o"></i><!--Cambios-->
+                     </div>
+                     <div class="vertical-timeline-content">
+                         <!--CORREO ELECTRÓNICO-->
+                        <h3><strong>{{translateTitulos.lbl_04_40}}</strong></h3>
+                           <p>{{translateTitulos.lbl_04_41}}</p>
+                           <!--<p>Le recomendamos contar con un correo electrónico para poder realizar una interacción digital con usted</p>-->
+                     </div>
+                  </div>
+                    <div class="vertical-timeline-block"  ng-show = "celularid == null">
+                     <div class="vertical-timeline-icon2 blue-bg timeLineIcon"><!--Cambios-->
+                        <i class="fa fa-mobile blanco"></i><!--Cambios-->
+                     </div>
+                     <div class="vertical-timeline-content">
+                         <!--NÚMERO DE CELULAR-->
+                        <h3><strong>{{translateTitulos.lbl_04_42}}</strong></h3>
+                           <p>{{translateTitulos.lbl_04_43}}</p>
+                           <!--<p>Le recomendamos contar con un número de celular para poder contactarnos con usted.</p>-->
+                           <span class="vertical-date blanco">
+                           </span>
+                     </div>
+                  </div>
+                  <div class="vertical-timeline-block">
+                     <div class="vertical-timeline-icon2 navy-bg">
+                        <i class=" fa fa-comment-o blanco"></i><!--Cambios-->
+                     </div>
+                     <div class="vertical-timeline-content">
+                        <h3><strong>{{translateTitulos.lbl_04_29}}</strong></h3>
+                         <!-- US_NOMBRE -->
+                        <!--<p><strong>Estimado (a) {{nombreCiudadano}}</strong>, queremos darle la bienvenida a nuestra plataforma de Gobierno Electrónico, donde podrá acceder a diferentes servicios y trámites en línea. Para conocer más de los beneficios de nuestra plataforma,  revise la opción del menú.
+                        </p>-->
+                        <p>{{translateMensajes.txt_04_30}} <strong> {{nombreCiudadano}}</strong>,{{translateMensajes.txt_04_31}}<p>
+                        </p>                         
+                     </div>
+                  </div>
+                  <div ng-show="stiporol == '5'" ng-controller="authCtrl" class="vertical-timeline-block">
+                  <!--<div ng-controller="authCtrl" class="vertical-timeline-block" ng-show="vercondicionesuso == 'mostrar'">-->
+                        <div class="vertical-timeline-icon2 blue-bg timeLineIcon"><!--Cambios-->
+                           <i class="fa fa-envelope-o"></i><!--Cambios-->
+                        </div>
+                        <div class="vertical-timeline-content">
+                            <h3><strong>Condiciones de Uso</strong></h3>
+                            <!--<p ng-show="! aceptarcondiciones"><a href="/documentos/igobcondicionesuso.pdf" download="Condiciones de USO"><i class="fa-comment-o !important"></i>Descargar</a></p>-->
+                            <div id=summary1>
+                                <p id=collapseSummary1 align=justify>
+                                    Por favor, lea detenidamente las condiciones del presente documento, puesto que indican sus derechos y responsabilidades al visitar la Plataforma Electrónica Innovador iGob 24/7.
+                                </p>
+                                <!--<p><a class={{sstyloLetter}} ng-click="fcolapsartexto(sstyloLetter);" >{{txtcolapsado}}</a></p>-->
+                                <p ng-show="aceptarcondiciones"><a data-toggle="modal" ng-click="fmostrarCondicionesUso();">Aceptar Condiciones de uso</a></p>                              
+                                <!--<p ng-show="! aceptarcondiciones"><a href="/documentos/igobcondicionesuso.pdf" download="Condiciones de USO"><i class="fa-comment-o !important"></i>Descargar</a></p>-->
+
+                                <p ng-show="! aceptarcondiciones"><a ng-click="ImprimirUrl(t)" data-toggle="modal" data-target="#divPopup4">Ver condiciones de Uso</a></p>
+
+                                <!--<p ng-show="! aceptarcondiciones"><a href="{{t}}" download="Condiciones de USO">Descargar</a></p>-->
+                            </div>
+                        </div>                      
+                  </div>
+
+
+                  <div id="divPopup4" class="modal fade" role="dialog">
+                    <div class="modal-dialog" style="width:700px">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="visorFum" ng-show="true">
+                                    <object data="" type="application/pdf" width="650" height="500"></object>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                  <div class="vertical-timeline-block" ng-show=" cedulaid==null">
+                     <div class="vertical-timeline-icon2 blue-bg" style="background: #FF1744 !important">
+                        <i class="fa fa-credit-card blanco"></i><!--Cambios-->
+                     </div>
+                     <div class="vertical-timeline-content">
+                         <!-- CÉDULA DE IDENTIDAD DIGITALIZADA -->                         
+                        <h3><strong>{{translateTitulos.lbl_04_44}}</strong></h3>
+                           <p>{{translateTitulos.lbl_04_45}}</p>
+                           <p>{{translateTitulos.lbl_04_46}}</p>                           
+                            <!--<p>Debe adjuntar su cédula digitalizada y registrar la fecha de caducidad.</p>
+                           <p>Usted no cuenta con el documento digital validado por plataforma.</p>-->
+                           <span class="vertical-date">
+                           </span>
+                     </div>
+                  </div>
+                  <div class="vertical-timeline-block" ng-show="validacion3 == null">
+                    <a href="#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html">
+                        <div class="vertical-timeline-icon2 blue-bg" style="background: #FF1744 !important">
+                            <i class="fa fa-credit-card blanco"></i>                        
+                        </div>
+                    </a>
+                     <div class="vertical-timeline-content">
+                         <!-- CÉDULA DE IDENTIDAD HA CADUCADO -->
+                        <h3><strong>{{translateTitulos.lbl_04_32}}</strong></h3>
+                           <p>{{translateTitulos.lbl_04_33}}</p>
+                           <!--<p>Venció la fecha de validez de la cédula de identidad o no lleno el dato</p>-->
+                           <span class="vertical-date">
+                           </span>
+                     </div>
+                  </div>
+                  <!--div class="vertical-timeline-block" ng-show="facturas == null">
+                     <div class="vertical-timeline-icon2 blue-bg" style="background: #FF1744 !important">
+                       <i class="fa fa-file-text-o blanco"></i>
+                     </div>
+                     <div class="vertical-timeline-content"-->
+                         <!--CERTIFICADO DE NACIMIENTO DIGITALIZADO-->
+                        <!--h3><strong>{{translateTitulos.lbl_04_47}}</strong></h3>
+                           <p>{{translateTitulos.lbl_04_48}}</p>
+                           <p>{{translateTitulos.lbl_04_49}}</p-->
+                           <!--<p>Debe adjuntar su certificado de nacimiento digitalizado.</p>
+                           <p>Usted no cuenta con el documento digital validado por plataforma.</p>-->                         
+                           <!--span class="vertical-date">
+                           </span>
+                     </div>
+                  </div-->
+                </div>
+            </div>
+             <!--Contenido Izquierdo-->
+            <!-- /profile -->
+            <!-- FORMULARIO JUeRÍDICO -->
+            
+         </div>
+         <div class="col-md-7">
+           <!-- begin calendario -->
+            <div class="bandejaUser"><p class="blanco"><strong>{{translateTitulos.lbl_04_28}}</strong>
+                <button type="button" class="close" style="color: #222831; opacity: 1 !important"  data-dismiss="modal" ng-click="notificaciones();">
+                    <span class="fa fa-refresh fa-spin"></span>
+                </button>
+                </p>
+            </div>
+            <div class="ibox-content2" id="ibox-content">
+               <div id="vertical-timeline" class="vertical-container light-timeline">
+                  <div class="vertical-timeline-block" ng-show = "nivelusr == null">
+                     <div class="vertical-timeline-icon blue-bg timeLineIcon ">
+                        <i class="fa fa-barcode"></i>
+                     </div>
+                     <div class="vertical-timeline-content">
+                        <h3><strong>{{translateTitulos.lbl_04_34}}</strong></h3>
+                          <p>{{translateTitulos.lbl_04_35}}
+                          </p>
+                          <ol>
+                            {{translateTitulos.lbl_04_36}}<br>
+                            {{translateTitulos.lbl_04_37}}<br>
+                            {{translateTitulos.lbl_04_38}}<br>
+                          </ol>
+                          <span class="vertical-date">
+                            <br/>
+                            <strong style="color: #39AB6F">{{translateTitulos.lbl_04_39}}</strong>
+                          </span>
+                     </div>
+                  </div>
+                  
+                  <!-- Dinamico-->
+                  <div class="vertical-timeline-block"  ng-repeat="data in myObj | orderBy:'obs_tra_id':true">
+                      <div class="vertical-timeline-icon blue-bg timeLineIcon"><!--Cambios-->
+                        <i class="fa fa-tags blanco"></i><!--Cambios-->
+                      </div>
+                      <div class="vertical-timeline-content">
+                        <h3><strong>NOTIFICACIÓN : TRÁMITE {{data.frm_tra_if_codigo}}</strong></h3>
+                            <p>{{data.serdv_descripcion}} </p>
+                            <p>{{data.obs_tra_observaciones}} </p>
+                            <div class="row" ng-show="data.obs_tra_tipo_resp!='F' && data.obs_tra_tipo_resp!=null">
+                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#ModalAdjuntar" data-dismiss="modal" ng-click="cargarData(data)"><i class="glyphicon glyphicon-file"></i>  Responder</button>
+                            </div>
+                            <span class="vertical-date">
+                              <br/>
+                              <strong style="color: #39AB6F">Esta Notificación fue generada el : {{data.obs_tra_registrado}}</strong>
+                              <br>
+                              <strong style="color: #39AB6F"><a href="" ng-click="archivarNotificacion(data.obs_tra_id);"> Archivar Notificación </a></strong>
+                            </span>
+                            <div ng-show = "data.obj_url_ra != 'noRA'">
+                                <a href="{{data.obj_url_ra}}" target="_blank"  data-toggle="tooltip" data-placement="left"  title="Ver/Descargar la R.A.">
+                                <button   id="ra1"  type="button" class="btn btn-success fa fa-download"> DESCARGAR R.A.</button>
+                                </a>
+                                <a  ng-show = "data.obj_url_inspeccion != 'noINSPECCION'" href="{{data.obj_url_inspeccion}}" target="_blank"  data-toggle="tooltip" data-placement="left"  title="Ver/Descargar la R.A.">
+                                <button   id="ra1"  type="button" class="btn btn-success fa fa-download"> INFORME INSPECIÓN.</button>
+                                </a>
+                            </div>
+                      </div>
+                  </div>
+               </div>
+            </div>
+           <!-- end calendario -->
+         </div>
+    </div>
+
+    <!--MODAL-->
+    <div class="modal fade" id="ModalAdjuntar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #ffcb05;" >
+                    <h2 class="modal-title " id="exampleModalLongTitle" align="center">RESPONDER TRÁMITE</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form name="formulario" readOnly="true" novalidate>
+                            <div class="form-group" ng-show="respAdjunto==true">
+                                <div class="col-md-12">
+                                    <div class="col-md-3">
+                                        <label for="url">Archivo:</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group custom-upload">
+                                            <input type="file" id="adjunto" name="adjunto" uploader-model="adjunto" accept="image/*" style="display: none;">
+                                            <div class="input-group">
+                                                <input id="txt_adjunto" name="txt_adjunto" ng-model="registroAdj.adjunto" type="text" ng-disabled="true" class="form-control input-lg" required>
+                                                <span class="input-group-btn">
+                                                    <a id="adjunto"  href="">
+                                                        <button id="href_adjunto" class="browse btn btn-primary input-lg" type="button" ng-show="btover != null" ng-click="mostrarimg('adj');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_adjunto" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('adjunto');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                                </span>
+                                            </div>                      
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="mostrarI==true">
+                                  <img id="imgSalida" ng-src="{{archivoCI}}" width="100%" height="100%">
+                                </div>
+                            </div>  
+                            <div class="col-md-12" ng-show="respInfo==true">
+                                <div class="col-md-3">
+                                    <label for="url">Descripción:</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea id="descripcion" name="descripcion" type="text" class="form-control" placeholder="Descripción" ng-model="registroAdj.descripcion" ng-change="validaCampo(registroAdj.descripcion)"> </textarea>
+                                </div>
+                            </div>         
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnadjuntar" ng-show="btover" type="button" class="btn btn-success" ng-click="responderTramite(registroAdj);" data-dismiss="modal">Responder a Trámite</button>
+                    <button type="button" type="button" class="btn btn-close" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- cierra  el page content  -->

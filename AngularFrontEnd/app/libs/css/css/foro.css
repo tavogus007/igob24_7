@@ -1,0 +1,359 @@
+<style type="text/css">
+  html, body, div, span, applet, object, iframe,
+  h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+  a, abbr, acronym, address, big, cite, code,
+  del, dfn, em, font, img, ins, kbd, q, s, samp,
+  small, strike, strong, sub, sup, tt, var,
+  b, u, i, center,
+  dl, dt, dd, ol, ul, li,
+  fieldset, form, label, legend,
+  table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+  }
+  body {
+    background-size: cover;
+    color: #000;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    background-color:white;
+  }
+  .contenedor_log{
+    margin: 7% auto;
+    position: relative;
+  }
+</style>
+#registration-form .fieldset {
+  background-color:#d5d5d5;
+  border-radius: 3px;
+}
+
+#registration-form legend {
+  text-align: center;
+  background: #00adb5;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 3px 3px 0 0;
+  color: white;
+font-size:2em;
+}
+
+.container-fluid {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.fieldset form{
+  border:2px solid #00adb5;
+  margin:0 auto;
+  display:block;
+  width:100%;
+  padding:10px 10px;
+  box-sizing:border-box;
+  border-radius:8px;
+}
+#btn {
+  opacity: 0.5;
+  cursor: text;
+  outline: none;
+}
+
+.custom-upload {
+    position: relative;
+    height: 40px;
+    width: 100%;
+    margin:30px;
+}
+.custom-upload input[type=file]
+{
+    outline:none;
+    position: relative;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width:85%;
+    height:100%;
+}
+.custom-upload .fake-file
+{
+    background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 85%;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    line-height: 100%;
+}
+.custom-upload .fake-file input
+{
+    font-size:16px;
+    height:40px;
+    width:85%;
+}
+/*aqui estaba el captcha*/
+     input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+     .box2{
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+      .foro_textos{
+    background: white;
+    border-top: solid 2px #222831;
+    padding: 8px;
+    margin-top: 30px;/*cambios*/
+  }
+  .foro_titulo{
+    font-weight: bold;
+    color: #222831;
+    font-size: 16px;
+    padding: 15px 0px;
+  }
+  .foro_descripcion{
+    font-size: 14px;
+    padding: 15px 0px;
+  }
+  .volver_foro_t{
+    font-size: 30px;
+    position: relative;
+    top: 0px;
+    left: 15px;
+  }
+  .imagen_foro_list{
+    padding: 15px;
+  }
+  /*
+   * JULIO 
+   */
+  .titulo_f_list{
+    font-size: 18px;
+    font-weight: bold;
+    font-family: monospace;
+    padding: 5px;
+    color: #310401;
+    text-align:center;
+
+  }
+  .por_f_list{
+    font-size: 15px;
+    font-weight: normal;
+    font-family: monospace;
+    padding: 5px;
+    color: #964B00;
+  }
+  .descripcion_f_list{
+    font-size: 14px;
+    padding: 5px;
+    font-family: monospace;
+  }
+  .calificacion{
+    position: relative;
+     top: 25px;
+     text-align: center;
+  }
+  /*
+   * JULIO
+   */
+  .btn_participa{
+     top: 35px;
+     left: 0px;
+     text-align: center;
+  }
+
+@import url(https://fonts.googleapis.com/css?family=Merriweather);
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Merriweather', serif;
+  padding: 20px;
+}
+
+a {
+  color: #f06d06;
+  text-decoration: none;
+}
+.icono-color{
+  color:#FFA500;
+}
+.icono{
+  font-size: 19px;
+}
+.box {
+  vertical-align: center;
+  border-radius: 8px;
+  padding: 2em;
+  border: 1px solid #ccc;
+  display: block;
+  width: 100%;
+  height: 110px;
+  float: left;
+  margin: -1px 0 0 -1px;
+  color: white;
+  background: linear-gradient(
+     #00adb5, gray 50%, #1e89a1 50%, #333
+  );
+  background-size: 100% 202%;
+  transition: all 0.2s ease;
+  animation: down-bump 0.4s ease;
+}
+.box h2 {
+  font-weight: 400;
+  letter-spacing: -1.5px;
+  line-height: 1.2;
+}
+.box h3 {
+  font: 0.8em "Lucida Grande", serif;
+}
+
+.box:hover {
+  background-position: 100% 100%;
+  animation: up-bump 0.4s ease;
+}
+.box:hover h2 {
+  color: #48ad26;
+}
+.box:hover h2 span {
+  color: white;
+}
+.box:hover h3 {
+  color: #999;
+}
+.contenedorVerdeM{
+  
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0acc9e+0,00adb5+100&0.65+0,1+100 */
+  background: -moz-linear-gradient(top, rgba(10,204,158,0.65) 0%, rgba(0,173,181,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(10,204,158,0.65) 0%,rgba(0,173,181,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(10,204,158,0.65) 0%,rgba(0,173,181,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a60acc9e', endColorstr='#00adb5',GradientType=0 ); /* IE6-9 */
+  border-bottom: 5px solid #00ADB5; 
+  border-radius: 8px;
+  width: 50%;
+}
+.fondoForo{
+  background-color: #00ADB5 !important;
+  padding: 30px;
+  border-radius: 8px 8px 0px 0px;
+  height: 100px;
+}
+
+.fondoForoRespuesta{
+  border-radius: 100px;
+  background-color: #c9a990 !important;
+  padding: 10px;
+  border-radius: 2px 2px 0px 0px;
+  height: 70px;
+}
+.pull-left {
+  float: left !important;
+}
+#cabecera { height: 10px; }
+
+#background{
+  background-color: #00ADB5 !important;
+}
+.tabla{
+display: table;
+border: 0 #C0C0C0 solid;
+width: 100%;
+height: 25%;
+
+}
+.columna0{
+display: table-cell;
+border: 0px dotted #C0C0C0;
+width: 25%px;
+height: 20%;
+}
+.columna1{
+display: table-cell;
+border: 0px dotted #C0C0C0;
+width: 25%px;
+height: 20%;
+
+}
+.columna2{
+display: table-cell;
+border: 0px dotted #C0C0C0;
+width: 25%;
+}
+.columna3{
+display: table-cell;
+border: 0px dotted #C0C0C0;
+width: 25%;
+}
+
+#registration-form .fieldset {
+  background-color:#d5d5d5;
+  border-radius: 3px;
+}
+
+#registration-form legend {
+  text-align: center;
+  background: #00adb5;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 3px 3px 0 0;
+  color: white;
+font-size:2em;
+}
+.fieldset{
+    background: white;
+    border:2px solid #00adb5;
+    margin:0 auto;
+    display:block;
+    width:100%;
+    padding:10px 10px;
+    box-sizing:border-box;
+    border-radius:8px;
+}
+
+.fieldset_r{
+    background: white;
+    border:2px solid #003366;
+    margin:0 auto;
+    display:block;
+    width:100%;
+    padding:10px 10px;
+    box-sizing:border-box;
+    border-radius:8px;
+}
+
+@keyframes up-bump {
+  0% { padding-top: 2em; }
+  50% { padding-top: 1.5em; }
+  100% { padding-top: 2em; }
+}
+@keyframes down-bump {
+  0% { padding-top: 2em; }
+  50% { padding-top: 2.5em; }
+  100% { padding-top: 2em; }
+}

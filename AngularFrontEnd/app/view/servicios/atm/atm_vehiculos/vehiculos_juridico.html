@@ -1,0 +1,843 @@
+<html lang="en" ng-app="myApp">
+
+<head>
+    <script type="text/javascript" src="../../view/servicios/atm/atm_vehiculos/vehiculos_juridico.js"></script>
+    <script type="text/javascript" src="../../libs/js/jic.js"></script>
+    <script type="text/javascript" src="../../libs/js/jszip.js"></script>
+
+    <!-- Libs -->
+    <link href="../../libs/css/sweetalert.css" rel="stylesheet">
+    <!--ngSweetAlert-->
+    <script src="../../libs/js/prism.js"></script>
+    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+    <link rel="stylesheet"
+        href="../../view/servicios/varios/formularios/solicitudLotus/moustache/bootstrap/estilosFormularios.css" />
+    <link href="../../libs/css/select2.min.css" rel="stylesheet" async />
+    <script src="../../libs/js/select2.min.js" async></script>
+    <script type="text/javascript" src="../../libs/js/jic.js"></script>
+    <script type="text/javascript" src="../../libs/js/jszip.js"></script>
+    <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+    <link rel="stylesheet"
+        href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+    <link rel="stylesheet"
+        href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css"
+        id="toggleCSS" />
+
+</head>
+<script type="text/javascript">
+    $(document).on('click', '#close-preview', function () {
+        $('.image-preview').popover('hide');
+        $('.image-preview').hover(
+            function () {
+                $('.image-preview').popover('show');
+            },
+            function () {
+                $('.image-preview').popover('hide');
+            }
+        );
+    });
+
+    $(function () {
+        var closebtn = $('<button/>', {
+            type: "button",
+            text: 'x',
+            id: 'close-preview',
+            style: 'font-size: initial;',
+        });
+        closebtn.attr("class", "close pull-right");
+        $('.image-preview').popover({
+            trigger: 'manual',
+            html: true,
+            title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
+            content: "There's no image",
+            placement: 'bottom'
+        });
+        $('.image-preview-clear').click(function () {
+            $('.image-preview').attr("data-content", "").popover('hide');
+            $('.image-preview-filename').val("");
+            $('.image-preview-clear').hide();
+            $('.image-preview-input input:file').val("");
+            $(".image-preview-input-title").text("Browse");
+        });
+
+        $(".image-preview-input input:file").change(function () {
+            var img = $('<img/>', {
+                id: 'dynamic',
+                width: 250,
+                height: 200
+            });
+            var file = this.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(".image-preview-input-title").text("");
+                $(".image-preview-clear").show();
+                $(".image-preview-filename").val(file.name);
+                img.attr('src', e.target.result);
+                $(".image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+            }
+            reader.readAsDataURL(file);
+        });
+    });
+
+    $('#categoria> option[value="Natural"]').attr('selected', 'selected'); // valor por de3fecto en el select de un combo
+
+    $('.custom-upload input[type=file]').change(function () {
+        $(this).next().find('input').val($(this).val());
+        cambiarFile(this, $(this).val());
+    });
+    function cambiarFile(obj, valor) {
+        var datos = new Array();
+        datos[obj.name] = valor;
+        subirRequisitos(obj, valor);
+    };
+
+    function subirRequisitos(sobj, svalor) {
+        var rMisDocs = new Array();
+        if (sobj.files[0]) {
+            rMisDocs.push(sobj.files[0]);
+            angular.element(document.getElementById("id_serviciosVehiculosComercialController")).scope().almacenarRequisitos(rMisDocs, sidFile); //NO OLVIDAR
+        }
+    };
+    $('#file-input').change(function (e) {
+        var id = 0;
+        angular.element(this).scope().addImage(e, id);
+    });
+
+    function ejecutarFile(filename, idfile) {
+        var sid = document.getElementById(filename);
+        sidFile = idfile;
+        if (sid) {
+            document.getElementById(filename).click();
+        } else {
+            alert("Error ");
+        }
+    };
+
+    function ver(id, id2, btn) {
+        /*if (dataIgob.POC_ADJUNTOS_url != undefined) {
+            document.getElementById(id).href = dataIgob.POC_ADJUNTOS_url;
+        } else {*/
+        var urlImg = document.getElementById(id2).value;
+        if (urlImg != '') {
+            document.getElementById(id).href = urlImg;
+        }
+        //}
+    }
+
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+
+    $('.custom-upload1 input[type=file]').change(function () {
+        $(this).next().find('input').val($(this).val());
+        cambiarFilePoliza(this, $(this).val());
+    });
+    function cambiarFilePoliza(obj, valor) {
+        var datos = new Array();
+        datos[obj.name] = valor;
+        subirRequisitosPoliza(obj, valor);
+    };
+    function subirRequisitosPoliza(sobj, svalor) {
+        var rMisDocs = new Array();
+        if (sobj.files[0]) {
+            rMisDocs.push(sobj.files[0]);
+            angular.element(document.getElementById("id_serviciosVehiculosComercialController")).scope().almacenarRequisitosPoliza(rMisDocs, sidFile); //NO OLVIDAR
+        }
+    };
+    function ejecutarFilePoliza(filename, idfile) {
+        var sid = document.getElementById(filename);
+        sidFile = idfile;
+        if (sid) {
+            document.getElementById(filename).click();
+        } else {
+            alert("Error ");
+        }
+    };
+    /* poder*/
+    $('.custom-upload2 input[type=file]').change(function () {
+        $(this).next().find('input').val($(this).val());
+        cambiarFilePoder(this, $(this).val());
+    });
+    function cambiarFilePoder(obj, valor) {
+        var datos = new Array();
+        datos[obj.name] = valor;
+        subirRequisitosPoder(obj, valor);
+    };
+    function subirRequisitosPoder(sobj, svalor) {
+        var rMisDocs = new Array();
+        if (sobj.files[0]) {
+            rMisDocs.push(sobj.files[0]);
+            angular.element(document.getElementById("id_serviciosVehiculosComercialController")).scope().almacenarRequisitosPoder(rMisDocs, sidFile); //NO OLVIDAR
+        }
+    };
+    function ejecutarFilePoder(filename, idfile) {
+        var sid = document.getElementById(filename);
+        sidFile = idfile;
+        if (sid) {
+            document.getElementById(filename).click();
+        } else {
+            alert("Error ");
+        }
+    };
+
+    function soloNumericoCelular(sValor, mensaje) {
+        Numer = parseInt(sValor);
+        if (isNaN(Numer)) {
+            return "";
+        } else {
+            var digits = ("" + Numer).split("");
+            if (digits.length == 8 && (digits[0] == 7 || digits[0] == 6)) {
+                $("#" + mensaje).hide();
+                return Numer;
+            } else {
+                $("#" + mensaje).show();
+                return "";
+            }
+        }
+    }
+    function valNumeroCelular(Control, mensaje) {
+        Control.value = soloNumericoCelular(Control.value, mensaje);
+    }
+
+    function soloNumericoTelefono(sValo, mensaje) {
+        Numer = parseInt(sValo);
+        if (isNaN(Numer)) {
+            $("#mprTelefono").val("");
+            angular.element(document.getElementById('mprTelefono')).scope().mprTelefono = 0;
+            return "";
+        } else {
+            var digits = ("" + Numer).split("");
+            if (digits.length == 7 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)) {//digits.length > 6 &&
+                $("#" + mensaje).hide();
+                return Numer;
+            } else {
+                $("#" + mensaje).show();
+                return "";
+            }
+        }
+    }
+    function valNumeroTelefono(Control, mensaje) {
+        Control.value = soloNumericoTelefono(Control.value, mensaje);
+    }
+
+    function soloNumericoCelular(sValor, mensaje) {
+        Numer = parseInt(sValor);
+        if (isNaN(Numer)) {
+            return "";
+        } else {
+            var digits = ("" + Numer).split("");
+            if (digits.length > 0 && (digits[0] == 7 || digits[0] == 6)) {
+                if (digits.length == 8)
+                    $("#" + mensaje).hide();
+                else $("#" + mensaje).show();
+                return Numer;
+            } else {
+                $("#" + mensaje).show();
+                return "";
+            }
+        }
+    }
+
+    function valNumeroCelular(Control, mensaje) {
+        Control.value = soloNumericoCelular(Control.value, mensaje);
+    }
+
+    function soloNumerico(variable) {
+        Numer = parseInt(variable);
+        if (isNaN(Numer)) {
+            return "";
+        }
+        return Numer;
+    }
+
+    function valNumero(Control) {
+        Control.value = soloNumerico(Control.value);
+    }
+
+    function soloNumericoTelefono(sValo, mensaje) {
+        Numer = parseInt(sValo);
+        if (isNaN(Numer)) {
+            return "";
+        } else {
+            // $("#"+mensaje).hide();
+            var digits = ("" + Numer).split("");
+            if (digits.length < 9 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)) {
+                if (digits.length == 7)
+                    $("#" + mensaje).hide();
+                else $("#" + mensaje).show();
+                return Numer;
+            } else {
+                $("#" + mensaje).show();
+                return "";
+
+            }
+        }
+    }
+
+    function valNumeroTelefono(Control, mensaje) {
+        Control.value = soloNumericoTelefono(Control.value, mensaje);
+    }
+
+    function conMayusculas(field) {
+        field.value = field.value.toUpperCase()
+    }
+
+    function checkInput(ob) {
+        var invalidChars = /[a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ¡"'!@#/\$%\^&\*\¿?_~();:{}|<>´ñ,.?`=a-zA-Z]/;
+        if (invalidChars.test(ob.value)) {
+            ob.value = ob.value.replace(invalidChars, "");
+        }
+    };
+
+    function validarCaracter(Control) {
+        Control.value = checkInput(Control.value);
+        textoTroceado = Control.split(Control, " ");
+        if (digits.length < 11) {
+            return Control;
+        }
+        return "";
+    }
+
+    function accessScope(node, func) {
+        var scope = angular.element(document.querySelector(node)).scope();
+        scope.$apply(func);
+    }
+
+    function initMap() {
+        accessScope('#outerMapaModificar', function (scope) {
+            scope.initMap();
+        });
+    }
+
+    function validarEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+    function setRepresentanteLegal(sValor) {
+        $("#rlNom").val("");
+        $("#rlMaterno").val("");
+    }
+</script>
+<script type="application/javascript">
+    $(document).ready(function () {
+        $('.js-example-basic-single').select2();
+    });
+</script>
+<div id="id_serviciosVehiculosComercialController" class="page-content" ng-controller="vehiculosControllerJuridico"
+    data-ng-init="inicioVehiculosJuridicoC();">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                <h4>INCRIPCIÓN CASA COMERCIAL - VEHÍCULOS</h4>
+                <!--cambios-->
+            </div>
+            <br><br>
+            <form name="signupForm" ng-controller="serviciosAtmController">
+                <div ng-show="formulario != null">
+                    <div ng-show="divJuridico != null">
+                        <div class="col-md-12">
+                            <legend>DATOS PERSONA JURÍDICA</legend>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_22}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_doc_per_jur" id="f01_num_doc_per_jur"
+                                        name="f01_num_doc_per_jur" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_23}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_raz_soc_per_jur" id="f01_raz_soc_per_jur"
+                                        name="f01_raz_soc_per_jur" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_24}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ges_vig_pod" id="f01_ges_vig_pod" name="f01_ges_vig_pod"
+                                        class="form-control" onkeyUp="checkInput(this);" width="30%" height="30"
+                                        ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_25}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_notaria" id="f01_num_notaria" name="f01_num_notaria"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4" ng-show="false">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_14}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_macro_des" id="f01_macro_des" name="f01_macro_des"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                    <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                                <span style="color:red" ng-show="signupForm.f01_macro.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.f01_macro.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4" ng-show="false">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_16}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_distrito_desc" id="f01_distrito_desc"
+                                        name="f01_distrito_desc" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
+                                    <input type="hidden" ng-model="datos.f01_distrito" id="f01_distrito"
+                                        name="f01_distrito" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_17}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"
+                                        width="30%" height="30" ng-disabled="true">
+                                    <input type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_18}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_tipo_viarep" id="f01_tipo_viarep" name="f01_tipo_viarep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_19}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_nom_via_rep" id="f01_nom_via_rep" name="f01_nom_via_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_20}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_rep" id="f01_num_rep" name="f01_num_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <legend>{{translateTitulos.lbl_12_26}}</legend>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_27}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_pri_nom_rep" id="f01_pri_nom_rep" name="f01_pri_nom_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_28}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ape_pat_rep" id="f01_ape_pat_rep" name="f01_ape_pat_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_29}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ape_mat_rep" id="f01_ape_mat_rep" name="f01_ape_mat_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_30}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ape_cas_rep" id="f01_ape_cas_rep" name="f01_ape_cas_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">Número de documento:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_doc_rep" id="f01_num_doc_rep" name="f01_num_doc_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">Expedido:</label>
+                                <div class="controls">
+                                    <select id="f01_expedido_rep" name="f01_expedido_rep" placeholder="expedido"
+                                        ng-model="datos.f01_expedido_rep" class="form-control" ng-disabled="true"
+                                        required>
+                                        <option value="">--Seleccione--</option>
+                                        <option value="LPZ">LA PAZ</option>
+                                        <option value="CBB">COCHABAMBA</option>
+                                        <option value="SCZ">SANTA CRUZ</option>
+                                        <option value="CHQ">CHUQUISACA</option>
+                                        <option value="TJA">TARIJA</option>
+                                        <option value="PTS">POTOSI</option>
+                                        <option value="ORU">ORURO</option>
+                                        <option value="BNI">BENI</option>
+                                        <option value="PND">PANDO</option>
+                                        <option value="EXP">EXPEDIDO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-md-12">
+                            <legend>DATOS VEHÍCULO:</legend>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url">Tipo de Objeto Tributario: </label>
+                                <div class="controls">
+                                    <input ng-model="datos.VH_CC_TIP_OBJ_TRIB" id="VH_CC_TIP_OBJ_TRIB"
+                                        name="VH_CC_TIP_OBJ_TRIB" class="form-control" width="30%" height="30"
+                                        placeholder="PÓLIZA" ng-disabled="desabilitado" readonly>
+                                </div>
+                                <span style="color:red" ng-show="signupForm.VH_CC_TIP_OBJ_TRIB.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.VH_CC_TIP_OBJ_TRIB.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url">Numero Objeto Tributario: </label>
+                                <div class="controls">
+                                    <input ng-model="datos.VH_CC_NRO_OBJ_TRIB" id="VH_CC_NRO_OBJ_TRIB"
+                                        name="VH_CC_NRO_OBJ_TRIB" class="form-control" width="30%" height="30"
+                                        ng-disabled="desabilitado">
+                                </div>
+                                <span style="color:red" ng-show="signupForm.VH_CC_NRO_OBJ_TRIB.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.VH_CC_NRO_OBJ_TRIB.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url">Nro. Chasis </label>
+                                <div class="controls">
+                                    <input ng-model="datos.VH_CC_NRO_CHASIS" id="VH_CC_NRO_CHASIS"
+                                        name="VH_CC_NRO_CHASIS" class="form-control" width="30%" height="30"
+                                        ng-disabled="desabilitado">
+                                </div>
+                                <span style="color:red" ng-show="signupForm.VH_CC_NRO_CHASIS.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.VH_CC_NRO_CHASIS.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url">Fecha Trámite </label>
+                                <div class="controls">
+                                    <input ng-model="datos.VH_CC_FCHA_TRAM" id="VH_CC_FCHA_TRAM" name="VH_CC_FCHA_TRAM"
+                                        class="form-control" placeholder="{{fechayhora}}" width="30%" height="30"
+                                        readonly ng-disabled="desabilitado">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Inicio Grilla visualizacion de requistos a enviar ><-->
+                        <div class="col-md-12">
+                            <legend> Documentos registrados de la Empresa:</legend>
+
+                            <div class="col-lg-12">
+                                <div class="tab-content">
+                                    <div id="tab-one" class="tab-pane active">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <br>
+                                                <br>
+                                                <table class="table table-striped table-bordered" id="tablaAdjuntos">
+                                                    <thead>
+                                                        <th>#&nbsp;</th>
+                                                        <th>Opciones&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; </th>
+                                                        <th>Archivo&nbsp;</th>
+                                                        <th>Descripción&nbsp;</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="column" ng-repeat="archivo in obtArchivosAdjuntos">
+                                                            <td>{{$index+1}}</td>
+
+                                                            <td>
+                                                                <a target="_blank" tooltip="Ver"
+                                                                    ng-click="imprimirArchivo(archivo.url)"
+                                                                    class="btn btn-default btn-circle"
+                                                                    data-toggle="modal" data-target="#docsVisor"><i
+                                                                        class="fa fa-eye" style="color:#249FE6"></i></a>
+                                                                <a ng-if="$index > 3" tooltip="Eliminar"
+                                                                    ng-click="eliminarArchivo(archivo, $index)"
+                                                                    class="btn btn-default btn-circle"
+                                                                    ng-hide="botones"><i class="fa fa-trash-o "
+                                                                        style="color:#249FE6"></i></a>
+                                                            </td>
+                                                            <td>{{archivo.campo}}</td>
+                                                            <td>{{archivo.nombre}}</td>
+                                                            <!--td>{{archivo.url}}</td-->
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Fin Grilla visualizacion de requistos a enviar> <-->
+                        <div class="ibox-content">
+                            <form name="signupForm" ng-controller="serviciosController" class="form-horizontal"
+                                role="form" novalidate>
+                                <div class="col-md-12">
+                                    <legend>LISTA DE REQUISITOS:</legend>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="url">FACTURA COMERCIAL:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group custom-upload">
+                                                <input type="file" id="f01_upload_factura" name="f01_upload_factura"
+                                                    accept="image/*" style="display: none;">
+                                                <div class="input-group col-xs-6">
+                                                    <span class="input-group-addon"
+                                                        style="background-color:rgb(0, 185, 194 ,0.6);">
+                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover"
+                                                            data-content="Se puede enviar archivos de Imagen, PDF, documentos de Office y archivos comprimidos."><i
+                                                                class="glyphicon glyphicon-question-sign"></i></a>
+                                                    </span>
+                                                    <input type="hidden" name="factura_url" id="factura_url">
+                                                    <input id="factura" name="factura" type="text" placeholder=""
+                                                        value="{{valor_factura}}" class="form-control input-lg" disabled
+                                                        required>
+                                                    <span class="input-group-btn">
+                                                        <a id="href_f01_upload_factura"
+                                                            onclick="ver('href_f01_upload_factura','factura_url','btn_f01_upload_factura')"
+                                                            target="_blank">
+                                                            <button id="btn_f01_upload_factura"
+                                                                class="browse btn btn-primary input-lg" type="button"><i
+                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                        </a>
+                                                        <button id="btn_f01_upload_factura"
+                                                            onclick="ejecutarFile('f01_upload_factura', 'factura')"
+                                                            class="btnupload browse btn btn-primary input-lg"
+                                                            type="button" {{{deshabilitado}}}><i
+                                                                class="glyphicon glyphicon-upload"></i> Subir
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="url">DUI-FRV O PÓLIZA DE IMPORTACIÓN</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group custom-upload1">
+                                                <input type="file" id="f01_upload_poliza" name="f01_upload_poliza"
+                                                    accept="image/*" style="display: none;">
+                                                <div class="input-group col-xs-6">
+                                                    <span class="input-group-addon"
+                                                        style="background-color:rgb(0, 185, 194 ,0.6);">
+                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover"
+                                                            data-content="Se puede enviar archivos de Imagen, PDF, documentos de Office y archivos comprimidos."><i
+                                                                class="glyphicon glyphicon-question-sign"></i></a>
+                                                    </span>
+                                                    <input type="hidden" name="poliza_url" id="poliza_url">
+                                                    <input id="poliza" name="poliza" type="text" placeholder=""
+                                                        value="{{valor_poliza}}" class="form-control input-lg" disabled
+                                                        required>
+                                                    <span class="input-group-btn">
+                                                        <a id="href_f01_upload_poliza"
+                                                            onclick="ver('href_f01_upload_poliza','poliza_url','btn_f01_upload_poliza')"
+                                                            target="_blank">
+                                                            <button id="btn_f01_upload_poliza"
+                                                                class="browse btn btn-primary input-lg" type="button"><i
+                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                        </a>
+                                                        <button id="btn_f01_upload_poliza"
+                                                            onclick="ejecutarFilePoliza('f01_upload_poliza', 'poliza')"
+                                                            class="btnupload browse btn btn-primary input-lg"
+                                                            type="button" {{{deshabilitado}}}><i
+                                                                class="glyphicon glyphicon-upload"></i> Subir
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="url">PODER DEL COMPRADOR:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group custom-upload2">
+                                                <input type="file" id="f01_upload_poder" name="f01_upload_poder"
+                                                    accept="image/*" style="display: none;">
+                                                <div class="input-group col-xs-6">
+                                                    <span class="input-group-addon"
+                                                        style="background-color:rgb(0, 185, 194 ,0.6);">
+                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover"
+                                                            data-content="Se puede enviar archivos de Imagen, PDF, documentos de Office y archivos comprimidos."><i
+                                                                class="glyphicon glyphicon-question-sign"></i></a>
+                                                    </span>
+                                                    <input type="hidden" name="poder_url" id="poder_url">
+                                                    <input id="poder" name="poder" type="text" placeholder=""
+                                                        value="{{valor_poder}}" class="form-control input-lg" disabled
+                                                        required>
+                                                    <span class="input-group-btn">
+                                                        <a id="href_f01_upload_poder"
+                                                            onclick="ver('href_f01_upload_poder','poder_url','btn_f01_upload_poder')"
+                                                            target="_blank">
+                                                            <button id="btn_f01_upload_poder"
+                                                                class="browse btn btn-primary input-lg" type="button"><i
+                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                        </a>
+                                                        <button id="btn_f01_upload_poder"
+                                                            onclick="ejecutarFile('f01_upload_poder', 'poder')"
+                                                            class="btnupload browse btn btn-primary input-lg"
+                                                            type="button" {{{deshabilitado}}}><i
+                                                                class="glyphicon glyphicon-upload"></i> Subir
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+
+                        </div>
+                        <br><br><br><br><br><br>
+                        <div class="col-md-6" align="center">
+                            <!-- GNERADOR DE CAPCHA -->
+                            <div class="col-md-12" align="center">
+                                <table width="50%" border="0" cellspacing="0" cellpadding="2" class="one">
+                                    <tr class="color">
+                                        <div style="background: #ffffff;">
+                                            <div class="box2">
+                                                <img class="img-responsive" src="{{imageCSTT}}" title="{{toltipT}}">
+                                            </div>
+                                            <div class="box2">
+                                                <img class="img-responsive" src="{{imageLNGG}}"
+                                                    title="Palabra en CASTELLANO">
+                                            </div>
+                                        </div>
+                                    </tr>
+                                    <tr class="color">
+                                        <td class="color22" colspan="3" width="70" align="center">
+                                            <input id="resultadoCC" name="resultadoCC" type="text"
+                                                style="border: 0px !important;" class="form-control"
+                                                placeholder="{{palabraT}}" ng-model="resultadoCC"
+                                                ng-keyup="VerificarCapchaa()" />
+                                            <span ng-show="formulario.palabraT.$invalid">
+                                                <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                            </span>
+                                            <label>{{palabraT}}</label>
+                                        </td>
+                                        <td class="color2" width="30" align="center">
+                                            <a type="button" class="btn btn-default btn-circle" data-toggle="modal"
+                                                data-target="modal" ng-click="getCaptchasXX();"><i
+                                                    class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072"
+                                                    title="Actualizar"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <b>
+                                    <font SIZE=3 color="red"> {{ErrorCapchasXX}}</font>
+                                </b>
+                                <b>
+                                    <font SIZE=3 color="red"> {{ErrorCapchasXX2}}</font>
+                                </b>
+                                <b>
+                                    <font SIZE=2 color="green"> {{SuccesCapchasxx}}</font>
+                                </b>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+            <div class="col-md-12" align="right" ng-show="botones != null">
+                <button id="miFormGuardar" ng-click="serializarInformacion(datos);getCaptchasXX();" type="button"
+                    class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" tooltip="Guardar Formulario">
+                    <!--{{translateTitulos.lbl_016_29}}--></button>
+                <!--cambios-->
+                <button id="btnFormLicencia" ng-click="validarEnvio(datos);" data-dismiss="modal" type="button"
+                    class="btn btn-success1 fa fab fa-mail-forward shake-little" tooltip="Enviar Formulario">
+                    <!--{{translateTitulos.lbl_016_30}}--></button>
+                <!--cambios-->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</html>

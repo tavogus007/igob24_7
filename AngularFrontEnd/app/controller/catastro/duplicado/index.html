@@ -1,0 +1,756 @@
+<style>
+    /*para quitar las flechas en buscador*/
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button
+    {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+    .img1{
+        position: absolute;
+        top:  65%;
+        left: 45%;
+    }
+    {box-sizing: border-box;}
+    .pdf-controls { width: 100%; display: block; background: #eee; padding: 1em;}
+    .rotate0 {-webkit-transform: rotate(0deg); transform: rotate(0deg); }
+    .rotate90 {-webkit-transform: rotate(90deg); transform: rotate(90deg); }
+    .rotate180 {-webkit-transform: rotate(180deg); transform: rotate(180deg); }
+    .rotate270 {-webkit-transform: rotate(270deg); transform: rotate(270deg); }
+    .fixed { position: fixed; top: 0; left: calc(50% - 480px); z-index: 100; width: 100%; padding: 1em; background: rgba(238, 238, 238,.9); width: 960px; }
+    /*si necesitas que sea responsive*/
+    canvas {
+        width: 100%;
+        height: auto;
+    }
+
+
+
+    #caja {
+        display: block;
+    }
+    #mostrar{
+        display:block;
+    }
+    #cerrar_rc{
+        position: absolute;
+        top: 5px;
+        left: 92%;
+        font-size: 38px;
+        color: #FFCB05 !important;
+    }
+
+    /*ESTILOS PROPIOS DE CODIGO CAPTCHA*/
+    .ejemplo3 {
+        background-color: #6F7072;
+
+        color: #6F7072;
+        margin: 1px auto;
+        padding: 4px;
+        text-align: center;
+        width: 350px;
+    }
+    
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+    .box2{
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+    input[type=radio] {
+        border: 0px;
+        width: 16px;
+        height: 16px;
+    }
+
+    ul {
+        list-style: initial ! important;
+    }
+
+    .lblAdvertencia{
+        font-weight: bold;
+        color: red;
+    }
+    /*ESTILOS PROPIOS DE CODIGO CAPTCHA FIN*/
+</style>
+<script type="text/javascript" class="ng-scope">
+    $('#divPopup2').modal('show');
+</script>
+
+<div  ng-controller="DuplicadosController"  ng-init="inicioSolicitudes();">
+    <div class="col-lg-12">
+	    <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>SOLICITUD DE DUPLICADO DE CERTIFICADO DE REGISTRO CATASTRAL</h5>
+            </div>
+            <div class="container-fluid">
+                Si desea solicitar un Duplicado de Certificado de Registro Catastral de su inmueble, presione el botón <strong>SOLICITAR DUPLICADO</strong>.
+                <br>
+                Para m&aacute;s informaci&oacute;n presione el bot&oacute;n GU&Iacute;A DE TR&Aacute;MITE
+            </div>
+            <br>
+            <div id="divBuscador">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#divPopup" ng-click="CargarPopupBuscador()" ><span></span>Solicitar duplicado</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#divPopup2" ng-click="cambiarImagen(0)"><span aria-hidden="true" title="Donde encontrar el c%oacute;digo catastral" ></span>Guía de trámite</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#divPopupLstCC" ><span aria-hidden="true"></span>Ver mis predios</button>
+            </div>
+            <hr>
+			<div id= "mostrar" class="ibox-title">
+			    <a  class="" ng-click="solicitudesCiudadano()"><h5>MIS TR&Aacute;MITES</h5></a>
+				&nbsp;&nbsp;
+				<button type="button" class="close" style="font-size:20px; color: #FFCB05; opacity: 1 !important" ng-click="solicitudesCiudadano()"><span class="fa fa-refresh fa-spin" title="Actualizar"></span></button>
+            </div>
+			<div class="ibox-content" id="caja">
+			    <div>
+				    <div class="panel ">
+					    <table  ng-table="tablaSolicitudes"  class="table table-striped">
+						    <tr style="cursor: pointer;" ng-repeat="solicitud in $data  | filter:query " ng-style="solicitud.idEstado === '5' && {'background-color':'#fdeedc'} || solicitud.idEstado === '2' && {'background-color':'#ccf5f6'} || solicitud.idEstado === '4' && {'background-color':'#f8c7db'}" >
+							    <td data-title="'Nro.'" >{{$index+1}}</td>
+								<td data-title="'Tipo de Trámite'" sortable="'TipoTra'">{{solicitud.TipoTra}}</td>
+								<td data-title="'Código Catastral'" sortable="'CodigoCatastral'">{{solicitud.CodigoCatastral | FormatoSercat}}</td>
+								<td data-title="'Proforma'" sortable="'FUM'" >{{solicitud.FUM}}</td>
+								<td data-title="'Fecha de Solicitud'" sortable="'FechaRegistro'" >{{solicitud.FechaRegistro}} </td>
+								<td data-title="'Estado'" sortable="'Estado'" >{{solicitud.Estado}}</td>
+                                <td data-title="'Tipo de pago'" sortable="'tipoPago'" >{{solicitud.tipoPago}}</td>
+                                <td data-title="'Acciones'">
+								    <div id="divAcciones{{solicitud.IdRegistro}}"  >
+										<button class="btn btn-warning" ng-show="VerificarDespliegueFUM(solicitud)" data-toggle="modal" data-target="#divPopup4" ng-click="ImprimirProforma(solicitud.f)"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Imprimir proforma de pago" ></span> Imprimir Proforma de Pago (FUM)</button>
+                                        <button class="btn btn-warning" ng-show="VerificarDespliegueEpago(solicitud)" ng-click="continuarPagoOL(solicitud)"><span class="glyphicon glyphicon-usd" aria-hidden="true" title="Imprimir proforma de pago" ></span> Continuar pago en línea</button>
+										<button class="btn btn-info" ng-show="VerificarDespliegueCC(solicitud)" data-toggle="modal" data-target="#divPopup7" ng-click="DeplegarDpl(solicitud)"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Imprimir Certificado" ></span> Imprimir Duplicado del Certificado</button>
+                                    </div>
+								</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal1 : Buscador-->
+    <div id="divPopup" class="modal fade" tabindex="-1" data-focus-on="input:first" role="dialog">
+        <div class="modal-dialog" style="width:600px">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title"> <button class="btn-warning">PASO 1</button> &nbsp; Ingrese su C&oacute;digo Catastral y el texto de la imagen.</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" ng-submit="VerificarCapcha(codigoCatastral)" id="frmCodCat" name="frmCodCat">
+                        <div class="form-group">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-2 col-lg-offset-1">
+                                        <label class="control-label" style="color:black;" >Distrito</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="control-label" style="color:black;">Manzana</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="control-label" style="color:black;">Predio</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="control-label" style="color:black;">Subpredio</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="control-label" ></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2 col-lg-offset-1">
+                                        <input class="form-control" id="ccDistrito" name="ccDistrito" type="number" placeholder="Distrito" ng-model="codigoCatastral.distrito" required/>
+                                        <span ng-show="frmCodCat.ccDistrito.$error.required" style="color:red"> Requerido</span>
+                                    </div>
+                                    <div class="col-sm-2 col-lg-offset-0">
+                                        <input class="form-control" id="ccManzana" name="ccManzana" type="number" placeholder="Manzana" ng-model="codigoCatastral.manzana" required/>
+                                        <span ng-show="frmCodCat.ccManzana.$error.required" style="color:red"> Requerido</span>
+                                    </div>
+                                    <div class="col-sm-2 col-lg-offset-0">
+                                        <input class="form-control" id="ccPredio" name="ccPredio" type="number" placeholder="Predio" ng-model="codigoCatastral.predio" required/>
+                                        <span ng-show="frmCodCat.ccPredio.$error.required" style="color:red"> Requerido</span>
+                                    </div>
+                                    <div class="col-sm-2 col-lg-offset-0">
+                                        <input class="form-control" id="ccSubpredio" name="ccSubpredio" type="number" placeholder="Subpredio" ng-model="codigoCatastral.subpredio" />
+                                    </div>
+                                    <div class="col-sm-2 col-lg-offset-0">
+                                        <a data-toggle="modal" data-target="#divPopup6"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el C&oacute;digo Catastral" style=" font-size:30px"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" align="center">
+                            <table width="50%" border="3" cellspacing="0" cellpadding="2"  class="one">
+                                <tr class="color">
+                                    <div><!--cambios-->
+                                        <div class="box2">
+                                            <img id="img1" class="img-responsive" src="" title="">
+                                        </div>
+                                        <div class="box2">
+                                            <img id="img2" class="img-responsive" src=""  title="Palabra en CASTELLANO">
+                                        </div>
+                                    </div>
+                                </tr>
+                                <tr class="color">
+                                    <td class="color22" colspan="3" width="70"  align="center">
+                                        <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" placeholder="" ng-model="resultadoC" ng-change="getlimpiareRROR()" required/>
+                                        <span  ng-show="formulario.resultadoC.$invalid">
+                                            <span ng-show="formulario.resultadoC.$error.required">
+                                                <input id="lbllengua" name="lbllengua" type="text" size="50" disabled="disabled"/>
+                                            </span>
+                                        </span>
+                                    </td>
+                                    <td class="color2" width="30"  align="center">
+                                        <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasX();" ><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <b><font SIZE=3 color="red">{{ErrorCapcha}}</font></b>
+                        </div>
+                        <br><br><br><br><br><br><br>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info pull-left" data-toggle="modal" data-dismiss="modal" href="#divPopup2" ng-click="cambiarImagen(1)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el codigo catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="frmCodCat" class="btn btn-primary"  ng-disabled="frmCodCat.$invalid"> Siguiente<span class="glyphicon glyphicon-chevron-right " aria-hidden="true" title="Siguiente"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 7 Visor pdf-->
+    <div id="divPopup7" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:900px">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img class="img1" src="../catastro/img/spin.gif" ng-show="varSpin" alt="no cargo imagen">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="resetUrl()">&times;</button>
+                    <h3 class="modal-title" ng-show="tipoVisor == 1"><button class="btn-warning">Paso 2</button>&nbsp;Vista preliminar del Duplicado</h3>
+                    <h3 class="modal-title" ng-show="tipoVisor == 2"><button class="btn-warning">Paso Final</button>&nbsp;Impresi&oacute;n del Duplicado</h3>
+                    <br>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup" ng-click="getCaptchasX();" ng-show="tipoVisor == 1"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Siguiente"></span>Atr&aacute;s</button>
+                        <button class="btn btn-info" ng-show="tipoVisor == 1" data-toggle="modal" data-target="#divPopup2" data-dismiss="modal" ng-click="cambiarImagen(2)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el C&oacute;digo Catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup3"  ng-show="confirmacionCiudadano == null && tipoVisor == 1"> ¿Problemas de visualizaci&oacute;n?</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#divPopup9" ng-show="resultadoBusqueda.res == 'OK' && tipoVisor == 1" ng-click="ProformaPago(resultadoBusqueda)">Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span> </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-info" ng-show="tipoVisor == 2" data-dismiss="modal" data-toggle="modal" data-target="#divPopup2" ng-click="cambiarImagen(6)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el C&oacute;digo Catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" ng-show="tipoVisor == 2 && dspl == true" data-target="#divPopup11" ng-click="genAdj()"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Duplicado de Certificado Catastral"></span> Imprimir</button>
+                    <div class="pull-right" style="padding: 1px">
+                        <button class="btn btn-info" ng-click="zoomIn()" ng-show="resultadoBusqueda.res == 'OK' || tipoVisor == 2">+</button>&nbsp;
+                    </div>
+                    <div class="pull-right" style="padding: 1px">
+                        <button class="btn btn-info" ng-click="zoomOut()" ng-show="resultadoBusqueda.res == 'OK' || tipoVisor == 2">-</button>
+                    </div>
+                    <label ng-show="tipoVisor==1" style="color:{{resultadoBusqueda.res == 'OK'?'black':'red'}} font-size: 120%"><strong>{{resultadoBusqueda.msg}}</strong>
+                    </label>
+                    <div id="visorPreview" ng-show="resultadoBusqueda.res == 'OK' || tipoVisor==2 ">
+                        <ng-pdf id="pdfView" template-url="../catastro/partials/viewer.html" canvasid="pdf1" scale="1" ></ng-pdf>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: problema de visualización-->
+    <div id="divPopup3" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:500px">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Problemas de visualizaci&oacute;n</h4>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align: center">
+                        <form name="frmObs" id="frmObs" >
+                            <div class="form-group" >
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="control-label" ></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <textarea name="textArea"  class="form-control" rows="3" ng-model="observacion.obs" placeholder="Introduzca el problema de visualización." required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button class="btn btn-info pull-left" data-toggle="modal" data-target="#divPopup2"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Ayuda para realizar su solicitud de duplicado"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>-->
+                    <button class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup7" ><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Retroceder"></span>&nbsp;Atr&aacute;s</button>
+                    <button ng-disabled="frmObs.textArea.$error.required" type="button" class="btn btn-primary"  ng-click="EnviarObservacion(observacion)"><span class="glyphicon glyphicon-envelope" aria-hidden="true" title="Enviar observación"></span> Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 9: Paso 3: Proforma de pago-->
+    <div id="divPopup9" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:900px">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title"><button class="btn-warning">Paso 3</button>Seleccionar el motivo de la solicitud. (Debe seleccionar el motivo y detalle).</h3>
+                </div>
+                <div class="modal-body">
+                    <div ng-show="datospersonaNatural ==null"> <!--datosPersonaNatural == null-->
+                        <form name="frmProforma">
+                            <div class="col-xs-6">
+                                <label>Motivo:</label>
+                                <select class="form-control" ng-model="idMotivo" ng-change="CargarComboMotivosDetalle()" id="cmbMotivo" name="cmbMotivo" required>
+                                    <option ng-repeat="m in Motivos" ng-model="descMotivo" value='{{m.IdMotivo}}'>
+                                        {{m.descripcion}}
+                                    </option>
+                                </select>
+                                <span ng-show="!(frmProforma.cmbMotivo.$dirty && idMotivo != 0)" style="color:red">Seleccione motivo.</span>
+                            </div>
+                            <div class="col-xs-6 ">
+                                <label>Detalle del motivo:</label>
+                                <select class="form-control" ng-model="idMotivoDetalle" name="cmbDetalleMotivo" required>
+                                    <option ng-repeat="md in MotivosDetalle" ng-model="descDetalle" value='{{md.IdMotivoDetalle}}'>
+                                        {{md.Descripcion}}
+                                    </option>
+                                </select>
+                                <span ng-show="!(frmProforma.cmbDetalleMotivo.$dirty && idMotivoDetalle != 0)" style="color:red">Seleccione detalle.</span>
+                            </div>
+
+                            <!--<div class="col-xs-12 col-sm-12">
+                                <hr>
+                                <label >Nombres:</label>
+                                <input type="text"  class="form-control" ng-model="registro3.nombre"  disabled> &lt;!&ndash; +' '+  registro.paterno +' '+ registro.materno"&ndash;&gt;
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <label >Apellido paterno:</label>
+                                <input type="text" class="form-control" ng-model="registro3.paterno"  disabled>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <label >Apellido materno:</label>
+                                <input type="text" class="form-control" ng-model="registro3.materno" disabled>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <label >Cedula de identidad:</label>
+                                <input type="text" class="form-control"  ng-model="registro3.cedula" disabled>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <label >Fecha de nacimiento:</label>
+                                <input type="date" class="form-control" ng-model="registro3.fecha_nacimiento"  disabled>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <label >Correo electr&oacute;nico:</label>
+                                <input type="text" class="form-control" ng-model="registro3.correo"  disabled>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <label >Celular:</label>
+                                <input type="text" class="form-control" ng-model="registro3.celular"  disabled>
+                            </div>-->
+
+                            <div class="col-xs-6 col-sm-6">
+                                <br/>
+                            </div>
+
+                            <div class="col-xs-12 text-right">
+                                <button class="btn btn-info pull-left" data-toggle="modal" data-target="#divPopup2" data-dismiss="modal" ng-click="cambiarImagen(3)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el codigo catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                                <button class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup7" ><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Retroceder"></span>&nbsp;Atr&aacute;s</button>
+                                <button class="btn btn-primary" data-dismiss="modal"  ng-click="cargarDescripcionMotivos()" data-toggle="modal" data-target="#divPopup12" ng-disabled="!(frmProforma.cmbMotivo.$dirty && frmProforma.cmbDetalleMotivo.$dirty && idMotivoDetalle != 0 && idMotivo != 0)">Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div ng-show="datospersonaJuridica == null"> <!---->
+                        <form name="frmProformaJ">
+                            <div class="col-xs-6">
+                                <label>Motivo:</label>
+                                <select class="form-control" ng-model="idMotivo" ng-change="CargarComboMotivosDetalle()"  name="cmbMotivoJ" required>
+                                    <option ng-repeat="m in Motivos" value='{{m.IdMotivo}}'>
+                                        {{m.descripcion}}
+                                    </option>
+                                </select>
+                                <span ng-show="!(frmProformaJ.cmbMotivoJ.$dirty && idMotivo != 0)" style="color:red">Seleccione motivo.</span>
+                            </div>
+                            <div class="col-xs-6 ">
+                                <label>Detalle del motivo:</label>
+                                <select class="form-control" ng-model="idMotivoDetalle" name="cmbDetalleMotivoJ" required>
+                                    <option ng-repeat="md in MotivosDetalle" value='{{md.IdMotivoDetalle}}'>
+                                        {{md.Descripcion}}
+                                    </option>
+                                </select>
+                                <span ng-show="!(frmProformaJ.cmbDetalleMotivoJ.$dirty && idMotivoDetalle != 0)" style="color:red">Seleccione detalle del motivo.</span>
+                            </div>
+                            <div class="col-xs-12 col-sm-12">
+                                <hr>
+                            </div>
+                            <!--<div class="col-xs-6 col-sm-6">
+                                <label >NIT:</label>
+                                <input type="text" class="form-control"  ng-model="registro3.nit" disabled>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <label >Razon Social:</label>
+                                <input type="text"  class="form-control" ng-model="registro3.razonSocial"  disabled>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <label >Telefono:</label>
+                                <input type="text" class="form-control" ng-model="registro3.telefono"  disabled>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <label >Celular:</label>
+                                <input type="text" class="form-control" ng-model="registro3.celular"  disabled>
+                            </div>
+                            <div class="col-xs-12">
+                                <hr>
+                                <label style="color: #2728c3; font-size: 110%">Seleccione motivo y detalle del motivo</label>
+                            </div>-->
+
+                            <div class="col-xs-6 col-sm-6">
+                                <br/>
+                            </div>
+                            <div  class="col-xs-12 text-right">
+                                <button class="btn btn-info pull-left" data-toggle="modal" data-dismiss="modal" data-target="#divPopup2" ng-click="cambiarImagen(3)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el codigo catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                                <button class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup7" ><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Retroceder"></span>&nbsp;Atr&aacute;s</button>
+                                <button class="btn btn-primary" data-dismiss="modal"  ng-click="cargarDescripcionMotivos()" data-toggle="modal" data-target="#divPopup12" ng-disabled="!(frmProformaJ.cmbMotivoJ.$dirty && frmProformaJ.cmbDetalleMotivoJ.$dirty && idMotivoDetalle != 0 && idMotivo != 0)"> Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span></button>
+                            </div>
+                        </form>
+                    </div>
+                    <label></label><!--mantiene el modal-body en su posicion-->
+                </div>
+                <br>
+                <div class="modal-footer">
+                    <!--<button class="btn btn-info pull-left" data-toggle="modal" data-target="#divPopup2"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el codigo catastral"  ></span> GU&Iacute;A DE TRAMITE</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 12: alerta  -->
+    <div id="divPopup12" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:700px">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button class="btn-warning" style="font-size: 120%"><strong>Atenci&oacute;n!</strong></button>
+                </div>
+                <div class="modal-body">
+                    <span style="font-size:120%;" >Este documento est&aacute; destinado &uacute;nicamente para el tr&aacute;mite:</span><br>
+                    <span style="font-size:120%;">- <strong>{{descMotivo}}, {{descMotivoDetalle}} </strong></span><br>
+                    <span style="font-size:120%;" > y tendr&aacute; una validez de <strong> {{diasImpresion}}</strong> d&iacute;as calendario.</span>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default"  data-dismiss="modal" data-toggle="modal" data-target="#divPopup9" ng-click="ProformaPago(resultadoBusqueda)" ><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Retroceder"></span>&nbsp;Atr&aacute;s</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal"  data-target="#divPopupTipoPago" ng-click="idTipoPago=0"> Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal tipo pago: Paso 4: tipo de pago-->
+    <div id="divPopupTipoPago" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:600px">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title"><button class="btn-warning">Paso 4</button>&nbsp;Seleccione de tipo de pago.</h3><!--&nbsp;Generaci&oacute;n de Proforma de Pago FUM.-->
+                </div>
+                <form name="formTipoPago" id="formTipoPago">
+                    <div class="modal-body">
+                        <div class="row">
+                        <div class="form-group  col-xs-12 col-sm-12">
+                            <!--<label >Seleccione el tipo de pago:</label>-->
+                            <!--<select class="form-control" ng-model="idTipoPago" id="cmbPago" name="cmbPago" required>
+                                <option ng-repeat="tp in TipoPago" ng-model="tipoPago" value='{{tp.idTipoPago}}'>
+                                    {{tp.tipoPago}}
+                                </option>
+                            </select>
+                            <label class="radio-inline"><input type="radio" name="optradio">Option 1</label>
+                            <label class="radio-inline"><input type="radio" name="optradio">Option 2</label>-->
+                            <div class="col-xs-12">
+
+                                <div class="table">
+                                    <table >
+                                    <tr>
+                                        <td width="12%">
+                                            <input type="radio"  name="radioPago" ng-model="idTipoPago" value="1" title="Pago en efectivo">
+                                            <button class="btn btn-info btn-circle" ng-click="idTipoPago=1">
+                                                <span class="glyphicon glyphicon-usd" aria-hidden="true" title="Pago en efectivo"></span>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <strong>Pago en efectivo:</strong>&nbsp;Realizar el pago a trav&eacute;s de una entidad bancaria autorizada.
+                                        </td>
+                                    </tr>
+                                        </table>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="table">
+                                    <table>
+                                        <tr>
+                                            <td width="12%">
+                                                <input type="radio" name="radioPago" ng-model="idTipoPago" value="2" title="Pago en linea">
+                                                <button class="btn btn-warning btn-circle" ng-click="idTipoPago=2">
+                                                    <span class="glyphicon glyphicon-credit-card" aria-hidden="true" title="Pago en linea"></span>
+                                                </button>
+
+                                            </td>
+                                            <td>
+                                                <strong>Pago en linea:</strong>&nbsp;Realizar el pago por medio de una tarjeta de cr&eacute;dito o d&eacute;bito.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                            <span ng-show="!idTipoPago" style="color:red">Seleccione una opci&oacute;n.</span>
+
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info pull-left" data-toggle="modal" href="#divPopup2" data-dismiss="modal" ng-click="cambiarImagen(4)" ><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el codigo catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                        <button class="btn btn-default"  data-dismiss="modal" data-toggle="modal" data-target="#divPopup12"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Retroceder"></span>&nbsp;Atr&aacute;s</button>
+                        <button type="button" form="formTipoPago" class="btn btn-primary" data-dismiss="modal" ng-click="AddIntegra()" ng-disabled="!idTipoPago"> Siguiente<span class="glyphicon glyphicon-chevron-right " aria-hidden="true" title="Siguiente"></span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal tipo pago: Paso 4: tipo de pago-->
+    <div id="divPopupPagoTarjeta" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:900px">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title"><button class="btn-warning">Paso 5</button>&nbsp;Pago por tarjeta.</h3><!--&nbsp;Generaci&oacute;n de Proforma de Pago FUM.-->
+                </div>
+                <form name="formPagoTarjeta" id="formPagoTarjeta">
+                    <div class="modal-body">
+                        <h3>Procesando...</h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info pull-left" data-toggle="modal" href="#divPopup12" data-toggle="modal" ng-click="cambiarImagen(0)" ng-if="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el codigo catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                        <button class="btn btn-default"  data-dismiss="modal" data-toggle="modal" data-target="#divPopupTipoPago" ng-click="idTipoPago=0"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Retroceder"></span>&nbsp;Atr&aacute;s</button>
+                        <button type="button" form="formPagoTarjeta" class="btn btn-primary" data-dismiss="modal" ng-disabled="fromTipoPago.$invalid"> Siguiente<span class="glyphicon glyphicon-chevron-right " aria-hidden="true" title="Siguiente"></span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4 Proforma de Pago PDF-->
+    <div id="divPopup4" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:700px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-disabled=" RegistroFUM.registrado != 'OK' || !Imp " data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title"><button class="btn-warning" ng-show="RegistroFUM.mensaje != ''">Paso 5</button>&nbsp;Imprimir Proforma de Pago FUM.</h3>
+                </div>
+                <div class="modal-body">
+                    <img class="img1" src="../catastro/img/spin.gif" ng-show="varSpin" alt="no cargo imagen">
+                    <label style="font-size:120%; color:{{RegistroFUM.registrado == 'OK'?'black':'red'}}"><strong>{{RegistroFUM.mensaje}}</strong></label>
+                    <div id="visorFum" ng-show="RegistroFUM.registrado =='OK'">
+                        <object data="" type="application/pdf" width="650" height="350">
+                        </object>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info pull-left" data-toggle="modal" data-target="#divPopup2" data-dismiss="modal" ng-click="cambiarImagen(5)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el C&oacute;digo Catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                    <button class="btn btn-default"  data-dismiss="modal" data-toggle="modal" data-target="#divPopup9" ng-show="RegistroFUM.registrado != 'OK'" ng-click="ProformaPago(resultadoBusqueda)" ><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Retroceder"></span>&nbsp;Atr&aacute;s</button>
+                    <label for="chkImp" class="text-center" ng-show="!Imp && RegistroFUM.registrado == 'OK'" style="color: #2728c3; font-size: 110%">
+                        &nbsp;¿Imprimi&oacute; la proforma?&nbsp;&nbsp;&nbsp;
+                        <button type="button" ng-model="Imp" ng-click="Imp=true" id="chkImp" class="btn btn-primary">SI</button>
+                    </label>
+                    <button type="button" class="btn btn-primary" ng-show="Imp" data-dismiss="modal" data-toggle="modal" data-target="#divPopup10" > Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span></button>
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-show="RegistroFUM.mensaje == ''"> Cancelar </button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5 Duplicado-->
+	<div id="divPopup5" class="modal fade" role="dialog">
+	    <div class="modal-dialog" style="width:700px">
+		    <!-- Modal content-->
+			<div class="modal-content">
+			    <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Duplicado de Certificado Catastral</h4>
+					</div>
+					<div class="modal-body">
+						<div id="visorDuplicado">
+							<object data="" type="application/pdf" width="650" height="400">
+							</object>
+						</div>
+                    </div>
+					<div class="modal-footer">
+                    <button class="btn btn-info pull-left" data-toggle="modal" data-dismiss="modal" data-target="#divPopup2" ng-click="cambiarImagen(6)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el C&acutedigo Catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+				    <button type="button" class="btn btn-primary" ng-click="impDpl('iFramePdf')"><span class="glyphicon glyphicon-ok" aria-hidden="true" title="Duplicado de Certificado Catastral" ></span> Imprimir</button>
+			    </div>
+		    </div>
+	    </div>
+    </div>
+
+    <!-- Modal 6 Help-->
+	<div id="divPopup6" class="modal fade" role="dialog">
+	    <div class="modal-dialog" style="width:500px">
+		    <!-- Modal content-->
+			<div class="modal-content">
+			    <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Código Catastral</h4>
+                </div>
+				<div class="modal-body">
+				    <div >
+					    <img src="../catastro/img/catastroHelp.png" style="width: 100%; height: 100%" />
+                    </div>
+                </div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 10: mensaje 1-->
+    <div id="divPopup10" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:900px">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button class="btn-warning" style="font-size: 120%"><strong>Atenci&oacute;n!</strong></button>
+                </div>
+                <div class="modal-body">
+                    <!--<label style="font-size: 110%;"><strong>Una vez pagada la proforma, se habilitar&aacute; automáticamente la opci&oacute;n de imprimir su Duplicado del Certificado Catastral desde la bandeja de (MIS TR&Aacute;MITES) por el lapso de 7 d&iacute;as (ver la siguiente figura).</strong></label>-->
+                    <label style="font-size: 110%;"><strong>Una vez pagada la proforma, se habilitar&aacute; automáticamente la opci&oacute;n de imprimir su Duplicado del Certificado Catastral en el lapso de 7 d&iacute;as calendario. Para imprimir su Duplicado del Certificado debe volver a ingresar a este sitio WEB, y en la bandeja de MIS TR&Aacute;MITES presionar sobre IMPRIMIR DUPLICADO DEL CERTIFICADO (ver figura). Vencido este plazo se deshabilitar&aacute; la opci&oacute;n de imprimir.</strong></label>
+                    <img src="../catastro/img/vista22.png" style="width: 100%; height: 120%" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="resetUrl()">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 11: mensaje 2  -->
+    <div id="divPopup11" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:700px">
+            &lt;!&ndash; Modal content&ndash;&gt;
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button class="btn-warning" style="font-size: 120%"><strong>Atenci&oacute;n!</strong></button>
+                </div>
+                <div class="modal-body">
+                    <span style="font-size:150%;" >
+                        <!--strong>ADVERTENCIA!!! El duplicado del Certificado Catastral debe imprimirse en una hoja bond blanca tamaño Oficio con las siguientes dimensiones 21,59 (cm) x 33,02 (cm).</strong-->
+                        <span class="lblAdvertencia">¡ADVERTENCIA! </span>
+                        <br/>
+                        Para evitar contratiempos u observaciones el duplicado del Certificado Catastral debe imprimirse:
+                        <ul type = disk >
+                            <li>Hoja bond blanca tamaño Oficio con las siguientes dimensiones 21,59 (cm) x 33,02 (cm)</li>
+                            <li>Calidad y resolución óptima (No debe tener manchas, alteraciones, cortes, ajaduras ni distorsiones)</li>
+                            <li>Impreso en blanco y negro</li>
+                        </ul>
+                    </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup8" >Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 8 impresion-->
+    <div id="divPopup8" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:900px">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div>
+                        <iframe  id="PDFtoPrint" height="600px" width="850px" ></iframe>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info pull-left" data-toggle="modal" data-dismiss="modal" data-target="#divPopup2" ng-click="cambiarImagen(7)" ><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el C&oacute;digo Catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--ultimo modal: mantener al ultimo por la sobreposicion-->
+    <!-- Modal 2: Guía de Tramite  -->
+    <div id="divPopup2"  class="modal fade" role="dialog" tabindex="-1" data-focus-on="input:first">
+        <div class="modal-dialog" >
+            &lt;!&ndash; Modal content&ndash;&gt;
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="navegarGuiaTramite()">&times;</button>
+                    <h3 class="modal-title">Gu&iacute;a de tr&aacute;mite.</h3>
+                </div>
+                <div class="modal-body">
+                    <img src="{{srcTutorial}}" class="img-responsive" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="navegarGuiaTramite()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Lista de CC del ciudadano -->
+    <div id="divPopupLstCC"  class="modal fade" role="dialog" tabindex="-1" data-focus-on="input:first">
+        <div class="modal-dialog" >
+            &lt;!&ndash; Modal content&ndash;&gt;
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">Predios del Ciudadano</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-hover">
+                        <tr><th>C&oacute;digo Catastral</th><th>Zona</th><th>Direcci&oacute;n</th></tr>
+                        <tr ng-repeat="cc in lstCCciudadano"><td width="150px">{{cc.CodigoCatastral | FormatoSercat}}</td><td>{{cc.Zona}}</td><td>{{cc.Direccion}}</td></tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <script src="../../libs/apiMov/api_mov.js"></script>
+    <link href="../../libs/css/sweetalert.css" rel="stylesheet"></link>
+    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+    <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/registroOperadores/registroOperadores.js"></script>
+    <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script> 
+    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" /> 
+    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfKWci28piaE9q8Or0DzmUUJXbbdja54&callback=initMap"></script>
+  </head>
+<style>
+  
+#caja {
+  display: block;
+}
+#mostrar{
+  display:block;
+}
+#cerrar_rc{
+  position: absolute;
+  top: 5px;
+  left: 92%;
+  font-size: 38px;
+  color: #FFCB05 !important;
+}
+input:required:invalid {
+  border: 1px solid red;
+}
+input:required:valid {
+  border: 1px solid green;
+}
+select:required:invalid {
+  border: 1px solid red;
+}
+select:required:valid {
+  border: 1px solid green;
+}
+body{
+  background: #ecf0f1;
+}
+
+.table1 th {
+  background-color: #fff !important;
+}
+
+#cerrar_rc{
+  position: absolute;
+  top: 5px;
+  left: 92%;
+  font-size: 38px;
+  color: #FFCB05 !important;
+}
+.accordion-titulo {
+  position: relative;
+  display: block;
+  padding: 20px;
+  font-size: 20px;
+  font-weight: 300;
+  background: #2c3e50;
+  color: #fff;
+  text-decoration: none;
+}
+.accordion-titulo.open {
+  background: #16a085;
+  color: #fff;
+}
+.accordion-titulo:hover {
+  background: #1abc9c;
+}
+.accordion-titulo span.toggle-icon:before {
+  content:"+";
+}
+.accordion-titulo.open span.toggle-icon:before {
+  content:"-";
+}
+.accordion-titulo span.toggle-icon {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight:bold;
+}
+
+.tableE > thead > tr > th {
+    border-bottom: 1px solid #FFFFE0;
+    vertical-align: bottom;
+    background: #FFEFD5;
+    color: black;
+}
+</style>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfKWci28piaE9q8Or0DzmUUJXbbdja54&callback=initMap">
+</script>
+<script type="text/javascript">
+$('.custom-upload input[type=file]').change(function(){
+    $(this).next().find('input').val($(this).val());
+    angular.element(this).scope().cambiarFile(this, $(this).val());
+});
+
+function initMap()
+{
+  accessScope('#principal', function (scope) {
+    scope.initMap();
+  });
+}
+
+function iniciarLoadFyle(){
+    $('.custom-upload input[type=file]').change(function(){
+    $(this).next().find('input').val($(this).val());
+    angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+}
+var icon= 0;
+$('#mostrar').click(function(event) {
+  event.preventDefault();
+  $("#caja").slideToggle();
+  if (icon==0) {
+    $("#cerrar_i").removeClass("fa fa-sort-asc");
+    $("#cerrar_i").addClass("fa fa-sort-desc");
+    $("#cerrar_rc").css({'position' : 'absolute', 'top' : '-11px' });
+    icon=icon + 1;
+  }
+  else{
+    $("#cerrar_i").addClass("fa fa-sort-asc");
+    $("#cerrar_rc").css({'position' : 'absolute', 'top' : '5px' });
+    icon= 0;
+  }
+});
+function accessScope(node, func) {
+  var scope = angular.element(document.querySelector(node)).scope();
+  scope.$apply(func);
+}
+
+function areaMul(){
+  var area = $("#INT_ALTO").val()*$("#INT_ANCHO").val();
+  $("#INT_AREA").val(area);
+}
+
+function valNumeroTelefono(Control){
+  Control.value = soloNumericoTelefono(Control.value);
+}
+
+function soloNumericoTelefono(sValo){
+  Numer=parseInt(sValo);
+  if (isNaN(Numer)){
+    return "";
+  }else{
+    var digits = ("" + Numer).split("");
+    if(digits.length < 9 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+      return Numer;
+    }else{
+      return "";
+    }
+  }
+}
+
+function validaLetras(campo){
+  console.log(campo.name);
+  var color = campo.value;
+  emailRegex = /^[a-zA-Z ]+$/;
+  if (emailRegex.test(color)) {
+  }
+  else{
+    $("#"+campo.name).val('');
+  }
+}
+
+function mayus(e) {
+  e.value = e.value.toUpperCase();
+}
+
+</script>          
+  <div id="principal" class="page-content" ng-controller="registroOperadoresController" data-ng-init="inicio();">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div id="mostrar" class="ibox-title">
+          <h5 class="ng-binding">REGISTRO DE OPERADORES </h5>
+          <a id="cerrar_rc" style="position: absolute; top: 5px;"><i class="fa-sort-desc fa fa-sort-asc" style="color: #00adb5" id="cerrar_i"></i></a>
+        </div>
+        <div class="ibox-content" id="caja">
+          <div class="row">
+            <div class="col-md-12 b-r">
+              <form class="form-horizontal ng-pristine ng-valid">
+                <div class="form-group">
+                  <div class="col-lg-5">
+                    <div>
+                      <a class="btn btn-redondo" tooltip="Crear Trámite"  data-toggle="modal" data-target="#crearTramite">
+                        <div class="shake-slow"><i class="fa fa-file blanco"></i></div>
+                      </a>
+                      <a data-toggle="modal" tooltip="Ayuda para crear la solicitud" data-target="#guiatramite">
+                        <span class="btn btn-redondo">
+                          <div class="shake-slow"><i class="fa fa-question-circle blanco"></i></div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <label class="col-lg-2 control-label ng-binding">Buscar:</label>
+                  <div class="col-lg-5">
+                    <input ng-model="query" id="busca1" class="form-control ng-pristine ng-valid" placeholder="">
+                  </div>
+                </div>
+                <div class="modal fade" id="crearTramite" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <h3 class="modal-title" id="myModalLabel"><strong>Tipos de Servicios</strong></h3>
+                      </div>
+                      <div class="modal-body" >
+                        <form novalidate>
+                          <div class="row">
+                            <div class="table-responsive">
+                              <table class="table">
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th scope="col" width="15%"><center>#</center></th>
+                                    <th scope="col" width="35%"><center>Opciones</center></th>
+                                    <th scope="col" width="50%"><center>Modalidad</center></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr ng-repeat="mod in modalidadDat" height="50%" ng-style="mod.mod_id==modalidadId && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}" ng-click="seleccionaServicio(mod.mod_id);" ng-show="tipo_persona == mod.mod_tipo_persona || mod.mod_tipo_persona == null">
+                                    <td scope="row" width="15%" ><center>{{mod.mod_id}}</center></td>
+                                    <td width="35%" >
+                                      <center>
+                                        <div class="shake-slow" ng-show="mod.mod_id==1">
+                                          <img src="../../img/movilidad/radioTaxi_3.png" width="30" height="30">
+                                        </div>
+                                        <div class="shake-slow" ng-show="mod.mod_id==2">
+                                          <img src="../../img/movilidad/taxi_3.png" width="30" height="30">
+                                        </div>
+                                      
+                                        <div class="shake-slow" ng-show="mod.mod_id==3">
+                                          <img src="../../img/movilidad/escolar_3.png" width="30" height="30">
+                                        </div>
+                                        <div class="shake-slow" ng-show="mod.mod_id==4">
+                                          <img src="../../img/movilidad/carga_3.png" width="30" height="30">
+                                        </div>
+                                        <div class="shake-slow" ng-show="mod.mod_id==5">
+                                          <img src="../../img/movilidad/turismo_3.png" width="30" height="30">
+                                        </div>
+                                        <div class="shake-slow" ng-show="mod.mod_id==6">
+                                          <img src="../../img/movilidad/personal_3.png" width="30" height="30">
+                                        </div>
+                                      </center>
+                                    </td>
+                                    <td width="50%">{{mod.mod_descripcion}}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>                 
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button class="btn btn-default" ng-click="crear_tramite();" data-dismiss="modal">Crear</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <form class="form-horizontal ng-pristine ng-valid" action="index.html" method="post">
+                  <table  ng-table="tablaTramites"  class="table table-striped table-hover">
+                    <tr style="cursor: pointer;text-align: center;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                      <td data-title="'Código'" ng-click="seleccionarTramite(tramite)">{{tramite.vcodigo}}</td>
+                      <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite)">{{tramite.vservicio}}&nbsp;-&nbsp;{{tramite.modalidad}}</td>
+                      <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)">{{tramite.vfecha}} </td>
+                      <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)">{{tramite.venviado}}</td>
+                    </tr>
+                  </table>
+                </form>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--div class="col-md-12" ng-show="mostrarTipo">
+      <div class="panel panel-default">
+        <div class="container"> 
+          <div class="col-md-12" >
+            <div class="form-group" >
+              <font color="#FF0000" size="4px"> * </font>     
+              <label for="url" >Tipo de Solicitud:</label>
+              <div class="controls">
+                <select id="RO_TIP_SOL" class="form-control" ng-model="datos.RO_TIP_SOL" ng-disabled="desabilita" name="RO_TIP_SOL" >
+                  <option value="">Seleccionar</option>
+                  <option value="1">Nueva Habilitación  de Operador</option>
+                  <option value="2">Modificación de Operador</option> 
+                </select>
+              </div>
+            </div>
+          </div>                   
+        </div><br>
+      </div>
+    </div-->
+    <div ng-show="mostrar_form_ope == true" class="col-lg-12">
+      <div  class="ibox-content" id="caja"> 
+        <div  class="row">                
+          <form name="signupForm" class="" role="form" novalidate>
+            <div id="container-main" class="ibox float-e-margins">  
+              <div class="ibox-title" style="background-color: #FFEFB0 !important; border-bottom: solid 0px !important;">
+                <strong><h3 style="color:black";>REGISTRO DE OPERADORES</h3></strong>
+              </div><br>                               
+              <div>
+                <label class="col-sm-12" align="left" for="url" >
+                  <font color="#1ABC9C" size="4px"> * Realice el registro del Operador para la Habilitación de la nueva empresa. Debe llenar los datos siguiendo los pasos que a continuación se muestran</font>
+                </label><br>
+              </div><br>
+              <div ng-show = "datosMostrar==1">
+                <div>
+                  <form name="regrepresentante" class="form-horizontal" role="form" novalidate><br>
+                    <h2>Paso 1: Datos del Solicitante</h2>
+                    <div ng-show = "tipo_persona == 'NATURAL'">
+                      <div class="row" >
+                        <div class="col-md-12"><br>  
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >{{translateTitulos.lbl_12_27}}:</label>   
+                              <div class="controls">
+                                <input ng-model="datos.RO_NOM_RL" id="RO_NOM_RL" name="RO_NOM_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                              <div class="controls">
+                                <input ng-model="datos.RO_PAT_RL" id="RO_PAT_RL" name="RO_PAT_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                              <div class="controls">
+                                <input ng-model="datos.RO_MAT_RL" id="RO_MAT_RL" name="RO_MAT_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >Ap. Casada:</label>
+                              <div class="controls">
+                                <input ng-model="datos.RO_CAS_RL" id="RO_CAS_RL" name="RO_CAS_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>                             
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >Número de documento:</label>
+                              <div class="controls">
+                                <input ng-model="datos.RO_CI_RL" id="RO_CI_RL" name="RO_CI_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div> 
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >Expedido:</label>
+                              <div class="controls">
+                                <input ng-model="datos.RO_EXP_RL" id="RO_EXP_RL" name="RO_EXP_RL" class="form-control"  width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>                                                                                                            
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url">Celular:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_CEL_RL" id="RO_CEL_RL" name="RO_CEL_RL" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url">Correo:</label>
+                              <div class="controls">
+                                <input type="email" ng-model="datos.RO_CORR_RL" id="RO_CORR_RL" name="RO_CORR_RL" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div> 
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >Zona:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_ZONA_RL" id="RO_ZONA_RL" name="RO_ZONA_RL" class="form-control"   width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >Tipo de Via:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_TIP_VIA_RL" id="RO_TIP_VIA_RL" name="RO_TIP_VIA_RL" class="form-control"   width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >Nombre de Via:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_CALL_RL" id="RO_CALL_RL" name="RO_CALL_RL" class="form-control"    width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>                        
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >Nro. de Vivienda:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_NRO_RL" id="RO_NRO_RL" name="RO_NRO_RL" class="form-control"   width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div ng-show = "tipo_persona == 'JURIDICO'">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url">NIT:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_NIT" id="RO_NIT" name="RO_NIT" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div> 
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url">Razón Social:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_RZ" id="RO_RZ" name="RO_RZ" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div> 
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url">Poder de Representante Legal(Nro):</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_POD_RL" id="RO_POD_RL" name="RO_POD_RL" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div> 
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url">Nro de la Notaría:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_NOT_RL" id="RO_NOT_RL" name="RO_NOT_RL" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>                         
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url">Zona:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_ZON_OF" id="RO_ZON_OF" name="RO_ZON_OF" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div> 
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url">Tipo de Via:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_TIP_VIA_OF" id="RO_TIP_VIA_OF" name="RO_TIP_VIA_OF" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div> 
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url">Nombre de Via:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_NOM_VIA_OF" id="RO_NOM_VIA_OF" name="RO_NOM_VIA_OF" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div> 
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url">Nro de Vivienda:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_NUM_DOM_OF" id="RO_NUM_DOM_OF" name="RO_NUM_DOM_OF" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-12"><h3>DATOS DEL REPRESENTANTE LEGAL</h3></div>
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >{{translateTitulos.lbl_12_27}}:</label>   
+                              <div class="controls">
+                                <input ng-model="datos.RO_NOM_RLJ" id="RO_NOM_RLJ" name="RO_NOM_RLJ" class="form-control"  width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                              <div class="controls">
+                                <input ng-model="datos.RO_PAT_RLJ" id="RO_PAT_RLJ" name="RO_PAT_RLJ" class="form-control"  width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                              <div class="controls">
+                                <input ng-model="datos.RO_MAT_RLJ" id="RO_MAT_RLJ" name="RO_MAT_RLJ" class="form-control"  width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>                           
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >Número de documento:</label>
+                              <div class="controls">
+                                <input ng-model="datos.RO_CI_RLJ" id="RO_CI_RLJ" name="RO_CI_RLJ" class="form-control"  width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div> 
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url" >Expedido:</label>
+                              <div class="controls">
+                                <input ng-model="datos.RO_EXP_RLJ" id="RO_EXP_RLJ" name="RO_EXP_RLJ" class="form-control"  width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>  
+                          <div class="col-md-4">
+                            <div class="form-group" >
+                              <label for="url">Celular:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_CEL_RLJ" id="RO_CEL_RLJ" name="RO_CEL_RLJ" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                              </div>
+                            </div>
+                          </div>   
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div><br>
+                <!---Datos de Operador -->
+                <div>       
+                  <form name="operador"  readOnly="true" novalidate>
+                    <h2>Paso 2: Datos del Operador</h2>
+                    <div class="row"><br>
+                      <div class="col-md-12">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >Tipo de Operador:</label>
+                            <div class="controls">
+                              <select id="RO_TIP_OPE" class="form-control"  ng-model="datos.RO_TIP_OPE" ng-disabled="desabilita" name="RO_TIP_OPE" ng-options="tipoOpe.tipoOp as tipoOpe.tipoOp for tipoOpe in datos.RO_TIP_OPE_A" required>
+                              </select>
+                            </div>
+                          </div>
+                        </div>                                  
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >Denominación:</label>
+                            <div class="controls">
+                              <input type = "text" ng-model="datos.RO_DEN" id="RO_DEN" name="RO_DEN" class="form-control"  width="30%" height="30" ng-disabled="desabilita" onkeyup="mayus(this);" required>
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >Modalidad:</label>
+                            <div class="controls">
+                              <select id="RO_MOD" class="form-control" ng-model="datos.RO_MOD" ng-change="muestraDatos(datos.RO_MOD)" name="RO_MOD" ng-disabled="true" ng-options="mod.mod_id as mod.mod_descripcion for mod in modalidadDat" required>
+                                <option value="">--Seleccionar--</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>                               
+                        <div class="col-md-4" ng-show="datos.RO_MOD!=''">
+                          <div class="form-group">
+                            <label for="url" >Tipo de servicio:</label>
+                            <div class="controls">
+                              <select id="RO_TIP_SER" class="form-control" ng-model="datos.RO_TIP_SER" name="RO_TIP_SER" ng-disabled="true">
+                                <option value="">--Seleccionar--</option>
+                                <option value="SPU">Servicio Público de Transporte</option>
+                                <option value="SPR">Servicio Privado de Transporte</option> 
+                                <option value="EMC">Empresa de Movilidad Colaborativa</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" ng-show="datos.RO_TIP_SER=='SPU'">
+                          <div class="form-group" >
+                            <label for="url" >Tipo:</label>
+                            <div class="controls">
+                              <select id="RO_SER_SPU" class="form-control" ng-model="datos.RO_SER_SPU" name="RO_SER_SPU" ng-disabled="true">
+                                <option value="">--Seleccionar--</option>
+                                <option value="COL">Colectivo</option>
+                                <option value="IEX">Individual o exclusivo</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4" ng-show="datos.RO_TIP_SER=='SPR'">
+                          <div class="form-group" >
+                            <label for="url" >Tipo:</label>
+                            <div class="controls">
+                              <select id="RO_SER_SPR" class="form-control" ng-model="datos.RO_SER_SPR" name="RO_SER_SPR" ng-disabled="true" required="">
+                                <option value="">--Seleccionar--</option>
+                                <option value="Escolar">Escolar</option>
+                                <option value="Carga">Carga</option>
+                                <option value="Turismo">Turismo</option>
+                                <option value="Personal">De personal</option>
+                                <option value="DS">De salud emergencias</option>
+                                <option value="CP">Contratado a través de plataformas técnologicas</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4" ng-show="datos.RO_TIP_SER=='EMC'">
+                          <div class="form-group" >
+                            <label for="url" >Tipo de servicio:</label>
+                            <div class="controls">
+                              <select id="RO_SER_EMC" class="form-control" ng-model="datos.RO_SER_EMC" name="RO_SER_EMC" ng-disabled="true" required="">
+                                <option value="">--Seleccionar--</option>
+                                <option value="SPU">Autorización (2 años)</option>
+                                <option value="SPR">Renovación de la autorización</option>
+                                <option value="SPR">Modificación de datos</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div> 
+                        <div ng-show = "datos.RO_MOD == 1">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Frecuencia Radioeléctrica:</label>
+                              <div class="controls">  
+                                <input id="RO_FRE_RAD" type="checkbox" min="1" max="1500" ng-model="datos.RO_FRE_RAD" ng-disabled="desabilita" class="form-control">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4" ng-show="datos.RO_FRE_RAD==true"> 
+                            <div class="form-group" >
+                              <label for="url" >Cantidad de frecuencias Radioeléctricas:</label>
+                              <div class="controls">
+                                <input type="number" ng-model="datos.RO_FRE" id="RO_FRE" name="RO_FRE" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilita">
+                              </div>
+                            </div>
+                          </div>             
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Forma de acceso - Plataforma Tecnológica:</label> 
+                              <div class="controls">   
+                                <input id="RO_PLA_TEC" type="checkbox" min="1" max="1500" ng-model="datos.RO_PLA_TEC" ng-disabled="desabilita" class="form-control">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4" ng-show="datos.RO_PLA_TEC==true">
+                            <div class="form-group">
+                              <label for="url" >Nombre de plataforma tecnológica:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.RO_PLA" id="RO_PLA" name="RO_PLA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilita">
+                              </div>
+                            </div>
+                          </div>                         
+                          <div class="col-md-4">
+                            <div class="form-group"> 
+                              <label>En Vía:</label>
+                              <div class="controls">
+                                <input id="RO_EN_VIA" type="checkbox" min="1" max="1500" ng-model="datos.RO_EN_VIA" ng-disabled="desabilita" class="form-control">
+                              </div>
+                            </div>
+                          </div> 
+                        </div>
+                        <div ng-show = "datos.RO_MOD == 2">
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url" >Tipo de Taxi:</label>
+                              <div class="controls">
+                                <select id="RO_TIP_TAX" class="form-control" ng-model="datos.RO_TIP_TAX" name="RO_TIP_TAX" ng-disabled="true" required="">
+                                  <option value="">--Seleccionar--</option>
+                                  <option value="1">Agrupación de Taxi</option>
+                                  <option value="2">Taxi libre</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div> 
+                        </div>
+                        <div ng-show = "datos.RO_MOD == 3">
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url" >Unidad Educativa:</label>
+                              <div class="controls">
+                                <input type = "text" ng-model="datos.RO_UNI_EDU" id="RO_UNI_EDU" name="RO_UNI_EDU" class="form-control"  width="30%" height="30" onkeyup="mayus(this);" ng-disabled="desabilita" required>
+                              </div>
+                            </div>
+                          </div> 
+                        </div>
+                        <div ng-show = "datos.RO_MOD == 5">
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url" >Institución Publica o Privada donde trabaja:</label>
+                              <div class="controls">
+                                <input type = "text" ng-model="datos.RO_INS_TUR" id="RO_INS_TUR" name="RO_INS_TUR" class="form-control"  width="30%" height="30" onkeyup="mayus(this);" ng-disabled="desabilita" required>
+                              </div>
+                            </div>
+                          </div> 
+                        </div>  
+                        <div ng-show = "datos.RO_MOD == 6">
+                          <div class="col-md-4" >
+                            <div class="form-group" >
+                              <label for="url" >Institución Pública o Privada en la que Opera:</label>
+                              <div class="controls">
+                                <input type = "text" ng-model="datos.RO_INS_OPE" id="RO_INS_OPE" name="RO_INS_OPE" class="form-control"  width="30%" height="30" onkeyup="mayus(this);" ng-disabled="desabilita" required>
+                              </div>
+                            </div>
+                          </div> 
+                        </div>                                        
+                      </div>
+                    </div>      
+                  </form>             
+                </div><br>
+                <div align="right">
+                  <button type="button" class="btn btn-info" ng-click="validaOperador();" ng-show="desabilita==false">Siguiente<i class="fa fa-chevron-right"></i></button>
+                  <button type="button" class="btn btn-info" ng-click="ver();listaDatos();" ng-show="desabilita==true">Siguiente<i class="fa fa-chevron-right"></i></button>
+                </div>
+              </div>
+              <div ng-show = "datosMostrar==2">
+                <div class="col-md-12">
+                  <div class="panel panel-default">
+                    <div class="panel-body" ng-show="desabilita == false">
+                      <!---datos de la ubicacion -->
+                      <div>
+                        <form name="oficinas" role="form" novalidate>
+                          <h2>Paso 3: Registro de las Oficinas</h2><br>
+                          <div class="row">
+                            <label class="col-sm-4" type ="hidden" id="lbl_f01_croquis_ae">*Croquis de la Ubicación de la Oficina</label>
+                            <div class="col-md-12" >
+                              <div class="col-md-1" >
+                                <br><br><br><br><br><br><br><br><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <font color="#FF0000" size="4px" align="center"> * </font>
+                              </div>
+                              <div class="col-md-10">                                    
+                                <div id="mapActividad" ng-disabled="desabilitadoO || desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
+                              </div>
+                              <div class="col-md-1">
+                                  &nbsp;
+                              </div>
+                            </div>
+                            <div class="col-md-12"><br><br></div>
+                            <!--div class="col-md-12" >
+                              <legend>Seleccione la ubicación de la oficina</legend>
+                              <div class="col-md-1" >
+                                <br><br><br><br><br><br><br><br><br>
+                                <font color="#FF0000" size="4px" align="center"> * </font>
+                              </div>
+                              <div class="col-md-10">                                    
+                                <div id="mapActividad" style="height: 500px; width:auto; margin: 10px 5px 5px 5px"></div>>
+                                <div id="mapa_ol" ng-disabled="desabilita" style="height: 500px; width:auto; margin: 10px 5px 5px 5px"></div>
+                              </div>
+                            </div--><br>  
+                            <div class="col-md-12">                                  
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Tipo de Actividad:</label>
+                                  <div class="controls">
+                                    <select id="RO_TIP_ACT" name="RO_TIP_ACT" ng-model="datos.RO_TIP_ACT" class="form-control" ng-disabled="desabilita" required >
+                                        <option value="">Seleccionar</option>
+                                        <option value="MA"> MATRIZ (Oficina Central)</option>
+                                        <option value="SU"> SUCURSAL  </option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>  
+                              <div class="col-md-4">
+                                <div class="form-group" >
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Macrodistrito:</label>
+                                  <div class="controls">
+                                    <select id="RO_MAC_OF_VALUE" 
+                                              name="RO_MAC_OF_VALUE"
+                                              placeholder="Macrodistrito" 
+                                              ng-model="datos.RO_MAC_OF_VALUE"
+                                              class="form-control"
+                                              ng-disabled="desabilita"
+                                              ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
+                                              required ng-change="distritoZonas(datos.RO_MAC_OF_VALUE)">
+                                        <option value="">Seleccionar</option>
+                                    </select>
+                                    <!--
+                                    <input id="RO_MAC_OF_VALUE" type="text" name="RO_MAC_OF_VALUE" style="text-transform:uppercase;" onkeyup="return conMayusculas(this)" ng-model="datos.RO_MAC_OF_VALUE" ng-disabled="true" class="form-control" required-->
+                                  </div>
+                                </div>
+                              </div>   
+                              <div class="col-md-4">
+                                <div class="form-group" >
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Zona:</label>
+                                  <div class="controls">
+                                    <select id="RO_ZONA_OF_VALUE"
+                                            name="RO_ZONA_OF_VALUE"
+                                            placeholder="Distrito - Zona"
+                                            ng-model="datos.RO_ZONA_OF_VALUE"
+                                            class="form-control"
+                                            ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZona | orderBy:['nombre','dist_nombre']"
+                                            ng-change="actulizarIdDistrito(this);" ng-disabled="desabilita" required>
+                                      <option value="">Seleccionar</option>
+                                    </select>
+                                    <!--
+                                    <input id="RO_ZONA_OF_VALUE" type="text" name="RO_ZONA_OF_VALUE" style="text-transform:uppercase;" onkeyup="return conMayusculas(this)" ng-model="datos.RO_ZONA_OF_VALUE" ng-disabled="true" class="form-control" required>-->
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group" >
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Tipo de Via:</label>
+                                  <div class="controls">
+                                    <select id="RO_TIPO_VIA_SUC"
+                                            name="RO_TIPO_VIA_SUC"
+                                            ng-model="datos.RO_TIPO_VIA_SUC"
+                                            class="form-control" ng-disabled="desabilita" required>
+                                      <option value="">Seleccionar</option>
+                                      <option value="AV">AVENIDA</option>
+                                      <option value="CA">CALLE</option>
+                                      <option value="CL">CALLEJON</option>
+                                      <option value="PA">PASAJE</option>
+                                      <option value="ND">NO DEFINIDO</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>                                                                                            
+                              <div class="col-md-4">  
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Nombre de Via: </label>
+                                  <div class="controls">
+                                    <input id="RO_NOM_VIA_SUC" type="text" name="RO_NOM_VIA_SUC" style="text-transform:uppercase;" onkeyup="return conMayusculas(this)" ng-model="datos.RO_NOM_VIA_SUC" ng-disabled="desabilita" class="form-control" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Entre calles: </label>
+                                  <div class="controls">  
+                                    <input id="RO_ENT_CALL_SUC" type="text" min="1" max="1500" name="RO_ENT_CALL_SUC" style="text-transform:uppercase;" ng-model="datos.RO_ENT_CALL_SUC" onkeyup="return conMayusculas(this)" ng-disabled="desabilita" ng-model="datos.RO_ENT_CALL" class="form-control" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Número: </label>
+                                  <div class="form-controls">
+                                    <input id="RO_NRO_SUC" type="number" name="RO_NRO_SUC" ng-disabled="desabilita" style="text-transform:uppercase;" ng-model="datos.RO_NRO_SUC"  class="form-control" required>
+                                  </div>
+                                </div>
+                              </div>                         
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Superficie m2: </label>
+                                  <div class="form-controls">
+                                    <input id="RO_SUP_SUC" type="number" name="RO_SUP_SUC" ng-disabled="desabilita"  ng-model="datos.RO_SUP_SUC"  class="form-control" required>
+                                  </div>
+                                </div>
+                              </div>                              
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Nro. Factura Electrica: </label>
+                                  <div class="form-controls">
+                                    <input id="RO_FAC_ELE" type="text" name="RO_FAC_ELE" ng-disabled="desabilita"  ng-model="datos.RO_FAC_ELE"  class="form-control" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >{{translateTitulos.lbl_12_38}}:</label>
+                                    <div class="controls">
+                                        <select id="RO_EST_SUC" class="form-control" ng-model="datos.RO_EST_SUC"  name="RO_EST_SUC" ng-disabled="desabilita" required>
+                                            <option value="">--Seleccionar--</option>
+                                            <option value="PROPIO"> PROPIO </option>
+                                            <option value="ALQUILADO"> ALQUILADO </option>
+                                            <option value="ANTICRETICO"> ANTICRÉTICO </option>
+                                            <option value="OTRO"> OTRO </option>
+                                        </select>
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Teléfono: </label>
+                                  <div class="controls">
+                                    <input type="number" id="RO_TEL_SUC" type="text" name="RO_TEL_SUC"  ng-model="datos.RO_TEL_SUC" ng-disabled="desabilita" class="form-control" placeholder="Teléfono ej.22451630" onkeyUp="valNumeroTelefono(this);" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Cantidad de vehículos disponibles: </label>
+                                  <div class="form-controls">
+                                    <input id="RO_CAN_VEH_SUC" type="number" min="20" title="La cantidad de vehículos debe ser mayor a 20" name="RO_CAN_VEH_SUC" style="text-transform:uppercase;" ng-model="datos.RO_CAN_VEH_SUC"  class="form-control" ng-disabled="desabilita" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Dirección garaje (min. 10% de vehículos declarados): </label>
+                                  <div class="form-controls">
+                                    <input id="RO_DIR_GAR_SUC" type="text"  name="RO_DIR_GAR_SUR" style="text-transform:uppercase;" onkeyup="return conMayusculas(this)"  ng-model="datos.RO_DIR_GAR_SUC" ng-disabled="desabilita" class="form-control" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Nro de garaje: </label>
+                                  <div class="form-controls">
+                                    <input id="RO_PAR_NRO_SUC" type="number" name="RO_PAR_NRO_SUC" style="text-transform:uppercase;" ng-model="datos.RO_PAR_NRO_SUC"  class="form-control" ng-disabled="desabilita" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Espacios Reales Disponibles en Garage: </label>
+                                  <div class="form-controls">
+                                    <input id="RO_ESP_DIS" type="number" min="1" max="" name="RO_ESP_DIS" style="text-transform:uppercase;" ng-model="datos.RO_ESP_DIS" ng-disabled="desabilita" class="form-control" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Vía para parada momentánea: </label>
+                                  <div class="form-controls">
+                                    <input id="RO_VIA_PAR_MOM" type="text" min="1" max="1500" name="RO_VIA_PAR_MOM" onkeyup="return conMayusculas(this)"  style="text-transform:uppercase;" ng-disabled="desabilita" ng-model="datos.RO_VIA_PAR_MOM"  class="form-control"  required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <font color="#FF0000" size="4px"> * </font>
+                                  <label for="url" >Entre calles (Parada Momentanea): </label>
+                                  <div class="form-controls">
+                                    <input id="RO_ENT_CALL_PM" type="text" min="1" max="1500" name="RO_ENT_CALL_PM" onkeyup="return conMayusculas(this)" ng-model="datos.RO_ENT_CALL_PM" ng-disabled="desabilita" class="form-control" required>
+                                  </div>
+                                </div>
+                              </div>   
+                              <br> 
+                            </div>                                          
+                          </div>                             
+                        </form>
+                      </div><br>
+                      <!---datos de la viae -->
+                      <div ng-show="datos.RO_MOD==1">
+                        <form name="publicidad" role="form" novalidate>
+                          <h2>Paso 4: Elementos de Identificación (Letreros)</h2>
+                          <div class="col-md-12" align="left">
+                            <div class="form-group" >
+                              <div class="controls">
+                                <font color="#FF0000" size="4px">* </font>
+                                <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" value="CON PUBLICIDAD" ng-change="cambioToggle1(datos.rdTipoTramite1);" ng-disabled="true" required />Con Elementos Publicitarios
+                                <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" value="SIN PUBLICIDAD" ng-change="cambioToggle1(datos.rdTipoTramite1);"  ng-disabled="true" required/>Sin Elementos Publicitarios<br>
+                              </div><br>
+                              <div ng-show = "publicidad == true" >
+                                <div class="col-md-12">
+                                  <div class="panel panel-default">
+                                    <div class="panel-heading"><b>{{translateTitulos.lbl_12_71}}:</b></div>
+                                    <div class="panel-body">
+                                      <form id="myPublicidad" name="myPublicidad">
+                                        <div class="col-md-4">
+                                          <div class="form-group">
+                                            <label for="url" >Tipo</label>
+                                            <div class="controls">
+                                              <select id="INT_TIPO_LETRE" name="INT_TIPO_LETRE" placeholder="Tipo de Letrero" ng-model="publi.INT_TIPO_LETRE"  class="form-control"
+                                              ng-options="tletre.p_descripcion as tletre.p_descripcion for tletre in TipoLetrero"  ng-change="ltCaracteristica(publi.INT_TIPO_LETRE);" required>
+                                                <option value=""></option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <div class="form-group" >
+                                            <label for="url" >Caracteristica:</label>
+                                            <div class="controls">
+                                              <select id="INT_CARA" name="INT_CARA"  placeholder="Distrito - Zona" ng-model="publi.INT_CARA"  class="form-control" ng-options="tletr.p_caracteristica as tletr.p_caracteristica for tletr in lCaracteristica" ng-change="actulizarCaracteristica();sacaDesc();" required>
+                                                <option value=""></option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <div class="form-group" >
+                                            <label for="url" >Caras:</label>
+                                            <div class="controls">
+                                              <input id="INT_NRO_CARA" type="number" min="1" max="1500" name="INT_NRO_CARA"  placeholder="Número de caras" ng-model="publi.INT_NRO_CARA"  class="form-control"  required>
+                                              <span style="color:red" ng-show="formularioRegistro.INT_NRO_CARA.$invalid">
+                                                <span ng-show="formularioRegistro.INT_NRO_CARA.$error.required">Es requerido.</span>
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                          <div class="panel panel-default">
+                                            <div class="panel-heading"><b>Expresado en metros.</b> <br>
+                                              <input type="checkbox" id="INT_CHECK_VIAE" ng-model="publi.INT_CHECK_VIAE" ng-disabled="desabilitadoO || desabilitado" ng-click="verSuperficie(publi.INT_CHECK_VIAE)"> Superficie Irregular
+                                            </div>
+                                            <div class="panel-body">
+                                              <table class="table table-responsive">
+                                                <tr>
+                                                  <th>
+                                                    <input class="form-control" type="text"  id="INT_DESC" name="INT_DESC" placeholder="Descripción" ng-model="publi.INT_DESC" ng-disabled="true" value="publi.INT_TIPO_LETRE" required onkeyUp="return conMayusculas(this);">
+                                                  </th>
+                                                  <th ng-show="publi.INT_CHECK_VIAE!=true">
+                                                    <input class="form-control" type="text" min="0" max="1500" id="INT_ALTO" name="INT_ALTO" placeholder="Alto" ng-model="publi.INT_ALTO" ng-disabled="desabilitadoO || desabilitado" onkeyup ="areaMul();" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.INT_ALTO.$invalid">
+                                                      <span ng-show="formularioRegistro.INT_ALTO.$error.required">Es requerido.</span>
+                                                    </span>
+                                                  </th>
+                                                  <th ng-show="publi.INT_CHECK_VIAE!=true">
+                                                    <input class="form-control" type="text" min="0" max="1500" id="INT_ANCHO" name="INT_ANCHO" placeholder="Ancho" ng-model="publi.INT_ANCHO"ng-disabled="desabilitadoO || desabilitado" onkeyup ="areaMul();" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.INT_ANCHO.$invalid">
+                                                      <span ng-show="formularioRegistro.INT_ANCHO.$error.required">Es requerido.</span>
+                                                    </span>
+                                                  </th>                                                  
+                                                  <th ng-show="publi.INT_CHECK_VIAE!=true">
+                                                    <input class="form-control" type="text" min="0" max="1500" id="INT_AREA" name="INT_AREA" placeholder="Area" ng-model="publi.INT_AREA" ng-disabled ="true" required>
+                                                  </th>
+                                                  <th ng-show="publi.INT_CHECK_VIAE==true">
+                                                    <input class="form-control" type="text" min="0" max="1500" id="INT_SUPERFICIE" name="INT_SUPERFICIE" placeholder="Superficie M2" ng-model="publi.INT_SUPERFICIE" ng-disabled="desabilitadoO || desabilitado" required>
+                                                    <span style="color:red" ng-show="formularioRegistro.INT_SUPERFICIE.$invalid">
+                                                      <span ng-show="formularioRegistro.INT_SUPERFICIE.$error.required">Es requerido.</span>
+                                                    </span>
+                                                  </th>
+                                                </tr>
+                                              </table>
+                                              <div class="col-md-3">
+                                                <a class="btn btn-primary" ng-click="guardarpublicidad(publi)" ng-class="{'disabled': myForm.$invalid}" ng-show="botonn=='new'" ng-hide="botonn=='upd'" >
+                                                   Adicionar
+                                                </a>
+                                                <a class="btn btn-primary" ng-click="modificarpublicidad(publi)" ng-disabled="desabilitadoO || desabilitado"  ng-hide="botonn=='new'">
+                                                  <i class="glyphicon glyphicon-plus-sign"></i>Modificar
+                                                </a>
+                                              </div>
+                                              <table ng-table="tablaRoles" show-filter="true" class="table table-striped table-bordered">
+                                                <tr ng-repeat="pup in datos.publicidad" >
+                                                  <td align="center" data-title="'Opciones'">
+                                                    <a class="btn btn-default btn-circle" ng-click="modificarPlubli(pup)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
+                                                    <a class="btn btn-default btn-circle" ng-hide="edit[pup.id]" ng-click="eliminarPubli(pup)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
+                                                  </td>
+                                                  <td data-title="'VIAE'">{{$index+1}}</td>
+                                                  <td data-title="'TIPO'" sortable="'INT_TIPO_LETRE'">{{pup.INT_TIPO_LETRE}}</td>
+                                                  <td data-title="'CARACTERÍSTICA'" sortable="'INT_CARA'">{{pup.INT_CARA}}</td>
+                                                  <td data-title="'CARAS'" sortable="'CARAS'">{{pup.INT_NRO_CARA}}</td>
+                                                  <td data-title="'DESCRIPCIÓN'" sortable="'INT_DESC'">{{pup.INT_DESC}}</td>
+                                                  <td data-title="'ALTO'" sortable="'INT_ALTO'">{{pup.INT_ALTO}}</td>
+                                                  <td data-title="'ANCHO'" sortable="'INT_ANCHO'">{{pup.INT_ANCHO}}</td>
+                                                  <td data-title="'SUPERFICIE'" sortable="'INT_SUP'">{{pup.INT_SUP}}</td>
+                                                </tr>
+                                              </table>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <input type="hidden" ng-model="publi.idcate" id="idcate" name="idcate" class="form-control">
+                                        <input type="hidden" ng-model="publi.idcarac" id="idcarac" name="idcarac" class="form-control">
+                                        <input type="hidden" ng-model="publi.id_cara" id="id_cara" name="id_cara" class="form-control">
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <h2 ng-show="desabilita != false" >Paso 3: Oficinas Registradas</h2><br>
+                  <div ng-show="desabilita == false">
+                    <button ng-click="adiModOficinas(0,'I');" type="button" class="btn btn-primary" ng-show="botonO == 'new'"><i class="fa fa-save"></i>Guardar</button>
+                    <button ng-click="adiModOficinas(idOfi,'A')"  type="button" class="btn btn-primary" ng-show="botonO == 'upd'" >Modificar</button>
+                    <button ng-click="cerrar();" type="button" class="btn btn-primary" ng-show="botonc == 'c'"><i class="fa fa-save"></i>Cancelar</button>
+                  </div><br>
+                  <table ng-table="tablaOficinas"  show-filter="false" class=" table tableE  table-striped table-bordered">
+                    <tr ng-repeat="ofic in $data" >
+                      <td align="center" data-title="'Opciones'" width="3%">
+                        <a class="btn btn-default btn-circle"  ng-show="desabilita == false" ng-click="datosModOficina(ofic);"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
+                        <a class="btn btn-default btn-circle"  ng-show="desabilita == false" ng-click="eliOficina(ofic.ofi_id)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
+                      </td>
+                      <td align="center" data-title="'#'"  style="width:2%">{{$index+1}}</td>
+                      <td class="text-center" style="width:10%" data-title="'Tipo de Actividad'" sortable="'RO_TIP_ACT_SUC'" filter="{'RO_TIP_ACT_SUC':'text'}">
+                        {{ofic.ofi_datos.RO_TIP_ACT_SUC}}
+                      </td> 
+                      <td class="text-center" style="width:10%" data-title="'Macrodistrito'" sortable="'RO_MAC_OF_VALUE'" filter="{'RO_MAC_OF_VALUE':'text'}">
+                        {{ofic.ofi_datos.RO_MAC_OF_VALUE}}
+                      </td>                      
+                      <td class="text-center" style="width:10%" data-title="'Zona'" sortable="'RO_ZONA_OF_VALUE'" filter="{'RO_ZONA_OF_VALUE':'text'}">
+                        {{ofic.ofi_datos.RO_ZONA_OF_VALUE}}
+                      </td>
+                      <td class="text-center" style="width:10%" data-title="'Tipo de Via'" sortable="'RO_TIPO_VIA_SUC'" filter="{'RO_TIPO_VIA_SUC':'text'}">
+                        {{ofic.ofi_datos.RO_TIPO_VIA_SUC}}
+                      </td>
+                      <td class="text-center" style="width:10%" data-title="'Nombre de Via'" sortable="'RO_NOM_VIA_SUC'" filter="{'RO_NOM_VIA_SUC':'text'}">
+                        {{ofic.ofi_datos.RO_NOM_VIA_SUC}}
+                      </td>
+                      <td class="text-center" style="width:10%" data-title="'Superficie'" sortable="'RO_SUP_SUC'" filter="{'RO_SUP_SUC':'text'}">
+                        {{ofic.ofi_datos.RO_SUP_SUC}}
+                      </td>
+                      <td class="text-center" style="width:10%" data-title="'Viae'" sortable="'RO_VIAE'" filter="{'RO_VIAE':'text'}">
+                        {{ofic.ofi_datos.RO_VIAE}}
+                      </td>
+                    </tr>
+                  </table>
+                </div> 
+                <div align="right">
+                  <button type="button" class="btn btn-info" ng-click="volver()"><i class="fa fa-chevron-left"></i>Anterior</button>
+                  <button type="button" class="btn btn-info" ng-click="validaOficinas();"  ng-show="desabilita==false">Siguiente<i class="fa fa-chevron-right"></i></button>
+                  <button type="button" class="btn btn-info" ng-click="ver();lstRequisitosOpe();" ng-show="desabilita==true">Siguiente<i class="fa fa-chevron-right"></i></button>
+                </div>
+              </div>
+              <div ng-show = "datosMostrar==3">
+                <!--datos de requisitos -->
+                <div>
+                  <form name="requisitos" role="form" novalidate>
+                    <h2>Paso 5: Requisitos Documentales</h2>
+                    <div  class="col-md-12">
+                      <div ng-repeat="data in docArray">
+                        <div class="form-group">
+                          <div  class="col-md-12">
+                            <div class="col-md-6">
+                              <label id="lbl_f01_upload{{data.resid}}">{{data.resvalor}}</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="f01_upload{{data.resid}}" ng-disabled="desabilita" name="f01_upload{{data.resid}}" accept="image/*"  style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_f01_upload{{data.resid}}" ng-disabled="true" ng-model = "fileArRequisitos['f01_upload'+data.resid].campo" name="txt_f01_upload{{data.resid}}" type="text" placeholder="{{data.resvalor}}" class="form-control input-lg"  required>
+                                  <span class="input-group-btn">
+                                    <a id="href_f01_upload{{data.resid}}" ng-show="fileArRequisitos['f01_upload'+data.resid].url" href="{{fileArRequisitos['f01_upload'+data.resid].url}}" target="_blank">
+                                      <button id="btn_f01_upload{{data.resid}}" class="browse btn btn-info input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button ng-disabled="desabilita" id="btn_f01_upload{{data.resid}}" ng-disabled="" ng-click="ejecutarFile('f01_upload' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-md-12"><br><br></div>
+                <div ng-show="tipo_persona=='NATURAL'"> 
+                  <div><br><br>
+                    <form name="vehiculos" class="" role="form" novalidate>
+                      <h2>Paso 6: Registre Datos del Vehículo</h2><br>   
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label">Placa:</label> 
+                              <div class="col-sm-9">
+                                <input id="RO_PLA_V1" name="RO_PLA_V1" type="text" placeholder="Ejemplo: 1234ABC" maxlength="7" class="form-control" ng-model="datos.RO_PLA_V1"   ng-disabled="desabilita" ng-keyup ="validaPlaca1(datos.RO_PLA_V1);" onkeyup="mayus(this);" required />
+                                <span id="validax" style = "color:red;font-weight:bold; font-size:14px">La Placa es Incorrecta</span>
+                                <span id ="valida11" style = "color:green;font-weight:bold; font-size:14px">La Placa es Correcta</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <button name="buscar" ng-click="verificaPlaca(datos.RO_PLA_V1)" type="button" class="btn btn-primary btn-inverse" tooltip="Examina si existe un datos Previo del Vehiculo" ng-disabled="desabilita"> <span class="glyphicon glyphicon-search"></span> Buscar</button>
+                            </div>
+                          </div>
+                          <div class="col-sm-12">
+                            <h3><label for="url" >Datos del Vehículo</label></h3>
+                          </div>                                                   
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Tipo:</label>
+                              <div class="controls">
+                                <input id="RO_TIP_V1" name="RO_TIP_V1" type="text"  class="form-control" ng-disabled="desabilita || desabilitaVeh" placeholder="Tipo" ng-model="datos.RO_TIP_V1"  required />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Clase Vehículo</label>
+                              <div class="controls">
+                                <select id="RO_CLA_V1" name="RO_CLA_V1"  ng-model="datos.RO_CLA_V1" class="form-control" ng-disabled="desabilita || desabilitaVeh" ng-options="claseMovis.vclase_movilidad as claseMovis.vclase_movilidad for claseMovis in obtClaseMovilidades" required>
+                                  <option value="">Seleccionar</option>
+                                </select> 
+                              </div>   
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label  for="nombre">Marca Vehículo</label>
+                              <div class="controls">
+                                <select id="RO_MAR_V1" name="RO_MAR_V1" ng-model="datos.RO_MAR_V1" class="form-control" ng-disabled="desabilita || desabilitaVeh" ng-options="marcaMovis.vmarca_movilidad as marcaMovis.vmarca_movilidad for marcaMovis in obtMarcaMovilidades" required>
+                                  <option value="">Seleccionar</option>
+                                </select>                                                                   
+                              </div>                                                           
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Modelo:</label>
+                              <div class="controls">
+                                <input id="RO_MOD_V1"  ng-disabled="desabilita || desabilitaVeh" name="RO_MOD_V1" type="number" minlength="4" maxlength ="4" placeholder="Modelo" class="form-control" ng-model="datos.RO_MOD_V1"  required />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Color:</label>
+                              <div class="controls">
+                                <input id="RO_COLOR_V1" name="RO_COLOR_V1" type="text" value="#ff0000" class="form-control"  ng-model="datos.RO_COLOR_V1" ng-disabled="desabilita || desabilitaVeh" onkeyup="validaLetras(this);" required />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Nro de puertas:</label>
+                              <div class="controls">
+                                <select id="RO_PUE_V1" name="RO_PUE_V1" ng-model="datos.RO_PUE_V1" class="form-control" required ng-disabled="desabilita || desabilitaVeh">
+                                  <option value="">--Seleccione--</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                                  <option value="6">6</option>
+                                  <option value="7">7</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3" ng-show = "datos.RO_MOD==1 || datos.RO_MOD==2">
+                            <div class="form-group">
+                              <label class="control-label">Nro de asientos:</label>
+                              <div class="controls">
+                                <select id="RO_ASI_V1" name="RO_ASI_V1" ng-model="datos.RO_ASI_V1" class="form-control" required ng-disabled="desabilita || desabilitaVeh">
+                                  <option value="">--Seleccione--</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                                  <option value="6">6</option>
+                                  <option value="7">7</option>
+                                  <option value="8">8</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3" ng-show = "datos.RO_MOD==3 || datos.RO_MOD==4 || datos.RO_MOD==5 || datos.RO_MOD==6">
+                            <div class="form-group">
+                              <label class="control-label">Nro de asientos:</label>
+                              <div class="controls">
+                                <input type="number" id="RO_ASI_VE1" name="RO_ASI_VE1" ng-model="datos.RO_ASI_VE1" class="form-control" required ng-disabled="desabilita || desabilitaVeh"/>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">                                                        
+                            <div class="form-group">
+                              <label class="control-label">Radicatoria:</label>
+                              <div class="controls">
+                                <select id="RO_RAD_V1" name="RO_RAD_V1" ng-model="datos.RO_RAD_V1" class="form-control"  required ng-disabled="desabilita || desabilitaVeh">
+                                    <option value="">--Seleccione--</option>
+                                    <option value="LA PAZ">LA PAZ</option>
+                                    <option value="EL ALTO">EL ALTO</option>
+                                </select>
+                              </div>
+                            </div>                                                    
+                          </div>
+                        </div> 
+                        <div class="col-md-12">
+                          <h3 class="col-md-12">Datos de Propietario/Poseedor</h3><br>
+                          <ul class="nav nav-tabs">
+                            <li class="active">
+                              <a data-toggle="tab" ng-click="" data-target="#tab-one"><h4>Registro de Propietario de Vehículo</h4></a>
+                            </li>
+                            <li>
+                              <a data-toggle="tab" ng-click="validaProp()" data-target="#tab-two"><h4>Registro de Poseedor de Vehículo</h4></a>
+                            </li>                                       
+                          </ul><br>
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="tab-one">
+                              <div>
+                                <div class="col-sm-5">
+                                  <div class="form-group">
+                                    <label class="col-sm-3 control-label">C.I.:</label>
+                                      <div class="col-sm-9">
+                                      <input id="RO_CI_P1" name="RO_CI_P1" type="number"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_P1" ng-disabled="desabilita || desabilitaVeh" /></div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-5">                                                        
+                                  <div class="form-group">
+                                    <label class="col-sm-3 control-label">Expedido:</label>
+                                    <div class="col-sm-9">
+                                      <select id="RO_EXP_P1" name="RO_EXP_P1" placeholder="Expedido" ng-model="datos.RO_EXP_P1" class="form-control" ng-disabled="desabilita || desabilitaVeh">
+                                        <option value="">--Seleccione--</option>
+                                        <option value="LA PAZ">LA PAZ</option>
+                                        <option value="EL ALTO">EL ALTO</option>
+                                        <option value="COCHABAMBA">COCHABAMBA</option>
+                                        <option value="SANTA CRUZ">SANTA CRUZ</option>
+                                        <option value="CHUQUISACA">CHUQUISACA</option>
+                                        <option value="TARIJA">TARIJA</option>
+                                        <option value="POTOSI">POTOSI</option>
+                                        <option value="ORURO">ORURO</option>
+                                        <option value="BENI">BENI</option>
+                                        <option value="PANDO">PANDO</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>  
+                                <div class="col-sm-2">
+                                  <div class="form-group">
+                                    <button name="buscar" type="button" class="btn btn-primary btn-inverse" ng-click="datosNaturalVehiculo(datos.RO_CI_P1,'p');" ng-disabled="desabilita || desabilitaVeh"> <span class="glyphicon glyphicon-search" ></span> Buscar</button>
+                                  </div>
+                                </div>
+                                <div class="col-md-12">
+                                  <h3><label for="url" >Datos Personales</label></h3>
+                                </div>                                                    
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Nombre:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_NOM_P1" name="RO_NOM_P1" type="text"  class="form-control" placeholder="Nombre" ng-model="datos.RO_NOM_P1"  onkeyup="validaLetras(this);" required ng-disabled="desabilita || desabilitaVeh" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Paterno:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_PAT_P1" name="RO_PAT_P1" type="text"  class="form-control" placeholder="Paterno" ng-model="datos.RO_PAT_P1"  onkeyup="validaLetras(this);" required ng-disabled="desabilita || desabilitaVeh" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Materno:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_MAT_P1" name="RO_MAT_P1" type="text" class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_P1" onkeyup="validaLetras(this);" required ng-disabled="desabilita || desabilitaVeh"/>
+                                    </div>
+                                  </div>
+                                </div>  
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Celular:</label>
+                                      <div class="input-group col-md-12">  
+                                        <input id="RO_CEL_P1" name="RO_CEL_P1" type="number"  class="form-control" placeholder="Celular" ng-model="datos.RO_CEL_P1"  required ng-disabled="desabilita || desabilitaVeh" ng-keyup="validaCelular(datos.RO_CEL_P1, 'valida21', 'RO_CEL_P1');"/><span class="input-group-addon" id="valida21" style = "color:green;font-weight:bold; font-size:12px" ng-show="datos.RO_CEL_P1 >0"><img src="../../img/movilidad/greencheck.png" width="20" height="20"></span>
+                                      </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <div class="form-group" >
+                                    <label class="control-label" for="url" >Macrodistrito:</label>
+                                    <div class="input-group col-md-12">
+                                      <select id="RO_MAC_P1" 
+                                              name="RO_MAC_P1"
+                                              placeholder="Macrodistrito" 
+                                              ng-model="datos.RO_MAC_P1"
+                                              class="form-control"
+                                              ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
+                                              required ng-change="distritoZonasTipo(datos.RO_MAC_P1,'Prop')" ng-disabled="desabilita || desabilitaVeh">
+                                        <option value="">--Seleccionar--</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>                                    
+                                <div class="col-md-3">
+                                  <div class="form-group" >
+                                    <label for="url" class="control-label">Zona:</label>
+                                    <div class="input-group col-md-12">  
+                                      <select id="RO_ZONA_P1"
+                                              name="RO_ZONA_P1"
+                                              placeholder="Distrito - Zona"
+                                              ng-model="datos.RO_ZONA_P1"
+                                              class="form-control"
+                                              ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZonaProp | orderBy:['nombre','dist_nombre']"
+                                              required ng-disabled="desabilita || desabilitaVeh">
+                                        <option value="">--Seleccionar--</option>
+                                      </select>
+                                    </div>  
+                                  </div>
+                                </div>                           
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Calle:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_CALL_P1" name="RO_CALL_P1" type="text"  class="form-control" placeholder="Calle" ng-model="datos.RO_CALL_P1"  required ng-disabled="desabilita || desabilitaVeh"/>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Nro:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_NRO_P1" name="RO_NRO_P1" type="number" class="form-control" placeholder="Nro" ng-model="datos.RO_NRO_P1"  required ng-disabled="desabilita || desabilitaVeh"/>
+                                    </div>
+                                  </div>
+                                </div>  
+                              </div>                          
+                            </div>  
+                            <div class="tab-pane" id="tab-two">             
+                              <div class="col-sm-5">
+                                <div class="form-group">
+                                  <label class="col-sm-3 control-label">C.I.:</label>
+                                    <div class="col-sm-9">
+                                    <input id="RO_CI_POO1" name="RO_CI_POO1" type="text"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_POO1" ng-disabled="desabilita || desabilitaVeh" style="text-transform:uppercase;" /></div>
+                                </div>
+                              </div>
+                              <div class="col-sm-5">                                                        
+                                <div class="form-group">
+                                  <label class="col-sm-3 control-label">Expedido:</label>
+                                  <div class="col-sm-9">
+                                    <select id="RO_EXP_POO1" name="RO_EXP_POO1" placeholder="Expedido" ng-model="datos.RO_EXP_POO1" class="form-control" ng-disabled="desabilita || desabilitaVeh">
+                                      <option value="">--Seleccione--</option>
+                                      <option value="LA PAZ">LA PAZ</option>
+                                      <option value="EL ALTO">EL ALTO</option>
+                                      <option value="COCHABAMBA">COCHABAMBA</option>
+                                      <option value="SANTA CRUZ">SANTA CRUZ</option>
+                                      <option value="CHUQUISACA">CHUQUISACA</option>
+                                      <option value="TARIJA">TARIJA</option>
+                                      <option value="POTOSI">POTOSI</option>
+                                      <option value="ORURO">ORURO</option>
+                                      <option value="BENI">BENI</option>
+                                      <option value="PANDO">PANDO</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>  
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <button name="buscar" type="button" class="btn btn-primary btn-inverse" ng-click="datosNaturalVehiculo(datos.RO_CI_POO1,'poo');" ng-disabled="desabilita || desabilitaVeh"> <span class="glyphicon glyphicon-search" ></span> Buscar</button>
+                                </div>
+                              </div>
+                              <div class="col-md-12">
+                                <h3><label for="url" >Datos Personales</label></h3>
+                              </div> 
+                              <div> 
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Nombre:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_NOM_POO1" name="RO_NOM_POO1" type="text"  class="form-control" placeholder="Nombre" ng-model="datos.RO_NOM_POO1" onkeyup="validaLetras(this);" required ng-disabled="desabilita || desabilitaVeh"/>
+                                    </div>
+                                  </div>
+                                </div>                            
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Paterno:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_PAT_POO1" name="RO_PAT_POO1" type="text"  class="form-control" placeholder="Paterno" ng-model="datos.RO_PAT_POO1" onkeyup="validaLetras(this);" required ng-disabled="desabilita || desabilitaVeh"/>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Materno:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_MAT_POO1" name="RO_MAT_POO1" type="text"  class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_POO1"   onkeyup="validaLetras(this);" required ng-disabled="desabilita || desabilitaVeh"/>
+                                    </div>
+                                  </div>
+                                </div>                                                                                                   
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Celular:</label>
+                                      <div class="input-group col-md-12">  
+                                        <input id="RO_CEL_POO1" name="RO_CEL_POO1" type="number"  class="form-control" placeholder="Celular" ng-model="datos.RO_CEL_POO1"  required ng-disabled="desabilita || desabilitaVeh" ng-keyup="validaCelular(datos.RO_CEL_POO1, 'valida22', 'RO_CEL_POO1');"/><span class="input-group-addon" id="valida22" style = "color:green;font-weight:bold; font-size:12px" ng-show="datos.RO_CEL_POO1 >0"><img src="../../img/movilidad/greencheck.png" width="20" height="20"></span>
+                                      </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <div class="form-group" >
+                                    <label for="url" class="control-label">Macrodistrito:</label>
+                                    <div class="input-group col-md-12">
+                                      <select id="RO_MAC_POO1" 
+                                              name="RO_MAC_POO1"
+                                              placeholder="Macrodistrito" 
+                                              ng-model="datos.RO_MAC_POO1"
+                                              class="form-control"
+                                              ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
+                                              ng-change="distritoZonasTipo(datos.RO_MAC_POO1,'Pos')" ng-disabled="desabilita || desabilitaVeh">
+                                        <option value="">--Seleccionar--</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>                        
+                                <div class="col-md-3">
+                                  <div class="form-group" >
+                                    <label for="url" class="control-label">Zona:</label>
+                                    <div class="input-group col-md-12">
+                                      <select id="RO_ZONA_POO1"
+                                              name="RO_ZONA_POO1"
+                                              placeholder="Distrito - Zona"
+                                              ng-model="datos.RO_ZONA_POO1"
+                                              class="form-control"
+                                              ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZonaPos | orderBy:['nombre','dist_nombre']" ng-disabled="desabilita || desabilitaVeh">
+                                        <option value="">--Seleccionar--</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Calle:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_CALL_POO1" name="RO_CALL_POO1" type="text"  class="form-control" placeholder="Calle" ng-model="datos.RO_CALL_POO1"  required ng-disabled="desabilita || desabilitaVeh"/>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label class="control-label">Nro:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_NRO_POO1" name="RO_NRO_POO1" type="number"  class="form-control" placeholder="Nro" ng-model="datos.RO_NRO_POO1"   required ng-disabled="desabilita || desabilitaVeh"/>
+                                    </div>
+                                  </div>
+                                </div> 
+                              </div>
+                            </div>
+                          </div>
+                        </div>                   
+                      </div>
+                    </form>
+                  </div>
+                  <!-- Datos de Vehiculo -->
+                  <div>
+                    <form name="conductores" class="" role="form" novalidate><br>
+                      <h2>Paso 7: Registre Datos del Conductor</h2><br>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">C.I.:</label>
+                              <div class="controls">
+                                <input id="RO_CI_C1" name="RO_CI_C1" type="number"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_C1"  required ng-disabled="desabilita"/>
+                              </div>
+                            </div>
+                          </div>                                                                                         
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label"></label>
+                              <div class="controls">
+                                <button name="buscar" type="button" class="btn btn-primary btn-inverse" ng-click="verificaConductor(datos.RO_CI_C1);" ng-disabled="desabilita"> <span class="glyphicon glyphicon-search"></span> Buscar</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">                                                        
+                            <div class="form-group">
+                              <label class="control-label">Expedido: </label>
+                              <div class="controls">
+                                <select id="RO_EXP_C1" name="RO_EXP_C1" placeholder="Expedido" ng-model="datos.RO_EXP_C1" ng-disabled="desabilita || desabilitaCon" class="form-control" required>
+                                  <option value="">--Seleccione--</option>
+                                  <option value="LA PAZ">LA PAZ</option>
+                                  <option value="EL ALTO">EL ALTO</option>
+                                  <option value="COCHABAMBA">COCHABAMBA</option>
+                                  <option value="SANTA CRUZ">SANTA CRUZ</option>
+                                  <option value="CHUQUISACA">CHUQUISACA</option>
+                                  <option value="TARIJA">TARIJA</option>
+                                  <option value="POTOSI">POTOSI</option>
+                                  <option value="ORURO">ORURO</option>
+                                  <option value="BENI">BENI</option>
+                                  <option value="PANDO">PANDO</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">                                                      
+                            <div class="form-group">
+                              <label class="control-label">Placa de vehículo:</label>
+                              <div class="controls">
+                                <input id="RO_PLA_V1" name="RO_PLA_V1" type="text" placeholder="Ejemplo: 1234ABC" maxlength="7" class="form-control" ng-model="datos.RO_PLA_V1" ng-disabled="true" required />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <h3><label for="url" >Datos Personales</label></h3>
+                          </div> 
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Nombre:</label>
+                              <div class="input-group col-md-12">
+                                <input id="RO_NOM_C1" name="RO_NOM_C1" type="text"  class="form-control" placeholder="Nombre" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_NOM_C1"  onkeyup="validaLetras(this);" required />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Paterno:</label>
+                              <div class="input-group col-md-12">
+                                <input id="RO_PAT_C1" name="RO_PAT_C1" type="text"  class="form-control" placeholder="Paterno" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_PAT_C1"  onkeyup="validaLetras(this);" required />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Materno:</label>
+                              <div class="input-group col-md-12">
+                                <input id="RO_MAT_C1" name="RO_MAT_C1" type="text"  class="form-control" placeholder="Materno" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_MAT_C1"  onkeyup="validaLetras(this);" required />
+                              </div>
+                            </div>
+                          </div>   
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Correo:</label>
+                              <div class="input-group col-md-12">
+                                <input id="RO_CORR_C1" name="RO_CORR_C1" type="text"  class="form-control" ng-disabled="desabilita || desabilitaCon" placeholder="Correo" ng-model="datos.RO_CORR_C1"/>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Teléfono:</label>
+                              <div class="input-group col-md-12">
+                                <input id="RO_TEL_C1" name="RO_TEL_C1" type="number"  class="form-control" placeholder="Telefono" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_TEL_C1"  />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Celular:</label>
+                              <div class="input-group col-md-12">
+                                <input id="RO_CEL_C1" name="RO_CEL_C1" type="number"  class="form-control" placeholder="Celular" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_CEL_C1" ng-keyup="validaCelular(datos.RO_CEL_C1, 'valida20', 'RO_CEL_C1');" required /><span class="input-group-addon" id="valida20" style = "color:green;font-weight:bold; font-size:12px" ng-show="datos.RO_CEL_C1 >0"><img src="../../img/movilidad/greencheck.png" width="20" height="20"></span>
+                              </div>
+                            </div>
+                          </div> 
+                          <div class="col-md-3">
+                            <div class="form-group" >
+                              <label class="control-label" for="url" >Macrodistrito:</label>
+                              <div class="input-group col-md-12">
+                                <select id="RO_MAC_C1" 
+                                        name="RO_MAC_C1"
+                                        placeholder="Macrodistrito" 
+                                        ng-model="datos.RO_MAC_C1"
+                                        class="form-control"
+                                        ng-disabled="desabilita || desabilitaCon"
+                                        ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
+                                        required ng-change="distritoZonasTipo(datos.RO_MAC_C1,'Cond')">
+                                  <option value="">--Seleccionar--</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>                                                       
+                          <div class="col-md-3">
+                            <div class="form-group" >
+                              <label for="url" class="control-label">Zona:</label>
+                              <div class="input-group col-md-12">  
+                                <select id="RO_ZONA_C1"
+                                        name="RO_ZONA_C1"
+                                        placeholder="Distrito - Zona"
+                                        ng-model="datos.RO_ZONA_C1"
+                                        class="form-control"
+                                        ng-disabled="desabilita || desabilitaCon"
+                                        ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZonaCond | orderBy:['nombre','dist_nombre']"
+                                        ng-change="actulizarIdDistrito();"
+                                        required>
+                                  <option value="">--Seleccionar--</option>
+                                </select>
+                              </div>  
+                            </div>
+                          </div> 
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Calle:</label>
+                              <div class="input-group col-md-12">
+                                <input id="RO_CALL_C1" name="RO_CALL_C1" type="text"  class="form-control" ng-disabled="desabilita || desabilitaCon" placeholder="Calle" ng-model="datos.RO_CALL_C1"   required />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label">Nro:</label>
+                              <div class="input-group col-md-12">
+                                <input id="RO_NRO_C1" name="RO_NRO_C1" type="number"  class="form-control" ng-disabled="desabilita || desabilitaCon" placeholder="Nro" ng-model="datos.RO_NRO_C1" required />
+                              </div>
+                            </div>
+                          </div>                                                                                                          
+                          <div class="col-md-12">
+                            <h3><label for="url">Datos adicionales del conductor</label></h3>
+                          </div>                                                      
+                          <div class="col-md-3">                                                        
+                            <div class="form-group">
+                              <label class="control-label">Categoría licencia:</label>
+                              <div class="controls">
+                                <select id="RO_CAT_C1" name="RO_CAT_C1" placeholder="Expedido" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_CAT_C1" class="form-control" ng-show="datos.RO_MOD==1 || datos.RO_MOD==2 || datos.RO_MOD==3" required>
+                                  <option value="">--Seleccione--</option>
+                                  <option value="A">A</option>
+                                  <option value="B">B</option>
+                                  <option value="C">C</option>
+                                </select>
+                                <select id="RO_CAT_C1" name="RO_CAT_C1" placeholder="Expedido" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_CAT_C1" class="form-control" ng-show="datos.RO_MOD==4 || datos.RO_MOD==5 || datos.RO_MOD==6" required>
+                                  <option value="">--Seleccione--</option>
+                                  <option value="B">B</option>
+                                  <option value="C">C</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>                                       
+                          <div class="col-md-3">                                                        
+                            <div class="form-group">
+                              <label class="control-label">Tipo de datos:</label>
+                              <div class="controls">
+                                <select id="RO_TIP_C1" name="RO_TIP_C1" placeholder="Expedido" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_TIP_C1" class="form-control" required>
+                                  <option value="">--Seleccione--</option>
+                                  <option value="PROPIETARIO">PROPIETARIO</option>
+                                  <option value="ASALARIADO">ASALARIADO</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>     
+                        </div>                   
+                      </div>
+                    </form>           
+                  </div><br>
+                </div>
+                <div ng-show="tipo_persona=='JURIDICO'" align="right">
+                  <br>
+                  <button  type="button" class="btn btn-info" ng-click="volver();"><i class="fa fa-chevron-left"></i>Anterior</button>
+                  <button type="button" class="btn btn-info"  ng-show="desabilita==false" ng-click="guardaRequisitos();buscaOficinas();listaVeh();listaCond();ver();">Siguiente<i class="fa fa-chevron-right"></i></button>
+                  <button type="button" class="btn btn-info" ng-show="desabilita==true" ng-click="ver();listaVeh();listaCond();">Siguiente<i class="fa fa-chevron-right"></i></button>
+                </div>
+              </div>
+              <div ng-show = "datosMostrar==4">
+                <!--datos de vehiculos -->
+                <div>
+                  <form name="vehiculos" class="form-horizontal" role="form" novalidate>
+                    <h2>Paso 6: Registro de Vehículos</h2> 
+                    <div align="right">
+                      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#vehiculo" ng-show="desabilita == false" ng-click="crear(1);limpiar();"><i class="fa fa-plus fa-lg"></i>&nbsp;Nuevo Vehiculo&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                    </div><br> 
+                    <div class="table-responsive">                                     
+                      <table ng-table="tablaVehiculo" show-filter="true" class="table tableE table-striped table-bordered">
+                        <tr ng-repeat="veh in $data" >
+                          <td align="center"  data-title="'Opciones'" width="3%">
+                            <a class="btn btn-default btn-circle" ng-click="modificarVehiculo(veh);" ng-show="desabilita == false" data-toggle="modal" data-target="#vehiculo" ><i class="fa fa-pencil" style="color:#249FE6"></i></a>
+                            <a  class="btn btn-default btn-circle" ng-click="eliVehiculo(veh.veh_id);" ng-show="desabilita == false" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a> 
+                          </td>
+                          <td align="center" data-title="'#'" style="width:2%">{{$index+1}}</td>
+                          <td class="text-center" style="width:10%" data-title="'Oficina'" sortable="'RO_NOM_SUC'" ng-show="datos.RO_MOD==1">
+                            {{veh.veh_datos.RO_NOM_SUC}}
+                          </td> 
+                          <td class="text-center" style="width:10%" data-title="'Placa'" sortable="'veh_placa'" filter="{'veh_placa':'text'}">
+                            {{veh.veh_placa}}
+                          </td>                      
+                          <td class="text-center" style="width:10%" data-title="'Modelo'" sortable="'RO_MOD_V'">
+                            {{veh.veh_datos.RO_MOD_V}}
+                          </td>
+                          <td class="text-center" style="width:10%" data-title="'Tipo'" sortable="'RO_TIP_V'">
+                            {{veh.veh_datos.RO_TIP_V}}
+                          </td>
+                          <td class="text-center" style="width:10%" data-title="'Marca'" sortable="'RO_MAR_V'" >
+                            {{veh.veh_datos.RO_MAR_V}}
+                          </td>
+                          <td class="text-center" style="width:10%" data-title="'Color'" sortable="'RO_COLOR_V'" >
+                            {{veh.veh_datos.RO_COLOR_V}}
+                          </td>
+                          <td class="text-center" style="width:10%" data-title="'Estado'" sortable="'veh_estado_doc'">
+                            {{veh.veh_estado_doc}}
+                          </td>
+                        </tr>
+                      </table>
+                    </div>    
+                  </form>
+                </div>
+                <!-- Datos de Vehiculo -->
+                <div>
+                  <form name="conductores" class="" role="form" novalidate><br>
+                    <h2>Paso 7: Registro de Conductores</h2>
+                    <div align="right">
+                      <button type="button" class="btn btn-info" data-toggle="modal" ng-show="desabilita == false" data-target="#modalConductor" ng-click="crearCond(1);limpiarCon();"><i class="fa fa-plus fa-lg"></i>&nbsp;Nuevo Conductor&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                    </div><br>
+                    <div class="table-responsive">
+                      <table ng-table="tablaConductor" show-filter="true" class="table tableE table-striped table-bordered">
+                        <tr ng-repeat="cond in $data">
+                          <td align="center"  data-title="'Opciones'" width="3%">
+                            <a class="btn btn-default btn-circle" data-toggle="modal" data-target="#modalConductor" ng-show="desabilita == false" ng-click="modificarCond(cond);"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
+                            <a class="btn btn-default btn-circle"  ng-click="eliminarCond(cond.cond_id)" ng-show="desabilita == false" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>        
+                          </td>
+                          <td align="center" data-title="'#'" style="width:2%">{{$index+1}}</td>
+                          <td class="text-center" style="width:10%" data-title="'Oficina-Macro'" ng-show="datos.RO_MOD==1">
+                            {{cond.cond_datos.RO_NOM_SUC}}
+                          </td> 
+                          <td class="text-center" style="width:10%" data-title="'CI'" filter="{'cond_ci':'text'}">
+                            {{cond.cond_ci}}
+                          </td>                      
+                          <td class="text-center" style="width:10%" data-title="'Placa'">
+                            {{cond.cond_datos.PLACA}}
+                          </td>
+                          <td class="text-center" style="width:10%" data-title="'Nombre'">
+                            {{cond.cond_datos.RO_NOM_C}}
+                          </td>
+                          <td class="text-center" style="width:10%" data-title="'Paterno'">
+                            {{cond.cond_datos.RO_PAT_C}}
+                          </td>
+                          <td class="text-center" style="width:10%" data-title="'Materno'">
+                            {{cond.cond_datos.RO_MAT_C}}
+                          </td>
+                          <td class="text-center" style="width:10%" data-title="'Estado'">
+                            {{cond.cond_estado_doc}}
+                          </td>
+                        </tr>
+                      </table>
+                    </div>  
+                  </form>           
+                </div><br>
+                <!-- modales -->
+                <!-- vehiculo -->
+                <div class="modal fade" id="vehiculo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <center><h2 class="modal-title" id="myModalLabel"><strong>{{tituloVehiculo}}</strong></h2></center>
+                      </div>
+                      <div class="modal-body" >
+                        <form novalidate>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="col-sm-6">
+                                <div class="form-group">
+                                  <label class="col-sm-3 control-label">Placa:</label>
+                                  <div class="col-sm-9">
+                                    <input id="RO_PLA_V" name="RO_PLA_V" type="text" placeholder="Ejemplo: 1234ABC" maxlength="7" class="form-control" ng-model="datos.RO_PLA_V" ng-keyup ="validaPlaca(datos.RO_PLA_V);" required onkeyup="mayus(this)" />
+                                    <span id="valida" style = "color:red;font-weight:bold; font-size:14px">La Placa es Incorrecta</span>
+                                    <span id ="valida1" style = "color:green;font-weight:bold; font-size:14px">La Placa es Correcta</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="form-group">
+                                  <button name="buscar" ng-click="verificaPlaca(datos.RO_PLA_V)" type="button" class="btn btn-primary btn-inverse" tooltip="Examina si existe un datos Previo del Vehiculo"> <span class="glyphicon glyphicon-search"></span> Buscar</button>
+                                </div>
+                              </div>
+                              <div class="col-sm-12">
+                                <h3><label for="url" >Datos del Vehículo</label></h3>
+                              </div>  
+                              <div class="col-md-4" ng-show="datos.RO_MOD==1">
+                                <div class="form-group" >
+                                  <label class="control-label" for="url" >Sucursal:</label>
+                                  <div class="controls">
+                                    <select id="RO_ID_SUC" 
+                                            name="RO_ID_SUC"
+                                            ng-model="datos.RO_ID_SUC"
+                                            class="form-control"
+                                            ng-on
+                                            ng-options="ofic.xofi_id as ofic.xdescr for ofic in datosOfiR" 
+                                            ng-disabled="desabilitaVeh"
+                                            ng-change ="limpiaModelo();"
+                                            required>
+                                      <option value="">--Seleccionar--</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>                                                   
+                              <div class="col-sm-4">
+                                <div class="form-group">
+                                  <label class="control-label">Tipo:</label>
+                                  <div class="controls">
+                                    <input id="RO_TIP_V" name="RO_TIP_V" type="text"  class="form-control" ng-disabled="desabilitaVeh" placeholder="Tipo" ng-model="datos.RO_TIP_V" style="text-transform:uppercase;" required />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label class="control-label">Clase Vehículo</label>
+                                  <div class="controls">
+                                    <select id="RO_CLA_V" name="RO_CLA_V"  ng-model="datos.RO_CLA_V" class="form-control" ng-disabled="desabilitaVeh" ng-options="claseMovis.vclase_movilidad as claseMovis.vclase_movilidad for claseMovis in obtClaseMovilidades" required>
+                                      <option value="">Seleccionar</option>
+                                    </select>
+                                  </div>   
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label  for="nombre">Marca Vehículo</label>
+                                  <div class="controls">
+                                    <select id="RO_MAR_V" name="RO_MAR_V" ng-model="datos.RO_MAR_V" class="form-control" ng-disabled="desabilitaVeh" ng-options="marcaMovis.vmarca_movilidad as marcaMovis.vmarca_movilidad for marcaMovis in obtMarcaMovilidades" required>
+                                      <option value="">Seleccionar</option>
+                                    </select>                                                                  
+                                  </div>                                                           
+                                </div>
+                              </div>
+                              <div class="col-sm-4">
+                                <div class="form-group">
+                                  <label class="control-label">Modelo:</label>
+                                  <div class="controls">
+                                    <input id="RO_MOD_V"  ng-disabled="desabilitaVeh" name="RO_MOD_V" type="number" minlength="4" maxlength ="4" placeholder="Modelo" class="form-control" ng-model="datos.RO_MOD_V"   required ng-keyup ="validaModelo(datos.RO_MOD_V);" />
+                                    <span id ="validaMN" style = "color:red;font-weight:bold; font-size:9px">Antiguedad Menor a 10 años</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-4">
+                                <div class="form-group">
+                                  <label class="control-label">Color:</label>
+                                  <div class="controls">
+                                    <input id="RO_COLOR_V" name="RO_COLOR_V" type="text" value="#ff0000" class="form-control"  ng-model="datos.RO_COLOR_V" ng-disabled="desabilitaVeh" onkeyup="validaLetras(this);" required />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-4">
+                                <div class="form-group">
+                                  <label class="control-label">Nro de puertas:</label>
+                                  <div class="controls">
+                                    <select id="RO_PUE_V" name="RO_PUE_V" ng-model="datos.RO_PUE_V" class="form-control" required ng-disabled="desabilitaVeh">
+                                      <option value="">--Seleccione--</option>
+                                      <option value="4">4</option>
+                                      <option value="5">5</option>
+                                      <option value="6">6</option>
+                                      <option value="7">7</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-4" ng-show = "datos.RO_MOD==1 || datos.RO_MOD==2">
+                                <div class="form-group">
+                                  <label class="control-label">Nro de asientos:</label>
+                                  <div class="controls">
+                                    <select id="RO_ASI_V" name="RO_ASI_V" ng-model="datos.RO_ASI_V" class="form-control" required ng-disabled="desabilitaVeh">
+                                      <option value="">--Seleccione--</option>
+                                      <option value="4">4</option>
+                                      <option value="5">5</option>
+                                      <option value="6">6</option>
+                                      <option value="7">7</option>
+                                      <option value="8">8</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4" ng-show = "datos.RO_MOD==3 || datos.RO_MOD==4 || datos.RO_MOD==5 || datos.RO_MOD==6">
+                                <div class="form-group">
+                                  <label class="control-label">Nro de asientos:</label>
+                                  <div class="controls">
+                                    <input type="number" id="RO_ASI_VJ1" name="RO_ASI_VJ1" ng-model="datos.RO_ASI_VJ1" class="form-control" required ng-disabled="desabilita || desabilitaVeh"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-4">                                                        
+                                <div class="form-group">
+                                  <label class="control-label">Radicatoria:</label>
+                                  <div class="controls">
+                                    <select id="RO_RAD_V" name="RO_RAD_V" ng-model="datos.RO_RAD_V" class="form-control"  required ng-disabled="desabilitaVeh">
+                                        <option value="">--Seleccione--</option>
+                                        <option value="LA PAZ">LA PAZ</option>
+                                        <option value="EL ALTO">EL ALTO</option>
+                                    </select>
+                                  </div>
+                                </div>                                                    
+                              </div>
+                            </div> 
+                            <div class="col-md-12">
+                              <h3 class="col-md-12">Datos de Propietario/Poseedor</h3><br>                                             
+                              <ul class="nav nav-tabs">
+                                <li class="active">
+                                  <a data-toggle="tab" ng-click="" data-target="#tab-one1"><h4>Registro de Propietario de Vehículo</h4></a>
+                                </li>
+                                <li>
+                                  <a data-toggle="tab" ng-click="validaPropietario();" data-target="#tab-two1"><h4>Registro de Poseedor de Vehículo</h4></a>
+                                </li>                                       
+                              </ul><br>
+                              <div class="tab-content">
+                                <div class="tab-pane active" id="tab-one1">
+                                  <div>
+                                    <div class="col-sm-5">
+                                      <div class="form-group">
+                                        <label class="col-sm-3 control-label">C.I.:</label>
+                                          <div class="col-sm-9">
+                                          <input id="RO_CI_P" name="RO_CI_P" type="number"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_P" ng-disabled="desabilitaVeh"  /></div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-5">                                                        
+                                      <div class="form-group">
+                                        <label class="col-sm-3 control-label">Expedido:</label>
+                                        <div class="col-sm-9">
+                                          <select id="RO_EXP_P" name="RO_EXP_P" placeholder="Expedido" ng-model="datos.RO_EXP_P" class="form-control" ng-disabled="desabilitaVeh">
+                                            <option value="">--Seleccione--</option>
+                                            <option value="LA PAZ">LA PAZ</option>
+                                            <option value="EL ALTO">EL ALTO</option>
+                                            <option value="COCHABAMBA">COCHABAMBA</option>
+                                            <option value="SANTA CRUZ">SANTA CRUZ</option>
+                                            <option value="CHUQUISACA">CHUQUISACA</option>
+                                            <option value="TARIJA">TARIJA</option>
+                                            <option value="POTOSI">POTOSI</option>
+                                            <option value="ORURO">ORURO</option>
+                                            <option value="BENI">BENI</option>
+                                            <option value="PANDO">PANDO</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>  
+                                    <div class="col-sm-2">
+                                      <div class="form-group">
+                                        <button name="buscar" type="button" class="btn btn-primary btn-inverse" ng-click="datosNaturalVehiculo(datos.RO_CI_P,'p');" ng-disabled="desabilitaVeh"> <span class="glyphicon glyphicon-search" ></span> Buscar</button>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                      <h3><label for="url" >Datos Personales</label></h3>
+                                    </div>                                                    
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Nombre:</label>
+                                        <div class="input-group col-md-12">
+                                          <input id="RO_NOM_P" name="RO_NOM_P" type="text"  class="form-control" placeholder="Nombre" ng-model="datos.RO_NOM_P"   onkeyup="validaLetras(this);" required ng-disabled="desabilitaVeh" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Paterno:</label>
+                                        <div class="input-group col-md-12">
+                                          <input id="RO_PAT_P" name="RO_PAT_P" type="text"  class="form-control" placeholder="Paterno" ng-model="datos.RO_PAT_P" onkeyup="validaLetras(this);" required ng-disabled="desabilitaVeh"/>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Materno:</label>
+                                        <div class="input-group col-md-12">
+                                          <input id="RO_MAT_P" name="RO_MAT_P" type="text" class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_P"  onkeyup="validaLetras(this);" required ng-disabled="desabilitaVeh"/>
+                                        </div>
+                                      </div>
+                                    </div>  
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Celular:</label>
+                                          <div class="input-group col-md-12">  
+                                            <input id="RO_CEL_P" name="RO_CEL_P" type="number"  class="form-control" placeholder="Celular" ng-model="datos.RO_CEL_P"   required ng-disabled="desabilitaVeh" ng-keyup="validaCelular(datos.RO_CEL_P, 'valida23', 'RO_CEL_P');"/><span class="input-group-addon" id="valida23" style = "color:green;font-weight:bold; font-size:12px" ng-show="datos.RO_CEL_C1 >0"><img src="../../img/movilidad/greencheck.png" width="20" height="20"></span>
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <div class="form-group" >
+                                        <label class="control-label" for="url" >Macrodistrito:</label>
+                                        
+                                        <div class="input-group col-md-12">
+                                          <select id="RO_MAC_P" 
+                                                  name="RO_MAC_P"
+                                                  placeholder="Macrodistrito" 
+                                                  ng-model="datos.RO_MAC_P"
+                                                  class="form-control"
+                                                  ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
+                                                  required ng-change="distritoZonasTipo(datos.RO_MAC_P,'Prop')" ng-disabled="desabilitaVeh">
+                                            <option value="">--Seleccionar--</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>                                    
+                                    <div class="col-md-4">
+                                      <div class="form-group" >
+                                        <label for="url" class="control-label">Zona:</label>
+                                        <div class="input-group col-md-12">  
+                                          <select id="RO_ZONA_P"
+                                                  name="RO_ZONA_P"
+                                                  placeholder="Distrito - Zona"
+                                                  ng-model="datos.RO_ZONA_P"
+                                                  class="form-control"
+                                                  ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZonaProp | orderBy:['nombre','dist_nombre']"
+                                                  required ng-disabled="desabilitaVeh">
+                                            <option value="">--Seleccionar--</option>
+                                          </select>
+                                        </div>  
+                                      </div>
+                                    </div>                                                                                      
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Calle:</label>
+                                        <div class="input-group col-md-12">
+                                          <input id="RO_CALL_P" name="RO_CALL_P" type="text"  class="form-control" placeholder="Calle" ng-model="datos.RO_CALL_P"  required ng-disabled="desabilitaVeh"/>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Nro:</label>
+                                        <div class="input-group col-md-12">
+                                          <input id="RO_NRO_P" name="RO_NRO_P" type="number" class="form-control" placeholder="Nro" ng-model="datos.RO_NRO_P"    required ng-disabled="desabilitaVeh"/>
+                                        </div>
+                                      </div>
+                                    </div>  
+                                  </div>                          
+                                </div>  
+                                <div class="tab-pane" id="tab-two1">             
+                                  <div class="col-sm-5">
+                                    <div class="form-group">
+                                      <label class="col-sm-3 control-label">C.I.:</label>
+                                        <div class="col-sm-9">
+                                        <input id="RO_CI_POO" name="RO_CI_POO" type="text"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_POO" ng-disabled="desabilitaVeh" /></div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-5">                                                        
+                                    <div class="form-group">
+                                      <label class="col-sm-3 control-label">Expedido:</label>
+                                      <div class="col-sm-9">
+                                        <select id="RO_EXP_POO" name="RO_EXP_POO" placeholder="Expedido" ng-model="datos.RO_EXP_POO" class="form-control" ng-disabled="desabilitaVeh">
+                                          <option value="">--Seleccione--</option>
+                                          <option value="LA PAZ">LA PAZ</option>
+                                          <option value="EL ALTO">EL ALTO</option>
+                                          <option value="COCHABAMBA">COCHABAMBA</option>
+                                          <option value="SANTA CRUZ">SANTA CRUZ</option>
+                                          <option value="CHUQUISACA">CHUQUISACA</option>
+                                          <option value="TARIJA">TARIJA</option>
+                                          <option value="POTOSI">POTOSI</option>
+                                          <option value="ORURO">ORURO</option>
+                                          <option value="BENI">BENI</option>
+                                          <option value="PANDO">PANDO</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>  
+                                  <div class="col-sm-2">
+                                    <div class="form-group">
+                                      <button name="buscar" type="button" class="btn btn-primary btn-inverse" ng-click="datosNaturalVehiculo(datos.RO_CI_POO,'poo');" ng-disabled="desabilitaVeh"> <span class="glyphicon glyphicon-search" ></span> Buscar</button>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <h3><label for="url" >Datos Personales</label></h3>
+                                  </div> 
+                                  <div> 
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Nombre:</label>
+                                        <div class="input-group col-md-12">
+                                          <input id="RO_NOM_POO" name="RO_NOM_POO" type="text"  class="form-control" placeholder="Nombre" ng-model="datos.RO_NOM_POO" onkeyup="validaLetras(this);" required ng-disabled="desabilitaVeh"/>
+                                        </div>
+                                      </div>
+                                    </div>                            
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Paterno:</label>
+                                        <div class="input-group col-md-12">
+                                          <input id="RO_PAT_POO" name="RO_PAT_POO" type="text"  class="form-control" placeholder="Paterno" ng-model="datos.RO_PAT_POO" onkeyup="validaLetras(this);" required ng-disabled="desabilitaVeh"/>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Materno:</label>
+                                        <div class="input-group col-md-12">
+                                          <input id="RO_MAT_POO" name="RO_MAT_POO" type="text"  class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_POO"  onkeyup="validaLetras(this);" required ng-disabled="desabilitaVeh"/>
+                                        </div>
+                                      </div>
+                                    </div>                                                                                                   
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Celular:</label>
+                                          <div class="input-group col-md-12">  
+                                            <input id="RO_CEL_POO" name="RO_CEL_POO" type="number"  class="form-control" placeholder="Celular" ng-model="datos.RO_CEL_POO" style="text-transform:uppercase;" required ng-disabled="desabilitaVeh" ng-keyup="validaCelular(datos.RO_CEL_POO, 'valida24', 'RO_CEL_POO');"/><span class="input-group-addon" id="valida24" style = "color:green;font-weight:bold; font-size:12px" ng-show="datos.RO_CEL_POO >0"><img src="../../img/movilidad/greencheck.png" width="20" height="20"></span>
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <div class="form-group" >
+                                        <label for="url" class="control-label">Macrodistrito:</label>
+                                        <div class="input-group col-md-12">
+                                          <select id="RO_MAC_POO" 
+                                                  name="RO_MAC_POO"
+                                                  placeholder="Macrodistrito" 
+                                                  ng-model="datos.RO_MAC_POO"
+                                                  class="form-control"
+                                                  ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
+                                                  ng-change="distritoZonasTipo(datos.RO_MAC_POO,'Pos')" ng-disabled="desabilitaVeh">
+                                            <option value="">--Seleccionar--</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>                        
+                                    <div class="col-md-4">
+                                      <div class="form-group" >
+                                        <label for="url" class="control-label">Zona:</label>
+                                        <div class="input-group col-md-12">
+                                          <select id="RO_ZONA_POO"
+                                                  name="RO_ZONA_POO"
+                                                  placeholder="Distrito - Zona"
+                                                  ng-model="datos.RO_ZONA_POO"
+                                                  class="form-control"
+                                                  ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZonaPos | orderBy:['nombre','dist_nombre']" ng-disabled="desabilitaVeh">
+                                            <option value="">--Seleccionar--</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Calle:</label>
+                                        <div class="input-group col-md-12">
+                                          <input id="RO_CALL_POO" name="RO_CALL_POO" type="text"  class="form-control" placeholder="Calle" ng-model="datos.RO_CALL_POO" style="text-transform:uppercase;" required ng-disabled="desabilitaVeh"/>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Nro:</label>
+                                        <div class="input-group col-md-12">
+                                          <input id="RO_NRO_POO" name="RO_NRO_POO" type="number"  class="form-control" placeholder="Nro" ng-model="datos.RO_NRO_POO"  style="text-transform:uppercase;" required ng-disabled="desabilitaVeh"/>
+                                        </div>
+                                      </div>
+                                    </div> 
+                                  </div>
+                                </div>
+                              </div>
+                            </div>                   
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button ng-click="adiModVehiculo(0,'I');" type="button" class="btn btn-primary" ng-show="botonV=='new'"><i class="fa fa-save"></i>Guardar</button>
+                        <button ng-click="adiModVehiculo(idVeh,'A')" data-dismiss="modal" type="button" class="btn btn-primary" ng-show="botonV=='upd'">Modificar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--conductor -->
+                <div class="modal fade" id="modalConductor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <center><h2 class="modal-title" id="myModalLabel"><strong>{{tituloConductor}}</strong></h2></center>
+                      </div>
+                      <div class="modal-body" >
+                        <form novalidate>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label class="control-label">C.I.:</label>
+                                  <div class="controls">
+                                    <input id="RO_CI_C" name="RO_CI_C" type="number"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_C"  style="text-transform:uppercase;" required ng-disabled="desabilitadoO"/>
+                                  </div>
+                                </div>
+                              </div>                                                                                         
+                              <div class="col-md-2">
+                                <div class="form-group">
+                                  <label class="control-label"></label>
+                                  <div class="controls">
+                                    <button name="buscar" type="button" class="btn btn-primary btn-inverse" ng-click="verificaConductor(datos.RO_CI_C);"> <span class="glyphicon glyphicon-search"></span> Buscar</button>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-3">                                                        
+                                <div class="form-group">
+                                  <label class="control-label">Expedido: </label>
+                                  <div class="controls">
+                                    <select id="RO_EXP_C" name="RO_EXP_C" placeholder="Expedido" ng-model="datos.RO_EXP_C" ng-disabled="desabilitaCon" class="form-control" required>
+                                      <option value="">--Seleccione--</option>
+                                      <option value="LA PAZ">LA PAZ</option>
+                                      <option value="EL ALTO">EL ALTO</option>
+                                      <option value="COCHABAMBA">COCHABAMBA</option>
+                                      <option value="SANTA CRUZ">SANTA CRUZ</option>
+                                      <option value="CHUQUISACA">CHUQUISACA</option>
+                                      <option value="TARIJA">TARIJA</option>
+                                      <option value="POTOSI">POTOSI</option>
+                                      <option value="ORURO">ORURO</option>
+                                      <option value="BENI">BENI</option>
+                                      <option value="PANDO">PANDO</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">                                                      
+                                <div class="form-group">
+                                  <label class="control-label">Placa de vehículo:</label>
+                                  <div class="controls">
+                                    <select id="PLACA" name="PLACA" ng-model="datos.PLACA"  class="form-control"  required ng-disabled="desabilitaCon">
+                                      <option value = "">Seleccionar</option>
+                                      <option ng-repeat="vehic_vi in objVehiculos" value="{{vehic_vi.veh_placa}}"> {{vehic_vi.veh_placa}}</option>
+                                    </select>  
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-12">
+                                <h3><label for="url" >Datos Personales</label></h3>
+                              </div> 
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label class="control-label">Nombre:</label>
+                                  <div class="input-group col-md-12">
+                                    <input id="RO_NOM_C" name="RO_NOM_C" type="text"  class="form-control" placeholder="Nombre" ng-disabled="desabilitaCon" ng-model="datos.RO_NOM_C"  onkeyup="validaLetras(this);"  required />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label class="control-label">Paterno:</label>
+                                  <div class="input-group col-md-12">
+                                    <input id="RO_PAT_C" name="RO_PAT_C" type="text"  class="form-control" placeholder="Paterno" ng-disabled="desabilitaCon" ng-model="datos.RO_PAT_C"   onkeyup="validaLetras(this);" required />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label class="control-label">Materno:</label>
+                                  <div class="input-group col-md-12">
+                                    <input id="RO_MAT_C" name="RO_MAT_C" type="text"  class="form-control" placeholder="Materno" ng-disabled="desabilitaCon" ng-model="datos.RO_MAT_C"  onkeyup="validaLetras(this);" required />
+                                  </div>
+                                </div>
+                              </div>   
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label class="control-label">Correo:</label>
+                                  <div class="input-group col-md-12">
+                                    <input id="RO_CORR_C" name="RO_CORR_C" type="text"  class="form-control" ng-disabled="desabilitaCon" placeholder="Correo" ng-model="datos.RO_CORR_C"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label class="control-label">Teléfono:</label>
+                                  <div class="input-group col-md-12">
+                                    <input id="RO_TEL_C" name="RO_TEL_C" type="number"  class="form-control" placeholder="Telefono" ng-disabled="desabilitaCon" ng-model="datos.RO_TEL_C"  style="text-transform:uppercase;"  />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label class="control-label">Celular:</label>
+                                  <div class="input-group col-md-12">
+                                    <input id="RO_CEL_C" name="RO_CEL_C" type="number"  class="form-control" placeholder="Celular" ng-disabled="desabilitaCon" ng-model="datos.RO_CEL_C"  style="text-transform:uppercase;" required ng-keyup="validaCelular(datos.RO_CEL_C, 'valida25', 'RO_CEL_C');"/><span class="input-group-addon" id="valida25" style = "color:green;font-weight:bold; font-size:12px" ng-show="datos.RO_CEL_C >0"><img src="../../img/movilidad/greencheck.png" width="20" height="20"></span>
+                                  </div>
+                                </div>
+                              </div> 
+                              <div class="col-md-4">
+                                <div class="form-group" >
+                                  <label class="control-label" for="url" >Macrodistrito:</label>
+                                  <div class="input-group col-md-12">
+                                    <select id="RO_MAC_C" 
+                                            name="RO_MAC_C"
+                                            placeholder="Macrodistrito" 
+                                            ng-model="datos.RO_MAC_C"
+                                            class="form-control"
+                                            ng-disabled="desabilitaCon"
+                                            ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
+                                            required ng-change="distritoZonas(datos.RO_MAC_C)">
+                                      <option value="">--Seleccionar--</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>                                                       
+                              <div class="col-md-4">
+                                <div class="form-group" >
+                                  <label for="url" class="control-label">Zona:</label>
+                                  <div class="input-group col-md-12">                                                                
+                                    <select id="RO_ZONA_C"
+                                            name="RO_ZONA_C"
+                                            placeholder="Distrito - Zona"
+                                            ng-model="datos.RO_ZONA_C"
+                                            class="form-control"
+                                            ng-disabled="desabilitaCon"
+                                            ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZona | orderBy:['nombre','dist_nombre']"
+                                            ng-change="actulizarIdDistrito();"
+                                            required>
+                                      <option value="">--Seleccionar--</option>
+                                    </select>
+                                  </div>  
+                                </div>
+                              </div> 
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label class="control-label">Calle:</label>
+                                  <div class="input-group col-md-12">
+                                    <input id="RO_CALL_C" name="RO_CALL_C" type="text"  class="form-control" ng-disabled="desabilitaCon" placeholder="Calle" ng-model="datos.RO_CALL_C"  style="text-transform:uppercase;" required />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label class="control-label">Nro:</label>
+                                  <div class="input-group col-md-12">
+                                    <input id="RO_NRO_C" name="RO_NRO_C" type="number"  class="form-control" ng-disabled="desabilitaCon" placeholder="Nro" ng-model="datos.RO_NRO_C"  style="text-transform:uppercase;" required />
+                                  </div>
+                                </div>
+                              </div>                                                                                                          
+                              <div class="col-md-12">
+                                <h3><label for="url">Datos adicionales del conductor</label></h3>
+                              </div>                                                      
+                              <div class="col-md-4">                                                        
+                                <div class="form-group">
+                                  <label class="control-label">Categoría licencia:</label>
+                                  <div class="controls">
+                                    <select id="RO_CAT_C" name="RO_CAT_C" placeholder="Expedido" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_CAT_C" class="form-control" ng-show="datos.RO_MOD==1 || datos.RO_MOD==2 || datos.RO_MOD==3" required>
+                                      <option value="">--Seleccione--</option>
+                                      <option value="A">A</option>
+                                      <option value="B">B</option>
+                                      <option value="C">C</option>
+                                    </select>
+                                    <select id="RO_CAT_C" name="RO_CAT_C" placeholder="Expedido" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_CAT_C" class="form-control" ng-show="datos.RO_MOD==4 || datos.RO_MOD==5 || datos.RO_MOD==6" required>
+                                      <option value="">--Seleccione--</option>
+                                      <option value="B">B</option>
+                                      <option value="C">C</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>                                       
+                              <div class="col-md-4">                                                        
+                                <div class="form-group">
+                                  <label class="control-label">Tipo de datos:</label>
+                                  <div class="controls">
+                                    <select id="RO_TIP_C" name="RO_TIP_C" placeholder="Expedido" ng-disabled="desabilitaCon" ng-model="datos.RO_TIP_C" class="form-control" required>
+                                      <option value="">--Seleccione--</option>
+                                      <option value="PROPIETARIO">PROPIETARIO</option>
+                                      <option value="ASALARIADO">ASALARIADO</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>     
+                            </div>                   
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button ng-click="adiModConductor(0,'I');limpiar();" type="button" class="btn btn-primary"  ng-show="botonC=='new'"><i class="fa fa-save"></i>&nbsp;Guardar</button>
+                        <button ng-click="adiModConductor(condId,'A')" data-dismiss="modal" type="button" class="btn btn-primary" ng-show="botonC=='upd'">Modificar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- finn modales -->
+              </div>
+              <div ng-show = "botonesGuardar==true" class="col-md-12" align="right"><br>
+                <button  type="button" class="btn btn-success fa fa-chevron-left" ng-click="volver();">Anterior</button>
+                <button id="miFormGuardar"  ng-click="guardar_tramite(datos);" ng-show="datos.RO_TIP_TAX!=2"  type="button" class="btn btn-success fa fa-save" name="formEnviar">{{translateTitulos.lbl_016_29}}</button>
+                <button id="miFormGuardar"  ng-click="guardaRequisitos();" ng-show="datos.RO_TIP_TAX==2" type="button" class="btn btn-success fa fa-save" name="formEnviar">{{translateTitulos.lbl_016_29}}</button>
+                <button ng-click="validarEnvio(datos);" id="gu" type="button" class="btn btn-success fa fa-mail-forward" >{{translateTitulos.lbl_016_30}}</button>
+              </div>
+              <!--observaciones-->
+              <div class="modal" id="ObservacionesConductoresVeh" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" id="modalTamanio">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <legend style="color:black"><strong>{{tituloObs}}</strong></legend>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="col-md-4">
+                            <center>
+                              <img ng-src="../../img/observacion.jpg" width="70%" height="70%">
+                            </center>
+                          </div>
+                          <div class="col-md-8">
+                            <ul>
+                              <li ng-repeat="datosObs1 in datosObs">{{datosObs1.xobs_observacion}}</li>
+                            </ul>
+                          </div>
+                        </div> 
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

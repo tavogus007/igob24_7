@@ -1,0 +1,47 @@
+[
+  {
+    "id": 4,
+    "description": "Av. Camacho, Centro Comercial Camacho - Nivel  1",
+    "image": "../servicios/varios/formularios/fichas/image/piac_camacho.png"    
+  },
+  {
+    "id": 5,
+    "description": "Edif. Torre Vicenta Av.Argentina Nº1843 Miraflores",
+    "image": "../servicios/varios/formularios/fichas/image/sermat_II.png"    
+  },
+  {
+    "id": 6,
+    "description": "Edif. Escobar Uria, Calle Colón esquina Mercado No. 1308",
+    "image": "../servicios/varios/formularios/fichas/image/exBanco.png"    
+  },
+  {
+    "id": 7,
+    "description": "Edif. Atlanta Av.Gral. José Ballivián Nº720 Calacoto",
+    "image": "../servicios/varios/formularios/fichas/image/plataformaIntegral.png"    
+  },
+  {
+    "id": 8,
+    "description": "Av. Uruguay (final) esq. Av. Perú",
+    "image": "../servicios/varios/formularios/fichas/image/terminalBuses.png"    
+  },
+  {
+    "id": 9,
+    "description": "Descripcion 9",
+    "image": "../servicios/varios/formularios/fichas/image/igob0.png"    
+  },
+  {
+    "id": 10,
+    "description": "Descripcion 10",
+    "image": "../servicios/varios/formularios/fichas/image/igob0.png"    
+  },
+  {
+    "id": 11,
+    "description": "Descripcion 11",
+    "image": "../servicios/varios/formularios/fichas/image/igob0.png"    
+  },
+  {
+    "id": 12,
+    "description": "Descripcion 12",
+    "image": "../servicios/varios/formularios/fichas/image/igob0.png"    
+  }
+]

@@ -1,0 +1,78 @@
+<style type="text/css">
+#container1 {
+  height: 400px; 
+  min-width: 310px; 
+  max-width: 800px;
+  margin: 0 auto;
+}
+</style>
+
+<script src="../../libs/charts/highcharts.js"></script>   
+<script src="../../libs/charts/data.js"></script>         
+<script src="../../libs/charts/drilldown.js"></script>    
+<script src="../../libs/charts/highcharts-3d.js"></script> 
+<script src="../../libs/charts/modules/exporting.js"></script>
+
+<div  class="row" ng-controller="reporteGraficoCampoDinamicoController" data-ng-init="inicioreporteDocumentos()">
+    <div  class="col-md-12">
+		<form name="formularioreporte" readOnly="true" novalidate>
+			<div class="row" ng-show = "frmreporte == null">
+				<div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >TIPIFICACIÓN:</label>
+                        <select id="vtps_doc_id" name="vtps_doc_id" ng-model="datostipoDocumento.vtps_doc_id" class="form-control" ng-options="datadocumentacion.vtps_doc_id as datadocumentacion.vtps_doc_tipo_doc for datadocumentacion in datadocumentaciones"  ng-change="tiposCampos(datostipoDocumento.vtps_doc_id)" ng-disabled="desabilitado" ng-required="true">
+						    <option style="display:none" value="">-- Seleccione Tipo --</option>
+						</select> 
+                    </div>
+                </div>
+				<div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >CAMPOS:</label>
+                        <select id="vdoct_titulo" name="vdoct_titulo" ng-model="datostipoDocumento.vdoct_titulo" class="form-control" ng-options="datatipocampo.vdoct_titulo as datatipocampo.vdoct_titulo for datatipocampo in datatipocampos" ng-disabled="desabilitado" ng-required="true">
+						    <option style="display:none" value="">-- Seleccione Campo --</option>
+						</select> 
+                    </div>
+                </div>
+			</div>
+			<button  name="btnBuscar1" ng-click="buscarcampos(datostipoDocumento)" data-dismiss="modal" type="button" class="btn btn-success fa fa-search"> Buscar</button>
+            <button name="btnVolver1" id="btnVolver1" ng-click="limpiar()" data-dismiss="modal" type="button" class="btn btn-success fa fa-eraser"> Limpiar </button>
+		</form>
+	</div>
+	<div class="col-md-12">
+   <!--  <div class="row"  id="grafica"  ng-show = "verGrafica == null">
+        <table  width="100%">
+            <td><h4>REPORTE DE LOS DOCUMENTOS ELABORADOS</h4></td> 
+        </table>
+        <br/>
+    </div>  -->
+    <br/>
+    <div class="col-md-3" >
+      <div class="row panel panel-default" ng-show = "cargarInformacionvista12== null">
+        <div class="table-responsive">
+          
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="text-center" colspan="3"><h5>REPORTE DE LOS DOCUMENTOS ELABORADOS</h5></th>
+                </tr>
+                </thead>                           
+                <tbody>
+                <tr>                                
+                    <td><div class="col-sm-3"><b>#</b></div></td>
+                    <td><div class="col-sm-3"><b>{{campo}}</b></div></td>
+                    <td><div class="col-sm-3"><b>TOTAL</b></div></td>                    
+                </tr> 
+                <tr ng-repeat="datavalor in datavalores">                                
+                    <td><div class="col-sm-3">{{$index+1}}</div></td>
+                    <td><div class="col-sm-3">{{datavalor.valor}}</div></td>
+                    <td><div class="col-sm-3">{{datavalor.total}}</div></td>                    
+                </tr> 
+                </tbody>
+            </table>
+            </br>
+          </div>
+        </div>
+    </div>  
+    <div class="col-md-8" id="container" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto" ng-show = "cargarInformacion== null"></div>     
+	</div>		
+</div>

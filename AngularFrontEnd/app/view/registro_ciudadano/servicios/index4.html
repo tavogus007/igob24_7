@@ -1,0 +1,264 @@
+<div class="col-md-12" class="row" ng-controller="serviciosEEController" data-ng-init="inicioServicios()">
+  <!--img src="../formularios/reportes/post/logo_smde.jpg" width="20%" height="8%" class="img-thumbnail"/-->
+  
+    <table  width="100%">
+       <h1 align=center>BUSQUEDA DE PERSONAS EXTRAVIADAS/ ENCONTRADAS</h1>
+       <div align="center"><font color="#FFFFFF" size="+1"><marquee bgcolor="#FE0000" direction="right" loop="20">ESTE MODULO ES DE PRUEBA</marquee></font></div>
+    </table>
+    <br/>
+   <div class="modal-body" >
+     <form name="formularioGrupos">
+       <div class="col-md-12">
+         <div class="col-md-12">
+           <button class="btn btn-primary ng-scope"  ng-click="vistas(1)" ng-disabled="formularioGrupos.variable.$invalid">
+             <i class=" fa fa-users"></i>
+             <div> BUSCAR POR NOMBRE</a></div>
+           </button>
+           <button class="btn btn-primary ng-scope"  ng-click="busqueda_Extraviado(2,vnombre,vfecha);vistas(2)" ng-disabled="formularioGrupos.variable.$invalid" >
+             <i class="glyphicon fa fa-eye-slash"></i>
+             <div> ULTIMOS CERRADOS</a></div>
+
+           </button>
+           <button class="btn btn-primary ng-scope"  ng-click="busqueda_Extraviado(3,vnombre,vfecha);vistas(3)" ng-disabled="formularioGrupos.variable.$invalid" >
+             <i class="glyphicon fa fa-binoculars"></i>
+             <div>ABIERTOS MAS VISITADOS </a></div>
+
+           </button>
+           <button class="btn btn-primary ng-scope"  ng-click="busqueda_Extraviado(4,vnombre,vfecha);vistas(4)" ng-disabled="formularioGrupos.variable.$invalid" >
+             <i class="glyphicon fa fa-search-minus"></i>
+              <div>ABIERTOS MAS ANTIGUOS </a></div>
+
+           </button>
+           <button class="btn btn-primary ng-scope"  ng-click="vistas(5)" ng-disabled="formularioGrupos.variable.$invalid" >
+             <i class="glyphicon fa fa-calendar-o"></i>
+             <div>ABIERTOS POR DIA </a></div>
+
+           </button>
+         </div>
+         <br>
+         <br>
+
+         <!--div class="col-md-1">
+           <label>Seleccione :</label>
+         </div-->
+         <!--div class="col-md-4">
+             <select ng-model="variable" id="variable" name="variable" class="form-control"  ng-required="true" ng-change="vistas(variable)">
+              <option style=" " value="">-- Elegir --</option>
+              <option value = '1'>POR NOMBRE</option>
+              <option value = '2'>ULTIMOS CERRADOS </option>
+              <option value = '3'>ABIERTOS MAS VISITADOS</option>
+              <option value = '4'>ABIERTOS MAS ANTIGUOS</option>
+              <option value = '5'>ABIERTOS POR DIA</option>
+             </select>
+             <br>
+         </div-->
+
+      </div><br>
+   <!-- carga de casos segun el caso que se haya presentado  -->
+        <div class="col-md-12" ng-show="ocultar" >
+          <div class="col-md-3">
+          </div>
+          <div class="col-md-1">
+            <br>
+            <label>Nombre Completo :</label>
+          </div><br>
+          <div class="col-md-4">
+            <input ng-change="busqueda_Extraviado(1,vnombre,null)" name="vnombre" id="vnombre" type="text"  placeholder="Ingrese Nombre" class="form-control" ng-model="vnombre"  ng-required="true" close-text="Close"  required/>
+          </div>
+          <div class="col-md-4">
+        </div>
+      </div>
+
+      <div class="col-md-12" ng-show="ocultar1" >
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-1">
+          <br>
+          <label>Ingrese Fecha:</label>
+        </div>
+        <br>
+        <div class="col-md-4">
+          <p class="input-group">
+            <input  ng-change="busqueda_Extraviado(5,null,vfecha)" name="vfecha" id="vfecha" type="text"  placeholder="Ingrese Fecha" class="form-control" datepicker-popup="" ng-model="vfecha" is-open="startDateOpened1" ng-required="true" close-text="Close" ng-disabled="desabilitado" required/>
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default"  ng-click="startDateOpen1($event)"><i class="glyphicon glyphicon-calendar"></i>
+                </button>
+            </span>
+          </p>
+          </div>
+        <div class="col-md-4">
+      </div>
+    </div>
+    <div class="col-md-12" >
+      <div class="row" >
+      </div>
+      <div class="col-md-6" ng-repeat="dato in extraviados" style="background:#FFFFFF; border-bottom: 10px solid #E5A21D; padding: 10px 10px" ng-click="mostrar()">
+        <div class="col-md-1">
+          <img ng-src={{dato.datos.EE_IMG}} align="center" width="120px" height="120px" class="img-circle" style="box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.19), 0 3px 1px -2px rgba(0, 0, 0, 0.27), 0 1px 5px 0 rgba(0, 0, 0, 0.26);" >
+        </div>
+        <div class="col-md-1" style="padding:10px 20px; text-align: center;" ng-click="mostrar()">
+           <!--img ng-src="http://192.168.5.141:80/rest/files/RC_CLI/57798d0e2f59181eb2806c01/dc universe rebirth.jpg?app_name=todoangular" align="center" width="120px" height="120px" class="img-circle" style="box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.19), 0 3px 1px -2px rgba(0, 0, 0, 0.27), 0 1px 5px 0 rgba(0, 0, 0, 0.26);" src="http://192.168.5.141:80/rest/files/RC_CLI/57798d0e2f59181eb2806c01/dc universe rebirth.jpg?app_name=todoangular"-->
+           <a ng-src={{dato.datos.EE_IMG}} align="center" width="120px" height="120px" class="img-circle" style="box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.19), 0 3px 1px -2px rgba(0, 0, 0, 0.27), 0 1px 5px 0 rgba(0, 0, 0, 0.26);" >
+        </div>
+        <div class="col-md-8" data-toggle="modal"  data-target="#formModal" ng-click="verDesaparecido(dato.datos)">
+           <ul class="datos1" >
+              <li class="nombre_ci ng-binding">{{dato.datos.EE_APELLIDO_P}}&nbsp; {{dato.datos.EE_APELLIDO_M}}&nbsp; {{dato.datos.EE_NOMBRE}}</li>
+              <li><span class="ng-binding">Teléfono  de Referencia: </span><span class="ng-binding">{{dato.datos.EE_TELF}}</span></li>
+              <li><span class="ng-binding">Último Avistamiento:</span><span class="ng-binding">{{dato.datos.EE_ULT_AVISTAMIENTO}}</span></li>
+              <li><span class="ng-binding">Fecha de Registro:</span><span class="ng-binding">{{dato.datos.g_fecha}}</span></li>
+              <li><span class="ng-binding">Caso:</span><span class="ng-binding">{{dato.datos.EE_CASO }}</span></li>
+              <li><span class="ng-binding">Número de visitas: </span><i class="glyphicon fa fa-eye"></i><span class="ng-binding"> {{dato.datos.EE_VISITAS }}</span></li>
+              <li><span class="ng-binding">VER MÁS </span><i class="glyphicon fa fa-info"></i></span></li>
+           </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+        </div>
+ </div>
+<!--MODAL-->
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">ddddd</span></button>
+                <h4 class="modal-title" id="myModalLabel">PERSONA DESAPARECIDA </h4>
+            </div>
+            <div class="modal-body" >
+                <form name="formulario" readOnly="true" novalidate>
+                  <div class="col-md-12">
+                    <div class="row" style="background:#FFCB0D; border-bottom: 10px solid #E5A21D; padding: 10px 10px">
+                      <div class="col-md-3">
+                      </div>
+                      <div class="col-md-6">
+                        <input style="background:#FFCB0D;border: #FFCB0D; padding: 10px 10px;align:center font-size:30px"  ng-disabled="true" id="vnombre1" name="vnombre1" type="text" class="form-control"  ng-model="vnombre1" />
+                      </div>
+                      <div class="col-md-3">
+                      </div>
+                  </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="row" style="background:#FFCB0D; border-bottom: 10px solid #E5A21D; padding: 10px 10px">
+
+                      <div class="col-md-6">
+                        <!--img ng-src="http://192.168.5.141:80/rest/files/RC_CLI/57798d0e2f59181eb2806c01/dc universe rebirth.jpg?app_name=todoangular" align="center" width="300px" height="300px" class="img-circle" style="box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.19), 0 3px 1px -2px rgba(0, 0, 0, 0.27), 0 1px 5px 0 rgba(0, 0, 0, 0.26);" src="http://192.168.5.141:80/rest/files/RC_CLI/57798d0e2f59181eb2806c01/dc universe rebirth.jpg?app_name=todoangular"-->
+                        <img  id ="imagen_perdido" align="center" width="300px" height="300px" class="img-circle" style="box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.19), 0 3px 1px -2px rgba(0, 0, 0, 0.27), 0 1px 5px 0 rgba(0, 0, 0, 0.26);" >
+                      </div>
+                      <div class="col-md-6">
+                          <label style="background:#FFCB0D;border: #FFCB0D; padding: 10px 10px; align:left">Género:</label><BR>
+                          <input style="background:#FFCB0D;border: #FFCB0D; padding: 10px 10px; align:center" ng-disabled="true" id="vgenero" name="vgenero" type="text" class="form-control" ng-model="vgenero" />
+                          <label style="background:#FFCB0D;border: #FFCB0D; padding: 10px 10px;align:center">Telefono de Referencia: </label><BR>
+                          <input style="background:#FFCB0D;border: #FFCB0D; padding: 10px 10px;align:center" ng-disabled="true" id="vtelefono" name="vtelefono" type="text" class="form-control"  ng-model="vtelefono" />
+                          <label style="background:#FFCB0D;border: #FFCB0D; padding: 10px 10px;align:center">Fecha de Extravio: </label><BR>
+                          <input style="background:#FFCB0D;border: #FFCB0D; padding: 10px 10px;align:center" ng-disabled="true" id="vfecha_extravio" name="vfecha_extravio" type="text" class="form-control"  ng-model="vfecha_extravio" />
+                          <label style="background:#FFCB0D;border: #FFCB0D" style="text-align:center">Estado del Caso: </label><BR>
+                          <input style="background:#FFCB0D;border: #FFCB0D; padding: 10px 10px;align:center" ng-disabled="true" id="vcaso" name="vcaso" type="text" class="form-control"  ng-model="vcaso" />
+                    </div>
+                  </div>
+                </div>
+                           <div class="row" style="background: white; ">
+                              <div class="col-md-12">
+                              <div class="col-md-6">
+                                <h3>DATOS DEL EXTRAVIADO</h3>
+                                <label id="titulo" name="titulo" type="text"  ng-model="titulo" value="asdkjdjkasdas">
+
+                                  <div class="col-md-12">
+                                    <label>Detalle de la vestimenta: </label>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <textarea style="margin: 0px -7px 0px 0px; height: 80px; width: 317px;" ng-disabled="true" id="vestimenta" name="vestimenta" type="text" class="form-control"  ng-model="vestimenta" />
+                                  </div>
+                                  <div class="col-md-12">
+                                    <label>Descripcion de hechos: </label>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <textarea style="margin: 0px -7px 0px 0px; height: 80px; width: 317px;" ng-disabled="true" id="hechos" name="hechos" type="text" class="form-control"  ng-model="hechos" />
+                                  </div>
+                                  <div class="col-md-12">
+                                    <label>Nombre del Denunciante: </label>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <input  ng-disabled="true" id="denunciante" name="denunciante" type="text" class="form-control"  ng-model="denunciante" />
+                                  </div>
+                                  <div class="col-md-12">
+                                    <label>Parentesco: </label>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <input  ng-disabled="true" id="parentesco" name="parentesco" type="text" class="form-control"  ng-model="parentesco" />
+                                  </div>
+                                    <!--li><span class="titulo_ci ng-binding">Vestimenta: </span><span class="ng-binding"> {{vvestimenta}}</span></li>
+                                    <li><span class="titulo_ci ng-binding">Descripcion de Hechos : </span><span class="ng-binding"> {{vdeschecho}}</span></li>
+                                    <li><span class="titulo_ci ng-binding">Ultimo Avistamiento : </span><span class="ng-binding"> {{vasistamiento}}</span></li>
+                                    <li><span class="titulo_ci ng-binding">Nombre del Denunciante : </span><span class="ng-binding"> {{vnomdenun}} {{vpatdenun}} {{vmatdenun}}</span></li-->
+                              </div>
+                              <div class="col-md-6">
+                                <h3>CARACTERISTICAS</h3>
+                                <div class="col-md-12">
+                                  <label>Tatuajes: </label>
+                                </div>
+                                <div class="col-md-12">
+                                  <input  ng-disabled="true" id="tatuajes" name="tatuajes" type="text" class="form-control"  ng-model="tatuajes" />
+                                </div>
+                                <div class="col-md-12">
+                                  <label>Lunares: </label>
+                                </div>
+                                <div class="col-md-12">
+                                  <input  ng-disabled="true" id="lunares" name="lunares" type="text" class="form-control"  ng-model="lunares" />
+                                </div>
+                                <div class="col-md-12">
+                                  <label>Cicatrices:</label>
+                                </div>
+                                <div class="col-md-12">
+                                  <input  ng-disabled="true" id="cicatrices" name="cicatrices" type="text" class="form-control"  ng-model="cicatrices" />
+                                </div>
+                                <div class="col-md-12">
+                                  <label>Color de Ojos:</label>
+                                </div>
+                                <div class="col-md-12">
+                                  <input  ng-disabled="true" id="color_ojos" name="color_ojos" type="text" class="form-control"  ng-model="color_ojos" />
+                                </div>
+                                <div class="col-md-12">
+                                  <label>Forma de Ojos:</label>
+                                </div>
+                                <div class="col-md-12">
+                                  <input  ng-disabled="true" id="forma_ojos" name="forma_ojos" type="text" class="form-control"  ng-model="forma_ojos" />
+                                </div>
+                                <div class="col-md-12">
+                                  <label>Color de Cabello:</label>
+                                </div>
+                                <div class="col-md-12">
+                                  <input  ng-disabled="true" id="color_cabello" name="color_cabello" type="text" class="form-control"  ng-model="color_cabello" />
+                                </div>
+                                <div class="col-md-12">
+                                  <label>Tamaño de Cabellos:</label>
+                                </div>
+                                <div class="col-md-12">
+                                  <input  ng-disabled="true" id="tam_cabello" name="tam_cabello" type="text" class="form-control"  ng-model="tam_cabello" />
+                                </div>
+                                 <!--ul class="datos2">
+                                    <li><span class="titulo_ci ng-binding">1.Tatuajes: </span> {{vnomdenun}}</li>
+                                    <li><span class="titulo_ci ng-binding">2.Lunares </span><label id="vlunar"> {{vlunar}}<label></li>
+                                    <li><span class="titulo_ci ng-binding">3.Cicatrices: </span><span class="ng-binding"> {{vcicatrices}}</span></li>
+                                    <li><span class="titulo_ci ng-binding">4.Color de Ojos: </span><span class="ng-binding"> {{vcolorojo}}</span></li>
+                                    <li><span class="titulo_ci ng-binding">5.Forma de Ojos: </span><span class="ng-binding"> {{vformaojo}}</span></li>
+                                    <li><span class="titulo_ci ng-binding">6.Color de Cabello: </span><span class="ng-binding"> {{vcolorcabello}}</span></li>
+                                    <li><span class="titulo_ci ng-binding">7.Tamaño de Cabello : </span><span class="ng-binding"> {{vtamcabello}}</span></li>
+                                 </ul-->
+                              </div>
+                            </div>
+                           </div>
+                           <div class="row">
+                           </div>
+                        </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+ </form>
+</div>

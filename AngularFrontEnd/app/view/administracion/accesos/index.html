@@ -1,0 +1,66 @@
+<table>
+<td><tr>&nbsp;</tr></td>
+<td></td>
+</table>
+<div  ng-controller="accesosControler"   data-ng-init="inicioAccesos()">
+  <h4>Roles : 
+    <select id="Roles" ng-change="getAccesos(selecteIdi)" ng-model="selecteIdi"> 
+      <option value="-1">Seleccione...</option>
+      <option ng-repeat="rol in obtRoles" value="{{rol.rlsId}}">{{rol.rlsRol}}</option>
+    </select> 
+  </h4> 
+  <H3> <label for="title">Administración de Accesos</label> </H3>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-lg-5">
+        <div class="panel panel-default">
+          <div class="panel-heading">OPCIONES  DISPONIBLES</div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <div class="col-md-4">Buscar:
+                <input ng-model = "query" id ="busca1" class="form-control" placeholder="" >
+                <legend></legend>
+              </div> 
+              <table ng-table="tablaOpcion "   class="table table-hover table-striped table-bordered todolist" >
+                <tr ng-repeat="opcion in Opciones  | filter:query   "  ng-class="{'colorInactivo': grupo.grpEstado == 'INACTIVO', 'colorBloqueado': grupo.grpEstado == 'BLOQUEADO'}"  >
+                  <td><input  type="checkbox" ng-model="checkboxes.items[opcion.opcId]" /> </td> 
+                  <td data-title="'GRUPO'" >{{opcion.grupo}}</td>
+                  <td data-title="'OPCION'">{{opcion.opcion}}</td>
+                  <td data-title="'CONTENIDO'">{{opcion.contenido}}</td>          
+                </tr>
+              </table>
+            </div>
+            <input ng-model="usuarioRol.usuarios_usr_id" ng-init="usuarioRol.usuarios_usr_id='1'" hidden id="GRUPO" name="GRUPO" type="text" value="1"> 
+          </div>
+        </div>
+      </div>  
+      <div class="col-lg-1">
+        <button ng-click="adicionar()" type="button" class="btn btn-primary">AGREGAR <span class="glyphicon glyphicon-chevron-right"></button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button ng-click="retirar()"  type="button" class="btn btn-primary">RETIRAR<span class="glyphicon glyphicon-chevron-left">&nbsp;</button>
+      </div>      
+      <div class="col-lg-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">ACCESOS  ASIGNADOS A ESTE ROL</div>
+          <div class="panel-body">
+            <div class="table-responsive"> 
+              <div class="col-md-3">Buscar:
+                <input ng-model = "query1" id ="busca2" class="form-control" placeholder="" >
+                <legend></legend>
+              </div>   
+              <table ng-table="tablaAccesos" class="table table-hover table-striped table-bordered todolist" >
+                <tr ng-repeat="accesosRol in obtAccesosRoles  | filter: query1 " ng-class="{'colorInactivo': grupo.grpEstado == 'INACTIVO', 'colorBloqueado': grupo.grpEstado == 'BLOQUEADO'}" >
+                  <td><input  type="checkbox" ng-model="checkboxes2.items[accesosRol.accid]" /> </td>
+                  <td data-title="'ROL'">{{accesosRol.rol }}</td>
+                  <td data-title="'OPCION'">{{accesosRol.opcion}}</td>
+                  <td data-title="'REGISTRADO'">{{accesosRol.registrado}}</td>
+                  <td data-title="'MODIFICADO'">{{accesosRol.modificado}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

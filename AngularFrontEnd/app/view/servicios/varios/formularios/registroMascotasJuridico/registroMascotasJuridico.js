@@ -114,70 +114,162 @@ getData: function($defer, params)
  $scope.materno = sessionService.get('US_MATERNO');
  $scope.exp = sessionService.get('CIEXPEDIDO');
 
- //INSERTAR DATOS MASCOTA
-  $scope.serializarInformacion = function(data){
-    $.blockUI();
-    
-    if ($scope.swimagen == true){
-      $scope.insertarDataMascota(data);
-      $("#formModal").modal("show");
-      if($scope.vacunas.length == 0){
-        //alert('sin vacunas');
-        swal({
-          title: 'Mensaje de Verificación',
-          text: 'Estimado Ciudadano, ¡No registró Vacunas!, ¿Se encuentra seguro/a de realizar el registro?',
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#DD6B55',
-          confirmButtonText: 'SI',
-          cancelButtonText: 'NO',
-          closeOnConfirm: false
-      }, function() {
-        swal.close();
-           $.blockUI();
-          var datosMascota   = new reglasnegocioM();
-          datosMascota.identificador = 'SISTEMA_VALLE-CM-2053';
-          datosMascota.parametros = JSON.stringify($scope.dataMascota);
-          datosMascota.llamarregla(function(results){ 
-              if (results.length == 0){
-                alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
-              }else{
-                $("#formModal").modal("show");
-                var sci = sessionService.get('NITCIUDADANO');
-                $scope.listarMascotasXci(sci);        
-                $scope.tablaTramites.reload();
-                $scope.$apply();
-                alertify.success('Su Mascota fue registrada exitosamente...');
-                $scope.cargarNuevaDataMascota();
-              } 
-        $.unblockUI();
-        });
-      });
-    }else{
+//INSERTAR DATOS MASCOTA
+  $scope.serializarInformacion = function (data) {
+    console.log(777,$scope.datos.mascota_esterilizacion,$scope.datos.mascota_certificado);
+      if ($scope.datos.mascota_esterilizacion == "si" && $scope.datos.mascota_marca == "tatuaje") {
+        if ($scope.datos.mascota_certificado != "" ) {
+             $scope.dataMascota.cod_chip = $scope.datos.mascota_certificado;
+            $.blockUI();
+            $scope.insertarDataMascota(data);
+            if ($scope.swimagen == true) {
+              $("#formModal").modal("show");
+              if ($scope.vacunas.length == 0) {
+                //alert('sin vacunas');
+                swal({
+                  title: 'Mensaje de Verificación',
+                  text: 'Estimado Ciudadano, ¡No registró Vacunas!, ¿Se encuentra seguro/a de realizar el registro?',
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#DD6B55',
+                  confirmButtonText: 'SI',
+                  cancelButtonText: 'NO',
+                  closeOnConfirm: false
+                }, function () {
+                  swal.close();
+                  $.blockUI();
+                  var datosMascota = new reglasnegocioM();
+                  datosMascota.identificador = 'SISTEMA_VALLE-CM-2053';
+                  datosMascota.parametros = JSON.stringify($scope.dataMascota);
+                  datosMascota.llamarregla(function (results) {
+
+                    if (results.length == 0) {
+                      alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
+                    } else {
+                      $("#formModal").modal("show");
+                      var sci = sessionService.get('NITCIUDADANO');
+                      $scope.listarMascotasXci(sci);
+                      $scope.tablaTramites.reload();
+                      $scope.$apply();
+                      alertify.success('Su Mascota fue registrada exitosamente con el codigo: '+$scope.dataMascota.cod_chip);
+                      $scope.cargarNuevaDataMascota();
+                    }
+                    $.unblockUI();
+                  });
+                });
+              } else {
+                $.blockUI();
+                swal('Estimado Ciudadano', 'Ud. registró:' + $scope.vacunas.length + ' Vacuna(s)', 'success');
+                var datosMascota = new reglasnegocioM();
+                datosMascota.identificador = 'SISTEMA_VALLE-CM-2053';
+                datosMascota.parametros = JSON.stringify($scope.dataMascota);
+                datosMascota.llamarregla(function (results) {
+                  if (results.length == 0) {
+                    alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
+                  } else {
+                    var sci = sessionService.get('NITCIUDADANO');
+                    $scope.listarMascotasXci(sci);
+                    $scope.tablaTramites.reload();
+                    $scope.$apply();
+                    //alertify.success('Su Mascota fue registrada exitosamente...');
+                    alertify.success('Su Mascota fue registrada exitosamente con el codigo: '+$scope.dataMascota.cod_chip);
+                    $scope.cargarNuevaDataMascota();
+                  }
+                  $.unblockUI();
+                });
+              }
+            } else {
+              swal('Estimado Ciudadano', 'Todavia no seleccionó una imagen, por favor adjunte la imagen de su mascota.');
+            }
+
+        }else{
+          swal('Estimado Ciudadano', 'Lleno los campos de esterilizacion y marca, por favor llene el campo Nº Certificado :.');
+        }
+
+      }else{
+         if ($scope.datos.mascota_esterilizacion == "si") {
+
+          $.blockUI();
+          var datosMascotaCod = new reglasnegocioM();
+          datosMascotaCod.identificador = 'SISTEMA_VALLE-CM-1430';
+          datosMascotaCod.parametros = '{}';
+          datosMascotaCod.llamarregla(function (results) {
+            $scope.cod_id = JSON.parse(results);
+             $scope.dataMascota.cod_chip = 'V-'+$scope.cod_id[0].sp_obtener_correlativo; 
+            console.log("codigo",$scope.cod_id[0].sp_obtener_correlativo);
+          });
+          }else{
+            $scope.dataMascota.cod_chip = '';
+          }
         $.blockUI();
-        swal('Estimado Ciudadano', 'Ud. registró:' + $scope.vacunas.length+ ' Vacuna(s)', 'success');
-        var datosMascota   = new reglasnegocioM();
-        datosMascota.identificador = 'SISTEMA_VALLE-CM-2053';
-        datosMascota.parametros = JSON.stringify($scope.dataMascota);
-        datosMascota.llamarregla(function(results){ 
-            if (results.length == 0){
-              alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
-            }else{
-              var sci = sessionService.get('NITCIUDADANO');
-              $scope.listarMascotasXci(sci);        
-              $scope.tablaTramites.reload();
-              $scope.$apply();
-              alertify.success('Su Mascota fue registrada exitosamente...');
-              $scope.cargarNuevaDataMascota();
-            } 
-      $.unblockUI();
-      });
+            $scope.insertarDataMascota(data);
+            if ($scope.swimagen == true) {
+              $("#formModal").modal("show");
+              if ($scope.vacunas.length == 0) {
+                //alert('sin vacunas');
+                swal({
+                  title: 'Mensaje de Verificación',
+                  text: 'Estimado Ciudadano, ¡No registró Vacunas!, ¿Se encuentra seguro/a de realizar el registro?',
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#DD6B55',
+                  confirmButtonText: 'SI',
+                  cancelButtonText: 'NO',
+                  closeOnConfirm: false
+                }, function () {
+                  swal.close();
+                  $.blockUI();
+                  var datosMascota = new reglasnegocioM();
+                  datosMascota.identificador = 'SISTEMA_VALLE-CM-2053';
+                  datosMascota.parametros = JSON.stringify($scope.dataMascota);
+                  console.log("$scope.dataMascota",$scope.dataMascota,datosMascota.parametros );
+                  datosMascota.llamarregla(function (results) {
+                    if (results.length == 0) {
+                      alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
+                    } else {
+                      $("#formModal").modal("show");
+                      var sci = sessionService.get('CICIUDADANO');
+                      $scope.listarMascotasXci(sci);
+                      $scope.tablaTramites.reload();
+                      $scope.$apply();
+
+                      alertify.success('Su Mascota fue registrada exitosamente con el codigo: '+$scope.dataMascota.cod_chip);
+                     
+                      $scope.cargarNuevaDataMascota();
+                    }
+                    $.unblockUI();
+                  });
+                });
+              } else {
+                $.blockUI();
+                swal('Estimado Ciudadano', 'Ud. registró:' + $scope.vacunas.length + ' Vacuna(s)', 'success');
+                var datosMascota = new reglasnegocioM();
+                datosMascota.identificador = 'SISTEMA_VALLE-CM-2053';
+                datosMascota.parametros = JSON.stringify($scope.dataMascota);
+                datosMascota.llamarregla(function (results) {
+                  if (results.length == 0) {
+                    alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
+                  } else {
+                    var sci = sessionService.get('CICIUDADANO');
+                    $scope.listarMascotasXci(sci);
+                    $scope.tablaTramites.reload();
+                    $scope.$apply();
+                    //alertify.success('Su Mascota fue registrada exitosamente...');
+                    alertify.success('Su Mascota fue registrada exitosamente con el codigo: '+$scope.dataMascota.cod_chip);
+                    $scope.cargarNuevaDataMascota();
+                  }
+                  $.unblockUI();
+                });
+              }
+            } else {
+              swal('Estimado Ciudadano', 'Todavia no seleccionó una imagen, por favor adjunte la imagen de su mascota.');
+            }
+
       }
-    }else{
-      swal('Estimado Ciudadano', 'Todavia no seleccionó una imagen, por favor adjunte la imagen de su mascota.','warning');
-    }
-    $.unblockUI();    
-  }
+
+   
+
+  };
 
 
   $scope.buscarRep = function(){
@@ -232,7 +324,7 @@ getData: function($defer, params)
     }   
     //$scope.dataMascota.xmascota_usr_id =  sessionService.get('NITCIUDADANO');//data.xmascota_usr_id;//ci_igob
     $scope.dataMascota.xmascota_usr_id = 2;
-    $scope.dataMascota.cod_chip = "FOTO";//url de la foto
+    //$scope.dataMascota.cod_chip = "FOTO";//url de la foto
     $scope.dataMascota.xmascota_titular_ci = sessionService.get('NITCIUDADANO');//data.xmascota_titular_ci;//ci_igob
     $scope.dataMascota.xmascota_data = "{}";
         //reg_desparacitacion
@@ -567,7 +659,7 @@ $scope.ModDataMascota = function(data){
   $scope.dataMascotaMod.xmascota_raza = $scope.raza;
   ////$scope.dataMascotaMod.xmascota_usr_id =  sessionService.get('NITCIUDADANO');//data.xmascota_usr_id;//ci_igob
   $scope.dataMascotaMod.xmascota_usr_id=2;
-  $scope.dataMascotaMod.cod_chip = "FOTO";//url de la foto
+  //$scope.dataMascotaMod.cod_chip = "FOTO";//url de la foto
   $scope.dataMascotaMod.xmascota_titular_ci = sessionService.get('NITCIUDADANO');//data.xmascota_titular_ci;//ci_igob
 
   $scope.dataMascotaMod.xmascota_data = "{}";

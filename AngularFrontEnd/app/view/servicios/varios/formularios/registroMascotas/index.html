@@ -664,7 +664,7 @@ function validateDecimal(valor) {
                                         <div class="form-group" class="col-md-12">
                                             <label for="url" >Marca - Esterilización: <font color="#FF0000"> * </font></label>
                                             <div class="controls">
-                                                <select id="marca" name="marca"  ng-model="datos.mascota_marca"  class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado">
+                                                <select id="marca" name="marca"  ng-model="datos.mascota_marca"  class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado" ng-change="cambioNrocert();">
                                                     <option value="">--Seleccione--</option>
                                                     <option value="esterilizacion"> Ninguna  </option>
                                                     <option value="certificado"> Certificado  </option>

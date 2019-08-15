@@ -189,7 +189,7 @@ getData: function($defer, params)
       }else{
          if ($scope.datos.mascota_esterilizacion == "si") {
 
-          $.blockUI();
+         /* $.blockUI();
           var datosMascotaCod = new reglasnegocioM();
           datosMascotaCod.identificador = 'SISTEMA_VALLE-CM-1430';
           datosMascotaCod.parametros = '{}';
@@ -197,9 +197,10 @@ getData: function($defer, params)
             $scope.cod_id = JSON.parse(results);
              $scope.dataMascota.cod_chip = 'V-'+$scope.cod_id[0].sp_obtener_correlativo; 
             console.log("codigo",$scope.cod_id[0].sp_obtener_correlativo);
-          });
+          });*/
+          $scope.dataMascota.cod_chip = 'NO';
           }else{
-            $scope.dataMascota.cod_chip = '';
+            $scope.dataMascota.cod_chip = 'NO';
           }
         $.blockUI();
             $scope.insertarDataMascota(data);
@@ -413,6 +414,10 @@ $scope.seleccionarMascota = function(data_tramite){
   
 }
 
+///para borrar data nro cert
+    $scope.cambioNrocert = function () {
+    $scope.datos.mascota_certificado = "";
+  }
 
 $scope.mostrarInformacionMascota = function(data){
   $.blockUI();

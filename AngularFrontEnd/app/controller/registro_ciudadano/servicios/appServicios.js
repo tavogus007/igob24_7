@@ -689,11 +689,17 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
            $.blockUI(); 
         },500);
         $scope.seleccionarTramiteRender(tramite);
-            
-    }    
+        $scope.open_mapa_ae_update();        
+    }
+
+
+    $scope.open_mapa_ae_update = function()
+    {
+        console.log("ggggggg");
+    }   
     
     $scope.seleccionarTramiteRender = function (tramite) {
-        console.log('tramite    ',tramite);
+        console.log('tramiteeeee    ',tramite);
         //$scope.getCaptchasXX();
         $scope.procesoSeleccionado   =   tramite.vdvser_id;
         $rootScope.tramiteId = tramite.vtra_id;
@@ -1654,4 +1660,7 @@ app.directive("confirmButton", function($document, $parse) {
             });
         }
     };
+    ///////////////////////////**** INICIO MAPA GIS***** /////////////////////////////////////
+    
+    ///////////////////////////****** FIN MAPA GIS****** /////////////////////////////////////
 });

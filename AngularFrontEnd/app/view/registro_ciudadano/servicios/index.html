@@ -128,7 +128,7 @@
                   <table ng-table="tablaTramites"  class="table  table-hover">
                      <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==sIdTramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
                       <td data-title="'Código'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>
-                      <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite)" >{{tramite.vservicio}}</td>  
+                      <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite);" >{{tramite.vservicio}}</td>  
                       <td data-title="'Subtipo'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>    
                       <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)" >{{tramite.vfecha}} </td>
                       <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)" >{{tramite.venviado}}</td> 

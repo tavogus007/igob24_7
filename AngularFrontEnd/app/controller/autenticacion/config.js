@@ -41,35 +41,29 @@ var jsonURLS    =   {
         'usr_clave'     : '123456'
     },
     KEY: 'igob24_7',
-    CREDENCIAL_MOTORESATM: {
-        'usr_usuario'   : 'administrador',
-        'usr_clave'     : '123456'
-    },
-    CREDENCIAL_MOTORESMASCOTAS: {
-        'usr_usuario'   : 'administrador',
-        'usr_clave'     : 'Adm1nSierra113'
-    },
     SERVICE_ENVIO_CORREO: "http://200.105.139.183:9090/smsemail/email/mail.php",
     //URLS_API
-    CONEXION_API_PG_IF: "http://192.168.5.141:9098/",//login, apirc, lotus
-    //CONEXION_API_PG_RC: "http://40.117.46.159:90939/",//login, apirc, lotus
-    CONEXION_API_PG_RC: "http://192.168.5.141:8001/",//login, apirc, lotusoficial
+    //CONEXION_API_PG_IF: "http://172.19.161.199:9091/",//login, apirc, lotus
+    CONEXION_API_PG_IF: "http://192.168.6.107:91/",//login, apirc, lotus
+    //CONEXION_API_PG_RC: "http://40.117.46.159:9093/",//login, apirc, lotus
+    CONEXION_API_PG_RC: "http://192.168.5.141:8003/",//login, apirc, lotusoficial
     CONEXION_MOTOR_SERVICIO: "http://192.168.5.69/motorservicio_pruebas/public/",//apirc
-    
     //http://192.168.5.69/motorservicio_pruebas/public/reglaNegocio/ejecutarWeb
-    CONEXION_API_PG_IF_OFICIAL: "http://192.168.5.141:9098/",//apirc
+    CONEXION_API_PG_IF_OFICIAL: "http://192.168.6.107:91/",//apirc
     CONEXION_API_PG_SALUD: "http://serigobvprueba.lapaz.bo/",//apisalud pruebas
     CONEXION_PUENTE_IMG: "http://200.105.139.183:9090",
     API_URL_DMS_2: "http://192.168.5.141:80/dreamfactory/dist/generarIgobPdf/",
-    CONEXION_MOVILIDAD: "http://192.168.5.141:2020/",
-    CONEXION_SERVICIOATM: "http://172.19.161.3/",//apiATM
-    //CONEXION_SERVICIOMASCOTAS: "http://172.19.161.3/",//apimascotas
-    //CONEXION_SERVICIOMASCOTAS: "http://172.19.161.71:8000/",//apimascotas   
+    CONEXION_SERVICIOATM: "http://172.19.161.3/",//apiATM,
     CONEXION_SERVICIOMASCOTAS: "http://131.0.0.11:90/", //externo MASCOTAS
     SERVICIO_URL_MASCOTAS:"http://40.117.46.159/dreamfactory/crearImagenBase64.php", //externo MASCOTAS
     URL_FILES:"http://40.117.46.159:80", //SERVICIO QUE GENERA URL
-    SIT_GEO: "https://gamlpmotores.lapaz.bo/sitgeo",
-    CONEXION_SITV3: "http://192.168.6.111/SITv3Desarrollo/"
+    
+    //CONEXION_MOVILIDAD: "http://serigobvprueba.lapaz.bo/"
+    CONEXION_MOVILIDAD: "http://192.168.5.141:2020/",
+    CONEXION_SITV3: "http://192.168.6.111/SITv3Desarrollo/",
+    CONEXION_SITV3_Antena: "http://sitservicios.lapaz.bo/",
+    SIT_GEO: "https://gamlpmotores.lapaz.bo/sitgeo"
+
 };
 try{
     if(app){

@@ -43,7 +43,6 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
 
         href="#registro_ciudadano|servicios|indexAntena.html"
         $scope.mostrarboton = false;
-        console.log('$scope.desabilitado========>',$scope.desabilitado);
     };
 
       $scope.adicionarServicioGamlp = function(datos){    
@@ -223,7 +222,6 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
                        
                             datosForm['FILE_FOTOCOPIA_CI_RA']   =   repLegalmongo[0].dtspsl_file_fotocopia_ci;
                             datosForm['FILE_FOTOCOPIA_CI_RR']   =   repLegalmongo[0].dtspsl_file_fotocopia_ci_r;
-
                             var sepNombre = repLegalmongo[0].dtspsl_nombres.split(" ");
                             
                         }); 
@@ -332,8 +330,10 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
             },1000);
 
         } else {
-            ///alert("NO");
+            //alert("NO");
+            
             if(tramite.form_contenido != undefined){
+
                 //alert("eeee");
                 $rootScope.botones = false;  
                 $.blockUI();          
@@ -362,7 +362,6 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         $scope.formulario = "mostrar";
         //TIPO_PERSONA
         var tipoPersona =   sessionService.get('TIPO_PERSONA');
-        //console.log("TIPO DE PERSONA :", tipoPersona );
         var sidservicio =   tramite.vdvser_id;
         if(tipoPersona == 'NATURAL' && sidservicio == 12){
             sidservicio =   1;
@@ -397,7 +396,6 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
     $rootScope.mostrarInformacionAntenas = function(dataAntena, estado){
         //alert("mostrarINF");
         $scope.data1 = JSON.parse(dataAntena[0].form_contenido);
-        //console.log("qqqqqq",$scope.data1);
         $scope.data1 = $scope.data1.GRD_ANTENAS[0];
         if(estado == 'NO'){
             $rootScope.botones = true;
@@ -539,17 +537,15 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
             rData.frm_idTramite = sIdTramite;
             rData.splistafrmdatos(function(res){
                 r       = JSON.parse(res);
-                console.log("WWWWWWW",res);
                 results = r.success;
-                console.log("WWWWWWW!!!!!11",results);
                 var formalmacenado    = "";
                 if(results.length > 0){
+
                     $rootScope.mostrardiv = null;
                     $rootScope.mostrardivform = "mostrar";
                     $rootScope.mostrarInformacionAntenas(results,$scope.estado);
                     datoform = JSON.parse(results[0].form_contenido); 
                     formalmacenado =   ((typeof(datoform.INT_FORM_ALMACENADO)    == 'undefined' || datoform.INT_FORM_ALMACENADO    == null) ? '' : datoform.INT_FORM_ALMACENADO);
-                    console.log("formalmacenado",formalmacenado);
                     if(formalmacenado == 'G'){
                         //alert("GGGGG");
                         $scope.datos.INT_FORM_ALMACENADO = 'G';
@@ -608,7 +604,6 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
                     //VALIDAR BOTONES ENVIO
                     //$rootScope.$broadcast('iniciaBtnHabilitar', datoform.INT_FORM_ALMACENADO);
                 }else{
-
 
                     $rootScope.mostrardiv = "mostrar";
                     $rootScope.mostrardivform = null;
@@ -846,9 +841,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         obj.File_Adjunto = "";
         obj.File_Adjunto = $rootScope.FileAdjuntos;
         //ALMACENAR FORMULARIO 
-        console.log('obj.INT_FORM_ALMACENADO',obj.INT_FORM_ALMACENADO);
         obj.INT_FORM_ALMACENADO = 'G';
-        console.log('obj.INT_FORM_ALMACENADO despues',obj.INT_FORM_ALMACENADO);
         if(obj.f01_tipo_per == 'NATURAL'){
             obj.f01_tipo_per = 'N';
             obj.f01_tipo_per_desc = 'NATURAL';
@@ -918,7 +911,60 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
             params.total($scope.tramitesUsuario.length);
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));                  
         }
-    });     
+    }); 
+
+    $scope.generarDocumentoPhpAntena = function (){
+        
+        $.blockUI();
+        var tipoPersona = '';
+        var oidCiudadano = '';
+        var datosCiudadano = '';
+        var datosci = '';
+        var datosexpedido = '';
+        var dEmpresa = '';
+        var dnit = '';
+        var datoForm4 = '';
+        var stform = '';
+        tipoPersona     = sessionService.get('TIPO_PERSONA');
+        if(tipoPersona == 'JURIDICO' || tipoPersona == 'J'){
+            oidCiudadano    = sessionService.get('IDSOLICITANTE');
+            datosCiudadano  = $scope.datosIniciales.f01_pri_nom_rep +' '+ $scope.datosIniciales.f01_ape_pat_rep;
+            datosci         = $scope.datosIniciales.f01_num_doc_rep;
+            dEmpresa        = $scope.datosIniciales.f01_raz_soc_per_jur;
+            dnit            = $scope.datosIniciales.f01_num_doc_per_jur;
+            datoForm4 = JSON.stringify($rootScope.datosFormDJ_Antenas);
+
+            $.ajax({
+                url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdfAntenas_402.php',
+                type:"post",
+                data:{
+                    "soid": oidCiudadano,
+                    "sorigen":"PLATAFORMA INSTITUCIONAL",
+                    "stipo":tipoPersona,
+                    "usuario": datosCiudadano,
+                    "cedula":  datosci,
+                    "expedido": '',
+                    "empresa": dEmpresa,
+                    "nit": dnit,
+                    "fecha": $scope.fechafinalserver,
+                    "hora": $scope.horafinal,
+                    "data": datoForm4,
+                    "stipo_form": 'RB'
+                },
+                success:function(response){
+                    /*if(response.length>0){
+                        var urlData = response;
+                        $rootScope.decJuradaNatural = urlData;
+                        $scope.InsertarDocumento(response);
+                        $rootScope.datosEnv.declaracion_jurada = urlData;
+                        $scope.serializarInformacion($rootScope.datosEnv);
+                        $.unblockUI();
+                    }*/
+                }
+            });
+        }
+        
+    };    
       
     
 });

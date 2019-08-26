@@ -3,10 +3,18 @@
         var vector_layer = new OpenLayers.Layer.Vector();
         var vlayer = new OpenLayers.Layer.Vector();
         var panel = new OpenLayers.Control.Panel();
+        //var Url = CONFIG.CONEXION_SITV3;
+
+        if(jsonURLS){
+            var url_API_PG    =   jsonURLS.CONEXION_API_PG_IF;
+        }
+
 
         function graficar_mapa(campo_id_mapa){
-            //alert(campo_id_mapa);
-            CUtil.Capas.GEOSERVER = "http://sitservicios.lapaz.bo/geoserver/";
+            
+            var url_SITV3_ANTENA    =   jsonURLS.CONEXION_SITV3_Antena;
+            $("#"+campo_id_mapa).empty();
+            CUtil.Capas.GEOSERVER = url_SITV3_ANTENA + "geoserver/";
             var mapOptions = {
                 resolutions: [1399.9999999999998, 699.9999999999999, 280.0, 140.0, 70.0, 27.999999999999996, 13.999999999999998, 6.999999999999999, 2.8, 1.4, 0.7, 0.27999999999999997, 0.13999999999999999, 0.06999999999999999, 0.034999999999999996],
                 projection: new OpenLayers.Projection('EPSG:32719'),
@@ -21,10 +29,10 @@
             map.addControl(position);
             //mapa base
             var wmsMunicipio = new OpenLayers.Layer.WMS('Mapa La Paz', CUtil.Capas.GEOSERVER + 'gwc/service/wms', {layers:'g_municipio'},null);
-            var wmsKompsat = new OpenLayers.Layer.WMS('Imagen Satelital 2018', CUtil.Capas.GEOSERVER + 'raster/wms', {layers:'kompsat_2018'},null);
-            var wmsGeoEye = new OpenLayers.Layer.WMS('Imagen Satelital 2013', CUtil.Capas.GEOSERVER + 'lapaz/wms', {layers:'geoeye_2013'},null);
+            //var wmsKompsat = new OpenLayers.Layer.WMS('Imagen Satelital 2018', CUtil.Capas.GEOSERVER + 'raster/wms', {layers:'kompsat_2018'},null);
+            //var wmsGeoEye = new OpenLayers.Layer.WMS('Imagen Satelital 2013', CUtil.Capas.GEOSERVER + 'lapaz/wms', {layers:'geoeye_2013'},null);
 
-            map.addLayers([wmsMunicipio,wmsKompsat,wmsGeoEye]);
+            map.addLayers([wmsMunicipio]);
             map.setCenter(new OpenLayers.LonLat(592489.90, 8176019.29),10);
 
             var wmsMacro = new OpenLayers.Layer.WMS('Macrodistritos',CUtil.Capas.GEOSERVER + 'wms',{layers:'lapaz:macrodistritos', transparent: true}, {isBaseLayer:false, visibility:false});
@@ -114,9 +122,7 @@
             panel.addControls([ ctl_punto, new OpenLayers.Control.Navigation()]);
             //panel.defaultControl = panel.controls[0];
             map.addControls([panel]);
-
             var busquedas = new OpenLayers.Control.MapSearch({ fnMessage: msgX, div: 'ctlBusquedas', nodeResult: 'resultBusquedas', items:MapSearch.templates, fnHandler: verTablaBusquedas });
-
             map.addControls([busquedas]);
         }
 
@@ -125,13 +131,12 @@
         function mapas(caso_id){
             rMispuntos = [];
             var cas_id = caso_id;//$("#idtramite").val();//sessionService.get('IDTRAMITE');//4;//8076;
-            //alert(cas_id);
             var principio = "";
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
-                //url: 'http://172.19.161.199:9098/wsUbi/lstubicacionGeoserver',
-                url: 'http://192.168.5.141:9098/wsUbi/lstubicacionGeoserver',
+                url: url_API_PG + 'wsUbi/lstubicacionGeoserver',
+                //url: 'http://192.168.5.141:9098/wsUbi/lstubicacionGeoserver',
                 dataType: 'json',
                 data: '{  "xgeo_frm_id":'+cas_id+'}',
                 success: function (data){ 
@@ -143,9 +148,7 @@
                         }
                         graficar(rMispuntos);
                     }else{
-                        
                         graficarVacio();
-
                     }
                 },
                 error: function (data){ 
@@ -165,7 +168,6 @@
               $("#dlgBusquedas").empty();
               $("#resultBusquedas").empty();
               $("#ctlBusquedas").empty();
-              
               graficar_mapa("mapa1");
         }
         function graficar(data){
@@ -215,9 +217,7 @@
             });
             vector_layer.addFeatures(geojson_format.read(featurecollection));
             map.addLayer(vector_layer);
-            console.log("gggggggggg",featurecollection);            
             var x = data[0].geometry.coordinates[0];
-            console.log("qqqqqqqqqqq",x);
             var y = data[0].geometry.coordinates[1];
             map.setCenter(new OpenLayers.LonLat(x, y),11);
 
@@ -351,6 +351,7 @@
                         console.log('cod macro:', data.features[0].properties.macro);
                         console.log('macrodistrito:', data.features[0].properties.macrodistrito);
                         console.log('zona:', data.features[0].properties.zona);
+                        console.log('wkt:', wkt);
 
                         $("#ln_ubicacion").val(wkt);
                         $("#macrodistrito").val(data.features[0].properties.macrodistrito);
@@ -420,6 +421,3 @@
                 error: fnError
             });
         }
-        
-
-        ///

@@ -182,6 +182,28 @@
             .focus {
               outline: 2px solid #FF0000 !important;
             }
+            .mapas_resp {
+              max-width:100%;      /* Aquí el tamaño máximo de tus imágenes */
+              height:auto; 
+            }
+
+            .modal-dialog{
+                overflow-y: auto !important;
+                height: 500px;
+            }
+
+            .modal {
+              align-items: center;
+              justify-content: center;
+              height: 48%;
+              left: 0;
+              opacity: 0;
+              position: fixed;
+              top: 0;
+              width: 100%;
+              padding-left:300px;
+            }
+        
         </style>    
       <script type="text/javascript" src="../../view/servicios/varios/formularios/solicitudAntenas/juridico/solicitudAntenasJ.js"></script>
 
@@ -209,10 +231,16 @@
                 angular.element(this).scope().cambiarFile(this, $(this).val());
             }
         });
+        function vsuperficie(ob) {
+            var invalidChars = /[a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ¡!@#/\$%\^&\*\¿?_~();:{}'"|<>´ñ?`=a-zA-Z]/;
+            if(invalidChars.test(ob.value)) {
+                ob.value = ob.value.replace(invalidChars,"");
+            };
+        }
     </script>
     
-    <div class="row principal" id = "outerMapaActividad" ng-controller="solicitudJAntenasController" ng-init="iniAntenas()" >
-        <form class="form-horizontal ng-pristine ng-valid" name="antenasform"> 
+    <div class="row principal"  id = "outerMapaActividad" ng-controller="solicitudJAntenasController" ng-init="iniAntenas()" >
+        <form class="form-horizontal ng-pristine ng-valid" name="antenasform" > 
 
             <div class="col-md-12" ng-show="mostrardiv != null">
                 <div class="col-md-12" >
@@ -434,41 +462,19 @@
                     <legend>  DATOS DE LA SOLICITUD ENVIADA:</legend>
                 </div>
                 <div class="row"  class="ibox-content"> 
-                <!--div  class="col-md-12" ng-hide="n_autorizacion">
-                    <div ng-hide="chec_autorizacion">
-                        <h3> Tiene Autorización   <input type="checkbox" name="condiciones" id = "condiciones" value="1" ng-click ="recuperacheck()"> </h3>
-                    </div>
-                    <div class= "col-md-1">
-                    </div>
-                    <div class= "col-md-3" ng-show="autoriza != null">
-                    <label for="url" >Número de Autorización:</label>
-                    <input ng-model="dataAnt.den_auto" id="den_auto" name="den_auto" class="form-control ng-pristine ng-invalid ng-invalid-required" type="text" placeholder="Nro. de Autorizacion" ng-disabled="false" ng-value="den_auto_r" required="" onkeyup="return conMayusculas(this);">
-                    </div>
-                </div-->
-                <!--div  class="col-md-12" ng-hide="n_autorizacion_1">
-                    <div class= "col-md-6">
-                    <label for="url" >Número de Autorización:</label>
-                    <input ng-model="dataAnt.den_auto1" id="den_auto1" name="den_auto1" class="form-control ng-pristine ng-invalid ng-invalid-required" type="text" placeholder="Nro. de Autorizacion" ng-disabled="true" ng-value="den_auto_r1" required="" onkeyup="return conMayusculas(this);">
-                    </div>
-                </div-->
-
                     <div class="col-md-12">
-                        
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="panel with-nav-tabs panel-default" id = "tab-antenas">
                                     <div class="panel-heading">
                                             <ul class="nav nav-tabs">
                                                 <li class="active"><a data-target="#tab1-registro" data-toggle="tab" >Registro</a></li>
-                                                <li><a data-target="#tab-adjuntos" data-toggle="tab" ng-click  = "" ng-hide = "tabAdj">Requisitos</a></li>
-                                                 
+                                                <li><a data-target="#tab-adjuntos" data-toggle="tab" ng-click  = "" ng-hide = "tabAdj">Requisitos</a></li> 
                                             </ul>
                                     </div>
                                     <div class="panel-body">
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="tab1-registro">
-                                                
-
                                                 <!-- Inicio radio base unico> <-->
                                                 <input ng-model="dataAnt.idtramite" id="idtramite" name="idtramite" class="form-control" ng-hide="true">
                                                 <div ng-show="mostrarRUGU != null">
@@ -520,16 +526,31 @@
                                                                       
                                                                     </div>
                                                                 </div>
-                                                                 <input  ng-model="dataAnt.cod_catastral" id="cod_catastral" name="cod_catastral" class="form-control" type="text" placeholder="Codigo Catastral" required onkeyUp="return conMayusculas(this);" ng-hide="true">
-                                                                     
+                                                                 <input  ng-model="dataAnt.cod_catastral" id="cod_catastral" name="cod_catastral" class="form-control" type="text" placeholder="Codigo Catastral" required onkeyUp="return conMayusculas(this);" ng-hide="true">                                                                     
+                                                            </div>                                                             
+                                                            <div class="col-sm-10">
+                                                                <div class="form-group" >
+                                                                    <font color="#FF0000" size="4px"> * </font>
+                                                                    <label for="url" >Total Número de Gabinetes: </label>
+                                                                    <div class="controls">
+                                                                        <input type="text" ng-model="dataAnt.den_ngabinete" id="den_ngabinete" name="den_ngabinete" class="form-control"  width="30%" height="30" ng-disabled="false" onkeyUp=" vsuperficie(this)" required>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                             
-                                                                  
                                                             <div class="col-sm-10" >
                                                                 <div class="form-group" >
-                                                                    <label for="url" >Total Número de Gabinetes:</label>
+                                                                    <label for="url" >Latitud:</label>
                                                                     <div class="controls">
-                                                                      <input  ng-model="dataAnt.den_ngabinete" id="den_ngabinete" name="den_ngabinete" class="form-control" type="number" placeholder="Total Número de Gabinete" ng-disabled="false" required onkeyUp="return conMayusculas(this);" min="1">
+                                                                      <input  ng-model="dataAnt.latitud_reg" id="latitud_reg" name="latitud_reg" class="form-control" type="yexy" placeholder="Latitud" ng-disabled="false" required onkeyUp="return conMayusculas(this);" min="1">
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-10" >
+                                                                <div class="form-group" >
+                                                                    <label for="url" >Longitud:</label>
+                                                                    <div class="controls">
+                                                                      <input  ng-model="dataAnt.longitud_reg" id="longitud_reg" name="longitud_reg" class="form-control" type="text" placeholder="Longitud" ng-disabled="false" required onkeyUp="return conMayusculas(this);" min="1">
                                                                       
                                                                     </div>
                                                                 </div>
@@ -545,7 +566,7 @@
                                                         </div>
                                                         <div class="col-md-8">
                                                             
-                                                            <div id="mapa1">
+                                                            <div class="mapas_resp" id="mapa1">
                                                             </div>
                                                             <div id="ctlBusquedas"><strong>BUSQUEDA</strong></div>
                                                             <div id="msg1" style="color: Blue;">
@@ -631,39 +652,40 @@
                                                                 </div>
                                                                 
                                                                 <div class="col-md-1">
-                                                                </div>
+                                                                </div>                                                           
                                                                 <div class="col-sm-4">
                                                                     <div class="form-group" >
-                                                                        <label for="url" >Altura(Mts.):</label>
+                                                                        <font color="#FF0000" size="4px"> * </font>
+                                                                        <label for="url" >Altura(Mts.): </label>
                                                                         <div class="controls">
-                                                                          <input  ng-model="dataAnt.altura" id="altura" name="altura" class="form-control" type="number" placeholder="Altura metros" ng-disabled="false"  min="1" required>
-                                                                          
+                                                                            <input type="text" ng-model="dataAnt.altura" id="altura" name="altura" class="form-control"  width="30%" height="30" ng-disabled="false" onkeyUp=" vsuperficie(this)" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <div class="col-md-1">
-                                                                </div>
+                                                                </div>                                                                
                                                                 <div class="col-sm-4">
                                                                     <div class="form-group" >
-                                                                        <label for="url" >NRO. ANTENAS:</label>
+                                                                        <font color="#FF0000" size="4px"> * </font>
+                                                                        <label for="url" >NRO. ANTENAS: </label>
                                                                         <div class="controls">
-                                                                          <input  ng-model="dataAnt.n_antenas" id="n_antenas" name="n_antenas" class="form-control" type="number" placeholder="Nro. Antenas" ng-disabled="false" required min="1">
-                                                                          
+                                                                            <input type="text" ng-model="dataAnt.n_antenas" id="n_antenas" name="n_antenas" class="form-control"  width="30%" height="30" ng-disabled="false" onkeyUp=" vsuperficie(this)" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-5" ng-hide="guardar_soporte">
                                                                     <div class="container">
                                                                       <button ng-click="close_datos()" type="button" class="btn btn-success fa fa-close">Cancelar</button>
-                                                                      <button ng-click="reg_soporte(dataAnt)" type="button" class="btn btn-success fa fa-save"></i> Registrar Soporte Antena</button>
+                                                                      <button ng-click="reg_soporte(dataAnt)" type="button" class="btn btn-success fa fa-save"></i> Registrar Soporte R.U.</button>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-5" ng-hide="actualizar_soporte">
                                                                     <div class="container">
                                                                       <button ng-click="close_datos()" type="button" class="btn btn-success fa fa-close">Cancelar</button>
-                                                                      <button ng-click="act_datasoporte(dataAnt)" type="button" class="btn btn-success fa fa-save"> Actualizar Soporte Antena</button>
+                                                                      <button ng-click="act_datasoporte(dataAnt)" type="button" class="btn btn-success fa fa-save"> Actualizar Soporte R.U.</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -716,11 +738,11 @@
                                                                     </div>
                                                                     <div ng-hide="mostrarbtn_multiple" class="container">
                                                                       <button  type="button" class="btn btn-success fa fa-close" ng-click= "close_data_multiple()"  ng-show = "guardarbtn1 != null " >Cancelar</button>
-                                                                      <button ng-show = "guardarbtn1 != null " ng-click="reg_radiantes_multiple(dataAnt)" type="button" class="btn btn-success fa fa-save"> Registrar Antena</button>
+                                                                      <button ng-show = "guardarbtn1 != null " ng-click="reg_radiantes_multiple(dataAnt)" type="button" class="btn btn-success fa fa-save"> Registrar R.U.</button>
                                                                     </div>
                                                                     <div ng-hide="actualizarbtn_multiple" class="container">
                                                                       <button  type="button" class="btn btn-success fa fa-close" ng-click= "close_editar_multiple()" ng-show = "guardarbtn1 != null " >Cancelar</button>
-                                                                      <button ng-show = "guardarbtn1 != null " ng-click="actualizar_multiple(dataAnt)" type="button" class="btn btn-success fa fa-save">  Actualizar Antena</button>
+                                                                      <button ng-show = "guardarbtn1 != null " ng-click="actualizar_multiple(dataAnt)" type="button" class="btn btn-success fa fa-save">  Actualizar R.U.</button>
                                                                     </div>
 
                                                                 </div>  
@@ -801,7 +823,7 @@
                                             </div>
                                             <div class="tab-pane fade" id="tab-adjuntos" >
 
-                                            <!--           Inicio de Adjuntos...><-->
+                                                <!--           Inicio de Adjuntos...><-->
 
 
                                                 <div ng-hide = "requistosfile">
@@ -1312,10 +1334,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-
-
-
                                                     <div  class="col-md-12" ng-show = "ANTT_INF_TEC_EMITIDO_GAB != null">
                                                         <div class="form-group">
 
@@ -1352,8 +1370,6 @@
                                                               </div>
                                                         </div>
                                                     </div>
-
-
                                                     <div class="col-md-12" ng-show = "ANTT_PLAN_ALT_SOPORTE != null">
                                                         <div class="form-group">
 
@@ -1679,7 +1695,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <!--           Fin de Adjuntos......><-->
+                                                <!--           Fin de Adjuntos......><-->
 
                                                 <!-- Inicio requisitos Gabinete ><-->
                                                
@@ -1723,7 +1739,6 @@
                                                 </div>
                                                 <!-- Fin Grilla visualizacion de requistos a enviar> <-->
                                             </div>
-                                            
                                         </div>
                                     </div>
                                 </div>
@@ -1754,6 +1769,33 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- MODAL EMISION JURIDICO-->
+            
+            <div class="modal fade " id="declaracionJ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: #ffcb05;" >
+                              <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO DE DECLARACIÓN JURADA</h2>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <form name="formulario" readOnly="true" novalidate>
+                                    <div class="row">
+                                        <div id="msgformularioJ">
+                                          {{msgformularioJ}}
+                                        </div>
+                                    </div>      
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="guardarInformacioAntena();" data-dismiss="modal">Aceptar</button>
+                          <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTramite();" data-dismiss="modal">Cerrar</button>
+                          </div>
+                      </div>
+                  </div>
             </div>
 
         </form>

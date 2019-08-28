@@ -4297,7 +4297,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                           $rootScope.botones = true;
                           $scope.desabilitado = true;
                           $rootScope.datosFormDJ_Antenas['AE_NRO_CASO'] = $scope.nrotramitec;
-                          $scope.generarDocumentoPhpAntena();
+                          $scope.generarDocumentoPhpAntena($scope.nrotramitec);
                           setTimeout(function () {
                                 $scope.$apply(function () {
                                     location.reload();
@@ -5409,7 +5409,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                       $scope.limpearRequisitos();
                       $rootScope.datosFormDJ_Antenas_multiple['AE_NRO_CASO'] = $scope.nrotramitec;
                       $rootScope.datosFormDJ_Antenas                         = $rootScope.datosFormDJ_Antenas_multiple;
-                      $scope.generarDocumentoPhpAntena();
+                      $scope.generarDocumentoPhpAntena($scope.nrotramitec);
                       setTimeout(function () {
                             $scope.$apply(function () {
                                 location.reload();

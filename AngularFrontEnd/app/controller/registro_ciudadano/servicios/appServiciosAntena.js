@@ -73,7 +73,13 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         $scope.razonsocial = sessionService.get('US_NOMBRE');
         sparam.parametros='{"sidciudadano":"' + sIdCiudadano + '"}';
         sparam.llamarregla(function(results){
-            results = JSON.parse(results);
+            console.log("resultado123123",results);
+            if( results != "[{}]"){
+                results = JSON.parse(results);
+            }else {
+                results = "";
+                
+            }
             $scope.tramites = results;     
             angular.forEach(results,function(val, index){
              if(val['form_contenido'])
@@ -913,7 +919,8 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         }
     }); 
 
-    $scope.generarDocumentoPhpAntena = function (){
+    $scope.generarDocumentoPhpAntena = function (codigoTramite){
+        $scope.codigoTramite = codigoTramite;
         
         $.blockUI();
         var tipoPersona = '';
@@ -952,19 +959,70 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
                     "stipo_form": 'RB'
                 },
                 success:function(response){
-                    /*if(response.length>0){
+                    if(response.length>0){
                         var urlData = response;
                         $rootScope.decJuradaNatural = urlData;
-                        $scope.InsertarDocumento(response);
-                        $rootScope.datosEnv.declaracion_jurada = urlData;
-                        $scope.serializarInformacion($rootScope.datosEnv);
+                        $scope.InsertarDocumentoAntena(response);
+                        //$scope.serializarInformacion($rootScope.datosEnv);
                         $.unblockUI();
-                    }*/
+                    }
                 }
             });
         }
-        
-    };    
+    };
+    $scope.InsertarDocumentoAntena = function(urlData){
+        var sDocSistema     =   "IGOB247";
+        var sDocProceso     =   "DECLARACION JURADA";
+        var sDocId          =   1;
+        var sDocCiNodo      =   "CU";
+        var sDocDatos       =   "";
+        var sDocUrl         =   urlData;
+        var sDocVersion     =   1;
+        var sDocTiempo      =   400;
+        var sDocFirmaDigital=   0;
+        var sDocUsuario     =   sessionService.get('IDSOLICITANTE');
+        var sDocTipoDoc     =   "pdf";
+        var sDocTamDoc      =   "";
+        var sDocNombre      =   "FORMULARIO DE DECLARACION JURADA";
+        var sDocTpsId       =   0;
+        var sDocUrlLogica   =   urlData;
+        var sDocAcceso      =   "";
+        var sDocTipoExt     =   "";
+        var sDocNroTramNexo =   "";
+        var sCasoCodigo     =   $scope.codigoTramite;
+        var documento  =   new gDocumentosIgob();
+            documento.doc_sistema = sDocSistema;
+            documento.doc_proceso = sDocProceso;
+            documento.doc_id = sDocId;
+            documento.doc_ci_nodo = sDocCiNodo;
+            documento.doc_datos = sDocDatos;
+            documento.doc_url = sDocUrl;
+            documento.doc_version = sDocVersion;
+            documento.doc_tiempo = sDocTiempo;
+            documento.doc_firma_digital = sDocFirmaDigital;
+            documento.doc_usuario = sDocUsuario;
+            documento.doc_tipo_documento = sDocTipoDoc;
+            documento.doc_tamanio_documento = sDocTamDoc;
+            documento.doc_nombre = sDocNombre;
+            documento.doc_tps_doc_id = sDocTpsId;
+            documento.doc_url_logica = sDocUrlLogica;
+            documento.doc_acceso = sDocAcceso;
+            documento.doc_tipo_documento_ext = sDocTipoExt;
+            documento.doc_nrotramite_nexo = sDocNroTramNexo;
+            documento.doc_id_codigo = sCasoCodigo;
+            documento.insertarDocIgob(function(resultado){
+                resultadoApi = JSON.parse(resultado);                           
+                if (resultadoApi.success) {
+                    srespuesta  =   "TRUE";
+                    return srespuesta;
+                } else {
+                    $.unblockUI();
+                    sweet.show(resultadoApi.error.message);
+                    srespuesta  =   "FALSE";                          
+                    return srespuesta;
+                }
+            });
+    }    
       
     
 });

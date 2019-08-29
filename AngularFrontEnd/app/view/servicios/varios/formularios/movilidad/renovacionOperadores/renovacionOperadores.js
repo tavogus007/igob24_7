@@ -350,7 +350,7 @@ function renovacionOperadoresController($scope, $rootScope, $routeParams, $locat
     conGenesis.empresa = "";
     conGenesis.p_accion = sAccion;
     try{
-      conGenesis.lstDatosContribuyente(function(resultado){
+      conGenesis.lstDatosContribuyenteLey272(function(resultado){
         resultadoApi = JSON.parse(resultado);
         if (resultadoApi.success) {
           var response = resultadoApi;
@@ -387,7 +387,7 @@ function renovacionOperadoresController($scope, $rootScope, $routeParams, $locat
       var contribuyente   =   new gLstActividadEconomica();
       contribuyente.idContribuyente   =   idContribuyente;
       contribuyente.tipo  =   tipoPersona;
-      contribuyente.lstActividadEconomica(function(resultado){
+      contribuyente.lstActividadEconomicaLey272(function(resultado){
         resultadoApi = JSON.parse(resultado);
         if (resultadoApi.success) {
           var response    =   resultadoApi;
@@ -445,12 +445,14 @@ function renovacionOperadoresController($scope, $rootScope, $routeParams, $locat
   }
 
   $scope.listaDatosOperador = function(operador){
+    console.log(operador,'operador');
     $scope.mostrar_formulario = true;
     $scope.datos.MO_ID_OPE = operador.xope_id; 
     $scope.datos.MO_OPE = operador.xope_tipo_operador;
     $scope.datos.MO_MOD = operador.xope_datos.RO_MOD;
     $scope.datos.MO_MOD_VALUE = operador.xope_datos.RO_MOD_VALUE;
     $scope.datos.MO_TIP_SER = operador.xope_datos.RO_TIP_SER;
+    $scope.datos.MO_DIRC_RES = operador.direccion_res;
     var listaOficinas = new oficinasAprobadas();
     listaOficinas.idOperador = $scope.datos.MO_ID_OPE;
     listaOficinas.listaOficinasAprob(function(data){
@@ -538,6 +540,7 @@ function renovacionOperadoresController($scope, $rootScope, $routeParams, $locat
           var resultadoAe = JSON.parse(resultado).success.dataSql;
           $scope.datosOficina.resultadoAe = resultadoAe;
           $('#verOficina').modal('show');
+          console.log(resultadoAe.datosVIAE,'datos Via');
           $scope.datosOficina.xofi_viae = resultadoAe.datosVIAE;
           console.log(123,$scope.datosOficina);
         });
@@ -791,7 +794,13 @@ function renovacionOperadoresController($scope, $rootScope, $routeParams, $locat
           "url": datosOfi.xofi_datos.RO_CROQUIS_OFI,
           "campo": "Mapa de la Ubicacion",
           "nombre": "Mapa de la Ubicacion"
-        }
+        },
+        {
+          "url": $scope.datos.MO_DIRC_RES,
+          "campo": "Resolución Administrativa",
+          "nombre": "Resolución Administrativa"
+        },
+
       ];
       //datosNeXO['FILE_FOTOCOPIA_CI'] = paramForm.FILE_FOTOCOPIA_CI;
       //datosNeXO['FILE_FOTOCOPIA_CI_R'] = paramForm.FILE_FOTOCOPIA_CI_R;

@@ -1,10 +1,11 @@
 function registroOperadoresController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, $timeout, obtFechaCorrecta,$route, obtFechaActual,fileUpload1) {
   var sIdCiudadano= sessionService.get('IDSOLICITANTE');
+  $scope.activaTab = 'active';
   $scope.tablaTramites        =   {};
   $scope.tramitesUsuario      =   [];
   $scope.mostrar_form_ope = false;
   $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
-  $scope.oidCiu = sessionService.get('IDCIUDADANO');
+  $scope.oidCiu = sessionService.get('IDSOLICITANTE');
   $scope.datos = {};
   $scope.aMacrodistritos = {};
   $scope.requisitos = [];
@@ -151,7 +152,9 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
 
   $scope.crear_tramite = function()
   {
+    $scope.limpiarUbi();
     if($scope.modalidadId != 0){
+      console.log($scope.modalidadId,'mod');
       if($scope.tipo_persona == "NATURAL")
       {
         var condiciones = $scope.datosCiudadano.dtspsl_file_condiciones_uso;
@@ -167,9 +170,9 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         if ($scope.datosCiudadano.dtspsl_activaciond == 'SI' && $scope.datosCiudadano.dtspsl_activacionf == 'SI') 
         {
           if($scope.modalidadId == 1){
-            $scope.datos.RO_TIP_OPE_A =[{"tipoOp":"Asociación"},{"tipoOp":"Cooperativa"},{"tipoOp":"Empresa"}];
+            $scope.datos.RO_TIP_OPE_A =[{"tipoOp":"Sindicato"},{"tipoOp":"Asociación"},{"tipoOp":"Cooperativa"},{"tipoOp":"Empresa"}];
             var RO_MOD_DESC = 'RADIO TAXI';
-            var RO_TIP_OPE = "Asociación";
+            var RO_TIP_OPE = "Sindicato";
             var RO_TIP_TAX = '';
             var RO_TIP_SER = 'SPU';
             var RO_SER_SPU = 'IEX';
@@ -201,7 +204,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
                 }else{
                   if($scope.modalidadId == 3 && $scope.tipo_persona == 'JURIDICO')
                   {
-                    $scope.datos.RO_TIP_OPE_A =[{"tipoOp":"Sindicato"},{"tipoOp":"Asociación"},{"tipoOp":"Cooperativa"},{"tipoOp":"Empresa"}];
+                    $scope.datos.RO_TIP_OPE_A =[{"tipoOp":"Sindicato"},{"tipoOp":"Asociación"},{"tipoOp":"Cooperativa"},{"tipoOp":"Empresa"},{"tipoOp":"Otro"}];
                     var RO_MOD_DESC = 'ESCOLAR';
                     var RO_TIP_OPE = "Sindicato";
                     var RO_TIP_TAX = '';
@@ -220,7 +223,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
                       if($scope.modalidadId == 4 && $scope.tipo_persona == 'JURIDICO')
                       {
                         var RO_MOD_DESC = 'CARGA';
-                        $scope.datos.RO_TIP_OPE_A =[{"tipoOp":"Sindicato"},{"tipoOp":"Asociación"},{"tipoOp":"Cooperativa"}];
+                        $scope.datos.RO_TIP_OPE_A =[{"tipoOp":"Sindicato"},{"tipoOp":"Asociación"},{"tipoOp":"Cooperativa"},{"tipoOp":"Otro"}];
                         var RO_TIP_OPE = "Sindicato";
                         var RO_TIP_TAX = '';
                         var RO_TIP_SER = 'SPR';
@@ -238,7 +241,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
                           if($scope.modalidadId == 5 && $scope.tipo_persona == 'JURIDICO')
                           {
                             var RO_MOD_DESC = 'TURISMO';
-                            $scope.datos.RO_TIP_OPE_A = [{"tipoOp":"Sindicato"},{"tipoOp":"Asociación"},{"tipoOp":"Cooperativa"},{"tipoOp":"Empresa"}];
+                            $scope.datos.RO_TIP_OPE_A = [{"tipoOp":"Sindicato"},{"tipoOp":"Asociación"},{"tipoOp":"Cooperativa"},{"tipoOp":"Empresa"},{"tipoOp":"Otro"}];
                             var RO_TIP_OPE = "Sindicato";
                             var RO_TIP_TAX = '';
                             var RO_TIP_SER = 'SPR';
@@ -589,6 +592,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.datos.Tipo_tramite_creado = "WEB";
     $scope.idServicio = data_tramite.vdvser_id;
     $scope.idTramite = data_tramite.vtra_id;
+    $scope.tramiteSeleccionado = data_tramite.vtra_id;
     if(data_tramite.venviado == 'SI'){
       $scope.desabilita = true;
     }
@@ -728,10 +732,11 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.datos.RO_ASI_VE1 = '';
       $scope.datos.RO_INS_OPE = '';
     }
+    $scope.limpiarUbi();
   }
 
   $scope.ver = function(){ 
-    if($scope.tipo_persona == 'NATURAL'){
+    if($scope.tipo_persona == 'NATURAL' && $scope.datos.RO_MOD!=1){
       $scope.i = $scope.i + 2;
       $scope.getComboClaseMovilidad();
       $("#valida11").hide();
@@ -761,7 +766,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   }
 
   $scope.volver = function (){
-    if($scope.tipo_persona == 'NATURAL'){
+    if($scope.tipo_persona == 'NATURAL' && $scope.datos.RO_MOD != 1){
       $scope.i = $scope.i - 2;
     }else{
       if($scope.datos.RO_MOD==1){
@@ -872,8 +877,23 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         rep.persona = $scope.tipo_persona;
         rep.oidciudadano = $scope.oidCiu;
         rep.representanteInsert(function(results){
-          if($scope.tipo_persona == 'NATURAL'){
+          if($scope.tipo_persona == 'NATURAL' && $scope.datos.RO_MOD!=1){
             $scope.lstRequisitosOpe();  
+            var req = new listaRequisitos(); 
+            req.tipo = 'DOC_VEHICULOS';
+            req.lstRequisitos(function(data){
+              $scope.requisitosVehiculo = JSON.parse(data).success.data;
+              $scope.datos.fileRequisitosVeh = {};
+            });
+            var req = new listaRequisitos(); 
+            req.tipo = 'DOC_CONDUCTOR';
+            req.lstRequisitos(function(data){
+              $scope.requisitosConductor = JSON.parse(data).success.data;
+              $scope.datos.fileRequisitosCond = {};
+            })
+            setTimeout(function(){
+              iniciarLoadFyle();
+            }, 1000); 
             $scope.botonesGuardar = true;        
           }else{
             if($scope.datos.RO_MOD==1){
@@ -994,9 +1014,12 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     var swOfi = 0;
     for(var i=0;i<$scope.datosOfiR.length;i++){
       if($scope.datosOfiR[i].suc == 'MA' && $scope.datos.RO_TIP_ACT == 'MA'){
-        swOfi = 1;
+        swOfi = swOfi + 1;
       }
     } 
+    if(opc == 'A' && swOfi == 1){
+      swOfi = 0;
+    }
     if(swOfi == 0){
       if($scope.datos.RO_TIP_ACT !='' && $scope.datos.RO_TIP_ACT != undefined &&  $scope.datos.RO_DEN !='' &&  $scope.datos.RO_DEN!=undefined && $scope.datos.RO_MAC_OF_VALUE!= '' && $scope.datos.RO_MAC_OF_VALUE!=undefined &&
       $scope.datos.RO_ZONA_OF_VALUE !='' && $scope.datos.RO_ZONA_OF_VALUE!=undefined && $scope.datos.RO_TIPO_VIA_SUC!='' && $scope.datos.RO_TIPO_VIA_SUC!= undefined && $scope.datos.RO_NOM_VIA_SUC!='' &&  $scope.datos.RO_NOM_VIA_SUC!=undefined
@@ -1067,8 +1090,11 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
             var swL = 0;
             for(var i=0; i<$scope.objOficinas.length ; i++){
               if($scope.datos.RO_MAC_OF_VALUE == $scope.objOficinas[i].ofi_datos.RO_MAC_OF_VALUE){
-                swL = 1;
+                swL = swL + 1;
               }
+            }
+            if(opc == 'A' && swL == 1){
+              swL = 0;
             }
             if(swL == 0){
               datosOf = JSON.stringify(datosOf);
@@ -1087,10 +1113,11 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
                 $scope.lstOficinasDatos();
                 $scope.datos.rdTipoTramite1 = 'CON PUBLICIDAD';
                 $scope.publicidad = true;
-                $scope.botonn="new";
+                $scope.botonO = 'new';
+                $scope.botonc = 'c1';
               })
             }else{
-              var mens = "Ya existe una Oficina en el Macrodistrito "+$scope.datos.RO_MAC_OF_VALUE +" ,zona "+$scope.datos.RO_ZONA_OF_VALUE;
+              var mens = "Ya existe una Oficina en el Macrodistrito "+$scope.datos.RO_MAC_OF_VALUE;
               swal("",mens, "warning");
             }
           }
@@ -1112,7 +1139,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
                 $scope.lstOficinasDatos();
                 $scope.datos.rdTipoTramite1 = 'CON PUBLICIDAD';
                 $scope.publicidad = true;
-                $scope.botonn="new";
+                $scope.botonO = 'new';
+                $scope.botonc = 'c1';
               })
             }
             else{
@@ -1139,8 +1167,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
 
   $scope.datosModOficina = function (dataOfic){
     $scope.datos.RO_TIP_ACT = dataOfic.ofi_datos.RO_TIP_ACT;
-    $scope.datos.RO_MAC_OF = dataOfic.ofi_datos.RO_MAC_OF_VALUE;
-    $scope.datos.RO_ZONA_OF = dataOfic.ofi_datos.RO_ZONA_OF_VALUE;
+    $scope.datos.RO_MAC_OF_VALUE = dataOfic.ofi_datos.RO_MAC_OF_VALUE;
+    $scope.datos.RO_ZONA_OF_VALUE= dataOfic.ofi_datos.RO_ZONA_OF_VALUE;
     $scope.datos.RO_TIPO_VIA_SUC = dataOfic.ofi_datos.RO_TIPO_VIA_SUC;
     $scope.datos.RO_NOM_VIA_SUC = dataOfic.ofi_datos.RO_NOM_VIA_SUC;
     $scope.datos.RO_ENT_CALL_SUC = dataOfic.ofi_datos.RO_ENT_CALL_SUC;
@@ -1153,8 +1181,14 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.datos.RO_ESP_DIS = dataOfic.ofi_datos.RO_ESP_DIS;
     $scope.datos.RO_VIA_PAR_MOM = dataOfic.ofi_datos.RO_VIA_PAR_MOM;
     $scope.datos.RO_ENT_CALL_PM = dataOfic.ofi_datos.RO_ENT_CALL_PM;
-    $scope.datos.rdTipoTramite1 = dataOfic.ofi_datos.rdTipoTramite1;
+    $scope.datos.RO_TEL_SUC = dataOfic.ofi_datos.RO_TEL_SUC;
+    $scope.datos.RO_EST_SUC = dataOfic.ofi_datos.RO_EST_SUC;
+    $scope.datos.rdTipoTramite1 = dataOfic.ofi_datos.RO_VIAE;
     $scope.idOfi = dataOfic.ofi_id;  
+    $scope.macrodistritos();
+    $scope.distritoZonas($scope.datos.RO_MAC_OF_VALUE); 
+    $scope.datos.publicidad = dataOfic.ofi_viae;
+    $scope.publicid = dataOfic.ofi_viae;
     $scope.botonO = 'upd';
     $scope.botonc = 'c';
   }
@@ -1276,7 +1310,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         console.log($scope.requisitosAdj[j].req_ope_natural,$scope.datos.RO_TIP_OPE);
         if($scope.requisitosAdj[j].req_ope_natural==$scope.datos.RO_TIP_OPE || $scope.requisitosAdj[j].req_ope_sindicato==$scope.datos.RO_TIP_OPE || 
           $scope.requisitosAdj[j].req_ope_empresa==$scope.datos.RO_TIP_OPE || $scope.requisitosAdj[j].req_ope_cooperativa==$scope.datos.RO_TIP_OPE ||
-          $scope.requisitosAdj[j].req_ope_asociacion==$scope.datos.RO_TIP_OPE){
+          $scope.requisitosAdj[j].req_ope_asociacion==$scope.datos.RO_TIP_OPE || $scope.requisitosAdj[j].req_ope_otro == $scope.datos.RO_TIP_OPE){
           datoObject = new Object();
           datoObject.resid = $scope.requisitosAdj[j].req_id;
           datoObject.resvalor = $scope.requisitosAdj[j].req_descripcion;
@@ -1294,7 +1328,31 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   }
 
   $scope.ejecutarFile = function(idfile){
+    $scope.reqVehiculo = 1;
+    $scope.reqConductor = 1;
     var sid =   document.getElementById(idfile);
+    if(sid){
+        document.getElementById(idfile).click();
+    }else{
+        alert("Error ");
+    }
+  };
+
+  $scope.ejecutarFileVehiculo = function(idfile){
+    var sid =   document.getElementById(idfile);
+    $scope.reqVehiculo = 0;
+    $scope.reqConductor = 1;
+    if(sid){
+        document.getElementById(idfile).click();
+    }else{
+        alert("Error ");
+    }
+  };
+
+  $scope.ejecutarFileConductor = function(idfile){
+    var sid =   document.getElementById(idfile);
+    $scope.reqConductor = 0;
+    $scope.reqVehiculo = 1;
     if(sid){
         document.getElementById(idfile).click();
     }else{
@@ -1340,16 +1398,33 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $.blockUI();
     angular.forEach(aArchivos, function(archivo, key) {
       if(typeof(archivo) != 'undefined'){
-        angular.forEach($scope.docArray, function(doc, pos) {
-          if(doc.resid == idFiles[key]){
-            descDoc = 'Requisito_'+doc.resid;
+        if($scope.reqVehiculo == 0){
+          angular.forEach($scope.requisitosVehiculo, function(doc, pos) {
+            if(doc.req_id == idFiles[key]){
+              descDoc = 'Requisito_'+doc.req_id;
+            }
+          })
+        }else{
+          if($scope.reqConductor == 0){
+            angular.forEach($scope.requisitosConductor, function(doc, pos) {
+              console.log(doc,'doc');
+              if(doc.req_id == idFiles[key]){
+                descDoc = 'Requisito_'+doc.req_id;
+              }
+            })
+          }else{
+            angular.forEach($scope.docArray, function(doc, pos) {
+              if(doc.resid == idFiles[key]){
+                descDoc = 'Requisito_'+doc.resid;
+              }
+            })
           }
-        })
+        }
         var imagenNueva = archivo.name.split('.');
-        var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[1];
+        var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[imagenNueva.length-1];
         if (archivo.size > 500000 && archivo.size <= 15000000) {
-          if (imagenNueva[1] == "png" || imagenNueva[1] == "jpg" || imagenNueva[1] == "jpeg" || imagenNueva[1] == "bmp" || imagenNueva[1] == "gif" || 
-            imagenNueva[1] == "PNG" || imagenNueva[1] == "JPG" || imagenNueva[1] == "JPEG" || imagenNueva[1] == "BMP" || imagenNueva[1] == "GIF") {
+          if (imagenNueva[imagenNueva.length-1] == "png" || imagenNueva[imagenNueva.length-1] == "jpg" || imagenNueva[imagenNueva.length-1] == "jpeg" || imagenNueva[imagenNueva.length-1] == "bmp" || imagenNueva[imagenNueva.length-1] == "gif" || 
+            imagenNueva[imagenNueva.length-1] == "PNG" || imagenNueva[imagenNueva.length-1] == "JPG" || imagenNueva[imagenNueva.length-1] == "JPEG" || imagenNueva[imagenNueva.length-1] == "BMP" || imagenNueva[imagenNueva.length-1] == "GIF") {
             var filecompress = compressImage(archivo).then(function(respuestaFile){
               var imagenFile = respuestaFile.name.split('.');
               var tipoFile = imagenFile[1];
@@ -1360,8 +1435,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
             });
             $.unblockUI();
           }else{
-            if (imagenNueva[1] == 'pdf' ||  imagenNueva[1] == 'docx' ||  imagenNueva[1] == 'docxlm' ||
-              imagenNueva[1] == 'PDF' ||  imagenNueva[1] == 'DOCX' ||  imagenNueva[1] == 'DOCXLM' ) {
+            if (imagenNueva[imagenNueva.length-1] == 'pdf' ||  imagenNueva[imagenNueva.length-1] == 'docx' ||  imagenNueva[imagenNueva.length-1] == 'docxlm' ||
+              imagenNueva[imagenNueva.length-1] == 'PDF' ||  imagenNueva[imagenNueva.length-1] == 'DOCX' ||  imagenNueva[imagenNueva.length-1] == 'DOCXLM' ) {
               $scope.documentosarc[key] = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/movilidad/"  + "/" + nombreFileN + "?app_name=todoangular";
               fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
               document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreFileN;
@@ -1375,15 +1450,25 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         }  
         else{
           if (archivo.size <= 500000) {
-            if (imagenNueva[1] == 'png' || imagenNueva[1] == 'jpg' || imagenNueva[1] == 'jpeg' || imagenNueva[1] == 'bmp' || imagenNueva[1] == 'gif' || imagenNueva[1] == 'pdf' || imagenNueva[1] == 'docx' || imagenNueva[1] == 'docxlm' || 
-              imagenNueva[1] == 'PNG' || imagenNueva[1] == 'JPG' || imagenNueva[1] == 'JPEG' || imagenNueva[1] == 'BMP' || imagenNueva[1] == 'GIF' || imagenNueva[1] == 'PDF' || imagenNueva[1] == 'DOCX' || imagenNueva[1] == 'DOCXLM') {
+            if (imagenNueva[imagenNueva.length-1] == 'png' || imagenNueva[imagenNueva.length-1] == 'jpg' || imagenNueva[imagenNueva.length-1] == 'jpeg' || imagenNueva[imagenNueva.length-1] == 'bmp' || imagenNueva[imagenNueva.length-1] == 'gif' || imagenNueva[imagenNueva.length-1] == 'pdf' || imagenNueva[imagenNueva.length-1] == 'docx' || imagenNueva[imagenNueva.length-1] == 'docxlm' || 
+              imagenNueva[imagenNueva.length-1] == 'PNG' || imagenNueva[imagenNueva.length-1] == 'JPG' || imagenNueva[imagenNueva.length-1] == 'JPEG' || imagenNueva[imagenNueva.length-1] == 'BMP' || imagenNueva[imagenNueva.length-1] == 'GIF' || imagenNueva[imagenNueva.length-1] == 'PDF' || imagenNueva[imagenNueva.length-1] == 'DOCX' || imagenNueva[imagenNueva.length-1] == 'DOCXLM') {
                 $scope.documentosarc[key] = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/movilidad/"  + "/" + nombreFileN + "?app_name=todoangular";
                 fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
                 document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreFileN;
                 $.unblockUI();
             } else{
+              console.log(imagenNueva[1]);
+              if (imagenNueva[imagenNueva.length-1] == 'pdf' ||  imagenNueva[imagenNueva.length-1] == 'docx' ||  imagenNueva[imagenNueva.length-1] == 'docxlm' ||
+                imagenNueva[imagenNueva.length-1] == 'PDF' ||  imagenNueva[imagenNueva.length-1] == 'DOCX' ||  imagenNueva[imagenNueva.length-1] == 'DOCXLM' ) {
+                $scope.documentosarc[key] = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/movilidad/"  + "/" + nombreFileN + "?app_name=todoangular";
+                fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
+                document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreFileN;
                 $.unblockUI();
-                swal('Advertencia', 'El archivo  no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+              }
+              else{
+                $.unblockUI();
+                swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+              };   
             };
           };
           if (archivo.size > 15000000) {
@@ -1407,31 +1492,49 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         var hora_ = fechaServ[1].split(':');
         fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
     });
-    angular.forEach($scope.docArray, function(doc, pos) {
-      if(doc.resid == idFile){
-        descDoc = 'Requisito_'+doc.resid;
-      }
-    })
+    if($scope.reqVehiculo == 0){
+      angular.forEach($scope.requisitosVehiculo, function(doc, pos) {
+        if(doc.req_id == idFile){
+          descDoc = 'Requisito_'+doc.req_id;
+        }
+      })
+    }else{
+      if($scope.reqConductor == 0){
+        angular.forEach($scope.requisitosConductor, function(doc, pos) {
+          if(doc.req_id == idFile){
+            console.log(doc,'doc');
+            descDoc = 'Requisito_'+doc.req_id;
+          }
+        })
+      }else{
+        angular.forEach($scope.docArray, function(doc, pos) {
+          if(doc.resid == idFile){
+            descDoc = 'Requisito_'+doc.resid;
+          }
+        })
+      } 
+    }
     var imagenNueva = aArch.files[0].name.split('.');
     var tam = aArch.files[0];
-    var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[1];
+    var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[imagenNueva.length-1];
     $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
     var sDirTramite = sessionService.get('IDTRAMITE');
     $scope.direccionvirtual = "Movilidad/" + $scope.oidCiudadano;
-    if (aArch.files[0].size > 500000 && aArch.files[0].size <= 15000000) {
-      if (imagenNueva[1] == "png" || imagenNueva[1] == "jpg" || imagenNueva[1] == "jpeg" || imagenNueva[1] == "bmp" || imagenNueva[1] == "gif") {
-        var filecompress = compressImage(aArch.files[0]).then(function(respuestaFile){
-          var imagenFile = respuestaFile.name.split('.');
-          var tipoFile = imagenFile[1];
-          nombreFileN = descDoc + '_'+fechaNueva+'.'+tipoFile;
-        });
-      } 
-    }  
     var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual  + "/" + nombreFileN + "?app_name=todoangular";
     var descrip =  document.getElementById('lbl_f01_upload'+idFile).innerHTML;
     descrip = descrip.replace("\n","");
-    var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "idRequisito":'+idFile+',"desc":"'+descrip+'"}';
-    $scope.fileArRequisitos[aArch.name] = JSON.parse(myJSON);
+    if($scope.reqVehiculo == 0){
+      var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "idRequisito":'+idFile+',"desc":"'+descrip+'"}';
+      $scope.datos.fileRequisitosVeh[aArch.name] = JSON.parse(myJSON);
+    }else{
+      if($scope.reqConductor == 0){
+        var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "idRequisito":'+idFile+',"desc":"'+descrip+'"}';
+        $scope.datos.fileRequisitosCond[aArch.name] = JSON.parse(myJSON);
+      }else{
+        var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "idRequisito":'+idFile+',"desc":"'+descrip+'"}';
+        $scope.fileArRequisitos[aArch.name] = JSON.parse(myJSON);
+      }   
+    }
   }
 
   $scope.guardaRequisitos = function (){
@@ -1440,7 +1543,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     reqOpe.id = $scope.datosOperador.id_ope; 
     reqOpe.datosreq = JSON.stringify($scope.fileArRequisitos);
     reqOpe.actualizarReqOperador(function(results){
-      if($scope.tipo_persona == 'JURIDICO'){
+      if($scope.tipo_persona == 'JURIDICO' || $scope.datos.RO_MOD == 1){
         $scope.botonesGuardar = true;
       }
       console.log(results);
@@ -1451,7 +1554,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
 //*********************vehiculo************************************
   $scope.validaPlaca = function (campo){
     campo = campo.toUpperCase();
-    emailRegex = /^[0-9]{3,4}[A-Z]{3}/;
+    emailRegex = /^[0-9]{3,4}[A-Z]{3}$/;
     if (emailRegex.test(campo)) {
       valPlaca = 0;
       $("#valida1").show();
@@ -1459,13 +1562,14 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     } else {
       $("#valida1").hide();
       $("#valida").show();
+      $scope.desabilitaVeh = true;
       valPlaca = 1;
     };
   }
 
   $scope.validaPlaca1 = function (campo){
     campo = campo.toUpperCase();
-    emailRegex = /^[0-9]{3,4}[A-Z]{3}/;
+    emailRegex = /^[0-9]{3,4}[A-Z]{3}$/;
     if (emailRegex.test(campo)) {
       valPlaca = 0;
       $("#valida11").show();
@@ -1483,8 +1587,10 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     veh.ope_id = idOpe; 
     veh.lstVehiculo(function(data){
       data = JSON.parse(data).success.data;
+      for (var i = 0; i < data.length; i++) {
+        data[i].nro = i+1;
+      }
       $scope.objVehiculos = data;
-      console.log($scope.objVehiculos,'vehiculos');
       $scope.tablaVehiculo.reload();
     })
   }
@@ -1497,18 +1603,24 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   }, {
     total: $scope.objVehiculos.length,
     getData: function($defer, params) {
-      var filteredData = params.filter() ?
+      var orderedData = params.filter() ?
       $filter('filter')($scope.objVehiculos, params.filter()) :
       $scope.objVehiculos;
-      var orderedData = params.sorting() ?
-      $filter('orderBy')(filteredData, params.orderBy()) :
-      $scope.$scope.objVehiculos;
       params.total(orderedData.length);
       $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
     }
   });
 
+  $scope.validaTabPoo = function(){
+    $scope.valida = 'active';
+    $scope.valida2 = '';
+  }
+
   $scope.crear =function(acc){
+    $scope.valida = 'active';
+    $scope.valida2 = '';
+    $scope.valid = true;
+    $scope.valid2 = false;
     $("#valida1").hide();
     $("#valida").hide();
     $("#validaMN").hide();
@@ -1517,6 +1629,15 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.tituloVehiculo = "REGISTRAR NUEVO VEHICULO";
       $scope.botonV = "nu";
       $scope.desabilitaVeh = true;
+      var req = new listaRequisitos(); 
+      req.tipo = 'DOC_VEHICULOS';
+      req.lstRequisitos(function(data){
+        $scope.requisitosVehiculo = JSON.parse(data).success.data;
+        setTimeout(function(){
+          iniciarLoadFyle();
+        }, 1000); 
+        $scope.datos.fileRequisitosVeh = {};
+      })
     }
     else{
       $scope.tituloVehiculo = "MODIFICAR DATOS DEL VEHICULO";
@@ -1583,20 +1704,19 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   }
 
   $scope.adiModVehiculo = function(id,opcion){
+    console.log($scope.datos,'datos');
     if($scope.datos.RO_PLA_V!='' && $scope.datos.RO_PLA_V!=undefined && $scope.datos.RO_TIP_V!='' && $scope.datos.RO_TIP_V!=undefined
       && $scope.datos.RO_CLA_V!=''&&$scope.datos.RO_CLA_V!=undefined && $scope.datos.RO_MAR_V!='' && $scope.datos.RO_MAR_V!=undefined
       && $scope.datos.RO_MOD_V!=''&&$scope.datos.RO_MOD_V!=undefined && $scope.datos.RO_COLOR_V!='' && $scope.datos.RO_COLOR_V!=undefined
       && $scope.datos.RO_PUE_V!=''&&$scope.datos.RO_PUE_V!=undefined 
       && $scope.datos.RO_RAD_V!=''&&$scope.datos.RO_RAD_V!=undefined && $scope.datos.RO_CI_P!='' && $scope.datos.RO_CI_P!=undefined
       && $scope.datos.RO_EXP_P!=''&&$scope.datos.RO_EXP_P!=undefined && $scope.datos.RO_NOM_P!=''&&$scope.datos.RO_NOM_P!=undefined
-      && $scope.datos.RO_PAT_P!=''&&$scope.datos.RO_PAT_P!=undefined && $scope.datos.RO_MAT_P!=''&&$scope.datos.RO_MAT_P!=undefined
       && $scope.datos.RO_CEL_P!=''&&$scope.datos.RO_CEL_P!=undefined && $scope.datos.RO_MAC_P!='' && $scope.datos.RO_MAC_P!=undefined
-      && $scope.datos.RO_ZONA_P!=''&&$scope.datos.RO_ZONA_P!=undefined && $scope.datos.RO_CALL_P!='' && $scope.datos.RO_CALL_P!=undefined
+      && $scope.datos.RO_CALL_P!='' && $scope.datos.RO_CALL_P!=undefined
       && $scope.datos.RO_NRO_P!=''&&$scope.datos.RO_NRO_P!=undefined && $scope.datos.RO_CI_POO!='' && $scope.datos.RO_CI_POO!=undefined
       && $scope.datos.RO_EXP_POO!=''&&$scope.datos.RO_EXP_POO!=undefined && $scope.datos.RO_NOM_POO!='' && $scope.datos.RO_NOM_POO!=undefined
-      && $scope.datos.RO_PAT_POO!=''&&$scope.datos.RO_PAT_POO!=undefined && $scope.datos.RO_MAT_POO!='' && $scope.datos.RO_MAT_POO!=undefined
       && $scope.datos.RO_CEL_POO!=''&&$scope.datos.RO_CEL_POO!=undefined && $scope.datos.RO_MAC_POO!='' && $scope.datos.RO_MAC_POO!=undefined
-      && $scope.datos.RO_ZONA_POO!=''&&$scope.datos.RO_ZONA_POO!=undefined && $scope.datos.RO_CALL_POO!='' && $scope.datos.RO_CALL_POO!=undefined
+      && $scope.datos.RO_CALL_POO!='' && $scope.datos.RO_CALL_POO!=undefined
       && $scope.datos.RO_NRO_POO!=''&&$scope.datos.RO_NRO_POO!=undefined)
     {
       if($scope.datos.RO_MOD==1){
@@ -1610,6 +1730,12 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       }
       if($scope.datos.RO_MOD == 3 || $scope.datos.RO_MOD == 4 || $scope.datos.RO_MOD==5 || $scope.datos.RO_MOD==6){
         var nroAs = $scope.datos.RO_ASI_VJ1;
+      }
+      if($scope.datos.RO_MAC_P == 'OTRO'){
+        $scope.datos.RO_ZONA_P = $scope.datos.RO_ZONA_P_OTRO;
+      }
+      if($scope.datos.RO_MAC_POO == 'OTRO'){
+        $scope.datos.RO_ZONA_POO = $scope.datos.RO_ZONA_POO_OTRO;
       }
       var datosV = {
         RO_NOM_SUC : idSuc,
@@ -1640,7 +1766,9 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         RO_MAC_POO   : $scope.datos.RO_MAC_POO,
         RO_ZONA_POO  : $scope.datos.RO_ZONA_POO,      
         RO_CALL_POO  : $scope.datos.RO_CALL_POO,
-        RO_NRO_POO   : $scope.datos.RO_NRO_POO
+        RO_NRO_POO   : $scope.datos.RO_NRO_POO,
+        RO_VEH_ADJ : $scope.datos.fileRequisitosVeh
+
       };
       datosV = JSON.stringify(datosV);
       var datosVeh = new vehiculo();
@@ -1653,6 +1781,10 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       datosVeh.id_ofi = $scope.datos.RO_ID_SUC; 
       datosVeh.opcion = opcion;
       datosVeh.vehiculoAbm(function(results){
+        results = JSON.parse(results).success.data[0];
+        if(results.sp_abm_operador_vehiculo = 'Insertado'){
+          swal('Exitoso','Se registro exitosamente el vehículo','success');
+        }
         $scope.listaVeh();
         $('#vehiculo').modal('hide');
         $scope.limpiar();
@@ -1681,7 +1813,11 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.datos.RO_MAT_P = data.veh_datos.RO_MAT_P;
     $scope.datos.RO_CEL_P = data.veh_datos.RO_CEL_P;
     $scope.datos.RO_MAC_P = data.veh_datos.RO_MAC_P;
-    $scope.datos.RO_ZONA_P = data.veh_datos.RO_ZONA_P;     
+    if($scope.datos.RO_MAC_P == 'OTRO'){
+      $scope.datos.RO_ZONA_P_OTRO = data.veh_datos.RO_ZONA_P;     
+    }else{
+      $scope.datos.RO_ZONA_P = data.veh_datos.RO_ZONA_P;     
+    }
     $scope.datos.RO_CALL_P = data.veh_datos.RO_CALL_P;
     $scope.datos.RO_NRO_P  = data.veh_datos.RO_NRO_P;
     $scope.datos.RO_CI_POO  = data.veh_datos.RO_CI_POO;
@@ -1691,7 +1827,11 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.datos.RO_MAT_POO = data.veh_datos.RO_MAT_POO;
     $scope.datos.RO_CEL_POO = data.veh_datos.RO_CEL_POO;
     $scope.datos.RO_MAC_POO = data.veh_datos.RO_MAC_POO;
-    $scope.datos.RO_ZONA_POO = data.veh_datos.RO_ZONA_POO;      
+    if($scope.datos.RO_MAC_POO == 'OTRO'){
+      $scope.datos.RO_ZONA_POO_OTRO = data.veh_datos.RO_ZONA_POO;      
+    }else{
+      $scope.datos.RO_ZONA_POO = data.veh_datos.RO_ZONA_POO;      
+    }
     $scope.datos.RO_CALL_POO = data.veh_datos.RO_CALL_POO;
     $scope.datos.RO_NRO_POO = data.veh_datos.RO_NRO_POO;
     $scope.datos.RO_ID_SUC = data.veh_ofi_id;
@@ -1738,11 +1878,14 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.datos.RO_CALL_POO = '';
     $scope.datos.RO_NRO_POO = '';
     $scope.datos.RO_ID_SUC = '';
+    $scope.mostrarZonaPoo = false;
+    $scope.mostrarZonaProp = false;   
+    $scope.tab1 = true;
   }
 
   $scope.verificaPlaca = function(placa){
     if(valPlaca == 0){
-      var verif = new verifPlaca();
+      /*var verif = new verifPlaca();
       verif.placa = placa;
       verif.verificaPlaca(function(results){
         results = JSON.parse(results).success.data[0];
@@ -1751,7 +1894,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
           swal({
             title: "",
             text: "La Placa "+results.vveh_placa+' ya fue registrada en fecha '+results.vehregistrado+', en el operador '+results.vope_rz,
-            imageUrl: '../../img/error.jpg'
+            imageUrl: '../../../app/view/registro_ciudadano/servicios/img/movilidad/error.jpg'
           });
           $('#vehiculo').modal('hide');
           $scope.desabilitaVeh = true;
@@ -1776,7 +1919,23 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
             }
           })
         }
-      }); 
+      }); */
+      var buscaV = new busca_placa();
+      buscaV.placa = placa;
+      buscaV.busca_placa_sam(function(results){
+        results = JSON.parse(results).success.data;
+        $scope.botonV = "new";
+        $scope.desabilitaVeh = false;
+        if(results.length != 0){
+          $scope.datos.RO_TIP_V = results[0].xmov_tipo;
+          $scope.datos.RO_CLA_V = results[0].xclmov_nombre;
+          $scope.datos.RO_MAR_V = results[0].xclmar_nombre;
+          $scope.datos.RO_MOD_V = results[0].xmov_modelo;
+          $scope.datos.RO_COLOR_V = results[0].xmov_color;
+          $scope.datos.RO_PUE_V = results[0].xmov_nro_puertas;
+          $scope.datos.RO_ASI_V = results[0].xmov_capacidad_tn; 
+        }    
+      })
     }
     else{
       swal("","La Placa es Incorrecta","error");
@@ -1822,70 +1981,169 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       buscarRepresentante.buscarPersona(function(res){
         var x = JSON.parse(res);
         if (x.error) {
+          if(tipo == 'p'){
+            if($scope.tipo_persona=='NATURAL' && $scope.datos.RO_MOD!=1){
+              $scope.datos.RO_NRO_P1 = '';
+              $scope.datos.RO_NOM_P1 = '';
+              $scope.datos.RO_PAT_P1 = '';
+              $scope.datos.RO_MAT_P1 = '';
+              $scope.datos.RO_CAS_P1 = '';
+              $scope.datos.RO_CEL_P1 = '';
+              $scope.datos.RO_TEL_P1 = '';
+              $scope.datos.RO_CORR_P1 = '';
+              $scope.datos.RO_EXP_P1 = '';
+              $scope.datos.RO_MAC_P1 = '';
+              $scope.datos.RO_ZONA_P1 = '';
+              $scope.datos.RO_CALL_P1 = '';
+            }else{
+              $scope.datos.RO_NRO_P = '';
+              $scope.datos.RO_NOM_P = '';
+              $scope.datos.RO_PAT_P = '';
+              $scope.datos.RO_MAT_P = '';
+              $scope.datos.RO_CAS_P = '';
+              $scope.datos.RO_CEL_P = '';
+              $scope.datos.RO_TEL_P = '';
+              $scope.datos.RO_CORR_P = '';
+              $scope.datos.RO_EXP_P = '';
+              $scope.datos.RO_MAC_P = '';
+              $scope.datos.RO_ZONA_P = '';
+              $scope.datos.RO_CALL_P = '';
+            }
+          }else{
+            if($scope.tipo_persona=='NATURAL' && $scope.datos.RO_MOD!=1){ 
+              $scope.datos.RO_NRO_POO1 = '';
+              $scope.datos.RO_NOM_POO1 = '';
+              $scope.datos.RO_PAT_POO1 = '';
+              $scope.datos.RO_MAT_POO1 = '';
+              $scope.datos.RO_CAS_POO1 = '';
+              $scope.datos.RO_CEL_POO1 = '';
+              $scope.datos.RO_TEL_POO1 = '';
+              $scope.datos.RO_CORR_POO1 = '';
+              $scope.datos.RO_EXP_POO1 = '';
+              $scope.datos.RO_MAC_POO1 = '';
+              $scope.datos.RO_ZONA_POO1 = '';
+              $scope.datos.RO_CALL_POO1 = '';
+            }
+            else{
+              $scope.datos.RO_NRO_POO = '';
+              $scope.datos.RO_NOM_POO = '';
+              $scope.datos.RO_PAT_POO = '';
+              $scope.datos.RO_MAT_POO = '';
+              $scope.datos.RO_CAS_POO = '';
+              $scope.datos.RO_CEL_POO = '';
+              $scope.datos.RO_TEL_POO = '';
+              $scope.datos.RO_CORR_POO = '';
+              $scope.datos.RO_EXP_POO = '';
+              $scope.datos.RO_MAC_POO = '';
+              $scope.datos.RO_ZONA_POO = '';
+              $scope.datos.RO_CALL_POO = '';
+            }             
+          }          
           alertify.success(x.error.message);
         }else {
           if (x.length > 0) {
             alertify.success('Datos Encontrados');
             $scope.busquedaCiudadano = x[0];
+            switch (x[0].dtspsl_expedido) {
+              case "LPZ":
+                var expd = 'LA PAZ';
+                break;              
+              case "CBB":
+                var expd = 'COCHABAMBA';
+                break;
+              case "SCZ":
+                var expd = 'SANTA CRUZ';
+                break;
+              case "CHQ":
+                var expd = 'CHUQUISACA';
+                break;
+              case "TJA":
+                var expd = 'TARIJA';
+                break;
+              case "PTS":
+                var expd = 'POTOSI';
+                break;
+              case "ORU":
+                var expd = 'ORURO';
+                break;
+              case "BNI":
+                var expd = 'BENI';
+                break;
+              case "PND":
+                var expd = 'PANDO';
+                break;              
+              case "EXT":
+                var expd = 'ESTRANJERO';
+                break;
+              default:
+                var expd = '';
+                break;
+            }
+            $scope.macrodistritos();
             if(tipo == 'p'){
-              if($scope.tipo_persona=='NATURAL'){
-                $scope.datos.RO_NRO_P1 = x[0].dtspsl_numero_casa;
+              if($scope.tipo_persona=='NATURAL' && $scope.datos.RO_MOD!=1){
+                $scope.datos.RO_NRO_P1 = parseInt(x[0].dtspsl_numero_casa);
                 $scope.datos.RO_NOM_P1 = x[0].dtspsl_nombres;
                 $scope.datos.RO_PAT_P1 = x[0].dtspsl_paterno;
                 $scope.datos.RO_MAT_P1 = x[0].dtspsl_materno;
                 $scope.datos.RO_CAS_P1 = x[0].dtspsl_tercer_apellido;
-                $scope.datos.RO_CEL_P1 = x[0].dtspsl_movil;
+                $scope.datos.RO_CEL_P1 = parseInt(x[0].dtspsl_movil);
                 $scope.datos.RO_TEL_P1 = x[0].dtspsl_telefono;
                 $scope.datos.RO_CORR_P1 = x[0].dtspsl_correo;
-                $scope.datos.RO_EXP_P1 = x[0].dtspsl_expedido;
+                $scope.datos.RO_EXP_P1 = expd;
                 $scope.datos.RO_MAC_P1 = x[0].dtspsl_macrodistrito_desc;
                 $scope.datos.RO_ZONA_P1 = x[0].dtspsl_zona_desc;
                 $scope.datos.RO_CALL_P1 = x[0].dtspsl_nombre_via;
+                $scope.distritoZonasTipo($scope.datos.RO_MAC_P1,'Prop')
               }else{
-                $scope.datos.RO_NRO_P = x[0].dtspsl_numero_casa;
+                $scope.datos.RO_NRO_P = parseInt(x[0].dtspsl_numero_casa);
                 $scope.datos.RO_NOM_P = x[0].dtspsl_nombres;
                 $scope.datos.RO_PAT_P = x[0].dtspsl_paterno;
                 $scope.datos.RO_MAT_P = x[0].dtspsl_materno;
                 $scope.datos.RO_CAS_P = x[0].dtspsl_tercer_apellido;
-                $scope.datos.RO_CEL_P = x[0].dtspsl_movil;
+                $scope.datos.RO_CEL_P = parseInt(x[0].dtspsl_movil);
                 $scope.datos.RO_TEL_P = x[0].dtspsl_telefono;
                 $scope.datos.RO_CORR_P = x[0].dtspsl_correo;
-                $scope.datos.RO_EXP_P = x[0].dtspsl_expedido;
+                $scope.datos.RO_EXP_P = expd;
                 $scope.datos.RO_MAC_P = x[0].dtspsl_macrodistrito_desc;
                 $scope.datos.RO_ZONA_P = x[0].dtspsl_zona_desc;
                 $scope.datos.RO_CALL_P = x[0].dtspsl_nombre_via;
+                $scope.distritoZonasTipo($scope.datos.RO_MAC_P,'Prop')
               }
             }else{
-              if($scope.tipo_persona=='NATURAL'){ 
-                $scope.datos.RO_NRO_POO1 = x[0].dtspsl_numero_casa;
+              if($scope.tipo_persona=='NATURAL' && $scope.datos.RO_MOD!=1){ 
+                $scope.datos.RO_NRO_POO1 = parseInt(x[0].dtspsl_numero_casa);
                 $scope.datos.RO_NOM_POO1 = x[0].dtspsl_nombres;
                 $scope.datos.RO_PAT_POO1 = x[0].dtspsl_paterno;
                 $scope.datos.RO_MAT_POO1 = x[0].dtspsl_materno;
                 $scope.datos.RO_CAS_POO1 = x[0].dtspsl_tercer_apellido;
-                $scope.datos.RO_CEL_POO1 = x[0].dtspsl_movil;
+                $scope.datos.RO_CEL_POO1 = parseInt(x[0].dtspsl_movil);
                 $scope.datos.RO_TEL_POO1 = x[0].dtspsl_telefono;
                 $scope.datos.RO_CORR_POO1 = x[0].dtspsl_correo;
-                $scope.datos.RO_EXP_POO1 = x[0].dtspsl_expedido;
+                $scope.datos.RO_EXP_POO1 = expd;
                 $scope.datos.RO_MAC_POO1 = x[0].dtspsl_macrodistrito_desc;
                 $scope.datos.RO_ZONA_POO1 = x[0].dtspsl_zona_desc;
                 $scope.datos.RO_CALL_POO1 = x[0].dtspsl_nombre_via;
+                $scope.distritoZonasTipo($scope.datos.RO_MAC_POO1,'Pos')
               }
               else{
-                $scope.datos.RO_NRO_POO = x[0].dtspsl_numero_casa;
+                $scope.datos.RO_NRO_POO = parseInt(x[0].dtspsl_numero_casa);
                 $scope.datos.RO_NOM_POO = x[0].dtspsl_nombres;
                 $scope.datos.RO_PAT_POO = x[0].dtspsl_paterno;
                 $scope.datos.RO_MAT_POO = x[0].dtspsl_materno;
                 $scope.datos.RO_CAS_POO = x[0].dtspsl_tercer_apellido;
-                $scope.datos.RO_CEL_POO = x[0].dtspsl_movil;
+                $scope.datos.RO_CEL_POO = parseInt(x[0].dtspsl_movil);
                 $scope.datos.RO_TEL_POO = x[0].dtspsl_telefono;
                 $scope.datos.RO_CORR_POO = x[0].dtspsl_correo;
-                $scope.datos.RO_EXP_POO = x[0].dtspsl_expedido;
+                $scope.datos.RO_EXP_POO = expd;
                 $scope.datos.RO_MAC_POO = x[0].dtspsl_macrodistrito_desc;
                 $scope.datos.RO_ZONA_POO = x[0].dtspsl_zona_desc;
                 $scope.datos.RO_CALL_POO = x[0].dtspsl_nombre_via;
+                $scope.distritoZonasTipo($scope.datos.RO_MAC_POO,'Pos')
               }             
             }
           }
+          
         }
       });
     }catch(e){
@@ -1950,7 +2208,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
           RO_MAC_POO   : $scope.datos.RO_MAC_POO1,
           RO_ZONA_POO  : $scope.datos.RO_ZONA_POO1,      
           RO_CALL_POO  : $scope.datos.RO_CALL_POO1,
-          RO_NRO_POO   : $scope.datos.RO_NRO_POO1
+          RO_NRO_POO   : $scope.datos.RO_NRO_POO1,
+          RO_VEH_ADJ : $scope.datos.fileRequisitosVeh
         };
         datosV = JSON.stringify(datosV);
         var datosVeh = new vehiculo();
@@ -1999,7 +2258,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
           "RO_CALL_C" : $scope.datos.RO_CALL_C1,
           "RO_NRO_C" : $scope.datos.RO_NRO_C1,
           "RO_CAT_C" : $scope.datos.RO_CAT_C1,
-          "RO_TIP_C" : $scope.datos.RO_TIP_C1
+          "RO_TIP_C" : $scope.datos.RO_TIP_C1,
+          "RO_DOC_COND" : $scope.datos.fileRequisitosCond
         }
         datac = JSON.stringify(dataC);
         var datosCond = new conductor();
@@ -2030,6 +2290,15 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.desabilitaCon = true;
       $scope.tituloConductor = "REGISTRAR NUEVO CONDUCTOR";
       $scope.botonC = "ne";
+      var req = new listaRequisitos(); 
+      req.tipo = 'DOC_CONDUCTOR';
+      req.lstRequisitos(function(data){
+        $scope.requisitosConductor = JSON.parse(data).success.data;
+        setTimeout(function(){
+          iniciarLoadFyle();
+        }, 1000); 
+        $scope.datos.fileRequisitosCond = {};
+      })
     }
     else{
       $scope.desabilitaCon = false;
@@ -2061,6 +2330,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   }
 
   $scope.validaPropietario = function(){
+    $scope.valida = '';
+    $scope.valida2 = 'active';
     if($scope.datos.RO_CI_POO=='' 
       && $scope.datos.RO_EXP_POO=='' && $scope.datos.RO_NOM_POO=='' 
       && $scope.datos.RO_PAT_POO=='' && $scope.datos.RO_MAT_POO==''
@@ -2076,6 +2347,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.datos.RO_CEL_POO = $scope.datos.RO_CEL_P;
       $scope.datos.RO_MAC_POO =  $scope.datos.RO_MAC_P;
       $scope.datos.RO_ZONA_POO = $scope.datos.RO_ZONA_P;
+      $scope.datos.RO_ZONA_POO_OTRO = $scope.datos.RO_ZONA_P_OTRO;
       $scope.datos.RO_CALL_POO = $scope.datos.RO_CALL_P;
       $scope.datos.RO_NRO_POO = $scope.datos.RO_NRO_P;
       $scope.distritoZonasTipo($scope.datos.RO_MAC_P,'Pos')
@@ -2084,9 +2356,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
 
   $scope.adiModConductor = function(id,opc){
     if($scope.datos.RO_EXP_C!='' && $scope.datos.RO_EXP_C!=undefined && $scope.datos.PLACA!='' && $scope.datos.PLACA!=undefined
-      &&$scope.datos.RO_NOM_C!='' && $scope.datos.RO_NOM_C!=undefined && $scope.datos.RO_PAT_C!='' && $scope.datos.RO_PAT_C!=undefined
-      &&$scope.datos.RO_MAT_C!='' && $scope.datos.RO_MAT_C!=undefined && $scope.datos.RO_CEL_C!='' && $scope.datos.RO_CEL_C!=undefined
-      &&$scope.datos.RO_MAC_C!='' && $scope.datos.RO_MAC_C!=undefined && $scope.datos.RO_ZONA_C!='' && $scope.datos.RO_ZONA_C!=undefined
+      &&$scope.datos.RO_NOM_C!='' && $scope.datos.RO_NOM_C!=undefined && $scope.datos.RO_CEL_C!='' && $scope.datos.RO_CEL_C!=undefined
+      &&$scope.datos.RO_MAC_C!='' && $scope.datos.RO_MAC_C!=undefined 
       &&$scope.datos.RO_CALL_C!='' && $scope.datos.RO_CALL_C!=undefined && $scope.datos.RO_NRO_C!='' && $scope.datos.RO_NRO_C!=undefined
       &&$scope.datos.RO_CAT_C!='' && $scope.datos.RO_CAT_C!=undefined && $scope.datos.RO_TIP_C!='' && $scope.datos.RO_TIP_C!=undefined){
       var id_suc = 0;
@@ -2098,6 +2369,10 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
           nom_suc = val.veh_datos.RO_NOM_SUC
         }
       });
+      if($scope.datos.RO_MAC_C == 'OTRO'){
+        $scope.datos.RO_ZONA_C = $scope.datos.RO_ZONA_C_OTRO;
+      }
+      console.log($scope.datos.RO_MAC_C,123456);
       var dataC = {
         "RO_NOM_SUC" : nom_suc,
         "RO_EXP_C" : $scope.datos.RO_EXP_C,
@@ -2113,7 +2388,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         "RO_CALL_C" : $scope.datos.RO_CALL_C,
         "RO_NRO_C" : $scope.datos.RO_NRO_C,
         "RO_CAT_C" : $scope.datos.RO_CAT_C,
-        "RO_TIP_C" : $scope.datos.RO_TIP_C
+        "RO_TIP_C" : $scope.datos.RO_TIP_C,
+        "RO_DOC_COND" : $scope.datos.fileRequisitosCond
       }
       datac = JSON.stringify(dataC);
       var datosCond = new conductor();
@@ -2125,6 +2401,10 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       datosCond.ofi_id = id_suc; 
       datosCond.opcion = opc;
       datosCond.conductorAbm (function(data){
+        data = JSON.parse(data).success.data[0];
+        if(data.sp_abm_operador_conductor == 'Insertado'){
+          swal('Exitoso','Se registro exitosamente al conductor','success');
+        }
         $scope.listaCond();
         $scope.limpiarCon();
         $('#modalConductor').modal('hide');
@@ -2139,6 +2419,9 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     cond.ope_id = $scope.datosOperador.id_ope; 
     cond.lstConductor(function(data){
       data = JSON.parse(data).success.data;
+      for (var i = 0; i < data.length; i++) {
+        data[i].nro = i+1;
+      }
       $scope.objConductores = data;
       $scope.tablaConductor.reload();
     })
@@ -2152,12 +2435,9 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   }, {
     total: $scope.objConductores.length,
     getData: function($defer, params) {
-      var filteredData = params.filter() ?
+      var orderedData = params.filter() ?
       $filter('filter')($scope.objConductores, params.filter()) :
       $scope.objConductores;
-      var orderedData = params.sorting() ?
-      $filter('orderBy')(filteredData, params.orderBy()) :
-      $scope.$scope.objConductores;
       params.total(orderedData.length);
       $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
     }
@@ -2174,7 +2454,11 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.datos.RO_CORR_C = cond.cond_datos.RO_CORR_C;
     $scope.datos.RO_CEL_C = cond.cond_datos.RO_CEL_C;
     $scope.datos.RO_MAC_C = cond.cond_datos.RO_MAC_C;
-    $scope.datos.RO_ZONA_C = cond.cond_datos.RO_ZONA_C;
+    if($scope.datos.RO_MAC_C == 'OTRO'){
+      $scope.datos.RO_ZONA_C_OTRO = cond.cond_datos.RO_ZONA_C;
+    }else{
+      $scope.datos.RO_ZONA_C = cond.cond_datos.RO_ZONA_C;
+    }
     $scope.datos.RO_CALL_C = cond.cond_datos.RO_CALL_C;
     $scope.datos.RO_NRO_C = cond.cond_datos.RO_NRO_C;
     $scope.datos.RO_CAT_C = cond.cond_datos.RO_CAT_C;
@@ -2198,6 +2482,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.datos.RO_NRO_C = '';
     $scope.datos.RO_CAT_C = '';
     $scope.datos.RO_TIP_C= '';
+    $scope.mostrarOtraZona = false;
   }
 
   $scope.eliminarCond = function(id){
@@ -2230,7 +2515,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   }
 
   $scope.verificaConductor= function (ci) {      
-    var busC = new buscaConductorVeh();
+    /*var busC = new buscaConductorVeh();
     busC.ci = ci;
     busC.buscaConductor(function(results){
       results = JSON.parse(results);
@@ -2241,7 +2526,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         swal({
           title:"",
           text: 'El conductor con Carnet de Identidad '+$scope.datosVer.xcond_ci+' ya fue registrada en fecha '+ fechaR +', en el operador '+$scope.datosVer.xope_rz,
-          imageUrl: '../../img/btnProf.png'
+          imageUrl: '../../../app/view/registro_ciudadano/servicios/img/movilidad/btnProf.png'
         });
         $('#modalConductor').modal('hide');
         $scope.botonC = "ne";
@@ -2266,7 +2551,21 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
           }
         })
       }
-    });
+    });*/
+    var busquedaC = new busca_conductor();
+    busquedaC.ci = ci;
+    busquedaC.busca_conductor_sam(function(results){
+      results = JSON.parse(results).success.data;
+      console.log(results,1111);
+      $scope.botonC = "new";
+      $scope.desabilitaCon = false;
+      if(results.length != 0){
+        $scope.datos.RO_EXP_C = results[0].xexpd_nombre;
+        $scope.datos.RO_NOM_C = results[0].xdtspsl_nombres;
+        $scope.datos.RO_PAT_C = results[0].xdtspsl_paterno;
+        $scope.datos.RO_MAT_C = results[0].xdtspsl_materno;
+      }
+    })
   }; 
 
   $scope.datosNaturalConductor= function () {
@@ -2315,6 +2614,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       data = JSON.parse(resultado);
       if(data.success.length > 0){
         $scope.aMacrodistritos = data.success;
+        $scope.aMacrodistritos.push({"mcdstt_macrodistrito" :'OTRO'});
       }else{
           $scope.msg = "Error !!";
       }
@@ -2323,78 +2623,96 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
 
   $scope.distritoZonasTipo = function(idMacroJ,tipo){ 
     var idMacro = "";
-    if($scope.aMacrodistritos){
-      angular.forEach($scope.aMacrodistritos, function(value, key) {
-        if(value.mcdstt_macrodistrito == idMacroJ){
-          idMacro = value.mcdstt_id;
-        }
-      });
-    }        
-    $scope.idMacro = idMacro;
-    $scope.datos.f01_macro_act    =   idMacro;
-    $scope.datos.INT_AC_MACRO_ID = idMacro;
-    $scope.aDistritoZona = {};
-    try{
-      var parametros = new distritoZona();
-      parametros.idMacro = idMacro;
-      parametros.obtdist(function(resultado){
-        data = JSON.parse(resultado);
-        if(data.success.length > 0){
-          if(tipo == 'Prop'){
-            $scope.aDistritoZonaProp = data.success;
-          }else{
-            if(tipo == 'Pos'){
-              $scope.aDistritoZonaPos = data.success;
-            }else{
-              if(tipo == 'Cond'){
-                $scope.aDistritoZonaCond = data.success;
-              } 
-            }
+    if(idMacroJ != 'OTRO'){
+      if($scope.aMacrodistritos){
+        angular.forEach($scope.aMacrodistritos, function(value, key) {
+          if(value.mcdstt_macrodistrito == idMacroJ){
+            idMacro = value.mcdstt_id;
           }
-        }else{
-          $scope.msg = "Error !!";
-        } 
-      });
-    }catch(error){
-      console.log('error',error);
+        });
+      }        
+      $scope.idMacro = idMacro;
+      $scope.datos.f01_macro_act    =   idMacro;
+      $scope.datos.INT_AC_MACRO_ID = idMacro;
+      $scope.aDistritoZona = {};
+      try{
+        if(idMacroJ.length != 0){
+          var parametros = new distritoZona();
+          parametros.idMacro = idMacro;
+          parametros.obtdist(function(resultado){
+            data = JSON.parse(resultado);
+            if(data.success.length > 0){
+              if(tipo == 'Prop'){
+                $scope.aDistritoZonaProp = data.success;
+              }else{
+                if(tipo == 'Pos'){
+                  $scope.aDistritoZonaPos = data.success;
+                }else{
+                  if(tipo == 'Cond'){
+                    $scope.aDistritoZonaCond = data.success;
+                  } 
+                }
+              }
+            }else{
+              $scope.msg = "Error !!";
+            } 
+          });
+        }
+      }catch(error){
+        console.log('error',error);
+      }
+    }
+    else{
+      if(tipo == 'Prop'){
+        $scope.mostrarZonaProp = true;
+      }else{
+        if(tipo == 'Pos'){
+          $scope.mostrarZonaPoo = true;   
+        }
+      }
     }
   };
 
   $scope.distritoZonas = function(idMacroJ){ 
-    var idMacro = "";
-    if($scope.aMacrodistritos){
-      angular.forEach($scope.aMacrodistritos, function(value, key) {
+    console.log(idMacroJ);
+    if(idMacroJ != 'OTRO'){
+      var idMacro = "";
+      if($scope.aMacrodistritos){
+        angular.forEach($scope.aMacrodistritos, function(value, key) {
           if(value.mcdstt_macrodistrito == idMacroJ){
-              idMacro = value.mcdstt_id;
+            idMacro = value.mcdstt_id;
           }
-      });
-    }        
-    $scope.idMacro = idMacro;
-    $scope.datos.f01_macro_act    =   idMacro;
-    if($scope.datos.g_origen != 'POS/EMPR2017'){
+        });
+      }        
+      $scope.idMacro = idMacro;
+      $scope.datos.f01_macro_act    =   idMacro;
+      if($scope.datos.g_origen != 'PLATAFORMA'){
         $scope.datos.INT_AC_MACRO_ID    =   idMacro;
-    }
-
-    $scope.datos.INT_AC_MACRO_ID = idMacro;
-    $scope.aDistritoZona = {};
-    try{
+      }
+      $scope.datos.INT_AC_MACRO_ID = idMacro;
+      $scope.aDistritoZona = {};
+      try{
         var parametros = new distritoZona();
         parametros.idMacro = idMacro;
         parametros.obtdist(function(resultado){
-            data = JSON.parse(resultado);
-            if(data.success.length > 0){
-                $scope.desabilitadoZ=false;
-                $scope.aDistritoZona = data.success;
-                $scope.desabilitadoV=true;
-                $scope.desabilitadoNo=true;
-            }else{
-                $scope.msg = "Error !!";
-            }
+          data = JSON.parse(resultado);
+          if(data.success.length > 0){
+            $scope.desabilitadoZ=false;
+            $scope.aDistritoZona = data.success;
+            $scope.desabilitadoV=true;
+            $scope.desabilitadoNo=true;
+          }else{
+            $scope.msg = "Error !!";
+          }
         });
-    }catch(error){
+      }catch(error){
         $scope.desabilitadoZ=true;
         $scope.desabilitadoV=true;
         $scope.desabilitadoNo=true;
+      }
+    }
+    else{
+      $scope.mostrarOtraZona = true;
     }
   };
 
@@ -2602,6 +2920,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     }
     $scope.botonn="new";
     $scope.publi=[];
+    $scope.lssubcategoria();
   }
 
   $scope.eliminarPubli = function(dato){
@@ -2634,7 +2953,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
             alertify.success("Formulario almacenado");
             document.getElementById('gu').disabled=false;          
           }
-          if($scope.tipo_persona == 'NATURAL' &&  $scope.datosMostrar == 3 && $scope.datos.fileArRequisitos != undefined){
+          if($scope.tipo_persona == 'NATURAL' && $scope.datos.RO_MOD != 1 &&$scope.datosMostrar == 3 && $scope.datos.fileArRequisitos != undefined){
             alertify.success("Formulario almacenado");
             document.getElementById('gu').disabled=false;     
           }
@@ -2664,20 +2983,40 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       swal.close();
       setTimeout(function(){
         $scope.recuperandoDatosGenesis();
-        if($scope.tipo_persona=='NATURAL'){
+        if($scope.tipo_persona=='NATURAL' && $scope.datos.RO_MOD!=1){
           $scope.adicionaVehiculoConductor();
         }else{
           if($scope.datos.RO_MOD==1){
             $scope.lstOficinasDatos();
-            var cantTotal = 0;
+            var nroVehOfic = [];
+            console.log($scope.objOficinas,111,$scope.objVehiculos);
             for(var i=0;i<$scope.objOficinas.length;i++){
-              cantTotal = cantTotal+$scope.objOficinas[i].ofi_datos.RO_CAN_VEH_SUC;
+              var cantTotal = 0; 
+              for (var j = 0; j < $scope.objVehiculos.length; j++) {
+                if($scope.objOficinas[i].ofi_id == $scope.objVehiculos[j].veh_ofi_id){
+                  cantTotal ++;
+                }
+              }
+              nroVehOfic.push({"idOfi":$scope.objOficinas[i].ofi_id,"dirOfi":$scope.objOficinas[i].ofi_oficina,"cantVeh":cantTotal});
             }
-            if(cantTotal==$scope.objVehiculos.length){
-              $scope.crea_tramite_lotus(data);
+            var cadena = 'La cantidad de vehiculos de la(s) sucursal(es): '
+            var sw = 0;
+            for (var i = 0; i < nroVehOfic.length; i++) {
+              if(nroVehOfic[i].cantVeh<20){
+                cadena = cadena + nroVehOfic[i].dirOfi+',';
+                sw = 1;
+              }
+            }
+            if(sw == 1){
+              cadena = cadena.substring(0,cadena.length-1)+' es menor a 20';
+              swal({
+                title: '',
+                text: '<h3>' + cadena + '</h3>',
+                html: true,
+                type: 'warning',
+              });
             }else{
-              //$scope.crea_tramite_lotus(data);
-              swal("", "No cumple con la cantidad total de vehiculos que registro por oficina", "warning");
+              $scope.crea_tramite_lotus(data);
             }
           }else{
             $scope.crea_tramite_lotus(data);
@@ -2749,7 +3088,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       tramiteIgob.validarFormProcesos(function(resultado){
         swal({
           title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
-          text: 'Su número de Trámite es:<h3></strong> ' + nroTramite + '</strong></h3>\n Usted debe dirigirse al tercer día hábil a la Secretaria Municipal de Movilidad y contactarse con el Asesor Legal DROM, portando sus documentos originales para la verificación.',
+          text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2>\n Usted debe dirigirse al tercer día hábil a la Secretaria Municipal de Movilidad y contactarse con el Asesor Legal DROM, portando sus documentos originales para la verificación.',
           html: true,
           type: 'success',
           //timer: 5000,

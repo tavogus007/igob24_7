@@ -95,6 +95,11 @@
 
   .resaltado { background-color: #F9B1A7; }
 
+  .btn-warning {
+    background-color: #f8ac59;
+    border-color: #f8ac59;
+    color: #FFFFFF;
+  }
 </style>
 <script type="text/javascript">
 
@@ -184,28 +189,28 @@
                     <table ng-table="tablaVehiculo" show-filter="true" class="table tableE table-striped table-bordered">
                       <tr ng-repeat="veh in $data" ng-style="veh.resultado=='vencido' && {'background-color':'#F9B1A7'}">
                         <td align="center"  data-title="'Opciones'" style="width:8%">
-                          <a  class="btn btn-default btn-circle"  ng-click="registrarObservacion(veh.veh_id,'V');" title="Registrar Observación" ng-show="veh.veh_estado_veh =='APROBADO'"><i class="fa fa-pencil-square-o" style="color:#249FE6"></i></a>
-                          <a  class="btn btn-default btn-circle"  ng-click="listaObservaciones(veh.veh_id,'V');" title="Lista Observaciones Vehiculo" ng-show="veh.veh_estado_veh =='APROBADO'"><i class="fa fa-list-ol" style="color:#249FE6"></i></a>
-                          <a  class="btn btn-default btn-circle"  ng-click="eliVehiculo(veh.veh_id);" title="Eliminar Vehiculo" ng-show="veh.veh_estado_veh =='APROBADO'" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
-                          <a  class="btn btn-default btn-circle"  ng-click="renovacionTmov(veh)" title="Renovación de TMOV" ng-show="veh.resultado=='vencido'"><i class="fa fa-refresh" style="color:#249FE6" ></i></a>
+                          <a  class="btn btn-success btn-circle"  ng-click="registrarObservacion(veh.veh_id,'V');" title="Registrar Observación" ng-show="veh.veh_estado_veh =='APROBADO'"><i class="fa fa-pencil-square-o" style="color:white"></i></a>
+                          <a  class="btn btn-primary btn-circle"  ng-click="listaObservaciones(veh.veh_id,'V');" title="Lista Observaciones Vehiculo" ng-show="veh.veh_estado_veh =='APROBADO' && veh.veh_obs>0"><i class="fa fa-list-ol" style="color:white"></i></a>
+                          <a  class="btn btn-danger btn-circle"  ng-click="eliVehiculo(veh.veh_id);" title="Eliminar Vehiculo" ng-show="veh.veh_estado_veh =='APROBADO'" ><i class="fa fa-trash-o" style="color:white"></i></a>
+                          <a  class="btn btn-warning btn-circle"  ng-click="renovacionTmov(veh)" title="Renovación de TMOV" ng-show="veh.resultado=='vencido'"><i class="fa fa-refresh" style="color:white" ></i></a>
                         </td>
                         <td align="center" data-title="'#'" style="width:2%">{{$index+1}} {{}}</td>
-                        <td class="text-center" style="width:12%" data-title="'Oficina'" sortable="'RO_NOM_SUC'" filter="{'RO_NOM_SUC':'text'}" ng-show ="datos.RO_MOD_VALUE==1">
+                        <td class="text-center" style="width:12%" data-title="'Oficina'" sortable="'RO_NOM_SUC'" ng-show ="datos.RO_MOD_VALUE==1">
                           {{veh.veh_datos.RO_NOM_SUC}}
                         </td> 
                         <td class="text-center" style="width:10%" data-title="'Placa'" sortable="'veh_placa'" filter="{'veh_placa':'text'}">
                           {{veh.veh_placa}}
                         </td>                      
-                        <td class="text-center" style="width:5%" data-title="'Modelo'" sortable="'RO_MOD_V'" filter="{'RO_MOD_V':'text'}">
+                        <td class="text-center" style="width:5%" data-title="'Modelo'" sortable="'RO_MOD_V'" >
                           {{veh.veh_datos.RO_MOD_V}}
                         </td>
-                        <td class="text-center" style="width:10%" data-title="'Tipo'" sortable="'RO_TIP_V'" filter="{'RO_TIP_V':'text'}">
+                        <td class="text-center" style="width:10%" data-title="'Tipo'" sortable="'RO_TIP_V'" >
                           {{veh.veh_datos.RO_TIP_V}}
                         </td>
-                        <td class="text-center" style="width:10%" data-title="'Marca'" sortable="'RO_MAR_V'" filter="{'RO_MAR_V':'text'}">
+                        <td class="text-center" style="width:10%" data-title="'Marca'" sortable="'RO_MAR_V'" >
                           {{veh.veh_datos.RO_MAR_V}}
                         </td>
-                        <td class="text-center" style="width:8%" data-title="'Color'" sortable="'RO_COLOR_V'" filter="{'RO_COLOR_V':'text'}">
+                        <td class="text-center" style="width:8%" data-title="'Color'" sortable="'RO_COLOR_V'" >
                           {{veh.veh_datos.RO_COLOR_V}}
                         </td>
                         <td class="text-center" style="width:8%" data-title="'Estado'" sortable="'veh_estado_veh'" filter="{'veh_estado_veh':'text'}">
@@ -217,7 +222,7 @@
                       </tr>
                     </table>
                   </div>    
-                  <div class="modal fade" id="vehiculo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="vehiculo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -254,7 +259,6 @@
                                               name="RO_ID_SUC"
                                               ng-model="datos.RO_ID_SUC"
                                               class="form-control"
-                                              ng-on
                                               ng-options="ofic.xofi_id as ofic.xdescr for ofic in datosOfiR" 
                                               ng-disabled="desabilitaVeh"
                                               ng-change ="limpiaModelo();"
@@ -348,7 +352,7 @@
                                     </div>
                                   </div>
                                 </div>
-                                <div class="col-sm-4">                                                        
+                                <div class="col-sm-4">  
                                   <div class="form-group">
                                     <label class="control-label">Radicatoria:</label>
                                     <div class="controls">
@@ -362,12 +366,12 @@
                                 </div>
                               </div> 
                               <div class="col-md-12">
-                                <h3 class="col-md-12">Datos de Propietario/Poseedor</h3><br>                                             
+                                <h3 class="col-md-12">Datos de Propietario/Poseedor</h3><br>
                                 <ul class="nav nav-tabs">
-                                  <li class="active">
-                                    <a data-toggle="tab" ng-click="" data-target="#tab-one1"><h4>Registro de Propietario de Vehículo</h4></a>
+                                  <li class="{{valida}}">
+                                    <a data-toggle="tab" ng-click="validaTabPoo();" data-target="#tab-one1" ><h4>Registro de Propietario de Vehículo</h4></a>
                                   </li>
-                                  <li>
+                                  <li class="{{valida2}}">
                                     <a data-toggle="tab" ng-click="validaPropietario();" data-target="#tab-two1"><h4>Registro de Poseedor de Vehículo</h4></a>
                                   </li>                                       
                                 </ul><br>
@@ -381,7 +385,7 @@
                                             <input id="RO_CI_P" name="RO_CI_P" type="number"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_P" ng-disabled="desabilitaVeh"  /></div>
                                         </div>
                                       </div>
-                                      <div class="col-sm-5">                                                        
+                                      <div class="col-sm-5">  
                                         <div class="form-group">
                                           <label class="col-sm-3 control-label">Expedido:</label>
                                           <div class="col-sm-9">
@@ -407,7 +411,7 @@
                                         </div>
                                       </div>
                                       <div class="col-md-12">
-                                        <h3><label for="url" >Datos Personales</label></h3>
+                                        <h3><label for="url" >Datos Personales Propietario</label></h3>
                                       </div>                                                    
                                       <div class="col-md-4">
                                         <div class="form-group">
@@ -444,7 +448,6 @@
                                       <div class="col-md-4">
                                         <div class="form-group" >
                                           <label class="control-label" for="url" >Macrodistrito:</label>
-                                          
                                           <div class="controls">
                                             <select id="RO_MAC_P" 
                                                     name="RO_MAC_P"
@@ -452,31 +455,39 @@
                                                     ng-model="datos.RO_MAC_P"
                                                     class="form-control"
                                                     ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
-                                                    required ng-change="distritoZonas(datos.RO_MAC_P)" ng-disabled="desabilitaVeh">
+                                                    required ng-change="distritoZonasTipo(datos.RO_MAC_P,'Prop')" ng-disabled="desabilitaVeh">
                                               <option value="">--Seleccionar--</option>
                                             </select>
                                           </div>
                                         </div>
                                       </div>                                    
-                                      <div class="col-md-4">
+                                      <div class="col-md-4" ng-show="mostrarZonaProp==false">
                                         <div class="form-group" >
                                           <label for="url" class="control-label">Zona:</label>
-                                          <div class="controls">                                                                
+                                          <div class="input-group col-md-12">  
                                             <select id="RO_ZONA_P"
                                                     name="RO_ZONA_P"
                                                     placeholder="Distrito - Zona"
                                                     ng-model="datos.RO_ZONA_P"
                                                     class="form-control"
-                                                    ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZona | orderBy:['nombre','dist_nombre']"
+                                                    ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZonaProp | orderBy:['nombre','dist_nombre']"
                                                     required ng-disabled="desabilitaVeh">
                                               <option value="">--Seleccionar--</option>
                                             </select>
                                           </div>  
                                         </div>
-                                      </div>                                                                                      
+                                      </div>  
+                                      <div class="col-md-4" ng-show="mostrarZonaProp==true">
+                                        <div class="form-group">
+                                          <label class="control-label">Zona:</label>
+                                          <div class="input-group col-md-12">
+                                            <input id="RO_ZONA_P_OTRO" name="RO_ZONA_P_OTRO" type="text"  class="form-control" placeholder="Zona" ng-model="datos.RO_ZONA_P_OTRO" style="text-transform: uppercase;" required ng-disabled="desabilitaVeh"/>
+                                          </div>
+                                        </div>
+                                      </div>
                                       <div class="col-md-4">
                                         <div class="form-group">
-                                          <label class="control-label">Calle:</label>
+                                          <label class="control-label">Dirección:</label>
                                           <div class="controls">
                                             <input id="RO_CALL_P" name="RO_CALL_P" type="text"  class="form-control" placeholder="Calle" ng-model="datos.RO_CALL_P"  required ng-disabled="desabilitaVeh"/>
                                           </div>
@@ -500,7 +511,7 @@
                                           <input id="RO_CI_POO" name="RO_CI_POO" type="text"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_POO" ng-disabled="desabilitaVeh" /></div>
                                       </div>
                                     </div>
-                                    <div class="col-sm-5">                                                        
+                                    <div class="col-sm-5">  
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">Expedido:</label>
                                         <div class="col-sm-9">
@@ -526,7 +537,7 @@
                                       </div>
                                     </div>
                                     <div class="col-md-12">
-                                      <h3><label for="url" >Datos Personales</label></h3>
+                                      <h3><label for="url" >Datos Personales Poseedor</label></h3>
                                     </div> 
                                     <div> 
                                       <div class="col-md-4">
@@ -552,8 +563,7 @@
                                             <input id="RO_MAT_POO" name="RO_MAT_POO" type="text"  class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_POO"  onkeyup="validaLetras(this);" required ng-disabled="desabilitaVeh"/>
                                           </div>
                                         </div>
-                                      </div>                                                                                                   
-                                      <div class="col-md-4">
+                                      </div>                                                                 <div class="col-md-4">
                                         <div class="form-group">
                                           <label class="control-label">Celular:</label>
                                             <div class="controls">  
@@ -571,30 +581,38 @@
                                                     ng-model="datos.RO_MAC_POO"
                                                     class="form-control"
                                                     ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
-                                                    ng-change="distritoZonas(datos.RO_MAC_POO)" ng-disabled="desabilitaVeh">
+                                                    ng-change="distritoZonasTipo(datos.RO_MAC_POO,'Pos')" ng-disabled="desabilitaVeh">
                                               <option value="">--Seleccionar--</option>
                                             </select>
                                           </div>
                                         </div>
                                       </div>                        
-                                      <div class="col-md-4">
-                                        <div class="form-group" >
+                                      <div class="col-md-4" ng-show="mostrarZonaPoo==false">
+                                        <div class="form-group">
                                           <label for="url" class="control-label">Zona:</label>
-                                          <div class="controls">
+                                          <div class="input-group col-md-12">
                                             <select id="RO_ZONA_POO"
                                                     name="RO_ZONA_POO"
                                                     placeholder="Distrito - Zona"
                                                     ng-model="datos.RO_ZONA_POO"
                                                     class="form-control"
-                                                    ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZona | orderBy:['nombre','dist_nombre']" ng-disabled="desabilitaVeh">
+                                                    ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZonaPos | orderBy:['nombre','dist_nombre']" ng-disabled="desabilitaVeh">
                                               <option value="">--Seleccionar--</option>
                                             </select>
                                           </div>
                                         </div>
                                       </div>
+                                      <div class="col-md-4" ng-show="mostrarZonaPoo==true">
+                                        <div class="form-group">
+                                          <label class="control-label">Zona:</label>
+                                          <div class="input-group col-md-12">
+                                            <input id="RO_ZONA_POO_OTRO" name="RO_ZONA_POO_OTRO" type="text"  class="form-control" placeholder="Zona" ng-model="datos.RO_ZONA_POO_OTRO" style="text-transform:uppercase;" required ng-disabled="desabilitaVeh"/>
+                                          </div>
+                                        </div>
+                                      </div>
                                       <div class="col-md-4">
                                         <div class="form-group">
-                                          <label class="control-label">Calle:</label>
+                                          <label class="control-label">Dirección:</label>
                                           <div class="controls">
                                             <input id="RO_CALL_POO" name="RO_CALL_POO" type="text"  class="form-control" placeholder="Calle" ng-model="datos.RO_CALL_POO" style="text-transform:uppercase;" required ng-disabled="desabilitaVeh"/>
                                           </div>
@@ -621,7 +639,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="modal fade" id="Observaciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="Observaciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -674,28 +692,28 @@
                     <table ng-table="tablaConductor" show-filter="true" class="table tableE table-striped table-bordered">
                       <tr ng-repeat="cond in $data" ng-style="cond.resultado=='vencido' && {'background-color':'#F9B1A7'}">
                         <td align="center"  data-title="'Opciones'" style="width:10%">
-                          <a  class="btn btn-default btn-circle"  ng-click="registrarObservacion(cond.cond_id,'C');" title="Registrar Observación" ng-show="cond.cond_estado_doc=='APROBADO'"><i class="fa fa-pencil-square-o" style="color:#249FE6"></i></a>
-                          <a  class="btn btn-default btn-circle"  ng-click="listaObservaciones(cond.cond_id,'C');" title="Lista Observaciones Conductor" ng-show="cond.cond_estado_doc=='APROBADO'"><i class="fa fa-list-ol" style="color:#249FE6"></i></a>
-                          <a class="btn btn-default btn-circle"  ng-click="eliminarCond(cond.cond_id)" title="Elimina Conductor" ng-show="cond.cond_estado_doc=='APROBADO'"><i class="fa fa-trash-o" style="color:#249FE6"></i></a> 
-                          <a  class="btn btn-default btn-circle"  ng-click="renovacionTic(cond)" title="Renovación de TIC" ng-show="cond.resultado=='vencido'"><i class="fa fa-refresh" style="color:#249FE6" ></i></a>
+                          <a  class="btn btn-success btn-circle"  ng-click="registrarObservacion(cond.cond_id,'C');" title="Registrar Observación" ng-show="cond.cond_estado_doc=='APROBADO'"><i class="fa fa-pencil-square-o" style="color:white"></i></a>
+                          <a  class="btn btn-primary btn-circle"  ng-click="listaObservaciones(cond.cond_id,'C');" title="Lista Observaciones Conductor" ng-show="cond.cond_estado_doc=='APROBADO' && cond.cond_obs >0"><i class="fa fa-list-ol" style="color:white"></i></a>
+                          <a class="btn btn-danger btn-circle"  ng-click="eliminarCond(cond.cond_id)" title="Elimina Conductor" ng-show="cond.cond_estado_doc=='APROBADO'"><i class="fa fa-trash-o" style="color:white"></i></a> 
+                          <a  class="btn btn-warning btn-circle"  ng-click="renovacionTic(cond)" title="Renovación de TIC" ng-show="cond.resultado=='vencido'"><i class="fa fa-refresh" style="color:white" ></i></a>
                         </td>
                         <td align="center" data-title="'#'" style="width:2%">{{$index+1}}</td>
-                        <td class="text-center" style="width:12%" data-title="'Oficina-Macro'" sortable="'RO_NOM_SUC'" filter="{'RO_NOM_SUC':'text'}" ng-show="datos.RO_MOD_VALUE == 1">
+                        <td class="text-center" style="width:12%" data-title="'Oficina-Macro'" sortable="'RO_NOM_SUC'"  ng-show="datos.RO_MOD_VALUE == 1">
                           {{cond.cond_datos.RO_NOM_SUC}}
                         </td> 
                         <td class="text-center" style="width:8%" data-title="'CI'" sortable="'cond_ci'" filter="{'cond_ci':'text'}">
                           {{cond.cond_ci}}
                         </td>                      
-                        <td class="text-center" style="width:8%" data-title="'Placa'" sortable="'PLACA'" filter="{'PLACA':'text'}">
+                        <td class="text-center" style="width:8%" data-title="'Placa'" sortable="'PLACA'">
                           {{cond.cond_datos.PLACA}}
                         </td>
-                        <td class="text-center" style="width:10%" data-title="'Nombre'" sortable="'RO_NOM_C'" filter="{'RO_NOM_C':'text'}">
+                        <td class="text-center" style="width:10%" data-title="'Nombre'" sortable="'RO_NOM_C'">
                           {{cond.cond_datos.RO_NOM_C}}
                         </td>
-                        <td class="text-center" style="width:10%" data-title="'Paterno'" sortable="'RO_PAT_C'" filter="{'RO_PAT_C':'text'}">
+                        <td class="text-center" style="width:10%" data-title="'Paterno'" sortable="'RO_PAT_C'">
                           {{cond.cond_datos.RO_PAT_C}}
                         </td>
-                        <td class="text-center" style="width:10%" data-title="'Materno'" sortable="'RO_MAT_C'" filter="{'RO_MAT_C':'text'}">
+                        <td class="text-center" style="width:10%" data-title="'Materno'" sortable="'RO_MAT_C'">
                           {{cond.cond_datos.RO_MAT_C}}
                         </td>
                         <td class="text-center" style="width:10%" data-title="'Estado'" sortable="'cond_estado_doc'" filter="{'cond_estado_doc':'text'}">
@@ -707,7 +725,7 @@
                       </tr>
                     </table>
                   </div>  
-                  <div class="modal fade" id="modalConductor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="modalConductor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -833,10 +851,10 @@
                                     </div>
                                   </div>
                                 </div>                                                       
-                                <div class="col-md-4">
+                                <div class="col-md-4" ng-show="mostrarOtraZona == false">
                                   <div class="form-group" >
                                     <label for="url" class="control-label">Zona:</label>
-                                    <div class="controls">                                                                
+                                    <div class="input-group col-md-12">  
                                       <select id="RO_ZONA_C"
                                               name="RO_ZONA_C"
                                               placeholder="Distrito - Zona"
@@ -851,9 +869,17 @@
                                     </div>  
                                   </div>
                                 </div> 
+                                <div class="col-md-4" ng-show="mostrarOtraZona == true">
+                                  <div class="form-group" >
+                                    <label for="url" class="control-label">Zona:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_ZONA_C_OTRO" name="RO_ZONA_C_OTRO" type="text"  class="form-control" ng-disabled="desabilitaCon" placeholder="Zona" ng-model="datos.RO_ZONA_C_OTRO"  style="text-transform:uppercase;" required />
+                                    </div>
+                                  </div>
+                                </div>
                                 <div class="col-md-4">
                                   <div class="form-group">
-                                    <label class="control-label">Calle:</label>
+                                    <label class="control-label">Dirección:</label>
                                     <div class="controls">
                                       <input id="RO_CALL_C" name="RO_CALL_C" type="text"  class="form-control" ng-disabled="desabilitaCon" placeholder="Calle" ng-model="datos.RO_CALL_C"  style="text-transform:uppercase;" required />
                                     </div>

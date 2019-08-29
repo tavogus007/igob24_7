@@ -1,5 +1,6 @@
 if(jsonURLS){
     urlMov = jsonURLS.CONEXION_MOVILIDAD + "wsMov";
+    urlIf1 = jsonURLS.CONEXION_API_PG_IF1+"wsIf";
 }
 
 var urlComp;
@@ -29,6 +30,29 @@ function ejecutarAjaxMov(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
     }
   });
   return dataResp;
+};
+
+function ejecutarAjaxIF(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+    $.ajax({
+      type: vTypeCall,
+      url: urlIf1 + vUrlComp,
+      data: vDataCall,
+      //dataType: "json",
+      async: false,
+      //processData: true,
+      success: function(response) {
+        //console.log(response);
+        dataResp = JSON.stringify(response);
+        vFunctionResp(dataResp);
+      },
+      error: function (response, status, error) {
+        //dataResp = response.responseText;
+        dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+        vFunctionResp(dataResp);
+      }
+    });
+
+    return dataResp;
 };
 
 //**********************REGISTRO DE OPERADORES**********************************
@@ -406,6 +430,17 @@ buscaObservacionesCondVeh.prototype.buscaObservaciones = function (functionResp)
     };
     ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
 };
+
+function observaciones(){
+}
+
+observaciones.prototype.lstTodasObservaciones = function (functionResp) {
+    urlComp = "/listaTodasObservaciones";
+    typeCall = "post";
+    dataParams = {
+    };
+    ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
+};
 //*******************************Renovacion TIC y TMOV*********************************
 function renovacionVehTmov(){
   this.id_veh;
@@ -469,6 +504,32 @@ modOficinasAprobadas.prototype.modificaOficina = function(functionResp){
   };
   ejecutarAjaxMov(urlCompIf, typeCallIf,dataParamsIf, functionResp); 
 }
+
+function busca_placa(){
+    this.placa;
+};
+
+busca_placa.prototype.busca_placa_sam = function (functionResp) {     
+  urlCompIf =  "/buscaVehiculoSam";     
+  typeCallIf = "post";     
+  dataParamsIf = { "placa": this.placa };    
+  ejecutarAjaxMov(urlCompIf, typeCallIf,
+  dataParamsIf, functionResp); 
+};
+
+function busca_conductor(){
+    this.ci;
+};
+
+busca_conductor.prototype.busca_conductor_sam = function (functionResp) {     
+  urlCompIf =  "/buscaConductorSam";     
+  typeCallIf = "post";     
+  dataParamsIf = { "ci": this.ci };    
+  ejecutarAjaxMov(urlCompIf, typeCallIf,
+  dataParamsIf, functionResp); 
+};
+
+
 //********************************************************************************************************
 function asig_dinamico(){
     this.consulta;
@@ -479,5 +540,32 @@ asig_dinamico.prototype.dinamico = function (functionResp) {
   typeCallIf = "post";     
   dataParamsIf = { "consulta": this.consulta };    
   ejecutarAjaxMov(urlCompIf, typeCallIf,dataParamsIf, functionResp); 
+};
+
+//***********************TEMPORAL************************
+function crear_Tramite_lotus1(){
+    this.proid;
+    this.actid;
+    this.usr_id;
+    this.datos;
+    this.procodigo;
+    this.macro_id;
+    this.nodo_id;
+    this.ws_id;
+};
+crear_Tramite_lotus1.prototype.tram_lotus1 = function (functionResp) {
+  urlComp = "/crearTramiteLotus";
+  typeCall = "post";
+  dataParams = {
+    "proid" : this.proid,
+    "actid" : this.actid,
+    "usr_id" : this.usr_id,
+    "datos" : this.datos,
+    "procodigo" : this.procodigo,
+    "macro_id" : this.macro_id,
+    "nodo_id" : this.nodo_id,
+    "ws_id" : this.ws_id
+  };
+  ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };
 

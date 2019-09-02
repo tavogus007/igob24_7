@@ -3002,7 +3002,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
             var cadena = 'La cantidad de vehiculos de la(s) sucursal(es): '
             var sw = 0;
             for (var i = 0; i < nroVehOfic.length; i++) {
-              if(nroVehOfic[i].cantVeh<20){
+              if(nroVehOfic[i].cantVeh<1){
                 cadena = cadena + nroVehOfic[i].dirOfi+',';
                 sw = 1;
               }

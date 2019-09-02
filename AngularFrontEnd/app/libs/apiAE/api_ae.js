@@ -12,7 +12,7 @@ var dataParams;
 var typeCall;
 
 if(jsonURLS){
-  var urlGENESIS = jsonURLS.CONEXION_API_PG_IF+"wsGENESIS";
+  var urlGENESIS = jsonURLS.CONEXION_API_PG_IF1+"wsGENESIS";
   var urlIf2 = jsonURLS.CONEXION_API_PG_IF+"wsIf"; 
 }
 
@@ -148,6 +148,34 @@ getDatosAEViae.prototype.getDatosAE_Viae = function (functionResp) {
     typeCallAe = "post";
     dataParamsAe = {
         "idActividadEconomica":this.idActividadEconomica
+    };
+    ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};
+
+gLstDatos.prototype.lstDatosContribuyenteLey272 = function (functionResp) {
+    urlCompAe = "/lstDatosGenesisLey272";
+    typeCallAe = "post";
+    dataParamsAe = {
+        "idContribuyente":this.idContribuyente,
+        "clase":this.clase,
+        "padron":this.padron,
+        "identificacion":this.identificacion,
+        "primerNombre":this.primerNombre,
+        "primerApellido":this.primerApellido,
+        "segundoApellido":this.segundoApellido,
+        "nit":this.nit,
+        "empresa":this.empresa,
+        "p_accion":this.p_accion
+    };
+    ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};
+
+gLstActividadEconomica.prototype.lstActividadEconomicaLey272 = function (functionResp) {
+    urlCompAe = "/lstActividaEconomicaLey272";
+    typeCallAe = "post";
+    dataParamsAe = {
+        "idContribuyente":this.idContribuyente,
+        "tipo":this.tipo
     };
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
 };

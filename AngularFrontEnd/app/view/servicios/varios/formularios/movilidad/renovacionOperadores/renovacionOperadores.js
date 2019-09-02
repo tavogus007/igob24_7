@@ -836,7 +836,7 @@ function renovacionOperadoresController($scope, $rootScope, $routeParams, $locat
       datosNeXO['INT_ID_ACTIVIDAD_ECONOMICA'] = datosOfi.IdActividad;
       datosNeXO['f01_nro_actividad']            = datosOfi.Nro;
       console.log('datosNeXO',datosNeXO)
-      var tramite = new crear_Tramite_lotus();
+      var tramite = new crear_Tramite_lotus1();
       tramite.proid = 47;
       tramite.actid = 360;
       tramite.usr_id = 0;        
@@ -845,7 +845,7 @@ function renovacionOperadoresController($scope, $rootScope, $routeParams, $locat
       tramite.macro_id = 0;
       tramite.nodo_id = 672;
       tramite.ws_id = 24;
-      tramite.tram_lotus(function(results){ 
+      tramite.tram_lotus1(function(results){ 
         results = JSON.parse(results);
         if (results !=null) {
           results = results.success.data[0].casonro;

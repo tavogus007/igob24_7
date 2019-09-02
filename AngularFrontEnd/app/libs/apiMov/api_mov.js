@@ -32,7 +32,7 @@ function ejecutarAjaxMov(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
   return dataResp;
 };
 
-function ejecutarAjaxIF(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+function ejecutarAjaxIF9097(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
     $.ajax({
       type: vTypeCall,
       url: urlIf1 + vUrlComp,
@@ -505,6 +505,32 @@ modOficinasAprobadas.prototype.modificaOficina = function(functionResp){
   ejecutarAjaxMov(urlCompIf, typeCallIf,dataParamsIf, functionResp); 
 }
 
+function actualizaRepresentante(){
+  this.ope_id;
+  this.ci_repr; 
+  this.datos;
+  this.usr_id;
+  this.persona;
+  this.oidciudadano;
+  this.repr_adjuntos;
+}
+
+actualizaRepresentante.prototype.modificaRepresentante = function(functionResp){
+  urlCompIf = "/modificaRepresentante";
+  typeCallIf = "post";
+  dataParamsIf = {
+    "ope_id"        : this.ope_id,
+    "ci_repr"       : this.ci_repr, 
+    "datos"         : this.datos,
+    "usr_id"        : this.usr_id,
+    "persona"       : this.persona,
+    "oidciudadano"  : this.oidciudadano,
+    "repr_adjuntos" : this.repr_adjuntos
+  };
+  ejecutarAjaxMov(urlCompIf, typeCallIf,dataParamsIf, functionResp); 
+}
+
+
 function busca_placa(){
     this.placa;
 };
@@ -553,8 +579,10 @@ function crear_Tramite_lotus1(){
     this.nodo_id;
     this.ws_id;
 };
+
 crear_Tramite_lotus1.prototype.tram_lotus1 = function (functionResp) {
   urlComp = "/crearTramiteLotus";
+  alert(123);
   typeCall = "post";
   dataParams = {
     "proid" : this.proid,
@@ -566,6 +594,6 @@ crear_Tramite_lotus1.prototype.tram_lotus1 = function (functionResp) {
     "nodo_id" : this.nodo_id,
     "ws_id" : this.ws_id
   };
-  ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
+  ejecutarAjaxIF9097(urlComp, typeCall, dataParams, functionResp);
 };
 

@@ -28,11 +28,13 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
     $scope.cargarDatosCiudadano();
     $scope.recuperandoDatosGenesis();
     $scope.listarAE();
-    $scope.initMap();
   }
+
+  $scope.$on('api:ready',function(){
+    $scope.initMap();
+  });
   //*******************ACTIVIDADES ECONOMICAS************************
   $scope.recuperandoDatosGenesis = function(){
-    console.log($scope.datos,'datos');
     var tipoContribuyente  = sessionService.get('TIPO_PERSONA');
     var ciDocumento        = '';//sessionService.get('CICIUDADANO'));
     var nitDocumento       = '';//sessionService.get('CICIUDADANO'));
@@ -60,6 +62,7 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
     try{
       conGenesis.lstDatosContribuyenteLey272(function(resultado){
         resultadoApi = JSON.parse(resultado);
+        console.log(resultadoApi,'resultado');
         if (resultadoApi.success) {
           var response = resultadoApi;
           if(response.success.dataSql.length > 0){
@@ -740,6 +743,7 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
   $scope.ejecutarFile = function(idfile){
     var sid =   document.getElementById(idfile);
     if(sid){
+      $scope.adjCiu = 0;
         document.getElementById(idfile).click();
     }else{
         alert("Error ");
@@ -1604,7 +1608,6 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
   $scope.ltCaracteristica = function(idlee){
     $scope.lCaracteristica = {};
     var idcarac = "";        
-    
     //ID CARACTERISITICA
     if($scope.TipoLetrero){
         angular.forEach($scope.TipoLetrero, function(value, key) {
@@ -1781,26 +1784,6 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
     $scope.registro = {};
     if(validarRep == true){
       $('#modificaRep').modal('show');
-      /*swal({
-        title: "Modificar",
-        text: "Esta seguro de Modificar datos del Representante Legal ?, Para realizar la modificación debe realizarlo desde el IGOB",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "SI",
-        cancelButtonText: "No",
-        closeOnConfirm: false,
-        closeOnCancel: false },
-      function(isConfirm){
-        if (isConfirm) {
-          swal.close();
-                
-        } else {
-          $('#formModificar').modal('hide');
-          swal.close();
-          $scope.datos.f10_modificacionRepEmpresa = false;    
-        }
-      });*/
     }else{
       $scope.datos.f10_modificacionRepEmpresa = false;    
     }
@@ -2353,60 +2336,104 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
       }
     });
   };
-
+  
+  var latitud = 0;
+  var longitud = 0;
+  var activarClick = false;
+  var versionUrl = "";
+  var markerToClose = null;
+  var dynamicMarkers;
+  var vNroInsidenciaG = 0;
+  var recargaMapita;
   var map;
   var mapj;
   var markers = [];
   var markersj = [];
 
   $scope.initMap = function() {
-    var haightAshbury = {
-      lat: -16.495635, 
-      lng: -68.133543
-    };
-    map = new google.maps.Map(document.getElementById('mapModificar'), {
-      zoom: 15,
-      center: haightAshbury,
-    });
-    mapj = new google.maps.Map(document.getElementById('mapModificarJ'), {
-      zoom: 15,
-      center: haightAshbury,
-    });
-    map.addListener('click', function(event) {
-      $scope.deleteMarkers();
-      $scope.registro.latitud = event.latLng.lat();
-      $scope.registro.longitud = event.latLng.lng();
-      $scope.addMarker(event.latLng);
-    });
-    mapj.addListener('click', function(event) {
-      $scope.deleteMarkersJ();
-      $scope.registro.latitud = event.latLng.lat();
-      $scope.registro.longitud = event.latLng.lng();
-      $scope.addMarkerJ(event.latLng);
-    });   
+      var haightAshbury = {
+          lat: -16.495635, 
+          lng: -68.133543
+      };
+      mapj = new google.maps.Map(document.getElementById('mapModificarJ'), {
+        zoom: 15,
+        center: haightAshbury
+      });
+      mapj.addListener('click', function(event) {
+        $scope.deleteMarkersJ();
+        $rootScope.laaa = event.latLng.lat();
+        $rootScope.looo = event.latLng.lng();
+        $scope.datos.INT_AC_latitud = $rootScope.laaa;
+        $scope.datos.INT_AC_longitud = $rootScope.looo;
+        $scope.addMarkerJ(event.latLng);
+      });/*
+      map = new google.maps.Map(document.getElementById('mapModificar'), {
+          zoom: 15,
+          center: haightAshbury,
+      });
+
+      mapj = new google.maps.Map(document.getElementById('mapModificarJ'), {
+          zoom: 15,
+          center: haightAshbury,
+      });
+      alert(1222),
+      console.log(mapj);
+
+      // This event listener will call addMarker() when the map is clicked.
+      map.addListener('click', function(event) {
+          $scope.deleteMarkers();
+          $scope.registro.latitud = event.latLng.lat();
+          $scope.registro.longitud = event.latLng.lng();
+          $scope.addMarker(event.latLng);
+      });
+
+      mapj.addListener('click', function(event) {
+          $scope.deleteMarkersJ();
+          $scope.registro.latitud = event.latLng.lat();
+          $scope.registro.longitud = event.latLng.lng();
+          $scope.addMarkerJ(event.latLng);
+      });   */
   }
+  
+  $scope.restaurarmapa    =   function(){
+      setTimeout(function(){            
+          $scope.mostrarMapa = true;
+          google.maps.event.trigger(map, 'resize');
+          $scope.abrirMapa();
+          $scope.$apply();
+      }, 300);
+  }
+  
+  $scope.restaurarmapaJ    =   function(){
+      setTimeout(function(){
+          $scope.mostrarMapaJ = true;
+          google.maps.event.trigger(mapj, 'resize');
+          $scope.abrirMapaJ();
+          $scope.$apply();
+      }, 300);
+  }    
 
   $scope.addMarker = function(location) {
-    var marker = new google.maps.Marker({
-      position: location,
-      map: map
+      var marker = new google.maps.Marker({
+        position: location,
+        map: map
     });
-    markers.push(marker);
+      markers.push(marker);
   }
 
   $scope.addMarkerJ = function(location) {
-    var markerj = new google.maps.Marker({
-      position: location,
-      map: mapj
+      var markerj = new google.maps.Marker({
+        position: location,
+        map: mapj
     });
-    markersj.push(markerj);
+      markersj.push(markerj);
   }
 
-  $scope.setMapOnAll = function(map) {
-    for (var i = 0; i < markers.length; i++) {
-      markers[i].setMap(map);
+    $scope.setMapOnAll = function(map) {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
     }
-  }
+}
 
   $scope.setMapOnAllJ = function(mapj) {
     for (var i = 0; i < markersj.length; i++) {
@@ -2414,21 +2441,23 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
     }
   }
 
-  $scope.clearMarkers = function() {
-    $scope.setMapOnAll(null);
+    $scope.clearMarkers = function() {
+      $scope.setMapOnAll(null);
   }
 
   $scope.clearMarkersJ = function() {
-    $scope.setMapOnAllJ(null);
+      $scope.setMapOnAllJ(null);
   }
 
-  $scope.showMarkers = function() {
-    $scope.setMapOnAll(map);
+    // Shows any markers currently in the array.
+    $scope.showMarkers = function() {
+      $scope.setMapOnAll(map);
   }
 
   $scope.showMarkersJ = function() {
-    $scope.setMapOnAllJ(mapj);
+      $scope.setMapOnAllJ(mapj);
   }
+
 
   $scope.deleteMarkers = function() {
     $scope.clearMarkers();
@@ -2436,17 +2465,33 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
   }
 
   $scope.deleteMarkersJ = function() {
-    $scope.clearMarkersJ();
-    markersj = [];
+      $scope.clearMarkersJ();
+      markersj = [];
   }
 
-  $scope.restaurarmapaJ    =   function(){
-    setTimeout(function(){
-      $scope.mostrarMapaJ = true;
-      google.maps.event.trigger(mapj, 'resize');
-      $scope.abrirMapaJ();
-      $scope.$apply();
-    }, 300);
+  $scope.abrirMapa = function () {
+    google.maps.visualRefresh = true;
+    $scope.mostrarMapa = true;
+    if( 
+        (typeof($scope.registro.latitud) !=  'undefined' && $scope.registro.latitud  != "" && $scope.registro.latitud != 0 && $scope.registro.latitud != "0") &&
+        (typeof($scope.registro.longitud) != 'undefined' && $scope.registro.longitud != "" && $scope.registro.longitud != 0 && $scope.registro.longitud != "0")
+        ){
+        var nuevoUbicacion = {
+            lat: parseFloat($scope.registro.latitud), 
+            lng: parseFloat($scope.registro.longitud)
+        };
+
+        map.setCenter(nuevoUbicacion);
+        $scope.addMarker(nuevoUbicacion);
+    }else{
+
+        var nuevoUbicacion = {
+            lat: -16.495635, 
+            lng: -68.133543
+        };
+        map.setCenter(nuevoUbicacion);
+        $scope.addMarker(nuevoUbicacion);
+    }         
   }
 
   $scope.abrirMapaJ = function () {
@@ -2456,57 +2501,109 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
       (typeof($scope.registro.latitud) !=  'undefined' && $scope.registro.latitud  != "" && $scope.registro.latitud != 0 && $scope.registro.latitud != "0") &&
       (typeof($scope.registro.longitud) != 'undefined' && $scope.registro.longitud != "" && $scope.registro.longitud != 0 && $scope.registro.longitud != "0")
       ){
-      var nuevoUbicacion = {
-          lat: parseFloat($scope.registro.latitud), 
-          lng: parseFloat($scope.registro.longitud)
-      };
-      console.log('maapj',mapj);
-      //mapj.setCenter(nuevoUbicacion);
-      $scope.addMarkerJ(nuevoUbicacion);
+        var nuevoUbicacion = {
+            lat: parseFloat($scope.registro.latitud), 
+            lng: parseFloat($scope.registro.longitud)
+        };
+        mapj.setCenter(nuevoUbicacion);
+        $scope.addMarkerJ(nuevoUbicacion);
     }else{
-      var nuevoUbicacion = {
-        lat: -16.495635, 
-        lng: -68.133543
-      };
-      //mapj.setCenter(nuevoUbicacion);
-      $scope.addMarkerJ(nuevoUbicacion);
+        var nuevoUbicacion = {
+            lat: -16.495635, 
+            lng: -68.133543
+        };
+        mapj.setCenter(nuevoUbicacion);
+        $scope.addMarkerJ(nuevoUbicacion);
     }         
-  }  
+  }
 
   $scope.cerrarMapa = function () {
-    $scope.mostrarMapa = false;
-    $.blockUI();
-    setTimeout(function(){
       $scope.mostrarMapa = false;
-      if($scope.tipo_persona == 'JURIDICO'){
-        document.getElementById("macrodistritoj").value = $scope.registro.macrodistrito;
-        document.getElementById("distritoj").value = $scope.registro.distrito;
-        document.getElementById("zonaj").value = $scope.registro.zona;
+  };
+
+  $scope.cerrarMapaJ = function () {
+      $scope.mostrarMapaJ = false;
+  };
+  $scope.convertToDataURLviaCanvas = function (url, callback, outputFormat){
+    var img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = function(){
+      var canvas = document.createElement('CANVAS');
+      var ctx = canvas.getContext('2d');
+      var dataURL;
+      canvas.height = this.height;
+      canvas.width = this.width;
+      ctx.drawImage(this, 0, 0);
+      dataURL = canvas.toDataURL(outputFormat);
+      callback(dataURL);
+      canvas = null;
+    };
+    img.src = url;        
+  };
+
+  $scope.subirImgBase64= function(imagen,url,nombre){
+    var contentType = 'image/png';
+    var b64Data = imagen;
+    var blob = b64toBlob(b64Data, contentType);
+    var blobUrl = URL.createObjectURL(blob);
+    function b64toBlob(b64Data, contentType, sliceSize) {
+      contentType = contentType || '';
+      sliceSize = sliceSize || 512;
+      var byteCharacters = atob(b64Data);
+      var byteArrays = [];
+      for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+          var slice = byteCharacters.slice(offset, offset + sliceSize);
+          var byteNumbers = new Array(slice.length);
+          for (var i = 0; i < slice.length; i++) {
+              byteNumbers[i] = slice.charCodeAt(i);
+          }
+          var byteArray = new Uint8Array(byteNumbers);
+          byteArrays.push(byteArray);
       }
-      $scope.idMacrod = $scope.registro.municipio;
-      var mc = $scope.registro.macrodistrito;
-      var di =  $scope.registro.distrito;
-      var zo = $scope.registro.zona;
-      if(mc == 0){
-        $scope.deshabilitadoMc = true;
-      }
-      else{
-        $scope.deshabilitadoMc = false;
-      }
-      if(di == 0){
-        $scope.deshabilitadoDs = true;
-      }
-      else{
-        $scope.deshabilitadoDs = false;
-      }
-      if(zo == 0){
-        $scope.deshabilitadoZ = true;
-      }
-      else{
-        $scope.deshabilitadoZ = false;
-      }
-      $.unblockUI();
-    },1000);
+      var blob = new Blob(byteArrays, {type: contentType});
+      return blob;
+    }
+    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+    var sDirTramite = sessionService.get('IDTRAMITE');
+    $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+    var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/";
+    blob.name = nombre;
+    var resFormulario = {
+        container:url,
+        file_path:nombre,
+        body:blob
+    };
+    fileUpload.uploadFileToUrl(blob, uploadUrl);
+  };
+
+  $scope.capturarImagen = function(ubi){
+    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+    var latitud = $rootScope.laaa;
+    var longitud = $rootScope.looo;
+    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+    var sDirTramite = sessionService.get('IDTRAMITE');
+    $scope.url = "RC_CLI/" + $scope.oidCiudadano + "/" + sDirTramite;
+    $scope.archivo1 = ubi+"croquisActividad.jpg";
+    $scope.datos.INT_AC_direccionImagenmapa = CONFIG.APIURL+"/files/"+$scope.url + "/"+ $scope.archivo1 + "?app_name=todoangular";
+    aDocAdjuntosmapa = [];
+    var datosAdjuntosmapa = {
+      "nombre_archivo" : $scope.archivo1,
+      "tam_archivo" : '0',
+      "estado_archivo" : "Env.",
+
+      "opcion_archivo" : "-",
+      "url_archivo" : $scope.datos.INT_AC_direccionImagenmapa,
+      "docdatos" : "Croquis de la actividad",
+      "descripcion" : "Croquis de la actividad",
+      "titulo" : "Croquis"
+    };
+    aDocAdjuntosmapa[0]=datosAdjuntosmapa;
+    $scope.datos.ARCHIVOS_MULTIPLES_MAPA = aDocAdjuntosmapa;
+    $scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center='+ latitud +','+ longitud +'&zoom=16&size=600x300&maptype=roadmap&markers=color:red|label:S|'+ latitud +','+ longitud +'&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img){
+      var Imagen = base64Img.replace(/data:image\/png;base64,/i,'');
+      $scope.Imagenb = Imagen;
+      $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);
+    });
   }
 
   //***************************Adjuntos*************************
@@ -2973,7 +3070,7 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
           setTimeout(function(){
               alertify.success(mensajeExito);  
           }, 100);
-          $scope.cargarDatosCiudadano();        
+          $scope.cargarDatosCiudadano();       
         }
         else
         {
@@ -2992,7 +3089,7 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
       modificarJuridico.nit=response.nit;
       modificarJuridico.razonSocial=response.razon;
       modificarJuridico.telefono=response.telefono_representante;
-      modificarJuridico.movil=response.celular_representante;
+      modificarJuridico.movil=parseInt(response.celular_representante);
       modificarJuridico.correo=response.correo;
       modificarJuridico.ci=response.cedula
       modificarJuridico.complemento=response.complemento;
@@ -3017,7 +3114,7 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
       modificarJuridico.zona                 = response.zona;
       modificarJuridico.zona_desc            = $('#zona option:selected').text();
       modificarJuridico.tipo_via=response.tipo_via;
-      modificarJuridico.tipo_via_desc=$('#tipo_via option:selected').text();
+      modificarJuridico.tipo_via_desc=$('#tipo_via1 option:selected').text();
       modificarJuridico.nombre_via=response.nombrevia;
       modificarJuridico.numero_casa=response.numero;
       modificarJuridico.edificio=response.edificio;
@@ -3042,15 +3139,17 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
       };
       modificarJuridico.URL=$scope.nombreFile1;
       modificarJuridico.oid=oidCiudadano; 
+      console.log(modificarJuridico,$('#distrito option:selected').text(),11111);
       modificarJuridico.modificarJuridico(function(resultado){
         resultadoApi = JSON.parse(resultado);
         if( typeof(resultadoApi.success) != 'undefined')
         {
           var mensajeExito = "Se realizo la actualizacion de sus datos!";  
+          console.log(resultadoApi,1235);
           setTimeout(function(){
               alertify.success(mensajeExito);  
           }, 100);      
-          $scope.cargarDatosCiudadano();        
+          $scope.cargarDatosCiudadano();    
         }
         else
         {
@@ -3156,28 +3255,25 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
                 'RO_CEL_RLJ':$scope.datos.MO_CEL_RLJ
               }
             }
-            /*var rep = new representante();
-            rep.op_id   = $scope.datos.MO_ID_OPE;   
+            var rep = new actualizaRepresentante();
+            rep.ope_id = $scope.datos.MO_ID_OPE;
             rep.ci_repr = ci; 
-            rep.datos   = datosRepresentante;  
-            rep.usr_id  = 1;    
+            rep.datos = JSON.stringify(datosRepresentante);
+            rep.usr_id = 1;
             rep.persona = $scope.tipo_persona;
-            rep.oidciudadano = $scope.oidCiu;
-            rep.representanteInsert(function(results){
-              if($scope.tipo_persona == 'NATURAL'){
-                $scope.lstRequisitosOpe();  
-                $scope.botonesGuardar = true;        
+            rep.oidciudadano = $scope.datos.MO_OID;
+            rep.repr_adjuntos = JSON.stringify($scope.datos.fileArRequisitosArrayRepresentante);
+            rep.modificaRepresentante(function(results){
+              results = JSON.parse(results).success.data[0].sp_ope_modifica_representante;
+              if(results == 1){
+                $scope.crea_tramite_lotus($scope.datos);
               }else{
-                if($scope.datos.RO_MOD==1){
-                  $scope.lstOficinasDatos();
-                  $scope.botonO = 'new';
-                }else{
-                  $scope.lstRequisitosOpe();  
-                } 
+                swal("", "Ocurrio un error vuelva a intentarlo", "error");
               }
-            })*/
+            })
+          }else{
+            $scope.crea_tramite_lotus($scope.datos);
           }
-          //$scope.crea_tramite_lotus($scope.datos);
         }
         else{
           swal("", "No se modifico el dato de ninguna oficina, ni del representante legal", "warning");  
@@ -3249,85 +3345,5 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
   };
 
   //**********************Datos del Mapa************************
-  $scope.convertToDataURLviaCanvas = function (url, callback, outputFormat){
-    var img = new Image();
-    img.crossOrigin = 'Anonymous';
-    img.onload = function(){
-      var canvas = document.createElement('CANVAS');
-      var ctx = canvas.getContext('2d');
-      var dataURL;
-      canvas.height = this.height;
-      canvas.width = this.width;
-      ctx.drawImage(this, 0, 0);
-      dataURL = canvas.toDataURL(outputFormat);
-      callback(dataURL);
-      canvas = null;
-    };
-    img.src = url;        
-  };
-
-  $scope.subirImgBase64= function(imagen,url,nombre){
-    var contentType = 'image/png';
-    var b64Data = imagen;
-    var blob = b64toBlob(b64Data, contentType);
-    var blobUrl = URL.createObjectURL(blob);
-    function b64toBlob(b64Data, contentType, sliceSize) {
-      contentType = contentType || '';
-      sliceSize = sliceSize || 512;
-      var byteCharacters = atob(b64Data);
-      var byteArrays = [];
-      for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-          var slice = byteCharacters.slice(offset, offset + sliceSize);
-          var byteNumbers = new Array(slice.length);
-          for (var i = 0; i < slice.length; i++) {
-              byteNumbers[i] = slice.charCodeAt(i);
-          }
-          var byteArray = new Uint8Array(byteNumbers);
-          byteArrays.push(byteArray);
-      }
-      var blob = new Blob(byteArrays, {type: contentType});
-      return blob;
-    }
-    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
-    var sDirTramite = sessionService.get('IDTRAMITE');
-    $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
-    var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/";
-    blob.name = nombre;
-    var resFormulario = {
-        container:url,
-        file_path:nombre,
-        body:blob
-    };
-    fileUpload.uploadFileToUrl(blob, uploadUrl);
-  };
-
-  $scope.capturarImagen = function(ubi){
-    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
-    var latitud = $rootScope.laaa;
-    var longitud = $rootScope.looo;
-    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
-    var sDirTramite = sessionService.get('IDTRAMITE');
-    $scope.url = "RC_CLI/" + $scope.oidCiudadano + "/" + sDirTramite;
-    $scope.archivo1 = ubi+"croquisActividad.jpg";
-    $scope.datos.INT_AC_direccionImagenmapa = CONFIG.APIURL+"/files/"+$scope.url + "/"+ $scope.archivo1 + "?app_name=todoangular";
-    aDocAdjuntosmapa = [];
-    var datosAdjuntosmapa = {
-      "nombre_archivo" : $scope.archivo1,
-      "tam_archivo" : '0',
-      "estado_archivo" : "Env.",
-
-      "opcion_archivo" : "-",
-      "url_archivo" : $scope.datos.INT_AC_direccionImagenmapa,
-      "docdatos" : "Croquis de la actividad",
-      "descripcion" : "Croquis de la actividad",
-      "titulo" : "Croquis"
-    };
-    aDocAdjuntosmapa[0]=datosAdjuntosmapa;
-    $scope.datos.ARCHIVOS_MULTIPLES_MAPA = aDocAdjuntosmapa;
-    $scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center='+ latitud +','+ longitud +'&zoom=16&size=600x300&maptype=roadmap&markers=color:red|label:S|'+ latitud +','+ longitud +'&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img){
-      var Imagen = base64Img.replace(/data:image\/png;base64,/i,'');
-      $scope.Imagenb = Imagen;
-      $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);
-    });
-  }
+  
 }

@@ -9,8 +9,7 @@
     <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script> 
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" /> 
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS"/>
-
-    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfKWci28piaE9q8Or0DzmUUJXbbdja54&callback=initMap"></script>
   </head>
 <style>
   
@@ -227,6 +226,13 @@ function validaLetras(campo){
   else{
     $("#"+campo.name).val('');
   }
+}
+
+function initMap()
+{
+  accessScope('#principalMod', function (scope){
+    scope.initMap();
+  });
 }
 
 </script> 
@@ -1529,7 +1535,7 @@ function validaLetras(campo){
                                     </div>
                                     <div class="hr-line-dashed"></div>
                                     <div class="form-group"><label class="col-sm-2 control-label">Subir Imagen:</label>
-                                      <div class="col-sm-10"><input name="file-input" id="file-input" type="file" value="Subir" "files[0]" nv-file-select="" uploader="uploader" file-model="myFile1" accept="image/*"/></div>
+                                      <div class="col-sm-10"><input name="file-input" id="file-input" type="file" value="Subir" "files[0]" nv-file-select=""  file-model="myFile1" accept="image/*"/></div>
                                     </div>
                                     <div class="form-group"><label class="col-sm-2 control-label">Imagen:</label>
                                       <div class="col-sm-10"><img id="imgSalida" ng-src="{{imagenPortada}}" width="150px" height="150px"></div>
@@ -1700,7 +1706,7 @@ function validaLetras(campo){
                                         <div class="col-md-6">
                                           <div class="form-group custom-upload">
                                             <div>
-                                              <input type="file" id="FILE_FOTOCOPIA_CI" name="FILE_FOTOCOPIA_CI" uploader-model="FILE_FOTOCOPIA_CI" accept="image/*" style="display: none;">
+                                              <input type="file" id="FILE_FOTOCOPIA_CI" name="FILE_FOTOCOPIA_CI"  accept="image/*" style="display: none;">
                                               <div class="input-group">                                  
                                                 <input id="txt_FILE_FOTOCOPIA_CI" name="txt_FILE_FOTOCOPIA_CI" ng-model="registro.FILE_FOTOCOPIA_CI" type="text" ng-disabled="true" class="form-control input-lg" required>
                                                 <span class="input-group-btn">
@@ -1730,7 +1736,7 @@ function validaLetras(campo){
                                         <div class="col-md-6">
                                           <div class="form-group custom-upload">
                                             <div>
-                                              <input type="file" id="FILE_FOTOCOPIA_CI_R" name="FILE_FOTOCOPIA_CI_R" uploader-model="FILE_FOTOCOPIA_CI_R" accept="image/*" style="display: none;">
+                                              <input type="file" id="FILE_FOTOCOPIA_CI_R" name="FILE_FOTOCOPIA_CI_R"  accept="image/*" style="display: none;">
                                               <div class="input-group">
                                                 <input id="txt_FILE_FOTOCOPIA_CI_R" name="txt_FILE_FOTOCOPIA_CI_R" ng-model="registro.FILE_FOTOCOPIA_CI_R" type="text" ng-disabled="true" class="form-control input-lg" required>
                                                 <span class="input-group-btn">
@@ -1779,7 +1785,7 @@ function validaLetras(campo){
                                         <div class="col-md-6">
                                           <div class="form-group custom-upload">
                                             <div>
-                                              <input type="file" id="FILE_CONDICIONES_USO" name="FILE_CONDICIONES_USO" uploader-model="FILE_CONDICIONES_USO" accept="image/*" style="display: none;">
+                                              <input type="file" id="FILE_CONDICIONES_USO" name="FILE_CONDICIONES_USO"  accept="image/*" style="display: none;">
                                               <div class="input-group">
                                                 <input id="txt_FILE_CONDICIONES_USO" name="txt_FILE_CONDICIONES_USO" ng-model="registro.FILE_CONDICIONES_USO" type="text" ng-disabled="true" class="form-control input-lg" required>
                                                 <span class="input-group-btn">
@@ -2027,7 +2033,7 @@ function validaLetras(campo){
                                     <div class="form-group">
                                       <label class="url">País:</label>
                                       <div class="controls">
-                                        <select id="paisJ" name="paisJ" placeholder="País" ng-model="registro.pais" class="form-control" required  ng-change="actualizaDepartamento(registro.pais)">
+                                        <select id="pais" name="pais" placeholder="País" ng-model="registro.pais" class="form-control" required  ng-change="actualizaDepartamento(registro.pais)">
                                           <option ng-repeat="dato in comdpais" value="{{dato.pais_codigo}}">{{dato.pais_pais}}</option>
                                         </select>
                                       </div>
@@ -2037,7 +2043,7 @@ function validaLetras(campo){
                                     <div class="form-group">
                                       <label class="url">Departamento:</label>
                                       <div class="controls">
-                                        <select id="departamentoJ" name="departamentoJ" placeholder="Departamento" ng-model="registro.departamento" class="form-control" required ng-disabled="deshabilitadoD" ng-change="cargarProvincia(registro.departamento)">
+                                        <select id="departamento" name="departamento" placeholder="Departamento" ng-model="registro.departamento" class="form-control" required ng-disabled="deshabilitadoD" ng-change="cargarProvincia(registro.departamento)">
                                           <option ng-repeat="data in comdepa" value="{{data.dpto_codigo}}">{{data.dpto_departamento}}</option>
                                         </select>
                                       </div>
@@ -2047,7 +2053,7 @@ function validaLetras(campo){
                                     <div class="form-group">
                                       <label class="url">Provincia:</label>
                                       <div class="controls">
-                                        <select id="provinciaJ" name="provinciaJ" placeholder="Provincia" ng-model="registro.provincia" class="form-control" required ng-disabled="deshabilitadoP" ng-change="cargarMunicipio(registro.provincia)">
+                                        <select id="provincia" name="provincia" placeholder="Provincia" ng-model="registro.provincia" class="form-control" required ng-disabled="deshabilitadoP" ng-change="cargarMunicipio(registro.provincia)">
                                           <option ng-repeat="data in aProvincias" value="{{data.prv_codigo_compuesto}}">{{data.prv_provincia}}</option>
                                         </select>
                                       </div>
@@ -2057,7 +2063,7 @@ function validaLetras(campo){
                                     <div class="form-group">
                                       <label class="url">Municipio:</label>
                                       <div class="controls">
-                                        <select id="municipioJ" name="municipioJ" placeholder="Municipio" ng-model="registro.municipio" class="form-control" required ng-disabled="deshabilitadoM" ng-change="cargarMacrodistrito(registro.municipio)">
+                                        <select id="municipio" name="municipio" placeholder="Municipio" ng-model="registro.municipio" class="form-control" required ng-disabled="deshabilitadoM" ng-change="cargarMacrodistrito(registro.municipio)">
                                           <option ng-repeat="data in aMunicipios" value="{{data.mnc_codigo_compuesto}}">{{data.mnc_municipio}}</option>
                                         </select>
                                       </div>
@@ -2067,7 +2073,7 @@ function validaLetras(campo){
                                     <div class="form-group">
                                       <label class="url">Macrodistrito:</label>
                                       <div class="controls">
-                                        <select id="macrodistritoj" ng-change="cargarDistrito(registro.macrodistrito)"  ng-model="registro.macrodistrito"  class="form-control" required  ng-disabled="deshabilitadoMc">
+                                        <select id="macrodistrito" ng-change="cargarDistrito(registro.macrodistrito)"  ng-model="registro.macrodistrito"  class="form-control" required  ng-disabled="deshabilitadoMc">
                                           <option ng-repeat="datos in aMacrodistritos" value="{{datos.mcdstt_id}}">{{datos.mcdstt_macrodistrito}}</option>
                                         </select>
                                       </div>
@@ -2077,7 +2083,7 @@ function validaLetras(campo){
                                     <div class="form-group">
                                       <label class="url">Distrito:</label>
                                       <div class="controls">
-                                        <select id="distritoj" ng-change="cargarZona(registro.distrito)"   ng-model="registro.distrito"  class="form-control" required  ng-disabled="deshabilitadoDs">
+                                        <select id="distrito" ng-change="cargarZona(registro.distrito)"   ng-model="registro.distrito"  class="form-control" required  ng-disabled="deshabilitadoDs">
                                           <option ng-repeat="datos in aDistritos" value="{{datos.dstt_id}}">{{datos.dstt_distrito}}</option>
                                         </select>
                                       </div>
@@ -2087,7 +2093,7 @@ function validaLetras(campo){
                                     <div class="form-group">
                                       <label class="url">Zona:</label>
                                       <div class="controls">
-                                        <select id="zonaj" ng-model="registro.zona" class="form-control" required  ng-disabled="deshabilitadoZ">
+                                        <select id="zona" ng-model="registro.zona" class="form-control" required  ng-disabled="deshabilitadoZ">
                                           <option ng-repeat="datos in aZonas" value="{{datos.dist_id}}">{{datos.dist_nombre}}</option>
                                         </select>
                                       </div>
@@ -2167,7 +2173,7 @@ function validaLetras(campo){
                                       &nbsp;
                                   </div>
                                   <div class="col-md-10">                                    
-                                    <div id="mapModificarJ" aling="center" style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
+                                      <div id="mapModificarJ" aling="center" style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
                                   </div>
                                   <div class="col-md-1">
                                       &nbsp;
@@ -2237,7 +2243,7 @@ function validaLetras(campo){
                                         <div class="col-md-8">
                                           <div class="form-group custom-upload">
                                             <div>
-                                              <input type="file" id="FILE_PODER_LEGAL" name="FILE_PODER_LEGAL" uploader-model="FILE_PODER_LEGAL" accept="image/*" style="display: none;">
+                                              <input type="file" id="FILE_PODER_LEGAL" name="FILE_PODER_LEGAL"  accept="image/*" style="display: none;">
                                               <div class="input-group">
                                                 <input id="txt_FILE_PODER_LEGAL" name="txt_FILE_PODER_LEGAL" ng-model="registro.FILE_PODER_LEGAL" type="text" ng-disabled="true" class="form-control input-lg" required>
                                                 <span class="input-group-btn">
@@ -2261,7 +2267,7 @@ function validaLetras(campo){
                                         </div>
                                         <div class="col-md-8">
                                           <div class="form-group custom-upload">
-                                            <input type="file" id="FILE_TEST_CONST" name="FILE_TEST_CONST" uploader-model="FILE_TEST_CONST" accept="image/*" style="display: none;">
+                                            <input type="file" id="FILE_TEST_CONST" name="FILE_TEST_CONST"  accept="image/*" style="display: none;">
                                             <div class="input-group">
                                               <input id="txt_FILE_TEST_CONST" name="txt_FILE_TEST_CONST" ng-model="registro.FILE_TEST_CONST" type="text" ng-disabled="true" class="form-control input-lg" required>
                                               <span class="input-group-btn">
@@ -2284,7 +2290,7 @@ function validaLetras(campo){
                                         </div>
                                         <div class="col-md-8">
                                           <div class="form-group custom-upload">
-                                            <input type="file" id="FILE_NUM_IDENT" name="FILE_NUM_IDENT" uploader-model="FILE_NUM_IDENT" accept="image/*" style="display: none;">
+                                            <input type="file" id="FILE_NUM_IDENT" name="FILE_NUM_IDENT"  accept="image/*" style="display: none;">
                                             <div class="input-group">
                                               <input id="txt_FILE_NUM_IDENT" name="txt_FILE_NUM_IDENT" ng-model="registro.FILE_NUM_IDENT" type="text" ng-disabled="true" class="form-control input-lg" required>
                                               <span class="input-group-btn">
@@ -2307,7 +2313,7 @@ function validaLetras(campo){
                                         </div>
                                         <div class="col-md-8">
                                           <div class="form-group custom-upload">
-                                            <input type="file" id="FILE_FUND_EMP" name="FILE_FUND_EMP" uploader-model="FILE_FUND_EMP" accept="image/*" style="display: none;">
+                                            <input type="file" id="FILE_FUND_EMP" name="FILE_FUND_EMP"  accept="image/*" style="display: none;">
                                             <div class="input-group"> 
                                               <input id="txt_FILE_FUND_EMP" name="txt_FILE_FUND_EMP" ng-model="registro.FILE_FUND_EMP" type="text" ng-disabled="true" class="form-control input-lg" required>
                                               <span class="input-group-btn">
@@ -2330,7 +2336,7 @@ function validaLetras(campo){
                                         </div>
                                         <div class="col-md-8">
                                           <div class="form-group custom-upload">
-                                            <input type="file" id="FILE_CONDICIONES_USO_J" name="FILE_CONDICIONES_USO_J" uploader-model="FILE_CONDICIONES_USO_J" accept="image/*" style="display: none;">
+                                            <input type="file" id="FILE_CONDICIONES_USO_J" name="FILE_CONDICIONES_USO_J" accept="image/*" style="display: none;">
                                             <div class="input-group">                                 
                                               <input id="txt_FILE_CONDICIONES_USO_J" name="txt_FILE_CONDICIONES_USO_J" ng-model="registro.FILE_CONDICIONES_USO_J" type="text" ng-disabled="true" class="form-control input-lg" required>
                                               <span class="input-group-btn">

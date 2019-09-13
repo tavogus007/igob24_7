@@ -2600,6 +2600,10 @@ $scope.vias_v2= function(zona,tipo)
                 var longitud = centro_1[0];
                 wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
                 console.log("PUNTO",centro_1);
+
+                $scope.registro.longitud = longitud;
+                $scope.registro.latitud = latitud;
+
                 $("#latitud").val(latitud);
                 $("#longitud").val(longitud);
                 /////////////////////////////////////////////////////////////////////

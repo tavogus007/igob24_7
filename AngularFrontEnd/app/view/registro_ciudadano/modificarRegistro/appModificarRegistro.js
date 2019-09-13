@@ -2379,16 +2379,23 @@ $scope.vias_v2= function(zona,tipo)
                 lng: parseFloat($scope.registro.longitud)
             };
 
-            map.setCenter(nuevoUbicacion);
+            //map.setCenter(nuevoUbicacion);
             $scope.addMarker(nuevoUbicacion);
+
+            console.log("tttttttttt",nuevoUbicacion);
+            $scope.open_map_registroN(nuevoUbicacion);
+
         }else{
 
             var nuevoUbicacion = {
                 lat: -16.495635, 
                 lng: -68.133543
             };
-            map.setCenter(nuevoUbicacion);
+            //map.setCenter(nuevoUbicacion);
             $scope.addMarker(nuevoUbicacion);
+
+            console.log("uuuuuuuuuuu",nuevoUbicacion);
+            $scope.open_map_registroN(nuevoUbicacion);
         }         
     }
 
@@ -2405,7 +2412,7 @@ $scope.vias_v2= function(zona,tipo)
             };
 
             console.log("kkkkkkk",nuevoUbicacion);
-            $scope.open_map_registro(nuevoUbicacion)
+            $scope.open_map_registroJ(nuevoUbicacion)
 
 
             mapj.setCenter(nuevoUbicacion);
@@ -2417,6 +2424,8 @@ $scope.vias_v2= function(zona,tipo)
             };
 
             console.log("hhhhhhhh",nuevoUbicacion);
+
+            $scope.open_map_registroJ(nuevoUbicacion)
 
             mapj.setCenter(nuevoUbicacion);
             $scope.addMarkerJ(nuevoUbicacion);
@@ -2544,7 +2553,79 @@ $scope.vias_v2= function(zona,tipo)
     var mapa,datos;
     
 
-    $scope.open_map_registro = function(nuevoUbicacion)
+    $scope.open_map_registroN = function(nuevoUbicacion)
+    {
+        //document.getElementById('busqueda_p').style.display = 'inline';
+        //document.getElementById('boton1').style.display = 'inline';
+
+        var latitud = nuevoUbicacion.lat;
+        var longitud = nuevoUbicacion.lng;
+
+        console.log("ENTRANDO A open_map_registro", latitud,longitud);
+        //var mapa = new ol.Map();
+        
+        setTimeout(function()
+        {
+            $("#mapModificar_1").empty();
+            mapa = new ol.Map({
+            layers: [
+                    new ol.layer.Group({
+                                          title: 'Mapas Base',
+                                          layers: [
+                                                    osm,
+                                                    municipios,
+                                                    macrodistritos,
+                                                    vectorLayer
+                                                  ]
+                                      })
+                   
+                  ],
+            //overlays: [featureOverlay],
+            target: 'mapModificar_1',
+            //controls: controls,
+            //interactions: mover,
+            view: view
+            });
+
+            var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: 'Leyenda'});
+            mapa.addControl(layerSwitcher);
+
+            var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
+            feature.setStyle(iconStyle_1);
+            vectorSource.addFeature(feature);
+            mapa.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
+            mapa.getView().setZoom(16);
+
+            var datos_salida = [];
+
+            mapa.on('click', function (evt)
+            {
+                vectorSource.clear();
+                var coord = mapa.getCoordinateFromPixel(evt.pixel);
+                var centro = ol.proj.transform(coord, 'EPSG:3857', epsg32719);
+                var wkt = '';
+                var centro_1 = ol.proj.transform(coord, 'EPSG:3857', epsg4326);
+                var latitud = centro_1[1];
+                var longitud = centro_1[0];
+                wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
+                console.log("PUNTO",centro_1);
+
+                $scope.registro.longitud = longitud;
+                $scope.registro.latitud = latitud;
+
+                $("#latitud").val(latitud);
+                $("#longitud").val(longitud);
+                /////////////////////////////////////////////////////////////////////
+                var feature = new ol.Feature(
+                new ol.geom.Point(ol.proj.fromLonLat(centro_1))
+                );
+                feature.setStyle(iconStyle_1);
+                vectorSource.addFeature(feature);
+            });
+        },500);     
+    };
+
+    $scope.open_map_registroJ = function(nuevoUbicacion)
     {
         //document.getElementById('busqueda_p').style.display = 'inline';
         //document.getElementById('boton1').style.display = 'inline';

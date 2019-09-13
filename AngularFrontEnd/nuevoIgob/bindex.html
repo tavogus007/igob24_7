@@ -978,15 +978,16 @@
 	<script type="text/javascript">
 		google.load('maps', '2');
 		var map;
+
 		function pla1(){
-		    if (GBrowserIsCompatible()) {
+        if (GBrowserIsCompatible()) {
 		        function createMarker(point,html) {
 		    	    var marker = new GMarker(point);
 		        	GEvent.addListener(marker, "click", function() {
 		          	marker.openInfoWindowHtml(html);});
 		        	return marker;
 		    	}
-				var map = new GMap2(document.getElementById("map1"));
+				//var map = new GMap2(document.getElementById("map1"));
 				map.addControl(new GLargeMapControl());
 				map.addControl(new GMapTypeControl());
 				map.setCenter(new GLatLng(-16.500498,-68.131358), 19);
@@ -996,6 +997,7 @@
 			map.addOverlay(marker);
 		}
 		function pla2(){
+       console.log("pla222222");
 			if (GBrowserIsCompatible()) {
 				function createMarker(point,html) {
 					var marker = new GMarker(point);
@@ -1013,6 +1015,7 @@
 			map.addOverlay(marker);
 		}
 		function pla3(){
+      console.log("pla333333333333");
 			if (GBrowserIsCompatible()) {
 				function createMarker(point,html) {
 					var marker = new GMarker(point);
@@ -1164,6 +1167,7 @@
 			var point = new GLatLng(-16.4981161522231 ,-68.13411712646484);
 			var marker = createMarker(point,'<div> Calle Mercado esquina Colon<p>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45<\/p><\/div>')
 			map.addOverlay(marker);
+    
 		}
 		function pla12(){
 			if (GBrowserIsCompatible()) {

@@ -49,6 +49,17 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 <link href="nuevoIgob/css/style.min.css" rel=stylesheet>
 <link href="nuevoIgob/css/iconos_flotantes.css" rel=stylesheet>
 
+<link href="../app/libs/Librerias/ol_4.6.5_dist/ol.css" rel=stylesheet>
+<link href="../app/libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css" rel=stylesheet>
+
+<script type="text/javascript" src="../app/libs/Librerias/ol_4.6.5_dist/ol.js"></script>
+<script type="text/javascript" src="../app/libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
+<script type="text/javascript" src="../app/libs/Librerias/proj_4/proj4.js"></script>
+<script type="text/javascript" src="../app/libs/Librerias/busqueda/geo_zonas.js"></script>
+<script type="text/javascript" src="../app/libs/Librerias/busqueda/geo_zonas_centroides.js"></script>
+<script type="text/javascript" src="../app/libs/Librerias/busqueda/nombre_calles.js"></script>
+<script type="text/javascript" src="../app/libs/Librerias/busqueda/nombre_lugares.js"></script>
+
 </head>
 <body>
 <div class=preloader>
@@ -796,7 +807,7 @@ En caso de requerir ayuda en su registro puede aproximarse a nuestras Plataforma
 						</div>
 						<div class="modal-body">
 							<p>
-								<div id="map2" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div>
+								<div id="map2" style="width:auto;height:550px;border:1px;"></div>
 							</p>
 						</div>
 						
@@ -1161,15 +1172,43 @@ var map;
 var image = 'nuevoIgob/img/marcador.png';
 function initMap() {
 var plataforma = new google.maps.LatLng(-16.500498,-68.131358);
+/*
 map = new google.maps.Map(document.getElementById('map1'), {
 center: plataforma,
 zoom: 18
 });
+*/
 }
+
+
+var epsg32719 = 'EPSG:32719';
+var epsg4326 = 'EPSG:4326';
+proj4.defs(epsg32719, '+proj=utm +zone=19 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs');
+proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');
+
+var view = new ol.View({center: ol.proj.fromLonLat([-68.133605,-16.495745]), zoom: 18});
+var vectorSource = new ol.source.Vector();
+var vectorLayer = new ol.layer.Vector({ source: vectorSource });
+var iconStyle_1 = new ol.style.Style({
+  image: new ol.style.Circle({
+                                radius: 7,
+                                fill: new ol.style.Fill({color: 'red'})
+                            })
+});
+
+var osm = new ol.layer.Tile({
+  title: 'Open Street Map',
+  visible: true,
+  source: new ol.source.OSM()
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido, Horario, telefono,servicios)
 {
-	plataforma = new google.maps.LatLng(latitud, longitud);
+	
+	//plataforma = new google.maps.LatLng(latitud, longitud);
 
 	if( plataformaTitulo =='Plataforma de Atención Ciudadana Centro Comercial Camacho.')
 	{
@@ -1216,6 +1255,45 @@ function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido,
 		var i='11';
 	}
 
+	console.log("iiii",i);
+
+	$('#map'+i).empty();
+
+	vectorSource.clear();
+
+	setTimeout(function()
+	{
+		var mapa = new ol.Map({
+	        layers: [
+	                new ol.layer.Group({
+	                                      title: 'Mapas Base',
+	                                      layers: [
+	                                                osm,
+	                                                vectorLayer
+	                                              ]
+	                                  })
+	               
+	              ],
+	        //overlays: [featureOverlay],
+	        target: 'map'+i,
+	        //controls: controls,
+	        //interactions: mover,
+	        view: view
+	    });
+		var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
+	  	feature.setStyle(iconStyle_1);
+	  	vectorSource.addFeature(feature);
+	  	mapa.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
+	  	mapa.getView().setZoom(16);
+
+	}, 500);
+
+	
+	/*
+   
+  	*/
+
+	/*
 	map = new google.maps.Map(document.getElementById('map'+i),
 	{
 		center: plataforma,
@@ -1236,6 +1314,11 @@ function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido,
 	marker.addListener('click', function() {
 	infowindow.open(map, marker);
 	});
+	*/
+	/////////////////////////////////////////////////////////////
+	
+      
+      ///////////////////////////////////////////////////////////////
 }
 
 function mostrarMarker2(latitud, longitud, plataformaTitulo, plataformaContenido, Horario, telefono,servicios)

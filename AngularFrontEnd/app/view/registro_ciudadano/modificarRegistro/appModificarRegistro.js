@@ -2403,6 +2403,11 @@ $scope.vias_v2= function(zona,tipo)
                 lat: parseFloat($scope.registro.latitud), 
                 lng: parseFloat($scope.registro.longitud)
             };
+
+            console.log("kkkkkkk",nuevoUbicacion);
+            $scope.open_map_registro(nuevoUbicacion)
+
+
             mapj.setCenter(nuevoUbicacion);
             $scope.addMarkerJ(nuevoUbicacion);
         }else{
@@ -2410,10 +2415,275 @@ $scope.vias_v2= function(zona,tipo)
                 lat: -16.495635, 
                 lng: -68.133543
             };
+
+            console.log("hhhhhhhh",nuevoUbicacion);
+
             mapj.setCenter(nuevoUbicacion);
             $scope.addMarkerJ(nuevoUbicacion);
         }         
     }
+
+    ///////////////////////MAPA GIS///////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    var epsg32719 = 'EPSG:32719';
+    var epsg4326 = 'EPSG:4326';
+    proj4.defs(epsg32719, '+proj=utm +zone=19 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs');
+    proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    var view = new ol.View({center: ol.proj.fromLonLat([-68.133605,-16.495745]), zoom: 18});
+    var vectorSource = new ol.source.Vector();
+    var vectorLayer = new ol.layer.Vector({ source: vectorSource });
+    var iconStyle_1 = new ol.style.Style({
+      image: new ol.style.Circle({
+                                    radius: 7,
+                                    fill: new ol.style.Fill({color: 'red'})
+                                })
+    });
+
+    var osm = new ol.layer.Tile({
+      title: 'Open Street Map',
+      visible: true,
+      source: new ol.source.OSM()
+    });
+
+    var osm_udit = new ol.layer.Tile({
+      title: 'OSM',
+      visible: true,
+      render: 'canvas',
+      source: new ol.source.TileWMS({
+                                      url: 'http://192.168.6.46:8080/geoserver/DEGEM/wms',
+                                      params: {'LAYERS': 'DEGEM:osm_udit', 'VERSION': '1.1.1','FORMAT': 'image/png','TILED': true},
+                                      serverType: 'geoserver',
+                                      crossOriginKeyword: 'anonymous'
+                                    })
+    });
+            
+    var municipios = new ol.layer.Tile({
+      title: 'Municipios',
+      visible: false,
+      render: 'canvas',
+      source: new ol.source.TileWMS({
+                                      url: 'http://192.168.5.84:8080/geoserver/wms',
+                                      params: { 'LAYERS': 'mapa_municipio', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+                                      serverType: 'geoserver',
+                                      crossOrigin: 'Anonymous'
+                                    })
+    });
+       
+    var zonas_tributarias = new ol.layer.Tile({
+      title: 'Zonas Tributarias',
+      opacity: 0.3,
+      visible: false,
+      source: new ol.source.TileWMS({
+                                      url: 'http://192.168.5.84:8080/geoserver/wms',
+                                      params: { 'LAYERS': 'catastro:zonasvalor2015', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+                                      serverType: 'geoserver',
+                                      crossOrigin: 'Anonymous'
+                                    })
+    });
+
+    var zonas = new ol.layer.Tile({
+      title: 'Zonas',
+      opacity: 0.3,
+      visible: false,
+      source: new ol.source.TileWMS({
+                                      url: 'http://192.168.5.84:8080/geoserver/wms',
+                                      params: { 'LAYERS': 'sit:zonasgu2016', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+                                      serverType: 'geoserver',
+                                      crossOrigin: 'Anonymous'
+                                    })
+    });
+
+    var vias = new ol.layer.Tile({
+      title: 'Vias',
+      //opacity: 0.3,
+      visible: true,
+      source: new ol.source.TileWMS({
+                                      url: 'http://192.168.5.84:8080/geoserver/wms',
+                                      params: { 'LAYERS': 'catastro:vias2', 'VERSION': '1.1.1', 'FORMAT': 'image/png','TILED': true },
+                                      serverType: 'geoserver',
+                                      crossOrigin: 'Anonymous'
+                                    })
+    });
+
+    var macrodistritos = new ol.layer.Tile({
+      title: 'Macrodistritos',
+      //opacity: 0.3,
+      visible: true,
+      source: new ol.source.TileWMS({
+                                      url: 'http://192.168.5.84:8080/geoserver/wms',
+                                      params: { 'LAYERS': 'lapaz:macrodistritos_2019', 'VERSION': '1.1.1', 'FORMAT': 'image/png','STYLES':'lp_macrodistritos2019','TILED': true },
+                                      serverType: 'geoserver',
+                                      crossOrigin: 'Anonymous'
+                                    })
+    });
+
+    var vectorLayerZonas = new ol.layer.Vector();
+
+    var myStyleZonas = new ol.style.Style({
+      stroke : new ol.style.Stroke({color : 'orange',width : 3}),
+      fill : new ol.style.Fill({color: 'transparent'})
+    });
+
+    var style = new ol.style.Style({
+      image: new ol.style.Icon(({
+                                  //color: '#ff0000',
+                                  crossOrigin: 'anonymous',
+                                  src: '../img/dot_2.png'
+                              }))
+    });
+
+    var iconStyle = new ol.style.Style({
+      image: new ol.style.Circle({
+                                  radius: 7,
+                                  fill: new ol.style.Fill({color: 'red'})
+                                })
+    });
+
+    var mapa,datos;
+    
+
+    $scope.open_map_registro = function(nuevoUbicacion)
+    {
+        //document.getElementById('busqueda_p').style.display = 'inline';
+        //document.getElementById('boton1').style.display = 'inline';
+
+        var latitud = nuevoUbicacion.lat;
+        var longitud = nuevoUbicacion.lng;
+
+        console.log("ENTRANDO A open_map_registro", latitud,longitud);
+        //var mapa = new ol.Map();
+        
+        setTimeout(function()
+        {
+            $("#mapModificarJ_1").empty();
+            mapa = new ol.Map({
+            layers: [
+                    new ol.layer.Group({
+                                          title: 'Mapas Base',
+                                          layers: [
+                                                    osm,
+                                                    municipios,
+                                                    macrodistritos,
+                                                    vectorLayer
+                                                  ]
+                                      })
+                   
+                  ],
+            //overlays: [featureOverlay],
+            target: 'mapModificarJ_1',
+            //controls: controls,
+            //interactions: mover,
+            view: view
+            });
+
+            var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: 'Leyenda'});
+            mapa.addControl(layerSwitcher);
+
+            var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
+            feature.setStyle(iconStyle_1);
+            vectorSource.addFeature(feature);
+            mapa.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
+            mapa.getView().setZoom(16);
+
+            var datos_salida = [];
+
+            mapa.on('click', function (evt)
+            {
+                vectorSource.clear();
+                var coord = mapa.getCoordinateFromPixel(evt.pixel);
+                var centro = ol.proj.transform(coord, 'EPSG:3857', epsg32719);
+                var wkt = '';
+                var centro_1 = ol.proj.transform(coord, 'EPSG:3857', epsg4326);
+                var latitud = centro_1[1];
+                var longitud = centro_1[0];
+                wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
+                console.log("PUNTO",centro_1);
+                $("#latitud").val(latitud);
+                $("#longitud").val(longitud);
+                /////////////////////////////////////////////////////////////////////
+                var feature = new ol.Feature(
+                new ol.geom.Point(ol.proj.fromLonLat(centro_1))
+                );
+                feature.setStyle(iconStyle_1);
+                vectorSource.addFeature(feature);
+            });
+        },500);     
+    };
+
+    $scope.buscar_zona = function()
+    {
+      var nombre_1 = new Array();
+      var f = '';
+      var nombre = document.getElementById('busqueda_p').value;
+      nombre = nombre.toUpperCase();
+      console.log(nombre);
+      var ca = "CALLE ";
+      ca = ca.concat(nombre);
+      var c = 0;
+      /////////////////////////////
+      var tipo = "lugares";
+      var data = '';
+      ///////////////////////////////
+      
+      if(nombre==='')
+      {
+        var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
+        console.log("Vacio :",obj);
+        vectorLayerZonas.getSource().clear();
+        //document.getElementById('busqueda_p').style.display = 'none';
+      }
+      else
+      {  
+        if(tipo == 'lugares')
+        {
+          mapa.removeLayer(vectorLayerZonas);
+          for (var i=0;i<geo_zonas_1.features.length;i++)
+          {
+            var nombre_zona =  geo_zonas_1.features[i].properties.zonaref;
+            var x_c = geo_zonas_centroides.features[i].geometry.coordinates[0];
+            var y_c = geo_zonas_centroides.features[i].geometry.coordinates[1];
+            nombre_zona = nombre_zona.toUpperCase();
+            if(nombre === nombre_zona)
+            {
+              c=c+1;
+              var geo_zona =  geo_zonas_1.features[i];
+              var xx = x_c;
+              var yy = y_c;
+            }
+          }
+          if(c>0)
+          {
+            document.getElementById('mensaje_zona').style.display = 'none';;
+            geo_zona = JSON.stringify(geo_zona);
+            vectorLayerZonas.setSource(new ol.source.Vector({
+                                                         features: (new ol.format.GeoJSON({defaultDataProjection:'EPSG:3857'})).readFeatures(geo_zona)
+            }));
+
+            vectorLayerZonas.setStyle(myStyleZonas);
+
+            mapa.addLayer(vectorLayerZonas);
+            mapa.getView().setCenter([xx,yy]);
+            mapa.getView().setZoom(15);
+
+            setTimeout(function(){
+              //alert();
+              vectorLayerZonas.getSource().clear();
+            },5000);
+
+          }
+        }
+        if(c==0)
+        {
+          var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
+          console.log("Vacio :",obj);
+          document.getElementById('mensaje_zona').style.display = 'inline';
+        }
+      } 
+    };
+
+    ////////////////////////////////////////////////////////////////
 
     $scope.cerrarMapa = function () {
         $scope.mostrarMapa = false;

@@ -1189,11 +1189,15 @@ proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');
 var view = new ol.View({center: ol.proj.fromLonLat([-68.133605,-16.495745]), zoom: 18});
 var vectorSource = new ol.source.Vector();
 var vectorLayer = new ol.layer.Vector({ source: vectorSource });
+
 var iconStyle_1 = new ol.style.Style({
-  image: new ol.style.Circle({
-                                radius: 7,
-                                fill: new ol.style.Fill({color: 'red'})
-                            })
+	image: new ol.style.Icon(({
+                              	anchor: [0.5, 30],
+                              	anchorXUnits: 'fraction',
+                              	anchorYUnits: 'pixels',
+                              	//color: '#40FF00',
+                              	src: '../nuevoIgob/img/marcador.png'
+                          	}))
 });
 
 var osm = new ol.layer.Tile({
@@ -1284,7 +1288,7 @@ function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido,
 	  	feature.setStyle(iconStyle_1);
 	  	vectorSource.addFeature(feature);
 	  	mapa.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
-	  	mapa.getView().setZoom(16);
+	  	mapa.getView().setZoom(18);
 
 	}, 500);
 

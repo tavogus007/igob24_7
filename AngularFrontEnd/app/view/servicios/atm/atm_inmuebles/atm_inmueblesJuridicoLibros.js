@@ -74,7 +74,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
     $scope.validarEnvio = function (data) {
         swal({
             title: 'CONFIRMAR',
-            text: 'El envío de la presente solicitud de licencia de funcionamiento de actividad económica, (DD.JJ.) generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',
+            text: 'El envío de la presente solicitud, (DD.JJ.) generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -88,7 +88,6 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
             }, 1000);
         });
     };
-
     $scope.enviarFormProcesosLinea = function (paramForm) {
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm = true;

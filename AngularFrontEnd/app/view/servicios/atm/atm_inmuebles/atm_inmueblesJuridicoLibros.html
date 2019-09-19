@@ -366,7 +366,7 @@
 </script>
 
     <div id="id_serviciosInmueblesJuridicoLibrosController" class="page-content" ng-controller="inmueblesControllerJuridico" data-ng-init="inicioInmueblesJuridico();">
-        <div class="col-md-12">
+        <div class="col-md-12 row principal ng-scope">
             <div class="ibox float-e-margins">
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
                     <h4>REGISTRO VALOR LIBROS - INMUEBLES</h4>
@@ -614,9 +614,9 @@
                                 </div>
                             </div>    
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12" ng-show="t_enviado">
                             <legend>LISTA DE REQUISITOS:</legend>
-                            <div class="form-group">
+                            <div class="form-group" ng-show="t_enviado">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-9" class="form-control">
@@ -624,13 +624,13 @@
                                                 <label class="col-sm-12 control-label no-padding-right" for="url"></label>
                                                 <div class="col-sm-12" align="left">
                                                     <div class="alert alert-danger fade in">
-                                                        <bold>Estimado Ciudadano:</bold> Antes de adjuntar el CUADRO VALOR LIBROS, debe descargar y complementar la información en el archivo modelo.<br>
+                                                        <bold>Estimado Ciudadano:</bold> Antes de adjuntar el CUADRO DE BALANCE - INMUEBLES, debe descargar y complementar la información en el archivo modelo.<br>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-3" >
-                                            <a href="../../docs/cuadro_valor_libros.xls" download>DESCARGAR MODELO CUADRO VALOR LIBROS</a>
+                                            <a href="../../docs/INMUEBLES_BALANCE_V1.xlsx" download>DESCARGAR MODELO DE BALANCE INMUEBLES</a>
                                             <img src="../../../app/view/img/manito.gif" alt=" Imagen" height="20" width="40" tooltip="Descarga el archivo">
 
                                         </div>
@@ -661,7 +661,7 @@
                                     </div>
                                 </div>
                             </div><br>
-                            <div class="form-group">
+                            <div class="form-group" ng-show="t_enviado">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -689,7 +689,7 @@
                                     </div>
                                 </div>
                             </div><br>
-                            <div class="form-group">
+                            <div class="form-group" ng-show="t_enviado">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -717,11 +717,11 @@
                                     </div>
                                 </div>
                             </div><br>
-                            <div class="form-group">
+                            <div class="form-group" ng-show="t_enviado">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label for="url">CUADRO VALOR LIBROS (ARCHIVOS XLS Ó XLSX)</label>
+                                            <label for="url">CUADRO DE BALANCE - INMUEBLES (ARCHIVOS XLS Ó XLSX)</label>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group custom-upload3">

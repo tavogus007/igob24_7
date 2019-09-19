@@ -404,7 +404,7 @@
 
 <div id="id_serviciosVehiculosJuridicoLibrosController" class="page-content"
     ng-controller="vehiculosJuridicoLibrosController" data-ng-init="inicioVehiculosJuridicoL();">
-    <div class="col-md-12">
+    <div class="col-md-12 row principal ng-scope">
         <div class="ibox float-e-margins">
             <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
                 <h4>REGISTRO VALOR LIBROS - VEHICULOS </h4>
@@ -653,18 +653,18 @@
                         <input type="hidden" name="anio" id="anio">
 
 <!-- Fin Grilla visualizacion de requistos a enviar> <-->
-                        <div class="ibox-content">
+                        <div class="ibox-content" ng-show="t_enviado">
                             <form name="signupForm" class="form-horizontal" role="form" novalidate>
                                 <div class="col-md-12">
                                     <legend>LISTA DE REQUISITOS:</legend>
                                 </div>
                             </form>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12" ng-show="t_enviado">
                             <div class="form-group">
                                 <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-9" class="form-control">
+                                    <div class="col-md-6" class="form-control">
                                         <div class="form-group" >
                                             <label class="col-sm-12 control-label no-padding-right" for="url"></label>
                                             <div class="col-sm-12" align="left">
@@ -675,7 +675,12 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3" >
-                                        <a href="../../docs/cuadro_valor_libros.xls" download>DESCARGAR MODELO CUADRO VALOR LIBROS</a>
+                                        <a href="../../docs/VEHICULOS_LIBROS_V1.xlsx" download>DESCARGAR MODELO CUADRO VALOR LIBROS</a>
+                                        <img src="../../../app/view/img/manito.gif" alt=" Imagen" height="20" width="40" tooltip="Descarga el archivo">
+                                    </div>
+                                    
+                                    <div class="col-md-3" >
+                                        <a href="../../docs/VEHICULOS_TABLAS_V1.xlsx" download>DESCARGAR MODELO CUADRO VALOR TABLAS</a>
                                         <img src="../../../app/view/img/manito.gif" alt=" Imagen" height="20" width="40" tooltip="Descarga el archivo">
                                     </div>
                                 </div>

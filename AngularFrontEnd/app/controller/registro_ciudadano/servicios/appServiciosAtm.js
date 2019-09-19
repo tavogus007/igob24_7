@@ -113,7 +113,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
     }
 
     $scope.seleccionarTramiteRenderAtm = function (tramite) {
-        console.log('tramite',tramite);
+        //console.log('tramite',tramite);
         //$scope.getCaptchasXX();
         $scope.tramiteSeleccionado   =   tramite.vtra_id;
         $scope.procesoSeleccionado = tramite.vdvser_id;
@@ -152,9 +152,11 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
 
         if (tramite.venviado == "SI") {
             $scope.template = $scope.templates[sidservicio];
+            $rootScope.t_enviado = false;
 
         } else {
             $scope.template = $scope.templates[sidservicio];
+            $rootScope.t_enviado = true;
         }
 
         if (tipoPersona == 'NATURAL') {
@@ -1190,7 +1192,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
     };
 
     $scope.serializarInformacionMotos = function (obj) {
-        console.log('obj',obj);
+        //console.log('obj',obj);
         //AQUI PREPARA DATOS PARA ENVIAR DATOS DE IGOB A  LOTUS//
         //$rootScope.validacionRequisitosTec();
         obj.VH_CC_REQ_FAC_COMER = '';
@@ -1211,7 +1213,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         obj.VH_CC_TIP_OBJ_TRIB = 'POLIZA';
         obj.VH_CC_FCHA_TRAM = $rootScope.fechayhora;
         obj.VH_CC_REQ_FAC_COMER = $scope.datos.urlFactura; //ADJUNTOS FACTURA
-        console.log('factura',obj.VH_CC_REQ_FAC_COMER); 
+        //console.log('factura',obj.VH_CC_REQ_FAC_COMER); 
         obj.VH_CC_REQ_POL_IMPOR = $scope.datos.urlPoliza; 
         obj.VH_CC_PODER_COMPRADOR = $scope.datos.urlPoder; 
         obj.VH_CC_CI_ANV = $rootScope.file_CI_A;
@@ -1223,13 +1225,13 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
             swal('Estimado Ciudadano', "Debe adjuntar todos los requisitos...", 'warning');
         }*/
         if((obj.VH_CC_REQ_FAC_COMER == 'undefined' || obj.VH_CC_REQ_FAC_COMER == undefined) || (obj.VH_CC_REQ_POL_IMPOR == 'undefined' || obj.VH_CC_REQ_POL_IMPOR == undefined) || (obj.VH_CC_PODER_COMPRADOR == 'undefined' || obj.VH_CC_PODER_COMPRADOR == undefined) || (obj.VH_CC_NRO_OBJ_TRIB == 'undefined' || obj.VH_CC_NRO_OBJ_TRIB == undefined )||(obj.VH_CC_NRO_CHASIS == 'undefined' || obj.VH_CC_NRO_CHASIS == undefined)){
-            alert(1111);
+            //alert(1111);
             swal('Estimado ciudadano', "Debe completar los datos del formulario y/o adjuntar todos los requisitos...", 'warning');
             $scope.habGuardar1 = true;
         }else{
             try {
                 var datosSerializados = JSON.stringify(obj);
-                console.log ('obj',obj);
+                //console.log ('obj',obj);
                 var idCiudadano = sessionService.get('IDSOLICITANTE');
                 var idTramite = sessionService.get('IDTRAMITE');
                 var idServicio = sessionService.get('IDSERVICIO');
@@ -1413,7 +1415,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                 dEmpresa        = $scope.datosIniciales.f01_raz_soc_per_jur;
                 dnit            = $scope.datosIniciales.f01_num_doc_per_jur;
                 datoFormI = JSON.stringify($rootScope.datosForm406);
-                console.log('datoForm4',datoFormI);
+                //console.log('datoForm4',datoFormI);
                 $.ajax({
                     url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf406_409.php',
                     type:"post",

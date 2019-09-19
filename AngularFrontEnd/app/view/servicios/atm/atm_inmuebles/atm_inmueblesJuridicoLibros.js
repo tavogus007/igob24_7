@@ -61,7 +61,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
             tramiteIgob.validarFormProcesos(function (resultado) {
                 $scope.tramitesCiudadano();
                 $scope.bloquearBtnEnviarForm();
-                swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible para programar la inspección y/o verificación documental. Caso contrario puede apersonarse a la Plataforma Integra de su Macrodistrito para recabar mayor información.");
+                swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible, para darle a conocer novedades acerca de su trámite.");
             });
         } catch (error) {
             console.log("Error : ", error);
@@ -104,11 +104,11 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
         var sIdTramite = $rootScope.tramiteId;
         var datosSerializados = JSON.stringify(paramForm);
         archivo1 = "";
-        var crearCaso = new gCrearCaso();
+        var crearCaso = new gCrearCasoLinea();
         crearCaso.usr_id = 1,
             crearCaso.datos = datosSerializados,
             crearCaso.procodigo = idProcodigo,
-            crearCaso.crearCasoAeLinea(function (response) {
+            crearCaso.crearCasoLinea(function (response) {
                 try {
                     $scope.botones = null;
                     $scope.desabilitado = true;
@@ -117,7 +117,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
                     indice = 0;
                     //if(results.length > 0 && results[0].sp_pmfunction_crearcaso_linea != null){
                     //if(results.length > 0 && results[0].sp_pmfunction_crearcaso_linea != null){
-                    datosIF = results[0].sp_pmfunction_crearcaso_linea.split(",");
+                    datosIF = results[0].sp_pmfunction_crearcaso_en_linea.split(",");
                     datosIF2 = datosIF[1];
                     datosIF[0] = datosIF[0].substring(1, datosIF[0].length);
                     $scope.nrotramitec = datosIF[0];
@@ -203,8 +203,9 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
         $("#declaracionJ").modal("show");
 
     }
-    $scope.formulario406 = function(data){
-        $scope.valor =  data.valorLibroTablas; 
+    $scope.formulario406 = function(dataI){
+        //console.log('dataI',dataI);
+        $scope.valor =  dataI.valorLibroTablas; 
         $rootScope.datosEnvI = "";
         var fecha= new Date();
         var fechaActualS = "";
@@ -230,9 +231,9 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
             $( "#msgformularioJ" ).load(urlFormularioJ, function(data) {
                 stringFormulario406  =   data;
                 
-                datos.INM_VL_NRO_DOC_IDEN = ((typeof(datos.dtspsl_ci) == 'undefined' || datos.dtspsl_ci == null) ? "" : datos.dtspsl_ci);
-                datos.INM_VL_NOM_RAZ_SOC = ((typeof(datos.dtspsl_razon_social) == 'undefined' || datos.dtspsl_razon_social == null) ? "" : datos.dtspsl_razon_social);
-                datos.valorLibroTablas = ((typeof(datos.valorLibroTablas) == 'undefined' || datos.valorLibroTablas == null) ? "" : datos.valorLibroTablas);   
+                datos.INM_VL_NRO_DOC_IDEN = ((typeof(dataI.INT_NIT) == 'undefined' || dataI.INT_NIT == null) ? "" : dataI.INT_NIT);
+                datos.INM_VL_NOM_RAZ_SOC = ((typeof(dataI.f01_raz_soc_per_jur) == 'undefined' || dataI.f01_raz_soc_per_jur == null) ? "" : dataI.f01_raz_soc_per_jur);
+                datos.valorLibroTablas = ((typeof(dataI.valorLibroTablas) == 'undefined' || dataI.valorLibroTablas == null) ? "" : dataI.valorLibroTablas);   
 
                 stringFormulario406  =   stringFormulario406.replace("#INM_VL_NRO_DOC_IDEN#", datos.INM_VL_NRO_DOC_IDEN);
                 stringFormulario406  =   stringFormulario406.replace("#INM_VL_NOM_RAZ_SOC#", datos.INM_VL_NOM_RAZ_SOC);
@@ -401,8 +402,8 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
     };
 
     $scope.almacenarRequisitosExcel = function (aArchivos, idFile) {
-        console.log('aArchivos',aArchivos);
-        console.log('idFile',idFile);
+        //console.log('aArchivos',aArchivos);
+        //console.log('idFile',idFile);
 
         document.getElementById('href_f01_upload_' + idFile).href = '';
         document.getElementById(idFile).value = '';
@@ -429,7 +430,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
                 if (tipoDocci == 'xlsx' || tipoDocci == 'xls') {
                     nombreNuevo = 'adjunto_' + fechaNueva + '.' + tipoDocci;
                     url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreNuevo + "?app_name=todoangular";
-                    console.log('url',url);
+                    //console.log('url',url);
                     document.getElementById('href_f01_upload_' + idFile).href = url;
                     document.getElementById(idFile).value = nombreNuevo;
                     document.getElementById(idFile + '_url').value = url;

@@ -41,7 +41,8 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
         var rep_legal = "Poder del Representante Legal";
         $scope.guardarFiles($rootScope.datosIniciales.f01_poder_representante, rep_legal, $scope.rep_legal);
         var nit = "N.I.T.";
-        $scope.guardarFiles($rootScope.datosIniciales.f01_poder_representante, nit, $scope.nit);
+        $scope.guardarFiles($rootScope.datosIniciales.file_num_ident, nit, $scope.nit);
+
 
 
         $rootScope.file_CI_A = $scope.file_CI;
@@ -262,7 +263,8 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
             tramiteIgob.validarFormProcesos(function (resultado) {
                 $scope.tramitesCiudadano();
                 $scope.bloquearBtnEnviarForm();
-                swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible para programar la inspección y/o verificación documental. Caso contrario puede apersonarse a la Plataforma Integra de su Macrodistrito para recabar mayor información.");
+                swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible, para darle a conocer novedades acerca de su trámite.");
+
             });
         } catch (error) {
             swal('', 'Registro no modificado', 'error');
@@ -275,7 +277,7 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
     $scope.validarEnvio = function (data) {
         swal({
             title: 'CONFIRMAR',
-            text: 'El envío de la presente solicitud de licencia de funcionamiento de actividad económica, (DD.JJ.) generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',
+            text: 'El envío de la presente solicitud (DD.JJ.), generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -305,11 +307,11 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
         var sIdTramite = $rootScope.tramiteId;
         var datosSerializados = JSON.stringify(paramForm);
         archivo1 = "";
-        var crearCaso = new gCrearCaso();
+        var crearCaso = new gCrearCasoLinea();
         crearCaso.usr_id = 1,
             crearCaso.datos = datosSerializados,
             crearCaso.procodigo = idProcodigo,
-            crearCaso.crearCasoAeLinea(function (response) {
+            crearCaso.crearCasoLinea(function (response) {
                 try {
                     $scope.botones = null;
                     $scope.desabilitado = true;
@@ -318,7 +320,7 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
                     indice = 0;
                     //if(results.length > 0 && results[0].sp_pmfunction_crearcaso_linea != null){
                     //if(results.length > 0 && results[0].sp_pmfunction_crearcaso_linea != null){
-                    datosIF = results[0].sp_pmfunction_crearcaso_linea.split(",");
+                    datosIF = results[0].sp_pmfunction_crearcaso_en_linea.split(",");
                     datosIF2 = datosIF[1];
                     datosIF[0] = datosIF[0].substring(1, datosIF[0].length);
                     $scope.nrotramitec = datosIF[0];

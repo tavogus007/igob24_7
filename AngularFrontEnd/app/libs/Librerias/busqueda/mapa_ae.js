@@ -473,7 +473,7 @@ function openMapGis()
         return datos;
     });
     //////////////////////////////////////
-  },550);
+  },850);
 }
 
 function buscar_ubicacion_p()

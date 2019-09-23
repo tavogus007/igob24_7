@@ -30,6 +30,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.macrodistritos();
     $scope.lssubcategoria();
     $scope.listaMod();
+    //openMapGis();
   };
 
   $scope.recuperandoDatosGenesis = function(){
@@ -1003,6 +1004,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.datos.rdTipoTramite1 = 'CON PUBLICIDAD';
       $scope.publicidad = true;
       $scope.botonn="new";
+      openMapGis();
     }else{
       swal("", "Datos obligatorios, verifique los datos del formulario", "warning");
     }

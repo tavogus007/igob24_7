@@ -10,6 +10,20 @@
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" /> 
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfKWci28piaE9q8Or0DzmUUJXbbdja54&callback=initMap"></script>
+
+    <link rel="stylesheet" href="../../libs/Librerias/ol_4.6.5_dist/ol.css"/>
+    <link rel="stylesheet" href="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css"/>
+
+    <script type="text/javascript" src="../../libs/Librerias/ol_4.6.5_dist/ol.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/proj_4/proj4.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas_centroides.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_calles.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_lugares.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/reqwest-master/src/reqwest.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/busqueda/mapa_ae.js"></script> 
+
   </head>
 <style>
   
@@ -766,8 +780,21 @@ function validaSuperficie(sup)
                                 <font color="#FF0000" size="4px" align="center"> * </font>
                               </div>
                               <div class="col-md-10">                                    
-                                <div id="mapActividad" ng-disabled="desabilitadoO || desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
+                                <!--<div id="mapActividad" ng-disabled="desabilitadoO || desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>-->
+                                <div id="map_principal" ng-disabled="desabilitadoO || desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
                               </div>
+
+                              <div class="form-group">
+                                <div class="col-sm-6">
+                                    <input  name="busqueda_p" id="busqueda_p" class="form-control" type="text" placeholder=" INTRODUZCA NOMBRE DE ZONA">
+                                </div>
+                                <div class="col-sm-6">
+                                    <span class="input-group-btn"><br>
+                                      <button class="btn btn-info" type="button" onclick="buscar_ubicacion_p();"><i class="fa fa-search">Buscar</i></button>
+                                    </span>
+                                </div>
+                              </div>
+
                               <div class="col-md-1">
                                   &nbsp;
                               </div>

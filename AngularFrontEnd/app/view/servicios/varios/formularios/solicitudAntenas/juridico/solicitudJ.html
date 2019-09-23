@@ -1786,12 +1786,27 @@
                                         <div id="msgformularioJ">
                                           {{msgformularioJ}}
                                         </div>
-                                    </div>      
+                                        
+                                    </div>
+                                    <div>
+                                    <table>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td colspan="8" style="text-align:center">Firma del Contribuyente o Representante Legal</td>
+                                            <td style="text-align:center">&nbsp;</td>
+                                            <td style="text-align:center">&nbsp;</td>
+                                            <td> <input type="checkbox" id = "checkFirma" value="0" ng-click="hab_btnFirma();"><br></td>     
+                                        </tr>
+                                        <tr>
+                                            <td>Lugar y Fecha de Firma: La Paz,&nbsp; {{fecha_sist2}} &nbsp; Hora: {{hora_sist}}</td>
+                                        </tr>
+                                    </table>
+                                    </div>
                                 </form>
                             </div>
                         </div>
                         <div class="modal-footer">
-                          <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="guardarInformacioAntena();" data-dismiss="modal">Aceptar</button>
+                          <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="guardarInformacioAntena();" data-dismiss="modal" ng-disabled="btnfirmar">Aceptar</button>
                           <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTramite();" data-dismiss="modal">Cerrar</button>
                           </div>
                       </div>

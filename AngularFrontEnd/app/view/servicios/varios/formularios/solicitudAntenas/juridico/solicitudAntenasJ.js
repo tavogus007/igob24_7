@@ -2551,7 +2551,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             var dataUbi = '{"xgeo_frm_id":'+sessionService.get('IDTRAMITE')+',"xgoe_ciudadano_id":"'+sessionService.get('IDUSUARIO')+'","xgeo_ubicacion":"'+ubicacionutm+'"}';
             dataAnt1 = {"ubicacion":ubicacionutm,"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val(),"latitud_extra":$("#latitud_reg").val(),"longitud_extra":$("#longitud_reg").val()}; 
 
-            var dataGrilla = '{"f01_TIPO_REGISTRO":"'+$scope.tipoReg+'","f01_DENOMINACION":"'+data.den_rbase+'","f01_UBI_RB":"'+data.ub_rbase+'","f01_TIPO_UBIC":"'+data.tp_prop+'","f01_Ubicacion":'+JSON.stringify(dataAnt1)+',"f01_UbicacionUdit":'+JSON.stringify(dataUbi)+',"f01_NRO_GABINETE":'+data.den_ngabinete+',"cod_catastral":"'+$("#cod_catastral").val()+'","f01_GRILLA_SOPORTE":'+JSON.stringify($scope.lstSoporteprevio)+',"f01_NRO_AUTORIZACION":"'+$("#den_auto").val()+'","estadoTramite":"NO ENVIADO","fecha_envio":"SIN FECHA","ANT_LOGITUD":"'+$("#longitud_reg").val()+'","ANT_LATITUD":"'+$("#latitud_reg").val()+'","observacion":"'+$("#observacion").val()+'"}';
+            var dataGrilla = '{"f01_TIPO_REGISTRO":"'+$scope.tipoReg+'","f01_DENOMINACION":"'+data.den_rbase+'","f01_UBI_RB":"'+data.ub_rbase+'","f01_TIPO_UBIC":"'+data.tp_prop+'","f01_Ubicacion":'+JSON.stringify(dataAnt1)+',"f01_UbicacionUdit":'+JSON.stringify(dataUbi)+',"f01_NRO_GABINETE":'+data.den_ngabinete+',"cod_catastral":"'+$("#cod_catastral").val()+'","f01_GRILLA_SOPORTE":'+JSON.stringify($scope.lstSoporteprevio)+',"f01_NRO_AUTORIZACION":"'+$("#den_auto").val()+'","estadoTramite":"NO ENVIADO","fecha_envio":"SIN FECHA","ANT_LOGITUD":"'+$("#longitud_reg").val()+'","ANT_LATITUD":"'+$("#latitud_reg").val()+'","ANT_OBSERVACION":"'+$("#observacion").val()+'"}';
             var grilla = JSON.parse(dataGrilla);
             $scope.grilla_rbmultiple.push(JSON.parse(dataGrilla));
             $scope.lst_grilla_multiple();
@@ -2598,7 +2598,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               ubicacionutm = ubicacionutm[0];
               var dataUbi = '{"xgeo_frm_id":'+sessionService.get('IDTRAMITE')+',"xgoe_ciudadano_id":"'+sessionService.get('IDUSUARIO')+'","xgeo_ubicacion":"'+ubicacionutm+'","latitud_extra":"'+$("#latitud_reg").val()+'","longitud_extra":"'+$("#longitud_reg").val()+'"}';
               dataAnt1 = {"ubicacion":ubicacionutm,"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val()}; 
-              var dataGrilla = '{"f01_TIPO_REGISTRO":"'+$scope.tipoReg+'","f01_DENOMINACION":"'+data.den_rbase+'","f01_UBI_RB":"'+data.ub_rbase+'","f01_TIPO_UBIC":"'+data.tp_prop+'","f01_Ubicacion":'+JSON.stringify(dataAnt1)+',"f01_UbicacionUdit":'+JSON.stringify(dataUbi)+',"f01_NRO_GABINETE":'+data.den_ngabinete+',"cod_catastral":"'+$("#cod_catastral").val()+'","f01_GRILLA_SOPORTE":'+JSON.stringify($scope.lstSoporteprevio)+',"f01_NRO_AUTORIZACION":"'+$("#den_auto").val()+'","estadoTramite":"NO ENVIADO","fecha_envio":"SIN FECHA","ANT_LOGITUD":"'+$("#longitud_reg").val()+'","ANT_LATITUD":"'+$("#latitud_reg").val()+'"}';
+              var dataGrilla = '{"f01_TIPO_REGISTRO":"'+$scope.tipoReg+'","f01_DENOMINACION":"'+data.den_rbase+'","f01_UBI_RB":"'+data.ub_rbase+'","f01_TIPO_UBIC":"'+data.tp_prop+'","f01_Ubicacion":'+JSON.stringify(dataAnt1)+',"f01_UbicacionUdit":'+JSON.stringify(dataUbi)+',"f01_NRO_GABINETE":'+data.den_ngabinete+',"cod_catastral":"'+$("#cod_catastral").val()+'","f01_GRILLA_SOPORTE":'+JSON.stringify($scope.lstSoporteprevio)+',"f01_NRO_AUTORIZACION":"'+$("#den_auto").val()+'","estadoTramite":"NO ENVIADO","fecha_envio":"SIN FECHA","ANT_LOGITUD":"'+$("#longitud_reg").val()+'","ANT_LATITUD":"'+$("#latitud_reg").val()+'","ANT_OBSERVACION":"'+$("#observacion").val()+'"}';
               
               var grilla = JSON.parse(dataGrilla);
               $scope.grilla_rbmultiple.push(JSON.parse(dataGrilla));
@@ -3549,6 +3549,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
    
     $scope.UbicacionData = "";
     $scope.serializarInformacion = function(dataAnt){
+      $scope.btnfirmar = true;
       if($scope.estadoTramite == "NO"){
         if ( $scope.tipoTramite == "NUEVO") {
           var ubicacionutm = $("#ln_ubicacion").val();
@@ -3565,6 +3566,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
           if($scope.verif_requisitos() && dataAnt != undefined){
               $scope.ultimoRegistro(dataAnt);
+              //$scope.btnfirmar = true;
               $rootScope.datosIniciales.ANT_NRO_AUTORIZACION = $("#den_auto").val();
               var fechactual = obtFechaActual.obtenerFechaActual();
               $rootScope.datosIniciales.g_fecha = fechactual;
@@ -3602,11 +3604,14 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               $rootScope.datosIniciales.g_tipo                 = $scope.tipoProceso;
               $rootScope.datosIniciales.GRD_ANTENAS            = $rootScope.Antenas;            
               $rootScope.datosIniciales.INT_FORM_ALMACENADO    = "G";            
+              $scope.fecha_sit2 = fechactual;
               $.blockUI();
               setTimeout(function () {
                   $scope.$apply(function () {
                   $scope.formularioDJ_Antenas($rootScope.datosIniciales);
                   $.unblockUI();
+                  
+
                   });
               }, 1000);
               $scope.estadoTramite = "NO";
@@ -3969,8 +3974,11 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
                 
                 $scope.msgformularioJ = stringFormulario40;
+                $scope.fecha_sist2 = fechaActualS;
+                $scope.hora_sist   =  sHora;
                 //$scope.notifcondicionesuso = stringFormulario40;
                 $scope.guardarDataAntena = datos;
+
                 setTimeout(function(){
                     $scope.fmostrarFormulario();
                 },500);
@@ -4140,8 +4148,10 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         }
     }
     $scope.fmostrarFormulario   =   function(){
+
         $("#declaracionJ").modal({backdrop: 'static', keyboard: false});
         $('#msgformularioJ').html($scope.msgformularioJ);
+
 
     }
     $scope.guardarInformacioAntena = function(){
@@ -4270,9 +4280,15 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     });
 
     $scope.enviarData = function() {
+      
+      var fecha= new Date();
+      $scope.fechaDj = fecha.getFullYear()+''+ (fecha.getMonth() + 1)+''+ fecha.getDate()+''+ fecha.getHours() +''+ fecha.getMinutes() +''+ fecha.getSeconds();
+
+      
       $.blockUI();
       $scope.ConsumoServCatastro();
       $rootScope.datosIniciales.itemENVIOSITv3 = $scope.data_Sitv3;
+      $rootScope.datosIniciales.fechaDj = $scope.fechaDj;
       var datosSerializados = JSON.stringify($rootScope.datosIniciales);
       setTimeout(function () {
         $scope.$apply(function () {
@@ -4296,8 +4312,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                           $scope.validarFormProcesos();
                           $rootScope.botones = true;
                           $scope.desabilitado = true;
-                          $rootScope.datosFormDJ_Antenas['AE_NRO_CASO'] = $scope.nrotramitec;
-                          $scope.generarDocumentoPhpAntena($scope.nrotramitec);
+                          $rootScope.datosFormDJ_Antenas['ANT_NRO_CASO'] = $scope.nrotramitec;
+                          $scope.generarDocumentoPhpAntena($scope.nrotramitec,$scope.fechaDj);
                           setTimeout(function () {
                                 $scope.$apply(function () {
                                     location.reload();
@@ -4908,6 +4924,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     }
     
     $scope.serializarInformacionMultiple = function(dataAnt){
+          $scope.btnfirmar = true;
           $scope.tipoPersona = $rootScope.datosIniciales.f01_tipo_per;
           var ubicacionutm = $("#ln_ubicacion").val();
           var dataUbi = '{"xgeo_frm_id":'+sessionService.get('IDTRAMITE')+',"xgoe_ciudadano_id":"'+sessionService.get('IDUSUARIO')+'","xgeo_ubicacion":"'+ubicacionutm+'"}';
@@ -4920,12 +4937,12 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
           if($scope.tipoProceso == "RBM"){
             $scope.tipoProceso_envio = "ANTT";
             $scope.tipoReg_desp = "R_UNICO";
-            dataEnvLotus_M = '[{"f01_TIPO_REGISTRO":"R_UNICO","ANT_NOM_RADBASE":"'+$("#den_rbase").val()+'","ANT_UBICA_RBASE":"'+$("#ub_rbase").val()+'","ANT_TIP_PROPIEDAD":"'+$("#tp_prop").val()+'","f01_Ubicacion":'+JSON.stringify($scope.UbicacionData_m)+',"f01_GRD_SOPORTE":'+JSON.stringify($scope.dataSoporte_pos_i)+',"ANT_NRO_GAB":"'+$("#den_ngabinete").val()+'","ANT_OBSERVACION":"'+$("#observacion").val()+'"}]';
+            dataEnvLotus_M = '[{"f01_TIPO_REGISTRO":"R_UNICO","ANT_NOM_RADBASE":"'+$("#den_rbase").val()+'","ANT_UBICA_RBASE":"'+$("#ub_rbase").val()+'","ANT_TIP_PROPIEDAD":"'+$("#tp_prop").val()+'","f01_Ubicacion":'+JSON.stringify($scope.UbicacionData_m)+',"f01_GRD_SOPORTE":'+JSON.stringify($scope.dataSoporte_pos_i)+',"ANT_NRO_GAB":"'+$("#den_ngabinete").val()+'","ANT_LOGITUD":"'+$("#longitud_reg").val()+'","ANT_LATITUD":"'+$("#latitud_reg").val()+'","ANT_OBSERVACION":"'+$("#observacion").val()+'"}]';
             $rootScope.Antenas_multiple = JSON.parse(dataEnvLotus_M);
           }else if( $scope.tipoProceso == "GM"){
             $scope.tipoProceso_envio = "ANTT";
             $scope.tipoReg_desp = "G_UNICO";
-            dataEnvLotus_M = '[{"f01_TIPO_REGISTRO":"G_UNICO","ANT_NOM_RADBASE":"'+$("#den_rbase").val()+'","ANT_UBICA_RBASE":"'+$("#ub_rbase").val()+'","ANT_TIP_PROPIEDAD":"'+$("#tp_prop").val()+'","f01_Ubicacion":'+JSON.stringify($scope.UbicacionData_m)+',"ANT_NRO_GAB":"'+$("#den_ngabinete").val()+'","ANT_OBSERVACION":"'+$("#observacion").val()+'"}]';
+            dataEnvLotus_M = '[{"f01_TIPO_REGISTRO":"G_UNICO","ANT_NOM_RADBASE":"'+$("#den_rbase").val()+'","ANT_UBICA_RBASE":"'+$("#ub_rbase").val()+'","ANT_TIP_PROPIEDAD":"'+$("#tp_prop").val()+'","f01_Ubicacion":'+JSON.stringify($scope.UbicacionData_m)+',"ANT_NRO_GAB":"'+$("#den_ngabinete").val()+'","ANT_LOGITUD":"'+$("#longitud_reg").val()+'","ANT_LATITUD":"'+$("#latitud_reg").val()+'","ANT_OBSERVACION":"'+$("#observacion").val()+'"}]';
             $rootScope.Antenas_multiple = JSON.parse(dataEnvLotus_M);
           }
 
@@ -5373,8 +5390,12 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       }else{
         $scope.codigoenvioLotus = "RG"; 
         datosSerializados.g_tipo = "RG";
-      } 
+      }
+      var fecha= new Date();
+      $scope.fechaDjM = fecha.getFullYear()+''+ (fecha.getMonth() + 1)+''+ fecha.getDate()+''+ fecha.getHours() +''+ fecha.getMinutes() +''+ fecha.getSeconds();
+ 
       $scope.ConsumoServCatastro_desp($scope.tipoReg_desp);
+      $rootScope.datosIniciales_rcp.fechaDj = $scope.fechaDjM;
       $rootScope.datosIniciales_rcp.itemENVIOSITv3 = $scope.data_Sitv3_v01;
       datosSerializados = JSON.stringify($rootScope.datosIniciales_rcp);
       var crearCaso   =   new gCrearCasoLinea();
@@ -5407,9 +5428,9 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                       $scope.observarData = true;
                       $rootScope.tabAdj = true;
                       $scope.limpearRequisitos();
-                      $rootScope.datosFormDJ_Antenas_multiple['AE_NRO_CASO'] = $scope.nrotramitec;
+                      $rootScope.datosFormDJ_Antenas_multiple['ANT_NRO_CASO'] = $scope.nrotramitec;
                       $rootScope.datosFormDJ_Antenas                         = $rootScope.datosFormDJ_Antenas_multiple;
-                      $scope.generarDocumentoPhpAntena($scope.nrotramitec);
+                      $scope.generarDocumentoPhpAntena($scope.nrotramitec,$scope.fechaDjM);
                       setTimeout(function () {
                             $scope.$apply(function () {
                                 location.reload();
@@ -5583,7 +5604,22 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 swal("Es necesario seleccionar el tipo de registro a realizar..","error");
         }
     }
+    $scope.hab_btnFirma = function(){
+      //alert(121323);$('#condiciones:checked').val()
+      $scope.firma = $('#checkFirma:checked').val();
+      if( $scope.firma == 0){
+        var fecha= new Date();
+        $scope.fecha_sist2 = fecha.getDate() +" - "+ (fecha.getMonth() + 1) +" - "+ fecha.getFullYear();
+        $scope.hora_sist = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+        $scope.btnfirmar = false;
 
+      }else{
+        $scope.btnfirmar = true;
+        $scope.fecha_sist2 = "";
+        $scope.hora_sist = "";
+      }
+      //alert($scope.firma);
+    }
     $scope.iniAntenas = function(){
       
       graficar_mapa("mapa1");

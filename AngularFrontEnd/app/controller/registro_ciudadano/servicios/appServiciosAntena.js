@@ -73,7 +73,6 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         $scope.razonsocial = sessionService.get('US_NOMBRE');
         sparam.parametros='{"sidciudadano":"' + sIdCiudadano + '"}';
         sparam.llamarregla(function(results){
-            console.log("resultado123123",results);
             if( results != "[{}]"){
                 results = JSON.parse(results);
             }else {
@@ -919,7 +918,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         }
     }); 
 
-    $scope.generarDocumentoPhpAntena = function (codigoTramite){
+    $scope.generarDocumentoPhpAntena = function (codigoTramite,fechaDJ){
         $scope.codigoTramite = codigoTramite;
         
         $.blockUI();
@@ -956,7 +955,9 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
                     "fecha": $scope.fechafinalserver,
                     "hora": $scope.horafinal,
                     "data": datoForm4,
-                    "stipo_form": 'RB'
+                    "stipo_form": 'RB',
+                    "tipoTramite": codigoTramite,
+                    "fechaDJ": fechaDJ
                 },
                 success:function(response){
                     if(response.length>0){

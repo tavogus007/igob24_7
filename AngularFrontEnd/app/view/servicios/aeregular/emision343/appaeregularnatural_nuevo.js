@@ -127,119 +127,111 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     $scope.catactividadDesarrollada = function(){
         $.blockUI();
         $scope.datos.rdTipoTramite = 'NUEVO';
-        $scope[name] = 'Running';
-        var deferred = $q.defer();
-        $scope.datos.f01_actividad_desarrollada = "";
+        //$scope.datos.f01_actividad_desarrollada = "";
         $scope.datosActividad = "";
-        var infodata = '{"usr_usuario": "administrador","usr_clave": "123456"}';
-        infodata = JSON.parse(infodata);        
         try{
-            $.ajax({
-                type: 'POST',
-                url: 'http://172.19.161.3:9590/api/apiLogin',
-                dataType: 'json',
-                data: infodata,
-                success: function (token){
-                    $rootScope.tokenvalle = token.token;
-                    $.ajax({
-                        type        : 'GET',
-                        url         : 'http://172.19.161.3:9590/api/consultaActividadesDesarrolladas343',
-                        data        : '',
-                        dataType    : 'json',
-                        crossDomain : true,
-                        headers: {
-                            'authorization': 'Bearer' + $rootScope.tokenvalle,
-                        },
-                        success: function (datosLic){
-                            $scope.datosActividad = "";
-                            $scope.datos.f01_actividad_desarrollada = "";
-                            if(datosLic.length > 0){
-                                for (var i = datosLic.length - 1; i >= 0; i--) {
-                                    if (datosLic[i].idActividadDesarrollada343 == 907 || datosLic[i].idActividadDesarrollada343 == '907') {
-                                        datosLic[i].descripcion343 = 'MULTISERVICIOS';
-                                    }
-                                };
-                                $scope.datosActividad = datosLic;
-                                deferred.resolve($scope.datosActividad);
-                            }else{
-                                $scope.msg = "Error !!";
-                            }
-                            $scope.$apply();
-                            $.unblockUI();
-                        },
-                        error: function (data){ console.log(data);}
-                    });
-                },
-                error: function (data){ console.log(data);}
+            var nActividadDesarrollada = new getDatosActividadDesarrollada343();
+            nActividadDesarrollada.getDatos_ActividadDesarrollada343(function(resActDes){
+                var lstActividadDesarrollada = JSON.parse(resActDes);
+                $scope.datosActividad = "";
+                var datosLic = lstActividadDesarrollada.success.dataSql;
+                //$scope.datos.f01_actividad_desarrollada = "";
+                if(datosLic.length > 0){
+                    for (var i = datosLic.length - 1; i >= 0; i--) {
+                        if (datosLic[i].idActividadDesarrollada343 == 907 || datosLic[i].idActividadDesarrollada343 == '907') {
+                            datosLic[i].descripcion343 = 'MULTISERVICIOS';
+                        }
+                    };
+                    $scope.datosActividad = datosLic;
+                    console.log('lista desssssssss    ',$scope.datosActividad);
+                }else{
+                    $scope.msg = "Error !!";
+                }
+                //$scope.$apply();
+                $.unblockUI();
             });
-            return deferred.promise;
         }catch(e){
             alert("Error en la actividad desarrollada");
         }
     }
 
-    $scope.LicenciaXCategoriaA = function(idDesarrollada){
+    $scope.LicenciaXCategoriaA = function(idDesarrollada, superficie){
         $.blockUI();
+        //$scope.datos.rdTipoTramite = 'NUEVO';
         $scope[name] = 'Running';
         var deferred = $q.defer();
         datoObjectFile1 = new Object();
         datoObjectFile2 = new Object();
+        datoObjectFile3 = new Object();
+        datoObjectFile4 = new Object();
+        datoObjectFile5 = new Object();
+        datoObjectFile6 = new Object();
         datoObjectFiles_ci = [];
+        $scope.datos.FILE_CI = '';
+        $scope.datos.fileArchivosAd = '';
         try{
-            var infodes = '{"idActividadDesarrollada343": ' + idDesarrollada + '}';
-            infodes = JSON.parse(infodes);
-            $.ajax({
-                type        : 'POST',
-                url         : 'http://172.19.161.3:9590/api/cargarTiposLicenciasCategorias',
-                data        : infodes,
-                dataType    : 'json',
-                crossDomain : true,
-                headers: {
-                    'authorization': 'Bearer' + $rootScope.tokenvalle,
-                },
-                success: function (datosLic){
-                    if(datosLic.length > 0){
-                        $scope.sCategoria = true;
-                        $scope.smultiservicios = false;
-                        $scope.datosActividadLicencia = datosLic;
-                        deferred.resolve($scope.datosActividadLicencia);
-                        $scope.datos.f01_tipo_lic = datosLic[0].idTipoLicencia;
-                        $scope.datos.f01_tipo_lic_descrip = datosLic[0].TipoLicenciaDescripcion;
-                        $scope.datos.f01_categoria_agrupada = datosLic[0].idActividadDesarrollada;
-                        $scope.datos.f01_categoria_agrupada_dem = datosLic[0].idActividadDesarrollada343;
-                        $scope.datos.f01_categoria_agrupada_descrip = datosLic[0].ADDescripcion;
-                        $scope.GetValueZonaSegura(datosLic[0].idActividadDesarrollada);
-                        var comboz      = document.getElementById('f01_categoria_descrip');
-                        selected2   = comboz.options[comboz.selectedIndex].text;
-                        $scope.datos.f01_categoria_descripcion  = selected2;
-                        $scope.datos.f01_categoria_descrip2 = selected2;
-                        $scope.datos.f01_categoria_agrupada_descripcion = selected2;
-                        $scope.datos.f01_actividadesSecundarias = datosLic[0].ADDescripcion;
-                    }else{
-                        $scope.msg = "Error !!";
-                    };
-                    if (idDesarrollada == 907 || idDesarrollada == '907') {
-                        $scope.actividadDesarrolladaM();
-                        $scope.sCategoria = false;
-                        $scope.smultiservicios = true;
-                    }
-                    datoObjectFile1.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
-                    datoObjectFile1.campo = 'Cédula de identidad (Anverso)';
-                    datoObjectFile1.nombre = 'Cédula de identidad (Reverso)';
-                    datoObjectFiles_ci[0] = datoObjectFile1;
-                    datoObjectFile2.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";
-                    datoObjectFile2.campo = 'Cédula de identidad (Anverso)';
-                    datoObjectFile2.nombre = 'Cédula de identidad (Reverso)';
-                    datoObjectFiles_ci[1] = datoObjectFile2;
-                    $scope.datos.FILE_CI = datoObjectFiles_ci;
-                    $scope.getRequisitosFormulario($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
-                    $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
-                    $scope.$apply();
-                    $.unblockUI();
-                },
-                error: function (data){ console.log(data);}
+            var nDatosLic = new getDatosLicencia();
+            nDatosLic.idActividadDesarrollada = idDesarrollada;
+            nDatosLic.superficie = superficie;
+            nDatosLic.getDatos_Licencia(function(resDatosLic){
+                var obtLic = JSON.parse(resDatosLic);
+                var datosLic = obtLic.success.dataSql;
+                if(datosLic.length > 0){
+                    $scope.sCategoria = true;
+                    $scope.smultiservicios = false;
+                    $scope.datosActividadLicencia = datosLic;
+                    deferred.resolve($scope.datosActividadLicencia);
+                    $scope.datos.f01_tipo_lic = datosLic[0].idTipoLicencia;
+                    $scope.datos.f01_tipo_lic_descrip = datosLic[0].TipoLicenciaDescripcion;
+                    $scope.datos.f01_categoria_agrupada = datosLic[0].idActividadDesarrollada;
+                    $scope.datos.f01_categoria_agrupada_dem = datosLic[0].idActividadDesarrollada343;
+                    $scope.datos.f01_categoria_agrupada_descrip = datosLic[0].ADDescripcion;
+                    $scope.GetValueZonaSegura(datosLic[0].idActividadDesarrollada);
+                    var comboz = document.getElementById('f01_categoria_descrip');
+                    selected2 = comboz.options[comboz.selectedIndex].text;
+                    $scope.datos.f01_categoria_descripcion = selected2;
+                    $scope.datos.f01_categoria_descrip2 = selected2;
+                    $scope.datos.f01_categoria_agrupada_descripcion = selected2;
+                    $scope.datos.f01_actividadesSecundarias = datosLic[0].ADDescripcion;
+                }else{
+                    $scope.msg = "Error !!";
+                }
+                if (idDesarrollada == 907 || idDesarrollada == '907') {
+                    $scope.sCategoria = false;
+                    $scope.smultiservicios = true;
+                    $scope.actividadDesarrolladaM();
+                }
+                datoObjectFile1.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + $scope.datos.id_representante + "/" + $scope.datos.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
+                datoObjectFile1.campo = 'Cedula de identidad (Anverso)';
+                datoObjectFile1.nombre = 'Cedula de identidad (Reverso)';
+                datoObjectFiles_ci[0] = datoObjectFile1;
+                datoObjectFile2.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + $scope.datos.id_representante + "/" + $scope.datos.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";
+                datoObjectFile2.campo = 'Cedula de identidad (Anverso)';
+                datoObjectFile2.nombre = 'Cedula de identidad (Reverso)';
+                datoObjectFiles_ci[1] = datoObjectFile2;
+                datoObjectFile3.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datos.f01_poder_representante + "?app_name=todoangular";
+                datoObjectFile3.campo = 'Poder de Representación Legal';
+                datoObjectFile3.nombre = 'Poder de Representación Legal';
+                datoObjectFiles_ci[2] = datoObjectFile3;
+                datoObjectFile4.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datos.f01_test_cons_sociedad_j + "?app_name=todoangular";
+                datoObjectFile4.campo = 'Testimonio de Constitución de Sociedad';
+                datoObjectFile4.nombre = 'Testimonio de Constitución de Sociedad';
+                datoObjectFiles_ci[3] = datoObjectFile4;
+                datoObjectFile5.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datos.file_num_ident + "?app_name=todoangular";
+                datoObjectFile5.campo = 'NIT o inscripción al Régimen Simplificado';
+                datoObjectFile5.nombre = 'NIT o inscripción al Régimen Simplificado';
+                datoObjectFiles_ci[4] = datoObjectFile5;
+                datoObjectFile6.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datos.file_fund_emp + "?app_name=todoangular";
+                datoObjectFile6.campo = 'FUNDEMPRESA o Matricula de Comercio';
+                datoObjectFile6.nombre = 'FUNDEMPRESA o Matricula de Comercio';
+                datoObjectFiles_ci[5] = datoObjectFile6;
+                $scope.datos.FILE_CI = datoObjectFiles_ci;
+                $scope.getRequisitosFormulario($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
+                $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
+                $scope.getRequisitosTecnicosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
+                //$scope.$apply();
+                $.unblockUI();
             });
-            return deferred.promise;
         }catch(e){
                 console.log("Error en la actividad desarrollada");
         }
@@ -247,20 +239,12 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
 
     $scope.actividadDesarrolladaM = function(){
         $.blockUI();
-        $scope[name] = 'Running';
-        var deferred = $q.defer();
         var datosMulti = [];
-        $.ajax({
-            type        : 'GET',
-            url         : 'http://172.19.161.3:9590/api/consultaActividadesDesarrolladas343',
-            data        : '',
-            dataType    : 'json',
-            crossDomain : true,
-            headers: {
-                'authorization': 'Bearer' + $rootScope.tokenvalle,
-            },
-            success: function (datosLicM){
-                dataResp = datosLicM;
+        try{
+            var nActividadDesarrollada = new getDatosActividadDesarrollada343();
+            nActividadDesarrollada.getDatos_ActividadDesarrollada343(function(resActDesM){
+                var lstActividadDesM = JSON.parse(resActDesM);
+                var dataResp = lstActividadDesM.success.dataSql;
                 for (var i = 0; i < dataResp.length; i++) {
                     if (dataResp[i].idActividadDesarrollada343 == '907' || dataResp[i].idActividadDesarrollada343 == 907) {
                     } else{
@@ -279,63 +263,60 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     };                        
                 };                        
                 $scope.datosActividadMul = datosMulti;
-                deferred.resolve($scope.datosActividadMul);
-                $scope.$apply();
+                //$scope.$apply();
                 $.unblockUI();
-            },
-            error: function (data){ console.log(data);}
-        });
+            });
+        }catch(e){
+            console.log("Error en la actividad desarrollada");
+        }
     }
 
-    $scope.LicenciaXCategoriaM = function(idDesarrollada){
-        setTimeout(function(){
-            $.blockUI();
-            $scope[name] = 'Running';
-            var deferred = $q.defer();
-            datoObjectFile1 = new Object();
-            datoObjectFile2 = new Object();
-            datoObjectFiles_ci = [];
-            try{
-                var infodesM = '{"idActividadDesarrollada343": ' + idDesarrollada + '}';
-                infodesM = JSON.parse(infodesM);
-                $.ajax({
-                    type        : 'POST',
-                    url         : 'http://172.19.161.3:9590/api/cargarTiposLicenciasCategorias',
-                    data        : infodesM,
-                    dataType    : 'json',
-                    crossDomain : true,
-                    headers: {
-                        'authorization': 'Bearer' + $rootScope.tokenvalle,
-                    },
-                    success: function (datosLicM){
-                        $scope.multiple = datosLicM;
-                        $scope.multiple.f01_tipo_licmid = datosLicM[0].idTipoLicencia;
-                        $scope.multiple.f01_tipo_licmdescrip = datosLicM[0].TipoLicenciaDescripcion;
-                        $scope.multiple.f01_cat_agrupadamid = datosLicM[0].idActividadDesarrollada;
-                        $scope.multiple.f01_cat_agrupadamdescrip = datosLicM[0].ADDescripcion;
-                        $scope.multiple.f01_act_desarrolladamid = idDesarrollada;
-                        var combox      = document.getElementById('f01_act_desarrolladamid');
-                        selected2   = combox.options[combox.selectedIndex].text;
-                        $scope.multiple.f01_act_desarrolladamdescrip  = selected2;
-                        $scope.multiple.f01_tae  = datosLicM[0].tae;
-                        $scope.getRequisitosFormulario(datosLicM[0].idActividadDesarrollada,$scope.datos.f01_tipo_per);
-                        deferred.resolve($scope.multiple);
-                        $scope.$apply();
-                        $.unblockUI();
-                    },
-                    error: function (data){ console.log(data);}
-                });
-                return deferred.promise;
-            }catch(e){
-                console.log("Error en la actividad desarrollada");
-            }
-        }, 1000);
+    $scope.LicenciaXCategoriaM = function(idDesarrollada, superficie){
+        $.blockUI();
+        $scope[name] = 'Running';
+        var deferred = $q.defer();
+        datoObjectFile1 = new Object();
+        datoObjectFile2 = new Object();
+        datoObjectFiles_ci = [];
+        try{
+            var nDatosLic = new getDatosLicencia();
+            nDatosLic.idActividadDesarrollada = idDesarrollada;
+            nDatosLic.superficie = superficie;
+            nDatosLic.getDatos_Licencia(function(resDatosLicM){
+                var obtLicM = JSON.parse(resDatosLicM);
+                var datosLicM = obtLicM.success.dataSql;
+                if(datosLicM.length > 0){
+                    $scope.multiple = datosLicM;
+                    $scope.multiple.f01_tipo_licmid = datosLicM[0].idTipoLicencia;
+                    $scope.multiple.f01_tipo_licmdescrip = datosLicM[0].TipoLicenciaDescripcion;
+                    $scope.multiple.f01_cat_agrupadamid = datosLicM[0].idActividadDesarrollada;
+                    $scope.multiple.f01_cat_agrupadamdescrip = datosLicM[0].ADDescripcion;
+                    $scope.multiple.f01_act_desarrolladamid = idDesarrollada;
+                    var combox = document.getElementById('f01_act_desarrolladamid');
+                    selected2 = combox.options[combox.selectedIndex].text;
+                    $scope.multiple.f01_act_desarrolladamdescrip = selected2;
+                    $scope.multiple.f01_tae = datosLicM[0].tae;
+                    $scope.getRequisitosFormulario(datosLicM[0].idActividadDesarrollada,$scope.datos.f01_tipo_per);
+                    deferred.resolve($scope.multiple);
+                    $.unblockUI();
+                }else{
+                    $scope.msg = "Error !!";
+                    $.unblockUI();
+                }
+            });
+        }catch(e){
+            console.log("Error en la actividad desarrollada");
+        }
     }
+
 
     $scope.guardarLicencia = function(licencia){
         $scope.dscripcionlic ={};
+        if($scope.dscripcionlic.f01_act_desarrolladamdescrip=='--Seleccione--'){
+            $scope.dscripcionlic.f01_act_desarrolladamdescrip = '';
+        }
         if(licencia.f01_tipo_licmid =='' || licencia.f01_tipo_licmid == null || licencia.f01_cat_agrupadamid =='' || licencia.f01_cat_agrupadamid == null ) {
-            swal('', 'Llene lo campos requeridos para la Catergoria Multiple  ', 'error');
+            sweet.show('', 'Llene lo campos requeridos para la Catergoria Multiple  ', 'error');
         } else {
              var id=0
             if($scope.datos.licenciam =='' || $scope.datos.licenciam == null || $scope.datos.licenciam =="undefined" ){
@@ -351,9 +332,9 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 $scope.id = id;
                 if($scope.id == 1){
                     $scope.f01_catagrp_principal = 1;
-                    $scope.datos.mulact_principal = licencia.f01_act_principal2;
+                    $scope.datos.mulact_principal = $scope.multiple.f01_act_principal;
                     $scope.datos.xf01_idcat_multi_principal = licencia.f01_cat_agrupadamid;
-                    $scope.datos.xf01_descat_multi_principal = licencia.f01_cat_agrupadamdescrip;
+                    $scope.datos.xf01_descat_multi_principal = $scope.dscripcionlic.f01_cat_agrupadamdescrip;
                 }else{
                     $scope.f01_catagrp_principal=0;
                 }
@@ -371,15 +352,13 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 $scope.licdes = [];
                 $scope.multiple = [];
                 $scope.dscripcionlic = {};
-                $scope.multiple.f01_act_desarrolladamid = "";
-                document.getElementById("f01_act_desarrolladamid").value='';
-                $scope.multiple.f01_tipo_licmid = "";
                 $scope.datos.licenciam = $scope.licenciamul;
                 $scope.Licencia_Multiple($scope.licenciamul);
+                 /*LISTAR REQUISITOS DINAMICOS*/
                 $scope.lstRequisitosMultiples2018($scope.licenciamul);
                 $scope.lstRequisitosTecnicosMultiples($scope.licenciamul);
             } else {
-                swal('', 'El numero de multiples excede los estandares permitidos', 'error');
+                sweet.show('', 'El numero de multiples excede los estandares permitidos', 'error');
             }
         }
     }
@@ -388,7 +367,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.licmul_grilla = [];
         var encabezado = [];
         var indice = 1;
-        encabezado[0] = {"tipo": "GRD","campos": "nroElem|f01_tipo_licmid|f01_tipo_licmdescrip|f01_cat_agrupadamid|f01_cat_agrupadamdescrip|f01_act_desarrolladamid|f01_act_desarrolladamdescrip|f01_catagrp_principal","titulos": "NRO|Id Licencia|Tipo de Licencia|Id Categoria|Tipo de Categoria|Id Actividad|Tipo de Actividad Desarrollada|Actividad Principal","impresiones": "true|false|true|false|true|false|true|false|"};
+        encabezado[0] = {"tipo": "GRD","campos": "nroElem|f01_tipo_licmid|f01_tipo_licmdescrip|f01_cat_agrupadamid|f01_cat_agrupadamdescrip|f01_act_desarrolladamid|f01_act_desarrolladamdescrip|f01_catagrp_principal","titulos": "NRO|Id Licencia|Tipo de Licencia|Id Categoria|Tipo de Categoria|Id Actividad|Tipo de Actividad Desarrollada|Actividad Principal","impresiones": "true|true|true|true|true|true|true|true|"};
         var nroElem = 0;
         var j=0;
         for(j=0; j<dato.length;j++) {
@@ -3288,7 +3267,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.ultimoArrayAdjunto();
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm    =   true;
-        var idProcodigo         =   'EMI-AE';
+        var idProcodigo         =   'EM-LF';
         var datosNeXO = {};
         $scope.divVIAE="mostrar";
         datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;

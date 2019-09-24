@@ -689,7 +689,8 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
            $.blockUI(); 
         },500);
         $scope.seleccionarTramiteRender(tramite);
-        $scope.open_mapa_ae_update();        
+        //$scope.open_mapa_ae_update();
+        //openMapGis();        
     }
 
 
@@ -700,6 +701,7 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
     
     $scope.seleccionarTramiteRender = function (tramite) {
         console.log('tramiteeeee    ',tramite);
+        openMapGis();
         //$scope.getCaptchasXX();
         $scope.procesoSeleccionado   =   tramite.vdvser_id;
         $rootScope.tramiteId = tramite.vtra_id;

@@ -2243,11 +2243,30 @@ app.controller('regularController', function ($scope,$timeout, $q, $rootScope, $
         };
         aDocAdjuntosmapa[0]=datosAdjuntosmapa;
         $scope.datos.ARCHIVOS_MULTIPLES_MAPA = aDocAdjuntosmapa;
+
+        $scope.map.once('postcompose', function(event) {
+            var canvas = event.context.canvas;
+            if (navigator.msSaveBlob) {
+                //navigator.msSaveBlob(canvas.msToBlob(), 'mapa.jpg');
+            }
+            else {
+                canvas.toBlob(function(blob) {
+                    var data_mapa1 = canvas.toDataURL();
+                    var d = data_mapa1;
+                    data_mapa1 = d.replace("data:image/png;base64,", "");
+                    $scope.Imagenb = data_mapa1;
+                    $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);
+                });
+            }
+        });
+        $scope.map.renderSync();
+        /*
         $scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center='+ latitud +','+ longitud +'&zoom=16&size=600x300&maptype=roadmap&markers=color:red|label:S|'+ latitud +','+ longitud +'&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img){
             var Imagen = base64Img.replace(/data:image\/png;base64,/i,'');
             $scope.Imagenb = Imagen;
             $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);
         });
+        */
     }
     //DATOS PUBLICIDAD ->   categoria -> tipo de letrero  ***********************************************************************************************************************************
     $scope.verSuperficie = function(p){

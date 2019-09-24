@@ -15,7 +15,7 @@ var vectorLayer = new ol.layer.Vector({source: vectorSource});
 //map.addLayer(vectorLayerZonas);
 
 var myStyleZonas = new ol.style.Style({
-         stroke : new ol.style.Stroke({color : 'orange',width : 2}),
+         stroke : new ol.style.Stroke({color : 'brow',width : 3}),
          fill : new ol.style.Fill({color: 'transparent'})
 });
 
@@ -140,7 +140,7 @@ var osm_udit = new ol.layer.Tile({
 
 var municipios = new ol.layer.Tile({
   title: 'Municipio',
-      visible: true,
+      visible: false,
       source: new ol.source.TileWMS({
           url: 'http://sitservicios.lapaz.bo/geoserver/wms',
           params: { 'LAYERS': 'g_municipio', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
@@ -232,6 +232,7 @@ var ortofotos_2006 = new ol.layer.Tile({
 });
 
 var datos;
+
 
 function openMapGis()
 {
@@ -541,9 +542,4 @@ function buscar_ubicacion_p()
       console.log("Vacio :",obj);
     }
   }   
-}
-
-function map_ae_update()
-{
-  console.log("ENTRANDO MAPA ACTUALIZAR....");
 }

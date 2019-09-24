@@ -41,7 +41,6 @@
     function initMap() {
         accessScope('#outerMapaActividadM', function (scope) {
             scope.initMap();
-            openMapGis();
         });
 
     }
@@ -691,6 +690,35 @@
                             </div>
                         </div>
                     </div>
+
+                    
+                    <div class="col-md-12">
+                        <legend>{{translateTitulos.lbl_12_54}}: </legend>
+                    </div>
+                    <label class="col-sm-4" type ="hidden"> UBICACIÓN DE LA ACTIVIDAD ECONÓMICA</label>
+                    <!-- +++++++++++++++++++++++++++++   MAPA ++++++++++++++++++++++++++++++++++++++-->
+                    <div class="col-md-12" >
+                        <div class="col-md-1" >
+                            <font color="#FF0000" size="4px" align="center"> * </font>
+                        </div>
+                        <div class="col-md-10">                                    
+                            <!--<div id="mapActividad" ng-disabled="desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>-->
+                            <div id="map_principal" ng-disabled="desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
+                        </div>
+
+                         <div class="form-group">
+                            <div class="col-sm-6">
+                                <input  name="busqueda_p" id="busqueda_p" class="form-control" type="text" placeholder=" INTRODUZCA NOMBRE DE ZONA">
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="input-group-btn"><br>
+                                  <button class="btn btn-info" type="button" onclick="buscar_ubicacion_p();"><i class="fa fa-search">Buscar</i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <input ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control" type="hidden" readonly>
+                    <input ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control" type="hidden" readonly>
                     <div class="col-md-12">
                         <legend>{{translateTitulos.lbl_12_39}}:</legend>
                     </div>
@@ -982,39 +1010,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="col-md-12">
-                            <legend>{{translateTitulos.lbl_12_54}}: </legend>
-                        </div>
-                        <label class="col-sm-4" type ="hidden" id="lbl_f01_croquis_ae">*CROQUIS DE UBICACIÓN DE LA ACTIVIDAD ECONÓMICA</label>
-                        <div class="col-md-12" >
-                            <div class="col-md-1" >
-                                <br><br><br><br><br><br><br><br><br>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <font color="#FF0000" size="4px" align="center"> * </font>
-                            </div>
-                            <div class="col-md-10">                                    
-                                <!--<div id="mapActividad" style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>-->
-                                <div id="map_principal" style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <input  name="busqueda_p" id="busqueda_p" class="form-control" type="text" placeholder=" INTRODUZCA NOMBRE DE ZONA">
-                                </div>
-                                <div class="col-sm-6">
-                                    <span class="input-group-btn"><br>
-                                      <button class="btn btn-info" type="button" onclick="buscar_ubicacion_p();"><i class="fa fa-search">Buscar</i></button>
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-1">
-                                &nbsp;
-                            </div>
-                        </div>
-                        <div><br><br><br></div> 
+                    <br><br><br></div> 
                     </div>
                     <div ng-show = "mostrarzonasegura">
                         <div class="col-md-12">

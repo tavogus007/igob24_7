@@ -12,7 +12,7 @@ var dataParams;
 var typeCall;
 
 if(jsonURLS){
-  var urlGENESIS = jsonURLS.CONEXION_API_PG_IF1+"wsGENESIS";
+  var urlGENESIS = jsonURLS.CONEXION_API_PG_IF+"wsGENESIS";
   var urlIf2 = jsonURLS.CONEXION_API_PG_IF+"wsIf"; 
 }
 
@@ -176,6 +176,46 @@ gLstActividadEconomica.prototype.lstActividadEconomicaLey272 = function (functio
     dataParamsAe = {
         "idContribuyente":this.idContribuyente,
         "tipo":this.tipo
+    };
+    ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};
+
+//////LEY 343
+function getDatosActividadDesarrollada343(){
+};
+getDatosActividadDesarrollada343.prototype.getDatos_ActividadDesarrollada343 = function (functionResp) {
+    urlCompAe = "/listarActDesarrollada";
+    typeCallAe = "post";
+    dataParamsAe = {
+    };
+    ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);
+};
+
+function getDatosLicencia() {
+    this.idActividadDesarrollada;
+    this.superficie;
+};
+
+//idActividadEconomica +"\', @tipo
+getDatosLicencia.prototype.getDatos_Licencia = function (functionResp) {
+    urlCompAe = "/cargarTipoLicencia";
+    typeCallAe = "post";
+    dataParamsAe = {
+        "idActividadDesarrollada":this.idActividadDesarrollada,
+        "superficie":this.superficie
+    };
+    ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};
+
+function getHomologacion() {
+    this.idActividadDesarrollada;
+};
+
+getHomologacion.prototype.get_Homologacion = function (functionResp) {
+    urlCompAe = "/obtenerHomologacion";
+    typeCallAe = "post";
+    dataParamsAe = {
+        "idActividadDesarrollada":this.idActividadDesarrollada
     };
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
 };

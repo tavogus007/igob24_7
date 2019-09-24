@@ -292,13 +292,17 @@ function vehiculosJuridicoLibrosController($scope, $q, $rootScope, $routeParams,
         //alert(11111);
         //console.log('datos11111',datos);
         $scope.formulario409(datos);
-        $("#declaracionJV").modal("show");
+        //$("#declaracionJV").modal("show");
 
     }
 
     $scope.formulario409 = function(datosV){
         //console.log('data 409',datosV);
         $scope.valor =  datosV.valorLibroTablasV; 
+        if( $scope.valor == undefined){
+console.log("verificar datoooooooos", $scope.valor);
+swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 'error');
+        }else{
         var fecha= new Date();
         var fechaActualS = "";
         fechaActualS= fecha.getDate() +" - "+ (fecha.getMonth() + 1) +" - "+ fecha.getFullYear();
@@ -348,7 +352,9 @@ function vehiculosJuridicoLibrosController($scope, $q, $rootScope, $routeParams,
                 },500);
             })
             $scope.armarDatosForm(datos,fechaActualS, sHora);
+            $scope.generarDocumentoPhpV();
         }
+    }
     }
 
     $scope.armarDatosForm = function(data,sfecha,sHora){
@@ -498,6 +504,48 @@ function vehiculosJuridicoLibrosController($scope, $q, $rootScope, $routeParams,
         datoObjectCuadroAct = new Object();
         datoObjectCuad = [];
         $scope.datos.urlCuadroAct = url;
+    };
+     $scope.almacenarRequisitos409 = function (aArchivos, idFile) {
+        console.log("registar url ", aArchivos, idFile)
+        document.getElementById('href_f01_upload_' + idFile).href = '';
+        document.getElementById(idFile).value = '';
+        document.getElementById(idFile + '_url').value = '';
+        var fechaNueva = "";
+        var fechaserver = new fechaHoraServer();
+        fechaserver.fechahora(function (resp) {
+            var sfecha = JSON.parse(resp);
+            var fechaServ = (sfecha.success.fecha).split(' ');
+            var fecha_ = fechaServ[0].split('-');
+            var hora_ = fechaServ[1].split(':');
+            fechaNueva = fecha_[0] + fecha_[1] + fecha_[2] + '_' + hora_[0] + hora_[1] + hora_[2];
+        });
+
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+        var sDirTramite = sessionService.get('IDTRAMITE');
+        $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+        var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/";
+        angular.forEach(aArchivos, function (archivo, key) {
+            if (typeof (archivo) != 'undefined') {
+                var tipoDocci = archivo.name;
+                var nameArrayci = tipoDocci.split('.');
+                tipoDocci = nameArrayci[nameArrayci.length - 1];
+                if (tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm') {
+                    nombreNuevo = 'adjunto_' + fechaNueva + '.' + tipoDocci;
+                    url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreNuevo + "?app_name=todoangular";
+                    console.log("urlllllll", url);
+                    document.getElementById('href_f01_upload_' + idFile).href = url;
+                    document.getElementById(idFile).value = nombreNuevo;
+                    document.getElementById(idFile + '_url').value = url;
+                    fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
+                } else {
+                    swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                    document.getElementById(idFile).value = '';
+                }
+            } 
+        });
+        datoObjectCuadroAct = new Object();
+        datoObjectCuad = [];
+        $scope.datos.urlFomulario409 = url;
     };
 
     $scope.almacenarRequisitosExcel = function (aArchivos, idFile) {

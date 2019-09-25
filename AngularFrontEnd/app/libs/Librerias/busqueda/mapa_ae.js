@@ -82,22 +82,22 @@ var osm = new ol.layer.Tile({
 
 
 var vias = new ol.layer.Tile({
-            title: 'Vias',
-            //opacity: 0.3,
-            visible: true,
-            source: new ol.source.TileWMS({
-              url: 'http://sitservicios.lapaz.bo/geoserver/wms',
-              params: { 'LAYERS': 'catastro:vias2', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
-              serverType: 'geoserver',
-              //crossOrigin: '*'
-              crossOriginKeyword: 'anonymous'
-            }),
-            style: new ol.style.Style({ 
-               stroke: new ol.style.Stroke({
-                 color: 'red',
-                 with: 10
-               })
-            })
+  title: 'Vias',
+  //opacity: 0.3,
+  visible: true,
+  source: new ol.source.TileWMS({
+    url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+    params: { 'LAYERS': 'catastro:vias2', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+    serverType: 'geoserver',
+    //crossOrigin: '*'
+    crossOriginKeyword: 'anonymous'
+  }),
+  style: new ol.style.Style({ 
+     stroke: new ol.style.Stroke({
+       color: 'red',
+       with: 10
+     })
+  })
 });
 
 var zonas_tributarias = new ol.layer.Tile({
@@ -122,6 +122,18 @@ var zonas = new ol.layer.Tile({
             serverType: 'geoserver',
             crossOriginKeyword: 'anonymous'
           })
+});
+
+var lotes_1 = new ol.layer.Tile({
+    title: 'Lotes Catastro',
+    //opacity: 0.3,
+    visible: true,
+    source: new ol.source.TileWMS({
+        url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+        params: { 'LAYERS': 'catastro:lotes', 'VERSION': '1.1.1', 'FORMAT': 'image/png','STYLES':'ct_lote5','TILED': true },
+        serverType: 'geoserver',
+        crossOriginKeyword: 'anonymous'
+    })
 });
 
 

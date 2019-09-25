@@ -1290,7 +1290,9 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         obj.VH_VL_DOC_DETALLE_OBJ_TRIB = $scope.datos.urlTributario; //ADJUNTOS FACTURA 
         obj.VH_CC_CUADRO_ACT = $scope.datos.urlCuadroAct; //ADJUNTOS FACTURA
         obj.VH_CC_FCHA_TRAM = $rootScope.fechayhora;
-        obj.VH_VL_CUADRO_EXCEL = $scope.datos.excel; 
+        obj.VH_VL_CUADRO_EXCEL = $scope.datos.excel;
+        obj.VH_VL_FORMULARIO409 = $scope.datos.urlFomulario409;
+
         //obj.VH_CC_REQ_FAC_COMER = $scope.datos.urlFactura; //ADJUNTOS FACTURA 
         //obj.VH_CC_REQ_POL_IMPOR = $scope.datos.urlPoliza; 
         //obj.VH_CC_PODER_COMPRADOR = $scope.datos.urlPoder; 
@@ -1359,7 +1361,8 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         obj.VH_CC_CUADRO_EXCEL_INM = $scope.datos.excel; 
         obj.DOC_CI_FORMULARIO_406 = $rootScope.datosEnvI.declaracion_jurada;  //url pdf generado form 406
         obj.VH_CC_FCHA_TRAM = $rootScope.fechayhora;
-        obj.VH_CC_REQ_FAC_COMER = $scope.datos.urlCuadroAct;  
+        obj.VH_CC_REQ_FAC_COMER = $scope.datos.urlCuadroAct; 
+        obj.VH_VL_FORMULARIO406 = $scope.datos.formularioAdjunto406;  
         obj.VH_CC_PODER_COMPRADOR = $scope.datos.urlPoder; 
         obj.VH_CC_CI_ANV = $rootScope.file_CI_A;
         obj.VH_CC_CI_REV = $rootScope.file_CI_R;
@@ -1436,10 +1439,12 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                     success:function(response){
                         if(response.length>0){
                             var urlData = response;
-                            $rootScope.decJuradaNatural = urlData;
-                            $scope.InsertarDocumento(response);
-                            $rootScope.datosEnvI.declaracion_jurada = urlData;
-                            $scope.serializarInformacionInmuebles($rootScope.datosEnvI);
+                            console.log("urllllll", urlData);
+                            window.open(urlData, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=1000,width=800,height=1000");  
+                            //$rootScope.decJuradaNatural = urlData;
+                           // $scope.InsertarDocumento(response);
+                            //$rootScope.datosEnvI.declaracion_jurada = urlData;
+                           // $scope.serializarInformacionInmuebles($rootScope.datosEnvI);
                             $.unblockUI();
                         }
                     }
@@ -1485,10 +1490,12 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                 success:function(response){
                     if(response.length>0){
                         var urlData = response;
-                        $rootScope.decJuradaNatural = urlData;
-                        $scope.InsertarDocumento(response);
-                        $rootScope.datosEnvV.declaracion_jurada = urlData;
-                        $scope.serializarInformacionLibrosVehiculos($rootScope.datosEnvV);
+                        window.open(urlData, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=1000,width=800,height=1000");  
+                            
+                        //$rootScope.decJuradaNatural = urlData;
+                        //$scope.InsertarDocumento(response);
+                        //$rootScope.datosEnvV.declaracion_jurada = urlData;
+                        //$scope.serializarInformacionLibrosVehiculos($rootScope.datosEnvV);
                         $.unblockUI();
                     }
                 }

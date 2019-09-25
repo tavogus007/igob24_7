@@ -199,12 +199,18 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
     };
     $scope.verificarDatos = function(datos){
         $scope.formulario406(datos);
-        $("#declaracionJ").modal("show");
+        //$("#declaracionJ").modal("show");
 
     }
     $scope.formulario406 = function(dataI){
+
         //console.log('dataI',dataI);
         $scope.valor =  dataI.valorLibroTablas; 
+        if( $scope.valor == undefined){
+console.log("verificar datoooooooos", $scope.valor);
+swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 'error');
+        }else{
+        console.log("verificar datoooooooos", $scope.valor);
         $rootScope.datosEnvI = "";
         var fecha= new Date();
         var fechaActualS = "";
@@ -236,7 +242,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
 
                 stringFormulario406  =   stringFormulario406.replace("#INM_VL_NRO_DOC_IDEN#", datos.INM_VL_NRO_DOC_IDEN);
                 stringFormulario406  =   stringFormulario406.replace("#INM_VL_NOM_RAZ_SOC#", datos.INM_VL_NOM_RAZ_SOC);
-                stringFormulario406  =   stringFormulario406.replace("#valorLibroTablas#",$scope.valor); 
+                stringFormulario406  =   stringFormulario406.replace("#valorLibroTablas#",dataI.valorLibroTablas); 
 
                 stringFormulario406  =   stringFormulario406.replace("#DIA#", fecha.getDate());
                 stringFormulario406  =   stringFormulario406.replace("#MES#", fecha.getMonth() + 1);
@@ -250,7 +256,9 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
                 },500);
             })
             $scope.armarDatosForm(datos,fechaActualS, sHora);
+            $scope.generarDocumentoPhpI();
         }
+    }
     }
 
     $scope.armarDatosForm = function(data,sfecha,sHora){
@@ -443,6 +451,48 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
         datoObjectExcel = new Object();
         datoObjectExc = [];
         $scope.datos.excel = url; 
+    };
+
+
+    $scope.almacenarRequisitoFormulario406 = function (aArchivos, idFile) {
+        document.getElementById('href_f01_upload_' + idFile).href = '';
+        document.getElementById(idFile).value = '';
+        document.getElementById(idFile + '_url').value = '';
+        var fechaNueva = "";
+        var fechaserver = new fechaHoraServer();
+        fechaserver.fechahora(function (resp) {
+            var sfecha = JSON.parse(resp);
+            var fechaServ = (sfecha.success.fecha).split(' ');
+            var fecha_ = fechaServ[0].split('-');
+            var hora_ = fechaServ[1].split(':');
+            fechaNueva = fecha_[0] + fecha_[1] + fecha_[2] + '_' + hora_[0] + hora_[1] + hora_[2];
+        });
+
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+        var sDirTramite = sessionService.get('IDTRAMITE');
+        $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+        var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/";
+        angular.forEach(aArchivos, function (archivo, key) {
+            if (typeof (archivo) != 'undefined') {
+                var tipoDocci = archivo.name;
+                var nameArrayci = tipoDocci.split('.');
+                tipoDocci = nameArrayci[nameArrayci.length - 1];
+                if (tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm') {
+                    nombreNuevo = 'adjunto_' + fechaNueva + '.' + tipoDocci;
+                    url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreNuevo + "?app_name=todoangular";
+                    document.getElementById('href_f01_upload_' + idFile).href = url;
+                    document.getElementById(idFile).value = nombreNuevo;
+                    document.getElementById(idFile + '_url').value = url;
+                    fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
+                } else {
+                    swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                    document.getElementById(idFile).value = '';
+                }
+            } 
+        });
+        datoObjectCuadroAct = new Object();
+        datoObjectCuad = [];
+        $scope.datos.formularioAdjunto406 = url; 
     };
     ////ADJUNTOS DEL CIUDADANO
     $scope.guardarFiles = function (campo, nombre, url) {

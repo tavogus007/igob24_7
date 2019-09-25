@@ -1,270 +1,213 @@
-<style type="text/css">
-  body {
-    font-family: "Open Sans", sans-serif;
-    line-height: 1.25;
-  }
-  
-  table {
-    border: 1px solid #ccc;
-    border-collapse: collapse;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    table-layout: fixed;
-  }
-  
-  table caption {
-    font-size: 1.5em;
-    margin: .5em 0 .75em;
-  }
-  
-  table tr {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    padding: .35em;
-  }
-  
-  table th,
-  table td {
-    padding: .625em;
-    text-align: left;
-  }
-  
-  table th {
-    font-size: .85em;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-  }
-  
-  @media screen and (max-width: 600px) {
-    table {
-      border: 0;
-    }
-  
-    table caption {
-      font-size: 1.3em;
-    }
-    
-    table thead {
-      border: none;
-      clip: rect(0 0 0 0);
-      height: 1px;
-      margin: -1px;
-      overflow: hidden;
-      padding: 0;
-      position: absolute;
-      width: 1px;
-    }
-    
-    table tr {
-      border-bottom: 3px solid #ddd;
-      display: block;
-      margin-bottom: .625em;
-    }
-    
-    table td {
-      border-bottom: 1px solid #ddd;
-      display: block;
-      font-size: .8em;
-      text-align: right;
-    }
-    
-    table td::before {
-      content: attr(data-label);
-      float: left;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-    
-    table td:last-child {
-      border-bottom: 0;
-    }
-  }
-  </style>
-  <table border="1" cellpadding="1" cellspacing="1" style="">
-    <tbody>
-      <tr>
-        <td>
-        <table>
-          <tbody>
-            <tr>
-              <td>
-              <h3 style="text-align:center">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong> <span style="font-size:10px">GOBIERNO AUT&Oacute;NOMO MUNICIPAL DE LA PAZ</span></strong></h3>
-  
-              <address style="margin-left: 40px; text-align: center;"><span style="font-size:10px">ADMINISTRACI&Oacute;N TRIBUTARIA MUNICIPAL</span></address>
-              </td>
-              <td>
-              <h3 style="text-align:center"><strong>SOLICITUD INSERCI&Oacute;N DE LA BASE IMPONIBLE PARA LA LIQUIDACI&Oacute;N DEL I.M.P.V.A</strong><strong>&nbsp; &nbsp;</strong></h3>
-              </td>
-              <td>
-              <address style="text-align: center;">FORMULARIO 409</address>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-  
-        <h5>&nbsp; &nbsp; &nbsp; Por intermedio de la presente, solicito a la Autoridad Tributaria Municipal del G.A.M.L.P la inserci&oacute;n de la base imponible para la liquidaci&oacute;n del Impuesto Municipal a la Propiedad de Veh&iacute;culos Automotores&nbsp; &nbsp; &nbsp;</h5>
-  
-        <div class="row">
-          <div class="col-md-12" style="margin: 10px">
-              <h3><strong>#valorLibroTablasV#</h3></strong>
-          </div>
-        </div>
+<address>&nbsp;</address>
 
-        <p>&nbsp;</p>
-  
-        <table border="1" cellpadding="1" cellspacing="1" >
-          <tbody>
-            <tr>
-              <td colspan="4"><strong>1.- IDENTIFICACION DEL PROPIETARIO:</strong></td>
-            </tr>
-            <tr>
-              <td colspan="4">Nombre/Razon Social:&nbsp;<strong>#VH_CC_NOM_RAZ_SOC#</strong></td>
-            </tr>
-            <tr>
-              <td>PMC:</td>
-              <td colspan="3" rowspan="1">N&ordm; Placa(Solo para un Vehiculo):</td>
-            </tr>
-            <tr>
-              <td>Gesti&oacute;n(es):</td>
-              <td>C.I.:</td>
-              <td>R.U.C.:</td>
-              <td>N.I.T.:&nbsp;<strong>#VH_CC_NRO_DOC_IDEN#</strong></td>
-            </tr>
-          </tbody>
-        </table>
-  
-        <p>&nbsp;</p>
-  
-        <table border="1" cellpadding="1" cellspacing="1" >
-          <tbody>
-            <tr>
-              <td><strong>DOCUMENTACI&Oacute;N QUE DEBE ADJUNTAR PARA</strong></td>
-            </tr>
-          </tbody>
-        </table>
-  
-        <table border="1" cellpadding="1" cellspacing="1" >
-          <tbody>
-            <tr>
-              <td colspan="3"><strong>2.1. VALOR LIBROS.</strong></td>
-            </tr>
-            <tr>
-              <td>Balance General:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-              <td>Detalle de Veh&iacute;culos:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-              <td>Formulario 605 y Certificaci&oacute;n:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-            </tr>
-            <tr>
-              <td>Cuadro de Ajuste:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-              <td>C.I. Representante Legal:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-              <td>Documentaci&oacute;n de Representante Legal:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-            </tr>
-            <tr>
-              <td>M.I.D.F.:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-            </tr>
-          </tbody>
-        </table>
-  
-        <table border="1" cellpadding="1" cellspacing="1" >
-          <tbody>
-            <tr>
-              <td colspan="3"><strong>2.2. VALOR TABLAS.</strong></td>
-            </tr>
-            <tr>
-              <td>Solicitud Justificada:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-              <td>Documentaci&oacute;n que justifique el Registro:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-              <td>Detalle de los Veh&iacute;culos:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-            </tr>
-            <tr>
-              <td>C.I. Propietario(s):&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-              <td>C.I. Representante Legal:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-              <td>Documentaci&oacute;n de Representante Legal:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-            </tr>
-          </tbody>
-        </table>
-  
-        <h3 style="text-align:center">&nbsp;</h3>
-  
-        <table border="1" cellpadding="1" cellspacing="1" >
-          <tbody>
-            <tr>
-              <td><strong>LLENAR SOLO PARA SOLICITUDES DE VALOR TABLAS</strong></td>
-            </tr>
-          </tbody>
-        </table>
-  
-        <table border="1" cellpadding="1" cellspacing="1" >
-          <tbody>
-            <tr>
-              <td colspan="3"><strong>3. CAUSAL DE LA SOLICITUD</strong></td>
-            </tr>
-            <tr>
-              <td>No lleva registros contables:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-              <td>Sin registro oportuno en sus activos fijos:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-              <td>Empresas cerradas o desaparecidas:&nbsp;<input type="checkbox" id="cbox1" value="first_checkbox"></td>
-            </tr>
-          </tbody>
-        </table>
-  
-        <p>&nbsp;</p>
-  
-        <table border="1" cellpadding="1" cellspacing="1" >
-          <tbody>
-            <tr>
-              <td>
-              <h3>OBSERVACIONES:</h3>
-  
-              <h3>&nbsp;</h3>
-  
-              <h3>&nbsp;</h3>
-  
-              <h3>&nbsp;</h3>
-  
-              <h3>&nbsp;</h3>
-  
-              <h3>&nbsp;</h3>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-  
-        <table border="1" cellpadding="1" cellspacing="1" >
-          <tbody>
-            <tr>
-              <td style="text-align:center">LUGAR</td>
-              <td style="text-align:center">FIRMA&nbsp;</td>
-            </tr>
-          </tbody>
-        </table>
-  
-        <table border="1" cellpadding="1" cellspacing="1" style="height:100px; width:100%">
-          <tbody>
-            <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-            </tr>
-          </tbody>
-        </table>
-  
-        <table border="1" cellpadding="1" cellspacing="1" >
-          <tbody>
-            <tr>
-              <td style="text-align:center">DIA</td>
-              <td style="text-align:center">MES</td>
-              <td style="text-align:center">A&Ntilde;O</td>
-              <td style="text-align:center">ACLARACI&Oacute;N DE FIRMA</td>
-            </tr>
-            <tr>
-              <td style="text-align:center">#DIA#</td>
-              <td style="text-align:center">#MES#</td>
-              <td style="text-align:center">#ANIO#</td>
-            </tr>
-          </tbody>
-        </table>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  
+<table border="0" cellpadding="1" cellspacing="1" style="width:100%">
+	<tbody>
+		<tr>
+			<td>
+			<table style="width:100%">
+				<tbody>
+					<tr>
+						<td>
+						<h6 style="text-align:center"><span style="font-size:8px">GOBIERNO AUT&Oacute;NOMO MUNICIPAL DE LA PAZ</span><br />
+						<span style="font-size:8px">ADMINISTRACI&Oacute;N TRIBUTARIA MUNICIPAL</span><br />
+						<span style="font-size:8px">UNIDAD DE RECAUDACIONES</span></h6>
+						</td>
+						<td>
+						<h6>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong></h6>
+						</td>
+						<td>
+						<h6>FORMULARIO 409</h6>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<table border="0" cellpadding="3" cellspacing="0" style="width:100%">
+				<tbody>
+					<tr>
+						<td style="text-align:center">
+						<pre>
+<span style="font-size:16px">   <strong>SOLICITUD INSERCI&Oacute;N DE LA BASE IMPONIBLE PARA LA LIQUIDACI&Oacute;N DEL I.M.P.V.A        </strong></span></pre>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>
+		<tr>
+			<td><span style="font-size:14px">&nbsp; &nbsp; &nbsp;</span><span style="font-size:12px"> Por intermedio de la presente, solicito a la Autoridad Tributaria Municipal del G.A.M.L.P la inserci&oacute;n de la base imponible para la liquidaci&oacute;n del Impuesto Municipal a la Propiedad de Veh&iacute;culos Automotores:</span></td>
+		</tr>
+		<tr>
+			<td>
+			<h3 style="text-align:center"><span style="font-size:12px">&nbsp; &nbsp; #VALOR LIBROS#</span></h3>
+
+			<pre>
+<span style="font-size:12px"><strong>1.- IDENTIFICACI&Oacute;N DEL PROPIETARIO:</strong></span></pre>
+
+			<table border="1" cellpadding="3" cellspacing="0" style="width:100%">
+				<tbody>
+					<tr>
+						<td colspan="4"><span style="font-size:12px">Nombre/Raz&oacute;n Social:&nbsp;</span> &nbsp;#VH_CC_NOM_RAZ_SOC#&nbsp; &nbsp;</td>
+					</tr>
+					<tr>
+						<td><span style="font-size:12px">PMC:</span></td>
+						<td colspan="3" rowspan="1"><span style="font-size:12px">N&ordm; Placa(Solo para un Veh&iacute;culo):</span></td>
+					</tr>
+					<tr>
+						<td><span style="font-size:12px">Gesti&oacute;n(es):</span></td>
+						<td><span style="font-size:12px">C.I.:</span></td>
+						<td><span style="font-size:12px">R.U.C.:</span></td>
+						<td><span style="font-size:12px">N.I.T.:</span> &nbsp;#VH_CC_NRO_DOC_IDEN#&nbsp; &nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h3><span style="font-size:12px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></h3>
+
+			<pre>
+<span style="font-size:12px"><strong>2.- DOCUMENTACI&Oacute;N QUE DEBE ADJUNTAR PARA:</strong></span></pre>
+
+			<table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+				<tbody>
+					<tr>
+						<td colspan="3"><span style="font-size:12px"><strong>2.1. VALOR LIBROS.</strong></span></td>
+					</tr>
+					<tr>
+						<td><span style="font-size:12px">Balance General :&nbsp;</span></td>
+						<td><span style="font-size:12px">Detalle de Veh&iacute;culos:&nbsp;</span></td>
+						<td><span style="font-size:12px">Formulario 605 y Certificaci&oacute;n:&nbsp;</span></td>
+					</tr>
+					<tr>
+						<td><span style="font-size:12px">Cuadro de Ajuste:&nbsp;</span></td>
+						<td><span style="font-size:12px">C.I. Representante Legal:&nbsp;</span></td>
+						<td><span style="font-size:12px">Documentaci&oacute;n de Representaci&oacute;n Legal:&nbsp;</span></td>
+					</tr>
+					<tr>
+						<td><span style="font-size:12px">M.I.D.F.:&nbsp;</span></td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<p>&nbsp;</p>
+
+			<table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+				<tbody>
+					<tr>
+						<td colspan="3"><span style="font-size:12px"><strong>2.2. VALOR TABLAS.</strong></span></td>
+					</tr>
+					<tr>
+						<td><span style="font-size:12px">Solicitud Justificada:&nbsp;</span></td>
+						<td><span style="font-size:12px">Documentaci&oacute;n que justifique el Registro:&nbsp;</span></td>
+						<td><span style="font-size:12px">Detalle de los Veh&iacute;culos:&nbsp;</span></td>
+					</tr>
+					<tr>
+						<td><span style="font-size:12px">C.I. Propietario(s):&nbsp;</span></td>
+						<td><span style="font-size:12px">C.I. Representante Legal:&nbsp;</span></td>
+						<td><span style="font-size:12px">Documento de Representante Legal:&nbsp;</span></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h3 style="text-align:center">&nbsp;</h3>
+
+			<div><span style="font-size:10px"><strong>LLENAR SOLO PARA SOLICITUDES DE VALOR TABLAS</strong></span></div>
+
+			<pre>
+<span style="font-size:12px"><strong>3. CAUSAL DE LA SOLICITUD</strong></span></pre>
+
+			<table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+				<tbody>
+					<tr>
+						<td><span style="font-size:12px">No lleva registros contables:&nbsp;</span></td>
+						<td><span style="font-size:12px">Sin registro oportuno en sus activos fijos:&nbsp;</span></td>
+						<td><span style="font-size:12px">Empresas cerradas o desaparecidas:&nbsp;</span></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div>&nbsp;</div>
+
+			<div><span style="font-size:10px"><strong>LLENAR SOLO PARA SOLICITUDES DE AUTOAVAL&Uacute;O</strong></span></div>
+
+			<pre>
+<span style="font-size:12px"><strong>4. VALOR DEL INMUEBLE</strong></span></pre>
+
+			<table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+				<tbody>
+					<tr>
+						<td><span style="font-size:12px">Metros cuadrados:&nbsp;</span></td>
+						<td><span style="font-size:12px">Valor por mt2 (Bs):&nbsp;</span></td>
+						<td><span style="font-size:12px">Valor Total (Bs):&nbsp;</span></td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<table align="left" border="0" cellpadding="1" cellspacing="1">
+	<tbody>
+		<tr>
+			<td>
+			<pre>
+<span style="font-size:12px"><strong>OBSERVACIONES</strong>:</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+	<tbody>
+		<tr>
+			<td>
+			<h3><span style="font-size:12px"><span style="color:#FFFFFF">OBSERVACIONES:</span></span></h3>
+
+			<h3>&nbsp;</h3>
+
+			<h3>&nbsp;</h3>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+	<tbody>
+		<tr>
+			<td style="text-align:center"><span style="font-size:12px">LUGAR</span></td>
+			<td style="text-align:center"><span style="font-size:12px">FIRMA&nbsp;</span></td>
+		</tr>
+	</tbody>
+</table>
+
+<table border="1" cellpadding="1" cellspacing="1" style="height:100px; width:100%">
+	<tbody>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+	<tbody>
+		<tr>
+			<td style="text-align:center"><span style="font-size:12px">D&Iacute;A</span></td>
+			<td style="text-align:center"><span style="font-size:12px">MES</span></td>
+			<td style="text-align:center"><span style="font-size:12px">A&Ntilde;O</span></td>
+			<td style="text-align:center"><span style="font-size:12px">ACLARACI&Oacute;N DE FIRMA&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></td>
+		</tr>
+		<tr>
+			<td style="text-align:center">&nbsp; &nbsp;#DIA#</td>
+			<td style="text-align:center">&nbsp; &nbsp; &nbsp;#MES#&nbsp; &nbsp;</td>
+			<td style="text-align:center">&nbsp; &nbsp;#ANIO#</td>
+		</tr>
+	</tbody>
+</table>
+

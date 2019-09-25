@@ -216,6 +216,33 @@
         }
     };
 
+    function ejecutarForm406(filename, idfile) {
+        var sid = document.getElementById(filename);
+        sidFile = idfile;
+        if (sid) {
+            document.getElementById(filename).click();
+        } else {
+            alert("Error ");
+        }
+    };
+    $('.custom-upload4 input[type=file]').change(function () {
+        $(this).next().find('input').val($(this).val());
+        cambiarFileFormulario(this, $(this).val());
+    });
+
+    function cambiarFileFormulario(obj, valor) {
+        var datos = new Array();
+        datos[obj.name] = valor;
+        subirRequisitos406(obj, valor);
+    };
+    function subirRequisitos406(sobj, svalor) {
+        var rMisDocs = new Array();
+        if (sobj.files[0]) {
+            rMisDocs.push(sobj.files[0]);
+            angular.element(document.getElementById("id_serviciosInmueblesJuridicoLibrosController")).scope().almacenarRequisitoFormulario406(rMisDocs, sidFile); //NO OLVIDAR
+        }
+    };
+
     ////FIN-ADJUNTOS
     function soloNumericoCelular(sValor, mensaje) {
         Numer = parseInt(sValor);
@@ -563,11 +590,11 @@
                             <div class="form-group" class="col-md-12">
                                 <div class="controls">
                                     <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                                        <h4>TIPO</h4>
+                                        <h4>1. GENERAR FORMULARIO 406</h4>
                                     </div><br>
                                     <div class="col-md-4">
                                         <font color="#FF0000" size="4px">*  </font>
-                                        <input type="radio" ng-model="datos.valorLibroTablas" name="valorLibroTablas" value="VALOR LIBROS" ng-disabled="desabilitado" required> VALOR LIBROS
+                                        <input type="radio" ng-model="datos.valorLibroTablas" name="valorLibroTablas" value="VALOR LIBROS" ng-disabled="desabilitado" required > VALOR LIBROS
                                     </div>
                                     <div class="col-md-4">
                                         <input type="radio" ng-model="datos.valorLibroTablas" name="valorLibroTablas" value="VALOR TABLAS" ng-disabled="desabilitado" required> VALOR TABLAS
@@ -615,7 +642,9 @@
                             </div>    
                         </div>
                         <div class="col-md-12" ng-show="t_enviado">
-                            <legend>LISTA DE REQUISITOS:</legend>
+                            <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                                        <h4>2. DESCARGAR CUADRO BALANCE </h4>
+                                    </div><br>
                             <div class="form-group" ng-show="t_enviado">
                                 <div class="col-md-12">
                                     <div class="row">
@@ -636,6 +665,9 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                                        <h4>3. ADJUNTAR REQUISITOS</h4>
+                                    </div><br>
                                         <div class="col-md-6">
                                             <label for="url">FOTOCOPIA DE BALANCE CON SELLO DE IMPUESTOS NACIONALES O INSTITUCIÒN BANCARIA:</label>
                                         </div>
@@ -644,7 +676,7 @@
                                                 <input type="file" id="f01_upload_factura" name="f01_upload_factura" accept="image/*" style="display: none;">
                                                 <div class="input-group col-xs-6">
                                                     <span class="input-group-addon" style="background-color:rgb(0, 185, 194 ,0.6);">
-                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Se puede enviar archivos de Imagen, PDF, documentos de Office y archivos comprimidos."><i class="glyphicon glyphicon-question-sign"></i></a>
+                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Se puede enviar archivos de Imagen, PDF."><i class="glyphicon glyphicon-question-sign"></i></a>
                                                     </span>
                                                     <input type="hidden" name="factura_url" id="factura_url">
                                                     <input id="factura" name="factura" type="text" placeholder="" value="{{valor_factura}}" class="form-control input-lg" disabled required>
@@ -672,7 +704,7 @@
                                                 <input type="file" id="f01_upload_inmueble" name="f01_upload_inmueble" accept="image/*" style="display: none;">
                                                 <div class="input-group col-xs-6">
                                                     <span class="input-group-addon" style="background-color:rgb(0, 185, 194 ,0.6);">
-                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Se puede enviar archivos de Imagen, PDF, documentos de Office y archivos comprimidos."><i class="glyphicon glyphicon-question-sign"></i></a>
+                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Se puede enviar archivos de Imagen, PDF."><i class="glyphicon glyphicon-question-sign"></i></a>
                                                     </span>
                                                     <input type="hidden" name="inmueble_url" id="inmueble_url">
                                                     <input id="inmueble" name="inmueble" type="text" placeholder="" value="{{valor_inmueble}}" class="form-control input-lg" disabled required>
@@ -700,7 +732,7 @@
                                                 <input type="file" id="f01_upload_ajuste" name="f01_upload_ajuste" accept="image/*" style="display: none;">
                                                 <div class="input-group col-xs-6">
                                                     <span class="input-group-addon" style="background-color:rgb(0, 185, 194 ,0.6);">
-                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Se puede enviar archivos de Imagen, PDF, documentos de Office y archivos comprimidos."><i class="glyphicon glyphicon-question-sign"></i></a>
+                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Se puede enviar archivos de Imagen, PDF"><i class="glyphicon glyphicon-question-sign"></i></a>
                                                     </span>
                                                     <input type="hidden" name="ajuste_url" id="ajuste_url">
                                                     <input id="ajuste" name="ajuste" type="text" placeholder="" value="{{valor_ajuste}}" class="form-control input-lg" disabled required>
@@ -721,14 +753,14 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label for="url">CUADRO DE BALANCE - INMUEBLES (ARCHIVOS XLS Ó XLSX)</label>
+                                            <label for="url">CUADRO DE BALANCE - INMUEBLES (descargar en el punto 2, archivo tipo XLS Ó XLSX):</label>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group custom-upload3">
                                                 <input type="file" id="f01_upload_excel" name="f01_upload_excel" accept="image/*" style="display: none;">
                                                 <div class="input-group col-xs-6">
                                                     <span class="input-group-addon" style="background-color:rgb(0, 185, 194 ,0.6);">
-                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Se puede enviar archivos de Imagen, PDF, documentos de Office y archivos comprimidos."><i class="glyphicon glyphicon-question-sign"></i></a>
+                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Debe descargar la plantilla en formato excel del cuadro de balance Inmuebles en el punto 2, complementar la informacion y adjuntar en este punto."><i class="glyphicon glyphicon-question-sign"></i></a>
                                                     </span>
                                                     <input type="hidden" name="excel_url" id="excel_url">
                                                     <input id="excel" name="excel" type="text" placeholder="" value="{{valor_excel}}" class="form-control input-lg" disabled required>
@@ -737,6 +769,34 @@
                                                             <button id="btn_f01_upload_excel" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                         </a>
                                                         <button id="btn_f01_upload_excel" onclick="ejecutarFileExcel('f01_upload_excel', 'excel')" class="btnupload browse btn btn-primary input-lg" type="button" {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i> Subir
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="form-group" ng-show="t_enviado">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="url">FORMULARIO 406 (debe descargar el formulario en el punto 1, firmar la solicitud y adjuntar):</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group custom-upload4">
+                                                <input type="file" id="f01_upload_formulario" name="f01_upload_formulario" accept="image/*" style="display: none;">
+                                                <div class="input-group col-xs-6">
+                                                    <span class="input-group-addon" style="background-color:rgb(0, 185, 194 ,0.6);">
+                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Debe descargar el formulario en el punto 2, firmar la solicitud y proceder a escanear el formulario en formato pdf para poder adjuntar en este punto"><i class="glyphicon glyphicon-question-sign"></i></a>
+                                                    </span>
+                                                    <input type="hidden" name="formulario_url" id="formulario_url">
+                                                    <input id="formulario" name="formulario" type="text" placeholder="" value="{{formulario406}}" class="form-control input-lg" disabled required>
+                                                    <span class="input-group-btn">
+                                                        <a id="href_f01_upload_formulario" onclick="ver('href_f01_upload_formulario','formulario_url','btn_f01_upload_formulario')" target="_blank">
+                                                            <button id="btn_f01_upload_formulario" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                        </a>
+                                                        <button id="btn_f01_upload_formulario" onclick="ejecutarForm406('f01_upload_formulario', 'formulario')" class="btnupload browse btn btn-primary input-lg" type="button" {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i> Subir
                                                         </button>
                                                     </span>
                                                 </div>

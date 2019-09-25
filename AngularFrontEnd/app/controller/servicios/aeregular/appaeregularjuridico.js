@@ -2513,8 +2513,10 @@ app.controller('regularjuridicoController', function ($scope,$timeout, $rootScop
 
     $scope.capturarImagen = function(){
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
-        var latitud = $rootScope.laaa;
-        var longitud = $rootScope.looo;
+        //var latitud = $rootScope.laaa;
+        //var longitud = $rootScope.looo;
+        var latitud = $scope.latitud;
+        var longitud = $scope.longitud;
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         var sDirTramite = sessionService.get('IDTRAMITE');
         $scope.url = "RC_CLI/" + $scope.oidCiudadano + "/" + sDirTramite;
@@ -2534,7 +2536,7 @@ app.controller('regularjuridicoController', function ($scope,$timeout, $rootScop
         };
         aDocAdjuntosmapa[0]=datosAdjuntosmapa;
         $scope.datos.ARCHIVOS_MULTIPLES_MAPA = aDocAdjuntosmapa;
-        
+        /*
         $scope.map.once('postcompose', function(event) 
         {
             var canvas = event.context.canvas;
@@ -2552,13 +2554,12 @@ app.controller('regularjuridicoController', function ($scope,$timeout, $rootScop
             }
         });
         $scope.map.renderSync();
-        /*
-        $scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center='+ latitud +','+ longitud +'&zoom=16&size=600x300&maptype=roadmap&markers=color:red|label:S|'+ latitud +','+ longitud +'&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img){
+         */
+        $scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center='+ latitud +','+ longitud +'&zoom=18&size=900x500&maptype=roadmap&markers=color:red|label:S|'+ latitud +','+ longitud +'&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img){
             var Imagen = base64Img.replace(/data:image\/png;base64,/i,'');
             $scope.Imagenb = Imagen;
             $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);
-        });
-        */
+        });   
     }
 
     ///termina MAPA

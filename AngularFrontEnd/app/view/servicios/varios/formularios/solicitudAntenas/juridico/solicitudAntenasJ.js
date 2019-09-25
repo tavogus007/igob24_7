@@ -3823,7 +3823,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             urlFormularioN  =   "../../docs/Formulario_DJ_Antenas.html";
             $( "#msgformularioJ" ).load(urlFormularioN, function(data) {
                 stringFormulario40  =   data;
-                //alert($scope.tipoProceso);
                 if($scope.tipoProceso == "ANTT" || $scope.tipoProceso == "RG"){
                   var style_antt = 'class="row"  style="border-style: solid; border-width: 1px; border-radius: 10px 10px 10px 10px; margin: 10px; padding-top: 8px"';
                   deno_data = '<div class="col-md-6">'+
@@ -3930,7 +3929,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 if($scope.tipoProceso == "RG"){
                   $scope.tipo_de_registro = "";
                 }
-                if($scope.tipoProceso == "RBM"){
+                if($scope.tipoProceso == "RBM" || $scope.tipoProceso == "GM"){
                   $scope.tipo_de_registro = "";
                 }
                 stringFormulario40  =   stringFormulario40.replace("#divft#", $scope.tipo_de_registro);

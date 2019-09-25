@@ -803,6 +803,9 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
 
                 datos.latitud = latitud;
                 datos.longitud = longitud;
+
+                $scope.latitud = latitud;
+                $scope.longitud = longitud;
               
                 var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';   
                 

@@ -233,7 +233,7 @@ var ortofotos_2006 = new ol.layer.Tile({
 
 var datos;
 
-
+/*
 function openMapGis()
 {
   setTimeout(function()
@@ -543,3 +543,4 @@ function buscar_ubicacion_p()
     }
   }   
 }
+*/

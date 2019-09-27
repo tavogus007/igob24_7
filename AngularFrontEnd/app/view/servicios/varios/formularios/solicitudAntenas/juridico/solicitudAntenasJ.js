@@ -3628,11 +3628,9 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               swal("Error!","Para guardar el formulario es necesario registrar al menos un gabinete gracias...","error");
 
             }
-
             $scope.estadoTramite = "NO";
           }
         }else{
-          alert("reenvio");
           $scope.recupe1 = JSON.parse($scope.dataRecuperadoCP[0].form_contenido);
           //console.log("$scope.recupe1",$scope.recupe1);
           var ubicacionutm = $("#ln_ubicacion").val();

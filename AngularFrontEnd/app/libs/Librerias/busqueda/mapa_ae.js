@@ -77,6 +77,9 @@ var iconStyle_orange = new ol.style.Style({
 });
 
 var osm = new ol.layer.Tile({
+  title: 'Open Street Map',
+  //opacity: 0.3,
+  visible: false,
   source: new ol.source.OSM()
 });
 
@@ -84,7 +87,7 @@ var osm = new ol.layer.Tile({
 var vias = new ol.layer.Tile({
   title: 'Vias',
   //opacity: 0.3,
-  visible: true,
+  visible: false,
   source: new ol.source.TileWMS({
     url: 'http://sitservicios.lapaz.bo/geoserver/wms',
     params: { 'LAYERS': 'catastro:vias2', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
@@ -152,7 +155,7 @@ var osm_udit = new ol.layer.Tile({
 
 var municipios = new ol.layer.Tile({
   title: 'Municipio',
-      visible: false,
+      visible: true,
       source: new ol.source.TileWMS({
           url: 'http://sitservicios.lapaz.bo/geoserver/wms',
           params: { 'LAYERS': 'g_municipio', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },

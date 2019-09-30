@@ -518,13 +518,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.datos.f01_categoria_agrupada_descripcion = '';
     }
 
-    $scope.GetValueLicencia = function () {
-        $scope.limpiarlic();
-        var e = document.getElementById('f01_tipo_lic');
-        var ee = $scope.datos.f01_tipo_lic;
-        $scope.datos.f01_tipo_lic_descrip = e.options[e.selectedIndex].text;
-    }
-
     $scope.GetValueCategoriaAgrupada = function(){
         $scope.limpiarcateg();
         var e = document.getElementById('f01_categoria_agrupada');
@@ -539,21 +532,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.datos.f01_categoria_descrip2 = e.options[e.selectedIndex].text;
         $scope.datos.f01_categoria = $scope.datos.f01_categoria_descrip;
         $scope.datos.f01_categoria_agrupada_descripcion = e.options[e.selectedIndex].text;
-    }
-
-    $scope.GetValueMacrodistrito = function (macro) {
-        var e = document.getElementById("f01_macro_act");
-        $scope.datos.f01_macro_act_descrip = e.options[e.selectedIndex].text;
-    }
-
-    $scope.GetValueDistrito = function () {
-        var e = document.getElementById("f01_dist_act");
-        $scope.datos.f01_dist_act_descrip = e.options[e.selectedIndex].text;
-    }
-
-    $scope.GetValueZonaActividad = function () {
-        var e = document.getElementById("INT_AC_ID_ZONA");
-        $scope.datos.INT_AC_ID_ZONA_descrip = e.options[e.selectedIndex].text;
     }
 
     $scope.GetValueZonaContribuyente = function () {
@@ -746,19 +724,20 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     };
 
     $scope.macrodistritos = function(){
-        $scope.aMacrodistritos = {};
+        //$scope.aMacrodistritos = {};
         var datosP = new macrodistritoLst();
         datosP.obtmacro(function(resultado){
             data = JSON.parse(resultado);
             if(data.success.length > 0){
                 $scope.aMacrodistritos = data.success;
+                console.log("$scope.aMacrodistritos: ", $scope.aMacrodistritos);
             }else{
                 $scope.msg = "Error !!";
             }
         });
     };
 
-    $scope.distritoZonas = function(idMacroJ){        
+   /*$scope.distritoZonas = function(idMacroJ){        
         var idMacro = "";
         if($scope.aMacrodistritos){
             angular.forEach($scope.aMacrodistritos, function(value, key) {
@@ -864,7 +843,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         }catch(error){
             console.log("error en via");
         }        
-    };
+    };*/
 
     var clsValidarBtnEnviar = $rootScope.$on('validarBtnEnviar', function(event, data){
         if(data > 0){
@@ -903,6 +882,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             $scope.divJuridico = "mostrar";
             $scope.botones = "mostrar";
         }
+        $scope.macrodistritos();
         $scope.lscategoria();
         $scope.lssubcategoria();
         $scope.lsCaracteristica();
@@ -941,27 +921,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.formDatosAE              = false;
         $scope.mostrarMsgActividadTrue  = false;
         $scope.mostrarMsgActividadFalse = false;
-        setTimeout(function(){
-            if(
-                (typeof($scope.datos.INT_AC_latitud) !=  'undefined' && $scope.datos.INT_AC_latitud  != "" && $scope.datos.INT_AC_latitud != 0 && $scope.datos.INT_AC_latitud != "0") &&
-                (typeof($scope.datos.INT_AC_longitud) != 'undefined' && $scope.datos.INT_AC_longitud != "" && $scope.datos.INT_AC_longitud != 0 && $scope.datos.INT_AC_longitud != "0")
-            ){
-                var nuevoUbicacion = {
-                    lat: parseFloat($scope.datos.INT_AC_latitud),
-                    lng: parseFloat($scope.datos.INT_AC_longitud)
-                };
-                map.setCenter(nuevoUbicacion);
-                $scope.addMarker(nuevoUbicacion);
-            }else{
-                 var nuevoUbicacion = {
-                    lat: -16.495635,
-                    lng: -68.133543
-                };
-                map.setCenter(nuevoUbicacion);
-                $scope.setMapOnAll();
-            }
-            $scope.$apply();
-        },100);
         if(data.length > 0){
             if(data[0].venviado != 'SI'){                
                 if(data[0].datos.INT_FORM_ALMACENADO != 'G'){
@@ -980,12 +939,17 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     });
     //INICIAR VARIABLES EN EL FORMULARIO 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
+        console.log("data::: ", data);
+        console.log("$scope.datos::: ", $scope.datos);
+
         $scope.catactividadDesarrollada();
-        $scope.MacroZona();
-        $scope.datos.f01_zona_act = data.f01_zona_act;
+
         $scope.multiple = [];
-        //$scope.datos.f01_zona_act = data.f01_zona_act;
         $scope.GetValueZonaSegura(data.f01_categoria_agrupada);
+        if ((data.INT_AC_latitud == 'undefined' && data.INT_AC_longitud == 'undefined') || (data.INT_AC_latitud == undefined && data.INT_AC_longitud == undefined) || (data.INT_AC_latitud == '' && data.INT_AC_longitud == '')) {
+        } else{
+            $scope.open_map_ae2(data.INT_AC_latitud, data.INT_AC_longitud);
+        };
         //REQUISITOS DOCUMENTALES
         var categoriaAgrupadaDesc  =   ((typeof(data.f01_categoria_agrupada)  == 'undefined' || data.f01_categoria_agrupada  == null) ? '' : data.f01_categoria_agrupada);
         if(categoriaAgrupadaDesc != ''){
@@ -1000,9 +964,11 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             $scope.sCategoria = true;
             $scope.smultiservicios = false;
         }
+
         if (data.f01_tip_via_act == '' || data.f01_tip_via_act == undefined || data.f01_tip_via_act == 'undefined') {} else{
-            $scope.cargarNombVia(data.f01_tip_via_act, data);
+            $scope.cargarNombVia(data.f01_tip_via_act, data.f01_zona_act);
         };
+
         switch (data.chkzonasegura) {
             case 'ZONASEGURA':
                 $scope.mostrarzonasegura = true;
@@ -1036,6 +1002,26 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             $scope.IsVisible = false;
             $scope.datos.pago_adel = 'NO';
         };
+        $scope.datos.f01_macro_act = data.f01_macro_act;
+
+        if(typeof(data.INT_AC_MACRO_ID) != 'undefined'){
+            //LISTANDO ZONAS
+            $scope.aDistritoZona = {};
+            try{
+                var parametros = new distritoZona();
+                parametros.idMacro = data.f01_macro_act;
+                parametros.obtdist(function(resultado){
+                    data = JSON.parse(resultado);
+                    if(data.success.length > 0){
+                        $scope.aDistritoZona = data.success;
+                    }else{
+                        $scope.msg = "Error !!";
+                    }
+                });
+            }catch(error){
+            }
+        }
+
         $scope.obtenerHora();
         $scope.obtenerFecha();
         if(typeof($scope.datos.INT_VIA) != 'undefined'){
@@ -1082,7 +1068,15 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             }
         };
         $scope.iniciarRequsitosDoc(data);
-        $scope.$apply();
+        console.log("$scope.datos222::: ", $scope.datos);
+
+        $scope.open_mapa_ae();
+        /*setTimeout(function(){
+            $scope.$apply();
+        },1000);*/
+
+        $scope.$apply(() => { $scope.datos.f01_macro_act = 5; });
+        
     });//INICIAR CAMPOS INTERNET
 
     //fecha del servidor
@@ -1152,44 +1146,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         return sfechafinal;
     };
 
-    $scope.getDistritos = function(macro){
-        try{
-            var nDistritos = new aelstdistritos();
-            nDistritos.id_macrodistrito = macro;
-            nDistritos.aelst_distritos(function(res){
-                x = JSON.parse(res);
-                var datosdistrito = x.success.data;
-                $scope.datosDistritos = datosdistrito;
-                for (var i = 0; i < $scope.datosDistritos.length; i++) {
-                    if ($scope.datosDistritos[i].iddistrito == $scope.datos.f01_dist_act) {
-                        $scope.datos.f01_dist_act = $scope.datosDistritos[i].iddistrito;
-                    };
-                };
-            });
-        }catch (error){
-            alert("error en distritos");
-        }
-    };
-
-    $scope.getZonas = function(distrito){
-        try{
-            var nZonas = new aelstzonas();
-            nZonas.id_distrito = distrito;
-            nZonas.aelst_zonas(function(res){
-                x = JSON.parse(res);
-                var gzonas = x.success.data;
-                $scope.datosZonas = gzonas;
-                for (var i = 0; i < $scope.datosZonas.length; i++) {
-                    if ($scope.datosZonas[i].idzona == $scope.datos.f01_zona_act) {
-                        $scope.datos.f01_zona_act = $scope.datosZonas[i].idzona;
-                    };
-                };
-            });
-        }catch (error){
-            alert("error en zonas");
-        }
-    };
-
     $scope.cambioToggle1 = function(dato){
         $scope.lscategoria();
         $scope.lssubcategoria();
@@ -1213,6 +1169,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
    /*CIUDADANO - TIPO INICIO DE TRAMITE NUEVO - RENOVACION*/
    $scope.cambioToggleForm = function () {
         //$scope.validarRequisitosForm();
+        $scope.aMacrodistritos = {};
         $scope.botones = "mostrar";
         $scope.desabilitado = false;
         $scope.mostrarMsgNuevaActividad = false;
@@ -1340,7 +1297,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.cambioToggleForm();
     };
 
-    $scope.actulizarIdDistrito  =   function(idZona){
+    /*$scope.actulizarIdDistrito  =   function(idZona){
         $scope.desabilitadoV=false;
         var idDistrito  = "";
         var zonaDes      = "";
@@ -1361,7 +1318,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.desabilitadoNo=true;
         //$scope.datos.f01_nom_via_prop = "";
         //$scope.datos.f01_tip_via_prop = "";      
-    };
+    };*/
 
     $scope.mostrarCamposJuegos = function(){
         $scope.divOcultarJuegos = true;
@@ -2705,7 +2662,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         }
     }
 
-    $scope.cargarNombVia = function(tipoVia, dato) {
+    /*$scope.cargarNombVia = function(tipoVia, dato) {
         try{
             var nomvia = new aelstNombreVia();
             nomvia.idzona = dato.f01_zona_act;
@@ -2729,7 +2686,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         }catch (error){
             console.log('datos error via:', error);
         }        
-    };
+    };*/
     
     $scope.cargarNombViaTxt = function(valor) {
         if (valor == "NINGUNO"){
@@ -2768,7 +2725,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         if($scope.tipoPersona == 'NATURAL' || $scope.tipoPersona == 'N'){
             datos.f01_tipo_per_desc = 'NATURAL';
-            urlFormularioN  =   "../../docs/AE_Formulario_401.html";
+            urlFormularioN  =   "../../docs/AE_Formulario_401_343.html";
             $( "#msgformularioN" ).load(urlFormularioN, function(data) {
                 stringFormulario40  =   data;
                 datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
@@ -3148,6 +3105,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 data.f01_estab_es != "" && data.f01_estab_es != null &&
                 data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
                 data.licenciam != "" && data.licenciam != null &&
+                data.f01_macro_act != "" && data.f01_macro_act != null &&
                 data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
                 data.f01_zona_act != "" && data.f01_zona_act != null &&
                 data.f01_tip_via_act != "" && data.f01_tip_via_act != null &&
@@ -3189,6 +3147,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
                 data.f01_categoria_agrupada != "" && data.f01_categoria_agrupada != null &&
                 //data.f01_categoria_descrip != "" && data.f01_categoria_descrip != null &&
+                data.f01_macro_act != "" && data.f01_macro_act != null &&
                 data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
                 data.f01_zona_act != "" && data.f01_zona_act != null &&
                 data.f01_tip_via_act != "" && data.f01_tip_via_act != null &&
@@ -3333,7 +3292,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['f01_estab_es']       = paramForm.f01_estab_es;
             datosNeXO['INT_AC_ESTADO']      = paramForm.INT_AC_ESTADO;
             datosNeXO['INT_AC_MACRO']       = paramForm.INT_AC_MACRO;
-            datosNeXO['INT_AC_MACRO_ID']            = paramForm.INT_AC_MACRO_ID;
+            datosNeXO['INT_AC_MACRO_ID']            = parseInt(paramForm.INT_AC_MACRO_ID);
             datosNeXO['f01_tipo_lic_descrip']       =  paramForm.f01_tipo_lic_descrip;
             datosNeXO['f01_requisitos_tecnicos']    = $scope.datos.f01_requisitos_tecnicos;            
             //PARA LA 70
@@ -3397,7 +3356,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['f01_fecha_imp']="";
             datosNeXO['f01_fecha_fin_act']="";
             //UBICACION DE LA ACTIVIDAD ECONOMICA
-            datosNeXO['f01_macro_act_descrip']=paramForm.f01_macro_act_descrip;
             datosNeXO['f01_dist_act']=paramForm.f01_dist_act;//"";
             datosNeXO['f01_zona_act']=paramForm.f01_zona_act;//paramForm.f01_zona_act_descrip;
             datosNeXO['f01_tip_via_act']=paramForm.f01_tip_via_act;

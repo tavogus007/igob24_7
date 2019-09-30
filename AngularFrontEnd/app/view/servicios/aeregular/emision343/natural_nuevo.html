@@ -445,7 +445,7 @@
                                 </div>
                             </div>
                         </div>
-                         <div class="col-md-12">
+                         <div class="col-md-6">
                                 <div class="form-group">
                                     <font color="#FF0000" size="4px"> * </font>
                                     <label for="url" >Tipo de Actividad Desarrollada:</label>
@@ -748,35 +748,36 @@
                             <legend>{{translateTitulos.lbl_12_39}}:</legend>
                         </div>
 
-                        <div class="col-md-4">
+                         <div class="col-md-6">
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
-                                <div class="controls">
+                                <label for="url" >Macrodistrito:</label>
+                                <div class="controls">      
                                     <select
                                         id="f01_macro_act"
                                         name="f01_macro_act"
-                                        placeholder="Macrodistrito" ng-model="datos.f01_macro_act"
+                                        placeholder="Macrodistrito" 
+                                        ng-model="datos.f01_macro_act"
                                         class="form-control"
                                         ng-disabled="desabilitadoO || desabilitado"
                                         ng-change="distritoZonas(datos.f01_macro_act);GetValueMacrodistrito(datos.f01_macro_act);"
                                         required>
-                                        <option value="">--Seleccionar--</option>
+                                        <option value="" selected>--Seleccionar--</option>
                                         <option ng-repeat="macro in aMacrodistritos | orderBy:['nombre','mcdstt_id']" value="{{macro.mcdstt_id}}">{{macro.mcdstt_macrodistrito}}</option>
                                     </select>
-                                <input type="hidden" ng-model="datos.f01_idCodigoZona" id="f01_idCodigoZona" name="f01_idCodigoZona" class="form-control" required/>
-                                <input type="hidden" ng-model="datos.f01_macro_act_descrip" id="f01_macro_act_descrip" name="f01_macro_act_descrip" class="form-control" style="text-transform:uppercase;"/>                     
                                 </div>
                                 <span style="color:red" ng-show="signupForm.f01_macro_act.$invalid">
                                     <span class="error" ng-show="signupForm.f01_macro_act.$invalid">{{translateMensajes.txt_12_15}}</span>
                                 </span>
+                                <input type="hidden" ng-model="datos.f01_idCodigoZona" id="f01_idCodigoZona" name="f01_idCodigoZona" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
+                                <input type="hidden" ng-model="datos.f01_macro_act_descrip" id="f01_macro_act_descrip" name="f01_macro_act_descrip" class="form-control" style="text-transform:uppercase;"/> 
                             </div>
                         </div>
                         
-                        <div class="col-md-4">
+                       <div class="col-md-6">
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
+                                <label for="url" >Zona:</label>
                                 <div class="controls">
                                     <select id="f01_zona_act_descrip"
                                             name="f01_zona_act_descrip"
@@ -788,8 +789,6 @@
                                             ng-disabled="desabilitado"  required>
                                         <option value="">--Seleccionar--</option>
                                     </select>
-                                <!--input type="text" ng-model="datos.f01_zona_act" id="f01_zona_act" name="f01_zona_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/-->
-                                <input type="hidden" ng-model="datos.f01_distrito_act" id="f01_distrito_act" name="f01_distrito_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
                                 </div>
                             </div>
                         </div>
@@ -1266,7 +1265,6 @@
                 <input type="hidden" ng-model="datos.IDTRAMITE" id="IDTRAMITE" name="IDTRAMITE" class="form-control" />
                 <input type="hidden" ng-model="datos.f01_nac_prop" id="f01_nac_prop" name="f01_nac_prop" class="form-control" />
                 <input type="hidden" ng-model="datos.f01_cap_aprox" id="f01_cap_aprox" name="f01_cap_aprox" class="form-control">
-                <input type="hidden" ng-model="datos.f01_zona_act_descrip" id="f01_zona_act_descrip" name="f01_zona_act_descrip" class="form-control">
                 <div class="col-md-12" align="right" ng-if = "botones == null"></div>
                 <div class="hr-line-dashed"></div>
                 <input type="hidden" ng-model="datos.f01_actividadesDesarrolladasc" id="f01_actividadesDesarrolladasc" name="f01_actividadesDesarrolladasc" class="form-control">

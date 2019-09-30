@@ -630,8 +630,8 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         }
     };
 
-    $scope.macrodistritos = function(){
-        $scope.aMacrodistritos = {};
+   $scope.macrodistritos = function(){
+        
         var datosP = new macrodistritoLst();
         datosP.obtmacro(function(resultado){
             data = JSON.parse(resultado);
@@ -643,7 +643,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         });
     };
  
-    $scope.actulizarIdDistrito  =   function(idZona){
+    /*$scope.actulizarIdDistrito  =   function(idZona){
         $scope.desabilitadoV=false;
         var idDistrito  = "";
         var zonaDes      = "";
@@ -785,7 +785,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         }catch (error){
             console.log('datos error via:', error);
         }        
-    };
+    };*/
 
     $scope.GetValueLicencia = function () {
         //$scope.limpiarlic();
@@ -813,10 +813,6 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         $scope.datos.f01_categoria_agrupada_descripcion = e.options[e.selectedIndex].text;
     }
 
-    $scope.GetValueMacrodistrito = function (macro) {
-        var e = document.getElementById("f01_macro_act");
-        $scope.datos.f01_macro_act_descrip = e.options[e.selectedIndex].text;
-    }
 
     $scope.GetValueDistrito = function () {
         var e = document.getElementById("f01_dist_act");
@@ -1313,15 +1309,6 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         }        
         var sIdCiudadano = sessionService.get('IDCIUDADANO');
         datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
-        /*if(paramForm.f01_tipo_lic == '1' || paramForm.f01_tipo_lic == '3' || paramForm.f01_tipo_lic == '4'){
-            datosNeXO['f01_actividadesSecundarias'] = paramForm.f01_categoria_agrupada_descrip;
-        }else{
-            if(paramForm.f01_tipo_lic == 32 || paramForm.f01_tipo_lic == '32'){
-                datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias; 
-            }else{
-                 datosNeXO['f01_actividadesSecundarias'] = '';
-            }
-        }*/
         datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
         if ($scope.tipoPersona != 'NATURAL'){
             datosNeXO['f01_tipo_per']                   =    'J';
@@ -1459,6 +1446,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             datosNeXO['Licenmul_grilla'] = paramForm.Licenmul_grilla;
             datosNeXO['f01_tip_act']                    =   paramForm.f01_tip_act;
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;
+            datosNeXO['f01_idCodigoZona'] = paramForm.f01_idCodigoZona;
             //PAGO ADELANTADO
             datosNeXO['pago_adel'] =  $scope.pago_adelantado;
             datosNeXO['nro_ges'] =  paramForm.nro_ges;
@@ -2965,7 +2953,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
         $scope.catactividadDesarrollada();
         //TIPO DE LICENCIA
-        $scope.MacroZona();
+        //$scope.MacroZona();
         $scope.GetValueZonaSegura(data.f01_categoria_agrupada);
         //REQUISITOS DOCUMENTALES
         var categoriaAgrupadaDesc         =   ((typeof(data.f01_categoria_agrupada)             == 'undefined' || data.f01_categoria_agrupada             == null) ? '' : data.f01_categoria_agrupada);
@@ -3060,7 +3048,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         $scope.$apply();
     });//INICIAR CAMPOS INTERNET
     
-    $scope.vias= function(zona,tipo){
+    /*$scope.vias= function(zona,tipo){
         $scope.z =zona;
         $scope.t =tipo;
         try{
@@ -3082,7 +3070,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         }catch(error){
             console.log("error en via");
         }
-    };
+    };*/
 
      //fecha del servidor
     $scope.obtenerFecha = function(){

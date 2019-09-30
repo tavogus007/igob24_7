@@ -1,4 +1,4 @@
-app.controller('serviciosController343', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad) {
+app.controller('serviciosController343', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad, $q) {
     $scope.imageCST = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     $scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     var fecha= new Date();
@@ -694,7 +694,6 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
     }
     ///////////////////****MAPA GIS*****/////////////////////////
 
-
     $scope.open_mapa_ae = function()
     {
         setTimeout(function()
@@ -812,105 +811,124 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                 setTimeout(function()
                 {
                     $.ajax({
-                              url: url_z,
-                              //data: parameters,
-                              type: 'GET',
-                              dataType: 'jsonp',
-                              jsonpCallback: 'getJson',
-                              success: function (data)
-                              {
-                                //console.log('OK.....', data);
-                                if(data.features.length == 1)
-                                {                         
-                                  var distrito = data.features[0].properties.distrito;
-                                  console.log('distrito:', distrito);
-
-                                  var cod_macrodistrito = data.features[0].properties.macro;
-                                  console.log('cod macro:', cod_macrodistrito);
+                          url: url_z,
+                          //data: parameters,
+                          type: 'GET',
+                          dataType: 'jsonp',
+                          jsonpCallback: 'getJson',
+                          success: function (data)
+                          {
+                            //console.log('OK.....', data);
+                            if(data.features.length == 1)
+                            {                         
+                              var distrito = data.features[0].properties.distrito;
+                              var idMacrodistrito = data.features[0].properties.macro;                  
+                              var macrodistrito =  data.features[0].properties.macrodistrito;                
+                              var zona = data.features[0].properties.zona;
+                              var codigo_zona = data.features[0].properties.codigozona;
+                              datos.zona = zona;
+                              datos.cod_zona_sit = codigo_zona;
+                              datos.distrito = distrito;
+                              datos.macrodistrito = macrodistrito;
+                              $scope.datos.f01_macro_act = idMacrodistrito;
+                              $scope.datos.f01_dist_act = distrito;
                               
-                                  var macrodistrito =  data.features[0].properties.macrodistrito;
-                                  console.log('macrodistrito:', macrodistrito);
-                                                      
-                                  var zona = data.features[0].properties.zona;
-                                  console.log('zona:', zona);
+                              $scope.datos.f01_zona_act_descrip = zona.toUpperCase();
+                              console.log("$scope.datos.f01_macro_act::: ", $scope.datos.f01_macro_act);
+                              console.log("$scope.datos.f01_zona_act_descrip::: ", $scope.datos.f01_zona_act_descrip);
 
-                                  var codigo_zona = data.features[0].properties.codigozona;
-                                  console.log('cod zona sit:',codigo_zona);
-
-                                  datos.zona = zona;
-                                  datos.cod_zona_sit = codigo_zona;
-                                  datos.distrito = distrito;
-                                  datos.macrodistrito = macrodistrito;
-
-                                  var n_genesis = geo_id_genesis.length;
-                                  for (var i=0;i<n_genesis;i++)
-                                  {
-                                    if(geo_id_sit_servicio[i ]=== codigo_zona )
-                                    {
-                                      cod_zona_genesis = geo_id_genesis[i];
-                                      console.log("cod zona genesis: ",cod_zona_genesis);
-                                      datos.cod_zona_genesis = cod_zona_genesis;
-                                    }
-                                  }
-
-                                  setTimeout(function()
-                                  {
-                                    $.ajax({
-                                            type: "POST",
-                                            url:url_zt,
-                                            dataType: 'jsonp',
-                                            jsonpCallback: 'getJson',
-                                            success: function (data) 
-                                            {
-                                              var c = data.features.length;
-                                              //console.log(data.features);
-                                              if(c==1)
+                              //$scope.distritoZonas(idMacrodistrito);
+                              $scope.GetValueMacrodistrito(idMacrodistrito);
+                              $scope.actulizarIdDistrito();
+                              var n_genesis = geo_id_genesis.length;
+                              for (var i=0;i<n_genesis;i++)
+                              {
+                                if(geo_id_sit_servicio[i ]=== codigo_zona )
+                                {
+                                  cod_zona_genesis = geo_id_genesis[i];
+                                 
+                                  datos.cod_zona_genesis = cod_zona_genesis;
+                                }
+                              }
+                            $.ajax({
+                                        type: "POST",
+                                        url:url_zt,
+                                        dataType: 'jsonp',
+                                        jsonpCallback: 'getJson',
+                                        success: function (data) 
+                                        {
+                                          var c = data.features.length;
+                                          console.log("DATA ZT",data.features);
+                                          if(c==1)
+                                          {
+                                            var cod_zona_t = data.features[0].properties.grupovalor;
+                                            cod_zona_t = cod_zona_t.replace("-","");
+                                            var cod_zona_tributaria = parseInt(cod_zona_t);
+                                            console.log("cod zona tributaria: ",cod_zona_tributaria);
+                                            datos.codigo_zona_tributaria = cod_zona_tributaria;
+                                             $scope.datos.f01_idCodigoZona = cod_zona_tributaria;
+                                            $.ajax({
+                                              type: "POST",
+                                              url:url_v,
+                                              dataType: 'jsonp',
+                                              jsonpCallback: 'getJson',
+                                              success: function (data) 
                                               {
-                                                var cod_zona_t = data.features[0].properties.grupovalor;
-                                                cod_zona_t = cod_zona_t.replace("-","");
-                                                var cod_zona_tributaria = parseInt(cod_zona_t);
-                                                console.log("cod zona tributaria: ",cod_zona_tributaria);
-                                                datos.codigo_zona_tributaria = cod_zona_tributaria;
-                                                setTimeout(function()
+                                                var c = data.features.length;
+                                                if(c==1)
                                                 {
-                                                  $.ajax({
-                                                          type: "POST",
-                                                          url:url_v,
-                                                          dataType: 'jsonp',
-                                                          jsonpCallback: 'getJson',
-                                                          success: function (data) 
-                                                          {
-                                                            var c = data.features.length;
-                                                            //console.log(data.features);
-                                                            if(c==1)
-                                                            {
-                                                              var id_via = data.features[0].properties.idvias;
-                                                              console.log("id via: ",id_via);
-
-                                                              var nombre_via = data.features[0].properties.nombrevia;
-                                                              console.log("nombre via: ",nombre_via);
-
-                                                              var tipo_via = data.features[0].properties.tipovia;
-                                                              console.log("tipo via: ",tipo_via);
-
-                                                              datos.nombre_via = nombre_via;
-                                                              datos.tipo_via = tipo_via;
-                                                            }
-                                                            else
-                                                            {
-                                                              console.log("ningun resultado para vias");
-                                                            }
-                                                          }
-                                                        });
-                                                },50);
+                                                    var id_via = data.features[0].properties.idvias;
+                                                    var nombre_via = data.features[0].properties.nombrevia;
+                                                    var tipo_via = data.features[0].properties.tipovia;
+                                                    datos.nombre_via = nombre_via;
+                                                    datos.tipo_via = tipo_via;
+                                                    console.log("nombre via: ",nombre_via);
+                                                    $scope.actulizarIdDistrito();
+                                                         //console.log("respLicencia: ", resp);
+                                                    switch (tipo_via) {
+                                                      case 'AVENIDA':
+                                                          $scope.datos.f01_tip_via_act = 'AV';
+                                                      break;
+                                                      case 'CALLE':
+                                                          $scope.datos.f01_tip_via_act = 'CA';
+                                                      break;
+                                                      case 'CALLEJON':
+                                                          $scope.datos.f01_tip_via_act = 'CL';
+                                                      break;
+                                                      case 'PLAZA':
+                                                          $scope.datos.f01_tip_via_act = 'PL';
+                                                      break;
+                                                      case 'CANCHA':
+                                                          $scope.datos.f01_tip_via_act = 'CN';
+                                                      break;
+                                                      case 'PARQUE':
+                                                          $scope.datos.f01_tip_via_act = 'PR';
+                                                      break;
+                                                      case 'PASAJE':
+                                                          $scope.datos.f01_tip_via_act = 'PA';
+                                                      break;
+                                                      case 'NO DEFINIDO':
+                                                          $scope.datos.f01_tip_via_act = 'ND';
+                                                      break;
+                                                  }
+                                                  $scope.cargarNombVia($scope.datos.f01_tip_via_act, $scope.datos.f01_zona_act);
+                                                  console.log("tipo via: ",tipo_via);
+                                                  $scope.datos.f01_num_act = nombre_via;
+                                                  $scope.cargarNombViaTxt($scope.datos.f01_num_act);
+                                                }
+                                                else
+                                                {
+                                                  console.log("ningun resultado para vias");
+                                                }
                                               }
-                                              else
-                                              {
-                                                console.log("ningun resultado para zona tributaria");
-                                              }
-                                            }
-                                          });
-                                  },100);
+                                            });
+                                          }
+                                          else
+                                          {
+                                            console.log("ningun resultado para zona tributaria");
+                                          }
+                                        }
+                                      });
                                 }
                                 else
                                 {
@@ -922,7 +940,7 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                                 console.log(data);
                               }   
                           });
-                },200);
+                },500);
             
                 var feature = new ol.Feature(
                       new ol.geom.Point(ol.proj.fromLonLat(centro_1))
@@ -1006,14 +1024,97 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
     }
 
     /////////////////////////////////////////////////////////////
+    $scope.distritoZonas = function(idMacroJ){     
+    console.log("idMacroJ: ", idMacroJ);   
+        $scope.datos.f01_macro_act    =   idMacroJ;
+        console.log("$scope.datos.f01_macro_act: ", $scope.datos.f01_macro_act);   
+        $scope.datos.INT_AC_MACRO_ID = idMacroJ;
+        $scope.aDistritoZona = {};
+        try{
+            $scope[name] = 'Running';
+            var deferred = $q.defer();
+            var parametros = new distritoZona();
+            parametros.idMacro = idMacroJ;
+            parametros.obtdist(function(resultado){
+                data = JSON.parse(resultado);
+                if(data.success.length > 0){
+                    $scope.desabilitadoZ=false;
+                    $scope.aDistritoZona = data.success;
+                    console.log("aDistritoZona: ", aDistritoZona);   
+                    deferred.resolve(data.success);
+                    $scope.desabilitadoV=true;
+                    $scope.desabilitadoNo=true;
+                }else{
+                    $scope.msg = "Error !!";
+                }
+            });
+        }catch(error){
+            $scope.desabilitadoZ=true;
+            $scope.desabilitadoV=true;
+            $scope.desabilitadoNo=true;
+        }
+        return deferred.promise;
+    };
 
+    $scope.cargarNombVia = function(tipoVia, idZona) {
+        try{
+            var nomvia = new aelstNombreVia();
+            nomvia.idzona = idZona;
+            nomvia.tipovia = tipoVia;
+            nomvia.aelst_NombreVia(function(res){
+                x = JSON.parse(res);
+                response = x.success.data;
+                if (response.length > 0) {
+                    $scope.datosNombVia = response;
+                }
+            });
+        }catch (error){
+            console.log('datos error via');
+        }
+    };
+
+    $scope.actulizarIdDistrito  =   function(){
+        $scope.desabilitadoV=false;
+        var idDistrito  = "";
+        var idZona      = "";
+        var distNombre  = $scope.datos.f01_zona_act_descrip;
+        console.log('f01_zona_act_descrip   ',$scope.datos.f01_zona_act_descrip);
+        if($scope.aDistritoZona){
+            angular.forEach($scope.aDistritoZona, function(value, key) {
+                if(value.dist_nombre == distNombre){
+                    idDistrito  =   value.dist_dstt_id;
+                    idZona      =   value.dist_id;
+                }
+            });
+        }
+        $scope.datos.f01_dist_act    =   idDistrito;
+        $scope.datos.INT_AC_ID_ZONA     =   idZona;
+        $scope.datos.f01_zona_act       = idZona;
+        console.log("$scope.datos.f01_dist_act: ", $scope.datos.f01_dist_act);
+        console.log('f01_zona_act    ',$scope.datos.f01_zona_act);
+        $scope.datos.INT_ID_ZONA        =   idZona;
+        $scope.desabilitadoNo=true;
+    };
+
+    $scope.cargarNombViaTxt = function(valor) {
+        if (valor == "NINGUNO"){
+            $scope.datos.f01_factor = "VA";
+        } else {
+            $scope.datos.f01_factor = "TM";
+        }
+    };
+
+    $scope.GetValueMacrodistrito = function (macro) {
+        var e = document.getElementById("f01_macro_act");
+        $scope.datos.f01_macro_act_descrip = e.options[e.selectedIndex].text;
+        console.log("f01_macro_act_descrip:: ", $scope.datos.f01_macro_act_descrip);
+    }
       
     
     $scope.seleccionarTramiteRender = function (tramite) {
         console.log('tramiteeeee    ',tramite);
         //openMapGis();
         $scope.open_mapa_ae();
-
         //$scope.getCaptchasXX();
         $scope.procesoSeleccionado   =   tramite.vdvser_id;
         $rootScope.tramiteId = tramite.vtra_id;
@@ -1047,15 +1148,11 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
             sidservicio =   15;
         }
 
-        
-
         if (tramite.venviado == "SI") {
             $scope.template         =   $scope.templates[sidservicio];
-
         } else {
             $scope.template         =   $scope.templates[sidservicio];
         }
-
         if(tipoPersona == 'NATURAL'){
             $scope.recuperarSerializarInfo(tramite);
         }
@@ -1067,7 +1164,6 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
         if(cboTipoCon){
             cboTipoCon.style.display = 'none';
         }
-       
     };
 
     var adjuntos = '';

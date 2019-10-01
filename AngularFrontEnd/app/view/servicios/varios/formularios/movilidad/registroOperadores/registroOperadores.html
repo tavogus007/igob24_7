@@ -820,14 +820,16 @@ function validaSuperficie(sup)
                                   <font color="#FF0000" size="4px"> * </font>
                                   <label for="url" >Macrodistrito:</label>
                                   <div class="controls">
-                                    <select id="RO_MAC_OF_VALUE" 
-                                              name="RO_MAC_OF_VALUE"
-                                              placeholder="Macrodistrito" 
-                                              ng-model="datos.RO_MAC_OF_VALUE"
-                                              class="form-control"
-                                              ng-disabled="desabilita"
-                                              ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"required ng-change="distritoZonas(datos.RO_MAC_OF_VALUE)">
-                                        <option value="">Seleccionar</option>
+                                    <select
+                                    id="RO_MAC_OF"
+                                    name="RO_MAC_OF"
+                                    placeholder="Macrodistrito" ng-model="datos.RO_MAC_OF"
+                                    class="form-control"
+                                    ng-disabled="desabilitadoO || desabilitado"
+                                    ng-change="distritoZonas(datos.RO_MAC_OF);"
+                                    required>
+                                      <option value="">--Seleccionar--</option>
+                                      <option ng-repeat="macro in aMacrodistritos | orderBy:['nombre','mcdstt_id']" value="{{macro.mcdstt_id}}">{{macro.mcdstt_macrodistrito}}</option>
                                     </select>
                                   </div>
                                 </div>
@@ -862,6 +864,7 @@ function validaSuperficie(sup)
                                       <option value="AV">AVENIDA</option>
                                       <option value="CA">CALLE</option>
                                       <option value="CL">CALLEJON</option>
+                                      <option value="PL">PLAZA</option>
                                       <option value="PA">PASAJE</option>
                                       <option value="ND">NO DEFINIDO</option>
                                     </select>
@@ -2485,7 +2488,7 @@ function validaSuperficie(sup)
                                             class="form-control"
                                             ng-disabled="desabilitaCon"
                                             ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
-                                            required ng-change="distritoZonas(datos.RO_MAC_C)">
+                                            required ng-change="distritoZonasTipo(datos.RO_MAC_C,'Cond')">
                                       <option value="">--Seleccionar--</option>
                                     </select>
                                   </div>
@@ -2501,7 +2504,7 @@ function validaSuperficie(sup)
                                             ng-model="datos.RO_ZONA_C"
                                             class="form-control"
                                             ng-disabled="desabilitaCon"
-                                            ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZona | orderBy:['nombre','dist_nombre']"
+                                            ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZonaCond | orderBy:['nombre','dist_nombre']"
                                             ng-change="actulizarIdDistrito();"
                                             required>
                                       <option value="">--Seleccionar--</option>
@@ -2625,7 +2628,7 @@ function validaSuperficie(sup)
                         <div class="col-md-12">
                           <div class="col-md-4">
                             <center>
-                              <img ng-src="../../view/img/movilidad/observacion.jpg" width="70%" height="70%">
+                              <img ng-src="../../img/movilidad/observacion.jpg" width="70%" height="70%">
                             </center>
                           </div>
                           <div class="col-md-8">

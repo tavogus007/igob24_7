@@ -23,6 +23,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   var valPlaca = 0;
   var valCel = 0;
   var idTram = 14;
+  $scope.datosMapa = {};
   
   $scope.inicio = function () {
     $scope.tramitesCiudadano();
@@ -1017,6 +1018,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     setTimeout(function()
     {
         console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICAS");
+        console.log($scope.datos,111111111111);
         //map.removeLayer(vectorLayer_inci_baja);
         $("#map_principal").empty();
         $scope.map = new ol.Map
@@ -1118,8 +1120,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
             var longitud = centro_1[0];
             wkt = "POINT("+centro[0]+" "+centro[1]+")";
 
-            datos.latitud = latitud;
-            datos.longitud = longitud;
+            $scope.datos.latitud = latitud;
+            $scope.datos.longitud = longitud;
 
             $scope.latitud = latitud;
             $scope.longitud = longitud;
@@ -1143,33 +1145,24 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
                             if(data.features.length == 1)
                             {                         
                               var distrito = data.features[0].properties.distrito;
-                              console.log('distrito:', distrito);
-
-                              var cod_macrodistrito = data.features[0].properties.macro;
-                              console.log('cod macro:', cod_macrodistrito);
-                          
-                              var macrodistrito =  data.features[0].properties.macrodistrito;
-                              console.log('macrodistrito:', macrodistrito);
-                                                  
+                              $scope.datos.RO_MAC_OF = data.features[0].properties.macro;
+                              $scope.distritoZonas($scope.datos.RO_MAC_OF);
+                              var macrodistrito =  data.features[0].properties.macrodistrito;                                                  
                               var zona = data.features[0].properties.zona;
-                              console.log('zona:', zona);
-
+                              $scope.datos.RO_ZONA_OF_VALUE = zona.toUpperCase();
                               var codigo_zona = data.features[0].properties.codigozona;
-                              console.log('cod zona sit:',codigo_zona);
-
-                              datos.zona = zona;
-                              datos.cod_zona_sit = codigo_zona;
-                              datos.distrito = distrito;
-                              datos.macrodistrito = macrodistrito;
-
+                              $scope.datosMapa.distrito = distrito;
+                              $scope.$apply();
+                              $scope.datosMapa.macrodistrito = macrodistrito;
+                              $scope.datosMapa.zona = zona;
+                              $scope.datosMapa.cod_zona_sit = codigo_zona;
                               var n_genesis = geo_id_genesis.length;
                               for (var i=0;i<n_genesis;i++)
                               {
                                 if(geo_id_sit_servicio[i ]=== codigo_zona )
                                 {
                                   cod_zona_genesis = geo_id_genesis[i];
-                                  console.log("cod zona genesis: ",cod_zona_genesis);
-                                  datos.cod_zona_genesis = cod_zona_genesis;
+                                  $scope.datosMapa.cod_zona_genesis = cod_zona_genesis;
                                 }
                               }
 
@@ -1189,8 +1182,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
                                             var cod_zona_t = data.features[0].properties.grupovalor;
                                             cod_zona_t = cod_zona_t.replace("-","");
                                             var cod_zona_tributaria = parseInt(cod_zona_t);
-                                            console.log("cod zona tributaria: ",cod_zona_tributaria);
-                                            datos.codigo_zona_tributaria = cod_zona_tributaria;
+                                            $scope.datos.codigo_zona_tributaria = cod_zona_tributaria;
+                                            $scope.datosMapa.codigo_zona_tributaria = cod_zona_tributaria;
                                             setTimeout(function()
                                             {
                                               $.ajax({
@@ -1205,16 +1198,38 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
                                                         if(c==1)
                                                         {
                                                           var id_via = data.features[0].properties.idvias;
-                                                          console.log("id via: ",id_via);
-
                                                           var nombre_via = data.features[0].properties.nombrevia;
-                                                          console.log("nombre via: ",nombre_via);
-
                                                           var tipo_via = data.features[0].properties.tipovia;
-                                                          console.log("tipo via: ",tipo_via);
-
-                                                          datos.nombre_via = nombre_via;
-                                                          datos.tipo_via = tipo_via;
+                                                          $scope.datosMapa.nombre_via = nombre_via;
+                                                          $scope.datosMapa.tipo_via = tipo_via;
+                                                          switch (tipo_via) {
+                                                            case 'AVENIDA':
+                                                                $scope.datos.RO_TIPO_VIA_SUC = 'AV';
+                                                            break;
+                                                            case 'CALLE':
+                                                                $scope.datos.RO_TIPO_VIA_SUC = 'CA';
+                                                            break;
+                                                            case 'CALLEJON':
+                                                                $scope.datos.RO_TIPO_VIA_SUC = 'CL';
+                                                            break;
+                                                            case 'PLAZA':
+                                                                $scope.datos.RO_TIPO_VIA_SUC = 'PL';
+                                                            break;
+                                                            case 'CANCHA':
+                                                                $scope.datos.RO_TIPO_VIA_SUC = 'CN';
+                                                            break;
+                                                            case 'PARQUE':
+                                                                $scope.datos.RO_TIPO_VIA_SUC = 'PR';
+                                                            break;
+                                                            case 'PASAJE':
+                                                                $scope.datos.RO_TIPO_VIA_SUC = 'PA';
+                                                            break;
+                                                            case 'NO DEFINIDO':
+                                                                $scope.datos.RO_TIPO_VIA_SUC = 'ND';
+                                                            break;
+                                                          }
+                                                          $scope.datos.RO_NOM_VIA_SUC  = nombre_via;
+                                                          $scope.$apply();
                                                         }
                                                         else
                                                         {
@@ -1250,9 +1265,9 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
                 
             feature.setStyle(iconStyle);
             vectorSource.addFeature(feature);
-
-            console.log("JSON DATOS",datos);
-            return datos;
+            $scope.$apply();
+            console.log($scope.datosMapa);
+            return $scope.datosMapa;
         });
         //////////////////////////////////////
     },550);
@@ -1325,8 +1340,6 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     }   
   };
   /////////////////////////////////////////////////////////////
-
-
   $scope.adiModOficinas = function(id,opc){
     $.blockUI();
     $scope.buscaOficinas();
@@ -1336,11 +1349,12 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         swOfi = swOfi + 1;
       }
     } 
+    console.log(swOfi,'swOfi');
     if(opc == 'A' && swOfi == 1){
       swOfi = 0;
     }
     if(swOfi == 0){
-      if($scope.datos.RO_TIP_ACT !='' && $scope.datos.RO_TIP_ACT != undefined &&  $scope.datos.RO_DEN !='' &&  $scope.datos.RO_DEN!=undefined && $scope.datos.RO_MAC_OF_VALUE!= '' && $scope.datos.RO_MAC_OF_VALUE!=undefined &&
+      if($scope.datos.RO_TIP_ACT !='' && $scope.datos.RO_TIP_ACT != undefined &&  $scope.datos.RO_DEN !='' &&  $scope.datos.RO_DEN!=undefined && $scope.datos.RO_MAC_OF!= '' && $scope.datos.RO_MAC_OF!=undefined &&
       $scope.datos.RO_ZONA_OF_VALUE !='' && $scope.datos.RO_ZONA_OF_VALUE!=undefined && $scope.datos.RO_TIPO_VIA_SUC!='' && $scope.datos.RO_TIPO_VIA_SUC!= undefined && $scope.datos.RO_NOM_VIA_SUC!='' &&  $scope.datos.RO_NOM_VIA_SUC!=undefined
       && $scope.datos.RO_ENT_CALL_SUC !='' && $scope.datos.RO_ENT_CALL_SUC !=undefined && $scope.datos.RO_NRO_SUC!='' && $scope.datos.RO_NRO_SUC!=undefined
       && $scope.datos.RO_SUP_SUC !='' && $scope.datos.RO_SUP_SUC != undefined && $scope.datos.RO_EST_SUC!='' && $scope.datos.RO_EST_SUC!=undefined 
@@ -1349,13 +1363,13 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       && $scope.datos.RO_ESP_DIS!='' && $scope.datos.RO_ESP_DIS!=undefined && $scope.datos.RO_VIA_PAR_MOM!=''&& $scope.datos.RO_VIA_PAR_MOM!=undefined
       && $scope.datos.RO_ENT_CALL_PM!='' && $scope.datos.RO_ENT_CALL_PM!=undefined){
         $scope.capturarImagen($scope.datos.RO_MAC_OF_VALUE);
-        for (var i = 1; i<$scope.aMacrodistritos.length ; i++) {
-          if($scope.aMacrodistritos[i].mcdstt_macrodistrito==$scope.datos.RO_MAC_OF_VALUE){
-            $scope.datos.RO_MAC_OF = $scope.aMacrodistritos[i].mcdstt_id;
+        for (var i = 0; i<$scope.aMacrodistritos.length ; i++) {
+          if($scope.aMacrodistritos[i].mcdstt_id==$scope.datos.RO_MAC_OF){
+            $scope.datos.RO_MAC_OF_VALUE = $scope.aMacrodistritos[i].mcdstt_macrodistrito;
           }
         }
-        $scope.distritoZonas($scope.datos.RO_MAC_OF_VALUE);
-        for (var i = 1; i<$scope.aDistritoZona.length ; i++) {
+        $scope.distritoZonas($scope.datos.RO_MAC_OF);
+        for (var i = 0; i<$scope.aDistritoZona.length ; i++) {
           if($scope.aDistritoZona[i].dist_nombre == $scope.datos.RO_ZONA_OF_VALUE){
             $scope.datos.RO_ZONA_OF = $scope.aDistritoZona[i].dist_id;
             $scope.datos.RO_DIS_ID_OF = $scope.aDistritoZona[i].dist_dstt_id;
@@ -1395,6 +1409,9 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
           "RO_ENT_CALL_PM" : $scope.datos.RO_ENT_CALL_PM,
           "RO_DEM_SUC" : denominacion,
           "RO_VIAE" : $scope.datos.rdTipoTramite1,
+          "RO_COD_ZONA_TRIB" : $scope.datos.codigo_zona_tributaria,
+          "RO_LATITUD" : $scope.datos.latitud,
+          "RO_LONGITUD" : $scope.datos.longitud,
           "RO_CROQUIS_OFI" : $scope.datos.INT_AC_direccionImagenmapa     
         };
         if($scope.datos.rdTipoTramite1 == 'CON PUBLICIDAD'){
@@ -1515,7 +1532,9 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   $scope.limpiarUbi = function (dataOfic){
     $scope.datos.RO_TIP_ACT = '';
     $scope.datos.RO_MAC_OF_VALUE = '';
-    $scope.datos.RO_ZONA_OF_VALUE = '';
+    $scope.datos.RO_ZONA_OF_VALUE = '';    
+    $scope.datos.RO_MAC_OF = '';
+    $scope.datos.RO_ZONA_OF = '';
     $scope.datos.RO_TIPO_VIA_SUC = '';
     $scope.datos.RO_NOM_VIA_SUC = '';
     $scope.datos.RO_ENT_CALL_SUC = '';
@@ -1535,6 +1554,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.datos.publicidad ='';
     $scope.publicid = [];
     $scope.publi=[];
+    $scope.datos.codigo_zona_tributaria = '';
     $scope.lssubcategoria();
   }
 
@@ -2962,12 +2982,15 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
             data = JSON.parse(resultado);
             if(data.success.length > 0){
               if(tipo == 'Prop'){
+                $scope.mostrarZonaProp = false;
                 $scope.aDistritoZonaProp = data.success;
               }else{
                 if(tipo == 'Pos'){
+                  $scope.mostrarZonaPoo = false; 
                   $scope.aDistritoZonaPos = data.success;
                 }else{
                   if(tipo == 'Cond'){
+                    $scope.mostrarOtraZona = false;
                     $scope.aDistritoZonaCond = data.success;
                   } 
                 }
@@ -2987,51 +3010,31 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       }else{
         if(tipo == 'Pos'){
           $scope.mostrarZonaPoo = true;   
+        }else{
+          if(tipo == 'Cond'){ 
+            $scope.mostrarOtraZona = true;
+          }
         }
       }
     }
   };
 
-  $scope.distritoZonas = function(idMacroJ){ 
-    console.log(idMacroJ);
-    if(idMacroJ != 'OTRO'){
-      var idMacro = "";
-      if($scope.aMacrodistritos){
-        angular.forEach($scope.aMacrodistritos, function(value, key) {
-          if(value.mcdstt_macrodistrito == idMacroJ){
-            idMacro = value.mcdstt_id;
-          }
-        });
-      }        
-      $scope.idMacro = idMacro;
-      $scope.datos.f01_macro_act    =   idMacro;
-      if($scope.datos.g_origen != 'PLATAFORMA'){
-        $scope.datos.INT_AC_MACRO_ID    =   idMacro;
-      }
-      $scope.datos.INT_AC_MACRO_ID = idMacro;
-      $scope.aDistritoZona = {};
-      try{
-        var parametros = new distritoZona();
-        parametros.idMacro = idMacro;
-        parametros.obtdist(function(resultado){
-          data = JSON.parse(resultado);
-          if(data.success.length > 0){
-            $scope.desabilitadoZ=false;
-            $scope.aDistritoZona = data.success;
-            $scope.desabilitadoV=true;
-            $scope.desabilitadoNo=true;
-          }else{
-            $scope.msg = "Error !!";
-          }
-        });
-      }catch(error){
-        $scope.desabilitadoZ=true;
-        $scope.desabilitadoV=true;
-        $scope.desabilitadoNo=true;
-      }
-    }
-    else{
-      $scope.mostrarOtraZona = true;
+  $scope.distritoZonas = function(idMacroJ){        
+    $scope.idMacro = idMacroJ;
+    $scope.aDistritoZona = {};
+    try{
+      var parametros = new distritoZona();
+      parametros.idMacro = idMacroJ;
+      parametros.obtdist(function(resultado){
+        data = JSON.parse(resultado);
+        if(data.success.length > 0){
+          $scope.aDistritoZona = data.success;
+
+        }else{
+          $scope.msg = "Error !!";
+        }
+      });
+    }catch(error){
     }
   };
 
@@ -3321,7 +3324,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
             var cadena = 'La cantidad de vehiculos de la(s) sucursal(es): '
             var sw = 0;
             for (var i = 0; i < nroVehOfic.length; i++) {
-              if(nroVehOfic[i].cantVeh<1){
+              if(nroVehOfic[i].cantVeh<0){
                 cadena = cadena + nroVehOfic[i].dirOfi+',';
                 sw = 1;
               }

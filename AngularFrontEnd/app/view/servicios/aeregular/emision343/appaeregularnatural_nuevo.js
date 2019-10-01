@@ -724,7 +724,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     };
 
     $scope.macrodistritos = function(){
-        //$scope.aMacrodistritos = {};
+        $scope.aMacrodistritos = {};
         var datosP = new macrodistritoLst();
         datosP.obtmacro(function(resultado){
             data = JSON.parse(resultado);
@@ -939,11 +939,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     });
     //INICIAR VARIABLES EN EL FORMULARIO 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
-        console.log("data::: ", data);
-        console.log("$scope.datos::: ", $scope.datos);
-
         $scope.catactividadDesarrollada();
-
+        $scope.macrodistritos();
         $scope.multiple = [];
         $scope.GetValueZonaSegura(data.f01_categoria_agrupada);
         if ((data.INT_AC_latitud == 'undefined' && data.INT_AC_longitud == 'undefined') || (data.INT_AC_latitud == undefined && data.INT_AC_longitud == undefined) || (data.INT_AC_latitud == '' && data.INT_AC_longitud == '')) {

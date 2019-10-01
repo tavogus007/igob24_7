@@ -831,16 +831,7 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                                 datos.cod_zona_sit = codigo_zona;
                                 datos.distrito = distrito;
                                 datos.macrodistrito = macrodistrito;
-                                $scope.datos.f01_macro_act = idMacrodistrito;
-                                $scope.datos.f01_dist_act = distrito;
-                              
-                                $scope.datos.f01_zona_act_descrip = zona.toUpperCase();
-                                console.log("$scope.datos.f01_macro_act::: ", $scope.datos.f01_macro_act);
-                                console.log("$scope.datos.f01_zona_act_descrip::: ", $scope.datos.f01_zona_act_descrip);
-
-                                //$scope.distritoZonas(idMacrodistrito);
-                                $scope.GetValueMacrodistrito(idMacrodistrito);
-                                $scope.actulizarIdDistrito();
+                                
                                 var n_genesis = geo_id_genesis.length;
                                 for (var i=0;i<n_genesis;i++)
                                 {
@@ -1114,7 +1105,6 @@ $scope.open_map_ae2 = function(latitud, longitud)
     $scope.distritoZonas = function(idMacroJ){     
     console.log("idMacroJ: ", idMacroJ);   
         $scope.datos.f01_macro_act    =   idMacroJ;
-        console.log("$scope.datos.f01_macro_act: ", $scope.datos.f01_macro_act);   
         $scope.datos.INT_AC_MACRO_ID = idMacroJ;
         $scope.aDistritoZona = {};
         try{

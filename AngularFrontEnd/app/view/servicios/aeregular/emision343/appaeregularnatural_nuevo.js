@@ -724,18 +724,18 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     };
 
     $scope.macrodistritos = function(){
-        $scope.aMacrodistritos = {};
+         $scope.aMacrodistritos = {};
         var datosP = new macrodistritoLst();
         datosP.obtmacro(function(resultado){
             data = JSON.parse(resultado);
             if(data.success.length > 0){
                 $scope.aMacrodistritos = data.success;
-                console.log("$scope.aMacrodistritos: ", $scope.aMacrodistritos);
             }else{
                 $scope.msg = "Error !!";
             }
         });
     };
+ 
 
    /*$scope.distritoZonas = function(idMacroJ){        
         var idMacro = "";
@@ -999,7 +999,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             $scope.IsVisible = false;
             $scope.datos.pago_adel = 'NO';
         };
-        $scope.datos.f01_macro_act = data.f01_macro_act;
 
         if(typeof(data.INT_AC_MACRO_ID) != 'undefined'){
             //LISTANDO ZONAS
@@ -1065,14 +1064,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             }
         };
         $scope.iniciarRequsitosDoc(data);
-        console.log("$scope.datos222::: ", $scope.datos);
-
         $scope.open_mapa_ae();
-        /*setTimeout(function(){
-            $scope.$apply();
-        },1000);*/
-
-        $scope.$apply(() => { $scope.datos.f01_macro_act = 5; });
         
     });//INICIAR CAMPOS INTERNET
 
@@ -1166,7 +1158,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
    /*CIUDADANO - TIPO INICIO DE TRAMITE NUEVO - RENOVACION*/
    $scope.cambioToggleForm = function () {
         //$scope.validarRequisitosForm();
-        $scope.aMacrodistritos = {};
         $scope.botones = "mostrar";
         $scope.desabilitado = false;
         $scope.mostrarMsgNuevaActividad = false;

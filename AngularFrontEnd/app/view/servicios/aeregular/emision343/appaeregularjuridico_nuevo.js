@@ -2881,7 +2881,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
         $scope.catactividadDesarrollada();
-         $scope.macrodistritos();
+        $scope.macrodistritos();
         $scope.multiple = [];
         $scope.GetValueZonaSegura(data.f01_categoria_agrupada);
         if ((data.INT_AC_latitud == 'undefined' && data.INT_AC_longitud == 'undefined') || (data.INT_AC_latitud == undefined && data.INT_AC_longitud == undefined) || (data.INT_AC_latitud == '' && data.INT_AC_longitud == '')) {
@@ -2940,7 +2940,6 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             $scope.IsVisible = false;
             $scope.datos.pago_adel = 'NO';
         };
-        $scope.datos.f01_macro_act = data.f01_macro_act;
 
         if(typeof(data.INT_AC_MACRO_ID) != 'undefined'){
             //LISTANDO ZONAS
@@ -3006,14 +3005,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             }
         };
         $scope.iniciarRequsitosDoc(data);
-        console.log("$scope.datos222::: ", $scope.datos);
-
         $scope.open_mapa_ae();
-        /*setTimeout(function(){
-            $scope.$apply();
-        },1000);*/
-
-        $scope.$apply(() => { $scope.datos.f01_macro_act = 5; });
         
     });
     /*$scope.vias= function(zona,tipo){

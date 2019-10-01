@@ -1468,8 +1468,8 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
       })
     }else{
       angular.forEach($scope.requisitos, function(doc, pos) {
-        if(doc.resid == idFile){
-          descDoc = 'Requisito_'+doc.resid;
+        if(doc.req_id == idFile){
+          descDoc = 'Requisito_'+doc.req_id;
         }
       })
     }

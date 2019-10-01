@@ -582,7 +582,6 @@ function crear_Tramite_lotus1(){
 
 crear_Tramite_lotus1.prototype.tram_lotus1 = function (functionResp) {
   urlComp = "/crearTramiteLotus";
-  alert(123);
   typeCall = "post";
   dataParams = {
     "proid" : this.proid,

@@ -728,8 +728,8 @@ function renovacionOperadoresController($scope, $rootScope, $routeParams, $locat
       datosNeXO['f01_dist_act']                   = datosOfi.xofi_datos.RO_DIS_ID_OF;
       //datosNeXO['f01_dist_act_descrip']           =   paramForm.f01_dist_act_descrip;
       datosNeXO['f01_tip_via_act']                = datosOfi.xofi_datos.RO_TIPO_VIA_SUC;
-      datosNeXO['f01_num_act']                    = datosOfi.xofi_datos.RO_NRO_SUC;
-      datosNeXO['f01_num_act_n']                  = datosOfi.xofi_datos.RO_NRO_SUC;
+      datosNeXO['f01_num_act']                    = datosOfi.xofi_datos.RO_NOM_VIA_SUC;
+      datosNeXO['f01_num_act_n']                  = datosOfi.xofi_datos.RO_NOM_VIA_SUC;
       datosNeXO['f01_factor']                     = datosOfi.resultadoAe.datosAE[0].tipoTrayecto;
       datosNeXO['f01_num_act1']                   = datosOfi.xofi_datos.RO_NRO_SUC;
       //datosNeXO['f01_edificio_act']               =   paramForm.f01_edificio_act;

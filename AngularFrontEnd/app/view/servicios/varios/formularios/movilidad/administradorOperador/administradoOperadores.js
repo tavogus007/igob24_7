@@ -135,7 +135,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
           console.log(data[i].veh_id,'veh',$scope.objObservaciones[j].obs_id_tipo,111,$scope.objObservaciones[j].obs_tipo);
           if(data[i].veh_id == $scope.objObservaciones[j].obs_id_tipo && $scope.objObservaciones[j].obs_tipo.trim() == 'V'){
             obs = obs + 1;
-            console.log('obs',obs);
           }
         }
         data[i].veh_obs = obs;

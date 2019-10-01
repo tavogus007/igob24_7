@@ -631,7 +631,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     };
 
    $scope.macrodistritos = function(){
-        
+         $scope.aMacrodistritos = {};
         var datosP = new macrodistritoLst();
         datosP.obtmacro(function(resultado){
             data = JSON.parse(resultado);
@@ -2493,7 +2493,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         if($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona == 'J'){
             datos.f01_tipo_per_desc = 'JURIDICO';
-            urlFormularioN  =   "../../docs/AE_Formulario_401_J.html";
+            urlFormularioN  =   "../../docs/AE_Formulario_401_343J.html";
             $( "#msgformularioJ" ).load(urlFormularioN, function(data) {
                 stringFormulario40  =   data;
                 datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
@@ -2880,11 +2880,8 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     });
 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
-        console.log("data::: ", data);
-        console.log("$scope.datos::: ", $scope.datos);
-
         $scope.catactividadDesarrollada();
-
+         $scope.macrodistritos();
         $scope.multiple = [];
         $scope.GetValueZonaSegura(data.f01_categoria_agrupada);
         if ((data.INT_AC_latitud == 'undefined' && data.INT_AC_longitud == 'undefined') || (data.INT_AC_latitud == undefined && data.INT_AC_longitud == undefined) || (data.INT_AC_latitud == '' && data.INT_AC_longitud == '')) {

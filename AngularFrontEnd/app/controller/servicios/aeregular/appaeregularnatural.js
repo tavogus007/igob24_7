@@ -2221,11 +2221,12 @@ app.controller('regularController', function ($scope,$timeout, $q, $rootScope, $
 
     var aDocAdjuntosmapa = new Object();
     $scope.capturarImagen = function(){
+        console.log("Entrando a captura imagen appaeregular....");
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         //var latitud = $rootScope.laaa;
         //var longitud = $rootScope.looo;
-        var latitud = $scope.latitud;
-        var longitud = $scope.longitud;
+        var latitud = $scope.datos.INT_AC_latitud;
+        var longitud = $scope.datos.INT_AC_longitud;
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         var sDirTramite = sessionService.get('IDTRAMITE');
         $scope.url = "RC_CLI/" + $scope.oidCiudadano + "/" + sDirTramite;

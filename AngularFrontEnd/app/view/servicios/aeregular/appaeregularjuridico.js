@@ -2698,6 +2698,7 @@ function regularjuridicoController($scope,$timeout, $rootScope, $routeParams, $l
     };
 
     $scope.capturarImagen = function(){
+        console.log("Entrando a captura imagen 5....");
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         var latitud = $rootScope.laaa;
         var longitud = $rootScope.looo;

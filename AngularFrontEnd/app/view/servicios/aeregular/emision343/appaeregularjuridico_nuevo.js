@@ -2334,9 +2334,16 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     };
 
     $scope.capturarImagen = function(){
+        console.log("Entrando a captura imagen 1....");
         $scope.oidCiudadano = sessionService.get('IDCIUDADANO');
-        var latitud = $rootScope.laaa;
-        var longitud = $rootScope.looo;
+        //var latitud = $rootScope.laaa;
+        //var longitud = $rootScope.looo;
+
+        var latitud =  $scope.datos.INT_AC_latitud;
+        var longitud = $scope.datos.INT_AC_longitud;
+        console.log("latitud",latitud);
+        console.log("longitud",longitud);
+
         $scope.oidCiudadano = sessionService.get('IDCIUDADANO');
         var sDirTramite = sessionService.get('IDTRAMITE');
         $scope.url = "RC_CLI/" + $scope.oidCiudadano + "/" + sDirTramite;
@@ -2355,7 +2362,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         };
         aDocAdjuntosmapa[0]=datosAdjuntosmapa;
         $scope.datos.ARCHIVOS_MULTIPLES_MAPA = aDocAdjuntosmapa;
-        $scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center='+ latitud +','+ longitud +'&zoom=16&size=600x300&maptype=roadmap&markers=color:red|label:S|'+ latitud +','+ longitud +'&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img){
+        $scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center='+ latitud +','+ longitud +'&zoom=18&size=900x500&maptype=roadmap&markers=color:red|label:S|'+ latitud +','+ longitud +'&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img){
             var Imagen = base64Img.replace(/data:image\/png;base64,/i,'');
             $scope.Imagenb = Imagen;
             $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);

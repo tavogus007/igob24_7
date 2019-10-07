@@ -432,7 +432,7 @@
                         <div class="col-md-12">
                             <legend> Tipo Licencia: </legend>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" ng-show="false">
                             <div class="form-group">
                                 <font color="#FF0000" size="4px"> * </font>
                                 <label for="url" >Tipo de Actividad:</label>
@@ -904,9 +904,9 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_47}}:</label>
+                                <label for="url" >Tel&eacute;fono/Celular::</label>
                                 <div class="controls">
-                                    <input ng-model="datos.f01_tel_act1" id="f01_tel_act1" maxlength="7" name="f01_tel_act1" placeholder="Teléfono ej.22451630" class="form-control"  width="30%" height="30" onkeyUp=" valNumeroTelefono(this);"  ng-disabled="desabilitadoO || desabilitado"/>
+                                    <input ng-model="datos.f01_tel_act1" id="f01_tel_act1" maxlength="7" name="f01_tel_act1" placeholder="Teléfono ej.22451630" class="form-control"  width="30%" height="30" onkeyUp="soloNumerico(this);"  ng-disabled="desabilitadoO || desabilitado"/>
                                 </div>
                             </div>
                         </div>
@@ -1108,85 +1108,87 @@
                     </div>
                         <!-- PAGO ANTICIPADO -->
                     </br>
-                    <div class="col-md-12">
-                        <legend>Datos Pago Anticipado:</legend>
-                    </div>
-                    <div class = "col-md-12" class="form-control">
-                        <div class = "col-md-6" class="form-control">
-                            <label for="Pago_Anticipado">
-                            Desea realizar el Pago por Adelantado?
-                            Si <input type="radio" name="pago_adel" value = "SI" ng-model="datos.pago_adel" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            No <input type="radio" name="pago_adel" value = "NO" ng-model="datos.pago_adel" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
-                            </label>
+                    <div ng-show="false">
+                        <div class="col-md-12">
+                            <legend>Datos Pago Anticipado:</legend>
                         </div>
-                    </div>
-                    <div ng-show="IsVisible">
-                        <div class = "col-md-6" class="form-control">
-                            <div class="form-group">
-                            <legend>Gestiones a Pagar:</legend>
-                                <div class="controls">
-                                    <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" name="nro_ges" ng-disabled="desabilitado" required>
-                                        <option value="">--Seleccionar--</option>
-                                        <option value="2"> 2 </option>
-                                        <option value="4"> 4 </option>
-                                    </select>
-                                </div>
+                        <div class = "col-md-12" class="form-control">
+                            <div class = "col-md-6" class="form-control">
+                                <label for="Pago_Anticipado">
+                                Desea realizar el Pago por Adelantado?
+                                Si <input type="radio" name="pago_adel" value = "SI" ng-model="datos.pago_adel" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                No <input type="radio" name="pago_adel" value = "NO" ng-model="datos.pago_adel" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
+                                </label>
                             </div>
                         </div>
-                        <div class="col-md-12" class="form-control">
-                            <div class="form-group" >
-                                <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                                <div class="col-sm-12" align="left">
-                                    <div class="alert alert-danger fade in">
-                                        <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
-                                        Ud. puede verificar en su cuenta iGob dentro de 48 hrs. la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
-                                        <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (48 hrs), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
+                        <div ng-show="IsVisible">
+                            <div class = "col-md-6" class="form-control">
+                                <div class="form-group">
+                                <legend>Gestiones a Pagar:</legend>
+                                    <div class="controls">
+                                        <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" name="nro_ges" ng-disabled="desabilitado" required>
+                                            <option value="">--Seleccionar--</option>
+                                            <option value="2"> 2 </option>
+                                            <option value="4"> 4 </option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    </br>
-                    </br>
-                    <div class="modal fade" id="imgSalidai" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">IMAGEN</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div id="visorFum" ng-show="archpdf">
-                                        <object data="" type="application/pdf" width="100%" height="500"></object>
+                            <div class="col-md-12" class="form-control">
+                                <div class="form-group" >
+                                    <label class="col-sm-12 control-label no-padding-right" for="url"></label>
+                                    <div class="col-sm-12" align="left">
+                                        <div class="alert alert-danger fade in">
+                                            <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
+                                            Ud. puede verificar en su cuenta iGob dentro de 48 hrs. la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
+                                            <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (48 hrs), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
+                                        </div>
                                     </div>
-                                    <div ng-show="archotro">
-                                        <img id="imgSalida" ng-src="{{archivoP}}" width="100%" height="100%">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal fade" id="docsVisor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" style="width:700px">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                                </div>
-                                <div class="modal-body">
-                                    <!--pdf-->
-                                    <div id="visorFum" ng-show="archpdf">
-                                        <object data="" type="application/pdf" width="650" height="500"></object>
+                        </br>
+                        </br>
+                        <div class="modal fade" id="imgSalidai" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">IMAGEN</h4>
                                     </div>
-                                    <!--imagen-->
-                                    <div ng-show="archotro">
-                                        <img id="imgSalida" ng-src="{{archivoP}}" onerror="angular.element(this).scope().imgError()" width="100%" height="100%">
+                                    <div class="modal-body">
+                                        <div id="visorFum" ng-show="archpdf">
+                                            <object data="" type="application/pdf" width="100%" height="500"></object>
+                                        </div>
+                                        <div ng-show="archotro">
+                                            <img id="imgSalida" ng-src="{{archivoP}}" width="100%" height="100%">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="docsVisor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" style="width:700px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!--pdf-->
+                                        <div id="visorFum" ng-show="archpdf">
+                                            <object data="" type="application/pdf" width="650" height="500"></object>
+                                        </div>
+                                        <!--imagen-->
+                                        <div ng-show="archotro">
+                                            <img id="imgSalida" ng-src="{{archivoP}}" onerror="angular.element(this).scope().imgError()" width="100%" height="100%">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

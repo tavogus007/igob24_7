@@ -401,7 +401,7 @@
                         <div class="col-md-12">
                             <legend> Tipo Licencia: </legend>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6"  ng-show="false">
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> * </font>
                                 <label for="url" >Tipo de Actividad:</label>
@@ -879,9 +879,9 @@
                     <div class="col-md-4">
                         <div class="form-group" >
                           <font color="#FF0000" size="4px"></font>
-                            <label for="url" size="4px">{{translateTitulos.lbl_12_47}}:</label>
+                            <label for="url" size="4px">Tel&eacute;fono/Celular:</label>
                             <div class="controls">
-                                <input ng-model="datos.f01_tel_act1" id="f01_tel_act1" maxlength="7" name="f01_tel_act1" placeholder="Teléfono ej.22451630" class="form-control" width="30%" height="30" onkeyUp=" valNumeroTelefono(this);"  ng-disabled="desabilitado">
+                                <input ng-model="datos.f01_tel_act1" id="f01_tel_act1" maxlength="7" name="f01_tel_act1" class="form-control" width="30%" height="30" onkeyUp="soloNumerico(this);"  ng-disabled="desabilitado">
                             </div>
                         </div>
                     </div>
@@ -1071,39 +1071,41 @@
                         </div>
                     </div>
                     <!--PAGO ANTICIPADO -->
-                    <div class="col-md-12">
-                        <legend>Datos Pago Anticipado:</legend>
-                    </div>
-                    <div class = "col-md-12" class="form-control">
-                        <div class = "col-md-6" class="form-control">
-                            <label for="Pago_Anticipado">
-                            Desea realizar el Pago por Adelantado?
-                            Si <input type="radio" name="pago_adel" value = "SI" ng-model="datos.pago_adel" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            No <input type="radio" name="pago_adel" value = "NO" ng-model="datos.pago_adel" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
-                            </label>
+                    <div ng-show="false">
+                        <div class="col-md-12">
+                            <legend>Datos Pago Anticipado:</legend>
                         </div>
-                    </div>
-                    <div ng-show="IsVisible==true">
-                        <div class = "col-md-6" class="form-control">
-                            <div class="form-group">
-                            <legend>Gestiones a Pagar:</legend>
-                                <div class="controls">
-                                    <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" name="nro_ges">
-                                        <option value="">--Seleccionar--</option>
-                                        <option value="2"> 2 </option>
-                                        <option value="4"> 4 </option>
-                                    </select>
-                                </div>
+                        <div class = "col-md-12" class="form-control">
+                            <div class = "col-md-6" class="form-control">
+                                <label for="Pago_Anticipado">
+                                Desea realizar el Pago por Adelantado?
+                                Si <input type="radio" name="pago_adel" value = "SI" ng-model="datos.pago_adel" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                No <input type="radio" name="pago_adel" value = "NO" ng-model="datos.pago_adel" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
+                                </label>
                             </div>
                         </div>
-                        <div class="col-md-12" class="form-control" ng-show="IsVisible">
-                            <div class="form-group" >
-                                <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                                <div class="col-sm-12" align="left">
-                                    <div class="alert alert-danger fade in">
-                                        <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
-                                        Ud. puede verificar en su cuenta iGob dentro de 48 hrs. la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
-                                        <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (48 hrs), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
+                        <div ng-show="IsVisible==true">
+                            <div class = "col-md-6" class="form-control">
+                                <div class="form-group">
+                                <legend>Gestiones a Pagar:</legend>
+                                    <div class="controls">
+                                        <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" name="nro_ges">
+                                            <option value="">--Seleccionar--</option>
+                                            <option value="2"> 2 </option>
+                                            <option value="4"> 4 </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" class="form-control" ng-show="IsVisible">
+                                <div class="form-group" >
+                                    <label class="col-sm-12 control-label no-padding-right" for="url"></label>
+                                    <div class="col-sm-12" align="left">
+                                        <div class="alert alert-danger fade in">
+                                            <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
+                                            Ud. puede verificar en su cuenta iGob dentro de 48 hrs. la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
+                                            <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (48 hrs), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
+                                        </div>
                                     </div>
                                 </div>
                             </div>

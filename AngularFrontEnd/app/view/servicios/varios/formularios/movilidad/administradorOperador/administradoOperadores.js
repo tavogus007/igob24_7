@@ -490,7 +490,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
         console.log(results,11111);
         results = JSON.parse(results).success.data[0];
         if(results.sp_abm_operador_vehiculo = 'Insertado'){
-          swal('Exitoso','Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección','success');
           $scope.crea_tramite_lotus($scope.datos);
         }
         $scope.datos = {};
@@ -901,7 +900,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       datosCond.conductorAbm (function(data){
         data = JSON.parse(data).success.data[0];
         if(data.sp_abm_operador_conductor == 'Insertado'){
-          swal('Exitoso','Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección','success');
           $scope.crea_tramite_lotus($scope.datos);
         }
         $scope.datos = {};
@@ -1096,7 +1094,15 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       tramite.tram_lotus(function(results){ 
         results = JSON.parse(results);
         if (results !=null) {
-          console.log('Se envio el tramite');
+          var nrot = results.success.data[0].casonro;
+          swal({
+            title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
+            text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
+            html: true,
+            type: 'success',
+            //timer: 5000,
+          });
+          console.log('Se envio el tramite',nrot);
         }else{
           console.log('Se envio el tramite');
         }

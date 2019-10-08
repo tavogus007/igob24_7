@@ -39,9 +39,9 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
       { name: 'template15.html', url: '../../../app/view/servicios/aeregular/emision343/juridico_nuevo.html'} 
     ];
     $scope.serivicosInternet = [
-        { name: 'Actividades Economicas Regulares', id:'10'},
-        { name: 'Renovación Licencia de Funcionamiento - 2019', id:'34'}, 
-        { name: 'Actividades Economicas Regulares - 2019', id:'35'} 
+        //{ name: 'Actividades Economicas Regulares', id:'10'},
+        { name: 'Renovación de Licencias de Funcionamiento', id:'34'}, 
+        { name: 'Emisión de Licencias de Funcionamiento', id:'35'} 
     ];
 
     $scope.btnEnviarForm = true;
@@ -52,14 +52,16 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
 
     $scope.template     =   "";
     var aDocAdjuntos    =   new Array();
+    $scope.renovacion = 34;
+    $scope.emision = 35;
 
     $scope.seleccionarProceso = function(proceso){
         $scope.procesoSeleccionado  =   proceso.id;
         if($scope.procesoSeleccionado == 10){
             sidservicio =   10; 
         }
-        if($scope.procesoSeleccionado == 34){
-            sidservicio =   34; 
+        if($scope.procesoSeleccionado == $scope.renovacion){
+            sidservicio =   $scope.renovacion; 
         }
         $scope.procesoSeleccionado  =   proceso.id;
         $scope.btnNuevoTramtite     =   false;
@@ -1209,20 +1211,20 @@ $scope.open_map_ae2 = function(latitud, longitud)
         if(tipoPersona == 'NATURAL' && sidservicio == 10){
             sidservicio =   10;
         }
-        if(tipoPersona == 'NATURAL' && sidservicio == 34){
+        if(tipoPersona == 'NATURAL' && sidservicio == $scope.renovacion){
             sidservicio =   12;
         }
-        if(tipoPersona == 'NATURAL' && sidservicio == 35){
+        if(tipoPersona == 'NATURAL' && sidservicio ==  $scope.emision){
             sidservicio =   14;
         }
 
         if(tipoPersona == 'JURIDICO' && sidservicio == 10){
             sidservicio = 11;
         }
-        if(tipoPersona == 'JURIDICO' && sidservicio == 34){
+        if(tipoPersona == 'JURIDICO' && sidservicio == $scope.renovacion){
             sidservicio =   13;
         }
-        if(tipoPersona == 'JURIDICO' && sidservicio == 35){
+        if(tipoPersona == 'JURIDICO' && sidservicio ==  $scope.emision){
             sidservicio =   15;
         }
 
@@ -1485,7 +1487,7 @@ $scope.open_map_ae2 = function(latitud, longitud)
                         $.unblockUI();
                     }
                 }
-                if(datos == 35){
+                if(datos ==  $scope.emision){
                     var dataInicio  =   {};
                     dataInicio["f01_tipo_lic"] = "";
                     dataInicio["f01_categoria_agrupada"] = "";
@@ -1495,7 +1497,7 @@ $scope.open_map_ae2 = function(latitud, longitud)
                     $scope.datos.f01_categoria_descri = "";
                     var fecha= new Date();
                     var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio = 35;
+                    var sIdServicio =  $scope.emision;
                     var sIdCiudadano = sessionService.get('IDSOLICITANTE');
                     var sFechaTramite = fechactual;
                     dataInicio.INT_FORM_ALMACENADO='C';
@@ -1538,7 +1540,7 @@ $scope.open_map_ae2 = function(latitud, longitud)
                     }
                 }
                
-                if(datos == 34){
+                if(datos == $scope.renovacion){
 
                     if ($scope.dataGenesisCidadano != ''){
                         var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
@@ -1558,7 +1560,7 @@ $scope.open_map_ae2 = function(latitud, longitud)
                                 $scope.datos.f01_categoria_descri = ""; 
                                 var fecha= new Date();
                                 var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                                var sIdServicio = 34;
+                                var sIdServicio = $scope.renovacion;
                                 var sIdCiudadano = sessionService.get('IDSOLICITANTE');
                                 var sFechaTramite = fechactual;
                                 dataInicio.INT_FORM_ALMACENADO='C';
@@ -1624,14 +1626,16 @@ $scope.open_map_ae2 = function(latitud, longitud)
 
                 sidservicio =   10; 
             }
-            if($scope.procesoSeleccionado == 34){
-                sidservicio =   34; 
+            if($scope.procesoSeleccionado == $scope.renovacion){
+                $('#divPopupAviso').modal('show');
+                //sidservicio =   $scope.renovacion; 
             }
-            if($scope.procesoSeleccionado == 35){
-                sidservicio =   35; 
+            if($scope.procesoSeleccionado ==  $scope.emision){
+                sidservicio =    $scope.emision; 
+                href="#registro_ciudadano|servicios|index.html"
+                $scope.adicionarServicioGamlp(sidservicio);
             }
-            href="#registro_ciudadano|servicios|index.html"
-            $scope.adicionarServicioGamlp(sidservicio);
+            
         }
     }
     $scope.getCaptchasX=function(){

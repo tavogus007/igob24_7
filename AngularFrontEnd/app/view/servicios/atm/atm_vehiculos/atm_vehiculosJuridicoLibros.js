@@ -1,4 +1,4 @@
-function vehiculosJuridicoLibrosController($scope, $q, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG,
+﻿function vehiculosJuridicoLibrosController($scope, $q, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG,
     LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter, FileUploader, fileUpload, fileUpload1, $timeout, obtFechaCorrecta) {
     //alert('CONTROLADOR VEHICULOS JURIDICA');
 
@@ -292,7 +292,7 @@ function vehiculosJuridicoLibrosController($scope, $q, $rootScope, $routeParams,
         //alert(11111);
         //console.log('datos11111',datos);
         $scope.formulario409(datos);
-        //$("#declaracionJV").modal("show");
+        $("#declaracionJV").modal("show");
 
     }
 

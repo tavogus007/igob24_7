@@ -1296,7 +1296,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         //obj.VH_CC_REQ_FAC_COMER = $scope.datos.urlFactura; //ADJUNTOS FACTURA 
         //obj.VH_CC_REQ_POL_IMPOR = $scope.datos.urlPoliza; 
         //obj.VH_CC_PODER_COMPRADOR = $scope.datos.urlPoder; 
-        obj.DOC_FORMULARIO_409 = $rootScope.datosEnvV.declaracion_jurada  //url pdf generado form 409
+        //obj.DOC_FORMULARIO_409 = $rootScope.datosEnvV.declaracion_jurada  //url pdf generado form 409
         obj.VH_CC_CI_ANV = $rootScope.file_CI_A;
         obj.VH_CC_CI_REV = $rootScope.file_CI_R;
         obj.VH_CC_PODER_RL = $rootScope.file_PODER;
@@ -1335,6 +1335,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         }
     };
     $scope.serializarInformacionInmuebles = function (obj) {
+        console.log("ingreso a oba", obj);
         //AQUI PREPARA DATOS PARA ENVIAR DATOS DE IGOB A  LOTUS//
         //$rootScope.validacionRequisitosTec();
         obj.VH_CC_REQ_BALANCE = '';
@@ -1438,19 +1439,28 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                     },
                     success:function(response){
                         if(response.length>0){
-                            var urlData = response;
-                            console.log("urllllll", urlData);
-                            window.open(urlData, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=1000,width=800,height=1000");  
-                            //$rootScope.decJuradaNatural = urlData;
-                           // $scope.InsertarDocumento(response);
-                            //$rootScope.datosEnvI.declaracion_jurada = urlData;
-                           // $scope.serializarInformacionInmuebles($rootScope.datosEnvI);
+                            var urlData = response;                            
+                            $rootScope.decJuradaNatural = urlData;
+                            $scope.InsertarDocumento(response);
+                           $rootScope.datosEnvI.declaracion_jurada = urlData;
+                           $scope.serializarInformacionInmuebles($rootScope.datosEnvI);
+                           //window.open(urlData);  
                             $.unblockUI();
                         }
                     }
             });
         }
     };
+
+$scope.printToCart = function(printSectionId) {
+        var innerContents = document.getElementById(printSectionId).innerHTML;
+        console.log("ingreso aca print ", innerContents);
+        var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+        popupWinindow.document.open();
+        popupWinindow.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + innerContents + '</html>');
+        popupWinindow.document.close();
+      }
+
     $scope.generarDocumentoPhpV = function (){
         $.blockUI();
         var tipoPersona = '';
@@ -1488,14 +1498,15 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                     "stipo_form": '409'
                 },
                 success:function(response){
+
                     if(response.length>0){
                         var urlData = response;
-                        window.open(urlData, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=1000,width=800,height=1000");  
+                        //window.open(urlData, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=1000,width=800,height=1000");  
                             
-                        //$rootScope.decJuradaNatural = urlData;
-                        //$scope.InsertarDocumento(response);
-                        //$rootScope.datosEnvV.declaracion_jurada = urlData;
-                        //$scope.serializarInformacionLibrosVehiculos($rootScope.datosEnvV);
+                        $rootScope.decJuradaNatural = urlData;
+                        $scope.InsertarDocumento(response);
+                        $rootScope.datosEnvV.declaracion_jurada = urlData;
+                        $scope.serializarInformacionLibrosVehiculos($rootScope.datosEnvV);
                         $.unblockUI();
                     }
                 }

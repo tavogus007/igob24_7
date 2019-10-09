@@ -870,7 +870,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.sTipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.inciarUpload();
         $scope.getCaptchasXX();
-        if($scope.sTipoPersona =="NATURAL"){
+        if($scope.sTipoPersona =="NATURAL" || $scope.sTipoPersona =="N"){
             if(sessionService.get('ESTADO') == 'NO'){
                 $scope.botones = "mostrar";
                 $scope.divNatural = "mostrar";               
@@ -878,9 +878,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             if(sessionService.get('ESTADO') == 'SI'){
                 $scope.botones = "null";
             }
-        } else {
-            $scope.divJuridico = "mostrar";
-            $scope.botones = "mostrar";
         }
         $scope.macrodistritos();
         $scope.lscategoria();
@@ -965,6 +962,16 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         if (data.f01_tip_via_act == '' || data.f01_tip_via_act == undefined || data.f01_tip_via_act == 'undefined') {} else{
             $scope.cargarNombVia(data.f01_tip_via_act, data.f01_zona_act);
         };
+         if (data.f01_categoria_agrupada == '' || data.f01_categoria_agrupada == undefined || data.f01_categoria_agrupada == 'undefined') {} else{
+            if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){//verificamos si la licencia es multiple
+                $scope.lstRequisitosMultiples2018(data.licenciam);
+            }else{
+                $scope.getRequisitosFormulario(data.f01_categoria_agrupada, data.f01_tipo_per);
+            }
+        };
+        $scope.iniciarRequsitosDoc(data);
+        
+        
 
         switch (data.chkzonasegura) {
             case 'ZONASEGURA':
@@ -1056,16 +1063,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             });
         }
         /*REQUISITOS2018*/
-        if (data.f01_categoria_agrupada == '' || data.f01_categoria_agrupada == undefined || data.f01_categoria_agrupada == 'undefined') {} else{
-            if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){//verificamos si la licencia es multiple
-                $scope.lstRequisitosMultiples2018(data.licenciam);
-            }else{
-                $scope.getRequisitosFormulario(data.f01_categoria_agrupada, data.f01_tipo_per);
-            }
-        };
-        $scope.iniciarRequsitosDoc(data);
         $scope.open_mapa_ae();
-        
+       
     });//INICIAR CAMPOS INTERNET
 
     //fecha del servidor
@@ -1248,8 +1247,11 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         if(data){
             if(data == 'G'){
                 $scope.btnEnviarFormLinea    =   false;
+                $scope.desabilitado     =   true;
             }else if(data == 'C'){
                 $scope.btnEnviarFormLinea    =   true;
+                $scope.desabilitado     =   false;
+                $scope.botones          =   "mostrar";
             }
         }    
     });
@@ -1715,8 +1717,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
 
     /*REQUISITOS2018*/
     $scope.iniciarRequisitosForm = function(data){
-        //$scope[name] = 'Running';
-        //var deferred = $q.defer();
+        console.log("data111: ", data);
         $scope.fileArRequisitos = {};
         if(data.sArrayFileArRequisitos){
             $scope.fileArRequisitos = data.sArrayFileArRequisitos;
@@ -1726,7 +1727,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     //deferred.resolve(data);
                 });
                 $scope.validarRequisitosForm();
-            },3500);
+            },3000);
         }
         //return deferred.promise;
     }

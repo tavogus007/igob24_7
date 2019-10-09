@@ -2030,6 +2030,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     }
 
     $scope.iniciarRequsitosDoc = function(data){
+        console.log("data: ", data);
         var validarpromesas = [$scope.iniciarRequisitosForm(data)];
         $q.all(validarpromesas).then(function (resp) {//AE - Validar Envio Licencia
            //console.log("resp: ", resp);
@@ -2050,7 +2051,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                 });
                 $scope.validarRequisitosForm();
 
-            },3500);
+            },3000);
         }
         return deferred.promise;
     }
@@ -2829,7 +2830,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     
     $scope.cargarDatosJuridico = function(){
         $scope.sTipoPersona = sessionService.get('TIPO_PERSONA');
-        if($scope.sTipoPersona=="JURIDICO"){  
+        if($scope.sTipoPersona=="JURIDICO" || $scope.sTipoPersona=="J"){  
             $scope.divJuridico = "mostrar";
             if(sessionService.get('ESTADO') == 'NO'){
                 $scope.botones = "mostrar";            
@@ -3000,29 +3001,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         $scope.open_mapa_ae();
         
     });
-    /*$scope.vias= function(zona,tipo){
-        $scope.z =zona;
-        $scope.t =tipo;
-        try{
-            var datos = new tipoVia();
-            datos.idz = zona;
-            datos.tipo = tipo;
-            datos.obt_tipoVia(function(results){
-                $scope.tip_vias =   [];
-                var aTipoVia    =   {};
-                aTipoVia["idv"] = "OTROS";
-                aTipoVia["nombrev"] = "OTRO";
-                data = JSON.parse(resultado);
-                if(data.success.length > 0 ){
-                    $scope.tip_vias =   data.success;
-                }
-                $scope.tip_vias.push(aTipoVia);
-                $scope.desabilitadoNo=false;
-            })
-        }catch(error){
-            console.log("error en via");
-        }
-    };*/
+   
 
      //fecha del servidor
     $scope.obtenerFecha = function(){
@@ -3110,6 +3089,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             $scope.btnGuardarForm           =   true;
             $scope.desabilitado             =   true;
             $scope.botones                  =   null;
+            $scope.only                     =   true;
         } else {
             $scope.btnGuardarForm   =   false;
             $scope.desabilitado     =   false;

@@ -199,7 +199,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
     };
     $scope.verificarDatos = function(datos){
         $scope.formulario406(datos);
-        //$("#declaracionJ").modal("show");
+        
 
     }
     $scope.formulario406 = function(dataI){
@@ -210,7 +210,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
 console.log("verificar datoooooooos", $scope.valor);
 swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 'error');
         }else{
-        console.log("verificar datoooooooos", $scope.valor);
+        $("#declaracionJ").modal("show");
         $rootScope.datosEnvI = "";
         var fecha= new Date();
         var fechaActualS = "";

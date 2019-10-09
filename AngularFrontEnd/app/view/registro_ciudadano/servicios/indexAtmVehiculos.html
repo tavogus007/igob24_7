@@ -127,7 +127,7 @@
                 <div class="modal-header" style="background: #ffcb05;" >
                     <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO 409</h2>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="bodyDeclaracionJV">
                     <div class="row">
                         <form name="formulario" readOnly="true" novalidate>
                             <div class="row">
@@ -139,8 +139,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="generarDocumentoPhpV();" data-dismiss="modal">Aceptar</button>
                     <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button>
+                    <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="printToCart('bodyDeclaracionJV');generarDocumentoPhpV();" data-dismiss="modal">IMPRIMIR</button>
                 </div>
             </div>
         </div>

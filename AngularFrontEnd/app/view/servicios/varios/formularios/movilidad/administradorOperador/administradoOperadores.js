@@ -1082,13 +1082,13 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
       data_form = JSON.stringify(datos);
       var tramite = new crear_Tramite_lotus();
-      tramite.proid = 373;
-      tramite.actid = 1652;
+      tramite.proid = 66;
+      tramite.actid = 478;
       tramite.usr_id = 0;        
       tramite.datos = data_form;
       tramite.procodigo = 'AO';
       tramite.macro_id = 0;
-      tramite.nodo_id = 672;
+      tramite.nodo_id = 517;
       tramite.ws_id = 24;
       var nroTramiteEnviado = sessionService.get('NROTRAMITE');
       tramite.tram_lotus(function(results){ 
@@ -1245,6 +1245,4 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       })
     },500);
   }
-
-
 }

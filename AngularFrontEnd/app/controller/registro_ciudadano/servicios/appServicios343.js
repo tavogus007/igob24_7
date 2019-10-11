@@ -40,8 +40,8 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
     ];
     $scope.serivicosInternet = [
         //{ name: 'Actividades Economicas Regulares', id:'10'},
-        { name: 'Renovación de Licencias de Funcionamiento', id:'34'}, 
-        { name: 'Emisión de Licencias de Funcionamiento', id:'35'} 
+        { name: 'Renovación de Licencias de Funcionamiento', id:'14'}, 
+        { name: 'Emisión de Licencias de Funcionamiento', id:'13'} 
     ];
 
     $scope.btnEnviarForm = true;
@@ -52,8 +52,8 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
 
     $scope.template     =   "";
     var aDocAdjuntos    =   new Array();
-    $scope.renovacion = 34;
-    $scope.emision = 35;
+    $scope.renovacion = 14;
+    $scope.emision = 13;
 
     $scope.seleccionarProceso = function(proceso){
         $scope.procesoSeleccionado  =   proceso.id;
@@ -1627,8 +1627,9 @@ $scope.open_map_ae2 = function(latitud, longitud)
                 sidservicio =   10; 
             }
             if($scope.procesoSeleccionado == $scope.renovacion){
-                $('#divPopupAviso').modal('show');
-                //sidservicio =   $scope.renovacion; 
+                sidservicio =   $scope.renovacion; 
+                 href="#registro_ciudadano|servicios|index.html"
+                $scope.adicionarServicioGamlp(sidservicio);
             }
             if($scope.procesoSeleccionado ==  $scope.emision){
                 sidservicio =    $scope.emision; 

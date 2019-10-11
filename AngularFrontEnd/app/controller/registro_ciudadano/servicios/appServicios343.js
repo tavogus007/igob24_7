@@ -701,6 +701,7 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
         setTimeout(function()
         {
             console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICAS");
+            console.log("latitud...",$scope.datos.INT_AC_latitud);
             //map.removeLayer(vectorLayer_inci_baja);
             $("#map_principal").empty();
             $scope.map = new ol.Map
@@ -1192,7 +1193,7 @@ $scope.open_map_ae2 = function(latitud, longitud)
       
     
     $scope.seleccionarTramiteRender = function (tramite) {
-        console.log('tramiteeeee    ',tramite);
+        console.log('tramiteeeee   111111  ',tramite);
         //openMapGis();
         $scope.open_mapa_ae();
         //$scope.getCaptchasXX();

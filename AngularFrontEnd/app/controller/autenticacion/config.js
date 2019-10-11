@@ -61,7 +61,7 @@ var jsonURLS    =   {
     //CONEXION_MOVILIDAD: "http://serigobvprueba.lapaz.bo/"
     CONEXION_MOVILIDAD: "http://192.168.5.141:2020/",
     CONEXION_SITV3: "http://192.168.6.111/SITv3Desarrollo/",
-    CONEXION_SITV3_Antena: "http://sitservicios.lapaz.bo/",
+    //CONEXION_SITV3_Antena: "http://sitservicios.lapaz.bo/",
     SIT_GEO: "https://gamlpmotores.lapaz.bo/sitgeo"
 
 };

@@ -12,7 +12,7 @@
 
         function graficar_mapa(campo_id_mapa){
             
-            var url_SITV3_ANTENA    =   jsonURLS.CONEXION_SITV3_Antena;
+            var url_SITV3_ANTENA    =   jsonURLS.SIT_GEO;
             $("#"+campo_id_mapa).empty();
             CUtil.Capas.GEOSERVER = url_SITV3_ANTENA + "geoserver/";
             var mapOptions = {

@@ -352,27 +352,28 @@
                 <div class="col-md-12">
                     <legend>{{translateTitulos.lbl_12_32}}:</legend>
                 </div>
+                  <div class="col-md-4">
+                    <div class="form-group" >
+                        <font color="#FF0000" size="4px">  </font>
+                        <label for="url" >Nit:</label>
+                        <div class="controls">
+                            <input type="text" ng-model="datos.f01_nit" id="f01_nit" name="f01_nit" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" />
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-4">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px"> * </font>
                         <label for="url" >{{translateTitulos.lbl_12_33}}:</label>
                         <div class="controls">
-                            <input type="text" ng-model="datos.f01_raz_soc" id="f01_raz_soc" name="f01_raz_soc" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="true" required/>
+                            <input type="text" ng-model="datos.f01_raz_soc" id="f01_raz_soc" name="f01_raz_soc" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" required/>
                         </div>
                         <span style="color:red" ng-show="signupForm.f01_raz_soc.$invalid">
                             <span class="error" ng-show="signupForm.f01_raz_soc.$invalid">{{translateMensajes.txt_12_15}}</span>
                         </span>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group" >
-                        <font color="#FF0000" size="4px">  </font>
-                        <label for="url" >Nit:</label>
-                        <div class="controls">
-                            <input type="text" ng-model="datos.f01_nit_prop" id="f01_nit_prop" name="f01_nit_prop" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" />
-                        </div>
-                    </div>
-                </div>
+              
                 <div class="col-md-4">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px"> * </font>
@@ -387,7 +388,7 @@
                         <font color="#FF0000" size="4px"> * </font>
                         <label for="url" >{{translateTitulos.lbl_12_38}}:</label>
                         <div class="controls">
-                            <select id="f01_estab_es" class="form-control" ng-model="datos.f01_estab_es"  name="f01_estab_es" ng-change="validarRequisitosForm();" ng-disabled="true" required>
+                            <select id="f01_estab_es" class="form-control" ng-model="datos.f01_estab_es"  name="f01_estab_es" ng-change="validarRequisitosForm();" ng-disabled="desabilitado" required>
                                 <option value="">--Seleccionar--</option>
                                 <option value="PROPIO"> PROPIO </option>
                                 <option value="ALQUILADO"> ALQUILADO </option>
@@ -426,7 +427,7 @@
                         <font color="#FF0000" size="4px"> * </font>
                         <label for="url" >{{translateTitulos.lbl_12_34}}: </label>
                         <div class="controls">
-                            <input type="text" ng-model="datos.f01_sup" id="f01_sup" name="f01_sup" class="form-control"  width="30%" height="30" ng-disabled="true" ng-change="verificarSuperficie(datos.f01_sup);calcularCapacidad(datos.f01_sup);" onkeyUp="vsuperficie(this);" required/>
+                            <input type="text" ng-model="datos.f01_sup" id="f01_sup" name="f01_sup" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" ng-change="verificarSuperficie(datos.f01_sup);calcularCapacidad(datos.f01_sup);" onkeyUp="vsuperficie(this);" required/>
                         </div>
                     </div>
                 </div>                      
@@ -465,12 +466,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="form-group" >
-                    <div class="col-md-12">
-                        <legend> Tipo de Licencia a Actualizar: </legend>
-                    </div>
-                    <div class="col-md-6">
+
+            <div ng-show="false">
+                <div class="col-md-6">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >Tipo de Actividad:</label>
@@ -483,7 +481,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                
+            </div>
+            <div class="col-md-12">
+                <div class="form-group" >
+                    <div class="col-md-12">
+                        <legend> Tipo de Licencia a Actualizar: </legend>
+                    </div>
+                    
+                    <div class="col-md-12">
                         <label for="url" >Detalle de la Actividad Desarrollada: </label>
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> </font>
@@ -599,124 +605,151 @@
                     </div>
                     <!--TERMINA TIPO DE LICENCIA MULTIPLE-->
                 </div>
+
+                 <div class="col-md-12">
+                    <legend>{{translateTitulos.lbl_12_54}}: </legend>
+                </div>
+                <label class="col-sm-4" type ="hidden"> UBICACIÓN DE LA ACTIVIDAD ECONÓMICA</label>
+                        <!-- +++++++++++++++++++++++++++++   MAPA ++++++++++++++++++++++++++++++++++++++-->
+                <div class="col-md-12" >
+                    <div class="col-md-1" >
+                        <br><br><br><br><br><br><br><br><br>
+                        <font color="#FF0000" size="4px" align="center"> * </font>
+                    </div>
+                    <div class="col-md-10">                                    
+                        <div id="map_principal" ng-disabled="desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
+                    </div>
+                    <div class="col-md-1">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <input ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control" type="hidden" readonly>
+                <input ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control" type="hidden" readonly>
+
             <!-- UBICACION DE ACTIVIDADES ECONOMICAS -->
-                <div class="col-md-12">
-                    <legend>{{translateTitulos.lbl_12_39}}:</legend>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <font color="#FF0000" size="4px"> * </font>
-                        <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
-                        <div class="controls">
-                            <select id="f01_zona_act"
-                                    name="f01_zona_act"
-                                    placeholder="Distrito - Zona"
-                                    ng-model="datos.f01_zona_act"
-                                    class="js-example-basic-single form-control"
-                                    ng-options="disZona.dist_id as disZona.dist_nombre for disZona in aMacroZona | orderBy:['nombre','dist_nombre']"
-                                    ng-change="macrodistritosid(datos.f01_zona_act);actulizarIdDistrito(datos.f01_zona_act);"
-                                    ng-disabled="desabilitado"  
-                                    ng-required="true">
-                                <option value="">--Seleccionar--</option>
-                            </select>
-                        </div>
+                    <div class="col-md-12">
+                        <legend>{{translateTitulos.lbl_12_39}}:</legend>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group" >
-                        <font color="#FF0000" size="4px"> * </font>
-                        <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
-                        <div class="controls">
-                            <input  id="f01_macro_act_descrip" 
-                                    name="f01_macro_act_descrip"
-                                    placeholder="Macrodistrito" 
-                                    ng-model="datos.f01_macro_act_descrip"
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
+                            <div class="controls">
+                                <select
+                                    id="f01_macro_act"
+                                    name="f01_macro_act"
+                                    placeholder="Macrodistrito" ng-model="datos.f01_macro_act"
                                     class="form-control"
-                                    ng-disabled="true"
+                                    ng-disabled="desabilitadoO || desabilitado"
+                                    ng-change="distritoZonas(datos.f01_macro_act);GetValueMacrodistrito(datos.f01_macro_act);"
                                     required>
-                            
-                        </div>
-                        <span style="color:red" ng-show="signupForm.f01_macro_act_descrip.$invalid">
-                            <span class="error" ng-show="signupForm.f01_macro_act_descrip.$invalid">{{translateMensajes.txt_12_15}}</span>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group" >
-                        <font color="#FF0000" size="4px"> * </font>
-                        <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
-                        <div class="controls">
-                            <select id="f01_tip_via_act" class="form-control" ng-model="datos.f01_tip_via_act"  name="f01_tip_via_act" ng-disabled="true" required  ng-change="cargarNombVia(datos.f01_tip_via_act, datos);">
-                                <option value="">--Seleccionar--</option>
-                                <option value="AV">AVENIDA</option>
-                                <option value="CA">CALLE</option>
-                                <option value="CL">CALLEJON</option>
-                                <option value="PL">PLAZA</option>
-                                <option value="CN">CANCHA</option>
-                                <option value="PR">PARQUE</option>
-                                <option value="PA">PASAJE</option>
-                                <option value="ND">NO DEFINIDO</option>
-                            </select>
-                            <!-- ng-change="cargarNombVia(datos.f01_tip_via_act, datos)" -->
+                                    <option value="">--Seleccionar--</option>
+                                    <option ng-repeat="macro in aMacrodistritos | orderBy:['nombre','mcdstt_id']" value="{{macro.mcdstt_id}}">{{macro.mcdstt_macrodistrito}}</option>
+                                </select>
+                            <input type="hidden" ng-model="datos.f01_idCodigoZona" id="f01_idCodigoZona" name="f01_idCodigoZona" class="form-control" required/>
+                            <input type="hidden" ng-model="datos.f01_macro_act_descrip" id="f01_macro_act_descrip" name="f01_macro_act_descrip" class="form-control" style="text-transform:uppercase;"/>                     
+                            </div>
+                            <span style="color:red" ng-show="signupForm.f01_macro_act.$invalid">
+                                <span class="error" ng-show="signupForm.f01_macro_act.$invalid">{{translateMensajes.txt_12_15}}</span>
+                            </span>
                         </div>
                     </div>
-                </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >V&iacute;a: <font color="#FF0000"> * </font></label>
-                                <div class="controls">
-                                    <select 
-                                        id="f01_num_act" 
-                                        name="f01_num_act" 
-                                        placeholder="-- Seleccione --" 
-                                        ng-model="datos.f01_num_act" 
-                                        class="form-control" 
-                                        ng-options="dato.nombVia as dato.nombVia for dato in datosNombVia"
-                                        ng-change="cargarNombViaTxt(datos.f01_num_act)" 
-                                        ng-disabled="desabilitado"
-                                        required>
-                                        <option style="display:none" value="">--Seleccione--</option>
-                                    </select>
-                                </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
+                            <div class="controls">
+                                <select id="f01_zona_act_descrip"
+                                        name="f01_zona_act_descrip"
+                                        placeholder="Distrito - Zona"
+                                        ng-model="datos.f01_zona_act_descrip"
+                                        class="form-control"
+                                        ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZona | orderBy:['nombre','dist_nombre']"
+                                        ng-change="actulizarIdDistrito();"
+                                        ng-disabled="desabilitado"  required>
+                                    <option value="">--Seleccionar--</option>
+                                </select>
+                            <!--input type="text" ng-model="datos.f01_zona_act" id="f01_zona_act" name="f01_zona_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/-->
+                            <input type="hidden" ng-model="datos.f01_distrito_act" id="f01_distrito_act" name="f01_distrito_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
                             </div>
                         </div>
-                        <div class="col-md-4" ng-show="datos.f01_num_act == 'NINGUNO'">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
-                                <div class="controls">
-                                <input type="text" ng-model="datos.f01_num_act_n" id="f01_num_act_n" name="f01_num_act_n" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
-                                </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
+                            <div class="controls">
+                                <select id="f01_tip_via_act" class="form-control" ng-model="datos.f01_tip_via_act"  name="f01_tip_via_act" ng-disabled="desabilitado" required  ng-change="cargarNombVia(datos.f01_tip_via_act, datos);">
+                                    <option value="">--Seleccionar--</option>
+                                    <option value="AV">AVENIDA</option>
+                                    <option value="CA">CALLE</option>
+                                    <option value="CL">CALLEJON</option>
+                                    <option value="PL">PLAZA</option>
+                                    <option value="CN">CANCHA</option>
+                                    <option value="PR">PARQUE</option>
+                                    <option value="PA">PASAJE</option>
+                                    <option value="ND">NO DEFINIDO</option>
+                                </select>
                             </div>
                         </div>
-                        <div ng-show="datos.f01_num_act == 'OTRO'">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url" >{{translateTitulos.lbl_12_40}} :</label>
-                                    <div class="controls">
-                                    <input type="text" ng-model="datos.OTRO_VIA" id="OTRO_VIA" name="OTRO_VIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
-                                    </div>
-                                </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >V&iacute;a: <font color="#FF0000"> * </font></label>
+                            <div class="controls">
+                                <select
+                                    id="f01_num_act"
+                                    name="f01_num_act"
+                                    placeholder="-- Seleccione --"
+                                    ng-model="datos.f01_num_act"
+                                    class="form-control"
+                                    ng-options="dato.nombVia as dato.nombVia for dato in datosNombVia | orderBy:['nombre','nombVia']"
+                                    ng-change="cargarNombViaTxt(datos.f01_num_act)"
+                                    ng-disabled="desabilitado"
+                                    required>
+                                    <option style="display:none" value="">--Seleccione--</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-md-4" ng-show="false">
-                            <div class="form-group" ng-show="divOcultarJuegos">
-                                <label for="url" >Tipo Trayecto:</label>
-                                <div class="controls">
-                            <input type="text" ng-model="datos.f01_factor" id="f01_factor" name="f01_factor" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
-                                </div>
+                    </div>
+                    <div class="col-md-6" ng-show="datos.f01_num_act == 'NINGUNO'">
+                        <div class="form-group" >
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.f01_num_act_n" id="f01_num_act_n" name="f01_num_act_n" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                    </div>
+                    <div ng-show="datos.f01_num_act == 'OTRO'">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >{{translateTitulos.lbl_12_41}}:</label>
+                                <label for="url" >{{translateTitulos.lbl_12_40}} :</label>
                                 <div class="controls">
-                                    <input ng-model="datos.f01_num_act1" id="f01_num_act1" name="f01_num_act1" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true" required/>
+                                  <input type="text" ng-model="datos.OTRO_VIA" id="OTRO_VIA" name="OTRO_VIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-6" ng-show="false">
+                        <div class="form-group">
+                            <label for="url" >Tipo Trayecto:</label>
+                            <div class="controls">
+                          <input type="text" ng-model="datos.f01_factor" id="f01_factor" name="f01_factor" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >{{translateTitulos.lbl_12_41}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_num_act1" id="f01_num_act1" name="f01_num_act1" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado" required/>
+                            </div>
+                        </div>
+                    </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <font color="#FF0000" size="4px"></font>
@@ -904,23 +937,7 @@
                         </div>
                     </div>                
                     <!-- FIN DE VARIABLE DE IDENTIFICACION DE LA ACTIVIDAD ECONIMICA -->
-                        <div class="col-md-12">
-                            <legend>{{translateTitulos.lbl_12_54}}: </legend>
-                        </div>
-                        <label class="col-sm-4" type ="hidden"> UBICACIÓN DE LA ACTIVIDAD ECONÓMICA</label>
-                                <!-- +++++++++++++++++++++++++++++   MAPA ++++++++++++++++++++++++++++++++++++++-->
-                        <div class="col-md-12" >
-                            <div class="col-md-1" >
-                                <br><br><br><br><br><br><br><br><br>
-                                <font color="#FF0000" size="4px" align="center"> * </font>
-                            </div>
-                            <div class="col-md-10">                                    
-                                <div id="map_principal" ng-disabled="desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
-                            </div>
-                            <div class="col-md-1">
-                                &nbsp;
-                            </div>
-                        </div>
+                       
                         <div ng-show = "mostrarzonasegura">
                             <div class="col-md-12">
                                 <div class="col-md-12">

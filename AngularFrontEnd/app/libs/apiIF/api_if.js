@@ -770,3 +770,32 @@ crear_Tramite_lotus.prototype.tram_lotus = function (functionResp) {
   };
   ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };
+
+//Ley 343
+function getCategoriaLicencia(){ 
+    this.dependencia; 
+};
+
+getCategoriaLicencia.prototype.getCategoria_Licencia = function (functionResp) { 
+    urlCompif = "/getDatosLicencia"; 
+    typeCallif = "post"; 
+    dataParamsif = { 
+        "dependencia" : this.dependencia 
+    }; 
+    ejecutarAjaxIF(urlCompif, typeCallif, dataParamsif, functionResp); 
+};
+
+function getDatosAELotus() {
+    this.caso;
+    this.idActividad;
+};
+
+getDatosAELotus.prototype.getDatosAE_Lotus = function (functionResp) {
+    urlCompAe = "/datos_tramite";
+    typeCallAe = "post";
+    dataParamsAe = {
+        "caso":this.caso,
+        "idActividad":this.idActividad
+    };
+    ejecutarAjaxIF(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};

@@ -333,7 +333,6 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                     },300);
                 }else{
                     var gestion = datos.dtspsl_poder_replegal.split(/[ -.!,&|\[\]/\\]+/);
-                    console.log('la gessssssssssss      ',gestion);
                     if (gestion[1] == 'NaN' || gestion[1] == NaN || gestion[1] == 'undefined' || gestion[1] == undefined || gestion[1] == null || gestion[1] == '') {
                         datosForm['f01_ges_vig_pod'] = gestion[0];
                         datosForm['f01_num_pod_leg'] = gestion[0];
@@ -1202,37 +1201,37 @@ $scope.open_map_ae2 = function(latitud, longitud)
         sessionService.set('IDTRAMITE', $rootScope.tramiteId);
         sessionService.set('IDSERVICIO', tramite.vdvser_id);
         sessionService.set('ESTADO', tramite.venviado);
-
         $scope.template = "";
         $scope.formulario = "mostrar";
+        var vsidservicio = "";
         //TIPO_PERSONA
         var tipoPersona =   sessionService.get('TIPO_PERSONA');
         var sidservicio =   $scope.procesoSeleccionado;
-        console.log('sidservicio    ',sidservicio);
         if(tipoPersona == 'NATURAL' && sidservicio == 10){
-            sidservicio =   10;
+            vsidservicio =   10;
         }
-        if(tipoPersona == 'NATURAL' && sidservicio == $scope.renovacion){
-            sidservicio =   12;
-        }
-        if(tipoPersona == 'NATURAL' && sidservicio ==  $scope.emision){
-            sidservicio =   14;
+        if(tipoPersona == 'JURIDICO' && sidservicio == 10){
+            vsidservicio = 11;
         }
 
-        if(tipoPersona == 'JURIDICO' && sidservicio == 10){
-            sidservicio = 11;
+        if(tipoPersona == 'NATURAL' && sidservicio == $scope.renovacion){
+            vsidservicio =   12;
         }
-        if(tipoPersona == 'JURIDICO' && sidservicio == $scope.renovacion){
-            sidservicio =   13;
+        if(tipoPersona == 'JURIDICO' && sidservicio ==  $scope.renovacion){
+            vsidservicio =   13;
+        }
+
+        if(tipoPersona == 'NATURAL' && sidservicio == $scope.emision){
+            vsidservicio =   14;
         }
         if(tipoPersona == 'JURIDICO' && sidservicio ==  $scope.emision){
-            sidservicio =   15;
+            vsidservicio =   15;
         }
 
         if (tramite.venviado == "SI") {
-            $scope.template         =   $scope.templates[sidservicio];
+            $scope.template         =   $scope.templates[vsidservicio];
         } else {
-            $scope.template         =   $scope.templates[sidservicio];
+            $scope.template         =   $scope.templates[vsidservicio];
         }
         if(tipoPersona == 'NATURAL'){
             $scope.recuperarSerializarInfo(tramite);

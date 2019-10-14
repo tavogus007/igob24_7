@@ -499,7 +499,7 @@
                                 id="f01_categoria_descrip"
                                 name="f01_categoria_descrip"
                                 ng-disabled="desabilitado"
-                                ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip);"
+                                ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip, datos.f01_sup);"
                                 required>
                                 <option value="">--Seleccionar--</option>
                             </select>
@@ -526,7 +526,7 @@
                         </div>
                     </div>
                 </div>
-                        <!--TIPO DE LICENCIA MULTIPLE-->
+               <!--TIPO DE LICENCIA MULTIPLE-->
                 <div ng-show="smultiservicios">
                     <div class="col-md-12">
                         <div class="panel panel-default">
@@ -543,7 +543,7 @@
                                                   id="f01_act_desarrolladamid"
                                                   name="f01_act_desarrolladamid"
                                                   ng-disabled="desabilitado"
-                                                  ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid);"
+                                                  ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid, datos.f01_sup);"
                                                   required>
                                                 <option value="">--Seleccionar--</option>
                                             </select>

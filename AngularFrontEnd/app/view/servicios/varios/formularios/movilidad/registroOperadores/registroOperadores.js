@@ -22,7 +22,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   $scope.modalidadId = 0;
   var valPlaca = 0;
   var valCel = 0;
-  var idTram = 14;
+  var idTram = 12;
   $scope.datosMapa = {};
   
   $scope.inicio = function () {
@@ -102,7 +102,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   $scope.tramitesCiudadano = function(){
     var tramites  = new listaTramitesMov();
     tramites.idCiudadano = sIdCiudadano;
-    tramites.tra_ser = idTram;
+    tramites.tra_ser = 12;
     tramites.spbusquedaformulariomovilidad(function(results){
       results = JSON.parse(results).success;
       $scope.tramites = results;
@@ -281,7 +281,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
           var dataInicio = {"RO_MOD":$scope.modalidadId,"RO_MOD_DESC":RO_MOD_DESC,"RO_TIP_OPE_A":$scope.datos.RO_TIP_OPE_A,"RO_TIP_OPE":RO_TIP_OPE,"RO_TIP_TAX":RO_TIP_TAX,"RO_TIP_SER":RO_TIP_SER,"RO_SER_SPU":RO_SER_SPU,"RO_SER_SPR":RO_SER_SPR};
           var fecha= new Date();
           var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-          var sIdServicio = 14;
+          var sIdServicio = 12;
           var sIdCiudadano = $scope.oidCiu;
           var sFechaTramite = fechactual;
           var datosSerializados   =  JSON.stringify(dataInicio);

@@ -945,7 +945,9 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
     {
       var nombre_1 = new Array();
       var f = '';
-      var nombre = document.getElementById('busqueda_p').value;
+      //var nombre = document.getElementById('busqueda_p').value;
+      var nombre = $('#busqueda_pn').val();
+      console.log("zona...",nombre);
       nombre = nombre.toUpperCase();
       var ca = "CALLE ";
       ca = ca.concat(nombre);

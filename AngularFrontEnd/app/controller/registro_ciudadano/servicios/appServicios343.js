@@ -333,7 +333,6 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                     },300);
                 }else{
                     var gestion = datos.dtspsl_poder_replegal.split(/[ -.!,&|\[\]/\\]+/);
-                    console.log('la gessssssssssss      ',gestion);
                     if (gestion[1] == 'NaN' || gestion[1] == NaN || gestion[1] == 'undefined' || gestion[1] == undefined || gestion[1] == null || gestion[1] == '') {
                         datosForm['f01_ges_vig_pod'] = gestion[0];
                         datosForm['f01_num_pod_leg'] = gestion[0];

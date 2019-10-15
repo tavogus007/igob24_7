@@ -1333,6 +1333,7 @@ $scope.open_map_ae2 = function(latitud, longitud)
 
     $scope.bloquearBtnEnviarForm    =   function(){
         $scope.botones          =   null;
+        console.log("$scope.botones :: ", $scope.botones );
     };
 
     $scope.serializarInformacion = function(obj){

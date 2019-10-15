@@ -187,7 +187,7 @@
                                 <div class="panel-heading"><B>RENOVAR {{translateTitulos.lbl_12_06}}</B></div>
                                 <div class="panel-body" ng-disabled="true">
                                     <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadEconomica">
-                                        <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}"><!--cambios-->
+                                        <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'#00f5f5','font-color':'#A2D5AE'}"><!--cambios-->
                                             <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
                                             <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
                                             <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
@@ -200,8 +200,7 @@
                         </div>
                     </div>
                     </br>
-                    <!-- datos persona natural -->
-                <div ng-show="divNatural != null">                    
+                     <div ng-show="divNatural != null">                    
                     <div class="col-md-12">
                         <legend>{{translateTitulos.lbl_12_07}}:</legend>
                     </div>
@@ -348,7 +347,6 @@
                         </div>
                     </div>
                 </div>
-                                    <!-- datos juridico-->
                 <div class="col-md-12">
                     <legend>{{translateTitulos.lbl_12_32}}:</legend>
                 </div>
@@ -430,10 +428,9 @@
                             <input type="text" ng-model="datos.f01_sup" id="f01_sup" name="f01_sup" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" ng-change="verificarSuperficie(datos.f01_sup);calcularCapacidad(datos.f01_sup);" onkeyUp="vsuperficie(this);" required/>
                         </div>
                     </div>
-                </div>                      
-                              <!--HABILITAR PARA EL CASO DE INTERNET -->
-            </div>
-            <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="true">
+                </div> 
+
+                 <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="true">
                             <!-- UBICACION DE ACTIVIDADES ECONOMICAS -->
             <div class="col-md-12">
                 <div class="form-group" >
@@ -467,22 +464,20 @@
                 </div>
             </div>
 
-            <div ng-show="false">
-                <div class="col-md-6">
-                        <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>
-                            <label for="url" >Tipo de Actividad:</label>
-                            <div class="controls">
-                                <select id="f01_tip_act" name="f01_tip_act" ng-disabled="true"  ng-model="datos.f01_tip_act"  class="form-control" required>
-                                    <option value="">--Seleccionar--</option>
-                                    <option value="MA"> MATRIZ  </option>
-                                    <option value="SU"> SUCURSAL  </option>
-                                </select>
-                            </div>
-                        </div>
+            <div class="col-md-6" ng-show="false">
+                <div class="form-group" >
+                    <font color="#FF0000" size="4px"> * </font>
+                    <label for="url" >Tipo de Actividad:</label>
+                    <div class="controls">
+                        <select id="f01_tip_act" name="f01_tip_act" ng-disabled="true"  ng-model="datos.f01_tip_act"  class="form-control" required>
+                            <option value="">--Seleccionar--</option>
+                            <option value="MA"> MATRIZ  </option>
+                            <option value="SU"> SUCURSAL  </option>
+                        </select>
                     </div>
-                
+                </div>
             </div>
+
             <div class="col-md-12">
                 <div class="form-group" >
                     <div class="col-md-12">
@@ -526,120 +521,120 @@
                         </div>
                     </div>
                 </div>
-               <!--TIPO DE LICENCIA MULTIPLE-->
-                <div ng-show="smultiservicios">
-                    <div class="col-md-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><b>Múltiple por Servicios:</b></div>
-                            <div class="panel-body">
-                                <form id="myLicenciaMultiple" name="myLicenciaMultiple">
-                                    <div class="col-md-4">
-                                        <font color="#FF0000" size="4px">*</font>
-                                        <label for="url" >Detalle de la Actividad Desarrollada para Multiservicios: </label>
-                                        <div class="form-group" >
-                                            <select class="js-example-basic-single form-control"
-                                                  ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividadMul | orderBy:['nombre','descripcion343']"
-                                                  ng-model="multiple.f01_act_desarrolladamid"
-                                                  id="f01_act_desarrolladamid"
-                                                  name="f01_act_desarrolladamid"
-                                                  ng-disabled="desabilitado"
-                                                  ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid, datos.f01_sup);"
-                                                  required>
-                                                <option value="">--Seleccionar--</option>
-                                            </select>
+            </div>
+           <!--TIPO DE LICENCIA MULTIPLE-->
+            <div ng-show="smultiservicios">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><b>Múltiple por Servicios:</b></div>
+                        <div class="panel-body">
+                            <form id="myLicenciaMultiple" name="myLicenciaMultiple">
+                                <div class="col-md-4">
+                                    <font color="#FF0000" size="4px">*</font>
+                                    <label for="url" >Detalle de la Actividad Desarrollada para Multiservicios: </label>
+                                    <div class="form-group" >
+                                        <select class="js-example-basic-single form-control"
+                                              ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividadMul | orderBy:['nombre','descripcion343']"
+                                              ng-model="multiple.f01_act_desarrolladamid"
+                                              id="f01_act_desarrolladamid"
+                                              name="f01_act_desarrolladamid"
+                                              ng-disabled="desabilitado"
+                                              ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid, datos.f01_sup);"
+                                              required>
+                                            <option value="">--Seleccionar--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <font color="#FF0000" size="4px"> * </font>
+                                        <label for="url" >Tipo de Categoria:</label>
+                                        <div class="controls">
+                                            <input
+                                                  id="f01_cat_agrupadamdescrip" name="f01_cat_agrupadamdescrip" ng-model="multiple.f01_cat_agrupadamdescrip" class="form-control" ng-disabled="true" required />
+                                        </div>
+                                        <span style="color:red" ng-show="myLicenciaMultiple.f01_act_desarrolladamid.$invalid">
+                                            <span class="error" ng-show="myLicenciaMultiple.f01_act_desarrolladamid.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <font color="#FF0000" size="4px"> * </font>
+                                        <label for="url" >Tipo de Licencia:</label>
+                                        <div class="controls">
+                                            <input
+                                                id="f01_tipo_licmdescrip" name="f01_tipo_licmdescrip" ng-model="multiple.f01_tipo_licmdescrip" class="form-control" ng-disabled="true" required/>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <font color="#FF0000" size="4px"> * </font>
-                                            <label for="url" >Tipo de Categoria:</label>
-                                            <div class="controls">
-                                                <input
-                                                      id="f01_cat_agrupadamdescrip" name="f01_cat_agrupadamdescrip" ng-model="multiple.f01_cat_agrupadamdescrip" class="form-control" ng-disabled="true" required />
+                                </div>
+                                <input type="hidden" ng-model="multiple.f01_act_principal" id="f01_act_principal" name="f01_act_principal" class="form-control" />
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="col-md-3">
+                                                <a class="btn btn-primary" ng-click="guardarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myLicenciaMultiple.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
+                                                </a>
+                                                <a class="btn btn-primary" ng-click="modificarLicencia(multiple)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
+                                                    <i class="glyphicon glyphicon-plus-sign"></i>Modificar
+                                                </a>
                                             </div>
-                                            <span style="color:red" ng-show="myLicenciaMultiple.f01_act_desarrolladamid.$invalid">
-                                                <span class="error" ng-show="myLicenciaMultiple.f01_act_desarrolladamid.$invalid">{{translateMensajes.txt_12_15}}</span>
-                                            </span>
+                                            <table ng-table="tablaRoles" show-filter="true" class="table table-striped table-bordered">
+                                                <tr style="cursor: pointer;" ng-repeat="lic in datos.licenciam" ng-style="lic.id==MultipleSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}" ><!--cambios-->
+                                                    <td align="center" data-title="'Opciones'">
+                                                        <a class="btn btn-default btn-circle" ng-click="modificarLic(lic)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
+                                                        <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
+                                                    </td>
+                                                    <td data-title="'NRO'" ng-click="SeleccionaPrioridad(lic)">{{$index+1}}</td>
+                                                    <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_tipo_licmdescrip}}</td>
+                                                    <td data-title="'TIPO DE CATEGORIA'" sortable="'INT_TIPO_CAT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_cat_agrupadamdescrip}}</td>
+                                                    <td data-title="'TIPO DE ACTIVIDAD'" sortable="'INT_TIPO_ACT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_act_desarrolladamdescrip}}</td>
+                                                </tr>
+                                            </table>
+                                      <!-- fin de la tabla -->
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <font color="#FF0000" size="4px"> * </font>
-                                            <label for="url" >Tipo de Licencia:</label>
-                                            <div class="controls">
-                                                <input
-                                                    id="f01_tipo_licmdescrip" name="f01_tipo_licmdescrip" ng-model="multiple.f01_tipo_licmdescrip" class="form-control" ng-disabled="true" required/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" ng-model="multiple.f01_act_principal" id="f01_act_principal" name="f01_act_principal" class="form-control" />
-                                    <div class="col-md-12">
-                                        <div class="panel panel-default">
-                                            <div class="panel-body">
-                                                <div class="col-md-3">
-                                                    <a class="btn btn-primary" ng-click="guardarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myLicenciaMultiple.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
-                                                    </a>
-                                                    <a class="btn btn-primary" ng-click="modificarLicencia(multiple)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
-                                                        <i class="glyphicon glyphicon-plus-sign"></i>Modificar
-                                                    </a>
-                                                </div>
-                                                <table ng-table="tablaRoles" show-filter="true" class="table table-striped table-bordered">
-                                                    <tr style="cursor: pointer;" ng-repeat="lic in datos.licenciam" ng-style="lic.id==MultipleSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}" ><!--cambios-->
-                                                        <td align="center" data-title="'Opciones'">
-                                                            <a class="btn btn-default btn-circle" ng-click="modificarLic(lic)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
-                                                            <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
-                                                        </td>
-                                                        <td data-title="'NRO'" ng-click="SeleccionaPrioridad(lic)">{{$index+1}}</td>
-                                                        <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_tipo_licmdescrip}}</td>
-                                                        <td data-title="'TIPO DE CATEGORIA'" sortable="'INT_TIPO_CAT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_cat_agrupadamdescrip}}</td>
-                                                        <td data-title="'TIPO DE ACTIVIDAD'" sortable="'INT_TIPO_ACT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_act_desarrolladamdescrip}}</td>
-                                                    </tr>
-                                                </table>
-                                          <!-- fin de la tabla -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <!--TERMINA TIPO DE LICENCIA MULTIPLE-->
+                </div>
+                <!--TERMINA TIPO DE LICENCIA MULTIPLE-->
+            </div>   
+             <div class="col-md-12">
+                <legend>{{translateTitulos.lbl_12_54}}: </legend>
+            </div>
+            <label class="col-sm-4" type ="hidden"> UBICACIÓN DE LA ACTIVIDAD ECONÓMICA</label>
+                    <!-- +++++++++++++++++++++++++++++   MAPA ++++++++++++++++++++++++++++++++++++++-->
+            <div class="col-md-12" >
+                <div class="col-md-1" >
+                    <br><br><br><br><br><br><br><br><br>
+                    <font color="#FF0000" size="4px" align="center"> * </font>
+                </div>
+                <div class="col-md-10">                                    
+                    <div id="map_principal" ng-disabled="desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
                 </div>
 
-                 <div class="col-md-12">
-                    <legend>{{translateTitulos.lbl_12_54}}: </legend>
-                </div>
-                <label class="col-sm-4" type ="hidden"> UBICACIÓN DE LA ACTIVIDAD ECONÓMICA</label>
-                        <!-- +++++++++++++++++++++++++++++   MAPA ++++++++++++++++++++++++++++++++++++++-->
-                <div class="col-md-12" >
-                    <div class="col-md-1" >
-                        <br><br><br><br><br><br><br><br><br>
-                        <font color="#FF0000" size="4px" align="center"> * </font>
-                    </div>
-                    <div class="col-md-10">                                    
-                        <div id="map_principal" ng-disabled="desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
-                    </div>
 
-
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <input  name="busqueda_pn" id="busqueda_pn" class="form-control" type="text" placeholder=" INTRODUZCA NOMBRE DE ZONA" ><br>
-                            <label id="mensaje_zona" style="display:none;">No se encuentra datos de zona...</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <span class="input-group-btn"><br>
-                              <button class="btn btn-info" type="button" id="boton1" name="boton1" ng-click="buscar_ubicacion_p();" ><i class="fa fa-search">Buscar</i></button>
-                            </span>
-                        </div>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <input  name="busqueda_pn" id="busqueda_pn" class="form-control" type="text" placeholder=" INTRODUZCA NOMBRE DE ZONA" ><br>
+                        <label id="mensaje_zona" style="display:none;">No se encuentra datos de zona...</label>
                     </div>
-                    
-                    <div class="col-md-1">
-                        &nbsp;
+                    <div class="col-sm-6">
+                        <span class="input-group-btn"><br>
+                          <button class="btn btn-info" type="button" id="boton1" name="boton1" ng-click="buscar_ubicacion_p();" ><i class="fa fa-search">Buscar</i></button>
+                        </span>
                     </div>
                 </div>
+                
+                <div class="col-md-1">
+                    &nbsp;
+                </div>
+            </div>
 
-                <input ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control" type="hidden" readonly>
-                <input ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control" type="hidden" readonly>
+            <input ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control" type="hidden" readonly>
+            <input ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control" type="hidden" readonly>
 
             <!-- UBICACION DE ACTIVIDADES ECONOMICAS -->
                     <div class="col-md-12">
@@ -764,77 +759,75 @@
                             </div>
                         </div>
                     </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <font color="#FF0000" size="4px"></font>
-                                <label for="url" >{{translateTitulos.lbl_12_42}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_edificio_act" id="f01_edificio_act" name="f01_edificio_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true"/>
-                                </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <font color="#FF0000" size="4px"></font>
+                            <label for="url" >{{translateTitulos.lbl_12_42}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_edificio_act" id="f01_edificio_act" name="f01_edificio_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="url" >{{translateTitulos.lbl_12_43}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_bloque_act" id="f01_bloque_act" name="f01_bloque_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true"/>
-                                </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="url" >{{translateTitulos.lbl_12_43}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_bloque_act" id="f01_bloque_act" name="f01_bloque_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="url" >{{translateTitulos.lbl_12_44}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_piso_act" id="f01_piso_act" name="f01_piso_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true"/>
-                                </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="url" >{{translateTitulos.lbl_12_44}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_piso_act" id="f01_piso_act" name="f01_piso_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="url" >{{translateTitulos.lbl_12_45}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_dpto_of_loc" id="f01_dpto_of_loc" name="f01_dpto_of_loc" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true"/>
-                                </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="url" >{{translateTitulos.lbl_12_45}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_dpto_of_loc" id="f01_dpto_of_loc" name="f01_dpto_of_loc" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_47}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_tel_act1" id="f01_tel_act1" maxlength="7" name="f01_tel_act1" placeholder="Teléfono ej.22451630" class="form-control"  width="30%" height="30" onkeyUp=" valNumeroTelefono(this);"  ng-disabled="true"/>
-                                </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_47}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_tel_act1" id="f01_tel_act1" maxlength="7" name="f01_tel_act1" placeholder="Teléfono ej.22451630" class="form-control"  width="30%" height="30" onkeyUp=" valNumeroTelefono(this);"  ng-disabled="desabilitado"/>
                             </div>
                         </div>
-                        <div class="col-md-8">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Referencia de la Dirección de la Actividad Económica para mayor presición:</label>                                        
-                                <div class="controls">
-                                    <input ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" ng-disabled="desabilitadoO || desabilitado" required/>
-                                </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group" >
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >Referencia de la Dirección de la Actividad Económica para mayor presición:</label>                                        
+                            <div class="controls">
+                                <input ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" ng-disabled="desabilitadoO || desabilitado" required/>
                             </div>
                         </div>
-                        <div class="col-md-4" ng-show="false">
+                    </div>
+                    <div class="col-md-4" ng-show="false">
                         <div class="form-group" >
                             <label for="url" >Cuenta Energia Electrica:</label>
                             <div class="controls">
                                 <input ng-model="datos.f01_cod_luz" id="f01_cod_luz" name="f01_cod_luz"  class="form-control"  width="30%" height="30" style="text-transform:uppercase;" ng-disabled="desabilitadoO || desabilitado" />
                             </div>
                         </div>
-                    </div>                                         
-                </div>
-                    <!-- Fin Ubicacion de actividada economica -->
-                    <!-- VARIABLE DE IDENTIFICACION DE LA ACTIVIDAD ECONIMICA -->
-                <div class="col-md-12">
+                    </div>   
+
+                    <div class="col-md-12">
                     <legend>Elementos de Identificación de la Actividad Económica (Letreros):</legend>
                 </div>
                 <div class="col-md-12" align="left">
                     <div class="form-group" class="col-md-12">
                         <div class="controls">
                             <font color="#FF0000" size="4px">*  </font>
-                            <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" value="NUEVO" ng-change="cambioToggle1(datos.rdTipoTramite1);validarRequisitosForm();" ng-disabled="true" required/>Con Elementos Publicitarios
+                            <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" value="NUEVO" ng-change="cambioToggle1(datos.rdTipoTramite1);validarRequisitosForm();" ng-disabled="desabilitado" required/>Con Elementos Publicitarios
 
-                            <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" value="RENOVACION" ng-change="cambioToggle1(datos.rdTipoTramite1);validarRequisitosForm();" ng-disabled="true" required/>Sin Elementos Publicitarios</input>
+                            <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" value="RENOVACION" ng-change="cambioToggle1(datos.rdTipoTramite1);validarRequisitosForm();" ng-disabled="desabilitado" required/>Sin Elementos Publicitarios</input>
                           <br>
                         </div>
                     </div>
@@ -949,240 +942,238 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                
-                    <!-- FIN DE VARIABLE DE IDENTIFICACION DE LA ACTIVIDAD ECONIMICA -->
-                       
-                        <div ng-show = "mostrarzonasegura">
-                            <div class="col-md-12">
-                                <div class="col-md-12">
-                                    <legend>Zona Segura: </legend>
-                                </div>
-                                <div class="col-md-12" align="left">
-                                    <div class="form-group" class="col-md-12">
-                                        <div class="controls">
-                                            <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura" value="ZONASEGURA" ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();" ng-disabled="desabilitado" >Es Zona Segura &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura" value="NOZONASEGURA" ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();" ng-disabled="desabilitado">No es Zona Segura
-                                            <br>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                </div>                
+                <!-- FIN DE VARIABLE DE IDENTIFICACION DE LA ACTIVIDAD ECONIMICA -->
+                <div ng-show = "mostrarzonasegura">
+                    <div class="col-md-12">
                         <div class="col-md-12">
-                            <legend>Requisitos Documentales: </legend>
+                            <legend>Zona Segura: </legend>
                         </div>
-                        <div  class="col-md-12">
-                            <div ng-repeat="data in docArray">
-                                <div class="form-group">
-                                    <div ng-show = "data.estado" class="col-md-12">
-                                        <div class="col-md-6">
-                                            <label id="lbl_f01_upload{{data.resid}}">{{data.resvalor}}</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group custom-upload">
-                                                <input type="file" id="f01_upload{{data.resid}}" name="f01_upload{{data.resid}}" accept="image/*"  style="display: none;">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                                                    <input id="txt_f01_upload{{data.resid}}" name="txt_f01_upload{{data.resid}}"  ng-model="datos['txt_f01_upload{{data.resid}}']"  type="text" placeholder="{{data.resvalor}}" class="form-control input-lg" disabled required>
-                                                    <span class="input-group-btn">
-                                                        <a id="href_f01_upload{{data.resid}}" ng-show="fileArRequisitos['f01_upload'+data.resid].url" href="{{fileArRequisitos['f01_upload'+data.resid].url}}" target="_blank">
-                                                        {{rmostrarviae}}
-                                                            <button id="btn_f01_upload{{data.resid}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                                        </a>
-                                                        <button id="btn_f01_upload{{data.resid}}" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="col-md-12" align="left">
+                            <div class="form-group" class="col-md-12">
+                                <div class="controls">
+                                    <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura" value="ZONASEGURA" ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();" ng-disabled="desabilitado" >Es Zona Segura &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura" value="NOZONASEGURA" ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();" ng-disabled="desabilitado">No es Zona Segura
+                                    <br>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <legend>Datos Pago Anticipado:</legend>
-                        </div>
-                        <div class = "col-md-12" class="form-control">
-                            <div class = "col-md-6" class="form-control">
-                                <label for="Pago_Anticipado">
-                                Desea realizar el Pago por Adelantado?
-                                Si <input type="radio" name="pago_adel" value = "SI" ng-model="datos.pago_adel" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                No <input type="radio" name="pago_adel" value = "NO" ng-model="datos.pago_adel" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
-                                </label>
-                            </div>
-                        </div>
-                        <div ng-show="IsVisible==true">
-                            <div class = "col-md-6" class="form-control">
-                                <div class="form-group">
-                                <legend>Gestiones a Pagar:</legend>
-                                    <div class="controls">
-                                        <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" ng-change="calcularDeudas(datos.f01_id_actividad_economica, datos.nro_ges);" name="nro_ges" ng-disabled="desabilitado">
-                                            <option value="">--Seleccionar--</option>
-                                            <option value="2"> 2 </option>
-                                            <option value="4"> 4 </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading"><B>GESTIONES A PAGAR</B></div>
-                                    <div class="panel-body">
-                                        <table  ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
-                                            <tr ng-repeat="duedasCiu in $data">
-                                                <td data-title="'Nº'">{{duedasCiu.numero}}</td>
-                                                <td data-title="'GESTIÓN'">{{duedasCiu.gestion}}</td>
-                                                <td data-title="'MONTO'">{{duedasCiu.total}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td bgcolor = "black"><font color = "white"> TOTAL A PAGAR</font></td>
-                                                <td bgcolor = "black"></td>
-                                                <td bgcolor = "black"><font color = "white">{{getTotal() | currency}}</font></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12" class="form-control" ng-show="IsVisible">
-                                <div class="form-group" >
-                                    <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                                    <div class="col-sm-12" align="left">
-                                        <div class="alert alert-danger fade in">
-                                            <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
-                                            Ud. puede verificar en su cuenta iGob dentro de 48 hrs. la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
-                                            <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (48 hrs), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </br>
-                        </br>
-                        <div class="modal fade" id="imgSalidai" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                                        <h4 class="modal-title" id="myModalLabel">IMAGEN</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div id="visorFum" ng-show="archpdf">
-                                            <object data="" type="application/pdf" width="100%" height="500"></object>
-                                        </div>
-                                        <div ng-show="archotro">
-                                            <img id="imgSalida" ng-src="{{archivoP}}" width="100%" height="100%">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="docsVisor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" style="width:700px">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!--pdf-->
-                                        <div id="visorFum" ng-show="archpdf">
-                                            <object data="" type="application/pdf" width="650" height="500"></object>
-                                        </div>
-                                        <!--imagen-->
-                                        <div ng-show="archotro">
-                                            <img id="imgSalida" ng-src="{{archivoP}}" onerror="angular.element(this).scope().imgError()" width="100%" height="100%">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                    
-                </div>       
-                <input type="hidden" ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control" />
-                <input type="hidden" ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control" />
-                <input type="hidden" ng-model="datos.ARCHIVOS_MULTIPLES_MAPA" id="ARCHIVOS_MULTIPLES_MAPA" name="ARCHIVOS_MULTIPLES_MAPA" class="form-control" />
-                <input type="hidden" ng-model="datos.INT_AC_direccionImagenmapa" id="INT_AC_direccionImagenmapa" name="INT_AC_direccionImagenmapa" class="form-control" />
-                <!-- +++++++++++++++++++++++++++++   END MAPA ++++++++++++++++++++++++++++++++++++++   -->
-                <input type="hidden" ng-model="datos.INT_AC_MACRO_ID" id="INT_AC_MACRO_ID" name="INT_AC_MACRO_ID" class="form-control" />
-                <input type="hidden" ng-model="datos.INT_AC_MACRO" id="INT_AC_MACRO" name="INT_AC_MACRO" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_macro_des" id="f01_macro_des" name="f01_macro_des" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.f01_zon_prop_desc" id="f01_zon_prop_desc" name="f01_zon_prop_desc" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.f01_zon_prop" id="f01_zon_prop" name="f01_zon_prop" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.INT_VIA" id="INT_VIA" name="INT_VIA" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.INT_EDIF" id="INT_EDIF" name="INT_EDIF" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.f01_nom_edi_prop" id="f01_nom_edi_prop" name="f01_nom_edi_prop" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.f01_dir_det_prop" id="f01_dir_det_prop" name="f01_dir_det_prop" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.f01_bloq_prop" id="f01_bloq_prop" name="f01_bloq_prop" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.INT_PISO" id="INT_PISO" name="INT_PISO" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.INT_NUM_DEP" id="INT_NUM_DEP" name="INT_NUM_DEP" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.INT_DIR_DET" id="INT_DIR_DET" name="INT_DIR_DET" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.INT_RL_FEC_EMISION_DOCUMENTO"  id="INT_RL_FEC_EMISION_DOCUMENTO" name="INT_RL_FEC_EMISION_DOCUMENTO" class="form-control"  width="30%" height="30" />
-                 <input type="hidden" ng-model="datos.f01_zona_act" id="f01_zona_act" name="f01_zona_act" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.f01_tipo_lic" id="f01_tipo_lic" name="f01_tipo_lic">
-                <input type="hidden" ng-model="datos.f01_tipo_lic_descrip" id="f01_tipo_lic_descrip" name="f01_tipo_lic_descrip">
-                <input type="hidden" ng-model="datos.f01_categoria_agrupada" id="f01_categoria_agrupada" name="f01_categoria_agrupada">
-                <input type="hidden" ng-model="datos.INT_NACIONALIDAD" id="INT_NACIONALIDAD" name="INT_NACIONALIDAD" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.INT_RL_FEC_NACIMIENTO" id="INT_RL_FEC_NACIMIENTO" name="INT_RL_FEC_NACIMIENTO" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.INT_NIT" id="INT_NIT" name="INT_NIT" class="form-control"  width="30%" height="30" />
-                <input type="hidden" ng-model="datos.INT_AC_DISTRITO" id="INT_AC_DISTRITO" name="INT_AC_DISTRITO" class="form-control" />
-                <input type="hidden" ng-model="datos.INT_AC_ID_ZONA" id="INT_AC_ID_ZONA" name="INT_AC_ID_ZONA" class="form-control" />
-                <input type="hidden" ng-model="datos.INT_ID_ZONA" id="INT_ID_ZONA" name="INT_ID_ZONA" class="form-control" />
-                <!--input type="hidden" ng-model="datos.INT_TIPO_LICENCIA" id="INT_TIPO_LICENCIA" name="INT_TIPO_LICENCIA" class="form-control" /-->
-                <input type="hidden" ng-model="datos.INT_TIPO_LICENCIA_DESCRIPCION" id="INT_TIPO_LICENCIA_DESCRIPCION" name="INT_TIPO_LICENCIA_DESCRIPCION" class="form-control" />
-                <input type="hidden" ng-model="datos.INT_CAT_AGRUPADA_DESCRIPCION" id="INT_CAT_AGRUPADA_DESCRIPCION" name="INT_CAT_AGRUPADA_DESCRIPCION" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_fecha_nac" id="f01_fecha_nac" name="f01_fecha_nac" class="form-control" /><input type="hidden">
-                <input type="hidden" ng-model="datos.INT_TRAMITE_RENOVA" id="INT_TRAMITE_RENOVA" name="INT_TRAMITE_RENOVA" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_tel" id="f01_tel" name="f01_tel" class="form-control" />
-                <input type="hidden" ng-model="datos.INT_NRO_PODER" id="INT_NRO_PODER" name="INT_NRO_PODER" class="form-control" />
-                <input type="hidden" ng-model="datos.INT_RL_FECHA_NAC" id="INT_RL_FECHA_NAC" name="INT_RL_FECHA_NAC" class="form-control" />                               
-                <input type="hidden" ng-model="datos.IDTRAMITE" id="IDTRAMITE" name="IDTRAMITE" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_dist_act" id="f01_dist_act" name="f01_dist_act" class="form-control" />
-                <input type="hidden" name="f01_categoria_agrupada_dem" ng-model="datos.f01_categoria_agrupada_dem" class="form-control" >
-                <input type="hidden" ng-model="datos.INT_TIPO_LICENCIA_DESCRIPCION" id="INT_TIPO_LICENCIA_DESCRIPCION" name="INT_TIPO_LICENCIA_DESCRIPCION" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_categoria_agrupada_descripcion" id="f01_categoria_agrupada_descripcion" name="f01_categoria_agrupada_descripcion" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_categoria_agrupada_descrip" id="f01_categoria_agrupada_descrip" name="f01_categoria_agrupada_descrip" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_categoria_descrip2" id="f01_categoria_descrip2" name="f01_categoria_descrip2" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_id_actividad_economica" id="f01_id_actividad_economica" name="f01_id_actividad_economica" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_nro_orden" id="f01_nro_orden" name="f01_nro_orden" class="form-control"/>
-                <input type="hidden" ng-model="datos.f01_id_contribuyente" id="f01_id_contribuyente" name="f01_id_contribuyente" class="form-control"/>
-                <input type="hidden" ng-model="datos.f01_num_pmc" id="f01_num_pmc" name="f01_num_pmc" class="form-control"/>
-                <input type="hidden" ng-model="datos.f01_requisitos_tecnicos" id="f01_requisitos_tecnicos" name="f01_requisitos_tecnicos" class="form-control" />
-                <input type="hidden" ng-model="datos.g_origen_p" id="g_origen_p" name="g_origen_p" class="form-control"/>
-                <div class="col-md-12" align="right" ng-if = "botones == null"></div>
-                <input type="hidden" ng-model="datos.licenciam" id="licenciam" name="licenciam" class="form-control">
-                <input type="hidden" ng-model="datos.CI_BIGDATA" id="CI_BIGDATA" name="CI_BIGDATA" class="form-control" />
-                <div class="hr-line-dashed"></div>
-                <input type="hidden" ng-model="datos.f01_act_principal" id="f01_act_principal" name="f01_act_principal" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_act_principal2" id="f01_act_principal2" name="f01_act_principal2" class="form-control" />
-                <!--MULTIPLES-->
-                <input type="hidden" ng-model="datos.xf01_idcat_multi_principal" id="xf01_idcat_multi_principal" name="xf01_idcat_multi_principal" class="form-control" />
-                <input type="hidden" ng-model="datos.xf01_descat_multi_principal" id="xf01_descat_multi_principal" name="xf01_descat_multi_principal" class="form-control" />
-                <input type="hidden" ng-model="datos.mulact_principal" id="mulact_principal" name="mulact_principal" class="form-control" />
-                <input type="hidden" ng-model="datos.Licenmul_grilla" id="Licenmul_grilla" name="Licenmul_grilla" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_actividad_principal_array" id="f01_actividad_principal_array" name="f01_actividad_principal_array" class="form-control" />
-                <input type="hidden" ng-model="datos.FILE_CI" id="datos.FILE_CI" name="datos.FILE_CI" class="form-control" />
-                <input type="hidden" ng-model="datos.fileArchivosAd" id="datos.fileArchivosAd" name="datos.fileArchivosAd" class="form-control" />
-                <input type="hidden" ng-model="datos.FILE_MAPA" id="datos.FILE_MAPA" name="datos.FILE_MAPA" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_nro_frm" id="f01_nro_frm" name="f01_nro_frm" class="form-control" />
-                <input type="hidden" ng-model="datos.macrodistrito_act" id="macrodistrito_act" name="macrodistrito_act" class="form-control" />
-                <input type="hidden" ng-model="datos.IDTRAMITE" id="IDTRAMITE" name="IDTRAMITE" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_nac_prop" id="f01_nac_prop" name="f01_nac_prop" class="form-control" />
-                <input type="hidden" ng-model="datos.f01_cap_aprox" id="f01_cap_aprox" name="f01_cap_aprox" class="form-control">
-                <input type="hidden" ng-model="datos.f01_zona_act_descrip" id="f01_zona_act_descrip" name="f01_zona_act_descrip" class="form-control">
-                <div class="col-md-12" align="right" ng-if = "botones == null"></div>
-                <div class="hr-line-dashed"></div>
-                <input type="hidden" ng-model="datos.f01_actividadesDesarrolladasc" id="f01_actividadesDesarrolladasc" name="f01_actividadesDesarrolladasc" class="form-control">          
-                <input type="hidden" ng-model="datos.f01_actividadesCAAD" id="f01_actividadesCAAD" name="f01_actividadesCAAD" class="form-control">
+                    </div>
+                </div>
                 <div class="col-md-12">
-                    <legend></legend>
-                </div>                        
+                    <legend>Requisitos Documentales: </legend>
+                </div>
+                <div  class="col-md-12">
+                    <div ng-repeat="data in docArray">
+                        <div class="form-group">
+                            <div ng-show = "data.estado" class="col-md-12">
+                                <div class="col-md-6">
+                                    <label id="lbl_f01_upload{{data.resid}}">{{data.resvalor}}</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group custom-upload">
+                                        <input type="file" id="f01_upload{{data.resid}}" name="f01_upload{{data.resid}}" accept="image/*"  style="display: none;">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                            <input id="txt_f01_upload{{data.resid}}" name="txt_f01_upload{{data.resid}}"  ng-model="datos['txt_f01_upload{{data.resid}}']"  type="text" placeholder="{{data.resvalor}}" class="form-control input-lg" disabled required>
+                                            <span class="input-group-btn">
+                                                <a id="href_f01_upload{{data.resid}}" ng-show="fileArRequisitos['f01_upload'+data.resid].url" href="{{fileArRequisitos['f01_upload'+data.resid].url}}" target="_blank">
+                                                {{rmostrarviae}}
+                                                    <button id="btn_f01_upload{{data.resid}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                </a>
+                                                <button id="btn_f01_upload{{data.resid}}" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--div class="col-md-12">
+                    <legend>Datos Pago Anticipado:</legend>
+                </div>
+                <div class = "col-md-12" class="form-control">
+                    <div class = "col-md-6" class="form-control">
+                        <label for="Pago_Anticipado">
+                        Desea realizar el Pago por Adelantado?
+                        Si <input type="radio" name="pago_adel" value = "SI" ng-model="datos.pago_adel" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        No <input type="radio" name="pago_adel" value = "NO" ng-model="datos.pago_adel" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
+                        </label>
+                    </div>
+                </div-->
+                <!--div ng-show="IsVisible==true">
+                    <div class = "col-md-6" class="form-control">
+                        <div class="form-group">
+                        <legend>Gestiones a Pagar:</legend>
+                            <div class="controls">
+                                <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" ng-change="calcularDeudas(datos.f01_id_actividad_economica, datos.nro_ges);" name="nro_ges" ng-disabled="desabilitado">
+                                    <option value="">--Seleccionar--</option>
+                                    <option value="2"> 2 </option>
+                                    <option value="4"> 4 </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><B>GESTIONES A PAGAR</B></div>
+                            <div class="panel-body">
+                                <table  ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
+                                    <tr ng-repeat="duedasCiu in $data">
+                                        <td data-title="'Nº'">{{duedasCiu.numero}}</td>
+                                        <td data-title="'GESTIÓN'">{{duedasCiu.gestion}}</td>
+                                        <td data-title="'MONTO'">{{duedasCiu.total}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td bgcolor = "black"><font color = "white"> TOTAL A PAGAR</font></td>
+                                        <td bgcolor = "black"></td>
+                                        <td bgcolor = "black"><font color = "white">{{getTotal() | currency}}</font></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" class="form-control" ng-show="IsVisible">
+                        <div class="form-group" >
+                            <label class="col-sm-12 control-label no-padding-right" for="url"></label>
+                            <div class="col-sm-12" align="left">
+                                <div class="alert alert-danger fade in">
+                                    <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
+                                    Ud. puede verificar en su cuenta iGob dentro de 48 hrs. la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
+                                    <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (48 hrs), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div-->
+                </br>
+                </br>
+                
+                <div class="modal fade" id="imgSalidai" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                <h4 class="modal-title" id="myModalLabel">IMAGEN</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="visorFum" ng-show="archpdf">
+                                    <object data="" type="application/pdf" width="100%" height="500"></object>
+                                </div>
+                                <div ng-show="archotro">
+                                    <img id="imgSalida" ng-src="{{archivoP}}" width="100%" height="100%">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="docsVisor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="width:700px">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <!--pdf-->
+                                <div id="visorFum" ng-show="archpdf">
+                                    <object data="" type="application/pdf" width="650" height="500"></object>
+                                </div>
+                                <!--imagen-->
+                                <div ng-show="archotro">
+                                    <img id="imgSalida" ng-src="{{archivoP}}" onerror="angular.element(this).scope().imgError()" width="100%" height="100%">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+                    <div>    
+            <input type="hidden" ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control" />
+            <input type="hidden" ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control" />
+            <input type="hidden" ng-model="datos.ARCHIVOS_MULTIPLES_MAPA" id="ARCHIVOS_MULTIPLES_MAPA" name="ARCHIVOS_MULTIPLES_MAPA" class="form-control" />
+            <input type="hidden" ng-model="datos.INT_AC_direccionImagenmapa" id="INT_AC_direccionImagenmapa" name="INT_AC_direccionImagenmapa" class="form-control" />
+            <!-- +++++++++++++++++++++++++++++   END MAPA ++++++++++++++++++++++++++++++++++++++   -->
+            <input type="hidden" ng-model="datos.INT_AC_MACRO_ID" id="INT_AC_MACRO_ID" name="INT_AC_MACRO_ID" class="form-control" />
+            <input type="hidden" ng-model="datos.INT_AC_MACRO" id="INT_AC_MACRO" name="INT_AC_MACRO" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_macro_des" id="f01_macro_des" name="f01_macro_des" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.f01_zon_prop_desc" id="f01_zon_prop_desc" name="f01_zon_prop_desc" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.f01_zon_prop" id="f01_zon_prop" name="f01_zon_prop" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.INT_VIA" id="INT_VIA" name="INT_VIA" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.INT_EDIF" id="INT_EDIF" name="INT_EDIF" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.f01_nom_edi_prop" id="f01_nom_edi_prop" name="f01_nom_edi_prop" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.f01_dir_det_prop" id="f01_dir_det_prop" name="f01_dir_det_prop" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.f01_bloq_prop" id="f01_bloq_prop" name="f01_bloq_prop" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.INT_PISO" id="INT_PISO" name="INT_PISO" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.INT_NUM_DEP" id="INT_NUM_DEP" name="INT_NUM_DEP" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.INT_DIR_DET" id="INT_DIR_DET" name="INT_DIR_DET" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.INT_RL_FEC_EMISION_DOCUMENTO"  id="INT_RL_FEC_EMISION_DOCUMENTO" name="INT_RL_FEC_EMISION_DOCUMENTO" class="form-control"  width="30%" height="30" />
+             <input type="hidden" ng-model="datos.f01_zona_act" id="f01_zona_act" name="f01_zona_act" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.f01_tipo_lic" id="f01_tipo_lic" name="f01_tipo_lic">
+            <input type="hidden" ng-model="datos.f01_tipo_lic_descrip" id="f01_tipo_lic_descrip" name="f01_tipo_lic_descrip">
+            <input type="hidden" ng-model="datos.f01_categoria_agrupada" id="f01_categoria_agrupada" name="f01_categoria_agrupada">
+            <input type="hidden" ng-model="datos.INT_NACIONALIDAD" id="INT_NACIONALIDAD" name="INT_NACIONALIDAD" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.INT_RL_FEC_NACIMIENTO" id="INT_RL_FEC_NACIMIENTO" name="INT_RL_FEC_NACIMIENTO" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.INT_NIT" id="INT_NIT" name="INT_NIT" class="form-control"  width="30%" height="30" />
+            <input type="hidden" ng-model="datos.INT_AC_DISTRITO" id="INT_AC_DISTRITO" name="INT_AC_DISTRITO" class="form-control" />
+            <input type="hidden" ng-model="datos.INT_AC_ID_ZONA" id="INT_AC_ID_ZONA" name="INT_AC_ID_ZONA" class="form-control" />
+            <input type="hidden" ng-model="datos.INT_ID_ZONA" id="INT_ID_ZONA" name="INT_ID_ZONA" class="form-control" />
+            <!--input type="hidden" ng-model="datos.INT_TIPO_LICENCIA" id="INT_TIPO_LICENCIA" name="INT_TIPO_LICENCIA" class="form-control" /-->
+            <input type="hidden" ng-model="datos.INT_TIPO_LICENCIA_DESCRIPCION" id="INT_TIPO_LICENCIA_DESCRIPCION" name="INT_TIPO_LICENCIA_DESCRIPCION" class="form-control" />
+            <input type="hidden" ng-model="datos.INT_CAT_AGRUPADA_DESCRIPCION" id="INT_CAT_AGRUPADA_DESCRIPCION" name="INT_CAT_AGRUPADA_DESCRIPCION" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_fecha_nac" id="f01_fecha_nac" name="f01_fecha_nac" class="form-control" /><input type="hidden">
+            <input type="hidden" ng-model="datos.INT_TRAMITE_RENOVA" id="INT_TRAMITE_RENOVA" name="INT_TRAMITE_RENOVA" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_tel" id="f01_tel" name="f01_tel" class="form-control" />
+            <input type="hidden" ng-model="datos.INT_NRO_PODER" id="INT_NRO_PODER" name="INT_NRO_PODER" class="form-control" />
+            <input type="hidden" ng-model="datos.INT_RL_FECHA_NAC" id="INT_RL_FECHA_NAC" name="INT_RL_FECHA_NAC" class="form-control" />                               
+            <input type="hidden" ng-model="datos.IDTRAMITE" id="IDTRAMITE" name="IDTRAMITE" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_dist_act" id="f01_dist_act" name="f01_dist_act" class="form-control" />
+            <input type="hidden" name="f01_categoria_agrupada_dem" ng-model="datos.f01_categoria_agrupada_dem" class="form-control" >
+            <input type="hidden" ng-model="datos.INT_TIPO_LICENCIA_DESCRIPCION" id="INT_TIPO_LICENCIA_DESCRIPCION" name="INT_TIPO_LICENCIA_DESCRIPCION" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_categoria_agrupada_descripcion" id="f01_categoria_agrupada_descripcion" name="f01_categoria_agrupada_descripcion" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_categoria_agrupada_descrip" id="f01_categoria_agrupada_descrip" name="f01_categoria_agrupada_descrip" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_categoria_descrip2" id="f01_categoria_descrip2" name="f01_categoria_descrip2" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_id_actividad_economica" id="f01_id_actividad_economica" name="f01_id_actividad_economica" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_nro_orden" id="f01_nro_orden" name="f01_nro_orden" class="form-control"/>
+            <input type="hidden" ng-model="datos.f01_id_contribuyente" id="f01_id_contribuyente" name="f01_id_contribuyente" class="form-control"/>
+            <input type="hidden" ng-model="datos.f01_num_pmc" id="f01_num_pmc" name="f01_num_pmc" class="form-control"/>
+            <input type="hidden" ng-model="datos.f01_requisitos_tecnicos" id="f01_requisitos_tecnicos" name="f01_requisitos_tecnicos" class="form-control" />
+            <input type="hidden" ng-model="datos.g_origen_p" id="g_origen_p" name="g_origen_p" class="form-control"/>
+            <input type="hidden" ng-model="datos.licenciam" id="licenciam" name="licenciam" class="form-control">
+            <input type="hidden" ng-model="datos.CI_BIGDATA" id="CI_BIGDATA" name="CI_BIGDATA" class="form-control" />
+            <div class="hr-line-dashed"></div>
+            <input type="hidden" ng-model="datos.f01_act_principal" id="f01_act_principal" name="f01_act_principal" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_act_principal2" id="f01_act_principal2" name="f01_act_principal2" class="form-control" />
+            <!--MULTIPLES-->
+            <input type="hidden" ng-model="datos.xf01_idcat_multi_principal" id="xf01_idcat_multi_principal" name="xf01_idcat_multi_principal" class="form-control" />
+            <input type="hidden" ng-model="datos.xf01_descat_multi_principal" id="xf01_descat_multi_principal" name="xf01_descat_multi_principal" class="form-control" />
+            <input type="hidden" ng-model="datos.mulact_principal" id="mulact_principal" name="mulact_principal" class="form-control" />
+            <input type="hidden" ng-model="datos.Licenmul_grilla" id="Licenmul_grilla" name="Licenmul_grilla" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_actividad_principal_array" id="f01_actividad_principal_array" name="f01_actividad_principal_array" class="form-control" />
+            <input type="hidden" ng-model="datos.FILE_CI" id="datos.FILE_CI" name="datos.FILE_CI" class="form-control" />
+            <input type="hidden" ng-model="datos.fileArchivosAd" id="datos.fileArchivosAd" name="datos.fileArchivosAd" class="form-control" />
+            <input type="hidden" ng-model="datos.FILE_MAPA" id="datos.FILE_MAPA" name="datos.FILE_MAPA" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_nro_frm" id="f01_nro_frm" name="f01_nro_frm" class="form-control" />
+            <input type="hidden" ng-model="datos.macrodistrito_act" id="macrodistrito_act" name="macrodistrito_act" class="form-control" />
+            <input type="hidden" ng-model="datos.IDTRAMITE" id="IDTRAMITE" name="IDTRAMITE" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_nac_prop" id="f01_nac_prop" name="f01_nac_prop" class="form-control" />
+            <input type="hidden" ng-model="datos.f01_cap_aprox" id="f01_cap_aprox" name="f01_cap_aprox" class="form-control">
+            <input type="hidden" ng-model="datos.f01_zona_act_descrip" id="f01_zona_act_descrip" name="f01_zona_act_descrip" class="form-control">
+            <div class="hr-line-dashed"></div>
+            <input type="hidden" ng-model="datos.f01_actividadesDesarrolladasc" id="f01_actividadesDesarrolladasc" name="f01_actividadesDesarrolladasc" class="form-control"><input type="hidden" ng-model="datos.f01_actividadesCAAD" id="f01_actividadesCAAD" name="f01_actividadesCAAD" class="form-control">
+        </div>                
+
+    
+
                 <div class="col-md-6" align="center" ng-show = "botones != null">
                     <!-- GNERADOR DE CAPCHA -->
                     <div class="col-md-12" align="center" >
@@ -1273,6 +1264,4 @@
         </div>
     </div>
 </div>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfKWci28piaE9q8Or0DzmUUJXbbdja54&callback=initMap">
-</script>
+

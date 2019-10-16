@@ -303,6 +303,21 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             });
         $scope.datos.publicidadAntiguo_grilla = encabezado;
     }
+    
+    $scope.obtenerActDes = function(idActividadDesarrollada){
+        $scope.datosactividadDes="";
+        var dato = new getHomologacion();
+        dato.idActividadDesarrollada = idActividadDesarrollada;
+        dato.get_Homologacion(function(res){
+            x = JSON.parse(res);
+            var resp = x.success.dataSql;
+            $scope.datos.f01_categoria_agrupada = resp[0].idCategoria;
+            $scope.datos.f01_categoria_agrupada_descrip = resp[0].descripcion;
+            $scope.datos.f01_tipo_lic = resp[0].idTipoLicencia;//response[0].TipoLicencia;
+            $scope.datos.f01_tipo_lic_descrip = resp[0].TipoLicenciaDescripcion;
+            $scope.datosactividadDes = resp;
+        })
+    }
 
     $scope.selActividadEconomica =  function(tramite){
         //RENOVA ID ACTIVIDAD
@@ -657,6 +672,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             });
         }catch(e){
             console.log("Error en la actividad desarrollada");
+            $.unblockUI();
         }
     }
 
@@ -714,8 +730,9 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                
                 $.unblockUI();
             });
+            $.unblockUI();
         }catch(e){
-            console.log("Error en la actividad desarrollada");
+            console.log("Error en la actividad desarrolladaA");
         }
     }
 
@@ -753,7 +770,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 }
             });
         }catch(e){
-            console.log("Error en la actividad desarrollada");
+            console.log("Error en la actividad desarrolladaM");
         }
     }
 
@@ -1049,11 +1066,10 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         });
     };
  
-    $scope.actulizarIdDistrito  =   function(idZona){
+    /*$scope.actulizarIdDistrito  =   function(idZona){
         $scope.desabilitadoV=false;
         var idDistrito  = "";
         var zonaDes      = "";
-        //var distNombre  = $scope.datos.f01_zon_prop_valor;
         var distNombre  = idZona;
         if($scope.aMacroZona){
             angular.forEach($scope.aMacroZona, function(value, key) {
@@ -1069,8 +1085,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.datos.INT_AC_ID_ZONA     =   idZona;
         $scope.datos.f01_zona_act_descrip = zonaDes;
         $scope.desabilitadoNo=true;
-        //$scope.datos.f01_nom_via_prop = "";
-        //$scope.datos.f01_tip_via_prop = "";
+       
     };
 
     $scope.distritoZonas = function(idMacroJ){ 
@@ -1153,7 +1168,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 $scope.msg = "Error !!";
             }
         });
-    };
+    };*/
 
     $scope.cargarNombViaTxt = function(valor) {
         if (valor == "NINGUNO"){
@@ -1167,7 +1182,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }
     };
 
-    $scope.cargarNombVia = function(tipoVia, dato) {
+    /*$scope.cargarNombVia = function(tipoVia, dato) {
         try{
             var nomvia = new aelstNombreVia();
             nomvia.idzona = $scope.datos.INT_AC_ID_ZONA;
@@ -1191,7 +1206,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }catch (error){
             console.log('datos error via:', error);
         }        
-    };
+    };*/
 
     $scope.GetValueLicencia = function () {
         $scope.limpiarlic();
@@ -1719,7 +1734,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         //$rootScope.validacionRequisitosTec();
         $scope.btnEnviarForm    =   true;
-        var idProcodigo         =   'REN-AE';
+        var idProcodigo         =   'RE-LF';
         var datosNeXO = {};
         if (paramForm.OTRO_VIA!="") {
             $scope.nombre_via =paramForm.OTRO_VIA;
@@ -2570,27 +2585,6 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     var map;
     var markers = [];
 
-    $scope.initMap = function() {
-        var haightAshbury = {
-            lat: -16.495635,
-            lng: -68.133543
-        };
-        try{
-            map = new google.maps.Map(document.getElementById('mapActividad'), {
-                zoom: 15,
-                center: haightAshbury
-            });
-            map.addListener('click', function(event) {
-                $scope.deleteMarkers();
-                $rootScope.laaa = event.latLng.lat();
-                $rootScope.looo = event.latLng.lng();
-                $scope.datos.INT_AC_latitud = $rootScope.laaa;
-                $scope.datos.INT_AC_longitud = $rootScope.looo;
-                $scope.addMarker(event.latLng);
-            });
-        }catch(err){}
-    }
-
     // Adds a marker to the map and push to the array.
     $scope.addMarker = function(location) {
         var marker = new google.maps.Marker({
@@ -2799,7 +2793,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         if($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona == 'J'){
             datos.f01_tipo_per_desc = 'JURIDICO';
-            urlFormularioN  =   "../../docs/AE_Formulario_401_J.html";
+            urlFormularioN  =   "../../docs/AE_Formulario_402Renov_J.html";
             $( "#msgformularioJ" ).load(urlFormularioN, function(data) {
                 stringFormulario40  =   data;
                 datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
@@ -3135,73 +3129,87 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     });
 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
-        //TIPO DE LICENCIA
-        if (data.f01_id_actividad_economica == '' || data.f01_id_actividad_economica == undefined || data.f01_id_actividad_economica == 'undefined' || data.f01_id_actividad_economica == null) {} else{
-            $scope.MacroZona();
-        };
         $scope.catactividadDesarrollada();
+        if (datos.f01_id_actividad_economica) {
+            $scope.datosAnterioresJuridico(datos.f01_id_actividad_economica);
+        };
+        if ((data.INT_AC_latitud == 'undefined' && data.INT_AC_longitud == 'undefined') || (data.INT_AC_latitud == undefined && data.INT_AC_longitud == undefined) || (data.INT_AC_latitud == '' && data.INT_AC_longitud == '')) {
+        } else{
+            $scope.open_map_ae2(data.INT_AC_latitud, data.INT_AC_longitud);
+        };
+        $scope.datos.f01_macro_act = data.f01_macro_act;
+        document.getElementById("f01_macro_act").value = data.f01_macro_act;
         $scope.GetValueZonaSegura(data.f01_categoria_agrupada);
+        //VERIFICAR CATEGORIA DESARROLLADA
+        var categoriaDescrip = ((typeof(data.f01_categoria_descrip) == 'undefined' || data.f01_categoria_descrip == null) ? '' : data.f01_categoria_descrip);
+        if(categoriaDescrip == ''){
+            $scope.sActividadDesarrollada = false;
+        }
         //REQUISITOS DOCUMENTALES
-        var categoriaAgrupadaDesc         =   ((typeof(data.f01_categoria_agrupada)             == 'undefined' || data.f01_categoria_agrupada             == null) ? '' : data.f01_categoria_agrupada);
+        var categoriaAgrupadaDesc = ((typeof(data.f01_categoria_agrupada) == 'undefined' || data.f01_categoria_agrupada == null) ? '' : data.f01_categoria_agrupada);
         if(categoriaAgrupadaDesc != ''){
             $scope.getRequisitosTecnicosCategoria(data.f01_categoria_agrupada, data.f01_tipo_per);
         }
-        switch (data.chkzonasegura) {
-            case 'ZONASEGURA':
-                $scope.mostrarzonasegura = true;
-            break;
-            case 'NOZONASEGURA':
-                $scope.mostrarzonasegura = true;
-            break;
-            case '':
-                $scope.mostrarzonasegura = false;
-            break;
-            case 'undefined':
-                $scope.mostrarzonasegura = false;
-            break;
-            case undefined:
-                $scope.mostrarzonasegura = false;
-            break;
-            case null:
-                $scope.mostrarzonasegura = false;
-            break;
-        };
-        if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
+        if (data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32') {
             $scope.sCategoria = false;
             $scope.smultiservicios = true;
-            //$scope.SeleccionaPrioridad(data.f01_actividad_principal_array);
+            $scope.datos.f01_categoria_descrip = data.f01_categoria;
         }
         else{
             $scope.sCategoria = true;
             $scope.smultiservicios = false;
         }
-        if(typeof(data.f01_zona_act_descrip) == 'undefined'){
-            setTimeout(function(){
-                $scope.desabilitadoZ=true;
-                $scope.desabilitadoV=true;
-            }, 1000);
-        }
-        
-        if(typeof(data.f01_tip_via_act) == 'undefined'){
-            setTimeout(function(){
-                $scope.desabilitadoZ=true;
-                $scope.desabilitadoV=true;
-            }, 1000);
-        }else{
-            $scope.cargarNombVia(data.f01_tip_via_act, data);
-        }
+
+        /*REQUISITOS2018*/
+        if (data.f01_categoria_agrupada == '' || data.f01_categoria_agrupada == undefined || data.f01_categoria_agrupada == 'undefined') {} else{
+            if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){//verificamos si la licencia es multiple
+                $scope.lstRequisitosMultiples2018(data.licenciam);
+            }else{
+                $scope.getRequisitosFormulario(data.f01_categoria_agrupada, data.f01_tipo_per);
+            }
+        };
+        $scope.iniciarRequisitosForm(data);
+
+        if (data.f01_tip_via_act == '' || data.f01_tip_via_act == undefined || data.f01_tip_via_act == 'undefined') {} else{
+            $scope.cargarNombVia(data.f01_tip_via_act, data.f01_zona_act);
+        };
+        switch (data.chkzonasegura) {
+            case 'ZONASEGURA':
+                $scope.mostrarzonaseguraj = true;
+            break;
+            case 'NOZONASEGURA':
+                $scope.mostrarzonaseguraj = true;
+            break;
+            case '':
+                $scope.mostrarzonaseguraj = false;
+            break;
+            case 'undefined':
+                $scope.mostrarzonaseguraj = false;
+            break;
+            case undefined:
+                $scope.mostrarzonaseguraj = false;
+            break;
+            case null:
+                $scope.mostrarzonaseguraj = false;
+            break;
+        };
         //MOSTRAR VIAE
-        if ( data.rdTipoTramite1 == "NUEVO") {
+        if(data.rdTipoTramite1 == 'NUEVO'){
             $scope.licenciaToogle4 = true;
-        } else if(data.rdTipoTramite1 == "RENOVACION") {
+        }
+        else{
             $scope.licenciaToogle4 = false;
         }
         if (data.pago_adel == 'SI') {
             $scope.IsVisible = true;
-            $scope.calcularDeudas(data.f01_id_actividad_economica,data.nro_ges);
+            $scope.calcularDeudas(data.nro_ges);
+            $scope.pago_adelantado = 'SI';
         } else{
             $scope.IsVisible = false;
             $scope.datos.pago_adel = 'NO';
+            $scope.totalD = 0;
+            $scope.datos.nro_ges = '';
+            $scope.pago_adelantado = 'NO';
         };
         //MOSTRAR RADIO NUEVA - RENOVACION
         if(typeof(data.rdTipoTramite) != 'undefined'){
@@ -3213,31 +3221,26 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 }
             }
         }
-        if (data.pago_adel == 'SI') {
-            $scope.IsVisible = true;
-            $scope.calcularDeudas(data.f01_id_actividad_economica,data.nro_ges);
-        } else{
-            $scope.IsVisible = false;
-        };
-        /*if(typeof(data.INT_AC_MACRO_ID) != 'undefined'){
+        $scope.datos.f01_macro_act = data.f01_macro_act;
+        $scope.datos.f01_categoria_descrip = data.f01_categoria_descrip;
+        /*if(typeof(data.f01_macro_act) != 'undefined'){
             //LISTANDO ZONAS
-            var idMacro =   data.INT_AC_MACRO_ID;
+            var idMacro =   data.f01_macro_act;
             $scope.aDistritoZona = {};
-            try{
-                var parametros = new distritoZona();
-                parametros.idMacro = idMacro;
-                parametros.obtdist(function(resultado){
-                    data = JSON.parse(resultado);
-                    if(data.success.length > 0){
-                        $scope.aDistritoZona = data.success;
-                    }else{
-                        $scope.msg = "Error !!";
-                    }
-                })
-            }catch(error){
-                console.log("error");
-            }
-        }*/
+            filtro = '{"filter": "dist_macro_id='+idMacro+'"}';
+            var parametros = {
+                    "table_name":"_bp_distritos_zonas",
+                    "body": filtro
+            };
+            DreamFactory.api[CONFIG.SERVICE].getRecordsByPost(parametros).success(function (results){
+                if(results.record.length > 0){
+                    $scope.aDistritoZona = results.record;
+                }else{
+                    $scope.msg = "Error !!";
+                }
+            }).error(function(results){
+            });
+        }
         if(typeof($scope.datos.INT_VIA) != 'undefined'){
             var idTipoVia   =   $scope.datos.INT_VIA;
             var tipoVia     =   [
@@ -3251,22 +3254,80 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                     $scope.datos.INT_TIP_VIA  =   value.name;
                 }
             });
+        }*/
+        //EXTRAYENDO EXPEDIDO
+        if(typeof($scope.datos.INT_EXP) != 'undefined'){
+            var ideExpedido   =   $scope.datos.INT_EXP;
+            var tipoExpedido  =   [
+                { name: 'LA PAZ', value:'LPZ', id: '1'},
+                { name: 'ORURO', value:'ORU', id: '2'},
+                { name: 'POTOSI', value:'PTS', id: '3'},
+                { name: 'COCHABAMBA', value:'CBB', id: '4'},
+                { name: 'TARIJA', value:'TJA', id: '5'},
+                { name: 'CHUQUISACA', value:'CHQ', id: '6'},
+                { name: 'SANTA CRUZ', value:'SCZ', id: '7'},
+                { name: 'PANDO', value:'PND', id: '8'},
+                { name: 'BENI', value:'BNI', id: '9'},
+                { name: 'EXTRANJERO', value:'EXT', id: '10'}
+            ];
+            angular.forEach(tipoExpedido, function(value, key) {
+                if(value.id == ideExpedido){
+                    $scope.datos.INT_EXP  =   value.value;
+                }
+            });
         }
-        if(data.f01_tip_via_prop != ""){
-            $scope.vias(data.INT_AC_ID_ZONA,data.f01_tip_via_prop);
+        if(typeof(data.f01_tip_via_act) == 'undefined'){
+            setTimeout(function(){
+                $scope.desabilitadoZ=true;
+                $scope.desabilitadoV=true;
+            }, 1000);
         }
-        if (data.f01_categoria_agrupada == '' || data.f01_categoria_agrupada == undefined || data.f01_categoria_agrupada == 'undefined') {} else{
-            if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){//verificamos si la licencia es multiple
-                $scope.lstRequisitosMultiples2018(data.licenciam);
-            }else{
-                $scope.getRequisitosFormulario(data.f01_categoria_agrupada, data.f01_tipo_per);
+        /*if(typeof(data.INT_AC_MACRO_ID) != 'undefined'){
+            //LISTANDO ZONAS
+            $scope.aDistritoZona = {};
+            try{
+                var parametros = new distritoZona();
+                parametros.idMacro = data.f01_macro_act;
+                parametros.obtdist(function(resultado){
+                    data = JSON.parse(resultado);
+                    if(data.success.length > 0){
+                        $scope.aDistritoZona = data.success;
+                    }else{
+                        $scope.msg = "Error !!";
+                    }
+                });
+            }catch(error){
             }
-        };
-        $scope.iniciarRequsitosDoc(data);
-        $scope.datos.f01_nom_via_prop = data.f01_nom_via_prop;
+        }*/
+        $scope.distritoZonas($scope.datos.f01_macro_act);
+        $scope.nom_via = data.INT_AC_NOMBRE_VIA;
+        if (data.INT_AC_ZONA) {
+            $scope.desabilitadoZ=false;
+        }
+        if (data.INT_AC_TIP_VIA) {
+            $scope.desabilitadoV=false;
+        }
+        /*if(data.INT_AC_TIP_VIA != ""){
+            $scope.vias(data.INT_AC_ID_ZONA,data.INT_AC_TIP_VIA);
+        }*/
+        $scope.datos.INT_AC_NOMBRE_VIA = data.INT_AC_NOMBRE_VIA;
         $scope.obtenerHora();
         $scope.obtenerFecha();
-    });//INICIAR CAMPOS INTERNET
+        //$scope.abrirMapa();
+        $scope.open_mapa_ae();
+        if (data.FILE_FOTOCOPIA_CI)
+            $scope.divfileci = true;
+        if (data.FILE_FOTOCOPIA_CI_R)
+            $scope.divfilecir = true;
+        if ($scope.datos.f01_poder_representante)
+            $scope.divfilepoder = true;
+        if (data.f01_test_cons_sociedad_j)
+            $scope.divfiletest = true;
+        if (data.file_num_ident)
+            $scope.divfilenum = true;
+        if (data.file_fund_emp)
+            $scope.divfilefund = true;
+    });
     
     $scope.vias= function(zona,tipo){
         $scope.z =zona;
@@ -3444,7 +3505,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             $scope.mostrarMsgNuevaActividad = false;
         }
         $.unblockUI();
-        $scope.initMap();
+        //$scope.initMap();
     });
 
     $scope.$on('$destroy', function() {

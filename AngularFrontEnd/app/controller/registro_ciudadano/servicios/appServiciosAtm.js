@@ -31,13 +31,13 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
 
     ];
     $scope.serivicosInternetInmuebles = [
-        { name: 'REGISTRO VALOR LIBROS INMUEBLES ', id: '36' },
+        { name: 'REGISTRO VALOR LIBROS INMUEBLES ', id: '20' },
     ];
 
     $scope.serivicosInternetVehiculos = [
-        { name: 'INSCRIPCION CASA COMERCIAL VEHICULOS ', id: '37' },
-        { name: 'INSCRIPCION CASA COMERCIAL MOTOS', id: '38' },
-        { name: 'REGISTRO VALOR LIBROS VEHICULOS ', id: '39' },
+        { name: 'INSCRIPCION CASA COMERCIAL VEHICULOS ', id: '19' },
+        { name: 'INSCRIPCION CASA COMERCIAL MOTOS', id: '18' },
+        { name: 'REGISTRO VALOR LIBROS VEHICULOS ', id: '17' },
     ];
     $scope.btnEnviarForm = true;
     $scope.datosGuardados = false;
@@ -127,25 +127,25 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         //TIPO_PERSONA
         var tipoPersona = sessionService.get('TIPO_PERSONA');
         var sidservicio = $scope.procesoSeleccionado;
-        if (tipoPersona == 'NATURAL' && sidservicio == 36) {
+        if (tipoPersona == 'NATURAL' && sidservicio == 20) {
             sidservicio = 0;
         }
-        if (tipoPersona == 'NATURAL' && sidservicio == 37) {
+        if (tipoPersona == 'NATURAL' && sidservicio == 19) {
             sidservicio = 1;
         }
 
 
-        if (tipoPersona == 'JURIDICO' && sidservicio == 36) {
+        if (tipoPersona == 'JURIDICO' && sidservicio == 20) {
             sidservicio = 4;
         }
-        if (tipoPersona == 'JURIDICO' && sidservicio == 37) {
+        if (tipoPersona == 'JURIDICO' && sidservicio == 19) {
             sidservicio = 3;
         }
-        if (tipoPersona == 'JURIDICO' && sidservicio == 38) {
+        if (tipoPersona == 'JURIDICO' && sidservicio == 18) {
             sidservicio = 5;
             //alert('MOTOS');
         }
-        if (tipoPersona == 'JURIDICO' && sidservicio == 39) {
+        if (tipoPersona == 'JURIDICO' && sidservicio == 17) {
             sidservicio = 6;
             //alert('LIBROS VEHICULOS');
         }
@@ -401,17 +401,17 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
 
     $scope.seleccionarProceso = function (proceso) {
         $scope.procesoSeleccionado = proceso.id;
-        if ($scope.procesoSeleccionado == 36) {
-            sidservicio = 36;
+        if ($scope.procesoSeleccionado == 20) {
+            sidservicio = 20;
         }
-        if ($scope.procesoSeleccionado == 37) {
-            sidservicio = 37;
+        if ($scope.procesoSeleccionado == 19) {
+            sidservicio = 19;
         }
-        if ($scope.procesoSeleccionado == 38) {
-            sidservicio = 38;
+        if ($scope.procesoSeleccionado == 18) {
+            sidservicio = 18;
         }
-        if ($scope.procesoSeleccionado == 39) {
-            sidservicio = 39;
+        if ($scope.procesoSeleccionado == 17) {
+            sidservicio = 17;
         }
         $scope.procesoSeleccionado = proceso.id;
         $scope.btnNuevoTramtite = false;
@@ -421,17 +421,17 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
     };
     $scope.crearTramiteAE = function () {
         if ($scope.procesoSeleccionado != '') {
-            if ($scope.procesoSeleccionado == 36) {
-                sidservicio = 36;
+            if ($scope.procesoSeleccionado == 20) {
+                sidservicio = 20;
             }
-            if ($scope.procesoSeleccionado == 37) {
-                sidservicio = 37;
+            if ($scope.procesoSeleccionado == 19) {
+                sidservicio = 19;
             }
-            if ($scope.procesoSeleccionado == 38) {
-                sidservicio = 38;
+            if ($scope.procesoSeleccionado == 18) {
+                sidservicio = 18;
             }
-            if ($scope.procesoSeleccionado == 39) {
-                sidservicio = 39;
+            if ($scope.procesoSeleccionado == 17) {
+                sidservicio = 17;
             }
             //href="#registro_ciudadano|servicios|indexAtm.html"
             $scope.adicionarServicioGamlp(sidservicio);
@@ -453,11 +453,11 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
             swal('', 'Estimado Ciudadano, para poder proseguir con el trámite deberá aceptar las condiciones de uso en el IGOB 24/7', 'warning');
         } else {
             if ($scope.datosRecuperados.dtspsl_activaciond == 'SI' && $scope.datosRecuperados.dtspsl_activacionf == 'SI') {
-                if (datos == 36) {
+                if (datos == 20) {
                     var dataInicio = {};
                     var fecha = new Date();
                     var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio = 36;
+                    var sIdServicio = 20;
                     var sIdCiudadano = sessionService.get('IDSOLICITANTE');
                     var sFechaTramite = fechactual;
                     dataInicio.INT_FORM_ALMACENADO = 'C';
@@ -499,11 +499,11 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                         //$.unblockUI();
                     }
                 }
-                if (datos == 37) {
+                if (datos == 19) {
                     var dataInicio = {};
                     var fecha = new Date();
                     var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio = 37;
+                    var sIdServicio = 19;
                     var sIdCiudadano = sessionService.get('IDSOLICITANTE');
                     var sFechaTramite = fechactual;
                     dataInicio.INT_FORM_ALMACENADO = 'C';
@@ -545,12 +545,12 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                         $.unblockUI();
                     }
                 }
-                if (datos == 38) {
+                if (datos == 18) {
                     //alert('ingresando a Motos....');
                     var dataInicio = {};
                     var fecha = new Date();
                     var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio = 38;
+                    var sIdServicio = 18;
                     var sIdCiudadano = sessionService.get('IDSOLICITANTE');
                     var sFechaTramite = fechactual;
                     dataInicio.INT_FORM_ALMACENADO = 'C';
@@ -592,12 +592,12 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                         $.unblockUI();
                     }
                 }
-                if (datos == 39) {
+                if (datos == 17) {
                     //alert('ingresando a Motos....');
                     var dataInicio = {};
                     var fecha = new Date();
                     var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio = 39;
+                    var sIdServicio = 17;
                     var sIdCiudadano = sessionService.get('IDSOLICITANTE');
                     var sFechaTramite = fechactual;
                     dataInicio.INT_FORM_ALMACENADO = 'C';

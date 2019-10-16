@@ -2793,8 +2793,9 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         if($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona == 'J'){
             datos.f01_tipo_per_desc = 'JURIDICO';
+            //urlFormularioN  =   "../../docs/AE_Formulario_401_J.html";
             urlFormularioN  =   "../../docs/AE_Formulario_402Renov_J.html";
-            $( "#msgformularioJ" ).load(urlFormularioN, function(data) {
+            $( "#msgformularioJ").load(urlFormularioN, function(data) {
                 stringFormulario40  =   data;
                 datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
                 datos.f01_seg_nom_prop = ((typeof(datos.f01_seg_nom_prop) == 'undefined' || datos.f01_seg_nom_prop == null) ? "" : datos.f01_seg_nom_prop);
@@ -2816,36 +2817,43 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 datos.f01_tipo_lic_descrip = ((typeof(datos.f01_tipo_lic_descrip) == 'undefined' || datos.f01_tipo_lic_descrip == null) ? "" : datos.f01_tipo_lic_descrip);
                 datos.f01_categoria_agrupada_descrip = ((typeof(datos.f01_categoria_agrupada_descrip) == 'undefined' || datos.f01_categoria_agrupada_descrip == null) ? "" : datos.f01_categoria_agrupada_descrip);
                 datos.f01_categoria_agrupada_descripcion = ((typeof(datos.f01_categoria_agrupada_descripcion) == 'undefined' || datos.f01_categoria_agrupada_descripcion == null) ? "" : datos.f01_categoria_agrupada_descripcion);
+                /*if(datos.f01_tipo_lic != '32' || datos.f01_tipo_lic != 32){
+                    $scope.GetValueLicencia();
+                    $scope.GetValueCategoriaAgrupada();
+                    $scope.GetValueCategoria();
+                }*/
                 if(datos.f01_tip_act =='MA' || datos.f01_tip_act =='MATRI'){
                     datos.f01_tip_act1 = 'MATRIZ';
                 }
                 if(datos.f01_tip_act =='SU' || datos.f01_tip_act =='SUCUR'){
                     datos.f01_tip_act1 = 'SUCURSAL';
                 }
-                pubMod = '';
+                var pubMod = '';
                 pubMod = '<tr><td>VIAE</td>'+
                 '<td>TIPO</td>' +
                 '<td>CARACTERÍSTICA</td>'+
-                '<td>CARAS</td>'+
+                //'<td>CARAS</td>'+
                 '<td>DESCRIPCIÓN</td>'+
                 '<td>ALTO</td>'+
                 '<td>ANCHO</td>'+
-                '<td>SUPERFICIE</td></tr>';
+                '<td>SUPERFICIE</td>'+
+                '<td>ESTADO</td></tr>';
                 for (i = 0; i < datos.publicidad.length; i++){
                     pubMod = pubMod +'<tr>' +
                     '<td>' + (i+1) + '</td>'+
                     '<td>' + datos.publicidad[i].INT_TIPO_LETRE + '</td>'+
                     '<td>' + datos.publicidad[i].INT_CARA + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_NRO_CARA + '</td>'+
+                    //'<td>' + datos.publicidad[i].INT_NRO_CARA + '</td>'+
                     '<td>' + datos.publicidad[i].INT_DESC + '</td>'+
                     '<td>' + datos.publicidad[i].INT_ANCHO + '</td>'+
                     '<td>' + datos.publicidad[i].INT_ALTO + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_SUP + '</td></tr>';
+                    '<td>' + datos.publicidad[i].INT_SUP + '</td>'+
+                    '<td>' + datos.publicidad[i].estado + '</td></tr>';
                 }
                 //CABECERA
                 stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
                 stringFormulario40  =   stringFormulario40.replace("#f01_nro_orden#", datos.f01_nro_orden);
-                stringFormulario40  =   stringFormulario40.replace("#f01_tipo_form#", '401');
+                stringFormulario40  =   stringFormulario40.replace("#f01_tipo_form#", '402');
                 stringFormulario40  =   stringFormulario40.replace("#f01_tipo_per_desc#", datos.f01_tipo_per_desc);
                 //DATOS DEL REPRESENTANTE LEGAL
                 stringFormulario40  =   stringFormulario40.replace("#f01_pri_nom_rep#", datos.f01_pri_nom_rep);
@@ -2877,20 +2885,13 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 stringFormulario40  =   stringFormulario40.replace("#f01_estab_es#", datos.f01_estab_es);
                 stringFormulario40  =   stringFormulario40.replace("#f01_tip_act1#", datos.f01_tip_act1);
                 stringFormulario40  =   stringFormulario40.replace("#publicidad_grilla#", pubMod);
-                //pago adelantado
-                if($scope.pago_adelantado == 'undefined' || $scope.pago_adelantado == undefined  || $scope.pago_adelantado == 'NO'){
-                    stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
-                    stringFormulario40  =   stringFormulario40.replace("#nro_ges#", 'NINGUNA');
-                }else{
-                    stringFormulario40  =   stringFormulario40.replace("#pago_adel#", $scope.pago_adelantado);
-                    stringFormulario40  =   stringFormulario40.replace("#nro_ges#", datos.nro_ges);
-                }
                 var multi = '';
                 if (datos.f01_tipo_lic == 32 || datos.f01_tipo_lic == '32') {
                     stringFormulario40  =   stringFormulario40.replace("#f01_tipo_lic_descrip#", datos.f01_tipo_lic_descrip);
                     stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descrip#", datos.f01_categoria_agrupada_descrip);
                     stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descripcion#", datos.f01_categoria_agrupada_descrip);
-                    multi = '<tr><td>NRO</td>'+
+                    multi = '<table id="tablaMul" class="table table-striped table-bordered"><tr>'+
+                    '<tr><td>NRO</td>'+
                     '<td>TIPO DE LICENCIA</td>' +
                     '<td>TIPO DE CATEGORÍA</td>'+
                     '<td>TIPO DE ACTIVIDAD</td></tr>';
@@ -2901,12 +2902,113 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                         '<td>' + datos.Licenmul_grilla[i].f01_cat_agrupadamdescrip + '</td>'+
                         '<td>' + datos.Licenmul_grilla[i].f01_act_desarrolladamdescrip + '</td></tr>';
                     }
+                    multi = multi + '</table>';
                     stringFormulario40  =   stringFormulario40.replace("#Licenmul_grilla#", multi);
                 } else{
                     stringFormulario40  =   stringFormulario40.replace("#f01_tipo_lic_descrip#", datos.f01_tipo_lic_descrip);
                     stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descrip#", datos.f01_categoria_agrupada_descrip);
                     stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descripcion#", datos.f01_categoria_agrupada_descripcion);
                     stringFormulario40  =   stringFormulario40.replace("#Licenmul_grilla#", multi);
+                };
+                var tablapago = '';
+                if($scope.pago_adelantado == 'undefined' || $scope.pago_adelantado == undefined  || $scope.pago_adelantado == 'NO'){
+                    stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
+                    stringFormulario40  =   stringFormulario40.replace("#nro_ges#", 'NINGUNA');
+                    stringFormulario40  =   stringFormulario40.replace("#tablaP#", tablapago);
+                }else{
+                    stringFormulario40  =   stringFormulario40.replace("#pago_adel#", $scope.pago_adelantado);
+                    stringFormulario40  =   stringFormulario40.replace("#nro_ges#", datos.nro_ges);
+                    if ($scope.listDeudas.length > 0) {
+                        tablapago = '<table id="tablaDe" class="table table-striped table-bordered"><tr>'+
+                            '<th>Nº</th>'+
+                            '<th>GESTIÓN</th>'+
+                            '<th>MONTO</th>'+
+                            '</tr>';
+                            for (i = 0; i < $scope.listDeudas.length; i++){
+                                tablapago = tablapago +'<tr>' +
+                                '<td>' + $scope.listDeudas[i].numero + '</td>'+
+                                '<td>' + $scope.listDeudas[i].gestion + '</td>'+
+                                '<td>' + $scope.listDeudas[i].total + '</td></tr>';
+                            }
+                            tablapago = tablapago + '<tr>'+
+                                '<td> TOTAL A PAGAR</font></td>'+
+                                '<td></td>'+
+                                '<td>'+ $scope.totalD +'</font></td>'+
+                            '</tr></table>';
+                        stringFormulario40  =   stringFormulario40.replace("#tablaP#", tablapago);
+                    }                   
+                }
+                stringFormulario40 = stringFormulario40.replace("#f01_idCodigoZona#",datos.f01_idCodigoZona);
+                var divfoodTruck = '';
+                if (datos.f01_categoria == 211 || datos.f01_categoria == '211') {
+                    divfoodTruck = divfoodTruck + '<div class="row"><div class="col-md-12" style="margin: 10px">'+
+                                                '<h3>DATOS DEL VEHÍCULO O REMOLQUE</h3></div></div>'+
+                                        '<div class="row" style="border-style: solid; border-width: 1px; border-radius: 10px 10px 10px 10px; margin: 10px; padding-top: 8px">'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Tipo de Vehículo: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_vehiculo_ft + '</div>'+
+                                            '</div>';
+                                            if (datos.f01_vehiculo_ft == "REMOLQUE") {
+                                                divfoodTruck = divfoodTruck + '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Otorgado: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_otorgado_ft + '</div>'+
+                                            '</div>';
+                                            }                                            
+                                            divfoodTruck = divfoodTruck + '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Clase: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_clase_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Marca: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_marca_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Tipo: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_tipo_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Subtipo: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_subtipo_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Modelo: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_modelo_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Motor: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_motor_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Nº Chasis: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_chasis_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Servicio: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_servicio_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Color: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_color_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Radicatoria: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_radicatoria_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Documento Legal: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_doclegal_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Nº Documento Legal: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_numdoclegal_ft + '</div>'+
+                                            '</div>'+
+                                            '<div class="col-md-6">'+
+                                                '<div class="col-md-6"><label>Ubicación del lugar donde se Efectuara la Inspección del Vehículo o Remolque: </label></div>'+
+                                                '<div class="col-md-6">'+ datos.f01_lugar_ft + '</div>'+
+                                            '</div></div>';
+                    stringFormulario40  =   stringFormulario40.replace("#divft#", divfoodTruck);
+                } else{
+                    stringFormulario40  =   stringFormulario40.replace("#divft#", divfoodTruck);
                 };
                 //UBICACION DE LA ACTIVIDAD ECONOMICA
                 stringFormulario40  =   stringFormulario40.replace("#f01_macro_act_descrip#", datos.f01_macro_act_descrip);
@@ -2929,6 +3031,139 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
                 stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
+                var nombreUsuario = sessionService.get('US_NOMBRE')+ ' ' +sessionService.get('US_PATERNO')+ ' ' +sessionService.get('US_MATERNO');
+                stringFormulario40  =   stringFormulario40.replace("#usuarioPlataforma#", nombreUsuario);
+                if (datos.chkzonasegura == '' || datos.chkzonasegura == 'undefined' || datos.chkzonasegura == undefined) {
+                    stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '');
+                } else{
+                    if (datos.chkzonasegura == 'ZONASEGURA') {
+                        stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> SI');
+                    } else{
+                        stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> NO');
+                    };
+                };
+
+                $scope.datosAnt.RepresentanteLegal_segundoNombre = ((typeof($scope.datosAnt.RepresentanteLegal_segundoNombre) == 'undefined' || $scope.datosAnt.RepresentanteLegal_segundoNombre == null) ? "" : $scope.datosAnt.RepresentanteLegal_segundoNombre);
+                $scope.datosAnt.RepresentanteLegal_tercerNombre = ((typeof($scope.datosAnt.RepresentanteLegal_tercerNombre) == 'undefined' || $scope.datosAnt.RepresentanteLegal_tercerNombre == null) ? "" : $scope.datosAnt.RepresentanteLegal_tercerNombre);
+                $scope.datosAnt.RepresentanteLegal_primerApellido = ((typeof($scope.datosAnt.RepresentanteLegal_primerApellido) == 'undefined' || $scope.datosAnt.RepresentanteLegal_primerApellido == null) ? "" : $scope.datosAnt.RepresentanteLegal_primerApellido);
+                $scope.datosAnt.RepresentanteLegal_segundoApellido = ((typeof($scope.datosAnt.RepresentanteLegal_segundoApellido) == 'undefined' || $scope.datosAnt.RepresentanteLegal_segundoApellido == null) ? "" : $scope.datosAnt.RepresentanteLegal_segundoApellido);
+                $scope.datosAnt.RepresentanteLegal_tercerApellido = ((typeof($scope.datosAnt.RepresentanteLegal_tercerApellido) == 'undefined' || $scope.datosAnt.RepresentanteLegal_tercerApellido == null) ? "" : $scope.datosAnt.RepresentanteLegal_tercerApellido);
+                $scope.datosAnt.RepresentanteLegal_correoElectronico = ((typeof($scope.datosAnt.RepresentanteLegal_correoElectronico) == 'undefined' || $scope.datosAnt.RepresentanteLegal_correoElectronico == null) ? "" : $scope.datosAnt.RepresentanteLegal_correoElectronico);
+                $scope.datosAnt.RepresentanteLegal_celular = ((typeof($scope.datosAnt.RepresentanteLegal_celular) == 'undefined' || $scope.datosAnt.RepresentanteLegal_celular == null) ? "" : $scope.datosAnt.RepresentanteLegal_celular);
+                $scope.datosAnt.empresa_telefono = ((typeof($scope.datosAnt.empresa_telefono) == 'undefined' || $scope.datosAnt.empresa_telefono == null) ? "" : $scope.datosAnt.empresa_telefono);
+                if($scope.datosAnt.establecimiento =='ALQUI'){
+                    $scope.datosAnt.establecimiento = "ALQUILADO";
+                }
+                if($scope.datosAnt.establecimiento =='PROPI'){
+                    $scope.datosAnt.establecimiento = "PROPIO";
+                }
+                if($scope.datosAnt.establecimiento =='ANTI'){
+                    $scope.datosAnt.establecimiento = "ANTICRÉTICO";
+                }
+                if($scope.datosAnt.establecimiento =='OTRO'){
+                    $scope.datosAnt.establecimiento = "OTRO";
+                }
+                if($scope.datosAnt.establecimiento =='NINGU'){
+                    $scope.datosAnt.establecimiento = "OTRO";
+                }  
+                if($scope.datosAnt.tipoActividad =='MA' || $scope.datosAnt.tipoActividad =='MATRI'){
+                    $scope.datosAnt.tipoActividad = 'MATRIZ';
+                }
+                if($scope.datosAnt.tipoActividad =='SU' || $scope.datosAnt.tipoActividad =='SUCUR'){
+                    $scope.datosAnt.tipoActividad = 'SUCURSAL';
+                }
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_primerNombre#", $scope.datosAnt.RepresentanteLegal_primerNombre);
+                //stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_segundoNombre#", $scope.datosAnt.RepresentanteLegal_segundoNombre);
+                //stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_tercerNombre#", $scope.datosAnt.RepresentanteLegal_tercerNombre);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_primerApellido#", $scope.datosAnt.RepresentanteLegal_primerApellido);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_segundoApellido#", $scope.datosAnt.RepresentanteLegal_segundoApellido);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_tercerApellido#", $scope.datosAnt.RepresentanteLegal_tercerApellido);
+                stringFormulario40  =   stringFormulario40.replace("#Representante_Legal_tipoIdentidad#", $scope.datosAnt.Representante_Legal_tipoIdentidad);
+                stringFormulario40  =   stringFormulario40.replace("#Representante_Legal_identificacion#", $scope.datosAnt.Representante_Legal_identificacion);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_expedicion#", $scope.datosAnt.RepresentanteLegal_expedicion);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_correoElectronico#", $scope.datosAnt.RepresentanteLegal_correoElectronico);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_celular#", $scope.datosAnt.RepresentanteLegal_celular);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_zona#", $scope.datosAnt.RepresentanteLegal_zona);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_TipoVia#", $scope.datosAnt.RepresentanteLegal_TipoVia);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_via#", $scope.datosAnt.RepresentanteLegal_via);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_numeroVia#", $scope.datosAnt.RepresentanteLegal_numeroVia);
+                stringFormulario40  =   stringFormulario40.replace("#empresa_telefono#", $scope.datosAnt.empresa_telefono);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_numeroPoder#", $scope.datosAnt.RepresentanteLegal_numeroPoder);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_gestionPoder#", $scope.datosAnt.RepresentanteLegal_gestionPoder);
+                stringFormulario40  =   stringFormulario40.replace("#RepresentanteLegal_numeroNotaria#", $scope.datosAnt.RepresentanteLegal_numeroNotaria);
+                stringFormulario40  =   stringFormulario40.replace("#empresa#", $scope.datosAnt.empresa);
+                stringFormulario40  =   stringFormulario40.replace("#nit_empresa#", $scope.datosAnt.nit_empresa);
+                stringFormulario40  =   stringFormulario40.replace("#denominacion#", $scope.datosAnt.denominacion);
+                stringFormulario40  =   stringFormulario40.replace("#superficie#", $scope.datosAnt.superficie);
+                stringFormulario40  =   stringFormulario40.replace("#horarioAtencion#", $scope.datosAnt.horarioAtencion);
+                stringFormulario40  =   stringFormulario40.replace("#establecimiento#", $scope.datosAnt.establecimiento);
+                stringFormulario40  =   stringFormulario40.replace("#tipoActividad#", $scope.datosAnt.tipoActividad);
+                //stringFormulario40  =   stringFormulario40.replace("#descripcion#", $scope.datosAnt.descripcion.toUpperCase());
+                //stringFormulario40  =   stringFormulario40.replace("#tipocategoria#", $scope.datosA[0].tipocategoria); 
+                //stringFormulario40  =   stringFormulario40.replace("#ActividadDesarrollada#", $scope.datosAnt.ActividadDesarrollada);
+                stringFormulario40  =   stringFormulario40.replace("#IdMacrodistrito#", $scope.datosAnt.IdMacrodistrito);
+                stringFormulario40  =   stringFormulario40.replace("#Macrodistrito#", $scope.datosAnt.Macrodistrito);
+                stringFormulario40  =   stringFormulario40.replace("#Distrito#", $scope.datosAnt.Distrito);
+                stringFormulario40  =   stringFormulario40.replace("#zona#", $scope.datosAnt.zona);
+                stringFormulario40  =   stringFormulario40.replace("#tipoVia#", $scope.datosAnt.tipoVia);
+                stringFormulario40  =   stringFormulario40.replace("#via#", $scope.datosAnt.via);
+                stringFormulario40  =   stringFormulario40.replace("#numero#", $scope.datosAnt.numero);
+                stringFormulario40  =   stringFormulario40.replace("#numeroActividad#", $scope.datosAnt.numeroActividad);
+                stringFormulario40  =   stringFormulario40.replace("#idCodigoZona#", $scope.datosAnt.idCodigoZona);
+                
+                var multiAnt = '';                
+                if ($scope.datosAnt.idTipoLicencia == 3375 || $scope.datosAnt.idTipoLicencia == '3375') {
+                    stringFormulario40  =   stringFormulario40.replace("#tipocategoria#", 'MULTISERVICIOS');
+                    //stringFormulario40  =   stringFormulario40.replace("#ActividadDesarrollada#", 'MULTISERVICIOS');
+                    stringFormulario40  =   stringFormulario40.replace("#descripcion#", 'MULTISERVICIOS');
+                    /*multiAnt = '<table id="tablaMulAnt" class="table table-striped table-bordered"><tr><td>NRO</td>'+
+                    '<td>TIPO DE LICENCIA</td>' + 
+                    '<td>TIPO DE CATEGORÍA</td>'+
+                    '<td>TIPO DE ACTIVIDAD</td></tr>';
+                    for (i = 0; i < $scope.datosAntMulti.length; i++){
+                        multiAnt = multiAnt +'<tr>' + 
+                        '<td>' + (i+1) + '</td>'+
+                        '<td>' + $scope.datosAntMulti[i].f01_tipo_licmdescrip + '</td>'+
+                        '<td>' + $scope.datosAntMulti[i].f01_cat_agrupadamdescrip + '</td>'+
+                        '<td>' + $scope.datosAntMulti[i].f01_act_desarrolladamdescrip + '</td></tr>';
+                    }
+                    multiAnt = multiAnt + '</table>';
+                    stringFormulario40  =   stringFormulario40.replace("#ActividadDesarrollada#", 'MULTISERVICIOS');
+                    stringFormulario40  =   stringFormulario40.replace("#Licenmul_grillaAnt#", multiAnt);*/
+                } else{
+                    stringFormulario40  =   stringFormulario40.replace("#descripcion#", $scope.datosAnt.descripcion.toUpperCase());
+                    try{
+                        stringFormulario40  =   stringFormulario40.replace("#tipocategoria#", $scope.datosA[0].tipocategoria);
+                    }catch(e){console.log("Error:", e)}                 
+                    stringFormulario40  =   stringFormulario40.replace("#ActividadDesarrollada#", $scope.datosAnt.ActividadDesarrollada);
+                    stringFormulario40  =   stringFormulario40.replace("#Licenmul_grillaAnt#", multiAnt);
+                };
+                var pubAnt = '';
+                if (datos.publicidadAntiguo_grilla.length > 1) {
+                    pubAnt = '<tr><td>VIAE</td>'+
+                    '<td>TIPO</td>' + 
+                    '<td>CARACTERÍSTICA</td>'+
+                    //'<td>CARAS</td>'+
+                    '<td>DESCRIPCIÓN</td>'+
+                    '<td>ALTO</td>'+
+                    '<td>ANCHO</td>'+
+                    '<td>SUPERFICIE</td></tr>';
+                    for (i = 1; i < datos.publicidadAntiguo_grilla.length; i++){
+                        pubAnt = pubAnt +'<tr>' + 
+                        '<td>' + datos.publicidadAntiguo_grilla[i].nroElem + '</td>'+
+                        '<td>' + datos.publicidadAntiguo_grilla[i].descripcionTipoLetrero + '</td>'+
+                        '<td>' + datos.publicidadAntiguo_grilla[i].caracteristica + '</td>'+
+                        //'<td>' + datos.publicidadAntiguo_grilla[i].cara + '</td>'+
+                        '<td>' + datos.publicidadAntiguo_grilla[i].descripcion + '</td>'+
+                        '<td>' + datos.publicidadAntiguo_grilla[i].alto + '</td>'+
+                        '<td>' + datos.publicidadAntiguo_grilla[i].ancho + '</td>'+
+                        '<td>' + datos.publicidadAntiguo_grilla[i].superficie + '</td></tr>';
+                    }
+                    stringFormulario40  =   stringFormulario40.replace("#publicidadAntiguo_grilla#", pubAnt);
+                }
+                else{
+                    stringFormulario40  =   stringFormulario40.replace("#publicidadAntiguo_grilla#", 'ACTIVIDAD ECONOMICA SIN ELEMENTOS DE IDENTIFICACIÓN');
+                }
                 $scope.msgformularioJ = stringFormulario40;
                 $scope.notifcondicionesuso = stringFormulario40;
                 setTimeout(function(){
@@ -2943,128 +3178,317 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $rootScope.datosForm401 = "";
         var dataForm = {};
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
-        if($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona =='J'){
-            dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
-            dataForm['f01_tipo_form'] = '401';
-            dataForm['f01_raz_soc_per_jur'] = data.f01_raz_soc_per_jur;
-            dataForm['f01_num_doc_per_jur'] = data.f01_num_doc_per_jur;
-            dataForm['f01_pri_nom_rep'] = data.f01_pri_nom_rep;
-            dataForm['f01_seg_nom_rep'] = data.f01_seg_nom_rep;
-            dataForm['f01_ape_pat_rep'] = data.f01_ape_pat_rep;
-            dataForm['f01_ape_mat_rep'] = data.f01_ape_mat_rep;
-            dataForm['f01_ape_cas_rep'] = data.f01_ape_cas_rep;
-            dataForm['f01_tip_doc_rep'] = data.f01_tip_doc_rep;
-            dataForm['f01_num_doc_rep'] = data.f01_num_doc_rep;
-            dataForm['f01_expedido_rep'] = data.f01_expedido_rep;
-            dataForm['f01_num_pod_leg'] = data.f01_num_pod_leg;
-            dataForm['f01_num_notaria'] = data.f01_num_notaria;
-            dataForm['f01_ges_vig_pod'] = data.f01_ges_vig_pod;
-            dataForm['f01_nit'] = data.f01_nit;
-            dataForm['f01_zona_rep'] = data.f01_zona_rep;
-            dataForm['f01_num_prop'] = data.f01_num_prop;
-            dataForm['f01_telef_rep'] = data.f01_telef_rep;
-            dataForm['f01_tipo_viarep'] = data.f01_tipo_viarep;
-            dataForm['f01_nom_via_rep'] = data.f01_nom_via_rep;
-            dataForm['f01_num_rep'] = data.f01_num_rep;
-            dataForm['f01_cel_rep'] = data.f01_cel_rep;
-            dataForm['f01_cel_prop'] = data.f01_cel_prop;
-            dataForm['f01_categoria_descrip'] = data.f01_categoria_agrupada_descripcion;
-            dataForm['f01_zona_act_descrip'] = data.f01_zona_act_descrip;
-            dataForm['f01_tip_via_act'] = data.f01_tip_via_act;
-            dataForm['f01_num_act'] = data.f01_num_act;
-            dataForm['f01_num_act1'] = data.f01_num_act1;
-            dataForm['f01_sup'] = data.f01_sup;
-            dataForm['f01_edificio_act'] = data.f01_edificio_act;
-            dataForm['f01_bloque_act'] = data.f01_bloque_act;
-            dataForm['f01_piso_act'] = data.f01_piso_act;
-            dataForm['f01_dpto_of_loc'] = data.f01_dpto_of_loc;
-            dataForm['f01_tel_act1'] = data.f01_tel_act1;
-            dataForm['f01_tipo_lic_descrip'] = data.f01_tipo_lic_descrip;
-            dataForm['f01_categoria_agrupada_descrip'] = data.f01_categoria_agrupada_descrip;
-            dataForm['f01_macro_act_descrip'] = data.f01_macro_act_descrip;
-            dataForm['f01_dist_act'] = data.f01_dist_act;
-            dataForm['f01_estab_es'] = data.f01_estab_es;
-            dataForm['f01_sup'] = data.f01_sup;
-            dataForm['f01_num_pmc'] = data.f01_num_pmc;
-            dataForm['f01_nro_orden'] = data.f01_nro_orden;
-            //pago adelantado
-            if($scope.pago_adelantado == 'undefined' || $scope.pago_adelantado == undefined  || $scope.pago_adelantado == 'NO'){
-                dataForm['pago_adel']  =  'SIN PAGO ADELANTADO';
-                dataForm['nro_ges']  =    'NINGUNA';
-            }else{
-                dataForm['pago_adel'] = $scope.pago_adelantado;
-                dataForm['nro_ges'] = data.nro_ges;
+        $scope.datosAnt.RepresentanteLegal_primerApellido = (($scope.datosAnt.RepresentanteLegal_primerApellido == 'undefined' || $scope.datosAnt.RepresentanteLegal_primerApellido == null) ? "" : $scope.datosAnt.RepresentanteLegal_primerApellido);
+        $scope.datosAnt.RepresentanteLegal_segundoApellido = (($scope.datosAnt.RepresentanteLegal_segundoApellido == 'undefined' || $scope.datosAnt.RepresentanteLegal_segundoApellido == null) ? "" : $scope.datosAnt.RepresentanteLegal_segundoApellido);
+        $scope.datosAnt.RepresentanteLegal_tercerApellido = (($scope.datosAnt.RepresentanteLegal_tercerApellido == 'undefined' || $scope.datosAnt.RepresentanteLegal_tercerApellido == null) ? "" : $scope.datosAnt.RepresentanteLegal_tercerApellido);
+        $scope.datosAnt.RepresentanteLegal_celular = (($scope.datosAnt.RepresentanteLegal_celular == 'undefined' || $scope.datosAnt.RepresentanteLegal_celular == null) ? "" : $scope.datosAnt.RepresentanteLegal_celular);
+        $scope.datosAnt.empresa_telefono = (($scope.datosAnt.empresa_telefono == 'undefined' || $scope.datosAnt.empresa_telefono == null) ? "" : $scope.datosAnt.empresa_telefono);
+        dataForm['empresa'] = $scope.datosAnt.empresa;
+        dataForm['nit_empresa'] = $scope.datosAnt.nit_empresa;
+        dataForm['RepresentanteLegal_primerNombre'] = $scope.datosAnt.RepresentanteLegal_primerNombre;
+        dataForm['RepresentanteLegal_segundoNombre'] = $scope.datosAnt.RepresentanteLegal_segundoNombre;
+        dataForm['RepresentanteLegal_tercerNombre'] = $scope.datosAnt.RepresentanteLegal_tercerNombre;
+        dataForm['RepresentanteLegal_primerApellido'] = $scope.datosAnt.RepresentanteLegal_primerApellido;
+        dataForm['RepresentanteLegal_segundoApellido'] = $scope.datosAnt.RepresentanteLegal_segundoApellido;
+        dataForm['RepresentanteLegal_tercerApellido'] = $scope.datosAnt.RepresentanteLegal_tercerApellido;
+        dataForm['Representante_Legal_tipoIdentidad'] = $scope.datosAnt.Representante_Legal_tipoIdentidad;
+        dataForm['Representante_Legal_identificacion'] = $scope.datosAnt.Representante_Legal_identificacion;
+        dataForm['RepresentanteLegal_expedicion'] = $scope.datosAnt.RepresentanteLegal_expedicion;
+        dataForm['RepresentanteLegal_zona'] = $scope.datosAnt.RepresentanteLegal_zona;
+        dataForm['RepresentanteLegal_TipoVia'] = $scope.datosAnt.RepresentanteLegal_TipoVia;
+        dataForm['RepresentanteLegal_via'] = $scope.datosAnt.RepresentanteLegal_via;
+        dataForm['RepresentanteLegal_numeroVia'] = $scope.datosAnt.RepresentanteLegal_numeroVia;
+        dataForm['empresa_telefono'] = $scope.datosAnt.empresa_telefono;
+        dataForm['RepresentanteLegal_celular'] = $scope.datosAnt.RepresentanteLegal_celular;
+        dataForm['RepresentanteLegal_numeroPoder'] = $scope.datosAnt.RepresentanteLegal_numeroPoder;
+        dataForm['RepresentanteLegal_gestionPoder'] = $scope.datosAnt.RepresentanteLegal_gestionPoder;
+        dataForm['RepresentanteLegal_numeroNotaria'] = $scope.datosAnt.RepresentanteLegal_numeroNotaria;
+        dataForm['denominacion'] = $scope.datosAnt.denominacion;
+        dataForm['superficie'] = $scope.datosAnt.superficie;
+        dataForm['horarioAtencion'] = $scope.datosAnt.horarioAtencion;
+        dataForm['establecimiento'] = $scope.datosAnt.establecimiento;
+        dataForm['tipoActividad'] = $scope.datosAnt.tipoActividad;
+        dataForm['IdMacrodistrito'] = $scope.datosAnt.IdMacrodistrito;
+        dataForm['Macrodistrito'] = $scope.datosAnt.Macrodistrito;
+        dataForm['Distrito'] = $scope.datosAnt.Distrito;
+        dataForm['zona'] = $scope.datosAnt.zona;
+        dataForm['tipoVia'] = $scope.datosAnt.tipoVia;
+        dataForm['via'] = $scope.datosAnt.via;
+        dataForm['numero'] = $scope.datosAnt.numero;
+        dataForm['publicidadAntiguo_grilla'] = $scope.datosAnt.publicidadAntiguo_grilla;
+        dataForm['numeroActividad'] = $scope.datosAnt.numeroActividad;
+        dataForm['idCodigoZona'] = $scope.datosAnt.idCodigoZona;
+        var multiAnt = '';
+        if ($scope.datosAnt.idTipoLicencia == 3375 || $scope.datosAnt.idTipoLicencia == '3375') {
+            dataForm['descripcion'] = 'MULTISERVICIOS';
+            dataForm['tipocategoria'] =  'MULTISERVICIOS';
+            /*multiAnt = '<table id="tablaVAnt" border="0.5" style="width:100%"><tr><td>NRO</td>'+
+            '<td>TIPO DE LICENCIA</td>' + 
+            '<td>TIPO DE CATEGORÍA</td>'+
+            '<td>TIPO DE ACTIVIDAD</td></tr>';
+            for (i = 0; i < $scope.datosAntMulti.length; i++){
+                multiAnt = multiAnt +'<tr>' + 
+                '<td>' + (i+1) + '</td>'+
+                '<td>' + $scope.datosAntMulti[i].f01_tipo_licmdescrip + '</td>'+
+                '<td>' + $scope.datosAntMulti[i].f01_cat_agrupadamdescrip + '</td>'+
+                '<td>' + $scope.datosAntMulti[i].f01_act_desarrolladamdescrip + '</td></tr>';
             }
-            if(data.f01_tip_act =='MA' || data.f01_tip_act =='MATRI'){
-                dataForm['f01_tip_act'] =  'MATRIZ';
-            }
-            if(data.f01_tip_act =='SU' || data.f01_tip_act =='SUCUR'){
-                dataForm['f01_tip_act'] = 'SUCURSAL';
-            }
-            var multi = '';
-            if (data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32') {
-                dataForm['f01_tipo_lic_descrip'] = data.f01_tipo_lic_descrip;
-                dataForm['f01_categoria_agrupada_descrip'] = data.f01_tipo_lic_descrip;
-                dataForm['f01_categoria_agrupada_descripcion'] = data.f01_tipo_lic_descrip;
-                multi = '<table border="0.5" style="width:100%"><tr><td>NRO</td>'+
-                '<td>TIPO DE LICENCIA</td>' +
-                '<td>TIPO DE CATEGORÍA</td>'+
-                '<td>TIPO DE ACTIVIDAD</td></tr>';
-                for (i = 1; i < data.Licenmul_grilla.length; i++){
-                    multi = multi +'<tr>' +
-                    '<td>' + data.Licenmul_grilla[i].nroElem + '</td>'+
-                    '<td>' + data.Licenmul_grilla[i].f01_tipo_licmdescrip + '</td>'+
-                    '<td>' + data.Licenmul_grilla[i].f01_cat_agrupadamdescrip + '</td>'+
-                    '<td>' + data.Licenmul_grilla[i].f01_act_desarrolladamdescrip + '</td></tr>';
-                }
-                multi = multi + '</table>';
-                dataForm['Licenmul_grilla'] =  multi;
-            } else{
-                dataForm['f01_tipo_lic_descrip'] = data.f01_tipo_lic_descrip;
-                dataForm['f01_categoria_agrupada_descrip'] = data.f01_categoria_agrupada_descrip;
-                dataForm['f01_categoria_agrupada_descripcion'] = data.f01_categoria_agrupada_descripcion;
-                dataForm['Licenmul_grilla'] = data.Licenmul_grilla;
-            };
-            pubMod  = '';
-            if(data.publicidad == 'undefined' || data.publicidad == undefined){
-                pubMod = '<table border="0.5" style="width:100%"><tr><td>VIAE</td>'+
-                '<td>TIPO</td>' +
-                '<td>CARACTERÍSTICA</td>'+
-                '<td>CARAS</td>'+
-                '<td>DESCRIPCIÓN</td>'+
-                '<td>ALTO</td>'+
-                '<td>ANCHO</td>'+
-                '<td>SUPERFICIE</td></tr>';
-            }
-            pubMod = '<table border="0.5" style="width:100%"><tr><td>VIAE</td>'+
-            '<td>TIPO</td>' +
+            multiAnt = multiAnt + '</table>';*/
+            dataForm['ActividadDesarrollada'] =  'MULTISERVICIOS';
+            //dataForm['Licenmul_grillaAnt'] =  multiAnt;
+        } else{
+            dataForm['descripcion'] = $scope.datosAnt.descripcion.toUpperCase();
+            try{
+                dataForm['tipocategoria'] =  $scope.datosA[0].tipocategoria;
+            }catch(e){console.log("Error:", e)}
+            dataForm['ActividadDesarrollada'] =  $scope.datosAnt.ActividadDesarrollada;
+            //dataForm['Licenmul_grillaAnt'] =  multiAnt;            
+        };
+        var pubAnt = '';
+        if (data.publicidadAntiguo_grilla.length > 1) {
+            pubAnt = '<table border="0.5" style="width:100%"><tr><td>VIAE</td>'+
+            '<td>TIPO</td>' + 
             '<td>CARACTERÍSTICA</td>'+
-            '<td>CARAS</td>'+
+            //'<td>CARAS</td>'+
             '<td>DESCRIPCIÓN</td>'+
             '<td>ALTO</td>'+
             '<td>ANCHO</td>'+
             '<td>SUPERFICIE</td></tr>';
-            for (i = 0; i < data.publicidad.length; i++){
-                pubMod = pubMod +'<tr>' +
-                    '<td>' + (i+1) + '</td>'+
-                    '<td>' + data.publicidad[i].INT_TIPO_LETRE + '</td>'+
-                    '<td>' + data.publicidad[i].INT_CARA + '</td>'+
-                    '<td>' + data.publicidad[i].INT_NRO_CARA + '</td>'+
-                    '<td>' + data.publicidad[i].INT_DESC + '</td>'+
-                    '<td>' + data.publicidad[i].INT_ANCHO + '</td>'+
-                    '<td>' + data.publicidad[i].INT_ALTO + '</td>'+
-                    '<td>' + data.publicidad[i].INT_SUP + '</td></tr>';
+            for (i = 1; i < data.publicidadAntiguo_grilla.length; i++){
+                pubAnt = pubAnt +'<tr>' + 
+                '<td>' + data.publicidadAntiguo_grilla[i].nroElem + '</td>'+
+                '<td>' + data.publicidadAntiguo_grilla[i].descripcionTipoLetrero + '</td>'+
+                '<td>' + data.publicidadAntiguo_grilla[i].caracteristica + '</td>'+
+                //'<td>' + data.publicidadAntiguo_grilla[i].cara + '</td>'+
+                '<td>' + data.publicidadAntiguo_grilla[i].descripcion + '</td>'+
+                '<td>' + data.publicidadAntiguo_grilla[i].alto + '</td>'+
+                '<td>' + data.publicidadAntiguo_grilla[i].ancho + '</td>'+
+                '<td>' + data.publicidadAntiguo_grilla[i].superficie + '</td></tr>';
             }
-            pubMod = pubMod +'</table>';
-            dataForm['publicidad_grilla'] = pubMod;
-            dataForm['fecha_sist'] = sfecha;
-            dataForm['fecha_sist2'] = sfecha;
-            dataForm['usuario'] = sessionService.get('USUARIO');
-            dataForm['hora_sist'] = sHora;
-            $rootScope.datosForm401 = dataForm;
-            $rootScope.datosEnv = data;
+            pubAnt = pubAnt +'</table>';
+            dataForm['publicidadAntiguo_grilla'] = pubAnt;
+        }else{
+            dataForm['publicidadAntiguo_grilla'] = 'ACTIVIDAD ECONOMICA SIN ELEMENTOS DE IDENTIFICACIÓN';
         }
+        dataForm['numeroActividad'] = $scope.datosAnt.numeroActividad;
+        dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
+        dataForm['f01_tipo_form'] = '402';
+        dataForm['f01_raz_soc_per_jur'] = data.f01_raz_soc_per_jur;
+        dataForm['f01_raz_soc'] = data.f01_raz_soc;
+        dataForm['f01_num_doc_per_jur'] = data.f01_num_doc_per_jur;
+        dataForm['f01_pri_nom_rep'] = data.f01_pri_nom_rep;
+        dataForm['f01_seg_nom_rep'] = data.f01_seg_nom_rep;
+        dataForm['f01_ape_pat_rep'] = data.f01_ape_pat_rep;
+        dataForm['f01_ape_mat_rep'] = data.f01_ape_mat_rep;
+        dataForm['f01_ape_cas_rep'] = data.f01_ape_cas_rep;
+        dataForm['f01_tip_doc_rep'] = data.f01_tip_doc_rep;
+        dataForm['f01_num_doc_rep'] = data.f01_num_doc_rep;
+        dataForm['f01_expedido_rep'] = data.f01_expedido_rep;
+        dataForm['f01_num_pod_leg'] = data.f01_num_pod_leg;
+        dataForm['f01_num_notaria'] = data.f01_num_notaria;
+        dataForm['f01_ges_vig_pod'] = data.f01_ges_vig_pod;
+        dataForm['f01_nit'] = data.f01_nit;
+        dataForm['f01_zona_rep'] = data.f01_zona_rep;
+        dataForm['f01_num_prop'] = data.f01_num_prop;
+        dataForm['f01_telef_rep'] = data.f01_telef_rep;
+        dataForm['f01_tipo_viarep'] = data.f01_tipo_viarep;
+        dataForm['f01_nom_via_rep'] = data.f01_nom_via_rep;
+        dataForm['f01_num_rep'] = data.f01_num_rep;
+        dataForm['f01_cel_rep'] = data.f01_cel_rep;
+        dataForm['f01_cel_prop'] = data.f01_cel_prop;
+        dataForm['f01_categoria_descrip'] = data.f01_categoria_agrupada_descripcion;
+        dataForm['f01_zona_act_descrip'] = data.f01_zona_act_descrip;
+        dataForm['f01_tip_via_act'] = data.f01_tip_via_act;
+        dataForm['f01_num_act'] = data.f01_num_act;
+        dataForm['f01_num_act1'] = data.f01_num_act1;
+        dataForm['f01_sup'] = data.f01_sup;
+        dataForm['f01_edificio_act'] = data.f01_edificio_act;
+        dataForm['f01_bloque_act'] = data.f01_bloque_act;
+        dataForm['f01_piso_act'] = data.f01_piso_act;
+        dataForm['f01_dpto_of_loc'] = data.f01_dpto_of_loc;
+        dataForm['f01_tel_act1'] = data.f01_tel_act1;
+        dataForm['f01_tipo_lic_descrip'] = data.f01_tipo_lic_descrip;
+        dataForm['f01_categoria_agrupada_descrip'] = data.f01_categoria_agrupada_descrip;
+        dataForm['f01_macro_act_descrip'] = data.f01_macro_act_descrip;
+        dataForm['f01_dist_act'] = data.f01_dist_act;
+        dataForm['f01_estab_es'] = data.f01_estab_es;
+        dataForm['f01_sup'] = data.f01_sup;
+        dataForm['f01_num_pmc'] = data.f01_num_pmc;
+        dataForm['f01_nro_orden'] = data.f01_nro_orden;
+        /*if(data.f01_tip_act =='MA' || data.f01_tip_act =='MATRI'){
+            dataForm['f01_tip_act'] =  'MATRIZ';
+        }
+        if(data.f01_tip_act =='SU' || data.f01_tip_act =='SUCUR'){
+            dataForm['f01_tip_act'] = 'SUCURSAL';
+        }*/
+        var multi = '';
+        if (data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32') {
+            dataForm['f01_tipo_lic_descrip'] = data.f01_tipo_lic_descrip;
+            dataForm['f01_categoria_agrupada_descrip'] = data.f01_tipo_lic_descrip;
+            dataForm['f01_categoria_agrupada_descripcion'] = data.f01_tipo_lic_descrip;
+            multi = '<table border="0.5" style="width:100%"><tr><td>NRO</td>'+
+            '<td>TIPO DE LICENCIA</td>' +
+            '<td>TIPO DE CATEGORÍA</td>'+
+            '<td>TIPO DE ACTIVIDAD</td></tr>';
+            for (i = 1; i < data.Licenmul_grilla.length; i++){
+                multi = multi +'<tr>' +
+                '<td>' + data.Licenmul_grilla[i].nroElem + '</td>'+
+                '<td>' + data.Licenmul_grilla[i].f01_tipo_licmdescrip + '</td>'+
+                '<td>' + data.Licenmul_grilla[i].f01_cat_agrupadamdescrip + '</td>'+
+                '<td>' + data.Licenmul_grilla[i].f01_act_desarrolladamdescrip + '</td></tr>';
+            }
+            multi = multi + '</table>';
+            dataForm['Licenmul_grilla'] =  multi;
+        } else{
+            dataForm['f01_tipo_lic_descrip'] = data.f01_tipo_lic_descrip;
+            dataForm['f01_categoria_agrupada_descrip'] = data.f01_categoria_agrupada_descrip;
+            dataForm['f01_categoria_agrupada_descripcion'] = data.f01_categoria_agrupada_descripcion;
+            dataForm['Licenmul_grilla'] = data.Licenmul_grilla;
+        };
+        var pubMod = '';
+        pubMod = '<table border="0.5" style="width:100%"><tr><td>VIAE</td>'+
+        '<td>TIPO</td>' +
+        '<td>CARACTERÍSTICA</td>'+
+        //'<td>CARAS</td>'+
+        '<td>DESCRIPCIÓN</td>'+
+        '<td>ALTO</td>'+
+        '<td>ANCHO</td>'+
+        '<td>SUPERFICIE</td>'+
+        '<td>ESTADO</td></tr>';
+        for (i = 0; i < data.publicidad.length; i++){
+            pubMod = pubMod +'<tr>' +
+                '<td>' + (i+1) + '</td>'+
+                '<td>' + data.publicidad[i].INT_TIPO_LETRE + '</td>'+
+                '<td>' + data.publicidad[i].INT_CARA + '</td>'+
+                //'<td>' + data.publicidad[i].INT_NRO_CARA + '</td>'+
+                '<td>' + data.publicidad[i].INT_DESC + '</td>'+
+                '<td>' + data.publicidad[i].INT_ANCHO + '</td>'+
+                '<td>' + data.publicidad[i].INT_ALTO + '</td>'+
+                '<td>' + data.publicidad[i].INT_SUP + '</td>'+
+                '<td>' + data.publicidad[i].estado + '</td></tr>';
+        }
+        pubMod = pubMod +'</table>';
+        dataForm['publicidad_grilla'] = pubMod;
+        var tablapago = '';
+        if($scope.pago_adelantado == 'undefined' || $scope.pago_adelantado == undefined  || $scope.pago_adelantado == 'NO' || datos.pago_adel == 'NO' || datos.pago_adel == undefined || datos.pago_adel == 'undefined'){
+            dataForm['pago_adel'] = 'SIN PAGO ADELANTADO';
+            dataForm['nro_ges'] = 'NINGUNA';
+            dataForm['tablaP'] = tablapago;
+        }else{
+            dataForm['pago_adel'] = $scope.pago_adelantado;
+            dataForm['nro_ges'] = data.nro_ges;
+            if (lstD.length > 0) {
+                tablapago = '<table border="0.5"><tr>'+
+                    '<th>Nº</th>'+
+                    '<th>GESTIÓN INICIO</th>'+
+                    '<th>GESTIÓN FIN</th>'+
+                    '<th>MONTO PATENTE</th>'+
+                    '<th>MONTO VIAE</th>'+
+                    '<th>MONTO SIN DESC.</th>'+
+                    '<th>DESCUENTO</th>'+
+                    '<th>MONTO TOTAL</th>'+
+                    '</tr>';
+                    for (i = 0; i < (lstD.length)-1; i++){
+                        tablapago = tablapago +'<tr>' +
+                        '<td>' + lstD[i].numero + '</td>'+
+                        '<td>' + lstD[i].inicio + '</td>'+
+                        '<td>' + lstD[i].fin + '</td>'+
+                        '<td>' + lstD[i].montoPatente + '</td>'+
+                        '<td>' + lstD[i].montoVIAE + '</td>'+
+                        '<td>' + lstD[i].montoTotalSinDescuento + '</td>'+
+                        '<td>' + lstD[i].montoDescuento + '</td>'+
+                        '<td>' + lstD[i].montoTotal + '</td></tr>';
+                    }
+                    tablapago = tablapago + '<tr>'+
+                        '<td colspan="7"> TOTAL A PAGAR</td>'+
+                        '<td>'+ $scope.totalD +'</td>'+
+                    '</tr></table>';
+                dataForm['tablaP'] = tablapago;
+            }
+        }
+        var divfoodTruck = '';
+        if (data.f01_categoria == 211 || data.f01_categoria == '211') {
+            divfoodTruck = divfoodTruck + '<table border="0" style="width:100%">'+
+                                        '<tr><td colspan="4" style="width: 100%">DATOS DEL VEHÍCULO O REMOLQUE</td></tr>'+
+                                    '<tr>'+
+                                        '<td style="width: 25%">TIPO DE VEHÍCULO:</td>'+
+                                        '<td style="width: 25%">'+ data.f01_vehiculo_ft + '</td>';
+                                    if (data.f01_vehiculo_ft == "REMOLQUE") {
+                                        divfoodTruck = divfoodTruck + 
+                                        '<td style="width: 25%">OTORGADO: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_otorgado_ft + '</td>'+
+                                    '</tr>';
+                                    }
+                                    else{
+                                        divfoodTruck = divfoodTruck +
+                                        '<td style="width: 25%"></td>'+
+                                        '<td style="width: 25%"></td>'+
+                                    '</tr>';
+                                    }
+                                    divfoodTruck = divfoodTruck + '<tr>'+
+                                        '<td style="width: 25%">CLASE: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_clase_ft + '</td>'+
+                                        '<td style="width: 25%">MARCA: </td>'+
+                                        '<td style="width: 250%">'+ data.f01_marca_ft + '</td>'+
+                                    '</tr>'+
+                                    '<tr>'+
+                                        '<td style="width: 25%">TIPO: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_tipo_ft + '</td>'+
+                                        '<td style="width: 25%">SUBTIPO: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_subtipo_ft + '</td>'+
+                                    '</tr>'+
+                                    '<tr>'+
+                                        '<td style="width: 25%">MODELO: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_modelo_ft + '</td>'+
+                                        '<td style="width: 25%">MOTOR: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_motor_ft + '</td>'+
+                                    '</tr>'+
+                                    '<tr>'+
+                                        '<td style="width: 25%">Nº CHASIS: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_chasis_ft + '</td>'+
+                                        '<td style="width: 25%">SERVICIO: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_servicio_ft + '</td>'+
+                                    '</tr>'+
+                                    '<tr>'+
+                                        '<td style="width: 25%">COLOR: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_color_ft + '</td>'+
+                                        '<td style="width: 25%">RADICATORIA: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_radicatoria_ft + '</td>'+
+                                    '</tr>'+
+                                    '<tr>'+
+                                        '<td style="width: 25%">DOCUMENTO LEGAL: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_doclegal_ft + '</td>'+
+                                        '<td style="width: 25%">Nº DOCUMENTO LEGAL: </td>'+
+                                        '<td style="width: 25%">'+ data.f01_numdoclegal_ft + '</td>'+
+                                    '</tr>'+
+                                    '<tr>'+
+                                        '<td style="width: 50%" colspan="2">UBICACIÓN DEL LUGAR DONDE SE EFECTUARÁ LA INSPECCIÓN DEL VEHÍCULO O REMOLQUE: </td>'+
+                                        '<td style="width: 50%" colspan="2">'+ data.f01_lugar_ft + '</td>'+
+                                    '</tr></table>';
+            dataForm['divft'] = divfoodTruck;
+        } else{
+            dataForm['divft'] = divfoodTruck;
+        };
+        dataForm['f01_idCodigoZona'] = data.f01_idCodigoZona;
+        dataForm['fecha_sist'] = sfecha;
+        dataForm['fecha_sist2'] = sfecha;
+        dataForm['usuario'] = sessionService.get('USUARIO');
+        dataForm['hora_sist'] = sHora;
+        if (data.chkzonasegura == '' || data.chkzonasegura == 'undefined' || data.chkzonasegura == undefined) {
+            dataForm['zonaSegura'] = '';
+        } else{
+            if (datos.chkzonasegura == 'ZONASEGURA') {
+                dataForm['zonaSegura'] = '<label>Zona Segura:</label> SI';
+            } else{
+                dataForm['zonaSegura'] = '<label>Zona Segura:</label> NO';
+            };
+        };
+        var nombreUsuario = sessionService.get('US_NOMBRE')+ ' ' +sessionService.get('US_PATERNO')+ ' ' +sessionService.get('US_MATERNO');
+        dataForm['usuarioPlataforma'] = nombreUsuario;
+        $rootScope.datosForm401 = dataForm;
+        $rootScope.datosEnv = data;
     }
+
     $scope.fmostrarFormulario   =   function(){
         $("#exampleModalCenter1").modal({backdrop: 'static', keyboard: false});
         $('#msgformularioJ').html($scope.msgformularioJ);

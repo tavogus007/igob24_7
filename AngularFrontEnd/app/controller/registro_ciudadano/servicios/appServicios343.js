@@ -1040,7 +1040,10 @@ $scope.open_map_ae2 = function(latitud, longitud)
     {
       var nombre_1 = new Array();
       var f = '';
-      var nombre = document.getElementById('busqueda_p').value;
+      //var nombre = document.getElementById('busqueda_p').value;
+      var nombre = $('#busqueda_p').val();
+      console.log("ZONA en appServicios343..!!! ",nombre);
+
       nombre = nombre.toUpperCase();
       var ca = "CALLE ";
       ca = ca.concat(nombre);

@@ -48,7 +48,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
       $scope.adicionarServicioGamlp = function(datos){    
         var fecha = new Date();
         var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-        var sIdServicio = 12;
+        var sIdServicio = 21;
         var sIdCiudadano = sessionService.get('IDSOLICITANTE');
         var sFechaTramite = fechactual;
         var idusu = 3;
@@ -57,6 +57,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         //aServicio.id = 68;
         aServicio.parametros ='{"frm_tra_dvser_id":"' + sIdServicio + '","frm_tra_id_ciudadano":"' + sIdCiudadano + '","frm_tra_fecha":"' + sFechaTramite + '","frm_tra_enviado":"NO","frm_tra_id_usuario":"' + idusu + '"}';
         aServicio.llamarregla(function(data){
+            console.log("dataaa",data);
             $.blockUI();
             $scope.tramitesCiudadano();
             swal('', 'Tramite creado correctamente', 'success');
@@ -368,10 +369,10 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         //TIPO_PERSONA
         var tipoPersona =   sessionService.get('TIPO_PERSONA');
         var sidservicio =   tramite.vdvser_id;
-        if(tipoPersona == 'NATURAL' && sidservicio == 12){
+        if(tipoPersona == 'NATURAL' && sidservicio == 21){
             sidservicio =   1;
         }
-        if(tipoPersona == 'JURIDICO' && sidservicio == 12){         
+        if(tipoPersona == 'JURIDICO' && sidservicio == 21){         
             sidservicio = 2;
         }
 

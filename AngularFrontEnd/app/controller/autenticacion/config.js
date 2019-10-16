@@ -44,7 +44,7 @@ var jsonURLS    =   {
     SERVICE_ENVIO_CORREO: "http://200.105.139.183:9090/smsemail/email/mail.php",
     //URLS_API
     //CONEXION_API_PG_IF: "http://172.19.161.199:9091/",//login, apirc, lotus
-    CONEXION_API_PG_IF: "http://192.168.6.107:91/",//login, apirc, lotus
+    CONEXION_API_PG_IF: "http://192.168.5.141:9097/",
     //CONEXION_API_PG_RC: "http://40.117.46.159:9093/",//login, apirc, lotus
     CONEXION_API_PG_RC: "http://192.168.5.141:8003/",//login, apirc, lotusoficial
     CONEXION_MOTOR_SERVICIO: "http://192.168.5.69/motorservicio_pruebas/public/",//apirc

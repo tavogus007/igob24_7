@@ -946,8 +946,8 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
       var nombre_1 = new Array();
       var f = '';
       //var nombre = document.getElementById('busqueda_p').value;
-      var nombre = $('#busqueda_pn').val();
-      console.log("zona...",nombre);
+      var nombre = $('#busqueda_p').val();
+      console.log("ZONA EN appServicios...",nombre);
       nombre = nombre.toUpperCase();
       var ca = "CALLE ";
       ca = ca.concat(nombre);

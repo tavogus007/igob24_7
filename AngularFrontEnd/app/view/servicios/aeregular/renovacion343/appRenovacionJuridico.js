@@ -486,33 +486,35 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                             }
                             /*HABILITANDO CAMPOS*/
                             $scope.botones = "mostrar";
-                            $scope.desabilitado = false;                    //console.log("zona:", response[0].zona_ae);
+                            $scope.desabilitado = false;                    
+                            //console.log("zona:", response[0].zona_ae);
                             if (lstPublicidad.length > 0) {
-                                $scope.datos.rdTipoTramite1 = 'NUEVO';
-                                //$scope.cambioToggle1('NUEVO');
-                                $scope.listpub = [];
-                                for (var i = 0; i < lstPublicidad.length; i++) {
-                                    var lstpublicidad = new Object();
-                                    lstpublicidad.idPublicidad = lstPublicidad[i].idPublicidad;
-                                    lstpublicidad.INT_NRO_CARA = lstPublicidad[i].cara;
-                                    lstpublicidad.INT_SUP = lstPublicidad[i].superficie;
-                                    lstpublicidad.idcarac = lstPublicidad[i].idTipoLetrero;
-                                    lstpublicidad.INT_TIPO_LETRE = lstPublicidad[i].descripcionTipoLetrero;
-                                    lstpublicidad.id_cara = lstPublicidad[i].idCaracteristica;
-                                    lstpublicidad.INT_CARA = lstPublicidad[i].caracteristica;
-                                    lstpublicidad.idcate = lstPublicidad[i].idCategoria;
-                                    lstpublicidad.INT_ALTO = lstPublicidad[i].alto;
-                                    lstpublicidad.INT_ANCHO = lstPublicidad[i].ancho;
-                                    lstpublicidad.INT_DESC = lstPublicidad[i].descripcion;
-                                    lstpublicidad.estado = lstPublicidad[i].estado;
-                                    $scope.listpub[i] = lstpublicidad;
-                                };
-                                $scope.datos.swpublicidad = 'CP';
-                                $scope.licenciaToogle4 = true;
-                                $scope.datos.publicidad = $scope.listpub;
-                                $scope.Plubli_Grilla($scope.datos.publicidad);
-                                $scope.publicid = $scope.listpub;
-                            }
+                            $scope.datos.rdTipoTramite1 = 'NUEVO';
+                            $scope.listpub = [];
+                            for (var i = 0; i < lstPublicidad.length; i++) {
+                                var lstpublicidad = new Object();
+                                lstpublicidad.idPublicidad = lstPublicidad[i].idPublicidad;
+                                lstpublicidad.INT_NRO_CARA = lstPublicidad[i].cara;
+                                lstpublicidad.INT_SUP = lstPublicidad[i].superficie;
+                                lstpublicidad.idcarac = lstPublicidad[i].idTipoLetrero;
+                                lstpublicidad.INT_TIPO_LETRE = lstPublicidad[i].descripcionTipoLetrero;
+                                lstpublicidad.id_cara = lstPublicidad[i].idCaracteristica;
+                                lstpublicidad.INT_CARA = lstPublicidad[i].caracteristica;
+                                lstpublicidad.idcate = lstPublicidad[i].idCategoria;
+                                lstpublicidad.INT_ALTO = lstPublicidad[i].alto;
+                                lstpublicidad.INT_ANCHO = lstPublicidad[i].ancho;
+                                lstpublicidad.INT_DESC = lstPublicidad[i].descripcion;
+                                lstpublicidad.estado = lstPublicidad[i].estado;
+                                $scope.listpub[i] = lstpublicidad;
+
+                            };
+                            $scope.datos.swpublicidad = 'CP';
+                            $scope.licenciaToogle4 = true;
+                            $scope.datos.publicidadAE = $scope.listpub;
+                            $scope.Plubli_Grilla($scope.datos.publicidadAE);
+                            $scope.pubAE = true;
+                            $scope.pubMensaje = false;
+                        }
                             else{
                                 $scope.datos.rdTipoTramite1 = 'RENOVACION';
                                 $scope.datos.swpublicidad = 'SP';
@@ -1488,7 +1490,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.publi = dato;
         $scope.publi.INT_ALTO = parseFloat(dato.INT_ALTO);
         $scope.publi.INT_ANCHO = parseFloat(dato.INT_ANCHO);
-        $scope.publi.INT_NRO_CARA = parseInt(dato.INT_NRO_CARA);
+        //$scope.publi.INT_NRO_CARA = parseInt(dato.INT_NRO_CARA);
         $scope.publi.INT_TIPO_LETRE = dato.INT_TIPO_LETRE;
         $scope.publi.INT_CARA = dato.INT_CARA;
         $scope.publi.INT_DESC = dato.INT_DESC;
@@ -1534,7 +1536,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                         palto   =   palto.replace(",",",");
                         pancho  =   parseFloat(pancho).toFixed(2);
                         pancho  =   pancho.replace(",",".");
-                        $scope.datos.publicidad[i].estado = 'M';
+                        $scope.datos.publicidad[i].estado = "N";
                         $scope.datos.publicidad[i].INT_SUP =  supe;
                         $scope.datos.publicidad[i].INT_ALTO = palto;
                         $scope.datos.publicidad[i].INT_ANCHO = pancho;
@@ -1554,12 +1556,11 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }
     }
 
+    
     $scope.guardarpublicidad = function(public){
         if (public.INT_SUPERFICIE) {
-            if(public.INT_NRO_CARA =='' || public.INT_NRO_CARA == null || public.INT_CARA =='' || public.INT_CARA == null ||
-            public.INT_CATE =='' || public.INT_CATE == null || public.INT_TIPO_LETRE =='' || public.INT_TIPO_LETRE == null ||
-            public.INT_DESC =='' || public.INT_DESC == null || public.INT_SUPERFICIE =='' || public.INT_SUPERFICIE == null ) {
-                swal('', 'Llene lo campos requeridos para la VIAE  ', 'error');
+            if(public.INT_CARA =='' || public.INT_CARA == null || public.INT_CATE =='' || public.INT_CATE == null || public.INT_TIPO_LETRE =='' || public.INT_TIPO_LETRE == null || public.INT_DESC =='' || public.INT_DESC == null || public.INT_SUPERFICIE =='' || public.INT_SUPERFICIE == null ) {
+                sweet.show('', 'Llene lo campos requeridos para la VIAE  ', 'error');
             } else {
                 var id=0
                 if($scope.datos.publicidad =='' || $scope.datos.publicidad == null || $scope.datos.publicidad =="undefined" ){
@@ -1573,12 +1574,11 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 }
                 if(id<21){
                     total = parseFloat(public.INT_SUPERFICIE);
-                    var sup_exc = total - 1;
                     if (total < 700) {
                         $scope.id = id;
                         $scope.publicid.push({
                             id: id,
-                            INT_NRO_CARA: public.INT_NRO_CARA,
+                            //INT_NRO_CARA: public.INT_NRO_CARA,
                             INT_CARA: public.INT_CARA,
                             INT_CATE: public.INT_CATE,
                             INT_TIPO_LETRE: public.INT_TIPO_LETRE,
@@ -1588,8 +1588,8 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                             id_cara: public.id_cara,
                             idcarac: public.idcarac,
                             idcate: public.idcate,
-                            INT_SUP:total.toFixed(2)
-                            //INT_SUP_EXCLUIDA: sup_exc
+                            INT_SUP:total.toFixed(2),
+                            estado:'N'
                         });
                         $scope.publi=[];
                         $scope.publi.INT_CATE="II Fija";
@@ -1598,17 +1598,17 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                         $scope.datos.publicidad = $scope.publicid;
                         $scope.Plubli_Grilla($scope.publicid);
                     } else {
-                        swal('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
+                        sweet.show('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
                     }
                 } else {
-                    swal('', 'Llego al limite de registro de Publicidad', 'error');
+                    sweet.show('', 'Llego al limite de registro de Publicidad', 'error');
                 }
             }
         } else {
-            if(public.INT_NRO_CARA =='' || public.INT_NRO_CARA == null || public.INT_CARA =='' || public.INT_CARA == null ||
+            if(public.INT_CARA =='' || public.INT_CARA == null ||
             public.INT_CATE =='' || public.INT_CATE == null || public.INT_TIPO_LETRE =='' || public.INT_TIPO_LETRE == null ||
             public.INT_DESC =='' || public.INT_DESC == null || public.INT_ALTO =='' || public.INT_ALTO == null || public.INT_ANCHO =='' || public.INT_ANCHO == null ) {
-                swal('', 'Llene lo campos requeridos para la VIAE  ', 'error');
+                sweet.show('', 'Llene lo campos requeridos para la VIAE  ', 'error');
             } else {
                 var id=0
                 if($scope.datos.publicidad =='' || $scope.datos.publicidad == null || $scope.datos.publicidad =="undefined" ){
@@ -1622,12 +1622,11 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 }
                 if(id<21){
                     total = parseFloat(public.INT_ALTO) * parseFloat(public.INT_ANCHO);
-                    var sup_exc = total - 1;
                     if (total < 700) {
                         $scope.id = id;
                         $scope.publicid.push({
                             id: id,
-                            INT_NRO_CARA: public.INT_NRO_CARA,
+                            //INT_NRO_CARA: public.INT_NRO_CARA,
                             INT_CARA: public.INT_CARA,
                             INT_CATE: public.INT_CATE,
                             INT_TIPO_LETRE: public.INT_TIPO_LETRE,
@@ -1637,8 +1636,8 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                             id_cara: public.id_cara,
                             idcarac: public.idcarac,
                             idcate: public.idcate,
-                            INT_SUP:total.toFixed(2)
-                            //INT_SUP_EXCLUIDA: sup_exc
+                            INT_SUP:total.toFixed(2),
+                            estado:'N'
                         });
                         $scope.publi=[];
                         $scope.publi.INT_CATE="II Fija";
@@ -1647,10 +1646,10 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                         $scope.datos.publicidad = $scope.publicid;
                         $scope.Plubli_Grilla($scope.publicid);
                     } else {
-                        swal('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
+                        sweet.show('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
                     }
                 } else {
-                    swal('', 'Llego al limite de registro de Publicidad', 'error');
+                    sweet.show('', 'Llego al limite de registro de Publicidad', 'error');
                 }
             }
         }
@@ -1669,19 +1668,39 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 FECHAINICIO: dato[j].FECHAINICIO,
                 INT_TIPO_LETRE: dato[j].INT_TIPO_LETRE,
                 INT_CARA: dato[j].INT_CARA,
-                //INT_CATE: dato[j].INT_CATE,
+                INT_CATE: dato[j].INT_CATE,
                 INT_DESC: dato[j].INT_DESC,
                 INT_ALTO: dato[j].INT_ALTO,
-                INT_ANCHO: dato[j].INT_ANCHO
+                INT_ANCHO: dato[j].INT_ANCHO,
+                estado: dato[j].estado
             });
         }
         var jsonString = '['+ (encabezado) +']';
         angular.forEach($scope.publi_grilla, function(value, key) {
-                encabezado[indice] = value;
-                indice = indice + 1;
-            });
-        $scope.datos.publicidad_grilla=encabezado;
+            encabezado[indice] = value;
+            indice = indice + 1;
+        });
+        $scope.datos.publicidad_grilla = encabezado;
+        var pub_grilla = $scope.datos.publicidad_grilla;
+        angular.forEach(pub_grilla, function(celda, fila) {
+            if (celda['estado'] == 'V') {
+                celda['estado'] = 'Vigente';
+            };
+            if (celda['estado'] == 'M') {
+                celda['estado'] = 'Modificar';
+            };
+            if (celda['estado'] == 'B') {
+                celda['estado'] = 'Baja';
+            };
+            if (celda['estado'] == 'N') {
+                celda['estado'] = 'Nuevo';
+            };
+        });
+        $scope.datos.publicidad_grilla = encabezado;
     }
+
+
+
 
     $scope.calcularCapacidad = function(superficie){
         if(superficie){
@@ -1727,10 +1746,40 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         });
     };
 
+     $scope.adjpublicidad = function (paramf){
+        console.log("Publicidad: ", paramf);
+        $scope.pubrd = $scope.datos.publicidadAE.concat(paramf.publicidad);
+        console.log(" $scope.pubrd:: ",  $scope.pubrd);
+        $scope.publigri = [];
+        var datpub = $scope.pubrd;
+        var j = 0;
+        var c = 1;
+        for(j = 0; j < datpub.length; j++) {
+            $scope.publigri.push({
+                id: c+1,
+                INT_CARA: datpub[j].INT_CARA,
+                INT_CATE: datpub[j].INT_CATE,
+                INT_TIPO_LETRE: datpub[j].INT_TIPO_LETRE,
+                INT_DESC: datpub[j].INT_DESC,
+                INT_ALTO: datpub[j].INT_ALTO,
+                INT_ANCHO: datpub[j].INT_ANCHO,
+                id_cara: datpub[j].id_cara,
+                idcarac: datpub[j].idcarac,
+                idcate: datpub[j].idcate,
+                INT_SUP:datpub[j].INT_SUP,
+                estado:datpub[j].estado
+            });
+        }
+
+        $scope.datos.pubenvio = $scope.publigri;
+        console.log("$scope.datos.pubenvio: ", $scope.datos.pubenvio);
+    }
+
     /*CIUDADANO - ENVIAR FORMULARIO JURIDICO*/
     $scope.enviarFormProcesosLinea = function(paramForm){
         $scope.ultimoArrayAdjunto();
         $scope.capturarImagen();
+        $scope.adjpublicidad(paramForm);
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         //$rootScope.validacionRequisitosTec();
         $scope.btnEnviarForm    =   true;
@@ -1823,7 +1872,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             datosNeXO['f01_observaciones_i']            =   "0";            
             datosNeXO['INT_RL_FEC_NACIMIENTO']          =   paramForm.INT_RL_FEC_NACIMIENTO;
             datosNeXO['INT_ACTIVIDAD_DESCRIPCION']      =   document.getElementById('INT_ACTIVIDAD_DESCRIPCION').value;
-            datosNeXO['INT_AC_MACRO_ID']                =   paramForm.INT_AC_MACRO_ID;
+            datosNeXO['INT_AC_MACRO_ID']                =   parseInt(paramForm.INT_AC_MACRO_ID);
             datosNeXO['INT_DISTRITO']                   =   paramForm.INT_DISTRITO;
             datosNeXO['f01_distrito_desc']              =   paramForm.f01_distrito_desc;
             //DATOS FALTANTES DEL CONTRIBUYENTE - REPRESENTANTE LEGAL
@@ -3564,6 +3613,13 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.datos.f01_macro_act = data.f01_macro_act;
         document.getElementById("f01_macro_act").value = data.f01_macro_act;
         $scope.GetValueZonaSegura(data.f01_categoria_agrupada);
+        if (data.publicidadAE == undefined || data.publicidadAE == 'undefined') {
+            $scope.pubAE = false;
+            $scope.pubMensaje = true;
+        } else{
+            $scope.pubAE = true;
+            $scope.pubMensaje = false;
+        };
         //VERIFICAR CATEGORIA DESARROLLADA
         var categoriaDescrip = ((typeof(data.f01_categoria_descrip) == 'undefined' || data.f01_categoria_descrip == null) ? '' : data.f01_categoria_descrip);
         if(categoriaDescrip == ''){

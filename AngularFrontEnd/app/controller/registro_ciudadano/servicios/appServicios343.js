@@ -699,10 +699,13 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
     {
         setTimeout(function()
         {
-            console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICAS");
-            console.log("latitud...",$scope.datos.INT_AC_latitud);
+            console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICASsssssssss");
+            var latitud = $scope.datos.INT_AC_latitud;
+            var longitud = $scope.datos.INT_AC_longitud;
+            console.log("latitud...",latitud);
             //map.removeLayer(vectorLayer_inci_baja);
             $("#map_principal").empty();
+
             $scope.map = new ol.Map
             ({
               target: 'map_principal',
@@ -734,6 +737,18 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
               
             var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: 'Leyenda'});
             $scope.map.addControl(layerSwitcher);
+
+            vectorLayer.getSource().clear();
+            ////////////////////////////////////////////////////////////////////////
+            if (latitud != undefined)
+            {
+                var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
+                feature.setStyle(iconStyle);
+                vectorSource.addFeature(feature);
+                $scope.map.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
+                $scope.map.getView().setZoom(15);
+            }
+            //////////////////////////////////////////////////////////////////////////
 
             $scope.map.on('click', function (evt)
             {
@@ -870,9 +885,9 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
         },550);
     };
 
-$scope.open_map_ae2 = function(latitud, longitud)
-  {
-    console.log("Entrando open_map_ae2");
+    $scope.open_map_ae2 = function(latitud, longitud)
+    {
+        console.log("Entrando open_map_ae2222222");
        
         setTimeout(function(){            
             var style = new ol.style.Style({
@@ -1034,7 +1049,7 @@ $scope.open_map_ae2 = function(latitud, longitud)
             });
             /////////////////////////
         },1000);
-  };
+    };
 
     $scope.buscar_ubicacion_p = function()
     {

@@ -1746,32 +1746,38 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         });
     };
 
-     $scope.adjpublicidad = function (paramf){
+    $scope.adjpublicidad = function (paramf){
         console.log("Publicidad: ", paramf);
-        $scope.pubrd = $scope.datos.publicidadAE.concat(paramf.publicidad);
-        console.log(" $scope.pubrd:: ",  $scope.pubrd);
-        $scope.publigri = [];
-        var datpub = $scope.pubrd;
-        var j = 0;
-        var c = 1;
-        for(j = 0; j < datpub.length; j++) {
-            $scope.publigri.push({
-                id: c+1,
-                INT_CARA: datpub[j].INT_CARA,
-                INT_CATE: datpub[j].INT_CATE,
-                INT_TIPO_LETRE: datpub[j].INT_TIPO_LETRE,
-                INT_DESC: datpub[j].INT_DESC,
-                INT_ALTO: datpub[j].INT_ALTO,
-                INT_ANCHO: datpub[j].INT_ANCHO,
-                id_cara: datpub[j].id_cara,
-                idcarac: datpub[j].idcarac,
-                idcate: datpub[j].idcate,
-                INT_SUP:datpub[j].INT_SUP,
-                estado:datpub[j].estado
-            });
+        var longpub = paramf.publicidadAE;
+        console.log(" $scope.pubrd:: ",  paramf.publicidadAE);
+        if(paramf.publicidadAE){
+            console.log(" $scope.pubrd:: ",  $scope.pubrd);
+            $scope.pubrd = paramf.publicidadAE.concat(paramf.publicidad);
+            $scope.publigri = [];
+            var datpub = $scope.pubrd;
+            var j = 0;
+            var c = 1;
+            for(j = 0; j < datpub.length; j++) {
+                $scope.publigri.push({
+                    id: c+1,
+                    INT_CARA: datpub[j].INT_CARA,
+                    INT_CATE: datpub[j].INT_CATE,
+                    INT_TIPO_LETRE: datpub[j].INT_TIPO_LETRE,
+                    INT_DESC: datpub[j].INT_DESC,
+                    INT_ALTO: datpub[j].INT_ALTO,
+                    INT_ANCHO: datpub[j].INT_ANCHO,
+                    id_cara: datpub[j].id_cara,
+                    idcarac: datpub[j].idcarac,
+                    idcate: datpub[j].idcate,
+                    INT_SUP:datpub[j].INT_SUP,
+                    estado:datpub[j].estado
+                });
+            }
+            $scope.datos.pubenvio = $scope.publigri;  
+        }else{
+            $scope.datos.pubenvio = paramf.publicidad;
         }
-
-        $scope.datos.pubenvio = $scope.publigri;
+        
         console.log("$scope.datos.pubenvio: ", $scope.datos.pubenvio);
     }
 

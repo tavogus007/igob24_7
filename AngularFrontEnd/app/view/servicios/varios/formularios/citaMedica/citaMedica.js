@@ -1303,18 +1303,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                  var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000038",descripcion:"CE-NUTRICION",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
               break;
               case "OD":
-                 if($scope.idHospital == 1){
                     var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000039",descripcion:"CE-ODONTOLOGÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-                 }  
-                 if($scope.idHospital == 2){
-                    var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000039",descripcion:"CE-ODONTOLOGÍA",gestion:"2018",costo:"7.00",costoPayme:"700",estado:"V",UsuarioFac:Usuario};
-                 }
-                 if($scope.idHospital == 3){
-                    var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000039",descripcion:"CE-ODONTOLOGÍA",gestion:"2018",costo:"10.00",costoPayme:"1000",estado:"V",UsuarioFac:Usuario};
-                 }
-                 if($scope.idHospital == 5){
-                    var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000039",descripcion:"CE-ODONTOLOGÍA",gestion:"2018",costo:"10.00",costoPayme:"1000",estado:"V",UsuarioFac:Usuario};
-                 }
               break;
               case "PE"://PEDIATRIA
                  var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000040",descripcion:"CE-PEDIATRÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
@@ -1486,7 +1475,6 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                  }
              });
             }
-    
     }
     
     $scope.pagoOnlineAfuera = function(){
@@ -1559,18 +1547,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                  var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000038",descripcion:"CE-NUTRICION",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
               break;
               case "OD":
-                 if($scope.idHospital == 1){
                     var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000039",descripcion:"CE-ODONTOLOGÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-                 }  
-                 if($scope.idHospital == 2){
-                    var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000039",descripcion:"CE-ODONTOLOGÍA",gestion:"2018",costo:"7.00",costoPayme:"700",estado:"V",UsuarioFac:Usuario};
-                 }
-                 if($scope.idHospital == 3){
-                    var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000039",descripcion:"CE-ODONTOLOGÍA",gestion:"2018",costo:"10.00",costoPayme:"1000",estado:"V",UsuarioFac:Usuario};
-                 }
-                 if($scope.idHospital == 5){
-                    var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000039",descripcion:"CE-ODONTOLOGÍA",gestion:"2018",costo:"10.00",costoPayme:"1000",estado:"V",UsuarioFac:Usuario};
-                 }
               break;
               case "PE"://PEDIATRIA
                  var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000040",descripcion:"CE-PEDIATRÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
@@ -1606,6 +1583,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                  var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000050",descripcion:"CE-TRAUMATOLOGIA PEDIATRICA(PROGRAMA PIE EQUINO CAVO VARO)",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
               break;
             }
+
             var formData = '{"personaId": "-1","clase": "N","gestion": "2018","observaciones": "NINGUNO","UnidadRecaudadoraId": "'+dataFum.idUnidadRecaudadora+'","usuario": "simgep","UsuarioIP": "192.168.5.248.1","equipo": "PAYME","cabecera": "'+dataFum.descripcion+'","itemsCadena": "'+dataFum.idItemRecaudador+'","montosCadena": "'+dataFum.costo+'","tipoActividad": "SIIS"}';
             //var urlFactura = "http://200.105.139.183:9090/igob247/generarFumPrometeo.php";
             var urlFactura = "http://200.105.139.183:9090/igob247/generarFumOficial.php";
@@ -1744,6 +1722,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
             }
     }
 
+    
     $scope.addImage=function(e,idFoto){
         cargando();
         $scope.imagenReferencia = true;

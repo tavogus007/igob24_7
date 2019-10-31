@@ -52,6 +52,8 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
 
     $scope.template     =   "";
     var aDocAdjuntos    =   new Array();
+     $rootScope.decJuradaNatural = "";
+    $rootScope.decJuradaJuridico = "";
     $scope.renovacion = 14;
     $scope.emision = 13;
 
@@ -1186,6 +1188,7 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
             });
         }
         $scope.datos.f01_dist_act    =   idDistrito;
+        $scope.datos.INT_AC_DISTRITO    =   idDistrito;
         $scope.datos.INT_AC_ID_ZONA     =   idZona;
         $scope.datos.f01_zona_act       = idZona;
         console.log("$scope.datos.f01_dist_act: ", $scope.datos.f01_dist_act);
@@ -1560,7 +1563,6 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                 }
                
                 if(datos == $scope.renovacion){
-
                     if ($scope.dataGenesisCidadano != ''){
                         var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
                         var contribuyente   =   new gLstActividadEconomica();
@@ -2066,6 +2068,7 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                     $rootScope.decJuradaNatural = urlData;
                     $scope.InsertarDocumento(response);
                     $rootScope.datosEnv.declaracion_jurada = urlData;
+                    $scope.datos.declaracion_jurada = urlData;
                     $scope.serializarInformacion($rootScope.datosEnv);
                     $.unblockUI();
                 }

@@ -604,27 +604,33 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
         $scope.datos.f01_actividadesDesarrolladasc = $scope.actividadDes;
     }
 
-    $scope.GetValueActividadesCatDesarrollada = function(){
+   $scope.GetValueActividadesCatDesarrollada = function(){        
         $scope.actividadDesCat = "";
-        var datosaux='';
+        var datosaux = '';
+        var datoscat = '';
+        var datosact = '';
         var datoslicm = {};
         if($scope.datos.licenciam.length > 0){
             datoslicm = $scope.datos.licenciam;
             for (var j = 0; j < datoslicm.length; j++) {
                 if(j+1 == datoslicm.length){
                     if(datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == '18' || datoslicm[j].f01_tipo_licmid == 18){
-                        datosaux = datosaux + datoslicm[j].f01_cat_agrupadamdescrip;
-                    } 
-                    else{
                         datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip;
-                    }   
-                }else{
-                    if(datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == '18' || datoslicm[j].f01_tipo_licmid == 18){
-                        datosaux = datosaux + datoslicm[j].f01_cat_agrupadamdescrip +" - ";
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip;
                     }
                     else{
-                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip +" - ";
-                    }   
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip;
+                    }
+                }else{
+                    if(datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == '18' || datoslicm[j].f01_tipo_licmid == 18){
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip  +" - ";;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip  +" - ";
+                    }
+                    else{
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip  +" - ";;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip  +" - ";
+                    }
                 }
             }
             var swmul = 0;
@@ -643,6 +649,7 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
         }
         $scope.actividadDesCat = datosaux;
         $scope.datos.f01_actividadesSecundarias = $scope.actividadDesCat;
+        $scope.datos.f01_categorias_multi = datosact;
     }
 
     $scope.SeleccionaPrioridad = function(dato){
@@ -3948,7 +3955,25 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
             datosNeXO['f01_categoria_agrupada']= parseInt(paramForm.f01_categoria_agrupada);
             datosNeXO['f01_categoria_agrupada_descripcion']="";
             datosNeXO['f01_actividad_desarrollada']= paramForm.f01_categoria_descrip2;
-            datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos;
+            datosNeXO['declaracion_jurada']               =   $rootScope.decJuradaNatural;
+
+            var datoObjectdj = [];
+            var decjuradaN = new Object();
+            if ($rootScope.decJuradaJuridico) {
+                decjuradaN.url = $rootScope.decJuradaJuridico;
+            } else{
+                decjuradaN.url = $scope.datos.declaracion_jurada;
+            };
+            decjuradaN.campo = 'Declaración Jurada Juridico';
+            decjuradaN.nombre = 'DECLARACIÓN JURADA';
+            datoObjectdj[0] = decjuradaN;
+            if($scope.datos.File_Adjunto){
+                datosNeXO['File_Adjunto'] =  $scope.datos.File_Adjunto.concat(decjuradaN);
+            }
+            else{
+                datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);;
+            }
+
             if(paramForm.g_origen_p){
                datosNeXO['g_origen_p'] = paramForm.g_origen_p;  
             }

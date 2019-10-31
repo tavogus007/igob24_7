@@ -1315,26 +1315,32 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.datos.f01_actividadesDesarrolladasc = $scope.actividadDes;
     }
 
-    $scope.GetValueActividadesCatDesarrollada = function(){
+    $scope.GetValueActividadesCatDesarrollada = function(){        
         $scope.actividadDesCat = "";
-        var datosaux='';
+        var datosaux = '';
+        var datoscat = '';
+        var datosact = '';
         var datoslicm = {};
         if($scope.datos.licenciam.length > 0){
             datoslicm = $scope.datos.licenciam;
             for (var j = 0; j < datoslicm.length; j++) {
                 if(j+1 == datoslicm.length){
                     if(datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == '18' || datoslicm[j].f01_tipo_licmid == 18){
-                        datosaux = datosaux + datoslicm[j].f01_cat_agrupadamdescrip;
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip;
                     }
                     else{
                         datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip;
                     }
                 }else{
-                    if(datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == 18){
-                        datosaux = datosaux + datoslicm[j].f01_cat_agrupadamdescrip +" - ";
+                    if(datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == '18' || datoslicm[j].f01_tipo_licmid == 18){
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip  +" - ";;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip  +" - ";
                     }
                     else{
-                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip +" - ";
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip  +" - ";;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip  +" - ";
                     }
                 }
             }
@@ -1347,14 +1353,16 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 }
             }
             if(swmul == 1){
-                $scope.mostrarzonaseguraj = true;
+                $scope.mostrarzonasegura = true;
             }else{
-                $scope.mostrarzonaseguraj = false;
+                $scope.mostrarzonasegura = false;
             }
         }
         $scope.actividadDesCat = datosaux;
         $scope.datos.f01_actividadesSecundarias = $scope.actividadDesCat;
+        $scope.datos.f01_categorias_multi = datosact;
     }
+
 
     $scope.SeleccionaPrioridad = function(dato){
        var arraydata = [];
@@ -1798,8 +1806,21 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }
         $scope.divVIAE="mostrar";
         /*RENOVACION DE LICENCIAS*/
-        datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
-        if ($scope.tipoPersona != 'NATURAL'){
+         if(paramForm.rdTipoTramite == 'RENOVACION'){
+            datosNeXO['f01_id_actividad_economica']   =   paramForm.f01_id_actividad_economica;
+            datosNeXO['f01_nro_orden']   =   paramForm.f01_nro_orden;
+            datosNeXO['f01_id_contribuyente']   =   paramForm.f01_id_contribuyente;
+            datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
+            datosNeXO['f01_id_representante_legal'] = paramForm.f01_id_representante_legal;
+        }
+         if(paramForm.f01_tipo_lic == 32 || paramForm.f01_tipo_lic == '32'){
+            datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
+        }else{
+             datosNeXO['f01_actividadesSecundarias'] = '';
+        }
+
+        if ($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona == 'J'){
+            datosNeXO['f01_nro_frm'] = sessionService.get('IDTRAMITE') ;
             datosNeXO['f01_tipo_per']                   =    'J';
             datosNeXO['f01_tipo_per_desc']              = 'JURIDICO';
             datosNeXO['INT_SOLICITANTE']                =   paramForm.INT_SOLICITANTE;
@@ -1857,7 +1878,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             datosNeXO['f01_macro_act_descrip']          =   paramForm.f01_macro_act_descrip;
             datosNeXO['f01_zona_act']                   =   paramForm.f01_zona_act;//paramForm.f01_zona_act_descrip;
             datosNeXO['f01_zona_act_descrip']           =   paramForm.f01_zona_act_descrip;
-            datosNeXO['f01_dist_act']                   =   paramForm.INT_AC_DISTRITO;//"";
+            datosNeXO['f01_dist_act']                   =   paramForm.f01_dist_act;//"";
             datosNeXO['f01_dist_act_descrip']           =   paramForm.f01_dist_act_descrip;
             datosNeXO['f01_tip_via_act']                =   paramForm.f01_tip_via_act;
             datosNeXO['f01_num_act']                    =   paramForm.f01_num_act;
@@ -1915,7 +1936,8 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             datosNeXO['f01_macro_des']=paramForm.f01_macro_des;
             datosNeXO['f01_requisitos_actividad_economica'] =  paramForm.f01_requisitos_actividad_economica;
             datosNeXO['rdTipoTramite'] = paramForm.rdTipoTramite;
-            datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos;
+            
+
             datosNeXO['FILE_FOTOCOPIA_CI'] = paramForm.FILE_FOTOCOPIA_CI;
             datosNeXO['FILE_FOTOCOPIA_CI_R'] = paramForm.FILE_FOTOCOPIA_CI_R;
             datosNeXO['f01_poder_representante'] = paramForm.f01_poder_representante;
@@ -1931,6 +1953,23 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             datosNeXO['f01_actividad_desarrollada']     =   "";           
             /*CAMPOS GENERICOS NATURAL Y JURIDICO*/ //-->EL CAMPO NO SE ESTA GENERANDO CORRECTAMENTE
             /*REQUISITOSDELAACTIVIDADECONOMICA*/
+
+             var datoObjectdj = [];
+            var decjuradaN = new Object();
+            if ($rootScope.decJuradaJuridico) {
+                decjuradaN.url = $rootScope.decJuradaJuridico;
+            } else{
+                decjuradaN.url = $scope.datos.declaracion_jurada;
+            };
+            decjuradaN.campo = 'Declaración Jurada Juridico';
+            decjuradaN.nombre = 'DECLARACIÓN JURADA';
+            datoObjectdj[0] = decjuradaN;
+            if($scope.datos.File_Adjunto){
+                datosNeXO['File_Adjunto'] =  $scope.datos.File_Adjunto.concat(decjuradaN);
+            }
+            else{
+                datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);;
+            }
             datosNeXO['Licenmul_grilla'] = paramForm.Licenmul_grilla;
             datosNeXO['f01_tip_act']                    =   paramForm.f01_tip_act;
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;
@@ -1947,16 +1986,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 datosNeXO['f01_act_principal2'] = '';
             }   
         }         
-        /*CAMPOS GENERICOS NATURAL Y JURIDICO*/ //-->EL CAMPO NO SE ESTA GENERANDO CORRECTAMENTE
-        /*if(paramForm.f01_tipo_lic == 3375){
-            datosNeXO['f01_categoria'] = 3375;
-            datosNeXO['f01_categoria_descrip'] =3375
-            datosNeXO['f01_categoria_agrupada_descripcion'] = '';
-            datosNeXO['f01_categoria_agrupada'] = 3375;
-            datosNeXO['f01_actividad_desarrollada'] = '';
-            datosNeXO['f01_categoria_agrupada_descrip'] = 0;
-            datosNeXO['f01_categoria_agrupada_dem'] = 0;
-        }*/
+        
             datosNeXO['f01_categoria_descrip']      =  paramForm.f01_categoria_descripcion;
             datosNeXO['f01_categoria_descrip2']      =  paramForm.f01_categoria_descripcion;
             datosNeXO['f01_categoria']      =  paramForm.f01_categoria_descrip;

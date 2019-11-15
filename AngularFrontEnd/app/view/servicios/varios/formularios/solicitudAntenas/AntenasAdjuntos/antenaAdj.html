@@ -61,9 +61,22 @@
     <link href="../../libs/css/sweetalert.css" rel="stylesheet">
     <!--ngSweetAlert-->
   <script type="text/javascript">
-      $('#FILE_LIC_RADIODIFUSION').change(function(e) {
+      /*$('#FILE_LIC_RADIODIFUSION').change(function(e) {
+        console.log("RRRRRRRRRrrr",e);
       var id = 0;
       angular.element(this).scope().addImage(e,id);
+      });*/
+
+      $('.modal').on('shown.bs.modal', function() {
+            $(this).before($('.modal-backdrop'));
+            $(this).css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 1);
+      });
+
+      $('.custom-upload input[type=file]').change(function(){
+          if($(this).val() != '' || $(this).val() != ""){
+              $(this).next().find('input').val($(this).val());
+              angular.element(this).scope().cambiarFile(this, $(this).val());
+          }
       });
   </script>
     <script src="../../libs/js/prism.js"></script>
@@ -85,7 +98,33 @@
             <div class="form-group" >
                 <div class="col-md-1">
                 </div>
-                <div class="col-md-5">
+
+                <div class="form-group">
+                    <label class="col-sm-5" id="lbl_f01_req13">LICENCIA DE RADIODIFUSIÓN Y/O LICENCIA VIGENTE DE USO DE FRECUENCIAS DEL ESPECTRO RADIOELÉCTRICO EMITIDA POR LA AUTORIDAD DE REGULACIÓN Y FISCALIZACIÓN DE TELECOMUNICACIONES Y TRANSPORTES:</label>
+                    <div class="col-sm-4">
+                        <div class="custom-upload">
+                            <input type="file" id="FILE_LIC_RADIODIFUSION" name="FILE_LIC_RADIODIFUSION" uploader-model="FILE_LIC_RADIODIFUSION" style="display: none;" accept="image/*"/>
+                            <div class="input-group">
+                              <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                              <input id="FILE_LIC_RADIODIFUSION_campo" name="FILE_LIC_RADIODIFUSION_campo" ng-model="datos.FILE_LIC_RADIODIFUSION_campo" type="text" class="form-control input-lg" required disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="input-group-btn">
+                            <p>
+                              <a id="href_FILE_LIC_RADIODIFUSION"  href="" target="_blank" ng-click="mostrarimgjuridico('FILE_LIC_RADIODIFUSION');">
+                         file
+                        <button id="btn_FILE_LIC_RADIODIFUSION" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                        </a>
+                        <button id="btn_FILE_LIC_RADIODIFUSION" ng-click="ejecutarFile('FILE_LIC_RADIODIFUSION', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--div class="col-md-5">
                     <label class="fecha">LICENCIA DE RADIODIFUSIÓN Y/O LICENCIA VIGENTE DE USO DE FRECUENCIAS DEL ESPECTRO RADIOELÉCTRICO EMITIDA POR LA AUTORIDAD DE REGULACIÓN Y FISCALIZACIÓN DE TELECOMUNICACIONES Y TRANSPORTES:</label>
                 </div>
                 <div class="col-md-3">
@@ -103,24 +142,16 @@
                     <div class="controls">
                         <img class="img-responsive img-thumbnail"  id="imgSalida"  ng-src="{{imagenPortada}}" >    
                     </div>
-                </div>
+                </div-->
             </div>
             <br>
             <br>
             <div class="form-group" align="right">
-              <div class="col-md-10">
-                <span class="lbl col-sm-10"> </span>
-                <tr>
-                <!--td>
-                    <a class="btn btn-default" style="color:#ffffff" href="#/dashboard">{{translateTitulos.lbl_01_01_01}}</a>
-                </td-->
-                 
-                <td >
-                    <button id="grabar" data-toggle="modal" data-target="#formModal" type="submit" ng-click="validacamposJuridico();"  class="btn btn-success" >
-                        Grabar ó Actualizar Documento.
+              <div class="col-md-11" align="right">
+                
+                    <button  id="grabar" data-toggle="modal" type="submit" ng-click="validacamposJuridico();"  class="btn btn-success" >
+                        Registrar Documento.
                     </button>
-                </td>
-                </tr>
                </div>
             </div>
             
@@ -204,7 +235,7 @@
                              </tr>                
                           </table>
                           <!--b><font SIZE=3 color="red">{{ErrorCapcha}}</font></b-->
-              <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
+                          <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
                           <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b>
                        </div>
                       <!-- ********************* -->
@@ -218,5 +249,21 @@
           </div>
       </div>
   </div>
+
+  <div class="modal fade" id="fotpod" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+                  <h4 class="modal-title" id="myModalLabel">LICENCIA DE RADIODIFUSIÓN Y/O LICENCIA VIGENTE DE USO DE FRECUENCIAS DEL ESPECTRO RADIOELÉCTRICO EMITIDA POR LA AUTORIDAD DE REGULACIÓN Y FISCALIZACIÓN DE TELECOMUNICACIONES Y TRANSPORTES:</h4>
+              </div>
+              <img id="imgSalida" ng-src="{{archivoPOD}}" width="100%" height="100%">
+              <div class="modal-footer">
+                  <button id="{{translateTitulos.lbl_05_05_05}}" name="{{translateTitulos.lbl_05_05_05}}" type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
 </div>
 

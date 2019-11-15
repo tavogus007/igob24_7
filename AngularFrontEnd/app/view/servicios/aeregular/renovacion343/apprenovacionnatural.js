@@ -3944,6 +3944,7 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
             datosNeXO['f08_hojas_recibidas']="0";
             datosNeXO['f08_observaciones_i']="0";
             datosNeXO['rdTipoTramite'] = paramForm.rdTipoTramite;
+            datosNeXO['f01_nro_actividad']  =   paramForm.f01_nro_actividad;
             //PAGO ADELANTADO
             datosNeXO['pago_adel'] =  $scope.pago_adelantado;
             datosNeXO['nro_ges'] =  paramForm.nro_ges;

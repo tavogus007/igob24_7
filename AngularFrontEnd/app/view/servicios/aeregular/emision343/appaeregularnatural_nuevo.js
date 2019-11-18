@@ -3385,7 +3385,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['f08_observaciones_i']="0";
             datosNeXO['rdTipoTramite'] = paramForm.rdTipoTramite;
             /*REQUISITOSDELAACTIVIDADECONOMICA - CIUDADANO*/
-            datosNeXO['f01_tip_act']=paramForm.f01_tip_act;
             datosNeXO['f01_tipo_lic']=paramForm.f01_tipo_lic;
             datosNeXO['f01_categoria'] = paramForm.f01_categoria_descrip;
             datosNeXO['f01_categoria_agrupada'] = paramForm.f01_categoria_agrupada;
@@ -3401,7 +3400,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             else{
                 datosNeXO['g_origen_p']="";
             }
-            datosNeXO['f01_tip_act']                    =   paramForm.f01_tip_act; 
+            datosNeXO['f01_tip_act']                    =   'SU'; 
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;           
             /*CAMPOS GENERICOS NATURAL Y JURIDICO*/ //-->EL CAMPO NO SE ESTA GENERANDO CORRECTAMENTE
             if(datosNeXO['f01_requisitos_tecnicos'] == null){

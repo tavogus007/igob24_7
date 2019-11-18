@@ -1936,7 +1936,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             datosNeXO['f01_macro_des']=paramForm.f01_macro_des;
             datosNeXO['f01_requisitos_actividad_economica'] =  paramForm.f01_requisitos_actividad_economica;
             datosNeXO['rdTipoTramite'] = paramForm.rdTipoTramite;
-            
+            datosNeXO['f01_nro_actividad']  =   paramForm.f01_nro_actividad;
 
             datosNeXO['FILE_FOTOCOPIA_CI'] = paramForm.FILE_FOTOCOPIA_CI;
             datosNeXO['FILE_FOTOCOPIA_CI_R'] = paramForm.FILE_FOTOCOPIA_CI_R;

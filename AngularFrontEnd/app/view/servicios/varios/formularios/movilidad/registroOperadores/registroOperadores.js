@@ -2173,8 +2173,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     }
     $scope.datos.RO_CALL_POO = data.veh_datos.RO_CALL_POO;
     $scope.datos.RO_NRO_POO = data.veh_datos.RO_NRO_POO;
-    $scope.datos.RO_ID_SUC = data.veh_ofi_id;
-    $scope.idVeh = data.veh_id;
+    $scope.datos.RO_ID_SUC = data.veh_ope_id_oficina;
+    $scope.idVeh = data.veh_ope_id;
     $scope.getComboClaseMovilidad();
     if($scope.datos.RO_MOD == 1 || $scope.datos.RO_MOD == 2 ){
       $scope.datos.RO_ASI_V = data.veh_datos.RO_ASI_V;
@@ -2704,7 +2704,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       angular.forEach($scope.objVehiculos,function(val, index)
       {
         if(val.veh_placa == $scope.datos.PLACA){
-          id_suc = val.veh_ofi_id;
+          id_suc = val.veh_ope_id_oficina;
           nom_suc = val.veh_datos.RO_NOM_SUC
         }
       });
@@ -2738,6 +2738,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       datosCond.datos = datac;
       datosCond.usr_id = 1; 
       datosCond.ofi_id = id_suc; 
+      datosCond.tipo_ser = $scope.datos.RO_MOD;        
       datosCond.opcion = opc;
       datosCond.conductorAbm (function(data){
         data = JSON.parse(data).success.data[0];
@@ -2783,8 +2784,9 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   });
 
   $scope.modificarCond = function(cond){
+    console.log(cond,'cond');
     $scope.crearCond(2);
-    $scope.datos.RO_CI_C = cond.cond_id;
+    $scope.datos.RO_CI_C = cond.cond_ci;
     $scope.datos.RO_EXP_C = cond.cond_datos.RO_EXP_C;
     $scope.datos.PLACA  = cond.cond_datos.PLACA;
     $scope.datos.RO_NOM_C = cond.cond_datos.RO_NOM_C;
@@ -2802,7 +2804,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.datos.RO_NRO_C = cond.cond_datos.RO_NRO_C;
     $scope.datos.RO_CAT_C = cond.cond_datos.RO_CAT_C;
     $scope.datos.RO_TIP_C= cond.cond_datos.RO_TIP_C;
-    $scope.condId = cond.cond_id;
+    $scope.condId = cond.cond_ofi_id;
     $scope.distritoZonas($scope.datos.RO_MAC_C);
   }
 
@@ -2842,6 +2844,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       datosCond.datos = '';
       datosCond.usr_id = 1; 
       datosCond.ofi_id = 1; 
+      datosCond.tipo_ser = 0;
       datosCond.opcion = 'E';
       datosCond.conductorAbm (function(data){
         data = JSON.parse(data).success.data[0].sp_abm_operador_conductor;

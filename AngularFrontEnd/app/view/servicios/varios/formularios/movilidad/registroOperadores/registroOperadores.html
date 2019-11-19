@@ -1839,7 +1839,7 @@ function validaSuperficie(sup)
                         <tr ng-repeat="veh in $data" >
                           <td align="center"  data-title="'Opciones'" width="3%" ng-show="desabilita == false">
                             <a class="btn btn-default btn-circle" ng-click="modificarVehiculo(veh);" data-toggle="modal" data-target="#vehiculo" ><i class="fa fa-pencil" style="color:#249FE6"></i></a>
-                            <a  class="btn btn-default btn-circle" ng-click="eliVehiculo(veh.veh_id);"><i class="fa fa-trash-o" style="color:#249FE6"></i></a> 
+                            <a  class="btn btn-default btn-circle" ng-click="eliVehiculo(veh.veh_ope_id);"><i class="fa fa-trash-o" style="color:#249FE6"></i></a> 
                           </td>
                           <td align="center" data-title="'#'" style="width:2%">{{veh.nro}}</td>
                           <td class="text-center" style="width:10%" data-title="'Oficina'" sortable="'RO_NOM_SUC'" ng-show="datos.RO_MOD==1">
@@ -1861,7 +1861,7 @@ function validaSuperficie(sup)
                             {{veh.veh_datos.RO_COLOR_V}}
                           </td>
                           <td class="text-center" style="width:10%" data-title="'Estado'" sortable="'veh_estado_doc'">
-                            {{veh.veh_estado_doc}}
+                            {{veh.veh_ope_estado_veh}}
                           </td>
                         </tr>
                       </table>
@@ -1880,7 +1880,7 @@ function validaSuperficie(sup)
                         <tr ng-repeat="cond in $data">
                           <td align="center"  data-title="'Opciones'" width="3%" ng-show="desabilita == false">
                             <a class="btn btn-default btn-circle" data-toggle="modal" data-target="#modalConductor"  ng-click="modificarCond(cond);"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
-                            <a class="btn btn-default btn-circle"  ng-click="eliminarCond(cond.cond_id)"  ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>        
+                            <a class="btn btn-default btn-circle"  ng-click="eliminarCond(cond.cond_ofi_id)"  ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>        
                           </td>
                           <td align="center" data-title="'#'" style="width:2%">{{cond.nro}}</td>
                           <td class="text-center" style="width:10%" data-title="'Oficina-Macro'" ng-show="datos.RO_MOD==1">
@@ -1902,7 +1902,7 @@ function validaSuperficie(sup)
                             {{cond.cond_datos.RO_MAT_C}}
                           </td>
                           <td class="text-center" style="width:10%" data-title="'Estado'">
-                            {{cond.cond_estado_doc}}
+                            {{cond.cond_ofi_estado_doc}}
                           </td>
                         </tr>
                       </table>
@@ -2383,7 +2383,7 @@ function validaSuperficie(sup)
                                 <div class="form-group">
                                   <label class="control-label">C.I.:</label>
                                   <div class="controls">
-                                    <input id="RO_CI_C" name="RO_CI_C" type="number"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_C"  style="text-transform:uppercase;" required ng-disabled="desabilitadoO"/>
+                                    <input id="RO_CI_C" name="RO_CI_C" type="text"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_C"  style="text-transform:uppercase;" required ng-disabled="desabilitadoO"/>
                                   </div>
                                 </div>
                               </div>

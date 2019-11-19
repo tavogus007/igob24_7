@@ -105,6 +105,7 @@
 
   function validaLetras(campo){
     console.log(campo.name);
+    campo.value = campo.value.toUpperCase();
     var color = campo.value;
     emailRegex = /^[a-zA-Z ]+$/;
     if (emailRegex.test(color)) {
@@ -189,9 +190,9 @@
                     <table ng-table="tablaVehiculo" show-filter="true" class="table tableE table-striped table-bordered">
                       <tr ng-repeat="veh in $data" ng-style="veh.resultado=='vencido' && {'background-color':'#F9B1A7'}">
                         <td align="center"  data-title="'Opciones'" style="width:8%">
-                          <a  class="btn btn-success btn-circle"  ng-click="registrarObservacion(veh.veh_id,'V');" title="Registrar Observación" ng-show="veh.veh_estado_veh =='APROBADO'"><i class="fa fa-pencil-square-o" style="color:white"></i></a>
-                          <a  class="btn btn-primary btn-circle"  ng-click="listaObservaciones(veh.veh_id,'V');" title="Lista Observaciones Vehiculo" ng-show="veh.veh_estado_veh =='APROBADO' && veh.veh_obs>0"><i class="fa fa-list-ol" style="color:white"></i></a>
-                          <a  class="btn btn-danger btn-circle"  ng-click="eliVehiculo(veh.veh_id);" title="Eliminar Vehiculo" ng-show="veh.veh_estado_veh =='APROBADO'" ><i class="fa fa-trash-o" style="color:white"></i></a>
+                          <a  class="btn btn-success btn-circle"  ng-click="registrarObservacion(veh.veh_ope_id,'V');" title="Registrar Observación" ng-show="veh.veh_ope_estado_veh =='APROBADO'"><i class="fa fa-pencil-square-o" style="color:white"></i></a>
+                          <a  class="btn btn-primary btn-circle"  ng-click="listaObservaciones(veh.veh_ope_id,'V');" title="Lista Observaciones Vehiculo" ng-show="veh.veh_ope_estado_veh =='APROBADO' && veh.veh_obs>0"><i class="fa fa-list-ol" style="color:white"></i></a>
+                          <a  class="btn btn-danger btn-circle"  ng-click="eliVehiculo(veh.veh_ope_id);" title="Eliminar Vehiculo" ng-show="veh.veh_ope_estado_veh =='APROBADO'" ><i class="fa fa-trash-o" style="color:white"></i></a>
                           <a  class="btn btn-warning btn-circle"  ng-click="renovacionTmov(veh)" title="Renovación de TMOV" ng-show="veh.resultado=='vencido'"><i class="fa fa-refresh" style="color:white" ></i></a>
                         </td>
                         <td align="center" data-title="'#'" style="width:2%">{{$index+1}} {{}}</td>
@@ -214,10 +215,10 @@
                           {{veh.veh_datos.RO_COLOR_V}}
                         </td>
                         <td class="text-center" style="width:8%" data-title="'Estado'" sortable="'veh_estado_veh'" filter="{'veh_estado_veh':'text'}">
-                          {{veh.veh_estado_veh}}
+                          {{veh.veh_ope_estado_veh}}
                         </td>
                         <td class="text-center" style="width:10%" data-title="'Fecha de Vencimiento TMOV'" sortable="'veh_vigencia_a'" filter="{'veh_vigencia_a':'text'}">
-                          {{veh.veh_vigencia_a | date:'dd-MM-yyyy'}}
+                          {{veh.veh_ope_vigencia_a | date:'dd-MM-yyyy'}}
                         </td>
                       </tr>
                     </table>
@@ -360,6 +361,7 @@
                                           <option value="">--Seleccione--</option>
                                           <option value="LA PAZ">LA PAZ</option>
                                           <option value="EL ALTO">EL ALTO</option>
+                                          <option value="OTRO">OTRO</option>
                                       </select>
                                     </div>
                                   </div>                                                    
@@ -692,9 +694,9 @@
                     <table ng-table="tablaConductor" show-filter="true" class="table tableE table-striped table-bordered">
                       <tr ng-repeat="cond in $data" ng-style="cond.resultado=='vencido' && {'background-color':'#F9B1A7'}">
                         <td align="center"  data-title="'Opciones'" style="width:10%">
-                          <a  class="btn btn-success btn-circle"  ng-click="registrarObservacion(cond.cond_id,'C');" title="Registrar Observación" ng-show="cond.cond_estado_doc=='APROBADO'"><i class="fa fa-pencil-square-o" style="color:white"></i></a>
-                          <a  class="btn btn-primary btn-circle"  ng-click="listaObservaciones(cond.cond_id,'C');" title="Lista Observaciones Conductor" ng-show="cond.cond_estado_doc=='APROBADO' && cond.cond_obs >0"><i class="fa fa-list-ol" style="color:white"></i></a>
-                          <a class="btn btn-danger btn-circle"  ng-click="eliminarCond(cond.cond_id)" title="Elimina Conductor" ng-show="cond.cond_estado_doc=='APROBADO'"><i class="fa fa-trash-o" style="color:white"></i></a> 
+                          <a  class="btn btn-success btn-circle"  ng-click="registrarObservacion(cond.cond_ofi_id,'C');" title="Registrar Observación" ng-show="cond.cond_ofi_estado_doc=='APROBADO'"><i class="fa fa-pencil-square-o" style="color:white"></i></a>
+                          <a  class="btn btn-primary btn-circle"  ng-click="listaObservaciones(cond.cond_ofi_id,'C');" title="Lista Observaciones Conductor" ng-show="cond.cond_ofi_estado_doc=='APROBADO' && cond.cond_obs >0"><i class="fa fa-list-ol" style="color:white"></i></a>
+                          <a class="btn btn-danger btn-circle"  ng-click="eliminarCond(cond.cond_ofi_id)" title="Elimina Conductor" ng-show="cond.cond_ofi_estado_doc=='APROBADO'"><i class="fa fa-trash-o" style="color:white"></i></a> 
                           <a  class="btn btn-warning btn-circle"  ng-click="renovacionTic(cond)" title="Renovación de TIC" ng-show="cond.resultado=='vencido'"><i class="fa fa-refresh" style="color:white" ></i></a>
                         </td>
                         <td align="center" data-title="'#'" style="width:2%">{{$index+1}}</td>
@@ -716,11 +718,11 @@
                         <td class="text-center" style="width:10%" data-title="'Materno'" sortable="'RO_MAT_C'">
                           {{cond.cond_datos.RO_MAT_C}}
                         </td>
-                        <td class="text-center" style="width:10%" data-title="'Estado'" sortable="'cond_estado_doc'" filter="{'cond_estado_doc':'text'}">
-                          {{cond.cond_estado_doc}}
+                        <td class="text-center" style="width:10%" data-title="'Estado'" sortable="'cond_ofi_estado_doc'" filter="{'cond_ofi_estado_doc':'text'}">
+                          {{cond.cond_ofi_estado_doc}}
                         </td>
-                        <td class="text-center" style="width:11%" data-title="'Fecha de Vencimiento TIC'" sortable="'cond_vigencia_a'" filter="{'cond_vigencia_a':'text'}">
-                          {{cond.cond_vigencia_a | date:'dd-MM-yyyy'}}
+                        <td class="text-center" style="width:11%" data-title="'Fecha de Vencimiento TIC'" sortable="'cond_ofi_vigencia_a'" filter="{'cond_ofi_vigencia_a':'text'}">
+                          {{cond.cond_ofi_vigencia_a | date:'dd-MM-yyyy'}}
                         </td>
                       </tr>
                     </table>

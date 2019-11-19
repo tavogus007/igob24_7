@@ -194,6 +194,7 @@ function conductor(){
   this.datos; 
   this.usr_id; 
   this.ofi_id; 
+  this.tipo_ser; 
   this.opcion; 
 } 
 
@@ -207,6 +208,7 @@ conductor.prototype.conductorAbm = function (functionResp) {
     "datos"   :this.datos, 
     "usr_id"  :this.usr_id, 
     "ofi_id" :this.ofi_id, 
+    "tipo_ser" :this.tipo_ser, 
     "opcion"  :this.opcion
   };
   ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);

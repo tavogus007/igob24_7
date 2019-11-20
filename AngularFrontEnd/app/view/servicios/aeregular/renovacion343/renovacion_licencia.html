@@ -182,12 +182,12 @@
                                 <div class="panel-heading"><B>RENOVAR {{translateTitulos.lbl_12_06}}</B></div>
                                 <div class="panel-body" ng-disabled="true">
                                     <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadEconomica">
-                                        <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'#00f5f5','font-color':'#A2D5AE'}"><!--cambios-->
+                                        <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'#D3D3D3','font-color':'#A2D5AE'}"><!--cambios-->
                                             <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
                                             <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
                                             <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
-                                            <td data-title="'Descripcion'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
-                                            <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
+                                            <td data-title="'DESCRIPCIÓN'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
+                                            <td data-title="'DEUDA'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
                                         </tr>
                                     </table>
                                 </div>

@@ -121,12 +121,12 @@
                                 <div class="panel-heading"><b>RENOVAR {{translateTitulos.lbl_12_06}}</b></div>
                                 <div class="panel-body" ng-disabled="true">
                                     <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadEconomica">
-                                        <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}"><!--cambios-->
-                                            <td data-title="'NÂº'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
+                                        <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'#D3D3D3','font-color':'#A2D5AE'}"><!--cambios-->
+                                            <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
                                             <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
                                             <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
-                                            <td data-title="'Descripcion'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
-                                            <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
+                                            <td data-title="'DESCRIPCIÓN'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
+                                            <td data-title="'DEUDA'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -1103,6 +1103,7 @@
                         <input type="hidden" ng-model="datos.f01_actividadesCAAD" id="f01_actividadesCAAD" name="f01_actividadesCAAD" class="form-control">
                         <input type="hidden" ng-model="datos.f01_categorias_multi" id="f01_categorias_multi" name="f01_categorias_multi" class="form-control">
                        <input type="hidden" ng-model="datos.f01_nro_actividad" id="f01_nro_actividad" name="f01_nro_actividad" class="form-control">
+                        <input type="hidden" ng-model="datos.pubenvio" id="pubenvio" name="pubenvio" class="form-control">
                         
                     </div>
                     <div class="col-md-6" align="center" ng-show = "botones != null">

@@ -944,6 +944,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
           datosCond.datos = '';
           datosCond.usr_id = 1; 
           datosCond.ofi_id = 1; 
+          datosCond.tipo_ser = 0; 
           datosCond.opcion = 'E';
           datosCond.conductorAbm (function(data){
             data = JSON.parse(data).success.data[0].sp_abm_operador_conductor;

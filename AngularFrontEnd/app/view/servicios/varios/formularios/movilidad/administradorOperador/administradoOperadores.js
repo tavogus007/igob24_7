@@ -133,7 +133,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
         var obs = 0;
         for (var j = 0; j < $scope.objObservaciones.length; j++) {
           console.log(data[i].veh_id,'veh',$scope.objObservaciones[j].obs_id_tipo,111,$scope.objObservaciones[j].obs_tipo);
-          if(data[i].veh_id == $scope.objObservaciones[j].obs_id_tipo && $scope.objObservaciones[j].obs_tipo.trim() == 'V'){
+          if(data[i].veh_ope_id == $scope.objObservaciones[j].obs_id_tipo && $scope.objObservaciones[j].obs_tipo.trim() == 'V'){
             obs = obs + 1;
           }
         }
@@ -745,7 +745,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       for (var i = 0; i < data.length; i++) {
         var obs = 0;
         for (var j = 0; j < $scope.objObservaciones.length; j++) {
-          if(data[i].cond_id == $scope.objObservaciones[j].obs_id_tipo && $scope.objObservaciones[j].obs_tipo.trim() == 'C'){
+          if(data[i].cond_ofi_id == $scope.objObservaciones[j].obs_id_tipo && $scope.objObservaciones[j].obs_tipo.trim() == 'C'){
             obs = obs + 1;
           }
         }
@@ -865,7 +865,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       angular.forEach($scope.objVehiculos,function(val, index)
       {
         if(val.veh_placa == $scope.datos.PLACA){
-          id_suc = val.veh_ofi_id;
+          id_suc = val.veh_ope_id_oficina;
           nom_suc = val.veh_datos.RO_NOM_SUC
           $scope.datos.nom_suc = nom_suc;
         }
@@ -896,6 +896,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       datosCond.datos = datac;
       datosCond.usr_id = 1; 
       datosCond.ofi_id = id_suc; 
+      datosCond.tipo_ser = $scope.datos.RO_MOD_VALUE; 
       datosCond.opcion = opc;
       datosCond.conductorAbm (function(data){
         data = JSON.parse(data).success.data[0];
@@ -1082,14 +1083,22 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
       data_form = JSON.stringify(datos);
       var tramite = new crear_Tramite_lotus();
-      tramite.proid = 66;
+      tramite.proid = 373;
+      tramite.actid = 1652;
+      tramite.usr_id = 0;        
+      tramite.datos = data_form;
+      tramite.procodigo = 'AO';
+      tramite.macro_id = 0;
+      tramite.nodo_id = 672;
+      tramite.ws_id = 24;
+      /*tramite.proid = 66;
       tramite.actid = 478;
       tramite.usr_id = 0;        
       tramite.datos = data_form;
       tramite.procodigo = 'AO';
       tramite.macro_id = 0;
       tramite.nodo_id = 517;
-      tramite.ws_id = 24;
+      tramite.ws_id = 24;*/
       var nroTramiteEnviado = sessionService.get('NROTRAMITE');
       tramite.tram_lotus(function(results){ 
         results = JSON.parse(results);
@@ -1141,15 +1150,15 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     },message: "Espere un momento por favor ..." }); 
     setTimeout(function(){
       var detalle = '';
-      if(veh.veh_detalle_renov==null){
-        detalle = [{"fecha_d":veh.veh_vigencia_d,"fecha_a":veh.veh_vigencia_a}];
+      if(veh.veh_ope_detalle_renov==null){
+        detalle = [{"fecha_d":veh.veh_ope_vigencia_d,"fecha_a":veh.veh_ope_vigencia_a}];
       }else{
         detalle =veh.veh_detalle_renov;
-        detalle.push({"fecha_d":veh.veh_vigencia_d,"fecha_a":veh.veh_vigencia_a});
+        detalle.push({"fecha_d":veh.veh_ope_vigencia_d,"fecha_a":veh.veh_ope_vigencia_a});
       }
       detalle = JSON.stringify(detalle);
       var renov = new renovacionVehTmov();
-      renov.id_veh = veh.veh_id;
+      renov.id_veh = veh.veh_ope_id;
       renov.detalle_ren = detalle;
       renov.renovacionTmov(function(results){
         results = JSON.parse(results).success.data;
@@ -1200,22 +1209,22 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     },message: "Espere un momento por favor ..." }); 
     setTimeout(function(){
       var detalle = '';
-      if(cond.cond_detalle_renov==null){
-        detalle = [{"fecha_d":cond.cond_vigencia_d,"fecha_a":cond.cond_vigencia_a}];
+      if(cond.cond_ofi_detalle_renov==null){
+        detalle = [{"fecha_d":cond.cond_ofi_vigencia_d,"fecha_a":cond.cond_ofi_vigencia_a}];
       }else{
-        detalle = cond.cond_detalle_renov;
-        detalle.push({"fecha_d":cond.cond_vigencia_d,"fecha_a":cond.cond_vigencia_a});
+        detalle = cond.cond_ofi_detalle_renov;
+        detalle.push({"fecha_d":cond.cond_ofi_vigencia_d,"fecha_a":cond.cond_ofi_vigencia_a});
       }
       detalle = JSON.stringify(detalle);
       var renov = new renovacionCondTic();
-      renov.id_cond = cond.cond_id;
+      renov.id_cond = cond.cond_ofi_id;
       renov.detalle_ren = detalle;
       renov.renovacionTic(function(results){
         results = JSON.parse(results).success.data;
         if(results.length > 0){
           $scope.listaCond ();
           console.log('results',results);
-          $scope.datos.REN_ID_COND = cond.cond_id;
+          $scope.datos.REN_ID_COND = cond.cond_ofi_id;
           $scope.datos.REN_TIPO = "COND";
           $scope.datos.REN_COND_CI = cond.cond_ci;
           var f = new Date();  

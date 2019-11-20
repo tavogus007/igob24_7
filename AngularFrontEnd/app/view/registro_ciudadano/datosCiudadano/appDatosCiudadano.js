@@ -808,7 +808,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
                 }else{                                                              //CASO CONTRARIO....
                     $scope.myObj = aNotif.success;
-                    //console.log("frm_tra_if_codigo===> ",aNotif.success[i].frm_tra_if_codigo);
                     datoObjectNoti = new Object();
                     datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
                     datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
@@ -820,6 +819,9 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                     datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                     datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
+                    datoObjectNoti.obs_tra_tipo_resp = aNotif.success[i].obs_tra_tipo_resp; 
+                    datoObjectNoti.obs_tra_id_tramite = aNotif.success[i].obs_tra_id_tramite;   
+                    datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus; 
                     datoObjectNoti.obj_url_ra = "noRA";
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal;
@@ -885,6 +887,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
     var nombreNuevoCIAnverso = '';
 
     $scope.cargarData = function(dataAdj){
+        console.log('dataAdj',dataAdj);
         $scope.datosSitram = dataAdj;
         if (dataAdj.obs_tra_tipo_resp == 'A') {
             $scope.respAdjunto = true;
@@ -1094,6 +1097,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         $scope.datosReportePlaformista();
         $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
         $scope.notificaciones();
+        //$scope.cargarData(dataAdj);
         /** MODIFICACIONES RMCF **/
         $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
     };

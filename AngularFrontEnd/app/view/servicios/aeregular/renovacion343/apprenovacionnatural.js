@@ -3416,6 +3416,7 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
         dataForm['tipoVia'] = $scope.datosAnt.tipoVia;
         dataForm['via'] = $scope.datosAnt.via;
         dataForm['numero'] = $scope.datosAnt.numero;
+        dataForm['publicidadAntiguo_grilla'] = $scope.datosAnt.publicidadAntiguo_grilla;
         var multiAnt = '';
         if ($scope.datosAnt.idTipoLicencia == 3375 || $scope.datosAnt.idTipoLicencia == '3375') {
             dataForm['descripcion'] = 'MULTISERVICIOS';
@@ -3748,19 +3749,28 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
     };
 
     $scope.adjpublicidad = function (paramf){
+        $scope.pubrd ="";
         console.log("Publicidad: ", paramf);
         var longpub = paramf.publicidadAE;
-        console.log(" $scope.pubrd:: ",  paramf.publicidadAE);
+        console.log(" $scope.publicidadAE:: ",  paramf.publicidadAE);
         if(paramf.publicidadAE){
             console.log(" $scope.pubrd:: ",  $scope.pubrd);
-            $scope.pubrd = paramf.publicidadAE.concat(paramf.publicidad);
+            if(paramf.publicidad.length > 0 ){
+                 $scope.pubrd = paramf.publicidadAE.concat(paramf.publicidad);
+              }else{
+                  $scope.pubrd = paramf.publicidadAE;
+              }
+            console.log(" $scope.pubrd:: ",  $scope.pubrd);
+            console.log("paramf.publicidad: ", paramf.publicidad);
+
             $scope.publigri = [];
             var datpub = $scope.pubrd;
             var j = 0;
             var c = 1;
             for(j = 0; j < datpub.length; j++) {
                 $scope.publigri.push({
-                    id: c+1,
+                    id: j+1,
+                    idPublicidad:datpub[j].idPublicidad,
                     INT_CARA: datpub[j].INT_CARA,
                     INT_CATE: datpub[j].INT_CATE,
                     INT_TIPO_LETRE: datpub[j].INT_TIPO_LETRE,
@@ -4022,6 +4032,7 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
         datosNeXO['publicidadcop']=paramForm.publicidad;
         datosNeXO['publicidad']=paramForm.pubenvio;
         datosNeXO['publicidad_grilla']=paramForm.publicidad_grilla;
+
         datosNeXO['licencia_multiple']=paramForm.licenciam;
         datosNeXO['g_tipo'] = "AE-LINEA";
         datosNeXO['g_fecha'] = fechactual;

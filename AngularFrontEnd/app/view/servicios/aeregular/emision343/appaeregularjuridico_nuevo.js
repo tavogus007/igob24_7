@@ -1390,7 +1390,6 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             datosNeXO['file_fund_emp'] = paramForm.file_fund_emp;
             datosNeXO['file_reg_comer'] = paramForm.file_reg_comer;
             /*REQUISITOSDELAACTIVIDADECONOMICA*/
-            datosNeXO['f01_tip_act']                    =   paramForm.f01_tip_act;
             datosNeXO['f01_actividad_desarrollada']     =   "";           
             /*CAMPOS GENERICOS NATURAL Y JURIDICO*/ //-->EL CAMPO NO SE ESTA GENERANDO CORRECTAMENTE
             /*REQUISITOSDELAACTIVIDADECONOMICA*/

@@ -1550,7 +1550,6 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
                             $scope.obtenerActDes(response[0].idActividadDesarrollada);
                             //$scope.datos.f01_tipo_lic_descrip = response[0].descripcion;
                             /*Ubicación de Actividad Económica*/
-                            $scope.actulizarIdDistrito();
                             $scope.distritoZonas(response[0].IdMacrodistrito);
                             $scope.datos.INT_AC_MACRO_ID = response[0].IdMacrodistrito;
                             $scope.datos.f01_macro_act = response[0].IdMacrodistrito;
@@ -1571,6 +1570,7 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
                             $scope.datos.f01_tel_act1 = response[0].telefono;
                             $scope.datos.f01_casilla = response[0].casilla;
                             $scope.datos.f01_factor          =  response[0].tipoTrayecto;
+                            $scope.actulizarIdDistrito();
                             if(response[0].edificio == 'undefined' || response[0].bloque == 'undefined' || response[0].piso == 'undefined' || response[0].departamento == 'undefined' || response[0].telefono == 'undefined'){
                                 response[0].edificio = '';
                                 response[0].bloque = '';
@@ -2888,6 +2888,7 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
    /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {
         /*REQUISITOS2018*/
+        $scope.adjpublicidad(data);
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         //DOCS OBLIGATORIOS    
         if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
@@ -3748,11 +3749,9 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
         });
     };
 
-    $scope.adjpublicidad = function (paramf){
+ $scope.adjpublicidad = function (paramf){
         $scope.pubrd ="";
-        console.log("Publicidad: ", paramf);
         var longpub = paramf.publicidadAE;
-        console.log(" $scope.publicidadAE:: ",  paramf.publicidadAE);
         if(paramf.publicidadAE){
             console.log(" $scope.pubrd:: ",  $scope.pubrd);
             if(paramf.publicidad.length > 0 ){
@@ -3760,9 +3759,6 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
               }else{
                   $scope.pubrd = paramf.publicidadAE;
               }
-            console.log(" $scope.pubrd:: ",  $scope.pubrd);
-            console.log("paramf.publicidad: ", paramf.publicidad);
-
             $scope.publigri = [];
             var datpub = $scope.pubrd;
             var j = 0;
@@ -3787,15 +3783,14 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
             $scope.datos.pubenvio = $scope.publigri;  
         }else{
             $scope.datos.pubenvio = paramf.publicidad;
-        }
-        
+        }        
         console.log("$scope.datos.pubenvio: ", $scope.datos.pubenvio);
+        $scope.datos.publicidad = $scope.datos.pubenvio;
     }
 
 
     $scope.enviarFormProcesosLinea = function(paramForm){
         $scope.ultimoArrayAdjunto();
-        $scope.adjpublicidad(paramForm);
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm    =   true;
         var idProcodigo         =   'RE-LF';

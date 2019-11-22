@@ -2047,7 +2047,7 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
             datosexpedido   = sessionService.get('CIEXPEDIDO');
             datoForm4 = JSON.stringify($rootScope.datosForm401);
             $.ajax({
-                url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402.php',
+                url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402_1.php',
                 type:"post",
                 data:{
                     "soid": oidCiudadano,
@@ -2074,6 +2074,8 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                 }
 
             });
+
+
         }else{
             if(tipoPersona == 'JURIDICO' || tipoPersona == 'J'){
                 oidCiudadano    = sessionService.get('IDSOLICITANTE');
@@ -2083,7 +2085,7 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                 dnit            = $scope.datosIniciales.f01_num_doc_per_jur;
                 datoForm4 = JSON.stringify($rootScope.datosForm401);
                 $.ajax({
-                    url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402.php',
+                    url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402_1.php',
                     type:"post",
                     data:{
                         "soid": oidCiudadano,

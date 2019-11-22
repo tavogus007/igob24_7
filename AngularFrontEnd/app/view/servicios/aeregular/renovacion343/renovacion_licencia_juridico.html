@@ -809,9 +809,13 @@
                                       </div>
                                   </div>
                                 <div ng-show="pubAE==true">
+                                    <div class="alert alert-warning fade in">
+                                          <a href="" class="close" data-dismiss="alert">&times;</a>
+                                          <strong>ELEMENTOS PUBLICITARIOS REGISTRADOS ANTERIORMENTE</strong>
+                                      </div>
                                       <div class="col-md-12">
                                           <div class="panel panel-default">
-                                              <div class="panel-heading"><b>Elementos de identificación de la Actividad Económica:</b></div>                                 
+                                              <div class="panel-heading"><font color="#FF0000"><b>SEÑOR CONTRIBUYENTE EL LISTADO DE ELEMENTOS DE IDENTIFICACIÓN EN LA TABLA QUE SE DETALLA SON LOS CUALES SE ENCUENTRAN REGISTRADOS ACTUALMENTE EN EL SISTEMA, SI USTED QUIERE REALIZAR ALGUNA MODIFICACION O RETIRO DEL ELEMENTO DE PUBLICIDAD DEBE APERSONARSE A LA PLATAFORMA MAS CERCANA A SU MACRODISTRITO, CON EL FIN DE EVITAR ALGUN REGISTRO INCORRECTO, ASIMISMO RECORDARLE QUE SI DECEA INCLUIR NUEVOS ELEMENTOS DE IDENTIFICACION PODRA REGISTRARLOS SIN NINGUN PROBLEMA:</b></font></div>                                 
                                               <div class="panel-body">
                                              <!-- inicio de la tabla -->
                                                   <table ng-table="tablaVA" class="table table-striped table-bordered">
@@ -1104,6 +1108,8 @@
                         <input type="hidden" ng-model="datos.f01_categorias_multi" id="f01_categorias_multi" name="f01_categorias_multi" class="form-control">
                        <input type="hidden" ng-model="datos.f01_nro_actividad" id="f01_nro_actividad" name="f01_nro_actividad" class="form-control">
                         <input type="hidden" ng-model="datos.pubenvio" id="pubenvio" name="pubenvio" class="form-control">
+                        <input type="hidden" ng-model="datos.publicidad_grilla" id="publicidad_grilla" name="publicidad_grilla" class="form-control">
+
                         
                     </div>
                     <div class="col-md-6" align="center" ng-show = "botones != null">

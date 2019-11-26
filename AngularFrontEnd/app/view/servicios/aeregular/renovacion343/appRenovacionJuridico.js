@@ -1842,7 +1842,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             datosNeXO['f01_num_doc_per_jur']            =   paramForm.f01_num_doc_per_jur;
             datosNeXO['f01_raz_soc_per_jur']            =   paramForm.f01_raz_soc_per_jur;
             datosNeXO['f01_raz_soc']                    =   paramForm.f01_raz_soc;
-            datosNeXO['f01_tipo_lic_descrip']           =   paramForm.f01_tipo_lic;
+            datosNeXO['f01_tipo_lic_descrip']           =   paramForm.f01_tipo_lic_descrip;
             datosNeXO['INT_ID_CAT_AGRUPADA']            =   parseInt(paramForm.f01_categoria_agrupada);
             datosNeXO['f01_requisitos_tecnicos']        =   $scope.datos.f01_requisitos_tecnicos;
             datosNeXO['INT_TIPO_DOC_IDENTIDAD']         =   paramForm.INT_TIPO_DOC_IDENTIDAD;

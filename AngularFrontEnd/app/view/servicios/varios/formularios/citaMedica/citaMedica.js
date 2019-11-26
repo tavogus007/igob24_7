@@ -2039,7 +2039,6 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                 cargando();
                 swal.close();
                 try{
-                    
                   var sql = new dataDinamic();
                   sql.consulta = 'select * from sp_lst_verifica_pacientesficha_revertir(0,'+datos.presidhospital+','+datos.presid+','+datos.presturno_id+','+datos.presnumero_ficha+')';
                   sql.SqlDinamic(function(res){

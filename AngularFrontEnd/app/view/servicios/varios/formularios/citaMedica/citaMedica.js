@@ -2039,8 +2039,9 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                 cargando();
                 swal.close();
                 try{
+                    
                   var sql = new dataDinamic();
-                  sql.consulta = 'select * from sp_lst_verifica_pacientesficha_revertir('+$scope.nroCi+','+datos.presidhospital+','+datos.presid+','+datos.presturno_id+','+datos.presnumero_ficha+')';
+                  sql.consulta = 'select * from sp_lst_verifica_pacientesficha_revertir(0,'+datos.presidhospital+','+datos.presid+','+datos.presturno_id+','+datos.presnumero_ficha+')';
                   sql.SqlDinamic(function(res){
                       var x = JSON.parse(res);
                       var resultado = x.success.data;
@@ -2051,9 +2052,6 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                         $.LoadingOverlay("hide");
                          alertify.success('Se revirtio la ficha con exito');
                          $scope.cargarFichasReservadas();
-
-
-                         
                       }
                       else
                       {

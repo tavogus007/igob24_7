@@ -9,6 +9,8 @@
     <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script> 
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" /> 
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+    <link href="../../libs/css/select2.min.css" rel="stylesheet" async/>
+    <script src="../../libs/js/select2.min.js" async></script>
   </head>
 <style>
   #caja {
@@ -100,6 +102,8 @@
     border-color: #f8ac59;
     color: #FFFFFF;
   }
+
+
 </style>
 <script type="text/javascript">
 
@@ -118,7 +122,12 @@
   function mayus(e) {
     e.value = e.value.toUpperCase();
   }
-</script>          
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
+</script>
   <div id="principal" class="page-content" ng-controller="administracionOperadoresController" data-ng-init="inicio();">
     <div ng-show="mostrar_form_ope == true" class="col-lg-12">
       <div class="ibox float-e-margins" >     
@@ -152,6 +161,7 @@
                   <div class="col-md-12">
                     <legend class="ng-binding">Datos del Operador: </legend>
                   </div>
+
                   <div class="col-md-12">
                     <div class="col-md-4">
                       <div class="form-group" >
@@ -378,7 +388,7 @@
                                   </li>                                       
                                 </ul><br>
                                 <div class="tab-content">
-                                  <div class="tab-pane active" id="tab-one1">
+                                  <div class="tab-pane {{valida}}" id="tab-one1">
                                     <div>
                                       <div class="col-sm-5">
                                         <div class="form-group">
@@ -505,7 +515,7 @@
                                       </div>  
                                     </div>                          
                                   </div>  
-                                  <div class="tab-pane" id="tab-two1">             
+                                  <div class="tab-pane {{valida2}}" id="tab-two1">             
                                     <div class="col-sm-5">
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">C.I.:</label>
@@ -727,7 +737,7 @@
                       </tr>
                     </table>
                   </div>  
-                  <div class="modal fade" id="modalConductor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                  <div class="modal fade" id="modalConductor"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -774,14 +784,18 @@
                                     </div>
                                   </div>
                                 </div>
-                                <div class="col-md-4">                                                      
+                                <div class="col-md-4">                                                     
                                   <div class="form-group">
                                     <label class="control-label">Placa de vehículo:</label>
                                     <div class="controls">
-                                      <select id="PLACA" name="PLACA" ng-model="datos.PLACA"  class="form-control"  required ng-disabled="desabilitaCon">
+                                      <select class="js-example-basic-single form-control"
+                                      ng-options="vehic_vi.veh_placa as vehic_vi.veh_placa for vehic_vi in objVehiculos" ng-model="datos.PLACA" id="PLACA" name="PLACA" ng-disabled="desabilitaCon" style=" width: 100%;" required>
+                                        <option value="">--Seleccionar--</option>
+                                      </select>
+                                      <!--select id="PLACA" name="PLACA" ng-model="datos.PLACA"  class="form-control"  required ng-disabled="desabilitaCon">
                                         <option value = "">Seleccionar</option>
                                         <option ng-repeat="vehic_vi in objVehiculos" value="{{vehic_vi.veh_placa}}"> {{vehic_vi.veh_placa}}</option>
-                                      </select>  
+                                      </select-->  
                                     </div>
                                   </div>
                                 </div>

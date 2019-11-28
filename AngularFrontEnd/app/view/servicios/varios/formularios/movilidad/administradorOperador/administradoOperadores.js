@@ -578,6 +578,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   $scope.distritoZonas = function(idMacroJ){ 
     var idMacro = "";
     if(idMacroJ != 'OTRO'){
+      $scope.mostrarOtraZona = false;
       if($scope.aMacrodistritos){
         angular.forEach($scope.aMacrodistritos, function(value, key) {
             if(value.mcdstt_macrodistrito == idMacroJ){
@@ -641,9 +642,11 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
             if(data.success.length > 0){
               if(tipo == 'Prop'){
                 $scope.aDistritoZonaProp = data.success;
+                $scope.mostrarZonaProp = false;
               }else{
                 if(tipo == 'Pos'){
                   $scope.aDistritoZonaPos = data.success;
+                  $scope.mostrarZonaPoo = false;   
                 }else{
                   if(tipo == 'Cond'){
                     $scope.aDistritoZonaCond = data.success;
@@ -1084,22 +1087,24 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
       data_form = JSON.stringify(datos);
       var tramite = new crear_Tramite_lotus();
-      tramite.proid = 373;
+      /*tramite.proid = 373;
       tramite.actid = 1652;
       tramite.usr_id = 0;        
       tramite.datos = data_form;
       tramite.procodigo = 'AO';
       tramite.macro_id = 0;
       tramite.nodo_id = 672;
-      tramite.ws_id = 24;
-      /*tramite.proid = 66;
+      tramite.ws_id = 24;*/
+
+      tramite.proid = 66;
       tramite.actid = 478;
       tramite.usr_id = 0;        
       tramite.datos = data_form;
       tramite.procodigo = 'AO';
       tramite.macro_id = 0;
-      tramite.nodo_id = 517;
-      tramite.ws_id = 24;*/
+      tramite.nodo_id = 3517;
+      tramite.ws_id = 24;
+      
       var nroTramiteEnviado = sessionService.get('NROTRAMITE');
       tramite.tram_lotus(function(results){ 
         results = JSON.parse(results);

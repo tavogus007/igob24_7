@@ -1136,10 +1136,11 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
             parametros.idMacro = idMacroJ;
             parametros.obtdist(function(resultado){
                 data = JSON.parse(resultado);
+                console.log("data.success.length: ", data.success.length);
                 if(data.success.length > 0){
-                    $scope.desabilitadoZ=false;
+                    console.log("listado de zonas", $scope.aDistritoZona);
                     $scope.aDistritoZona = data.success;
-                    console.log("aDistritoZona: ", aDistritoZona);   
+                    console.log("aDistritoZona: ", $scope.aDistritoZona);   
                     deferred.resolve(data.success);
                     $scope.desabilitadoV=true;
                     $scope.desabilitadoNo=true;
@@ -2047,11 +2048,11 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
             datosexpedido   = sessionService.get('CIEXPEDIDO');
             datoForm4 = JSON.stringify($rootScope.datosForm401);
             $.ajax({
-                url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402_1.php',
+                url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402.php',
                 type:"post",
                 data:{
                     "soid": oidCiudadano,
-                    "sorigen": "PLATAFORMA INSTITUCIONAL",
+                    "sorigen": "IGOB",
                     "stipo": tipoPersona,
                     "usuario": datosCiudadano,
                     "cedula":  datosci,
@@ -2085,7 +2086,91 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                 dnit            = $scope.datosIniciales.f01_num_doc_per_jur;
                 datoForm4 = JSON.stringify($rootScope.datosForm401);
                 $.ajax({
-                    url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402_1.php',
+                    url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402.php',
+                    type:"post",
+                    data:{
+                        "soid": oidCiudadano,
+                        "sorigen":"IGOB",
+                        "stipo":tipoPersona,
+                        "usuario": datosCiudadano,
+                        "cedula":  datosci,
+                        "expedido": '',
+                        "empresa": dEmpresa,
+                        "nit": dnit,
+                        "fecha": $scope.fechafinalserver,
+                        "hora": $scope.horafinal,
+                        "data": datoForm4,
+                        "stipo_form": '401'
+                    },
+                    success:function(response){
+                        if(response.length>0){
+                            var urlData = response;
+                            $rootScope.decJuradaNatural = urlData;
+                            $scope.InsertarDocumento(response);
+                            $rootScope.datosEnv.declaracion_jurada = urlData;
+                            $scope.serializarInformacion($rootScope.datosEnv);
+                            $.unblockUI();
+                        }
+                    }
+                });
+            }
+        }
+    };
+
+    $scope.generarDocumentoPhp = function (){
+        $.blockUI();
+        var tipoPersona = '';
+        var oidCiudadano = '';
+        var datosCiudadano = '';
+        var datosci = '';
+        var datosexpedido = '';
+        var dEmpresa = '';
+        var dnit = '';
+        var datoForm4 = '';
+        var stform = '';
+         tipoPersona     = sessionService.get('TIPO_PERSONA');
+        if(tipoPersona == 'NATURAL' || tipoPersona == 'N'){
+            oidCiudadano    = sessionService.get('IDSOLICITANTE');
+            datosCiudadano  = (sessionService.get('US_NOMBRE')+' '+sessionService.get('US_PATERNO')+' '+sessionService.get('US_MATERNO'));
+            datosci         = sessionService.get('CICIUDADANO');
+            datosexpedido   = sessionService.get('CIEXPEDIDO');
+            datoForm4 = JSON.stringify($rootScope.datosForm401);
+            $.ajax({
+                url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402.php',
+                type:"post",
+                data:{
+                    "soid": oidCiudadano,
+                    "sorigen": "PLATAFORMA INSTITUCIONAL",
+                    "stipo": tipoPersona,
+                    "usuario": datosCiudadano,
+                    "cedula":  datosci,
+                    "expedido": datosexpedido,
+                    "empresa": '',
+                    "nit": '',
+                    "fecha": $scope.fechafinalserver,
+                    "hora": $scope.sHoraFinal,
+                    "data": datoForm4,
+                    "stipo_form": $rootScope.datosForm401.f01_tipo_form//'401'
+                },
+                success:function(response){
+                    var urlData = response;
+                    $rootScope.decJuradaNatural = urlData;
+                    $scope.InsertarDocumento(response);
+                    $rootScope.datosEnv.declaracion_jurada = urlData;
+                    $scope.serializarInformacion($rootScope.datosEnv);
+                    $.unblockUI();
+                }
+            });
+        }else{
+            if(tipoPersona == 'JURIDICO' || tipoPersona == 'J'){
+                oidCiudadano    = sessionService.get('IDSOLICITANTE');
+                datosCiudadano  = $scope.datosIniciales.f01_pri_nom_rep +' '+ $scope.datosIniciales.f01_ape_pat_rep;
+                datosci         = $scope.datosIniciales.f01_num_doc_rep;
+                dEmpresa        = $scope.datosIniciales.f01_raz_soc_per_jur;
+                dnit            = $scope.datosIniciales.f01_num_doc_per_jur;
+                datoForm4 = JSON.stringify($rootScope.datosForm401);
+                $.ajax({
+                    url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402.php',
                     type:"post",
                     data:{
                         "soid": oidCiudadano,
@@ -2099,7 +2184,7 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                         "fecha": $scope.fechafinalserver,
                         "hora": $scope.horafinal,
                         "data": datoForm4,
-                        "stipo_form": '401'
+                        "stipo_form": $rootScope.datosForm401.f01_tipo_form//'401'
                     },
                     success:function(response){
                         if(response.length>0){

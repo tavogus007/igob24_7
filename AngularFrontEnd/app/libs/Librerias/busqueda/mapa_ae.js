@@ -158,7 +158,7 @@ var municipios = new ol.layer.Tile({
       visible: true,
       source: new ol.source.TileWMS({
           url: 'http://sitservicios.lapaz.bo/geoserver/wms',
-          params: { 'LAYERS': 'g_municipio', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+          params: { 'LAYERS': 'g_municipio3', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
           serverType: 'geoserver',
           crossOriginKeyword: 'anonymous'
   })

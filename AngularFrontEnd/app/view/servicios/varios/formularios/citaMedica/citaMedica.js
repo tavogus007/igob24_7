@@ -19,6 +19,10 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     $scope.lstatencionesvacias = false;
     $scope.lstatenciones = false;
     $scope.vectorMensaje = ['Nro. de Proforma:','Nombres:','Apellidos:','Correo Electrónico:','Ciudad:','País:','Especialidad:','Precio (Bs):'];
+    if(jsonURLS){
+        //var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";
+        var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";
+      }
     $scope.get_renderizarHospitales = function(x){
         return $sce.trustAsHtml(x);
         }; 
@@ -1340,11 +1344,9 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
               break;
             }
             var formData = '{"personaId": "-1","clase": "N","gestion": "2018","observaciones": "NINGUNO","UnidadRecaudadoraId": "'+dataFum.idUnidadRecaudadora+'","usuario": "simgep","UsuarioIP": "192.168.5.248.1","equipo": "PAYME","cabecera": "'+dataFum.descripcion+'","itemsCadena": "'+dataFum.idItemRecaudador+'","montosCadena": "'+dataFum.costo+'","tipoActividad": "SIIS"}';
-            //var urlFactura = "http://200.105.139.183:9090/igob247/generarFumPrometeo.php";
-            var urlFactura = "http://200.105.139.183:9090/igob247/generarFumOficial.php";
               $.ajax({
                type        : 'POST',            
-               url         : urlFactura,
+               url         : urlFum,
                data        : formData,
                dataType    : 'json',
                crossDomain : true,
@@ -1585,11 +1587,9 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
             }
 
             var formData = '{"personaId": "-1","clase": "N","gestion": "2018","observaciones": "NINGUNO","UnidadRecaudadoraId": "'+dataFum.idUnidadRecaudadora+'","usuario": "simgep","UsuarioIP": "192.168.5.248.1","equipo": "PAYME","cabecera": "'+dataFum.descripcion+'","itemsCadena": "'+dataFum.idItemRecaudador+'","montosCadena": "'+dataFum.costo+'","tipoActividad": "SIIS"}';
-            //var urlFactura = "http://200.105.139.183:9090/igob247/generarFumPrometeo.php";
-            var urlFactura = "http://200.105.139.183:9090/igob247/generarFumOficial.php";
               $.ajax({
                type        : 'POST',            
-               url         : urlFactura,
+               url         : urlFum,
                data        : formData,
                dataType    : 'json',
                crossDomain : true,

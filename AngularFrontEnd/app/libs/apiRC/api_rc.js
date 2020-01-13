@@ -1067,6 +1067,15 @@ listaTramitesMov.prototype.spbusquedaformulariomovilidad=function(functionResp){
   ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 };
 
+listaTramitesMov.prototype.busquedaMovilidadInfracciones=function(functionResp){
+  urlComp = "/busquedaFormularioMovilidadInfracciones";
+  typeCall = "post";
+  dataParams= {
+      "idCiudadano" : this.idCiudadano
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+};
+
 function rcTramites(){
     this.oid;
 };

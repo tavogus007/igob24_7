@@ -156,8 +156,8 @@ function enviarData() {
         console.log(document.getElementById('POC_SUBTIPO_TRAMITE').value)
         crearCaso.subtipoTramite = ((typeof(document.getElementById('POC_SUBTIPO_TRAMITE').value) == 'undefined' || document.getElementById('POC_SUBTIPO_TRAMITE').value == null || document.getElementById('POC_SUBTIPO_TRAMITE').value == "NaN" || document.getElementById('POC_SUBTIPO_TRAMITE').value == "") ? 0   : parseInt(document.getElementById('POC_SUBTIPO_TRAMITE').value));
 */
-        crearCaso.proid = 66;
-        crearCaso.actid = 477;
+        crearCaso.proid = 73;
+        crearCaso.actid = 599;
         crearCaso.usr_id = 0;
         crearCaso.datos = datosSerializados;
         crearCaso.procodigo = idProcodigo;

@@ -13,23 +13,23 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         {name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/moustache.html'}
     ];
     var p = $scope.serviciosLotus = [
-        { name: 'Correspondencia ciudadana', id:'22', idprc:'66', idcampo:'650', scodigo:'CORC'},
-        { name: 'Ejecución de procesos de fiscalización', id:'23', idprc:'66', idcampo:'674', scodigo:'EPFZ'},
-        { name: 'Denuncias y reclamos', id:'24', idprc:'66', idcampo:'652', scodigo:'DRTR'},
-        { name: 'Calificación de años de servicio', id:'25', idprc:'66', idcampo:'683', scodigo:'CAS'},
-        { name: 'Fotocopias', id:'26', idprc:'66', idcampo:'677', scodigo:'FOT'},
-        { name: 'Publicidad urbana', id:'27', idprc:'66', idcampo:'672', scodigo:'PUB'},
-        { name: 'Catastro', id:'28', idprc:'66', idcampo:'718', scodigo:'CAT'},
-        { name: 'Inmuebles', id:'29', idprc:'66', idcampo:'697', scodigo:'INM'},
-        { name: 'Administración territorial', id:'30', idprc:'66', idcampo:'678', scodigo:'ADMT'},
-        { name: 'Fiscalización tributos municipales', id:'31', idprc:'66', idcampo:'719', scodigo:'FTM'},
-        { name: 'Vehículos', id:'32', idprc:'66', idcampo:'698', scodigo:'VEH'},
-        { name: 'Planilla pago de obras', id:'33', idprc:'66', idcampo:'716', scodigo:'PPO'},        
-        { name: 'Correspondencia Ciudadana cm (cccm)', id:'34', idprc:'66', idcampo:'681', scodigo:'CCCM'},        
-        { name: 'Comercio en vías y espacios públicos', id:'35', idprc:'66', idcampo:'682', scodigo:'CVEP'},
-        { name: 'Mercados municipales de abasto', id:'36', idprc:'66', idcampo:'654', scodigo:'MMA'},
-        { name: 'Transferencia de área residual', id:'37', idprc:'66', idcampo:'653', scodigo:'TAR'},
-        { name: 'Uso de espacios públicos temporales', id:'38', idprc:'66', idcampo:'723', scodigo:'UEPP'}
+        { name: 'Correspondencia ciudadana', id:'22', idprc:'73', idcampo:'788', scodigo:'CORC'},
+        { name: 'Ejecución de procesos de fiscalización', id:'23', idprc:'73', idcampo:'812', scodigo:'EPFZ'},
+        { name: 'Denuncias y reclamos', id:'24', idprc:'73', idcampo:'790', scodigo:'DRTR'},
+        { name: 'Calificación de años de servicio', id:'25', idprc:'73', idcampo:'821', scodigo:'CAS'},
+        { name: 'Fotocopias', id:'26', idprc:'73', idcampo:'815', scodigo:'FOT'},
+        { name: 'Publicidad urbana', id:'27', idprc:'73', idcampo:'810', scodigo:'PUB'},
+        { name: 'Catastro', id:'28', idprc:'73', idcampo:'856', scodigo:'CAT'},
+        { name: 'Inmuebles', id:'29', idprc:'73', idcampo:'835', scodigo:'INM'},
+        { name: 'Administración territorial', id:'30', idprc:'73', idcampo:'816', scodigo:'ADMT'},
+        { name: 'Fiscalización tributos municipales', id:'31', idprc:'73', idcampo:'857', scodigo:'FTM'},
+        { name: 'Vehículos', id:'32', idprc:'73', idcampo:'836', scodigo:'VEH'},
+        { name: 'Planilla pago de obras', id:'33', idprc:'73', idcampo:'854', scodigo:'PPO'},        
+        { name: 'Correspondencia Ciudadana cm (cccm)', id:'34', idprc:'73', idcampo:'819', scodigo:'CCCM'},        
+        { name: 'Comercio en vías y espacios públicos', id:'35', idprc:'73', idcampo:'820', scodigo:'CVEP'},
+        { name: 'Mercados municipales de abasto', id:'36', idprc:'73', idcampo:'792', scodigo:'MMA'},
+        { name: 'Transferencia de área residual', id:'37', idprc:'73', idcampo:'791', scodigo:'TAR'},
+        { name: 'Uso de espacios públicos temporales', id:'38', idprc:'73', idcampo:'861', scodigo:'UEPP'}
     ];
 
     $scope.btnEnviarForm = true;
@@ -523,7 +523,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     
     $scope.recuperarFormsxProceso = function (tramite) {
         jDataFormsLotus =   [];
-        var sidproceso  =   66;
+        var sidproceso  =   73;
         var sidcampo    =   tramite.datos.INT_ID_FORM_LOTUS;
         var getFormJson =   new getFormulario();
         getFormJson.idprc    =  sidproceso;

@@ -1,0 +1,142 @@
+function conmutacionController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, $timeout, obtFechaCorrecta,$route, obtFechaActual,fileUpload1) {
+  var sIdCiudadano= sessionService.get('IDSOLICITANTE');
+  $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
+  $scope.oidCiu = sessionService.get('IDSOLICITANTE');
+  $scope.datos = {};
+  $scope.ocultaTipo = false;
+  $scope.desabilitado = false;
+
+  $scope.inicio = function(){
+    $scope.datos = JSON.parse(sessionService.get('DATOS_TRAMITE'));
+    $scope.enviado = sessionService.get('ESTADO');
+    if($scope.enviado == 'SI'){
+      $scope.desabilitado = true;
+    }else{
+      $scope.desabilitado = false;
+    }
+  }
+
+  //////////////////////////GUARDA TRAMITE//////////////////////
+  $scope.guardar_tramite = function(datos){ 
+    datos.Tipo_tramite_creado = "WEB";
+    try {
+      var datosSerializados   =  JSON.stringify(datos);
+      var idCiudadano         = sessionService.get('IDSOLICITANTE');
+      var idTramite           = sessionService.get('IDTRAMITE');
+      var crear = new datosFormularios();
+      crear.frm_tra_dvser_id = sessionService.get('IDSERVICIO');
+      crear.data_json = datosSerializados;
+      crear.frm_tra_id_ciudadano = sIdCiudadano;
+      crear.frm_tra_id_usuario = 1;
+      crear.frm_idTramite = idTramite;
+      $.blockUI();
+      crear.sp_crear_datos_formulario(function(results){
+        results = JSON.parse(results);
+        results = results.success;
+        if(results.length > 0){
+          //$scope.tramitesCiudadano();
+          alertify.success("Formulario almacenado");
+          document.getElementById('gu').disabled=false;     
+          $.unblockUI();
+        }else{
+          $.unblockUI();
+          sweet.show('', "Formulario no almacenado", 'error');
+        }
+      });
+    }catch(e){
+      console.log("Error..",e);
+      $.unblockUI();
+    }
+  }
+
+  ///////////////////////////ENVIO//////////////////////////////
+  $scope.validarEnvio = function(data){
+    swal({
+      title: 'CONFIRMAR',
+      text: 'El envío de la presente solicitud  generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'SI',
+      cancelButtonText: 'NO',
+      closeOnConfirm: false
+    }, function() {
+      swal.close();
+      setTimeout(function(){
+        $scope.crea_tramite_lotus(data);
+      }, 1000);
+    });
+  };
+
+  $scope.crea_tramite_lotus = function (datos) {
+    $.blockUI({ css: { 
+      border: 'none', 
+      padding: '10px', 
+      backgroundColor: '#000', 
+      '-webkit-border-radius': '10px', 
+      '-moz-border-radius': '10px', 
+      opacity: .5, 
+      color: '#fff' 
+    },message: "Espere un momento por favor ..." }); 
+    setTimeout(function(){
+      $.blockUI();
+      var f = new Date();  
+      datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
+      datos.g_tipo = 'INF_CONM';
+      console.log($scope.datos,'datossss');
+      data_form = JSON.stringify(datos);
+      var tramite = new crearTramiteMovilidad();
+      tramite.usr_id = 1;    
+      tramite.datos = data_form;
+      tramite.procodigo = 'INF_CONM';
+      tramite.tramite_linea(function(results){ 
+        results = JSON.parse(results);
+        if (results !=null) {
+          results = results.success.data[0].crea_tramite_linea;
+          $scope.mostrar_form_ope = false;
+          $scope.datosMostrar = 1;
+          $scope.validarFormProcesos(results);
+          $.unblockUI();
+        }else{
+          alertify.error("Señor(a) Ciudadano(a) ocurrio un error al enviar su Tramité.", );
+          $.unblockUI();
+        }
+      }); 
+    },300);         
+  };
+
+  $scope.validarFormProcesos = function(nroTramite){
+    idUsuario = sessionService.get('IDUSUARIO');
+    try {
+      idUsuario = 4; 
+      var tramiteIgob = new datosFormularios();
+      tramiteIgob.frm_idTramite = sessionService.get('IDTRAMITE');
+      tramiteIgob.frm_tra_enviado = 'SI';
+      tramiteIgob.frm_tra_if_codigo = nroTramite;
+      tramiteIgob.frm_tra_id_usuario = idUsuario;
+      tramiteIgob.validarFormProcesos(function(resultado){
+        swal({
+          title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
+          text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2>\n Usted debe dirigirse al tercer día hábil a la Secretaria Municipal de Movilidad y contactarse con el Asesor Legal DROM, portando sus documentos originales para la verificación.',
+          html: true,
+          type: 'success',
+          //timer: 5000,
+        });
+        $scope.tramitesCiudadano();
+        $scope.desabilitado = true;
+      });
+    } catch (error){
+      alertify.success('Registro no modificado');
+      $.unblockUI(); 
+    }
+  };
+
+  $scope.ocultar = function(tipo){
+    if(tipo=='OTRO'){
+      $scope.ocultaTipo = true;
+    }else{
+      $scope.ocultaTipo = false;
+    }
+  }
+
+}

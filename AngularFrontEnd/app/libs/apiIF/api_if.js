@@ -771,6 +771,23 @@ crear_Tramite_lotus.prototype.tram_lotus = function (functionResp) {
   ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };
 
+function crearTramiteMovilidad(){
+  this.usr_id;
+  this.datos;
+  this.procodigo;
+}
+
+crearTramiteMovilidad.prototype.tramite_linea = function(functionResp){
+  urlComp = "/creaTramiteMov";
+  typeCall = "post";
+  dataParams = {
+    "usr_id" : this.usr_id,
+    "datos" : this.datos,
+    "procodigo" : this.procodigo
+  };
+  ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
+}
+
 //Ley 343
 function getCategoriaLicencia(){ 
     this.dependencia; 

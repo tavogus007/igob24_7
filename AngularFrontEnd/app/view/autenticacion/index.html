@@ -28,7 +28,7 @@
 
         <link rel="stylesheet" href="../../libs/Librerias/ol_4.6.5_dist/ol.css"/>
         <link rel="stylesheet" href="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css"/>
-
+        <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/infracciones/infracciones.js"></script>
         <script type="text/javascript" src="../../libs/Librerias/ol_4.6.5_dist/ol.js"></script>
         <script type="text/javascript" src="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
         <script type="text/javascript" src="../../libs/Librerias/proj_4/proj4.js"></script>
@@ -187,13 +187,14 @@
                                   </li>
                                   <li ng-show="stiporol == '5' && sservicios  == 'SI'">
                                       <a><i class="fa fa-caret-right blanco"></i>Movilidad<span class="fa arrow"></span></a>
-                                      <!--ul class="nav nav-third-level">
+                                      <ul class="nav nav-third-level">
                                         <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/registroOperadores/registroOperadores.html">Registro de Operadores</a></li>
                                         <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/modificacionOperadores/modificacionOperadores.html">Modificación de Operadores</a></li>                                      
                                         <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/renovacionOperadores/renovacionOperadores.html">Renovación de Licencia de Funcionamiento Radio Taxis</a></li>
                                         <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/administradorOperador/administradoOperadores.html'">Administracion de Operadores</a></li>
                                         <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/infracciones/impugnacion/impugnacion.html'">Impugnación de Infracciones</a></li>
-                                      </ul-->
+                                        <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/infracciones/infracciones.html'">Infracciones</a></li>
+                                      </ul>
                                   </li>
 
                                   <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/solicitudViajes/index.html'">{{translateTitulos.lbl_04_09}}</a></li>

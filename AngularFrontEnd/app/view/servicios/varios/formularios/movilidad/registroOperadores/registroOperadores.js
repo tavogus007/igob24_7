@@ -3352,6 +3352,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   };
 
   $scope.crea_tramite_lotus = function (datos) {
+    datos.g_origen_p = 'IGOB';
     if($scope.datos.RO_TIP_SOL==""|| $scope.datos.RO_TIP_SOL==undefined)
     {
       alertify.success('Completar el dato Tipo de Solicitud');

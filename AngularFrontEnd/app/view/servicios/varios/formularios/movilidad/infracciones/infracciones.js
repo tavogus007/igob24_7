@@ -17,6 +17,7 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
 
   $scope.impugnacion = 43;
   $scope.conmutacion = 45;
+  $scope.template =   "";
 
   $scope.inicio = function(){
     $scope.tramitesCiudadano();
@@ -312,6 +313,10 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
             x = JSON.parse(res);
             response = x.success;
             if(response.length  > 0){
+              $scope.template =   "";
+              sessionService.set('IDTRAMITE', '');
+              sessionService.set('IDSERVICIO', '');
+              sessionService.set('ESTADO', '');
               var nro_tramite = response[0].sp_insertar_formulario_tramites_datos;
               datosTramite = {};
               datosTramite.vtra_id = nro_tramite;
@@ -354,7 +359,6 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
     sessionService.set('IDTRAMITE', $rootScope.tramiteId);
     sessionService.set('IDSERVICIO', tramite.vdvser_id);
     sessionService.set('ESTADO', tramite.venviado);
-    sessionService.set('DATOS_TRAMITE', tramite.form_contenido);
     $scope.template = "";
     var idTemplate = 0;
     if($scope.procesoSeleccionado == $scope.impugnacion){
@@ -364,5 +368,10 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
       idTemplate = 2;
     }
     $scope.template = $scope.templates[idTemplate];
+    setTimeout(function(){
+      $rootScope.$broadcast('inicializarVista', tramite.form_contenido);
+    },500);
+    $scope.$apply();
+    console.log("template",$scope.template);
   };
 }

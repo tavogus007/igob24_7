@@ -7,14 +7,22 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
   $scope.desabilitado = false;
 
   $scope.inicio = function(){
-    $scope.datos = JSON.parse(sessionService.get('DATOS_TRAMITE'));
+  }
+
+  var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
+    $scope.datos = JSON.parse(data);
     $scope.enviado = sessionService.get('ESTADO');
     if($scope.enviado == 'SI'){
       $scope.desabilitado = true;
     }else{
       $scope.desabilitado = false;
     }
-  }
+    document.getElementById('gu').disabled=true;
+    $scope.$apply();
+    setTimeout(function(){
+      iniciarLoadFyle();
+    }, 1000);  
+  });
 
   //////////////////////////GUARDA TRAMITE//////////////////////
   $scope.guardar_tramite = function(datos){ 
@@ -117,7 +125,7 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
       tramiteIgob.validarFormProcesos(function(resultado){
         swal({
           title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
-          text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2>\n Usted debe dirigirse al tercer día hábil a la Secretaria Municipal de Movilidad y contactarse con el Asesor Legal DROM, portando sus documentos originales para la verificación.',
+          text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2>\n',
           html: true,
           type: 'success',
           //timer: 5000,

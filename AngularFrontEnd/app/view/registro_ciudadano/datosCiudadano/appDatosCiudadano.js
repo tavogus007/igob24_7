@@ -806,29 +806,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     }
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
-                }else{                                                              //CASO CONTRARIO....
-                    $scope.myObj = aNotif.success;
-                    datoObjectNoti = new Object();
-                    datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
-                    datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
-                    datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
-                    datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
-                    datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
-                    datoObjectNoti.obs_tra_observaciones = aNotif.success[i].obs_tra_observaciones;
-                    datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
-                    datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
-                    datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
-                    datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
-                    datoObjectNoti.obs_tra_tipo_resp = aNotif.success[i].obs_tra_tipo_resp; 
-                    datoObjectNoti.obs_tra_id_tramite = aNotif.success[i].obs_tra_id_tramite;   
-                    datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus; 
-                    datoObjectNoti.obj_url_ra = "noRA";
-                    datoObjectNotiFinal[i] = datoObjectNoti;
-                    $scope.myObj = datoObjectNotiFinal;
-                }
-
-                /*if((aNotif.success[i].serdv_descripcion == 'REGISTRO VALOR LIBROS VEHICULOS - ATM VEHICULOS') || (aNotif.success[i].serdv_descripcion == 'REGISTRO VALOR LIBROS IMUEBLES - ATM INMUEBLES') || (aNotif.success[i].serdv_descripcion == 'INSCCRIPCION CASA COMERCIAL VEHICULOS - ATM VEHICULOS') || (aNotif.success[i].serdv_descripcion == 'INSCCRIPCION CASA COMERCIAL MOTO - ATM VEHICULOS')){     //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
-                    console.log("mensajeigobeee", aNotif);
+                }else if((aNotif.success[i].serdv_descripcion == 'REGISTRO VALOR LIBROS VEHICULOS - ATM VEHICULOS') || (aNotif.success[i].serdv_descripcion == 'REGISTRO VALOR LIBROS IMUEBLES - ATM INMUEBLES') || (aNotif.success[i].serdv_descripcion == 'INSCCRIPCION CASA COMERCIAL VEHICULOS - ATM VEHICULOS') || (aNotif.success[i].serdv_descripcion == 'INSCCRIPCION CASA COMERCIAL MOTO - ATM VEHICULOS')){     //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
                     datoObjectNoti = new Object();
                     var mensaje = aNotif.success[i].obs_tra_observaciones;
                     var res = mensaje.split("&#34");
@@ -851,7 +829,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
                     datoObjectNoti.mensajeIgob = mensajeIgob[0];
                     datoObjectNoti.obj_ruat = $scope.res1;
-                    console.log("tipo ressssssssssssssssss", aNotif.success[i].obs_tra_tipo_resp);
                      if ((aNotif.success[i].obs_tra_tipo_resp) == 'A'){
                         datoObjectNoti.obs_tra_tipo_resp = aNotif.success[i].obs_tra_tipo_resp;
                     }
@@ -872,8 +849,29 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     }
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
-                    console.log("jjjjjjjjjjjjjj", datoObjectNotiFinal);
-                }*/
+                }
+                else{                                                              //CASO CONTRARIO....
+                    $scope.myObj = aNotif.success;
+                    datoObjectNoti = new Object();
+                    datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
+                    datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
+                    datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
+                    datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
+                    datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
+                    datoObjectNoti.obs_tra_observaciones = aNotif.success[i].obs_tra_observaciones;
+                    datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
+                    datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
+                    datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
+                    datoObjectNoti.obs_tra_tipo_resp = aNotif.success[i].obs_tra_tipo_resp; 
+                    datoObjectNoti.obs_tra_id_tramite = aNotif.success[i].obs_tra_id_tramite;   
+                    datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus; 
+                    datoObjectNoti.obj_url_ra = "noRA";
+                    datoObjectNotiFinal[i] = datoObjectNoti;
+                    $scope.myObj = datoObjectNotiFinal;
+                }
+
+                
 
             }
         });

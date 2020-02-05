@@ -90,7 +90,8 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
       $.blockUI();
       var f = new Date();  
       datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-      datos.g_tipo = 'INF_CONM';
+      datos.g_tipo_tramite = 'INF_CONM';
+      datos.vtra_id = sessionService.get('IDTRAMITE');
       console.log($scope.datos,'datossss');
       data_form = JSON.stringify(datos);
       var tramite = new crearTramiteMovilidad();
@@ -138,6 +139,7 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
       $.unblockUI(); 
     }
   };
+
 
   $scope.ocultar = function(tipo){
     if(tipo=='OTRO'){

@@ -510,7 +510,7 @@
                           <div class="form-group" >
                             <label for="url">Placa de Circulación:</label>
                             <div class="controls">
-                              <input type="text" class="form-control" ng-model="datos.INF_PLACA" name="INF_PLACA" value="memorandum" required ng-disabled="desabilitado"> 
+                              <input type="text" class="form-control" ng-model="datos.INF_PLACA" name="INF_PLACA" value="memorandum" ng-blur="listaInfracciones(datos.INF_PLACA)" required ng-disabled="desabilitado"> 
                             </div>
                           </div>
                         </div>
@@ -590,6 +590,28 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
+                      <div class="col-md-12">
+                        <div class="col-md-12 table-responsive">
+                          <table ng-table="tableInfracciones" class="table table-striped table-bordered">
+                            <tr ng-repeat="inf in datos.infracciones" >
+                              <td align="center" data-title="'Seleccionar'" align="center">
+                                <label class="tamañoLabel">
+                                  <input type="checkbox" ng-model="inf.INF_TIPO_SOLICITANTE" />
+                                </label>
+                              </td>
+                              <td data-title="'#'" align="center">{{$index+1}}</td>
+                              <td data-title="'Número de Boleta'" align="center" sortable="'infraccion_boleta_auto'">{{inf.infraccion_boleta_auto}}</td>
+                              <td data-title="'Fecha de Infracción'" align="center" sortable="'infraccion_registrado'">{{inf.infraccion_registrado | date:'dd-MM-yyyy'}}</td>
+                              <td data-title="'Monto de Infracción'" align="center" sortable="'infraccion_monto_total'">{{inf.infraccion_monto_total}}</td>
+                              <td data-title="'Lugar de Infracción'" align="center"> Zona {{inf.infraccion_detalle_ubi.zona}},via {{inf.infraccion_detalle_ubi.via}}</td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <!--div class="col-md-12">
                       <div class="col-md-6" >
                         <div class="form-group" >
                           <label for="url">Número de Memorandum:</label>
@@ -630,6 +652,8 @@
                           </div>
                         </div>
                       </div>
+                    </div-->
+                    <div class="col-md-12">
                       <div class="col-md-12" >
                         <div class="form-group" >
                           <label for="url">Justificación:</label>

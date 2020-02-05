@@ -22,6 +22,7 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
   }
 
   var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
+    console.log("datossss",data);
     $scope.datos = JSON.parse(data);
     $scope.enviado = sessionService.get('ESTADO');
     if($scope.enviado == 'SI'){
@@ -29,6 +30,7 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
     }else{
       $scope.desabilitado = false;
     }
+    $scope.listaInfracciones
     document.getElementById('gu').disabled=true;
     $scope.$apply();
     setTimeout(function(){
@@ -230,9 +232,34 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
     },message: "Espere un momento por favor ..." }); 
     setTimeout(function(){
       $.blockUI();
+      console.log("datos",datos);
+      $scope.INF_GRILLA = [];
+      var encabezado = [];
+      var indice = 1;
+      var dataInf = [];
+      encabezado[0] = {"tipo": "GRD","campos": "Nro|infraccion_boleta_auto|infraccion_registrado|infraccion_monto_total|infraccion_ubicacion|","titulos": "Nro|Número de Boleta|Fecha de Infracción|Monto de Infracción|Lugar de Infracción","impresiones": "true|true|true|true|true|true|true|true|false"};
+      for (var i = 0; i<datos.infracciones.length; i++) {
+        if(datos.infracciones[i].INF_TIPO_SOLICITANTE){
+          dataInf.push(datos.infracciones[i]);
+          $scope.INF_GRILLA.push({
+            Nro:i+1,
+            infraccion_boleta_auto:datos.infracciones[i].infraccion_boleta_auto,
+            infraccion_registrado:datos.infracciones[i].infraccion_registrado,
+            infraccion_monto_total:datos.infracciones[i].infraccion_monto_total,
+            infraccion_ubicacion:"Zona: "+datos.infracciones[i].infraccion_detalle_ubi.zona+" Via:"+datos.infracciones[i].infraccion_detalle_ubi.via
+          });
+        }
+      }  
+      var jsonString = '['+ (encabezado) +']';
+      angular.forEach($scope.INF_GRILLA, function(value, key) {
+        encabezado[indice] = value;
+        indice = indice + 1;
+      });
+      datos.INF_GRILLA=encabezado;
+      datos.infracciones = dataInf;
       var f = new Date();  
       datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-      datos.g_tipo = 'INF_IMPUG';
+      datos.g_tipo_tramite = 'INF_IMPUG';
       data_form = JSON.stringify(datos);
       var tramite = new crearTramiteMovilidad();
       tramite.usr_id = 1;    
@@ -287,6 +314,19 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
     }else{
       $scope.ocultaTipo = false;
     }
+  }
+
+  $scope.listaInfracciones = function(placa){
+    if(placa.length>5){
+      var busca = new buscaInfraccion();
+      busca.placa = placa;
+      busca.buscaInfraccionesPlaca(function(resultado){
+        $scope.datos.infracciones = JSON.parse(resultado).success.data;
+        console.log("placa",placa,1111111,$scope.datos.infracciones);
+        console.log("resultado",resultado);
+      })
+    }
+    console.log("placa",placa.length);
   }
 
 }

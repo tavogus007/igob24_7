@@ -598,3 +598,16 @@ crear_Tramite_lotus1.prototype.tram_lotus1 = function (functionResp) {
   ejecutarAjaxIF9097(urlComp, typeCall, dataParams, functionResp);
 };
 
+//*****************************INFRACCIONES*****************************************
+function buscaInfraccion(){
+  this.placa;
+};
+
+buscaInfraccion.prototype.buscaInfraccionesPlaca = function (functionResp) {
+  urlComp = "/buscaInfracciones";
+  typeCall = "post";
+  dataParams = {
+    "placa" : this.placa
+  };
+  ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
+};

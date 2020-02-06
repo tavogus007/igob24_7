@@ -640,7 +640,7 @@ $('.custom-upload2 input[type=file]').change(function () {
                                         <div class="col-md-4">
                                             <label for="url">FACTURA COMERCIAL:</label>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-6">
                                             <div class="form-group custom-upload">
                                                 <input type="file" id="f01_upload_factura" name="f01_upload_factura"
                                                     accept="application/pdf,image/jpg" style="display: none;">
@@ -673,6 +673,18 @@ $('.custom-upload2 input[type=file]').change(function () {
                                                 </div>
                                             </div>
                                         </div>
+                                         <div class="col-md-1">
+                                            <label for="url">Cantidad Hojas </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input ng-model="datos.facturaFojas" id="facturaFojas"
+                                                    name="facturaFojas" class="form-control" width="30%" height="30" type="number" required="required" 
+                                                    ng-disabled="desabilitado">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div><br>
@@ -682,7 +694,7 @@ $('.custom-upload2 input[type=file]').change(function () {
                                         <div class="col-md-4">
                                             <label for="url">DUI-FRV O PÓLIZA DE IMPORTACIÓN</label>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-6">
                                             <div class="form-group custom-upload1">
                                                 <input type="file" id="f01_upload_poliza" name="f01_upload_poliza"
                                                     accept="application/pdf,image/jpg" style="display: none;">
@@ -715,6 +727,18 @@ $('.custom-upload2 input[type=file]').change(function () {
                                                 </div>
                                             </div>
                                         </div>
+                                         <div class="col-md-1">
+                                            <label for="url">Cantidad Hojas </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input ng-model="datos.duiFojas" id="duiFojas"
+                                                    name="duiFojas" class="form-control" width="30%" height="30" type="number"  required="required" 
+                                                    ng-disabled="desabilitado">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div> <br>
@@ -722,9 +746,9 @@ $('.custom-upload2 input[type=file]').change(function () {
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="url">PODER DEL COMPRADOR:</label>
+                                            <label for="url">PODER DEL COMPRADOR, FOTOCOPIA DE CI Y/O NIT SI CORRESPONDE:</label>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-6">
                                             <div class="form-group custom-upload2">
                                                 <input type="file" id="f01_upload_poder" name="f01_upload_poder"
                                                    accept="application/pdf,image/jpg" style="display: none;">
@@ -754,6 +778,18 @@ $('.custom-upload2 input[type=file]').change(function () {
                                                                 class="glyphicon glyphicon-upload"></i> Subir
                                                         </button>
                                                     </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-1">
+                                            <label for="url">Cantidad Hojas </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input ng-model="datos.poderFojas" id="poderFojas"
+                                                    name="poderFojas" class="form-control" width="30%" height="30" type="number" required="required" 
+                                                    ng-disabled="desabilitado">
                                                 </div>
                                             </div>
                                         </div>

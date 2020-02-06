@@ -37,7 +37,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
     $scope.serivicosInternetVehiculos = [
         { name: 'INSCRIPCION CASA COMERCIAL VEHICULOS ', id: '19' },
         { name: 'INSCRIPCION CASA COMERCIAL MOTOS', id: '18' },
-        { name: 'REGISTRO VALOR LIBROS VEHICULOS ', id: '17' },
+        { name: 'BASE IMPONIBLE VEHICULOS', id: '17' },
     ];
     $scope.btnEnviarForm = true;
     $scope.datosGuardados = false;

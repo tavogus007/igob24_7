@@ -35,6 +35,21 @@
        });   
     </script>
    <script type="text/javascript">
+        /*se adiciono nota ATM*/
+    var fechaDato = new Date();
+    var mes = fechaDato.getMonth()+1;
+    var dia = fechaDato.getDate();
+    var anioo = fechaDato.getFullYear();
+    var fechaActual = anioo+'-'+mes+'-'+dia;
+    var fechaLimite = new Date('2020-02-18');
+    var fechaLimite2 = new Date('2020-02-11');
+    if(fechaDato < fechaLimite){
+    $('#guiatramiteV').modal('show');
+    } 
+    if(fechaDato < fechaLimite && fechaDato > fechaLimite2){
+    $('#guiatramiteV2').modal('show');
+    }  
+    /* FIN DE LA NOTA*/
        $(document).ready(function() {
          $(".js-example-basic-single").select2();
          $('html,body').scrollTop(0);
@@ -78,6 +93,34 @@
                 </div>
             </div>
         </div>
+        <!--CAMPO COMUNICADO-->
+        <div class="modal fade in" id="guiatramiteV" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-body" style="background: #545f63;">
+                         <img class="img-responsive" src="../../libs/img/comunicadoAtm01_2020.jpg">
+                  </div>
+
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default ng-binding" data-dismiss="modal">Cerrar</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal fade in" id="guiatramiteV2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-body" style="background: #545f63;">
+                         <img class="img-responsive" src="../../libs/img/comunicadoAtm2_01_2020.jpg">
+                  </div>
+
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default ng-binding" data-dismiss="modal">Cerrar</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!--CAMPO COMUNICADO-->
         <!--cambios magali-->
         <!-- Modal -->
         <div class="col-lg-12">

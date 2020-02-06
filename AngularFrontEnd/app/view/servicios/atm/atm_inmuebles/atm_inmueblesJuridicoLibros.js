@@ -208,7 +208,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
         $scope.valor =  dataI.valorLibroTablas; 
         if( $scope.valor == undefined){
 console.log("verificar datoooooooos", $scope.valor);
-swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 'error');
+swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
         }else{
         $("#declaracionJ").modal("show");
         $rootScope.datosEnvI = "";

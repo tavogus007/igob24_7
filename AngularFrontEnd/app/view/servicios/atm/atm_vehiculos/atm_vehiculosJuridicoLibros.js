@@ -295,6 +295,18 @@
         $("#declaracionJV").modal("show");
 
     }
+    $scope.visualizarLT = function(datos1) {
+        console.log("visualizacion datos", datos1)
+        if( datos1 == "1"){   
+        $scope.libro1 = 'mostrar';
+        $scope.libros2 = null;
+        $scope.noCierran = 'mostrar';
+    }if( datos1 == "2"){   
+        $scope.libros2 = 'mostrar';
+        $scope.libro1 = null;
+        $scope.noCierran = null;
+        }
+    }
 
     $scope.formulario409 = function(datosV){
         //console.log('data 409',datosV);

@@ -596,9 +596,9 @@
                                         <font color="#FF0000" size="4px">*  </font>
                                         <input type="radio" ng-model="datos.valorLibroTablas" name="valorLibroTablas" value="VALOR LIBROS" ng-disabled="desabilitado" required > VALOR LIBROS
                                     </div>
-                                    <div class="col-md-4">
+                                   <!--  <div class="col-md-4">
                                         <input type="radio" ng-model="datos.valorLibroTablas" name="valorLibroTablas" value="VALOR TABLAS" ng-disabled="desabilitado" required> VALOR TABLAS
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-4"> 
                                         <button type="button" class="btn btn-success" ng-click="verificarDatos(datos);">Generar Formulario 406 </button>
                                     </div>
@@ -671,7 +671,7 @@
                                         <div class="col-md-6">
                                             <label for="url">FOTOCOPIA DE BALANCE CON SELLO DE IMPUESTOS NACIONALES O INSTITUCIÒN BANCARIA:</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group custom-upload">
                                                 <input type="file" id="f01_upload_factura" name="f01_upload_factura" accept="application/pdf,image/jpg" style="display: none;">
                                                 <div class="input-group col-xs-6">
@@ -690,6 +690,18 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    <div class="col-md-1">
+                                            <label for="url">Cantidad Hojas </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input ng-model="datos.facturaFojas" id="facturaFojas" type="number" 
+                                                    name="facturaFojas" class="form-control" width="30%" height="30"
+                                                    ng-disabled="desabilitado">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div><br>
@@ -699,7 +711,7 @@
                                         <div class="col-md-6">
                                             <label for="url">ORIGINAL DETALLE DE INMUEBLES DE ACUERDO AL MODELO DE LA RESOLUCION REPRESENTANTE LEGAL O APODERADO:</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group custom-upload1">
                                                 <input type="file" id="f01_upload_inmueble" name="f01_upload_inmueble" accept="application/pdf,image/jpg" style="display: none;">
                                                 <div class="input-group col-xs-6">
@@ -718,6 +730,18 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    <div class="col-md-1">
+                                            <label for="url">Cantidad Hojas </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input ng-model="datos.detalleFojas" id="detalleFojas" type="number" 
+                                                    name="detalleFojas" class="form-control" width="30%" height="30"
+                                                    ng-disabled="desabilitado">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div><br>
@@ -727,7 +751,7 @@
                                         <div class="col-md-6">
                                             <label for="url">PARA EMPRESAS QUE NO CIERRAN EL 31 DE DICIEMBRE DEBERAN ELABORAR CUADRO DE AJUSTE ACTUALIZADO LOS VALORES AL 31 DE DICIEMBRE:</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group custom-upload2">
                                                 <input type="file" id="f01_upload_ajuste" name="f01_upload_ajuste" accept="application/pdf,image/jpg" style="display: none;">
                                                 <div class="input-group col-xs-6">
@@ -746,6 +770,18 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    <div class="col-md-1">
+                                            <label for="url">Cantidad Hojas </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input ng-model="datos.cuadroActualizadoFojas" id="cuadroActualizadoFojas" type="number" 
+                                                    name="cuadroActualizadoFojas" class="form-control" width="30%" height="30"
+                                                    ng-disabled="desabilitado">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div><br>
@@ -755,7 +791,7 @@
                                         <div class="col-md-6">
                                             <label for="url">CUADRO DE BALANCE - INMUEBLES (descargar en el punto 2, archivo tipo XLS Ó XLSX):</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group custom-upload3">
                                                 <input type="file" id="f01_upload_excel" name="f01_upload_excel" accept=".xls,.xlsx" style="display: none;">
                                                 <div class="input-group col-xs-6">
@@ -774,6 +810,18 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    <div class="col-md-1">
+                                            <label for="url">Cantidad Hojas </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input ng-model="datos.balanceFojas" id="balanceFojas" type="number" 
+                                                    name="balanceFojas" class="form-control" width="30%" height="30"
+                                                    ng-disabled="desabilitado">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div><br>
@@ -783,7 +831,7 @@
                                         <div class="col-md-6">
                                             <label for="url">FORMULARIO 406 (debe descargar el formulario en el punto 1, firmar la solicitud y adjuntar):</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group custom-upload4">
                                                 <input type="file" id="f01_upload_formulario" name="f01_upload_formulario" accept="application/pdf,image/jpg" style="display: none;">
                                                 <div class="input-group col-xs-6">
@@ -799,6 +847,18 @@
                                                         <button id="btn_f01_upload_formulario" onclick="ejecutarForm406('f01_upload_formulario', 'formulario')" class="btnupload browse btn btn-primary input-lg" type="button" {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i> Subir
                                                         </button>
                                                     </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <div class="col-md-1">
+                                            <label for="url">Cantidad Hojas </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <input ng-model="datos.409Fojas" id="409Fojas"
+                                                    name="409Fojas" class="form-control" width="30%" height="30" type="number" 
+                                                    ng-disabled="desabilitado">
                                                 </div>
                                             </div>
                                         </div>

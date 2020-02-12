@@ -350,7 +350,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     };  
     // ******FIN DE CAPCHA****************
      $scope.validarCiCiudadano = function(response){
-        
         var sw=100;
         var filtrov;
         var misDocs = new Array();
@@ -376,6 +375,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     };
     
     $scope.verificacionFiles = function(oid_ciu,tipo_file){
+
         var verifFiles = new reglasnegocio();
         verifFiles.identificador = "RCCIUDADANO_VERIF_FILES";
         var idusu = 68;
@@ -489,6 +489,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       var tipo_file = "FILE_LIC_RADIODIFUSION";
       var oid_ciu = sessionService.get('IDSOLICITANTE');
       $scope.verificacionFiles(oid_ciu,tipo_file);
+      $scope.getRepresentantes(sessionService.get('NITCIUDADANO'));
+
 
       //http://192.168.5.141:80/rest/files/req_Antenas/Adjuntossss?app_name=todoangular
 
@@ -500,8 +502,187 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     $scope.$on('api:ready',function(){
       $scope.getDatosRegistro();
       $scope.verificacionFiles(oid_ciu,tipo_file);
-
       //scope.imagenPortada = 'http://192.168.5.141/rest/files/RC_CLI/57798e502f59181eb2873e5d/carnetrdo.jpeg?app_name=todoangular';
 
     });
+    /////////////////REPRESENTANTES LEGALES/////////////
+    $scope.getRepresentantes = function(nit_representante){
+        $.blockUI();
+        var resRepresentante = new reglasnegocio();
+        resRepresentante.identificador = 'RCCIUDADANO_ANTENA_20-1';
+        resRepresentante.parametros = '{"nit_representante":"'+ nit_representante +'"}';
+        resRepresentante.llamarregla(function(response){
+            $scope.obtDatos = JSON.parse(response);
+            if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
+                $scope.obtRepresentanteLegal = [];
+                $("#divMsj").css({'display' : 'block' });
+                $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
+                $.unblockUI();
+                alertify.warning('No existen datos');  
+            } else{
+
+                $scope.obtRepresentanteLegal = $scope.obtDatos;
+                var data = response;
+                $scope.tablalstReprLegal.reload();
+                  
+                alertify.warning('existen datos');  
+                $.unblockUI();
+
+            };
+        });      
+    };
+
+    $scope.obtRepresentanteLegal = [];
+    $scope.tablalstReprLegal = new ngTableParams({
+        page: 1,
+        count: 20,
+        filter: {},
+        sorting: {}
+    }, {
+    total: $scope.obtRepresentanteLegal.length,
+    getData: function($defer, params) {
+        var filteredData = params.filter() ?
+        $filter('filter')($scope.obtRepresentanteLegal, params.filter()) :
+        $scope.obtRepresentanteLegal;
+        var orderedData = params.sorting() ?
+        $filter('orderBy')(filteredData, params.orderBy()) :
+        $scope.$scope.obtRepresentanteLegal;
+        params.total(orderedData.length);
+        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+        }
+    });
+    $scope.recInfo = function(){
+        var nit_ciu = sessionService.get('NITCIUDADANO');
+        $("#nit_rep").val(nit_ciu);
+    }
+
+    $scope.reg_representante = function(dataRepre){
+        console.log("WWWW",dataRepre);
+        $.blockUI();
+        var dataReprepresentante = '[{}]';
+        var datausuario = sessionService.get('IDUSUARIO');
+        var resRepresentante = new reglasnegocio();
+        resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-3';
+        resRepresentante.parametros = '{"nit":"'+ sessionService.get('NITCIUDADANO') +'","ci":"'+ dataRepre.ci_rep +'","nombre":"'+ dataRepre.nom_rep +' '+ dataRepre.pat_rep+' '+ dataRepre.mat_rep +'","ext":"'+ dataRepre.exp_rep +'","numPoder":"'+ dataRepre.nro_poder_rep +'","dataRep":"'+ dataReprepresentante +'","usuario":"'+ datausuario +'"}';
+        resRepresentante.llamarregla(function(response){
+            $scope.obtDatos = JSON.parse(response);
+            if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
+                $scope.obtRepresentanteLegal = [];
+                $("#divMsj").css({'display' : 'block' });
+                $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
+                $.unblockUI();
+                alertify.warning('No existen datos');  
+            } else{
+                if ($scope.obtDatos[0].inserta_representante) {
+                    
+                    $("#divMsj").css({'display' : 'block' });
+                    swal('', 'Representante almacenado correctamente', 'success'); 
+                    $scope.getRepresentantes(sessionService.get('NITCIUDADANO'));
+                    $.unblockUI();
+                    alertify.warning('existen datos'); 
+                    $("#ci_rep").val("");
+                    $("#nom_rep").val("");
+                    $("#pat_rep").val("");
+                    $("#mat_rep").val("");
+                    $("#nro_poder_rep").val("");
+
+                }else{
+                    $.unblockUI();
+
+                }
+
+            };
+        });
+    }
+    
+    $scope.eliminarRepresnte = function(dataRepre){
+        $.blockUI();
+        swal({   title: "Esta Seguro de Eliminar el Represetnate?",
+            text: "Presione Si para eliminar el Registro!",
+            type: "warning",   showCancelButton: true,
+            confirmButtonColor: "#DD6B55",  
+            confirmButtonText: "Si, Eliminar!",
+            cancelButtonText: "Cancelar!",
+            closeOnConfirm: false
+            }, function(){
+                var datausuario = sessionService.get('IDUSUARIO');
+                var resRepresentante = new reglasnegocio();
+                resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-2';
+                resRepresentante.parametros = '{"id_representante":'+ dataRepre.id_rep +',"usuario":"'+ sessionService.get('IDUSUARIO') +'"}';
+                resRepresentante.llamarregla(function(response){
+                    $scope.obtDatos = JSON.parse(response);
+                    if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
+                        $scope.obtRepresentanteLegal = [];
+                        $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
+                        $.unblockUI(); 
+                    } else{
+                        if ($scope.obtDatos[0].sp_delete_representante_id) {
+                            
+                            $("#divMsj").css({'display' : 'block' });
+                            swal('Ok!', 'El Representante se Elimino Correctamente', 'success');
+                            $scope.getRepresentantes(sessionService.get('NITCIUDADANO'));
+                            $.unblockUI();
+                        }else{
+                            $.unblockUI();
+
+                        }
+
+                    };
+                });
+        }); 
+        $.unblockUI(); 
+    }
+
+    $scope.editaRepresentante = function(dataRepre){
+        console.log("WWWW",dataRepre);
+        //$.blockUI();
+        var dataNom = dataRepre.nombre.split(" "); //split(" ",dataRepre.nombre);
+        console.log("sss",dataNom);
+        $("#id_rep_upd").val(dataRepre.id_rep);
+        $("#nit_rep_upd").val(dataRepre.nit);
+        $("#ci_rep_upd").val(dataRepre.ci);
+        $("#nom_rep_upd").val(dataNom[0]);
+        $("#pat_rep_upd").val(dataNom[1]);
+        $("#mat_rep_upd").val(dataNom[2]);
+        $("#exp_rep_upd").val(dataRepre.ext);
+        $("#nro_poder_rep_upd").val(dataRepre.numero_poder);
+        $scope.id_represen = dataRepre.id_rep;
+
+    }
+
+
+    $scope.act_representante = function(dataRepre){
+        $.blockUI();
+        var dataReprepresentante = '[{}]';
+        var datausuario = sessionService.get('IDUSUARIO');
+        var resRepresentante = new reglasnegocio();
+        resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-4';
+        resRepresentante.parametros = '{"id_registro":'+ $scope.id_represen +', "nit":"'+ sessionService.get('NITCIUDADANO') +'","ci":"'+ $("#nit_rep_upd").val() +'","nombre":"'+ $("#nom_rep_upd").val() +' '+ $("#pat_rep_upd").val()+' '+ $("#mat_rep_upd").val() +'","ext":"'+ $("#exp_rep_upd").val() +'","numPoder":"'+ $("#nro_poder_rep_upd").val() +'","dataRep":"'+ dataReprepresentante +'","usuario":"'+ datausuario +'"}';
+        resRepresentante.llamarregla(function(response){
+            $scope.obtDatos = JSON.parse(response);
+            if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
+                $scope.obtRepresentanteLegal = [];
+                $("#divMsj").css({'display' : 'block' });
+                $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
+                $.unblockUI();
+                alertify.warning('No existen datos');  
+            } else{
+                if ($scope.obtDatos[0].actualiza_representante) {
+                    
+                    $("#divMsj").css({'display' : 'block' });
+                    swal('', 'Representante Actualizado correctamente', 'success'); 
+                    $scope.getRepresentantes(sessionService.get('NITCIUDADANO'));
+                    $.unblockUI();
+                    alertify.warning('existen datos'); 
+
+                }else{
+                    $.unblockUI();
+
+                }
+
+            };
+        });
+        $.blockUI();
+
+    }
 }

@@ -82,6 +82,8 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
             }
             $scope.tramites = results;     
             angular.forEach(results,function(val, index){
+
+
              if(val['form_contenido'])
              {
                results[index].datos = val['form_contenido'];
@@ -341,6 +343,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
             if(tramite.form_contenido != undefined){
 
                 //alert("eeee");
+                
                 $rootScope.botones = false;  
                 $.blockUI();          
                 setTimeout(function(){

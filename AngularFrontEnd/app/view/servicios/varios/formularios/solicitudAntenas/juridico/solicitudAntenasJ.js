@@ -2757,7 +2757,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               case "GABINETES":
                 $scope.antsatelites =  "mostrar";
                   break;
-              
           }
         }
       }

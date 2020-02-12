@@ -650,7 +650,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
     }
 
-
     $scope.act_representante = function(dataRepre){
         $.blockUI();
         var dataReprepresentante = '[{}]';

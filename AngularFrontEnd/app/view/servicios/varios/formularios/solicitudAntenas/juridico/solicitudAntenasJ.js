@@ -240,7 +240,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     }
     $scope.tipoReg;
     $scope.valid_tipo = function() {
-      //alert($scope.URLAPI);
       var radios = $('input:radio[name=r_tipo]:checked').val();
       $("#den_auto").val("");
       $("#den_rbase").val("");
@@ -674,7 +673,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
     }
     $scope.reqPropiedad = function(propiedad){
-        //alert($scope.tipoTramite);
         if($scope.tipoTramite == "NUEVO" || $scope.tipoTramite == "MULTIPLE_RG" ){
           $rootScope.requistosfile = false;
           switch(propiedad) {
@@ -1683,7 +1681,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     $scope.datarenviada  = "";
     $scope.grilla_rbmultiple_reenvio = [];
     $rootScope.asgnvalores = function(data,estado) {
-      //alert(estado);
       ////////////////// RODOLFO CODIGO MARAVILLA ///////////
       $scope.btnEnviarFormLinea    =   true;
       $scope.fechaVerifica = obtFechaActual.obtenerFechaActual();
@@ -1712,7 +1709,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       if(data2.g_tipo == "RG"){
         $scope.tipoReg = "G_UNICO"; 
       }    
-      //alert($scope.tipoReg);  
       $scope.getArchivosAdjuntos(filesAdjunto);
       if(estado == "NO"){
         $rootScope.botones = false;
@@ -1724,7 +1720,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $scope.dataRecuperadoCP = data;
         //$scope.mostrarReqfaltantes();
       }else{
-        //alert(454354);
         $rootScope.botones = true;
         $rootScope.botonesrodolfo = false;
         $rootScope.botonesrodo = true;
@@ -1742,11 +1737,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       }
       var datas = data2.GRD_ANTENAS[0];
       $scope.valor = true;
-      //alert(datas.f01_TIPO_REGISTRO);
       switch (datas.f01_TIPO_REGISTRO){
         case "R_UNICO":
-          //alert("r_unico");
-
           mapas(sessionService.get('IDTRAMITE'));
           $("#idtramite").val(sessionService.get('IDTRAMITE'));
 
@@ -1800,12 +1792,9 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               $scope.hab_boton_guardar = true;
           break;
         case "G_UNICO":
-          //alert("g_unico");
           $scope.radiobase_simple = "mostrar";
-          //alert(sessionService.get('IDTRAMITE'));
           mapas(sessionService.get('IDTRAMITE'));
           $("#idtramite").val(sessionService.get('IDTRAMITE'));
-          //alert("pasa Todavia");
           $scope.n_autorizacion = true;
           $scope.n_autorizacion_1 = true;
           $scope.den_rbase = datas.ANT_NOM_RADBASE;
@@ -1831,7 +1820,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
           $scope.mostrarRUGU = "mostrar";//false;
           $scope.radiobase_simple = null;
           if(estado == "NO"){
-           // alert(estado);
             $scope.btnGuardarRegistro = false;
             $rootScope.botonesrodolfo = true;
             $rootScope.botonesrodo = true;
@@ -2012,7 +2000,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             }
     };
     $scope.eliminarArchivo = function(archivo, index){
-        //alert($scope.ANTT_AUT_ESC_COPROP);
         swal({   title: "Esta seguro de eliminar el Registro?",
               text: "Presione Si para eliminar el Registro!",
               type: "warning",   showCancelButton: true,
@@ -2165,10 +2152,10 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 $scope.getCaptchasXX(); 
             }else{
                 
-                swal('Ups!', 'Es necesario completar todos los campos', 'error');//alert("debe llenar los datos");
+                swal('Ups!', 'Es necesario completar todos los campos', 'error');
             }
         }else{
-            swal('Ups!', 'Es necesario completar todos los campos', 'error');//alert("debe llenar los datos");
+            swal('Ups!', 'Es necesario completar todos los campos', 'error');
         }
     }
     $scope.eliminar = function(dataR){
@@ -2398,7 +2385,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     $scope.grilla_rbm = [];
     $scope.grilla_rbmultiple = [];
     $scope.lst_grilla_multiple = function() {
-      //alert();
       $scope.estadoTramite = sessionService.get('ESTADO');
       $scope.grilla_rbm = $scope.grilla_rbmultiple;
       var data = $scope.grilla_rbmultiple;
@@ -2556,12 +2542,14 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             $scope.grilla_rbmultiple.push(JSON.parse(dataGrilla));
             $scope.lst_grilla_multiple();
             $scope.lstSoporte_m = [];
-            $scope.mostrarRUGU = null;//true;
+            $scope.mostrarRUGU = null;
             $scope.mostrarbtn_multiple = true;
             $scope.radiobase_simple = null;
-            //$scope.lstSoporteprevio_m = [];
             $scope.lstSoporteprevio = [];
             $scope.lstSoportes();
+            $scope.tipoProceso_envio  = "RBM";
+            $scope.guardarGrillaMultiple($scope.grilla_rbmultiple);
+            
             swal("Ok.","Información Registrada exitosamente Gracias","success");
             $scope.habilitaAdjuntosM();
             $("#den_rbase").val("");
@@ -2588,7 +2576,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
           }
         }else if ($scope.tipoReg == "G_MULTIPLE"){
-            //alert("gmultiple");
             if( $("#den_rbase").val() != "" && $("#ub_rbase").val() != "" && $("#tp_prop").val() != "" && $("#den_ngabinete").val() != "" && data.den_rbase != undefined && $("#zona").val() != "" && data.den_ngabinete != undefined 
             && data.tp_prop != undefined && data.ub_rbase != undefined){
 
@@ -2602,7 +2589,10 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               
               var grilla = JSON.parse(dataGrilla);
               $scope.grilla_rbmultiple.push(JSON.parse(dataGrilla));
+              console.log("$scope.grilla_rbmultiple ==>",$scope.grilla_rbmultiple);
               $scope.lst_grilla_multiple();
+              $scope.tipoProceso_envio  = "GM";
+              $scope.guardarGrillaMultiple($scope.grilla_rbmultiple);
               $scope.lstSoporte_m = [];
               $scope.mostrarRUGU = null;//true;
               $scope.mostrarbtn_multiple = true;
@@ -2632,6 +2622,10 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
             }
         }
+
+
+
+
       }else{
         
         swal("Error","Por favor es necesario completar todos los campos Gracias","error");
@@ -2639,6 +2633,86 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       $rootScope.botones = false;
     }
 
+
+    $rootScope.datosIniciales_previaG = [];
+    $scope.guardarGrillaMultiple = function(grillaMultiple){
+      console.log("AAAA",grillaMultiple);
+      console.log("BBBB",JSON.stringify($rootScope.datosIniciales));
+      $scope.grilla_revisada  = [];
+            
+      $rootScope.datosIniciales_previaG     = $rootScope.datosIniciales;
+      var fechactual       = obtFechaActual.obtenerFechaActual();
+      $scope.tipoPersona   =   sessionService.get('TIPO_PERSONA');
+      $rootScope.datosIniciales_previaG.ANT_NRO_AUTORIZACION    =   "";//$("#den_auto").val();
+      $rootScope.datosIniciales_previaG.g_fecha                 =   fechactual;
+      $rootScope.datosIniciales_previaG.g_tipo                  =   $scope.tipoProceso_envio;
+      $rootScope.datosIniciales_previaG.File_Adjunto            =   "";
+      $rootScope.datosIniciales_previaG.File_Adjunto            =   $scope.rutaArchEnvioLotus;
+      $rootScope.datosIniciales_previaG.INT_FORM_ALMACENADO     =   "G";
+      $rootScope.datosIniciales_previaG.f01_tipo_per            =   'J';
+      $rootScope.datosIniciales_previaG.f01_tipo_per_desc       =   'JURIDICO';
+      $rootScope.datosIniciales_previaG.ANT_TIPO_PERSONA        =   '2';
+      $rootScope.datosIniciales_previaG.ANT_NIT                 =   $rootScope.datosIniciales.f01_num_doc_per_jur;
+      $rootScope.datosIniciales_previaG.ANT_RAZ_SOC             =   $rootScope.datosIniciales.f01_raz_soc_per_jur;
+      $rootScope.datosIniciales_previaG.ANT_NUM_PODER           =   $rootScope.datosIniciales.f01_poder_representante; 
+      $rootScope.datosIniciales_previaG.ANT_NUM_PODER           =   $rootScope.datosIniciales.f01_ges_vig_pod;           
+      $rootScope.datosIniciales_previaG.ANT_EMP_TEL             =   "";
+      $rootScope.datosIniciales_previaG.ANT_NUM_NOTARIA         =   $rootScope.datosIniciales.f01_num_notaria;//f01_num_notaria
+      $rootScope.datosIniciales_previaG.ANT_EMP_CEL             =   "";
+      $rootScope.datosIniciales_previaG.ANT_EMP_CORREO          =   "";
+      $rootScope.datosIniciales_previaG.ANT_NUM_CI              =   $rootScope.datosIniciales.f01_num_doc_per_jur;
+      $rootScope.datosIniciales_previaG.ANT_NOM                 =   $rootScope.datosIniciales.f01_pri_nom_rep;+ " " + $rootScope.datosIniciales.f01_seg_nom_rep ;//+ " " + $rootScope.datosIniciales.f01_ter_nom_rep;
+      $rootScope.datosIniciales_previaG.ANT_PAT                 =   $rootScope.datosIniciales.f01_ape_pat_rep;
+      $rootScope.datosIniciales_previaG.ANT_MAT                 =   $rootScope.datosIniciales.f01_ape_mat_rep;
+      $rootScope.datosIniciales_previaG.ANT_CAS                 =   $rootScope.datosIniciales.f01_ape_cas_rep;
+      $rootScope.datosIniciales_previaG.ANT_DOM                 =   $rootScope.datosIniciales.f01_zon_rep_valor;
+      $rootScope.datosIniciales_previaG.ANT_CELU                =   $rootScope.datosIniciales.f01_cel_rep;   
+      $rootScope.datosIniciales_previaG.ANT_TEL                 =   $rootScope.datosIniciales.f01_telef_rep;     
+      $rootScope.datosIniciales_previaG.ANT_MAIL                =   $rootScope.datosIniciales.f01_email_rep;
+      $rootScope.datosIniciales_previaG.f01_macro_act           =   1; 
+      console.log("grillaMultiple ===> ",grillaMultiple);
+      var json = angular.toJson( grillaMultiple );
+
+      console.log("jsonssss ===> ",json);
+      grillaMultiple   = JSON.parse(json);
+      console.log("eeeee ===> ",grillaMultiple);
+      for (let index = 0; index < grillaMultiple.length; index++) {
+        const element = JSON.stringify(grillaMultiple[index]);
+        $scope.grilla_revisada.push(JSON.parse(element));
+      }
+      console.log("grilla_revisada ===> ",$scope.grilla_revisada);
+      $rootScope.datosIniciales_previaG.GRD_ANTENAS             = $scope.grilla_revisada;//$rootScope.Antenas_multiple;
+      console.log("$rootScope.datosIniciales_previaG",$rootScope.datosIniciales_previaG);
+      try { 
+        $rootScope.datosIniciales = $rootScope.datosIniciales_previaG;//JSON.parse(datosGradarCd);
+        var datosSerializados     = JSON.stringify($rootScope.datosIniciales_previaG);
+        var idCiudadano           = sessionService.get('IDSOLICITANTE');
+        var idTramite             = sessionService.get('IDTRAMITE');
+        var idServicio            = sessionService.get('IDSERVICIO');
+        var Parametros = new datosFormularios();
+        Parametros.frm_tra_dvser_id = idServicio;
+        Parametros.data_json = datosSerializados;
+        Parametros.frm_tra_id_ciudadano = idCiudadano;
+        Parametros.frm_tra_id_usuario = 1;
+        Parametros.frm_idTramite = idTramite;
+        $rootScope.btnGuardarForm   =   true;
+        $.blockUI();
+        Parametros.sp_crear_datos_formulario(function(results){ 
+            results = JSON.parse(results);
+                results = results.success;
+                if(results.length > 0){
+                    $.unblockUI();
+                    
+                }else{
+                    $.unblockUI();
+                    //$scope.btnEnviarFormLinea    =   true;
+                }
+            }); 
+      }catch(e){
+            $scope.btnGuardarForm   =   false;
+            $.unblockUI();
+      }
+    }
     $scope.habilitaAdjuntosM = function(){
       if($scope.tipoReg == "R_MULTIPLE"){
         $rootScope.radiobas_env = "mostrar";
@@ -2649,7 +2723,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       }
     }
     $rootScope.requisitosrbase = null;
-
+    
     $scope.mostrarRequisitos = function(objeto){
       $rootScope.requisitosrbase = "mostrar";
       $scope.torres_torretas_monoposte = null;
@@ -2683,7 +2757,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               case "GABINETES":
                 $scope.antsatelites =  "mostrar";
                   break;
-              
           }
         }
       }
@@ -3391,7 +3464,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 break;
             case "G_MULTIPLE":
     
-                //alert("En proceso..");
                 if($scope.grilla_rbmultiple.length > 0 ){
 
                   return true;
@@ -3472,7 +3544,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     }
     $scope.idrespuesta;
     $scope.guardarUbicacion = function(dataUbicacion){
-      //alert(2222);
       $.ajax({
           type: 'POST',
           contentType: 'application/json; charset=utf-8',
@@ -3530,21 +3601,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       }
 
       $scope.data_Sitv3 = '{"id_mapa":1,"ext_id_tramite":"'+nroTramiteEnviado+'","usuario":"sistema.externo","items":['+rItems+']}';
-
-      /*var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJMT1RVUyIsInN1YiI6Ik1hcGEgQW50ZW5hcyIsImV4cCI6NjM2NzQwNzMwMzk5MjA4OTg2LCJ1c3VhcmlvIjoibG90dXMuYW50ZW5hcyIsImlkVXN1YXJpbyI6MH0=.N4/Gddm85L7tAxCMiudUvfKeCYywANrxgw8OA6HrCyE=';
-      $.ajax({
-          type: 'POST',
-          headers:{
-            AuthorizationServices: 'Bearer '+token
-          },
-         url: $scope.urlSITv3+'GeoDB/publico/swPublicoRegistrarItemsTramite',
-         dataType: 'json',
-         data: '{"id_mapa":1,"ext_id_tramite":"'+nroTramiteEnviado+'","usuario":"sistema.externo","items":['+rItems+']}',
-         success: function (data){                    
-          },
-         error: function (data){ console.log(data);}
-      });*/
-
     }
    
     $scope.UbicacionData = "";
@@ -3577,18 +3633,18 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               $rootScope.datosIniciales.INT_FORM_ALMACENADO = "G";
               $scope.tipoPersona          =   sessionService.get('TIPO_PERSONA');
 
-              $rootScope.datosIniciales.f01_tipo_per            =   'J';
-              $rootScope.datosIniciales.f01_tipo_per_desc       =   'JURIDICO';
-              $rootScope.datosIniciales.ANT_TIPO_PERSONA        =   '2';
-              $rootScope.datosIniciales.ANT_NIT                 =   $rootScope.datosIniciales.f01_num_doc_per_jur;
-              $rootScope.datosIniciales.ANT_RAZ_SOC             =   $rootScope.datosIniciales.f01_raz_soc_per_jur;
-              $rootScope.datosIniciales.ANT_NUM_PODER           =   $rootScope.datosIniciales.f01_poder_representante; 
-              $rootScope.datosIniciales.ANT_NUM_PODER           =   $rootScope.datosIniciales.f01_ges_vig_pod;           
-              $rootScope.datosIniciales.ANT_EMP_TEL             =   "";
-              $rootScope.datosIniciales.ANT_NUM_NOTARIA         =   $rootScope.datosIniciales.f01_num_notaria;//f01_num_notaria
-              $rootScope.datosIniciales.ANT_EMP_CEL             =   "";
-              $rootScope.datosIniciales.ANT_EMP_CORREO          =   "";
-              $rootScope.datosIniciales.ANT_NUM_CI              =   $rootScope.datosIniciales.f01_num_doc_per_jur;
+              $rootScope.datosIniciales.f01_tipo_per           =   'J';
+              $rootScope.datosIniciales.f01_tipo_per_desc      =   'JURIDICO';
+              $rootScope.datosIniciales.ANT_TIPO_PERSONA       =   '2';
+              $rootScope.datosIniciales.ANT_NIT                =   $rootScope.datosIniciales.f01_num_doc_per_jur;
+              $rootScope.datosIniciales.ANT_RAZ_SOC            =   $rootScope.datosIniciales.f01_raz_soc_per_jur;
+              $rootScope.datosIniciales.ANT_NUM_PODER          =   $rootScope.datosIniciales.f01_poder_representante; 
+              $rootScope.datosIniciales.ANT_NUM_PODER          =   $rootScope.datosIniciales.f01_ges_vig_pod;           
+              $rootScope.datosIniciales.ANT_EMP_TEL            =   "";
+              $rootScope.datosIniciales.ANT_NUM_NOTARIA        =   $rootScope.datosIniciales.f01_num_notaria;//f01_num_notaria
+              $rootScope.datosIniciales.ANT_EMP_CEL            =   "";
+              $rootScope.datosIniciales.ANT_EMP_CORREO         =   "";
+              $rootScope.datosIniciales.ANT_NUM_CI             =   $rootScope.datosIniciales.f01_num_doc_per_jur;
               $rootScope.datosIniciales.ANT_NOM                =   $rootScope.datosIniciales.f01_pri_nom_rep;+ " " + $rootScope.datosIniciales.f01_seg_nom_rep ;//+ " " + $rootScope.datosIniciales.f01_ter_nom_rep;
               $rootScope.datosIniciales.ANT_PAT                =   $rootScope.datosIniciales.f01_ape_pat_rep;
               $rootScope.datosIniciales.ANT_MAT                =   $rootScope.datosIniciales.f01_ape_mat_rep;
@@ -3618,14 +3674,14 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               
           }else{
             if($scope.tipoReg == "R_UNICO" || $scope.tipoReg == "G_UNICO"){
-              swal("Error!","Para guardar el formulario es necesario completar todos los campos y los documentos gracias...","error");
+              swal("Error!","Para guardar el formulario por favor completar todos los campos y los documentos gracias...","error");
 
             }else if ($scope.tipoReg == "R_MULTIPLE" ){
-              swal("Error!","Para guardar el formulario es necesario registrar al menos una radio base gracias...","error");
+              swal("Error!","Para guardar el formulario por favor registrar una radio base gracias...","error");
 
             }else if ($scope.tipoReg == "G_MULTIPLE"){
 
-              swal("Error!","Para guardar el formulario es necesario registrar al menos un gabinete gracias...","error");
+              swal("Error!","Para guardar el formulario por favor registrar un gabinete gracias...","error");
 
             }
             $scope.estadoTramite = "NO";
@@ -4953,6 +5009,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     }
     
     $scope.serializarInformacionMultiple = function(dataAnt){
+          console.log("serializarInformacionMultiple===>  ",dataAnt);
           $scope.btnfirmar = true;
           $scope.tipoPersona = $rootScope.datosIniciales.f01_tipo_per;
           var ubicacionutm = $("#ln_ubicacion").val();
@@ -4975,15 +5032,14 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             $rootScope.Antenas_multiple = JSON.parse(dataEnvLotus_M);
           }
 
-          $rootScope.datosIniciales_rcp.ANT_NRO_AUTORIZACION = $("#den_auto").val();
-          var fechactual = obtFechaActual.obtenerFechaActual();
-          $rootScope.datosIniciales_rcp.g_fecha = fechactual;
-          $rootScope.datosIniciales_rcp.g_tipo = $scope.tipoProceso_envio;
-          $rootScope.datosIniciales_rcp.File_Adjunto = "";
-          $rootScope.datosIniciales_rcp.File_Adjunto = $scope.rutaArchEnvioLotus;
-          $rootScope.datosIniciales_rcp.INT_FORM_ALMACENADO = "G";
-          $scope.tipoPersona          =   sessionService.get('TIPO_PERSONA');
-          
+          var fechactual       = obtFechaActual.obtenerFechaActual();
+          $scope.tipoPersona   =   sessionService.get('TIPO_PERSONA');
+          $rootScope.datosIniciales_rcp.ANT_NRO_AUTORIZACION    =   $("#den_auto").val();
+          $rootScope.datosIniciales_rcp.g_fecha                 =   fechactual;
+          $rootScope.datosIniciales_rcp.g_tipo                  =   $scope.tipoProceso_envio;
+          $rootScope.datosIniciales_rcp.File_Adjunto            =   "";
+          $rootScope.datosIniciales_rcp.File_Adjunto            =   $scope.rutaArchEnvioLotus;
+          $rootScope.datosIniciales_rcp.INT_FORM_ALMACENADO     =   "G";
           $rootScope.datosIniciales_rcp.f01_tipo_per            =   'J';
           $rootScope.datosIniciales_rcp.f01_tipo_per_desc       =   'JURIDICO';
           $rootScope.datosIniciales_rcp.ANT_TIPO_PERSONA        =   '2';
@@ -5076,8 +5132,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             urlFormularioN  =   "../../docs/Formulario_DJ_Antenas.html";
             $( "#msgformularioJ" ).load(urlFormularioN, function(data) {
                 stringFormulario40  =   data;
-                //alert($scope.tipoProceso);
-
                 $scope.grilla_1 = datos.GRD_ANTENAS;
                 for (var i = 0; i < $scope.grilla_1.length; i++) {
                   if( $scope.grilla_1[i].$$hashKey == codigoAntena ){
@@ -5634,7 +5688,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         }
     }
     $scope.hab_btnFirma = function(){
-      //alert(121323);$('#condiciones:checked').val()
       $scope.firma = $('#checkFirma:checked').val();
       if( $scope.firma == 0){
         var fecha= new Date();
@@ -5647,7 +5700,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $scope.fecha_sist2 = "";
         $scope.hora_sist = "";
       }
-      //alert($scope.firma);
     }
     $scope.iniAntenas = function(){
       

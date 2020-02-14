@@ -63,6 +63,16 @@
         background-color: #fff;
         border-color: #ccc;
     }
+
+    #div-bg {
+        height: 98%;
+        width: 98%;
+        border: 1px solid #139da5;
+        display: inline-block;
+        box-sizing: border-box;
+        background: #f1f7f7;
+
+    }
 </style>
 <!--      -->
 
@@ -90,8 +100,8 @@
         });
         function vsuperficie(ob) {
             var invalidChars = /[a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ¡!@#/\$%\^&\*\¿?_~();:{}'"|<>´ñ?`=a-zA-Z]/;
-            if(invalidChars.test(ob.value)) {
-                ob.value = ob.value.replace(invalidChars,"");
+            if (invalidChars.test(ob.value)) {
+                ob.value = ob.value.replace(invalidChars, "");
             };
         }
     </script>
@@ -100,7 +110,12 @@
     <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
     <script type="text/javascript"
         src="../../view/servicios/varios/formularios/solicitudAntenas/AntenasAdjuntos/antenaAdj.js"></script>
-
+    <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+    <link rel="stylesheet"
+        href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+    <link rel="stylesheet"
+        href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css"
+        id="toggleCSS" />
 </body>
 
 <div ng-controller="solicitudJAntenasController" ng-init="iniAntenasAdjuntos();">
@@ -110,14 +125,14 @@
                 <h5>INFORMACIÓN PARA EL REGISTRO DE RADIO BASES Y/O GABINETES</h5>
             </div>
 
-            <form name="signupFormJuridico" class="form-horizontal" role="form" novalidate>
+            <form name="formJuridicoRepre" class="form-horizontal" role="form" novalidate>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel with-nav-tabs panel-default" id="tab-antenas">
                             <div class="panel-heading">
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a data-target="#tab1-registro" data-toggle="tab">Registro de
-                                            Representante Legal</a></li>
+                                    <li class="active"><a data-target="#tab1-registro" data-toggle="tab"
+                                            ng-click="ocultarDiv()">Representante Legal</a></li>
                                     <li><a data-target="#tab2-adjuntos" data-toggle="tab" ng-click=""
                                             ng-hide="tabAdj">Documentos Adjuntos</a></li>
                                 </ul>
@@ -125,13 +140,12 @@
                             <div class="panel-body">
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="tab1-registro">
-                                        <div class="col-md-12" ng-hide="botonesrodolfo">
-                                            <legend> Representantes Legales de la Empresa:</legend>
-                                        </div>
-                                        
-                                        <div class="col-md-12" >
-                                            <div align=right>
-                                                <a class="btn btn-info btn-circle" data-toggle="modal" data-target="#regRepresetante" ng-click = "recInfo()" ><i class="fa fa-plus"  title="Registrar nuevo Representante" style="text-align:center;"></i></a>
+                                        <div class="col-md-12">
+                                            <div align=left>
+                                                <a class="btn btn-redondo" title="Registrar Representante"
+                                                    ng-click="recInfo();">
+                                                    <div class="shake-slow"><i class="fa fa-plus blanco"></i></div>
+                                                </a>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -155,7 +169,8 @@
                                                                 </td>
                                                                 <td class="text-center" style="width:15%"
                                                                     data-title="'NOMBRE COMPLETO'">
-                                                                    {{lstRepLegal.nombre}}
+                                                                    {{lstRepLegal.nombre}} {{lstRepLegal.paterno}}
+                                                                    {{lstRepLegal.materno}}
                                                                 </td>
                                                                 <td class="text-center" style="width:15%"
                                                                     data-title="'NRO. PODER LEGAL'">
@@ -170,8 +185,10 @@
                                                                     <a class="btn btn-info btn-circle"
                                                                         ng-click="editaRepresentante(lstRepLegal)"
                                                                         ng-hide="botones"><i class="fa fa-pencil"
-                                                                            title="Editar Información"  data-toggle="modal" data-target="#regRepresetante_update"></i></a>
-                                                                    <a class="btn btn-primary"
+                                                                            title="Editar Información"
+                                                                            data-toggle="modal"
+                                                                            data-target="#regRepresetante_update"></i></a>
+                                                                    <a class="btn btn-primary btn-circle"
                                                                         ng-click="eliminarRepresnte(lstRepLegal,$index)"
                                                                         ng-hide="botones"><i class="fa fa-trash "
                                                                             title="Eliminar Representante"></i></a>
@@ -181,6 +198,285 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div ng-show="principalRegistro != false" class="page-content">
+                                            <form name="repLegalFormJuridico" class="form-horizontal" role="form">
+                                                <div class="ibox float-e-margins" id="div-bg">
+
+                                                    <div class="col-lg-12">
+                                                        <div class="ibox-content" id="divRegRepr">
+                                                            <div class="ibox-title cafeSuave"
+                                                                style="border-bottom: solid 0px #E2E2E2 !important;">
+                                                                <h4>REPRESENTANTE LEGAL</h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="col-md-12">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="url">NIT EMPRESA:</label>
+                                                                    <div class="controls">
+                                                                        <input ng-model="dataRep.nit_rep" id="nit_rep"
+                                                                            name="nit_rep" class="form-control"
+                                                                            type="text" placeholder="Nit Representante"
+                                                                            ng-disabled="true" min="1" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="url">NOMBRE:</label>
+                                                                    <div class="controls">
+                                                                        <input ng-model="dataRep.nom_rep" id="nom_rep"
+                                                                            name="nom_rep" class="form-control"
+                                                                            type="text"
+                                                                            placeholder="Nombre Representante Legal"
+                                                                            ng-disabled="false" min="1"
+                                                                            onkeyup="return conMayusculas(this);"
+                                                                            required>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="url">PATERNO:</label>
+                                                                    <div class="controls">
+                                                                        <input ng-model="dataRep.pat_rep" id="pat_rep"
+                                                                            name="pat_rep" class="form-control"
+                                                                            type="text"
+                                                                            placeholder="Paterno Representante Legal"
+                                                                            ng-disabled="false" min="1"
+                                                                            onkeyup="return conMayusculas(this);"
+                                                                            required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="url">MATERNO:</label>
+                                                                    <div class="controls">
+                                                                        <input ng-model="dataRep.mat_rep" id="mat_rep"
+                                                                            name="mat_rep" class="form-control"
+                                                                            type="text"
+                                                                            placeholder="Materno Representante Legal"
+                                                                            ng-disabled="false" min="1"
+                                                                            onkeyup="return conMayusculas(this);"
+                                                                            required>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="url">CI:</label>
+                                                                    <div class="controls">
+                                                                        <input ng-model="dataRep.ci_rep" id="ci_rep"
+                                                                            name="ci_rep" class="form-control"
+                                                                            type="text"
+                                                                            placeholder="C.I. Representante Legal"
+                                                                            ng-disabled="false" min="1"
+                                                                            onkeyUp=" vsuperficie(this)" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <label for="url">EXPEDIDO:</label>
+                                                                <select id="exp_rep" name="exp_rep"
+                                                                    placeholder="expedido" ng-model="dataRep.exp_rep"
+                                                                    class="form-control" ng-disabled="false" required>
+                                                                    <option value="">--Seleccione--</option>
+                                                                    <option value="LPZ">LA PAZ</option>
+                                                                    <option value="CBB">COCHABAMBA</option>
+                                                                    <option value="SCZ">SANTA CRUZ</option>
+                                                                    <option value="CHQ">CHUQUISACA</option>
+                                                                    <option value="TJA">TARIJA</option>
+                                                                    <option value="PTS">POTOSI</option>
+                                                                    <option value="ORU">ORURO</option>
+                                                                    <option value="BNI">BENI</option>
+                                                                    <option value="PND">PANDO</option>
+                                                                    <option value="OTR">OTRO</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label for="url">NRO. PODER:</label>
+                                                                    <div class="controls">
+                                                                        <input ng-model="dataRep.nro_poder_rep"
+                                                                            id="nro_poder_rep" name="nro_poder_rep"
+                                                                            class="form-control" type="text"
+                                                                            placeholder="Número Poder Representante Legal"
+                                                                            ng-disabled="false" min="1" required>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="ibox-content" id="divRegRepr">
+                                                                <div
+                                                                    style="border-bottom: solid 0px #E2E2E2 !important;">
+                                                                    <h4>DOCUMENTOS DEL REPRESENTANTE</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-12">
+                                                            </br>
+                                                            </br>
+                                                            <label class="col-sm-5" id="lbl_f01_req13">CI DEL
+                                                                REPRESENTANTE LEGAL (Anverso):</label>
+                                                            <div class="col-sm-5">
+                                                                <div class="custom-upload">
+                                                                    <input type="file" id="FILE_CI_REP_LEGAL_INV"
+                                                                        name="FILE_CI_REP_LEGAL_INV"
+                                                                        uploader-model="FILE_CI_REP_LEGAL_INV"
+                                                                        style="display: none;" accept="image/*" />
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon"><i
+                                                                                class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="FILE_CI_REP_LEGAL_INV_campo"
+                                                                            name="FILE_CI_REP_LEGAL_INV_campo"
+                                                                            ng-model="dataRep.FILE_CI_REP_LEGAL_INV_campo"
+                                                                            type="text" class="form-control input-lg"
+                                                                            required disabled="false">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                        <a id="href_FILE_CI_REP_LEGAL_INV" href=""
+                                                                            target="_blank"
+                                                                            ng-click="mostrarimgrepresentante('FILE_CI_REP_LEGAL_INV');">
+                                                                            file
+                                                                            <button id="btn_FILE_CI_REP_LEGAL_INV"
+                                                                                class="browse btn btn-primary input-lg"
+                                                                                type="button"><i
+                                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                                        </a>
+                                                                        <button id="btn_FILE_CI_REP_LEGAL_INV"
+                                                                            ng-click="ejecutarFile('FILE_CI_REP_LEGAL_INV', 'data' + $data.resvalor)"
+                                                                            class="btnupload browse btn btn-primary input-lg"
+                                                                            type="button"><i
+                                                                                class="glyphicon glyphicon-upload"></i>
+                                                                            Subir</button>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12">
+                                                            <label class="col-sm-5" id="lbl_f01_req13">CI DEL
+                                                                REPRESENTANTE LEGAL (Reverso):</label>
+                                                            <div class="col-sm-5">
+                                                                <div class="custom-upload" disabled="true">
+                                                                    <input type="file" id="FILE_CI_REP_LEGAL_REV"
+                                                                        name="FILE_CI_REP_LEGAL_REV"
+                                                                        uploader-model="FILE_CI_REP_LEGAL_REV"
+                                                                        style="display: none;" accept="image/*" />
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon"><i
+                                                                                class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="FILE_CI_REP_LEGAL_REV_campo"
+                                                                            name="FILE_CI_REP_LEGAL_REV_campo"
+                                                                            ng-model="dataRep.FILE_CI_REP_LEGAL_REV_campo"
+                                                                            type="text" class="form-control input-lg"
+                                                                            required disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                        <a id="href_FILE_CI_REP_LEGAL_REV" href=""
+                                                                            target="_blank"
+                                                                            ng-click="mostrarimgrepresentante('FILE_CI_REP_LEGAL_REV');">
+                                                                            file
+                                                                            <button id="btn_FILE_CI_REP_LEGAL_REV"
+                                                                                class="browse btn btn-primary input-lg"
+                                                                                type="button"><i
+                                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                                        </a>
+                                                                        <button id="btn_FILE_CI_REP_LEGAL_REV"
+                                                                            ng-click="ejecutarFile('FILE_CI_REP_LEGAL_REV', 'data' + $data.resvalor)"
+                                                                            class="btnupload browse btn btn-primary input-lg"
+                                                                            type="button"><i
+                                                                                class="glyphicon glyphicon-upload"></i>
+                                                                            Subir</button>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label class="col-sm-5" id="lbl_f01_req13">PODER DEL
+                                                                REPRESENTANTE LEGAL:</label>
+                                                            <div class="col-sm-5">
+                                                                <div class="custom-upload" disabled="false">
+                                                                    <input type="file" id="FILE_PODER_REP_LEGAL"
+                                                                        name="FILE_PODER_REP_LEGAL"
+                                                                        uploader-model="FILE_PODER_REP_LEGAL"
+                                                                        style="display: none;" accept="image/*" />
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon"><i
+                                                                                class="glyphicon glyphicon-picture"></i></span>
+                                                                        <input id="FILE_PODER_REP_LEGAL_campo"
+                                                                            name="FILE_PODER_REP_LEGAL_campo"
+                                                                            ng-model="dataRep.FILE_PODER_REP_LEGAL_campo"
+                                                                            type="text" class="form-control input-lg"
+                                                                            required disabled="false">
+                                                                    </div>
+                                                                </div >
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <div class="input-group-btn">
+                                                                    <p>
+                                                                        <a id="href_FILE_PODER_REP_LEGAL" href=""
+                                                                            target="_blank"
+                                                                            ng-click="mostrarimgrepresentante('FILE_PODER_REP_LEGAL');">
+                                                                            file
+                                                                            <button id="btn_FILE_PODER_REP_LEGAL"
+                                                                                class="browse btn btn-primary input-lg"
+                                                                                type="button"><i
+                                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                                        </a>
+                                                                        <button id="btn_FILE_PODER_REP_LEGAL"
+                                                                            ng-click="ejecutarFile('FILE_PODER_REP_LEGAL', 'data' + $data.resvalor)"
+                                                                            class="btnupload browse btn btn-primary input-lg"
+                                                                            type="button"><i
+                                                                                class="glyphicon glyphicon-upload"></i>
+                                                                            Subir</button>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" align="right">
+                                                            </br>
+                                                            </br>
+                                                            
+                                                            <button ng-click="reg_representante(dataRep)" type="button"
+                                                                class="btn btn-success fa fa-save"
+                                                                ng-show="btn_grd_repr != false"
+                                                                ng-disabled=" formJuridicoRepre.nom_rep.$invalid || formJuridicoRepre.pat_rep.$invalid || formJuridicoRepre.mat_rep.$invalid || formJuridicoRepre.ci_rep.$invalid || formJuridicoRepre.nro_poder_rep.$invalid || formJuridicoRepre.exp_rep.$invalid">
+                                                                {{translateTitulos.lbl_016_29}}</button>
+                                                            <button ng-click="act_representante(dataRep)" type="button"
+                                                                class="btn btn-success fa fa-save"
+                                                                ng-show="btn_act_repr != false"> Actualizar</button>
+                                                            <button ng-click="ocultarDiv();" type="button"
+                                                                class="btn btn-success fa fa-times"> Cancelar</button>
+
+                                                            </br>
+                                                            </br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="tab2-adjuntos">
@@ -260,6 +556,7 @@
             </form>
         </div>
     </div>
+
     <!--inicio del modal capcha-->
     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
@@ -400,128 +697,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="regRepresetante" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true" data-backdrop="static" data-keyboard="false" style="margin-top: 200px"
-        scroll-to-top-when="items_changed">
-        <div class="modal-dialog" class="form-horizontal" role="form" novalidate>
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
-                            class="sr-only">Cerrar</span></button>
-                    <h4 class="modal-title ng-binding" id="myModalLabel">Registro Representante Legal</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="col-md-12">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="url">NIT EMPRESA:</label>
-                                <div class="controls">
-                                    <input ng-model="dataRep.nit_rep" id="nit_rep" name="nit_rep"
-                                        class="form-control" type="text" placeholder="Nit Representante"
-                                        ng-disabled="true" min="1" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="url">NOMBRE:</label>
-                                <div class="controls">
-                                    <input ng-model="dataRep.nom_rep" id="nom_rep" name="nom_rep"
-                                        class="form-control" type="text" placeholder="Nombre Representante Legal"
-                                        ng-disabled="false" min="1" onkeyup="return conMayusculas(this);" required>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="url">PATERNO:</label>
-                                <div class="controls">
-                                    <input ng-model="dataRep.pat_rep" id="pat_rep" name="pat_rep"
-                                        class="form-control" type="text" placeholder="Paterno Representante Legal"
-                                        ng-disabled="false" min="1" onkeyup="return conMayusculas(this);" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="url">MATERNO:</label>
-                                <div class="controls">
-                                    <input ng-model="dataRep.mat_rep" id="mat_rep" name="mat_rep"
-                                        class="form-control" type="text" placeholder="Materno Representante Legal"
-                                        ng-disabled="false" min="1" onkeyup="return conMayusculas(this);" required>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="url">CI:</label>
-                                <div class="controls">
-                                    <input ng-model="dataRep.ci_rep" id="ci_rep" name="ci_rep"
-                                        class="form-control" type="text" placeholder="C.I. Representante Legal"
-                                        ng-disabled="false" min="1" onkeyUp=" vsuperficie(this)" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <label for="url">EXPEDIDO:</label>
-                            <select id="exp_rep" name="exp_rep" class="form-control" ng-model="dataRep.exp_rep"
-                                ng-change="">
-                                <option value=""> -- Seleccione -- </option>
-                                <option value="LP">LP</option>
-                                <option value="CBB">CBB</option>
-                                <option value="SC">SC</option>
-                                <option value="TR">TR</option>
-                                <option value="OR">OR</option>
-                                <option value="PT">PT</option>
-                                <option value="CH">CH</option>
-                                <option value="BN">BN</option>
-                                <option value="PD">PD</option>
-                                <option value="OTRO">OTRO</option>
-                            </select>
-                        </div>
-                        <!--div class="col-sm-3">
-                            <div class="form-group">
-                                <label for="url">EXPEDIDO:</label>
-                                <div class="controls">
-                                    <input ng-model="dataRep.exp_rep" id="exp_rep" name="exp_rep"
-                                        class="form-control" type="text" placeholder="Expedido Representante Legal"
-                                        ng-disabled="false" min="1" required>
-
-                                </div>
-                            </div>
-                        </div-->
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label for="url">NRO. PODER:</label>
-                                <div class="controls">
-                                    <input ng-model="dataRep.nro_poder_rep" id="nro_poder_rep" name="nro_poder_rep"
-                                        class="form-control" type="text" placeholder="Número Poder Representante Legal"
-                                        ng-disabled="false" min="1" required>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button data-dismiss="modal" ng-click="reg_representante(dataRep)" type="button"
-                            class="btn btn-primary"> <i class="glyphicon fa fa-save"></i> Registrar</button>
-                        <button data-dismiss="modal" type="button" class="btn btn-primary btn-inverse"><i
-                                class="glyphicon fa fa-close"></i>Cancelar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    
-    <div class="modal fade" id="regRepresetante_update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <!--div class="modal fade" id="regRepresetante_update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true" data-backdrop="static" data-keyboard="false" style="margin-top: 200px"
         scroll-to-top-when="items_changed">
         <div class="modal-dialog" class="form-horizontal" role="form" novalidate>
@@ -628,5 +804,7 @@
             </div>
         </div>
 
-    </div>
+    </div-->
+
+
 </div>

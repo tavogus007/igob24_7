@@ -328,6 +328,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         sessionService.set('IDTRAMITE', tramite.vtra_id);
         sessionService.set('IDSERVICIO', tramite.vdvser_id);
         sessionService.set('ESTADO', tramite.venviado);
+        //$rootScope.recuperarrepresentante();
         if(tramite.venviado ==='SI' || tramite.venviado === 'RECHAZADO'){
             //alert("si");
             $.blockUI();          
@@ -367,6 +368,8 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
 
 
         }
+        
+
         $scope.template = "";
         $scope.formulario = "mostrar";
         //TIPO_PERSONA
@@ -393,6 +396,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
             cboTipoCon.style.display = 'none';
         }
     };
+    
     $rootScope.gabineteEnvio = null;
     $rootScope.mostrarRU = true;
     $rootScope.mostrarGU = null;

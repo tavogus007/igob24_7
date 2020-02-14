@@ -1,7 +1,9 @@
 function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,sessionService,ngTableParams,$filter, $route,sweet,$http,FileUploader,$sce,fileUpload,fileUpload1,$timeout , filterFilter,FileUploader, $location, wsRgistrarPubliciadad, obtFechaActual ) 
 {
     var tipoPersona = "";
-    
+    $scope.principalRegistro = false;
+    $scope.btn_grd_repr = false;
+    $scope.btn_act_repr = false;
     $scope.getDatosRegistro = function(){   
        var validarpromesas = [$scope.recuperarDatosRegistro()];
        //$q.all(validarpromesas).then(function (resp) {//AE - Validar Envio Licencia
@@ -208,8 +210,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     };
 
     $scope.mostrarimgjuridico  =   function(imagen){ 
+        console.log("imagen",imagen,$scope.urlImagenfile);
         $.blockUI();
-        
         var estado = true;
         if ($scope.urlImagenfile != '' && $scope.urlImagenfile != undefined ) {
             try{
@@ -233,6 +235,54 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         }
               
         $.unblockUI();
+    }
+    $scope.mostrarimgrepresentante  =   function(imagen){ 
+        console.log("imagen",imagen,$scope.urlImagenfile);
+        var urlImagen = "";
+        if (imagen == "FILE_CI_REP_LEGAL_INV") {
+            nombreNuevo = $scope.doc_ci_inv;
+
+        }else if (imagen == "FILE_CI_REP_LEGAL_REV") {
+            nombreNuevo = $scope.doc_ci_rev;
+        } else if (imagen == "FILE_PODER_REP_LEGAL") {
+            nombreNuevo = $scope.doc_po_leg;
+        }
+        console.log("nombreNuevo",nombreNuevo);
+        if (nombreNuevo != "" && nombreNuevo != undefined) {
+            
+            urlImagen = CONFIG.APIURL +"/files/RC_CLI/"+sessionService.get('IDSOLICITANTE')+ "/" +nombreNuevo+"?app_name=todoangular";
+            console.log("urlImagen ",urlImagen);
+            $.blockUI();
+            $scope.urlImagenrepreleg = urlImagen;
+            var estado = true;
+            if ($scope.urlImagenrepreleg != '' && $scope.urlImagenrepreleg != undefined ) {
+                try{
+                    $scope.archivoPOD = $scope.urlImagenrepreleg;             
+                    var extPod   =  $scope.urlImagenrepreleg.split("?app_name=todoangular");
+                    extPod       =  extPod[0].split(".");
+                    extPod       =  extPod[extPod.length-1];
+                    if(extPod == 'pdf' || extPod == 'docx' ||  extPod == 'docxlm' || extPod == 'zip'){
+                        window.open($scope.archivoPOD, "_blank");
+                    }else{
+                        $("#fotpod").modal("show");             
+                    }
+                    $.unblockUI();
+    
+                }catch(e){
+                  console.log("error",e);
+                  $.unblockUI();
+                }   
+            }else{
+              swal('Error', 'Por favor seleccione un documento desde  su equipo', 'error');
+            }
+                  
+            $.unblockUI();
+        }else{
+            //alertify.success('Registro no modificado');
+            alertify.warning('Archivo no Almacenado');
+
+            
+        }
     }
     /////////////////////////////////////////////////////////////////
     //creando un nuevo registro 
@@ -375,7 +425,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     };
     
     $scope.verificacionFiles = function(oid_ciu,tipo_file){
-
         var verifFiles = new reglasnegocio();
         verifFiles.identificador = "RCCIUDADANO_VERIF_FILES";
         var idusu = 68;
@@ -490,13 +539,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       var oid_ciu = sessionService.get('IDSOLICITANTE');
       $scope.verificacionFiles(oid_ciu,tipo_file);
       $scope.getRepresentantes(sessionService.get('NITCIUDADANO'));
+      $scope.principalRegistro = false;
 
-
-      //http://192.168.5.141:80/rest/files/req_Antenas/Adjuntossss?app_name=todoangular
-
-
-      //http://192.168.5.141/rest/files/req_Antenas/57798e502f59181eb2873e5d/carnetV.gif?app_name=todoangular
-      //$scope.imagenPortada = 'http://192.168.5.141/rest/files/RC_CLI/57798e502f59181eb2873e5d/carnetrdo.jpeg?app_name=todoangular';
     };
 
     $scope.$on('api:ready',function(){
@@ -515,17 +559,15 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             $scope.obtDatos = JSON.parse(response);
             if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
                 $scope.obtRepresentanteLegal = [];
-                $("#divMsj").css({'display' : 'block' });
+                //$("#divMsj").css({'display' : 'block' });
                 $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
                 $.unblockUI();
-                alertify.warning('No existen datos');  
             } else{
 
                 $scope.obtRepresentanteLegal = $scope.obtDatos;
                 var data = response;
                 $scope.tablalstReprLegal.reload();
                   
-                alertify.warning('existen datos');  
                 $.unblockUI();
 
             };
@@ -554,45 +596,63 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     $scope.recInfo = function(){
         var nit_ciu = sessionService.get('NITCIUDADANO');
         $("#nit_rep").val(nit_ciu);
+        $scope.principalRegistro = true;
+        $scope.btn_grd_repr = true;
+        $scope.btn_act_repr = false;
     }
-
+    $scope.ocultarDiv = function(){
+        $scope.principalRegistro = false;
+    }
     $scope.reg_representante = function(dataRepre){
-        console.log("WWWW",dataRepre);
-        $.blockUI();
-        var dataReprepresentante = '[{}]';
-        var datausuario = sessionService.get('IDUSUARIO');
-        var resRepresentante = new reglasnegocio();
-        resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-3';
-        resRepresentante.parametros = '{"nit":"'+ sessionService.get('NITCIUDADANO') +'","ci":"'+ dataRepre.ci_rep +'","nombre":"'+ dataRepre.nom_rep +' '+ dataRepre.pat_rep+' '+ dataRepre.mat_rep +'","ext":"'+ dataRepre.exp_rep +'","numPoder":"'+ dataRepre.nro_poder_rep +'","dataRep":"'+ dataReprepresentante +'","usuario":"'+ datausuario +'"}';
-        resRepresentante.llamarregla(function(response){
-            $scope.obtDatos = JSON.parse(response);
-            if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
-                $scope.obtRepresentanteLegal = [];
-                $("#divMsj").css({'display' : 'block' });
-                $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
-                $.unblockUI();
-                alertify.warning('No existen datos');  
-            } else{
-                if ($scope.obtDatos[0].inserta_representante) {
-                    
-                    $("#divMsj").css({'display' : 'block' });
-                    swal('', 'Representante almacenado correctamente', 'success'); 
-                    $scope.getRepresentantes(sessionService.get('NITCIUDADANO'));
+        $scope.ci_inv  = $("#FILE_CI_REP_LEGAL_INV_campo").val();
+        $scope.ci_rev  = $("#FILE_CI_REP_LEGAL_REV_campo").val();
+        $scope.poderLegal = $("#FILE_PODER_REP_LEGAL_campo").val();
+        if($scope.ci_inv != "" && $scope.ci_rev != "" && $scope.poderLegal != "" ){
+            $.blockUI();
+            var dataReprepresentante = '[{"ci_inverso":"'+ $scope.ci_inv +'","ci_reverso":"'+$scope.ci_rev+'","poder_legal":"'+$scope.poderLegal+'"}]';
+            var datausuario = sessionService.get('IDUSUARIO');
+            var resRepresentante = new reglasnegocio();
+            resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-3';
+            resRepresentante.parametros = '{"nit":"'+ sessionService.get('NITCIUDADANO') +'","ci":"'+ dataRepre.ci_rep +'","nombre":"'+ dataRepre.nom_rep +'","paterno":"'+ dataRepre.pat_rep+'","materno":"'+ dataRepre.mat_rep +'","ext":"'+ dataRepre.exp_rep +'","numPoder":"'+ dataRepre.nro_poder_rep +'","dataRep":'+ JSON.stringify(dataReprepresentante) +',"usuario":"'+ datausuario +'"}';
+            resRepresentante.llamarregla(function(response){
+                $scope.obtDatos = JSON.parse(response);
+                if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
+                    $scope.obtRepresentanteLegal = [];
+                    $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
                     $.unblockUI();
-                    alertify.warning('existen datos'); 
-                    $("#ci_rep").val("");
-                    $("#nom_rep").val("");
-                    $("#pat_rep").val("");
-                    $("#mat_rep").val("");
-                    $("#nro_poder_rep").val("");
+                } else{
+                    if ($scope.obtDatos[0].inserta_representante) {
+                        
+                        $("#divMsj").css({'display' : 'block' });
+                        swal('', 'Representante almacenado correctamente', 'success'); 
+                        $scope.getRepresentantes(sessionService.get('NITCIUDADANO'));
+                        $.unblockUI();
+                        $("#ci_rep").val("");
+                        $("#nom_rep").val("");
+                        $("#pat_rep").val("");
+                        $("#mat_rep").val("");
+                        $("#nro_poder_rep").val("");
+                        $("#FILE_CI_REP_LEGAL_INV_campo").val("");
+                        $("#FILE_CI_REP_LEGAL_REV_campo").val("");
+                        $("#FILE_PODER_REP_LEGAL_campo").val("");
+                        $scope.principalRegistro = false;
 
-                }else{
-                    $.unblockUI();
+                    }else{
+                        $.unblockUI();
 
-                }
+                    }
 
-            };
-        });
+                };
+            });
+        }else{
+            if ($scope.ci_inv == "") {
+                alertify.warning('Archivo CI del Representante Anverso no Almacenado');
+            } if ($scope.ci_rev == "") {
+                alertify.warning('Archivo CI del Representante Reverso no Almacenado');
+            } if ($scope.poderLegal == "") {
+                alertify.warning('Archivo Poder del Representante Legal no Almacenado');
+            } 
+        }
     }
     
     $scope.eliminarRepresnte = function(dataRepre){
@@ -634,54 +694,84 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     }
 
     $scope.editaRepresentante = function(dataRepre){
-        console.log("WWWW",dataRepre);
-        //$.blockUI();
-        var dataNom = dataRepre.nombre.split(" "); //split(" ",dataRepre.nombre);
-        console.log("sss",dataNom);
-        $("#id_rep_upd").val(dataRepre.id_rep);
-        $("#nit_rep_upd").val(dataRepre.nit);
-        $("#ci_rep_upd").val(dataRepre.ci);
-        $("#nom_rep_upd").val(dataNom[0]);
-        $("#pat_rep_upd").val(dataNom[1]);
-        $("#mat_rep_upd").val(dataNom[2]);
-        $("#exp_rep_upd").val(dataRepre.ext);
-        $("#nro_poder_rep_upd").val(dataRepre.numero_poder);
+        //var dataNom = dataRepre.nombre.split(" "); //split(" ",dataRepre.nombre);
+        var dataAdjuntos = JSON.parse(dataRepre.datarep);
+        $("#id_rep").val(dataRepre.id_rep);
+        $("#nit_rep").val(dataRepre.nit);
+        $("#ci_rep").val(dataRepre.ci);
+        $("#nom_rep").val(dataRepre.nombre);
+        $("#pat_rep").val(dataRepre.paterno);
+        $("#mat_rep").val(dataRepre.materno);
+        $("#exp_rep").val(dataRepre.ext);
+        $("#nro_poder_rep").val(dataRepre.numero_poder);
+        $("#FILE_CI_REP_LEGAL_INV_campo").val(dataAdjuntos[0].ci_inverso);
+        $("#FILE_CI_REP_LEGAL_REV_campo").val(dataAdjuntos[0].ci_reverso);
+        $("#FILE_PODER_REP_LEGAL_campo").val(dataAdjuntos[0].poder_legal);
+        $scope.doc_ci_inv = dataAdjuntos[0].ci_inverso;
+        $scope.doc_ci_rev = dataAdjuntos[0].ci_reverso;
+        $scope.doc_po_leg = dataAdjuntos[0].poder_legal;
         $scope.id_represen = dataRepre.id_rep;
+        $scope.principalRegistro = true;
+        $scope.btn_grd_repr = false;
+        $scope.btn_act_repr = true;
 
     }
 
     $scope.act_representante = function(dataRepre){
-        $.blockUI();
-        var dataReprepresentante = '[{}]';
-        var datausuario = sessionService.get('IDUSUARIO');
-        var resRepresentante = new reglasnegocio();
-        resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-4';
-        resRepresentante.parametros = '{"id_registro":'+ $scope.id_represen +', "nit":"'+ sessionService.get('NITCIUDADANO') +'","ci":"'+ $("#nit_rep_upd").val() +'","nombre":"'+ $("#nom_rep_upd").val() +' '+ $("#pat_rep_upd").val()+' '+ $("#mat_rep_upd").val() +'","ext":"'+ $("#exp_rep_upd").val() +'","numPoder":"'+ $("#nro_poder_rep_upd").val() +'","dataRep":"'+ dataReprepresentante +'","usuario":"'+ datausuario +'"}';
-        resRepresentante.llamarregla(function(response){
-            $scope.obtDatos = JSON.parse(response);
-            if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
-                $scope.obtRepresentanteLegal = [];
-                $("#divMsj").css({'display' : 'block' });
-                $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
-                $.unblockUI();
-                alertify.warning('No existen datos');  
-            } else{
-                if ($scope.obtDatos[0].actualiza_representante) {
-                    
+        
+        
+        $scope.ci_inv  = $("#FILE_CI_REP_LEGAL_INV_campo").val();
+        $scope.ci_rev  = $("#FILE_CI_REP_LEGAL_REV_campo").val();
+        $scope.poderLegal = $("#FILE_PODER_REP_LEGAL_campo").val();
+        if($scope.ci_inv != "" && $scope.ci_rev != "" && $scope.poderLegal != "" ){
+            
+            $.blockUI();
+            var dataReprepresentanteUPD = JSON.stringify('[{"ci_inverso":"'+ $scope.ci_inv +'","ci_reverso":"'+$scope.ci_rev+'","poder_legal":"'+$scope.poderLegal+'"}]');
+            var datausuario = sessionService.get('IDUSUARIO');
+            var resRepresentante = new reglasnegocio();
+            resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-4';
+            resRepresentante.parametros = '{"id_registro":'+ $scope.id_represen +', "nit":"'+ sessionService.get('NITCIUDADANO') +'","ci":"'+ $("#nit_rep").val() +'","nombre":"'+ $("#nom_rep").val() +'","paterno":" '+ $("#pat_rep").val()+' ","materno":"'+ $("#mat_rep").val() +'","ext":"'+ $("#exp_rep").val() +'","numPoder":"'+ $("#nro_poder_rep").val() +'","dataRep":'+ dataReprepresentanteUPD +',"usuario":"'+ datausuario +'"}';
+            resRepresentante.llamarregla(function(response){
+                $scope.obtDatos = JSON.parse(response);
+                if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
+                    $scope.obtRepresentanteLegal = [];
                     $("#divMsj").css({'display' : 'block' });
-                    swal('', 'Representante Actualizado correctamente', 'success'); 
-                    $scope.getRepresentantes(sessionService.get('NITCIUDADANO'));
+                    $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
                     $.unblockUI();
-                    alertify.warning('existen datos'); 
+                } else{
+                    if ($scope.obtDatos[0].actualiza_representante) {
+                        
+                        $("#divMsj").css({'display' : 'block' });
+                        swal('', 'Representante Actualizado correctamente', 'success'); 
+                        $scope.getRepresentantes(sessionService.get('NITCIUDADANO'));
+                        $.unblockUI();
+                        $scope.principalRegistro = false;
+                        $("#ci_rep").val("");
+                        $("#nom_rep").val("");
+                        $("#pat_rep").val("");
+                        $("#mat_rep").val("");
+                        $("#nro_poder_rep").val("");
+                        $("#FILE_CI_REP_LEGAL_INV_campo").val("");
+                        $("#FILE_CI_REP_LEGAL_REV_campo").val("");
+                        $("#FILE_PODER_REP_LEGAL_campo").val("");
 
-                }else{
-                    $.unblockUI();
 
-                }
+                    }else{
+                        $.unblockUI();
 
-            };
-        });
-        $.blockUI();
+                    }
 
+                };
+            });
+            $.blockUI();
+        }else{
+            if ($scope.ci_inv == "") {
+                alertify.warning('Archivo CI del Representante Anverso no Almacenado');
+            } if ($scope.ci_rev == "") {
+                alertify.warning('Archivo CI del Representante Reverso no Almacenado');
+            } if ($scope.poderLegal == "") {
+                alertify.warning('Archivo Poder del Representante Legal no Almacenado');
+            } 
+        }
     }
 }

@@ -1961,10 +1961,11 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
     };
     $scope.imprimirArchivo = function (fum) {
+      console.log("aaasddd ",$scope.obtArchivosAdjuntos);
             var escudo = new Image();
             escudo.src = fum;
-            $scope.varSpin = true;
-            $scope.RegistroFUM={
+            $scope.varSpin     = true;
+            $scope.RegistroFUM = {
                 registrado:'OK',
                 mensaje:''
             };
@@ -1983,7 +1984,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 $timeout(function(){$scope.varSpin=false}, 1000);
             } else {
                 var tipoimg = tipoarch.toUpperCase();
-                if(tipoimg == '.BMP' || tipoimg == '.GIF') {
+                if(tipoimg == '.BMP1' || tipoimg == '.GIF1'|| tipoimg == '.gif') {
                 $scope.archotro = true;
                 $scope.archpdf = false;
                 $scope.archivoP=fum;
@@ -5701,11 +5702,125 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $scope.hora_sist = "";
       }
     }
+    
+    $scope.recuperarRepLegal = function (dataRepreSec) {
+      idRepresentante = dataRepreSec.idrepresentante;
+      console.log("idRepresentante",idRepresentante);
+      //RCCIUDADANO_ANTENA-20-5
+      //$scope.nro_rep_legalPrincipal = $rootScope.datosIniciales.f01_num_pod_leg;
+      var resRepresentante = new reglasnegocio();
+        resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-5';
+        resRepresentante.parametros = '{"idRepresentante":'+ idRepresentante +',"nit":"'+ sessionService.get('NITCIUDADANO') +'"}';
+        resRepresentante.llamarregla(function(response){
+            $scope.obtDatos = JSON.parse(response);
+            if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
+                $.unblockUI();
+            } else{
+                console.log("raaaaaaa",$scope.obtDatos);
+                $scope.dataRepAdjunto = JSON.parse($scope.obtDatos[0].data_rep);
+                $('#f01_pri_nom_rep').val($scope.obtDatos[0].nombre);
+                $('#f01_ape_pat_rep').val($scope.obtDatos[0].paterno);
+                $('#f01_ape_mat_rep').val($scope.obtDatos[0].materno);
+                $('#f01_num_doc_rep').val($scope.obtDatos[0].nro_documento);
+                $('#f01_expedido_rep').val($scope.obtDatos[0].extension);
+                $('#f01_ges_vig_pod').val(dataRepreSec.nro_poder);
+                console.log("AAAAAAdjuntos",$scope.obtArchivosAdjuntos);
+                $scope.ci_inverso  = $scope.dataRepAdjunto[0].ci_inverso;
+                $scope.ci_reverso  = $scope.dataRepAdjunto[0].ci_reverso;
+                $scope.poder_legal = $scope.dataRepAdjunto[0].poder_legal;
+                $scope.file_CI      = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.CI_BIGDATA +"/" + $scope.ci_inverso + "?app_name=todoangular";  
+                $scope.file_CI_inv  = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.CI_BIGDATA +"/" + $scope.ci_reverso + "?app_name=todoangular";  
+                $scope.poder_legal111  = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.CI_BIGDATA +"/" + $scope.poder_legal + "?app_name=todoangular";  
+                //$scope.rep_legal    = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 +"/" + $scope.poder_legal + "?app_name=todoangular"; 
+                
+                $scope.obtArchivosAdjuntos[1].campo = $scope.ci_inverso;
+                $scope.obtArchivosAdjuntos[1].url   = $scope.file_CI;
+
+                $scope.obtArchivosAdjuntos[2].campo = $scope.ci_reverso;
+                $scope.obtArchivosAdjuntos[2].url   = $scope.file_CI_inv;
+
+                $scope.obtArchivosAdjuntos[3].campo = $scope.poder_legal;
+                $scope.obtArchivosAdjuntos[3].url   = $scope.poder_legal111;
+
+                console.log("QQQ",$scope.file_CI);
+                console.log("QQQ",$scope.file_CI_inv);
+                console.log("QQQ",$scope.poder_legal111);
+                console.log("ttttt",$scope.obtArchivosAdjuntos);
+
+                console.log("dataaaaaENVIO", $rootScope.datosIniciales);
+                //http://192.168.5.141/rest/files/RC_CLI/57798d962f59181eb2833a8a/PODER_REP_LEGAL_20200213_1120.png?app_name=todoangular
+                //funciona
+                //http://192.168.5.141/rest/files/RC_CLI/5b9c6a081a3fe6e3e2000003/PODER_REP_LEGAL_20200213_1120.png?app_name=todoangular
+
+                //http://192.168.5.141/rest/files/RC_CLI/5b9c6a08%E2%80%A6R_REP_LEGAL_20200213_954.gif?app_name=todoangular
+                //http://192.168.5.141/rest/files/RC_CLI/5b9c6a081a3fe6e3e2000003/PODER_REP_LEGAL_20200213_954.gif?app_name=todoangular
+
+            };
+        });
+
+
+    }
+    $scope.recuperarrepresentante = function (){
+        //alert(33333);
+        //$scope.representantes = [];
+        console.log("$rootScope.datosIniciales",$rootScope.datosIniciales);
+        sessionService.set('NRO_PODER_PRINCIPAL', $rootScope.datosIniciales.f01_ges_vig_pod);
+        var resRepresentante = new reglasnegocio();
+        resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-6';
+        resRepresentante.parametros = '{"nit":"'+ sessionService.get('NITCIUDADANO') +'"}';
+        resRepresentante.llamarregla(function(response){
+            $scope.obtDatos = JSON.parse(response);
+            if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
+                $.unblockUI();
+            } else{
+                console.log("reeeeeee",$scope.obtDatos);
+                $scope.representantes = $scope.obtDatos;
+                console.log("ttttttttt",$scope.representantes);
+
+            };
+        });
+    }
+    $scope.repPrincipal = true;
+    $scope.controlRepresentante = function(valorCheck){
+      console.log("valorCheck",valorCheck);
+      if (valorCheck == 'SI') {
+        $scope.recuperarrepresentante();
+        $scope.repPrincipal = false;
+
+      } else if(valorCheck == 'NO'){
+        $scope.repPrincipal = true;
+        console.log("Representante data",$rootScope.datosIniciales);
+        $('#f01_pri_nom_rep').val($rootScope.datosIniciales.f01_pri_nom_rep);
+        $('#f01_ape_pat_rep').val($rootScope.datosIniciales.f01_ape_pat_rep);
+        $('#f01_ape_mat_rep').val($rootScope.datosIniciales.f01_ape_mat_rep);
+        $('#f01_ape_cas_rep').val($rootScope.datosIniciales.f01_ape_cas_rep);
+        $('#f01_num_doc_rep').val($rootScope.datosIniciales.f01_num_doc_rep);
+        $('#f01_expedido_rep').val($rootScope.datosIniciales.f01_expedido_rep);
+        $('#f01_ges_vig_pod').val(sessionService.get('NRO_PODER_PRINCIPAL'));
+        $scope.datosIniciales.f01_ges_vig_pod_sec = "";
+        //var oid_ciu1 = sessionService.get('IDCIUDADANO');
+        console.log("aaaaa",$rootScope.datosIniciales);
+        $scope.file_CI_origen = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante +"/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RA + "?app_name=todoangular";  
+        $scope.file_CI_inv_origen = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante +"/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RR + "?app_name=todoangular";  
+        $scope.rep_legal = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDCIUDADANO') +"/" + $rootScope.datosIniciales.f01_poder_representante + "?app_name=todoangular";  
+        $scope.obtArchivosAdjuntos[1].campo = $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RA;
+        $scope.obtArchivosAdjuntos[1].url   = $scope.file_CI_origen;
+
+        $scope.obtArchivosAdjuntos[2].campo = $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RR;
+        $scope.obtArchivosAdjuntos[2].url   = $scope.file_CI_inv_origen;
+
+        $scope.obtArchivosAdjuntos[3].campo = $rootScope.datosIniciales.f01_poder_representante;
+        $scope.obtArchivosAdjuntos[3].url   = $scope.rep_legal;
+
+      }
+
+    }
     $scope.iniAntenas = function(){
-      
+      $scope.nro_rep_legalPrincipal = $rootScope.datosIniciales.f01_num_pod_leg;
       graficar_mapa("mapa1");
       //graficar_mapa("mapa2");
      //mapas(sessionService.get('IDTRAMITE'));
+     $scope.recuperarrepresentante();
      $("#idtramite").val(sessionService.get('IDTRAMITE'));
     }
 }

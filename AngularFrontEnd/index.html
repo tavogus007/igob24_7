@@ -13,7 +13,6 @@ function MM_preloadImages() { //v3.0
     var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
     if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
 }
-
 function MM_findObj(n, d) { //v4.01
   var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
     d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
@@ -25,8 +24,6 @@ function MM_swapImage() { //v3.0
   var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
    if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
 }
-</script>
-<script>
 window.onload = function() {
 $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente de todos los elementos h2 en 2em
 };
@@ -38,19 +35,10 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 <meta http-equiv="last-modified" content="Mon, 16 Jul 2018 12:00:00 GMT" />
 <meta http-equiv="Cache-Control" content="max-age=7200">
 <link href="nuevoIgob/img/favicon.png" rel=icon>
-<link href="nuevoIgob/lib/bootstrap/css/bootstrap.min.css" rel=stylesheet>
-<link href="nuevoIgob/lib/font-awesome/css/font-awesome.min.css" rel=stylesheet>
-<link href="nuevoIgob/lib/animate/animate.min.css" rel=stylesheet>
-<link href="nuevoIgob/lib/ionicons/css/ionicons.min.css" rel=stylesheet>
-<link href="nuevoIgob/lib/owlcarousel/assets/owl.carousel.min.css" rel=stylesheet>
-<link href="nuevoIgob/css/style.min.css" rel=stylesheet>
-<link href="nuevoIgob/css/iconos_flotantes.css" rel=stylesheet>
-<link href="../app/libs/Librerias/ol_4.6.5_dist/ol.css" rel=stylesheet>
-<link href="../app/libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css" rel=stylesheet>
-<script type="text/javascript" src="../app/libs/Librerias/ol_4.6.5_dist/ol.js"></script>
-<script type="text/javascript" src="../app/libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
-<script type="text/javascript" src="../app/libs/Librerias/proj_4/proj4.js"></script>
-
+<link href="nuevoIgob/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="nuevoIgob/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="nuevoIgob/css/style.min.css" rel="stylesheet">
+<link href="nuevoIgob/css/iconos_flotantes.min.css" rel="stylesheet">
 </head>
 <body>
 <div class=preloader>
@@ -74,7 +62,6 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 <li><a href="#team">¿Cómo Registrarme?</a></li>
 <li><a href="#accesos">Páginas de Interes</a></li>
 <li><a href="#contact">En Linea</a></li>
-
 </ul>
 </nav>
 </div>
@@ -127,112 +114,105 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 	<span class=sr-only>Next</span>
 	</a>
 	</div>			
-		<div class="theme-config_icon_3">
-			<div class="theme-config-box_icon_3">			
-				<div class="spin-icon_env_3" ngclick="" title="Recepción de Denuncias">
-					<i class="fa fa-edit fa-spin"></i>
-				</div>
-				<div class="skin-setttings_icon_3">
-					<div class="title" style="text-align: left;">Recepción de Denuncias</div>
-					<div class="setings-depurador" style="background: #f3f3f4 !important;">
-						<form name="formularioHistorico"  readOnly="true" novalidate>
-							<div>
-								<iframe width="100%" height="450px" src="../../app/view/servicios/transparencia/denuncias/index.html"></iframe>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="theme-config_icon_5">
-				<div class="theme-config-box_icon_5">
-					<div class="spin-icon_env_5" title="Soporte iGob 24/7">
-						<i class="fa fa-gears"></i>
-					</div>
-					<div class="skin-setttings_icon_5">
-						<div class="title" style="text-align: left;">Soporte iGob 24/7</div>
-						<div class="setings-depurador" style="background: #f3f3f4 !important;">
-								<form name="formularioHistorico"  readOnly="true" novalidate>
-									<div>
-										<iframe width="100%" height="450px" src="../../app/view/servicios/soporteIgob/index.html"></iframe>
-									</div>
-								</form>
-						</div>
-					</div>
-				</div>
-		</div>
-		
+	<div class="theme-config_icon_3">
+	<div class="theme-config-box_icon_3">
+	<div class="spin-icon_env_3" ngclick="" title="Recepción de Denuncias">
+	<i class="fa fa-edit fa-spin"></i>
+	</div>
+	<div class="skin-setttings_icon_3">
+	<div class="title" style="text-align: left;">Recepción de Denuncias</div>
+	<div class="setings-depurador" style="background: #f3f3f4 !important;">
+	<form name="formularioHistorico"  readOnly="true" novalidate>
+	<div>
+	<iframe width="100%" height="450px" src="../../app/view/servicios/transparencia/denuncias/index.html"></iframe>
+	</div>
+	</form>
+	</div>
+	</div>
+	</div>
+	</div>
+	<div class="theme-config_icon_5">
+	<div class="theme-config-box_icon_5">
+	<div class="spin-icon_env_5" title="Soporte iGob 24/7">
+	<i class="fa fa-gears"></i>
+	</div>
+	<div class="skin-setttings_icon_5">
+	<div class="title" style="text-align: left;">Soporte iGob 24/7</div>
+	<div class="setings-depurador" style="background: #f3f3f4 !important;">
+	<form name="formularioHistorico"  readOnly="true" novalidate>
+	<div>
+	<iframe width="100%" height="450px" src="../../app/view/servicios/soporteIgob/index.html"></iframe>
+	</div>
+	</form>
+	</div>
+	</div>
+	</div>
+	</div>
 </div>
 <br>
 <section id="services" >
-
-
 <div class="row" align="center">
 	<div class="col-md-3 wow fadeInUp">
-		<!--<a href="#about">-->
 		<a>
 			<img src="nuevoIgob/img/igob/1.jpg"  alt="" class="img-fluid">
 		</a>
 		<div id="summary1">
-				<p class="collapse" id="collapseSummary1" align="justify" style="color:black !important;">
-				Es una plataforma de Innovación tecnológica de Gobierno Electrónico, creada para que los ciudadanos paceños tengan un acceso, a los servicios del GAMLP, desde cualquier ubicación o la comodidad de su hogar, las 24 horas y los 365 días del año.
-				<br>
-				<br>
-				Desarrollada para satisfacer las necesidades de la ciudadanía, modernizando la Gestión Pública, universalizando el acceso, optimizando los tiempos de interacción, información y diversificando los servicios para la ciudadanía.
-				<br>
-				<br>
-				Buscando los mayores índices de eficiencia, calidad y transparencia dentro de los servicios que se brindan.
-				<br>
-				<br>
-				Construyendo un gobierno eco-eficiente, que reduce el consumo de papel y energía en beneficio de nuestro medioambiente.
-				<br>
-				<br>
-				Con esta plataforma tecnológica lanzamos un proceso de transformación hacia una Ciudad Inteligente, brindando un mejor servicio a la ciudadanía.
-				</p>
-				<a class="collapsed" data-toggle=collapse href="#collapseSummary1" aria-expanded=false aria-controls=collapseSummary1></a>
+			<p class="collapse" id="collapseSummary1" align="justify" style="color:black !important;">
+			Es una plataforma de Innovación tecnológica de Gobierno Electrónico, creada para que los ciudadanos paceños tengan un acceso, a los servicios del GAMLP, desde cualquier ubicación o la comodidad de su hogar, las 24 horas y los 365 días del año.
+			<br>
+			<br>
+			Desarrollada para satisfacer las necesidades de la ciudadanía, modernizando la Gestión Pública, universalizando el acceso, optimizando los tiempos de interacción, información y diversificando los servicios para la ciudadanía.
+			<br>
+			<br>
+			Buscando los mayores índices de eficiencia, calidad y transparencia dentro de los servicios que se brindan.
+			<br>
+			<br>
+			Construyendo un gobierno eco-eficiente, que reduce el consumo de papel y energía en beneficio de nuestro medioambiente.
+			<br>
+			<br>
+			Con esta plataforma tecnológica lanzamos un proceso de transformación hacia una Ciudad Inteligente, brindando un mejor servicio a la ciudadanía.
+			</p>
+			<a class="collapsed" data-toggle=collapse href="#collapseSummary1" aria-expanded=false aria-controls=collapseSummary1></a>
 		</div>
 	</div>
 	<div class="col-md-3 wow fadeInUp">
-		<!--<a href="#about">-->
 		<a>
 			<img src="nuevoIgob/img/igob/2.jpg"  alt="" class="img-fluid">
 		</a>
 		<div id="summary2">
-				<p class="collapse" id="collapseSummary2" align="justify" style="color:black !important;">
-				<strong>Inicio de trámites y servicios en línea:</strong> Sustenta la implementación del nuevo modelo integral de atención ciudadana, ampliando y enriqueciendo los canales NO presenciales, permitiendo solicitar servicios en línea como ser:
-				<br>
-				<br>
-				- Seguimiento de Trámites y Servicios.
-				</br>
-				- Verificación de Documentos para Autorización de Viaje.
-				</br>
-				- Salud - Cita Médica.
-				</br>
-				- Espera en Línea en PLataformas de Atención Ciudadana. en línea (Duplicados).
-				</br>
-				- Catastro en línea (Duplicados y Actualizaciones).
-				</br>
-				- Territorio (Permisos de Construcción).
-				</br>
-				- Actividades Económicas Solicitud de Licencias de Funcionamiento.
-				</br>
-				- Foro de acciones y propuestas ciudadanas.
-				</br>
-				- Bandeja de Notificaciones.
-				</br>
-				- Descargas de Aplicaciones Móviles.
-				</br>
-				- Documentos.
-				</br>
-				<br>
-				</br>
-				</p>
-				<a class=collapsed data-toggle=collapse href="#collapseSummary2" aria-expanded=false aria-controls=collapseSummary2></a>
-				</div>		
+			<p class="collapse" id="collapseSummary2" align="justify" style="color:black !important;">
+			<strong>Inicio de trámites y servicios en línea:</strong> Sustenta la implementación del nuevo modelo integral de atención ciudadana, ampliando y enriqueciendo los canales NO presenciales, permitiendo solicitar servicios en línea como ser:
+			<br>
+			<br>
+			- Seguimiento de Trámites y Servicios.
+			</br>
+			- Verificación de Documentos para Autorización de Viaje.
+			</br>
+			- Salud - Cita Médica.
+			</br>
+			- Espera en Línea en PLataformas de Atención Ciudadana. en línea (Duplicados).
+			</br>
+			- Catastro en línea (Duplicados y Actualizaciones).
+			</br>
+			- Territorio (Permisos de Construcción).
+			</br>
+			- Actividades Económicas Solicitud de Licencias de Funcionamiento.
+			</br>
+			- Foro de acciones y propuestas ciudadanas.
+			</br>
+			- Bandeja de Notificaciones.
+			</br>
+			- Descargas de Aplicaciones Móviles.
+			</br>
+			- Documentos.
+			</br>
+			<br>
+			</br>
+			</p>
+			<a class=collapsed data-toggle=collapse href="#collapseSummary2" aria-expanded=false aria-controls=collapseSummary2></a>
+		</div>		
 	</div>
 	<div class="col-md-3 wow fadeInUp">
-		<!--<a href="#about">-->
 		<a>
 			<img src="nuevoIgob/img/igob/3.jpg"  alt="" class="img-fluid">
 		</a>
@@ -266,8 +246,6 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 </div>
 </section>
 </section>
-
-
 <main id="main">
 <section id="about">
 <div class="container">
@@ -356,56 +334,50 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 </div>
 </div>
 </div>
-
-
 </div>
-
 </section>
-
 <div>
-		<p align="center">
-			<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/">
-			<img class="img-fluid" alt="" src="nuevoIgob/img/boton.jpg">
-			</a>
-		</p>
-	
-		<p align="center">
-			<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img1','','nuevoIgob/img/servicios/linea_2-1.png',1)">
-				<img src="nuevoIgob/img/servicios/linea_1-1.png" alt="Consultas en Línea" name="img1" width="200" height="157" border="0" style="visibility: visible; animation-name: fadeInUp;">
-			</a>
-			<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/"> </a>
-			<a href="https://www.lapaz.bo/municipioenlinea/servicios247/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img2','','nuevoIgob/img/servicios/24-7_2-1.png',1)">
-				<img src="nuevoIgob/img/servicios/24-7_1-1.png" alt="Servicios 24/7" name="img2" width="200" height="157" border="0" >
-			</a>
-			<a href="https://www.lapaz.bo/municipioenlinea/servicios247/"> </a>
-			<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/inicio.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img3','','nuevoIgob/img/servicios/sitv3-2-1.png',1)">
-				<img src="nuevoIgob/img/servicios/sitv3-1-1.png" alt="Sit V3" name="img3" width="200" height="157" border="0" >
-			</a>
-			<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/inicio.html"> </a>
-			<a href="http://wsservicios.lapaz.bo/cheques/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img4','','nuevoIgob/img/servicios/recoger_2-1.png',1)">
-				<img src="nuevoIgob/img/servicios/recoger_1-1.png" alt="Cheques Por Recoger" name="img4" width="200" height="157" border="0">
-			</a>
-			<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/territorio.html">	</a>
-			<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/territorio.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img5','','nuevoIgob/img/servicios/construir-2-1.png',1)">
-				<img src="nuevoIgob/img/servicios/construir-1-1.png" alt="Construir con permiso es Fácil" name="img5" width="200" height="157" border="0">
-			</a>
-			<a href="https://www.lapaz.bo/municipioenlinea/construccion/"> </a>
-			<a href="https://www.lapaz.bo/municipioenlinea/construccion/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img6','','nuevoIgob/img/servicios/servicios_2-1.png',1)">
-				<img src="nuevoIgob/img/servicios/servicios_1-1.png" alt="Empresas y Servicios" name="img6" width="200" height="157" border="0">
-			</a>
-			<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/">	</a>
-			<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img7','','nuevoIgob/img/servicios/moviles_2-1.png',1)">
-				<img src="nuevoIgob/img/servicios/moviles_1-1.png" alt="Aplicaciones Móviles" name="img7" width="200" height="157" border="0">
-			</a>
-			<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/"></a>
-			<a href="https://drive.google.com/drive/folders/0B_qt9Yc8icg_QWxHbFJydG5Ya1E" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img8','','nuevoIgob/img/servicios/descargas_2-1.png',1)">
-				<img src="nuevoIgob/img/servicios/descargas_1-1.png" alt="Descargas" name="img8" width="200" height="157" border="0">
-			</a>
-			<a href="https://drive.google.com/drive/folders/0B_qt9Yc8icg_QWxHbFJydG5Ya1E"></a>
-		</p>
-	</div>
-
-<div id=myModal class="modal fade">
+	<p align="center">
+		<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/">
+		<img class="img-fluid" alt="" src="nuevoIgob/img/boton.jpg">
+		</a>
+	</p>
+	<p align="center">
+		<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img1','','nuevoIgob/img/servicios/linea_2-1.png',1)">
+			<img src="nuevoIgob/img/servicios/linea_1-1.png" alt="Consultas en Línea" name="img1" width="200" height="157" border="0" style="visibility: visible; animation-name: fadeInUp;">
+		</a>
+		<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/"> </a>
+		<a href="https://www.lapaz.bo/municipioenlinea/servicios247/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img2','','nuevoIgob/img/servicios/24-7_2-1.png',1)">
+			<img src="nuevoIgob/img/servicios/24-7_1-1.png" alt="Servicios 24/7" name="img2" width="200" height="157" border="0" >
+		</a>
+		<a href="https://www.lapaz.bo/municipioenlinea/servicios247/"> </a>
+		<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/inicio.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img3','','nuevoIgob/img/servicios/sitv3-2-1.png',1)">
+			<img src="nuevoIgob/img/servicios/sitv3-1-1.png" alt="Sit V3" name="img3" width="200" height="157" border="0" >
+		</a>
+		<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/inicio.html"> </a>
+		<a href="http://wsservicios.lapaz.bo/cheques/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img4','','nuevoIgob/img/servicios/recoger_2-1.png',1)">
+			<img src="nuevoIgob/img/servicios/recoger_1-1.png" alt="Cheques Por Recoger" name="img4" width="200" height="157" border="0">
+		</a>
+		<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/territorio.html">	</a>
+		<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/territorio.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img5','','nuevoIgob/img/servicios/construir-2-1.png',1)">
+			<img src="nuevoIgob/img/servicios/construir-1-1.png" alt="Construir con permiso es Fácil" name="img5" width="200" height="157" border="0">
+		</a>
+		<a href="https://www.lapaz.bo/municipioenlinea/construccion/"> </a>
+		<a href="https://www.lapaz.bo/municipioenlinea/construccion/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img6','','nuevoIgob/img/servicios/servicios_2-1.png',1)">
+			<img src="nuevoIgob/img/servicios/servicios_1-1.png" alt="Empresas y Servicios" name="img6" width="200" height="157" border="0">
+		</a>
+		<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/">	</a>
+		<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img7','','nuevoIgob/img/servicios/moviles_2-1.png',1)">
+			<img src="nuevoIgob/img/servicios/moviles_1-1.png" alt="Aplicaciones Móviles" name="img7" width="200" height="157" border="0">
+		</a>
+		<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/"></a>
+		<a href="https://drive.google.com/drive/folders/0B_qt9Yc8icg_QWxHbFJydG5Ya1E" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img8','','nuevoIgob/img/servicios/descargas_2-1.png',1)">
+			<img src="nuevoIgob/img/servicios/descargas_1-1.png" alt="Descargas" name="img8" width="200" height="157" border="0">
+		</a>
+		<a href="https://drive.google.com/drive/folders/0B_qt9Yc8icg_QWxHbFJydG5Ya1E"></a>
+	</p>
+</div>
+<div id="myModal" class="modal fade">
 <div class="modal-dialog modal-login">
 <div class=modal-content>
 <div class=modal-header>
@@ -433,11 +405,7 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 <div class=modal-footer>No tienes cuenta?.&nbsp; <a href="#">Registrate</a></div>
 </div>
 </div>
-
-
-
 </div>
-
 <section id="team">
 <div class="container">
 <div class="section-header wow fadeInUp">
@@ -526,7 +494,6 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 </div>
 </div>
 </section>
-
 <section id="accesos">
 	<div class="section-header wow fadeInUp">
 	<h3>Enlaces de Interes</h3>
@@ -617,8 +584,6 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 		<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
 		</div>
 	</div>
-	
-
 	<br>
 	<br>
 	<p align="center">
@@ -631,11 +596,7 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/alumbrado-a-1.png">
 		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/intendencia-a-1.png">
 	</p>
-
 </section>
-
-
-
 <section id=contact class="section-bg wow fadeInUp">
 	<div class=container>
 
@@ -976,12 +937,10 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 </section>
 </main>
 <footer id="footer">
-
 <div class=section-header>
 <h3 style="color:white">Contacto</h3>
 <p style="color:white">Para cualquier consulta, por favor comuníquese con la línea gratuita 800 13 5555 o diríjase a las siguientes plataformas de servicio y atención ciudadana del GAMLP:</p>
 </div>
-
 <div class="row">
 <div class="col-lg-1">
 </div>
@@ -1039,111 +998,86 @@ Oficina Virtual Palacio Consistorial.
 <script src="nuevoIgob/lib/easing/easing.min.js" async defer></script>
 <script src="nuevoIgob/js/main.min.js" async defer></script>
 
+<link href="nuevoIgob/lib/animate/animate.min.css" rel="stylesheet">
+<link href="nuevoIgob/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+<link href="nuevoIgob/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+<link href="../app/libs/Librerias/ol_4.6.5_dist/ol.min.css" rel="stylesheet">
+<link href="../app/libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.min.css" rel="stylesheet">
+<script type="text/javascript" src="../app/libs/Librerias/ol_4.6.5_dist/ol.min.js"></script>
+<script type="text/javascript" src="../app/libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.min.js"></script>
+<script type="text/javascript" src="../app/libs/Librerias/proj_4/proj4.min.js"></script>
 <script>
 var map;
 var image = 'nuevoIgob/img/marcador.png';
-function initMap() {
-var plataforma = new google.maps.LatLng(-16.500498,-68.131358);
-
-}
-
-
 var epsg32719 = 'EPSG:32719';
 var epsg4326 = 'EPSG:4326';
 proj4.defs(epsg32719, '+proj=utm +zone=19 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs');
 proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');
-
 var view = new ol.View({center: ol.proj.fromLonLat([-68.133605,-16.495745]), zoom: 18});
 var vectorSource = new ol.source.Vector();
 var vectorLayer = new ol.layer.Vector({ source: vectorSource });
-
 var iconStyle_1 = new ol.style.Style({
 	image: new ol.style.Icon(({
-                              	anchor: [0.5, 30],
-                              	anchorXUnits: 'fraction',
-                              	anchorYUnits: 'pixels',
-                              	//color: '#40FF00',
-                              	src: '../nuevoIgob/img/marcador.png'
-                          	}))
+		anchor: [0.5, 30],
+		anchorXUnits: 'fraction',
+		anchorYUnits: 'pixels',
+		//color: '#40FF00',
+		src: '../nuevoIgob/img/marcador.png'
+	}))
 });
-
 var osm = new ol.layer.Tile({
   title: 'Open Street Map',
   visible: true,
   source: new ol.source.OSM()
 });
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido, Horario, telefono,servicios)
-{
-	
-
-	if( plataformaTitulo =='Plataforma de Atención Ciudadana Centro Comercial Camacho.')
-	{
+function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido, Horario, telefono,servicios) {
+	if( plataformaTitulo =='Plataforma de Atención Ciudadana Centro Comercial Camacho.') {
 		var i='1';
 	}
-	if( plataformaTitulo =='Plataforma de Atención Ciudadana SERMAT II - Miraflores.')
-	{
+	if( plataformaTitulo =='Plataforma de Atención Ciudadana SERMAT II - Miraflores.') {
 		var i='2';
 	}
-	if( plataformaTitulo =='Plataforma Integral de Atención Ciudadana Sur.')
-	{
+	if( plataformaTitulo =='Plataforma Integral de Atención Ciudadana Sur.') {
 		var i='3';
 	}
-	if( plataformaTitulo =='Plataforma Integral de Atención Ciudadana Torres Mall.')
-	{
+	if( plataformaTitulo =='Plataforma Integral de Atención Ciudadana Torres Mall.') {
 		var i='4';
 	}
-	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Cotahuma MD1.')
-	{
+	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Cotahuma MD1.') {
 		var i='5';
 	}
-	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Max Paredes MD2.')
-	{
+	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Max Paredes MD2.') {
 		var i='6';
 	}
-	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Periférica MD3.')
-	{
+	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Periférica MD3.') {
 		var i='7';
 	}
-	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía San Antonio MD4.')
-	{
+	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía San Antonio MD4.') {
 		var i='8';
 	}
-	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Sur MD5.')
-	{
+	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Sur MD5.') {
 		var i='9';
 	}
-	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Mallasa MD6.')
-	{
+	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Mallasa MD6.') {
 		var i='10';
 	}
-	if( plataformaTitulo =='Oficina Virtual Palacio Consistorial.')
-	{
+	if( plataformaTitulo =='Oficina Virtual Palacio Consistorial.') {
 		var i='11';
 	}
-
-	console.log("iiii",i);
-
 	$('#map'+i).empty();
-
 	vectorSource.clear();
-
 	setTimeout(function()
 	{
 		var mapa = new ol.Map({
 	        layers: [
-	                new ol.layer.Group({
-	                                      title: 'Mapas Base',
-	                                      layers: [
-	                                                osm,
-	                                                vectorLayer
-	                                              ]
-	                                  })
-	               
-	              ],
+				new ol.layer.Group({
+					title: 'Mapas Base',
+					layers: [
+						osm,
+						vectorLayer
+					]
+				})
+			],
 	        //overlays: [featureOverlay],
 	        target: 'map'+i,
 	        //controls: controls,
@@ -1155,59 +1089,8 @@ function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido,
 	  	vectorSource.addFeature(feature);
 	  	mapa.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
 	  	mapa.getView().setZoom(18);
-
 	}, 500);
-
-	
-	
 }
-
-function mostrarMarker2(latitud, longitud, plataformaTitulo, plataformaContenido, Horario, telefono,servicios)
-{
-	plataforma = new google.maps.LatLng(latitud, longitud);
-	map = new google.maps.Map(document.getElementById('map2'), {
-	center: plataforma,
-	disableDefaultUI: true,
-	zoom: 18
-	});
-	var contenido  = '<div id="content"> <div id="siteNotice"> </div> <h3 id="firstHeading" class="firstHeading">' + plataformaTitulo + '</h3> <div id="bodyContent"> <p><b>Dirección:</b>, ' + plataformaContenido +'<br> </p> <p><b>Horario:</b>, ' + Horario +' <br> </p> <p><b>Teléfono:</b>, ' + telefono +' <br> </p>  <p><b>Servicios:</b>  <p align="justify">' + servicios +'  </p> <br> </p>  </div> </div>';
-	var infowindow = new google.maps.InfoWindow({
-	content: contenido
-	});
-	var marker = new google.maps.Marker({
-	map: map, 
-	position: plataforma, 
-	icon: image, 
-	animation: google.maps.Animation.DROP
-	});
-	marker.addListener('click', function() {
-	infowindow.open(map, marker);
-	});
-}
-
-function mostrarMarker2(latitud, longitud, plataformaTitulo, plataformaContenido, Horario, telefono,servicios)
-{
-	plataforma = new google.maps.LatLng(latitud, longitud);
-	map = new google.maps.Map(document.getElementById('map2'), {
-	center: plataforma,
-	disableDefaultUI: true,
-	zoom: 18
-	});
-	var contenido  = '<div id="content"> <div id="siteNotice"> </div> <h3 id="firstHeading" class="firstHeading">' + plataformaTitulo + '</h3> <div id="bodyContent"> <p><b>Dirección:</b>, ' + plataformaContenido +'<br> </p> <p><b>Horario:</b>, ' + Horario +' <br> </p> <p><b>Teléfono:</b>, ' + telefono +' <br> </p>  <p><b>Servicios:</b>  <p align="justify">' + servicios +'  </p> <br> </p>  </div> </div>';
-	var infowindow = new google.maps.InfoWindow({
-	content: contenido
-	});
-	var marker = new google.maps.Marker({
-	map: map, 
-	position: plataforma, 
-	icon: image, 
-	animation: google.maps.Animation.DROP
-	});
-	marker.addListener('click', function() {
-	infowindow.open(map, marker);
-	});
-}
-
 </script>
 <script type="text/javascript">
 	$('.spin-icon_env_3').click(function (){

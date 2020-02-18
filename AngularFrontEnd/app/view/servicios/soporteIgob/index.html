@@ -270,17 +270,17 @@ document.getElementById('correo').addEventListener('input', function() {
   <center> <div class="col-sm-11">  
   </div></center>
    <br> 
-      <div class="form-group row">       
-        <select class="form-control" id="fromIn" hidden>
-                        <option value="FORMULARIO" selected="selected" > FORMULARIO</option>                                                                
-        </select>
-          <select class="form-control" id="procedencia" hidden>
-                        <option value="EXTERNA" selected="selected" > EXTERNA</option>                                                                
-            </select>
-            <select class="form-control" id="tipoForm" hidden>
-                        <option value="SOPORTE" selected="selected" > SOPORTE</option>                                           
-            </select>         
-    </div>  
+  <div class="form-group row">       
+      <select class="form-control" id="fromIn" hidden>
+          <option value="FORMULARIO" selected="selected" > FORMULARIO</option>
+      </select>
+      <select class="form-control" id="procedencia" hidden>
+          <option value="EXTERNA" selected="selected" > EXTERNA</option>
+      </select>
+      <select class="form-control" id="tipoForm" hidden>
+          <option value="SOPORTE" selected="selected" > SOPORTE</option>
+      </select>         
+  </div>  
    <div class="form-group row">
    	<label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Nombre completo:</label>
@@ -327,7 +327,7 @@ document.getElementById('correo').addEventListener('input', function() {
             </tr>    
           </table>  
           <input   size="50"  id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="img/recarga.png"  width="20" height="20" title=""> </button>
-           <p id="msg_capcha"></p>             
+           <div id="msg_capcha" style="color:#000000"></div>             
         </div>
     </div>
   </div>

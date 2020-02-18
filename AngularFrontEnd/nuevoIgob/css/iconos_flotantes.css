@@ -62,6 +62,17 @@ body.rtls .spin-icon_env_3 {
   margin-left: 40px;
   background: #f3f3f4;
 }
+
+@media (max-width:768px){
+	.skin-setttings_icon_3{
+  	width: 350px;
+	}
+  .theme-config-box_icon_3{
+    margin-right: -340px;
+  }
+}
+
+
 .skin-setttings_icon_3 .title {
   background: #efefef;
   text-align: center;
@@ -211,6 +222,14 @@ body.rtls .spin-icon_env_5 {
   width: 823px;
   margin-left: 40px;
   background: #f3f3f4;
+}
+@media (max-width:768px){
+  .skin-setttings_icon_5{
+    width: 350px;
+  }
+  .theme-config-box_icon_5{
+    margin-right: -340px;
+  }
 }
 .skin-setttings_icon_5 .title {
   background: #efefef;

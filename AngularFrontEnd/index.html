@@ -28,10 +28,6 @@ window.onload = function() {
 $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente de todos los elementos h2 en 2em
 };
 </script>
-<script type="text/javascript" src="../app/libs/js/jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="../app/controller/autenticacion/config.js"></script>        
-<script type="text/javascript" src="../app/libs/login/login.js"></script>  
-
 <style type="text/css">
 	.scrollable {
 	  height: 700px !important;
@@ -156,12 +152,6 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 		document.getElementById("resultadoC").value = '';
 		document.getElementById("resultadoC").value = '';
 	}
-	$(document).ready(function() {
-		obtCaptha();
-		getlimpiareRROR();
-		noVacio();
-		$( "#htmlDenuncias" ).load( "../../app/view/servicios/transparencia/denuncias/index.html" );
-	}); 
 </script>
 <script >
   function guardarDatos2(){ 
@@ -1258,7 +1248,9 @@ Oficina Virtual Palacio Consistorial.
 </div>
 </footer>
 <a href="#" class=back-to-top><i class="fa fa-chevron-up"></i></a>
-
+<script type="text/javascript" src="../app/libs/js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="../app/controller/autenticacion/config.js"></script>        
+<script type="text/javascript" src="../app/libs/login/login.js"></script>  
 
 <script src="nuevoIgob/lib/jquery/jquery.min.js"></script>
 <script src="nuevoIgob/lib/superfish/superfish.min.js"></script>
@@ -1372,6 +1364,14 @@ function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido,
 		$(".theme-config-box_icon_5").toggleClass("show");
 		//$(".theme-config-box_icon_3").toggleClass("hidden");
 	});
+</script>
+<script type="text/javascript">
+		$(document).ready(function() {
+		obtCaptha();
+		getlimpiareRROR();
+		noVacio();		
+		$( "#htmlDenuncias" ).load( "../../app/view/servicios/transparencia/denuncias/index.html" );
+	}); 
 </script>
 </body>
 </html>

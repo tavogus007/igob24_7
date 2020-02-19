@@ -234,7 +234,8 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 		e.preventDefault();
 	}
 
-	document.getElementById('correo').addEventListener('input', function() {
+	if(document.getElementById('correo')){
+		document.getElementById('correo').addEventListener('input', function() {
 		campo = event.target;
 		valido = document.getElementById('emailOK');
 
@@ -244,7 +245,8 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 		} else {
 		valido.innerText = "incorrecto";
 		}
-	});
+		});
+	}
 </script>
 <!-- Cambio de formulario -->
 <meta content="width=device-width, initial-scale=1.0" name=viewport>

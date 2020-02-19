@@ -2,10 +2,10 @@
       <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
       <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>     
       <meta content="width=device-width, initial-scale=1.0" name=viewport> 
-      <script type="text/javascript" src="../../../../libs/js/jquery-1.11.2.min.js"></script>
+      <!--script type="text/javascript" src="../../../../libs/js/jquery-1.11.2.min.js"></!--script>
       <script type="text/javascript" src="../../../../controller/autenticacion/config.js"></script>        
       <script type="text/javascript" src="../../../../libs/login/login.js"></script>     
-      <script type="text/javascript" src="../../../../libs/apiIF/api_if.js"></script>           
+      <script type="text/javascript" src="../../../../libs/apiIF/api_if.js"></script-->
 </head>
 <body>  
     <style>
@@ -325,8 +325,8 @@ function crearCasoLotus(){
   crearCasoL.datos = JSON.stringify(dataForm);
   crearCasoL.procodigo = 'TRA_REG';
   crearCasoL.crearCasoAeLinea( function(resultado){
-     console.log(dataForm,2222);
-      //$.unblockUI();
+    //console.log(dataForm,2222);
+    //$.unblockUI();
   });
 }
 function limpiar()
@@ -343,10 +343,10 @@ function limpiar()
 }
 
 </script>
-<div style="max-width:960px; min-width:320px; margin:auto" id="content" class="border border-warning rounded">
+<div>
   <br>
   <div class="form-group">
-    <label  class="col-sm-12 control-label"><center><H2>Formulario de Recepción de Denuncias </H2></center></label>
+    <label  class="col-sm-12 control-label"><center><H5>Formulario de Recepción de Denuncias </H5></center></label>
     <input   id="esLibres"  hidden>
   </div> 
   <center> <div class="col-sm-11">
@@ -472,18 +472,19 @@ function limpiar()
                <th class="border border-warning"> <img id="img2" class="img-responsive" src=""  title="" width="200" height="35"></th>  
             </tr>        
           </table>  
-               <input   size="50"  id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="img/recarga.png"  width="20" height="20" title=""> </button>
-           <p id="msg_capcha"></p>             
+               <input   size="50"  id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="../app/view/servicios/transparencia/denuncias/img/recarga.png"  width="20" height="20" title=""> </button>
+           <p style="color:black" id="msg_capcha"></p>             
         </div>
     </div>
   </div>
-</div></center>
-
-        <div class="modal-footer">  
-          <button id= "EnvRes"  onClick="resetPassword();crearCasoLotus();" disabled="true" type="submit"  onclick="subirimagen();" class="btn btn-warning text-white"  >Enviar</button>        
-        </div>
-<center><img src="img/logo.png" width="250" height="100"/></center>
 </div>
-<script type="text/javascript" src="../../../../libs/js/jquery.blockUI.min.js"></script>
+</center>
+<div class="modal-footer">  
+  <!--button id= "EnvRes"  onClick="resetPassword();crearCasoLotus();" disabled="true" class="btn btn-warning text-white"  >Enviar </!--button-->
+  <input id= "EnvRes"  onClick="resetPassword();crearCasoLotus();" disabled="true" class="btn btn-warning text-white"  type="button" value="Enviar">
+</div>
+<center><img src="../app/view/servicios/transparencia/denuncias/img/logo.png" width="250" height="100"/></center>
+</div>
+<!--script type="text/javascript" src="../../../../libs/js/jquery.blockUI.min.js"></!--script>
 <script type="text/javascript" src="../../../../libs/js_one/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../../../libs/js/sweetalert.min.js"></script>
+<script type="text/javascript" src="../../../../libs/js/sweetalert.min.js"></script-->

@@ -933,10 +933,13 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/" + oidCiudadano + "/";
             if (nombre == 'adjunto' && (typeof(obj.files[0]) != 'undefined') && (valor != 'undefined' && valor != '')){
                 var tipoDocci = obj.files[0].type;
+                var tipoDoc1 = obj.files[0].name;
+                var nameArrayci = tipoDoc1.split('.');
+                var ext_doc = nameArrayci[nameArrayci.length - 1];
                 var nameArrayci = tipoDocci.split('/');
                 tipoDocci = nameArrayci[1];
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocci == "png" || tipoDocci == "jpg" || tipoDocci == "jpeg" || tipoDocci == "bmp" || tipoDocci == "gif") {
+                    if (ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' || ext_doc == 'xlsx') {
                         var filecompress = compressImage($scope.adjunto).then(function(respuestaci){
                             var imagenCia = respuestaci.type.split('/');
                             var tipoCia = imagenCia[1];
@@ -949,7 +952,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             //$scope.mostrarimg('adj');
                         });
                     } else{
-                        if (tipoDocci == 'pdf' ||  tipoDocci == 'docx' ||  tipoDocci == 'docxlm') {
+                        if (ext_doc == 'pdf' ||  ext_doc == 'docx' ||  ext_doc == 'docxlm' || ext_doc == 'xls' || ext_doc == 'xlsx') {
                             var zipci = new JSZip();
                             zipci.file($scope.adjunto.name, $scope.adjunto);
                             zipci.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobci) {
@@ -974,8 +977,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm') {
-                            nombreNuevoCIAnverso = 'doc_'+$scope.datosSitram.frm_tra_if_codigo+'_'+fechaNueva+'.'+tipoDocci;
+                        if (ext_doc == 'png' || ext_doc == 'jpg' || ext_doc == 'jpeg' || ext_doc == 'bmp' || ext_doc == 'gif' || ext_doc == 'pdf' || ext_doc == 'docx' || ext_doc == 'docxlm' || ext_doc == 'xls' || ext_doc == 'xlsx') {
+                            nombreNuevoCIAnverso = 'doc_'+$scope.datosSitram.frm_tra_if_codigo+'_'+fechaNueva+'.'+ext_doc;
                             fileUpload1.uploadFileToUrl1($scope.adjunto, uploadUrl,nombreNuevoCIAnverso);
                             $scope.registroAdj.adjunto = nombreNuevoCIAnverso;
                             $scope.btover=true;

@@ -483,7 +483,7 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 					<!--button id= "EnvRes"  onClick="resetPassword();crearCasoLotus();" disabled="true" class="btn btn-warning text-white"  >Enviar </!--button-->
 					<input id= "EnvRes"  onClick="resetPassword();crearCasoLotus();" disabled="true" class="btn btn-warning text-white"  type="button" value="Enviar">
 				  </div>
-				  <center><img src="../app/view/servicios/transparencia/denuncias/img/logo.png" width="250" height="100"/></center>
+				  <center><img src="nuevoIgob/img/logo.webp" width="250" height="100"/></center>
 				  </div>
 
 
@@ -1019,329 +1019,28 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/intendencia-a-1.png">
 	</p>
 </section>
-<section id=contact class="section-bg wow fadeInUp">
-	<div class=container>
-
+<section id="contact" class="section-bg wow fadeInUp">
+	<div class="container">
 		<div class="row contact-info">
-			
-			<div class="modal fade" id="formModal_1" role="dialog">
+			<div class="modal fade" id="formModal" role="dialog">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title">Ubicación de la Plataforma</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
 						</div>
 						<div class="modal-body">
-							<p>
-								<div id="map1" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div>
-							</p>
+							<p> <div id="map1" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div> </p>
 						</div>
-						
-						<span> 
-							<b>&nbsp Dirección: </b>Centro Comercial Camacho Nivel -1 , Av. Camacho.
-						</span>
-						<span> 
-							<b>&nbsp Horario: </b>Turno-Extendido de 8:45 a 18:45.
-						</span>
-						<span> 
-							<b>&nbsp Teléfono: </b>2650330.
-						</span>
-
+						<span> <div id="nombrePla"> </div> </span>
+						<span> <div id="horarioPla"> </div> </span>
+						<span> <div id="telefonoPla"> </div> </span>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="modal fade" id="formModal_2" role="dialog">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Ubicación de la Plataforma</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						<div class="modal-body">
-							<p>
-								<div id="map2" style="width:auto;height:550px;border:1px;"></div>
-							</p>
-						</div>
-						
-						<span> 
-							<b>&nbsp Dirección: </b>Edif. Torre Vicenta Planta Baja (Avenida Argentina, esquina calle Díaz Romero).
-						</span>
-						<span> 
-							<b>&nbsp Horario: </b>Turno-Continuo de 8:45 a 16:15.
-						</span>
-						<span> 
-							<b>&nbsp Teléfono: </b>2650577.
-						</span>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade" id="formModal_3" role="dialog">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Ubicación de la Plataforma</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						<div class="modal-body">
-							<p>
-								<div id="map3" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div>
-							</p>
-						</div>
-						
-						<span> 
-							<b>&nbsp Dirección: </b>Edif. Atlanta PB, Av. Gral. José Ballivián Nº720, entre calles 13 y 14 Calacoto.
-						</span>
-						<span> 
-							<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 16:15.
-						</span>
-						<span> 
-							<b>&nbsp Teléfono: </b>2651460 - 2773749.
-						</span>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade" id="formModal_4" role="dialog">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Ubicación de la Plataforma</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						<div class="modal-body">
-							<p>
-								<div id="map4" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div>
-							</p>
-						</div>
-						
-						<span> 
-							<b>&nbsp Dirección: </b>Las Torres Mall Subsuelo 103, Av. Arce Nº 2519.
-						</span>
-						<span> 
-							<b>&nbsp Horario: </b>Turno-Extendido de 8:45 a 18:30.
-						</span>
-						<span> 
-							<b>&nbsp Teléfono: </b>2651457.
-						</span>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade" id="formModal_5" role="dialog">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Ubicación de la Plataforma</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						<div class="modal-body">
-							<p>
-								<div id="map5" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div>
-							</p>
-						</div>
-						
-						<span> 
-							<b>&nbsp Dirección: </b>Calle Ernesto Torres, esquina Avenida Marcelo Quiroga Santa Cruz (camino a Pasankeri) s/n.
-						</span>
-						<span> 
-							<b>&nbsp Horario: </b>Turno-Continuo de 8:45 a 16:45.
-						</span>
-						<span> 
-							<b>&nbsp Teléfono: </b>2651453.
-						</span>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade" id="formModal_6" role="dialog">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Ubicación de la Plataforma</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						<div class="modal-body">
-							<p>
-								<div id="map6" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div>
-							</p>
-						</div>
-						
-						<span> 
-							<b>&nbsp Dirección: </b>Avenida Buenos Aires, esquina Max Paredes s/n.
-						</span>
-						<span> 
-							<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.
-						</span>
-						<span> 
-							<b>&nbsp Teléfono: </b>
-						</span>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade" id="formModal_7" role="dialog">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Ubicación de la Plataforma</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						<div class="modal-body">
-							<p>
-								<div id="map7" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div>
-							</p>
-						</div>						
-						<span> 
-							<b>&nbsp Dirección: </b>Edificio Nardin Rivas, avenida Montes y Uruguay.
-						</span>
-						<span> 
-							<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.
-						</span>
-						<span> 
-							<b>&nbsp Teléfono: </b>2651455
-						</span>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade" id="formModal_8" role="dialog">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Ubicación de la Plataforma</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						<div class="modal-body">
-							<p>
-								<div id="map8" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div>
-							</p>
-						</div>
-						
-						<span> 
-							<b>&nbsp Dirección: </b>Avenida Josefa Mujía s/n, zona alto Villa San Antonio.
-						</span>
-						<span> 
-							<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.
-						</span>
-						<span> 
-							<b>&nbsp Teléfono: </b>
-						</span>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade" id="formModal_9" role="dialog">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Ubicación de la Plataforma</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						<div class="modal-body">
-							<p>
-								<div id="map9" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div>
-							</p>
-						</div>
-						
-						<span> 
-							<b>&nbsp Dirección: </b>Avenida Hernando Siles Nº 4678, entre calle 11 y 12 de Obrajes.
-						</span>
-						<span> 
-							<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.
-						</span>
-						<span> 
-							<b>&nbsp Teléfono: </b>
-						</span>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade" id="formModal_10" role="dialog">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Ubicación de la Plataforma</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						<div class="modal-body">
-							<p>
-								<div id="map10" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div>
-							</p>
-						</div>
-						
-						<span> 
-							<b>&nbsp Dirección: </b>Calle 7, avenida Florida s/n.
-						</span>
-						<span> 
-							<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.
-						</span>
-						<span> 
-							<b>&nbsp Teléfono: </b>
-						</span>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade" id="formModal_11" role="dialog">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Ubicación de la Plataforma</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						<div class="modal-body">
-							<p>
-								<div id="map11" style="width:auto;height:550px;border:1px solid #DCDDDF;"></div>
-							</p>
-						</div>
-						
-						<span> 
-							<b>&nbsp Dirección: </b>Calle Mercado esquina Colon.
-						</span>
-						<span> 
-							<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.
-						</span>
-						<span> 
-							<b>&nbsp Teléfono: </b>2651451
-						</span>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
 		</div>
 	</div>
 </section>
@@ -1355,41 +1054,41 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 <div class="col-lg-1">
 </div>
 <div class="col-lg-3">
-<a data-toggle=modal data-target="#formModal_1" onclick="mostrarMarker(-16.500498, -68.131358, 'Plataforma de Atención Ciudadana Centro Comercial Camacho.', 'Centro Comercial Camacho Nivel 1 , Av. Camacho.', 'Turno-Extendido de 8:45 a 18:45','2650330','Licencias de funcionamiento - Verificación de autorización de viajes con menores de edad - Administración Tributaria Municipal.(vehículos, inmuebles) - Servicio de catastro municipal - Administración territorial - Duplicado de certificado catastral - Registro ciudadano - Información municipal - Cobro electrónico mediante POS - Correspondencia ciudadana en general')" href="" class=ion-android-checkmark-circle>
+<a data-toggle=modal data-target="#formModal" onclick="mostrarMarker(-16.500498, -68.131358, 'Plataforma de Atención Ciudadana Centro Comercial Camacho.', 'Centro Comercial Camacho Nivel 1 , Av. Camacho.', 'Turno-Extendido de 8:45 a 18:45','2650330','Licencias de funcionamiento - Verificación de autorización de viajes con menores de edad - Administración Tributaria Municipal.(vehículos, inmuebles) - Servicio de catastro municipal - Administración territorial - Duplicado de certificado catastral - Registro ciudadano - Información municipal - Cobro electrónico mediante POS - Correspondencia ciudadana en general')" href="" class=ion-android-checkmark-circle>
 Plataforma de Atención Ciudadana Centro Comercial Camacho.
 </a><br>
-<a data-toggle=modal data-target="#formModal_2" onclick="mostrarMarker(-16.501253698355917,-68.11883926391602, 'Plataforma de Atención Ciudadana SERMAT II - Miraflores.', 'Edif. Torre Vicenta Planta Baja (Avenida Argentina, esquina calle Díaz Romero)', 'Turno-Continuo de 8:45 a 16:15','2650577','Otorgación De Permiso De Construcción - Aprobación De Planos - Fraccionamientos En Propiedad Horizontal - División Y Partición De Predios - Autorizaciones Menores')" href="" class=ion-android-checkmark-circle>
+<a data-toggle=modal data-target="#formModal" onclick="mostrarMarker(-16.501253698355917,-68.11883926391602, 'Plataforma de Atención Ciudadana SERMAT II - Miraflores.', 'Edif. Torre Vicenta Planta Baja (Avenida Argentina, esquina calle Díaz Romero)', 'Turno-Continuo de 8:45 a 16:15','2650577','Otorgación De Permiso De Construcción - Aprobación De Planos - Fraccionamientos En Propiedad Horizontal - División Y Partición De Predios - Autorizaciones Menores')" href="" class=ion-android-checkmark-circle>
 Plataforma de Atención Ciudadana SERMAT II - Miraflores
 </a><br>
-<a data-toggle=modal data-target="#formModal_3" onclick="mostrarMarker(-16.539825922695574,-68.08581590652466, 'Plataforma Integral de Atención Ciudadana Sur.', 'Edif. Atlanta PB, Av. Gral. José Ballivián Nº720, entre calles 13 y 14 Calacoto.', 'Turno-Discontinuo de 8:45 a 16:15','2651460 - 2773749','Licencias de funcionamiento - Verificación de autorización de viajes con menores de edad - Administración Tributaria Municipal (vehículos, inmuebles) - Servicio de catastro municipal - Administración territorial - Duplicado de certificado catastral - Registro ciudadano - Información municipal - Cobro electrónico mediante POS - Correspondencia ciudadana en general.')" href="" class=ion-android-checkmark-circle>
+<a data-toggle=modal data-target="#formModal" onclick="mostrarMarker(-16.539825922695574,-68.08581590652466, 'Plataforma Integral de Atención Ciudadana Sur.', 'Edif. Atlanta PB, Av. Gral. José Ballivián Nº720, entre calles 13 y 14 Calacoto.', 'Turno-Discontinuo de 8:45 a 16:15','2651460 - 2773749','Licencias de funcionamiento - Verificación de autorización de viajes con menores de edad - Administración Tributaria Municipal (vehículos, inmuebles) - Servicio de catastro municipal - Administración territorial - Duplicado de certificado catastral - Registro ciudadano - Información municipal - Cobro electrónico mediante POS - Correspondencia ciudadana en general.')" href="" class=ion-android-checkmark-circle>
 Plataforma Integral de Atención Ciudadana Sur.
 </a><br>
-<a data-toggle=modal data-target="#formModal_4" onclick="mostrarMarker(-16.509361,-68.123743, 'Plataforma Integral de Atención Ciudadana Torres Mall.', 'Las Torres Mall Subsuelo 103, Av. Arce Nº 2519', 'Turno-Extendido de 8:45 a 18:30','2651457','Licencias de funcionamiento - Verificación de autorización de viajes con menores de edad - Administración Tributaria Municipal (vehículos, inmuebles) - Duplicado de certificado catastral - Registro ciudadano - Información municipal - Correspondencia ciudadana en general - Cobro electrónico mediante POS.')" href="" class=ion-android-checkmark-circle>
+<a data-toggle=modal data-target="#formModal" onclick="mostrarMarker(-16.509361,-68.123743, 'Plataforma Integral de Atención Ciudadana Torres Mall.', 'Las Torres Mall Subsuelo 103, Av. Arce Nº 2519', 'Turno-Extendido de 8:45 a 18:30','2651457','Licencias de funcionamiento - Verificación de autorización de viajes con menores de edad - Administración Tributaria Municipal (vehículos, inmuebles) - Duplicado de certificado catastral - Registro ciudadano - Información municipal - Correspondencia ciudadana en general - Cobro electrónico mediante POS.')" href="" class=ion-android-checkmark-circle>
 Plataforma Integral de Atención Ciudadana Torres Mall.
 </a>
 </div>
 <div class="col-lg-3">
-<a data-toggle=modal data-target="#formModal_5" onclick="mostrarMarker(-16.521695,-68.145575, 'Plataforma de Atención Ciudadana Subalcaldía Cotahuma MD1.', 'Calle Ernesto Torres, esquina Avenida Marcelo Quiroga Santa Cruz (camino a Pasankeri) s/n.', 'Turno-Continuo de 8:45 a 16:45','2651453','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
+<a data-toggle=modal data-target="#formModal" onclick="mostrarMarker(-16.521695,-68.145575, 'Plataforma de Atención Ciudadana Subalcaldía Cotahuma MD1.', 'Calle Ernesto Torres, esquina Avenida Marcelo Quiroga Santa Cruz (camino a Pasankeri) s/n.', 'Turno-Continuo de 8:45 a 16:45','2651453','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
 Plataforma de Atención Ciudadana Subalcaldía Cotahuma MD1.
 </a><br>
-<a data-toggle=modal data-target="#formModal_6" onclick="mostrarMarker(-16.496814827175278,-68.14550042152405, 'Plataforma de Atención Ciudadana Subalcaldía Max Paredes MD2.', 'Avenida Buenos Aires, esquina Max Paredes s/n.', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
+<a data-toggle=modal data-target="#formModal" onclick="mostrarMarker(-16.496814827175278,-68.14550042152405, 'Plataforma de Atención Ciudadana Subalcaldía Max Paredes MD2.', 'Avenida Buenos Aires, esquina Max Paredes s/n.', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
 Plataforma de Atención Ciudadana Subalcaldía Max Paredes MD2.
 </a><br>
-<a data-toggle=modal data-target="#formModal_7" onclick="mostrarMarker(-16.490647559008725,-68.13950300216675, 'Plataforma de Atención Ciudadana Subalcaldía Periférica MD3.', 'Edificio Nardin Rivas, avenida Montes y Uruguay.', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','2651455','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
+<a data-toggle=modal data-target="#formModal" onclick="mostrarMarker(-16.490647559008725,-68.13950300216675, 'Plataforma de Atención Ciudadana Subalcaldía Periférica MD3.', 'Edificio Nardin Rivas, avenida Montes y Uruguay.', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','2651455','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
 Plataforma de Atención Ciudadana Subalcaldía Periférica MD3.
 </a><br>
-<a data-toggle=modal data-target="#formModal_8" onclick="mostrarMarker(-16.500184,-68.108389, 'Plataforma de Atención Ciudadana Subalcaldía San Antonio MD4.', 'Avenida Josefa Mujía s/n, zona alto Villa San Antonio.', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
+<a data-toggle=modal data-target="#formModal" onclick="mostrarMarker(-16.500184,-68.108389, 'Plataforma de Atención Ciudadana Subalcaldía San Antonio MD4.', 'Avenida Josefa Mujía s/n, zona alto Villa San Antonio.', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
 Plataforma de Atención Ciudadana Subalcaldía San Antonio MD4.
 </a>
 </div>
 <div class="col-lg-3">
-<a data-toggle=modal data-target="#formModal_9" onclick="mostrarMarker(-16.527208510144373,-68.10530751943588, 'Plataforma de Atención Ciudadana Subalcaldía Sur MD5.', 'Avenida Hernando Siles Nº 4678, entre calle 11 y 12 de Obrajes.', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
+<a data-toggle=modal data-target="#formModal" onclick="mostrarMarker(-16.527208510144373,-68.10530751943588, 'Plataforma de Atención Ciudadana Subalcaldía Sur MD5.', 'Avenida Hernando Siles Nº 4678, entre calle 11 y 12 de Obrajes.', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
 Plataforma de Atención Ciudadana Subalcaldía Sur MD5.
 </a><br>
-<a data-toggle=modal data-target="#formModal_10" onclick="mostrarMarker(-16.569886339648185,-68.08547258377075, 'Plataforma de Atención Ciudadana Subalcaldía Mallasa MD6.', 'Calle 7, avenida Florida s/n.', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
+<a data-toggle=modal data-target="#formModal" onclick="mostrarMarker(-16.569886339648185,-68.08547258377075, 'Plataforma de Atención Ciudadana Subalcaldía Mallasa MD6.', 'Calle 7, avenida Florida s/n.', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','','Licencias de funcionamiento - Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
 Plataforma de Atención Ciudadana Subalcaldía Mallasa MD6. 
 </a><br>
-<a data-toggle=modal data-target="#formModal_11" onclick="mostrarMarker(-16.4981161522231,-68.13411712646484, 'Oficina Virtual Palacio Consistorial.', 'Calle Mercado esquina Colon', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','2651451','Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
+<a data-toggle=modal data-target="#formModal" onclick="mostrarMarker(-16.4981161522231,-68.13411712646484, 'Oficina Virtual Palacio Consistorial.', 'Calle Mercado esquina Colon', 'Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45','2651451','Recepción de correspondencia ejecutivo municipal')" href="" class=ion-android-checkmark-circle>
 Oficina Virtual Palacio Consistorial.
 </a>
 </div>
@@ -1399,29 +1098,29 @@ Oficina Virtual Palacio Consistorial.
 </footer>
 <a href="#" class=back-to-top><i class="fa fa-chevron-up"></i></a>
 
+<script src="nuevoIgob/libs/jquery.min.js" ></script>
+<script src="nuevoIgob/libs/superfish.min.js"></script>
+<script src="nuevoIgob/libs/wow.min.js"></script>
+<script src="nuevoIgob/libs/owl.carousel.min.js"></script>
+<script src="nuevoIgob/libs/jquery.touchSwipe.min.js"></script>
+<script src="nuevoIgob/libs/bootstrap.bundle.min.js" ></script>
+<script src="nuevoIgob/libs/easing.min.js"></script>
+<script src="nuevoIgob/libs/main.min.js"></script>
 
-<script src="nuevoIgob/lib/jquery/jquery.min.js" ></script>
-<script src="nuevoIgob/lib/superfish/superfish.min.js"></script>
-<script src="nuevoIgob/lib/wow/wow.min.js"></script>
-<script src="nuevoIgob/lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="nuevoIgob/lib/touchSwipe/jquery.touchSwipe.min.js"></script>
-<script src="nuevoIgob/lib/bootstrap/js/bootstrap.bundle.min.js" ></script>
-<script src="nuevoIgob/lib/easing/easing.min.js"></script>
-<script src="nuevoIgob/js/main.min.js"></script>
+<link href="nuevoIgob/libs/iconos_flotantes.min.css" rel="stylesheet">
+<link href="nuevoIgob/libs/animate.min.css" rel="stylesheet">
+<link href="nuevoIgob/libs/font-awesome.min.css" rel="stylesheet">
+<link href="nuevoIgob/libs/ionicons.min.css" rel="stylesheet">
+<link href="nuevoIgob/libs/owl.carousel.min.css" rel="stylesheet">
 
-<link href="nuevoIgob/css/iconos_flotantes.min.css" rel="stylesheet">
-<link href="nuevoIgob/lib/animate/animate.min.css" rel="stylesheet">
-<link href="nuevoIgob/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-<link href="nuevoIgob/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
-
-<link href="nuevoIgob/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-<link href="../app/libs/Librerias/ol_4.6.5_dist/ol.min.css" rel="stylesheet">
-<link href="../app/libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.min.css" rel="stylesheet">
-<script type="text/javascript" src="../app/libs/Librerias/ol_4.6.5_dist/ol.min.js"></script>
-<script type="text/javascript" src="../app/libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.min.js"></script>
-<script type="text/javascript" src="../app/libs/Librerias/proj_4/proj4.min.js"></script>
+<link href="nuevoIgob/libs/ol.min.css" rel="stylesheet">
+<link href="nuevoIgob/libs/ol-layerswitcher.min.css" rel="stylesheet">
+<script type="text/javascript" src="nuevoIgob/libs/ol.min.js"></script>
+<script type="text/javascript" src="nuevoIgob/libs/ol-layerswitcher.min.js"></script>
+<script type="text/javascript" src="nuevoIgob/libs/proj4.min.js"></script>
 
 <script>
+
 var map;
 var image = 'nuevoIgob/img/marcador.png';
 var epsg32719 = 'EPSG:32719';
@@ -1447,36 +1146,69 @@ var osm = new ol.layer.Tile({
 function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido, Horario, telefono,servicios) {
 	if( plataformaTitulo =='Plataforma de Atención Ciudadana Centro Comercial Camacho.') {
 		var i='1';
+		document.getElementById('nombrePla').innerHTML='<b>&nbsp Dirección: </b> Centro Comercial Camacho Nivel -1 , Av. Camacho.';
+		document.getElementById('horarioPla').innerHTML='<b>&nbsp Horario: </b>Turno-Extendido de 8:45 a 18:45.';
+		document.getElementById('telefonoPla').innerHTML='<b>&nbsp Teléfono: </b>2650330.';
 	}
 	if( plataformaTitulo =='Plataforma de Atención Ciudadana SERMAT II - Miraflores.') {
 		var i='2';
+		document.getElementById('nombrePla').innerHTML='<b>&nbsp Dirección: </b>Edif. Torre Vicenta Planta Baja (Avenida Argentina, esquina calle Díaz Romero).';
+		document.getElementById('horarioPla').innerHTML='<b>&nbsp Horario: </b>Turno-Continuo de 8:45 a 16:15.';
+		document.getElementById('telefonoPla').innerHTML='<b>&nbsp Teléfono: </b>2650577.';
 	}
 	if( plataformaTitulo =='Plataforma Integral de Atención Ciudadana Sur.') {
 		var i='3';
+		document.getElementById('nombrePla').innerHTML='<b>&nbsp Dirección: </b>Edif. Atlanta PB, Av. Gral. José Ballivián Nº720, entre calles 13 y 14 Calacoto.';
+		document.getElementById('horarioPla').innerHTML='<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 16:15.';
+		document.getElementById('telefonoPla').innerHTML='<b>&nbsp Teléfono: </b>2651460 - 2773749.';
 	}
 	if( plataformaTitulo =='Plataforma Integral de Atención Ciudadana Torres Mall.') {
 		var i='4';
+		document.getElementById('nombrePla').innerHTML='<b>&nbsp Dirección: </b>Las Torres Mall Subsuelo 103, Av. Arce Nº 2519.';
+		document.getElementById('horarioPla').innerHTML='<b>&nbsp Horario: </b>Turno-Extendido de 8:45 a 18:30.';
+		document.getElementById('telefonoPla').innerHTML='<b>&nbsp Teléfono: </b>2651457.';
 	}
 	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Cotahuma MD1.') {
 		var i='5';
+		document.getElementById('nombrePla').innerHTML='<b>&nbsp Dirección: </b>Calle Ernesto Torres, esquina Avenida Marcelo Quiroga Santa Cruz (camino a Pasankeri) s/n.';
+		document.getElementById('horarioPla').innerHTML='<b>&nbsp Horario: </b>Turno-Continuo de 8:45 a 16:45.';
+		document.getElementById('telefonoPla').innerHTML='<b>&nbsp Teléfono: </b>2651453.';
 	}
 	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Max Paredes MD2.') {
 		var i='6';
+		document.getElementById('nombrePla').innerHTML='<b>&nbsp Dirección: </b>Avenida Buenos Aires, esquina Max Paredes s/n.';
+		document.getElementById('horarioPla').innerHTML='<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.';
+		document.getElementById('telefonoPla').innerHTML='<b>&nbsp Teléfono: </b>';
 	}
 	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Periférica MD3.') {
 		var i='7';
+		document.getElementById('nombrePla').innerHTML='<b>&nbsp Dirección: </b>Edificio Nardin Rivas, avenida Montes y Uruguay.';
+		document.getElementById('horarioPla').innerHTML='<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.';
+		document.getElementById('telefonoPla').innerHTML='<b>&nbsp Teléfono: </b>2651455';
 	}
 	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía San Antonio MD4.') {
 		var i='8';
+		document.getElementById('nombrePla').innerHTML='<b>&nbsp Dirección: </b>Avenida Josefa Mujía s/n, zona alto Villa San Antonio.';
+		document.getElementById('horarioPla').innerHTML='<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.';
+		document.getElementById('telefonoPla').innerHTML='<b>&nbsp Teléfono: </b>';
 	}
 	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Sur MD5.') {
 		var i='9';
+		document.getElementById('nombrePla').innerHTML='<b>&nbsp Dirección: </b>Avenida Hernando Siles Nº 4678, entre calle 11 y 12 de Obrajes.';
+		document.getElementById('horarioPla').innerHTML='<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.';
+		document.getElementById('telefonoPla').innerHTML='<b>&nbsp Teléfono: </b>';
 	}
 	if( plataformaTitulo =='Plataforma de Atención Ciudadana Subalcaldía Mallasa MD6.') {
 		var i='10';
+		document.getElementById('nombrePla').innerHTML='<b>&nbsp Dirección: </b>Calle 7, avenida Florida s/n.';
+		document.getElementById('horarioPla').innerHTML='<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.';
+		document.getElementById('telefonoPla').innerHTML='<b>&nbsp Teléfono: </b>';
 	}
 	if( plataformaTitulo =='Oficina Virtual Palacio Consistorial.') {
 		var i='11';
+		document.getElementById('nombrePla').innerHTML='<b>&nbsp Dirección: </b>Calle Mercado esquina Colon.';
+		document.getElementById('horarioPla').innerHTML='<b>&nbsp Horario: </b>Turno-Discontinuo de 8:45 a 11:45 - 14:45 a 18:45.';
+		document.getElementById('telefonoPla').innerHTML='<b>&nbsp Teléfono: </b>2651451';
 	}
 	$('#map'+i).empty();
 	vectorSource.clear();

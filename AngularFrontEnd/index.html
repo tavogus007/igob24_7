@@ -28,7 +28,7 @@ window.onload = function() {
 $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente de todos los elementos h2 en 2em
 };
 </script>
-<script type="text/javascript" src="../app/libs/js/jquery-1.11.2.min.js"></script>
+<!--script type="text/javascript" src="../app/libs/js/jquery-1.11.2.min.js" async></script-->
 <script type="text/javascript" src="../app/controller/autenticacion/config.js"></script>        
 <script type="text/javascript" src="../app/libs/login/login.js"></script>  
 <style type="text/css">
@@ -333,23 +333,167 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 	</div>			
 	<div class="theme-config_icon_3">
 	<div class="theme-config-box_icon_3">
-	<div class="spin-icon_env_3" ngclick="" title="Recepción de Denuncias">
-	<i class="fa fa-edit fa-spin"></i>
+	<div class="spin-icon_env_3"  title="Recepción de Denuncias">
+		 <i class="fa fa-edit fa-spin"></i>
 	</div>
 	<div class="skin-setttings_icon_3">
 	<div class="title" style="text-align: left;">Recepción de Denuncias</div>
 	<div class="setings-depurador" style="background: #f3f3f4 !important;">
-	<form name="formularioHistorico"  readOnly="true" novalidate>
+	<!--form name="formularioHistorico"  readOnly="true" novalidate-->
 		<div>
 			<div style="max-width:960px; min-width:320px; margin:auto" id="content" class="border border-warning rounded scrollable"> 
-				<div id="htmlDenuncias"></div>
+				<!--div id="htmlDenuncias"></div-->
+				<div>
+					<br>
+					<div class="form-group">
+					  <label  class="col-sm-12 control-label"><center><H5>Formulario de Recepción de Denuncias </H5></center></label>
+					  <input   id="esLibres"  hidden>
+					</div> 
+					<center> <div class="col-sm-11">
+					 <label  class="col-sm-12 control-label text-justify" >Este formulario permite realizar denuncias relacionadas al Gobierno Autónomo Municipal de La Paz. Si requiere una respuesta formal es necesario que ingrese su Nombre Completo y C.I.</label>
+					</div></center>
+					 <br>    
+					   <div class="form-group row">    	
+							<select class="form-control" id="fromIn" hidden>
+										  <option value="FORMULARIO" selected="selected" > FORMULARIO</option>                                                                
+						  </select>
+							<select class="form-control" id="procedencia" hidden>
+										  <option value="EXT" selected="selected" > EXTERNA</option>                                                                
+							  </select>
+							  <select class="form-control" id="tipoForm" hidden>
+										  <option value="DENUNCIA" selected="selected" > DENUNCIA</option>                                           
+							  </select>         
+					  </div>   
+						<div class="form-group row">
+					  <label  class="col-sm-1 col-form-label"></label>
+					  <label  class="col-sm-3 control-label">Denuncia Anónima:</label>
+					  <div class="col-sm-6">
+						<select class="form-control" id="identidad" onclick="tipoOpcion(this);">
+										  <option value="1" selected="selected" >SI</option>
+										  <option value="2">NO</option>   
+							  </select>
+					  </div>
+					</div>
+				   <div class="form-group row">
+					<label  class="col-sm-1 col-form-label"></label>
+					  <label  class="col-sm-3 control-label">Asunto:</label>
+					  <div class="col-sm-6">
+						<select class="form-control" id="asunto" >
+										  <option value="1" text="Uso de influencias" selected="selected" >Uso de influencias</option>
+										  <option value="2" text="mal uso de bienes del municipio">Mal uso de bienes del municipio</option>  
+										  <option value="3" text="Obtencion de beneficios a cambio de agilizar tramites">Obtencion de beneficios a cambio de agilizar tramites</option> 
+										  <option value="4" text="Maltrato">Maltrato</option> 
+										  <option value="5" text="Imcumplimiento de deberes">Imcumplimiento de deberes</option> 
+										  <option value="6" text="Iregularidades en contratacion">Iregularidades en contratacion</option>         
+										  <option value="7" text="Retardacion de tramites">Retardacion de tramites</option> 
+										  <option value="9" text="Negacion de informacion">Negacion de informacion</option>  
+										  <option value="10" text="incumplimiento de procesos en tramites">Incumplimiento de procesos en tramites</option>                              
+							  </select>
+					  </div>
+					</div>
+					<div class="form-group row">
+						<label  class="col-sm-1 col-form-label"></label>
+					  <label  class="col-sm-3 control-label red">Detalle de la denuncia: *</label>
+					  <div class="col-sm-6">
+						<textarea type="text" class="form-control" id="detalleDenuncia" placeholder="Detalle Denuncia" onkeyup="noVacio()"></textarea> 
+					  </div>
+					</div>
+					 <div id="datosPersonales" style="display: none;"> 
+					<div class="form-group row">
+					  <label  class="col-sm-1 col-form-label"></label>
+					  <label  class="col-sm-3 control-label">Nombre Completo:</label>
+					  <div class="col-sm-6">
+						<input type="text" class="form-control" id="nombreCompleto" placeholder="Nombre Completo" >
+					  </div>
+					</div>
+					<div class="form-group row">
+					  <label  class="col-sm-1 col-form-label"></label>
+					  <label  class="col-sm-3 control-label">C.I.:</label>
+					  <div class="col-sm-6">
+						<input type="number" class="form-control" id="documento" placeholder="numero Carnet" onkeypress="solonumeros(event);">
+					  </div>
+					</div>
+					 <div class="form-group row">
+					  <label  class="col-sm-1 col-form-label"></label>
+					  <label  class="col-sm-3 control-label">Expedido:</label>
+					  <div class="col-sm-6">
+						<select class="form-control" id="expedido" >
+										  <option value="LPZ" selected="selected" > LA PAZ</option>
+										  <option value="CBB">COCHABAMBA</option>    
+										  <option value="ACZ">SANTA CRUZ</option> 
+										  <option value="TJA">TARIJA</option> 
+										  <option value="PTS">POTOSI</option> 
+										  <option value="BNI">BENI</option> 
+										  <option value="PND">PANDO</option> 
+										  <option value="ORU">ORURO</option> 
+										  <option value="CHQ">CHUQUISACA</option> 
+										  <option value="EXT">OTRO</option>                                       
+							  </select>
+					  </div>
+					</div>
+					 <div class="form-group row">
+					  <label  class="col-sm-1 col-form-label"></label>
+					  <label  class="col-sm-3 control-label"> Direccion:</label>
+					  <div class="col-sm-6">
+						<input type="text" class="form-control" id="direccion" placeholder="Calle / Zona">
+					  </div>   
+					</div>
+					 <div class="form-group row">
+					  <label  class="col-sm-1 col-form-label"></label>
+					  <label  class="col-sm-3 control-label">Teléfono/Celular:</label>
+					  <div class="col-sm-6">
+						<input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" onkeypress="solonumeros(event);">
+					  </div>
+					</div>
+					 <div class="form-group row">
+					  <label  class="col-sm-1 col-form-label"></label>
+					  <label  class="col-sm-3 control-label">Correo Electrónico:</label>
+					  <div class="col-sm-6">
+						<input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com">
+					  </div>  
+					</div> 
+				  </div> 
+					 <div class="form-group row" >
+						 <label  class="col-sm-1 col-form-label"></label>
+					  <label  class="col-sm-3 control-label">Adjuntar Archivo:</label>
+					  <div class="col-sm-6"> 
+					   <input type="file" name="upload" id="prueba2" ><br /><br />           
+					  </div>   
+					</div>  
+				  
+				   
+				  <center><div class="container" >
+					<div  class="center-block">
+					  <div class="col-md-12">
+						  <div class="table-responsive">
+							<table class="table users table-hover border border-warning " > 
+							  <tr> 
+								  <th class="border border-warning"><img id="img1" class="img-responsive" src="" title="" width="200" height="35"></th>   
+								 <th class="border border-warning"> <img id="img2" class="img-responsive" src=""  title="" width="200" height="35"></th>  
+							  </tr>        
+							</table>  
+								 <input   size="50"  id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="../app/view/servicios/transparencia/denuncias/img/recarga.png"  width="20" height="20" title=""> </button>
+							 <p style="color:black" id="msg_capcha"></p>             
+						  </div>
+					  </div>
+					</div>
+				  </div>
+				  </center>
+				  <div class="modal-footer">  
+					<!--button id= "EnvRes"  onClick="resetPassword();crearCasoLotus();" disabled="true" class="btn btn-warning text-white"  >Enviar </!--button-->
+					<input id= "EnvRes"  onClick="resetPassword();crearCasoLotus();" disabled="true" class="btn btn-warning text-white"  type="button" value="Enviar">
+				  </div>
+				  <center><img src="../app/view/servicios/transparencia/denuncias/img/logo.png" width="250" height="100"/></center>
+				  </div>
+
+
 			</div>
 			<!--iframe width="100%" height="450px" src="../../app/view/servicios/transparencia/denuncias/index.html"></!--iframe-->
 		</div>	
 		<div>
 		<!--iframe width="100%" height="450px" src="../../app/view/servicios/transparencia/denuncias/index.html"></!--iframe-->
 		</div>
-	</form>
+	<!--/form-->
 	</div>
 	</div>
 	</div>
@@ -865,14 +1009,14 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 	<br>
 	<br>
 	<p align="center">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/reten-a-1.webp">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/ambulancia-a-1.webp">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/basura-a-1.webp">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/defensoria-a-1.webp">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/lapazbus.webp">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/transporte-a-1.webp">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/alumbrado-a-1.webp">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/intendencia-a-1.webp">
+		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/reten-a-1.png">
+		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/ambulancia-a-1.png">
+		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/basura-a-1.png">
+		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/defensoria-a-1.png">
+		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/lapazbus.png">
+		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/transporte-a-1.png">
+		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/alumbrado-a-1.png">
+		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/intendencia-a-1.png">
 	</p>
 </section>
 <section id=contact class="section-bg wow fadeInUp">
@@ -1256,27 +1400,27 @@ Oficina Virtual Palacio Consistorial.
 <a href="#" class=back-to-top><i class="fa fa-chevron-up"></i></a>
 
 
-<script src="nuevoIgob/libs/jquery.min.js"></script>
-<script src="nuevoIgob/libs/superfish.min.js"></script>
-<script src="nuevoIgob/libs/wow.min.js"></script>
-<script src="nuevoIgob/libs/owl.carousel.min.js"></script>
-<script src="nuevoIgob/libs/jquery.touchSwipe.min.js"></script>
-<script src="nuevoIgob/libs/bootstrap.bundle.min.js" async defer></script>
-<!--script src="nuevoIgob/lib/easing/easing.min.js" async defer></script-->
-<script src="nuevoIgob/libs/main.min.js" async defer></script>
+<script src="nuevoIgob/lib/jquery/jquery.min.js" ></script>
+<script src="nuevoIgob/lib/superfish/superfish.min.js"></script>
+<script src="nuevoIgob/lib/wow/wow.min.js"></script>
+<script src="nuevoIgob/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="nuevoIgob/lib/touchSwipe/jquery.touchSwipe.min.js"></script>
+<script src="nuevoIgob/lib/bootstrap/js/bootstrap.bundle.min.js" ></script>
+<script src="nuevoIgob/lib/easing/easing.min.js"></script>
+<script src="nuevoIgob/js/main.min.js"></script>
 
 <link href="nuevoIgob/css/iconos_flotantes.min.css" rel="stylesheet">
-<link href="nuevoIgob/libs/animate.min.css" rel="stylesheet">
-<link href="nuevoIgob/libs/font-awesome.min.css" rel="stylesheet">
-<link href="nuevoIgob/libs/ionicons.min.css" rel="stylesheet">
-<link href="nuevoIgob/libs/owl.carousel.min.css" rel="stylesheet">
+<link href="nuevoIgob/lib/animate/animate.min.css" rel="stylesheet">
+<link href="nuevoIgob/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="nuevoIgob/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
 
+<link href="nuevoIgob/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 <link href="../app/libs/Librerias/ol_4.6.5_dist/ol.min.css" rel="stylesheet">
 <link href="../app/libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.min.css" rel="stylesheet">
-
 <script type="text/javascript" src="../app/libs/Librerias/ol_4.6.5_dist/ol.min.js"></script>
 <script type="text/javascript" src="../app/libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.min.js"></script>
 <script type="text/javascript" src="../app/libs/Librerias/proj_4/proj4.min.js"></script>
+
 <script>
 var map;
 var image = 'nuevoIgob/img/marcador.png';
@@ -1378,5 +1522,6 @@ function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido,
 		//$( "#htmlDenuncias" ).load( "../../app/view/servicios/transparencia/denuncias/index.html" );
 	}); 
 </script>
+
 </body>
 </html>

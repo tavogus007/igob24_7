@@ -4,29 +4,7 @@
 <meta charset=utf-8>
 <title>iGob 24/7</title>
 <script>
-sessionStorage.setItem("Idioma","C");var idioma=sessionStorage.getItem("Idioma");
-function MM_swapImgRestore() { //v3.0
-  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
-}
-function MM_preloadImages() { //v3.0
-  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
-    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
-    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
-}
-function MM_findObj(n, d) { //v4.01
-  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
-    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
-  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
-  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
-  if(!x && d.getElementById) x=d.getElementById(n); return x;
-}
-function MM_swapImage() { //v3.0
-  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
-   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
-}
-window.onload = function() {
-$('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente de todos los elementos h2 en 2em
-};
+
 </script>
 <!--script type="text/javascript" src="../app/libs/js/jquery-1.11.2.min.js" async></script-->
 <script type="text/javascript" src="../app/controller/autenticacion/config.js"></script>        
@@ -37,214 +15,7 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 	  overflow-y: scroll;
 	}
 </style>
-<script>
-	var numero = "";
-	var captchaerror=""; 
-	var tiemporespuesta = null;
-	var ErrorCapchasXX  = "";
-	var SuccesCapchasxx = "";
-	var habGuardar1 = ""; 
-	function resetPassword() {    
-		var captch  = $("#resultadoC").val();
-		var id = numero;
-		var verCaptcha = new captcha();
-		verCaptcha.identificador = id;
-		verCaptcha.respuesta = captch;
-		verCaptcha.verificarCaptcha(function(resultado){
-			json = JSON.parse(resultado);
-			if(json.success[0] == undefined) {
-				sweetAlert("", "Error en el captcha intentar de nuevo por favor", "warning");
-				obtCaptha();
-			} else {
-				guardarDatos2();
-			}
-		});
-	}
-	function noVacio() {
-		document.getElementById('correo').addEventListener('input', function() {
-			campo = event.target;
-			valido = document.getElementById('emailOK');
-			emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-			if (emailRegex.test(campo.value)) {
-				valido.innerText = "válido";
-			} else {
-				valido.innerText = "incorrecto";
-			}
-		});
-		var correo2  = $("#correo").val();    
-		var estadoDenuncia  = $("#detalleSoporte").val();      
-		if( estadoDenuncia != ""  && valido.innerText == "válido" )	{
-			document.getElementById("resultadoC").disabled = false;
-		} else {
-			document.getElementById("resultadoC").disabled = true;
-		}
-	}
-	function getlimpiareRROR() {
-		var captch  = $("#resultadoC").val();
-		if( captch != "") {
-			document.getElementById("EnvRes").disabled = false;
-		} else {
-			document.getElementById("EnvRes").disabled = true;
-		}
-	}
-	function obtCaptha() { 
-		$("#resultadoC").val('');
-		var objCaptcha = new captcha();
-		objCaptcha.obtcaptcha(function(resultado) {
-			json = JSON.parse(resultado);
-			partes = json.success[0].sp_captcha_porx1.split(',');
-			numero = partes[0].substring(1);
-			i1=(partes[2]+ "," + partes[3]);
-			i2=(partes[4] + "," + partes[5]);
-			document.getElementById('img2').src = i1.substring(1, i1.length - 1);
-			document.getElementById('img1').src = i2.substring(1, i2.length - 2);
-			var lengua = "";
-			if(partes[1] == 'A') {
-				lengua = 'AYMARA';
-			} else if(partes[1] == 'Q') {
-				lengua = 'QUECHUA';
-			} else if(partes[1] == 'G'){
-				lengua = 'GUARANI';
-			} else if(partes[1] == 'C'){
-				lengua = 'CASTELLANO';
-			} else {
-			}
-			document.getElementById('img1').title = "Palabra en " + lengua;
-			document.getElementById('resultadoC').placeholder = "Capcha: " + lengua + " CASTELLANO";      
-		});
-	} 
-	function verificarKeyPress(captch) {
-		var id = numero;
-		var verCaptcha = new captcha();
-		verCaptcha.identificador = id;
-		verCaptcha.respuesta = captch;
-		verCaptcha.verificarCaptcha(function(resultado) {
-		    json = JSON.parse(resultado);
-		    var nroregsitros = json.success.length;
-		    if(nroregsitros == 0)
-		    {
-		        habGuardar1 = true;
-		        ErrorCapchasXX = "Verifique el Capcha";
-		        SuccesCapchasxx="";
-		        document.getElementById("msg_capcha").innerHTML = ErrorCapchasXX;            
-		        document.getElementById("EnvRes").disabled = true;
-		    }
-		    else
-		    {
-		        habGuardar1 = false;
-		        ErrorCapchasXX = "";
-		        SuccesCapchasxx="Capcha correcto";
-		        document.getElementById("msg_capcha").innerHTML = SuccesCapchasxx;           
-		        document.getElementById("EnvRes").disabled = false;                     
-		    }
-		});
-	}
-	function VerificarCapchaa (datos) {
-		document.getElementById("EnvRes").disabled = true;
-		var captch  = $("#resultadoC").val();
-		if(captch.length == 0)
-			ErrorCapchasXX = "";
-		if(captch.length > 3) {
-			clearTimeout(tiemporespuesta);
-			tiemporespuesta = setTimeout(verificarKeyPress.bind(undefined, captch), 1500);
-		}
-	}
-	function limpiarCamposRecuperacion() {    
-		document.getElementById("resultadoC").disabled = true;
-		document.getElementById("EnvRes").disabled = true;  
-		document.getElementById("resultadoC").value = '';
-		document.getElementById("resultadoC").value = '';
-	}
-</script>
-<script >
-  function guardarDatos2(){ 
-	  setTimeout(function(){  
-	  	$.blockUI({ message: '<h1><img src="img/cargando.gif" width="45" height="45" /></h1>' });
-	  }, 200);
-	  var tipoForm = $("#tipoForm").val(); 
-	  var fromIn = $("#fromIn").val();
-	  var procedencia = $("#procedencia").val();  
-	  var nombreCompleto = $("#nombreCompleto").val();
-	  var documento = $("#documento").val();  
-	  var telefono = $("#telefono").val();
-	  var correo = $("#correo").val();  
-	  var detalleSoporte = $("#detalleSoporte").val();
-	  if(documento ==  '')
-	  {    
-	  	documento = 0;    
-	  }
-	  if(telefono ==  '')
-	  {    
-	  	telefono = 0;    
-	  }
-	  var xdts_datos = '{"tipoForm":"'+tipoForm+'",  "procedencia": "'+procedencia+'",  "nombreCompleto": "'+nombreCompleto+'", "documento":"'+documento+'", "telefono": "'+telefono+'", "correo":"'+correo+'",  "detalleCaso":"'+detalleSoporte+'" }'; 
-	  var xdts_datos = JSON.stringify(xdts_datos);  
-	  $.ajax({
-	  type        : 'POST',
-	  url         : jsonURLS.CONEXION_MOTOR_SERVICIO + 'api/apiLogin', 
-	  data        : '{"usr_usuario":"administrador", "usr_clave":123456}',
-	  headers: {
-	  'Content-type': 'application/json'
-	  },
-	  success: function(token) { 
-	  token = token.token; 
-	  var formData = {"identificador": 'RCCIUDADANO_INSERTA_CASOS',"parametros": '{"xdts_tipo":"'+tipoForm+'", "xdts_nombre_completo":"'+nombreCompleto+'", "xdts_fono":'+telefono+', "xdts_referencia":"Solicitud Soporte", "xdts_contenido":"Solicitud Soporte", "xdts_url_evidencia":" ", "xdts_usr_id":1, "xdts_tipo_detalle":"'+detalleSoporte+'", "xdts_datos":'+xdts_datos+'}'};    
-	  $.ajax({   
-	  type        : 'POST',            
-	  url         : jsonURLS.CONEXION_MOTOR_SERVICIO + 'api/reglaNegocio/ejecutarWeb',  
-	  data        : formData,
-	  dataType    : 'json',
-	  crossDomain : true,
-	  headers: {
-	  'authorization': 'Bearer '+token,         
-	  },
-	  success: function(dataIN) {  
-	  limpiar(); 
-	  obtCaptha();           
-	  document.getElementById("EnvRes").disabled = true;
-	  noVacio();         
 
-
-	  setTimeout(function(){
-	  $.unblockUI();
-	  swal("Enviado!", "Su solicitud fue enviada correctamente", "success"); 
-	  }, 500);                        
-	  },
-	  error: function(result) {
-
-	  }
-	  });     
-	  },   
-	  });   
-  } 
-	function limpiar(){ 
-		$("#nombreCompleto").val('');
-		$("#documento").val(''); 
-		$("#direccion").val(''); 
-		$("#telefono").val('');
-		$("#correo").val('');  
-		$("#detalleSoporte").val('');
-		}
-		function solonumeros(e){
-		var key = window.event ? e.which : e.keyCode;
-		if(key < 48 || key > 57)
-		e.preventDefault();
-	}
-
-	if(document.getElementById('correo')){
-		document.getElementById('correo').addEventListener('input', function() {
-		campo = event.target;
-		valido = document.getElementById('emailOK');
-
-		emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-		if (emailRegex.test(campo.value)) {
-		valido.innerText = "válido";
-		} else {
-		valido.innerText = "incorrecto";
-		}
-		});
-	}
-</script>
 <!-- Cambio de formulario -->
 <meta content="width=device-width, initial-scale=1.0" name=viewport>
 <meta content="" name=keywords>
@@ -269,7 +40,7 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 <header id="header">
 <div class="container-fluid">
 <div id="logo" class="pull-left">
-<a href="#intro"><img src="nuevoIgob/img/logoPeque.png" width="185px" height="79px" alt="" title=""/>
+<a href="#intro"><img src="nuevoIgob/img/logoPeque.webp" width="185px" height="79px" alt="" title=""/>
 </div>
 <nav id="nav-menu-container">
 <ul class="nav-menu">
@@ -472,7 +243,7 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 								 <th class="border border-warning"> <img id="img2" class="img-responsive" src=""  title="" width="200" height="35"></th>  
 							  </tr>        
 							</table>  
-								 <input   size="50"  id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="../app/view/servicios/transparencia/denuncias/img/recarga.png"  width="20" height="20" title=""> </button>
+								<input size="50" id="resultadoC" name="resultadoC" type="text" placeholder="" ng-model="resultadoC" onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning fa fa-refresh"  onClick="obtCaptha()"> </button>
 							 <p style="color:black" id="msg_capcha"></p>             
 						  </div>
 					  </div>
@@ -510,7 +281,7 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 	<div style="max-width:960px; min-width:320px; margin:auto" id="content" class="border border-warning rounded"> 
 	  <br>
 		<label  class="col-sm-12 control-label"><center><h4 style="margin: 0 0 10px 0">Soporte iGob 24/7</h4></center></label>
-		<input   id="esLibres"  hidden>
+		<input   id="esLibresC"  hidden>
 		<div>       
 			<select class="form-control" id="fromIn" hidden>
 				<option value="FORMULARIO" selected="selected" > FORMULARIO</option>
@@ -526,35 +297,35 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 		<label  class="col-sm-1 col-form-label"></label>
 		<label  class="col-sm-3 control-label">Nombre completo:</label>
 		<div class="col-sm-6">
-		<input type="text" class="form-control"  id="nombreCompleto" onKeyUp="noVacio()" placeholder="Nombre Completo">
+		<input type="text" class="form-control"  id="nombreCompletoC" onKeyUp="noVacioC()" placeholder="Nombre Completo">
 		</div>
 		</div>   
 		<div class="form-group row">
 		<label  class="col-sm-1 col-form-label"></label>
 		<label  class="col-sm-3 control-label">Numero CI:</label>
 		<div class="col-sm-6">
-		<input type="text" class="form-control" id="documento" placeholder="numero Carnet" onKeyUp="noVacio()" onKeyUp="solonumeros(event);" >
+		<input type="text" class="form-control" id="documentoC" placeholder="numero Carnet" onKeyUp="noVacioC()" onKeyUp="solonumeros(event);" >
 		</div>
 		</div>
 		<div class="form-group row">
 		<label  class="col-sm-1 col-form-label"></label>
 		<label  class="col-sm-3 control-label">Telefono:</label>
 		<div class="col-sm-6">
-		<input type="text" class="form-control" id="telefono"  placeholder="Numero de contacto" onKeyUp="noVacio()" onKeyUp="solonumeros(event);">
+		<input type="text" class="form-control" id="telefonoC"  placeholder="Numero de contacto" onKeyUp="noVacioC()" onKeyUp="solonumeros(event);">
 		</div>
 		</div> 
 		<div class="form-group row">
 		<label  class="col-sm-1 col-form-label"></label>
 		<label  class="col-sm-3 control-label">Correo:  * </label>
 		<div class="col-sm-6">
-		<input type="email" class="form-control" id="correo" placeholder="Correo electronico" onKeyUp="noVacio()" required/><span id="emailOK"></span>
+		<input type="email" class="form-control" id="correoC" placeholder="Correo electronico" onKeyUp="noVacioC()" required/><span id="emailOK"></span>
 		</div>
 		</div> 
 		<div class="form-group row">
 		<label  class="col-sm-1 col-form-label"></label>
 		<label  class="col-sm-3 control-label">Detalle de la solicitud :  <Span class = "red"> * </ span></label>
 		<div class="col-sm-6">
-		<textarea type="text" class="form-control" id="detalleSoporte" placeholder="Detalle Solicitud" onKeyUp="noVacio()"></textarea>
+		<textarea type="text" class="form-control" id="detalleSoporteC" placeholder="Detalle Solicitud" onKeyUp="noVacioC()"></textarea>
 		</div>
 		</div>  
 		<center>
@@ -564,19 +335,20 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 		<div class="table-responsive">
 		<table class="table users table-hover border border-warning " >  
 		<tr> 
-		<th class="border border-warning"><img id="img1" class="img-responsive" src="" title="" width="200" height="35"></th>   
-		<th class="border border-warning"><img id="img2" class="img-responsive" src="" title="" width="200" height="35"></th>  
+		<th class="border border-warning"><img id="img_3" class="img-responsive" src="" title="" width="200" height="35"></th>   
+		<th class="border border-warning"><img id="img_4" class="img-responsive" src="" title="" width="200" height="35"></th>  
 		</tr>    
 		</table>  
-		<input   size="50"  id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning  fa fa-refresh"  onClick="obtCaptha()"> </button>
-		<h6><div id="msg_capcha" style="color:#000000"></div></h6>
+		<input size="50" id="resultadoD" name="resultadoD" type="text" placeholder="" ng-model="resultadoD" onkeyup="VerificarCapchab(this)" onKeyPress="getlimpiareRRORC()" required/> 
+		<button  id="btnObtenerCapchaC" type="button" class="btn btn-warning  fa fa-refresh" onClick="obtCapthaC()"> </button>
+		<h6><div id="msg_capcha_" style="color:#000000"></div></h6>
 		</div>
 		</div>
 		</div>
 		</div>
 		</center>
         <div class="modal-footer">        
-          <button id= "EnvRes"  onClick="resetPassword();" disabled="true" type="submit"  onclick="guardarDatos2()" class="btn btn-warning text-white"  >Enviar</button>        
+          <button id= "EnvResC"  onClick="resetPasswordC();" disabled="true" type="submit"  class="btn btn-warning text-white"  >Enviar</button>        
         </div>  
 		<center><img src="nuevoIgob/img/logoPeque.webp" width="200" height="80"/></center>
 	</div>
@@ -774,45 +546,45 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 </div>
 </section>
 <div>
-	<p align="center">
-		<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/">
-		<img class="img-fluid" alt="" src="nuevoIgob/img/boton.jpg">
-		</a>
-	</p>
-	<p align="center">
-		<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img1','','nuevoIgob/img/servicios/linea_2-1.webp',1)">
-			<img src="nuevoIgob/img/servicios/linea_1-1.webp" alt="Consultas en Línea" name="img1" width="200" height="157" border="0" style="visibility: visible; animation-name: fadeInUp;">
-		</a>
-		<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/"> </a>
-		<a href="https://www.lapaz.bo/municipioenlinea/servicios247/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img2','','nuevoIgob/img/servicios/24-7_2-1.webp',1)">
-			<img src="nuevoIgob/img/servicios/24-7_1-1.webp" alt="Servicios 24/7" name="img2" width="200" height="157" border="0" >
-		</a>
-		<a href="https://www.lapaz.bo/municipioenlinea/servicios247/"> </a>
-		<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/inicio.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img3','','nuevoIgob/img/servicios/sitv3-2-1.webp',1)">
-			<img src="nuevoIgob/img/servicios/sitv3-1-1.webp" alt="Sit V3" name="img3" width="200" height="157" border="0" >
-		</a>
-		<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/inicio.html"> </a>
-		<a href="http://wsservicios.lapaz.bo/cheques/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img4','','nuevoIgob/img/servicios/recoger_2-1.webp',1)">
-			<img src="nuevoIgob/img/servicios/recoger_1-1.webp" alt="Cheques Por Recoger" name="img4" width="200" height="157" border="0">
-		</a>
-		<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/territorio.html">	</a>
-		<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/territorio.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img5','','nuevoIgob/img/servicios/construir-2-1.webp',1)">
-			<img src="nuevoIgob/img/servicios/construir-1-1.webp" alt="Construir con permiso es Fácil" name="img5" width="200" height="157" border="0">
-		</a>
-		<a href="https://www.lapaz.bo/municipioenlinea/construccion/"> </a>
-		<a href="https://www.lapaz.bo/municipioenlinea/construccion/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img6','','nuevoIgob/img/servicios/servicios_2-1.webp',1)">
-			<img src="nuevoIgob/img/servicios/servicios_1-1.webp" alt="Empresas y Servicios" name="img6" width="200" height="157" border="0">
-		</a>
-		<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/">	</a>
-		<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img7','','nuevoIgob/img/servicios/moviles_2-1.webp',1)">
-			<img src="nuevoIgob/img/servicios/moviles_1-1.webp" alt="Aplicaciones Móviles" name="img7" width="200" height="157" border="0">
-		</a>
-		<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/"></a>
-		<a href="https://drive.google.com/drive/folders/0B_qt9Yc8icg_QWxHbFJydG5Ya1E" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img8','','nuevoIgob/img/servicios/descargas_2-1.webp',1)">
-			<img src="nuevoIgob/img/servicios/descargas_1-1.webp" alt="Descargas" name="img8" width="200" height="157" border="0">
-		</a>
-		<a href="https://drive.google.com/drive/folders/0B_qt9Yc8icg_QWxHbFJydG5Ya1E"></a>
-	</p>
+<p align="center">
+<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/">
+<img class="img-fluid" alt="" src="nuevoIgob/img/boton.jpg">
+</a>
+</p>
+<p align="center">
+<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img1','','nuevoIgob/img/servicios/linea_2-1.webp',1)">
+<img src="nuevoIgob/img/servicios/linea_1-1.webp" alt="Consultas en Línea" name="img1" width="200" height="157" border="0" style="visibility: visible; animation-name: fadeInUp;">
+</a>
+<a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/"> </a>
+<a href="https://www.lapaz.bo/municipioenlinea/servicios247/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img2','','nuevoIgob/img/servicios/24-7_2-1.webp',1)">
+<img src="nuevoIgob/img/servicios/24-7_1-1.webp" alt="Servicios 24/7" name="img2" width="200" height="157" border="0" >
+</a>
+<a href="https://www.lapaz.bo/municipioenlinea/servicios247/"> </a>
+<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/inicio.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img3','','nuevoIgob/img/servicios/sitv3-2-1.webp',1)">
+<img src="nuevoIgob/img/servicios/sitv3-1-1.webp" alt="Sit V3" name="img3" width="200" height="157" border="0" >
+</a>
+<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/inicio.html"> </a>
+<a href="http://wsservicios.lapaz.bo/cheques/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img4','','nuevoIgob/img/servicios/recoger_2-1.webp',1)">
+<img src="nuevoIgob/img/servicios/recoger_1-1.webp" alt="Cheques Por Recoger" name="img4" width="200" height="157" border="0">
+</a>
+<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/territorio.html">	</a>
+<a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/territorio.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img5','','nuevoIgob/img/servicios/construir-2-1.webp',1)">
+<img src="nuevoIgob/img/servicios/construir-1-1.webp" alt="Construir con permiso es Fácil" name="img5" width="200" height="157" border="0">
+</a>
+<a href="https://www.lapaz.bo/municipioenlinea/construccion/"> </a>
+<a href="https://www.lapaz.bo/municipioenlinea/construccion/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img6','','nuevoIgob/img/servicios/servicios_2-1.webp',1)">
+<img src="nuevoIgob/img/servicios/servicios_1-1.webp" alt="Empresas y Servicios" name="img6" width="200" height="157" border="0">
+</a>
+<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/">	</a>
+<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img7','','nuevoIgob/img/servicios/moviles_2-1.webp',1)">
+<img src="nuevoIgob/img/servicios/moviles_1-1.webp" alt="Aplicaciones Móviles" name="img7" width="200" height="157" border="0">
+</a>
+<a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/"></a>
+<a href="https://drive.google.com/drive/folders/0B_qt9Yc8icg_QWxHbFJydG5Ya1E" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img8','','nuevoIgob/img/servicios/descargas_2-1.webp',1)">
+<img src="nuevoIgob/img/servicios/descargas_1-1.webp" alt="Descargas" name="img8" width="200" height="157" border="0">
+</a>
+<a href="https://drive.google.com/drive/folders/0B_qt9Yc8icg_QWxHbFJydG5Ya1E"></a>
+</p>
 </div>
 <div id="myModal" class="modal fade">
 <div class="modal-dialog modal-login">
@@ -932,92 +704,92 @@ $('.theme-config_icon_5').css('top','195px'); // establece el tamaño de fuente 
 </div>
 </section>
 <section id="accesos">
-	<div class="section-header wow fadeInUp">
-	<h3>Enlaces de Interes</h3>
-	<p></p>
-	</div>
-	<br>
-	<div class="row about-cols">
-		<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-		</div>
-		<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-			<div class="about-col">
-				<div class="img">
-					<a href="http://www.lapazbus.bo/">
-						<img alt="" class="img-fluid" src="nuevoIgob/img/externos/lapazbus.webp">
-					</a>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-			<div class="about-col">
-				<div class="img">
-					<a href="http://www.amn.bo/index.php/en/php">
-						<img alt="" class="img-fluid" src="nuevoIgob/img/externos/amn.webp">
-					</a>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-2 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-			<div class="about-col">
-				<div class="img">
-					<a href="http://www.concejomunicipal.bo/concejo/">
-						<img alt="" class="img-fluid" src="nuevoIgob/img/externos/consejo2.webp">
-					</a>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-2 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-			<div class="about-col">
-				<div class="img">
-					<a href="http://www.emaverde.com.bo/index.php/es/">
-						<img alt="" class="img-fluid" src="nuevoIgob/img/externos/emaverde.webp">
-					</a>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-			<div class="about-col">
-				<div class="img">
-					<a href="http://www.emavias.com.bo/">
-						<img alt="" class="img-fluid" src="nuevoIgob/img/externos/emavias.webp">
-					</a>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-			<div class="about-col">
-				<div class="img">
-					<a href="http://servidorrprivado.com/mp3/gamlp/player.php">
-						<img alt="" class="img-fluid" src="nuevoIgob/img/externos/rmlp.webp">
-					</a>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-2 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-			<div class="about-col">
-				<div class="img">
-					<a href="https://www.lapaz.bo/transparencia/">
-						<img alt="" class="img-fluid" src="nuevoIgob/img/externos/transparencia.webp">
-					</a>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-		</div>
-	</div>
-	<br>
-	<br>
-	<p align="center">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/reten-a-1.png">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/ambulancia-a-1.png">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/basura-a-1.png">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/defensoria-a-1.png">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/lapazbus.png">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/transporte-a-1.png">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/alumbrado-a-1.png">
-		<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/intendencia-a-1.png">
-	</p>
+<div class="section-header wow fadeInUp">
+<h3>Enlaces de Interes</h3>
+<p></p>
+</div>
+<br>
+<div class="row about-cols">
+<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+</div>
+<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+<div class="about-col">
+<div class="img">
+<a href="http://www.lapazbus.bo/">
+<img alt="" class="img-fluid" src="nuevoIgob/img/externos/lapazbus.webp">
+</a>
+</div>
+</div>
+</div>
+<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+<div class="about-col">
+<div class="img">
+<a href="http://www.amn.bo/index.php/en/php">
+<img alt="" class="img-fluid" src="nuevoIgob/img/externos/amn.webp">
+</a>
+</div>
+</div>
+</div>
+<div class="col-md-2 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+<div class="about-col">
+<div class="img">
+<a href="http://www.concejomunicipal.bo/concejo/">
+<img alt="" class="img-fluid" src="nuevoIgob/img/externos/consejo2.webp">
+</a>
+</div>
+</div>
+</div>
+<div class="col-md-2 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+<div class="about-col">
+<div class="img">
+<a href="http://www.emaverde.com.bo/index.php/es/">
+<img alt="" class="img-fluid" src="nuevoIgob/img/externos/emaverde.webp">
+</a>
+</div>
+</div>
+</div>
+<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+<div class="about-col">
+<div class="img">
+<a href="http://www.emavias.com.bo/">
+<img alt="" class="img-fluid" src="nuevoIgob/img/externos/emavias.webp">
+</a>
+</div>
+</div>
+</div>
+<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+<div class="about-col">
+<div class="img">
+<a href="http://servidorrprivado.com/mp3/gamlp/player.php">
+<img alt="" class="img-fluid" src="nuevoIgob/img/externos/rmlp.webp">
+</a>
+</div>
+</div>
+</div>
+<div class="col-md-2 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+<div class="about-col">
+<div class="img">
+<a href="https://www.lapaz.bo/transparencia/">
+<img alt="" class="img-fluid" src="nuevoIgob/img/externos/transparencia.webp">
+</a>
+</div>
+</div>
+</div>
+<div class="col-md-1 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+</div>
+</div>
+<br>
+<br>
+<p align="center">
+<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/reten-a-1.webp">
+<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/ambulancia-a-1.webp">
+<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/basura-a-1.webp">
+<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/defensoria-a-1.webp">
+<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/lapazbus.webp">
+<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/transporte-a-1.webp">
+<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/alumbrado-a-1.webp">
+<img class="img-fluid" alt="" width="12%" height="12%" src="nuevoIgob/img/telefonos/intendencia-a-1.webp">
+</p>
 </section>
 <section id="contact" class="section-bg wow fadeInUp">
 	<div class="container">
@@ -1097,6 +869,7 @@ Oficina Virtual Palacio Consistorial.
 </div>
 </footer>
 <a href="#" class=back-to-top><i class="fa fa-chevron-up"></i></a>
+<script type="text/javascript" src="nuevoIgob/libs/funciones.js"></script>
 
 <script src="nuevoIgob/libs/jquery.min.js" ></script>
 <script src="nuevoIgob/libs/superfish.min.js"></script>
@@ -1249,8 +1022,11 @@ function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido,
 <script type="text/javascript">
 		$(document).ready(function() {
 		obtCaptha();
+		obtCapthaC();
 		getlimpiareRROR();
+		getlimpiareRRORC();
 		noVacio();		
+		noVacioC();
 		//$( "#htmlDenuncias" ).load( "../../app/view/servicios/transparencia/denuncias/index.html" );
 	}); 
 </script>

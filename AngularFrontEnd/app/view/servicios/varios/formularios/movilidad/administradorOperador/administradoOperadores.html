@@ -136,7 +136,7 @@
             <form name="signupForm">
               <div id="container-main" class="ibox float-e-margins"> 
                 <div class="ibox-title" style="background-color: #FFEFB0 !important; border-bottom: solid 0px !important;">
-                  <strong><h3 style="color:black";>ADMINISTRACIÓN DE OPERADORES</h3></strong>
+                  <strong><h3 style="color:black";>ADMINISTRACI&Oacute;N DE OPERADORES</h3></strong>
                 </div><br> 
                 <div class="col-md-12" ng-show="lista == true">
                   <h3><strong>Operadores Habilitados</strong></h3><br>
@@ -145,11 +145,11 @@
                       <td data-title="'Opciones'" style="width:10%" >
                         <a class="btn btn-default btn-circle" ng-show="operadores.estadores=='VIGENTE'" ng-click="seleccionarOperador(operadores);" tooltip="Ver Datos del Operador"><i class="fa fa-eye" style="color:#249FE6"></i></a>
                       </td>
-                      <td data-title="'Denominación'" style="width:10%" >{{operadores.xope_denominacion}}</td>
+                      <td data-title="'Denominaci&oacute;n'" style="width:10%" >{{operadores.xope_denominacion}}</td>
                       <td data-title="'Tipo de Operador'" style="width:10%" >{{operadores.xope_tipo_operador}}</td> 
                       <td data-title="'Tipo de Modalidad'" style="width:10%" >{{operadores.xope_datos.RO_MOD}}</td>
-                      <td data-title="'Fecha Emision de Resolución'" style="width:10%">{{operadores.xope_fecha_resolucion | date:'dd-MM-yyyy'}} </td>
-                      <td data-title="'Fecha Vigencia de Resolución'" style="width:10%">{{operadores.xope_fecha_vigencia | date:'dd-MM-yyyy'}}</td>
+                      <td data-title="'Fecha Emision de Resoluci&oacute;n'" style="width:10%">{{operadores.xope_fecha_resolucion | date:'dd-MM-yyyy'}} </td>
+                      <td data-title="'Fecha Vigencia de Resoluci&oacute;n'" style="width:10%">{{operadores.xope_fecha_vigencia | date:'dd-MM-yyyy'}}</td>
                       <td data-title="'Estado de Resolución'" style="width:10%">{{operadores.estadores}}</td>
                     </tr>
                   </table>

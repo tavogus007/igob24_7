@@ -405,6 +405,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
     $rootScope.mostrarRUGU = null;
     $rootScope.mostrarRMGM = true;
     $rootScope.requisitosrbase = null;
+    $rootScope.opcioncheck = false;
 
     $rootScope.mostrarInformacionAntenas = function(dataAntena, estado){
         //alert("mostrarINF");
@@ -413,10 +414,13 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         if(estado == 'NO'){
             $rootScope.botones = true;
             $rootScope.botonesrodolfo = true;
+            $rootScope.opcioncheck = false;
 
         }else{
             $rootScope.botones = false;
             $rootScope.requistosfile = true;
+            $rootScope.opcioncheck = true;
+
 
         }
         //$rootScope.mostrarGM = null;

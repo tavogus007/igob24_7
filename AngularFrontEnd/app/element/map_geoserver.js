@@ -136,7 +136,6 @@
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 url: url_API_PG + 'wsUbi/lstubicacionGeoserver',
-                //url: 'http://192.168.5.141:9098/wsUbi/lstubicacionGeoserver',
                 dataType: 'json',
                 data: '{  "xgeo_frm_id":'+cas_id+'}',
                 success: function (data){ 
@@ -197,7 +196,7 @@
 
             //////////////////////////////////////////////////////////////
             var antena_style = new OpenLayers.Style({
-                  externalGraphic: "../../element/icon/antena_sf_azul.png",
+                  externalGraphic: "../../element/icon/antena-green.png",
                   graphicWidth:30,
                   graphicHeight:40,
                   graphicXOffset:-10,
@@ -236,7 +235,7 @@
 
                 vector_layer.destroy();
                 var antena_style = new OpenLayers.Style({
-                  externalGraphic: "../../element/icon/antena_sf_azul.png",
+                  externalGraphic: "../../element/icon/antena-green.png",
                   graphicWidth:30,
                   graphicHeight:40,
                   graphicXOffset:-10,

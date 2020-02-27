@@ -135,7 +135,16 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                             document.getElementById(nombrecampo+'_campo').value = nombreNuevo; 
                             var urlImagen = url_img+nombreNuevo+"?app_name=todoangular";
                             $scope.urlImagenfile = urlImagen;
-                            $scope.nombrefile    = nombreNuevo;
+                            if (nombrecampo == "FILE_CI_REP_LEGAL_INV") {
+                                $scope.doc_ci_inv = nombreNuevo;
+                            }else if (nombrecampo == "FILE_CI_REP_LEGAL_REV") {
+                                $scope.doc_ci_rev = nombreNuevo;
+                            } else if (nombrecampo == "FILE_PODER_REP_LEGAL") {
+                                $scope.doc_po_leg = nombreNuevo;
+                            } else{
+                                $scope.nombrefile    = nombreNuevo;
+                            }
+
                             $.unblockUI();
                         });
                     } else{
@@ -148,7 +157,15 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                                 document.getElementById(nombrecampo+'_campo').value = nombreNuevo; 
                                 var urlImagen = url_img+nombreNuevo+"?app_name=todoangular";
                                 $scope.urlImagenfile = urlImagen;
-                                $scope.nombrefile    = nombreNuevo;
+                                if (nombrecampo == "FILE_CI_REP_LEGAL_INV") {
+                                    $scope.doc_ci_inv = nombreNuevo;
+                                }else if (nombrecampo == "FILE_CI_REP_LEGAL_REV") {
+                                    $scope.doc_ci_rev = nombreNuevo;
+                                } else if (nombrecampo == "FILE_PODER_REP_LEGAL") {
+                                    $scope.doc_po_leg = nombreNuevo;
+                                } else{
+                                    $scope.nombrefile    = nombreNuevo;
+                                }
 
 
                             })
@@ -167,7 +184,16 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                             document.getElementById(nombrecampo+'_campo').value = nombreNuevo;
                             var urlImagen = url_img+nombreNuevo+"?app_name=todoangular";
                             $scope.urlImagenfile = urlImagen;
-                            $scope.nombrefile    = nombreNuevo;
+                            if (nombrecampo == "FILE_CI_REP_LEGAL_INV") {
+                                $scope.doc_ci_inv = nombreNuevo;
+                            }else if (nombrecampo == "FILE_CI_REP_LEGAL_REV") {
+                                $scope.doc_ci_rev = nombreNuevo;
+                            } else if (nombrecampo == "FILE_PODER_REP_LEGAL") {
+                                $scope.doc_po_leg = nombreNuevo;
+                            } else{
+                                $scope.nombrefile    = nombreNuevo;
+                            }
+
                             $.unblockUI();
                         } else{
                             swal('Advertencia', 'El archivo que esta enviando no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -210,7 +236,11 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     };
 
     $scope.mostrarimgjuridico  =   function(imagen){ 
-        console.log("imagen",imagen,$scope.urlImagenfile);
+        $scope.nombreVistaadj = "LICENCIA DE RADIODIFUSIÓN Y/O LICENCIA VIGENTE DE USO DE FRECUENCIAS DEL ESPECTRO RADIOELÉCTRICO EMITIDA POR LA AUTORIDAD DE REGULACIÓN Y FISCALIZACIÓN DE TELECOMUNICACIONES Y TRANSPORTES:";
+        if(imagen == "FILE_LIC_RADIODIFUSION"){
+            $scope.nombreVistaadj = $scope.nombreVistaadj;
+            $scope.urlImagenfile  = $scope.urlImagenfileLicencia
+        }
         $.blockUI();
         var estado = true;
         if ($scope.urlImagenfile != '' && $scope.urlImagenfile != undefined ) {
@@ -237,7 +267,23 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $.unblockUI();
     }
     $scope.mostrarimgrepresentante  =   function(imagen){ 
-        console.log("imagen",imagen,$scope.urlImagenfile);
+        console.log("imagen",imagen);
+        $scope.urlci_anv = "CEDULA DE IDENTIDAD DIGITALIZADA (Anverso)";
+        $scope.urlci_rev = "CEDULA DE IDENTIDAD DIGITALIZADA (Reverso)";
+        $scope.reppodleg = "PODER DE REPRESENTANTE LEGAL";
+        if (imagen == "FILE_CI_REP_LEGAL_INV") {
+            $scope.nombreVistaadj = $scope.urlci_anv;
+            
+        } else if(imagen == "FILE_CI_REP_LEGAL_REV") {
+            $scope.nombreVistaadj = $scope.urlci_rev;
+            
+        } else if(imagen == "FILE_PODER_REP_LEGAL") {
+            $scope.nombreVistaadj = $scope.reppodleg;
+            
+        }else if(imagen == "FILE_LIC_RADIODIFUSION"){
+            $scope.nombreVistaadj = $scope.urlLicencia;
+            
+        }
         var urlImagen = "";
         if (imagen == "FILE_CI_REP_LEGAL_INV") {
             nombreNuevo = $scope.doc_ci_inv;
@@ -247,7 +293,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         } else if (imagen == "FILE_PODER_REP_LEGAL") {
             nombreNuevo = $scope.doc_po_leg;
         }
-        console.log("nombreNuevo",nombreNuevo);
         if (nombreNuevo != "" && nombreNuevo != undefined) {
             
             urlImagen = CONFIG.APIURL +"/files/RC_CLI/"+sessionService.get('IDSOLICITANTE')+ "/" +nombreNuevo+"?app_name=todoangular";
@@ -442,6 +487,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                     var cadenaURL = uploadUrl + $scope.name + '?app_name=' + CONFIG.APP_NAME;
                     //$scope.imagenPortada = cadenaURL;
                     $scope.urlImagenfile = cadenaURL;
+                    $scope.urlImagenfileLicencia = cadenaURL;
                     document.getElementById('FILE_LIC_RADIODIFUSION_campo').value = $scope.name;
                     $.unblockUI();
                     $scope.$apply();
@@ -602,6 +648,21 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     }
     $scope.ocultarDiv = function(){
         $scope.principalRegistro = false;
+        $("#FILE_CI_REP_LEGAL_INV_campo").val("");
+        $("#FILE_CI_REP_LEGAL_REV_campo").val("");
+        $("#FILE_PODER_REP_LEGAL_campo").val("");
+        $("#ci_rep").val("");
+        $("#nom_rep").val("");
+        $("#pat_rep").val("");
+        $("#mat_rep").val("");
+        $("#nro_poder_rep").val("");
+        $("#FILE_CI_REP_LEGAL_INV_campo").val("");
+        $("#FILE_CI_REP_LEGAL_REV_campo").val("");
+        $("#FILE_PODER_REP_LEGAL_campo").val("");
+        $scope.doc_ci_inv = "";
+        $scope.doc_ci_rev = "";
+        $scope.doc_po_leg = "";
+
     }
     $scope.reg_representante = function(dataRepre){
         $scope.ci_inv  = $("#FILE_CI_REP_LEGAL_INV_campo").val();
@@ -730,7 +791,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             var datausuario = sessionService.get('IDUSUARIO');
             var resRepresentante = new reglasnegocio();
             resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-4';
-            resRepresentante.parametros = '{"id_registro":'+ $scope.id_represen +', "nit":"'+ sessionService.get('NITCIUDADANO') +'","ci":"'+ $("#nit_rep").val() +'","nombre":"'+ $("#nom_rep").val() +'","paterno":" '+ $("#pat_rep").val()+' ","materno":"'+ $("#mat_rep").val() +'","ext":"'+ $("#exp_rep").val() +'","numPoder":"'+ $("#nro_poder_rep").val() +'","dataRep":'+ dataReprepresentanteUPD +',"usuario":"'+ datausuario +'"}';
+            resRepresentante.parametros = '{"id_registro":'+ $scope.id_represen +', "nit":"'+ sessionService.get('NITCIUDADANO') +'","ci":"'+ $("#ci_rep").val() +'","nombre":"'+ $("#nom_rep").val() +'","paterno":" '+ $("#pat_rep").val()+' ","materno":"'+ $("#mat_rep").val() +'","ext":"'+ $("#exp_rep").val() +'","numPoder":"'+ $("#nro_poder_rep").val() +'","dataRep":'+ dataReprepresentanteUPD +',"usuario":"'+ datausuario +'"}';
             resRepresentante.llamarregla(function(response){
                 $scope.obtDatos = JSON.parse(response);
                 if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {

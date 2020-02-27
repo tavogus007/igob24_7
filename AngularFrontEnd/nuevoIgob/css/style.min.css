@@ -903,6 +903,12 @@ body.mobile-nav-active #mobile-nav-toggle{
 #summary3 a:not(.collapsed):after{
     content:'- Leer Menos'
 }
+#summary3 a#nada(.collapsed):after {
+    content: '';
+}
+#summary3 a#nada:after  {
+    content: '';
+}
 .modal-body{
     background-color:#ffd200
 }

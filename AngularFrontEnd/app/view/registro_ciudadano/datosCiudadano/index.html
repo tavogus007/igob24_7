@@ -457,9 +457,8 @@
                                 <!--<p><a class={{sstyloLetter}} ng-click="fcolapsartexto(sstyloLetter);" >{{txtcolapsado}}</a></p>-->
                                 <p ng-show="aceptarcondiciones"><a data-toggle="modal" ng-click="fmostrarCondicionesUso();">Aceptar Condiciones de uso</a></p>                              
                                 <!--<p ng-show="! aceptarcondiciones"><a href="/documentos/igobcondicionesuso.pdf" download="Condiciones de USO"><i class="fa-comment-o !important"></i>Descargar</a></p>-->
-
-                                <p ng-show="! aceptarcondiciones"><a ng-click="ImprimirUrl(t)" data-toggle="modal" data-target="#divPopup4">Ver condiciones de Uso</a></p>
-
+                                <!--p ng-show="! aceptarcondiciones"><a ng-click="ImprimirUrl(t)" data-toggle="modal" data-target="#divPopup4">Ver condiciones de Uso</a></p-->
+								<p ng-show="! aceptarcondiciones"><a href="{{t}}" target="_blank">Descargar condiciones de Uso</a></p>
                                 <!--<p ng-show="! aceptarcondiciones"><a href="{{t}}" download="Condiciones de USO">Descargar</a></p>-->
                             </div>
                         </div>                      

@@ -766,7 +766,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             condiciones.oid_ciudadano   =   sessionService.get('IDSOLICITANTE');
             condiciones.aceptacion      =   'NO';
             condiciones.mostrarCondicionesUso(function(resp){
-                $scope.aceptarcondiciones   =   true;
+                $rootScope.aceptarcondiciones   =   true;
                 if(sessionService.get('US_IDROL') == '4'){
                 }
                 $("#exampleModalCenter").modal("hide");
@@ -812,7 +812,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             });
         }else{
             $("#exampleModalCenter").modal("hide");
-            $scope.aceptarcondiciones   =   false;            
+            $rootScope.aceptarcondiciones   =   false;            
         }
         $scope.btncondicionesuso_n  =   true;
         $scope.btncondicionesuso_a  =   false;
@@ -851,7 +851,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                 var dataLogin = JSON.parse(sessionStorage.getItem('autenticacion'));
                 var valcondiciones          =   ((typeof(dataLogin[0].dtspsl_acepta_servicios) == 'undefined' || dataLogin[0].dtspsl_acepta_servicios == null) ? '' : dataLogin[0].dtspsl_acepta_servicios);
                 valcondiciones              =   valcondiciones.trim();
-                $scope.aceptarcondiciones   =   true;
+                $rootScope.aceptarcondiciones   =   true;
                 var tienecondicionesuso     =   '';
                 var aceptacondicionesuso    =   '';
                 
@@ -919,7 +919,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                             },500);
                         }          
                     }else if(tienecondicionesuso   ==  'SI'){
-                        $scope.aceptarcondiciones   =   false;
+                        $rootScope.aceptarcondiciones   =   false;
                     }
                 });
                 $scope.$apply();

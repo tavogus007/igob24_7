@@ -1133,6 +1133,9 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 {
                     var y = $scope.vdoc_url = dataValue['vdoc_url'];
                     var i = y.toString();
+                    if(i.indexOf("http://40.117.46.159:80/rest") != -1){
+                        i = i.replace("http://40.117.46.159:80/rest", CONFIG.APIURL);
+                    }					
                     $scope.t = i;
                     //$scope.vdoc_url = dataValue['vdoc_url'];
                     $scope.$apply(); 

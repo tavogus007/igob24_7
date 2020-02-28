@@ -2791,8 +2791,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     }
 
     $scope.det_grilla_multiple = function(data){
+      console.log("EEEE ",data);
       try{
-
         $scope.btnGuardarRegistro = true;
         $scope.resGabineteMultiple = null;
         $("#den_rbase").val(data.f01_DENOMINACION);
@@ -2803,7 +2803,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $("#observacion").val(data.ANT_OBSERVACION);
         $("#latitud_reg").val(data.ANT_LATITUD);
         $("#longitud_reg").val(data.ANT_LOGITUD);
-        $("#observacion").val(data.observacion);
 
         $scope.ubicacion = data.f01_Ubicacion;
         var puntosxy = $scope.ubicacion;
@@ -2877,6 +2876,9 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $("#lt_ubicacion").val(data.f01_LATITUD);
         $("#den_ngabinete").val(data.f01_NRO_GABINETE);
         $("#observacion").val(data.ANT_OBSERVACION);
+
+        $("#latitud_reg").val(data.ANT_LATITUD);
+        $("#longitud_reg").val(data.ANT_LOGITUD);
         $scope.ubicacion = data.f01_Ubicacion;
         var puntosxy = $scope.ubicacion;
         puntosxy = puntosxy.ubicacion.split(" ");

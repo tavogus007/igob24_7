@@ -241,7 +241,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     $scope.tipoReg;
     $scope.valid_tipo = function() {
 
-      console.log("datosIniciales====>",$rootScope.datosIniciales);
       var radios = $('input:radio[name=r_tipo]:checked').val();
       $("#den_auto").val("");
       $("#den_rbase").val("");
@@ -1687,9 +1686,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     $scope.datarenviada  = "";
     $scope.grilla_rbmultiple_reenvio = [];
     $rootScope.asgnvalores = function(data,estado) {
-      ////////////////// RODOLFO CODIGO MARAVILLA ///////////
-      console.log("DAtaRODOL ",data);
-      console.log("Estadooo ",estado);
+      //////////////////  CODIGO MARAVILLA ///////////
       //$rootScope.datosIniciales  = data;
       $scope.btnEnviarFormLinea    =   true;
       $scope.fechaVerifica = obtFechaActual.obtenerFechaActual();
@@ -1706,7 +1703,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       var filesAdjunto = JSON.parse(data[0].form_contenido);
       $scope.datarenviada = filesAdjunto;
       var data2 = JSON.parse(data[0].form_contenido);
-      console.log("ccccc111",data2);
       $('#f01_pri_nom_rep').val(data2.f01_pri_nom_rep);
       $('#f01_ape_pat_rep').val(data2.f01_ape_pat_rep);
       $('#f01_ape_mat_rep').val(data2.f01_ape_mat_rep);
@@ -1975,7 +1971,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
     };
     $scope.imprimirArchivo = function (fum) {
-      console.log("aaasddd ",$scope.obtArchivosAdjuntos);
             var escudo = new Image();
             escudo.src = fum;
             $scope.varSpin     = true;
@@ -2604,7 +2599,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               
               var grilla = JSON.parse(dataGrilla);
               $scope.grilla_rbmultiple.push(JSON.parse(dataGrilla));
-              console.log("$scope.grilla_rbmultiple ==>",$scope.grilla_rbmultiple);
               $scope.lst_grilla_multiple();
               $scope.tipoProceso_envio  = "GM";
               $scope.guardarGrillaMultiple($scope.grilla_rbmultiple);
@@ -2651,8 +2645,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
     $rootScope.datosIniciales_previaG = [];
     $scope.guardarGrillaMultiple = function(grillaMultiple){
-      console.log("AAAA",grillaMultiple);
-      console.log("BBBB",JSON.stringify($rootScope.datosIniciales));
       $scope.grilla_revisada  = [];
             
       $rootScope.datosIniciales_previaG     = $rootScope.datosIniciales;
@@ -2685,19 +2677,14 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       $rootScope.datosIniciales_previaG.ANT_TEL                 =   $rootScope.datosIniciales.f01_telef_rep;     
       $rootScope.datosIniciales_previaG.ANT_MAIL                =   $rootScope.datosIniciales.f01_email_rep;
       $rootScope.datosIniciales_previaG.f01_macro_act           =   1; 
-      console.log("grillaMultiple ===> ",grillaMultiple);
       var json = angular.toJson( grillaMultiple );
 
-      console.log("jsonssss ===> ",json);
       grillaMultiple   = JSON.parse(json);
-      console.log("eeeee ===> ",grillaMultiple);
       for (let index = 0; index < grillaMultiple.length; index++) {
         const element = JSON.stringify(grillaMultiple[index]);
         $scope.grilla_revisada.push(JSON.parse(element));
       }
-      console.log("grilla_revisada ===> ",$scope.grilla_revisada);
       $rootScope.datosIniciales_previaG.GRD_ANTENAS             = $scope.grilla_revisada;//$rootScope.Antenas_multiple;
-      console.log("$rootScope.datosIniciales_previaG",$rootScope.datosIniciales_previaG);
       try { 
         $rootScope.datosIniciales = $rootScope.datosIniciales_previaG;//JSON.parse(datosGradarCd);
         var datosSerializados     = JSON.stringify($rootScope.datosIniciales_previaG);
@@ -2791,7 +2778,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     }
 
     $scope.det_grilla_multiple = function(data){
-      console.log("EEEE ",data);
       try{
         $scope.btnGuardarRegistro = true;
         $scope.resGabineteMultiple = null;
@@ -3703,7 +3689,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               $scope.datosIniciales.f01_ges_vig_pod_sec = "";
 
 
-              console.log("AAAAA ,",$rootScope.datosIniciales);
               $.blockUI();
               setTimeout(function () {
                   $scope.$apply(function () {
@@ -3731,7 +3716,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
           }
         }else{
           $scope.recupe1 = JSON.parse($scope.dataRecuperadoCP[0].form_contenido);
-          console.log("RECUPERAAA",$scope.recupe1);
           var ubicacionutm = $("#ln_ubicacion").val();
           if(ubicacionutm != ""){
             if( $scope.recupe1 != "RBM" || $scope.recupe1 != "GM"){
@@ -3804,8 +3788,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     $scope.ultimoRegistro_renevio = function(dataPrevia) {
         
         $scope.adjuntosExtraidos = dataPrevia.File_Adjunto;
-        console.log("AAA RRRRRRR ",dataPrevia);
-        console.log("$scope.adjuntosExtraidos RRRR",$scope.adjuntosExtraidos);
         if($scope.img.length > 0){
           for (var i = 0; i < $scope.img.length; i++) {
             for (var j = 0; j < $scope.adjuntosExtraidos.length; j++) {
@@ -3818,10 +3800,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
           $scope.getArchivosAdjuntos(JSON.parse($scope.fileadj));
           $rootScope.requistosfile = true;
         }
-        console.log("roooo  ant nom 000",dataPrevia.ANT_NOM);
-        console.log("roooo  ant nom 111",$('#f01_pri_nom_rep').val());
         dataPrevia.ANT_NOM = $('#f01_pri_nom_rep').val();
-        console.log("roooo  ant nom 222",dataPrevia.ANT_NOM);
         dataPrevia.f01_pri_nom_rep = $('#f01_pri_nom_rep').val();
         dataPrevia.ANT_PAT = $('#f01_ape_pat_rep').val();
         dataPrevia.f01_ape_pat_rep = $('#f01_ape_pat_rep').val();
@@ -4276,7 +4255,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       }else{
         dataRescatada = $scope.guardarDataAntena;
       }
-      console.log("WWWWW ", $scope.guardarDataAntena);
       $.blockUI();
         setTimeout(function () {
             $scope.$apply(function () {
@@ -4519,7 +4497,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
          });
       }
-      console.log("ppppp",$scope.img);*/
+      */
       
     };
     $scope.registroFileobjImg = function(nombre,sobjid,urlImg){
@@ -5795,9 +5773,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     
     $scope.recuperarRepLegal = function (dataRepreSec) {
       idRepresentante = dataRepreSec.idrepresentante;
-      console.log("idRepresentante",idRepresentante);
-      //RCCIUDADANO_ANTENA-20-5
-      //$scope.nro_rep_legalPrincipal = $rootScope.datosIniciales.f01_num_pod_leg;
       var resRepresentante = new reglasnegocio();
         resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-5';
         resRepresentante.parametros = '{"idRepresentante":'+ idRepresentante +',"nit":"'+ sessionService.get('NITCIUDADANO') +'"}';
@@ -5806,7 +5781,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
                 $.unblockUI();
             } else{
-                console.log("raaaaaaa",$scope.obtDatos);
                 $scope.dataRepAdjunto = JSON.parse($scope.obtDatos[0].data_rep);
                 $('#f01_pri_nom_rep').val($scope.obtDatos[0].nombre);
                 $('#f01_ape_pat_rep').val($scope.obtDatos[0].paterno);
@@ -5815,7 +5789,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 $('#f01_expedido_rep').val($scope.obtDatos[0].extension);
                 $('#f01_ges_vig_pod').val(dataRepreSec.nro_poder);
                 $('#f01_ape_cas_rep').val("");
-                console.log("AAAAAAdjuntos",$scope.obtArchivosAdjuntos);
                 $scope.ci_inverso  = $scope.dataRepAdjunto[0].ci_inverso;
                 $scope.ci_reverso  = $scope.dataRepAdjunto[0].ci_reverso;
                 $scope.poder_legal = $scope.dataRepAdjunto[0].poder_legal;
@@ -5832,14 +5805,12 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 $scope.obtArchivosAdjuntos[3].url   = $scope.poder_legal111;
 
 
-                console.log("DATA recuperada rodolfo ",$scope.requiRecuperados);
                 $scope.requiRecuperados[1].campo = $scope.ci_inverso;
                 $scope.requiRecuperados[1].url   = $scope.file_CI;
                 $scope.requiRecuperados[2].campo = $scope.ci_reverso;
                 $scope.requiRecuperados[2].url   = $scope.file_CI_inv;
                 $scope.requiRecuperados[3].campo = $scope.poder_legal;
                 $scope.requiRecuperados[3].url   = $scope.poder_legal111;
-                console.log("dataaaaaENVIO", $rootScope.datosIniciales);
                 
             };
         });
@@ -5847,9 +5818,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
     }
     $scope.recuperarrepresentante = function (){
-        //alert(33333);
-        //$scope.representantes = [];
-        console.log("$rootScope.datosIniciales",$rootScope.datosIniciales);
         sessionService.set('NRO_PODER_PRINCIPAL', $rootScope.datosIniciales.f01_ges_vig_pod);
         var resRepresentante = new reglasnegocio();
         resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-6';
@@ -5859,23 +5827,19 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
                 $.unblockUI();
             } else{
-                console.log("reeeeeee",$scope.obtDatos);
                 $scope.representantes = $scope.obtDatos;
-                console.log("ttttttttt",$scope.representantes);
 
             };
         });
     }
     $scope.repPrincipal = true;
     $scope.controlRepresentante = function(valorCheck){
-      console.log("valorCheck",valorCheck);
       if (valorCheck == 'SI') {
         $scope.recuperarrepresentante();
         $scope.repPrincipal = false;
 
       } else if(valorCheck == 'NO'){
         $scope.repPrincipal = true;
-        console.log("Representante data",$rootScope.datosIniciales);
         $('#f01_pri_nom_rep').val($rootScope.datosIniciales.f01_pri_nom_rep);
         $('#f01_ape_pat_rep').val($rootScope.datosIniciales.f01_ape_pat_rep);
         $('#f01_ape_mat_rep').val($rootScope.datosIniciales.f01_ape_mat_rep);
@@ -5885,7 +5849,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $('#f01_ges_vig_pod').val(sessionService.get('NRO_PODER_PRINCIPAL'));
         $scope.datosIniciales.f01_ges_vig_pod_sec = "";
         //var oid_ciu1 = sessionService.get('IDCIUDADANO');
-        console.log("aaaaa",$rootScope.datosIniciales);
         $scope.file_CI_origen = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante +"/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RA + "?app_name=todoangular";  
         $scope.file_CI_inv_origen = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante +"/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RR + "?app_name=todoangular";  
         $scope.rep_legal = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDCIUDADANO') +"/" + $rootScope.datosIniciales.f01_poder_representante + "?app_name=todoangular";  
@@ -5907,7 +5870,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
         $scope.requiRecuperados[3].campo = $rootScope.datosIniciales.f01_poder_representante;
         $scope.requiRecuperados[3].url   = $scope.rep_legal;
-        console.log("DATA recuperada rodolfo ",$scope.requiRecuperados);
       }
 
     }

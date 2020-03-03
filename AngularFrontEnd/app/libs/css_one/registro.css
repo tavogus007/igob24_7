@@ -1,0 +1,186 @@
+#registration-form {
+  font-family:'Open Sans Condensed', sans-serif;
+  width: 90%;
+  min-width:40%;
+  margin: auto;
+  position: relative;
+}
+.cajatexto{
+background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid #e5e6e7;
+    border-radius: 8px;
+    color: inherit;
+    display: block;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 100%;
+    font-size: 13px;
+  }
+
+#registration-form .fieldset {
+  background-color:#d5d5d5;
+  border-radius: 3px;
+}
+
+#registration-form legend {
+  text-align: center;
+  background: #00adb5;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 3px 3px 0 0;
+  color: white;
+font-size:2em;
+}
+
+.fieldset form{
+  border:2px solid #00adb5;
+  margin:0 auto;
+  display:block;
+  width:100%;
+  padding:10px 10px;
+  box-sizing:border-box;
+  border-radius:8px;
+}
+:-ms-input-placeholder { text-shadow:0 1px 1px white; font-weight:bold; } /* ie */
+#registration-form input[type=submit]:hover {
+  background-color: #2980b9;
+}
+
+#registration-form input[type=submit]:active {
+background:#5C8CA7;
+}
+.parsley-error-list{
+background-color:#C34343;
+padding: 5px 11px;
+margin: 0;
+list-style: none;
+border-radius: 0 0 3px 3px;
+margin-top:-5px;
+  margin-bottom:5px;
+  color:white;
+  border:1px solid #870d0d;
+  border-top:none;
+    -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position:relative;
+  top:-1px;
+  text-shadow:0px 1px 1px #460909;
+    font-weight:700;
+  font-size:12px;
+}
+.parsley-error{
+  border-color:#870d0d!important;
+  border-bottom:none;
+}
+#registration-form select{
+  width:100%;
+  padding:5px;
+}
+::-moz-focus-inner {
+  border: 0;
+}
+input:required:invalid {
+    border: 1px solid red;
+  }
+  input:required:valid {
+    border: 1px solid green;
+  }
+  textarea:required:invalid {
+    border: 1px solid red;
+  }
+  textarea:required:valid {
+    border: 1px solid green;
+  }
+  select:required:invalid {
+    border: 1px solid red;
+  }
+  select:required:valid {
+    border: 1px solid green;
+  }
+
+
+ table.one {
+        border-collapse:collapse;
+        width:100%;
+        border-spacing:10px;
+    }
+    tr.color {
+        background-color:#6F7072;
+        /*border: green 5px solid; */
+    }
+    td.color2 {
+        border: #0ACC9E 5px solid;
+        background-color:#0ACC9E;
+        border-width:5px;
+        padding:1px;
+    }
+    td.colorCA {
+        border: #0ACC9E 5px solid;
+        background-color:#FFFFFF;
+        border-width:5px;
+        padding:1px;
+    }
+    td.color22 {
+        border: #0ACC9E 5px solid;
+        background-color:#0ACC9E;
+        border-width:5px;
+        color:#222831;
+        padding:1px;
+    }
+  input:required:invalid {
+    border: 1px solid red;
+  }
+  input:required:valid {
+    border: 1px solid green;
+  }
+  textarea:required:invalid {
+    border: 1px solid red;
+  }
+  textarea:required:valid {
+    border: 1px solid green;
+  }
+  select:required:invalid {
+    border: 1px solid red;
+  }
+  select:required:valid {
+    border: 1px solid green;
+  }
+  .form-group {
+    padding-left: 8px;
+  }
+  .box2{
+    display: inline-block;
+    width: 190px;
+    margin: 2px;
+  }
+  html, body, div, span, applet, object, iframe,
+  h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+  a, abbr, acronym, address, big, cite, code,
+  del, dfn, em, font, img, ins, kbd, q, s, samp,
+  small, strike, strong, sub, sup, tt, var,
+  b, u, i, center,
+  dl, dt, dd, ol, ul, li,
+  fieldset, form, label, legend,
+  table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+  }
+  body {
+    background-size: cover;
+    color: #000;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    background-color:rgb(255, 189, 1);
+  }
+  .contenedor_log{
+    margin: 7% auto;
+    position: relative;
+  }

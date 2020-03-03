@@ -1,199 +1,8 @@
-<style>
- 
-#registration-form {
-  font-family:'Open Sans Condensed', sans-serif;
-  width: 90%;
-  min-width:40%;
-  margin: auto;
-  position: relative;
-}
-.cajatexto{
-background-color: #FFFFFF;
-    background-image: none;
-    border: 1px solid #e5e6e7;
-    border-radius: 8px;
-    color: inherit;
-    display: block;
-    padding: 6px 12px;
-    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-    width: 100%;
-    font-size: 13px;
-  }
-
-#registration-form .fieldset {
-  background-color:#d5d5d5;
-  border-radius: 3px;
-}
-
-#registration-form legend {
-  text-align: center;
-  background: #00adb5;
-  width: 100%;
-  padding: 10px 0;
-  border-radius: 3px 3px 0 0;
-  color: white;
-font-size:2em;
-}
-
-.fieldset form{
-  border:2px solid #00adb5;
-  margin:0 auto;
-  display:block;
-  width:100%;
-  padding:10px 10px;
-  box-sizing:border-box;
-  border-radius:8px;
-}
-:-ms-input-placeholder { text-shadow:0 1px 1px white; font-weight:bold; } /* ie */
-#registration-form input[type=submit]:hover {
-  background-color: #2980b9;
-}
-
-#registration-form input[type=submit]:active {
-background:#5C8CA7;
-}
-.parsley-error-list{
-background-color:#C34343;
-padding: 5px 11px;
-margin: 0;
-list-style: none;
-border-radius: 0 0 3px 3px;
-margin-top:-5px;
-  margin-bottom:5px;
-  color:white;
-  border:1px solid #870d0d;
-  border-top:none;
-    -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  position:relative;
-  top:-1px;
-  text-shadow:0px 1px 1px #460909;
-    font-weight:700;
-  font-size:12px;
-}
-.parsley-error{
-  border-color:#870d0d!important;
-  border-bottom:none;
-}
-#registration-form select{
-  width:100%;
-  padding:5px;
-}
-::-moz-focus-inner {
-  border: 0;
-}
-input:required:invalid {
-    border: 1px solid red;
-  }
-  input:required:valid {
-    border: 1px solid green;
-  }
-  textarea:required:invalid {
-    border: 1px solid red;
-  }
-  textarea:required:valid {
-    border: 1px solid green;
-  }
-  select:required:invalid {
-    border: 1px solid red;
-  }
-  select:required:valid {
-    border: 1px solid green;
-  }
-
-
- table.one {
-        border-collapse:collapse;
-        width:100%;
-        border-spacing:10px;
-    }
-    tr.color {
-        background-color:#6F7072;
-        /*border: green 5px solid; */
-    }
-    td.color2 {
-        border: #0ACC9E 5px solid;
-        background-color:#0ACC9E;
-        border-width:5px;
-        padding:1px;
-    }
-    td.colorCA {
-        border: #0ACC9E 5px solid;
-        background-color:#FFFFFF;
-        border-width:5px;
-        padding:1px;
-    }
-    td.color22 {
-        border: #0ACC9E 5px solid;
-        background-color:#0ACC9E;
-        border-width:5px;
-        color:#222831;
-        padding:1px;
-    }
-  input:required:invalid {
-    border: 1px solid red;
-  }
-  input:required:valid {
-    border: 1px solid green;
-  }
-  textarea:required:invalid {
-    border: 1px solid red;
-  }
-  textarea:required:valid {
-    border: 1px solid green;
-  }
-  select:required:invalid {
-    border: 1px solid red;
-  }
-  select:required:valid {
-    border: 1px solid green;
-  }
-  .form-group {
-    padding-left: 8px;
-  }
-  .box2{
-    display: inline-block;
-    width: 190px;
-    margin: 2px;
-  }
-</style>
 <script type="text/javascript">
   function valor(a){
     $("#titulo").text(a);
   }
 </script>
-<style type="text/css">
-  html, body, div, span, applet, object, iframe,
-  h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-  a, abbr, acronym, address, big, cite, code,
-  del, dfn, em, font, img, ins, kbd, q, s, samp,
-  small, strike, strong, sub, sup, tt, var,
-  b, u, i, center,
-  dl, dt, dd, ol, ul, li,
-  fieldset, form, label, legend,
-  table, caption, tbody, tfoot, thead, tr, th, td {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    font-size: 100%;
-    vertical-align: baseline;
-    background: transparent;
-  }
-  body {
-    background-size: cover;
-    color: #000;
-    margin: 0 auto;
-    padding: 0;
-    position: relative;
-    background-color:rgb(255, 189, 1);
-  }
-  .contenedor_log{
-    margin: 7% auto;
-    position: relative;
-  }
-</style>
 <html>
   <head>
     <meta charset="utf-8"/>
@@ -210,13 +19,14 @@ input:required:invalid {
         display: block !important;
       }
       .fondo_menu
-      {s
+      {
         position: relative;
         height: 100%;
         width: 200px;
         background:#39AB6F;
       }
     </style>
+    <link rel="stylesheet" href="../../../libs/css_one/registro.css"/>
     <link rel="stylesheet" href="../../../libs/css_one/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../../libs/css_one/styleinspinia.min.css"/>
     <link rel="stylesheet" href="../../../libs/css_one/styleinspinia.css"/>
@@ -256,7 +66,7 @@ input:required:invalid {
 
 
       var app = angular.module('myApp',['ngAnimate','mwl.calendar','ui.bootstrap']);
-      app.controller('rCiudadanoController', function($scope) {
+      app.controller('rCiudadanoController', function($scope,$rootScope) {
         var vAsunto = "Registro_GAMLP";
         var vMensaje = "Con_esta_opción_podrá_tener_acceso_<b>limitado_a_los_servicios_en_línea</b>_del_Gobierno_Autónomo_Municipal_de_La_Paz,_si_desea_acceder_a_más_servicios,_le_pedimos_que_pueda_apersonarse_por_única_vez_a_una_de_nuestras_plataformas_de_atención_presencial_del_GAMLP,_para_realizar_la_validación_de_sus_datos_personales._Para_ello_usted_debe_llevar_<br><br>_Cédula_de_Identidad_Original._<br>_Certificado_de_Nacimiento_Original_(opcional)._<br>_Última_Factura_original_de_algún_servicio_del_domicilio_declarado_(luz/agua/teléfono/etc.)._<br><br>_No_olvide_de_actualizar_sus_datos_personales_con_tu_cuenta.";
         $("#mensaje1").hide();
@@ -286,6 +96,7 @@ input:required:invalid {
         $("#mensaje25").hide();
         $("#mensaje26").hide();
         $("#mensaje29").hide();
+        $("#mensaje30").hide();
 
         var sFono = "";
         var sCelular = "";
@@ -297,12 +108,8 @@ input:required:invalid {
         var sNumeroAleatorio = ""; 
 
         $scope.imageCST = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
-    $scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
-    
-        //$scope.imageCST = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
-        //$scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
+        $scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
         $scope.ErrorCapcha='';
-        //$scope.otroLugar = false;
         $scope.deshabilitadoD = true;
         $scope.deshabilitadoP = true;
         $scope.deshabilitadoM = true;
@@ -318,7 +125,6 @@ input:required:invalid {
         $scope.ciValido = null; 
         $scope.habilitarCondicion = true;
         $scope.validarTipoEmpresa = false;
-      
         var fecha= new Date();
         $scope.hora = fecha.getHours()+":"+fecha.getMinutes()+":"+fecha.getSeconds(); 
         var mes=fecha.getMonth()+1;
@@ -347,7 +153,6 @@ input:required:invalid {
                   $scope.translateIdioma[value.idm_label] = value.idm_contenido;
                 });
             });
-
         $scope.startDateOpen = function($event) {
           $event.preventDefault();
           $event.stopPropagation();
@@ -360,6 +165,7 @@ input:required:invalid {
             var buscarCiudadano = new validarCiudadanoR_n();
             buscarCiudadano.ci = reg.cedula;
             $scope.cedulaCondR = buscarCiudadano.ci;
+            buscarCiudadano.tipo_documento = $rootScope.tipoDocumento;
             buscarCiudadano.validar_CiudadanoR_n(function(resultado){
               resultadoApi = JSON.parse(resultado);
               if(resultadoApi.length > 0){
@@ -415,6 +221,7 @@ input:required:invalid {
                 buscarCiudadano.ci = $scope.ciCompl;
                 $scope.cedulaCondR = $scope.ciCompl;
                 reg.cedula = $scope.ciCompl;
+                buscarCiudadano.tipo_documento = $rootScope.tipoDocumento;
                 buscarCiudadano.validar_CiudadanoR_n(function(resultado){
                 resultadoApi = JSON.parse(resultado);
                 if(resultadoApi.length > 0){
@@ -466,10 +273,59 @@ input:required:invalid {
             var aux1 = reg.cedula;
             $scope.ciExt = 'E'+'-'+reg.cedula;
             reg.cedula = $scope.ciExt;
-           
             var buscarCiudadano = new validarCiudadanoR_n();
             buscarCiudadano.ci = $scope.ciExt;   
             $scope.cedulaCondR = $scope.ciExt ; 
+            buscarCiudadano.tipo_documento = $rootScope.tipoDocumento;
+            buscarCiudadano.validar_CiudadanoR_n(function(resultado){
+            resultadoApi = JSON.parse(resultado);
+            if(resultadoApi.length > 0){
+                var repLegalmongo = resultadoApi;
+                if(repLegalmongo[0].dtspsl_activaciond == "SI" && repLegalmongo[0].dtspsl_activacionf == "SI"){
+                  $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres;
+                  $scope.registro.paterno = repLegalmongo[0].dtspsl_paterno;
+                  $scope.registro.materno = repLegalmongo[0].dtspsl_materno;
+                  $scope.registro.tercer = repLegalmongo[0].dtspsl_tercerapellido; 
+                  $scope.registro.cedula = repLegalmongo[0].ci;
+                  $scope.registro.celular = repLegalmongo[0].dtspsl_movil;
+                  $scope.registro.telefono = repLegalmongo[0].telefono;
+                  $scope.registro.correo = repLegalmongo[0].mail;
+                  $scope.registro.direccion = repLegalmongo[0].dtspsl_direccion;
+                  $scope.registro.expedido = repLegalmongo[0].dtspsl_expedido;
+                  $scope.registro.fecha_nacimiento = repLegalmongo[0].dtspsl_fec_nacimiento;
+                  $scope.registro.estado_civil = repLegalmongo[0].dtspsl_id_estado_civil;
+                  $scope.registro.sexo = repLegalmongo[0].dtspsl_sexo;
+                  $scope.registro.ocupacion = repLegalmongo[0].dtspsl_ocupacion;
+                  $scope.registro.otra_profesion = repLegalmongo[0].dtspsl_otra_profesion;
+                  $scope.registro.profesion = repLegalmongo[0].dtspsl_profesion;
+                  $scope.registro.lugarNacimiento = repLegalmongo[0].dtspsl_lugar_nacimiento;
+                  $scope.bloquear3 = true;
+                  $scope.bloquearCi = true;
+                }
+                else {
+                  $scope.swjur = 'mostrar';
+                   sweetAlert('ESTIMADO CIUDADANO', 'Para registrarse como PERSONA JURÍDICA, requiere activar su cuenta, para ello por única vez debe apersonarse a una Plataforma del G.A.M.L.P., para más información contáctese con nuestra linea gratuita 800 13 5555', 'warning');
+                  $scope.obtDatos="";
+                  $scope.tablaCiudadanos = null;
+                  $scope.tablaEmpresas = null;
+                  $scope.bloquear3 = false;
+                } 
+            } else {
+              sweetAlert('ESTIMADO CIUDADANO', 'Para registrar a una Persona Jurídica, previamente el Representante Legal debe estar registrado como Persona Natural.', 'warning');
+              $scope.obtDatos="";
+              $scope.tablaCiudadanos = null;
+              $scope.tablaEmpresas = null;
+            }  
+            });
+            reg.cedula = aux1;         
+          }
+          if($scope.tipoDoc == 'pasaporte'){
+            var lonCi = reg.cedula.length;
+            var aux1 = reg.cedula;
+            var buscarCiudadano = new validarCiudadanoR_n();
+            buscarCiudadano.ci = aux1;   
+            $scope.cedulaCondR = aux1; 
+            buscarCiudadano.tipo_documento = $rootScope.tipoDocumento;
             buscarCiudadano.validar_CiudadanoR_n(function(resultado){
             resultadoApi = JSON.parse(resultado);
             if(resultadoApi.length > 0){
@@ -513,6 +369,7 @@ input:required:invalid {
             reg.cedula = aux1;         
 
           }
+        
         };
         $scope.btnCambiar = true;
         $scope.btnCondicion = true;
@@ -657,7 +514,6 @@ input:required:invalid {
         }
         
         $scope.cuentaDigCi = function(response){
-
           if(tipoPersona == "NATURAL"){
 
             if($scope.tipoDoc == 'solo_ci'){
@@ -667,9 +523,13 @@ input:required:invalid {
               if(lonCi >= 6){
                 $scope.verificarCiudadano(response);
                 $("#mensaje23").hide();
+                $("#mensaje30").hide();
                 $scope.existeCi2 = false;
+                response.tipo_documento = $rootScope.tipoDocumento;
+
               }
               else{
+                 $("#mensaje30").hide();
                  $("#mensaje23").show();
                  $("#mensaje24").hide();
                  $("#mensaje25").hide();
@@ -693,12 +553,15 @@ input:required:invalid {
                     $scope.verificarCiudadano(response);
                     $scope.cedulaCond = $scope.ciCompl;
                     response.cedula = aux;
-                    $("#mensaje23").hide();
+                    response.tipo_documento = $rootScope.tipoDocumento;
                     $scope.existeCi2 = false;
+                    $("#mensaje23").hide();
                     $("#buscarN").hide();
                     $("#mensaje26").hide();
+                    $("#mensaje30").hide();
                   }
                   else{
+                     $("#mensaje30").hide();
                      $("#mensaje23").show();
                      $("#mensaje24").hide();
                      $("#mensaje25").hide();
@@ -707,8 +570,6 @@ input:required:invalid {
                      $scope.bloquear1 = true;
                   }
                 }
-
-                
               }
             if($scope.tipoDoc == 'extr'){
               var aux = response.cedula;
@@ -720,12 +581,38 @@ input:required:invalid {
                   $scope.cedula = response.cedula;
                   $scope.verificarCiudadano(response);
                   response.cedula = aux;
+                  response.tipo_documento = $rootScope.tipoDocumento;
+                  $scope.existeCi2 = false;
                   $("#mensaje23").hide();
                   $("#mensaje26").hide();
-                  $scope.existeCi2 = false;
+                  $("#mensaje30").hide();
                 }
                 else{
+                   $("#mensaje30").hide();
                    $("#mensaje23").show();
+                   $("#mensaje24").hide();
+                   $("#mensaje25").hide();
+                   $("#mensaje26").hide();
+                   $scope.existeCi2 = true;
+                   $scope.bloquear1 = true;
+                }          
+            }
+            if($scope.tipoDoc == 'pasaporte'){
+              var aux = response.cedula;
+                var lonCi = aux.length;
+                if(lonCi >= 6){
+                  $scope.cedulaCond = response.cedula;
+                  $scope.cedula = response.cedula;
+                  response.cedula2 = aux;
+                  $scope.verificarCiudadano(response);
+                  response.tipo_documento = $rootScope.tipoDocumento;
+                  $scope.existeCi2 = false;
+                  $("#mensaje23").hide();
+                  $("#mensaje26").hide();
+                }
+                else{
+                   $("#mensaje30").show();
+                   $("#mensaje23").hide();
                    $("#mensaje24").hide();
                    $("#mensaje25").hide();
                    $("#mensaje26").hide();
@@ -754,66 +641,64 @@ input:required:invalid {
         
         $scope.verificarCiudadano = function (response) {
           var a = "";
-             if(tipoPersona == "JURIDICO") {
-
-                var cnit=response.nit;
-               
-                  if(response.nit !='' && response.nit != undefined && response.nit != 'undefined'){
-                    var buscarCiudadano = new validarCiudadanoR_j();
-                    buscarCiudadano.nit = cnit;
-                    buscarCiudadano.tipo_persona = "JURIDICO";
-                    buscarCiudadano.validar_CiudadanoR_j(function(resultado){
-                      resultadoApi = JSON.parse(resultado);
-                      if(resultadoApi.length > 0){
-                        if (resultadoApi[0].nit !='' && resultadoApi[0].nit.length >= 9){
-                          $scope.existeNit = true; 
-                          $scope.cisw2 = 'mostrar';
-                          $scope.cisw3 = null;
-                          $scope.bloquear2 = true;
-                        }else{
-                           $scope.existeNit = false; 
-                        }
-                      }else{
-                        $.unblockUI(); 
-                        $scope.cisw3 = 'mostrar';
-                        $scope.cisw2 = null;
+          if(tipoPersona == "JURIDICO") {
+            var cnit=response.nit;
+            if(response.nit !='' && response.nit != undefined && response.nit != 'undefined'){
+                var buscarCiudadano = new validarCiudadanoR_j();
+                buscarCiudadano.nit = cnit;
+                buscarCiudadano.tipo_persona = "JURIDICO";
+                buscarCiudadano.validar_CiudadanoR_j(function(resultado){
+                  resultadoApi = JSON.parse(resultado);
+                  if(resultadoApi.length > 0){
+                    if (resultadoApi[0].nit !='' && resultadoApi[0].nit.length >= 9){
+                      $scope.existeNit = true; 
+                      $scope.cisw2 = 'mostrar';
+                      $scope.cisw3 = null;
+                      $scope.bloquear2 = true;
+                    }else{
                         $scope.existeNit = false; 
-                        $scope.bloquear2 = false;
-                      }     
-                       
-                    });    
-                  }
-              } else {
-                a = response.cedula;
-                if(response.cedula != '' && response.cedula != undefined && response.cedula != 'undefined'){
-                  var buscarCiudadano = new validarCiudadanoR();
-                  buscarCiudadano.ci = a;
-                  buscarCiudadano.validar_CiudadanoR(function(resultado){
-                    resultadoApi = JSON.parse(resultado);
-                    if(resultadoApi.length > 0) {
-                      //correccion para usuarios validados
-                        if (resultadoApi[0]) {
-                          $scope.existeCi = true;
-                          $scope.cisw = 'mostrar';
-                          $scope.cisw1 = null;
-                          $scope.bloquear1 = true;
-
-                        }
-                       }else {
-                          $.unblockUI();  
-                           $scope.cisw = null;
-                           $scope.cisw1 = 'mostrar'; 
-                           $scope.existeCi = false;
-                           $scope.bloquear1 = false;
-                        }
-                  });
+                    }
+                  }else{
+                    $.unblockUI(); 
+                    $scope.cisw3 = 'mostrar';
+                    $scope.cisw2 = null;
+                    $scope.existeNit = false; 
+                    $scope.bloquear2 = false;
+                  }     
+                    
+                });    
               }
-              
-            }        
+          } else {
+            a = response.cedula;
+            if(response.cedula != '' && response.cedula != undefined && response.cedula != 'undefined'){
+              var buscarCiudadano = new validarCiudadanoR();
+              buscarCiudadano.ci = a;
+              buscarCiudadano.tipo_documento = $rootScope.tipoDocumento;
+              buscarCiudadano.validar_CiudadanoR(function(resultado){
+                resultadoApi = JSON.parse(resultado);
+                if(resultadoApi.length > 0) {
+                  //correccion para usuarios validados
+                    if (resultadoApi[0]) {
+                      $scope.existeCi = true;
+                      $scope.cisw = 'mostrar';
+                      $scope.cisw1 = null;
+                      $scope.bloquear1 = true;
+
+                    }
+                    }else {
+                      $.unblockUI();  
+                        $scope.cisw = null;
+                        $scope.cisw1 = 'mostrar'; 
+                        $scope.existeCi = false;
+                        $scope.bloquear1 = false;
+                    }
+              });
+          }
+          }        
         }
         $scope.validarDataCiudadano = function(response){
-          var sTipoPersona  =  $scope.tipo;     
-          if(response && (sTipoPersona =   'NATURAL')){
+          var sTipoPersona  =  $scope.tipo;  
+          if(response && (sTipoPersona = 'NATURAL')){        
             response.correo  = ((typeof(response.correo) == 'undefined' || response.correo == null) ? ""   : response.correo);
             if(response.celular>=0){
               response.celular  = ((typeof(response.celular) == 'undefined' || response.celular == null) ? ""   : response.celular);
@@ -1168,6 +1053,103 @@ input:required:invalid {
                 $scope.getCaptchasX();
               }
             }
+            if($scope.tipoDoc == 'pasaporte'){
+              $scope.pasaP = response.cedula;
+              ci2 = $scope.pasaP;
+              if(ci1==ci2){
+                var buscarCiudadano = new rcNatural();
+                response.cedula2 = $scope.pasaP;
+                buscarCiudadano.ci = response.cedula2;
+                buscarCiudadano.tipo_documento = response.tipo_documento;
+                buscarCiudadano.buscarNatural(function(resultado){
+                  resultadoApi = JSON.parse(resultado);
+                  if(resultadoApi.length > 0) {
+                    //correccion para usuarios validados
+                      if(resultadoApi[0].dtspsl_verificado == 'SI'){
+                          sweetAlert('¡El número de Pasaporte ya se encuentra registrado!', "Estimado Ciudadano, favor ingresar con su usuario y contraseña proporcionado o verificar que el número de Cédula de Identidad sea el correcto y si usted no realizó dicho registro, puede apersonarse por las Plataformas de Atención Ciudadana del GAMLP para realizar su registro.", 'warning');
+                      } else {
+                          sUsuario = resultadoApi[0].dtspsl_ci;
+                          descripcionNombre = resultadoApi[0].dtspsl_nombres;
+                          sPin = sUsuario;
+                          var detalleMensaje  =  " Usuario : " + sUsuario + "<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Contraseña : " + sPin;
+                          if (resultadoApi[0].dtspsl_correo) {
+                              sCorreo = resultadoApi[0].dtspsl_correo;
+                              if (resultadoApi[0].dtspsl_correo.trim().length > 0) {
+                                  //actualizar estado de verificado
+                                  var ciudadanoUpd = new rcNatural();
+                                  ciudadanoUpd.oid = resultadoApi[0]._id;
+                                  ciudadanoUpd.pin = sUsuario;
+                                  ciudadanoUpd.correo = sCorreo;
+                                  ciudadanoUpd.verificado = "SI";
+                                  ciudadanoUpd.modificarRegistro(function(resultado){
+                                      $scope.envioMensajes(detalleMensaje, sCorreo, descripcionNombre);
+                                      sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                                  });
+                              } else {
+                                    if(response.correo) {
+                                        //actualizar estado a verificado + correo
+                                        var ciudadanoUpd = new rcNatural();
+                                        ciudadanoUpd.oid = resultadoApi[0]._id;
+                                        ciudadanoUpd.pin = sUsuario;
+                                        ciudadanoUpd.correo = response.correo;
+                                        sCorreo = response.correo;
+                                        ciudadanoUpd.verificado = "SI";
+                                        ciudadanoUpd.modificarRegistro(function(resultado){
+                                        sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                                        });
+                                    } else {
+                                        //actualizar estado a verificado + correo
+                                        var ciudadanoUpd = new rcNatural();
+                                        ciudadanoUpd.oid = resultadoApi[0]._id;
+                                        ciudadanoUpd.pin = sUsuario;
+                                        ciudadanoUpd.correo = "";
+                                        ciudadanoUpd.verificado = "SI";
+                                        ciudadanoUpd.modificarRegistro(function(resultado){
+                                            sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+sUsuario+"\n Contraseña : "+sPin+"\n  No olvide actualizar sus datos personales ingresando a su cuenta.", 'success');
+                                        });
+                                    }
+                              }
+                          } else {
+                                if(response.correo) {
+                                    //actualizar estado a verificado + correo
+                                    var ciudadanoUpd = new rcNatural();
+                                    ciudadanoUpd.oid = resultadoApi[0]._id;
+                                    ciudadanoUpd.pin = sUsuario;
+                                    ciudadanoUpd.correo = response.correo;
+                                    sCorreo = response.correo;
+                                    ciudadanoUpd.verificado = "SI";
+                                    ciudadanoUpd.modificarRegistro(function(resultado){
+                                        $scope.envioMensajes(detalleMensaje, response.correo, descripcionNombre);
+                                        sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                                    });
+                                } else {
+                                    //actualizar estado a verificado + correo
+                                    var ciudadanoUpd = new rcNatural();
+                                    ciudadanoUpd.oid = resultadoApi[0]._id;
+                                    ciudadanoUpd.pin = sUsuario;
+                                    ciudadanoUpd.correo = "";
+                                    ciudadanoUpd.verificado = "SI";
+                                    ciudadanoUpd.modificarRegistro(function(resultado){
+                                        sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+sUsuario+"\n Contraseña : "+sPin+"\n  No olvide actualizar sus datos personales ingresando a su cuenta.", 'success');
+                                    });
+                                }                           
+                          }
+                      }
+                    $("#cerrar").click();
+                    $('#formModal').modal('hide');
+                    $scope.limpiarFormRegistro();
+                  } else {
+                    $.unblockUI();                    
+                    $scope.getCaptchasX();    
+                    $scope.registroCiudadano(response);
+                  }
+                });
+              }else{
+                $.unblockUI();
+                sweetAlert('ESTIMADO CIUDADANO', "El número de Pasaporte no concuerda con el anterior formulario, favor revisar.", 'warning');
+                $scope.getCaptchasX();
+              }
+            }
           }
         };
 
@@ -1309,6 +1291,7 @@ input:required:invalid {
             registrarCiudadano.correo = response.correo;
             registrarCiudadano.direccion = response.direccion;
             registrarCiudadano.usr_id = "0";
+            registrarCiudadano.tipo_documento = $rootScope.tipoDocumento;
             registrarCiudadano.sistema_creado = 'IGOB247';
             registrarCiudadano.crearNatural(function(resultado){
                 resultadoApi = JSON.parse(resultado);
@@ -1339,6 +1322,7 @@ input:required:invalid {
             registrarJuridico.poder_replegal =response.repLegal;
             registrarJuridico.nro_notaria =response.nroNotaria;
             registrarJuridico.usr_id="0";
+            registrarJuridico.tipo_documento = $rootScope.tipoDocumento;
             registrarJuridico.sistema_creado = "IGOB247";  
             registrarJuridico.tipo_empresa = response.tipoEmpresa;
             registrarJuridico.crearJuridico(function(resultado){
@@ -1490,7 +1474,6 @@ input:required:invalid {
           }
           return false;
         } 
-
         $scope.conv_Mayus_n = function(){
           var nombres = $scope.registro.nombre;
           $scope.nombre_may = nombres.toUpperCase();
@@ -1519,7 +1502,6 @@ input:required:invalid {
           var ci_complemento = $scope.ciCompl;
             $scope.cedulaCond = ci_complemento;
         }
-
         $scope.validaCorreo =function(){
 
           var $result = $("#result");
@@ -1536,7 +1518,6 @@ input:required:invalid {
           }
           return false;
         } 
-
         $scope.validaCamposCi = function(){
          
         }
@@ -1558,7 +1539,6 @@ input:required:invalid {
           }   
           $scope.getCaptchasX();
         };
-
         $scope.validaCondicionUso = function (){
           if(tipoPersona == 'NATURAL')
           {
@@ -1588,7 +1568,6 @@ input:required:invalid {
             $("#mensaje28").show();
           }
         };
-
         $scope.limpiarFormRegistro = function(){
           $scope.registro.cedula = "";
           $scope.registro.cedula2 = "";
@@ -1618,7 +1597,6 @@ input:required:invalid {
           $scope.registro = "";     
           $scope.stiloFecha   =  "border: 1px solid #FF4040;";
         }
-
         $scope.limpiarFormRegistroBuscar = function(){
           $scope.registro.complemento = "";
           $scope.registro.complemento2 = "";
@@ -1647,7 +1625,6 @@ input:required:invalid {
           //$scope.registro = "";     
           $scope.stiloFecha   =  "border: 1px solid #FF4040;";
         }
-
         $scope.getTipoPersona = function (val) {  
           $scope.bloquear1 = true;
           $scope.bloquear2 = true;      
@@ -1670,8 +1647,6 @@ input:required:invalid {
         };
         $("#mensaje29").show();
         $scope.getTipoDoc = function (val) {
-
-          //$scope.swTipoDoc = 0;
           $scope.tipoDoc = val.tipoDoc;
           if (val.tipoDoc == 'undefined' || val.tipoDoc == undefined || val.tipoDoc == '') {   
             $("#mensaje25").hide();
@@ -1679,6 +1654,7 @@ input:required:invalid {
             $scope.mostrarSoloCi = false;
             $scope.mostrarCiCompl = false;
             $scope.mostrarExtr = false;
+            $scope.mostrarPasaporte = false;
             $("#mensaje26").hide();
            
           };
@@ -1687,44 +1663,54 @@ input:required:invalid {
             $scope.mostrarCiCompl = false;
             $scope.mostrarExtr = false;
             $scope.mostrarvacio = false;   
+            $scope.mostrarPasaporte = false;
             $("#mensaje26").hide();
             $scope.bloquearCi = false;
-          
+            $rootScope.tipoDocumento= "carnet";
           };
           if (val.tipoDoc == "ci_compl") {
             $scope.mostrarSoloCi = false;
             $scope.mostrarCiCompl = true;
             $scope.mostrarExtr = false;
             $scope.mostrarvacio = false;
+            $scope.mostrarPasaporte = false;
             $("#mensaje26").show();
             $scope.bloquearCi = false;
-
+            $rootScope.tipoDocumento= "carnet";
           };
           if (val.tipoDoc == "extr") {
             $scope.mostrarSoloCi = false;
             $scope.mostrarCiCompl = false;
             $scope.mostrarExtr = true;
             $scope.mostrarvacio = false;
+            $scope.mostrarPasaporte = false;
             $("#mensaje26").hide();
             $scope.bloquearCi = false;
-            
-          };            
+            $rootScope.tipoDocumento= "extranjero";
+          }; 
+          if (val.tipoDoc == "pasaporte") {
+            $scope.mostrarSoloCi = false;
+            $scope.mostrarCiCompl = false;
+            $scope.mostrarExtr = false;
+            $scope.mostrarvacio = false;
+            $scope.mostrarPasaporte = true;
+            $("#mensaje26").hide();
+            $scope.bloquearCi = false;
+            $rootScope.tipoDocumento = "pasaporte";
+          };                
           $scope.limpiarFormRegistro();
           $scope.tipo = val.tipoDoc;
           //$scope.registro.tipoP = val.tipoPersoneria.toUpperCase();
         };
-
         $scope.getTipoEmpresa = function (val) {
           var tipoEmp = val.tipoEmpresa;
-          console.log("tipo de empresa :", tipoEmp);
           if(tipoEmp == 0){
             $scope.validarTipoEmpresa = true;
           }else{
             $scope.validarTipoEmpresa = false;
           }
         };
-
-        
+     
         var aRegistro = {"cedula": "","complemento": "","celular":"","correo":"","direccion":"","estado_civil":"","fecha_nacimiento":"",
         "materno":"","nombre":"","ocupacion":"","paterno":"","sexo":"","telefono":"","cedula2": "","complemento2": "","repLegal": "","nroDocumento": "","nroNotaria": "",
         "nit": "","razonSocial": "","tipoP": ""};
@@ -1740,6 +1726,21 @@ input:required:invalid {
           tipoPersona = "NATURAL";
         };
         //init
+        $scope.getGenero =function(){
+          $scope.generoSel = $('input[name="genero"]:checked').val();
+          if($scope.generoSel == 'F'){
+            $scope.activarCasada = true;
+          }else{
+            $scope.activarCasada = false;
+          }
+        }
+        $scope.getEstadoCivil = function(valor) {  
+          if(valor.estado_civil == 'C' || valor.estado_civil == 'V'){
+            $scope.activarEstCivil = true;
+          }else{
+            $scope.activarEstCivil = false;
+          }
+        }
         $scope.inicioEstadoCivil = function () {
           $scope.mostrarvacio = true;
           $("#mensaje25").hide();
@@ -1761,6 +1762,8 @@ input:required:invalid {
           var mes = resh[1];
           var dia = resh[2];
           $scope.fecha = dia+'/'+mes+'/'+anio;
+          $scope.activarEstCivil = false
+          $scope.activarCasada = false;
         };
 
         $scope.inciarValoresFormulario =   function(){
@@ -1780,8 +1783,6 @@ input:required:invalid {
               $.unblockUI();
           }
         };
-      
-
         $scope.generarDocumentoPhpN = function (result){
           $.blockUI();
           var tipoPersona = '';
@@ -1834,7 +1835,6 @@ input:required:invalid {
                   }
               });  
         };
-
         $scope.generarDocumentoPhpJ = function (result){
           $.blockUI();
           var tipoPersona = '';
@@ -1943,11 +1943,7 @@ input:required:invalid {
                     }
                 });
         }
-       
-
-
-           
-      });
+        });
 
       function display(obj,id1,id2) {
         txt = obj.options[obj.selectedIndex].value;
@@ -2071,7 +2067,6 @@ input:required:invalid {
           ob.value = ob.value.replace(invalidChars,"");
         }
       };
-
   </script>      
     <div ng-app="myApp">
 
@@ -2081,11 +2076,7 @@ input:required:invalid {
         <div class="col-md-10 col-md-offset-1">
           <div class="page-content" ng-controller="rCiudadanoController" data-ng-init="inicioEstadoCivil();">
             <div class="ibox-content" class="fieldset">
-              <!--div id="mostrar" class="ibox-title">
-                <h5>{{translateIdioma.lbl_03_01}} {{tipo}}</h5>
-              </div-->
               <br>
-              
               <div class="form-group" style="margin-bottom: 40px;" >
                 <label class="col-sm-4 control-label" for="tipo_persona"> {{translateIdioma.lbl_03_02}}: </label>
                 <div class="col-sm-8">
@@ -2125,6 +2116,7 @@ input:required:invalid {
                                 <option  value="solo_ci">Cédula de Identidad</option>
                                 <option  value="ci_compl">C.I. con complemento</option>
                                 <option  value="extr">Extranjero</option>
+                                <option  value="pasaporte">Pasaporte</option>
                               </select>
                               <span style="color:blue" ng-show="signupForm.tipoDoc.$invalid">
                                 <span align = "right"><strong>Paso 1:</strong> Seleccione su Tipo de Documento. </span>
@@ -2170,22 +2162,17 @@ input:required:invalid {
                                   <button ng-click="cuentaDigCi(registro);limpiarFormRegistroBuscar();" id="buscarN2" class="btn btn-default" type="button">Buscar</button>
                                 </div>
                             </div>
-                              <!--span style="color:red" ng-show="signupForm.repCi.$invalid || mostrarSoloCi || mostrarCiCompl || mostrarExtr">
-                                <span ng-show="signupForm.repCi.$error.required">*</span>
-                              </span-->
-                               
-                              <br><span id ="mensaje25" align="right" style = "color:red;font-weight:bold; font-size:12px" ng-if="cisw != null">¡El número de Cédula de Identidad ya se encuentra registrado!,Si Ud. no realizó el registro favor apersonarse por Plataforma del GAMLP ó contáctese con nuestra linea gratuita 800 13 5555. </span>
+                            <div class="input-group" ng-show="mostrarPasaporte" >
+                              <input type="text" class="cajatexto" class="col-sm-7"  id="repCiPasaporte"  name="repCiPasaporte"   minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-model="registro.cedula" onkeyup="return checkCi(this);" required/>
+                              <span ng-show = "mostrarPasaporte" class="input-group-btn">
+                                <button ng-click="cuentaDigCi(registro);limpiarFormRegistroBuscar();" class="btn btn-default" type="button">Buscar</button>
+                              </span>
+                            </div>
+                            <br><span id ="mensaje25" align="right" style = "color:red;font-weight:bold; font-size:12px" ng-if="cisw != null">¡El número de Cédula de Identidad ya se encuentra registrado!,Si Ud. no realizó el registro favor apersonarse por Plataforma del GAMLP ó contáctese con nuestra linea gratuita 800 13 5555. </span>
                                 <span id ="mensaje23" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es válido para un C.I.</span>
-                                <!--SPAN align="right" style = "color:green;font-weight:bold; font-size:16px" ng-if="cisw1 != null"  >El número de Cédula de Identidad No se encuentra registrado</SPAN-->      
-                               <!--div>
-                                <span class="input-group-btn">
-                                  <button class="btn btn-default" type="button" ng-click="cuentaDigCi(registro);"  id="buscarN" >Buscar</button>
-                                </span>
-                              </div-->
+                                <span id ="mensaje30" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es válido para un Pasaporte</span>
                             </div>
                           </div>                    
-
-
                           <div class="hr-line-dashed">
                           </div>
                           <div class="form-group">
@@ -2238,16 +2225,7 @@ input:required:invalid {
                               </span>
                             </div>
                           </div>
-                          <div class="hr-line-dashed"></div>
-                         
-                          <div class="form-group">
-                            <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_05}}:</label>
-                            <div class="col-sm-8">
-                              <input id="tercer" name="tercer" type="text" class="cajatexto" placeholder="{{translateIdioma.lbl_06_05}}" onkeypress="return validar(event);" ng-model="registro.tercer" style="text-transform:uppercase;" ng-change = "conv_Mayus_c()" maxlength="25" ng-disabled="bloquear1"/>
-                            </div>
-                          </div>
-                          <div class="hr-line-dashed"></div>
-
+                          <div class="hr-line-dashed"></div>                       
                           <div class="form-group">
                             <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_09}}:</label>
                             <div class="col-sm-8">
@@ -2268,11 +2246,8 @@ input:required:invalid {
                               <input id="paisOrigen" name="paisOrigen" type="text" class="form-control" style="text-transform:uppercase;" placeholder="País Origen" ng-model="registro.pais_origen"/>
                             </div>
                           </div>
-                        </div>
-                        <div class="col-sm-6">
-                        <div class="hr-line-dashed"></div>
                           <div class="form-group">
-                            <label class="col-sm-3 control-label">{{translateIdioma.lbl_06_10}}:</label>
+                            <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_10}}:</label>
                             <div class="col-sm-8">
                               <select id="lugarNacimiento" name="lugarNacimiento" class="form-control" ng-model="registro.lugarNacimiento" name="lugarNacimiento" placeholder="Lugar Nacimiento" ng-change="GetValueLugarNacimiento();" ng-disabled="bloquear1" required>
                                 <option value="">--Selecccione--</option>
@@ -2285,20 +2260,22 @@ input:required:invalid {
                                 <option value="ORU">ORURO</option>
                                 <option value="BNI">BENI</option>
                                 <option value="PND">PANDO</option>
-                                <option value="EXT">EXTRANJERO</option>
+                                <option value="OTR">EXTRANJERO</option>
                               </select>
                               <span style="color:red" ng-show="signupForm.lugarNacimiento.$invalid">
                                 <span align = "right" ng-show="signupForm.lugarNacimiento.$error.required">{{translateIdioma.lbl_20_26}}</span>
                               </span>
                             </div>
                           </div>
-                          <div class="hr-line-dashed"></div>
+                        </div>
+                        <div class="col-sm-6">
+                        <div class="hr-line-dashed"></div>
                           <div class="form-group">
-                            <label class="col-sm-3 control-label">{{translateIdioma.lbl_018_22}}:</label>
+                            <label class="col-sm-3 control-label">Género:</label>
                             <div class="col-sm-8">
                               <font color="#FF0000" size="5px"> * </font>
-                              <input type="radio" ng-model="registro.sexo" id="genero" name="genero" value="M" ng-change="" ng-disabled="bloquear1" required> {{translateIdioma.lbl_06_14}}
-                              <input type="radio" ng-model="registro.sexo" id="genero" name="genero" value="F" ng-change="" ng-disabled="bloquear1" required> {{translateIdioma.lbl_06_15}}
+                              <input type="radio" ng-model="registro.sexo" id="genero" name="genero" value="M" ng-change="" ng-disabled="bloquear1" ng-click = "getGenero();" required > Masculino
+                              <input type="radio" ng-model="registro.sexo" id="genero" name="genero" value="F" ng-change="" ng-disabled="bloquear1" ng-click = "getGenero();" required > Femenino
                               <br>
                               <span style="color:red" ng-show="signupForm.genero.$invalid">
                                 <span align = "right" ng-show="signupForm.genero.$error.required">{{translateIdioma.lbl_20_27}}</span>
@@ -2310,7 +2287,7 @@ input:required:invalid {
                           <div class="form-group">
                             <label class="col-sm-3 control-label">{{translateIdioma.lbl_06_12}}:</label>
                             <div class="col-sm-8">
-                              <select id="estCivil" class="form-control" ng-model="registro.estado_civil" name="estCivil" placeholder="Lugar Nacimiento" ng-disabled="bloquear1" required>
+                              <select id="estCivil" class="form-control" ng-model="registro.estado_civil" name="estCivil" placeholder="Lugar Nacimiento" ng-disabled="bloquear1" ng-change = "getEstadoCivil(registro)" required>
                                 <option value="">--Selecccione--</option>
                                 <option value="C">Casado/a </option>
                                 <option value="D">Divorciado/a</option>
@@ -2320,6 +2297,12 @@ input:required:invalid {
                               <span style="color:red" ng-show="signupForm.estCivil.$invalid">
                                 <span align = "right" ng-show="signupForm.estCivil.$error.required">{{translateIdioma.lbl_20_28}}</span>
                               </span>
+                            </div>
+                          </div>
+                          <div class="form-group" ng-show="activarEstCivil==true && activarCasada==true">
+                            <label class="col-sm-3 control-label">Apellido Cónyugue:</label>
+                            <div class="col-sm-8">
+                              <input class="form-control" id="tercer" name="tercer" type="text" class="cajatexto" placeholder="Apellido Cónyugue" onkeypress="return validar(event);" ng-model="registro.tercer" style="text-transform:uppercase;" ng-change = "conv_Mayus_c()" maxlength="25" ng-disabled="bloquear1"/>
                             </div>
                           </div>
                           <div class="hr-line-dashed">
@@ -2350,8 +2333,6 @@ input:required:invalid {
                             <div class="col-sm-8">
                               <span class="block input-icon input-icon-right">
                                 <input type="tel" class="form-control" placeholder="{{translateIdioma.lbl_06_08_08}}" ng-model="registro.telefono" minlength="7" maxlength="7" onkeyUp="valNumeroTelefono(this);" ng-keyUp="cuentaDigTel(registro);" ng-disabled="bloquear1" style="text-transform:uppercase;"/>
-                                <!--span id ="mensaje3" style = "color:red;font-weight:bold; font-size:12px">Debe introducir como mínimo 7 dígitos, en caso de tenerlo.</span-->
-                                <!--span id ="mensaje13" style = "color:green;font-weight:bold; font-size:14px">El número de teléfono es correcto</span-->
                                 <span id ="mensaje14" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es correcto.</span>
                               </span>
                             </div>
@@ -2369,8 +2350,6 @@ input:required:invalid {
                               </span> 
                                 <span id ="mensaje4" style = "color:red;font-weight:bold; font-size:12px">¡Debe introducir como mínimo 8 dígitos!</span>
                                 <span id ="mensaje5" style = "color:red;font-weight:bold; font-size:12px">¡Este dato es obligatorio.!</span>
-                                <!--span id ="mensaje6" style = "color:green;font-weight:bold; font-size:12px">Número de Celular correcto</span-->
-                                <!--span id ="mensaje15" style = "color:green;font-weight:bold; font-size:12px">El número de celular es correcto</span-->
                                 <span id ="mensaje16" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es correcto.</span>
                               </span>
                             </div>
@@ -2470,7 +2449,7 @@ input:required:invalid {
                         </td>
                       </tr>
                     </div>
-                 </div>
+                </div>
                 </form>
               </div>
               <!-- JURIDICO -->
@@ -2502,6 +2481,7 @@ input:required:invalid {
                               <option  value="solo_ci">Cédula de Identidad</option>
                               <option  value="ci_compl">C.I. con complemento</option>
                               <option  value="extr">Extranjero</option>
+                              <option  value="pasaporte">Pasaporte</option>
                             </select>
                             <span style="color:red" ng-show="signupForm.tipoDoc.$invalid">
                                 <span align = "right" ng-show="signupForm.tipoDoc.$error.required"><strong>Paso 1:</strong> Seleccione su Tipo de Documento. </span>
@@ -2541,6 +2521,12 @@ input:required:invalid {
                                 <button ng-click="limpiarFormRegistroBuscar();verificar(registro);" class="btn btn-default" type="button">Buscar</button>
                                 </div>
                               </div>
+                              <div class="input-group" ng-show="mostrarPasaporte" >
+                                <input type="text" class="cajatexto" class="col-sm-7"  id="repCiPasaporte"  name="repCiPasaporte"   minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-model="registro.cedula" onkeyup="return checkCi(this);" required/>
+                                <span ng-show = "mostrarPasaporte" class="input-group-btn">
+                                  <button ng-click="limpiarFormRegistroBuscar();verificar(registro);" class="btn btn-default" type="button">Buscar</button>
+                                </span>
+                              </div>
                             </div>                      
                         </div>
                         <div class="hr-line-dashed">
@@ -2576,7 +2562,7 @@ input:required:invalid {
                       <div class="col-sm-6"> 
                       <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                          <label class="col-sm-3 control-label">{{translateIdioma.lbl_06_05}}:</label>
+                          <label class="col-sm-3 control-label">Apellido Cónyugue:</label>
                           <div class="col-sm-8">
                             <input id="tercer" name="tercer" type="text" class="cajatexto"  ng-model="registro.tercer" style="text-transform:uppercase;" ng-disabled="true"  />
                           </div>
@@ -2642,14 +2628,7 @@ input:required:invalid {
                               </select>
                             </div>
                         </div>
-                        <!--div class="form-group" ng-show="validarTipoEmpresa">
-                            <label class="col-sm-4 control-label" for="tipo_persona"></label>
-                            <div class="col-sm-8">
-                                <input class="cajatexto" type="text" id="otroTipoEmpresa" name="otroTipoEmpresa"   placeholder="Ingrese Tipo Empresa" maxlength="12" ng-model="registro.otroTipoEmpresa" onkeyUp="return valNumero(this);"  />
-                            </div>
-                        </div-->
                         <div class="hr-line-dashed"></div>
-
                         <div class="form-group">
                           <label class="col-sm-4 control-label">{{translateIdioma.lbl_03_27_27}}:</label>
                           <div class="col-sm-8">
@@ -2664,7 +2643,6 @@ input:required:invalid {
                                    <span id ="mensaje24" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es válido para un N.I.T.</span>
                                 </div>
                               </div>
-                              <!--span id="cisw3" style = "color:green;font-weight:bold; font-size:12px" ng-if="cisw3 != null">El número de N.I.T. No se encuentra registrado.</span-->
                               <div class="col-sm-2">
                                 <button ng-click="cuentaDigCi(registro);" class="btn btn-default" type="button">Buscar</button>
                               </div>
@@ -2710,9 +2688,7 @@ input:required:invalid {
                           <label class="col-sm-3 control-label">{{translateIdioma.lbl_06_08_08}}:</label>
                           <div class="col-sm-8">
                             <input type="text" class="form-control" placeholder="{{translateIdioma.lbl_06_08_08}}" ng-model="registro.telefonoEmp"  maxlength="7" onkeyUp="return valNumeroTelefono(this);" ng-keyUp="cuentaDigTel(registro);" ng-disabled = "bloquear2"/>
-                            <br><!--span id ="mensaje7" style = "color:red;font-weight:bold; font-size:12px">Debe introducir como mínimo 7 dígitos, en caso de tenerlo.</span-->
-                            <!--span id ="mensaje17" style = "color:green;font-weight:bold; font-size:12px">El número de teléfono es correcto</span-->
-                            <span id ="mensaje18" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es correcto.</span>
+                            <br><span id ="mensaje18" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es correcto.</span>
                           </div>
                         </div>
                         <div class="hr-line-dashed">
@@ -2723,8 +2699,6 @@ input:required:invalid {
                             <input type="text" class="form-control" placeholder="{{translateIdioma.lbl_06_12_18}}" ng-model="registro.celularEmp" minlength="8" maxlength="8" onkeyUp="return valNumeroCelular(this);" ng-disabled = "bloquear2"/>
                             <br><span id ="mensaje8" style = "color:red;font-weight:bold; font-size:12px">¡Debe introducir como mínimo 8 dígitos!.</span>
                             <br><span id ="mensaje9" style = "color:red;font-weight:bold; font-size:12px">¡Este dato es obligatorio.!</span>
-                            <!--span id ="mensaje10" style = "color:green;font-weight:bold; font-size:12px">Número de Celular correcto</span-->
-                            <!--span id ="mensaje19" style = "color:green;font-weight:bold; font-size:12px">El número de celular es correcto</span-->
                             <span id ="mensaje20" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es correcto.</span>
                           </div>
                         </div>
@@ -2769,11 +2743,6 @@ input:required:invalid {
                         <center>
                           <div class="col-sm-12">
                           <span class="block input-icon input-icon-right">
-                            <!--input id="chkCondiciones_juridico" name="chkCondiciones_juridico" type="checkbox" ng-blur = "cuentaDigCi(registro);" ng-model="registro.chkCondiciones_juridico" required/-->
-                            <!--span>
-                              <font color="#FF0000" size="5px"> * </font>
-                              {{translateIdioma.lbl_03_20}}<a data-toggle="modal" data-target="#formModalTrm"><strong>{{translateIdioma.lbl_03_21}}</strong> </a>.
-                            </span-->
                             <center>
                               <div class="col-sm-12" ng-show = "habilitarCondicion">
                                   <span>
@@ -2796,7 +2765,6 @@ input:required:invalid {
                       <div class="form-group" >
                         <div class="col-sm-8">
                           <span class="block input-icon input-icon-right">
-                            <!--input type="hidden" class="form-control" placeholder="Tipo Persona Legal"  ng-model="registro.tipoP"/-->
                           </span>
                         </div>
                       </div>
@@ -2816,9 +2784,6 @@ input:required:invalid {
                           <button  data-toggle="modal" data-target="#formModal" type="submit" ng-click="validacamposJuridico();"  class="btn btn-success"   ng-disabled=" signupFormJuridico.nombre.$invalid || signupFormJuridico.nit.$invalid || existeNit || existeNit2 || btnCondicion || validaCelJ" style="background-color: #000;color:#FFFFFF">
                             {{translateIdioma.lbl_03_41_41}}
                           </button>
-                          <!--button  data-toggle="modal" data-target="#formModal" type="submit" ng-click="validacamposJuridico();"  class="btn btn-success"  ng-disabled="signupFormJuridico.$invalid || existeNit || existeNit2 || btnCondicion || validaCelJ" style="background-color: #000;color:#FFFFFF">
-                            {{translateIdioma.lbl_03_41_41}}
-                          </button-->
                         </td>
                       </tr>
                     </div>
@@ -2827,16 +2792,11 @@ input:required:invalid {
               </div>
             </div>
           </div>
-
-          <!--div id="formModal" class="modal fade"-->
           <div class="modal fade" id="formModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog  modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateIdioma.lbl_01_01_05}}</span></button>
-
-                  <!--Captcha-->
-                  <!--h4 class="modal-title" id="myModalLabel">{{tituloVentana}} </h4-->
                   <h4 id="myModalLabel" tabindex="-1"><center>Verificación de Datos</center></h4>
                 </div>
                 <div class="modal-body" role="document">
@@ -2845,7 +2805,6 @@ input:required:invalid {
                       <div class="col-md-12" ng-show = "opcionpersonaNatural != null">
                         <div class="form-group">
                           <div class="col-sm-12">
-                            <!--label class="col-sm-12" for="cedula">Introducir Nro. Cédula de Identidad:</label-->
                              <label class="col-sm-12 control-label no-padding-right" for="cedula">{{translateTitulos.lbl_09_22}}</label>
                           </div>
                         </div>
@@ -2875,6 +2834,9 @@ input:required:invalid {
                               <div class = "col-sm-1">-</div>
                               <div class = "col-sm-8"><input type="text" class="cajatexto" class="col-sm-7" id="repCi2"  name="repCi2" minlength="6" maxlength="12" placeholder="Nro. Doc." ng-model="registro.cedula2" onkeyup="return valNumero(this);" required/></div>
                             </div>
+                            <div class="input-group" ng-show="mostrarPasaporte">
+                              <div><input type="text" class="cajatexto" class="col-sm-7" id="repCiPasaporte"  name="repCiPasaporte" minlength="6" maxlength="12" placeholder="Nro. Doc." ng-model="registro.cedula2" onkeyup="return checkCi(this);" required/></div>
+                            </div>
 
                             <span style="color:red" ng-show="signupForm.repCi.$invalid">
                               <span ng-show="signupForm.repCi.$error.required">{{translateIdioma.lbl_20_21}}</span>
@@ -2885,7 +2847,6 @@ input:required:invalid {
                       </div>
                       <div class="col-md-12" ng-show = "opcionpersonaJuridico != null">
                         <div class="form-group">
-                          <!--label class="col-sm-3 control-label no-padding-right" for="cedula">{{translateIdioma.lbl_09_24}} </label-->
                           <label class="col-sm-12" for="cedula">Introducir Nro. N.I.T.:</label>
                           <div class="col-sm-12">
                             <input id="nit2" name="nit2" type="text"  class="cajatexto" placeholder="NIT" minlength="7" maxlength="15" ng-model="registro.nit2" onkeyUp="return valNumero(this);" required/>
@@ -2963,7 +2924,6 @@ input:required:invalid {
 
                   <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" ng-click="noValidaCondicionUso();">No Acepto</button>
                   <button id="btncondicionesuso_a" type="button" class="btn btn-default" ng-click="validaCondicionUso();" data-dismiss="modal">Acepto</button>
-                  <!--button id="btncerrarmodal" type="button" class="btn btn-default" ng-click="aceptarCondicionesUso();" data-dismiss="modal">Cerrar</button-->
                 </div>
               </div>
             </div>
@@ -2995,7 +2955,6 @@ input:required:invalid {
 
                   <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" ng-click="noValidaCondicionUso();">No Acepto</button>
                   <button id="btncondicionesuso_a" type="button" class="btn btn-default" ng-click="validaCondicionUso();" data-dismiss="modal">Acepto</button>
-                  <!--button id="btncerrarmodal" type="button" class="btn btn-default" ng-click="aceptarCondicionesUso();" data-dismiss="modal">Cerrar</button-->
                 </div>
               </div>
             </div>
@@ -3027,7 +2986,6 @@ input:required:invalid {
                   <label for="url" >{{translateIdioma.lbl_06_18}}:</label>
                   <div class="controls">
                     <input ng-model="prsCorreo" id="prsCorreo" name="prsCorreo" onkeypress="getlimpiareRROR()" class="form-control" type="email" placeholder="Ingrese e-mail" required/>
-
                   </div>
                 </div>
               </div>

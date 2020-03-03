@@ -35,7 +35,7 @@ function ejecutarAjaxP(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
       dataResp = response;
       dataResp = CryptoJS.AES.decrypt(dataResp, key);
       dataResp =  dataResp.toString(CryptoJS.enc.Utf8);
-      console.log(dataResp,'dataResp');
+      //console.log(dataResp,'dataResp');
       vFunctionResp(dataResp);
     },
     error: function (response, status, error) {
@@ -331,6 +331,8 @@ function rcNatural(){
     this.pinAnterior;
     this.pinNuevo;
     this.pin;
+    this.tipo_documento;
+
 };
 
 rcNatural.prototype.buscarPersona = function (functionResp)
@@ -437,7 +439,7 @@ rcNatural.prototype.buscarNatural_nit = function (functionResp)
     ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
 };
 
-rcNatural.prototype.crearNatural = function (functionResp)
+/*rcNatural.prototype.crearNatural = function (functionResp)
 {
     urlComp = "/new";
     typeCall = "post";
@@ -468,13 +470,80 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "tipo_persona": "NATURAL",
           "usr_id": this.usr_id,
           "activacionf": "NO",
-          "activaciond": "NO"
+          "activaciond": "NO",
+          "tipo_documento": this.tipo_documento 
         };
         ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
     }
     else
     {
         dataResp = "{\"error\":{\"message\":\"Uno o varios campos obligatorios vacios\",\"code\":702}}";
+        functionResp(dataResp);
+    }
+};*/
+
+rcNatural.prototype.crearNatural = function (functionResp)
+{
+    urlComp = "/new";
+    typeCall = "post";
+
+    if(validarNatural("NEW", this))
+    {
+        dataParams = {
+          "ci": this.ci,
+          "complemento": this.complemento,
+          "nombres": this.nombre,
+          "paterno": this.paterno,
+          "materno": this.materno,
+          "tercer_apellido": this.tercer_apellido,
+          "expedido": this.expedido,
+          "fec_nacimiento": this.fec_nacimiento,
+          "lugar_nacimiento": this.lugar_nacimiento,
+          "pais_origen": this.pais_origen,
+          "sexo": this.sexo,
+          "id_estado_civil": this.id_estado_civil,
+          "profesion": this.profesion,
+          "otra_profesion": this.otra_profesion,
+          "telefono": this.telefono,
+          "movil": this.movil,
+          "correo": this.correo,
+          "direccion": this.direccion,
+          
+          "pais": this.pais,
+          "departamento": this.departamento,
+          "provincia": this.provincia,
+          "municipio": this.municipio,
+          "macrodistrito": this.macrodistrito,
+          "macrodistrito_desc": this.macrodistrito_desc,
+          "distrito": this.distrito,
+          "distrito_desc": this.distrito_desc,
+          "zona": this.zona,
+          "zona_desc": this.zona_desc,
+          "tipo_via": this.tipo_via,
+          "nombre_via": this.nombre_via,
+          "numero_casa": this.numero_casa,
+          "edificio": this.edificio,
+          "bloque": this.bloque,
+          "piso": this.piso,
+          "oficina": this.oficina,
+          "latitud": this.latitud,
+          "longitud": this.longitud,
+
+
+          "tipo_persona": "NATURAL",
+          "usr_id": this.usr_id,
+          "activacionf": "NO",
+          "activaciond": "NO",
+          "tipo_documento": this.tipo_documento 
+        };
+
+        //console.log("PARAEMTRSO...:",dataParams);
+
+        ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+    }
+    else
+    {
+      dataResp = "{\"error\":{\"message\":\"Uno o varios campos obligatorios vacios\",\"code\":702}}";
         functionResp(dataResp);
     }
 };
@@ -1352,64 +1421,66 @@ gDocumentosIgob.prototype.insertarDocIgob = function (functionResp) {
     ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 };
 
-
 function validarCiudadanoR(){
-    this.ci;
+  this.ci;
+  this.tipo_documento;
 };
 validarCiudadanoR.prototype.validar_CiudadanoR=function(functionResp){
-  var stoquen = "";
-  var urlToken = urlRC + "/token2";
-  $.ajax({
-      dataType: "json",
-      type: "POST",
-      url : urlToken,
-      data: {},
-      async: false,
-      success: function(response) {
-        var token = response.token;
-        stoquen =  'Bearer ' + token;
-      },
-      error: function (response, status, error) {
-          dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-          console.log(dataResp);
-      }
-  });
-  urlComp = "/validarciudadano";
-  typeCall = "post";
-  dataParams = {
-    "ci":  this.ci     
-  };
-  ejecutarAjaxP(urlComp, typeCall, dataParams, functionResp,stoquen);
+var stoquen = "";
+var urlToken = urlRC + "/token2";
+$.ajax({
+    dataType: "json",
+    type: "POST",
+    url : urlToken,
+    data: {},
+    async: false,
+    success: function(response) {
+      var token = response.token;
+      stoquen =  'Bearer ' + token;
+    },
+    error: function (response, status, error) {
+        dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+        //console.log('RESPUESTA =========>',dataResp);
+    }
+});
+urlComp = "/validarciudadano";
+typeCall = "post";
+dataParams = {
+  "ci":  this.ci,
+  "tipo_documento": this.tipo_documento    
+};
+ejecutarAjaxP(urlComp, typeCall, dataParams, functionResp,stoquen);
 
 };
-
 function validarCiudadanoR_n(){
-    this.ci;
+  this.ci;
+  this.tipo_documento;
 };
 validarCiudadanoR_n.prototype.validar_CiudadanoR_n=function(functionResp){
-  var stoquen = "";
-  var urlToken = urlRC + "/token2";
-  $.ajax({
-      dataType: "json",
-      type: "POST",
-      url : urlToken,
-      data: {},
-      async: false,
-      success: function(response) {
-        var token = response.token;
-        stoquen =  'Bearer ' + token;
-      },
-      error: function (response, status, error) {
-          dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-          console.log(dataResp);
-      }
-  });
-  urlComp = "/validarciudadano_n";
-  typeCall = "post";
-  dataParams = {
-    "ci":  this.ci     
-  };
-  ejecutarAjaxP(urlComp, typeCall, dataParams, functionResp,stoquen);
+var stoquen = "";
+var urlToken = urlRC + "/token2";
+$.ajax({
+    dataType: "json",
+    type: "POST",
+    url : urlToken,
+    data: {},
+    async: false,
+    success: function(response) {
+      var token = response.token;
+      stoquen =  'Bearer ' + token;
+    },
+    error: function (response, status, error) {
+        dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+        console.log(dataResp);
+    }
+});
+urlComp = "/validarciudadano_n";
+typeCall = "post";
+dataParams = {
+  "ci":  this.ci,
+  "tipo_documento": this.tipo_documento   
+};
+ejecutarAjaxP(urlComp, typeCall, dataParams, functionResp,stoquen);
 };
 
 function validarCiudadanoR_j(){

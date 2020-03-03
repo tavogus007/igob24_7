@@ -1737,6 +1737,13 @@
         $scope.getEstadoCivil = function(valor) {  
           if(valor.estado_civil == 'C' || valor.estado_civil == 'V'){
             $scope.activarEstCivil = true;
+            if(valor.estado_civil == 'C'){
+              $('#tercer').val('DE');
+            }
+            if(valor.estado_civil == 'V'){
+              $('#tercer').val('VDA. DE');
+            }
+
           }else{
             $scope.activarEstCivil = false;
           }
@@ -2308,7 +2315,7 @@
                           <div class="hr-line-dashed">
                           </div>
                           <div class="form-group">
-                            <label class="col-sm-3 control-label">{{translateIdioma.lbl_06_19}}:</label>
+                            <label class="col-sm-3 control-label">Profesión / Oficio:</label>
                             <div class="col-sm-8">
                               <select id="profesion" name="profesion" placeholder="País" class="form-control" required  ng-disabled="bloquear1" ng-model="registro.profesion" ng-options="obj.prf_profesion as obj.prf_profesion for obj in combop" value="{{registro.prf_profesion}}">
                                 <option value="">--Selecccione--</option>

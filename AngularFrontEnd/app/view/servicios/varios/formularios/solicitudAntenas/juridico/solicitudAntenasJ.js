@@ -2786,7 +2786,11 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $("#tp_prop").val(data.f01_TIPO_UBIC);
         $("#lt_ubicacion").val(data.f01_LATITUD);
         $("#den_ngabinete").val(data.f01_NRO_GABINETE);
-        $("#observacion").val(data.ANT_OBSERVACION);
+        if(data.ANT_OBSERVACION == undefined){
+          $("#observacion").val(data.observacion);
+        }else{
+          $("#observacion").val(data.ANT_OBSERVACION);
+        }
         $("#latitud_reg").val(data.ANT_LATITUD);
         $("#longitud_reg").val(data.ANT_LOGITUD);
 
@@ -2809,6 +2813,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
           $scope.autoriza = null;
           $scope.chec_autorizacion = false;
           document.getElementById("condiciones").checked = 0;
+          $("#den_auto").val("");
+
         }
         $scope.lstSoporteprevio = [];
         $scope.lstSoporteprevio = data.f01_GRILLA_SOPORTE;
@@ -2861,7 +2867,11 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $("#tp_prop").val(data.f01_TIPO_UBIC);
         $("#lt_ubicacion").val(data.f01_LATITUD);
         $("#den_ngabinete").val(data.f01_NRO_GABINETE);
-        $("#observacion").val(data.ANT_OBSERVACION);
+        if (data.ANT_OBSERVACION == undefined) {
+          $("#observacion").val(data.observacion);
+        } else {
+          $("#observacion").val(data.ANT_OBSERVACION);
+        }
 
         $("#latitud_reg").val(data.ANT_LATITUD);
         $("#longitud_reg").val(data.ANT_LOGITUD);
@@ -2876,13 +2886,15 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $scope.tipoReg == data.f01_TIPO_REGISTRO;
         if(data.f01_NRO_AUTORIZACION != ""){
           $scope.autoriza = "mostrar";
-          $scope.chec_autorizacion = false;
+          $scope.n_autorizacion = false;
+          $scope.chec_autorizacion = true;
           $("#den_auto").val(data.f01_NRO_AUTORIZACION);
           document.getElementById("condiciones").checked = 1;
 
         }else{
           $scope.autoriza = null;
           $scope.chec_autorizacion = false;
+          $scope.n_autorizacion = true;
           document.getElementById("condiciones").checked = 0;
         }
         $scope.lstSoporteprevio = [];
@@ -2892,7 +2904,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         if($scope.tipoReg == "R_MULTIPLE"){
           $scope.mostrarRU = false;
           $scope.radiobase_simple = "mostrar"
-          $scope.botonesrodolfo = false;
+          $rootScope.botonesrodolfo = false;
 
         }else{
           $scope.radiobase_simple = null;
@@ -2906,6 +2918,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $scope.mostrarRMGM = true;
         $rootScope.mostrarRU = false;
         $scope.actualizarbtn_multiple = true;
+        
       }catch(e){
         console.log("Error",e);
       }
@@ -2932,7 +2945,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               }else{
                 nro_autorizacion = "";                
               }
-              var dataGrilla = '{"f01_TIPO_REGISTRO":"'+$scope.tipoReg+'","f01_DENOMINACION":"'+$("#den_rbase").val()+'","f01_UBI_RB":"'+$("#ub_rbase").val()+'","f01_TIPO_UBIC":"'+$("#tp_prop").val()+'","f01_Ubicacion":'+JSON.stringify(dataAnt1)+',"f01_UbicacionUdit":'+JSON.stringify(dataUbi)+',"f01_NRO_GABINETE":'+$("#den_ngabinete").val()+',"cod_catastral":"'+$("#cod_catastral").val()+'","f01_GRILLA_SOPORTE":'+JSON.stringify($scope.lstSoporteprevio)+',"f01_NRO_AUTORIZACION":"'+nro_autorizacion+'","estadoTramite":"NO ENVIADO","fecha_envio":"SIN FECHA","ANT_LOGITUD":"'+$("#longitud_reg").val()+'","ANT_LATITUD":"'+$("#latitud_reg").val()+'","observacion":"'+$("#observacion").val()+'" }';
+              var dataGrilla = '{"f01_TIPO_REGISTRO":"'+$scope.tipoReg+'","f01_DENOMINACION":"'+$("#den_rbase").val()+'","f01_UBI_RB":"'+$("#ub_rbase").val()+'","f01_TIPO_UBIC":"'+$("#tp_prop").val()+'","f01_Ubicacion":'+JSON.stringify(dataAnt1)+',"f01_UbicacionUdit":'+JSON.stringify(dataUbi)+',"f01_NRO_GABINETE":'+$("#den_ngabinete").val()+',"cod_catastral":"'+$("#cod_catastral").val()+'","f01_GRILLA_SOPORTE":'+JSON.stringify($scope.lstSoporteprevio)+',"f01_NRO_AUTORIZACION":"'+nro_autorizacion+'","estadoTramite":"NO ENVIADO","fecha_envio":"SIN FECHA","ANT_LOGITUD":"'+$("#longitud_reg").val()+'","ANT_LATITUD":"'+$("#latitud_reg").val()+'","ANT_OBSERVACION":"'+$("#observacion").val()+'" }';
               $scope.grilla_edita_multiple.push(JSON.parse(dataGrilla));   
               $scope.cargar_mapa();
 
@@ -3619,7 +3632,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               }
               ubicacionutm = ubicacionutm[0];
               var dataUbi = '{"xgeo_frm_id":'+sessionService.get('IDTRAMITE')+',"xgoe_ciudadano_id":"'+sessionService.get('IDUSUARIO')+'","xgeo_ubicacion":"'+ubicacionutm+'"}';
-              dataAnt = {"den_rbase":$("#den_rbase").val(),"ub_rbase":$("#ub_rbase").val(),"tp_prop":$("#tp_prop").val(),"den_ngabinete":$("#den_ngabinete").val(),"observacion":$("#observacion").val() ,"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val(),"ubicacion":ubicacionutm};  
+              dataAnt = {"den_rbase":$("#den_rbase").val(),"ub_rbase":$("#ub_rbase").val(),"tp_prop":$("#tp_prop").val(),"den_ngabinete":$("#den_ngabinete").val(),"ANT_OBSERVACION":$("#observacion").val() ,"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val(),"ubicacion":ubicacionutm};  
               $scope.UbicacionData = dataAnt;
           }
 
@@ -3727,7 +3740,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 ubicacionutm = ubicacionutm[0];
               }
               var dataUbi = '{"xgeo_frm_id":'+sessionService.get('IDTRAMITE')+',"xgoe_ciudadano_id":"'+sessionService.get('IDUSUARIO')+'","xgeo_ubicacion":"'+ubicacionutm+'"}';
-              dataAnt = {"den_rbase":$("#den_rbase").val(),"ub_rbase":$("#ub_rbase").val(),"tp_prop":$("#tp_prop").val(),"den_ngabinete":$("#den_ngabinete").val(),"observacion":$("#observacion").val(),"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val()};  
+              dataAnt = {"den_rbase":$("#den_rbase").val(),"ub_rbase":$("#ub_rbase").val(),"tp_prop":$("#tp_prop").val(),"den_ngabinete":$("#den_ngabinete").val(),"ANT_OBSERVACION":$("#observacion").val(),"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val()};  
               dataAnt1 = {"ubicacion":ubicacionutm,"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val(),"latitud_extra":$("#latitud_reg").val(),"longitud_extra":$("#longitud_reg").val()};  
               $scope.UbicacionData_previa = dataAnt1;
             }
@@ -3739,7 +3752,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             if($scope.datarenviada.GRD_ANTENAS[0].f01_Ubicacion.ubicacion != undefined || $scope.datarenviada.GRD_ANTENAS[0].f01_Ubicacion.ubicacion != null){
 
                 var dataUbi = '{"xgeo_frm_id":'+sessionService.get('IDTRAMITE')+',"xgoe_ciudadano_id":"'+sessionService.get('IDUSUARIO')+'","xgeo_ubicacion":"'+ubicacionutm+'"}';
-                dataAnt = {"den_rbase":$("#den_rbase").val(),"ub_rbase":$("#ub_rbase").val(),"tp_prop":$("#tp_prop").val(),"den_ngabinete":$("#den_ngabinete").val(),"observacion":$("#observacion").val(),"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val()};  
+                dataAnt = {"den_rbase":$("#den_rbase").val(),"ub_rbase":$("#ub_rbase").val(),"tp_prop":$("#tp_prop").val(),"den_ngabinete":$("#den_ngabinete").val(),"ANT_OBSERVACION":$("#observacion").val(),"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val()};  
                 dataAnt1 = {"ubicacion":ubicacionutm,"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val(),"latitud_extra":$("#latitud_reg").val(),"longitud_extra":$("#longitud_reg").val()};  
                 $scope.UbicacionData_previa = dataAnt1;
                 $scope.ultimoRegistro_renevio($scope.datarenviada);
@@ -3772,7 +3785,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             }
             var dataUbi = '{"xgeo_frm_id":'+sessionService.get('IDTRAMITE')+',"xgoe_ciudadano_id":"'+sessionService.get('IDUSUARIO')+'","xgeo_ubicacion":"'+ubicacionutm+'"}';
             // Fin Informacion Ubicacion
-            dataAnt = {"den_rbase":$("#den_rbase").val(),"ub_rbase":$("#ub_rbase").val(),"tp_prop":$("#tp_prop").val(),"den_ngabinete":$("#den_ngabinete").val(),"observacion":$("#observacion").val(),"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val()};  
+            dataAnt = {"den_rbase":$("#den_rbase").val(),"ub_rbase":$("#ub_rbase").val(),"tp_prop":$("#tp_prop").val(),"den_ngabinete":$("#den_ngabinete").val(),"ANT_OBSERVACION":$("#observacion").val(),"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val()};  
             dataAnt1 = {"ubicacion":ubicacionutm,"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val()};  
             $scope.UbicacionData_previa = dataAnt1;
           }else{
@@ -4977,7 +4990,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         if($scope.tipoReg == "R_MULTIPLE"){
           $scope.mostrarRU = false;
           $scope.radiobase_simple = "mostrar"
-          $scope.botonesrodolfo = false;
+          $rootScope.botonesrodolfo = false;
           $scope.tipoProceso = "RBM";
 
         }else{
@@ -5075,7 +5088,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
           $scope.dataUbicacionNueva = dataUbi;
           // Fin Informacion Ubicacion
           $scope.UbicacionData_m = {"ubicacion":ubicacionutm,"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val()}; 
-          dataAnt = {"den_rbase":$("#den_rbase").val(),"ub_rbase":$("#ub_rbase").val(),"tp_prop":$("#tp_prop").val(),"den_ngabinete":$("#den_ngabinete").val(),"observacion":$("#observacion").val(),"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val()};  
+          dataAnt = {"den_rbase":$("#den_rbase").val(),"ub_rbase":$("#ub_rbase").val(),"tp_prop":$("#tp_prop").val(),"den_ngabinete":$("#den_ngabinete").val(),"ANT_OBSERVACION":$("#observacion").val(),"macrodistrito":$("#macrodistrito").val(),"zona":$("#zona").val(),"cod_catastral":$("#cod_catastral").val()};  
         if($scope.verif_requisitos_desp() && dataAnt != undefined){
           $scope.ultimoRegistro(dataAnt);
           if($scope.tipoProceso == "RBM"){
@@ -5633,22 +5646,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       
 
       $scope.data_Sitv3_v01 = '{"id_mapa":1,"ext_id_tramite":"'+nroTramiteEnviado+'","usuario":"sistema.externo","items":['+rItems+']}';
-
-
-      /*var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJMT1RVUyIsInN1YiI6Ik1hcGEgQW50ZW5hcyIsImV4cCI6NjM2NzQwNzMwMzk5MjA4OTg2LCJ1c3VhcmlvIjoibG90dXMuYW50ZW5hcyIsImlkVXN1YXJpbyI6MH0=.N4/Gddm85L7tAxCMiudUvfKeCYywANrxgw8OA6HrCyE=';
-      $.ajax({
-          type: 'POST',
-          headers:{
-            AuthorizationServices: 'Bearer '+token
-          },
-         url: $scope.urlSITv3+'GeoDB/publico/swPublicoRegistrarItemsTramite',
-         dataType: 'json',
-         data: '{"id_mapa":1,"ext_id_tramite":"'+nroTramiteEnviado+'","usuario":"antenasIGOB","items":['+rItems+']}',
-         success: function (data){                    
-            
-          },
-         error: function (data){ console.log(data);}
-      });*/
 
     }
     $scope.verif_requisitos_desp = function(){

@@ -897,10 +897,10 @@ body.mobile-nav-active #mobile-nav-toggle{
 #summary3 p.collapsing{
     min-height:42px!important
 }
-#summary3 a.collapsed:after{
+#summary3 .collapsed:after{
     content:'+ Leer Más'
 }
-#summary3 a:not(.collapsed):after{
+#summary3 :not(.collapsed):after{
     content:'- Leer Menos'
 }
 #summary3 a#nada(.collapsed):after {

@@ -139,8 +139,6 @@ gCrearCasoSitram.prototype.crearCasoAeLineaSitram = function (functionResp) {
     };
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };
-
-
 gCrearCaso.prototype.crearSolicitudViaje = function (functionResp) {
     urlComp = "/crearSolicitudViaje";
     typeCall = "post";

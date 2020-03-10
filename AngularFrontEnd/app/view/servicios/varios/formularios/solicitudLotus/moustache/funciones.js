@@ -124,7 +124,6 @@ function validarFrmProcesos (){
     }
 };
 
-
 function validarEnvioTramite (){
         swal({
             title: 'CONFIRMAR',

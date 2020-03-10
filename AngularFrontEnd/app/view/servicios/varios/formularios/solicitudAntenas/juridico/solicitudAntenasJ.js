@@ -1857,8 +1857,9 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               $scope.hab_boton_guardar = true;
           break;
         case "R_MULTIPLE":
-          $scope.grilla_rbmultiple = data2.GRD_ANTENAS; 
-
+          $scope.grilla_rbmultiple = data2.GRD_ANTENAS;
+          $scope.dataGrillaM = angular.toJson($scope.grilla_rbmultiple);
+          $scope.grilla_rbmultiple = JSON.parse($scope.dataGrillaM);
           $scope.lst_grilla_multiple();
           if(estado == "NO" ){
             $scope.autoriza = null;
@@ -1923,6 +1924,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
           }
           $scope.grilla_rbmultiple = data2.GRD_ANTENAS; 
+          $scope.dataGrillaM = angular.toJson($scope.grilla_rbmultiple);
+          $scope.grilla_rbmultiple = JSON.parse($scope.dataGrillaM);
           $scope.lst_grilla_multiple();
           //$scope.tipoReg = "G_MULTIPLE";
           $rootScope.rbase_multiple = true;
@@ -2985,6 +2988,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       }
           $scope.grilla_rbmultiple = [];
           $scope.grilla_rbmultiple = $scope.grilla_edita_multiple;
+          $scope.dataGrillaM = angular.toJson($scope.grilla_rbmultiple);
+          $scope.grilla_rbmultiple = JSON.parse($scope.dataGrillaM);
           swal('Ok!', 'La actualización del Registro se realizo correctamente', 'success');
           $scope.lst_grilla_multiple();
           $scope.btnGuardarRegistro = false;
@@ -3859,6 +3864,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             
               }
               $rootScope.Antenas         = $scope.grilla_rbmultiple;//JSON.parse(dataEnvLotus); 
+              $rootScope.Antenas         = JSON.parse(angular.toJson($rootScope.Antenas));
               dataPrevia.GRD_ANTENAS     = $rootScope.Antenas;
               $scope.tipoProceso         = "RBM"; 
               $scope.tipo_rvnTramite     = "RM";
@@ -3888,6 +3894,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 $scope.guardarUbicacion($scope.grilla_rbmultiple[i].f01_UbicacionUdit); 
               }
               $rootScope.Antenas         = $scope.grilla_rbmultiple;
+              $rootScope.Antenas         = JSON.parse(angular.toJson($rootScope.Antenas));
               dataPrevia.GRD_ANTENAS     = $rootScope.Antenas;
               $scope.tipoProceso         = "GM";
               $scope.tipo_rvnTramite     = "GM";
@@ -4284,8 +4291,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
           url: $scope.URLAPI + 'wsUbi/updateUbicacionGeoserver',
           dataType: 'json',
           data: dataUbicacion,//'{  "cas_id":'+$scope.cas_id+',"fr_casos":'+JSON.stringify($scope.frcasos)+'}',
-          success: function (data){ 
-             
+          success: function (data){   
            },
           error: function (data){ console.log(data);}
       });
@@ -5168,6 +5174,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                     $scope.grd_antenas_nueva.push($scope.grilla_rbmultiple[i]);
                   }
                 }
+                console.log("RODOLFO1111 ",$scope.grd_antenas_nueva);
                 datosSerializados_UPDATE.GRD_ANTENAS = $scope.grd_antenas_nueva;
                 datosSerializados_UPDATE.File_Adjunto = $scope.requiRecuperados;
                 datosSerializados_UPDATE.g_tipo = $scope.tipoProceso;//"RBM";
@@ -5358,9 +5365,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 stringFormulario40    =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
                 $scope.msgformularioJ = stringFormulario40;
                 //$scope.notifcondicionesuso = stringFormulario40;
-                
-
-                //$scope.guardarDataAntena = datos;
                 setTimeout(function(){
                     $scope.fmostrarFormulario();
                 },500);

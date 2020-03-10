@@ -119,6 +119,8 @@ function gCrearCasoSitram() {
     this.macro_id;
     this.nodo_id;
     this.tipo_tramite;
+    this.fojas;
+    this.desc_fojas;
 };
 gCrearCasoSitram.prototype.crearCasoAeLineaSitram = function (functionResp) {
     urlComp = "/crearCasoSitram";
@@ -131,7 +133,9 @@ gCrearCasoSitram.prototype.crearCasoAeLineaSitram = function (functionResp) {
       "procodigo" : this.procodigo,
       "macro_id" : this.macro_id,
       "nodo_id" : this.nodo_id,
-      "tipo_tramite": this.tipo_tramite
+      "tipo_tramite": this.tipo_tramite,
+      "fojas":this.fojas,
+      "desc_fojas":this.desc_fojas
     };
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };

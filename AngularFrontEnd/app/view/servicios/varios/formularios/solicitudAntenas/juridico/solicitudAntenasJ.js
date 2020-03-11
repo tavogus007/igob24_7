@@ -927,7 +927,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       $scope.ANTT_PLAN_ELEM_COMPL = null;
       $scope.ANTT_ADJ_AUTORIZACION = null;
       $scope.FORMATO_DIG_ADJ = null;
-      $("#ANTT_LIC_AMB_campo").val("");  
+      //$("#ANTT_LIC_AMB_campo").val("");  
     }
     $scope.mostrar_ActualizarRequisitos = function(){
       //$scope.limpearRequisitos(); 
@@ -2916,6 +2916,17 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
 
         }
+        if (data.estadoTramite == "ENVIADO") {
+          $rootScope.tabAdj = false;
+          $scope.archEnvPos1 = [];
+          $scope.archguardaenv = data.AdjuntosTramite;
+          for (var i = 0; i< $scope.archguardaenv.length; i++) {
+                    
+            $scope.archEnvPos1.push($scope.archguardaenv[i]);
+              
+          };
+          $scope.obtArchivosAdjuntos = $scope.archEnvPos1;
+        } 
         $scope.mostrarRUGU = "mostrar";//false;
         //$scope.mostrarbtn_multiple = true;
         $scope.mostrarRMGM = true;
@@ -4257,14 +4268,12 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             dataForm['hora_sist'] = sHora;
             $rootScope.datosFormDJ_Antenas = dataForm;
             $rootScope.datosFormDJ_Antenas['g_fecha'] = sfecha+" "+sHora;
-            
         }
     }
     $scope.fmostrarFormulario   =   function(){
 
         $("#declaracionJ").modal({backdrop: 'static', keyboard: false});
         $('#msgformularioJ').html($scope.msgformularioJ);
-
 
     }
     $scope.guardarInformacioAntena = function(){
@@ -4293,7 +4302,9 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
           data: dataUbicacion,//'{  "cas_id":'+$scope.cas_id+',"fr_casos":'+JSON.stringify($scope.frcasos)+'}',
           success: function (data){   
            },
-          error: function (data){ console.log(data);}
+          error: function (data){ 
+            console.log(data);
+          }
       });
     }
     $scope.guardarInformacionCiudadano = function(datosGradarCd){
@@ -4921,7 +4932,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             
             
         }else{
-          swal('Error', 'Todavia no selecciono un documento desde  su equipo', 'error');
+          swal('Error', 'Todavia no selecciono un documento desde su equipo', 'error');
         }
               
         $.unblockUI();
@@ -4947,9 +4958,32 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
       }
       return posicion;
     }
+    $scope.vaciarinputArchivos = function(){
+      $("#ANTT_CON_ARR_campo").val("");
+        $("#ANTT_CART_NOTARIADA_campo").val("");
+        $("#ANTT_AUT_ESC_COPROP_campo").val("");
+        $("#ANTT_LIC_AMB_campo").val("");
+        $("#ANTT_CAL_ESTRUC_SOP_campo").val("");
+        $("#ANTT_POL_SEG_campo").val("");
+        $("#ANTT_CERT_AUT_TRIB_campo").val("");
+        $("#ANTT_CART_NOT_campo").val("");
+        $("#ANTT_PLAN_MIME_campo").val("");
+        $("#ANTT_PLAN_MANT_campo").val("");
+        $("#ANTT_EST_GEOLOGICO_campo").val("");
+        $("#ANTT_PLAN_ALT_SOPORTE_campo").val("");
+        $("#ANTT_PLAN_SITIO_campo").val("");
+        $("#ANTT_PLAN_MED_PREV_SEG_campo").val("");
+        $("#ANTT_DESC_ESQ_BALIZAMIENTO_campo").val("");
+        $("#ANTT_INF_TEC_POS_campo").val("");
+        $("#ANTT_DOC_AUT_LUG_ESP_PUB_campo").val("");
+        $("#ANTT_PLAN_DET_CONST_CAT_campo").val("");
+        $("#ANTT_DOC_AUT_LUG_ESP_PUB_GAB_campo").val("");
+    }
   ///////////////////////FIN DE ADJUNTOS V02/////////////////////
   //// data par el envio de informacion de  antenas multiple ///////
     $scope.registro_i_data_multiple = function(data){
+      $scope.img = [];
+      $scope.vaciarinputArchivos();
       $scope.enviarTRamiteRBM = true;
       $scope.verTRamiteRBM = false;  
       $scope.mostrarbtn_multiple =  true;
@@ -5020,6 +5054,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $scope.SubDocNecesarios();
         $scope.estadoTramite_posi = "NO";
         $scope.tipoTramite = "MULTIPLE_RG";
+        $scope.limpearRequisitos();
         $scope.reqPropiedad(data.f01_TIPO_UBIC);
         $scope.mostrar_ActualizarRequisitos();
 
@@ -5167,14 +5202,13 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                     //$scope.grilla_rbmultiple[i].estadoTramite = $rootScope.Antenas_multiple[0].f01_TIPO_REGISTRO;
                     $scope.grilla_rbmultiple[i].f01_Ubicacion    = $rootScope.Antenas_multiple[0].f01_Ubicacion;
                     $scope.grilla_rbmultiple[i].f01_NRO_GABINETE = $rootScope.Antenas_multiple[0].ANT_NRO_GAB;
-                    $scope.grilla_rbmultiple[i].f01_Observacion  = $rootScope.Antenas_multiple[0].ANT_OBSERVACION;
+                    $scope.grilla_rbmultiple[i].ANT_OBSERVACION  = $rootScope.Antenas_multiple[0].ANT_OBSERVACION;
                     $scope.grilla_rbmultiple[i].AdjuntosTramite  = $scope.rutaArchEnvioLotus;
                     $scope.grd_antenas_nueva.push($scope.grilla_rbmultiple[i]);
                   }else{
                     $scope.grd_antenas_nueva.push($scope.grilla_rbmultiple[i]);
                   }
                 }
-                console.log("RODOLFO1111 ",$scope.grd_antenas_nueva);
                 datosSerializados_UPDATE.GRD_ANTENAS = $scope.grd_antenas_nueva;
                 datosSerializados_UPDATE.File_Adjunto = $scope.requiRecuperados;
                 datosSerializados_UPDATE.g_tipo = $scope.tipoProceso;//"RBM";

@@ -124,7 +124,6 @@ function validarFrmProcesos (){
     }
 };
 
-
 function validarEnvioTramite (){
         swal({
             title: 'CONFIRMAR',
@@ -164,6 +163,8 @@ function enviarData() {
         crearCaso.macro_id = 0;
         crearCaso.nodo_id = 1628;
         crearCaso.tipo_tramite = document.getElementById('POC_TIPO_TRAMITE').value;
+        crearCaso.fojas = 0;
+        crearCaso.desc_fojas = 0;
         crearCaso.crearCasoAeLineaSitram(function(response){
             try {
                 response    =   JSON.parse(response);

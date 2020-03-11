@@ -1,7 +1,5 @@
 ﻿function vehiculosJuridicoLibrosController($scope, $q, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG,
     LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter, FileUploader, fileUpload, fileUpload1, $timeout, obtFechaCorrecta) {
-    //alert('CONTROLADOR VEHICULOS JURIDICA');
-
     var hoy = new Date();
     var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
     var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
@@ -21,28 +19,25 @@
         $scope.requiRecuperados = [];
         $scope.SubDocNecesarios();
     };
-    $scope.SubDocNecesarios = function(){
+    $scope.SubDocNecesarios = function () {
         var oid_ciu1 = sessionService.get('IDCIUDADANO');
-            $scope.file_CI = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante +"/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RA + "?app_name=todoangular";  
-            $scope.file_CI_inv = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante +"/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RR + "?app_name=todoangular";  
-            $scope.rep_legal = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 +"/" + $rootScope.datosIniciales.f01_poder_representante + "?app_name=todoangular"; 
-            $scope.nit = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 +"/" + $rootScope.datosIniciales.file_num_ident + "?app_name=todoangular";  
-            var nombre_ci = "Cedula de Identidad Anverso";
-            $scope.guardarFilesVL($rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RA, nombre_ci ,$scope.file_CI );
-            var nombre_ci_inv = "Cedula de Identidad Reverso";
-            $scope.guardarFilesVL($rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RR, nombre_ci_inv ,$scope.file_CI_inv );
-            var rep_legal = "Poder del Representante Legal";
-            $scope.guardarFilesVL($rootScope.datosIniciales.f01_poder_representante, rep_legal ,$scope.rep_legal );
-            var nit = "N.I.T.";
-            $scope.guardarFilesVL($rootScope.datosIniciales.file_num_ident, nit, $scope.nit);
-            $rootScope.file_CI_A = $scope.file_CI;
-            $rootScope.file_CI_R = $scope.file_CI_inv;
-            $rootScope.file_PODER = $scope.rep_legal;
-            $rootScope.file_NIT = $scope.nit;
+        $scope.file_CI = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante + "/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RA + "?app_name=todoangular";
+        $scope.file_CI_inv = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante + "/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RR + "?app_name=todoangular";
+        $scope.rep_legal = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 + "/" + $rootScope.datosIniciales.f01_poder_representante + "?app_name=todoangular";
+        $scope.nit = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 + "/" + $rootScope.datosIniciales.file_num_ident + "?app_name=todoangular";
+        var nombre_ci = "Cedula de Identidad Anverso";
+        $scope.guardarFilesVL($rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RA, nombre_ci, $scope.file_CI);
+        var nombre_ci_inv = "Cedula de Identidad Reverso";
+        $scope.guardarFilesVL($rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RR, nombre_ci_inv, $scope.file_CI_inv);
+        var rep_legal = "Poder del Representante Legal";
+        $scope.guardarFilesVL($rootScope.datosIniciales.f01_poder_representante, rep_legal, $scope.rep_legal);
+        var nit = "N.I.T.";
+        $scope.guardarFilesVL($rootScope.datosIniciales.file_num_ident, nit, $scope.nit);
+        $rootScope.file_CI_A = $scope.file_CI;
+        $rootScope.file_CI_R = $scope.file_CI_inv;
+        $rootScope.file_PODER = $scope.rep_legal;
+        $rootScope.file_NIT = $scope.nit;
     }
-
-      ////ADJUNTOS DEL CIUDADANO
-
     $scope.guardarFilesVL = function (campo, nombre, url) {
         var parAdjunto = '{"campo":"' + campo + '","nombre":"' + nombre + '","url":"' + url + '"}';
         $scope.requiRecuperados.push(JSON.parse(parAdjunto));
@@ -101,23 +96,17 @@
             }
         }
     };
-   
-   
-    ///ADJUNTOS DEL CIUDADANO
-
     $scope.tipotramite_list = function () {
         var validarpromesas = [$scope.tipoTramite()];
-        $q.all(validarpromesas).then(function (resp) {//AE - Validar Envio Licencia
+        $q.all(validarpromesas).then(function (resp) {
         });
     }
-
     angular.module('app', [])
         .directive('sameAs', function () {
             return {
                 require: 'ngModel',
                 link: function (scope, elem, attrs, ngModel) {
                     ngModel.$parsers.unshift(validate);
-                    // Force-trigger the parsing pipeline.
                     scope.$watch(attrs.sameAs, function () {
                         ngModel.$setViewValue(ngModel.$viewValue);
                     });
@@ -155,8 +144,6 @@
             $.unblockUI();
         }
     };
-    /*CIUDADANO - ENVIAR FORMULARIO NATURAL*/
-    //enviarFormProcesosLinea
     $scope.validarEnvio = function (data) {
         swal({
             title: 'CONFIRMAR',
@@ -180,12 +167,8 @@
         $scope.btnEnviarForm = true;
         var idProcodigo = 'LI_VEH';
         var datosNeXO = {};
-        /*RENOVACION DE LICENCIAS*/
-
         paramForm.FA_TIP_CON = paramForm.f01_num_dos_prop;
         paramForm.IN_TIP_CON = paramForm.FA_TIPO_DOC;
-
-        //if(sMacroR != "" && sZonaR  != "" && sMacroRDesc  != "" && sZonaRDesc  != ""){
         var sIdTramite = $rootScope.tramiteId;
         var datosSerializados = JSON.stringify(paramForm);
         archivo1 = "";
@@ -200,8 +183,6 @@
                     response = JSON.parse(response);
                     var results = response.success.data;
                     indice = 0;
-                    //if(results.length > 0 && results[0].sp_pmfunction_crearcaso_linea != null){
-                    //if(results.length > 0 && results[0].sp_pmfunction_crearcaso_linea != null){
                     datosIF = results[0].sp_pmfunction_crearcaso_en_linea.split(",");
                     datosIF2 = datosIF[1];
                     datosIF[0] = datosIF[0].substring(1, datosIF[0].length);
@@ -210,21 +191,15 @@
                     sessionService.set('NROTRAMITEID', datosIF[1]);
                     sessionService.set('IDPROCESO', datosIF[6]);
                     var idTramite1 = sessionService.get('NROTRAMITEID');
-                    //datosNeXO['INT_AC_direccionImagenmapa']   =  CONFIG.APIURL+"/files/RC_CLI/"+sessionService.get('IDSOLICITANTE') + "/" + sessionService.get('IDTRAMITE') + "/"+ sessionService.get('IDTRAMITE') + $scope.archivo2 + "?app_name=todoangular";
-                    //VERIFICAR Y CORREGIR ERROR AL REALIZAR ALGUNO DE ESTOS PROCESOS
                     try {
                         $scope.validarFormProcesos(paramForm);
                     } catch (e) { }
 
                     $.unblockUI();
                 } catch (e) {
-                    console.log("falla: ", e);
                     alert("conexion fallida ");
                 }
             });
-        /* }else{
-             swal('', "Complete sus Datos de Direccion", 'warning');
-         }  */
     };
 
     var clsIniciarHtmlForm = $rootScope.$on('inicializarHtmlForm', function (event, tramite) {
@@ -242,17 +217,15 @@
     });
 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function (event, data) {
-        //MOSTRAR RADIO NUEVA - RENOVACION
         if (typeof (data.rdTipoTramite) != 'undefined') {
             if (data.rdTipoTramite == "NUEVO") {
-                //MOSTRAMOS BOTONES PAGINA
                 if (data.INT_FORM_ALMACENADO == "G") {
                     $scope.botones = "mostrar";
                     $scope.desabilitado = false;
                 }
             }
         }
-    });//INICIAR CAMPOS INTERNET
+    });
 
     var clsValidarBtnEnviar = $rootScope.$on('validarBtnEnviar', function (event, data) {
         if (data > 0) {
@@ -262,7 +235,6 @@
         }
     });
 
-    //validarBtnEnviar
     $scope.validarBtnEnviar = function (cont) {
         if (cont > 0) {
             $scope.btnEnviarForm = false;
@@ -288,93 +260,78 @@
         }
     };
 
-    $scope.verificarDatosV = function(datos){
-        //alert(11111);
-        //console.log('datos11111',datos);
+    $scope.verificarDatosV = function (datos) {
         $scope.formulario409(datos);
         $("#declaracionJV").modal("show");
 
     }
-    $scope.visualizarLT = function(datos1) {
-        console.log("visualizacion datos", datos1)
-        if( datos1 == "1"){   
-        $scope.libro1 = 'mostrar';
-        $scope.libros2 = null;
-        $scope.noCierran = 'mostrar';
-    }if( datos1 == "2"){   
-        $scope.libros2 = 'mostrar';
-        $scope.libro1 = null;
-        $scope.noCierran = null;
+    $scope.visualizarLT = function (datos1) {
+        if (datos1 == "1") {
+            $scope.libro1 = 'mostrar';
+            $scope.libros2 = null;
+            $scope.noCierran = 'mostrar';
+        } if (datos1 == "2") {
+            $scope.libros2 = 'mostrar';
+            $scope.libro1 = null;
+            $scope.noCierran = null;
         }
     }
 
-    $scope.formulario409 = function(datosV){
-        //console.log('data 409',datosV);
-        $scope.valor =  datosV.valorLibroTablasV; 
-        if( $scope.valor == undefined){
-console.log("verificar datoooooooos", $scope.valor);
-swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 'error');
-        }else{
-        var fecha= new Date();
-        var fechaActualS = "";
-        fechaActualS= fecha.getDate() +" - "+ (fecha.getMonth() + 1) +" - "+ fecha.getFullYear();
-        var sHora = "";
-        sHora = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+    $scope.formulario409 = function (datosV) {
+        $scope.valor = datosV.valorLibroTablasV;
+        if ($scope.valor == undefined) {
+            swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 'error');
+        } else {
+            var fecha = new Date();
+            var fechaActualS = "";
+            fechaActualS = fecha.getDate() + " - " + (fecha.getMonth() + 1) + " - " + fecha.getFullYear();
+            var sHora = "";
+            sHora = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
 
-        $scope.dia = fecha.getDate();
-        $scope.mes = fecha.getMonth() + 1;
-        $scope.anio = fecha.getFullYear();
+            $scope.dia = fecha.getDate();
+            $scope.mes = fecha.getMonth() + 1;
+            $scope.anio = fecha.getFullYear();
 
-        $rootScope.datosEnvV = "";
-        
-        var stringFormulario409  =   "";
-        var urlFormularioJV  =   "";
-        $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
-        if($scope.tipoPersona == 'JURIDICO'){
-            datos.f01_tipo_per_desc = 'JURIDICO';
-            urlFormularioJV  =   "../../docs/formulario_409.html";
-            //urlFormularioJV  =   "../../docs/formulario_409.html";
+            $rootScope.datosEnvV = "";
 
-            $( "#msgformularioJV" ).load(urlFormularioJV, function(data) {
+            var stringFormulario409 = "";
+            var urlFormularioJV = "";
+            $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
+            if ($scope.tipoPersona == 'JURIDICO') {
+                datos.f01_tipo_per_desc = 'JURIDICO';
+                urlFormularioJV = "../../docs/formulario_409.html";
+                $("#msgformularioJV").load(urlFormularioJV, function (data) {
 
-                stringFormulario409  =   data;
+                    stringFormulario409 = data;
 
-                datos.VH_CC_NRO_DOC_IDEN = ((typeof(datosV.INT_NIT) == 'undefined' || datosV.INT_NIT == null) ? "" : datosV.INT_NIT);
-                datos.VH_CC_NOM_RAZ_SOC = ((typeof(datosV.f01_raz_soc_per_jur) == 'undefined' || datosV.f01_raz_soc_per_jur == null) ? "" : datosV.f01_raz_soc_per_jur);
-                datos.valorLibroTablasV = ((typeof(datosV.valorLibroTablasV) == 'undefined' || datosV.valorLibroTablasV == null) ? "" : datosV.valorLibroTablasV); 
-                //console.log('yyyyyy',datos.VH_CC_NRO_DOC_IDEN,datos.VH_CC_NOM_RAZ_SOC);  
+                    datos.VH_CC_NRO_DOC_IDEN = ((typeof (datosV.INT_NIT) == 'undefined' || datosV.INT_NIT == null) ? "" : datosV.INT_NIT);
+                    datos.VH_CC_NOM_RAZ_SOC = ((typeof (datosV.f01_raz_soc_per_jur) == 'undefined' || datosV.f01_raz_soc_per_jur == null) ? "" : datosV.f01_raz_soc_per_jur);
+                    datos.valorLibroTablasV = ((typeof (datosV.valorLibroTablasV) == 'undefined' || datosV.valorLibroTablasV == null) ? "" : datosV.valorLibroTablasV);
+                    stringFormulario409 = stringFormulario409.replace("#VH_CC_NRO_DOC_IDEN#", datos.VH_CC_NRO_DOC_IDEN);
+                    stringFormulario409 = stringFormulario409.replace("#VH_CC_NOM_RAZ_SOC#", datos.VH_CC_NOM_RAZ_SOC);
+                    stringFormulario409 = stringFormulario409.replace("#valorLibroTablasV#", $scope.valor);
 
-                /*datos.VH_CC_NRO_DOC_IDEN = ((typeof(datos.dtspsl_ci) == 'undefined' || datos.dtspsl_ci == null) ? "" : datos.dtspsl_ci);
-                datos.VH_CC_NOM_RAZ_SOC = ((typeof(datos.dtspsl_razon_social) == 'undefined' || datos.dtspsl_razon_social == null) ? "" : datos.dtspsl_razon_social);
-                datos.valorLibroTablasV = ((typeof(datos.valorLibroTablasV) == 'undefined' || datos.valorLibroTablasV == null) ? "" : datos.valorLibroTablasV);*/
- 
+                    stringFormulario409 = stringFormulario409.replace("#DIA#", fecha.getDate());
+                    stringFormulario409 = stringFormulario409.replace("#MES#", fecha.getMonth() + 1);
+                    stringFormulario409 = stringFormulario409.replace("#ANIO#", fecha.getFullYear());
 
-                stringFormulario409  =   stringFormulario409.replace("#VH_CC_NRO_DOC_IDEN#", datos.VH_CC_NRO_DOC_IDEN);
-                stringFormulario409  =   stringFormulario409.replace("#VH_CC_NOM_RAZ_SOC#", datos.VH_CC_NOM_RAZ_SOC);
-                stringFormulario409  =   stringFormulario409.replace("#valorLibroTablasV#", $scope.valor);
+                    $scope.msgformularioJV = stringFormulario409;
 
-                stringFormulario409  =   stringFormulario409.replace("#DIA#", fecha.getDate());
-                stringFormulario409  =   stringFormulario409.replace("#MES#", fecha.getMonth() + 1);
-                stringFormulario409  =   stringFormulario409.replace("#ANIO#", fecha.getFullYear());            
-
-                $scope.msgformularioJV = stringFormulario409;
-
-                setTimeout(function(){
-                    $scope.fmostrarFormulario();
-                },500);
-            })
-            $scope.armarDatosForm(datos,fechaActualS, sHora);
-            $scope.generarDocumentoPhpV();
+                    setTimeout(function () {
+                        $scope.fmostrarFormulario();
+                    }, 500);
+                })
+                $scope.armarDatosForm(datos, fechaActualS, sHora);
+                $scope.generarDocumentoPhpV();
+            }
         }
     }
-    }
 
-    $scope.armarDatosForm = function(data,sfecha,sHora){
-        console.log('data 11111111',data);
+    $scope.armarDatosForm = function (data, sfecha, sHora) {
         $rootScope.datosForm409 = "";
         var dataForm = {};
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
-        if($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona =='J'){
+        if ($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona == 'J') {
             dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
             dataForm['f01_tipo_form'] = '409';
             dataForm['VH_CC_NOM_RAZ_SOC'] = data.dtspsl_razon_social;
@@ -388,12 +345,11 @@ swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 
         }
     }
 
-    $scope.fmostrarFormulario   =   function(){
-        $("#exampleModalCenter1").modal({backdrop: 'static', keyboard: false});
+    $scope.fmostrarFormulario = function () {
+        $("#exampleModalCenter1").modal({ backdrop: 'static', keyboard: false });
         $('#msgformularioJV').html($scope.msgformularioJV);
     }
 
-    /* ADJUNTAR ACRCHIVOS */
     $scope.almacenarRequisitos = function (aArchivos, idFile) {
         document.getElementById('href_f01_upload_' + idFile).href = '';
         document.getElementById(idFile).value = '';
@@ -429,7 +385,7 @@ swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 
                     swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                     document.getElementById(idFile).value = '';
                 }
-            } 
+            }
         });
         datoObjectFactura = new Object();
         datoObjectFact = [];
@@ -470,7 +426,7 @@ swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 
                     swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                     document.getElementById(idFile).value = '';
                 }
-            } 
+            }
         });
         datoObjectTributario = new Object();
         datoObjectTrib = [];
@@ -511,14 +467,13 @@ swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 
                     swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                     document.getElementById(idFile).value = '';
                 }
-            } 
+            }
         });
         datoObjectCuadroAct = new Object();
         datoObjectCuad = [];
         $scope.datos.urlCuadroAct = url;
     };
-     $scope.almacenarRequisitos409 = function (aArchivos, idFile) {
-        console.log("registar url ", aArchivos, idFile)
+    $scope.almacenarRequisitos409 = function (aArchivos, idFile) {
         document.getElementById('href_f01_upload_' + idFile).href = '';
         document.getElementById(idFile).value = '';
         document.getElementById(idFile + '_url').value = '';
@@ -544,7 +499,6 @@ swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 
                 if (tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm') {
                     nombreNuevo = 'adjunto_' + fechaNueva + '.' + tipoDocci;
                     url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreNuevo + "?app_name=todoangular";
-                    console.log("urlllllll", url);
                     document.getElementById('href_f01_upload_' + idFile).href = url;
                     document.getElementById(idFile).value = nombreNuevo;
                     document.getElementById(idFile + '_url').value = url;
@@ -553,7 +507,7 @@ swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 
                     swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                     document.getElementById(idFile).value = '';
                 }
-            } 
+            }
         });
         datoObjectCuadroAct = new Object();
         datoObjectCuad = [];
@@ -561,9 +515,6 @@ swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 
     };
 
     $scope.almacenarRequisitosExcel = function (aArchivos, idFile) {
-        console.log('aArchivos',aArchivos);
-        console.log('idFile',idFile);
-
         document.getElementById('href_f01_upload_' + idFile).href = '';
         document.getElementById(idFile).value = '';
         document.getElementById(idFile + '_url').value = '';
@@ -586,10 +537,9 @@ swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 
                 var tipoDocci = archivo.name;
                 var nameArrayci = tipoDocci.split('.');
                 tipoDocci = nameArrayci[nameArrayci.length - 1];
-                if  (tipoDocci == 'xlsx' || tipoDocci == 'xls') {
+                if (tipoDocci == 'xlsx' || tipoDocci == 'xls') {
                     nombreNuevo = 'adjunto_' + fechaNueva + '.' + tipoDocci;
                     url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreNuevo + "?app_name=todoangular";
-                    console.log('url',url);
                     document.getElementById('href_f01_upload_' + idFile).href = url;
                     document.getElementById(idFile).value = nombreNuevo;
                     document.getElementById(idFile + '_url').value = url;
@@ -598,10 +548,10 @@ swal('Advertencia', 'Debe seleccionar una opcion, Valor Tablas o Valor Libros', 
                     swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo Excel (xls ó xlsx)', 'error');
                     document.getElementById(idFile).value = '';
                 }
-            } 
+            }
         });
         datoObjectExcel = new Object();
         datoObjectExc = [];
-        $scope.datos.excel = url; 
+        $scope.datos.excel = url;
     };
 }

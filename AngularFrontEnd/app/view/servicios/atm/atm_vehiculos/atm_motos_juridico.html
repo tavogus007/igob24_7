@@ -4,10 +4,7 @@
     <script type="text/javascript" src="../../view/servicios/atm/atm_vehiculos/atm_motos_juridico.js"></script>
     <script type="text/javascript" src="../../libs/js/jic.js"></script>
     <script type="text/javascript" src="../../libs/js/jszip.js"></script>
-
-    <!-- Libs -->
     <link href="../../libs/css/sweetalert.css" rel="stylesheet">
-    <!--ngSweetAlert-->
     <script src="../../libs/js/prism.js"></script>
     <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
     <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
@@ -81,7 +78,7 @@
         });
     });
 
-    $('#categoria> option[value="Natural"]').attr('selected', 'selected'); // valor por de3fecto en el select de un combo
+    $('#categoria> option[value="Natural"]').attr('selected', 'selected');
 
     $('.custom-upload input[type=file]').change(function () {
         $(this).next().find('input').val($(this).val());
@@ -106,14 +103,14 @@
         var rMisDocs = new Array();
         if (sobj.files[0]) {
             rMisDocs.push(sobj.files[0]);
-            angular.element(document.getElementById("id_serviciosMotosComercialController")).scope().almacenarRequisitos(rMisDocs, sidFile); 
+            angular.element(document.getElementById("id_serviciosMotosComercialController")).scope().almacenarRequisitos(rMisDocs, sidFile);
         }
     };
     function subirRequisitosPoliza(sobj, svalor) {
         var rMisDocs = new Array();
         if (sobj.files[0]) {
             rMisDocs.push(sobj.files[0]);
-            angular.element(document.getElementById("id_serviciosMotosComercialController")).scope().almacenarRequisitosPoliza(rMisDocs, sidFile); 
+            angular.element(document.getElementById("id_serviciosMotosComercialController")).scope().almacenarRequisitosPoliza(rMisDocs, sidFile);
         }
     };
     $('#file-input').change(function (e) {
@@ -141,21 +138,17 @@
     };
 
     function ver(id, id2, btn) {
-        /*if (dataIgob.POC_ADJUNTOS_url != undefined) {
-            document.getElementById(id).href = dataIgob.POC_ADJUNTOS_url;
-        } else {*/
         var urlImg = document.getElementById(id2).value;
         if (urlImg != '') {
             document.getElementById(id).href = urlImg;
         }
-        //}
     }
 
     $(document).ready(function () {
         $('[data-toggle="popover"]').popover();
     });
 
-$('.custom-upload2 input[type=file]').change(function () {
+    $('.custom-upload2 input[type=file]').change(function () {
         $(this).next().find('input').val($(this).val());
         cambiarFilePoder(this, $(this).val());
     });
@@ -207,7 +200,7 @@ $('.custom-upload2 input[type=file]').change(function () {
             return "";
         } else {
             var digits = ("" + Numer).split("");
-            if (digits.length == 7 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)) {//digits.length > 6 &&
+            if (digits.length == 7 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)) {
                 $("#" + mensaje).hide();
                 return Numer;
             } else {
@@ -259,7 +252,6 @@ $('.custom-upload2 input[type=file]').change(function () {
         if (isNaN(Numer)) {
             return "";
         } else {
-            // $("#"+mensaje).hide();
             var digits = ("" + Numer).split("");
             if (digits.length < 9 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)) {
                 if (digits.length == 7)
@@ -330,7 +322,6 @@ $('.custom-upload2 input[type=file]').change(function () {
         <div class="ibox float-e-margins">
             <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
                 <h4>INSCRIPCIÓN CASA COMERCIAL - MOTOS </h4>
-                <!--cambios-->
             </div>
             <br><br>
             <form name="signupForm" ng-controller="serviciosAtmController">
@@ -586,46 +577,50 @@ $('.custom-upload2 input[type=file]').change(function () {
                                 </div>
                             </div>
                         </div>
-                        <!-- Inicio Grilla visualizacion de requistos a enviar ><-->
-                        <div class="col-md-12" >
+                        <div class="col-md-12">
                             <legend> Documentos registrados de la Empresa:</legend>
-                            
+
                             <div class="col-lg-12">
                                 <div class="tab-content">
                                     <div id="tab-one" class="tab-pane active">
                                         <div class="row">
-                                        <div class="col-md-12">
-                                            <br>
-                                            <br>
-                                            <table class="table table-striped table-bordered" id="tablaAdjuntos">
-                                                <thead>
-                                                    <th>#&nbsp;</th>
-                                                    <th>Opciones&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; </th>
-                                                    <th>Archivo&nbsp;</th>
-                                                    <th>Descripción&nbsp;</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="column" ng-repeat="archivo in obtArchivosAdjuntos">
-                                                        <td>{{$index+1}}</td>
-                                                        
-                                                        <td>
-                                                        <a target="_blank" tooltip = "Ver" ng-click="imprimirArchivo(archivo.url)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#docsVisor"><i class="fa fa-eye" style="color:#249FE6"></i></a>
-                                                        <a ng-if = "$index > 3" tooltip = "Eliminar" ng-click="eliminarArchivo(archivo, $index)" class="btn btn-default btn-circle" ng-hide = "botones"><i class="fa fa-trash-o " style="color:#249FE6"></i></a>
-                                                        </td>
-                                                        <td>{{archivo.campo}}</td>
-                                                        <td>{{archivo.nombre}}</td>
-                                                        <!--td>{{archivo.url}}</td-->
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <div class="col-md-12">
+                                                <br>
+                                                <br>
+                                                <table class="table table-striped table-bordered" id="tablaAdjuntos">
+                                                    <thead>
+                                                        <th>#&nbsp;</th>
+                                                        <th>Opciones&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; </th>
+                                                        <th>Archivo&nbsp;</th>
+                                                        <th>Descripción&nbsp;</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="column" ng-repeat="archivo in obtArchivosAdjuntos">
+                                                            <td>{{$index+1}}</td>
+
+                                                            <td>
+                                                                <a target="_blank" tooltip="Ver"
+                                                                    ng-click="imprimirArchivo(archivo.url)"
+                                                                    class="btn btn-default btn-circle"
+                                                                    data-toggle="modal" data-target="#docsVisor"><i
+                                                                        class="fa fa-eye" style="color:#249FE6"></i></a>
+                                                                <a ng-if="$index > 3" tooltip="Eliminar"
+                                                                    ng-click="eliminarArchivo(archivo, $index)"
+                                                                    class="btn btn-default btn-circle"
+                                                                    ng-hide="botones"><i class="fa fa-trash-o "
+                                                                        style="color:#249FE6"></i></a>
+                                                            </td>
+                                                            <td>{{archivo.campo}}</td>
+                                                            <td>{{archivo.nombre}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
                                 </div>
-                            </div>    
+                            </div>
                         </div>
-                        <!-- Fin Grilla visualizacion de requistos a enviar> <-->
-
                         <div class="ibox-content" ng-show="t_enviado">
                             <form name="signupForm" class="form-horizontal" role="form" novalidate>
                                 <div class="col-md-12">
@@ -673,15 +668,15 @@ $('.custom-upload2 input[type=file]').change(function () {
                                                 </div>
                                             </div>
                                         </div>
-                                         <div class="col-md-1">
+                                        <div class="col-md-1">
                                             <label for="url">Cantidad Hojas </label>
                                         </div>
                                         <div class="col-md-1">
                                             <div class="form-group">
                                                 <div class="controls">
                                                     <input ng-model="datos.facturaFojas" id="facturaFojas"
-                                                    name="facturaFojas" class="form-control" width="30%" height="30" type="number" required="required" 
-                                                    ng-disabled="desabilitado">
+                                                        name="facturaFojas" class="form-control" width="30%" height="30"
+                                                        type="number" required="required" ng-disabled="desabilitado">
                                                 </div>
                                             </div>
                                         </div>
@@ -727,15 +722,15 @@ $('.custom-upload2 input[type=file]').change(function () {
                                                 </div>
                                             </div>
                                         </div>
-                                         <div class="col-md-1">
+                                        <div class="col-md-1">
                                             <label for="url">Cantidad Hojas </label>
                                         </div>
                                         <div class="col-md-1">
                                             <div class="form-group">
                                                 <div class="controls">
-                                                    <input ng-model="datos.duiFojas" id="duiFojas"
-                                                    name="duiFojas" class="form-control" width="30%" height="30" type="number"  required="required" 
-                                                    ng-disabled="desabilitado">
+                                                    <input ng-model="datos.duiFojas" id="duiFojas" name="duiFojas"
+                                                        class="form-control" width="30%" height="30" type="number"
+                                                        required="required" ng-disabled="desabilitado">
                                                 </div>
                                             </div>
                                         </div>
@@ -746,12 +741,13 @@ $('.custom-upload2 input[type=file]').change(function () {
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="url">PODER DEL COMPRADOR, FOTOCOPIA DE CI Y/O NIT SI CORRESPONDE:</label>
+                                            <label for="url">PODER DEL COMPRADOR, FOTOCOPIA DE CI Y/O NIT SI
+                                                CORRESPONDE:</label>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group custom-upload2">
                                                 <input type="file" id="f01_upload_poder" name="f01_upload_poder"
-                                                   accept="application/pdf,image/jpg" style="display: none;">
+                                                    accept="application/pdf,image/jpg" style="display: none;">
                                                 <div class="input-group col-xs-6">
                                                     <span class="input-group-addon"
                                                         style="background-color:rgb(0, 185, 194 ,0.6);">
@@ -781,25 +777,24 @@ $('.custom-upload2 input[type=file]').change(function () {
                                                 </div>
                                             </div>
                                         </div>
-                                         <div class="col-md-1">
+                                        <div class="col-md-1">
                                             <label for="url">Cantidad Hojas </label>
                                         </div>
                                         <div class="col-md-1">
                                             <div class="form-group">
                                                 <div class="controls">
-                                                    <input ng-model="datos.poderFojas" id="poderFojas"
-                                                    name="poderFojas" class="form-control" width="30%" height="30" type="number" required="required" 
-                                                    ng-disabled="desabilitado">
+                                                    <input ng-model="datos.poderFojas" id="poderFojas" name="poderFojas"
+                                                        class="form-control" width="30%" height="30" type="number"
+                                                        required="required" ng-disabled="desabilitado">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div><br>                      
+                            </div><br>
                         </div>
                         <br><br><br><br><br><br>
                         <div class="col-md-6" align="center">
-                            <!-- GNERADOR DE CAPCHA -->
                             <div class="col-md-12" align="center">
                                 <table width="50%" border="0" cellspacing="0" cellpadding="2" class="one">
                                     <tr class="color">
@@ -844,19 +839,16 @@ $('.custom-upload2 input[type=file]').change(function () {
                                 </b>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </form>
             <div class="col-md-12" align="right" ng-show="botones != null">
                 <button id="miFormGuardar" ng-click="serializarInformacionMotos(datos);getCaptchasXX();" type="button"
                     class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" tooltip="Guardar Formulario">
-                    <!--{{translateTitulos.lbl_016_29}}--></button>
-                <!--cambios-->
+                </button>
                 <button id="btnFormLicencia" ng-click="validarEnvio(datos);" data-dismiss="modal" type="button"
                     class="btn btn-success1 fa fab fa-mail-forward shake-little" tooltip="Enviar Formulario">
-                    <!--{{translateTitulos.lbl_016_30}}--></button>
-                <!--cambios-->
+                </button>
             </div>
         </div>
     </div>

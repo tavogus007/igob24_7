@@ -1,6 +1,5 @@
 function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG,
     LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter, FileUploader, fileUpload, fileUpload1, $timeout, obtFechaCorrecta) {
-    //alert('CONTROLADOR inmueble JURIDICA');
     var hoy = new Date();
     var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
     var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
@@ -41,7 +40,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
     }
     $scope.tipotramite_list = function () {
         var validarpromesas = [$scope.tipoTramite()];
-        $q.all(validarpromesas).then(function (resp) {//AE - Validar Envio Licencia
+        $q.all(validarpromesas).then(function (resp) {
         });
     }
     $scope.validarFormProcesos = function (datosForm) {
@@ -64,13 +63,10 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
                 swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible, para darle a conocer novedades acerca de su trámite.");
             });
         } catch (error) {
-            console.log("Error : ", error);
             swal('', 'Registro no modificado', 'error');
             $.unblockUI();
         }
     };
-    /*CIUDADANO - ENVIAR FORMULARIO NATURAL*/
-    //enviarFormProcesosLinea
     $scope.validarEnvio = function (data) {
         swal({
             title: 'CONFIRMAR',
@@ -93,13 +89,8 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
         $scope.btnEnviarForm = true;
         var idProcodigo = 'LI_INM';
         var datosNeXO = {};
-        /*RENOVACION DE LICENCIAS*/
-
         paramForm.FA_TIP_CON = paramForm.f01_num_dos_prop;
         paramForm.IN_TIP_CON = paramForm.FA_TIPO_DOC;
-
-
-        //if(sMacroR != "" && sZonaR  != "" && sMacroRDesc  != "" && sZonaRDesc  != ""){
         var sIdTramite = $rootScope.tramiteId;
         var datosSerializados = JSON.stringify(paramForm);
         archivo1 = "";
@@ -114,8 +105,6 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
                     response = JSON.parse(response);
                     var results = response.success.data;
                     indice = 0;
-                    //if(results.length > 0 && results[0].sp_pmfunction_crearcaso_linea != null){
-                    //if(results.length > 0 && results[0].sp_pmfunction_crearcaso_linea != null){
                     datosIF = results[0].sp_pmfunction_crearcaso_en_linea.split(",");
                     datosIF2 = datosIF[1];
                     datosIF[0] = datosIF[0].substring(1, datosIF[0].length);
@@ -124,15 +113,12 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
                     sessionService.set('NROTRAMITEID', datosIF[1]);
                     sessionService.set('IDPROCESO', datosIF[6]);
                     var idTramite1 = sessionService.get('NROTRAMITEID');
-                    //datosNeXO['INT_AC_direccionImagenmapa']   =  CONFIG.APIURL+"/files/RC_CLI/"+sessionService.get('IDSOLICITANTE') + "/" + sessionService.get('IDTRAMITE') + "/"+ sessionService.get('IDTRAMITE') + $scope.archivo2 + "?app_name=todoangular";
-                    //VERIFICAR Y CORREGIR ERROR AL REALIZAR ALGUNO DE ESTOS PROCESOS
                     try {
                         $scope.validarFormProcesos(paramForm);
                     } catch (e) { }
 
                     $.unblockUI();
                 } catch (e) {
-                    console.log("falla: ", e);
                     alert("conexion fallida ");
                 }
             });
@@ -152,17 +138,15 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
     });
 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function (event, data) {
-        //MOSTRAR RADIO NUEVA - RENOVACION
         if (typeof (data.rdTipoTramite) != 'undefined') {
             if (data.rdTipoTramite == "NUEVO") {
-                //MOSTRAMOS BOTONES PAGINA
                 if (data.INT_FORM_ALMACENADO == "G") {
                     $scope.botones = "mostrar";
                     $scope.desabilitado = false;
                 }
             }
         }
-    });//INICIAR CAMPOS INTERNET
+    });
 
     var clsValidarBtnEnviar = $rootScope.$on('validarBtnEnviar', function (event, data) {
         if (data > 0) {
@@ -171,8 +155,6 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
             $scope.btnEnviarForm = true;
         }
     });
-
-    //validarBtnEnviar
     $scope.validarBtnEnviar = function (cont) {
         if (cont > 0) {
             $scope.btnEnviarForm = false;
@@ -197,75 +179,66 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
             alert("Error ");
         }
     };
-    $scope.verificarDatos = function(datos){
+    $scope.verificarDatos = function (datos) {
         $scope.formulario406(datos);
-        
+
 
     }
-    $scope.formulario406 = function(dataI){
-
-        //console.log('dataI',dataI);
-        $scope.valor =  dataI.valorLibroTablas; 
-        if( $scope.valor == undefined){
-console.log("verificar datoooooooos", $scope.valor);
-swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
-        }else{
-        $("#declaracionJ").modal("show");
-        $rootScope.datosEnvI = "";
-        var fecha= new Date();
-        var fechaActualS = "";
-        fechaActualS= fecha.getDate() +" - "+ (fecha.getMonth() + 1) +" - "+ fecha.getFullYear();
-        var sHora = "";
-        sHora = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-        var stringFormulario406  =   "";
-        $scope.dia = fecha.getDate();
-        $scope.mes = fecha.getMonth() + 1;
-        $scope.anio = fecha.getFullYear();
-        var urlFormularioJ  =   "";
-        var snombre =   "";
-        var scedulaid   =   "";
-        var sexpedido   =   "";
-        var snombreREP = "";
-        var scirep = "";
-        var sempresa = "";
-        var snit = "";
-        $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
-        if($scope.tipoPersona == 'JURIDICO'){
-            datos.f01_tipo_per_desc = 'JURIDICO';
-            urlFormularioJ  =   "../../docs/formulario_406.html";
-            $( "#msgformularioJ" ).load(urlFormularioJ, function(data) {
-                stringFormulario406  =   data;
-                
-                datos.INM_VL_NRO_DOC_IDEN = ((typeof(dataI.INT_NIT) == 'undefined' || dataI.INT_NIT == null) ? "" : dataI.INT_NIT);
-                datos.INM_VL_NOM_RAZ_SOC = ((typeof(dataI.f01_raz_soc_per_jur) == 'undefined' || dataI.f01_raz_soc_per_jur == null) ? "" : dataI.f01_raz_soc_per_jur);
-                datos.valorLibroTablas = ((typeof(dataI.valorLibroTablas) == 'undefined' || dataI.valorLibroTablas == null) ? "" : dataI.valorLibroTablas);   
-
-                stringFormulario406  =   stringFormulario406.replace("#INM_VL_NRO_DOC_IDEN#", datos.INM_VL_NRO_DOC_IDEN);
-                stringFormulario406  =   stringFormulario406.replace("#INM_VL_NOM_RAZ_SOC#", datos.INM_VL_NOM_RAZ_SOC);
-                stringFormulario406  =   stringFormulario406.replace("#valorLibroTablas#",dataI.valorLibroTablas); 
-
-                stringFormulario406  =   stringFormulario406.replace("#DIA#", fecha.getDate());
-                stringFormulario406  =   stringFormulario406.replace("#MES#", fecha.getMonth() + 1);
-                stringFormulario406  =   stringFormulario406.replace("#ANIO#", fecha.getFullYear());
-                
-
-                $scope.msgformularioJ = stringFormulario406;
-
-                setTimeout(function(){
-                    $scope.fmostrarFormulario();
-                },500);
-            })
-            $scope.armarDatosForm(datos,fechaActualS, sHora);
-            $scope.generarDocumentoPhpI();
+    $scope.formulario406 = function (dataI) {
+        $scope.valor = dataI.valorLibroTablas;
+        if ($scope.valor == undefined) {
+            swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
+        } else {
+            $("#declaracionJ").modal("show");
+            $rootScope.datosEnvI = "";
+            var fecha = new Date();
+            var fechaActualS = "";
+            fechaActualS = fecha.getDate() + " - " + (fecha.getMonth() + 1) + " - " + fecha.getFullYear();
+            var sHora = "";
+            sHora = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+            var stringFormulario406 = "";
+            $scope.dia = fecha.getDate();
+            $scope.mes = fecha.getMonth() + 1;
+            $scope.anio = fecha.getFullYear();
+            var urlFormularioJ = "";
+            var snombre = "";
+            var scedulaid = "";
+            var sexpedido = "";
+            var snombreREP = "";
+            var scirep = "";
+            var sempresa = "";
+            var snit = "";
+            $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
+            if ($scope.tipoPersona == 'JURIDICO') {
+                datos.f01_tipo_per_desc = 'JURIDICO';
+                urlFormularioJ = "../../docs/formulario_406.html";
+                $("#msgformularioJ").load(urlFormularioJ, function (data) {
+                    stringFormulario406 = data;
+                    datos.INM_VL_NRO_DOC_IDEN = ((typeof (dataI.INT_NIT) == 'undefined' || dataI.INT_NIT == null) ? "" : dataI.INT_NIT);
+                    datos.INM_VL_NOM_RAZ_SOC = ((typeof (dataI.f01_raz_soc_per_jur) == 'undefined' || dataI.f01_raz_soc_per_jur == null) ? "" : dataI.f01_raz_soc_per_jur);
+                    datos.valorLibroTablas = ((typeof (dataI.valorLibroTablas) == 'undefined' || dataI.valorLibroTablas == null) ? "" : dataI.valorLibroTablas);
+                    stringFormulario406 = stringFormulario406.replace("#INM_VL_NRO_DOC_IDEN#", datos.INM_VL_NRO_DOC_IDEN);
+                    stringFormulario406 = stringFormulario406.replace("#INM_VL_NOM_RAZ_SOC#", datos.INM_VL_NOM_RAZ_SOC);
+                    stringFormulario406 = stringFormulario406.replace("#valorLibroTablas#", dataI.valorLibroTablas);
+                    stringFormulario406 = stringFormulario406.replace("#DIA#", fecha.getDate());
+                    stringFormulario406 = stringFormulario406.replace("#MES#", fecha.getMonth() + 1);
+                    stringFormulario406 = stringFormulario406.replace("#ANIO#", fecha.getFullYear());
+                    $scope.msgformularioJ = stringFormulario406;
+                    setTimeout(function () {
+                        $scope.fmostrarFormulario();
+                    }, 500);
+                })
+                $scope.armarDatosForm(datos, fechaActualS, sHora);
+                $scope.generarDocumentoPhpI();
+            }
         }
     }
-    }
 
-    $scope.armarDatosForm = function(data,sfecha,sHora){
+    $scope.armarDatosForm = function (data, sfecha, sHora) {
         $rootScope.datosForm406 = "";
         var dataForm = {};
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
-        if($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona =='J'){
+        if ($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona == 'J') {
             dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
             dataForm['f01_tipo_form'] = '406';
             dataForm['INM_VL_NOM_RAZ_SOC'] = data.dtspsl_razon_social;
@@ -279,13 +252,10 @@ swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
         }
     }
 
-    $scope.fmostrarFormulario   =   function(){
-        $("#exampleModalCenter1").modal({backdrop: 'static', keyboard: false});
+    $scope.fmostrarFormulario = function () {
+        $("#exampleModalCenter1").modal({ backdrop: 'static', keyboard: false });
         $('#msgformularioJ').html($scope.msgformularioJ);
     }
-
-   
-    /* ADJUNTAR ACRCHIVOS */
     $scope.almacenarRequisitos = function (aArchivos, idFile) {
         document.getElementById('href_f01_upload_' + idFile).href = '';
         document.getElementById(idFile).value = '';
@@ -321,11 +291,11 @@ swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
                     swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                     document.getElementById(idFile).value = '';
                 }
-            } 
+            }
         });
         datoObjectFactura = new Object();
         datoObjectFact = [];
-        $scope.datos.urlFactura = url; // NO OLVIDAR
+        $scope.datos.urlFactura = url;
     };
     $scope.almacenarRequisitosInmueble = function (aArchivos, idFile) {
         document.getElementById('href_f01_upload_' + idFile).href = '';
@@ -361,11 +331,11 @@ swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
                     swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                     document.getElementById(idFile).value = '';
                 }
-            } 
+            }
         });
         datoObjectInmueble = new Object();
         datoObjectInmb = [];
-        $scope.datos.urlInmueble = url; // NO OLVIDAR
+        $scope.datos.urlInmueble = url;
     };
     $scope.almacenarRequisitosCuadroAct = function (aArchivos, idFile) {
         document.getElementById('href_f01_upload_' + idFile).href = '';
@@ -401,17 +371,14 @@ swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
                     swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                     document.getElementById(idFile).value = '';
                 }
-            } 
+            }
         });
         datoObjectCuadroAct = new Object();
         datoObjectCuad = [];
-        $scope.datos.urlCuadroAct = url; 
+        $scope.datos.urlCuadroAct = url;
     };
 
     $scope.almacenarRequisitosExcel = function (aArchivos, idFile) {
-        //console.log('aArchivos',aArchivos);
-        //console.log('idFile',idFile);
-
         document.getElementById('href_f01_upload_' + idFile).href = '';
         document.getElementById(idFile).value = '';
         document.getElementById(idFile + '_url').value = '';
@@ -437,7 +404,6 @@ swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
                 if (tipoDocci == 'xlsx' || tipoDocci == 'xls') {
                     nombreNuevo = 'adjunto_' + fechaNueva + '.' + tipoDocci;
                     url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreNuevo + "?app_name=todoangular";
-                    //console.log('url',url);
                     document.getElementById('href_f01_upload_' + idFile).href = url;
                     document.getElementById(idFile).value = nombreNuevo;
                     document.getElementById(idFile + '_url').value = url;
@@ -446,11 +412,11 @@ swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
                     swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo Excel (xls ó xlsx)', 'error');
                     document.getElementById(idFile).value = '';
                 }
-            } 
+            }
         });
         datoObjectExcel = new Object();
         datoObjectExc = [];
-        $scope.datos.excel = url; 
+        $scope.datos.excel = url;
     };
 
 
@@ -488,13 +454,12 @@ swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
                     swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                     document.getElementById(idFile).value = '';
                 }
-            } 
+            }
         });
         datoObjectCuadroAct = new Object();
         datoObjectCuad = [];
-        $scope.datos.formularioAdjunto406 = url; 
+        $scope.datos.formularioAdjunto406 = url;
     };
-    ////ADJUNTOS DEL CIUDADANO
     $scope.guardarFiles = function (campo, nombre, url) {
         var parAdjunto = '{"campo":"' + campo + '","nombre":"' + nombre + '","url":"' + url + '"}';
         $scope.requiRecuperados.push(JSON.parse(parAdjunto));
@@ -552,5 +517,4 @@ swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
             }
         }
     };
-    ///ADJUNTOS DEL CIUDADANO
 }

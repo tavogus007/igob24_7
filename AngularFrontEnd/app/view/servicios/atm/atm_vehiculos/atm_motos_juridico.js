@@ -1,39 +1,27 @@
 function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG,
     LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter, FileUploader, fileUpload, fileUpload1, $timeout, obtFechaCorrecta) {
-    //alert('CONTROLADOR VEHICULOS JURIDICA');
     var hoy = new Date();
     var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
     var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
     $rootScope.fechayhora = fecha + ' ' + hora;
-    console.log('$scope.fechayhora', $scope.fechayhora);//$scope.btnGuardarForm   =   false;
     $scope.tipotramite = "";
 
     $scope.inicioVehiculosJuridico = function () {
         $scope.sTipoPersona = sessionService.get('TIPO_PERSONA');
         if ($scope.sTipoPersona == "NATURAL") {
             $scope.divNatural = "mostrar";
-
         } else {
             $scope.divJuridico = "mostrar";
         }
-        //$scope.datos.campo = 'factura';
-        //$scope.datos.titulo = 'factura';
-        console.log("recuperadossss", $scope.requiRecuperados);
         $scope.requiRecuperados = [];
         $scope.SubDocNecesarios();
     };
     $scope.SubDocNecesarios = function () {
-        console.log('$rootScope.datosIniciales', $rootScope.datosIniciales);
         var oid_ciu1 = sessionService.get('IDCIUDADANO');
         $scope.file_CI = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante + "/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RA + "?app_name=todoangular";
         $scope.file_CI_inv = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante + "/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RR + "?app_name=todoangular";
         $scope.rep_legal = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 + "/" + $rootScope.datosIniciales.f01_poder_representante + "?app_name=todoangular";
         $scope.nit = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 + "/" + $rootScope.datosIniciales.file_num_ident + "?app_name=todoangular";
-        console.log('$scope.file_CI', $scope.file_CI);
-        console.log('$scope.file_CI_inv', $scope.file_CI_inv);
-        console.log('$scope.file_CI_inv', $scope.rep_legal);
-        console.log('$scope.file_CI_inv', $scope.nit);
-
         var nombre_ci = "Cedula de Identidad Anverso";
         $scope.guardarFiles($rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RA, nombre_ci, $scope.file_CI);
         var nombre_ci_inv = "Cedula de Identidad Reverso";
@@ -42,16 +30,11 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
         $scope.guardarFiles($rootScope.datosIniciales.f01_poder_representante, rep_legal, $scope.rep_legal);
         var nit = "N.I.T.";
         $scope.guardarFiles($rootScope.datosIniciales.file_num_ident, nit, $scope.nit);
-
-
-
         $rootScope.file_CI_A = $scope.file_CI;
         $rootScope.file_CI_R = $scope.file_CI_inv;
         $rootScope.file_PODER = $scope.rep_legal;
         $rootScope.file_NIT = $scope.nit;
     }
-
-
     $scope.almacenarRequisitos = function (aArchivos, idFile) {
         document.getElementById('href_f01_upload_' + idFile).href = '';
         document.getElementById(idFile).value = '';
@@ -92,9 +75,7 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
         });
         datoObjectFactura = new Object();
         datoObjectFact = [];
-        $scope.datos.urlFactura = url; // NO OLVIDAR
-        //$scope.datos.urlFacturaLotus = $scope.datos.urlFactura[0].url;
-        console.log('URL ADJUNTO', url);
+        $scope.datos.urlFactura = url;
     };
     $scope.almacenarRequisitosPoliza = function (aArchivos, idFile) {
         document.getElementById('href_f01_upload_' + idFile).href = '';
@@ -135,8 +116,7 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
         });
         datoObjectPoliza = new Object();
         datoObjectPol = [];
-        $scope.datos.urlPoliza = url; // NO OLVIDAR
-        console.log('URL ADJUNTO', url);
+        $scope.datos.urlPoliza = url;
     };
 
     $scope.almacenarRequisitosPoder = function (aArchivos, idFile) {
@@ -178,16 +158,10 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
         });
         datoObjectPoder = new Object();
         datoObjectPod = [];
-        $scope.datos.urlPoder = url; // NO OLVIDAR
-        //$scope.datos.urlFacturaLotus = $scope.datos.urlFactura[0].url;
-        console.log('URL ADJUNTO', url);
-    };
-    ////ADJUNTOS DEL CIUDADANO
-    $scope.guardarFiles = function (campo, nombre, url) {
-        console.log('campo=================>', campo);
-        console.log('nombre =================>', nombre);
-        console.log('url=================>', url);
+        $scope.datos.urlPoder = url;
 
+    };
+    $scope.guardarFiles = function (campo, nombre, url) {
         var parAdjunto = '{"campo":"' + campo + '","nombre":"' + nombre + '","url":"' + url + '"}';
         $scope.requiRecuperados.push(JSON.parse(parAdjunto));
         $scope.fileadj = '{"File_Adjunto":' + JSON.stringify($scope.requiRecuperados) + '}';
@@ -203,7 +177,6 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
                 }
             };
             $scope.obtArchivosAdjuntos = archivosValidos;
-            console.log('$scope.obtArchivosAdjuntos', $scope.obtArchivosAdjuntos);
         }
     };
     $scope.imprimirArchivo = function (fum) {
@@ -245,7 +218,6 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
             }
         }
     };
-    ///ADJUNTOS DEL CIUDADANO
     $scope.validarFormProcesos = function (datosForm) {
         var idTramite = sessionService.get('IDTRAMITE');
         idUsuario = sessionService.get('IDUSUARIO');
@@ -271,9 +243,6 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
             $.unblockUI();
         }
     };
-    /*CIUDADANO - ENVIAR FORMULARIO NATURAL*/
-
-    //enviarFormProcesosLinea
     $scope.validarEnvio = function (data) {
         swal({
             title: 'CONFIRMAR',
@@ -297,13 +266,8 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
         $scope.btnEnviarForm = true;
         var idProcodigo = 'LI_VEH';
         var datosNeXO = {};
-        /*RENOVACION DE LICENCIAS*/
-
         paramForm.FA_TIP_CON = paramForm.f01_num_dos_prop;
         paramForm.IN_TIP_CON = paramForm.FA_TIPO_DOC;
-
-
-        //if(sMacroR != "" && sZonaR  != "" && sMacroRDesc  != "" && sZonaRDesc  != ""){
         var sIdTramite = $rootScope.tramiteId;
         var datosSerializados = JSON.stringify(paramForm);
         archivo1 = "";
@@ -318,8 +282,6 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
                     response = JSON.parse(response);
                     var results = response.success.data;
                     indice = 0;
-                    //if(results.length > 0 && results[0].sp_pmfunction_crearcaso_linea != null){
-                    //if(results.length > 0 && results[0].sp_pmfunction_crearcaso_linea != null){
                     datosIF = results[0].sp_pmfunction_crearcaso_en_linea.split(",");
                     datosIF2 = datosIF[1];
                     datosIF[0] = datosIF[0].substring(1, datosIF[0].length);
@@ -328,8 +290,6 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
                     sessionService.set('NROTRAMITEID', datosIF[1]);
                     sessionService.set('IDPROCESO', datosIF[6]);
                     var idTramite1 = sessionService.get('NROTRAMITEID');
-                    //datosNeXO['INT_AC_direccionImagenmapa']   =  CONFIG.APIURL+"/files/RC_CLI/"+sessionService.get('IDSOLICITANTE') + "/" + sessionService.get('IDTRAMITE') + "/"+ sessionService.get('IDTRAMITE') + $scope.archivo2 + "?app_name=todoangular";
-                    //VERIFICAR Y CORREGIR ERROR AL REALIZAR ALGUNO DE ESTOS PROCESOS
                     try {
                         $scope.validarFormProcesos(paramForm);
                     } catch (e) { }
@@ -342,7 +302,6 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
 
     };
     var clsIniciarHtmlForm = $rootScope.$on('inicializarHtmlForm', function (event, tramite) {
-        console.log("tramite:: ", tramite);
         if (tramite.venviado == 'SI') {
             $scope.btnGuardarForm = true;
             $scope.desabilitado = true;
@@ -356,19 +315,15 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
     });
 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function (event, data) {
-        //MOSTRAR RADIO NUEVA - RENOVACION
         if (typeof (data.rdTipoTramite) != 'undefined') {
             if (data.rdTipoTramite == "NUEVO") {
-                //MOSTRAMOS BOTONES PAGINA
                 if (data.INT_FORM_ALMACENADO == "G") {
                     $scope.botones = "mostrar";
                     $scope.desabilitado = false;
                 }
             }
         }
-        //$scope.tipoTramite();
-
-    });//INICIAR CAMPOS INTERNET
+    });
 
     var clsValidarBtnEnviar = $rootScope.$on('validarBtnEnviar', function (event, data) {
         if (data > 0) {
@@ -377,8 +332,6 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
             $scope.btnEnviarForm = true;
         }
     });
-
-    //validarBtnEnviar
     $scope.validarBtnEnviar = function (cont) {
         if (cont > 0) {
             $scope.btnEnviarForm = false;

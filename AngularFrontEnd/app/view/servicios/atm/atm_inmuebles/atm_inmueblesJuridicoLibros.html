@@ -4,10 +4,7 @@
     <script type="text/javascript" src="../../view/servicios/atm/atm_inmuebles/atm_inmueblesJuridicoLibros.js"></script>
     <script type="text/javascript" src="../../libs/js/jic.js"></script>
     <script type="text/javascript" src="../../libs/js/jszip.js"></script>
-
-    <!-- Libs -->
     <link href="../../libs/css/sweetalert.css" rel="stylesheet">
-    <!--ngSweetAlert-->
     <script src="../../libs/js/prism.js"></script>
     <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
     <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
@@ -80,9 +77,9 @@
         });
     });
 
-    $('#categoria> option[value="Natural"]').attr('selected', 'selected'); // valor por de3fecto en el select de un combo
+    $('#categoria> option[value="Natural"]').attr('selected', 'selected');
 
-    ////ADJUNTOS
+
     $('.custom-upload input[type=file]').change(function () {
         $(this).next().find('input').val($(this).val());
         cambiarFile(this, $(this).val());
@@ -126,7 +123,6 @@
         $('[data-toggle="popover"]').popover();
 
     });
-    /* Inmueble */
     $('.custom-upload1 input[type=file]').change(function () {
         $(this).next().find('input').val($(this).val());
         cambiarFileInmueble(this, $(this).val());
@@ -156,7 +152,6 @@
         }
     };
 
-    /* CUADRO AJUSTE */
     $('.custom-upload2 input[type=file]').change(function () {
         $(this).next().find('input').val($(this).val());
         cambiarFileAjuste(this, $(this).val());
@@ -185,9 +180,7 @@
             alert("Error ");
         }
     };
-
-     /* EXCEL */
-     $('.custom-upload3 input[type=file]').change(function () {
+    $('.custom-upload3 input[type=file]').change(function () {
         $(this).next().find('input').val($(this).val());
         cambiarFileExcel(this, $(this).val());
     });
@@ -242,8 +235,6 @@
             angular.element(document.getElementById("id_serviciosInmueblesJuridicoLibrosController")).scope().almacenarRequisitoFormulario406(rMisDocs, sidFile); //NO OLVIDAR
         }
     };
-
-    ////FIN-ADJUNTOS
     function soloNumericoCelular(sValor, mensaje) {
         Numer = parseInt(sValor);
         if (isNaN(Numer)) {
@@ -325,7 +316,6 @@
         if (isNaN(Numer)) {
             return "";
         } else {
-            // $("#"+mensaje).hide();
             var digits = ("" + Numer).split("");
             if (digits.length < 9 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)) {
                 if (digits.length == 7)
@@ -392,225 +382,225 @@
     });
 </script>
 
-    <div id="id_serviciosInmueblesJuridicoLibrosController" class="page-content" ng-controller="inmueblesControllerJuridico" data-ng-init="inicioInmueblesJuridico();">
-        <div class="col-md-12 row principal ng-scope">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>REGISTRO VALOR LIBROS - INMUEBLES</h4>
-                </div>
-                <br><br>
-                <form name="signupForm" ng-controller="serviciosAtmController">
-                    <div ng-show="formulario != null">
-                        <div ng-show="divJuridico != null">
-                            <div class="col-md-12">
-                                <legend>DATOS PERSONA JURÍDICA</legend>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_22}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_num_doc_per_jur" id="f01_num_doc_per_jur"
-                                            name="f01_num_doc_per_jur" class="form-control" width="30%" height="30"
-                                            ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_23}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_raz_soc_per_jur" id="f01_raz_soc_per_jur"
-                                            name="f01_raz_soc_per_jur" class="form-control" width="30%" height="30"
-                                            ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_24}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_ges_vig_pod" id="f01_ges_vig_pod" name="f01_ges_vig_pod"
-                                            class="form-control" onkeyUp="checkInput(this);" width="30%" height="30"
-                                            ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_25}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_num_notaria" id="f01_num_notaria" name="f01_num_notaria"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4" ng-show="false">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_14}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_macro_des" id="f01_macro_des" name="f01_macro_des"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                        <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                    </div>
-                                    <span style="color:red" ng-show="signupForm.f01_macro.$invalid">
-                                        <span class="error"
-                                            ng-show="signupForm.f01_macro.$invalid">{{translateMensajes.txt_12_15}}</span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-4" ng-show="false">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_16}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_distrito_desc" id="f01_distrito_desc"
-                                            name="f01_distrito_desc" class="form-control" width="30%" height="30"
-                                            ng-disabled="true">
-                                        <input type="hidden" ng-model="datos.f01_distrito" id="f01_distrito"
-                                            name="f01_distrito" class="form-control" width="30%" height="30"
-                                            ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_17}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"
-                                            width="30%" height="30" ng-disabled="true">
-                                        <input type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_18}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_tipo_viarep" id="f01_tipo_viarep" name="f01_tipo_viarep"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_19}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_nom_via_rep" id="f01_nom_via_rep" name="f01_nom_via_rep"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_20}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_num_rep" id="f01_num_rep" name="f01_num_rep"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <legend>{{translateTitulos.lbl_12_26}}</legend>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_27}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_pri_nom_rep" id="f01_pri_nom_rep" name="f01_pri_nom_rep"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_28}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_ape_pat_rep" id="f01_ape_pat_rep" name="f01_ape_pat_rep"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_29}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_ape_mat_rep" id="f01_ape_mat_rep" name="f01_ape_mat_rep"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">{{translateTitulos.lbl_12_30}}:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_ape_cas_rep" id="f01_ape_cas_rep" name="f01_ape_cas_rep"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">Número de documento:</label>
-                                    <div class="controls">
-                                        <input ng-model="datos.f01_num_doc_rep" id="f01_num_doc_rep" name="f01_num_doc_rep"
-                                            class="form-control" width="30%" height="30" ng-disabled="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url">Expedido:</label>
-                                    <div class="controls">
-                                        <select id="f01_expedido_rep" name="f01_expedido_rep" placeholder="expedido"
-                                            ng-model="datos.f01_expedido_rep" class="form-control" ng-disabled="true"
-                                            required>
-                                            <option value="">--Seleccione--</option>
-                                            <option value="LPZ">LA PAZ</option>
-                                            <option value="CBB">COCHABAMBA</option>
-                                            <option value="SCZ">SANTA CRUZ</option>
-                                            <option value="CHQ">CHUQUISACA</option>
-                                            <option value="TJA">TARIJA</option>
-                                            <option value="PTS">POTOSI</option>
-                                            <option value="ORU">ORURO</option>
-                                            <option value="BNI">BENI</option>
-                                            <option value="PND">PANDO</option>
-                                            <option value="EXP">EXPEDIDO</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>                        
+<div id="id_serviciosInmueblesJuridicoLibrosController" class="page-content" ng-controller="inmueblesControllerJuridico"
+    data-ng-init="inicioInmueblesJuridico();">
+    <div class="col-md-12 row principal ng-scope">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                <h4>REGISTRO VALOR LIBROS - INMUEBLES</h4>
+            </div>
+            <br><br>
+            <form name="signupForm" ng-controller="serviciosAtmController">
+                <div ng-show="formulario != null">
+                    <div ng-show="divJuridico != null">
+                        <div class="col-md-12">
+                            <legend>DATOS PERSONA JURÍDICA</legend>
                         </div>
-                        
-                        <input type="hidden" name="dia" id="dia">
-                        <input type="hidden" name="mes" id="mes">
-                        <input type="hidden" name="anio" id="anio">
-
-                        <div class="col-md-12" align="left">
-                            <div class="form-group" class="col-md-12">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_22}}:</label>
                                 <div class="controls">
-                                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                                        <h4>1. GENERAR FORMULARIO 406</h4>
-                                    </div><br>
-                                    <div class="col-md-4">
-                                        <font color="#FF0000" size="4px">*  </font>
-                                        <input type="radio" ng-model="datos.valorLibroTablas" name="valorLibroTablas" value="VALOR LIBROS" ng-disabled="desabilitado" required > VALOR LIBROS
-                                    </div>
-                                   <!--  <div class="col-md-4">
-                                        <input type="radio" ng-model="datos.valorLibroTablas" name="valorLibroTablas" value="VALOR TABLAS" ng-disabled="desabilitado" required> VALOR TABLAS
-                                    </div> -->
-                                    <div class="col-md-4"> 
-                                        <button type="button" class="btn btn-success" ng-click="verificarDatos(datos);">Generar Formulario 406 </button>
-                                    </div>
+                                    <input ng-model="datos.f01_num_doc_per_jur" id="f01_num_doc_per_jur"
+                                        name="f01_num_doc_per_jur" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12" >
-                            <legend> Documentos registrados de la Empresa:</legend>
-                            <div class="col-lg-12">
-                                <div class="tab-content">
-                                    <div id="tab-one" class="tab-pane active">
-                                        <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_23}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_raz_soc_per_jur" id="f01_raz_soc_per_jur"
+                                        name="f01_raz_soc_per_jur" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_24}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ges_vig_pod" id="f01_ges_vig_pod" name="f01_ges_vig_pod"
+                                        class="form-control" onkeyUp="checkInput(this);" width="30%" height="30"
+                                        ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_25}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_notaria" id="f01_num_notaria" name="f01_num_notaria"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-show="false">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_14}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_macro_des" id="f01_macro_des" name="f01_macro_des"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                    <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                                <span style="color:red" ng-show="signupForm.f01_macro.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.f01_macro.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-show="false">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_16}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_distrito_desc" id="f01_distrito_desc"
+                                        name="f01_distrito_desc" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
+                                    <input type="hidden" ng-model="datos.f01_distrito" id="f01_distrito"
+                                        name="f01_distrito" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_17}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"
+                                        width="30%" height="30" ng-disabled="true">
+                                    <input type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_18}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_tipo_viarep" id="f01_tipo_viarep" name="f01_tipo_viarep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_19}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_nom_via_rep" id="f01_nom_via_rep" name="f01_nom_via_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_20}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_rep" id="f01_num_rep" name="f01_num_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <legend>{{translateTitulos.lbl_12_26}}</legend>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_27}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_pri_nom_rep" id="f01_pri_nom_rep" name="f01_pri_nom_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_28}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ape_pat_rep" id="f01_ape_pat_rep" name="f01_ape_pat_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_29}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ape_mat_rep" id="f01_ape_mat_rep" name="f01_ape_mat_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_30}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ape_cas_rep" id="f01_ape_cas_rep" name="f01_ape_cas_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">Número de documento:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_doc_rep" id="f01_num_doc_rep" name="f01_num_doc_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">Expedido:</label>
+                                <div class="controls">
+                                    <select id="f01_expedido_rep" name="f01_expedido_rep" placeholder="expedido"
+                                        ng-model="datos.f01_expedido_rep" class="form-control" ng-disabled="true"
+                                        required>
+                                        <option value="">--Seleccione--</option>
+                                        <option value="LPZ">LA PAZ</option>
+                                        <option value="CBB">COCHABAMBA</option>
+                                        <option value="SCZ">SANTA CRUZ</option>
+                                        <option value="CHQ">CHUQUISACA</option>
+                                        <option value="TJA">TARIJA</option>
+                                        <option value="PTS">POTOSI</option>
+                                        <option value="ORU">ORURO</option>
+                                        <option value="BNI">BENI</option>
+                                        <option value="PND">PANDO</option>
+                                        <option value="EXP">EXPEDIDO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="dia" id="dia">
+                    <input type="hidden" name="mes" id="mes">
+                    <input type="hidden" name="anio" id="anio">
+
+                    <div class="col-md-12" align="left">
+                        <div class="form-group" class="col-md-12">
+                            <div class="controls">
+                                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                                    <h4>1. GENERAR FORMULARIO 406</h4>
+                                </div><br>
+                                <div class="col-md-4">
+                                    <font color="#FF0000" size="4px">* </font>
+                                    <input type="radio" ng-model="datos.valorLibroTablas" name="valorLibroTablas"
+                                        value="VALOR LIBROS" ng-disabled="desabilitado" required> VALOR LIBROS
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-success"
+                                        ng-click="verificarDatos(datos);">Generar Formulario 406 </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <legend> Documentos registrados de la Empresa:</legend>
+                        <div class="col-lg-12">
+                            <div class="tab-content">
+                                <div id="tab-one" class="tab-pane active">
+                                    <div class="row">
                                         <div class="col-md-12">
                                             <br>
                                             <br>
@@ -624,304 +614,394 @@
                                                 <tbody>
                                                     <tr class="column" ng-repeat="archivo in obtArchivosAdjuntos">
                                                         <td>{{$index+1}}</td>
-                                                        
                                                         <td>
-                                                        <a target="_blank" tooltip = "Ver" ng-click="imprimirArchivo(archivo.url)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#docsVisor"><i class="fa fa-eye" style="color:#249FE6"></i></a>
-                                                        <a ng-if = "$index > 3" tooltip = "Eliminar" ng-click="eliminarArchivo(archivo, $index)" class="btn btn-default btn-circle" ng-hide = "botones"><i class="fa fa-trash-o " style="color:#249FE6"></i></a>
+                                                            <a target="_blank" tooltip="Ver"
+                                                                ng-click="imprimirArchivo(archivo.url)"
+                                                                class="btn btn-default btn-circle" data-toggle="modal"
+                                                                data-target="#docsVisor"><i class="fa fa-eye"
+                                                                    style="color:#249FE6"></i></a>
+                                                            <a ng-if="$index > 3" tooltip="Eliminar"
+                                                                ng-click="eliminarArchivo(archivo, $index)"
+                                                                class="btn btn-default btn-circle" ng-hide="botones"><i
+                                                                    class="fa fa-trash-o "
+                                                                    style="color:#249FE6"></i></a>
                                                         </td>
                                                         <td>{{archivo.campo}}</td>
                                                         <td>{{archivo.nombre}}</td>
-                                                        <!--td>{{archivo.url}}</td-->
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
-                                    </div>
                                 </div>
-                            </div>    
-                        </div>
-                        <div class="col-md-12" ng-show="t_enviado">
-                            <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                                        <h4>2. DESCARGAR CUADRO BALANCE </h4>
-                                    </div><br>
-                            <div class="form-group" ng-show="t_enviado">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-9" class="form-control">
-                                            <div class="form-group" >
-                                                <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                                                <div class="col-sm-12" align="left">
-                                                    <div class="alert alert-danger fade in">
-                                                        <bold>Estimado Ciudadano:</bold> Antes de adjuntar el CUADRO DE BALANCE - INMUEBLES, debe descargar y complementar la información en el archivo modelo.<br>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3" >
-                                            <a href="../../docs/INMUEBLES_BALANCE_V1.xlsx" download>DESCARGAR MODELO DE BALANCE INMUEBLES</a>
-                                            <img src="../../../app/view/img/manito.gif" alt=" Imagen" height="20" width="40" tooltip="Descarga el archivo">
-
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                                        <h4>3. ADJUNTAR REQUISITOS</h4>
-                                    </div><br>
-                                        <div class="col-md-6">
-                                            <label for="url">FOTOCOPIA DE BALANCE CON SELLO DE IMPUESTOS NACIONALES O INSTITUCIÒN BANCARIA:</label>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group custom-upload">
-                                                <input type="file" id="f01_upload_factura" name="f01_upload_factura" accept="application/pdf,image/jpg" style="display: none;">
-                                                <div class="input-group col-xs-6">
-                                                    <span class="input-group-addon" style="background-color:rgb(0, 185, 194 ,0.6);">
-                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Se puede enviar archivos de Imagen, PDF."><i class="glyphicon glyphicon-question-sign"></i></a>
-                                                    </span>
-                                                    <input type="hidden" name="factura_url" id="factura_url">
-                                                    <input id="factura" name="factura" type="text" placeholder="" value="{{valor_factura}}" class="form-control input-lg" disabled required>
-                                                    <span class="input-group-btn">
-                                                        <a id="href_f01_upload_factura" onclick="ver('href_f01_upload_factura','factura_url','btn_f01_upload_factura')" target="_blank">
-                                                            <button id="btn_f01_upload_factura" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                                        </a>
-                                                        <button id="btn_f01_upload_factura" onclick="ejecutarFile('f01_upload_factura', 'factura')" class="btnupload browse btn btn-primary input-lg" type="button" {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i> Subir
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <div class="col-md-1">
-                                            <label for="url">Cantidad Hojas </label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <div class="form-group">
-                                                <div class="controls">
-                                                    <input ng-model="datos.facturaFojas" id="facturaFojas" type="number" 
-                                                    name="facturaFojas" class="form-control" width="30%" height="30"
-                                                    ng-disabled="desabilitado">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><br>
-                            <div class="form-group" ng-show="t_enviado">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="url">ORIGINAL DETALLE DE INMUEBLES DE ACUERDO AL MODELO DE LA RESOLUCION REPRESENTANTE LEGAL O APODERADO:</label>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group custom-upload1">
-                                                <input type="file" id="f01_upload_inmueble" name="f01_upload_inmueble" accept="application/pdf,image/jpg" style="display: none;">
-                                                <div class="input-group col-xs-6">
-                                                    <span class="input-group-addon" style="background-color:rgb(0, 185, 194 ,0.6);">
-                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Se puede enviar archivos de Imagen, PDF."><i class="glyphicon glyphicon-question-sign"></i></a>
-                                                    </span>
-                                                    <input type="hidden" name="inmueble_url" id="inmueble_url">
-                                                    <input id="inmueble" name="inmueble" type="text" placeholder="" value="{{valor_inmueble}}" class="form-control input-lg" disabled required>
-                                                    <span class="input-group-btn">
-                                                        <a id="href_f01_upload_inmueble" onclick="ver('href_f01_upload_inmueble','inmueble_url','btn_f01_upload_inmueble')" target="_blank">
-                                                            <button id="btn_f01_upload_inmueble" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                                        </a>
-                                                        <button id="btn_f01_upload_inmueble" onclick="ejecutarFileInmueble('f01_upload_inmueble', 'inmueble')" class="btnupload browse btn btn-primary input-lg" type="button" {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i> Subir
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <div class="col-md-1">
-                                            <label for="url">Cantidad Hojas </label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <div class="form-group">
-                                                <div class="controls">
-                                                    <input ng-model="datos.detalleFojas" id="detalleFojas" type="number" 
-                                                    name="detalleFojas" class="form-control" width="30%" height="30"
-                                                    ng-disabled="desabilitado">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><br>
-                            <div class="form-group" ng-show="t_enviado">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="url">PARA EMPRESAS QUE NO CIERRAN EL 31 DE DICIEMBRE DEBERAN ELABORAR CUADRO DE AJUSTE ACTUALIZADO LOS VALORES AL 31 DE DICIEMBRE:</label>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group custom-upload2">
-                                                <input type="file" id="f01_upload_ajuste" name="f01_upload_ajuste" accept="application/pdf,image/jpg" style="display: none;">
-                                                <div class="input-group col-xs-6">
-                                                    <span class="input-group-addon" style="background-color:rgb(0, 185, 194 ,0.6);">
-                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Se puede enviar archivos de Imagen, PDF"><i class="glyphicon glyphicon-question-sign"></i></a>
-                                                    </span>
-                                                    <input type="hidden" name="ajuste_url" id="ajuste_url">
-                                                    <input id="ajuste" name="ajuste" type="text" placeholder="" value="{{valor_ajuste}}" class="form-control input-lg" disabled required>
-                                                    <span class="input-group-btn">
-                                                        <a id="href_f01_upload_ajuste" onclick="ver('href_f01_upload_ajuste','ajuste_url','btn_f01_upload_ajuste')" target="_blank">
-                                                            <button id="btn_f01_upload_ajuste" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                                        </a>
-                                                        <button id="btn_f01_upload_ajuste" onclick="ejecutarFileCuadroAjuste('f01_upload_ajuste', 'ajuste')" class="btnupload browse btn btn-primary input-lg" type="button" {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i> Subir
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <div class="col-md-1">
-                                            <label for="url">Cantidad Hojas </label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <div class="form-group">
-                                                <div class="controls">
-                                                    <input ng-model="datos.cuadroActualizadoFojas" id="cuadroActualizadoFojas" type="number" 
-                                                    name="cuadroActualizadoFojas" class="form-control" width="30%" height="30"
-                                                    ng-disabled="desabilitado">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><br>
-                            <div class="form-group" ng-show="t_enviado">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="url">CUADRO DE BALANCE - INMUEBLES (descargar en el punto 2, archivo tipo XLS Ó XLSX):</label>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group custom-upload3">
-                                                <input type="file" id="f01_upload_excel" name="f01_upload_excel" accept=".xls,.xlsx" style="display: none;">
-                                                <div class="input-group col-xs-6">
-                                                    <span class="input-group-addon" style="background-color:rgb(0, 185, 194 ,0.6);">
-                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Debe descargar la plantilla en formato excel del cuadro de balance Inmuebles en el punto 2, complementar la informacion y adjuntar en este punto."><i class="glyphicon glyphicon-question-sign"></i></a>
-                                                    </span>
-                                                    <input type="hidden" name="excel_url" id="excel_url">
-                                                    <input id="excel" name="excel" type="text" placeholder="" value="{{valor_excel}}" class="form-control input-lg" disabled required>
-                                                    <span class="input-group-btn">
-                                                        <a id="href_f01_upload_excel" onclick="ver('href_f01_upload_excel','excel_url','btn_f01_upload_excel')" target="_blank">
-                                                            <button id="btn_f01_upload_excel" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                                        </a>
-                                                        <button id="btn_f01_upload_excel" onclick="ejecutarFileExcel('f01_upload_excel', 'excel')" class="btnupload browse btn btn-primary input-lg" type="button" {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i> Subir
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <div class="col-md-1">
-                                            <label for="url">Cantidad Hojas </label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <div class="form-group">
-                                                <div class="controls">
-                                                    <input ng-model="datos.balanceFojas" id="balanceFojas" type="number" 
-                                                    name="balanceFojas" class="form-control" width="30%" height="30"
-                                                    ng-disabled="desabilitado">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><br>
-                            <div class="form-group" ng-show="t_enviado">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="url">FORMULARIO 406 (debe descargar el formulario en el punto 1, firmar la solicitud y adjuntar):</label>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group custom-upload4">
-                                                <input type="file" id="f01_upload_formulario" name="f01_upload_formulario" accept="application/pdf,image/jpg" style="display: none;">
-                                                <div class="input-group col-xs-6">
-                                                    <span class="input-group-addon" style="background-color:rgb(0, 185, 194 ,0.6);">
-                                                        <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Debe descargar el formulario en el punto 2, firmar la solicitud y proceder a escanear el formulario en formato pdf para poder adjuntar en este punto"><i class="glyphicon glyphicon-question-sign"></i></a>
-                                                    </span>
-                                                    <input type="hidden" name="formulario_url" id="formulario_url">
-                                                    <input id="formulario" name="formulario" type="text" placeholder="" value="{{formulario406}}" class="form-control input-lg" disabled required>
-                                                    <span class="input-group-btn">
-                                                        <a id="href_f01_upload_formulario" onclick="ver('href_f01_upload_formulario','formulario_url','btn_f01_upload_formulario')" target="_blank">
-                                                            <button id="btn_f01_upload_formulario" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                                        </a>
-                                                        <button id="btn_f01_upload_formulario" onclick="ejecutarForm406('f01_upload_formulario', 'formulario')" class="btnupload browse btn btn-primary input-lg" type="button" {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i> Subir
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <div class="col-md-1">
-                                            <label for="url">Cantidad Hojas </label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <div class="form-group">
-                                                <div class="controls">
-                                                    <input ng-model="datos.409Fojas" id="409Fojas"
-                                                    name="409Fojas" class="form-control" width="30%" height="30" type="number" 
-                                                    ng-disabled="desabilitado">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><br>
-                        </div>
-                        <br><br><br><br><br><br>
-                        <div class="col-md-6" align="center">
-                            <!-- GNERADOR DE CAPCHA -->
-                            <div class="col-md-12" align="center">
-                                <table width="50%" border="0" cellspacing="0" cellpadding="2" class="one">
-                                    <tr class="color">
-                                        <div style="background: #ffffff;">
-                                            <div class="box2">
-                                                <img class="img-responsive" src="{{imageCSTT}}" title="{{toltipT}}">
-                                            </div>
-                                            <div class="box2">
-                                                <img class="img-responsive" src="{{imageLNGG}}"
-                                                    title="Palabra en CASTELLANO">
-                                            </div>
-                                        </div>
-                                    </tr>
-                                    <tr class="color">
-                                        <td class="color22" colspan="3" width="70" align="center">
-                                            <input id="resultadoCC" name="resultadoCC" type="text" style="border: 0px !important;" class="form-control" placeholder="{{palabraT}}" ng-model="resultadoCC" ng-keyup="VerificarCapchaa()" />
-                                            <span ng-show="formulario.palabraT.$invalid">
-                                                <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
-                                            </span>
-                                            <label>{{palabraT}}</label>
-                                        </td>
-                                        <td class="color2" width="30" align="center">
-                                            <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasXX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <b>
-                                    <font SIZE=3 color="red"> {{ErrorCapchasXX}}</font>
-                                </b>
-                                <b>
-                                    <font SIZE=3 color="red"> {{ErrorCapchasXX2}}</font>
-                                </b>
-                                <b>
-                                    <font SIZE=2 color="green"> {{SuccesCapchasxx}}</font>
-                                </b>
                             </div>
                         </div>
                     </div>
-            </div>
-                </form>
-                <div class="col-md-12" align="right" ng-show="botones != null">
-                    <button id="miFormGuardar" ng-click="serializarInformacionInmuebles(datos);getCaptchasXX();"
-                        type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar"
-                        tooltip="Guardar Formulario">
-                        <!--{{translateTitulos.lbl_016_29}}--></button>
-                    <!--cambios-->
-                    <button id="btnFormLicencia" ng-click="validarEnvio(datos);" data-dismiss="modal" type="button"
-                        class="btn btn-success1 fa fab fa-mail-forward shake-little" tooltip="Enviar Formulario">
-                        <!--{{translateTitulos.lbl_016_30}}--></button>
-                    <!--cambios-->
+                    <div class="col-md-12" ng-show="t_enviado">
+                        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                            <h4>2. DESCARGAR CUADRO BALANCE </h4>
+                        </div><br>
+                        <div class="form-group" ng-show="t_enviado">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-9" class="form-control">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label no-padding-right" for="url"></label>
+                                            <div class="col-sm-12" align="left">
+                                                <div class="alert alert-danger fade in">
+                                                    <bold>Estimado Ciudadano:</bold> Antes de adjuntar el CUADRO DE
+                                                    BALANCE - INMUEBLES, debe descargar y complementar la información en
+                                                    el archivo modelo.<br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="../../docs/INMUEBLES_BALANCE_V1.xlsx" download>DESCARGAR MODELO DE
+                                            BALANCE INMUEBLES</a>
+                                        <img src="../../../app/view/img/manito.gif" alt=" Imagen" height="20" width="40"
+                                            tooltip="Descarga el archivo">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="ibox-title cafeSuave"
+                                        style="border-bottom: solid 0px #E2E2E2 !important;">
+                                        <h4>3. ADJUNTAR REQUISITOS</h4>
+                                    </div><br>
+                                    <div class="col-md-6">
+                                        <label for="url">FOTOCOPIA DE BALANCE CON SELLO DE IMPUESTOS NACIONALES O
+                                            INSTITUCIÒN BANCARIA:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group custom-upload">
+                                            <input type="file" id="f01_upload_factura" name="f01_upload_factura"
+                                                accept="application/pdf,image/jpg" style="display: none;">
+                                            <div class="input-group col-xs-6">
+                                                <span class="input-group-addon"
+                                                    style="background-color:rgb(0, 185, 194 ,0.6);">
+                                                    <a title="Ayuda" data-toggle="popover" data-trigger="hover"
+                                                        data-content="Se puede enviar archivos de Imagen, PDF."><i
+                                                            class="glyphicon glyphicon-question-sign"></i></a>
+                                                </span>
+                                                <input type="hidden" name="factura_url" id="factura_url">
+                                                <input id="factura" name="factura" type="text" placeholder=""
+                                                    value="{{valor_factura}}" class="form-control input-lg" disabled
+                                                    required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload_factura"
+                                                        onclick="ver('href_f01_upload_factura','factura_url','btn_f01_upload_factura')"
+                                                        target="_blank">
+                                                        <button id="btn_f01_upload_factura"
+                                                            class="browse btn btn-primary input-lg" type="button"><i
+                                                                class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload_factura"
+                                                        onclick="ejecutarFile('f01_upload_factura', 'factura')"
+                                                        class="btnupload browse btn btn-primary input-lg" type="button"
+                                                        {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i>
+                                                        Subir
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="url">Cantidad Hojas </label>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <input ng-model="datos.facturaFojas" id="facturaFojas" type="number"
+                                                    name="facturaFojas" class="form-control" width="30%" height="30"
+                                                    ng-disabled="desabilitado">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+                        <div class="form-group" ng-show="t_enviado">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="url">ORIGINAL DETALLE DE INMUEBLES DE ACUERDO AL MODELO DE LA
+                                            RESOLUCION REPRESENTANTE LEGAL O APODERADO:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group custom-upload1">
+                                            <input type="file" id="f01_upload_inmueble" name="f01_upload_inmueble"
+                                                accept="application/pdf,image/jpg" style="display: none;">
+                                            <div class="input-group col-xs-6">
+                                                <span class="input-group-addon"
+                                                    style="background-color:rgb(0, 185, 194 ,0.6);">
+                                                    <a title="Ayuda" data-toggle="popover" data-trigger="hover"
+                                                        data-content="Se puede enviar archivos de Imagen, PDF."><i
+                                                            class="glyphicon glyphicon-question-sign"></i></a>
+                                                </span>
+                                                <input type="hidden" name="inmueble_url" id="inmueble_url">
+                                                <input id="inmueble" name="inmueble" type="text" placeholder=""
+                                                    value="{{valor_inmueble}}" class="form-control input-lg" disabled
+                                                    required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload_inmueble"
+                                                        onclick="ver('href_f01_upload_inmueble','inmueble_url','btn_f01_upload_inmueble')"
+                                                        target="_blank">
+                                                        <button id="btn_f01_upload_inmueble"
+                                                            class="browse btn btn-primary input-lg" type="button"><i
+                                                                class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload_inmueble"
+                                                        onclick="ejecutarFileInmueble('f01_upload_inmueble', 'inmueble')"
+                                                        class="btnupload browse btn btn-primary input-lg" type="button"
+                                                        {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i>
+                                                        Subir
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="url">Cantidad Hojas </label>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <input ng-model="datos.detalleFojas" id="detalleFojas" type="number"
+                                                    name="detalleFojas" class="form-control" width="30%" height="30"
+                                                    ng-disabled="desabilitado">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+                        <div class="form-group" ng-show="t_enviado">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="url">PARA EMPRESAS QUE NO CIERRAN EL 31 DE DICIEMBRE DEBERAN
+                                            ELABORAR CUADRO DE AJUSTE ACTUALIZADO LOS VALORES AL 31 DE
+                                            DICIEMBRE:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group custom-upload2">
+                                            <input type="file" id="f01_upload_ajuste" name="f01_upload_ajuste"
+                                                accept="application/pdf,image/jpg" style="display: none;">
+                                            <div class="input-group col-xs-6">
+                                                <span class="input-group-addon"
+                                                    style="background-color:rgb(0, 185, 194 ,0.6);">
+                                                    <a title="Ayuda" data-toggle="popover" data-trigger="hover"
+                                                        data-content="Se puede enviar archivos de Imagen, PDF"><i
+                                                            class="glyphicon glyphicon-question-sign"></i></a>
+                                                </span>
+                                                <input type="hidden" name="ajuste_url" id="ajuste_url">
+                                                <input id="ajuste" name="ajuste" type="text" placeholder=""
+                                                    value="{{valor_ajuste}}" class="form-control input-lg" disabled
+                                                    required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload_ajuste"
+                                                        onclick="ver('href_f01_upload_ajuste','ajuste_url','btn_f01_upload_ajuste')"
+                                                        target="_blank">
+                                                        <button id="btn_f01_upload_ajuste"
+                                                            class="browse btn btn-primary input-lg" type="button"><i
+                                                                class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload_ajuste"
+                                                        onclick="ejecutarFileCuadroAjuste('f01_upload_ajuste', 'ajuste')"
+                                                        class="btnupload browse btn btn-primary input-lg" type="button"
+                                                        {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i>
+                                                        Subir
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="url">Cantidad Hojas </label>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <input ng-model="datos.cuadroActualizadoFojas"
+                                                    id="cuadroActualizadoFojas" type="number"
+                                                    name="cuadroActualizadoFojas" class="form-control" width="30%"
+                                                    height="30" ng-disabled="desabilitado">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+                        <div class="form-group" ng-show="t_enviado">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="url">CUADRO DE BALANCE - INMUEBLES (descargar en el punto 2, archivo
+                                            tipo XLS Ó XLSX):</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group custom-upload3">
+                                            <input type="file" id="f01_upload_excel" name="f01_upload_excel"
+                                                accept=".xls,.xlsx" style="display: none;">
+                                            <div class="input-group col-xs-6">
+                                                <span class="input-group-addon"
+                                                    style="background-color:rgb(0, 185, 194 ,0.6);">
+                                                    <a title="Ayuda" data-toggle="popover" data-trigger="hover"
+                                                        data-content="Debe descargar la plantilla en formato excel del cuadro de balance Inmuebles en el punto 2, complementar la informacion y adjuntar en este punto."><i
+                                                            class="glyphicon glyphicon-question-sign"></i></a>
+                                                </span>
+                                                <input type="hidden" name="excel_url" id="excel_url">
+                                                <input id="excel" name="excel" type="text" placeholder=""
+                                                    value="{{valor_excel}}" class="form-control input-lg" disabled
+                                                    required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload_excel"
+                                                        onclick="ver('href_f01_upload_excel','excel_url','btn_f01_upload_excel')"
+                                                        target="_blank">
+                                                        <button id="btn_f01_upload_excel"
+                                                            class="browse btn btn-primary input-lg" type="button"><i
+                                                                class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload_excel"
+                                                        onclick="ejecutarFileExcel('f01_upload_excel', 'excel')"
+                                                        class="btnupload browse btn btn-primary input-lg" type="button"
+                                                        {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i>
+                                                        Subir
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="url">Cantidad Hojas </label>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <input ng-model="datos.balanceFojas" id="balanceFojas" type="number"
+                                                    name="balanceFojas" class="form-control" width="30%" height="30"
+                                                    ng-disabled="desabilitado">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+                        <div class="form-group" ng-show="t_enviado">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="url">FORMULARIO 406 (debe descargar el formulario en el punto 1,
+                                            firmar la solicitud y adjuntar):</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group custom-upload4">
+                                            <input type="file" id="f01_upload_formulario" name="f01_upload_formulario"
+                                                accept="application/pdf,image/jpg" style="display: none;">
+                                            <div class="input-group col-xs-6">
+                                                <span class="input-group-addon"
+                                                    style="background-color:rgb(0, 185, 194 ,0.6);">
+                                                    <a title="Ayuda" data-toggle="popover" data-trigger="hover"
+                                                        data-content="Debe descargar el formulario en el punto 2, firmar la solicitud y proceder a escanear el formulario en formato pdf para poder adjuntar en este punto"><i
+                                                            class="glyphicon glyphicon-question-sign"></i></a>
+                                                </span>
+                                                <input type="hidden" name="formulario_url" id="formulario_url">
+                                                <input id="formulario" name="formulario" type="text" placeholder=""
+                                                    value="{{formulario406}}" class="form-control input-lg" disabled
+                                                    required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload_formulario"
+                                                        onclick="ver('href_f01_upload_formulario','formulario_url','btn_f01_upload_formulario')"
+                                                        target="_blank">
+                                                        <button id="btn_f01_upload_formulario"
+                                                            class="browse btn btn-primary input-lg" type="button"><i
+                                                                class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload_formulario"
+                                                        onclick="ejecutarForm406('f01_upload_formulario', 'formulario')"
+                                                        class="btnupload browse btn btn-primary input-lg" type="button"
+                                                        {{{deshabilitado}}}><i class="glyphicon glyphicon-upload"></i>
+                                                        Subir
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="url">Cantidad Hojas </label>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <input ng-model="datos.409Fojas" id="409Fojas" name="409Fojas"
+                                                    class="form-control" width="30%" height="30" type="number"
+                                                    ng-disabled="desabilitado">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+                    </div>
+                    <br><br><br><br><br><br>
+                    <div class="col-md-6" align="center">
+                        <div class="col-md-12" align="center">
+                            <table width="50%" border="0" cellspacing="0" cellpadding="2" class="one">
+                                <tr class="color">
+                                    <div style="background: #ffffff;">
+                                        <div class="box2">
+                                            <img class="img-responsive" src="{{imageCSTT}}" title="{{toltipT}}">
+                                        </div>
+                                        <div class="box2">
+                                            <img class="img-responsive" src="{{imageLNGG}}"
+                                                title="Palabra en CASTELLANO">
+                                        </div>
+                                    </div>
+                                </tr>
+                                <tr class="color">
+                                    <td class="color22" colspan="3" width="70" align="center">
+                                        <input id="resultadoCC" name="resultadoCC" type="text"
+                                            style="border: 0px !important;" class="form-control"
+                                            placeholder="{{palabraT}}" ng-model="resultadoCC"
+                                            ng-keyup="VerificarCapchaa()" />
+                                        <span ng-show="formulario.palabraT.$invalid">
+                                            <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                        </span>
+                                        <label>{{palabraT}}</label>
+                                    </td>
+                                    <td class="color2" width="30" align="center">
+                                        <a type="button" class="btn btn-default btn-circle" data-toggle="modal"
+                                            data-target="modal" ng-click="getCaptchasXX();"><i
+                                                class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072"
+                                                title="Actualizar"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <b>
+                                <font SIZE=3 color="red"> {{ErrorCapchasXX}}</font>
+                            </b>
+                            <b>
+                                <font SIZE=3 color="red"> {{ErrorCapchasXX2}}</font>
+                            </b>
+                            <b>
+                                <font SIZE=2 color="green"> {{SuccesCapchasxx}}</font>
+                            </b>
+                        </div>
+                    </div>
                 </div>
+        </div>
+        </form>
+        <div class="col-md-12" align="right" ng-show="botones != null">
+            <button id="miFormGuardar" ng-click="serializarInformacionInmuebles(datos);getCaptchasXX();" type="button"
+                class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" tooltip="Guardar Formulario">
+            </button>
+            <button id="btnFormLicencia" ng-click="validarEnvio(datos);" data-dismiss="modal" type="button"
+                class="btn btn-success1 fa fab fa-mail-forward shake-little" tooltip="Enviar Formulario">
+            </button>
         </div>
     </div>
 </div>
+</div>
+
 </html>

@@ -14,7 +14,6 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
     $scope.formRegularRegistrado = "";
     $scope.datosinic = {};
     $scope.btover_c = false;
-
     $scope.mostrarCategoria = false;
     $scope.datosfalt = "";
     $scope.documentosarc = ['', '', '', '', '', '', '', '', '', '', '', '', '', ''];
@@ -27,8 +26,6 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         { name: 'template2.html', url: '../../../app/view/servicios/atm/atm_inmuebles/atm_inmueblesJuridicoLibros.html' },
         { name: 'template3.html', url: '../../../app/view/servicios/atm/atm_vehiculos/atm_motos_juridico.html' },
         { name: 'template4.html', url: '../../../app/view/servicios/atm/atm_vehiculos/atm_vehiculosJuridicoLibros.html' }
-
-
     ];
     $scope.serivicosInternetInmuebles = [
         { name: 'REGISTRO VALOR LIBROS INMUEBLES ', id: '20' },
@@ -44,7 +41,6 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
     $scope.habGuardar1 = true;
     $scope.ErrorCapchasXX = "";
     $scope.SuccesCapchasxx = "";
-
     $scope.template = "";
     var aDocAdjuntos = new Array();
     $scope.tramitesCiudadano = function (tramite) {
@@ -93,17 +89,12 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
     });
     $scope.seleccionarTramiteAtm = function (tramite) {
         $scope.tipoTramite = tramite.vservicio;
-        if (tramite.vservicio == 'INMUEBLES') {
-        }
         $scope.template = "";
         setTimeout(function () {
         }, 500);
-
-
         $scope.seleccionarTramiteRenderAtm(tramite);
 
     }
-
     $scope.seleccionarTramiteRenderAtm = function (tramite) {
         $scope.tramiteSeleccionado = tramite.vtra_id;
         $scope.procesoSeleccionado = tramite.vdvser_id;
@@ -226,8 +217,6 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         } catch (error) {
         }
     };
-
-
     $scope.iniciandoDatos = function () {
         var datosIniciales = $scope.datosIniciales;
         var fechactual = obtFechaActual.obtenerFechaActual();
@@ -359,14 +348,11 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                 datosForm_inicio['INT_AC_TIP_VIA'] = datosIniciales.INT_AC_TIP_VIA;
             }
         }
-
         datosForm_inicio['IDTRAMITE'] = $scope.sIdTramiteSeleccionado;
         $rootScope.looo = 0;
         $rootScope.laaa = 0;
         $scope.datos = datosForm_inicio;
     };
-
-
     $scope.seleccionarProceso = function (proceso) {
         $scope.procesoSeleccionado = proceso.id;
         if ($scope.procesoSeleccionado == 20) {
@@ -404,7 +390,6 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
             $scope.adicionarServicioGamlp(sidservicio);
         }
     };
-
     $scope.adicionarServicioGamlp = function (datos) {
         var tipoPersona = sessionService.get('TIPO_PERSONA');
         var condiciones = '';
@@ -440,19 +425,27 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                         crea.oid_ciudadano = sIdCiudadano;
                         crea.id_usuario = 3;
                         crea.adiciona_Tramites_Formulario(function (res) {
+
                             x = JSON.parse(res);
                             response = x.success;
                             if (response.length > 0) {
-                                sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
+
+                                $scope.template = "";
+                                sessionService.set('IDTRAMITE', '');
+                                sessionService.set('IDSERVICIO', '');
+                                sessionService.set('ESTADO', '');
+                                var nro_tramite = response[0].sp_insertar_formulario_tramites_datos;
+
+                                datosTramite = {};
+                                datosTramite.vtra_id = nro_tramite;
+                                datosTramite.vdvser_id = sIdServicio;
+                                datosTramite.venviado = "NO";
+                                datosTramite.form_contenido = datosSerializados;
+                                $scope.seleccionarTramiteAtm(datosTramite);
                                 $.unblockUI();
+                                alertify.success('Tramite creado correctamente');
+                                $('#crearTramite').modal('hide');
                                 $scope.tramitesCiudadano();
-                                swal('', 'Registro almacenado correctamente', 'success');
-                                sessionService.destroy('NROTRAMITE');
-                                sessionService.destroy('NROTRAMITEID');
-                                sessionService.destroy('IDPROCESO');
-                                $scope.btnEnviarForm = false;
-                                $scope.btnGuardarForm = false;
-                                $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
                             }
                             else {
                             }
@@ -485,17 +478,23 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                             x = JSON.parse(res);
                             response = x.success;
                             if (response.length > 0) {
-                                sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
+
+                                $scope.template = "";
+                                sessionService.set('IDTRAMITE', '');
+                                sessionService.set('IDSERVICIO', '');
+                                sessionService.set('ESTADO', '');
+                                var nro_tramite = response[0].sp_insertar_formulario_tramites_datos;
+
+                                datosTramite = {};
+                                datosTramite.vtra_id = nro_tramite;
+                                datosTramite.vdvser_id = sIdServicio;
+                                datosTramite.venviado = "NO";
+                                datosTramite.form_contenido = datosSerializados;
+                                $scope.seleccionarTramiteAtm(datosTramite);
                                 $.unblockUI();
+                                alertify.success('Tramite creado correctamente');
+                                $('#crearTramite').modal('hide');
                                 $scope.tramitesCiudadano();
-                                swal('', 'Registro almacenado correctamente', 'success');
-                                sessionService.destroy('NROTRAMITE');
-                                sessionService.destroy('NROTRAMITEID');
-                                sessionService.destroy('IDPROCESO');
-                                $scope.btnEnviarForm = false;
-                                $scope.btnGuardarForm = false;
-                                $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
-                                $('#registro').modal('hide');
                             }
                             else {
                                 $.unblockUI();
@@ -530,17 +529,23 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                             x = JSON.parse(res);
                             response = x.success;
                             if (response.length > 0) {
-                                sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
+
+                                $scope.template = "";
+                                sessionService.set('IDTRAMITE', '');
+                                sessionService.set('IDSERVICIO', '');
+                                sessionService.set('ESTADO', '');
+                                var nro_tramite = response[0].sp_insertar_formulario_tramites_datos;
+
+                                datosTramite = {};
+                                datosTramite.vtra_id = nro_tramite;
+                                datosTramite.vdvser_id = sIdServicio;
+                                datosTramite.venviado = "NO";
+                                datosTramite.form_contenido = datosSerializados;
+                                $scope.seleccionarTramiteAtm(datosTramite);
                                 $.unblockUI();
+                                alertify.success('Tramite creado correctamente');
+                                $('#crearTramite').modal('hide');
                                 $scope.tramitesCiudadano();
-                                swal('', 'Registro almacenado correctamente', 'success');
-                                sessionService.destroy('NROTRAMITE');
-                                sessionService.destroy('NROTRAMITEID');
-                                sessionService.destroy('IDPROCESO');
-                                $scope.btnEnviarForm = false;
-                                $scope.btnGuardarForm = false;
-                                $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
-                                $('#registro').modal('hide');
                             }
                             else {
                                 $.unblockUI();
@@ -575,17 +580,23 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                             x = JSON.parse(res);
                             response = x.success;
                             if (response.length > 0) {
-                                sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
+
+                                $scope.template = "";
+                                sessionService.set('IDTRAMITE', '');
+                                sessionService.set('IDSERVICIO', '');
+                                sessionService.set('ESTADO', '');
+                                var nro_tramite = response[0].sp_insertar_formulario_tramites_datos;
+
+                                datosTramite = {};
+                                datosTramite.vtra_id = nro_tramite;
+                                datosTramite.vdvser_id = sIdServicio;
+                                datosTramite.venviado = "NO";
+                                datosTramite.form_contenido = datosSerializados;
+                                $scope.seleccionarTramiteAtm(datosTramite);
                                 $.unblockUI();
+                                alertify.success('Tramite creado correctamente');
+                                $('#crearTramite').modal('hide');
                                 $scope.tramitesCiudadano();
-                                swal('', 'Registro almacenado correctamente', 'success');
-                                sessionService.destroy('NROTRAMITE');
-                                sessionService.destroy('NROTRAMITEID');
-                                sessionService.destroy('IDPROCESO');
-                                $scope.btnEnviarForm = false;
-                                $scope.btnGuardarForm = false;
-                                $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
-                                $('#registro').modal('hide');
                             }
                             else {
                                 $.unblockUI();
@@ -780,7 +791,6 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                             closeOnConfirm: true
                         }, function () {
                             window.location.href = "#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html'";
-                            //$.unblockUI();
                         });
                     }, 300);
                 } else {
@@ -1034,6 +1044,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                 $scope.ErrorCapcha = 'Error en el captcha intentar de nuevo por favor';
             } else {
                 $scope.confirmarServicioGamlp(responce, resp);
+
             }
         });
         $scope.getCaptchasX();
@@ -1057,6 +1068,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                 $scope.habGuardar1 = false;
                 $scope.ErrorCapchasXX = "";
                 $scope.SuccesCapchasxx = "Capcha correcto";
+                $("#miFormGuardar").removeAttr("disabled");
                 $scope.$apply();
             }
         });
@@ -1101,35 +1113,43 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         obj.VH_CC_CI_REV = $rootScope.file_CI_R;
         obj.VH_CC_PODER_RL = $rootScope.file_PODER;
         obj.VH_CC_NIT = $rootScope.file_NIT;
-        try {
-            var datosSerializados = JSON.stringify(obj);
-            var idCiudadano = sessionService.get('IDSOLICITANTE');
-            var idTramite = sessionService.get('IDTRAMITE');
-            var idServicio = sessionService.get('IDSERVICIO');
-            var Parametros = new datosFormularios();
-            Parametros.frm_tra_dvser_id = idServicio;
-            Parametros.data_json = datosSerializados;
-            Parametros.frm_tra_id_ciudadano = idCiudadano;
-            Parametros.frm_tra_id_usuario = 1;
-            Parametros.frm_idTramite = idTramite;
-            $rootScope.btnGuardarForm = true;
-            Parametros.sp_crear_datos_formulario(function (results) {
-                results = JSON.parse(results);
-                results = results.success;
-                if (results.length > 0) {
-                    $.unblockUI();
-                    $scope.btnEnviarForm = false;
-                    $scope.btnGuardarForm = false;
-                    $rootScope.$broadcast('iniciaBtnHabilitar', 'G');
-                    swal('', "Formulario almacenado", 'success');
-                } else {
-                    $.unblockUI();
-                    swal('', "Formulario no almacenado", 'error');
-                }
-            });
-        } catch (e) {
-            $scope.btnGuardarForm = false;
-            $.unblockUI();
+        obj.cantidadFactura = $scope.datos.facturaFojas;
+        obj.cantidadPoliza = $scope.datos.duiFojas;
+        obj.cantidadPoder = $scope.datos.poderFojas;
+        if ((obj.cantidadFactura == 'undefined' || obj.cantidadPoliza == 'undefined' || obj.cantidadPoder == 'undefined' || obj.VH_CC_REQ_FAC_COMER == 'undefined' || obj.VH_CC_REQ_FAC_COMER == undefined) || (obj.VH_CC_REQ_POL_IMPOR == 'undefined' || obj.VH_CC_REQ_POL_IMPOR == undefined) || (obj.VH_CC_PODER_COMPRADOR == 'undefined' || obj.VH_CC_PODER_COMPRADOR == undefined) || (obj.VH_CC_NRO_OBJ_TRIB == 'undefined' || obj.VH_CC_NRO_OBJ_TRIB == undefined) || (obj.VH_CC_NRO_CHASIS == 'undefined' || obj.VH_CC_NRO_CHASIS == undefined)) {
+            swal('Estimado ciudadano', "Debe completar los datos del formulario y/o adjuntar todos los requisitos...", 'warning');
+        } else {
+            try {
+                var datosSerializados = JSON.stringify(obj);
+                var idCiudadano = sessionService.get('IDSOLICITANTE');
+                var idTramite = sessionService.get('IDTRAMITE');
+                var idServicio = sessionService.get('IDSERVICIO');
+                var Parametros = new datosFormularios();
+                Parametros.frm_tra_dvser_id = idServicio;
+                Parametros.data_json = datosSerializados;
+                Parametros.frm_tra_id_ciudadano = idCiudadano;
+                Parametros.frm_tra_id_usuario = 1;
+                Parametros.frm_idTramite = idTramite;
+                $rootScope.btnGuardarForm = true;
+                Parametros.sp_crear_datos_formulario(function (results) {
+                    results = JSON.parse(results);
+                    results = results.success;
+                    if (results.length > 0) {
+                        $.unblockUI();
+                        $scope.btnEnviarForm = false;
+                        $scope.btnGuardarForm = false;
+                        $rootScope.$broadcast('iniciaBtnHabilitar', 'G');
+                        swal('', "Formulario almacenado", 'success');
+                        $("#btnFormLicencia").removeAttr("disabled");
+                    } else {
+                        $.unblockUI();
+                        swal('', "Formulario no almacenado", 'error');
+                    }
+                });
+            } catch (e) {
+                $scope.btnGuardarForm = false;
+                $.unblockUI();
+            }
         }
     };
 
@@ -1139,7 +1159,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         obj.VH_CC_PODER_COMPRADOR = '';
         obj.INT_FORM_ALMACENADO = 'G';
         obj.f01_tipo_per = sessionService.get('TIPO_PERSONA');
-        obj.ID_TIPO_TRAMITE = 1401; //no borrar
+        obj.ID_TIPO_TRAMITE = 1401;
         obj.VH_CC_NRO_DOC_IDEN = obj.f01_rl_nit;
         obj.VH_CC_NOM_RAZ_SOC = obj.f01_raz_soc_per_jur;
         obj.VH_CC_DIRECC = obj.f01_zon_rep_valor;
@@ -1157,9 +1177,11 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         obj.VH_CC_CI_REV = $rootScope.file_CI_R;
         obj.VH_CC_PODER_RL = $rootScope.file_PODER;
         obj.VH_CC_NIT = $rootScope.file_NIT;
-        if ((obj.VH_CC_REQ_FAC_COMER == 'undefined' || obj.VH_CC_REQ_FAC_COMER == undefined) || (obj.VH_CC_REQ_POL_IMPOR == 'undefined' || obj.VH_CC_REQ_POL_IMPOR == undefined) || (obj.VH_CC_PODER_COMPRADOR == 'undefined' || obj.VH_CC_PODER_COMPRADOR == undefined) || (obj.VH_CC_NRO_OBJ_TRIB == 'undefined' || obj.VH_CC_NRO_OBJ_TRIB == undefined) || (obj.VH_CC_NRO_CHASIS == 'undefined' || obj.VH_CC_NRO_CHASIS == undefined)) {
+        obj.cantidadFactura = $scope.datos.facturaFojas;
+        obj.cantidadPoliza = $scope.datos.duiFojas;
+        obj.cantidadPoder = $scope.datos.poderFojas;
+        if ((obj.cantidadFactura == 'undefined' || obj.cantidadPoliza == 'undefined' || obj.cantidadPoder == 'undefined' || obj.VH_CC_REQ_FAC_COMER == 'undefined' || obj.VH_CC_REQ_FAC_COMER == undefined) || (obj.VH_CC_REQ_POL_IMPOR == 'undefined' || obj.VH_CC_REQ_POL_IMPOR == undefined) || (obj.VH_CC_PODER_COMPRADOR == 'undefined' || obj.VH_CC_PODER_COMPRADOR == undefined) || (obj.VH_CC_NRO_OBJ_TRIB == 'undefined' || obj.VH_CC_NRO_OBJ_TRIB == undefined) || (obj.VH_CC_NRO_CHASIS == 'undefined' || obj.VH_CC_NRO_CHASIS == undefined)) {
             swal('Estimado ciudadano', "Debe completar los datos del formulario y/o adjuntar todos los requisitos...", 'warning');
-            $scope.habGuardar1 = true;
         } else {
             try {
                 var datosSerializados = JSON.stringify(obj);
@@ -1184,6 +1206,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
 
                         $rootScope.$broadcast('iniciaBtnHabilitar', 'G');
                         swal('', "Formulario almacenado", 'success');
+                        $("#btnFormLicencia").removeAttr("disabled");
                     } else {
                         $.unblockUI();
                         swal('', "Formulario no almacenado", 'error');
@@ -1198,12 +1221,15 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
 
     };
     $scope.serializarInformacionLibrosVehiculos = function (obj) {
+        if (obj.DOC_CI_FORMULARIO_409 == 'undefined' || obj.DOC_CI_FORMULARIO_409 == undefined) {
+            swal('Estimado ciudadano', "Debe generar el formulario 406...", 'warning');
+        }
         obj.DOC_BALANCE_VEHICULOS = '';
         obj.VH_VL_DOC_DETALLE_OBJ_TRIB = '';
         obj.VH_CC_CUADRO_ACT = '';
         obj.INT_FORM_ALMACENADO = 'G';
         obj.f01_tipo_per = sessionService.get('TIPO_PERSONA');
-        obj.ID_TIPO_TRAMITE = 103010; //no borrar
+        obj.ID_TIPO_TRAMITE = 103010;
         obj.VH_CC_NRO_DOC_IDEN = obj.f01_rl_nit;
         obj.VH_CC_NOM_RAZ_SOC = obj.f01_raz_soc_per_jur;
         obj.VH_CC_DIRECC = obj.f01_zon_rep_valor;
@@ -1224,40 +1250,63 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         obj.VH_CC_CI_REV = $rootScope.file_CI_R;
         obj.VH_CC_PODER_RL = $rootScope.file_PODER;
         obj.VH_CC_NIT = $rootScope.file_NIT;
+        obj.facturaFojas = $scope.datos.facturaFojas;
+        obj.detalleFojas = $scope.datos.detalleFojas;
+        obj.balanceFojas = $scope.datos.balanceFojas;
+        obj.Fojas409 = $scope.datos.Fojas409;
 
+        if ((obj.facturaFojas == 'undefined' || obj.facturaFojas == undefined) ||
+            (obj.detalleFojas == 'undefined' || obj.detalleFojas == undefined) ||
+            (obj.balanceFojas == 'undefined' || obj.balanceFojas == undefined) ||
+            (obj.balanceFojas == 'undefined' || obj.balanceFojas == undefined) ||
+            (obj.Fojas409 == 'undefined' || obj.Fojas409 == undefined) ||
+            (obj.DOC_BALANCE_VEHICULOS == 'undefined' ||
+                obj.DOC_BALANCE_VEHICULOS == undefined) ||
+            (obj.VH_VL_DOC_DETALLE_OBJ_TRIB == 'undefined' ||
+                obj.VH_VL_DOC_DETALLE_OBJ_TRIB == undefined) ||
+            (obj.VH_VL_CUADRO_EXCEL == 'undefined' ||
+                obj.VH_VL_CUADRO_EXCEL == undefined) ||
+            (obj.VH_VL_FORMULARIO409 == 'undefined' || obj.VH_VL_FORMULARIO409 == undefined)) {
+            swal('Estimado ciudadano', "Debe completar los datos del formulario y/o adjuntar todos los requisitos...", 'warning');
+        } else {
 
-        try {
-            var datosSerializados = JSON.stringify(obj);
-            var idCiudadano = sessionService.get('IDSOLICITANTE');
-            var idTramite = sessionService.get('IDTRAMITE');
-            var idServicio = sessionService.get('IDSERVICIO');
-            var Parametros = new datosFormularios();
-            Parametros.frm_tra_dvser_id = idServicio;
-            Parametros.data_json = datosSerializados;
-            Parametros.frm_tra_id_ciudadano = idCiudadano;
-            Parametros.frm_tra_id_usuario = 1;
-            Parametros.frm_idTramite = idTramite;
-            $rootScope.btnGuardarForm = true;
-            Parametros.sp_crear_datos_formulario(function (results) {
-                results = JSON.parse(results);
-                results = results.success;
-                if (results.length > 0) {
-                    $.unblockUI();
-                    $scope.btnEnviarForm = false;
-                    $scope.btnGuardarForm = false;
-                    $rootScope.$broadcast('iniciaBtnHabilitar', 'G');
-                    swal('', "Formulario almacenado", 'success');
-                } else {
-                    $.unblockUI();
-                    swal('', "Formulario no almacenado", 'error');
-                }
-            });
-        } catch (e) {
-            $scope.btnGuardarForm = false;
-            $.unblockUI();
+            try {
+                var datosSerializados = JSON.stringify(obj);
+                var idCiudadano = sessionService.get('IDSOLICITANTE');
+                var idTramite = sessionService.get('IDTRAMITE');
+                var idServicio = sessionService.get('IDSERVICIO');
+                var Parametros = new datosFormularios();
+                Parametros.frm_tra_dvser_id = idServicio;
+                Parametros.data_json = datosSerializados;
+                Parametros.frm_tra_id_ciudadano = idCiudadano;
+                Parametros.frm_tra_id_usuario = 1;
+                Parametros.frm_idTramite = idTramite;
+                $rootScope.btnGuardarForm = true;
+                Parametros.sp_crear_datos_formulario(function (results) {
+                    results = JSON.parse(results);
+                    results = results.success;
+                    if (results.length > 0) {
+                        $.unblockUI();
+                        $scope.btnEnviarForm = false;
+                        $scope.btnGuardarForm = false;
+                        $rootScope.$broadcast('iniciaBtnHabilitar', 'G');
+                        swal('', "Formulario almacenado", 'success');
+                        $("#btnFormLicencia").removeAttr("disabled");
+                    } else {
+                        $.unblockUI();
+                        swal('', "Formulario no almacenado", 'error');
+                    }
+                });
+            } catch (e) {
+                $scope.btnGuardarForm = false;
+                $.unblockUI();
+            }
         }
     };
     $scope.serializarInformacionInmuebles = function (obj) {
+        if (obj.DOC_CI_FORMULARIO_406 == 'undefined' || obj.DOC_CI_FORMULARIO_406 == undefined) {
+            swal('Estimado ciudadano', "Debe generar el formulario 406...", 'warning');
+        }
         obj.VH_CC_REQ_BALANCE = '';
         obj.VH_CC_REQ_DETALLE = '';
         obj.VH_CC_CUADRO_ACT = '';
@@ -1287,35 +1336,57 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         obj.VH_CC_CI_REV = $rootScope.file_CI_R;
         obj.VH_CC_PODER_RL = $rootScope.file_PODER;
         obj.VH_CC_NIT = $rootScope.file_NIT;
-        try {
-            var datosSerializados = JSON.stringify(obj);
-            var idCiudadano = sessionService.get('IDSOLICITANTE');
-            var idTramite = sessionService.get('IDTRAMITE');
-            var idServicio = sessionService.get('IDSERVICIO');
-            var Parametros = new datosFormularios();
-            Parametros.frm_tra_dvser_id = idServicio;
-            Parametros.data_json = datosSerializados;
-            Parametros.frm_tra_id_ciudadano = idCiudadano;
-            Parametros.frm_tra_id_usuario = 1;
-            Parametros.frm_idTramite = idTramite;
-            $rootScope.btnGuardarForm = true;
-            Parametros.sp_crear_datos_formulario(function (results) {
-                results = JSON.parse(results);
-                results = results.success;
-                if (results.length > 0) {
-                    $.unblockUI();
-                    $scope.btnEnviarForm = false;
-                    $scope.btnGuardarForm = false;
-                    $rootScope.$broadcast('iniciaBtnHabilitar', 'G');
-                    swal('', "Formulario almacenado", 'success');
-                } else {
-                    $.unblockUI();
-                    swal('', "Formulario no almacenado", 'error');
-                }
-            });
-        } catch (e) {
-            $scope.btnGuardarForm = false;
-            $.unblockUI();
+        obj.facturaFojas = $scope.datos.facturaFojas;
+        obj.detalleFojas = $scope.datos.detalleFojas;
+        obj.cuadroActualizadoFojas = $scope.datos.cuadroActualizadoFojas;
+        obj.balanceFojas = $scope.datos.balanceFojas;
+        obj.Fojas409 = $scope.datos.Fojas409;
+
+        if ((obj.facturaFojas == 'undefined' || obj.facturaFojas == undefined) ||
+            (obj.detalleFojas == 'undefined' || obj.detalleFojas == undefined) ||
+            (obj.cuadroActualizadoFojas == 'undefined' || obj.cuadroActualizadoFojas == undefined) ||
+            (obj.balanceFojas == 'undefined' || obj.balanceFojas == undefined) ||
+            (obj.Fojas409 == 'undefined' || obj.Fojas409 == undefined) ||
+            (obj.VH_CC_REQ_BALANCE == 'undefined' ||
+                obj.VH_CC_REQ_BALANCE == undefined) ||
+            (obj.VH_CC_CUADRO_EXCEL_INM == 'undefined' ||
+                obj.VH_CC_CUADRO_EXCEL_INM == undefined) ||
+            (obj.DOC_CI_FORMULARIO_406 == 'undefined' ||
+                obj.DOC_CI_FORMULARIO_406 == undefined) ||
+            (obj.VH_CC_REQ_DETALLE == 'undefined' || obj.VH_CC_REQ_DETALLE == undefined)) {
+            swal('Estimado ciudadano', "Debe completar los datos del formulario y/o adjuntar todos los requisitos...", 'warning');
+        } else {
+            try {
+                var datosSerializados = JSON.stringify(obj);
+                var idCiudadano = sessionService.get('IDSOLICITANTE');
+                var idTramite = sessionService.get('IDTRAMITE');
+                var idServicio = sessionService.get('IDSERVICIO');
+                var Parametros = new datosFormularios();
+                Parametros.frm_tra_dvser_id = idServicio;
+                Parametros.data_json = datosSerializados;
+                Parametros.frm_tra_id_ciudadano = idCiudadano;
+                Parametros.frm_tra_id_usuario = 1;
+                Parametros.frm_idTramite = idTramite;
+                $rootScope.btnGuardarForm = true;
+                Parametros.sp_crear_datos_formulario(function (results) {
+                    results = JSON.parse(results);
+                    results = results.success;
+                    if (results.length > 0) {
+                        $.unblockUI();
+                        $scope.btnEnviarForm = false;
+                        $scope.btnGuardarForm = false;
+                        $rootScope.$broadcast('iniciaBtnHabilitar', 'G');
+                        swal('', "Formulario almacenado", 'success');
+                        $("#btnFormLicencia1").removeAttr("disabled");
+                    } else {
+                        $.unblockUI();
+                        swal('', "Formulario no almacenado", 'error');
+                    }
+                });
+            } catch (e) {
+                $scope.btnGuardarForm = false;
+                $.unblockUI();
+            }
         }
     };
     $scope.generarDocumentoPhpI = function () {
@@ -1360,6 +1431,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                         $rootScope.decJuradaNatural = urlData;
                         $scope.InsertarDocumento(response);
                         $rootScope.datosEnvI.declaracion_jurada = urlData;
+
                         $scope.serializarInformacionInmuebles($rootScope.datosEnvI);
                         $.unblockUI();
                     }
@@ -1430,7 +1502,6 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
     $scope.$on('api:ready', function () {
         $scope.tramitesCiudadano();
         $scope.recuperandoDatosInicialesCiudadano();
-        $scope.getCaptchasXX();
 
     });
 

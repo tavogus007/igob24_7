@@ -103,6 +103,8 @@
         if (sobj.files[0]) {
             rMisDocs.push(sobj.files[0]);
             angular.element(document.getElementById("id_serviciosVehiculosJuridicoLibrosController")).scope().almacenarRequisitos(rMisDocs, sidFile); //NO OLVIDAR
+            $("#btn_f01_upload_factura2").removeAttr("disabled");
+            alertify.success('Archivo se subió correctamente');
         }
     };
 
@@ -148,6 +150,8 @@
         if (sobj.files[0]) {
             rMisDocs.push(sobj.files[0]);
             angular.element(document.getElementById("id_serviciosVehiculosJuridicoLibrosController")).scope().almacenarRequisitosTributario(rMisDocs, sidFile); //NO OLVIDAR
+            $("#btn_f01_upload_tributario2").removeAttr("disabled");
+            alertify.success('Archivo se subió correctamente');
         }
     };
 
@@ -175,7 +179,9 @@
         var rMisDocs = new Array();
         if (sobj.files[0]) {
             rMisDocs.push(sobj.files[0]);
-            angular.element(document.getElementById("id_serviciosVehiculosJuridicoLibrosController")).scope().almacenarRequisitosCuadroAct(rMisDocs, sidFile); //NO OLVIDAR
+            angular.element(document.getElementById("id_serviciosVehiculosJuridicoLibrosController")).scope().almacenarRequisitosCuadroAct(rMisDocs, sidFile);
+            $("#btn_f01_upload_ajuste2").removeAttr("disabled");
+            alertify.success('Archivo se subió correctamente');//NO OLVIDAR
         }
     };
 
@@ -223,14 +229,18 @@
         var rMisDocs = new Array();
         if (sobj.files[0]) {
             rMisDocs.push(sobj.files[0]);
-            angular.element(document.getElementById("id_serviciosVehiculosJuridicoLibrosController")).scope().almacenarRequisitosExcel(rMisDocs, sidFile); //NO OLVIDAR
+            angular.element(document.getElementById("id_serviciosVehiculosJuridicoLibrosController")).scope().almacenarRequisitosExcel(rMisDocs, sidFile);
+            $("#btn_f01_upload_excel2").removeAttr("disabled");
+            alertify.success('Archivo se subió correctamente');//NO OLVIDAR
         }
     };
     function subirRequisitos409(sobj, svalor) {
         var rMisDocs = new Array();
         if (sobj.files[0]) {
             rMisDocs.push(sobj.files[0]);
-            angular.element(document.getElementById("id_serviciosVehiculosJuridicoLibrosController")).scope().almacenarRequisitos409(rMisDocs, sidFile); //NO OLVIDAR
+            angular.element(document.getElementById("id_serviciosVehiculosJuridicoLibrosController")).scope().almacenarRequisitos409(rMisDocs, sidFile);
+            $("#btn_f01_upload_formulario2").removeAttr("disabled");
+            alertify.success('Archivo se subió correctamente'); //NO OLVIDAR
         }
     };
 
@@ -427,7 +437,7 @@
                 <div ng-show="formulario != null">
                     <div ng-show="divJuridico != null">
                         <div class="col-md-12">
-                            <legend>DATOS PERSONA JURÍDICA</legend>
+                            <legend>Datos de la persona Jurídica</legend>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -535,7 +545,7 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <legend>{{translateTitulos.lbl_12_26}}</legend>
+                            <legend>Datos personales del representante legal</legend>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -613,8 +623,13 @@
                                         style="border-bottom: solid 0px #E2E2E2 !important;">
                                         <h4>1. GENERAR FORMULARIO 409</h4>
                                     </div><br>
+                                    <div class="col-sm-12" align="left">
+                                        <div class="alert alert-danger fade in">
+                                            <bold>Seleccione una opción antes de continuar<br>
+                                        </div>
+                                    </div>
+                                    <br>
                                     <div class="col-md-4">
-                                        <font color="#FF0000" size="4px">* </font>
                                         <input type="radio" ng-model="datos.valorLibroTablasV"
                                             ng-click="visualizarLT(1);" name="valorLibroTablasV" value="VALOR LIBROS"
                                             ng-disabled="desabilitado" required> VALOR LIBROS
@@ -716,18 +731,18 @@
                                     <div class="row">
                                         <div class="ibox-title cafeSuave"
                                             style="border-bottom: solid 0px #E2E2E2 !important;">
-                                            <h4>3. ADJUNTAR REQUISITOS</h4>
+                                            <h4>3. Adjuntar Requisitos</h4>
                                         </div><br>
                                         <div class="col-md-6" ng-show="libro1 != null">
-                                            <label for="url">FOTOCOPIA DE BALANCE CON SELLO DE IMPUESTOS NACIONALES O
-                                                INSTITUCIÒN BANCARIA:</label>
+                                            <label for="url">Fotocopia de Balance con sello de impuestos nacionales o
+                                                institución bancaria:</label>
                                         </div>
                                         <div class="col-md-6" ng-show="libros2 != null">
-                                            <label for="url">SOLICITUD EXPRESA MEDIANTE NOTA DIRIGIDA AL DIRECTOR DE LA
-                                                ADMINISTRACIÓN TRIBUTARIA MUNICIPAL, JUSTIFICANDO LA SOLICITUD DE
-                                                LIQUIDACION VALOR TABLAS:</label>
+                                            <label for="url">Solicitud expresa mediante nota dirigida al director de la
+                                                Administración Tributaria Municipal, justificando la solicitud de
+                                                liquidación valor tablas</label>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4" ng-show="libro3 != null">
                                             <div class="form-group custom-upload">
                                                 <input type="file" id="f01_upload_factura" name="f01_upload_factura"
                                                     accept="application/pdf,image/jpg" style="display: none;">
@@ -746,7 +761,7 @@
                                                         <a id="href_f01_upload_factura"
                                                             onclick="ver('href_f01_upload_factura','factura_url','btn_f01_upload_factura')"
                                                             target="_blank">
-                                                            <button id="btn_f01_upload_factura"
+                                                            <button id="btn_f01_upload_factura2" ng-disabled="true"
                                                                 class="browse btn btn-primary input-lg" type="button"><i
                                                                     class="glyphicon glyphicon-eye-open"></i></button>
                                                         </a>
@@ -760,10 +775,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-1">
-                                            <label for="url">Cantidad Hojas </label>
+                                        <div class="col-md-1" ng-show="libro4 != null">
+                                            <label for="url">Cantidad de Hojas </label>
                                         </div>
-                                        <div class="col-md-1">
+                                        <div class="col-md-1" ng-show="libro5 != null">
                                             <div class="form-group">
                                                 <div class="controls">
                                                     <input ng-model="datos.facturaFojas" id="facturaFojas" type="number"
@@ -779,8 +794,8 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label for="url">DETALLE DE LOS OBJETOS TRIBUTARIOS FIRMADA POR EL
-                                                REPRESENTANTE LEGAL:</label>
+                                            <label for="url">Detalle de los Vehiculos firmado por el representante legal
+                                                o apoderado:</label>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group custom-upload1">
@@ -801,9 +816,11 @@
                                                     <span class="input-group-btn">
                                                         <a id="href_f01_upload_tributario"
                                                             onclick="ver('href_f01_upload_tributario','tributario_url','btn_f01_upload_tributario')"
-                                                            target="_blank"> <button id="btn_f01_upload_tributario"
+                                                            target="_blank">
+                                                            <button id="btn_f01_upload_tributario2" ng-disabled="true"
                                                                 class="browse btn btn-primary input-lg" type="button"><i
-                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                                    class="glyphicon glyphicon-eye-open"></i>
+                                                            </button>
                                                         </a>
                                                         <button id="btn_f01_upload_tributario"
                                                             onclick="ejecutarFileTributario('f01_upload_tributario', 'tributario')"
@@ -816,7 +833,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-1">
-                                            <label for="url">Cantidad Hojas </label>
+                                            <label for="url">Cantidad de Hojas </label>
                                         </div>
                                         <div class="col-md-1">
                                             <div class="form-group">
@@ -834,9 +851,9 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label for="url">PARA EMPRESAS QUE NO CIERRAN EL 31 DE DICIEMBRE DEBERAN
-                                                ELABORAR CUADRO DE AJUSTE ACTUALIZADO LOS VALORES AL 31 DE
-                                                DICIEMBRE:</label>
+                                            <label for="url">Para empresas que no cierran el 31 de diciembre, deberan
+                                                elaborar cuadro de ajuste actualizando los valores al 31 de
+                                                diciembre:</label>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group custom-upload2">
@@ -857,7 +874,7 @@
                                                         <a id="href_f01_upload_ajuste"
                                                             onclick="ver('href_f01_upload_ajuste','ajuste_url','btn_f01_upload_ajuste')"
                                                             target="_blank">
-                                                            <button id="btn_f01_upload_ajuste"
+                                                            <button id="btn_f01_upload_ajuste2" ng-disabled="true"
                                                                 class="browse btn btn-primary input-lg" type="button"><i
                                                                     class="glyphicon glyphicon-eye-open"></i></button>
                                                         </a>
@@ -873,7 +890,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-1">
-                                            <label for="url">Cantidad Hojas </label>
+                                            <label for="url">Cantidad de Hojas </label>
                                         </div>
                                         <div class="col-md-1">
                                             <div class="form-group">
@@ -892,8 +909,8 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label for="url">CUADRO DE BALANCE - VEHICULOS (descargar en el punto 2,
-                                                archivo tipo XLS Ó XLSX):</label> </div>
+                                            <label for="url">Cuadro de Balance - Vehículos (descargar en el punto 2,
+                                                archivo Excel):</label> </div>
                                         <div class="col-md-4">
                                             <div class="form-group custom-upload3">
                                                 <input type="file" id="f01_upload_excel" name="f01_upload_excel"
@@ -913,7 +930,7 @@
                                                         <a id="href_f01_upload_excel"
                                                             onclick="ver('href_f01_upload_excel','excel_url','btn_f01_upload_excel')"
                                                             target="_blank">
-                                                            <button id="btn_f01_upload_excel"
+                                                            <button id="btn_f01_upload_excel2" ng-disabled="true"
                                                                 class="browse btn btn-primary input-lg" type="button"><i
                                                                     class="glyphicon glyphicson-eye-open"></i></button>
                                                         </a>
@@ -928,7 +945,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-1">
-                                            <label for="url">Cantidad Hojas </label>
+                                            <label for="url">Cantidad de Hojas </label>
                                         </div>
                                         <div class="col-md-1">
                                             <div class="form-group">
@@ -944,7 +961,7 @@
                             </div><br>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="url">FORMULARIO 409 (debe descargar el formulario en el punto 1, firmar
+                                    <label for="url">Formulario 409 (debe descargar el formulario en el punto 1, firmar
                                         la solicitud y adjuntar):</label>
                                 </div>
                                 <div class="col-md-4">
@@ -966,7 +983,7 @@
                                                 <a id="href_f01_upload_formulario"
                                                     onclick="ver('href_f01_upload_formulario','formulario_url','btn_f01_upload_formulario')"
                                                     target="_blank">
-                                                    <button id="btn_f01_upload_formulario"
+                                                    <button id="btn_f01_upload_formulario2" ng-disabled="true"
                                                         class="browse btn btn-primary input-lg" type="button"><i
                                                             class="glyphicon glyphicon-eye-open"></i></button>
                                                 </a>
@@ -980,12 +997,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-1">
-                                    <label for="url">Cantidad Hojas </label>
+                                    <label for="url">Cantidad de Hojas </label>
                                 </div>
                                 <div class="col-md-1">
                                     <div class="form-group">
                                         <div class="controls">
-                                            <input ng-model="datos.409Fojas" id="409Fojas" name="409Fojas"
+                                            <input ng-model="datos.Fojas409" id="Fojas409" name="Fojas409"
                                                 class="form-control" width="30%" height="30" type="number"
                                                 ng-disabled="desabilitado">
                                         </div>
@@ -1046,11 +1063,12 @@
             </form>
             <div class="col-md-12" align="right" ng-show="botones != null">
                 <button id="miFormGuardar" ng-click="serializarInformacionLibrosVehiculos(datos);getCaptchasXX();"
-                    type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar"
-                    tooltip="Guardar Formulario">
+                    type="button" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar"
+                    ng-disabled="true" tooltip="Guardar Formulario">
                 </button>
                 <button id="btnFormLicencia" ng-click="validarEnvio(datos);" data-dismiss="modal" type="button"
-                    class="btn btn-success1 fa fab fa-mail-forward shake-little" tooltip="Enviar Formulario">
+                    class="btn btn-success1 fa fab fa-mail-forward shake-little fa-lg" ng-disabled="true"
+                    tooltip="Enviar Formularios">
                 </button>
             </div>
         </div>

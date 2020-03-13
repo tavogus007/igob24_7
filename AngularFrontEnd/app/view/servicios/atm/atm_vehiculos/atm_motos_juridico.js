@@ -214,7 +214,7 @@ function motosControllerJuridico($scope, $q, $rootScope, $routeParams, $location
                 angular.element('#docsVisor').modal('hide');
                 $('#docsVisor').modal().hide();
                 $('.docsVisor').removeClass('show');
-                window.open(fum, "visorMapa", "directories=no, location=no, menubar=no, scrollbars=yes, statusbar=no, tittlebar=no, width=400, height=400");
+                window.open(fum, "", "width=600,height=480,toolbar=no,menubar=no,resizable=yes,location=no");
             }
         }
     };

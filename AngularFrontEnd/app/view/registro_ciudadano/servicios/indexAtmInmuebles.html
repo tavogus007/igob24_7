@@ -1,193 +1,251 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
-    <head>
-        <!--<link href="../../libs/css/sweetalert.css" rel="stylesheet" async>-->
-        <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css" async>
-        <!--<script type="text/javascript" src="../../libs/js/sweetalert.min.js" async></script>-->
-        <!--<script type="text/javascript" src="../../libs/js/ngSweetAlert.js" async></script>-->
-        <link href="../../libs/css/select2.min.css" rel="stylesheet" async/>
-        <script src="../../libs/js/select2.min.js" async></script>
-        <script src="../../libs/js/prism.js" async></script>
-        <script type="text/javascript" src="../../libs/js/bootstrap-clockpicker.min.js" async></script>
-    </head>    
-  <body>
-<script type="text/javascript">
-        /*se adiciono nota ATM*/
-    var fechaDato = new Date();
-    var mes = fechaDato.getMonth()+1;
-    var dia = fechaDato.getDate();
-    var anioo = fechaDato.getFullYear();
-    var fechaActual = anioo+'-'+mes+'-'+dia;
-    var fechaLimite = new Date('2020-02-18');
-    var fechaLimite2 = new Date('2020-02-11');
-    if(fechaDato < fechaLimite){
-    $('#guiatramiteI').modal('show');
-    } 
-    if(fechaDato < fechaLimite && fechaDato > fechaLimite2){
-    $('#guiatramiteI2').modal('show');
-    } 
-    /* FIN DE LA NOTA*/
-    var icon= 0;  
-       $('#mostrar').click(function(event) {          
-           event.preventDefault();
-           $("#caja").slideToggle();
-                  
-           if (icon==0) {
-             $("#cerrar_i").removeClass("fa fa-sort-asc");
-             $("#cerrar_i").addClass("fa fa-sort-desc");
-             $("#cerrar_rc").css({'position' : 'absolute', 'top' : '-11px' });
-             icon=icon + 1;
-           }
-           else{
-              $("#cerrar_i").addClass("fa fa-sort-asc");
-              $("#cerrar_rc").css({'position' : 'absolute', 'top' : '5px' });
-              icon= 0;
-           }
-       });
-       $('#ibox-title').click(function(event) {
-           event.preventDefault();
-           $('#caja').slideUp();
-       });   
+
+<head>
+    <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css" async>
+    <link href="../../libs/css/select2.min.css" rel="stylesheet" async />
+    <script src="../../libs/js/select2.min.js" async></script>
+    <script src="../../libs/js/prism.js" async></script>
+    <script type="text/javascript" src="../../libs/js/bootstrap-clockpicker.min.js" async></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+        var fechaDato = new Date();
+        var mes = fechaDato.getMonth() + 1;
+        var dia = fechaDato.getDate();
+        var anioo = fechaDato.getFullYear();
+        var fechaActual = anioo + '-' + mes + '-' + dia;
+        var fechaLimitei2 = new Date('2020-02-19');
+        var fechaLimitef2 = new Date('2020-04-03');
+        var fechaLimitei3 = new Date('2020-04-04');
+        var fechaLimitef3 = new Date('2020-05-19');
+        var fechaLimitei4 = new Date('2020-05-20');
+        var fechaLimitef4 = new Date('2020-07-03');
+        var fechaLimiteS2 = new Date('2020-03-28');
+        var fechaLimiteS3 = new Date('2020-05-12');
+        var fechaLimiteS4 = new Date('2020-06-26');
+        if (fechaDato > fechaLimitei2 && fechaDato < fechaLimitef2) {
+            $('#guiatramiteI2').modal('show');
+        }
+        if (fechaDato > fechaLimitei3 && fechaDato < fechaLimitef3) {
+            $('#guiatramiteI3').modal('show');
+        }
+        if (fechaDato > fechaLimitei4 && fechaDato < fechaLimitef4) {
+            $('#guiatramiteI4').modal('show');
+        }
+        if (fechaDato > fechaLimiteS2 && fechaDato < fechaLimitef2) {
+            $('#guiatramiteI').modal('show');
+        }
+        if (fechaDato > fechaLimiteS3 && fechaDato < fechaLimitef3) {
+            $('#guiatramiteI').modal('show');
+        }
+        if (fechaDato > fechaLimiteS4 && fechaDato < fechaLimitef4) {
+            $('#guiatramiteI').modal('show');
+        }
+        var icon = 0;
+        $('#mostrar').click(function (event) {
+            event.preventDefault();
+            $("#caja").slideToggle();
+
+            if (icon == 0) {
+                $("#cerrar_i").removeClass("fa fa-sort-asc");
+                $("#cerrar_i").addClass("fa fa-sort-desc");
+                $("#cerrar_rc").css({ 'position': 'absolute', 'top': '-11px' });
+                icon = icon + 1;
+            }
+            else {
+                $("#cerrar_i").addClass("fa fa-sort-asc");
+                $("#cerrar_rc").css({ 'position': 'absolute', 'top': '5px' });
+                icon = 0;
+            }
+        });
+        $('#ibox-title').click(function (event) {
+            event.preventDefault();
+            $('#caja').slideUp();
+        });   
     </script>
-   <script type="text/javascript">
-       $(document).ready(function() {
-         $(".js-example-basic-single").select2();
-         $('html,body').scrollTop(0);
-       });
-   </script>
- 
-<div ng-controller="serviciosAtmController" ng-init="inicioServiciosAtm();">
-    <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div id="mostrar" class="ibox-title">
-                <h5>ADMINISTRACIÓN TRIBUTARIA MUNICIPAL - INMUEBLES</h5>
-                <a href="#" id="cerrar_rc" ><i class="fa fa-sort-asc flechaOscura" id="cerrar_i"></i></a>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".js-example-basic-single").select2();
+            $('html,body').scrollTop(0);
+        });
+    </script>
+
+    <div ng-controller="serviciosAtmController" ng-init="inicioServiciosAtm();">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div id="mostrar" class="ibox-title">
+                    <h5>ADMINISTRACIÓN TRIBUTARIA MUNICIPAL - INMUEBLES</h5>
+                    <a href="#" id="cerrar_rc"><i class="fa fa-sort-asc flechaOscura" id="cerrar_i"></i></a>
+                </div>
+                <div class="ibox-content" id="caja">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form class="form-horizontal ng-pristine ng-valid">
+                                <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <div style="text-align:center;">
+                                            <a class="btn btn-success" tooltip="Crear el trámite" data-toggle="modal"
+                                                data-target="#seleccionarTramiteVI"><i
+                                                    class="fa fa-file blanco shake-slow"></i>
+                                                <!--cambios-->
+                                                {{translateTitulos.lbl_10_02}}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <label class="col-lg-3 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
+                                    <div class="col-lg-6">
+                                        <input ng-model="query" id="busca1" class="form-control" placeholder="">
+                                    </div>
+                                </div>
+                            </form>
+                            <table ng-table="tablaTramites" class="table table-striped">
+                                <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
+                                    ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                                    <td data-title="'Código'" ng-click="seleccionarTramiteAtm(tramite)">
+                                        {{tramite.vcodigo}}</td>
+                                    <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramiteAtm(tramite)">
+                                        {{tramite.vservicio}}</td>
+                                    <td data-title="'Fecha'" ng-click="seleccionarTramiteAtm(tramite)">
+                                        {{tramite.vfecha}} </td>
+                                    <td data-title="'Enviado'" ng-click="seleccionarTramiteAtm(tramite)">
+                                        {{tramite.venviado}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="ibox-content" id="caja">
-                <div class="row">
-                    <div class="col-sm-12">
-                    <form class="form-horizontal ng-pristine ng-valid">
-                            <div class="form-group">                    
-                                <div class="col-lg-3">
-                                <div style="text-align:center;">
-                                    <a class="btn btn-success" tooltip = "Crear el trámite" data-toggle="modal" data-target="#seleccionarTramiteVI"><i class="fa fa-file blanco shake-slow"></i><!--cambios-->
-                                        {{translateTitulos.lbl_10_02}}
-                                    </a>
-                                </div>
-                                </div>
-                            <label class="col-lg-3 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
-                            <div class="col-lg-6">
-                                <input ng-model = "query" id ="busca1" class="form-control" placeholder="">
+            <div class="modal fade in" id="guiatramiteI" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body" style="background: #545f63;">
+                            <img class="img-responsive" src="../../libs/img/comunicadoAtm2_01_2020.jpg">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default ng-binding"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade in" id="guiatramiteI2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body" style="background: #545f63;">
+                            <img class="img-responsive" src="../../libs/img/comunicadoVencimiento2.JPG">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default ng-binding"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade in" id="guiatramiteI3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body" style="background: #545f63;">
+                            <img class="img-responsive" src="../../libs/img/comunicadoVencimiento3.JPG">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default ng-binding"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade in" id="guiatramiteI4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body" style="background: #545f63;">
+                            <img class="img-responsive" src="../../libs/img/comunicadoVencimiento4.JPG">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default ng-binding"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div ng-include="template.url" class="animated fadeInUp"></div>
+            </div>
+
+            <div class="modal fade" id="seleccionarTramiteVI" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Servicios</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Seleccione el tipo de trámite que desea realizar.</p>
+                            <div class="row">
+                                <table class="table table-striped">
+                                    <thead style="background: #6F7072;color: #F5F5F6;">
+                                        <th>#&nbsp;</th>
+                                        <th>Tipo de Trámites&nbsp;</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="cursor: pointer;" class="column"
+                                            ng-repeat="proceso in serivicosInternetInmuebles"
+                                            ng-click="seleccionarProceso(proceso)"
+                                            ng-style="proceso.id==procesoSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}">
+                                            <td>{{$index+1}}</td>
+                                            <td>{{proceso.name}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </form>
-                    <table ng-table="tablaTramites"  class="table table-striped">
-                        <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
-                            <td data-title="'Código'" ng-click="seleccionarTramiteAtm(tramite)">{{tramite.vcodigo}}</td>
-                            <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramiteAtm(tramite)" >{{tramite.vservicio}}</td>  
-                            <td data-title="'Fecha'" ng-click="seleccionarTramiteAtm(tramite)">{{tramite.vfecha}} </td>
-                            <td data-title="'Enviado'" ng-click="seleccionarTramiteAtm(tramite)">{{tramite.venviado}}</td> 
-                        </tr>
-                    </table> 
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-default" ng-click="crearTramiteAE();"
+                                data-dismiss="modal">Crear</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--CAMPO COMUNICADO-->
-        <div class="modal fade in" id="guiatramiteI" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-body" style="background: #545f63;">
-                         <img class="img-responsive" src="../../libs/img/comunicadoAtm01_2020.jpg">
-                  </div>
-
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-default ng-binding" data-dismiss="modal">Cerrar</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="modal fade in" id="guiatramiteI2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-body" style="background: #545f63;">
-                         <img class="img-responsive" src="../../libs/img/comunicadoAtm2_01_2020.jpg">
-                  </div>
-
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-default ng-binding" data-dismiss="modal">Cerrar</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <!--CAMPO COMUNICADO-->
-        <!--cambios magali-->
-        <!-- Modal -->
-        <div class="col-lg-12">
-            <div ng-include="template.url" class="animated fadeInUp" ></div>
-         </div>
-   
-    <div class="modal fade" id="seleccionarTramiteVI" role="dialog">
-            <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Servicios</h4>
-                </div>
-                <div class="modal-body">
-                <p>Seleccione el tipo de trámite que desea realizar.</p>
-                <div class="row">
-                        <table class="table table-striped">
-                            <thead style="background: #6F7072;color: #F5F5F6;">
-                                <th>#&nbsp;</th>
-                                <th>Tipo de Trámites&nbsp;</th>                                            
-                            </thead>
-                            <tbody>
-                                <tr  style="cursor: pointer;" class="column" ng-repeat="proceso in serivicosInternetInmuebles" ng-click="seleccionarProceso(proceso)" ng-style="proceso.id==procesoSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}">
-                                    <td>{{$index+1}}</td>
-                                    <td>{{proceso.name}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <div class="modal fade" id="declaracionJ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: #ffcb05;">
+                        <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO 406</h2>
                     </div>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button class="btn btn-default" ng-click="crearTramiteAE();" data-dismiss="modal">Crear</button>                                  
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL EMISION NATURAL -->
-
-    <div class="modal fade" id="declaracionJ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background: #ffcb05;" >
-                    <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO 406</h2>
-                </div>
-                <div class="modal-body" id="bodyDeclaracionJ">
-                    <div class="row">
-                        <form name="formulario" readOnly="true" novalidate>
-                            <div class="row">
-                                <div id="msgformularioJ">
-                                    {{msgformularioJ}}
+                    <div class="modal-body" id="bodyDeclaracionJ">
+                        <div class="row">
+                            <form name="formulario" readOnly="true" novalidate>
+                                <div class="row">
+                                    <div id="msgformularioJ">
+                                        {{msgformularioJ}}
+                                    </div>
                                 </div>
-                            </div>          
-                        </form>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btncerrarmodal" type="button" class="btn btn-primary"
+                            data-dismiss="modal">Cerrar</button>
+                        <button id="btnIm" type="button" class="btn btn-success"
+                            ng-click="printToCart('bodyDeclaracionJ');generarDocumentoPhpI();"
+                            data-dismiss="modal">IMPRIMIR</button>
+
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <!-- <button id="btndecl" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="generarDocumentoPhpI();" data-dismiss="modal">Aceptar</button> -->
-                    <button id="btncerrarmodal" type="button" class="btn btn-primary"  data-dismiss="modal">Cerrar</button>
-                    <button id="btnIm"  type="button" class="btn btn-success" ng-click="printToCart('bodyDeclaracionJ');generarDocumentoPhpI();" data-dismiss="modal">IMPRIMIR</button>
-                    
-                </div>
-           </div>
+            </div>
         </div>
     </div>
-</div>
 </body>

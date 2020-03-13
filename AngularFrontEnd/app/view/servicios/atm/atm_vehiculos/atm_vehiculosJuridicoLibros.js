@@ -268,10 +268,16 @@
     $scope.visualizarLT = function (datos1) {
         if (datos1 == "1") {
             $scope.libro1 = 'mostrar';
+            $scope.libro3 = 'mostrar';
+            $scope.libro4 = 'mostrar';
+            $scope.libro5 = 'mostrar';
             $scope.libros2 = null;
             $scope.noCierran = 'mostrar';
         } if (datos1 == "2") {
             $scope.libros2 = 'mostrar';
+            $scope.libro3 = 'mostrar';
+            $scope.libro4 = 'mostrar';
+            $scope.libro5 = 'mostrar';
             $scope.libro1 = null;
             $scope.noCierran = null;
         }

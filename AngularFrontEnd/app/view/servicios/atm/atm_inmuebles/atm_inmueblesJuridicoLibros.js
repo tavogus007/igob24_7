@@ -179,6 +179,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
             alert("Error ");
         }
     };
+
     $scope.verificarDatos = function (datos) {
         $scope.formulario406(datos);
 
@@ -189,6 +190,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
         if ($scope.valor == undefined) {
             swal('Advertencia', 'Debe seleccionar la opcion Valor Libros', 'error');
         } else {
+            $("#continuarSolicitud").css("display", "block");
             $("#declaracionJ").modal("show");
             $rootScope.datosEnvI = "";
             var fecha = new Date();

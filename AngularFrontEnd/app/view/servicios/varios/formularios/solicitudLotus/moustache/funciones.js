@@ -1,5 +1,6 @@
 var dataIgob = JSON.parse( sessionStorage.getItem('tramiteIgob'));
 dataIgob['g_usuario'] = sessionStorage.getItem('US_NOMBRE') + " " + sessionStorage.getItem('US_PATERNO') + " " + sessionStorage.getItem('US_MATERNO');
+dataIgob['g_usuario'] = 'ciudadano';
 dataIgob['g_oid'] = sessionStorage.getItem('IDUSUARIO');
 dataIgob['g_sistema'] = "IGOB 24_7";
 var jsonError = "";
@@ -146,37 +147,37 @@ function enviarData() {
     nroDatos = JSON.stringify(dataIgob).length;
     if (nroDatos > 2){
         var datosSerializados = JSON.stringify(dataIgob);
+        quitarComillas = new RegExp('<body id=\'tinymce\' class=\'mce-content-body \' data-id=\'POC_DESCRIB\' contenteditable=\'true\' spellcheck=\'false\'><p>', "g");
+        datosSerializados = datosSerializados.replace(quitarComillas,'');
+        quitarComillas = new RegExp('</p></body>', "g");
+        datosSerializados = datosSerializados.replace(quitarComillas,'');
         var idProcodigo = 'SITR@M-';
-        var crearCaso   =   new gCrearCasoSitram();
-        /*crearCaso.usr_id    = 1;
-        crearCaso.datos     = datosSerializados;
-        crearCaso.procodigo = idProcodigo;
-        crearCaso.tipoTramite = document.getElementById('POC_TIPO_TRAMITE').value;
-        console.log(document.getElementById('POC_SUBTIPO_TRAMITE').value)
-        crearCaso.subtipoTramite = ((typeof(document.getElementById('POC_SUBTIPO_TRAMITE').value) == 'undefined' || document.getElementById('POC_SUBTIPO_TRAMITE').value == null || document.getElementById('POC_SUBTIPO_TRAMITE').value == "NaN" || document.getElementById('POC_SUBTIPO_TRAMITE').value == "") ? 0   : parseInt(document.getElementById('POC_SUBTIPO_TRAMITE').value));
-*/
-        crearCaso.proid = 73;
-        crearCaso.actid = 599;
-        crearCaso.usr_id = 0;
-        crearCaso.datos = datosSerializados;
-        crearCaso.procodigo = idProcodigo;
-        crearCaso.macro_id = 0;
-        crearCaso.nodo_id = 1628;
-        crearCaso.tipo_tramite = document.getElementById('POC_TIPO_TRAMITE').value;
-        crearCaso.fojas = 0;
-        crearCaso.desc_fojas = 0;
-        crearCaso.crearCasoAeLineaSitram(function(response){
+        var crearCaso   =   new gCrearCasoSitramEnLinea();
+        crearCaso.datos             = datosSerializados;
+        crearCaso.tipo_tramite      = "TD";
+        crearCaso.sub_tipo_tramite  = 0;
+        crearCaso.tipo_hr           = "EXTERNA";
+        crearCaso.correlativo        = 0;
+        crearCaso.hoja_asunto       = document.getElementById('POC_ASUNTO').value;
+        crearCaso.desc_fojas        = "0";
+        crearCaso.fojas             = 0;
+        crearCaso.nodo_origen       = 2979;
+        crearCaso.nodo_id           = 2979;
+        crearCaso.usuario           = sessionStorage.getItem('USUARIO');
+        crearCaso.estado            = "ACTIVO";
+        crearCaso.crearCasoEnLineaSitram(function(response){
             try {
                 response    =   JSON.parse(response);
                 var results = response.success.data[0];
+                console.log(results);
                 indice = 0;
-                datosIF2 = results.casoid;
-                nrotramitec = results.casonro;
+                datosIF2 = results.tramite_nro_copia;
+                nrotramitec = results.tramite_nro_correlativo;
                 sessionStorage.setItem('NROTRAMITE', nrotramitec);
                 sessionStorage.setItem('NROTRAMITEID', datosIF2);
                 sessionStorage.setItem('IDPROCESO', results.procid);
                 var idTramite1 =  sessionStorage.getItem('NROTRAMITEID') ;
-                dataIgob['POC_UIDHISTO'] = results.casodata.POC_UID;
+                dataIgob['POC_UIDHISTO'] = results.tramite_uid;
                 guardarData(); 
                 ocultarFormulario();
                 try{

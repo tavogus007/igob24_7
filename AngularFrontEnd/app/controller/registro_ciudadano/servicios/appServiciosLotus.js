@@ -528,9 +528,17 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         var getFormJson =   new getFormulario();
         getFormJson.idprc    =  sidproceso;
         getFormJson.idcampo    =  sidcampo;
-        getFormJson.obtForms(function(respuesta){
+        /*getFormJson.obtForms(function(respuesta){
             //console.log("RESPUESTA FORMULARIO LOTUS 1:", respuesta);
             var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
+            //console.log("RESPUESTA FORMULARIO LOTUS 2:", JSON.parse(forms));            
+            jDataFormsLotus =   forms;
+            $scope.tramiteSeleccionadoP  =   tramite.idcampo;
+            $scope.formtramite  =   tramite;
+        });*/
+        $.getJSON( "../../controller/registro_ciudadano/servicios/correspondencia.json", function( respuesta ) {
+            //var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
+            var forms   =   respuesta.success.data[0].exportar_formulario;            
             //console.log("RESPUESTA FORMULARIO LOTUS 2:", JSON.parse(forms));            
             jDataFormsLotus =   forms;
             $scope.tramiteSeleccionadoP  =   tramite.idcampo;

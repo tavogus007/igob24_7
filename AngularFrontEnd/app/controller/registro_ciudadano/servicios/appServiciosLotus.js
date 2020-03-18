@@ -305,7 +305,107 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         $.unblockUI();
     };
 
+    $scope.validacionDatosNatural = function(datos){
+        var datosfaltantes = '';
+        datosfaltantes = new Array();
+        if(datos.dtspsl_file_fotocopia_ci == '' || datos.dtspsl_file_fotocopia_ci == ''){
+             datosfaltantes.push(' ANVERSO DE CARNET DE IDENTIDAD');
+        }
+        if(datos.dtspsl_file_fotocopia_ci_r == '' || datos.dtspsl_file_fotocopia_ci_r == ' '){
+             datosfaltantes.push(' REVERSO DE CARNET DE IDENTIDAD');
+        }
+        if(datos.dtspsl_fec_vencimiento == '' || datos.dtspsl_fec_vencimiento == ' '){
+            datosfaltantes.push(' FECHA DE VENCIMEINTO');
+        }
+        $scope.datosfalt = datosfaltantes; 
+    }
 
+    $scope.validacionDatosJuridico = function(datos){
+        var datosfaltantes = '';
+        datosfaltantes = new Array();
+        if(datos.dtspsl_ci_representante == '' || datos.dtspsl_ci_representante == ' '){
+             datosfaltantes.push('CI DEL REPRESENTANTE LEGAL');
+        }
+        if(datos.dtspsl_razon_social == '' || datos.dtspsl_razon_social == ' '){
+             datosfaltantes.push(' RAZON SOCIAL');
+        }
+        if(datos.dtspsl_movil == ''){
+            datosfaltantes.push(' CELULAR');
+        }
+        if((datos.dtspsl_correo == '')||(datos.dtspsl_correo == ' ')){
+            datosfaltantes.push(' CORREO');
+        }
+        if(datos.dtspsl_pais == ''){
+            datosfaltantes.push(' PAIS');
+        }
+        if(datos.dtspsl_departamento == ''){
+            datosfaltantes.push(' DEPARTAMENTO');
+        }
+        if(datos.dtspsl_provincia == ''){
+            datosfaltantes.push(' PROVINCIA');
+        }
+        if((datos.dtspsl_macrodistrito == '' || datos.dtspsl_macrodistrito_desc == '')){
+            datosfaltantes.push(' MACRODISTRITO');
+        }
+        if((datos.dtspsl_distrito == '' || datos.dtspsl_distrito_desc == '')){
+            datosfaltantes.push(' DISTRITO');
+        }
+        if((datos.dtspsl_zona_desc == '' || datos.dtspsl_zona == '')){
+            datosfaltantes.push(' ZONA');
+        }
+        if(datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0'){
+            datosfaltantes.push(' NOMBRE DE VIA');
+        }
+        if(datos.dtspsl_numero_casa == '' || datos.dtspsl_nombre_via == '0'){
+            datosfaltantes.push(' NUMERO DE DOMICILIO');
+        }
+        if(datos.dtspsl_file_poder_legal == '' || datos.dtspsl_file_poder_legal == ' ' ){
+            datosfaltantes.push(' DOCUMENTO DE PODER DEL REPRESENTANTE LEGAL');
+        }
+        if(datos.dtspsl_file_num_ident == '' || datos.dtspsl_file_num_ident == ' '){
+            datosfaltantes.push(' DOCUMENTO TESTIMONIO DE CONSTITUCION');
+        }
+        if(datos.dtspsl_file_num_ident == '' || datos.dtspsl_file_num_ident == ' '){
+            datosfaltantes.push(' DOCUMENTO NUMERO DE IDENTIFICACION TRIBUTARIA (NIT)');
+        }
+        if(datos.dtspsl_file_fund_emp == '' || datos.dtspsl_file_fund_emp == ' '){
+            datosfaltantes.push(' DOCUMENTO FUNDEMPRESA');
+        }
+        if(datos.dtspsl_file_reg_comer == '' || datos.dtspsl_file_reg_comer == ' '){
+            datosfaltantes.push(' DOCUMENTO REGISTRO COMERCIAL');
+        }
+
+        $scope.datosfalt = datosfaltantes; 
+    }
+    $scope.validacionDatosJuridico = function(datos){
+        var datosfaltantes = '';
+        datosfaltantes = new Array();
+        if(datos.dtspsl_ci_representante == '' || datos.dtspsl_ci_representante == ' '){
+             datosfaltantes.push('CI DEL REPRESENTANTE LEGAL');
+        }
+        if(datos.dtspsl_razon_social == '' || datos.dtspsl_razon_social == ' '){
+             datosfaltantes.push(' RAZON SOCIAL');
+        }
+        if(datos.dtspsl_nit == ''){
+            datosfaltantes.push(' NIT');
+        }
+        if((datos.dtspsl_correo == '')||(datos.dtspsl_correo == ' ')){
+            datosfaltantes.push(' CORREO');
+        }
+        if(datos.dtspsl_file_poder_legal == '' || datos.dtspsl_file_poder_legal == ' ' ){
+            datosfaltantes.push(' DOCUMENTO DE PODER DEL REPRESENTANTE LEGAL');
+        }
+        if(datos.dtspsl_file_num_ident == '' || datos.dtspsl_file_num_ident == ' '){
+            datosfaltantes.push(' DOCUMENTO NUMERO DE IDENTIFICACION TRIBUTARIA (NIT)');
+        }
+        if(datos.dtspsl_file_fund_emp == '' || datos.dtspsl_file_fund_emp == ' '){
+            datosfaltantes.push(' DOCUMENTO FUNDEMPRESA');
+        }
+        if(datos.dtspsl_file_reg_comer == '' || datos.dtspsl_file_reg_comer == ' '){
+            datosfaltantes.push(' DOCUMENTO REGISTRO COMERCIAL');
+        }
+        $scope.datosfalt = datosfaltantes; 
+    }
     //RECUPERANDO DATOS DEL REGISTRO CIUDADANO
     $scope.recuperandoDatosInicialesCiudadano = function()
     {       
@@ -320,6 +420,75 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             var resultadoApi    =   JSON.parse(resultado);
             datos           =   resultadoApi[0];
             $scope.datosIniciales = resultadoApi[0];
+            var fechaServer = $rootScope.fechaServer.split(" ");
+            var fechaFin = new Date($scope.datosIniciales.dtspsl_fec_vencimiento);
+            var fechaInicio = new Date(fechaServer[0]);
+            var diasdif= fechaFin.getTime()-fechaInicio.getTime();
+            var contdias = Math.round(diasdif/(1000*60*60*24));
+            if($scope.datosIniciales.dtspsl_tipo_persona=="NATURAL"){
+                $scope.validacionDatosNatural($scope.datosIniciales);
+                if ($scope.datosIniciales.dtspsl_file_fotocopia_ci=="" || $scope.datosIniciales.dtspsl_file_fotocopia_ci == "" || $scope.datosIniciales.dtspsl_file_fotocopia_ci_r==" " || $scope.datosIniciales.dtspsl_file_fotocopia_ci_r == " " || $scope.datosIniciales.dtspsl_fec_vencimiento=="" || $scope.datosIniciales.dtspsl_fec_vencimiento==" ") {   
+                        setTimeout(function(){
+                            swal({
+                                title: 'Editar su Información',
+                                text: 'Estimado ciudadano debe completar los siguientes datos de su cuenta: '+ $scope.datosfalt +', para poder realizar el trámite',
+                                type: 'warning',
+                                showCancelButton: false,
+                                confirmButtonColor: '#DD6B55',
+                                confirmButtonText: 'OK',
+                                closeOnConfirm: true
+                            }, function() {                                
+                                window.location.href = "#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html'";                   
+                                //$.unblockUI();
+                            });
+                        },300);
+                } else {
+                    //validacion de fecha
+                    setTimeout(function(){
+                        swal({
+                            title: 'Editar su Información',
+                            text: 'Estimado ciudadano su carnet de identidad expiro, debe actualizar su información',
+                            type: 'warning',
+                            showCancelButton: false,
+                            confirmButtonColor: '#DD6B55',
+                            confirmButtonText: 'OK',
+                            closeOnConfirm: true
+                        }, function() {                                
+                            window.location.href = "#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html'";                   
+                            //$.unblockUI();
+                        });
+                    },300);
+                }
+            } else {
+                if($scope.datosIniciales.dtspsl_tipo_persona=="JURIDICO"){
+                    console.log($scope.datosIniciales);
+                    $scope.validacionDatosJuridico($scope.datosIniciales);
+                    if ((datos.dtspsl_razon_social == '' || datos.dtspsl_nit == '' || datos.dtspsl_ci_representante == '' || datos.dtspsl_correo == '' || datos.dtspsl_file_poder_legal == '' || datos.dtspsl_file_num_ident == '' || datos.dtspsl_file_fund_emp == ''|| datos.dtspsl_file_reg_comer == '') || (datos.dtspsl_ci_representante == ' ' || datos.dtspsl_razon_social == ' ' || datos.dtspsl_correo == ' ' || datos.dtspsl_file_poder_legal == ' ' || datos.dtspsl_file_num_ident == ' ' || datos.dtspsl_file_fund_emp == ' ' || datos.dtspsl_file_reg_comer == ' ' )) {
+                        setTimeout(function(){
+                            swal({
+                                title: 'Completar información',
+                                text: 'Estimado ciudadano debe completar los siguientes datos de su cuenta: '+ $scope.datosfalt +', para poder realizar el trámite',
+                                type: 'warning',
+                                showCancelButton: false,
+                                confirmButtonColor: '#DD6B55',
+                                confirmButtonText: 'OK',
+                                closeOnConfirm: true
+                            }, function() {
+                                window.location.href = "#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html'";                   
+                                //$.unblockUI();
+                            });
+                        },300);
+                    }
+                } else {
+                    window.location.href = "#servicios|varios|index.html?url='dashboard'";                   
+                }
+            }
+
+            
+
+
+
+
         });
     };
 

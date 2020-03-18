@@ -560,6 +560,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             var fechaactualn = new fechaHoraServer();//new fechaserver();
             fechaactualn.fechahora(function(resultado){//obtfechahora(function(resultado){
                 sfecha  =   JSON.parse(resultado).success.fecha;
+                $rootScope.fechaServer = sfecha;
             });
 
             var sfechafinal =   "";

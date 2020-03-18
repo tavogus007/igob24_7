@@ -444,20 +444,23 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                         },300);
                 } else {
                     //validacion de fecha
-                    setTimeout(function(){
-                        swal({
-                            title: 'Editar su Información',
-                            text: 'Estimado ciudadano su carnet de identidad expiro, debe actualizar su información',
-                            type: 'warning',
-                            showCancelButton: false,
-                            confirmButtonColor: '#DD6B55',
-                            confirmButtonText: 'OK',
-                            closeOnConfirm: true
-                        }, function() {                                
-                            window.location.href = "#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html'";                   
-                            //$.unblockUI();
-                        });
-                    },300);
+                    console.log(contdias);
+                    if (contdias<0){
+                        setTimeout(function(){
+                            swal({
+                                title: 'Editar su Información',
+                                text: 'Estimado ciudadano su carnet de identidad expiro, debe actualizar su información',
+                                type: 'warning',
+                                showCancelButton: false,
+                                confirmButtonColor: '#DD6B55',
+                                confirmButtonText: 'OK',
+                                closeOnConfirm: true
+                            }, function() {                                
+                                window.location.href = "#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html'";                   
+                                //$.unblockUI();
+                            });
+                        },300);
+                    }
                 }
             } else {
                 if($scope.datosIniciales.dtspsl_tipo_persona=="JURIDICO"){

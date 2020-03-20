@@ -188,6 +188,7 @@
                                                 class="fa arrow blanco"></span>
                                         </a>
                                         <ul class="nav nav-second-level">
+                                            <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexLotus.html">Correspondencia Ciudadana<div style="color: #ff0000;">(Nuevo)</div></a></li>
                                             <li ng-show="stiporol == '5' && sservicios  == 'SI'">
                                                 <a ng-click=""
                                                     href="#registro_ciudadano|servicios|index343.html">{{translateTitulos.lbl_04_04}}</a>
@@ -303,8 +304,6 @@
                                                 <a ng-click=""
                                                     href="#servicios|varios|index.html?url='app/view/servicios/transparencia/reporte/index.html'">Transparencia</a>
                                             </li>
-
-                                            <li ng-show="stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexLotus.html">Trámites - Cero Papel</a></li>
                                         </ul>
                                     </li>
                                     <!--ATM -------- mostrarMenuMascota verifica si la persona es juridica-->

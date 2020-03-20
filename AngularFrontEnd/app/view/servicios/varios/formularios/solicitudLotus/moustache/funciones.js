@@ -163,7 +163,7 @@ function enviarData() {
         crearCaso.fojas             = 0;
         crearCaso.nodo_origen       = 2979;
         crearCaso.nodo_id           = 2979;
-        crearCaso.usuario           = sessionStorage.getItem('USUARIO');
+        crearCaso.usuario           = 'Ciudadano';//sessionStorage.getItem('USUARIO');
         crearCaso.estado            = "ACTIVO";
         crearCaso.crearCasoEnLineaSitram(function(response){
             try {

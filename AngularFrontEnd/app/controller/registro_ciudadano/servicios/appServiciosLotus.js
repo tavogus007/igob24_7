@@ -392,18 +392,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         if((datos.dtspsl_correo == '')||(datos.dtspsl_correo == ' ')){
             datosfaltantes.push(' CORREO');
         }
-        if(datos.dtspsl_file_poder_legal == '' || datos.dtspsl_file_poder_legal == ' ' ){
-            datosfaltantes.push(' DOCUMENTO DE PODER DEL REPRESENTANTE LEGAL');
-        }
-        if(datos.dtspsl_file_num_ident == '' || datos.dtspsl_file_num_ident == ' '){
-            datosfaltantes.push(' DOCUMENTO NUMERO DE IDENTIFICACION TRIBUTARIA (NIT)');
-        }
-        if(datos.dtspsl_file_fund_emp == '' || datos.dtspsl_file_fund_emp == ' '){
-            datosfaltantes.push(' DOCUMENTO FUNDEMPRESA');
-        }
-        if(datos.dtspsl_file_reg_comer == '' || datos.dtspsl_file_reg_comer == ' '){
-            datosfaltantes.push(' DOCUMENTO REGISTRO COMERCIAL');
-        }
         $scope.datosfalt = datosfaltantes; 
     }
     //RECUPERANDO DATOS DEL REGISTRO CIUDADANO
@@ -466,7 +454,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 if($scope.datosIniciales.dtspsl_tipo_persona=="JURIDICO"){
                     console.log($scope.datosIniciales);
                     $scope.validacionDatosJuridico($scope.datosIniciales);
-                    if ((datos.dtspsl_razon_social == '' || datos.dtspsl_nit == '' || datos.dtspsl_ci_representante == '' || datos.dtspsl_correo == '' || datos.dtspsl_file_poder_legal == '' || datos.dtspsl_file_num_ident == '' || datos.dtspsl_file_fund_emp == ''|| datos.dtspsl_file_reg_comer == '') || (datos.dtspsl_ci_representante == ' ' || datos.dtspsl_razon_social == ' ' || datos.dtspsl_correo == ' ' || datos.dtspsl_file_poder_legal == ' ' || datos.dtspsl_file_num_ident == ' ' || datos.dtspsl_file_fund_emp == ' ' || datos.dtspsl_file_reg_comer == ' ' )) {
+                    if ((datos.dtspsl_razon_social == '' || datos.dtspsl_nit == '' || datos.dtspsl_ci_representante == '' || datos.dtspsl_correo == '') || (datos.dtspsl_ci_representante == ' ' || datos.dtspsl_razon_social == ' ' || datos.dtspsl_correo == ' ' )) {
                         setTimeout(function(){
                             swal({
                                 title: 'Completar información',

@@ -918,13 +918,13 @@
                                                                                 class="text-center" style="width:10%">
                                                                                 <!--a class="btn btn-primary" data-toggle="modal" data-target="#detallesRadianes"  ng-click="detalleradianes(lstGrilla)" ><i class="fa fa-eye"  title="Ver radianes del Soporte"></i></a-->
                                                                                 <a class="btn btn-info btn-circle"
-                                                                                    ng-click="editaSoporte(lstGrilla)"
-                                                                                    ng-hide="botones"><i
+                                                                                    ng-click="editaSoporte(lstGrilla,$index)"
+                                                                                    ng-hide="botones1"><i
                                                                                         class="fa fa-pencil"
                                                                                         title="editar Registro del soporte"></i></a>
                                                                                 <a class="btn btn-primary"
                                                                                     ng-click="eliminarSoporte(lstGrilla,$index)"
-                                                                                    ng-hide="botones"><i
+                                                                                    ng-hide="botones1"><i
                                                                                         class="fa fa-trash "
                                                                                         title="Eliminar registro Antena"></i></a>
                                                                             </td>
@@ -1048,12 +1048,12 @@
                                                                                     style="width:10%">
                                                                                     <a ng-hide="!botones"
                                                                                         class="btn btn-info btn-circle"
-                                                                                        ng-click="det_grilla_multiple_vista(lstGrilla)"><i
+                                                                                        ng-click="det_grilla_multiple_vista(lstGrilla,$index)"><i
                                                                                             class="fa fa-eye"
                                                                                             title="ver Registro"></i></a>
                                                                                     <a ng-show="lstGrilla.estadoTramite != 'ENVIADO' && estadoTramite != 'NO' && lstGrilla.fecha_envio == fechaVerifica"
                                                                                         class="btn btn-info btn-circle"
-                                                                                        ng-click="registro_i_data_multiple(lstGrilla)"><i
+                                                                                        ng-click="registro_i_data_multiple(lstGrilla,$index)"><i
                                                                                             class="fa fa-share"
                                                                                             title="Enviar Tramite"></i></a>
 

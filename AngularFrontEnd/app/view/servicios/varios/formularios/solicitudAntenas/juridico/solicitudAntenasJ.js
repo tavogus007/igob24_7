@@ -238,6 +238,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     }
   }
   $scope.tipoReg;
+  $rootScope.botones1 = true;
   $scope.valid_tipo = function () {
 
     var radios = $('input:radio[name=r_tipo]:checked').val();
@@ -349,6 +350,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
         $rootScope.tabAdj = false;
         $scope.hab_boton_guardar = true;
         $scope.ANTT_ADJ_AUTORIZACION = null;
+        $rootScope.botones1 = false;
 
 
         break;
@@ -368,7 +370,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
         $scope.mostrarbtn_multiple = false;
         $scope.actualizarbtn_multiple = true;
         $scope.hab_boton_guardar = true;
-
+        $rootScope.botones1 = false;
         $scope.habilitaAdjuntosM();
 
         break;
@@ -748,7 +750,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       $scope.lstSoportes();
     });
   }
-  $scope.editaSoporte = function (datos) {
+  $scope.editaSoporte = function (datos,posgrillasoporte) {
     $scope.actualizar_soporte = false;
     $scope.guardar_soporte = true;
     $rootScope.soporteRU = false;
@@ -757,14 +759,14 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     $("#forma_sj").val(datos.frmSujecion);
     $("#altura").val(datos.altura);
     $("#n_antenas").val(datos.nro_antenas);
-    $scope.possoporte = datos.$$hashKey;
+    $scope.possoporte = posgrillasoporte;
   }
   $scope.act_datasoporte = function (data) {
 
     try {
       $scope.soporteActualizar = [];
       for (var i = 0; i < $scope.lstSoporteprevio.length; i++) {
-        if ($scope.lstSoporteprevio[i].$$hashKey == $scope.possoporte) {
+        if (i == $scope.possoporte) {
           var dataregistro = '{"tipoSoporte":"' + $("#tipo_sop").val() + '","categoria":"' + $("#categoria").val() + '","frmSujecion":"' + $("#forma_sj").val() + '","altura":"' + $("#altura").val() + '","nro_antenas":' + $("#n_antenas").val() + '}';
           $scope.soporteActualizar.push(JSON.parse(dataregistro));
         } else {
@@ -2438,6 +2440,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
 
   }
   $scope.resGabineteMultiple = null;
+  
   $scope.inireg_rbMultiple = function () {
 
     $scope.mostrarRUGU = "mostrar";//false;
@@ -2576,7 +2579,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
               $scope.lstSoportes();
               $scope.tipoProceso_envio = "RBM";
               $scope.guardarGrillaMultiple($scope.grilla_rbmultiple);
-
+              $rootScope.botones = false;
               swal("Ok.", "Información Registrada exitosamente Gracias", "success");
               $scope.habilitaAdjuntosM();
               $("#den_rbase").val("");
@@ -2612,7 +2615,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
             $scope.lstSoportes();
             $scope.tipoProceso_envio = "RBM";
             $scope.guardarGrillaMultiple($scope.grilla_rbmultiple);
-
+            $rootScope.botones = false;
             swal("Ok.", "Información Registrada exitosamente Gracias", "success");
             $scope.habilitaAdjuntosM();
             $("#den_rbase").val("");
@@ -2943,7 +2946,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
 
   $scope.enviarTRamiteRBM = true;
   $scope.verTRamiteRBM = true;
-  $scope.det_grilla_multiple_vista = function (data) {
+  $scope.det_grilla_multiple_vista = function (data,pos_grillaM) {
     try {
       $rootScope.tabAdj = true;
       $scope.enviarTRamiteRBM = false;
@@ -2990,7 +2993,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       $scope.lstSoporteprevio = [];
       $scope.lstSoporteprevio = data.f01_GRILLA_SOPORTE;
       $scope.lstSoportes();
-      $scope.posicion = data.$$hashKey;
+      $scope.posicion = pos_grillaM;
       if ($scope.tipoReg == "R_MULTIPLE") {
         $scope.mostrarRU = false;
         $scope.radiobase_simple = "mostrar"
@@ -5095,13 +5098,13 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
   }
   ///////////////////////FIN DE ADJUNTOS V02/////////////////////
   //// data par el envio de informacion de  antenas multiple ///////
-  $scope.registro_i_data_multiple = function (data) {
+  $scope.registro_i_data_multiple = function (data,pos_grilla_i) {
     $scope.img = [];
     $scope.vaciarinputArchivos();
     $scope.enviarTRamiteRBM = true;
     $scope.verTRamiteRBM = false;
     $scope.mostrarbtn_multiple = true;
-    $scope.codigoAntena = data.$$hashKey;
+    $scope.codigoAntena = pos_grilla_i;
     $scope.ANTT_NROAUTORIZACION = data.f01_NRO_AUTORIZACION;
     $("#den_auto").val("");
     try {
@@ -5142,7 +5145,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       $scope.lstSoporteprevio = data.f01_GRILLA_SOPORTE;
       $scope.dataSoporte_pos_i = data.f01_GRILLA_SOPORTE;
       $scope.lstSoportes();
-      $scope.posicion = data.$$hashKey;
+      $scope.posicion = pos_grilla_i;
       if ($scope.tipoReg == "R_MULTIPLE") {
         $scope.mostrarRU = false;
         $scope.radiobase_simple = "mostrar"
@@ -5307,7 +5310,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
         $scope.grd_antenas_nueva = [];
         for (var i = 0; i < $scope.grilla_rbmultiple.length; i++) {
 
-          if ($scope.grilla_rbmultiple[i].$$hashKey == $scope.codigoAntena) {
+          if (i == $scope.codigoAntena) {
             //$scope.grilla_rbmultiple[i].estadoTramite = "ENVIADO";
             $scope.grilla_rbmultiple[i].f01_DENOMINACION = $rootScope.Antenas_multiple[0].ANT_NOM_RADBASE;
             $scope.grilla_rbmultiple[i].f01_TIPO_UBIC = $rootScope.Antenas_multiple[0].ANT_TIP_PROPIEDAD;
@@ -5373,7 +5376,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
         stringFormulario40 = data;
         $scope.grilla_1 = datos.GRD_ANTENAS;
         for (var i = 0; i < $scope.grilla_1.length; i++) {
-          if ($scope.grilla_1[i].$$hashKey == codigoAntena) {
+          if (i == codigoAntena) {
             $scope.dataAntenapos_i = $scope.grilla_1[i];
           }
 
@@ -5557,7 +5560,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
 
       $scope.dataphp_i = data.GRD_ANTENAS;
       for (var i = 0; i < $scope.dataphp_i.length; i++) {
-        if ($scope.dataphp_i[i].$$hashKey == codigoAntena) {
+        if (i == codigoAntena) {
           $scope.info_data_php_i = $scope.dataphp_i[i];
         }
       }
@@ -5691,7 +5694,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     $scope.data_tramite_final1 = JSON.parse($scope.data_tramite_final);
     $scope.data_registro_i = $scope.data_tramite_final1.GRD_ANTENAS;
     for (var i = 0; i < $scope.data_registro_i.length; i++) {
-      if ($scope.data_registro_i[i].$$hashKey == $scope.codigoAntena) {
+      if (i == $scope.codigoAntena) {
         $scope.data_registro_i[i].estadoTramite = "ENVIADO";
       }
     }
@@ -5802,7 +5805,6 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
 
   }
   $scope.verif_requisitos_desp = function () {
-    console.log("ANTT_ADJ_AUTORIZACION_campo",$("#ANTT_ADJ_AUTORIZACION_campo").val());
     if ($scope.tipoProceso == "RBM") {
       $scope.tipoReg_desp = "R_UNICO";
     } else {
@@ -5854,8 +5856,6 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
               return true;
             }
           }
-
-
 
         } else {
 

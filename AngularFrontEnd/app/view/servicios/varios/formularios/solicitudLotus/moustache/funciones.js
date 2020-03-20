@@ -147,10 +147,21 @@ function enviarData() {
     nroDatos = JSON.stringify(dataIgob).length;
     if (nroDatos > 2){
         var datosSerializados = JSON.stringify(dataIgob);
-        quitarComillas = new RegExp('<body id=\'tinymce\' class=\'mce-content-body \' data-id=\'POC_DESCRIB\' contenteditable=\'true\' spellcheck=\'false\'><p>', "g");
+        /*quitarComillas = new RegExp('<body id=\'tinymce\' class=\'mce-content-body \' data-id=\'POC_DESCRIB\' contenteditable=\'true\' spellcheck=\'false\'><p>', "g");
         datosSerializados = datosSerializados.replace(quitarComillas,'');
         quitarComillas = new RegExp('</p></body>', "g");
+        datosSerializados = datosSerializados.replace(quitarComillas,'');*/
+        quitarComillas = new RegExp('id=\'tinymce\'', "g");
         datosSerializados = datosSerializados.replace(quitarComillas,'');
+        quitarComillas = new RegExp('class=\'mce-content-body \'', "g");
+        datosSerializados = datosSerializados.replace(quitarComillas,'');
+        quitarComillas = new RegExp('data-id=\'POC_DESCRIB\'', "g");
+        datosSerializados = datosSerializados.replace(quitarComillas,'');
+        quitarComillas = new RegExp('contenteditable=\'true\'', "g");
+        datosSerializados = datosSerializados.replace(quitarComillas,'');
+        quitarComillas = new RegExp('spellcheck=\'false\'', "g");
+        datosSerializados = datosSerializados.replace(quitarComillas,'');
+
         var idProcodigo = 'SITR@M-';
         var crearCaso   =   new gCrearCasoSitramEnLinea();
         crearCaso.datos             = datosSerializados;

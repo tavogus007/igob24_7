@@ -315,11 +315,11 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
              datosfaltantes.push(' REVERSO DE CARNET DE IDENTIDAD');
         }
         if(datos.dtspsl_fec_vencimiento == '' || datos.dtspsl_fec_vencimiento == ' '){
-            datosfaltantes.push(' FECHA DE VENCIMEINTO');
+            datosfaltantes.push(' FECHA DE VENCIMIENTO');
         }
         $scope.datosfalt = datosfaltantes; 
     }
-
+    /*
     $scope.validacionDatosJuridico = function(datos){
         var datosfaltantes = '';
         datosfaltantes = new Array();
@@ -376,7 +376,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         }
 
         $scope.datosfalt = datosfaltantes; 
-    }
+    }*/
     $scope.validacionDatosJuridico = function(datos){
         var datosfaltantes = '';
         datosfaltantes = new Array();

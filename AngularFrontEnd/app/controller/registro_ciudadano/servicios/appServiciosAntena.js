@@ -433,6 +433,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
     $scope.recuperarSerializarInfo = function(tramite){
         $scope.btover_c = true;
         $scope.estado = tramite.venviado;
+        $rootScope.botones1 = true;  
         $scope.recuperarDatosRegistro();        
         var sIdTramite = tramite.vtra_id;
         $rootScope.datosIniciales.ID_TRAM_RC = sIdTramite;
@@ -534,7 +535,8 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
     };
     //RECUPERAR INFORMACION GUARDADA
     $scope.recuperarSerializarInfoGuardada = function(tramite){
-        $rootScope.botones = false;  
+        $rootScope.botones = false;
+        $rootScope.botones1 = false;   
         $scope.estado = tramite.venviado;
         $scope.btover_c = true;
         $scope.recuperarDatosRegistro();        

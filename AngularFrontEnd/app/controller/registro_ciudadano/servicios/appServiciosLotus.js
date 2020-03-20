@@ -13,7 +13,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         {name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/moustache.html'}
     ];
     var p = $scope.serviciosLotus = [
-        { name: 'Correspondencia ciudadana', id:'22', idprc:'73', idcampo:'788', scodigo:'CORC'},
+        { name: 'Correspondencia ciudadana', id:'17', idprc:'73', idcampo:'788', scodigo:'CORC'},
         { name: 'Ejecución de procesos de fiscalización', id:'23', idprc:'73', idcampo:'812', scodigo:'EPFZ'},
         { name: 'Denuncias y reclamos', id:'24', idprc:'73', idcampo:'790', scodigo:'DRTR'},
         { name: 'Calificación de años de servicio', id:'25', idprc:'73', idcampo:'821', scodigo:'CAS'},

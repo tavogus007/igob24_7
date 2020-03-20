@@ -457,7 +457,7 @@ body.mobile-nav-active #mobile-nav-toggle{
   box-sizing: border-box;
 }
 .outer-wrapper {
-  width: 95%;
+  width: 80%;
   margin: 40px auto;
 }
 
@@ -494,19 +494,19 @@ body.mobile-nav-active #mobile-nav-toggle{
   background-size: cover;
 }
 .s-wrap .s-item-1 {
-  background-image: url("../img/info1.jpg");
+  background-image: url("../img/info1.webp");
 }
 .s-wrap .s-item-2 {
-  background-image: url("../img/info1.jpg");
+  background-image: url("../img/info1.webp");
 }
 .s-wrap .s-item-3 {
-  background-image: url("../img/info1.jpg");
+  background-image: url("../img/info1.webp");
 }
 .s-wrap .s-item-4 {
-  background-image: url("../img/info1.jpg");
+  background-image: url("../img/info1.webp");
 }
 .s-wrap .s-item-5 {
-  background-image: url("../img/info1.jpg");
+  background-image: url("../img/info1.webp");
 }
 
 .s-type-1 .s-control {

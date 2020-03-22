@@ -615,13 +615,14 @@ dataSITOL.prototype.getVariables = function (vidsubtipoTramite,vidPcFichaTecnica
     ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
 };
 
-dataSITOL.prototype.guardarDatosVariable = function (vdato,vidPcFichaTecnica,vidVariable,vaccion,functionResp)
+dataSITOL.prototype.guardarDatosVariable = function (vdato,vidPcFichaTecnica,vidVariable,vdatoJson,vaccion,functionResp)
 {
     wsMethodSITOL = "/guardarDatosVariable";
     typeCall = "post";
     dataParams = {"dato":vdato,
         "idPcFichaTecnica":vidPcFichaTecnica,
         "idVariable":vidVariable,
+	"datoJson":vdatoJson,
         "accion":vaccion};
 
     ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);

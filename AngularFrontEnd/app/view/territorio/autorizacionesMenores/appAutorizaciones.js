@@ -168,7 +168,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
         tiposolicitudTemp:0
     };
 
-    $scope.idSubTipoTramiteOcuAcera=12; //parametro para
+    $scope.idSubTipoTramiteOcuAcera=12; //parametro para establecer el sub tipo de tramite
     $scope.idSubTipoTramiteOcuRenovacion=18;  ///
     $scope.idTipoTramite=5;
 
@@ -257,7 +257,6 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
         for(var i = 0; i< $scope.listaSolicitudes.length; i++)
         {
             var solicitud =$scope.listaSolicitudes[i];
-
             if(solicitud.idEstado == 5 && solicitud.piif==null)
             {
                 //console.log("epago",solicitud);
@@ -323,8 +322,11 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                  }
                  else
                  {
-                     //console.log("Fum No pagado",data);
+                     //console.log("Fum No pagado",objFum.idFichaTecnica, objFum.fum);
                  }
+             },
+             error: function (response, status, error) {
+                 dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
              }
          });
     };
@@ -341,7 +343,6 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                 $scope.resetSolicitud();
                 $scope.flujo.paso = $scope.flujo.pasos.paso0;
                 $('#ModalTramite').modal('hide');
-
                 break;
             case $scope.flujo.pasos.paso2:
                 $scope.getListaPredios();
@@ -367,6 +368,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                 //console.log("reset -1");
                 $scope.resetSolicitud();
                 $scope.getListaPredios();
+                $scope.getLstTipoTramite();
                 $scope.flujo.paso = paso;
                 break;
             case $scope.flujo.pasos.paso2:
@@ -456,6 +458,14 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
         $scope.mensajeErrorVariables="";
         $scope.tramiteSinInspeccion=null;
         $scope.tramiteConInspeccion=null;
+        $scope.renovacionOcuAcera={
+            existeTramite:false,
+            idFichaTecnica:0,
+            origenBandeja:false,
+            monto:0,
+            diasRestantes:0,
+            tiposolicitudTemp:0
+        };
         //-------------------------------
         //var element = document.getElementById("cmbSubTipoTramite");
         //element.value = "";
@@ -631,7 +641,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
             var resApi = JSON.parse(resultado);
             if(resApi.success)
             {
-                //console.log("solicitudes",resApi.success.dataSql);
+
                 $scope.listaSolicitudes = resApi.success.dataSql;
                 var data = resApi.success.dataSql;//grabamos la respuesta para el paginado
                 $scope.tablaSolicitudes.reload();
@@ -870,14 +880,11 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
 
     //$scope.varTipoTramite=0;
     $scope.selectTipoTramite=function(){
+        $scope.rowTramite={};
+        $scope.rowTramite=$filter('filter')($scope.listaTipoTramite,{idSubTipoTramite: $scope.solicitud.idSubTipoTramite},true)[0];
             //console.log("tipoTramite",$scope.solicitud.idSubTipoTramite);
             //para el caso del combo en seleccion
-            if($scope.solicitud.idSubTipoTramite==null){
-                $scope.tramiteSinInspeccion=null;
-                $scope.tramiteConInspeccion=null;
-                return;
-            }
-
+            // según al tipo de trámite que seleccione, se traen los parametros que debe insertar el usuario
             var variables = new dataSITOL();
             variables.getVariables($scope.solicitud.idSubTipoTramite,0,"C1",function(resultado){
             var resApi = JSON.parse(resultado);
@@ -886,9 +893,8 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                 var countVariables=resApi.success.dataSql.length;
                 $scope.listaVariables=resApi.success.dataSql;
                 if($scope.solicitud.idSubTipoTramite!=null){
-                    $scope.rowTramite={};
-                    $scope.rowTramite=$filter('filter')($scope.listaTipoTramite,{idSubTipoTramite: $scope.solicitud.idSubTipoTramite},true)[0];
-                    //console.log("rowTramite",$scope.rowTramite);
+
+                    console.log("rowTramite",$scope.rowTramite);
 
                     $scope.listaRequisitos=[];
                     $scope.datos=[];
@@ -897,10 +903,11 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
 
 
                     if($scope.renovacionOcuAcera.origenBandeja==false){
+                        //verifica si es un tramite del tipo ocupacion de acera
                         if($scope.rowTramite.idSubTipoTramite==$scope.idSubTipoTramiteOcuAcera){
-                            $scope.rowTramite.tipoSolicitud=$scope.renovacionOcuAcera.tiposolicitudTemp;
-                            //console.log("rowTramite10",$scope.rowTramite);
-                            //revision para tramites con renovacion
+                            //$scope.rowTramite.tipoSolicitud=$scope.renovacionOcuAcera.tiposolicitudTemp;
+                            console.log("rowTramite2",$scope.rowTramite);
+                            //revisa si ya se tiene un trámite del tipo ocupacion de via en la bandeja de tramites
                             var renovacion=$scope.revisarRenovacion($scope.solicitud.codigoCatastral);
                             if(renovacion==true){
                                 swal('','Tiene un tramite en plazo en su bandeja','error');
@@ -910,23 +917,13 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                             }
                         }
                     }
-
                     else{  //entra por el boton de renovacion, bandeja de tramites
-                        $scope.rowTramite.tipoSolicitud=0;  //seteo para convertir el tramite de tipo online
+                        $scope.rowTramite.tipoSolicitud=0;  //seteo para convertir el tramite de tipo "en linea"
                         //console.log("rowTramite20",$scope.rowTramite);
                     }
 
-                    //seleccion de tipo de tramite, en linea o inmediato
-                    //console.log("tipoSolicitud",$scope.rowTramite.tipoSolicitud,$scope.listaTipoTramite);
-                    if($scope.rowTramite.tipoSolicitud===1 || $scope.rowTramite.tipoSolicitud===2){ //-------tramites por plataforma
-                        $scope.tramiteSinInspeccion=null;
-                        $scope.tramiteConInspeccion=$scope.tipoTramite;
-                        $scope.solicitud.idEstado=3; //- estado de tramite - enviado a plataforma.
-                        $scope.getRequisitos($scope.rowTramite);
-                    }
-                    //-- -----------------------
-                    //--  Tramites en linea
-                    else if($scope.rowTramite.tipoSolicitud===0){
+                    //--  para trámites en linea
+                    if($scope.rowTramite.tipoSolicitud===0){
                         $scope.tramiteConInspeccion=null;
                         $scope.tramiteSinInspeccion=$scope.tipoTramite;
                         $scope.solicitud.idEstado=5; //--estado de tramite -- pendiente de pago
@@ -974,6 +971,12 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                             }
                         });
                     }
+                    else if($scope.rowTramite.tipoSolicitud==1 || $scope.rowTramite.tipoSolicitud==2){
+                        $scope.tramiteSinInspeccion=null;
+                        $scope.tramiteConInspeccion=$scope.tipoTramite;
+                        $scope.solicitud.idEstado=3; //- estado de tramite - enviado a plataforma.
+                        $scope.getRequisitos($scope.rowTramite);
+                    }
                     else{
                         $scope.tramiteSinInspeccion=null;
                         $scope.tramiteConInspeccion=null;
@@ -983,6 +986,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                 else{
                     $scope.tramiteSinInspeccion=null;
                     $scope.tramiteConInspeccion=null;
+                    return;
                 }
 
             }
@@ -1005,26 +1009,32 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                 //console.log("variables",$scope.variables);
                 $scope.datos=[];
                 $scope.variables.forEach(function(element){
-                    $scope.datos.push({idVariable:element.idVariable,valor:0,idTipoDato:element.idTipoDato});
+                    var jArray=[];
+                    $scope.datos.push({idVariable:element.idVariable,valor:0,idTipoDato:element.idTipoDato,datoJson:[]});
                 });
 
                 ///para recuperar datos
-                //console.log("datos",$scope.datos,$scope.solicitud.idFichaTecnica);
-                //console.log("datos",$scope.datos,$scope.renovacionOcuAcera);
                 if($scope.renovacionOcuAcera.existeTramite==true){
                     //desabilita opciones
                     $scope.txtInputNumber=true;
                     $scope.txtInputText=true;
-                    //seteo de los valores para el nuevo tramite
+                    //obtiene los datos ingresados por en anterior tramite registrado, para el nuevo tramite
                     variables.getVariables($scope.solicitud.idSubTipoTramite, $scope.renovacionOcuAcera.idFichaTecnica, "C2", function (resultado2){
                         var resApi2 = JSON.parse(resultado2);
                         if (resApi2.success){
                             //console.log("datosVariable", $scope.datos, resApi2.success.dataSql);
                             $scope.valores=resApi2.success.dataSql;
                             $scope.datos.forEach(function(element){
-                                $scope.rowDato= $filter('filter')($scope.valores,{idVariable: element.idVariable},true)[0];
-                                //console.log("rowdatos",$scope.rowDato);
-                                element.valor=$scope.rowDato.dato;
+                                try{
+                                    $scope.rowDato= $filter('filter')($scope.valores,{idVariable: element.idVariable},true)[0];
+                                    //console.log("rowdatos",$scope.rowDato);
+                                    element.valor=$scope.rowDato.dato;
+                                    element.datoJson=($scope.rowDato.datoJson!=null && $scope.rowDato.datoJson.length>0)?JSON.parse($scope.rowDato.datoJson):null;
+                                }
+                                catch (err){
+                                    console.error(err);
+                                    element.datoJson=null;
+                                }
                             });
 
                         }
@@ -1046,7 +1056,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
             }
         });
 
-        //
+        //obtiene la lista de opciones para combo
         variables.getVariables($scope.solicitud.idSubTipoTramite,0,"C5",function(resultado){
             var resApi = JSON.parse(resultado);
             if(resApi.success)
@@ -1072,6 +1082,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
             $.unblockUI();
         }
         else if($scope.rowTramite.tipoSolicitud==0){ //tramites en linea
+            //todo: verificar calculo de monto
             //calcular monto de acuerdo a las variables
             if($scope.variables.length){//existen parametros de entrada
                 //verificar los campos llenados
@@ -1079,40 +1090,33 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                 $scope.solicitud.monto=$scope.tasaValor.valor;
                 //console.log("valor de tasa",$scope.tasaValor.valor);
                 //
+                //actualizar monto para multiples patrones
 
-                //para la multiplicacion
-                $scope.datos.forEach(function (element){
-                    //console.log("valores",element);
-                    if(element.valor<=0 || element.valor.length<=0){
-                        if(element.idVariable!=21){
-                            $scope.mensajeErrorVariables="Complete los campos";
-                            $scope.verificarVariables=false;
-                        }
-                    }
-                    else{
-                        //console.log("valores aceptables",element,$scope.tasaValor);
-                        if(!($scope.tasaValor.aplicablePor.includes("Tasa mínima")||$scope.tasaValor.aplicablePor.includes("Tasa única por trámite"))){
-
-                            if(element.idTipoDato==1){
-                                //console.log("elemento tipo 1",element);
-                                $scope.solicitud.monto=parseFloat($scope.solicitud.monto)*parseFloat(element.valor);//multiplicamos por los valores de entrada
-                            }
-                            //console.log("valores aceptables",element,"monto:"+$scope.solicitud.monto);
-                        }
-                        //para tomar dato de tasa unica
-                        // else if($scope.listaVariables.length>0){
-                        //     if($scope.listaVariables[0].idTipoVariable==3){
-                        //         $scope.solicitud.monto=$scope.datos[0].valor;
-                        //     }
-                        // }
-                    }
-
-                    // if($scope.verificarVariables===false){
-                    //     return;
-                    // }
-                });
-                //para la suma
-                if($scope.solicitud.idSubTipoTramite==10){
+                var supTemp=0;
+                //ampliacion de oc de via
+                if(($scope.solicitud.idSubTipoTramite==12 || $scope.solicitud.idSubTipoTramite==18)){
+                    $scope.rowDatoSup= $filter('filter')($scope.datos,{idVariable: 2},true)[0];
+                    $scope.rowDiasOcupacion= $filter('filter')($scope.datos,{idVariable: 3},true)[0];
+                    $scope.rowDatoPatron= $filter('filter')($scope.datos,{idVariable: 16},true)[0];
+                    var monto=0;
+                    angular.forEach($scope.rowDatoPatron.datoJson, function (value, key){
+                        //multiplicar por dias de ocupacion
+                        value.total=parseFloat(value.longitud)*parseFloat(value.valor_tasa)*parseFloat($scope.rowDiasOcupacion.valor);
+                        monto = parseFloat(monto)+parseFloat(value.total);
+                    });
+                    $scope.solicitud.monto=monto;
+                }
+                //refaccion de fachadas
+                else if($scope.solicitud.idSubTipoTramite==15){
+                    $scope.rowDatoPatron= $filter('filter')($scope.datos,{idVariable: 23},true)[0];
+                    var obj = {tasa_servicio:null,valor_tasa:null,longitud:null,total:0};
+                    obj.tasa_servicio=$scope.tasaValor.IdTasa;
+                    obj.valor_tasa=$scope.tasaValor.valor;
+                    obj.total=$scope.tasaValor.valor;
+                    $scope.rowDatoPatron.datoJson.push(obj);
+                    $scope.solicitud.monto=parseFloat(obj.total);
+                }
+                else if($scope.solicitud.idSubTipoTramite==10){
                     var montoMuro = 1;
                     $scope.datos.forEach(function (element){
                         if (element.idTipoDato == 2){
@@ -1127,6 +1131,43 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                         }
                     });
                     $scope.solicitud.monto = parseFloat($scope.solicitud.monto) + parseFloat(montoMuro);
+                }
+                else{
+                    //para la multiplicacion
+                    $scope.datos.forEach(function (element){
+                        console.log("valores",element);
+                        //validacion de campos
+                        if(element.valor==null || element.valor<=0 || element.valor.length<=0){
+                            if(element.idVariable==16 || element.idVariable==23){
+                                $scope.mensajeErrorVariables="";
+                                $scope.verificarVariables=true;
+                            }
+                            else if(element.idVariable!=22){
+                                $scope.mensajeErrorVariables="Complete los campos";
+                                $scope.verificarVariables=false;
+                            }
+                        }
+                        else{
+                            //console.log("valores aceptables",element,$scope.tasaValor);
+                            if(!($scope.tasaValor.aplicablePor.includes("Tasa mínima")||$scope.tasaValor.aplicablePor.includes("Tasa única por trámite"))){
+                                if(element.idTipoDato==1 && element.valor!=null){
+                                    //console.log("elemento tipo 1",element);
+                                    $scope.solicitud.monto=parseFloat($scope.solicitud.monto)*parseFloat(element.valor);//multiplicamos por los valores de entrada
+                                }
+                                //console.log("valores aceptables",element,"monto:"+$scope.solicitud.monto);
+                            }
+                            //para tomar dato de tasa unica
+                            // else if($scope.listaVariables.length>0){
+                            //     if($scope.listaVariables[0].idTipoVariable==3){
+                            //         $scope.solicitud.monto=$scope.datos[0].valor;
+                            //     }
+                            // }
+                        }
+
+                        // if($scope.verificarVariables===false){
+                        //     return;
+                        // }
+                    });
                 }
                 $scope.solicitud.monto=Math.round($scope.solicitud.monto * 100) / 100;
             }
@@ -1157,10 +1198,11 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
             //console.log("tipo de item vacio");
             var idItemFum=3;//modificar
         }
+
+        var montoFum=$scope.solicitud.monto;
+
+        //montoFum=0.1;        //asignamos monto de prueba, comentar produccion
         var p;
-        //console.log("Proforma",tipoPersona);
-        //asignamos monto de prueba
-        //$scope.solicitud.monto=0.1;
         if (tipoPersona == 'NATURAL'){
             p = {
                 tipoDoc: 'CEDULA DE IDENTIDAD',
@@ -1173,7 +1215,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                 fechanac: $scope.solicitud.fechaNacimiento,
                 razonsocial: 'RSN',
                 tipoItem:idItemFum,
-                monto:$scope.solicitud.monto
+                monto:montoFum
                 //tkn:'',//$scope.resultadoBusqueda.tkn,
                 //cc:''//$scope.resultadoBusqueda.codCat
             };
@@ -1190,7 +1232,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
                 fechanac: $scope.solicitud.fechaNacimiento,
                 razonsocial: 'RSJ',
                 tipoItem:idItemFum,
-                monto:$scope.solicitud.monto
+                monto:montoFum
                 //tkn:'',//$scope.resultadoBusqueda.tkn,
                 //cc:''//$scope.resultadoBusqueda.codCat
             };
@@ -1233,7 +1275,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
         else if($scope.rowTramite.tipoSolicitud===0){   //tramites en linea
             $scope.solicitud.requisitos = ""; //no fijamos requisitos para tramites en linea,**********
             //console.log("datos tramite",$scope.datos,"rowDatos",$scope.rowDato1,$scope.solicitud.DiasExpiracionAM,"existe ren",$scope.renovacionOcuAcera.existeTramite);
-            if($scope.renovacionOcuAcera.existeTramite==true)
+            if($scope.renovacionOcuAcera.existeTramite==true && $scope.renovacionOcuAcera.origenBandeja==true)
             {
                 $scope.solicitud.idSubTipoTramite=$scope.idSubTipoTramiteOcuRenovacion;//fija a tipo de tramite ampliacion
 
@@ -1445,8 +1487,16 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
         $scope.datos.forEach(function(element){
             //console.log("dato:",element);
             //guardarDatosVariable
+            var stJson=null;
+            if(element.datoJson!=null){
+                stJson=JSON.stringify(element.datoJson);
+            }
+            var valor=0;
+            if(element.valor!=null){
+                valor=element.valor;
+            }
             var VariableDatos = new dataSITOL();
-            VariableDatos.guardarDatosVariable(element.valor,idFichaTecnica,element.idVariable,"A1",function(resultado){
+            VariableDatos.guardarDatosVariable(valor,idFichaTecnica,element.idVariable,stJson,"A1",function(resultado){
                 var resApi = JSON.parse(resultado);
                 if(resApi.success)
                 {
@@ -1487,22 +1537,18 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
 
     $scope.ImprimirSolicitud = function (pisol){
         $scope.msgPrevioPDF="";
-        $scope.varSpin = true;
-        $('#visorFum object').attr("data","");
-        $('#visorFum1 object').attr("data","");
-        //console.log("solicitud",sol);
-        var urlFum = CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/VerSolicitudAMenor?d=' + pisol;
+        var urlSolicitud = CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/VerSolicitudAMenor?d=' + pisol;
         //window.open(urlFum,"_blank");
-        $('#visorFum object').attr("data",urlFum);
-        $('#visorFum1 object').attr("data",urlFum);
-        $scope.varSpin=false;
+        $timeout(function(){$('#visorFum object').attr("data",urlSolicitud);//visor desde generacion de tramite
+                            $('#visorFum1 object').attr("data",urlSolicitud);//visor desde bandeja de tramite
+        }, 200);
     };
 
     $scope.verRequisitos=function(element){
         //console.log("ver requisitos",element);
         $scope.getRequisitos(element);
     };
-
+    // obtiene los requisitos segun el tipo de tramite de autorizacion menor
     $scope.getRequisitos=function(rowTramite){
         $.blockUI();
         var requisitos = new dataSIT();
@@ -1531,23 +1577,23 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
 
     $scope.ImprimirProforma = function (pisol){
         $scope.msgPrevioPDF="";
-        //console.log("var piif",pisol);
-        $('#visorFum object').attr("data","");
-        $('#visorFum1 object').attr("data","");
         var urlFum = CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/VerProformaAMenor?d=' + pisol;
-        $('#visorFum object').attr("data",urlFum);
-        $('#visorFum1 object').attr("data",urlFum);
-        $timeout(function(){$scope.varSpin=false}, 1000);
+        $timeout(function(){$('#visorFum object').attr("data",urlFum);//visor desde generacion de tramite
+                            $('#visorFum1 object').attr("data",urlFum);//visor desde bandeja de tramite
+            }, 200);
     };
+    var m = 1;
 
     $scope.VerAutorizacion = function (sol){
         $scope.msgPrevioPDF="";
-        $('#visor2 object').attr("data","");
-        $scope.varSpin = true;
-        var urlFum = CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/VerAutorizacionMenor?d=' + sol.pisol;
-        //console.log("url:",urlFum);
-        $('#visor2 object').attr("data",urlFum);
-        $timeout(function(){$scope.varSpin=false}, 1000);
+        var urlInforme = CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/VerAutorizacionMenor?d=' + sol.pisol;
+        $timeout(function(){$('#graph').attr("data",urlInforme); }, 200);
+    };
+
+    $scope.VerFactura = function (sol){
+        $scope.msgPrevioPDF="";
+        var urlFactura = CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/VerFactura?d=' + sol.pisol;
+        $timeout(function(){$('#visorFactura object').attr("data",urlFactura);}, 200);
     };
 
     $scope.solActFumPagado=function(solicitud){
@@ -1560,7 +1606,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
             {
                 //console.log("fum pagado generando pdf",resApi.success);
                 $scope.GenerarInformeAM(solicitud.pisol);
-
+                //$scope.facturacionLogin(solicitud.pisol);
             }
             else
             {
@@ -1571,7 +1617,6 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
     };
 
     $scope.GenerarInformeAM = function (pisol){
-
         p = {
             //pf:pf,
             pisol:pisol
@@ -1614,6 +1659,198 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
 
     };
 
+    $scope.facturacionLogin = function (pisol) {
+        //$scope.loadingShow();
+        var formData = {
+            //'usr_usuario': 'angela_illanes',// desarrollo
+            'usr_usuario': 'angela.illanes',//produccion
+            'usr_clave': '6796374'
+        };
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            //url: 'http://192.168.5.69/ifacturacion247_pruebas/public/apiLogin', //desarrollo
+            url: 'http://192.168.6.45/apiLogin', //produccion
+            data: formData,
+            async: false,
+            success: function (response) {
+                console.log("loginFactura", response);
+                $scope.facturacion(pisol, response.token, response.id_usuario, response.nro_sucursal)
+            },
+            error: function (response, status, error) {
+                dataResp = "{\"error\":{\"message\":\"" + response.responseText + "\",\"code\":700}}";
+            }
+        });
+    };
+
+    $scope.facturacion = function (pisol, token, id_usuario, nro_sucursal) {
+
+        var stoquen = 'Bearer ' + token;
+        var f = new Date();
+        var fecha = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate();
+        p = {
+            //pf:pf,
+            pisol:pisol
+            //tkn:'',//$scope.resultadoBusqueda.tkn,
+            //cc:''//$scope.resultadoBusqueda.codCat
+        };
+
+        $http({
+            method:'POST',
+            url: CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/DatosTramiteFactura',
+            data: Object.toparams(p),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function (data, status, headers, config) {
+            console.log("datosFac",data);
+
+            var nombres =data.nombreSolicitante;
+            var ci_nit=data.numeroDocumentoSol;
+            var idFT= data.idFichaTecnica;
+
+            $http({
+                method: 'POST',
+                url: CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/GenerarDetalleFactura',
+                data: Object.toparams(p),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function (data, status, headers, config) {
+                console.log("Se guardo solicitud, datos devueltos:" , data);
+                if (data.res == 'OK') {
+                    var datosFactura = JSON.parse(data.valor);
+                    console.log("datosFactura", datosFactura);
+                    var efectivo = datosFactura.efectivo;
+                    var detalle = datosFactura.detalle;
+                    //generar codigo factura
+                    var codigoFactura = "AMOL" + idFT + "-" + f.getFullYear();
+                    console.log("detalle",datosFactura,efectivo,detalle);
+                    //----------------------------------
+                    $.ajax({
+                        type: 'POST',
+                        //url: 'http://192.168.5.69/ifacturacion247_pruebas/public/v02/api/ifactura247/computarizada/gamlp', //desarrollo
+                        url: 'http://192.168.6.45/v02/api/ifactura247/computarizada/gamlp', //produccion
+                        headers: {
+                            'Authorization': stoquen,
+                            'Content-Type': 'application/json'
+                        },
+                        async: false,
+                        dataType: 'json',
+                        data: JSON.stringify({
+                            "factura": {
+                                "ci_nit": parseInt(ci_nit),
+                                "nombres": nombres,
+                                "fecha": fecha,
+                                "idUsuario": id_usuario,
+                                "idSucursal": nro_sucursal,
+                                "efectivo": efectivo,
+                                "detalles": detalle,
+                                "codigo": codigoFactura
+                            }
+                        }),
+                        success: function (data) {
+                            console.log('success: ', data);
+                            $scope.GenerarFacturaAM(data.data.url, pisol);
+                            //guardar datos de factura en tabla
+                            $scope.guardarDatosFactura(pisol,data.data.ci_nit, data.data.nombres, data.data.nro_factura, data.data.codigo_control);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            console.error(xhr, ajaxOptions, thrownError);
+                            //$scope.loadingHide();
+                        }
+                    });
+                }
+                else {
+                    $.unblockUI();
+                    $scope.idMotivoDetalle = 0;
+                    $scope.idMotivo = 0;
+                    $scope.RegistroFUM = {
+                        registrado: null,
+                        mensaje: 'Surgió un error al registrar la proforma de pago, por favor vuelva a intentar'
+                    };
+                }
+            }).error(function (data, status, headers, config) {
+                $.unblockUI();
+                console.log("Error registro fum SIT ext, datos devueltos:", data);
+                swal('', 'Error al registrar proforma de pago', 'error');
+            });
+        });
+
+        $scope.guardarDatosFactura = function (pisol,ci_nit, nombres, nro_factura,codigo_control) {
+
+
+            p = {
+                pisol:pisol,
+                ci_nit:ci_nit,
+                nombres:nombres,
+                nro_factura:nro_factura,
+                codigo_control:codigo_control
+            };
+            //console.log("GenerarInformeAM:datos enviados",p,xx);
+            $http({
+                method:'POST',
+                url: CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/GuardarDatosFactura',
+                data: Object.toparams(p),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function (data, status, headers, config) {
+                //console.log("Se guardo solicitud, datos devueltos:" , data);
+                if(data.res == 'OK')
+                {
+                    console.log("Datos guardados factura");
+                    $.unblockUI();
+                }
+                else
+                {
+                    $.unblockUI();
+                    $scope.idMotivoDetalle =0;
+                    $scope.idMotivo =0;
+                    $scope.RegistroFUM = {
+                        registrado:null,
+                        mensaje:'Surgió un error al generar la factura'
+                    };
+                }
+            }).error(function (data, status, headers, config) {
+                $.unblockUI();
+                console.log("Error registro Generar Factura, datos devueltos:", data);
+                swal('', 'Error al generar la factura', 'error');
+            });
+        }
+
+    };
+
+    $scope.GenerarFacturaAM = function (url,pisol){
+
+        p = {
+            UrlFactura:url,
+            pisol:pisol
+        };
+        //console.log("GenerarInformeAM:datos enviados",p,xx);
+        $http({
+            method:'POST',
+            url: CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/GenerarFactura',
+            data: Object.toparams(p),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function (data, status, headers, config) {
+            //console.log("Se guardo solicitud, datos devueltos:" , data);
+            if(data.res == 'OK')
+            {
+                console.log("factura generada");
+                $.unblockUI();
+            }
+            else
+            {
+                $.unblockUI();
+                $scope.idMotivoDetalle =0;
+                $scope.idMotivo =0;
+                $scope.RegistroFUM = {
+                    registrado:null,
+                    mensaje:'Surgió un error al generar la factura'
+                };
+            }
+        }).error(function (data, status, headers, config) {
+            $.unblockUI();
+            console.log("Error registro Generar Factura, datos devueltos:", data);
+            swal('', 'Error al generar la factura', 'error');
+        });
+    };
+
 
     $scope.DescargarModeloDoc=function(archivo){
         var urlModelo = CONFIG.SERVICE_SITOLextgen+ 'AutorizacionesMenores/archivosModelo?path=' + archivo;
@@ -1630,9 +1867,6 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
     ///------------------------------------
     // DOCUMENTOS PLATAFORMA
     $scope.ImprimirProformaPlataforma = function (piif){
-        $('#visorFum object').attr("data","");
-        $('#visorFum1 object').attr("data","");
-        $('#visor2 object').attr("data","");
         $scope.msgPrevioPDF="";
         p = {
             piif:piif
@@ -1646,16 +1880,11 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
             //console.log(", datos devueltos:" , data);
             if(data.res == 'OK')
             {
-                //console.log("var piif ok",piif);
-
                 var urlFum = CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/DocumentoFum?q=' + piif;
-                $('#visorFum object').attr("data",urlFum);
-                $('#visorFum1 object').attr("data",urlFum);
-                $timeout(function(){$scope.varSpin=false}, 1000);
+                $timeout(function(){$('#visorFum1 object').attr("data",urlFum);}, 200);
             }
             else
             {
-                //console.log("error-documento");
                 $scope.msgPrevioPDF="ARCHIVO NO GENERADO";
             }
         }).error(function (data, status, headers, config){
@@ -1663,11 +1892,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
             swal('', 'Error verificando documento FUM', 'error');
         });
     };
-
     $scope.ImprimirSolicitudPlataforma = function(piif){
-        $('#visorFum object').attr("data","");
-        $('#visorFum1 object').attr("data","");
-        $('#visor2 object').attr("data","");
         $scope.msgPrevioPDF="";
         p = {
             piif:piif
@@ -1685,10 +1910,8 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
 
                 //console.log("solicitud",sol);
                 var urlFum = CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/DocumentoSolicitud?q=' + piif;
-                //window.open(urlFum,"_blank");
-                $('#visorFum object').attr("data",urlFum);
                 $('#visorFum1 object').attr("data",urlFum);
-                $timeout(function(){$scope.varSpin=false}, 1000);
+                $timeout(function(){$scope.varSpin=false;$('#visorFum1 object').attr("data",urlFum);}, 1000);
             }
             else
             {
@@ -1700,11 +1923,7 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
             swal('', 'Error verificando solicitud', 'error');
         });
     };
-
     $scope.VerAutorizacionPlataforma = function (piif){
-        $('#visor2 object').attr("data","");
-        $('#visorFum object').attr("data","");
-        $('#visorFum1 object').attr("data","");
         $scope.msgPrevioPDF="";
         p = {
             piif:piif
@@ -1719,11 +1938,8 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
             if(data.res == 'OK')
             {
                 $scope.varSpin = true;
-
                 var urlFum = CONFIG.SERVICE_SITOLextgen + 'AutorizacionesMenores/DocumentoInforme?q=' + piif;
-                //console.log("url:",urlFum);
-                $('#visor2 object').attr("data",urlFum);
-                $timeout(function(){$scope.varSpin=false}, 1000);
+                $timeout(function(){$('#visor2 object').attr("data",urlFum);$scope.varSpin=false}, 200);
             }
             else
             {
@@ -1768,17 +1984,29 @@ app.controller('autorizacionesController',function ($scope, $rootScope, $routePa
             //console.log("No se puede ver el seguimiento, parámetro no valido");
         }
     };
-
     $scope.accionPagoOL = function(sol){
         sessionService.set('IDFUM', sol.fum);
-        //console.log("fum continuar epago::",sol); //,",  IDFUM: "+sessionService.get('IDFUM')
-        //console.log("token continuar epago::",sessionService.get('TOKEN'));
-        window.location.href = "#servicios|epagos";
+        var formData = {
+            'usr_usuario'   : 'tecnico',
+            'usr_clave'     :   '123456'
+        };
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url : 'https://pagonline.lapaz.bo/api/logueo',
+            data: formData,
+            async: false,
+            success: function(response) {
+                console.log(response);
+                sessionService.set('TOKEN', response.token);
+                window.location.href = "#servicios|epagos";
+            },
+            error: function (response, status, error) {
+                dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+                console.log("Error login pago en linea", response);
+            }
+        });
     };
-
-    // $scope.versolicitud=function(datos,variable){
-    //     //  console.log(datos,variable);
-    // };
 
     $scope.cmbDatoVariableSelected=function (opcion,dato,variable){
         $scope.rowVariable=$filter('filter')(dato,{idVariable:variable.idVariable},true)[0];

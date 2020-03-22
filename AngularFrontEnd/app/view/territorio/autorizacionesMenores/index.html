@@ -98,8 +98,11 @@
 
     .imgSpinner{
         position: absolute;
-        margin-top: 20%;
-        margin-left: 45%;
+        margin-top: 10%;
+        margin-left: 15%;
+    }
+    .btn-primary{
+        margin-left: 8px;
     }
 </style>
 
@@ -112,7 +115,7 @@
 
             <div id="pnlListaSolicitudes" > <!--ng-show="flujo.paso == flujo.pasos.paso0"-->
                 <div class="container-fluid">
-                    Si desea solicitar una Autorización Menor para su inmueble, presione el botón INICIAR SOLICITUD
+                    Si desea solicitar una Autorización Menor para su inmueble, presione el bot&oacute;n INICIAR SOLICITUD
                     <br>
                     Para m&aacute;s informaci&oacute;n presione el bot&oacute;n GU&Iacute;A DE SOLICITUD
                 </div>
@@ -152,13 +155,14 @@
 
                                             <button class="btn btn-info" ng-click="VerAutorizacion(solicitud)" ng-show="(solicitud.idEstado == 6 || solicitud.idEstado == 7) && solicitud.piif==null" data-toggle="modal" data-target="#ModalAMenor" ><span class="glyphicon glyphicon-folder-open"></span>&nbsp; Ver Documento de autorizaci&oacute;n</button>
                                             <button class="btn btn-info" ng-click="VerAutorizacionPlataforma(solicitud.piif)" ng-show="(solicitud.idEstado == 6 || solicitud.idEstado == 7) && solicitud.piif!=null" data-toggle="modal" data-target="#ModalAMenor" ><span class="glyphicon glyphicon-folder-open"></span>&nbsp;Ver Documento de autorizaci&oacute;n.</button>
+                                            <!--<button class="btn btn-primary"  ng-click="VerFactura(solicitud)" ng-show="(solicitud.idEstado == 6 || solicitud.idEstado == 7) && solicitud.piif==null" data-toggle="modal" data-target="#ModalFactura" ><span class="glyphicon glyphicon-folder-open"></span>&nbsp; Ver Factura</button>-->
 
                                             <button class="btn btn-success" ng-click="verRequisitos(solicitud)" ng-show="solicitud.idEstado == 3"  data-dismiss="modal" data-toggle="modal" data-target="#divPopupRequisitos"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;Ver requisitos</button>
 
                                             <button class="btn btn-primary" ng-click="accionPagoOL(solicitud)" ng-show="solicitud.idEstado == 5"  title="Pago en línea"><span class="glyphicon glyphicon-usd" aria-hidden="true"  ></span> Pago en línea</button>
                                             <button class="btn btn-success" ng-click="accionSeguimientoFlujo(solicitud)" ng-show="solicitud.idEstado >= 4 && solicitud.piif!=null" ><span class="glyphicon glyphicon-info-sign"></span>Seguimiento</button>
 
-                                            <button class="btn btn-default" ng-show="verExisteRenovacion(solicitud)" ng-click="renovarOcupacionAcera(solicitud)" ><span class="glyphicon glyphicon-repeat"></span>&nbsp;Ampliar plazo Ocupaci&oacute;n de V&iacute;a (expira en {{solicitud.DiasExpiracionAM-solicitud.diferenciaDia}} d&iacute;as)</button>
+                                            <button class="btn btn-default" ng-show="verExisteRenovacion(solicitud) && solicitud.fichaSig==null" ng-click="renovarOcupacionAcera(solicitud)" ><span class="glyphicon glyphicon-repeat"></span>&nbsp;Ampliar plazo Ocupaci&oacute;n de V&iacute;a (expira en {{solicitud.DiasExpiracionAM-solicitud.diferenciaDia}} d&iacute;as)</button> <!---->
                                         </div>
                                     </td>
                                 </tr>
@@ -220,21 +224,25 @@
                                         <span class="help-block" style="font-size:80%;" ng-if="frmRegistro.cmbSubTipoTramite.$error.required">Dato requerido.</span>
                                         <div class="col-md-12" style="text-align: justify" ng-show="tramiteSinInspeccion != null || tramiteConInspeccion != null">
                                             <p style="font-size: 15px">{{rowTramite.leyendaDesc}}</p>
-                                            <div ng-repeat="variable in variables">
-                                                <label>{{variable.DescVariable}}&nbsp;&nbsp;</label>
-                                                    <div ng-if="variable.descTipoVariable=='number'">
-                                                        <input type="number" ng-model="datos[$index].valor" step=".01" ng-disabled="txtInputNumber">&nbsp;{{variable.unidadVariable}}
+                                            <div ng-show="tramiteSinInspeccion!=null"><!--tramite inmediato o en linea, sin inspeccion-->
+                                                <div ng-repeat="variable in variables">
+                                                    <div ng-show="variable.DescVariable!='tablaPatrones'">
+                                                        <label>{{variable.DescVariable}}&nbsp;&nbsp;</label>
+                                                        <div ng-if="variable.descTipoVariable=='number'">
+                                                            <input type="number" ng-model="datos[$index].valor" step=".01" ng-disabled="txtInputNumber">&nbsp;{{variable.unidadVariable}}
+                                                        </div>
+                                                        <div ng-if="variable.descTipoVariable=='text'">
+                                                            <input type="text" ng-model="datos[$index].valor" ng-disabled="txtInputText">&nbsp;{{variable.unidadVariable}}
+                                                        </div>
+                                                        <!--modificado para seleccion, comentar-->
+                                                        <div ng-if="variable.descTipoVariable=='select'">
+                                                            <select style="min-width: 100px;" ng-model="datos[$index].valor"  > <!--ng-change="versolicitud(datos,variable)"-->
+                                                                    <option ng-repeat="opcion in opciones" value="{{opcion.dato}}" ng-selected="cmbDatoVariableSelected(opcion,datos,variable)">{{opcion.DescVariable}}</option> <!-- ng-if="variable.idVariable==opcion.idVariablePadre"-->
+                                                            </select>&nbsp;{{variable.unidadVariable}}
+                                                        </div>
+                                                        <hr>
                                                     </div>
-                                                    <div ng-if="variable.descTipoVariable=='text'">
-                                                        <input type="text" ng-model="datos[$index].valor" ng-disabled="txtInputText">&nbsp;{{variable.unidadVariable}}
-                                                    </div>
-                                                    <!--modificado para seleccion, comentar-->
-                                                    <div ng-if="variable.descTipoVariable=='select'">
-                                                        <select style="min-width: 100px;" ng-model="datos[$index].valor"  > <!--ng-change="versolicitud(datos,variable)"-->
-                                                                <option ng-repeat="opcion in opciones" value="{{opcion.dato}}" ng-selected="cmbDatoVariableSelected(opcion,datos,variable)">{{opcion.DescVariable}}</option> <!-- ng-if="variable.idVariable==opcion.idVariablePadre"-->
-                                                        </select>&nbsp;{{variable.unidadVariable}}
-                                                    </div>
-                                                <hr>
+                                                </div>
                                             </div>
                                             <div style="color: red">
                                                 {{mensajeErrorVariables}}
@@ -278,7 +286,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" ng-click="cambiarPasoAtras()" ng-hide="flujo.paso == flujo.pasos.paso3 || renovacionOcuAcera.origenBandeja" ><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Siguiente" ></span>Atras</button>
-                    <button type="button"  class="btn btn-primary" ng-show="flujo.paso == flujo.pasos.paso2"  ng-click="registrarSolicitud()" ng-disabled="tramiteSinInspeccion == null && tramiteConInspeccion == null">Realizar solicitud<span class="glyphicon glyphicon-chevron-right " aria-hidden="true" title="Crear una solicitud de una autorización menor"></span></button> <!--ng-disabled="resultadoC==undefined || resultadoC==''"-->
+                    <button type="button"  class="btn btn-primary" ng-show="flujo.paso == flujo.pasos.paso2"  ng-click="registrarSolicitud()" ng-disabled="tramiteSinInspeccion == null && tramiteConInspeccion == null">Guardar<span class="glyphicon glyphicon-chevron-right " aria-hidden="true" title="Crear una solicitud de una autorización menor"></span></button> <!--ng-disabled="resultadoC==undefined || resultadoC==''"-->
                     <button type="button" class="btn btn-default" ng-show="flujo.paso == flujo.pasos.paso3" data-dismiss="modal" data-toggle="modal"><span  aria-hidden="true" title="Finalizar"></span>Cerrar</button> <!--class="glyphicon glyphicon-collapse-down"-->
                     <!--<button type="submit" form="frmCodCat" class="btn btn-primary" ng-disabled="frmCodCat.$invalid"> Siguiente<span class="glyphicon glyphicon-chevron-right " aria-hidden="true" title="Siguiente"></span></button>-->
                     <!--<button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#divPopupCaptcha" ng-disabled="tramiteSinInspeccion != null || tramiteConInspeccion != null" ng-click="getCaptchasX()">Realizar solicitud<span class="glyphicon glyphicon-chevron-right " aria-hidden="true"></span></button>-->
@@ -324,9 +332,9 @@
                         </a>&nbsp;&nbsp;
                     </div>
                     <div class="ibox-content">
+                        <img class="imgSpinner" src="../catastro/img/spin.gif" ng-show="varSpin" alt="no cargo imagen">
                         <div class="row">
                             <span style="font-weight: bold;font-size: 17px;color: blue;">{{msgPrevioPDF}}</span>
-                            <img class="imgSpinner" src="../catastro/img/spin.gif" ng-show="varSpin" alt="no cargo imagen">
                             <!--<label style="font-size:120%; color:{{RegistroFUM.registrado == 'OK'?'black':'red'}}"><strong>{{RegistroFUM.mensaje}}</strong></label>-->
                             <div class="col-md-12" id="visorFum1">
                                 <object data="" type="application/pdf" width="820" height="450">
@@ -369,12 +377,11 @@
                         </a>&nbsp;&nbsp;
                     </div>
                     <div class="ibox-content">
+                        <img class="imgSpinner" src="../catastro/img/spin.gif" ng-show="varSpin" alt="no cargo imagen">
                         <div class="row">
                             <span style="font-weight: bold;font-size: 17px;color: blue;">{{msgPrevioPDF}}</span>
-                            <img class="imgSpinner" src="../catastro/img/spin.gif" ng-show="varSpin" alt="no cargo imagen">
-                            <!--<label style="font-size:120%; color:{{RegistroFUM.registrado == 'OK'?'black':'red'}}"><strong>{{RegistroFUM.mensaje}}</strong></label>-->
                             <div class="col-md-12" id="visor2">
-                                <object data="" type="application/pdf" width="820" height="450">
+                                <object id="graph" data="" type="application/pdf" width="820" height="450">
                                 </object>
                             </div>
                         </div>
@@ -382,14 +389,42 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal"><span  aria-hidden="true" title="Finalizar"></span>Cerrar</button> <!--class="glyphicon glyphicon-collapse-down"-->
-                    <!--<button class="btn btn-info pull-left" data-toggle="modal" data-target="#divPopup2" data-dismiss="modal" ng-click="cambiarImagen(5)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el C&oacute;digo Catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>-->
-                    <!--<button class="btn btn-default"  data-dismiss="modal" data-toggle="modal" data-target="#divPopup9" ng-show="RegistroFUM.registrado != 'OK'" ng-click="ProformaPago(resultadoBusqueda)" ><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Retroceder"></span>&nbsp;Atr&aacute;s</button>-->
-                    <!--<label for="chkImp" class="text-center" ng-show="!Imp && RegistroFUM.registrado == 'OK'" style="color: #2728c3; font-size: 110%">
-                        &nbsp;¿Imprimi&oacute; la proforma?&nbsp;&nbsp;&nbsp;
-                        <button type="button" ng-model="Imp" ng-click="Imp=true" id="chkImp" class="btn btn-primary">SI</button>
-                    </label>-->
-                    <!--<button type="button" class="btn btn-primary" ng-show="Imp" data-dismiss="modal" data-toggle="modal" data-target="#divPopup10" > Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span></button>-->
-                    <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-show="RegistroFUM.mensaje == ''"> Cancelar </button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ModalFactura" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:900px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"  data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">SOLICITUD DE AUTORIZACIONES MENORES.</h3>
+                </div>
+                <div class="modal-body">
+                    <button type="button" class="btn btn-primary btn-circle btn-lg">4<span style="font-size: 12px;">to</span></button> <strong style="font-size: 15px;">PASO</strong>
+                    <br><br>
+                    <div class="ibox-title" style="background-color: #f3f0f0;">
+                        <a class="">
+                            <h5>
+                                Imprimir Factura.
+                            </h5>
+                        </a>&nbsp;&nbsp;
+                    </div>
+
+                    <div class="ibox-content">
+                        <img class="imgSpinner" src="../catastro/img/spin.gif" ng-show="varSpin" alt="no cargo imagen">
+                        <div class="row">
+                            <span style="font-weight: bold;font-size: 17px;color: blue;">{{msgPrevioPDF}}</span>
+                            <div class="col-md-12" id="visorFactura">
+                                <object id="objFac" data="" type="application/pdf" width="820" height="450">
+                                </object>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal"><span  aria-hidden="true" title="Finalizar"></span>Cerrar</button> <!--class="glyphicon glyphicon-collapse-down"-->
                 </div>
             </div>
         </div>

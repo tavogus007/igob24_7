@@ -31,7 +31,7 @@ function validarFormularioRender() {
         swal("CAMPOS OBLIGATORIOS", campos, "error");
     }
 }
-function guardarData () {
+function guardarData () {    
     $.blockUI();
     setTimeout(function(){
         var dataFrm = document.frmCiudadano.elements;
@@ -92,6 +92,9 @@ function guardarData () {
                         }else{
                             swal("ERROR ", "Formulario NO almacenado", "error");
                         }
+                        try{
+                            $('[data-toggle="tooltip"]').tooltip('hide').attr('data-original-title', "Enviar Formulario").tooltip('fixTitle').tooltip('Enviar Formulario'); 
+                        }catch(e){}
                     }); 
                 } catch(e) {
                     console.log("Error..",e);
@@ -207,13 +210,13 @@ function enviarData() {
                         validarFrmProcesos();
                     }catch(e){ 
                         $.unblockUI();
-                        swal("ERROR", "conexion fallida ", "error");                    
-                        console.log("falla: ", error);
+                        console.log("falla (1): ", error);
+                        swal("ERROR", "Conexion fallida.", "error");                        
                     }
                 } catch(error){    
                     $.unblockUI();                         
-                    console.log("falla: ", error);
-                    swal("ERROR", "conexion fallida ", "error");
+                    console.log("falla (2): ", error);
+                    swal("ERROR", "Conexion fallida ", "error");
                 }
             });
         } else {

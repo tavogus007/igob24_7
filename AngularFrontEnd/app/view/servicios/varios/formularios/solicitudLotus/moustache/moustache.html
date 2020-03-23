@@ -34,6 +34,12 @@
   .test + .tooltip.right > .tooltip-arrow {
       border-right: 5px solid black;
   }
+  .tool-tip {
+    display: inline-block;
+  }
+  .tool-tip [disabled] {
+   pointer-events: none;
+  }
   </style> 
 <script type="text/javascript">
     var urlHtmlComponentes =   "../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/componentes.htm";
@@ -230,6 +236,15 @@
             }
         });
     });
+
+    $( document ).ready(function() {
+        if ($("#senddata").is(":disabled")){
+            $('[data-toggle="tooltip"]').tooltip('hide')
+            .attr('data-original-title', "Favor de Guardar el Formulario")
+            .tooltip('fixTitle')
+            .tooltip('show');
+        }
+    });
 </script>
 </head>
 <body>
@@ -249,9 +264,11 @@
                 </button>
             </div>
             <div class="col-xs-6">
-                <button id="senddata" name="senddata" type="button" onclick="validarEnvioTramite();"  class="btn btn-success" tooltip="Enviar Formulario">
-                    <div class="info"><i class="fa fa-send fa-sm"></i> Enviar Formulario</div>
-                </button>
+                <span class="tool-tip" data-toggle="tooltip" data-placement="top" title="Favor de Guardar el Formulario">
+                    <button id="senddata" name="senddata" type="button" onclick="validarEnvioTramite();"  class="btn btn-success">
+                        <div class="info"><i class="fa fa-send fa-sm"></i> Enviar Formulario</div>
+                    </button>
+                </span>
             </div>
             <div class="alert alert-success" role="alert" style="display:none;">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">   

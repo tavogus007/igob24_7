@@ -107,8 +107,6 @@ function guardarData () {
         }
     }, 500);
 }
-
-
 function validarFrmProcesos (){      
     var idTramite = sessionStorage.getItem('IDTRAMITE');
     idUsuario = sessionStorage.getItem('IDUSUARIO');
@@ -135,7 +133,6 @@ function validarFrmProcesos (){
         swal("ERROR!", "Registro no modificado", "error");
     }
 };
-
 function validarEnvioTramite (){
         swal({
             title: 'CONFIRMAR',
@@ -154,7 +151,6 @@ function validarEnvioTramite (){
             }, 300);
         });
 };
-
 function enviarData() {   
     $.blockUI();
     setTimeout(function(){
@@ -175,7 +171,8 @@ function enviarData() {
             datosSerializados = datosSerializados.replace(quitarComillas,'');
             quitarComillas = new RegExp('spellcheck=\'false\'', "g");
             datosSerializados = datosSerializados.replace(quitarComillas,'');
-
+            quitarComillas = new RegExp('\'', "g");
+            datosSerializados = datosSerializados.replace(quitarComillas,'&#39;');
             var idProcodigo = 'SITR@M-';
             var crearCaso   =   new gCrearCasoSitramEnLinea();
             crearCaso.datos             = datosSerializados;

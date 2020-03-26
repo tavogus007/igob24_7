@@ -792,7 +792,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         console.log("tramite: ", tramite);
         swal({
             title: 'CONFIRMAR',
-            text: 'Esta apunto de crear un trámite de ' + tramite.name + ' .\n¿Se encuentra seguro de realizar dicha creación?',
+            text: 'Está a punto de crear un trámite de ' + tramite.name + ' .\n¿Se encuentra seguro de realizar dicha creación?',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',

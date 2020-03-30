@@ -206,7 +206,7 @@
                                       </p>
                                     </h3>
                                   </label>
-                            </div>
+                                </div>
 
                               <div class="col-md-12">
                                   <legend>Tipo trámite : {{datos.rdTipoTramite}}</legend>
@@ -1181,6 +1181,7 @@
                     <input type="hidden" ng-model="datos.f01_nac_prop" id="f01_nac_prop" name="f01_nac_prop" class="form-control" />
 
                     <input type="hidden" ng-model="datos.f01_cap_aprox" id="f01_cap_aprox" name="f01_cap_aprox" class="form-control">
+					<input type="hidden" ng-model="datos.f01_macro_act" id="f01_macro_act" name="f01_macro_act" class="form-control">
                     <input type="hidden" ng-model="datos.f01_zona_act_descrip" id="f01_zona_act_descrip" name="f01_zona_act_descrip" class="form-control">
 
                     <div class="col-md-12" align="right" ng-if = "botones == null"></div>
@@ -1189,6 +1190,7 @@
                     <input type="hidden" ng-model="datos.f01_actividadesDesarrolladasc" id="f01_actividadesDesarrolladasc" name="f01_actividadesDesarrolladasc" class="form-control">
                     
                     <input type="hidden" ng-model="datos.f01_actividadesCAAD" id="f01_actividadesCAAD" name="f01_actividadesCAAD" class="form-control">
+                    <input type="hidden" ng-model="datos.f01_nro_actividad" id="f01_nro_actividad" name="f01_nro_actividad" class="form-control">
                         
                     <div class="col-md-12">
                         <legend></legend>
@@ -1236,20 +1238,15 @@
                     <br><br><br><br>
 
                     <!--div class="col-md-12" align="right" ng-show = "botones != null">
-                        <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario"></button>                        
-                        <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="btnEnviarFormLinea" tooltip="Enviar Formulario" ></button>
-                    </div-->
-
-                    <div class="col-md-12" align="right" ng-show = "botones != null">
-                        <label>
-                        </label>
-                    </div>
-
-
-
+                        <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario">
+                        <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="btnEnviarFormLinea" tooltip="Enviar Formulario" >
+                    </div-->  
                 </form>
 
-               
+                    <!--div class="col-md-12" align="right" ng-show = "botones != null">
+                     <label><h3 style="color:#FF0000;" align="left">El envio de Trámites esta temporalmente inhabilitado.  Si requiere realizar algun Trámite debe apersonarse a las diferentes plataformas habilitadas.</h3> </label>
+                    </div--> 
+                              
             </div>
         </div>
           <div class="modal fade" id="imgSalidai" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="margin-top: 200px" scroll-to-top-when="items_changed">

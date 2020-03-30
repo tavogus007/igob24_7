@@ -101,6 +101,7 @@ function regularjuridicoController($scope,$timeout, $rootScope, $routeParams, $l
             $scope.datos.f01_actividad_principal_array =[];
             $scope.datos.FILE_CI = '';
             $scope.datos.fileArchivosAd = '';
+            $scope.datos.f01_nro_actividad ='';
 
         } else {
             //RENOVACION
@@ -172,6 +173,7 @@ function regularjuridicoController($scope,$timeout, $rootScope, $routeParams, $l
             $scope.datos.f01_actividad_principal_array =[];
             $scope.datos.FILE_CI = '';
             $scope.datos.fileArchivosAd = '';
+            $scope.datos.f01_nro_actividad ='';
             //LISTAMOS LA TABLA SI ESTA VACIA
             $scope.validarActividadEconomica();
         } 
@@ -422,7 +424,7 @@ function regularjuridicoController($scope,$timeout, $rootScope, $routeParams, $l
                                 $scope.datos.f01_tip_via_act = response[0].Tipo_Via_ae;
                                 $scope.datos.f01_num_act = response[0].via_ae;
                                 $scope.datos.f01_num_act1 = response[0].numero_ae;
-
+                                $scope.datos.f01_nro_actividad = response[0].sucursal;
                                 if(response[0].edificio_ae == 'undefined' || response[0].bloque_ae == 'undefined' || response[0].piso_ae == 'undefined' || response[0].departamento_ae == 'undefined' || response[0].telefono_ae == 'undefined' || response[0].AE_casilla == 'undefined'){
                                    response[0].edificio_ae = ''; 
                                    response[0].bloque_ae = ''; 
@@ -1858,7 +1860,7 @@ function regularjuridicoController($scope,$timeout, $rootScope, $routeParams, $l
             datosNeXO['INT_TIPO_LICENCIA_DESCRIPCION']   =  paramForm.INT_TIPO_LICENCIA_DESCRIPCION;
             datosNeXO['INT_CAT_AGRUPADA_DESCRIPCION']    =  paramForm.INT_CAT_AGRUPADA_DESCRIPCION;
             datosNeXO['INT_TIP_VIA']                     =  paramForm.INT_TIP_VIA;
-
+            datosNeXO['f01_nro_actividad'] = paramForm.f01_nro_actividad;
             datosNeXO['INT_AC_latitud']               =  paramForm.INT_AC_latitud;
             datosNeXO['INT_AC_longitud']              =  paramForm.INT_AC_longitud;
             datosNeXO['INT_AC_direccionImagenmapa']   =  paramForm.INT_AC_direccionImagenmapa;
@@ -2184,6 +2186,7 @@ function regularjuridicoController($scope,$timeout, $rootScope, $routeParams, $l
         var sDirTramite = sessionService.get('IDTRAMITE');
         $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
         var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/";
+        $.blockUI();
         angular.forEach(aArchivos, function(archivo, key) {
             if(typeof(archivo) != 'undefined'){
                 angular.forEach($scope.docArray, function(doc, pos) {
@@ -2203,7 +2206,19 @@ function regularjuridicoController($scope,$timeout, $rootScope, $routeParams, $l
                             fileUpload1.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
                             document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
                         });
-                    } 
+                        $.unblockUI();
+                    }else{
+                        if (imagenNueva[1] == 'pdf' ||  imagenNueva[1] == 'docx' ||  imagenNueva[1] == 'docxlm') {
+                            $scope.documentosarc[key] = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
+                            fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
+                            document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreFileN;
+                            $.unblockUI();
+                        }
+                        else{
+                            $.unblockUI();
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                        };                        
+                    };  
                 }  
                 else{
                     if (archivo.size <= 500000) {
@@ -2211,12 +2226,15 @@ function regularjuridicoController($scope,$timeout, $rootScope, $routeParams, $l
                             $scope.documentosarc[key] = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
                             fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
                             document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreFileN;
+                            $.unblockUI();
                         } else{
+                            $.unblockUI();
                             swal('Advertencia', 'El archivo  no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                         };
                     };
                     if (archivo.size > 15000000) {
-                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                        $.unblockUI();
+                        swal('Advertencia', 'El tamaño del archivo es muy grande', 'error');
                     };
                 }
             }else{
@@ -2698,7 +2716,6 @@ function regularjuridicoController($scope,$timeout, $rootScope, $routeParams, $l
     };
 
     $scope.capturarImagen = function(){
-        console.log("Entrando a captura imagen 5....");
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         var latitud = $rootScope.laaa;
         var longitud = $rootScope.looo;

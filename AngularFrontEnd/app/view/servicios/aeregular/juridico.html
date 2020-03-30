@@ -145,7 +145,7 @@
                 <div ng-show = "formulario != null">
                     <div class="col-md-12">
                         <div class="row">
-                             <div class="col-md-12" align="right" ng-show = "botones != null">
+                            <div class="col-md-12" align="right" ng-show = "botones != null">
                                   <label>
                                     <br><br>
                                     <h3 style="color:#FF0000" align="left">
@@ -1067,14 +1067,18 @@
                      <input type="hidden" ng-model="datos.f01_zona_act_descrip" id="f01_zona_act_descrip" name="f01_zona_act_descrip" class="form-control">
                     <input type="hidden" ng-model="datos.FILE_CI" id="datos.FILE_CI" name="datos.FILE_CI" class="form-control" />
                     <input type="hidden" ng-model="datos.fileArchivosAd" id="datos.fileArchivosAd" name="datos.fileArchivosAd" class="form-control" />
-                     <input type="hidden" ng-model="datos.f01_nro_frm" id="f01_nro_frm" name="f01_nro_frm" class="form-control" />
+                    <input type="hidden" ng-model="datos.f01_nro_frm" id="f01_nro_frm" name="f01_nro_frm" class="form-control" />
+                    <input type="hidden" ng-model="datos.f01_macro_act" id="f01_macro_act" name="f01_macro_act" class="form-control" />
+                    <input type="hidden" ng-model="datos.f01_nro_actividad" id="f01_nro_actividad" name="f01_nro_actividad" class="form-control">
 
                     <input type="hidden" ng-model="datos.IDTRAMITE" id="IDTRAMITE" name="IDTRAMITE" class="form-control" />
                     
                     <input type="hidden" ng-model="datos.f01_actividadesCAAD" id="f01_actividadesCAAD" name="f01_actividadesCAAD" class="form-control">
                 </div>
-                <div class="col-md-6" align="center" ng-show = "botones != null">
-                    <!-- GNERADOR DE CAPCHA -->
+
+
+                <!--div class="col-md-6" align="center" ng-show = "botones != null">
+                    
                     <div class="col-md-12" align="center" >
                         <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
                             <tr class="color">
@@ -1105,21 +1109,21 @@
                         <b><font SIZE=3 color="red"> {{ErrorCapchasXX2}}</font></b>
                         <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b>
                     </div>
-                </div>
+                </div-->
+
+
+ 
+
 
                 <!--div class="col-md-12" align="right" ng-show = "botones != null">
-                    <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little fa-lg" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario"></button>                   
-                    <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little fa-lg" ng-disabled="btnEnviarFormLinea" tooltip="Enviar Formulario"></button>
+                    <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little fa-lg" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario">
+                    <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little fa-lg" ng-disabled="btnEnviarFormLinea" tooltip="Enviar Formulario">
                 </div--> 
 
-                <div class="col-md-12" align="right" ng-show = "botones != null">
-                    <label>
-                     
-                    </label>
                 </div>
-
-
-                </div>
+                    <!--div class="col-md-12" align="right" ng-show = "botones != null">
+                     <label><h3 style="color:#FF0000;" align="left">El envio de Trámites esta temporalmente inhabilitado.  Si requiere realizar algun Trámite debe apersonarse a las diferentes plataformas habilitadas.</h3> </label>
+                    </div-->                    
             </form>
         </div>  
     </div>

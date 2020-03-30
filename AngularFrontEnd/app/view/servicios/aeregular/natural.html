@@ -197,6 +197,17 @@
                  <div ng-show = "formulario != null">                     
                     <div class="col-md-12">
                           <div class="row">
+                            <div class="col-md-12" align="right" ng-show = "botones != null">
+                                  <label>
+                                    <br><br>
+                                    <h3 style="color:#FF0000" align="left">
+                                     <p>Estimado Ciudadan@.</p>
+                                          <p>El presente Formulario ya no se encuentra v&aacute;lido. Por lo cual para continuar con su solicitud, favor de crear un NUEVO TR&Aacute;MITE.
+                                      </p>
+                                    </h3>
+                                  </label>
+                            </div>
+
                               <div class="col-md-12">
                                   <legend>Tipo trámite : {{datos.rdTipoTramite}}</legend>
                               </div>
@@ -1231,11 +1242,6 @@
 
                     <div class="col-md-12" align="right" ng-show = "botones != null">
                         <label>
-                          <br><br>
-                          <h3 style="color:#FF0000" align="left">
-                            <p>Estimado Ciudadan@. </p>
-                                <p>El formulario est&aacute; inv&aacute;lido debido a que se realiz&oacute; una actualizaci&oacute;n para la Ley 343, por lo cual para continuar con su Tr&aacute;mite le pedimos crear un nuevo tr&aacute;mite.</p>
-                          </h3>
                         </label>
                     </div>
 

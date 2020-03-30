@@ -197,6 +197,17 @@
                  <div ng-show = "formulario != null">                     
                     <div class="col-md-12">
                           <div class="row">
+                            <div class="col-md-12" align="right" ng-show = "botones != null">
+                                  <label>
+                                    <br><br>
+                                    <h3 style="color:#FF0000" align="left">
+                                     <p>Estimado Ciudadan@.</p>
+                                          <p>El presente Formulario ya no se encuentra v&aacute;lido. Por lo cual para continuar con su solicitud, favor de crear un NUEVO TR&Aacute;MITE.
+                                      </p>
+                                    </h3>
+                                  </label>
+                            </div>
+
                               <div class="col-md-12">
                                   <legend>Tipo trámite : {{datos.rdTipoTramite}}</legend>
                               </div>
@@ -1224,10 +1235,18 @@
 
                     <br><br><br><br>
 
+                    <!--div class="col-md-12" align="right" ng-show = "botones != null">
+                        <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario"></button>                        
+                        <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="btnEnviarFormLinea" tooltip="Enviar Formulario" ></button>
+                    </div-->
+
                     <div class="col-md-12" align="right" ng-show = "botones != null">
-                        <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario"><!--{{translateTitulos.lbl_016_29}}--></button><!--cambios-->                        
-                        <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="btnEnviarFormLinea" tooltip="Enviar Formulario" ><!--{{translateTitulos.lbl_016_30}}--></button><!--cambios-->
-                    </div>  
+                        <label>
+                        </label>
+                    </div>
+
+
+
                 </form>
 
                

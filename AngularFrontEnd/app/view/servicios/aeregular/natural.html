@@ -1224,10 +1224,23 @@
 
                     <br><br><br><br>
 
+                    <!--div class="col-md-12" align="right" ng-show = "botones != null">
+                        <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario"></button>                        
+                        <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="btnEnviarFormLinea" tooltip="Enviar Formulario" ></button>
+                    </div-->
+
                     <div class="col-md-12" align="right" ng-show = "botones != null">
-                        <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario"><!--{{translateTitulos.lbl_016_29}}--></button><!--cambios-->                        
-                        <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="btnEnviarFormLinea" tooltip="Enviar Formulario" ><!--{{translateTitulos.lbl_016_30}}--></button><!--cambios-->
-                    </div>  
+                        <label>
+                          <br><br>
+                          <h3 style="color:#FF0000" align="left">
+                            <p>Estimado Ciudadan@. </p>
+                                <p>El formulario est&aacute; inv&aacute;lido debido a que se realiz&oacute; una actualizaci&oacute;n para la Ley 343, por lo cual para continuar con su Tr&aacute;mite le pedimos crear un nuevo tr&aacute;mite.</p>
+                          </h3>
+                        </label>
+                    </div>
+
+
+
                 </form>
 
                

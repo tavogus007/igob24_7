@@ -920,30 +920,62 @@ creardatosformulario.prototype.crear_datos_formulario=function(functionResp){
 };
 
 function adicionaTramitesFormulario(){
-    this.frm_tra_fecha;
-    this.frm_tra_enviado;
-    this.frm_tra_registrado;
-    this.frm_tra_modificado;
-    this.id_servicio;
-    this.data_json;
-    this.oid_ciudadano;
-    this.id_usuario;
+  this.frm_tra_fecha;
+  this.frm_tra_enviado;
+  this.frm_tra_registrado;
+  this.frm_tra_modificado;
+  this.id_servicio;
+  this.data_json;
+  this.oid_ciudadano;
+  this.id_usuario;
+  this.frm_data_ciudadano;    
 };
 adicionaTramitesFormulario.prototype.adiciona_Tramites_Formulario=function(functionResp){
-    urlComp = "/adicionaTramitesFormulario";
-    typeCall = "post";
-    dataParams= {
-        "frm_tra_fecha" : this.frm_tra_fecha,
-        "frm_tra_enviado": this.frm_tra_enviado,
-        "frm_tra_registrado":  this.frm_tra_registrado,
-        "frm_tra_modificado": this.frm_tra_modificado,
-        "id_servicio": this.id_servicio,
-        "data_json": this.data_json,
-        "oid_ciudadano": this.oid_ciudadano,
-        "id_usuario": this.id_usuario
-    };
-    ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+  var sdataCiudadano = {};
+  try{      
+    var stipopersona = sessionStorage.getItem("TIPO_PERSONA");
+    var sidciudadano = sessionStorage.getItem("IDCIUDADANO");        
+    sdataCiudadano.stipopersona = stipopersona;
+    sdataCiudadano.sidciudadano = sidciudadano; 
+    if(stipopersona == 'NATURAL'){
+      var sciciudadano = sessionStorage.getItem("CICIUDADANO");           
+      var sapeparterno = sessionStorage.getItem("US_PATERNO");
+      var sap_ematerno = sessionStorage.getItem("US_MATERNO");
+      var s_correoelec = sessionStorage.getItem("US_EMAIL");
+      var s_nombre = sessionStorage.getItem("US_NOMBRE");
+      sdataCiudadano.sciciudadano = sciciudadano;
+      sdataCiudadano.sapeparterno = sapeparterno; 
+      sdataCiudadano.sap_ematerno = sap_ematerno;
+      sdataCiudadano.s_correoelec = s_correoelec; 
+      sdataCiudadano.s_nombre = s_nombre; 
+    }else if(stipopersona == 'JURIDICO'){
+      var snitciudaano = sessionStorage.getItem("NITCIUDADANO");
+      var cirepresentante = sessionStorage.getItem("REPRESENTANTECI");
+      var srepresentante = sessionStorage.getItem("REPRESENTANTE");
+      var srazonsocial = sessionStorage.getItem("US_NOMBRE");
+      sdataCiudadano.snitciudaano = snitciudaano;
+      sdataCiudadano.cirepresentante = cirepresentante; 
+      sdataCiudadano.srepresentante = srepresentante;
+      sdataCiudadano.srazonsocial = srazonsocial; 
+    }      
+  }catch(e){console.log("Error al recuperar Datos:", e);}    
+  var sjonDataCiudano = JSON.stringify(sdataCiudadano);    
+  urlComp = "/adicionaTramitesFormulario";
+  typeCall = "post";
+  dataParams= {
+      "frm_tra_fecha" : this.frm_tra_fecha,
+      "frm_tra_enviado": this.frm_tra_enviado,
+      "frm_tra_registrado":  this.frm_tra_registrado,
+      "frm_tra_modificado": this.frm_tra_modificado,
+      "id_servicio": this.id_servicio,
+      "data_json": this.data_json,
+      "oid_ciudadano": this.oid_ciudadano,
+      "id_usuario": this.id_usuario,
+      "frm_data_ciudadano":sjonDataCiudano
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 };
+
 
 function rcNotificaciones(){
     this.oid;

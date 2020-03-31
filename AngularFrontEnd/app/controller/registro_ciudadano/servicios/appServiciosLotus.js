@@ -680,36 +680,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             }
         }  
     };    
-    
-    $scope.recuperarFormsxProceso = function (tramite) {
-        try{
-            jDataFormsLotus =   [];
-            var sidproceso  =   73;
-            var sidcampo    =   tramite.datos.INT_ID_FORM_LOTUS;
-            var getFormJson =   new getFormulario();
-            getFormJson.idprc    =  sidproceso;
-            getFormJson.idcampo    =  sidcampo;
-            /*getFormJson.obtForms(function(respuesta){
-                //console.log("RESPUESTA FORMULARIO LOTUS 1:", respuesta);
-                var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
-                //console.log("RESPUESTA FORMULARIO LOTUS 2:", JSON.parse(forms));            
-                jDataFormsLotus =   forms;
-                $scope.tramiteSeleccionadoP  =   tramite.idcampo;
-                $scope.formtramite  =   tramite;
-            });*/
-            $.getJSON( "../../controller/registro_ciudadano/servicios/correspondencia.json", function( respuesta ) {
-                //var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
-                var forms   =   respuesta.success.data[0].exportar_formulario;            
-                //console.log("RESPUESTA FORMULARIO LOTUS 2:", JSON.parse(forms));            
-                jDataFormsLotus =   forms;
-                $scope.tramiteSeleccionadoP  =   tramite.idcampo;
-                $scope.formtramite  =   tramite;
-            });
-        }catch(e){
-            console.log("Error al Procesar formulario:",e);
-            $.unblockUI();
-        }
-    };
 
     $scope.seleccionarProcesoT = function (tramite) {
         $scope.formtramite  =   tramite;   
@@ -720,16 +690,51 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     $scope.seleccionarTramite = function (tramite) {
         $scope.template =   "";
         $.blockUI();
-        $scope.recuperarFormsxProceso(tramite);
         setTimeout(function(){
+            $scope.recuperarFormsxProceso(tramite);
+        },500);        
+        /*setTimeout(function(){
+            console.log("CARGA DEL FORMULARIO ");
             $scope.seleccionarTramiteRender(tramite);
             $scope.$apply();
             $.unblockUI();
-        },500);
+        },100);*/
     }
 
+    $scope.recuperarFormsxProceso = function (tramite) {
+        try{
+            jDataFormsLotus     =   [];
+            var sidproceso      =   73;
+            var sidcampo        =   tramite.datos.INT_ID_FORM_LOTUS;
+            var getFormJson     =   new getFormulario();
+            getFormJson.idprc   =   sidproceso;
+            getFormJson.idcampo =   sidcampo;
+            /*getFormJson.obtForms(function(respuesta){
+                //console.log("RESPUESTA FORMULARIO LOTUS 1:", respuesta);
+                var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
+                //console.log("RESPUESTA FORMULARIO LOTUS 2:", JSON.parse(forms));            
+                jDataFormsLotus =   forms;
+                $scope.tramiteSeleccionadoP  =   tramite.idcampo;
+                $scope.formtramite  =   tramite;
+            });*/
+            $.getJSON( "../../controller/registro_ciudadano/servicios/correspondencia.json", function( respuesta ) {
+                //var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
+                var forms   =   respuesta.success.data[0].exportar_formulario;         
+                jDataFormsLotus =   forms;
+                $scope.tramiteSeleccionadoP  =   tramite.idcampo;
+                $scope.formtramite  =   tramite;
+                //CARGAR FORMULARIO
+                $scope.seleccionarTramiteRender(tramite);
+                $scope.$apply();
+                $.unblockUI();
+            });
+        }catch(e){
+            console.log("Error al Procesar formulario:",e);
+            $.unblockUI();
+        }
+    };    
+
     $scope.seleccionarTramiteRender = function (tramite) {
-        //console.log("TRAMITE SELECCIONADO :", tramite);
         $rootScope.tramiteId = tramite.vtra_id;
         sessionService.set('IDTRAMITE', tramite.vtra_id);
         sessionService.set('IDSERVICIO', tramite.vdvser_id);
@@ -740,7 +745,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         var tipoPersona =   sessionService.get('TIPO_PERSONA');
         var sidservicio =   tramite.vdvser_id;
         $scope.template         =   $scope.templates[1];
-        //console.log("TRAMITE 7777 :", tramite);
         $scope.recuperarSerializarInfo(tramite);
         $scope.tramiteSeleccionado   =   tramite.vtra_id;
         var cboTipoCon = document.getElementById("tipo_contribuyente");
@@ -754,7 +758,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     
     /*RECUPERAR DATOS - INICIAR FORMULARIO*/
     $scope.recuperarSerializarInfo= function(tramite){
-        //console.log("TRAMITE SELECCIONADO :", tramite);
         try{
             var sIdTramite      = tramite.vtra_id;
             var sIdCiudadano    = sessionService.get('IDSOLICITANTE');//IDCIUDADANO
@@ -767,7 +770,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             rData.frm_tra_dvser_id      = sIdServicio;
             rData.frm_idTramite         = sIdTramite;
             rData.splistafrmdatos(function(result){
-                //console.log("LISTAR DATOS FORMULARIO :", result);
                 var formalmacenado      = "";
                 results                 = JSON.parse(result).success[0].form_contenido;
                 svalorJosn  = [];            
@@ -780,7 +782,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 }
                 dataFinal = $scope.datos;
             });
-
         }catch(e){
             console.log("Error al recuperar datos del formulario:",e);
             $.unblockUI();

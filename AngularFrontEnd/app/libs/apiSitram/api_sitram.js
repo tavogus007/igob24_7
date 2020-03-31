@@ -1,6 +1,6 @@
-//var urlSitram = "http://192.168.6.57:91/wsSitram";
-//var urlSitram = "http://192.168.34.70:91/wsSitram";
-var urlSitram = "https://gamlpmotores.lapaz.bo/salud/wsSitram";//crearTramiteDigital
+if(jsonURLS){
+  var urlSitram = jsonURLS.CONEXION_API_PG_SALUD + "wsSitram"; 
+}
 var urlComp;
 var dataResp;
 var dataParams;

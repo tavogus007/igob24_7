@@ -1,4 +1,4 @@
-app.controller('serviciosController343', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad, $q) {
+﻿app.controller('serviciosController343', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad, $q) {
     $scope.imageCST = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     $scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     var fecha= new Date();
@@ -1441,7 +1441,6 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
 
     $scope.adicionarServicioGamlp = function(datos){ 
         $scope.recuperandoDatosGenesis();
-
         var tipoPersona     =   sessionService.get('TIPO_PERSONA');
         var condiciones = '';
         if(tipoPersona == "NATURAL")
@@ -1454,188 +1453,185 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
             tipoPersona = "J";
             condiciones = $scope.datosRecuperados.dtspsl_file_condiciones_uso_j;
         }
-        if (condiciones == 'undefined' || condiciones == null || condiciones == '') {
-            swal('', 'Estimado Ciudadano, para poder proseguir con el trámite deberá aceptar las condiciones de uso en el IGOB 24/7', 'warning');
-        } else{
-            if ($scope.datosRecuperados.dtspsl_activaciond == 'SI' && $scope.datosRecuperados.dtspsl_activacionf == 'SI') {
-                if(datos == 10){
-                    var dataInicio  =   {};
-                    dataInicio["f01_tipo_lic"] = "";
-                    dataInicio["f01_categoria_agrupada"] = "";
-                    dataInicio["f01_categoria_descrip"] = "";
-                    $scope.datos.f01_tip_act_de = "";
-                    $scope.datos.f01_categoria_agrupada_descripcion = "";
-                    $scope.datos.f01_categoria_descri = "";
-                    var fecha= new Date();
-                    var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio = 10;
-                    var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-                    var sFechaTramite = fechactual;
-                    dataInicio.INT_FORM_ALMACENADO='C';
-                    var datosSerializados   =  JSON.stringify(dataInicio);
+
+        if ($scope.datosRecuperados.dtspsl_activaciond == 'SI' && $scope.datosRecuperados.dtspsl_activacionf == 'SI') {
+            if(datos == 10){
+                var dataInicio  =   {};
+                dataInicio["f01_tipo_lic"] = "";
+                dataInicio["f01_categoria_agrupada"] = "";
+                dataInicio["f01_categoria_descrip"] = "";
+                $scope.datos.f01_tip_act_de = "";
+                $scope.datos.f01_categoria_agrupada_descripcion = "";
+                $scope.datos.f01_categoria_descri = "";
+                var fecha= new Date();
+                var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+                var sIdServicio = 10;
+                var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+                var sFechaTramite = fechactual;
+                dataInicio.INT_FORM_ALMACENADO='C';
+                var datosSerializados   =  JSON.stringify(dataInicio);
+                $.blockUI();
+                try{
+                    var crea = new adicionaTramitesFormulario();
+                    crea.frm_tra_fecha = sFechaTramite;
+                    crea.frm_tra_enviado = "NO";
+                    crea.frm_tra_registrado = fechactual;
+                    crea.frm_tra_modificado = fechactual;
+                    crea.id_servicio = sIdServicio;
+                    crea.data_json = datosSerializados;
+                    crea.oid_ciudadano = sIdCiudadano;
+                    crea.id_usuario = 3;
                     $.blockUI();
-                    try{
-                        var crea = new adicionaTramitesFormulario();
-                        crea.frm_tra_fecha = sFechaTramite;
-                        crea.frm_tra_enviado = "NO";
-                        crea.frm_tra_registrado = fechactual;
-                        crea.frm_tra_modificado = fechactual;
-                        crea.id_servicio = sIdServicio;
-                        crea.data_json = datosSerializados;
-                        crea.oid_ciudadano = sIdCiudadano;
-                        crea.id_usuario = 3;
-                        $.blockUI();
-                        crea.adiciona_Tramites_Formulario(function(res){
-                            x = JSON.parse(res);
-                            response = x.success;
-                            if(response.length  > 0){
-                                sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
-                                $.unblockUI();
-                                $scope.tramitesCiudadano();
-                                swal('', 'Registro almacenado correctamente', 'success');
-                                sessionService.destroy('NROTRAMITE');
-                                sessionService.destroy('NROTRAMITEID');
-                                sessionService.destroy('IDPROCESO');
-                                $scope.btnEnviarForm    =   false;
-                                $scope.btnGuardarForm   =   false;
-                                $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
-                            $('#registro').modal('hide');
-                            }
-                            else{
-                                $.unblockUI();
-                            }
-                        });
-                    }catch(e){
-                        console.log('*Error*', e);
-                        $.unblockUI();
-                    }
+                    crea.adiciona_Tramites_Formulario(function(res){
+                        x = JSON.parse(res);
+                        response = x.success;
+                        if(response.length  > 0){
+                            sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
+                            $.unblockUI();
+                            $scope.tramitesCiudadano();
+                            swal('', 'Registro almacenado correctamente', 'success');
+                            sessionService.destroy('NROTRAMITE');
+                            sessionService.destroy('NROTRAMITEID');
+                            sessionService.destroy('IDPROCESO');
+                            $scope.btnEnviarForm    =   false;
+                            $scope.btnGuardarForm   =   false;
+                            $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
+                        $('#registro').modal('hide');
+                        }
+                        else{
+                            $.unblockUI();
+                        }
+                    });
+                }catch(e){
+                    console.log('*Error*', e);
+                    $.unblockUI();
                 }
-                if(datos ==  $scope.emision){
-                    var dataInicio  =   {};
-                    dataInicio["f01_tipo_lic"] = "";
-                    dataInicio["f01_categoria_agrupada"] = "";
-                    dataInicio["f01_categoria_descrip"] = "";
-                    $scope.datos.f01_tip_act_de = "";
-                    $scope.datos.f01_categoria_agrupada_descripcio = "";
-                    $scope.datos.f01_categoria_descri = "";
-                    var fecha= new Date();
-                    var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio =  $scope.emision;
-                    var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-                    var sFechaTramite = fechactual;
-                    dataInicio.INT_FORM_ALMACENADO='C';
-                    var datosSerializados   =  JSON.stringify(dataInicio);
+            }
+            if(datos ==  $scope.emision){
+                var dataInicio  =   {};
+                dataInicio["f01_tipo_lic"] = "";
+                dataInicio["f01_categoria_agrupada"] = "";
+                dataInicio["f01_categoria_descrip"] = "";
+                $scope.datos.f01_tip_act_de = "";
+                $scope.datos.f01_categoria_agrupada_descripcio = "";
+                $scope.datos.f01_categoria_descri = "";
+                var fecha= new Date();
+                var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+                var sIdServicio =  $scope.emision;
+                var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+                var sFechaTramite = fechactual;
+                dataInicio.INT_FORM_ALMACENADO='C';
+                var datosSerializados   =  JSON.stringify(dataInicio);
+                $.blockUI();
+                try{
+                    var crea = new adicionaTramitesFormulario();
+                    crea.frm_tra_fecha = sFechaTramite;
+                    crea.frm_tra_enviado = "NO";
+                    crea.frm_tra_registrado = fechactual;
+                    crea.frm_tra_modificado = fechactual;
+                    crea.id_servicio = sIdServicio;
+                    crea.data_json = datosSerializados;
+                    crea.oid_ciudadano = sIdCiudadano;
+                    crea.id_usuario = 3;
                     $.blockUI();
-                    try{
-                        var crea = new adicionaTramitesFormulario();
-                        crea.frm_tra_fecha = sFechaTramite;
-                        crea.frm_tra_enviado = "NO";
-                        crea.frm_tra_registrado = fechactual;
-                        crea.frm_tra_modificado = fechactual;
-                        crea.id_servicio = sIdServicio;
-                        crea.data_json = datosSerializados;
-                        crea.oid_ciudadano = sIdCiudadano;
-                        crea.id_usuario = 3;
-                        $.blockUI();
-                        crea.adiciona_Tramites_Formulario(function(res){
-                            x = JSON.parse(res);
-                            response = x.success;
-                            if(response.length  > 0){
-                                sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
-                                $.unblockUI();
-                                $scope.tramitesCiudadano();
-                                swal('', 'Registro almacenado correctamente', 'success');
-                                sessionService.destroy('NROTRAMITE');
-                                sessionService.destroy('NROTRAMITEID');
-                                sessionService.destroy('IDPROCESO');
-                                $scope.btnEnviarForm    =   false;
-                                $scope.btnGuardarForm   =   false;
-                                $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
-                            $('#registro').modal('hide');
-                            }
-                            else{
-                                $.unblockUI();
-                            }
-                        });
-                    }catch(e){
-                        console.log('*Error*', e);
-                        $.unblockUI();
-                    }
+                    crea.adiciona_Tramites_Formulario(function(res){
+                        x = JSON.parse(res);
+                        response = x.success;
+                        if(response.length  > 0){
+                            sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
+                            $.unblockUI();
+                            $scope.tramitesCiudadano();
+                            swal('', 'Registro almacenado correctamente', 'success');
+                            sessionService.destroy('NROTRAMITE');
+                            sessionService.destroy('NROTRAMITEID');
+                            sessionService.destroy('IDPROCESO');
+                            $scope.btnEnviarForm    =   false;
+                            $scope.btnGuardarForm   =   false;
+                            $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
+                        $('#registro').modal('hide');
+                        }
+                        else{
+                            $.unblockUI();
+                        }
+                    });
+                }catch(e){
+                    console.log('*Error*', e);
+                    $.unblockUI();
                 }
-               
-                if(datos == $scope.renovacion){
-                    if ($scope.dataGenesisCidadano != ''){
-                        var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
-                        var contribuyente   =   new gLstActividadEconomica();
-                        contribuyente.idContribuyente   =   idContribuyente;
-                        contribuyente.tipo  = tipoPersona;            //try{
-                        contribuyente.lstActividadEconomica(function(resultado){
-                            resultadoApi = JSON.parse(resultado);
-                            if (resultadoApi.success.dataSql.length) {
-                                var response    =   resultadoApi;
-                                var dataInicio  =   {}; 
-                                dataInicio["f01_tipo_lic"] = "";
-                                dataInicio["f01_categoria_agrupada"] = "";
-                                dataInicio["f01_categoria_descrip"] = "";
-                                $scope.datos.f01_tip_act_de = "";
-                                $scope.datos.f01_categoria_agrupada_descripcio = "";
-                                $scope.datos.f01_categoria_descri = ""; 
-                                var fecha= new Date();
-                                var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                                var sIdServicio = $scope.renovacion;
-                                var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-                                var sFechaTramite = fechactual;
-                                dataInicio.INT_FORM_ALMACENADO='C';
-                                var datosSerializados   =  JSON.stringify(dataInicio);
+            }
+           
+            if(datos == $scope.renovacion){
+                if ($scope.dataGenesisCidadano != ''){
+                    var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
+                    var contribuyente   =   new gLstActividadEconomica();
+                    contribuyente.idContribuyente   =   idContribuyente;
+                    contribuyente.tipo  = tipoPersona;            //try{
+                    contribuyente.lstActividadEconomica(function(resultado){
+                        resultadoApi = JSON.parse(resultado);
+                        if (resultadoApi.success.dataSql.length) {
+                            var response    =   resultadoApi;
+                            var dataInicio  =   {}; 
+                            dataInicio["f01_tipo_lic"] = "";
+                            dataInicio["f01_categoria_agrupada"] = "";
+                            dataInicio["f01_categoria_descrip"] = "";
+                            $scope.datos.f01_tip_act_de = "";
+                            $scope.datos.f01_categoria_agrupada_descripcio = "";
+                            $scope.datos.f01_categoria_descri = ""; 
+                            var fecha= new Date();
+                            var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+                            var sIdServicio = $scope.renovacion;
+                            var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+                            var sFechaTramite = fechactual;
+                            dataInicio.INT_FORM_ALMACENADO='C';
+                            var datosSerializados   =  JSON.stringify(dataInicio);
+                            $.blockUI();
+                            try{
+                                var crea = new adicionaTramitesFormulario();
+                                crea.frm_tra_fecha = sFechaTramite;
+                                crea.frm_tra_enviado = "NO";
+                                crea.frm_tra_registrado = fechactual;
+                                crea.frm_tra_modificado = fechactual;
+                                crea.id_servicio = sIdServicio;
+                                crea.data_json = datosSerializados;
+                                crea.oid_ciudadano = sIdCiudadano;
+                                crea.id_usuario = 3;
                                 $.blockUI();
-                                try{
-                                    var crea = new adicionaTramitesFormulario();
-                                    crea.frm_tra_fecha = sFechaTramite;
-                                    crea.frm_tra_enviado = "NO";
-                                    crea.frm_tra_registrado = fechactual;
-                                    crea.frm_tra_modificado = fechactual;
-                                    crea.id_servicio = sIdServicio;
-                                    crea.data_json = datosSerializados;
-                                    crea.oid_ciudadano = sIdCiudadano;
-                                    crea.id_usuario = 3;
-                                    $.blockUI();
-                                    crea.adiciona_Tramites_Formulario(function(res){
-                                        x = JSON.parse(res);
-                                        response = x.success;
-                                        if(response.length  > 0){
-                                            sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
-                                            $.unblockUI();
-                                            $scope.tramitesCiudadano();
-                                            swal('', 'Registro almacenado correctamente', 'success');
-                                            sessionService.destroy('NROTRAMITE');
-                                            sessionService.destroy('NROTRAMITEID');
-                                            sessionService.destroy('IDPROCESO');
-                                            $scope.btnEnviarForm    =   false;
-                                            $scope.btnGuardarForm   =   false;
-                                            $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
-                                        $('#registro').modal('hide');
-                                        }
-                                        else{
-                                            $.unblockUI();
-                                        }
-                                    });  
-                                }catch(e){
-                                    console.log('*Error*', e);
-                                    $.unblockUI();
-                                }
+                                crea.adiciona_Tramites_Formulario(function(res){
+                                    x = JSON.parse(res);
+                                    response = x.success;
+                                    if(response.length  > 0){
+                                        sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
+                                        $.unblockUI();
+                                        $scope.tramitesCiudadano();
+                                        swal('', 'Registro almacenado correctamente', 'success');
+                                        sessionService.destroy('NROTRAMITE');
+                                        sessionService.destroy('NROTRAMITEID');
+                                        sessionService.destroy('IDPROCESO');
+                                        $scope.btnEnviarForm    =   false;
+                                        $scope.btnGuardarForm   =   false;
+                                        $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
+                                    $('#registro').modal('hide');
+                                    }
+                                    else{
+                                        $.unblockUI();
+                                    }
+                                });  
+                            }catch(e){
+                                console.log('*Error*', e);
+                                $.unblockUI();
                             }
-                            else{
-                            }
-                        })                        
-                    } else{
-                        swal("Estimado Usuario", "Ud. no cuenta con Actividades Economicas registradas", "warning")
-                    };                       
-                }
-                
-            } else{
-                swal('', "Debe realizar las activaciones fisica y digital para poder realizar el trámite", 'warning');
-            };
-        }
+                        }
+                        else{
+                        }
+                    })                        
+                } else{
+                    swal("Estimado Usuario", "Ud. no cuenta con Actividades Economicas registradas", "warning")
+                };                       
+            }
+            
+        } else{
+            swal('', "Debe realizar las activaciones fisica y digital para poder realizar el trámite", 'warning');
+        };
     }
 
     $scope.btnCapcha=true;

@@ -143,7 +143,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                         }
                     };
                     $scope.datosActividad = datosLic;
-                    console.log('lista desssssssss    ',$scope.datosActividad);
                 }else{
                     $scope.msg = "Error !!";
                 }
@@ -411,11 +410,9 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     $scope.botonm="new";
 
     $scope.modificarLic = function(dato){
-        console.log('gggggg    ',dato);
         $scope.onlym = true;
         $scope.botonm = "upd";
         $scope.multiple = dato;
-        console.log('$scope.multiple    ',$scope.multiple);
     }
 
     $scope.eliminarLic = function(dato){
@@ -424,7 +421,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     }
 
     $scope.modificarLicencia = function(dato){
-        console.log('dddd   ',dato);
         $scope.onlym=true;
         $scope.botonm="new";
         delete $scope.editm[dato.idm];
@@ -1719,9 +1715,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             }
             //////////////////////////////////////////////////////////
         });
-        try{
-           // console.log("error en adjuntos");
-        }catch(e){}
+        
     }
 
     $scope.iniciarRequsitosDoc = function(data){
@@ -1732,7 +1726,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
 
     /*REQUISITOS2018*/
     $scope.iniciarRequisitosForm = function(data){
-        console.log("data111: ", data);
         $scope.fileArRequisitos = {};
         if(data.sArrayFileArRequisitos){
             $scope.fileArRequisitos = data.sArrayFileArRequisitos;
@@ -2073,7 +2066,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         if(nombre==='')
         {
           var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
-          console.log("Vacio :",obj);
           map.removeLayer(vectorLayerZonas);
         }
         else
@@ -2111,7 +2103,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
           if(c==0)
           {
             var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
-            console.log("Vacio :",obj);
           }
         }    
       }
@@ -2234,14 +2225,11 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
 
     var aDocAdjuntosmapa = new Object();
     $scope.capturarImagen = function(){
-        console.log("Entrando a captura imagen appaeregular_nuevo....");
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         //var latitud = $rootScope.laaa;
         //var longitud = $rootScope.looo;
         var latitud =  $scope.datos.INT_AC_latitud;
         var longitud = $scope.datos.INT_AC_longitud;
-        console.log("latitud",latitud);
-        console.log("longitud",longitud);
 
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         var sDirTramite = sessionService.get('IDTRAMITE');

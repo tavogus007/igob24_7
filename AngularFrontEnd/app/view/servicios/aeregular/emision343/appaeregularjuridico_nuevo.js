@@ -183,11 +183,9 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                         }
                     };
                     $scope.datosActividad = datosLic;
-                    console.log('lista desssssssss    ',$scope.datosActividad);
                 }else{
                     $scope.msg = "Error !!";
                 }
-                //$scope.$apply();
                 $.unblockUI();
             });
         }catch(e){
@@ -1390,12 +1388,11 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             datosNeXO['file_fund_emp'] = paramForm.file_fund_emp;
             datosNeXO['file_reg_comer'] = paramForm.file_reg_comer;
             /*REQUISITOSDELAACTIVIDADECONOMICA*/
-            datosNeXO['f01_tip_act']                    =   paramForm.f01_tip_act;
             datosNeXO['f01_actividad_desarrollada']     =   "";           
             /*CAMPOS GENERICOS NATURAL Y JURIDICO*/ //-->EL CAMPO NO SE ESTA GENERANDO CORRECTAMENTE
             /*REQUISITOSDELAACTIVIDADECONOMICA*/
             datosNeXO['Licenmul_grilla'] = paramForm.Licenmul_grilla;
-            datosNeXO['f01_tip_act']                    =   paramForm.f01_tip_act;
+            datosNeXO['f01_tip_act']                    =   'SU';
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;
             datosNeXO['f01_idCodigoZona'] = paramForm.f01_idCodigoZona;
             //PAGO ADELANTADO
@@ -2030,10 +2027,8 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     }
 
     $scope.iniciarRequsitosDoc = function(data){
-        console.log("data: ", data);
         var validarpromesas = [$scope.iniciarRequisitosForm(data)];
         $q.all(validarpromesas).then(function (resp) {//AE - Validar Envio Licencia
-           //console.log("resp: ", resp);
         });
     }
 
@@ -2327,16 +2322,12 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     };
 
     $scope.capturarImagen = function(){
-        console.log("Entrando a captura imagen 1....");
         $scope.oidCiudadano = sessionService.get('IDCIUDADANO');
         //var latitud = $rootScope.laaa;
         //var longitud = $rootScope.looo;
 
         var latitud =  $scope.datos.INT_AC_latitud;
         var longitud = $scope.datos.INT_AC_longitud;
-        console.log("latitud",latitud);
-        console.log("longitud",longitud);
-
         $scope.oidCiudadano = sessionService.get('IDCIUDADANO');
         var sDirTramite = sessionService.get('IDTRAMITE');
         $scope.url = "RC_CLI/" + $scope.oidCiudadano + "/" + sDirTramite;
@@ -2362,13 +2353,9 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         });
     }
 
-    ///termina MAPA
-
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
         /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {       
-         //DOCS OBLIGATORIOS
-         console.log("data: ", data);
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){

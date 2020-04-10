@@ -291,44 +291,7 @@
                     <div class="col-md-3 negrita user">{{translateTitulos.lbl_04_25}}</div>
                     <div class="col-md-9 user">{{registro.direccion}}</div>
                   </div>
-
-
-
-
-                  <!--<div class="row" style="background: white; ">
-                     
-                            <div class="col-md-12">
-                        <ul class="datos2">
-                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_21}}: </span><span> {{registro.cedula}}</span></li>
-                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_22}}: </span><span> {{registro.estado_civil_total}}</span></li>
-                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_23}}: </span><span> {{registro.sexo}}</span></li>
-                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_24}}: </span><span> {{registro.fecha_nacimiento}}</span></li>
-                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_25}}: </span><span> {{registro.direccion}}</span></li>
-                        </ul>
-                     
-                     <div class="table-responsive">                       
-                          <table class="userAdm">
-                              <tr>
-                                <td class="user"><span class="negrita">{{translateTitulos.lbl_04_22}}: </span></td>
-                                <td class="user"><span> {{registro.estado_civil_total}}</span></td>
-                              </tr>
-                              <tr>
-                                <td class="user"><span class="negrita">{{translateTitulos.lbl_04_23}}: </span></td>
-                                <td class="user"><span> {{registro.sexo}}</span></td>
-                              </tr>
-                              <tr>
-                                <td class="user"><span class="negrita">{{translateTitulos.lbl_04_24}}: </span></td>
-                                <td class="user"><span> {{registro.fecha_nacimiento}}</span></td>
-                              </tr>
-                              <tr>
-                                <td class="user"><span class="negrita">{{translateTitulos.lbl_04_25}}: </span></td>
-                                <td class="user"><span> {{registro.direccion}}</span></td>
-                              </tr>
-                            </table>
-                      </div>
-                  </div>-->
-
-                  <div class="row">
+                 <div class="row">
                      <div  class="contenedorVerdeUser">
                         <span><a href="#servicios|varios|index.html?url='app/view/registro_ciudadano/cambio/index.html" class="btn btn-oscuro">{{translateTitulos.lbl_04_26}}</a></span>
                         <span><a href="#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html" class="btn btn-oscuro">{{translateTitulos.lbl_04_27}}</a></span>
@@ -363,17 +326,6 @@
                         </ul>
                      </div>
                   </div>
-                  <!--<div class="row" style="background: white; ">
-                     <div class="col-md-12">
-                        <ul class="datos2">
-                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_50}}: </span><span> {{registro.nit}}</span></li>
-                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_51}}: </span><span> {{registro.direccion}}</span></li>
-                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_52}}: </span><span> {{registro.nrocasa}}</span></li>
-                           <li><span class="titulo_ci">{{translateTitulos.lbl_04_53}}: </span><span> {{registro.nrooficina}}</span></li>
-                        </ul>
-                     </div>
-                  </div>-->
-
                     <div class="row" style="background: white;">
                           <div class="col-md-3 negrita user">{{translateTitulos.lbl_04_50}}</div>
                           <div class="col-md-9 user">{{registro.nit}}</div>
@@ -435,31 +387,22 @@
                      </div>
                      <div class="vertical-timeline-content">
                         <h3><strong>{{translateTitulos.lbl_04_29}}</strong></h3>
-                         <!-- US_NOMBRE -->
-                        <!--<p><strong>Estimado (a) {{nombreCiudadano}}</strong>, queremos darle la bienvenida a nuestra plataforma de Gobierno Electrónico, donde podrá acceder a diferentes servicios y trámites en línea. Para conocer más de los beneficios de nuestra plataforma,  revise la opción del menú.
-                        </p>-->
                         <p>{{translateMensajes.txt_04_30}} <strong> {{nombreCiudadano}}</strong>,{{translateMensajes.txt_04_31}}<p>
                         </p>                         
                      </div>
                   </div>
                   <div ng-show="stiporol == '5'" ng-controller="authCtrl" class="vertical-timeline-block">
-                  <!--<div ng-controller="authCtrl" class="vertical-timeline-block" ng-show="vercondicionesuso == 'mostrar'">-->
                         <div class="vertical-timeline-icon2 blue-bg timeLineIcon"><!--Cambios-->
                            <i class="fa fa-envelope-o"></i><!--Cambios-->
                         </div>
                         <div class="vertical-timeline-content">
                             <h3><strong>Condiciones de Uso</strong></h3>
-                            <!--<p ng-show="! aceptarcondiciones"><a href="/documentos/igobcondicionesuso.pdf" download="Condiciones de USO"><i class="fa-comment-o !important"></i>Descargar</a></p>-->
                             <div id=summary1>
                                 <p id=collapseSummary1 align=justify>
                                     Por favor, lea detenidamente las condiciones del presente documento, puesto que indican sus derechos y responsabilidades al visitar la Plataforma Electrónica Innovador iGob 24/7.
                                 </p>
-                                <!--<p><a class={{sstyloLetter}} ng-click="fcolapsartexto(sstyloLetter);" >{{txtcolapsado}}</a></p>-->
                                 <p ng-show="aceptarcondiciones"><a data-toggle="modal" ng-click="fmostrarCondicionesUso();">Aceptar Condiciones de uso</a></p>                              
-                                <!--<p ng-show="! aceptarcondiciones"><a href="/documentos/igobcondicionesuso.pdf" download="Condiciones de USO"><i class="fa-comment-o !important"></i>Descargar</a></p>-->
-                                <!--p ng-show="! aceptarcondiciones"><a ng-click="ImprimirUrl(t)" data-toggle="modal" data-target="#divPopup4">Ver condiciones de Uso</a></p-->
-								<p ng-show="! aceptarcondiciones"><a href="{{t}}" target="_blank">Descargar condiciones de Uso</a></p>
-                                <!--<p ng-show="! aceptarcondiciones"><a href="{{t}}" download="Condiciones de USO">Descargar</a></p>-->
+								                <p ng-show="! aceptarcondiciones"><a href="{{t}}" target="_blank">Descargar condiciones de Uso</a></p>
                             </div>
                         </div>                      
                   </div>
@@ -494,8 +437,6 @@
                         <h3><strong>{{translateTitulos.lbl_04_44}}</strong></h3>
                            <p>{{translateTitulos.lbl_04_45}}</p>
                            <p>{{translateTitulos.lbl_04_46}}</p>                           
-                            <!--<p>Debe adjuntar su cédula digitalizada y registrar la fecha de caducidad.</p>
-                           <p>Usted no cuenta con el documento digital validado por plataforma.</p>-->
                            <span class="vertical-date">
                            </span>
                      </div>
@@ -510,26 +451,10 @@
                          <!-- CÉDULA DE IDENTIDAD HA CADUCADO -->
                         <h3><strong>{{translateTitulos.lbl_04_32}}</strong></h3>
                            <p>{{translateTitulos.lbl_04_33}}</p>
-                           <!--<p>Venció la fecha de validez de la cédula de identidad o no lleno el dato</p>-->
                            <span class="vertical-date">
                            </span>
                      </div>
                   </div>
-                  <!--div class="vertical-timeline-block" ng-show="facturas == null">
-                     <div class="vertical-timeline-icon2 blue-bg" style="background: #FF1744 !important">
-                       <i class="fa fa-file-text-o blanco"></i>
-                     </div>
-                     <div class="vertical-timeline-content"-->
-                         <!--CERTIFICADO DE NACIMIENTO DIGITALIZADO-->
-                        <!--h3><strong>{{translateTitulos.lbl_04_47}}</strong></h3>
-                           <p>{{translateTitulos.lbl_04_48}}</p>
-                           <p>{{translateTitulos.lbl_04_49}}</p-->
-                           <!--<p>Debe adjuntar su certificado de nacimiento digitalizado.</p>
-                           <p>Usted no cuenta con el documento digital validado por plataforma.</p>-->                         
-                           <!--span class="vertical-date">
-                           </span>
-                     </div>
-                  </div-->
                 </div>
             </div>
              <!--Contenido Izquierdo-->
@@ -586,7 +511,7 @@
                               <br>
                               <strong style="color: #39AB6F"><a href="" ng-click="archivarNotificacion(data.obs_tra_id);"> Archivar Notificación </a></strong>
                             </span>
-                            <div ng-show = "data.obj_url_ra != 'noRA' && data.obj_url_ra ==''">rrrr{{data.obj_url_ra}}
+                            <div ng-show = "data.obj_url_ra != 'noRA' && data.obj_url_ra ==''">
                                 <a href="{{data.obj_url_ra}}" target="_blank"  data-toggle="tooltip" data-placement="left"  title="Ver/Descargar la R.A.">
                                 <button   id="ra1"  type="button" class="btn btn-success fa fa-download"> DESCARGAR R.A.</button>
                                 </a>
@@ -604,9 +529,6 @@
                               <button   id="btnSitram"  type="button" class="btn btn-success fa fa-download">DESCARGAR</button>
                               </a>
                             </div>
-                            
-                            
-
                       </div>
 
                   </div>

@@ -424,128 +424,13 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         }
                         aRegistro.azona = results[0].dtspsl_zona_desc;
                          aRegistro.aMacrodistrito = results[0].dtspsl_macrodistrito_desc;
-                        //DATOS REPRESENTANTE
-                        //dtspsl_nro_notaria
-                        //dtspsl_poder_replegal
-                        //IMAGEN
-                        //$scope.imagenPortada = "../../libs/img/anonimo_user_masculino.png";                        
+                     
                     }                
                 }else{
                     $.unblockUI();
                     $scope.msg = "Error !!";
                 } 
             });
-            /*
-                //validar segun fecha actual
-                if (response.record[0].dtspsl_fec_vencimiento){
-                if (response.record[0].dtspsl_fec_vencimiento=="") {
-                    $scope.vencimiento=null;
-                }else{$scope.vencimiento="noexiste";}}
-
-                var results=response.record;
-                if(results.length > 0){
-                    $.unblockUI();
-                    tipoPersona = results[0].dtspsl_tipo_persona;
-                    $scope.imagenPortada    =   "";
-                    //$scope.imagenPortada    =   results[0].dtspsl_URL;   //// Imagen de presentacion
-                    if(results[0].dtspsl_URL) {
-                        $scope.imagenPortada = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDCIUDADANO') +"/" + results[0].dtspsl_URL + "?app_name=todoangular";   
-                        if(typeof($scope.imagenPortada) == 'undefined'){
-                            $scope.imagenPortada    =   "";   
-                        }
-                    } else {
-                        if(results[0].dtspsl_sexo=='M') {
-                            aRegistro.sexo = 'MASCULINO';
-                            if($scope.imagenPortada.trim() == ""){
-                                $scope.imagenPortada = "../../libs/img/anonimo_user_masculino.png";
-                            }
-                        } else {
-                            aRegistro.sexo = 'FEMENINO';
-                            if($scope.imagenPortada.trim() == ""){
-                                $scope.imagenPortada = "../../libs/img/anonimo_user_femenino.png";
-                            }                            
-                        }                     
-                    }
-                    
-                    if (tipoPersona == 'NATURAL') {
-                        $scope.datospersonaNatural = null;
-                        $scope.datospersonaJuridica = "ocultar";
-                        aRegistro.nombre = results[0].dtspsl_nombres;
-                        aRegistro.paterno = results[0].dtspsl_paterno;
-                        aRegistro.materno = results[0].dtspsl_materno;
-                        aRegistro.cedula = results[0].dtspsl_ci;
-
-                        if(results[0].dtspsl_sexo=='M') {
-                            aRegistro.sexo = 'MASCULINO';
-                            if($scope.imagenPortada.trim() == ""){
-                                $scope.imagenPortada = "../../libs/img/anonimo_user_masculino.png";
-                            }
-                        } else {
-                            aRegistro.sexo = 'FEMENINO';
-                            if($scope.imagenPortada.trim() == ""){
-                                $scope.imagenPortada = "../../libs/img/anonimo_user_femenino.png";
-                            }                            
-                        }
-
-                        aRegistro.estado_civil = results[0].dtspsl_id_estado_civil;
-                        aRegistro.estado_civil_total = "";
-                        if (results[0].dtspsl_id_estado_civil == "S")
-                            aRegistro.estado_civil_total = "SOLTERO/A";
-                        if (results[0].dtspsl_id_estado_civil == "C")
-                            aRegistro.estado_civil_total = "CASADO/A";
-                        if (results[0].dtspsl_id_estado_civil == "D")
-                            aRegistro.estado_civil_total = "DIVORCIADO/A";
-                        if (results[0].dtspsl_id_estado_civil == "V")
-                            aRegistro.estado_civil_total = "VIUDO/A";
-                        if (results[0].dtspsl_id_estado_civil == "PJ")
-                            aRegistro.estado_civil_total = "PRS. JURIDICA";
-                        //aRegistro.fecha_nacimiento = results[0].dtspsl_fec_nacimiento;
-                        $scope.fechadenac=results[0].dtspsl_fec_nacimiento.split("T");
-                        aRegistro.fecha_nacimiento =$scope.fechadenac[0];
-                        aRegistro.ocupacion = results[0].dtspsl_ocupacion;
-                        aRegistro.direccion = results[0].dtspsl_direccion;
-                        aRegistro.correo = results[0].dtspsl_correo;
-                        aRegistro.telefono = results[0].dtspsl_telefono;
-                        aRegistro.celular = results[0].dtspsl_movil;
-                        idEst =  aRegistro.estado_civil;
-                    } 
-                    else
-                    {   
-                        $scope.datospersonaJuridica = null;
-                        $scope.datospersonaNatural = "ocultar";
-                        aRegistro.nombre = results[0].dtspsl_nombres;
-                        aRegistro.paterno = results[0].dtspsl_paterno;
-                        aRegistro.materno = results[0].dtspsl_materno;
-
-                        aRegistro.cedula = results[0].dtspsl_ci;
-
-                        aRegistro.repLegal = results[0].dtspsl_poder_replegal;
-                        aRegistro.nroNotaria = results[0].dtspsl_nro_notaria;
-                        aRegistro.nroDocumento = results[0].dtspsl_nro_documento;
-
-                        //DATOS INICIALES REGISTRO CIUDADANO
-                        aRegistro.razonSocial   = results[0].dtspsl_razon_social;
-                        aRegistro.telefono      = results[0].dtspsl_telefono;
-                        aRegistro.celular       = results[0].dtspsl_movil;
-                        aRegistro.correo        = results[0].dtspsl_correo;                        
-                        aRegistro.nit           = results[0].dtspsl_nit;                        
-                        aRegistro.direccion     = results[0].dtspsl_direccion;
-                        aRegistro.nrocasa       = results[0].dtspsl_numero_casa;
-                        aRegistro.nrooficina    = results[0].dtspsl_oficina;
-                        //DATOS REPRESENTANTE
-                        //dtspsl_nro_notaria
-                        //dtspsl_poder_replegal
-                        //IMAGEN
-                        $scope.imagenPortada = "../../libs/img/anonimo_user_masculino.png";                        
-                    }                
-                }else{
-                    $.unblockUI();
-                    $scope.msg = "Error !!";
-                }             
-            }).error(function(results){
-                    $.unblockUI();
-            });            
-       // }*/
     }
     $scope.recuperarDatosDocumentos = function(){         
         var lista = "";
@@ -553,8 +438,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         if($.listar){
             lista = $.listar("LISTAR",$scope.idCiudadano,"","","");
         }
-        //var lista = $.listar("LISTAR",$scope.idCiudadano,"","","");        
-        //var documentos = {}
         documentos = eval(lista);
         $scope.documentos = documentos;
     };    
@@ -611,8 +494,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
     }
    
     $scope.eventEdited = function(event) {
-        //showModal('Edited', event);
-        //showModal();
+
     };
     //Traer eventos del ciudadano
     $scope.ciudadanoEventos = {};
@@ -761,6 +643,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             aNotif = JSON.parse(resultado);
             var notificaciones = aNotif.success.length;
             datoObjectNotiFinal = [];
+            var notificaciones = aNotif.success.length;
+            datoObjectNotiFinal = [];
             for(i = 0; i < notificaciones; i++){
                 if(aNotif.success[i].serdv_descripcion == 'ANTENA CIUDADANO'){      //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
                     datoObjectNoti = new Object();
@@ -836,7 +720,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         datoObjectNoti.obs_tra_tipo_resp = aNotif.success[i].obs_tra_tipo_resp;
                     }
                     
-                    //datoObjectNoti.obj_url_ra = null;
                     if ($scope.res1 == undefined){
                         datoObjectNoti.obj_url_ra = "noRA";
                     }else{
@@ -846,8 +729,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         }else{
                             datoObjectNoti.obj_ruat = $scope.res1;
                             datoObjectNoti.obj_url_ra = "noRA";
-
-
                         }
                     }
                     datoObjectNotiFinal[i] = datoObjectNoti;
@@ -879,11 +760,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             }else{
                                 if($scope.resS2.length > 0){
                                     datoObjectNoti.obj_url = $scope.resS2[0].url_archivoC;
-                                    /*for(j=0;j<$scope.resS2.length;j++){
-                                        datoObjectNoti[j].obj_urls = $scope.resS2[j].url_archivoC;
-
-                                    }*/
-
                                 }
                             }
                             datoObjectNotiFinal[i] = datoObjectNoti;
@@ -1122,8 +998,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         $scope.recuperarDatosRegistro();
         $scope.recuperarDatosDocumentos();
         $scope.datosReportePlaformista();
-        //$scope.recuperarNoticias();
-        //$scope.ciVerificarArchiv();
         $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
         $scope.notificaciones();
 
@@ -1135,7 +1009,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         $scope.datosReportePlaformista();
         $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
         $scope.notificaciones();
-        //$scope.cargarData(dataAdj);
         /** MODIFICACIONES RMCF **/
         $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
     };

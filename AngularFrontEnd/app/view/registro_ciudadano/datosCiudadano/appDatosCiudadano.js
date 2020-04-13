@@ -740,7 +740,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             var resS = mensaje.split("&#34");
                             $scope.actDetalle = resS[0];
                             var mensajeIgob = resS[0];
-                            $scope.actDetalle2 = mensajeIgob.replace(/\n/g, " <br>&nbsp;");
                             $scope.resS1 = resS[1];
                             $scope.resS2 = JSON.parse($scope.resS1);
                             datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;

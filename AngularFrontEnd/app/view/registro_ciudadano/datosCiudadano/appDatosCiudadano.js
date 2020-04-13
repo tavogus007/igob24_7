@@ -752,7 +752,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                             datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                             datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
-                            datoObjectNoti.mensajeIgob = $scope.actDetalle2;
                             datoObjectNoti.obj_url_ra = 'noRA';
                             if ($scope.resS2 == undefined){
                                 datoObjectNoti.obj_url = "noSitram";

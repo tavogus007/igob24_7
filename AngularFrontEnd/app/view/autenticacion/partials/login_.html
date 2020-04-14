@@ -303,17 +303,27 @@
                     else
                     {
                       var sJson = aRespuesta[0];
-                      if(aRespuesta[0].dtspsl_activaciond.trim()   !=   ""  &&  aRespuesta[0].dtspsl_activacionf.trim()    !=   "")
-                      {
-                          sessionStorage.setItem('TOKEN_API', response.token);
-                          sessionStorage.setItem("autenticacion", JSON.stringify(aRespuesta));
-                          window.location.href = "../index.html";
+                      console.log(sJson);
+
+                      console.log(aRespuesta[0].dtspsl_estado_activacion);
+                      if (aRespuesta[0].dtspsl_estado_activacion=="DESBLOQUEADO"){
+                        
+                        if(aRespuesta[0].dtspsl_activaciond.trim()   !=   ""  &&  aRespuesta[0].dtspsl_activacionf.trim()    !=   "")
+                        {
+                            sessionStorage.setItem('TOKEN_API', response.token);
+                            sessionStorage.setItem("autenticacion", JSON.stringify(aRespuesta));
+                            window.location.href = "../index.html";
+                        }
+                        else
+                        {
+                            var sMensaje    =   "por primera y única vez,";
+                            sweetAlert('', "Estimado usuario. Active su cuenta aproximándose " + sMensaje +" a la plataforma más cercana, donde validarán sus datos y activarán su cuenta. Otorgándole acceso a los servicios en línea del GAMLP.", 'warning');
+                        }  
+                      } else {
+                        sweetAlert('', "Estimado usuario. Su cuenta fue Bloqueada por razones administrativas, se ruega pasar por nuestras plataformas de atención Ciudadana o llamar al numero 800 13 5555", 'warning');
+
                       }
-                      else
-                      {
-                          var sMensaje    =   "por primera y única vez,";
-                          sweetAlert('', "Estimado usuario. Active su cuenta aproximándose " + sMensaje +" a la plataforma más cercana, donde validarán sus datos y activarán su cuenta. Otorgándole acceso a los servicios en línea del GAMLP.", 'warning');
-                      }
+                      
                     }
                 }
                 else

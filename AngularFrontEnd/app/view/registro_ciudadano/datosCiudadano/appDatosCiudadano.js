@@ -733,7 +733,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     }
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
-                    }else if(aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'Correspondencia ciudadana'){
+                    }else if(aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'CORRESPONDENCIA CIUDADANA'){
                             datoObjectNoti = new Object();
                             $scope.notSitram = aNotif.success[i];
                             var mensaje = aNotif.success[i].obs_tra_observaciones;

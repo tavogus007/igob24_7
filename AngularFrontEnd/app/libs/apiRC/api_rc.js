@@ -529,7 +529,8 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "latitud": this.latitud,
           "longitud": this.longitud,
 
-
+          "sistema":"IGOB247",
+          "sistema_creado":"IGOB247",
           "tipo_persona": "NATURAL",
           "usr_id": this.usr_id,
           "activacionf": "NO",
@@ -752,7 +753,8 @@ rcJuridico.prototype.crearJuridico = function (functionResp)
           "tipo_empresa": this.tipo_empresa,
 
           
-
+          "sistema":"IGOB247",
+          "sistema_creado":"IGOB247",
           "usr_id": this.usr_id,
           "activacionf": "NO",
           "activaciond": "NO"

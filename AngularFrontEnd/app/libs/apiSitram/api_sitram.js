@@ -1,6 +1,4 @@
-if(jsonURLS){
-  var urlSitram = jsonURLS.CONEXION_API_PG_SALUD + "wsSitram"; 
-}
+var urlSitram = "http://192.168.34.70:91/wsSitram";//crearTramiteDigital
 var urlComp;
 var dataResp;
 var dataParams;

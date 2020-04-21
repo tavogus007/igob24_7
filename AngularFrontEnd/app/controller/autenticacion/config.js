@@ -44,12 +44,12 @@ var jsonURLS    =   {
     SERVICE_ENVIO_CORREO: "http://200.105.139.183:9090/smsemail/email/mail.php",
     //URLS_API
     //CONEXION_API_PG_IF: "http://172.19.161.199:9091/",//login, apirc, lotus
-    CONEXION_API_PG_IF: "http://192.168.6.107:91/",
+    CONEXION_API_PG_IF: "http://192.168.34.70:91/",
     //CONEXION_API_PG_RC: "http://40.117.46.159:9093/",//login, apirc, lotus
     CONEXION_API_PG_RC: "http://192.168.5.141:8003/",//login, apirc, lotusoficial
     CONEXION_MOTOR_SERVICIO: "http://192.168.5.69/motorservicio_pruebas/public/",//apirc
     //http://192.168.5.69/motorservicio_pruebas/public/reglaNegocio/ejecutarWeb
-    CONEXION_API_PG_IF_OFICIAL: "http://192.168.6.107:91/",//apirc
+    CONEXION_API_PG_IF_OFICIAL: "http://192.168.34.706.107:91/",//apirc
     //CONEXION_API_PG_SALUD: "http://serigobvprueba.lapaz.bo/",//apisalud pruebas
     CONEXION_API_PG_SALUD: "http://localhost:9094/",//apisalud pruebas
     CONEXION_GENERAR_FUM: "http://200.105.139.183:9090/igob247/",//generador de fum pruebas
@@ -67,8 +67,10 @@ var jsonURLS    =   {
     CONEXION_MOVILIDAD: "http://192.168.5.141:2020/",
     CONEXION_SITV3: "http://192.168.6.111/SITv3Desarrollo/",
     //CONEXION_SITV3_Antena: "http://sitservicios.lapaz.bo/",
-    SIT_GEO: "https://gamlpmotores.lapaz.bo/sitgeo"
-    
+    SIT_GEO: "https://gamlpmotores.lapaz.bo/sitgeo",
+    URL_SITRAM: "http://192.168.5.141",
+    CONEXION_SITRAM: "http://192.168.34.70",
+
     //https://gamlpmotores.lapaz.bo/gamlp179/igob247/generarFumOficial.php
 
 };

@@ -182,7 +182,7 @@
             var sidTramite =  sessionStorage.getItem('IDTRAMITE');
             var svalorUrlCampo = document.getElementById(obj).value;
             //var surlDoc = "https://gamlpmotores.lapaz.bo/dream/files/RC_CLI/" + soidUsuario + "/" + sidTramite + "/" + svalorUrlCampo + "?app_name=todoangular";           
-            var surlDoc = "http://192.168.5.141:80/files/RC_CLI/" + soidUsuario + "/" + sidTramite + "/" + svalorUrlCampo + "?app_name=todoangular";  //pruebas         
+            var surlDoc = jsonURLS.URL_SITRAM+":80/files/RC_CLI/" + soidUsuario + "/" + sidTramite + "/" + svalorUrlCampo + "?app_name=todoangular";  //pruebas         
 
             if(surlDoc != ''){
                 document.getElementById(id).href=surlDoc;

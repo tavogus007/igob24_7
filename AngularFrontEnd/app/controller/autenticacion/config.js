@@ -71,6 +71,7 @@ var jsonURLS    =   {
     URL_SITRAM: "http://192.168.5.141",
     CONEXION_SITRAM: "http://192.168.34.70",
 
+    API_URL_GUARDAR_IMG: "http://192.168.5.141/dreamfactory/igob/", 
     //https://gamlpmotores.lapaz.bo/gamlp179/igob247/generarFumOficial.php
 
 };

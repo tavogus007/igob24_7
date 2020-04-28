@@ -19,6 +19,20 @@
                 border-radius: 10px;
             }
         </style>
+        <script type="text/javascript">
+            $('.custom-upload input[type=file]').change(function(){
+                $(this).next().find('input').val($(this).val());
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+            });
+            function iniciarLoadFyle(){
+                $('.custom-upload input[type=file]').change(function(){
+                $(this).next().find('input').val($(this).val());
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+                });
+            }
+            //$('.clockpicker').clockpicker();
+        </script>
+
     </head>
     <div class="col-md-12" ng-controller="productosController" ng-init="inicioDocumentosArchivados();">
         <div class="ibox float-e-margins">
@@ -47,23 +61,27 @@
                 <input ng-model = "query1" id ="busca2" class="form-control" placeholder="" >
               </div-->
               <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Añadir producto" ng-click="clsRegistrarNuevo();" data-target="#producto"> <i class="glyphicon glyphicon-plus"></i> Añadir Producto </a>
-
-              <br><br><br><br><br>
+              <br>
               <div class="ibox-content">
                   <div class="table-responsive">
                     <table ng-table="tablaDocumentos" class="table table-striped responsive">
                         <thead>
                         </thead>
                         <tbody>
-                            <!--tr class="column" ng-repeat="documento in $data | filter:query1 " ng-style="documento.vtiempo=='VENCIDO' && {'background-color':'#EDDADA','font-color':'#EDDADA'} || documento.vtiempo=='HOY' && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'##E5A21D'}">
-                                <td data-title="'#'" class="text-center">&nbsp; {{$index+1}}</td>
-                                <td data-title="'Actividad Económica'" class="text-left">&nbsp; {{documento.vdoc_id_codigo}}</td>
-                                <td data-title="'Sucursal'" class="text-left">&nbsp; {{documento.vdoc_proceso}}</td>
-                                <td data-title="'Descripción'" class="text-left">&nbsp; {{documento.vdoc_nombre}}</td>
-                                <td data-title="'Precio'" class="text-center">&nbsp; {{documento.vdoc_registro}}</td>
-                                <td data-title="'Imagen'" class="text-center">&nbsp; {{documento.vfechafinpublicacion}}</td>
-                            </tr-->
-                            <tr class="column">
+                            <tr class="column" ng-repeat="documento in $data | filter:query1">
+                                <!--td data-title="'#'" class="text-center">&nbsp; {{$index+1}}</td-->
+                                <td data-title="'Opciones'" class="text-center">&nbsp; 
+                                    <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Modificar producto" ng-click="updProducto(documento);" data-target="#registroLotus"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Eliminar producto" ng-click="updProducto(documento);" data-target="#registroLotus"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                </td>
+                                <td data-title="'Producto'" class="text-left">&nbsp; {{documento.prd_nombrec}}</td>
+                                <td data-title="'Descripción'" class="text-left">&nbsp; {{documento.prd_descripcionc}}</td>
+                                <td data-title="'Precio'" class="text-left">&nbsp; {{documento.prd_precioc}}</td>
+                                <td data-title="'Marca'" class="text-center">&nbsp; {{documento.prd_marcac}}</td>
+                                <td data-title="'Categoria'" class="text-center">&nbsp; {{documento.prd_categoriac}}</td>
+                                <td data-title="'Imagen'" class="text-center">&nbsp; {{documento.prd_imagen_pc}}</td>
+                            </tr>
+                            <!--tr class="column">
                                 <td data-title="'Opciones'" class="text-center">&nbsp; 
                                     <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Modificar producto" ng-click="updProducto();" data-target="#registroLotus"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                     <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Eliminar producto" ng-click="updProducto();" data-target="#registroLotus"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
@@ -95,7 +113,7 @@
                                 <td data-title="'Descripción'" class="text-left">&nbsp; Zapato escolar talla 36</td>
                                 <td data-title="'Precio'" class="text-center">&nbsp; Bs.- 150</td>
                                 <td data-title="'Imagen'" class="text-center">&nbsp; <img src=""> </td>
-                            </tr>
+                            </tr-->
                         </tbody>
                     </table>
                   </div>
@@ -111,7 +129,7 @@
                         <h4 class="modal-title ng-binding" id="myModalLabel">Añadir producto</h4>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <!--form>
                             <div class="form-group row">
                                 <label class="col-sm-1 col-form-label"></label>
                                 <label class="col-sm-3 control-label">Actividad Económica:</label>
@@ -168,9 +186,128 @@
                             </div>
 
 
+                        </form-->
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <!-- Text input-->
+                                <div class="form-group">
+                                  <label class="col-md-4 control-label" for="product_name">Producto</label>  
+                                  <div class="col-md-8">
+                                  <input id="f01_producto" name="f01_producto" placeholder="Nombre del producto" ng-model="datos.f01_producto" class="form-control input-md" required="" type="text">
+                                  </div>
+                                </div>
+                                <!-- Select Basic -->
+                                <div class="form-group">
+                                  <label class="col-md-4 control-label" for="product_categorie">Categoria</label>
+                                  <div class="col-md-8">
+                                    <select id="f01_categoria" name="f01_categoria" ng-model="datos.f01_categoria" class="form-control">
+                                    </select>
+                                  </div>
+                                </div>
+                                <!-- Select Basic -->
+                                <div class="form-group">
+                                  <label class="col-md-4 control-label" for="product_categorie">Actividad Economica</label>
+                                  <div class="col-md-8">
+                                    <select id="f01_ae" name="f01_ae" ng-model="datos.f01_ae" class="form-control">
+                                    </select>
+                                  </div>
+                                </div>
+                                <!-- Select Basic -->
+                                <div class="form-group">
+                                  <label class="col-md-4 control-label" for="product_categorie">Sucursal</label>
+                                  <div class="col-md-8">
+                                    <select id="f01_sucursal" name="f01_sucursal" ng-model="datos.f01_sucursal" class="form-control">
+                                    </select>
+                                  </div>
+                                </div>
+                                <!-- Textarea -->
+                                <div class="form-group">
+                                  <label class="col-md-4 control-label" for="product_description">Descripción</label>
+                                  <div class="col-md-8">                     
+                                    <textarea class="form-control" id="f01_descripcion" name="f01_descripcion" ng-model="datos.f01_descripcion"></textarea>
+                                  </div>
+                                </div>
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="approuved_by">Precio</label>  
+                                    <div class="col-md-8">
+                                      <input id="precio" name="precio" ng-model="datos.f01_precio" placeholder="Precio en Bs." class="form-control input-md" required="" type="text">
+                                    </div>
+                                </div>
+                                 <!-- File Button --> 
+                                <!--div class="form-group">
+                                  <label class="col-md-4 control-label" for="filebutton">Imagen Auxiliar 2</label>
+                                  <div class="col-md-4">
+                                    <input id="filebutton" name="filebutton" class="input-file" type="file">
+                                  </div>
+                                </div-->
+                                <div class="form-group">
+                                    <label id="lbl_f01_upload" class="col-md-4 control-label">Imagen Principal</label>
+                                    <div class="col-md-8">
+                                        <div class="form-group custom-upload">
+                                            <input type="file" id="f01_upload1" name="f01_upload1" accept="image/*"  style="display: none;">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                <input id="txt_f01_upload1" name="txt_f01_upload1"  ng-model="datos['txt_f01_upload1']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload1" ng-show="fileArRequisitos['f01_upload1'].url || data.idnro == 1 || data.idnro == 2" href="{{fileArRequisitos['f01_upload1'].url}}" target="_blank">
+                                                    {{rmostrarviae}}
+                                                        <button id="btn_f01_upload1" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload1" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload1', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label id="lbl_f01_upload2" class="col-md-4 control-label">Imagen Auxiliar 1</label>
+                                    <div class="col-md-8">
+                                        <div class="form-group custom-upload">
+                                            <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*"  style="display: none;">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datos['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload2" ng-show="fileArRequisitos['f01_upload2'].url || data.idnro == 1 || data.idnro == 2" href="{{fileArRequisitos['f01_upload2'].url}}" target="_blank">
+                                                    {{rmostrarviae}}
+                                                        <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload2" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload2', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label id="lbl_f01_upload" class="col-md-4 control-label">Imagen Auxiliar 2</label>
+                                    <div class="col-md-8">
+                                        <div class="form-group custom-upload">
+                                            <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*"  style="display: none;">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                <input id="txt_f01_upload3" name="txt_f01_upload3"  ng-model="datos['txt_f01_upload3']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload3" ng-show="fileArRequisitos['f01_upload3'].url || data.idnro == 1 || data.idnro == 2" href="{{fileArRequisitos['f01_upload3'].url}}" target="_blank">
+                                                    {{rmostrarviae}}
+                                                        <button id="btn_f01_upload3" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload3" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload3' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                
+                            </fieldset>
                         </form>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" name="singlebutton" class="btn btn-primary ng-binding" ng-click="registrarProducto(datos)">Registrar</button>
+
                         <button type="button" class="btn btn-default ng-binding" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>

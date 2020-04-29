@@ -70,133 +70,31 @@ dataProducto.prototype.lstMisProductosOID = function (functionResp)
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
 
-/*
-dataSalud.prototype.reservarFichaInternet = function (functionResp)
-{
-    urlCompSalud = "/insertarFicha";
+dataProducto.prototype.crearProducto = function (functionResp) {
+
+    urlCompProducto = "/adicionarProducto";
     typeCall = "post";
     dataParams = {
-    "vidpaciente":this.vidpaciente,
-    "vidservicio":this.vidservicio,
-    "vfechaatencion":this.vfechaatencion,
-    "vhabilitacion":this.vhabilitacion,
-    "vnumeroficha":this.vnumeroficha,
-    "vhospitalid":this.vhospitalid,
-    "vmedicoid":this.vmedicoid,
-    "vturnoid":this.vturnoid,
-    "vcodigoficha":this.vcodigoficha,
-    "vusuario":this.vusuario,
-    "vhorainicioficha":this.vhorainicioficha,
-    "vhorafinficha":this.vhorafinficha,
-    "vtipoconsulta":this.vtipoconsulta,
-    "vtipopaciente":this.vtipopaciente,
-    "vcancelo":this.vcancelo,
-    "vnro_fila":this.vnro_fila,
-    "vhistoria_sice":this.vhistoria_sice,
-    "vcentro_salud":this.vcentro_salud
+        "prd_nombrec" : this.nombre ,
+        "prd_descripcionc" : this.descripcion,
+        "prd_precioc" : parseInt(this.precio),
+        "prod_aec" : parseInt(this.ae),
+        "prod_sucursalc" : parseInt(this.sucursal),
+        "prd_marcac" : this.marca,
+        "prd_categoriac" : this.categoria,
+        "prd_imagen_pc" : this.imagen_p,
+        "prd_imagen_a1c" : this.imagen_a1,
+        "prd_imagen_a2c" : this.imagen_a2,
+        "prd_oidc" : this.oid_ciu,
+        "prd_telefono_referenciac" : this.telefono_referencia,
+        "prd_usrc" : this.usr
     };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
+    console.log(dataParams);
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
 
-function insertar_actual() {
-      this.idHospital;
-      this.s_auditoria;
-      this.i_operacion;
-      this.i_tipo;
-      this.i_Emp_Codigo;
-      this.i_HCL_CODIGO;
-      this.i_HCL_APPAT;
-      this.i_HCL_APMAT;
-      this.i_HCL_NOMBRE;
-      this.i_HCL_NUMCI;
-      this.i_HCL_SEXO;
-      this.i_HCL_FECNAC;
-      this.i_DEP_CODIGO_RES;
-      this.i_PRO_CODIGO_RES;
-      this.i_MUN_CODIGO_RES;
-      this.i_HCL_ESTCIV;
-      this.i_HCL_DIRECC;
-      this.i_HCL_TELDOM;
-      this.i_PProCodPro;
-      this.i_HCL_LUGTRA;
-      this.i_HCL_DIRTRA;
-      this.i_HCL_TELTRA;
-      this.i_HCL_NOMFAM;
-      this.i_HCL_TELFAM;
-      this.i_HCL_NOMPAD;
-      this.i_HCL_NOMMAD;
-      this.i_HCL_CodCSB;
-      this.i_HCL_CodSegSoc;
-      this.i_HCL_CodFam;
-      this.i_zon_codigo;
-      this.i_usuario;
-      this.i_DEP_CODIGO_NAC;
-      this.i_PRO_CODIGO_NAC;
-      this.i_MUN_CODIGO_NAC;
-      this.i_hc_alfa;
-      this.i_hc_NivelEstudio;
-      this.i_HCL_SUMI;
-      this.i_HCL_SUMI_FECHA;
-      this.i_HCL_TIPODOC;
-      this.i_SegSocial;
-      this.i_Idioma;
-      this.i_IdiomaMaterno;
-      this.i_Autopertenencia;
-      this.i_LugarExpedicion;
-};
 
-insertar_actual.prototype.insertar_actualizar = function (functionResp) {
-    urlComp = "/insertar_actualizar";
-    typeCall = "post";
-    dataParams = {
-                  "idHospital":this.idHospital,
-                  "s_auditoria":this.s_auditoria,
-                  "i_operacion":this.i_operacion,
-                  "i_tipo":this.i_tipo,
-                  "i_Emp_Codigo":this.i_Emp_Codigo,
-                  "i_HCL_CODIGO":this.i_HCL_CODIGO,
-                  "i_HCL_APPAT":this.i_HCL_APPAT,
-                  "i_HCL_APMAT":this.i_HCL_APMAT,
-                  "i_HCL_NOMBRE":this.i_HCL_NOMBRE,
-                  "i_HCL_NUMCI":this.i_HCL_NUMCI,
-                  "i_HCL_SEXO":this.i_HCL_SEXO,
-                  "i_HCL_FECNAC":this.i_HCL_FECNAC,
-                  "i_DEP_CODIGO_RES":this.i_DEP_CODIGO_RES,
-                  "i_PRO_CODIGO_RES":this.i_PRO_CODIGO_RES,
-                  "i_MUN_CODIGO_RES":this.i_MUN_CODIGO_RES,
-                  "i_HCL_ESTCIV":this.i_HCL_ESTCIV,
-                  "i_HCL_DIRECC":this.i_HCL_DIRECC,
-                  "i_HCL_TELDOM":this.i_HCL_TELDOM,
-                  "i_PProCodPro":this.i_PProCodPro,
-                  "i_HCL_LUGTRA":this.i_HCL_LUGTRA,
-                  "i_HCL_DIRTRA":this.i_HCL_DIRTRA,
-                  "i_HCL_TELTRA":this.i_HCL_TELTRA,
-                  "i_HCL_NOMFAM":this.i_HCL_NOMFAM,
-                  "i_HCL_TELFAM":this.i_HCL_TELFAM,
-                  "i_HCL_NOMPAD":this.i_HCL_NOMPAD,
-                  "i_HCL_NOMMAD":this.i_HCL_NOMMAD,
-                  "i_HCL_CodCSB":this.i_HCL_CodCSB,
-                  "i_HCL_CodSegSoc":this.i_HCL_CodSegSoc,
-                  "i_HCL_CodFam":this.i_HCL_CodFam,
-                  "i_zon_codigo":this.i_zon_codigo,
-                  "i_usuario":this.i_usuario,
-                  "i_DEP_CODIGO_NAC":this.i_DEP_CODIGO_NAC,
-                  "i_PRO_CODIGO_NAC":this.i_PRO_CODIGO_NAC,
-                  "i_MUN_CODIGO_NAC":this.i_MUN_CODIGO_NAC,
-                  "i_hc_alfa":this.i_hc_alfa,
-                  "i_hc_NivelEstudio":this.i_hc_NivelEstudio,
-                  "i_HCL_SUMI":this.i_HCL_SUMI,
-                  "i_HCL_SUMI_FECHA":this.i_HCL_SUMI_FECHA,
-                  "i_HCL_TIPODOC":this.i_HCL_TIPODOC,
-                  "i_SegSocial":this.i_SegSocial,
-                  "i_Idioma":this.i_Idioma,
-                  "i_IdiomaMaterno":this.i_IdiomaMaterno,
-                  "i_Autopertenencia":this.i_Autopertenencia,
-                  "i_LugarExpedicion":this.i_LugarExpedicion
-        };
-    ejecutarAjaxSalud(urlComp, typeCall, dataParams, functionResp);
-};
+/*
 
 function historiaClinica() {
     this.nombres;

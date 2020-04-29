@@ -81,39 +81,6 @@
                                 <td data-title="'Categoria'" class="text-center">&nbsp; {{documento.prd_categoriac}}</td>
                                 <td data-title="'Imagen'" class="text-center">&nbsp; {{documento.prd_imagen_pc}}</td>
                             </tr>
-                            <!--tr class="column">
-                                <td data-title="'Opciones'" class="text-center">&nbsp; 
-                                    <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Modificar producto" ng-click="updProducto();" data-target="#registroLotus"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                    <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Eliminar producto" ng-click="updProducto();" data-target="#registroLotus"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                                </td>
-                                <td data-title="'Actividad Económica'" class="text-left">&nbsp; Manaco</td>
-                                <td data-title="'Sucursal'" class="text-left">&nbsp; Obrajes</td>
-                                <td data-title="'Descripción'" class="text-left">&nbsp; Zapato escolar talla 36</td>
-                                <td data-title="'Precio'" class="text-center">&nbsp; Bs.- 150</td>
-                                <td data-title="'Imagen'" class="text-center">&nbsp; <img src=""> </td>
-                            </tr>
-                            <tr class="column">
-                                <td data-title="'Opciones'" class="text-center">&nbsp; 
-                                    <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Modificar producto" ng-click="updProducto();" data-target="#registroLotus"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                    <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Eliminar producto" ng-click="updProducto();" data-target="#registroLotus"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                                </td>
-                                <td data-title="'Actividad Económica'" class="text-left">&nbsp; Manaco</td>
-                                <td data-title="'Sucursal'" class="text-left">&nbsp; Obrajes</td>
-                                <td data-title="'Descripción'" class="text-left">&nbsp; Zapato escolar talla 37</td>
-                                <td data-title="'Precio'" class="text-center">&nbsp; Bs.- 150</td>
-                                <td data-title="'Imagen'" class="text-center">&nbsp; <img src=""> </td>
-                            </tr>
-                            <tr class="column">
-                                <td data-title="'Opciones'" class="text-center">&nbsp; 
-                                    <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Modificar producto" ng-click="updProducto();" data-target="#registroLotus"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                    <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Eliminar producto" ng-click="updProducto();" data-target="#registroLotus"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                                </td>
-                                <td data-title="'Actividad Económica'" class="text-left">&nbsp; Manaco</td>
-                                <td data-title="'Sucursal'" class="text-left">&nbsp; Calacoto</td>
-                                <td data-title="'Descripción'" class="text-left">&nbsp; Zapato escolar talla 36</td>
-                                <td data-title="'Precio'" class="text-center">&nbsp; Bs.- 150</td>
-                                <td data-title="'Imagen'" class="text-center">&nbsp; <img src=""> </td>
-                            </tr-->
                         </tbody>
                     </table>
                   </div>
@@ -201,6 +168,9 @@
                                   <label class="col-md-4 control-label" for="product_categorie">Categoria</label>
                                   <div class="col-md-8">
                                     <select id="f01_categoria" name="f01_categoria" ng-model="datos.f01_categoria" class="form-control">
+                                        <option value="Comida">Comida</option>
+                                        <option value="Vehículos">Vehículos</option>
+                                        <option value="Prendas de vestir">Prendas de vestir</option>
                                     </select>
                                   </div>
                                 </div>
@@ -209,6 +179,9 @@
                                   <label class="col-md-4 control-label" for="product_categorie">Actividad Economica</label>
                                   <div class="col-md-8">
                                     <select id="f01_ae" name="f01_ae" ng-model="datos.f01_ae" class="form-control">
+                                        <option value="1">ae1</option>
+                                        <option value="2">ae2</option>
+
                                     </select>
                                   </div>
                                 </div>
@@ -217,6 +190,11 @@
                                   <label class="col-md-4 control-label" for="product_categorie">Sucursal</label>
                                   <div class="col-md-8">
                                     <select id="f01_sucursal" name="f01_sucursal" ng-model="datos.f01_sucursal" class="form-control">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+
                                     </select>
                                   </div>
                                 </div>

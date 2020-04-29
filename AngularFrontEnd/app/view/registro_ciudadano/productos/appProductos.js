@@ -150,8 +150,52 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     /////////////////////////////////////////////////////////////////
 
     $scope.registrarProducto = function(data){
-      console.log(data);
-      console.log($rootScope.archivosProducto);
+      /*console.log(data);
+      console.log($rootScope.archivosProducto);*/
+      a = 0;
+      angular.forEach($rootScope.archivosProducto, function(archivo, key) {
+        console.log(archivo);
+        archivoP = JSON.parse(archivo);
+        console.log(key);
+        if (a==0)
+          f0 = archivoP.url;
+        if (a==1)
+          f1 = archivoP.url;
+        if (a==2)
+          f2 = archivoP.url;
+        a = a + 1;
+       });
+
+
+
+      var datosProducto = new dataProducto();
+      datosProducto.nombre = data.f01_producto;
+      datosProducto.descripcion = data.f01_descripcion;
+      datosProducto.precio = data.f01_precio;
+      datosProducto.ae = data.f01_ae;
+      datosProducto.sucursal = data.f01_sucursal;
+      datosProducto.marca = "MARCA";
+      datosProducto.categoria = data.f01_categoria;
+      datosProducto.imagen_p = f0;
+      datosProducto.imagen_a1 = f1;
+      datosProducto.imagen_a2 = f2;
+      datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
+      datosProducto.telefono_referencia = "74086316";
+      datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
+      datosProducto.crearProducto(function(response){
+        console.log(response);
+        results = JSON.parse(response);
+        results = results.success;
+        if(results.length > 0){
+            $.unblockUI();
+            swal('', "Producto Registrado", 'success');
+        } else {
+            $.unblockUI();
+            swal('', "Producto no registrado", 'error');
+        }
+      });
+      
+
     }
 
 

@@ -92,7 +92,15 @@ dataProducto.prototype.crearProducto = function (functionResp) {
     console.log(dataParams);
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
-
+dataProducto.prototype.eliminaMisProductos = function (functionResp)
+{
+    urlCompProducto = "/eliminaProducto";
+    typeCall = "post";
+    dataParams = {
+      "prd_idc":this.prd_idc
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
 
 /*
 

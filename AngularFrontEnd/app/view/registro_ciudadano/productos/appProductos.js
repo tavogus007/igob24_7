@@ -188,6 +188,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         results = results.success;
         if(results.length > 0){
             $.unblockUI();
+            $scope.refrescar();
             swal('', "Producto Registrado", 'success');
         } else {
             $.unblockUI();
@@ -198,80 +199,78 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
 
     }
 
+    $scope.getDocumento = function(usuario,sistema,proceso,ci_nodo){
+        $.blockUI();
+        var datosProducto = new dataProducto();
+        datosProducto.oid = sessionService.get('IDCIUDADANO');
+        datosProducto.lstMisProductosOID(function(response){
+        console.log(response);
+        resultado = JSON.parse(response);
+        $scope.obtDatos = resultado.success;
 
-
-  $scope.getDocumento = function(usuario,sistema,proceso,ci_nodo){
-    $.blockUI();
-    var datosProducto = new dataProducto();
-    datosProducto.oid = sessionService.get('IDCIUDADANO');
-    datosProducto.lstMisProductosOID(function(response){
-      console.log(response);
-      resultado = JSON.parse(response);
-      $scope.obtDatos = resultado.success;
-
-      if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
-          //swal('','No existen datos','warning');
-         // $scope.valida = 0;
-          $.unblockUI();        
-          //$("#divMsj").css({'display' : 'block' });
-          //$scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
-          alertify.warning('No existen datos');  
-      } else {
-            //$scope.valida = 1;
-            var data = $scope.obtDatos;
-            console.log(data);
-            $scope.tablaDocumentos.reload();
+        if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
+            //swal('','No existen datos','warning');
+            // $scope.valida = 0;
+            $.unblockUI();        
+            //$("#divMsj").css({'display' : 'block' });
+            //$scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
+            alertify.warning('No existen datos');  
+        } else {
+                //$scope.valida = 1;
+                var data = $scope.obtDatos;
+                console.log(data);
+                $scope.tablaDocumentos.reload();
+                $.unblockUI();
+                //$scope.msj1 = ' ';
+        }
+        /*
+        var results = response;
+        if(results.length > 0){ 
             $.unblockUI();
-            //$scope.msj1 = ' ';
-      }
-      /*
-      var results = response;
-      if(results.length > 0){ 
-        $.unblockUI();
-      
-      } else {
-        $.unblockUI();
-        $scope.msg = "Error !!";  
-      }*/
-    });
-    
-
-
-/*
-    var resRoles = new reglasnegocio();
-    resRoles.identificador = 'RCCIUDADANO_87';
-    resRoles.parametros = '{"sdoc_usuario":"' + usuario + '","sdoc_sistema":"' + sistema + '","sdoc_proceso":"' + proceso + '","sdoc_ci_nodo":"' + ci_nodo + '"}';
-    $.blockUI();
-    resRoles.llamarregla(function(response){
-      $scope.obtDatos = JSON.parse(response);
-      if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
-          //swal('','No existen datos','warning');
-          $scope.valida = 0;
-          $.unblockUI();        
-          $("#divMsj").css({'display' : 'block' });
-          $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
-          alertify.warning('No existen datos');  
-      } else{
-            $scope.valida = 1;
-            var data = response;
-            $scope.tablaDocumentos.reload();
+        
+        } else {
             $.unblockUI();
-            $scope.msj1 = ' ';
-      };
-    });*/
-    
+            $scope.msg = "Error !!";  
+        }*/
+        });
+        
+
+
+    /*
+        var resRoles = new reglasnegocio();
+        resRoles.identificador = 'RCCIUDADANO_87';
+        resRoles.parametros = '{"sdoc_usuario":"' + usuario + '","sdoc_sistema":"' + sistema + '","sdoc_proceso":"' + proceso + '","sdoc_ci_nodo":"' + ci_nodo + '"}';
+        $.blockUI();
+        resRoles.llamarregla(function(response){
+        $scope.obtDatos = JSON.parse(response);
+        if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
+            //swal('','No existen datos','warning');
+            $scope.valida = 0;
+            $.unblockUI();        
+            $("#divMsj").css({'display' : 'block' });
+            $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
+            alertify.warning('No existen datos');  
+        } else{
+                $scope.valida = 1;
+                var data = response;
+                $scope.tablaDocumentos.reload();
+                $.unblockUI();
+                $scope.msj1 = ' ';
+        };
+        });*/
+        
 
 
 
 
-  };
-  $scope.tablaDocumentos = new ngTableParams({
-    page: 1,
-    count: 10,
-    filter: {},
-    sorting: {
-    vdoc_idd: 'desc'
-    }
+    };
+    $scope.tablaDocumentos = new ngTableParams({
+        page: 1,
+        count: 10,
+        filter: {},
+        sorting: {
+        vdoc_idd: 'desc'
+        }
       }, {
     total: $scope.obtDatos.length,
     getData: function($defer, params) {
@@ -291,6 +290,38 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
   $scope.inicioDocumentosArchivados = function () {
       $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
   };
+  $scope.confirmarEliminar = function(datos){
+    swal({
+            title: "Estimado(a) Ciudadano(a)",
+            text: "Está seguro(a) de eliminar el producto seleccionado?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Eliminar",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: false,
+            closeOnCancel: false
+          },
+          function(isConfirm) {
+            if (isConfirm) {
+                $scope.delProducto(datos);
+                swal("Estimado(a) Ciudadano(a)", "El producto fue eliminado correctamente", "success");
+            } else {
+              swal("Estimado(a) Ciudadano(a)", "Se canceló la eliminación del Producto)", "error");
+            }
+          }); 
+          $scope.btnEnvio = true;
+    
+    
+  }
+  $scope.delProducto = function(datos){
+      var datosDelProducto = new dataProducto();
+      datosDelProducto.prd_idc = datos.prd_idc;
+      datosDelProducto.eliminaMisProductos(function(response){
+      resultado = JSON.parse(response);
+      $scope.refrescar();
+      });      
+  }
   ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
   try{ 
       $('body').removeClass('modal-open');

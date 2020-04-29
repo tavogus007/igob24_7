@@ -72,14 +72,14 @@
                                 <!--td data-title="'#'" class="text-center">&nbsp; {{$index+1}}</td-->
                                 <td data-title="'Opciones'" class="text-center">&nbsp; 
                                     <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Modificar producto" ng-click="updProducto(documento);" data-target="#registroLotus"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                    <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Eliminar producto" ng-click="updProducto(documento);" data-target="#registroLotus"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                    <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Eliminar producto" ng-click="confirmarEliminar(documento);" data-target="#registroLotus"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                                 </td>
                                 <td data-title="'Producto'" class="text-left">&nbsp; {{documento.prd_nombrec}}</td>
                                 <td data-title="'Descripción'" class="text-left">&nbsp; {{documento.prd_descripcionc}}</td>
                                 <td data-title="'Precio'" class="text-left">&nbsp; {{documento.prd_precioc}}</td>
                                 <td data-title="'Marca'" class="text-center">&nbsp; {{documento.prd_marcac}}</td>
                                 <td data-title="'Categoria'" class="text-center">&nbsp; {{documento.prd_categoriac}}</td>
-                                <td data-title="'Imagen'" class="text-center">&nbsp; {{documento.prd_imagen_pc}}</td>
+                                <td data-title="'Imagen'" class="text-center">&nbsp; <img src="{{documento.prd_imagen_pc}}" style="width:64px;"></td>
                             </tr>
                         </tbody>
                     </table>

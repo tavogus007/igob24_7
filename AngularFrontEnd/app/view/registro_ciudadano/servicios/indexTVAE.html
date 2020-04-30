@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+        <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css" async>
+
+        <script src="../../libs/js/prism.js" async></script>
+        
+    </head>    
+  <body>
+
+<div ng-controller="serviciosControllerTVAE" ng-init="inicioServiciosVAE();">
+   <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+         <div id="mostrar" class="ibox-title">
+            <h5>Registro de Solicitud de Actividades Economicas Informal y Formal</h5>
+            <a href="#" id="cerrar_rc" ><i class="fa fa-sort-asc flechaOscura" id="cerrar_i"></i></a>
+         </div>
+         <div class="ibox-content" id="caja">
+              <div class="row">
+               <div class="col-sm-12 b-r">
+                  <form class="form-horizontal ng-pristine ng-valid">
+                        <div class="form-group">    
+                                         
+                           <div class="col-lg-3">
+                              <div style="text-align:center;">
+                                 
+                                 <a class="btn btn-success" tooltip = "Crear el trámite" data-toggle="modal" data-target="#seleccionarTramiteVAE"><i class="fa fa-file blanco shake-slow"></i><!--cambios-->
+                                    {{translateTitulos.lbl_10_02}}
+                                  </a>    
+                                 
+                              </div>
+                           </div>
+                        <label class="col-lg-3 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
+                        <div class="col-lg-6">
+                           <input ng-model = "query" id ="busca1" class="form-control" placeholder="">
+                        </div>
+                     </div>
+                  </form>       
+                  <table ng-table="tablaTramites"  class="table  table-hover">
+                     <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==sIdTramiteSeleccionado && {'background-color':'#DCDCDC','font-color':'#A2D5AE'}">
+                      <td data-title="'Código'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>
+                      <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite);" >{{tramite.vservicio}}</td>  
+                      <td data-title="'Subtipo'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>    
+                      <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)" >{{tramite.vfecha}} </td>
+                      <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)" >{{tramite.venviado}}</td> 
+                    </tr>
+                  </table> 
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-lg-12">
+      <div ng-include="template.url" class="animated fadeInUp"></div>
+   </div>
+   <!-- Modal PARA SELECCIONAR TRAMITES-->
+   <div class="modal fade" id="seleccionarTramiteVAE" role="dialog">
+      <div class="modal-dialog">
+         <!-- Modal content-->
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">Solicitud de Actividades Economicas Formal e Informal </h4>
+            </div>
+            <div class="modal-body">
+               <p>Seleccione el tipo de trámite que desea realizar111.</p>
+              
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+               <button class="btn btn-default" ng-click="crearTramiteVAE();" data-dismiss="modal">Crear</button>                                  
+            </div>
+         </div>
+      </div>
+   </div>
+  </div>
+
+
+
+<!--cambios-->
+</body>

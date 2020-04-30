@@ -241,7 +241,8 @@
                                             </li>
                                             <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a
                                                     href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/citaMedica/citaMedica.html'">
-                                                    {{translateTitulos.lbl_04_10}} </a></li>
+                                                    {{translateTitulos.lbl_04_10}} </a>
+                                            </li>
                                             <li ng-show="stiporol == '4' || stiporol == '5'"><a
                                                     href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/fichas/fichas.html'">{{translateTitulos.lbl_04_11}}</a>
                                             </li>
@@ -273,7 +274,8 @@
                                             <li ng-show="mostrarMenuMascotaNatural == 'SI'"
                                                 ng-show="stiporol == '5' && sservicios  == 'SI'"><a
                                                     href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotas/index.html'">Registro
-                                                    de Mascotas</a></li>
+                                                    de Mascotas</a>
+                                            </li>
 
                                             <li ng-show="mostrarMenuMascota == 'SI'">
                                                 <a><i class="fa fa-caret-right blanco"></i>Para Veterinarias<span
@@ -300,13 +302,15 @@
                                             <!--li ng-show="mostrarMenuMascota == 'NO'">                                    
                                         <a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotas/index.html'">Registro de Mascotas</a>
                                     </li-->
-
-
                                             <li
                                                 ng-show="(stiporol == '4' || stiporol == '5') && vid == '5bb2773b398e617fc30015cb'">
                                                 <a ng-click=""
                                                     href="#servicios|varios|index.html?url='app/view/servicios/transparencia/reporte/index.html'">Transparencia</a>
                                             </li>
+
+                                             <li><a ng-click = "" href="#registro_ciudadano|servicios|indexTVAE.html">Solicitud Tienda Virtual(Actividades Economicas)</a>
+                                            </li>
+
                                         </ul>
                                     </li>
                                     <!--ATM -------- mostrarMenuMascota verifica si la persona es juridica-->
@@ -521,6 +525,8 @@
     <!--controladores-->
     <script src="../../controller/registro_ciudadano/servicios/appServicios.js"></script>
     <script src="../../controller/registro_ciudadano/servicios/appServicios343.js"></script>
+    <script src="../../controller/registro_ciudadano/servicios/appServiciosTVAE.js"></script>
+
 
     <script src="../../view/servicios/varios/formularios/solicitudAntenas/AntenasAdjuntos/antenaAdj.js"></script>
 

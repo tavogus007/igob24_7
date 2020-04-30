@@ -35,6 +35,7 @@ function ejecutarAjaxProducto(vurlCompProducto, vTypeCall, vDataCall, vFunctionR
     return dataResp;
 };
 function dataProducto(){
+    this.id,
     this.nombre,
     this.descripcion,
     this.precio,
@@ -100,6 +101,29 @@ dataProducto.prototype.eliminaMisProductos = function (functionResp)
       "prd_idc":this.prd_idc
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+dataProducto.prototype.modificarMiProducto = function (functionResp) {
+
+  urlCompProducto = "/modificarProducto";
+  typeCall = "post";
+  dataParams = {
+      "prd_idc" : this.id,
+      "prd_nombrec" : this.nombre,
+      "prd_descripcionc" : this.descripcion,
+      "prd_precioc" : parseInt(this.precio),
+      "prod_aec" : parseInt(this.ae),
+      "prod_sucursalc" : parseInt(this.sucursal),
+      "prd_marcac" : this.marca,
+      "prd_categoriac" : this.categoria,
+      "prd_imagen_pc" : this.imagen_p,
+      "prd_imagen_a1c" : this.imagen_a1,
+      "prd_imagen_a2c" : this.imagen_a2,
+      "prd_oidc" : this.oid_ciu,
+      "prd_telefono_referenciac" : this.telefono_referencia,
+      "prd_usrc" : this.usr
+  };
+  console.log(dataParams);
+  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
 
 /*

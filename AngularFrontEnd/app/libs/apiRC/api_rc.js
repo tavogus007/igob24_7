@@ -1155,6 +1155,18 @@ rcTramitesAe.prototype.obtTramites = function (functionResp)
   ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 }
 
+rcTramitesAe.prototype.listaraevirtual = function (functionResp)
+{
+  urlComp = "/listadoVirtualae";
+  typeCall = "post";
+
+  dataParams = {
+          "idCiudadano": this.oid
+  };
+
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+}
+
 function listaTramitesMov(){
   this.idCiudadano;
   this.tra_ser;

@@ -12,7 +12,7 @@ var dataParams;
 var typeCall;
 
 if(jsonURLS){
-  var urlGENESIS = jsonURLS.CONEXION_API_PG_IF+"wsGENESIS";
+  var urlGENESIS = jsonURLS.CONEXION_API_PG_GENESIS+"wsGENESIS";
   var urlIf2 = jsonURLS.CONEXION_API_PG_IF+"wsIf"; 
 }
 

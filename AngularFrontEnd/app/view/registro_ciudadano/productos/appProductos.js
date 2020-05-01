@@ -62,7 +62,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
                     var tipoFile = imagenFile[1];
                     var nombreNuevo = descDoc + '_'+fechaNueva+'.'+tipoFile;
                     $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
-                    console.log(' $scope.documentosarc========>', $scope.documentosarc);
                     fileUpload1.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
                     document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
                 });
@@ -113,7 +112,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     }
 
   $scope.ejecutarFile = function(idfile){
-    console.log('11',idfile);
+    $scope.fileId = idfile;
       var sid =   document.getElementById(idfile);
       if(sid){
           document.getElementById(idfile).click();
@@ -152,6 +151,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     /////////////////////////////////////////////////////////////////
 
     $scope.registrarProducto = function(data){
+    $scope.mostrarTxt = false; 
     console.log(data);
        a = 0;
       angular.forEach($rootScope.archivosProducto, function(archivo, key) {
@@ -173,8 +173,8 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       datosProducto.nombre = data.f01_producto;
       datosProducto.descripcion = data.f01_descripcion;
       datosProducto.precio = data.f01_precio;
-      datosProducto.ae = data.f01_ae;
-      datosProducto.sucursal = data.f01_sucursal;
+      datosProducto.ae = $scope.aeAct;
+      datosProducto.sucursal = $scope.sucursal;
       datosProducto.marca = "MARCA";
       datosProducto.categoria = data.f01_categoria;
       datosProducto.imagen_p = f0;
@@ -191,6 +191,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
             $.unblockUI();
             $scope.refrescar();
             swal('', "Producto Registrado", 'success');
+            $scope.limpiar();
         } else {
             $.unblockUI();
             swal('', "Producto no registrado", 'error');
@@ -290,11 +291,11 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
   };
   $scope.inicioDocumentosArchivados = function () {
       $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
-      f0 = '';
-      f1 = '';
-      f2 = '';
-       $scope.update = false;
-        $scope.nuevo = false;
+      $scope.obtenerContribuyente();
+      $scope.listadoActividadesEconomicas();
+      $scope.update = false;
+      $scope.nuevo = false;
+      $scope.mostrarTxt = false; 
   };
   $scope.confirmarEliminar = function(datos){
     swal({
@@ -327,6 +328,12 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
  }
  $scope.limpiar = function(){
     $scope.datos = [''];
+    document.getElementById("f01_ae").value = -1;
+    document.getElementById("f01_sucursal").value = '';
+    document.getElementById("txt_f01_upload1").value  = '';
+    document.getElementById("txt_f01_upload2").value  = '';
+    document.getElementById("txt_f01_upload3").value  = '';
+
 }
   $scope.delProducto = function(datos){
       var datosDelProducto = new dataProducto();
@@ -337,52 +344,50 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       });      
   } 
   $scope.updProducto = function(datosE){
-      $scope.datosP = datosE;
-      $scope.prd_id= datosE.prd_idc;
-      $scope.update = true;
-      $scope.nuevo = false;
-      $scope.titulo = "Modificación de Productos";
+    $scope.mostrarTxt = true;  
+    $scope.datosP = datosE;
+    $scope.prd_id= datosE.prd_idc;
+    $scope.update = true;
+    $scope.nuevo = false;
+    $scope.titulo = "Modificación de Productos";
+
+    $scope.datos = [];
+    $scope.datos.f01_producto = $scope.datosP.prd_nombrec;
+    $scope.datos.f01_categoria = $scope.datosP.prd_categoriac;
     
-      $scope.datos = [];
-      $scope.datos.f01_producto = $scope.datosP.prd_nombrec;
-      $scope.datos.f01_categoria = $scope.datosP.prd_categoriac;
-      $scope.datos.f01_ae = $scope.datosP.prod_aec;
-      $scope.datos.f01_sucursal =   $scope.datosP.prod_sucursalc;
-      $scope.datos.f01_descripcion = $scope.datosP.prd_descripcionc;
-      $scope.datos.f01_precio = $scope.datosP.prd_precioc;
-      $scope.datos['txt_f01_upload1'] = $scope.datosP.prd_imagen_pc;
-      $scope.datos['txt_f01_upload2'] = $scope.datosP.prd_imagen_a1c;
-      $scope.datos['txt_f01_upload3'] = $scope.datosP.prd_imagen_a2c;
+    $scope.cargarDatos($scope.datosP,$scope.datosP.prod_aec);
+    $scope.datos.f01_ae = $scope.aeAct;
+    //$scope.datos.f01_sucursal =   $scope.datosP.prod_sucursalc;
+
+    document.getElementById("f01_sucursal").value = $scope.datosP.prod_sucursalc;
+    $scope.datos.f01_descripcion = $scope.datosP.prd_descripcionc;
+    $scope.datos.f01_precio = $scope.datosP.prd_precioc;
+    $scope.datos['txt_f01_upload1'] = $scope.datosP.prd_imagen_pc;
+    $scope.datos['txt_f01_upload2'] = $scope.datosP.prd_imagen_a1c;
+    $scope.datos['txt_f01_upload3'] = $scope.datosP.prd_imagen_a2c;
  
   }
   $scope.actualizarProducto = function(data){
     f0 = data.txt_f01_upload1;
     f1 = data.txt_f01_upload2;
     f2 = data.txt_f01_upload3;
-     console.log('NUEVO', $scope.documentosarc);
-      console.log('NUEVO1', $rootScope.archivosProducto);
-   a = 0;
     angular.forEach($rootScope.archivosProducto, function(archivo, key) {
-      archivoP = JSON.parse(archivo);
-      console.log(key);
-      if (a==0)
+        archivoP = JSON.parse(archivo);
+        if($scope.fileId == 'f01_upload1')
         f0 = archivoP.url;
-      if (a==1)
+        if($scope.fileId == 'f01_upload2')
         f1 = archivoP.url;
-      if (a==2)
+        if($scope.fileId == 'f01_upload3')
         f2 = archivoP.url;
-      a = a + 1;
-     });
-
-
+       });
 
     var datosProducto = new dataProducto();
       datosProducto.id = $scope.prd_id;
       datosProducto.nombre = data.f01_producto;
       datosProducto.descripcion = data.f01_descripcion;
       datosProducto.precio = data.f01_precio;
-      datosProducto.ae = data.f01_ae;
-      datosProducto.sucursal = data.f01_sucursal;
+      datosProducto.ae = $scope.aeAct;
+      datosProducto.sucursal = $scope.sucursal;
       datosProducto.marca = "MARCA";
       datosProducto.categoria = data.f01_categoria;
       datosProducto.imagen_p = f0;
@@ -397,15 +402,99 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       if(results.length > 0){
           $.unblockUI();
           $scope.refrescar();
-          swal('', "Producto Registrado", 'success');    
+          swal('', "Producto Modificado", 'success');    
       } else {
           $.unblockUI();
-          swal('', "Producto no registrado", 'error');
+          swal('', "Producto no Modificado", 'error');
       }
     });
-    
+ }
+$scope.obtenerContribuyente = function(){
+    var tipoContribuyente = sessionService.get('TIPO_PERSONA');
+    if(tipoContribuyente == 'NATURAL'){
+        ciDocumento          =   sessionService.get('CICIUDADANO');
+        sAccion              =  'C01';
+        nitDocumento = '';
+    }else if(tipoContribuyente == 'JURIDICO'){
+        nitDocumento         =   sessionService.get('NITCIUDADANO');
+        sAccion              =  'C02';
+        ciDocumento = '';
+    }
+    var conGenesis  =   new gLstDatos();
+    conGenesis.idContribuyente = "";
+    conGenesis.clase="";
+    conGenesis.padron="";
+    conGenesis.identificacion=ciDocumento;//'40852017'
+    conGenesis.primerNombre="";
+    conGenesis.primerApellido="";
+    conGenesis.segundoApellido="";
+    conGenesis.nit=nitDocumento;
+    conGenesis.empresa="";
+    conGenesis.p_accion=sAccion;
+    conGenesis.lstDatosContribuyente(function(resultado){
+        resultadoApi = JSON.parse(resultado);
+        if (resultadoApi.success) {
+            var response    =   resultadoApi;
+            $scope.txtMsgConexionGen    =   "";
+            if(response.success.dataSql.length > 0){
+                $scope.dataGenesisCidadano  =   response.success.dataSql;
+            } else {
+               
+                $scope.dataGenesisCidadano  =  '';
+            }
+        } else {
+            $scope.txtMsgConexionGen    =   "Se ha producido un problema de conexion al cargar los datos";
+            $.unblockUI();
+            //swal(resultadoApi.error.message);
+        }
+    });
+};
 
-  }
+$scope.listadoActividadesEconomicas = function () {
+    $scope.datos.rdTipoTramite = "RENOVACION";            
+    var tipoPersona     =   sessionService.get('TIPO_PERSONA');
+    var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
+    var contribuyente   =   new gLstActividadEconomica();
+    contribuyente.idContribuyente   =   idContribuyente;
+    contribuyente.tipo  =   'N'; //N para natural y J para Juridico
+    contribuyente.lstActividadEconomica(function(resultado){ 
+        $.unblockUI(); 
+        resultadoApi = JSON.parse(resultado);
+        if (resultadoApi.success) {
+            //listado de Actividades Economicas
+            var response    =   resultadoApi;
+            if(response.success.dataSql.length > 0){
+                $scope.trmUsuario = response.success.dataSql;
+            } 
+        } else {
+             swal('', "Datos no Encontrados !!!", 'warning');
+        }
+        }); 
+};
+$scope.cargarDatos = function(ae,s){
+    $scope.sucursal = parseInt(s);
+    $scope.aeAct = parseInt(ae.prod_aec);
+    document.getElementById("f01_ae").value = $scope.aeAct;
+    document.getElementById("f01_sucursal").value = $scope.sucursal;
+        
+
+}   
+$scope.muestraDatos = function(ae,s){
+    $scope.mostrarTxt = false; 
+   var aeS = JSON.stringify(ae);
+   var aeS1 = JSON.parse(aeS);
+   for(i=0;i<=aeS1.length-1;i++){
+       if(s == aeS1[i].IdActividad){
+         var suc =   aeS1[i].Nro;
+         var aeUp =  aeS1[i].IdActividad;
+         $scope.sucursal = parseInt(suc);
+         $scope.aeAct = parseInt(aeUp);
+         document.getElementById("f01_ae").value = $scope.aeAct;
+         document.getElementById("f01_sucursal").value = $scope.sucursal;
+        
+       }
+   }
+}
 
   ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
   try{ 

@@ -32,6 +32,67 @@
             }
             //$('.clockpicker').clockpicker();
         </script>
+        <style>
+            .switch {
+              position: relative;
+              display: inline-block;
+              width: 60px;
+              height: 34px;
+            }
+
+            .switch input { 
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+
+            .slider {
+              position: absolute;
+              cursor: pointer;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: #ccc;
+              -webkit-transition: .4s;
+              transition: .4s;
+            }
+
+            .slider:before {
+              position: absolute;
+              content: "";
+              height: 26px;
+              width: 26px;
+              left: 4px;
+              bottom: 4px;
+              background-color: white;
+              -webkit-transition: .4s;
+              transition: .4s;
+            }
+
+            input:checked + .slider {
+              background-color: #2196F3;
+            }
+
+            input:focus + .slider {
+              box-shadow: 0 0 1px #2196F3;
+            }
+
+            input:checked + .slider:before {
+              -webkit-transform: translateX(26px);
+              -ms-transform: translateX(26px);
+              transform: translateX(26px);
+            }
+
+            /* Rounded sliders */
+            .slider.round {
+              border-radius: 34px;
+            }
+
+            .slider.round:before {
+              border-radius: 50%;
+            }
+        </style>
 
     </head>
     <div class="col-md-12" ng-controller="productosController" ng-init="inicioDocumentosArchivados();">
@@ -80,6 +141,10 @@
                                 <td data-title="'Opciones'" class="text-center">&nbsp; 
                                     <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Modificar producto" ng-click="updProducto(documento);" data-target="#producto"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                     <a class="btn btn-success ng-binding" data-toggle="modal" tooltip="Eliminar producto" ng-click="confirmarEliminar(documento);" data-target="#registroLotus"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                    <label class="switch">
+                                        <input type="checkbox" ng-checked="estadoBlock=='A'" ng-click="cambioEstadoB()">
+                                        <span class="slider round"></span>
+                                    </label>
                                 </td>
                                 <td data-title="'Producto'" class="text-left">&nbsp; {{documento.prd_nombrec}}</td>
                                 <td data-title="'Descripción'" class="text-left">&nbsp; {{documento.prd_descripcionc}}</td>
@@ -87,6 +152,8 @@
                                 <td data-title="'Marca'" class="text-center">&nbsp; {{documento.prd_marcac}}</td>
                                 <td data-title="'Categoria'" class="text-center">&nbsp; {{documento.prd_categoriac}}</td>
                                 <td data-title="'Imagen'" class="text-center">&nbsp; <img src="{{documento.prd_imagen_pc}}" style="width:64px;"></td>
+                                <td data-title="'Imagen Auxiliar'" class="text-center">&nbsp; <img src="{{documento.prd_imagen_a1c}}" style="width:64px;"></td>
+                                <td data-title="'Imagen Auxiliar'" class="text-center">&nbsp; <img src="{{documento.prd_imagen_a2c}}" style="width:64px;"></td>
                             </tr>
                         </tbody>
                     </table>

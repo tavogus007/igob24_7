@@ -8,6 +8,170 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     [ { name: 'template0.html', url: '../../../app/view/servicios/aetiendav/indexnatural.html'}, 
       { name: 'template1.html', url: '../../../app/view/servicios/aetiendav/indexjuridico.html'} 
     ];
+
+    $scope.serviciosTipoTramite = [
+        { name: 'Habilitacion de Plataforma Comercial', id:'48'}, 
+        { name: 'Permiso Excepcional', id:'50'} 
+    ];
+
+    $scope.seleccionarProceso = function(proceso){
+        $scope.procesoSeleccionado  =   proceso.id;
+        if($scope.procesoSeleccionado == 10){
+            sidservicio =   10; 
+        }
+        if($scope.procesoSeleccionado == $scope.renovacion){
+            sidservicio =   10; 
+        }
+        $scope.procesoSeleccionado  =   proceso.id;
+        $scope.btnNuevoTramtite     =   false;      
+    }; 
+
+     $scope.crearTramiteVAE = function(idproceso) {
+        if($scope.procesoSeleccionado != ''){
+            $scope.adicionarServicioGamlp(idproceso); 
+        }
+    }
+
+    $scope.adicionarServicioGamlp = function(idproceso){ 
+        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
+        var condiciones = '';
+        var dataInicio  =   {};
+        var fecha= new Date();
+        var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+        var sIdServicio = idproceso;
+        var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+        var sFechaTramite = fechactual;
+        dataInicio.INT_FORM_ALMACENADO='C';
+        var datosSerializados   =  JSON.stringify(dataInicio);
+        $.blockUI();
+        try{
+            var crea = new adicionaTramitesFormulario();
+            crea.frm_tra_fecha = sFechaTramite;
+            crea.frm_tra_enviado = "NO";
+            crea.frm_tra_registrado = fechactual;
+            crea.frm_tra_modificado = fechactual;
+            crea.id_servicio = sIdServicio;
+            crea.data_json = datosSerializados;
+            crea.oid_ciudadano = sIdCiudadano;
+            crea.id_usuario = 3;
+            $.blockUI();
+            crea.adiciona_Tramites_Formulario(function(res){
+                x = JSON.parse(res);
+                response = x.success;
+                if(response.length  > 0){
+                    sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
+                    $.unblockUI();
+                    $scope.ListadoTramitesCiudadano();
+                    swal('', 'Registro almacenado correctamente', 'success');
+                    sessionService.destroy('NROTRAMITE');
+                    sessionService.destroy('NROTRAMITEID');
+                    sessionService.destroy('IDPROCESO');
+                    $scope.btnEnviarForm    =   false;
+                    $scope.btnGuardarForm   =   false;
+                }
+                else{
+                    $.unblockUI();
+                }
+            });
+            }catch(e){
+                console.log('*Error*', e);
+                $.unblockUI();
+            }
+    }
+
+    $scope.ListadoTramitesCiudadano = function(){
+        sIdCiudadano = sessionService.get('IDSOLICITANTE');
+        try {
+            var rData = new rcTramitesAe();
+            rData.oid = sIdCiudadano;
+            rData.listaraevirtual(function(res){
+                r = JSON.parse(res);
+                results = r.success;
+                angular.forEach(results,function(val, index){
+                    if(val['form_contenido'])
+                    {
+                        results[index].datos=JSON.parse(val['form_contenido']);
+                    }
+                });
+                $scope.tramitesUsuario = results;
+                var data = results;
+                $scope.tablaTramites.reload(); 
+                if(tramite){
+                    $scope.seleccionarTramite(tramite);
+                }
+            });
+        } catch(error){
+            console.log("Error Interno : ", error);
+        }
+    };
+
+    $scope.tablaTramites = new ngTableParams({
+        page: 1,
+        count: 4,
+        filter: {},
+        sorting: {
+            vtra_id: 'desc'
+        }
+    }, {
+        total: $scope.tramitesUsuario.length,
+        getData: function($defer, params) {
+            var filteredData = params.filter() ?
+            $filter('filter')($scope.tramitesUsuario, params.filter()) :
+            $scope.tramitesUsuario;
+            var orderedData = params.sorting() ?
+            $filter('orderBy')(filteredData, params.orderBy()) :
+            $scope.tramitesUsuario;
+            params.total($scope.tramitesUsuario.length);
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+        }
+    });
+
+    $scope.seleccionarTramite = function (tramite) {
+        $scope.template =   "";
+        $scope.seleccionarTramiteRender(tramite);    
+    }
+
+    $scope.seleccionarTramiteRender = function (tramite) {
+        $scope.open_mapa_ae();
+        $scope.procesoSeleccionado   =   tramite.vdvser_id;
+        $rootScope.tramiteId = tramite.vtra_id;
+        sessionService.set('IDTRAMITE', $rootScope.tramiteId);
+        sessionService.set('IDSERVICIO', tramite.vdvser_id);
+        sessionService.set('ESTADO', tramite.venviado);
+        $scope.template = "";
+        $scope.formulario = "mostrar";
+        var vsidservicio = "";
+        var tipoPersona =   sessionService.get('TIPO_PERSONA');
+        var sidservicio =   $scope.procesoSeleccionado;
+        if(tipoPersona == 'NATURAL' && sidservicio == 48){
+            vsidservicio =   0;
+        }
+        if(tipoPersona == 'JURIDICO' && sidservicio == 48){
+            vsidservicio = 1;
+        }
+
+        if(tipoPersona == 'NATURAL' && sidservicio == 50){
+            vsidservicio =   0;
+        }
+        if(tipoPersona == 'JURIDICO' && sidservicio == 50){
+            vsidservicio = 1;
+        }
+
+        if (tramite.venviado == "SI") {
+            $scope.template         =   $scope.templates[vsidservicio];
+        } else {
+            $scope.template         =   $scope.templates[vsidservicio];
+        }
+
+        if(tipoPersona == 'NATURAL'){
+            $scope.recuperarSerializarInfo(tramite);
+        }
+        else{
+            $scope.recuperarSerializarInfo(tramite);
+        }
+
+    };
+
     $scope.recuperandoDatosInicialesCiudadano = function(){
         var idCiudadano = sessionService.get('IDUSUARIO');
         $scope.datosIniciales = "";
@@ -359,109 +523,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         $scope.datos = datosForm_inicio;
     };
 
-    $scope.crearTramiteVAE = function() {
-        $scope.adicionarServicioGamlp();    
-        
-    }
-
-	$scope.adicionarServicioGamlp = function(){ 
-        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-        var condiciones = '';
-        var dataInicio  =   {};
-        var fecha= new Date();
-        var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-        var sIdServicio = 48;
-        var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-        var sFechaTramite = fechactual;
-        dataInicio.INT_FORM_ALMACENADO='C';
-        var datosSerializados   =  JSON.stringify(dataInicio);
-        $.blockUI();
-        try{
-            var crea = new adicionaTramitesFormulario();
-            crea.frm_tra_fecha = sFechaTramite;
-            crea.frm_tra_enviado = "NO";
-            crea.frm_tra_registrado = fechactual;
-            crea.frm_tra_modificado = fechactual;
-            crea.id_servicio = sIdServicio;
-            crea.data_json = datosSerializados;
-            crea.oid_ciudadano = sIdCiudadano;
-            crea.id_usuario = 3;
-            $.blockUI();
-            crea.adiciona_Tramites_Formulario(function(res){
-                x = JSON.parse(res);
-                response = x.success;
-                if(response.length  > 0){
-                    sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
-                    $.unblockUI();
-                    $scope.ListadoTramitesCiudadano();
-                    swal('', 'Registro almacenado correctamente', 'success');
-                    sessionService.destroy('NROTRAMITE');
-                    sessionService.destroy('NROTRAMITEID');
-                    sessionService.destroy('IDPROCESO');
-                    $scope.btnEnviarForm    =   false;
-                    $scope.btnGuardarForm   =   false;
-                }
-                else{
-                    $.unblockUI();
-                }
-            });
-            }catch(e){
-                console.log('*Error*', e);
-                $.unblockUI();
-            }
-    }
-
-    $scope.ListadoTramitesCiudadano = function(){
-        sIdCiudadano = sessionService.get('IDSOLICITANTE');
-        try {
-            var rData = new rcTramitesAe();
-            rData.oid = sIdCiudadano;
-            rData.listaraevirtual(function(res){
-                r = JSON.parse(res);
-                results = r.success;
-                angular.forEach(results,function(val, index){
-                    if(val['form_contenido'])
-                    {
-                        results[index].datos=JSON.parse(val['form_contenido']);
-                    }
-                });
-                $scope.tramitesUsuario = results;
-                var data = results;
-                $scope.tablaTramites.reload(); 
-                if(tramite){
-                    $scope.seleccionarTramite(tramite);
-                }
-            });
-        } catch(error){
-            console.log("Error Interno : ", error);
-        }
-    };
-
-    $scope.tablaTramites = new ngTableParams({
-        page: 1,
-        count: 4,
-        filter: {},
-        sorting: {
-            vtra_id: 'desc'
-        }
-    }, {
-        total: $scope.tramitesUsuario.length,
-        getData: function($defer, params) {
-            var filteredData = params.filter() ?
-            $filter('filter')($scope.tramitesUsuario, params.filter()) :
-            $scope.tramitesUsuario;
-            var orderedData = params.sorting() ?
-            $filter('orderBy')(filteredData, params.orderBy()) :
-            $scope.tramitesUsuario;
-            params.total($scope.tramitesUsuario.length);
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-        }
-    });
-
-    $scope.seleccionarTramite = function (tramite) {
-        $scope.template =   "";
-        $scope.seleccionarTramiteRender(tramite);    
-    }
+   
 
     $scope.obtenerContribuyente = function(){
         var tipoContribuyente     =   sessionService.get('TIPO_PERSONA');
@@ -497,10 +559,6 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                 $scope.txtMsgConexionGen    =   "";
                 $scope.dataGenesisCidadano  =   response.success.dataSql;
                 $rootScope.datosGenesis = response.success.dataSql;
-                console.log('$scope.dataGenesisCidadano: ', $scope.dataGenesisCidadano);
-                console.log('$rootScope.dataGenesisCidadano: ', $rootScope.dataGenesisCidadano);
-
-                
             } else {
                 $scope.txtMsgConexionGen    =   "Se ha producido un problema de conexion al cargar los datos";
                 $.unblockUI();
@@ -509,62 +567,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         });
     };
 
-    $scope.listadoActividadesEconomicas = function () {
-        $scope.datos.rdTipoTramite = "RENOVACION";            
-        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-        var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
-        var contribuyente   =   new gLstActividadEconomica();
-        contribuyente.idContribuyente   =   idContribuyente;
-        contribuyente.tipo  =   'N'; //N para natural y J para Juridico
-        contribuyente.lstActividadEconomica(function(resultado){ 
-            $.unblockUI(); 
-            resultadoApi = JSON.parse(resultado);
-            if (resultadoApi.success) {
-            	//listado de Actividades Economicas
-                var response    =   resultadoApi;
-                if(response.success.dataSql.length > 0){
-                    $scope.trmUsuario = response.success.dataSql;
-                } 
-            } else {
-                 swal('', "Datos no Encontrados !!!", 'warning');
-            }
-        }); 
-    };
-
-    $scope.seleccionarTramiteRender = function (tramite) {
-        $scope.procesoSeleccionado   =   tramite.vdvser_id;
-        $rootScope.tramiteId = tramite.vtra_id;
-        sessionService.set('IDTRAMITE', $rootScope.tramiteId);
-        sessionService.set('IDSERVICIO', tramite.vdvser_id);
-        sessionService.set('ESTADO', tramite.venviado);
-        $scope.template = "";
-        $scope.formulario = "mostrar";
-        var vsidservicio = "";
-        var tipoPersona =   sessionService.get('TIPO_PERSONA');
-        var sidservicio =   $scope.procesoSeleccionado;
-        if(tipoPersona == 'NATURAL' && sidservicio == 48){
-            vsidservicio =   0;
-        }
-        if(tipoPersona == 'JURIDICO' && sidservicio == 48){
-            vsidservicio = 1;
-        }
-
-        if (tramite.venviado == "SI") {
-            $scope.template         =   $scope.templates[vsidservicio];
-        } else {
-            $scope.template         =   $scope.templates[vsidservicio];
-        }
-
-        if(tipoPersona == 'NATURAL'){
-            $scope.recuperarSerializarInfo(tramite);
-        }
-        else{
-            $scope.recuperarSerializarInfo(tramite);
-        }
-
-    };
-
-     $scope.recuperarSerializarInfo = function(tramite){
+    $scope.recuperarSerializarInfo = function(tramite){
         $scope.btover_c = true;     
         var sIdTramite = tramite.vtra_id;
         $scope.sIdTramiteSeleccionado = tramite.vtra_id;
@@ -628,13 +631,16 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                             }
                 }
                 $.unblockUI();
+                 setTimeout(function(){
+                    $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
+                }, 4000)
             });
         } catch(error){
             console.log("Error Interno : ", error);
         }
     };
 
-       $scope.recuperandoDatosGenesis = function(){
+    $scope.recuperandoDatosGenesis = function(){
         var tipoContribuyente   =   sessionService.get('TIPO_PERSONA');
         var ciDocumento =   '';
         var nitDocumento =   '';
@@ -713,6 +719,292 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
             $.unblockUI();
         }
     };
+
+    $scope.open_mapa_ae = function()
+    {
+        setTimeout(function()
+        {
+            console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICASsssssssss");
+            var latitud = $scope.datos.INT_AC_latitud;
+            var longitud = $scope.datos.INT_AC_longitud;
+            console.log("latitud...",latitud);
+            $("#map_principal").empty();
+
+            $scope.map = new ol.Map
+            ({
+              target: 'map_principal',
+              layers: [
+                        new ol.layer.Group({
+                                            title: 'Mapas Base',
+                                            layers: [
+                                                      osm,
+                                                      municipios,
+                                                      zonas_tributarias,
+                                                      vias  
+                                                    ]
+                                          }),
+                        new ol.layer.Group({
+                                            title: 'Capas',
+                                            layers: [
+                                                      //macrodistritos,
+                                                      vectorLayerZonas,
+                                                      vectorLayer
+                                                    ]
+                                          })
+                      ],
+
+              view: new ol.View({
+                zoom: 16,
+                center: ol.proj.fromLonLat([-68.133555,-16.495687])
+              })
+            });
+              
+            var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: 'Leyenda'});
+            $scope.map.addControl(layerSwitcher);
+
+            vectorLayer.getSource().clear();
+            if (latitud != undefined)
+            {
+                var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
+                feature.setStyle(iconStyle);
+                vectorSource.addFeature(feature);
+                $scope.map.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
+                $scope.map.getView().setZoom(15);
+            }
+
+            $scope.map.on('click', function (evt)
+            {
+                datos = {};
+                vectorSource.clear();
+                if(jsonURLS)
+                {
+                    var url_sit    =   jsonURLS.SIT_GEO;
+                }
+                var url_r = url_sit+'/geoserver/wms';
+
+                var viewResolution = view.getResolution();
+                var coord = $scope.map.getCoordinateFromPixel(evt.pixel);
+                var centro = ol.proj.transform(coord,'EPSG:3857',epsg32719);
+                var wkt = '';
+                var centro_1 = ol.proj.transform(coord,'EPSG:3857',epsg4326);
+                var latitud = centro_1[1];
+                var longitud = centro_1[0];
+                wkt = "POINT("+centro[0]+" "+centro[1]+")";
+
+                datos.latitud = latitud;
+                datos.longitud = longitud;
+              
+                var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';   
+                
+                console.log ("latitud: ",latitud);
+                console.log ("longitud: ",longitud);
+                $scope.datos.INT_AC_latitud=latitud;
+                $scope.datos.INT_AC_longitud=longitud;
+                setTimeout(function()
+                {
+                    $.ajax({
+                          url: url,
+                          //data: parameters,
+                          type: 'GET',
+                          dataType: 'jsonp',
+                          jsonpCallback: 'getJson',
+                          success: function (data)
+                          {
+                
+                            if(data.features.length == 1)
+                            {                         
+                                var distrito = data.features[0].properties.distrito;
+                                var idMacrodistrito = data.features[0].properties.macro;                  
+                                var macrodistrito =  data.features[0].properties.macrodistrito;                
+                                var zona = data.features[0].properties.zona;
+                                var codigo_zona = data.features[0].properties.codigozona;
+                                datos.zona = zona;
+                                datos.cod_zona_sit = codigo_zona;
+                                datos.distrito = distrito;
+                                datos.macrodistrito = macrodistrito;
+                                
+                                var n_genesis = geo_id_genesis.length;
+                                for (var i=0;i<n_genesis;i++)
+                                {
+                                    if(geo_id_sit_servicio[i ]=== codigo_zona )
+                                    {
+                                        cod_zona_genesis = geo_id_genesis[i];
+                                        datos.cod_zona_genesis = cod_zona_genesis;
+                                    }
+                                } 
+                            }
+                            else
+                            {
+                                console.log("ningun resultado para zonas");
+                            }
+                          },
+                          error: function (data)
+                          { 
+                            console.log(data);
+                          }   
+                        });
+                },500);
+            
+                var feature = new ol.Feature(
+                      new ol.geom.Point(ol.proj.fromLonLat(centro_1))
+                );
+                    
+                feature.setStyle(iconStyle);
+                vectorSource.addFeature(feature);
+
+                console.log("JSON DATOS",datos);
+                return datos;
+            });
+            
+        },550);
+    };
+
+    $scope.buscar_ubicacion_p = function()
+    {
+      var nombre_1 = new Array();
+      var f = '';
+      var nombre = $('#busqueda_p').val();
+      console.log("ZONA en appServicios343..!!! ",nombre);
+
+      nombre = nombre.toUpperCase();
+      var ca = "CALLE ";
+      ca = ca.concat(nombre);
+      var c = 0;
+      /////////////////////////////
+      var tipo = "lugares";
+      var data = '';
+      ///////////////////////////////
+      if(nombre==='')
+      {
+        var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
+        console.log("Vacio :",obj);
+        vectorLayerZonas.getSource().clear();
+      }
+      else
+      {  
+        if(tipo == 'lugares')
+        {
+          $scope.map.removeLayer(vectorLayerZonas);
+          for (var i=0;i<geo_zonas.features.length;i++)
+          {
+            var nombre_zona =  geo_zonas.features[i].properties.zonaref;
+            var x_c = geo_zonas_centroides.features[i].geometry.coordinates[0];
+            var y_c = geo_zonas_centroides.features[i].geometry.coordinates[1];
+            if(nombre === nombre_zona)
+            {
+              c=c+1;
+              var geo_zona =  geo_zonas.features[i];
+              var xx = x_c;
+              var yy = y_c;
+            }
+          }
+          if(c>0)
+          {
+            geo_zona = JSON.stringify(geo_zona);
+            vectorLayerZonas.setSource(new ol.source.Vector({
+                                                         features: (new ol.format.GeoJSON({defaultDataProjection:'EPSG:3857'})).readFeatures(geo_zona)
+            }));
+
+            vectorLayerZonas.setStyle(myStyleZonas);
+
+            $scope.map.addLayer(vectorLayerZonas);
+            $scope.map.getView().setCenter([xx,yy]);
+            $scope.map.getView().setZoom(15);
+
+            setTimeout(function(){
+              vectorLayerZonas.getSource().clear();
+            },2400);
+
+          }
+        }
+        if(c==0)
+        {
+          var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
+          console.log("Vacio :",obj);
+        }
+      }   
+    }
+
+     $scope.distritoZonas = function(idMacroJ){     
+    console.log("idMacroJ: ", idMacroJ);   
+        $scope.datos.f01_macro_act    =   idMacroJ;
+        $scope.datos.INT_AC_MACRO_ID = idMacroJ;
+        $scope.aDistritoZona = {};
+        try{
+            $scope[name] = 'Running';
+            var deferred = $q.defer();
+            var parametros = new distritoZona();
+            parametros.idMacro = idMacroJ;
+            parametros.obtdist(function(resultado){
+                data = JSON.parse(resultado);
+                if(data.success.length > 0){
+                    $scope.aDistritoZona = data.success;  
+                    deferred.resolve(data.success);
+                    $scope.desabilitadoV=true;
+                    $scope.desabilitadoNo=true;
+                }else{
+                    $scope.msg = "Error !!";
+                }
+            });
+        }catch(error){
+            $scope.desabilitadoZ=true;
+            $scope.desabilitadoV=true;
+            $scope.desabilitadoNo=true;
+        }
+        return deferred.promise;
+    };
+
+    $scope.cargarNombVia = function(tipoVia, idZona) {
+        try{
+            var nomvia = new aelstNombreVia();
+            nomvia.idzona = idZona;
+            nomvia.tipovia = tipoVia;
+            nomvia.aelst_NombreVia(function(res){
+                x = JSON.parse(res);
+                response = x.success.data;
+                if (response.length > 0) {
+                    $scope.datosNombVia = response;
+                }
+            });
+        }catch (error){
+            console.log('datos error via');
+        }
+    };
+
+    $scope.actulizarIdDistrito  =   function(){
+        $scope.desabilitadoV=false;
+        var idDistrito  = "";
+        var idZona      = "";
+        var distNombre  = $scope.datos.f01_zona_act_descrip;
+        if($scope.aDistritoZona){
+            angular.forEach($scope.aDistritoZona, function(value, key) {
+                if(value.dist_nombre == distNombre){
+                    idDistrito  =   value.dist_dstt_id;
+                    idZona      =   value.dist_id;
+                }
+            });
+        }
+        $scope.datos.f01_dist_act    =   idDistrito;
+        $scope.datos.INT_AC_DISTRITO    =   idDistrito;
+        $scope.datos.INT_AC_ID_ZONA     =   idZona;
+        $scope.datos.f01_zona_act       = idZona;
+        $scope.datos.INT_ID_ZONA        =   idZona;
+        $scope.desabilitadoNo=true;
+    };
+
+    $scope.cargarNombViaTxt = function(valor) {
+        if (valor == "NINGUNO"){
+            $scope.datos.f01_factor = "VA";
+        } else {
+            $scope.datos.f01_factor = "TM";
+        }
+    };
+
+    $scope.GetValueMacrodistrito = function (macro) {
+        var e = document.getElementById("f01_macro_act");
+        $scope.datos.f01_macro_act_descrip = e.options[e.selectedIndex].text;
+    }
+      
 
     $scope.inicioServiciosVAE = function () {
        $scope.recuperandoDatosInicialesCiudadano();

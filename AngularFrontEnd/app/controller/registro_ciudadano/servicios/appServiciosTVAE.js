@@ -590,10 +590,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         conGenesis.empresa="";
         conGenesis.p_accion=sAccion;
         conGenesis.lstDatosContribuyente(function(resultado){
-            console.log('resultado111:: ', resultado);
-
             resultadoApi = JSON.parse(resultado);
-            console.log('resultadoApi:: ', resultadoApi);
             if (resultadoApi.success) {
                 console.log('resultadoApi.success::: ', resultadoApi.success);
                 var response    =   resultadoApi;

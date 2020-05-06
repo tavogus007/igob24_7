@@ -559,10 +559,10 @@
                             <div class="controls">
                                 <select id="f01_modalidad_pago" class="form-control" ng-model="datos.f01_modalidad_pago"  name="f01_modalidad_pago"  ng-disabled="desabilitado" required>
                                     <option value="">--Seleccionar--</option>
-                                    <option value="TARJETA"> EFECTIVO </option>
-                                    <option value="PAGOONLINE"> PAGO ELECTRONICO </option>
-                                    <option value="EFECTIVO"> AMBOS </option>
-                                    <option value="OTRO"> OTROS </option>
+                                    <option value="EFECTIVO"> EFECTIVO </option>
+                                    <option value="PAGOELEC"> PAGO ELECTRONICO </option>
+                                    <option value="AMBOS"> AMBOS </option>
+                                    <option value="OTROS"> OTROS </option>
                                 </select>
                             </div>
                         </div>
@@ -771,6 +771,10 @@
                           </div>
                         </div>
                     </div>
+                    <input type="hidden" ng-model="datos.f01_tipo_act_ae_descrip" id="f01_nro_frm" name="f01_nro_frm" class="form-control">
+                    <input type="hidden" ng-model="datos.f01_modalidad_pago_descrip" id="f01_nro_frm" name="f01_nro_frm" class="form-control">
+                    
+
             </div>
 
             <div class="col-md-12" align="right" ng-show = "botones != null">

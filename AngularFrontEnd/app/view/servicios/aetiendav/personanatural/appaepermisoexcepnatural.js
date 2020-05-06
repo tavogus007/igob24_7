@@ -158,7 +158,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     $scope.datos.f01_productosElaborados = response[0].productosElaborados;
                     $scope.datos.f01_actividadesSecundarias = response[0].actividadesSecundarias;
                     /*TIPO LICENCIA*/
-                  
+                     $scope.datos.f01_tipo_lic = response[0].idTipoLicencia;
+                    $scope.datos.f01_categoria = response[0].idactividad_desarrollada343;
                     $scope.datos.f01_categoria_agrupada = response[0].idActividadDesarrollada;
                     $scope.datos.f01_categoria_descrip = response[0].desc_desarrollada;
                      $scope.datos.f01_tipo_lic_descrip = response[0].descripcion;
@@ -475,7 +476,15 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         });
     }
 
+    $scope.GetValueParam = function(){
+        var e = document.getElementById("f01_tipo_act_ae");
+        $scope.datos.f01_tipo_act_ae_descrip = e.options[e.selectedIndex].text;
+        var f = document.getElementById("f01_modalidad_pago");
+        $scope.datos.f01_modalidad_pago_descrip = f.options[f.selectedIndex].text;
+    }
+
     $scope.enviarTramiteCeroPapel = function(paramForm){
+        $scope.GetValueParam();
         console.log(paramForm);
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm    =   true;
@@ -627,7 +636,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             datosNeXO['f01_tip_act']=paramForm.f01_tip_act;
             datosNeXO['f01_tipo_lic']=paramForm.f01_tipo_lic;
             datosNeXO['f01_categoria_agrupada']= parseInt(paramForm.f01_categoria_agrupada);
-            datosNeXO['f01_categoria_agrupada_descripcion']="";
+            datosNeXO['f01_categoria_agrupada_descripcion']=paramForm.f01_categoria_agrupada_descripcion;
             datosNeXO['f01_actividad_desarrollada']= paramForm.f01_categoria_descrip2;
             datosNeXO['declaracion_jurada']               =   $rootScope.decJuradaNatural;
             datosNeXO['g_origen_p']='0';
@@ -680,7 +689,10 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         datosNeXO['f01_tipo_act_ae'] = paramForm.f01_tipo_act_ae;
         datosNeXO['f01_categoria_agrupada_descripcion'] = paramForm.f01_categoria_agrupada_descripcion;
         datosNeXO['f01_cantidad_personal'] = paramForm.f01_cantidad_personal;
-        datosNeXO['f01_modalidad_pago'] = paramForm.f01_modalidad_pago; 
+        datosNeXO['f01_modalidad_pago'] = paramForm.f01_modalidad_pago;
+        datosNeXO['f01_tipo_act_ae_descrip'] = paramForm.f01_tipo_act_ae_descrip;
+        datosNeXO['f01_modalidad_pago_descrip'] = paramForm.f01_modalidad_pago_descrip;
+
         datosNeXO['g_tipo'] = "AE-TIENDA EN LINEA";
         datosNeXO['g_fecha'] = fechactual;
         datosNeXO['g_origen'] = "IGOB247";

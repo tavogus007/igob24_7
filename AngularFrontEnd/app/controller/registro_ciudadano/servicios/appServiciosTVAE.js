@@ -7,7 +7,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     $scope.templates =
     [ { name: 'template0.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexnatural.html'}, 
       { name: 'template1.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexpermisonatural.html'},
-      { name: 'template2.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexjuridico.html'}, 
+      { name: 'template2.html', url: '../../../app/view/servicios/aetiendav/personajuridica/indexpermisojuridico.html'} 
     ];
 
     $scope.serviciosTipoTramite = [
@@ -131,6 +131,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         $scope.template =   "";
         $scope.seleccionarTramiteRender(tramite);    
     }
+    
 
     $scope.seleccionarTramiteRender = function (tramite) {
         $scope.open_mapa_ae();
@@ -155,9 +156,8 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
             vsidservicio =   1;
         }
         if(tipoPersona == 'JURIDICO' && sidservicio == 50){
-            vsidservicio = 2;
+            vsidservicio = 3;
         }
-
         if (tramite.venviado == "SI") {
             $scope.template         =   $scope.templates[vsidservicio];
         } else {

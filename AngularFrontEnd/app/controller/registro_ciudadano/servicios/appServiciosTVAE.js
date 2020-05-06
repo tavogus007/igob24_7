@@ -5,13 +5,14 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     $scope.tablaTramites        =   {};
     $scope.tramitesUsuario      =   [];
     $scope.templates =
-    [ { name: 'template0.html', url: '../../../app/view/servicios/aetiendav/indexnatural.html'}, 
-      { name: 'template1.html', url: '../../../app/view/servicios/aetiendav/indexjuridico.html'} 
+    [ { name: 'template0.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexnatural.html'}, 
+      { name: 'template1.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexpermisonatural.html'},
+      { name: 'template2.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexjuridico.html'}, 
     ];
 
     $scope.serviciosTipoTramite = [
-        { name: 'Habilitacion de Plataforma Comercial', id:'48'}, 
-        { name: 'Permiso Excepcional', id:'50'} 
+        { name: 'Permiso Excepcional', id:'50'},
+        { name: 'Habilitación de Plataforma Comercial   [ Proximamente ]', id:'48'} 
     ];
 
     $scope.seleccionarProceso = function(proceso){
@@ -96,9 +97,9 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                 $scope.tramitesUsuario = results;
                 var data = results;
                 $scope.tablaTramites.reload(); 
-                if(tramite){
+                /*if(tramite){
                     $scope.seleccionarTramite(tramite);
-                }
+                }*/
             });
         } catch(error){
             console.log("Error Interno : ", error);
@@ -147,14 +148,14 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
             vsidservicio =   0;
         }
         if(tipoPersona == 'JURIDICO' && sidservicio == 48){
-            vsidservicio = 1;
+            vsidservicio = 3;
         }
 
         if(tipoPersona == 'NATURAL' && sidservicio == 50){
-            vsidservicio =   0;
+            vsidservicio =   1;
         }
         if(tipoPersona == 'JURIDICO' && sidservicio == 50){
-            vsidservicio = 1;
+            vsidservicio = 2;
         }
 
         if (tramite.venviado == "SI") {

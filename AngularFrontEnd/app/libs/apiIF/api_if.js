@@ -818,3 +818,19 @@ getDatosAELotus.prototype.getDatosAE_Lotus = function (functionResp) {
     };
     ejecutarAjaxIF(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
 };
+
+function gCrearTramiteLinea() {
+    this.usr_id;
+    this.datos;
+    this.procodigo;
+};
+gCrearTramiteLinea.prototype.crearTramiteLinea = function (functionResp) {
+    urlComp = "/crearCasoGestorEmpresarial";
+    typeCall = "post";
+    dataParams = {
+      "usr_id" : this.usr_id,
+      "datos" : this.datos,
+      "procodigo" : this.procodigo
+    };
+    ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
+};

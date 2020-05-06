@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
     <head>
-      <script type="text/javascript" src="../../view/servicios/aetiendav/appaevirtualnatural.js"></script>
+      <script type="text/javascript" src="../../view/servicios/aetiendav/personanatural/appaepermisoexcepnatural.js"></script>
       <script type="text/javascript" src="../../libs/js/jic.js"></script>
       <script type="text/javascript" src="../../libs/js/jszip.js"></script> 
   </head> 
@@ -43,10 +43,10 @@
 </script> 
 
 
-<div id="aevirtual" ng-controller="aevirtualnaturalController" data-ng-init="cargarDatos();">
+<div id="aevirtual" ng-controller="aepermisoexcepcionalnaturalController" data-ng-init="cargarDatosPermiso();">
   <div class="ibox float-e-margins">
     <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-        <h4>Tienda Virtual de Actividades Economicas</h4>
+        <h4>REGISTRO DE REACTIVACION DE ACTIVIDAD ECONOMICA PARA PRESTACION DE SERVICIOS</h4>
     </div>
     <div class="ibox-content">
       <form name="signupForm"  ng-controller="serviciosControllerTVAE" class="form-horizontal" role="form" novalidate>                   
@@ -55,14 +55,37 @@
               
             <div class="col-md-6">
                 <div class="form-group" >
-                    <label for="url" > {{serviciosTipoTramite.name}}</label>
+                    <label for="url" >PERMISO EXCEPCIONAL</label>
                     
                 </div>
             </div>
+
+             <div class="col-md-12" align="left">
+                <div class="form-group" class="col-md-12">                                   
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                                <input type="radio" ng-model="datos.rdTipoTramit1" name="rdTipoTramite1" value="VP" ng-disabled="desabilitado" required/>VENTA DE PRODUCTOS A DOMICILIO
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                                <input type="radio" ng-model="datos.rdTipoTramit2" name="rdTipoTramite1" value="VR" ng-disabled="desabilitado" required/>VENTA PARA RECOJO
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                                <input type="radio" ng-model="datos.rdTipoTramit3" name="rdTipoTramite1" value="DP" ng-disabled="desabilitado" required/>DISTRIBUCION CON MOVILIDAD PROPIA
+                            <br>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
             <div class="col-md-12">
                   <div  class="col-md-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading"><B>LISTADO DE {{translateTitulos.lbl_12_06}}</B></div>
+                        <div class="panel-heading"><B>SELECCIONE LA ACTIVIDAD ECONOMICA PARA LA SOLICITUD DE HABILITACION</B></div>
                         <div class="panel-body" ng-disabled="true">
                             <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadEconomica">
                                 <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}"><!--cambios-->
@@ -221,7 +244,7 @@
             <div class="col-md-12">
                 <legend>DATOS DE LA ACTIVIDAD ECONOMICA </legend>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group" >
                     <label for="url" >{{translateTitulos.lbl_12_33}}:</label>
                     <div class="controls">
@@ -231,7 +254,7 @@
                 </div>
             </div>
             
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group" >
                     <label for="url" >Tipo de Licencia:</label>
                     <div class="controls">
@@ -239,7 +262,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group" >
                     <label for="url" >Tipo de Categoria:</label>
                     <div class="controls">
@@ -247,7 +270,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="url" >Detalle de Actividad Desarrollada:</label>
                     <div class="controls">
@@ -615,7 +638,7 @@
             
               <div class="col-md-12" align="right" ng-show = "botones != null">
                   <button id="miFormGuardar"  ng-click="guardarDatos(datos);" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="" tooltip="Guardar Formulario">
-                  <button id="btnFormLicencia"  ng-click="envioDatos(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="" tooltip="Enviar Formulario" >
+                  <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="" tooltip="Enviar Formulario" >
               </div> 
           </div>
         </div>

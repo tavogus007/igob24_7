@@ -145,7 +145,10 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         $scope.sIdAeGrilla    = $scope.datos.INT_TRAMITE_RENOVA;
         var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
         var sNumeroRegistros  = dataGenesis.length;
+        console.log("$scope.dataGenesisCidadano:: ", $scope.dataGenesisCidadano);
+        console.log("sNumeroRegistros: ", sNumeroRegistros);
         if(sNumeroRegistros > 0 ){
+
             $scope.datos.rdTipoTramite = "RENOVACION";            
             var tipoPersona     =   sessionService.get('TIPO_PERSONA');
             var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
@@ -328,12 +331,12 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         $scope.publicid = '';
          var codhojaruta = "";
         var datosLotus = "";
-        $scope.datosAnterioresJuridico(tramite.IdActividad);
+        //$scope.datosAnterioresJuridico(tramite.IdActividad);
         var dato = tramite.FechaInicio.split('/');
         aniotram = dato[2];
         var anioserv = $scope.anioserver.toString();
-        console.log(aniotram, "anos : ",anioserv);
-        if(aniotram != anioserv){
+       
+
                 if(tramite.IdActividad){
                     $scope.idActividiadEconomicaActual  =   tramite.IdActividad;
                     $scope.datos.f01_id_actividad_economica = tramite.IdActividad;
@@ -442,7 +445,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
                                 $scope.datos.f01_tel_act1 = response[0].telefono;
                                 $scope.datos.f01_casilla = response[0].casilla;
                                 $scope.datos.f01_factor          =  response[0].tipoTrayecto;
-                            $scope.actulizarIdDistrito();
+                                $scope.actulizarIdDistrito();
                                 $scope.actulizarIdDistrito();
                                 if(response[0].edificio == 'undefined' || response[0].bloque == 'undefined' || response[0].piso == 'undefined' || response[0].departamento == 'undefined' || response[0].telefono == 'undefined' || response[0].casilla == 'undefined'){
                                     response[0].edificio = '';
@@ -536,9 +539,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
                         swal('', "Datos no Encontrados !!!", 'warning');
                     }
                 });            
-        }else{
-            swal('', "Actividad Economica Vigente!!!", 'warning');
-        }
+   
     };
 
     $scope.getDatosLotus = function(idadcteco, hojar){
@@ -3607,7 +3608,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             $scope.divJuridico = "mostrar";
         } 
         $scope.macrodistritos();
-        $scope.getCaptchasXX();
+        //$scope.getCaptchasXX();
         //$scope.lscategoria();
         //$scope.lssubcategoria();
         //$scope.lsCaracteristica();
@@ -3642,9 +3643,12 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
                 $scope.setMapOnAll();
             }
         },500);
+        console.log("data.length:: ", data.length);
         if(data.length > 0){
             if(data[0].venviado != 'SI'){                
                 if(data[0].datos.INT_FORM_ALMACENADO != 'G'){
+                    console.log("data.length:: ", data.length);
+
                     $scope.validarActividadEconomica();
                 }else{                    
                     if(data[0].datos.rdTipoTramite == 'NUEVO'){
@@ -3652,6 +3656,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
                         $scope.formDatosAE              = false;
                         $scope.txtMsgDataNuevaActividad =   "Favor revisar la informacion. Creara una nueva Actividad Economica.";
                     }else{
+                        console.log("data.length:: ", data.length);
                         $scope.validarActividadEconomica();
                     }
                 }

@@ -149,14 +149,14 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
             vsidservicio =   0;
         }
         if(tipoPersona == 'JURIDICO' && sidservicio == 48){
-            vsidservicio = 3;
+            vsidservicio = 2;
         }
 
         if(tipoPersona == 'NATURAL' && sidservicio == 50){
             vsidservicio =   1;
         }
         if(tipoPersona == 'JURIDICO' && sidservicio == 50){
-            vsidservicio = 3;
+            vsidservicio = 2;
         }
         if (tramite.venviado == "SI") {
             $scope.template         =   $scope.templates[vsidservicio];
@@ -634,6 +634,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                 $.unblockUI();
                  setTimeout(function(){
                     $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
+                    $rootScope.$broadcast('inicializarGrillaAE', [{'datos':$scope.datos, 'venviado':tramite.venviado}]);
                 }, 4000)
             });
         } catch(error){

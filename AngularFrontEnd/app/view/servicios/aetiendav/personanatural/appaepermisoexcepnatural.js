@@ -3,28 +3,62 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
     $scope.tblTramites        =   {};
     $scope.trmUsuario      =   [];
-
     $scope.listadoActividadesEconomicas = function () {
         var dataGenesis       = ((typeof($rootScope.datosGenesis)    == 'undefined' || $rootScope.datosGenesis == null) ? {}  : $rootScope.datosGenesis); 
         var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-        var idContribuyente =   $rootScope.datosGenesis[0].idContribuyente;
-        var contribuyente   =   new gLstActividadEconomica();
-        contribuyente.idContribuyente   =   idContribuyente;
-        contribuyente.tipo  =   'N';
-        contribuyente.lstActividadEconomica(function(resultado){ 
-            $.unblockUI(); 
-            resultadoApi = JSON.parse(resultado);
-            if (resultadoApi.success) {
-                var response    =   resultadoApi;
-                $scope.trmUsuario = response.success.dataSql;
-                var data = response.success.dataSql;
-                $scope.tblTramites.reload(); 
-                $scope.desabilitado = true;  
-            } else {
-                $scope.desabilitado = true;
-                swal('', "Datos no Encontrados !!!", 'warning');
+        var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
+        var sNumeroRegistros  = dataGenesis.length;
+        if(sNumeroRegistros > 0 ){
+            var idContribuyente =   $rootScope.datosGenesis[0].idContribuyente;
+            var contribuyente   =   new gLstActividadEconomica();
+            contribuyente.idContribuyente   =   idContribuyente;
+            contribuyente.tipo  =   'N';
+            contribuyente.lstActividadEconomica(function(resultado){ 
+                $.unblockUI(); 
+                resultadoApi = JSON.parse(resultado);
+                if (resultadoApi.success) {
+                    $scope.formDatosAE  =   true;
+                    $scope.mostrarMsgActividadTrue  = true;
+                    $scope.mostrarMsgActividadFalse = false;
+                    var response    =   resultadoApi;
+                    $scope.trmUsuario = response.success.dataSql;
+                    var data = response.success.dataSql;
+                    $scope.tblTramites.reload(); 
+                    $scope.desabilitado = true;  
+                } else {
+                    $scope.mostrarMsgActividadTrue  = false;
+                    $scope.mostrarMsgActividadFalse = true;                        
+                    $scope.formDatosAE  =   false;
+                    $scope.desabilitado = true;
+                    swal('', "Datos no Encontrados !!!", 'warning');
+                }
+
+                var sformguardado   =   $scope.datos.INT_FORM_ALMACENADO;
+                if(typeof sformguardado == 'undefined' || sformguardado != 'G'){
+                    $scope.botones = null;
+                    $scope.desabilitado = true;                        
+                    swal('', "Favor revisar la información y seleccionar la Actividad Economica que desea Renovar.", 'warning');                    
+                }else{
+                    //$scope.botones = "mostrar";
+                    //$scope.desabilitado = false;
+                }
+            });
+        }else{
+            $scope.txtMsgDataRenovacion =   "Estimado Ciudadano no tiene actividad económica registrada.";                                
+            $scope.txtMsgDataNuevaActividad =   "Favor revisar la informacion de la nueva Actividad Economica que Creara.";
+            $scope.mostrarMsgActividadTrue  = false;
+            $scope.mostrarMsgActividadFalse = true;
+            $scope.mostrarMsgNuevaActividad = true;
+            $scope.formDatosAE  =   false;  
+            if($scope.txtMsgConexionGen != ''){
+                $scope.txtMsgDataRenovacion =   $scope.txtMsgConexionGen;
+            }else{
+                $scope.txtMsgDataRenovacion =   "Estimado Ciudadano no tiene actividad económica registrada.";                                
+                $scope.txtMsgDataNuevaActividad =   "Favor revisar la informacion de la nueva Actividad Economica que Creara.";
             }
-        });
+            $.unblockUI();
+        }
+
     };
 
     $scope.tblTramites = new ngTableParams({
@@ -163,7 +197,10 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     $scope.datos.f01_categoria_descrip_ant = response[0].ActividadDesarrollada;
                     $scope.cargarNombVia($scope.datos.f01_tip_via_act, $scope.datos.f01_zona_act);
                     $scope.getDatosLotus(resultadoApi.success.dataSql.datosAE[0].idActividadEconomica,codhojaruta);
-                    $scope.desabilitado = false;   
+                    $scope.desabilitado = false; 
+                    $scope.botones = "mostrar"
+                    console.log("botonesss33: ", $scope.botones);
+
                 }
                 //$rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
             }else{
@@ -188,7 +225,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 $scope.datos.f01_categoria_agrupada_descrip = $scope.resultadoCP.f01_categoria_agrupada_descrip;
                 $scope.datos.f01_categoria_agrupada_descripcion = $scope.resultadoCP.f01_categoria_agrupada_descripcion;
                 $scope.datos.f01_casilla = $scope.resultadoCP.f01_casilla;
-                
                 $scope.open_mapa_ae();
                 $scope.datosAntMulti = $scope.resultadoLotus.success.data[0].datos.licencia_multiple;
                 $q.all($scope.resultadoLotus).then(function(data){
@@ -205,51 +241,51 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     } 
 
     $scope.mostrarimg  =   function(imagen){         
-	    if (typeof($scope.FILE_FOTOCOPIA_CI) != 'undefined') {
-	        $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
-	    };
-	    if (typeof($scope.FILE_FOTOCOPIA_CI_R) != 'undefined') {
-	        $scope.registro.FILE_FOTOCOPIA_CI_R = nombreNuevoCIReverso;
-	    }
-	    if (typeof($scope.registro.FILE_FOTOCOPIA_CI) != 'undefined') {
-	        var nombreArchivoCi    =   "";
-	        nombreArchivoCi        =   $scope.registro.FILE_FOTOCOPIA_CI;
-	        var aTipoArchivoCi     =   nombreArchivoCi.split("?")[0];     
-	        var extCi              =   aTipoArchivoCi.split(".")[1];
+        if (typeof($scope.FILE_FOTOCOPIA_CI) != 'undefined') {
+            $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
+        };
+        if (typeof($scope.FILE_FOTOCOPIA_CI_R) != 'undefined') {
+            $scope.registro.FILE_FOTOCOPIA_CI_R = nombreNuevoCIReverso;
+        }
+        if (typeof($scope.registro.FILE_FOTOCOPIA_CI) != 'undefined') {
+            var nombreArchivoCi    =   "";
+            nombreArchivoCi        =   $scope.registro.FILE_FOTOCOPIA_CI;
+            var aTipoArchivoCi     =   nombreArchivoCi.split("?")[0];     
+            var extCi              =   aTipoArchivoCi.split(".")[1];
 
-	        try{
-	            extCi                  =   extCi.toLowerCase();
-	        }catch(e){}
+            try{
+                extCi                  =   extCi.toLowerCase();
+            }catch(e){}
 
-	        if(imagen == 'ci'){
-	            $scope.archivoCI = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registro.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
-	            if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip'){
-	                window.open($scope.archivoCI, "_blank");
-	            }else if(extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){             
-	                $("#fo").modal("show");
-	            }          
-	        }
-	    };      
-	    if (typeof($scope.registro.FILE_FOTOCOPIA_CI_R != 'undefined')) {
-	        var nombreArchivoCiR    =   "";
-	        nombreArchivoCiR        =   $scope.registro.FILE_FOTOCOPIA_CI_R;
-	        var aTipoArchivoCiR     =   nombreArchivoCiR.split("?")[0];     
-	        var extCiR              =   aTipoArchivoCiR.split(".")[1];   
-	        try{
-	            extCiR                  =   extCiR.toLowerCase();
-	        }catch(e){}
+            if(imagen == 'ci'){
+                $scope.archivoCI = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registro.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
+                if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip'){
+                    window.open($scope.archivoCI, "_blank");
+                }else if(extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){             
+                    $("#fo").modal("show");
+                }          
+            }
+        };      
+        if (typeof($scope.registro.FILE_FOTOCOPIA_CI_R != 'undefined')) {
+            var nombreArchivoCiR    =   "";
+            nombreArchivoCiR        =   $scope.registro.FILE_FOTOCOPIA_CI_R;
+            var aTipoArchivoCiR     =   nombreArchivoCiR.split("?")[0];     
+            var extCiR              =   aTipoArchivoCiR.split(".")[1];   
+            try{
+                extCiR                  =   extCiR.toLowerCase();
+            }catch(e){}
 
-	        if(imagen == 'ciR'){
-	            $scope.archivoCIR = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registro.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";             
-	            if(extCiR == 'pdf' || extCiR == 'docx' ||  extCiR == 'docxlm' || extCiR == 'zip'){
-	                window.open($scope.archivoCIR, "_blank");
-	            }else if(extCiR == 'jpeg' || extCiR == 'jpg' ||  extCiR == 'png' ||  extCiR == 'gif'){
-	                $("#fot").modal("show");             
-	            }
-	        } 
-	    }; 
-	    $.unblockUI();
-	}
+            if(imagen == 'ciR'){
+                $scope.archivoCIR = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registro.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";             
+                if(extCiR == 'pdf' || extCiR == 'docx' ||  extCiR == 'docxlm' || extCiR == 'zip'){
+                    window.open($scope.archivoCIR, "_blank");
+                }else if(extCiR == 'jpeg' || extCiR == 'jpg' ||  extCiR == 'png' ||  extCiR == 'gif'){
+                    $("#fot").modal("show");             
+                }
+            } 
+        }; 
+        $.unblockUI();
+    }
 
     $scope.ejecutarFile = function(idfile){
         var sid =   document.getElementById(idfile);
@@ -261,7 +297,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     };
 
     $scope.limpiarDatos = function(){
-    	$scope.datos.f01_id_actividad_economica = '';
+        $scope.datos.f01_id_actividad_economica = '';
             $scope.datos.f01_nro_orden = "";
             $scope.datos.f01_nit = '';
             $scope.datos.f01_raz_soc = '';
@@ -448,7 +484,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
         if ($scope.tipoPersona == 'NATURAL'){
             console.log($scope.tipoPersona);
-             $scope.capturarImagen();
+            $scope.capturarImagen();
             datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
             datosNeXO['f01_id_actividad_economica']   =   paramForm.f01_id_actividad_economica;
             datosNeXO['f01_nro_orden']   =   paramForm.f01_nro_orden;
@@ -585,11 +621,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             datosNeXO['f04_res_solicitud_upaee']="";
             datosNeXO['rdTipoTramite'] = paramForm.rdTipoTramite;
             datosNeXO['f01_nro_actividad']  =   paramForm.f01_nro_actividad;
-            //PAGO ADELANTADO
-            datosNeXO['pago_adel'] =  $scope.pago_adelantado;
-            datosNeXO['nro_ges'] =  paramForm.nro_ges;
-            datosNeXO['f01_gestiones_deudas'] = $scope.listDeudas;
-            datosNeXO['f01_total_deudas'] = $scope.totalD;
+
+
             /*REQUISITOSDELAACTIVIDADECONOMICA - CIUDADANO*/
             datosNeXO['f01_tip_act']=paramForm.f01_tip_act;
             datosNeXO['f01_tipo_lic']=paramForm.f01_tipo_lic;
@@ -633,7 +666,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 datosNeXO['f01_act_principal'] = '';
                 datosNeXO['f01_actividad_principal_array'] = '';
             }
-        }        
+        }  
+   
         datosNeXO['f01_categoria_descrip']      =  paramForm.f01_categoria_descripcion;
         datosNeXO['f01_categoria_descrip2']      =  paramForm.f01_categoria_descripcion.toUpperCase();
         datosNeXO['f01_categoria']      =  parseInt(paramForm.f01_categoria_descrip);
@@ -641,11 +675,12 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         datosNeXO['f01_categoria_agrupada_descrip'] = paramForm.f01_categoria_agrupada_descrip;
         datosNeXO['f01_categoria_agrupada_dem'] = paramForm.f01_categoria_agrupada_dem;
         datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2.toUpperCase();
-        datosNeXO['f01_correo_electronico_ae']=paramForm.f01_correo_electronico_ae;
-        datosNeXO['f01_modalidad_pago']=paramForm.f01_modalidad_pago;
-        datosNeXO['f01_serv_adic']=paramForm.f01_serv_adic;
-        datosNeXO['f01_emite_factura']=paramForm.f01_emite_factura;
-        datosNeXO['f01_informacion_adicional']=paramForm.f01_informacion_adicional;
+        datosNeXO['f01_productosElaborados'] = paramForm.f01_productosElaborados;
+        datosNeXO['f01_correo_electronico_ae'] = paramForm.f01_correo_electronico_ae;
+        datosNeXO['f01_tipo_act_ae'] = paramForm.f01_tipo_act_ae;
+        datosNeXO['f01_categoria_agrupada_descripcion'] = paramForm.f01_categoria_agrupada_descripcion;
+        datosNeXO['f01_cantidad_personal'] = paramForm.f01_cantidad_personal;
+        datosNeXO['f01_modalidad_pago'] = paramForm.f01_modalidad_pago; 
         datosNeXO['g_tipo'] = "AE-TIENDA EN LINEA";
         datosNeXO['g_fecha'] = fechactual;
         datosNeXO['g_origen'] = "IGOB247";
@@ -656,9 +691,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 datosNeXO['INT_ID_ACTIVIDAD_ECONOMICA'] = paramForm.INT_TRAMITE_RENOVA;
             }
         }
-
-        console.log("Hola::: ", paramForm);
-
+        
         var sMacroR         =   datosNeXO['f01_macro_des'];
         var sZonaR          =   datosNeXO['INT_AC_ID_ZONA'];
         var sMacroRDesc     =   datosNeXO['f01_macro_des'];
@@ -672,7 +705,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         crearCaso.datos     = datosSerializados;
         crearCaso.procodigo = idProcodigo;
         crearCaso.crearTramiteLinea(function(response){
-            console.log("dkjsnfskdl", response);
             try{
                 $scope.botones = null;
                 $scope.desabilitado = true;
@@ -732,111 +764,62 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         }
     };
 
+    var clsIniciarHtmlForm = $rootScope.$on('inicializarHtmlForm', function(event, tramite){
+        if (tramite.venviado == 'SI') {
+            $scope.btnGuardarForm           =   true;
+            $scope.desabilitado             =   true;
+            $scope.botones                  =   null;
+            $scope.only                     =   true;
+        } else {
+            $scope.btnGuardarForm   =   false;
+            $scope.only             =   false;
+
+        }
+        var datosgen       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
+        if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
+            $scope.mostrarMsgNuevaActividad = false;
+        }
+        $.unblockUI();
+        
+    });
+
+    var clsIniciarGrillaAE = $rootScope.$on('inicializarGrillaAE', function(event, data){
+        console.log("data xxxxxx ", data);
+        $scope.formDatosAE              = false;
+        $scope.mostrarMsgActividadTrue  = false;
+        $scope.mostrarMsgActividadFalse = false;
+        console.log("data 111 ", data);
+        if(data.length > 0){
+            if(data[0].venviado == 'SI'){                
+                if(data[0].datos.INT_FORM_ALMACENADO == 'G'){
+                    $scope.desabilitado = true;
+                    $scope.botones = null;
+                    console.log("botonesss: ", $scope.botones);
+                }else{
+                    $scope.desabilitado = false;
+                    $scope.botones = "mostrar";
+                    console.log("botoness22s: ", $scope.botones);
+
+                }
+            }
+        }
+    });
 
     $scope.cargarDatosPermiso=function(){
         $scope.listadoActividadesEconomicas();
         $scope.open_mapa_ae();
         $scope.macrodistritos();
-
-    	$scope.btnEnviarForm    =   true;
-        $scope.btnGuardarForm   =   true;
-        $scope.botones = "";
-    	$.unblockUI();
+        $.unblockUI();
     };
 
-    //////////////////////////////panchito /////////////////////////////
-
-    $scope.declaracionJurada = function(datos){
-        console.log("---------------------");
-        console.log(datos);
-        console.log("---------------------");
-        $rootScope.datosEnv = "";
-        var fecha= new Date();
-        var fechaActualS = "";
-        fechaActualS= fecha.getDate() +" - "+ (fecha.getMonth() + 1) +" - "+ fecha.getFullYear();
-        var sHora = "";
-        sHora = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-        var stringFormulario40  =   "";
-        var urlFormularioN  =   "";
-        var snombre =   "";
-        var scedulaid   =   "";
-        var sexpedido   =   "";
-        var snombreREP = "";
-        var scirep = "";
-        var sempresa = "";
-        var snit = "";
-        $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
-        if($scope.tipoPersona == 'NATURAL' || $scope.tipoPersona == 'N'){
-            datos.f01_tipo_per_desc = 'NATURAL';
-            urlFormularioN  =   "../../docs/AE_Formulario_TV.html";
-            $( "#msgformularioN" ).load(urlFormularioN, function(data) {
-                stringFormulario40  =   data;
-                datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
-                datos.f01_nom_completo = ((typeof(datos.f01_nom_completo) == 'undefined' || datos.f01_nom_completo == null) ? "" : datos.f01_nom_completo);
-                datos.f01_num_dos_prop = ((typeof(datos.f01_num_dos_prop) == 'undefined' || datos.f01_num_dos_prop == null) ? "" : datos.f01_num_dos_prop);
-                datos.f01_expedido_prop = ((typeof(datos.f01_expedido_prop) == 'undefined' || datos.f01_expedido_prop == null) ? "" : datos.f01_expedido_prop);
-                datos.f01_raz_soc = ((typeof(datos.f01_raz_soc) == 'undefined' || datos.f01_raz_soc == null) ? "" : datos.f01_raz_soc);
-                datos.f01_num_pmc = ((typeof(datos.f01_num_pmc) == 'undefined' || datos.f01_num_pmc == null) ? "" : datos.f01_num_pmc);
-                
-
-
-
-
-                stringFormulario40  =   stringFormulario40.replace("#f01_nom_completo#", datos.f01_nom_completo);
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_dos_prop#", datos.f01_num_dos_prop);
-                stringFormulario40  =   stringFormulario40.replace("#f01_expedido_prop#", datos.f01_expedido_prop);
-                stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.f01_raz_soc);
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
-
-
-                
-
-
-                stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
-                stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
-                stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
-                stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
-                $scope.msgformularioN = stringFormulario40;
-                $scope.notifcondicionesuso = stringFormulario40;
-                setTimeout(function(){
-                    $scope.fmostrarFormulario();
-                },500);
-            })
-            $scope.armarDatosForm(datos,fechaActualS, sHora);
-        }
-    }
-
-    $scope.armarDatosForm = function(data,sfecha,sHora){
-        $rootScope.datosForm401 = "";
-        var dataForm = {};
-        //CABECERA
-        dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
-        dataForm['f01_nom_completo'] = data.f01_nom_completo;
-        dataForm['f01_num_dos_prop'] = data.f01_num_dos_prop;
-        dataForm['f01_expedido_prop'] = data.f01_expedido_prop;
-        dataForm['f01_raz_soc'] = data.f01_raz_soc;
-        dataForm['f01_num_pmc'] = data.f01_num_pmc;
-        
-
-
-
-
-        dataForm['fecha_sist'] = sfecha;
-        dataForm['fecha_sist2'] = sfecha;
-        dataForm['usuario'] = sessionService.get('USUARIO');
-        dataForm['hora_sist'] = sHora;
-        $rootScope.datosForm401 = dataForm;
-        $rootScope.datosEnv = data;
-    }
-
-    $scope.fmostrarFormulario   =   function(){
-        $("#exampleModalCenter1").modal({backdrop: 'static', keyboard: false});
-        $('#msgformularioN').html($scope.msgformularioN);
-    }
-   $scope.verificarCamposInternet = function (data) {
-        console.log("Ingresando correcto");
-        $scope.declaracionJurada(data);
-        $("#declaracionN").modal("show");
-    }
+    $scope.$on('$destroy', function() {
+        setTimeout(function(){
+            //clsValidarBtnEnviar();
+            //clsIniciarCamposInternet();
+            clsIniciarGrillaAE();
+           // clsIniciaBtnHabilitar();
+            clsIniciarHtmlForm();
+        },2000);
+    });
 
 }

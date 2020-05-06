@@ -817,6 +817,59 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         }
     });
 
+    $scope.cambiarFile = function(obj, valor){
+        $scope.registroAdj  = [];
+        var fechaNueva      = "";
+        var fechaserver = new fechaHoraServer(); 
+        fechaserver.fechahora(function(resp){
+            var sfecha      = JSON.parse(resp);
+            var fechaServ   = (sfecha.success.fecha).split(' ');
+            var fecha_      = fechaServ[0].split('-');
+            var hora_       = fechaServ[1].split(':');
+            fechaNueva      = fecha_[0] + fecha_[1] +   fecha_[2]   +   '_' +   hora_[0]    +   hora_[1];
+        }); 
+        setTimeout(function(){         
+            var nombre = obj.getAttribute("name");
+            var objarchivo = obj.files[0];
+            var oidCiudadano = sessionService.get('IDSOLICITANTE');
+            $scope.direccionvirtual = "RC_CLI";
+            var sDirTramite = sessionService.get('IDTRAMITE');
+            var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/" + oidCiudadano + "/" + sDirTramite + "/";
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1];
+                if (objarchivo.size <= 15000000) {
+                    if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" 
+                        || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
+                        || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
+                        || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
+                        || ext_doc == 'XLSX' || ext_doc == "pdf") {
+                        var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                        fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                        document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                        document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                    } else{
+                        swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                            document.getElementById('txt_adjunto').value = '';
+                            document.getElementById('adjunto').value = '';
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $.unblockUI();
+                        }
+                }else{
+                    swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                        document.getElementById('txt_adjunto').value = '';
+                        document.getElementById('adjunto').value = '';
+                        $scope.registroAdj.adjunto = '';
+                        $scope.adjunto = '';
+                        valor = '';
+                        $.unblockUI();
+                }
+                $.unblockUI();
+        },500);
+    }
+
     $scope.cargarDatosPermiso=function(){
         $scope.listadoActividadesEconomicas();
         $scope.open_mapa_ae();

@@ -131,6 +131,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         $scope.template =   "";
         $scope.seleccionarTramiteRender(tramite);    
     }
+    
 
     $scope.seleccionarTramiteRender = function (tramite) {
         $scope.open_mapa_ae();
@@ -157,7 +158,6 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         if(tipoPersona == 'JURIDICO' && sidservicio == 50){
             vsidservicio = 3;
         }
-
         if (tramite.venviado == "SI") {
             $scope.template         =   $scope.templates[vsidservicio];
         } else {

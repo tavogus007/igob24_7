@@ -4,6 +4,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
 
     $scope.tablaTramites        =   {};
     $scope.tramitesUsuario      =   [];
+        $scope.datosinic = {};
     $scope.templates =
     [ { name: 'template0.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexnatural.html'}, 
       { name: 'template1.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexpermisonatural.html'},
@@ -172,6 +173,45 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         }
 
     };
+
+    $scope.recuperarDatosRegistro = function(){
+        var datosini = {};
+        var datosCiudadano = new rcNatural();
+        datosCiudadano.oid = sessionService.get('IDSOLICITANTE');
+
+        datosCiudadano.datosCiudadanoNatural(function(resultado){ 
+            results = JSON.parse(resultado);
+           if (results[0].dtspsl_file_fotocopia_ci) {
+                $scope.btover=true;
+            }
+
+            if (results[0].dtspsl_file_fotocopia_ci_r) {
+                $scope.btover1=true;
+            }else{
+            }
+            
+                
+            if(results[0].dtspsl_tipo_persona == "NATURAL") 
+            {                   
+                var cidate = results[0].dtspsl_file_fotocopia_ci;
+                datosini['FILE_FOTOCOPIA_CI'] = results[0].dtspsl_file_fotocopia_ci;
+                datosini['FILE_FOTOCOPIA_CI_R'] = results[0].dtspsl_file_fotocopia_ci_r;
+                datosini['FILE_FACTURA_LUZ'] = results[0].dtspsl_file_factura_luz;
+            }
+            else if(results[0].dtspsl_tipo_persona == "JURIDICO"){ 
+                datosini['FILE_FOTOCOPIA_CI'] = results[0].dtspsl_file_fotocopia_ci;
+                datosini['FILE_FOTOCOPIA_CI_R'] = results[0].dtspsl_file_fotocopia_ci_r;
+                $.unblockUI(); 
+            }        
+        });
+
+        $scope.datosinic = datosini;
+        $rootScope.archivoCI = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datosinic.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
+        $rootScope.archivoCIR = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datosinic.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";
+        $rootScope.archivoLuz = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datosinic.FILE_FACTURA_LUZ + "?app_name=todoangular";
+        $.unblockUI();
+    };
+
 
     $scope.recuperandoDatosInicialesCiudadano = function(){
         var idCiudadano = sessionService.get('IDUSUARIO');
@@ -528,7 +568,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
 
     $scope.obtenerContribuyente = function(){
         var tipoContribuyente     =   sessionService.get('TIPO_PERSONA');
-    	var ciDocumento          =   '';//sessionService.get('CICIUDADANO'));
+        var ciDocumento          =   '';//sessionService.get('CICIUDADANO'));
         var nitDocumento          =   '';//sessionService.get('CICIUDADANO'));
         var sAccion  
         if(tipoContribuyente == 'NATURAL'){
@@ -555,7 +595,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
             resultadoApi = JSON.parse(resultado);
             console.log('resultadoApi:: ', resultadoApi);
             if (resultadoApi.success) {
-            	console.log('resultadoApi.success::: ', resultadoApi.success);
+                console.log('resultadoApi.success::: ', resultadoApi.success);
                 var response    =   resultadoApi;
                 $scope.txtMsgConexionGen    =   "";
                 $scope.dataGenesisCidadano  =   response.success.dataSql;
@@ -569,7 +609,8 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     };
 
     $scope.recuperarSerializarInfo = function(tramite){
-        $scope.btover_c = true;     
+        $scope.btover_c = true;  
+         $scope.recuperarDatosRegistro();    
         var sIdTramite = tramite.vtra_id;
         $scope.sIdTramiteSeleccionado = tramite.vtra_id;
         var sIdCiudadano = sessionService.get('IDSOLICITANTE');//IDCIUDADANO
@@ -609,7 +650,6 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                            }
                         }
                         $scope.datos.IDTRAMITE = sIdTramite;
-                        ///$scope.datos.doc_Adjuntos = datoFinalA;
                         $scope.publicid = [];
                         $scope.publicid = $scope.datos.publicidad;
                         $rootScope.looo = $scope.datos.INT_AC_longitud;
@@ -630,12 +670,13 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                                 $scope.iniciandoDatos();                        
                                 sessionService.set('IDTRAMITE', sIdTramite);
                             }
-                }
-                $.unblockUI();
-                 setTimeout(function(){
-                    $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
+                }               
+                //$rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
+                setTimeout(function(){
                     $rootScope.$broadcast('inicializarGrillaAE', [{'datos':$scope.datos, 'venviado':tramite.venviado}]);
-                }, 4000)
+                    $rootScope.$broadcast('inicializarHtmlForm', tramite);
+                 }, 4000);
+                $.unblockUI();
             });
         } catch(error){
             console.log("Error Interno : ", error);
@@ -690,6 +731,8 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
 
      $scope.guardarDatos = function(obj){
         var fechactual          = obtFechaActual.obtenerFechaActual();
+        obj.INT_FORM_ALMACENADO = 'G';
+        obj.f01_tipo_per = sessionService.get('TIPO_PERSONA');
          try {
             var datosSerializados   =  JSON.stringify(obj);
             var idCiudadano         = sessionService.get('IDSOLICITANTE');
@@ -956,10 +999,12 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         return deferred.promise;
     };
 
+
     $scope.cargarNombVia = function(tipoVia, idZona) {
+
         try{
             var nomvia = new aelstNombreVia();
-            nomvia.idzona = idZona;
+            nomvia.idzona =  $scope.datos.f01_zona_act;
             nomvia.tipovia = tipoVia;
             nomvia.aelst_NombreVia(function(res){
                 x = JSON.parse(res);
@@ -1007,6 +1052,12 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         $scope.datos.f01_macro_act_descrip = e.options[e.selectedIndex].text;
     }
       
+     $scope.$on('api:ready',function(){
+        $scope.recuperandoDatosInicialesCiudadano();
+        $scope.ListadoTramitesCiudadano();
+        $scope.obtenerContribuyente();
+       
+    });
 
     $scope.inicioServiciosVAE = function () {
        $scope.recuperandoDatosInicialesCiudadano();

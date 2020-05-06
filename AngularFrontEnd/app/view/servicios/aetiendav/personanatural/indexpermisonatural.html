@@ -58,29 +58,20 @@
                         
                     </div>
                 </div>
-                 <!--div class="col-md-12" align="left">
-                    <div class="form-group" class="col-md-12">                                   
-                            <div class="col-md-4">
-                                <div class="form-group" >
-                                    <input type="radio" ng-model="datos.rdTipoTramit1" name="rdTipoTramite1" value="VP" ng-disabled="desabilitado" required/>VENTA DE PRODUCTOS A DOMICILIO
-                                </div>
+                
+                <div class="col-md-12" ng-show="mostrarMsgNuevaActividad">
+                    <div class="form-group" >
+                        <label class="col-sm-12 control-label no-padding-right" for="url" ><font color="#FF0000" size="5px"></font></label>
+                        <div class="col-sm-12" align="left">
+                            <div class="alert alert-danger fade in">
+                                <a href="" class="close" data-dismiss="alert">&times;</a>
+                                {{txtMsgDataNuevaActividad}}
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group" >
-                                    <input type="radio" ng-model="datos.rdTipoTramit2" name="rdTipoTramite1" value="VR" ng-disabled="desabilitado" required/>VENTA PARA RECOJO
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group" >
-                                    <input type="radio" ng-model="datos.rdTipoTramit3" name="rdTipoTramite1" value="DP" ng-disabled="desabilitado" required/>DISTRIBUCION CON MOVILIDAD PROPIA
-                                <br>
-                                </div>
-                            </div>
+                        </div>
                     </div>
-                </div-->
+                </div>
 
-                <div class="col-md-12">
+                <div class="col-md-12" ng-show="formDatosAE">
                   <div  class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading"><B>SELECCIONE LA ACTIVIDAD ECONOMICA PARA LA SOLICITUD DE HABILITACION</B></div>
@@ -243,6 +234,26 @@
                     <legend>DATOS DE LA ACTIVIDAD ECONOMICA </legend>
                 </div>
 
+                 <div class="col-md-12" align="left">
+                    <div class="form-group" class="col-md-12">                                   
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <input type="radio" ng-model="datos.rdTipoTramit1" name="rdTipoTramite1" value="VP" ng-disabled="desabilitado" required/>VENTA DE PRODUCTOS A DOMICILIO
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <input type="radio" ng-model="datos.rdTipoTramit2" name="rdTipoTramite1" value="VR" ng-disabled="desabilitado" required/>VENTA PARA RECOJO
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <input type="radio" ng-model="datos.rdTipoTramit3" name="rdTipoTramite1" value="DP" ng-disabled="desabilitado" required/>DISTRIBUCION CON MOVILIDAD PROPIA
+                                <br>
+                                </div>
+                            </div>
+                    </div>
+                </div>
                 <div class="col-md-4">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px">  </font>
@@ -429,14 +440,6 @@
                             <div class="controls">
                               <input type="text" ng-model="datos.OTRO_VIA" id="OTRO_VIA" name="OTRO_VIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4" ng-show="false">
-                    <div class="form-group">
-                        <label for="url" >Tipo Trayecto:</label>
-                        <div class="controls">
-                      <input type="text" ng-model="datos.f01_factor" id="f01_factor" name="f01_factor" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
                         </div>
                     </div>
                 </div>
@@ -772,7 +775,7 @@
 
             
             <div class="col-md-12" align="right" ng-show = "botones != null">
-                <button id="miFormGuardar"  ng-click="verificarCamposInternet(datos);guardarDatos(datos);" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="" tooltip="Guardar Formulario">
+                <button id="miFormGuardar"  ng-click="guardarDatos(datos);" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="" tooltip="Guardar Formulario">
                 <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="" tooltip="Enviar Formulario" >
             </div> 
           </div>

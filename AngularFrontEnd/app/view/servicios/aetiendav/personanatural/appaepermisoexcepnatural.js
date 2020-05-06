@@ -747,6 +747,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     //////////////////////////////panchito /////////////////////////////
 
     $scope.declaracionJurada = function(datos){
+        console.log("---------------------");
+        console.log(datos);
+        console.log("---------------------");
         $rootScope.datosEnv = "";
         var fecha= new Date();
         var fechaActualS = "";
@@ -769,6 +772,27 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             $( "#msgformularioN" ).load(urlFormularioN, function(data) {
                 stringFormulario40  =   data;
                 datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
+                datos.f01_nom_completo = ((typeof(datos.f01_nom_completo) == 'undefined' || datos.f01_nom_completo == null) ? "" : datos.f01_nom_completo);
+                datos.f01_num_dos_prop = ((typeof(datos.f01_num_dos_prop) == 'undefined' || datos.f01_num_dos_prop == null) ? "" : datos.f01_num_dos_prop);
+                datos.f01_expedido_prop = ((typeof(datos.f01_expedido_prop) == 'undefined' || datos.f01_expedido_prop == null) ? "" : datos.f01_expedido_prop);
+                datos.f01_raz_soc = ((typeof(datos.f01_raz_soc) == 'undefined' || datos.f01_raz_soc == null) ? "" : datos.f01_raz_soc);
+                datos.f01_num_pmc = ((typeof(datos.f01_num_pmc) == 'undefined' || datos.f01_num_pmc == null) ? "" : datos.f01_num_pmc);
+                
+
+
+
+
+                stringFormulario40  =   stringFormulario40.replace("#f01_nom_completo#", datos.f01_nom_completo);
+                stringFormulario40  =   stringFormulario40.replace("#f01_num_dos_prop#", datos.f01_num_dos_prop);
+                stringFormulario40  =   stringFormulario40.replace("#f01_expedido_prop#", datos.f01_expedido_prop);
+                stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.f01_raz_soc);
+                stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
+
+
+                
+
+
+                stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
                 stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
@@ -787,6 +811,16 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         var dataForm = {};
         //CABECERA
         dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
+        dataForm['f01_nom_completo'] = data.f01_nom_completo;
+        dataForm['f01_num_dos_prop'] = data.f01_num_dos_prop;
+        dataForm['f01_expedido_prop'] = data.f01_expedido_prop;
+        dataForm['f01_raz_soc'] = data.f01_raz_soc;
+        dataForm['f01_num_pmc'] = data.f01_num_pmc;
+        
+
+
+
+
         dataForm['fecha_sist'] = sfecha;
         dataForm['fecha_sist2'] = sfecha;
         dataForm['usuario'] = sessionService.get('USUARIO');

@@ -89,5 +89,60 @@
 
 
 
+  <!-- panchito -->
+  <div class="modal fade" id="declaracionN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header" style="background: #ffcb05;" >
+                  <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO DE DECLARACION JURADA</h2>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+                      <form name="formulario" readOnly="true" novalidate>
+                          <div class="row">
+                              <div id="msgformularioN">
+                                  {{msgformularioN}}
+                              </div>
+                          </div>          
+                      </form>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="generarDocumentoPhp();" data-dismiss="modal">Aceptar</button>
+                  <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button>
+              </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- MODAL EMISION JURIDICO-->
+   <div class="modal fade" id="declaracionJ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header" style="background: #ffcb05;" >
+                  <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO DE DECLARACION JURADA</h2>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+                      <form name="formulario" readOnly="true" novalidate>
+                          <div class="row">
+                              <div id="msgformularioJ">
+                                  {{msgformularioJ}}
+                              </div>
+                          </div>      
+                      </form>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="generarDocumentoPhp();" data-dismiss="modal">Aceptar</button>
+                  <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- panchito fin  -->
+
+
+
 <!--cambios-->
 </body>

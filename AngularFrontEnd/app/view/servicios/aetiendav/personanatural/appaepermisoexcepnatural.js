@@ -18,9 +18,11 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 var response    =   resultadoApi;
                 $scope.trmUsuario = response.success.dataSql;
                 var data = response.success.dataSql;
-                $scope.tblTramites.reload();   
+                $scope.tblTramites.reload(); 
+                $scope.desabilitado = true;  
             } else {
-                 swal('', "Datos no Encontrados !!!", 'warning');
+                $scope.desabilitado = true;
+                swal('', "Datos no Encontrados !!!", 'warning');
             }
         });
     };
@@ -57,13 +59,10 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         datosGenerales.getDatosAE_Viae(function(resultado){
             resultadoApi = JSON.parse(resultado);
             if (resultadoApi.success) {
-                console.log("Ingresa aqui22!!!!! ", resultadoApi.success);
-
                 codhojaruta = resultadoApi.success.dataSql.datosAE[0].hojaRuta;
                 var response = resultadoApi.success.dataSql.datosAE;
                 var lstPublicidad = resultadoApi.success.dataSql.datosVIAE;
                 if(response.length > 0){
-                    console.log("Ingresa aqui!!!!!", response.length);
                     if(response[0].numeroOrden == 0 || response[0].numeroOrden == null || response[0].numeroOrden == 'null'){
                         response[0].numeroOrden = 0;
                         $scope.nroOrdenActividiadEconomicaActual  =  response[0].numeroOrden;
@@ -164,7 +163,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     $scope.datos.f01_categoria_descrip_ant = response[0].ActividadDesarrollada;
                     $scope.cargarNombVia($scope.datos.f01_tip_via_act, $scope.datos.f01_zona_act);
                     $scope.getDatosLotus(resultadoApi.success.dataSql.datosAE[0].idActividadEconomica,codhojaruta);
-                
+                    $scope.desabilitado = false;   
                 }
                 //$rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
             }else{

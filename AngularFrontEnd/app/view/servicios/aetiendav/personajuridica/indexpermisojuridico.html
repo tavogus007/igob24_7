@@ -16,7 +16,7 @@
         angular.element(this).scope().cambiarFile(this, $(this).val());
         });
     }
-    $('.clockpicker').clockpicker();
+   // $('.clockpicker').clockpicker();
 </script>
 <script type="text/javascript">
     function accessScope(node, func) {
@@ -24,11 +24,7 @@
         scope.$apply(func);
     }
 
-    function initMap(){
-        accessScope('#outerMapaActividadM', function (scope) {
-            scope.initMap();
-        });
-    }
+    
 
     function soloNumericoTelefono(sValor){
         Numer=parseInt(sValor);
@@ -82,12 +78,7 @@
         };
     }
 </script>
-<script type="text/javascript">
-// In your Javascript (external .js resource or <script> tag)
-    $(document).ready(function() {
-        $('.js-example-basic-single').select2();
-    });
-</script>
+
 
 <div id="outerMapaActividadM" ng-controller="aepermisoexcepcionaljuridicoController" data-ng-init="cargarDatosJuridico();">
     <div class="ibox float-e-margins">

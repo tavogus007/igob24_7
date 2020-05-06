@@ -181,7 +181,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
                     if(typeof sformguardado == 'undefined' || sformguardado != 'G'){
                         $scope.botones = null;
                         $scope.desabilitado = true;
-                        swal('', "Favor revisar la información y seleccionar la Actividad Economica que desea Renovar.", 'warning');
+                        swal('Estimado Ciudadano', "Antes de realizar el registro, debe seleccionar la Actividad Economica.", 'warning');
                     }else{
                         $scope.botones = "mostrar";
                         $scope.desabilitado = false;
@@ -3617,6 +3617,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         $scope.lssubcategoria();
         $scope.lsCaracteristica();
         $scope.catactividadDesarrollada();
+        $scope.datosEA = false;
     };
 
     var clsIniciarGrillaAE = $rootScope.$on('inicializarGrillaAE', function(event, data){
@@ -4050,6 +4051,17 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         $.unblockUI();
         //$scope.initMap();
     });
+
+    $scope.mostrarDatos = function(datos){
+        console.log('DATOS MODALIDAD',datos);
+        if(datos == 'EA'){
+            $scope.datosEA = true;
+
+        }
+        else{
+            $scope.datosEA = false;
+        }
+    }
 
     $scope.$on('$destroy', function() {
         clsIniciarHtmlForm();

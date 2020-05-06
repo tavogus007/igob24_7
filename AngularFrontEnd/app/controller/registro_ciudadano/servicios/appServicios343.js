@@ -1436,9 +1436,6 @@
 
     //ALMACENANDO FORMULARIO
 
-     
-   
-
     $scope.adicionarServicioGamlp = function(datos){ 
         $scope.recuperandoDatosGenesis();
         var tipoPersona     =   sessionService.get('TIPO_PERSONA');

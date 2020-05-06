@@ -311,7 +311,7 @@ app.config(['$routeProvider',
         })
         .when('/', {
             title: 'Login',
-            templateUrl: 'index.html',
+            templateUrl: 'partials/cargando.html',
             controller: 'authCtrl',
             role: '0'
         })

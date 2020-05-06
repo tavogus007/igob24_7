@@ -189,10 +189,34 @@
                                         </a>
                                         <ul class="nav nav-second-level">
                                             <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexLotus.html">Correspondencia Ciudadana<div style="color: #ff0000;">(Nuevo)</div></a></li>
-                                            <li ng-show="stiporol == '5' && sservicios  == 'SI'">
+                                            <!--li ng-show="stiporol == '5' && sservicios  == 'SI'">
                                                 <a ng-click=""
-                                                    href="#registro_ciudadano|servicios|index343.html">{{translateTitulos.lbl_04_04}}</a>
+                                                    href="#registro_ciudadano|servicios|index343.html">{{translateTitulos.lbl_04_04}}
+                                                </a>
+                                            </li-->
+
+
+                                            <li ng-show="stiporol == '5' && sservicios  == 'SI'">
+                                                <a>
+                                                    <i
+                                                        class="fa fa-caret-right blanco">
+                                                        </i>{{translateTitulos.lbl_04_04}}
+                                                        <span class="fa arrow blanco"></span>
+                                                </a>
+                                                <ul class="nav nav-third-level">
+                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'">
+                                                        <a ng-click="" href="#registro_ciudadano|servicios|index343.html">Solicitud de Licencia
+                                                        </a>
+                                                    </li>
+                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'">
+                                                        <a ng-click="" href="">Registro Delivery
+                                                            <div style="color: #ff0000;">(Proximamente)</div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </li>
+
+
                                             <li><a
                                                     href="#servicios|varios|index.html?url='app/view/registro_ciudadano/productos/index.html"> Mis productos</a>
                                             </li>

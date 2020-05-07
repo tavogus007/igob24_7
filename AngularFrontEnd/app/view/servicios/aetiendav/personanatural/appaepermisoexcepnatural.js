@@ -39,7 +39,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     $scope.botones = null;
                     $scope.desabilitado = true; 
                                          
-                    swal('', "Favor revisar la información y seleccionar la Actividad Economica que desea Renovar.", 'warning');                    
+                    swal('', "Favor revisar la información y seleccionar la Actividad Economica que desea registrar.", 'warning');                    
                 }else{
 
                     //$scope.botones = "mostrar";
@@ -858,9 +858,12 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         datosNeXO['f01_modalidad_pago'] = paramForm.f01_modalidad_pago;
         datosNeXO['f01_tipo_act_ae_descrip'] = paramForm.f01_tipo_act_ae_descrip;
         datosNeXO['f01_modalidad_pago_descrip'] = paramForm.f01_modalidad_pago_descrip;
-        datosNeXO['rdTipoTramit1'] = paramForm.rdTipoTramit1;
-        datosNeXO['rdTipoTramit2'] = paramForm.rdTipoTramit2;
-        datosNeXO['rdTipoTramit3'] = paramForm.rdTipoTramit3;
+        datosNeXO['f01_venta_productos'] = paramForm.f01_venta_productos;
+        datosNeXO['f01_venta_recojo'] = paramForm.f01_venta_recojo;
+        datosNeXO['f01_distribucion_propia'] = paramForm.f01_distribucion_propia;
+        datosNeXO['f01_venta_productos_domicilio'] = paramForm.f01_venta_productos_domicilio;
+        datosNeXO['f01_venta_para_recojo'] = paramForm.f01_venta_para_recojo;
+        datosNeXO['f01_distribucion_movilidad_propia'] = paramForm.f01_distribucion_movilidad_propia;
 
         datosNeXO['g_tipo'] = "AE-TIENDA EN LINEA";
         datosNeXO['g_fecha'] = fechactual;
@@ -936,7 +939,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             tramiteIgob.frm_tra_id_usuario = idUsuario;
             tramiteIgob.validarFormProcesos(function(resultado){
                 $scope.ListadoTramitesCiudadano();
-                swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible para programar la inspección y/o verificación documental. Caso contrario puede apersonarse a la Plataforma Integra de su Macrodistrito para recabar mayor información.");
+                swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n La respuesta a su solicitud se realizará a través de su cuenta en la Plataforma iGob 24/7. Ante cualquier duda o consulta, favor comunicarse a nuestro Centro de Contacto Ciudadano 800-13-5555.");
             });
         } catch (error){
             console.log("Error : ", error);
@@ -1372,11 +1375,102 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $('#msgformularioN').html($scope.msgformularioN);
     }
 
+    $scope.getRequisito1 = function(dato){
+        datoObjectFinal = [];
+        if(dato == true){
+            datoObject = new Object();
+            datoObject.resid = 1;
+            datoObject.resvalor = "VENTA DE PRODUCTOS A DOMICILIO";
+            datoObject.estado=true;
+            datoObjectFinal[0] = datoObject;
+            $scope.datos.f01_venta_productos_domicilio=datoObjectFinal;
+        }else{
+            datoObject = new Object();
+            datoObject.resid = 1;
+            datoObject.resvalor = "VENTA DE PRODUCTOS A DOMICILIO";
+            datoObject.estado=false;
+            datoObjectFinal[0] = datoObject;
+            $scope.datos.f01_venta_productos_domicilio=datoObjectFinal;
+
+        }
+    }
+
+    $scope.getRequisito2 = function(dato){
+        datoObjectFinal = [];
+        if(dato == true){
+             datoObject = new Object();
+            datoObject.resid = 1;
+            datoObject.resvalor = "VENTA PARA RECOJO";
+            datoObject.estado=true;
+            datoObjectFinal[0] = datoObject;
+            $scope.datos.f01_venta_para_recojo=datoObjectFinal;
+
+        }else{
+            datoObject = new Object();
+            datoObject.resid = 1;
+            datoObject.resvalor = "VENTA PARA RECOJO";
+            datoObject.estado=false;
+            datoObjectFinal[0] = datoObject;
+            $scope.datos.f01_venta_para_recojo=datoObjectFinal;
+
+        }
+    }
+
+    $scope.getRequisito3 = function(dato){
+        datoObjectFinal = [];
+        if(dato == true){
+             datoObject = new Object();
+            datoObject.resid = 1;
+            datoObject.resvalor = "DISTRIBUCION CON MOVILIDAD PROPIA";
+            datoObject.estado=true;
+            datoObjectFinal[0] = datoObject;
+            $scope.datos.f01_distribucion_movilidad_propia=datoObjectFinal;
+
+        }else{
+            datoObject = new Object();
+            datoObject.resid = 1;
+            datoObject.resvalor = "DISTRIBUCION CON MOVILIDAD PROPIA";
+            datoObject.estado=false;
+            datoObjectFinal[0] = datoObject;
+            $scope.datos.f01_distribucion_movilidad_propia=datoObjectFinal;
+
+        }
+    }
+
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {
-        $scope.declaracionJurada(data);
-        $("#declaracionN").modal("show");
+        $scope.getRequisito1(data.f01_venta_productos);
+        $scope.getRequisito2(data.f01_venta_recojo);
+        $scope.getRequisito3(data.f01_distribucion_propia);
+
+        if(data &&
+              data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
+              data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
+              data.f01_raz_soc != "" && data.f01_raz_soc != null &&
+              data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
+              data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
+              data.f01_categoria_agrupada_descrip != "" && data.f01_categoria_agrupada_descrip != null &&
+              data.f01_macro_act != "" && data.f01_macro_act != null &&
+              data.f01_zona_act != "" && data.f01_zona_act != null &&
+            
+              data.f01_casilla != "" && data.f01_casilla != null &&
+              data.FILE_VEHICULO_FOTO != "" && data.FILE_VEHICULO_FOTO != null &&
+              data.FILE_VEHICULO_PERMISO != "" && data.FILE_VEHICULO_PERMISO != null &&
+              data.FILE_FORMVH_EXCEL != "" && data.FILE_FORMVH_EXCEL != null &&
+              data.FILE_RUAT_VEHICULO != "" && data.FILE_RUAT_VEHICULO != null &&
+              data.FILE_CONTRATO_DELIVERY != "" && data.FILE_CONTRATO_DELIVERY != null &&
+              data.FILE_FOTO_SOLICITANTE != "" && data.FILE_FOTO_SOLICITANTE != null &&
+              data.FILE_FOTO_LICENCIA_CI != "" && data.FILE_FOTO_LICENCIA_CI != null
+              ){
+              //$rootScope.validacionRequisitosTec();
+
+              $scope.guardarDatos(data);
+              $scope.declaracionJurada(data);
+              $("#declaracionN").modal("show");
+            }else{
+                swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
+            }
     }
 
 

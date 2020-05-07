@@ -1377,40 +1377,44 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
 
     $scope.getRequisito1 = function(dato){
         datoObjectFinal = [];
+        //"VENTA DE PRODUCTOS A DOMICILIO"
         if(dato == true){
             datoObject = new Object();
-            datoObject.resid = 1;
-            datoObject.resvalor = "VENTA DE PRODUCTOS A DOMICILIO";
-            datoObject.estado=true;
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor= "true";
             datoObjectFinal[0] = datoObject;
+            datoObjectFinal[1] = datoObject1;
             $scope.datos.f01_venta_productos_domicilio=datoObjectFinal;
         }else{
             datoObject = new Object();
-            datoObject.resid = 1;
-            datoObject.resvalor = "VENTA DE PRODUCTOS A DOMICILIO";
-            datoObject.estado=false;
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor="false";
             datoObjectFinal[0] = datoObject;
+            datoObjectFinal[1] = datoObject1;
             $scope.datos.f01_venta_productos_domicilio=datoObjectFinal;
-
         }
     }
 
     $scope.getRequisito2 = function(dato){
         datoObjectFinal = [];
         if(dato == true){
-             datoObject = new Object();
-            datoObject.resid = 1;
-            datoObject.resvalor = "VENTA PARA RECOJO";
-            datoObject.estado=true;
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor= "true";
             datoObjectFinal[0] = datoObject;
+            datoObjectFinal[1] = datoObject1;
             $scope.datos.f01_venta_para_recojo=datoObjectFinal;
 
         }else{
             datoObject = new Object();
-            datoObject.resid = 1;
-            datoObject.resvalor = "VENTA PARA RECOJO";
-            datoObject.estado=false;
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor="false";
             datoObjectFinal[0] = datoObject;
+            datoObjectFinal[1] = datoObject1;
             $scope.datos.f01_venta_para_recojo=datoObjectFinal;
 
         }
@@ -1419,19 +1423,21 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     $scope.getRequisito3 = function(dato){
         datoObjectFinal = [];
         if(dato == true){
-             datoObject = new Object();
-            datoObject.resid = 1;
-            datoObject.resvalor = "DISTRIBUCION CON MOVILIDAD PROPIA";
-            datoObject.estado=true;
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor= "true";
             datoObjectFinal[0] = datoObject;
+            datoObjectFinal[1] = datoObject1;
             $scope.datos.f01_distribucion_movilidad_propia=datoObjectFinal;
 
         }else{
             datoObject = new Object();
-            datoObject.resid = 1;
-            datoObject.resvalor = "DISTRIBUCION CON MOVILIDAD PROPIA";
-            datoObject.estado=false;
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor="false";
             datoObjectFinal[0] = datoObject;
+            datoObjectFinal[1] = datoObject1;
             $scope.datos.f01_distribucion_movilidad_propia=datoObjectFinal;
 
         }

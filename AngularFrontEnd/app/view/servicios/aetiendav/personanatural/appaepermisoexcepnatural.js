@@ -1020,9 +1020,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             document.getElementById("txt_" + nombre).value  = nombreNuevo;
                             document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                         } else{
-                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
-                                document.getElementById('txt_adjunto').value = '';
-                                document.getElementById('adjunto').value = '';
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo Imagen, Excel o documentos en formato pdf', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
                                 $scope.registroAdj.adjunto = '';
                                 $scope.adjunto = '';
                                 valor = '';
@@ -1030,8 +1030,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             }
                     }else{
                         swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
-                            document.getElementById('txt_adjunto').value = '';
-                            document.getElementById('adjunto').value = '';
+                        document.getElementById("txt_" + nombre).value  = "";
+                        document.getElementById("href_" + nombre).href = "";
                             $scope.registroAdj.adjunto = '';
                             $scope.adjunto = '';
                             valor = '';
@@ -1059,9 +1059,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             document.getElementById("txt_" + nombre).value  = nombreNuevo;
                             document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                         } else{
-                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
-                                document.getElementById('txt_adjunto').value = '';
-                                document.getElementById('adjunto').value = '';
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo Imagen, Excel o documentos en formato pdf', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
                                 $scope.registroAdj.adjunto = '';
                                 $scope.adjunto = '';
                                 valor = '';
@@ -1069,8 +1069,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             }
                     }else{
                         swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
-                            document.getElementById('txt_adjunto').value = '';
-                            document.getElementById('adjunto').value = '';
+                        document.getElementById("txt_" + nombre).value  = "";
+                        document.getElementById("href_" + nombre).href = "";
                             $scope.registroAdj.adjunto = '';
                             $scope.adjunto = '';
                             valor = '';
@@ -1099,9 +1099,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             document.getElementById("txt_" + nombre).value  = nombreNuevo;
                             document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                         } else{
-                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
-                                document.getElementById('txt_adjunto').value = '';
-                                document.getElementById('adjunto').value = '';
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo Imagen, Excel o documentos en formato pdf', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
                                 $scope.registroAdj.adjunto = '';
                                 $scope.adjunto = '';
                                 valor = '';
@@ -1109,8 +1109,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             }
                     }else{
                         swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
-                            document.getElementById('txt_adjunto').value = '';
-                            document.getElementById('adjunto').value = '';
+                        document.getElementById("txt_" + nombre).value  = "";
+                        document.getElementById("href_" + nombre).href = "";
                             $scope.registroAdj.adjunto = '';
                             $scope.adjunto = '';
                             valor = '';
@@ -1139,9 +1139,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             document.getElementById("txt_" + nombre).value  = nombreNuevo;
                             document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                         } else{
-                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
-                                document.getElementById('txt_adjunto').value = '';
-                                document.getElementById('adjunto').value = '';
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo Imagen, Excel o documentos en formato pdf', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
                                 $scope.registroAdj.adjunto = '';
                                 $scope.adjunto = '';
                                 valor = '';
@@ -1149,8 +1149,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             }
                     }else{
                         swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
-                            document.getElementById('txt_adjunto').value = '';
-                            document.getElementById('adjunto').value = '';
+                        document.getElementById("txt_" + nombre).value  = "";
+                        document.getElementById("href_" + nombre).href = "";
                             $scope.registroAdj.adjunto = '';
                             $scope.adjunto = '';
                             valor = '';
@@ -1179,9 +1179,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             document.getElementById("txt_" + nombre).value  = nombreNuevo;
                             document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                         } else{
-                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
-                                document.getElementById('txt_adjunto').value = '';
-                                document.getElementById('adjunto').value = '';
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo Imagen, Excel o documentos en formato pdf', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
                                 $scope.registroAdj.adjunto = '';
                                 $scope.adjunto = '';
                                 valor = '';
@@ -1189,8 +1189,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             }
                     }else{
                         swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
-                            document.getElementById('txt_adjunto').value = '';
-                            document.getElementById('adjunto').value = '';
+                        document.getElementById("txt_" + nombre).value  = "";
+                        document.getElementById("href_" + nombre).href = "";
                             $scope.registroAdj.adjunto = '';
                             $scope.adjunto = '';
                             valor = '';
@@ -1219,9 +1219,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             document.getElementById("txt_" + nombre).value  = nombreNuevo;
                             document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                         } else{
-                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
-                                document.getElementById('txt_adjunto').value = '';
-                                document.getElementById('adjunto').value = '';
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo Imagen, Excel o documentos en formato pdf', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
                                 $scope.registroAdj.adjunto = '';
                                 $scope.adjunto = '';
                                 valor = '';
@@ -1229,8 +1229,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             }
                     }else{
                         swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
-                            document.getElementById('txt_adjunto').value = '';
-                            document.getElementById('adjunto').value = '';
+                        document.getElementById("txt_" + nombre).value  = "";
+                        document.getElementById("href_" + nombre).href = "";
                             $scope.registroAdj.adjunto = '';
                             $scope.adjunto = '';
                             valor = '';
@@ -1258,9 +1258,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             document.getElementById("txt_" + nombre).value  = nombreNuevo;
                             document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                         } else{
-                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
-                                document.getElementById('txt_adjunto').value = '';
-                                document.getElementById('adjunto').value = '';
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo Imagen, Excel o documentos en formato pdf', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
                                 $scope.registroAdj.adjunto = '';
                                 $scope.adjunto = '';
                                 valor = '';
@@ -1268,8 +1268,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             }
                     }else{
                         swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
-                            document.getElementById('txt_adjunto').value = '';
-                            document.getElementById('adjunto').value = '';
+                        document.getElementById("txt_" + nombre).value  = "";
+                        document.getElementById("href_" + nombre).href = "";
                             $scope.registroAdj.adjunto = '';
                             $scope.adjunto = '';
                             valor = '';

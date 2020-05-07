@@ -1129,11 +1129,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 var docextension = nomdocumento.split('.');
                 var ext_doc = docextension[docextension.length - 1];
                     if (objarchivo.size <= 15000000) {
-                        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" 
-                            || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
-                            || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
-                            || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
-                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm") {
+                        if (ext_doc == 'xls' || ext_doc == 'xlsx' || ext_doc == 'XLS' || ext_doc == 'XLSX' ) {
                             var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
                             fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
                             $scope.datos.FILE_FORMVH_EXCEL = nombreNuevo;
@@ -1141,7 +1137,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             document.getElementById("txt_" + nombre).value  = nombreNuevo;
                             document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                         } else{
-                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo Imagen, Excel o documentos en formato pdf', 'error');
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo Excel', 'error');
                             document.getElementById("txt_" + nombre).value  = "";
                             document.getElementById("href_" + nombre).href = "";
                                 $scope.registroAdj.adjunto = '';

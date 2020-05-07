@@ -36,9 +36,11 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 var sformguardado   =   $scope.datos.INT_FORM_ALMACENADO;
                 if(typeof sformguardado == 'undefined' || sformguardado != 'G'){
                     $scope.botones = null;
-                    $scope.desabilitado = true;                        
+                    $scope.desabilitado = true; 
+                                         
                     swal('', "Favor revisar la información y seleccionar la Actividad Economica que desea Renovar.", 'warning');                    
                 }else{
+
                     //$scope.botones = "mostrar";
                     //$scope.desabilitado = false;
                 }
@@ -82,8 +84,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         }
     });
 
-    $scope.selActividadEconomica =  function(tramite){ 
-        $scope.limpiarDatos(); 
+    $scope.selActividadEconomica =  function(tramite){
+     $scope.limpiarDatos();  
         $scope.idActividiadEconomicaActual  =   tramite.IdActividad;
         $scope.datos.f01_id_actividad_economica = tramite.IdActividad;
         $scope.sIdAeGrilla  =   tramite.IdActividad;
@@ -241,50 +243,150 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         return deferred.promise;   
     } 
 
-    $scope.mostrarimg  =   function(imagen){         
-        if (typeof($scope.FILE_FOTOCOPIA_CI) != 'undefined') {
-            $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
-        };
-        if (typeof($scope.FILE_FOTOCOPIA_CI_R) != 'undefined') {
-            $scope.registro.FILE_FOTOCOPIA_CI_R = nombreNuevoCIReverso;
-        }
-        if (typeof($scope.registro.FILE_FOTOCOPIA_CI) != 'undefined') {
+     $scope.mostrarimg  =   function(imagen){         
+        if (typeof($scope.datos.FILE_VEHICULO_FOTO) != 'undefined') {
             var nombreArchivoCi    =   "";
-            nombreArchivoCi        =   $scope.registro.FILE_FOTOCOPIA_CI;
+            nombreArchivoCi        =   $scope.datos.FILE_VEHICULO_FOTO;
             var aTipoArchivoCi     =   nombreArchivoCi.split("?")[0];     
             var extCi              =   aTipoArchivoCi.split(".")[1];
-
             try{
                 extCi                  =   extCi.toLowerCase();
             }catch(e){}
-
-            if(imagen == 'ci'){
-                $scope.archivoCI = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registro.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
-                if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip'){
+            if(imagen == 'FILE_VEHICULO_FOTO'){
+                $scope.archivoCI = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE')+ "/" + sessionService.get('IDTRAMITE') +"/" + $scope.datos.FILE_VEHICULO_FOTO + "?app_name=todoangular";
+                if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip' || extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){
                     window.open($scope.archivoCI, "_blank");
-                }else if(extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){             
-                    $("#fo").modal("show");
+                }else {
+                    console.log("sin archivo");
+
                 }          
             }
         };      
-        if (typeof($scope.registro.FILE_FOTOCOPIA_CI_R != 'undefined')) {
+        if (typeof($scope.datos.FILE_VEHICULO_PERMISO != 'undefined')) {
             var nombreArchivoCiR    =   "";
-            nombreArchivoCiR        =   $scope.registro.FILE_FOTOCOPIA_CI_R;
+            nombreArchivoCiR        =   $scope.datos.FILE_VEHICULO_PERMISO;
             var aTipoArchivoCiR     =   nombreArchivoCiR.split("?")[0];     
             var extCiR              =   aTipoArchivoCiR.split(".")[1];   
             try{
                 extCiR                  =   extCiR.toLowerCase();
             }catch(e){}
 
-            if(imagen == 'ciR'){
-                $scope.archivoCIR = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registro.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";             
-                if(extCiR == 'pdf' || extCiR == 'docx' ||  extCiR == 'docxlm' || extCiR == 'zip'){
+            if(imagen == 'FILE_VEHICULO_PERMISO'){
+                $scope.archivoCIR =  CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE')+ "/" + sessionService.get('IDTRAMITE') +"/" + $scope.datos.FILE_VEHICULO_PERMISO + "?app_name=todoangular";          
+                if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip' || extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){
                     window.open($scope.archivoCIR, "_blank");
-                }else if(extCiR == 'jpeg' || extCiR == 'jpg' ||  extCiR == 'png' ||  extCiR == 'gif'){
-                    $("#fot").modal("show");             
-                }
+                 }else {
+                    console.log("sin archivo");
+
+                }   
             } 
         }; 
+
+        if (typeof($scope.datos.FILE_RUAT_VEHICULO != 'undefined')) {
+            var nombreArchivoCiR    =   "";
+            nombreArchivoCiR        =   $scope.datos.FILE_RUAT_VEHICULO;
+            var aTipoArchivoCiR     =   nombreArchivoCiR.split("?")[0];     
+            var extCiR              =   aTipoArchivoCiR.split(".")[1];   
+            try{
+                extCiR                  =   extCiR.toLowerCase();
+            }catch(e){}
+
+            if(imagen == 'FILE_RUAT_VEHICULO'){
+                $scope.archivoCIR =  CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE')+ "/" + sessionService.get('IDTRAMITE') +"/" + $scope.datos.FILE_RUAT_VEHICULO + "?app_name=todoangular";          
+                if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip' || extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){
+                    window.open($scope.archivoCIR, "_blank");
+                 }else {
+                    console.log("sin archivo");
+
+                }   
+            } 
+        }; 
+
+
+        if (typeof($scope.datos.FILE_FORMVH_EXCEL != 'undefined')) {
+            var nombreArchivoCiR    =   "";
+            nombreArchivoCiR        =   $scope.datos.FILE_FORMVH_EXCEL;
+            var aTipoArchivoCiR     =   nombreArchivoCiR.split("?")[0];     
+            var extCiR              =   aTipoArchivoCiR.split(".")[1];   
+            try{
+                extCiR                  =   extCiR.toLowerCase();
+            }catch(e){}
+
+            if(imagen == 'FILE_FORMVH_EXCEL'){
+                $scope.archivoCIR =  CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE')+ "/" + sessionService.get('IDTRAMITE') +"/" + $scope.datos.FILE_FORMVH_EXCEL + "?app_name=todoangular";          
+                if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip' || extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){
+                    window.open($scope.archivoCIR, "_blank");
+                 }else {
+                    console.log("sin archivo");
+
+                }   
+            } 
+        }; 
+
+
+        if (typeof($scope.datos.FILE_CONTRATO_DELIVERY != 'undefined')) {
+            var nombreArchivoCiR    =   "";
+            nombreArchivoCiR        =   $scope.datos.FILE_CONTRATO_DELIVERY;
+            var aTipoArchivoCiR     =   nombreArchivoCiR.split("?")[0];     
+            var extCiR              =   aTipoArchivoCiR.split(".")[1];   
+            try{
+                extCiR                  =   extCiR.toLowerCase();
+            }catch(e){}
+
+            if(imagen == 'FILE_CONTRATO_DELIVERY'){
+                $scope.archivoCIR =  CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE')+ "/" + sessionService.get('IDTRAMITE') +"/" + $scope.datos.FILE_CONTRATO_DELIVERY + "?app_name=todoangular";          
+                if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip' || extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){
+                    window.open($scope.archivoCIR, "_blank");
+                 }else {
+                    console.log("sin archivo");
+
+                }   
+            } 
+        }; 
+
+
+        if (typeof($scope.datos.FILE_FOTO_SOLICITANTE != 'undefined')) {
+            var nombreArchivoCiR    =   "";
+            nombreArchivoCiR        =   $scope.datos.FILE_FOTO_SOLICITANTE;
+            var aTipoArchivoCiR     =   nombreArchivoCiR.split("?")[0];     
+            var extCiR              =   aTipoArchivoCiR.split(".")[1];   
+            try{
+                extCiR                  =   extCiR.toLowerCase();
+            }catch(e){}
+
+            if(imagen == 'FILE_FOTO_SOLICITANTE'){
+                $scope.archivoCIR =  CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE')+ "/" + sessionService.get('IDTRAMITE') +"/" + $scope.datos.FILE_FOTO_SOLICITANTE + "?app_name=todoangular";          
+                if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip' || extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){
+                    window.open($scope.archivoCIR, "_blank");
+                 }else {
+                    console.log("sin archivo");
+
+                }   
+            } 
+        }; 
+
+
+        if (typeof($scope.datos.FILE_FOTO_LICENCIA_CI != 'undefined')) {
+            var nombreArchivoCiR    =   "";
+            nombreArchivoCiR        =   $scope.datos.FILE_FOTO_LICENCIA_CI;
+            var aTipoArchivoCiR     =   nombreArchivoCiR.split("?")[0];     
+            var extCiR              =   aTipoArchivoCiR.split(".")[1];   
+            try{
+                extCiR                  =   extCiR.toLowerCase();
+            }catch(e){}
+
+            if(imagen == 'FILE_FOTO_LICENCIA_CI'){
+                $scope.archivoCIR =  CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE')+ "/" + sessionService.get('IDTRAMITE') +"/" + $scope.datos.FILE_FOTO_LICENCIA_CI + "?app_name=todoangular";          
+                if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip' || extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){
+                    window.open($scope.archivoCIR, "_blank");
+                 }else {
+                    console.log("sin archivo");
+
+                }   
+            } 
+        }; 
+
+        
         $.unblockUI();
     }
 
@@ -299,60 +401,69 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
 
     $scope.limpiarDatos = function(){
         $scope.datos.f01_id_actividad_economica = '';
-            $scope.datos.f01_nro_orden = "";
-            $scope.datos.f01_nit = '';
-            $scope.datos.f01_raz_soc = '';
-            $scope.datos.f01_sup = '';
-            $scope.datos.f01_cap_aprox = '';
-            $scope.datos.f01_de_hor = '';
-            $scope.datos.f01_a_hor = '';
-            $scope.datos.f01_fecha_ini_act = '';
-            $scope.datos.f01_estab_es = '';
-            $scope.datos.f01_macro_act = '';
-            $scope.datos.f01_macro_act_descrip = '';
-            $scope.datos.f01_dist_act = '';
-            $scope.datos.f01_dist_act_descrip = '';
-            $scope.datos.f01_tip_via_act = '';
-            $scope.datos.f01_zona_act = '';
-            $scope.datos.f01_zona_act_descrip = '';
-            $scope.datos.f01_num_act = '';
-            $scope.datos.f01_num_act1 = '';
-            $scope.datos.f01_edificio_act = '';
-            $scope.datos.f01_bloque_act = '';
-            $scope.datos.f01_piso_act = '';
-            $scope.datos.f01_dpto_of_loc = '';
-            $scope.datos.f01_tel_act1 = '';
-            $scope.datos.f01_cod_luz = '';
-            $scope.datos.f01_idCodigoZona = '';
-            $scope.datos.f01_casilla = '';
-            $scope.datos.f01_productosElaborados = '';
-            $scope.datos.f01_factor = '';
-            $scope.datos.f01_tip_act = '';
-            $scope.datos.f01_tipo_lic = '';
-            $scope.datos.f01_tipo_lic = '';
-            $scope.datos.f01_tipo_lic_descrip = '';
-            $scope.datos.f01_categoria = '';
-            $scope.datos.f01_categoria_descrip = '';
-            $scope.datos.f01_categoria_agrupada = '';
-            $scope.datos.f01_categoria_descripcion = '';
-            $scope.datos.f01_categoria_agrupada_descripcion = '';
-            $scope.datos.f01_categoria_agrupada_descrip = '';
-            $scope.datos.f01_categoria_descrip2 = '';
-            $scope.licdes=[];
-            $scope.multiple=[];
-            $scope.dscripcionlic = {};
-            $scope.licenciamul = '';
-            $scope.datos.licenciam = '';
-            $scope.licmul_grilla = '';
-            $scope.datos.Licenmul_grilla = '';
-            $scope.datos.mulact_principal = '';
-            $scope.publicid='';
-            $scope.datos.f01_actividad_principal_array =[];
-            $scope.datos.fileArchivosAd = '';
-            $scope.datos.FILE_CI = '';
-            $scope.datos.FILE_MAPA='';
-            $scope.datos.f01_nro_actividad ='';
+        $scope.datos.f01_nro_orden = "";
+        $scope.datos.f01_nit = '';
+        $scope.datos.f01_raz_soc = '';
+        $scope.datos.f01_sup = '';
+        $scope.datos.f01_cap_aprox = '';
+        $scope.datos.f01_de_hor = '';
+        $scope.datos.f01_a_hor = '';
+        $scope.datos.f01_fecha_ini_act = '';
+        $scope.datos.f01_estab_es = '';
+        $scope.datos.f01_macro_act = '';
+        $scope.datos.f01_macro_act_descrip = '';
+        $scope.datos.f01_dist_act = '';
+        $scope.datos.f01_dist_act_descrip = '';
+        $scope.datos.f01_tip_via_act = '';
+        $scope.datos.f01_zona_act = '';
+        $scope.datos.f01_zona_act_descrip = '';
+        $scope.datos.f01_num_act = '';
+        $scope.datos.f01_num_act1 = '';
+        $scope.datos.f01_edificio_act = '';
+        $scope.datos.f01_bloque_act = '';
+        $scope.datos.f01_piso_act = '';
+        $scope.datos.f01_dpto_of_loc = '';
+        $scope.datos.f01_tel_act1 = '';
+        $scope.datos.f01_cod_luz = '';
+        $scope.datos.f01_idCodigoZona = '';
+        $scope.datos.f01_casilla = '';
+        $scope.datos.f01_productosElaborados = '';
+        $scope.datos.f01_factor = '';
+        $scope.datos.f01_tip_act = '';
+        $scope.datos.f01_tipo_lic = '';
+        $scope.datos.f01_tipo_lic = '';
+        $scope.datos.f01_tipo_lic_descrip = '';
+        $scope.datos.f01_categoria = '';
+        $scope.datos.f01_categoria_descrip = '';
+        $scope.datos.f01_categoria_agrupada = '';
+        $scope.datos.f01_categoria_descripcion = '';
+        $scope.datos.f01_categoria_agrupada_descripcion = '';
+        $scope.datos.f01_categoria_agrupada_descrip = '';
+        $scope.datos.f01_categoria_descrip2 = '';
+        $scope.licdes=[];
+        $scope.multiple=[];
+        $scope.dscripcionlic = {};
+        $scope.licenciamul = '';
+        $scope.datos.licenciam = '';
+        $scope.licmul_grilla = '';
+        $scope.datos.Licenmul_grilla = '';
+        $scope.datos.mulact_principal = '';
+        $scope.publicid='';
+        $scope.datos.f01_actividad_principal_array =[];
+        $scope.datos.fileArchivosAd = '';
+        $scope.datos.FILE_CI = '';
+        $scope.datos.FILE_MAPA='';
+        $scope.datos.f01_nro_actividad ='';
+
+        $scope.datos.FILE_VEHICULO_FOTO = "";
+        $scope.datos.FILE_VEHICULO_PERMISO = "";
+        $scope.datos.FILE_RUAT_VEHICULO = "";
+        $scope.datos.FILE_FORMVH_EXCEL = "";
+        $scope.datos.FILE_CONTRATO_DELIVERY = "";
+        $scope.datos.FILE_FOTO_SOLICITANTE = "";
+        $scope.datos.FILE_FOTO_LICENCIA_CI = "";
     }
+
 
     $scope.macrodistritos = function(){
         $scope.aMacrodistritos = {};
@@ -483,8 +594,77 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $scope.datos.f01_modalidad_pago_descrip = f.options[f.selectedIndex].text;
     }
 
+    $scope.ultimoArrayAdjunto = function(){
+        $scope.capturarImagen();
+        datoObjectFiles = [];
+        var datoObjectFile1 = new Object();
+        var datoObjectFile2 = new Object();
+        var datoObjectFile3 = new Object();
+        var datoObjectFile4 = new Object();
+        var datoObjectFile5 = new Object();
+        var datoObjectFile6 = new Object();
+        var datoObjectFile7 = new Object();
+        var datoObjectFile8 = new Object();
+        var datoObjectFile9 = new Object();
+
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+        $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+        var nombre_mapa = $scope.datos.ARCHIVOS_MULTIPLES_MAPA[0].nombre_archivo;
+        datoObjectFile1.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_VEHICULO_FOTO + "?app_name=todoangular";
+        datoObjectFile1.campo = $scope.datos.FILE_VEHICULO_FOTO;
+        datoObjectFile1.nombre = 'CARGAR FOTOGRAFÍA(S) FRONTAL Y LATERAL DE LOS VEHÍCULO(S) (Fotografías con buena resolución en un solo archivo formato PDF o DOC)';
+
+        datoObjectFile2.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_VEHICULO_PERMISO + "?app_name=todoangular";
+        datoObjectFile2.campo = $scope.datos.FILE_VEHICULO_PERMISO;
+        datoObjectFile2.nombre = 'CARGAR EL PERMISO DE CIRCULACIÓN VEHICULAR OTORGADO POR EL VICEMINISTERIO DE GOBIERNO DE TODOS LOS VEHÍCULOS (En un solo documento en formato PDF)';
+
+        datoObjectFile3.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_RUAT_VEHICULO + "?app_name=todoangular";
+        datoObjectFile3.campo = $scope.datos.FILE_RUAT_VEHICULO;
+        datoObjectFile3.nombre = 'CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S) (Los documentos deben estar en solo archivo en formato PDF o DOC.)';
+
+        datoObjectFile4.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FORMVH_EXCEL + "?app_name=todoangular";
+        datoObjectFile4.campo = $scope.datos.FILE_FORMVH_EXCEL;
+        datoObjectFile4.nombre = 'CARGAR ARCHIVO EXCEL FORMULARIO N° 1.1 (DEBIDAMENTE LLENADO)';
+
+        datoObjectFile5.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_CONTRATO_DELIVERY + "?app_name=todoangular";
+        datoObjectFile5.campo = $scope.datos.FILE_CONTRATO_DELIVERY;
+        datoObjectFile5.nombre = 'EN EL CASO DE ACTIVIDADES ECONÓMICAS QUE ADQUIEREN LOS SERVICIOS DE EMPRESAS DE DELIVERY, DEBE CARGAR EL CONTRATO VIGENTE EN FORMATO PDF (LA EMPRESA DELIVERY DEBE CONTAR CON LAS AUTORIZACIONES PARA OPERAR Y ESTAR REGISTRADO EN EL GAMLP)';
+
+        datoObjectFile6.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOTO_SOLICITANTE + "?app_name=todoangular";
+        datoObjectFile6.campo = $scope.datos.FILE_FOTO_SOLICITANTE;
+        datoObjectFile6.nombre = 'CARGAR FOTOGRAFÍA DE FRENTE Y NÍTIDA DEL ROSTRO DEL SOLICITANTE SUJETANDO SU CÉDULA DE IDENTIDAD DEL LADO ANVERSO (CARILLA DE LA FIRMA Y FOTO), SIN LENTES, NI GORRA';
+
+        datoObjectFile7.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOTO_LICENCIA_CI + "?app_name=todoangular";
+        datoObjectFile7.campo = $scope.datos.FILE_FOTO_LICENCIA_CI;
+        datoObjectFile7.nombre = 'CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR Y CÉDULA DE IDENTIDAD DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS (En un solo documento en formato PDF)';
+
+        datoObjectFile8.url = $rootScope.decJuradaNatural;
+        datoObjectFile8.campo = "DECLARACION JURADADA";
+        datoObjectFile8.nombre = 'DECLARACION JURADA';
+
+        datoObjectFile9.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + nombre_mapa + "?app_name=todoangular";
+        datoObjectFile9.campo = $scope.datos.ARCHIVOS_MULTIPLES_MAPA[0].nombre_archivo;
+        datoObjectFile9.nombre = 'CROQUIS DE UBICACIÓN DE LA ACTIVIDAD ECONÓMICA';
+
+        datoObjectFiles[0] = datoObjectFile1;
+        datoObjectFiles[1] = datoObjectFile2;
+        datoObjectFiles[2] = datoObjectFile3;
+        datoObjectFiles[3] = datoObjectFile4;
+        datoObjectFiles[4] = datoObjectFile5;
+        datoObjectFiles[5] = datoObjectFile6;
+        datoObjectFiles[6] = datoObjectFile7;
+        datoObjectFiles[7] = datoObjectFile8;
+        datoObjectFiles[8] = datoObjectFile9;
+
+        $scope.datos.FileDocumentos = datoObjectFiles;
+        $rootScope.FileAdjuntos = datoObjectFiles; 
+        $scope.datos.File_Adjunto = datoObjectFiles; 
+
+    }
+
     $scope.enviarTramiteCeroPapel = function(paramForm){
         $scope.GetValueParam();
+        $scope.ultimoArrayAdjunto();
         console.log(paramForm);
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm    =   true;
@@ -493,7 +673,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
         if ($scope.tipoPersona == 'NATURAL'){
             console.log($scope.tipoPersona);
-            $scope.capturarImagen();
             datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
             datosNeXO['f01_id_actividad_economica']   =   paramForm.f01_id_actividad_economica;
             datosNeXO['f01_nro_orden']   =   paramForm.f01_nro_orden;
@@ -640,22 +819,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             datosNeXO['f01_actividad_desarrollada']= paramForm.f01_categoria_descrip2;
             datosNeXO['declaracion_jurada']               =   $rootScope.decJuradaNatural;
             datosNeXO['g_origen_p']='0';
-            var datoObjectdj = [];
-            var decjuradaN = new Object();
-            if ($rootScope.decJuradaJuridico) {
-                decjuradaN.url = $rootScope.decJuradaJuridico;
-            } else{
-                decjuradaN.url = $scope.datos.declaracion_jurada;
-            };
-            decjuradaN.campo = 'Declaración Jurada Juridico';
-            decjuradaN.nombre = 'DECLARACIÓN JURADA';
-            datoObjectdj[0] = decjuradaN;
-            /*if($scope.datos.File_Adjunto){
-                datosNeXO['File_Adjunto'] =  $scope.datos.File_Adjunto.concat(decjuradaN);
-            }
-            else{
-                datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);;
-            }*/
+            datosNeXO['File_Adjunto'] =  $scope.datos.File_Adjunto;
             datosNeXO['f01_tip_act']                    =   paramForm.f01_tip_act; 
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;           
             
@@ -692,6 +856,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         datosNeXO['f01_modalidad_pago'] = paramForm.f01_modalidad_pago;
         datosNeXO['f01_tipo_act_ae_descrip'] = paramForm.f01_tipo_act_ae_descrip;
         datosNeXO['f01_modalidad_pago_descrip'] = paramForm.f01_modalidad_pago_descrip;
+        datosNeXO['rdTipoTramit1'] = paramForm.rdTipoTramit1;
+        datosNeXO['rdTipoTramit2'] = paramForm.rdTipoTramit2;
+        datosNeXO['rdTipoTramit3'] = paramForm.rdTipoTramit3;
 
         datosNeXO['g_tipo'] = "AE-TIENDA EN LINEA";
         datosNeXO['g_fecha'] = fechactual;
@@ -796,23 +963,23 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     });
 
     var clsIniciarGrillaAE = $rootScope.$on('inicializarGrillaAE', function(event, data){
-        console.log("data xxxxxx ", data);
         $scope.formDatosAE              = false;
         $scope.mostrarMsgActividadTrue  = false;
         $scope.mostrarMsgActividadFalse = false;
-        console.log("data 111 ", data);
         if(data.length > 0){
             if(data[0].venviado == 'SI'){                
                 if(data[0].datos.INT_FORM_ALMACENADO == 'G'){
                     $scope.desabilitado = true;
                     $scope.botones = null;
-                    console.log("botonesss: ", $scope.botones);
+                    
                 }else{
                     $scope.desabilitado = false;
                     $scope.botones = "mostrar";
-                    console.log("botoness22s: ", $scope.botones);
+                    
 
                 }
+            }else{
+               
             }
         }
     });
@@ -835,39 +1002,285 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             $scope.direccionvirtual = "RC_CLI";
             var sDirTramite = sessionService.get('IDTRAMITE');
             var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/" + oidCiudadano + "/" + sDirTramite + "/";
+            if (nombre == 'FILE_VEHICULO_FOTO' && (typeof(obj.files[0]) != 'undefined')) 
+            {
                 var nomdocumento = obj.files[0].name;
                 var docextension = nomdocumento.split('.');
                 var ext_doc = docextension[docextension.length - 1];
-                if (objarchivo.size <= 15000000) {
-                    if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" 
-                        || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
-                        || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
-                        || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
-                        || ext_doc == 'XLSX' || ext_doc == "pdf") {
-                        var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
-                        fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
-                        document.getElementById("txt_" + nombre).value  = nombreNuevo;
-                        document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                    } else{
-                        swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                    if (objarchivo.size <= 15000000) {
+                        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" 
+                            || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
+                            || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
+                            || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
+                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm") {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_VEHICULO_FOTO = nombreNuevo;
+                            $scope.FILE_VEHICULO_FOTO = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                        } else{
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                                document.getElementById('txt_adjunto').value = '';
+                                document.getElementById('adjunto').value = '';
+                                $scope.registroAdj.adjunto = '';
+                                $scope.adjunto = '';
+                                valor = '';
+                                $.unblockUI();
+                            }
+                    }else{
+                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
                             document.getElementById('txt_adjunto').value = '';
                             document.getElementById('adjunto').value = '';
                             $scope.registroAdj.adjunto = '';
                             $scope.adjunto = '';
                             valor = '';
+                            $scope.datos.FILE_VEHICULO_FOTO = "";
+                            $scope.FILE_VEHICULO_FOTO = "";
                             $.unblockUI();
-                        }
-                }else{
-                    swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
-                        document.getElementById('txt_adjunto').value = '';
-                        document.getElementById('adjunto').value = '';
-                        $scope.registroAdj.adjunto = '';
-                        $scope.adjunto = '';
-                        valor = '';
-                        $.unblockUI();
-                }
+                    }
+            }
+
+            if (nombre == 'FILE_VEHICULO_PERMISO' && (typeof(obj.files[0]) != 'undefined')) 
+            {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1];
+                    if (objarchivo.size <= 15000000) {
+                        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" 
+                            || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
+                            || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
+                            || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
+                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm") {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_VEHICULO_PERMISO = nombreNuevo;
+                            $scope.FILE_VEHICULO_PERMISO = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                        } else{
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                                document.getElementById('txt_adjunto').value = '';
+                                document.getElementById('adjunto').value = '';
+                                $scope.registroAdj.adjunto = '';
+                                $scope.adjunto = '';
+                                valor = '';
+                                $.unblockUI();
+                            }
+                    }else{
+                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById('txt_adjunto').value = '';
+                            document.getElementById('adjunto').value = '';
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_VEHICULO_PERMISO = "";
+                            $scope.FILE_VEHICULO_PERMISO = "";
+                            $.unblockUI();
+                    }
+            }
+
+
+            if (nombre == 'FILE_RUAT_VEHICULO' && (typeof(obj.files[0]) != 'undefined')) 
+            {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1];
+                    if (objarchivo.size <= 15000000) {
+                        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" 
+                            || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
+                            || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
+                            || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
+                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm") {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_RUAT_VEHICULO = nombreNuevo;
+                            $scope.FILE_RUAT_VEHICULO = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                        } else{
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                                document.getElementById('txt_adjunto').value = '';
+                                document.getElementById('adjunto').value = '';
+                                $scope.registroAdj.adjunto = '';
+                                $scope.adjunto = '';
+                                valor = '';
+                                $.unblockUI();
+                            }
+                    }else{
+                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById('txt_adjunto').value = '';
+                            document.getElementById('adjunto').value = '';
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_RUAT_VEHICULO = "";
+                            $scope.FILE_RUAT_VEHICULO = "";
+                            $.unblockUI();
+                    }
+            }
+
+
+            if (nombre == 'FILE_FORMVH_EXCEL' && (typeof(obj.files[0]) != 'undefined')) 
+            {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1];
+                    if (objarchivo.size <= 15000000) {
+                        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" 
+                            || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
+                            || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
+                            || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
+                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm") {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_FORMVH_EXCEL = nombreNuevo;
+                            $scope.FILE_FORMVH_EXCEL = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                        } else{
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                                document.getElementById('txt_adjunto').value = '';
+                                document.getElementById('adjunto').value = '';
+                                $scope.registroAdj.adjunto = '';
+                                $scope.adjunto = '';
+                                valor = '';
+                                $.unblockUI();
+                            }
+                    }else{
+                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById('txt_adjunto').value = '';
+                            document.getElementById('adjunto').value = '';
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_FORMVH_EXCEL = "";
+                            $scope.FILE_FORMVH_EXCEL = "";
+                            $.unblockUI();
+                    }
+            }
+
+
+            if (nombre == 'FILE_CONTRATO_DELIVERY' && (typeof(obj.files[0]) != 'undefined')) 
+            {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1];
+                    if (objarchivo.size <= 15000000) {
+                        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" 
+                            || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
+                            || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
+                            || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
+                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm") {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_CONTRATO_DELIVERY = nombreNuevo;
+                            $scope.FILE_CONTRATO_DELIVERY = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                        } else{
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                                document.getElementById('txt_adjunto').value = '';
+                                document.getElementById('adjunto').value = '';
+                                $scope.registroAdj.adjunto = '';
+                                $scope.adjunto = '';
+                                valor = '';
+                                $.unblockUI();
+                            }
+                    }else{
+                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById('txt_adjunto').value = '';
+                            document.getElementById('adjunto').value = '';
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_CONTRATO_DELIVERY = "";
+                            $scope.FILE_CONTRATO_DELIVERY = "";
+                            $.unblockUI();
+                    }
+            }
+
+
+            if (nombre == 'FILE_FOTO_SOLICITANTE' && (typeof(obj.files[0]) != 'undefined')) 
+            {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1];
+                    if (objarchivo.size <= 15000000) {
+                        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" 
+                            || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
+                            || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
+                            || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
+                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm") {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_FOTO_SOLICITANTE = nombreNuevo;
+                            $scope.FILE_FOTO_SOLICITANTE = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                        } else{
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                                document.getElementById('txt_adjunto').value = '';
+                                document.getElementById('adjunto').value = '';
+                                $scope.registroAdj.adjunto = '';
+                                $scope.adjunto = '';
+                                valor = '';
+                                $.unblockUI();
+                            }
+                    }else{
+                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById('txt_adjunto').value = '';
+                            document.getElementById('adjunto').value = '';
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_FOTO_SOLICITANTE = "";
+                            $scope.FILE_FOTO_SOLICITANTE = "";
+                            $.unblockUI();
+                    }
+            }
+
+            if (nombre == 'FILE_FOTO_LICENCIA_CI' && (typeof(obj.files[0]) != 'undefined')) 
+            {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1];
+                    if (objarchivo.size <= 15000000) {
+                        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" 
+                            || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
+                            || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
+                            || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
+                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm") {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_FOTO_LICENCIA_CI = nombreNuevo;
+                            $scope.FILE_FOTO_LICENCIA_CI = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                        } else{
+                            swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                                document.getElementById('txt_adjunto').value = '';
+                                document.getElementById('adjunto').value = '';
+                                $scope.registroAdj.adjunto = '';
+                                $scope.adjunto = '';
+                                valor = '';
+                                $.unblockUI();
+                            }
+                    }else{
+                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById('txt_adjunto').value = '';
+                            document.getElementById('adjunto').value = '';
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_FOTO_LICENCIA_CI = "";
+                            $scope.FILE_FOTO_LICENCIA_CI = "";
+                            $.unblockUI();
+                    }
+            }
+
                 $.unblockUI();
-        },500);
+        },800);
     }
 
     $scope.cargarDatosPermiso=function(){
@@ -890,6 +1303,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         //////////////////////////////nuevo /////////////////////////////
 
       $scope.declaracionJurada = function(datos){
+        console.log("form:: ",datos);
         $rootScope.datosEnv = "";
         var fecha= new Date();
         var fechaActualS = "";
@@ -912,12 +1326,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             $( "#msgformularioN" ).load(urlFormularioN, function(data) {
                 stringFormulario40  =   data;
                 datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
-                datos.f01_nom_completo = ((typeof(datos.f01_nom_completo) == 'undefined' || datos.f01_nom_completo == null) ? "" : datos.f01_nom_completo);
-                datos.f01_num_dos_prop = ((typeof(datos.f01_num_dos_prop) == 'undefined' || datos.f01_num_dos_prop == null) ? "" : datos.f01_num_dos_prop);
-                datos.f01_expedido_prop = ((typeof(datos.f01_expedido_prop) == 'undefined' || datos.f01_expedido_prop == null) ? "" : datos.f01_expedido_prop);
-                datos.f01_raz_soc = ((typeof(datos.f01_raz_soc) == 'undefined' || datos.f01_raz_soc == null) ? "" : datos.f01_raz_soc);
-                datos.f01_num_pmc = ((typeof(datos.f01_num_pmc) == 'undefined' || datos.f01_num_pmc == null) ? "" : datos.f01_num_pmc);
-                stringFormulario40  =   stringFormulario40.replace("#f01_nom_completo#", datos.f01_nom_completo);
+                var nombreCompleto = datos.f01_pri_nom_prop + ' ' + datos.f01_seg_nom_prop + ' ' + datos.f01_ape_pat_prop + ' ' + datos.f01_ape_mat_prop;
+                stringFormulario40  =   stringFormulario40.replace("#f01_nom_completo#", nombreCompleto);
                 stringFormulario40  =   stringFormulario40.replace("#f01_num_dos_prop#", datos.f01_num_dos_prop);
                 stringFormulario40  =   stringFormulario40.replace("#f01_expedido_prop#", datos.f01_expedido_prop);
                 stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.f01_raz_soc);
@@ -939,13 +1349,14 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $rootScope.datosForm401 = "";
         var dataForm = {};
         //CABECERA
-        dataForm['f01_nom_completo'] = data.f01_nom_completo;
+        var nombreCompleto = data.f01_pri_nom_prop + ' ' + data.f01_seg_nom_prop + ' ' + data.f01_ape_pat_prop + ' ' + data.f01_ape_mat_prop;
+        dataForm['f01_nom_completo'] = nombreCompleto;
         dataForm['f01_num_dos_prop'] = data.f01_num_dos_prop;
         dataForm['f01_expedido_prop'] = data.f01_expedido_prop;
         dataForm['f01_raz_soc'] = data.f01_raz_soc;
         dataForm['f01_num_pmc'] = data.f01_num_pmc;
-        dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
 
+        dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
         dataForm['fecha_sist'] = sfecha;
         dataForm['fecha_sist2'] = sfecha;
         dataForm['usuario'] = sessionService.get('USUARIO');
@@ -968,6 +1379,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     }
 
 
-
+    
 
 }

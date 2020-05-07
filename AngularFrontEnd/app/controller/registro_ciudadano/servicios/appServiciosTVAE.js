@@ -1081,18 +1081,6 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
             datosci         = sessionService.get('CICIUDADANO');
             datosexpedido   = sessionService.get('CIEXPEDIDO');
             datoForm4 = JSON.stringify($rootScope.datosForm401);
-            console.log("******************")
-            console.log(oidCiudadano);
-            console.log(tipoPersona);
-            console.log(datosCiudadano);
-            console.log(datosci);
-            console.log(datosexpedido);
-            console.log($scope.fechafinalserver);
-            console.log($scope.sHoraFinal);
-            console.log(datoForm4);
-            console.log("******************")
-            $.unblockUI();
-
             $.ajax({
                 url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdfTV.php',
                 type:"post",
@@ -1113,10 +1101,10 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                 success:function(response){
                     var urlData = response;
                     $rootScope.decJuradaNatural = urlData;
-                    //$scope.InsertarDocumento(response);
+                    $scope.InsertarDocumento(response);
                     $rootScope.datosEnv.declaracion_jurada = urlData;
                     $scope.datos.declaracion_jurada = urlData;
-                    //$scope.serializarInformacion($rootScope.datosEnv);
+                    $scope.guardarDatos($rootScope.datosEnv);
                     $.unblockUI();
                 }
             });
@@ -1151,7 +1139,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                             $rootScope.decJuradaNatural = urlData;
                             $scope.InsertarDocumento(response);
                             $rootScope.datosEnv.declaracion_jurada = urlData;
-                            $scope.serializarInformacion($rootScope.datosEnv);
+                            $scope.guardarDatos($rootScope.datosEnv);
                             $.unblockUI();
                         }
                     }
@@ -1161,6 +1149,6 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     };
     ///********************* panchito fin ********************/
 
-    
+
 
 });

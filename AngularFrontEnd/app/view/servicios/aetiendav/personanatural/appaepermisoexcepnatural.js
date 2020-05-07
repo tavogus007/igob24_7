@@ -1376,7 +1376,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {
-        console.log("Ingresando correcto");
         $scope.declaracionJurada(data);
         $("#declaracionN").modal("show");
     }

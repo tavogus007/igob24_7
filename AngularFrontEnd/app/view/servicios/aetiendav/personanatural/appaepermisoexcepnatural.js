@@ -1302,68 +1302,71 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
 
         //////////////////////////////nuevo /////////////////////////////
 
-      $scope.declaracionJurada = function(datos){
-        console.log("form:: ",datos);
-        $rootScope.datosEnv = "";
-        var fecha= new Date();
-        var fechaActualS = "";
-        fechaActualS= fecha.getDate() +" - "+ (fecha.getMonth() + 1) +" - "+ fecha.getFullYear();
-        var sHora = "";
-        sHora = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-        var stringFormulario40  =   "";
-        var urlFormularioN  =   "";
-        var snombre =   "";
-        var scedulaid   =   "";
-        var sexpedido   =   "";
-        var snombreREP = "";
-        var scirep = "";
-        var sempresa = "";
-        var snit = "";
-        $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
-        if($scope.tipoPersona == 'NATURAL' || $scope.tipoPersona == 'N'){
-            datos.f01_tipo_per_desc = 'NATURAL';
-            urlFormularioN  =   "../../docs/AE_Formulario_TV.html";
-            $( "#msgformularioN" ).load(urlFormularioN, function(data) {
-                stringFormulario40  =   data;
-                datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
-                var nombreCompleto = datos.f01_pri_nom_prop + ' ' + datos.f01_seg_nom_prop + ' ' + datos.f01_ape_pat_prop + ' ' + datos.f01_ape_mat_prop;
-                stringFormulario40  =   stringFormulario40.replace("#f01_nom_completo#", nombreCompleto);
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_dos_prop#", datos.f01_num_dos_prop);
-                stringFormulario40  =   stringFormulario40.replace("#f01_expedido_prop#", datos.f01_expedido_prop);
-                stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.f01_raz_soc);
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
-                stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
-                stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
-                stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
-                $scope.msgformularioN = stringFormulario40;
-                $scope.notifcondicionesuso = stringFormulario40;
-                setTimeout(function(){
-                    $scope.fmostrarFormulario();
-                },500);
-            })
-            $scope.armarDatosForm(datos,fechaActualS, sHora);
+        $scope.declaracionJurada = function(datos){
+            $rootScope.datosEnv = "";
+            var fecha= new Date();
+            var fechaActualS = "";
+            fechaActualS= fecha.getDate() +" - "+ (fecha.getMonth() + 1) +" - "+ fecha.getFullYear();
+            var sHora = "";
+            sHora = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+            var stringFormulario40  =   "";
+            var urlFormularioN  =   "";
+            var snombre =   "";
+            var scedulaid   =   "";
+            var sexpedido   =   "";
+            var snombreREP = "";
+            var scirep = "";
+            var sempresa = "";
+            var snit = "";
+            $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
+            if($scope.tipoPersona == 'NATURAL' || $scope.tipoPersona == 'N'){
+                datos.f01_tipo_per_desc = 'NATURAL';
+                urlFormularioN  =   "../../docs/AE_Formulario_TV.html";
+                $( "#msgformularioN" ).load(urlFormularioN, function(data) {
+                    stringFormulario40  =   data;
+                    datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
+                    datos.f01_nom_completo = ((typeof(datos.f01_nom_completo) == 'undefined' || datos.f01_nom_completo == null) ? "" : datos.f01_nom_completo);
+                    datos.f01_num_dos_prop = ((typeof(datos.f01_num_dos_prop) == 'undefined' || datos.f01_num_dos_prop == null) ? "" : datos.f01_num_dos_prop);
+                    datos.f01_expedido_prop = ((typeof(datos.f01_expedido_prop) == 'undefined' || datos.f01_expedido_prop == null) ? "" : datos.f01_expedido_prop);
+                    datos.f01_raz_soc = ((typeof(datos.f01_raz_soc) == 'undefined' || datos.f01_raz_soc == null) ? "" : datos.f01_raz_soc);
+                    datos.f01_num_pmc = ((typeof(datos.f01_num_pmc) == 'undefined' || datos.f01_num_pmc == null) ? "" : datos.f01_num_pmc);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_nom_completo#", datos.f01_nom_completo);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_num_dos_prop#", datos.f01_num_dos_prop);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_expedido_prop#", datos.f01_expedido_prop);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.f01_raz_soc);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
+                    stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
+                    stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
+                    stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
+                    $scope.msgformularioN = stringFormulario40;
+                    $scope.notifcondicionesuso = stringFormulario40;
+                    setTimeout(function(){
+                        $scope.fmostrarFormulario();
+                    },500);
+                })
+                $scope.armarDatosForm(datos,fechaActualS, sHora);
+            }
         }
-    }
 
-    $scope.armarDatosForm = function(data,sfecha,sHora){
-        $rootScope.datosForm401 = "";
-        var dataForm = {};
-        //CABECERA
-        var nombreCompleto = data.f01_pri_nom_prop + ' ' + data.f01_seg_nom_prop + ' ' + data.f01_ape_pat_prop + ' ' + data.f01_ape_mat_prop;
-        dataForm['f01_nom_completo'] = nombreCompleto;
-        dataForm['f01_num_dos_prop'] = data.f01_num_dos_prop;
-        dataForm['f01_expedido_prop'] = data.f01_expedido_prop;
-        dataForm['f01_raz_soc'] = data.f01_raz_soc;
-        dataForm['f01_num_pmc'] = data.f01_num_pmc;
 
-        dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
-        dataForm['fecha_sist'] = sfecha;
-        dataForm['fecha_sist2'] = sfecha;
-        dataForm['usuario'] = sessionService.get('USUARIO');
-        dataForm['hora_sist'] = sHora;
-        $rootScope.datosForm401 = dataForm;
-        $rootScope.datosEnv = data;
-    }
+        $scope.armarDatosForm = function(data,sfecha,sHora){
+            $rootScope.datosForm401 = "";
+            var dataForm = {};
+            //CABECERA
+            dataForm['f01_nom_completo'] = data.f01_nom_completo;
+            dataForm['f01_num_dos_prop'] = data.f01_num_dos_prop;
+            dataForm['f01_expedido_prop'] = data.f01_expedido_prop;
+            dataForm['f01_raz_soc'] = data.f01_raz_soc;
+            dataForm['f01_num_pmc'] = data.f01_num_pmc;
+            dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
+    
+            dataForm['fecha_sist'] = sfecha;
+            dataForm['fecha_sist2'] = sfecha;
+            dataForm['usuario'] = sessionService.get('USUARIO');
+            dataForm['hora_sist'] = sHora;
+            $rootScope.datosForm401 = dataForm;
+            $rootScope.datosEnv = data;
+        }
 
     $scope.fmostrarFormulario   =   function(){
         $("#exampleModalCenter1").modal({backdrop: 'static', keyboard: false});

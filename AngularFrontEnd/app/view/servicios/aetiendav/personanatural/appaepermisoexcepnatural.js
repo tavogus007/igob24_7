@@ -1,4 +1,5 @@
 function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, registroLog, filterFilter,FileUploader,ngTableParams, $filter, fileUpload,fileUpload1,wsRgistrarPubliciadad, $window) {
+    document.signupForm.btnFormLicencia.disabled=true;
     var fecha= new Date();
     var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
     $scope.tblTramites        =   {};
@@ -400,6 +401,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     };
 
     $scope.limpiarDatos = function(){
+        document.signupForm.btnFormLicencia.disabled=true;
         $scope.datos.f01_id_actividad_economica = '';
         $scope.datos.f01_nro_orden = "";
         $scope.datos.f01_nit = '';
@@ -1288,6 +1290,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $scope.open_mapa_ae();
         $scope.macrodistritos();
         $.unblockUI();
+        document.signupForm.btnFormLicencia.disabled=true;
     };
 
     $scope.$on('$destroy', function() {

@@ -1104,6 +1104,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                     $scope.InsertarDocumento(response);
                     $rootScope.datosEnv.declaracion_jurada = urlData;
                     $scope.datos.declaracion_jurada = urlData;
+                    document.signupForm.btnFormLicencia.disabled=false;
                     $scope.guardarDatos($rootScope.datosEnv);
                     $.unblockUI();
                 }

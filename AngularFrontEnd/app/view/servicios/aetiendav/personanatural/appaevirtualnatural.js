@@ -744,5 +744,4 @@ function aevirtualnaturalController($scope,$timeout, $q, $rootScope, $routeParam
         $scope.botones = "";
     	$.unblockUI();
     };
-
 }

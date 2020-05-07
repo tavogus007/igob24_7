@@ -887,4 +887,71 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         },2000);
     });
 
+        //////////////////////////////nuevo /////////////////////////////
+
+      $scope.formulario401 = function(datos){
+        $rootScope.datosEnv = "";
+        var fecha= new Date();
+        var fechaActualS = "";
+        fechaActualS= fecha.getDate() +" - "+ (fecha.getMonth() + 1) +" - "+ fecha.getFullYear();
+        var sHora = "";
+        sHora = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+        var stringFormulario40  =   "";
+        var urlFormularioN  =   "";
+        var snombre =   "";
+        var scedulaid   =   "";
+        var sexpedido   =   "";
+        var snombreREP = "";
+        var scirep = "";
+        var sempresa = "";
+        var snit = "";
+        $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
+        if($scope.tipoPersona == 'NATURAL' || $scope.tipoPersona == 'N'){
+            datos.f01_tipo_per_desc = 'NATURAL';
+            urlFormularioN  =   "../../docs/AE_Formulario_TV.html";
+            $( "#msgformularioN" ).load(urlFormularioN, function(data) {
+                stringFormulario40  =   data;
+                datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
+                stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
+                stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
+                stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
+                $scope.msgformularioN = stringFormulario40;
+                $scope.notifcondicionesuso = stringFormulario40;
+                setTimeout(function(){
+                    $scope.fmostrarFormulario();
+                },500);
+            })
+            $scope.armarDatosForm(datos,fechaActualS, sHora);
+        }
+    }
+
+    $scope.armarDatosForm = function(data,sfecha,sHora){
+        $rootScope.datosForm401 = "";
+        var dataForm = {};
+        //CABECERA
+        dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
+        dataForm['fecha_sist'] = sfecha;
+        dataForm['fecha_sist2'] = sfecha;
+        dataForm['usuario'] = sessionService.get('USUARIO');
+        dataForm['hora_sist'] = sHora;
+        $rootScope.datosForm401 = dataForm;
+        $rootScope.datosEnv = data;
+    }
+
+    $scope.fmostrarFormulario   =   function(){
+        $("#exampleModalCenter1").modal({backdrop: 'static', keyboard: false});
+        $('#msgformularioN').html($scope.msgformularioN);
+    }
+
+
+    /*VERIFICANDO CAMPOS OBLIGATORIOS*/
+    $scope.verificarCamposInternet = function (data) {
+        console.log("Ingresando correcto");
+        $scope.formulario401(data);
+        $("#declaracionN").modal("show");
+    }
+
+
+    
+
 }

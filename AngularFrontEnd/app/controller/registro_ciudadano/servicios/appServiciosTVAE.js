@@ -1062,4 +1062,105 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
        $scope.obtenerContribuyente();
     };
 
+    ///////////*************************panchito inicio ********************/
+    $scope.generarDocumentoPhp = function (){
+        $.blockUI();
+        var tipoPersona = '';
+        var oidCiudadano = '';
+        var datosCiudadano = '';
+        var datosci = '';
+        var datosexpedido = '';
+        var dEmpresa = '';
+        var dnit = '';
+        var datoForm4 = '';
+        var stform = '';
+        tipoPersona     = sessionService.get('TIPO_PERSONA');
+        if(tipoPersona == 'NATURAL' || tipoPersona == 'N'){
+            oidCiudadano    = sessionService.get('IDSOLICITANTE');
+            datosCiudadano  = (sessionService.get('US_NOMBRE')+' '+sessionService.get('US_PATERNO')+' '+sessionService.get('US_MATERNO'));
+            datosci         = sessionService.get('CICIUDADANO');
+            datosexpedido   = sessionService.get('CIEXPEDIDO');
+            datoForm4 = JSON.stringify($rootScope.datosForm401);
+            console.log("******************")
+            console.log(oidCiudadano);
+            console.log(tipoPersona);
+            console.log(datosCiudadano);
+            console.log(datosci);
+            console.log(datosexpedido);
+            console.log($scope.fechafinalserver);
+            console.log($scope.sHoraFinal);
+            console.log(datoForm4);
+            console.log("******************")
+            $.unblockUI();
+
+            $.ajax({
+                url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdfTV.php',
+                type:"post",
+                data:{
+                    "soid": oidCiudadano,
+                    "sorigen": "IGOB",
+                    "stipo": tipoPersona,
+                    "usuario": datosCiudadano,
+                    "cedula":  datosci,
+                    "expedido": datosexpedido,
+                    "empresa": '',
+                    "nit": '',
+                    "fecha": $scope.fechafinalserver,
+                    "hora": $scope.sHoraFinal,
+                    "data": datoForm4,
+                    "stipo_form": 'DECLARACIONTV'
+                },
+                success:function(response){
+                    var urlData = response;
+                    $rootScope.decJuradaNatural = urlData;
+                    //$scope.InsertarDocumento(response);
+                    $rootScope.datosEnv.declaracion_jurada = urlData;
+                    $scope.datos.declaracion_jurada = urlData;
+                    //$scope.serializarInformacion($rootScope.datosEnv);
+                    $.unblockUI();
+                }
+            });
+        } else {
+            if(tipoPersona == 'JURIDICO' || tipoPersona == 'J'){
+                oidCiudadano    = sessionService.get('IDSOLICITANTE');
+                datosCiudadano  = $scope.datosIniciales.f01_pri_nom_rep +' '+ $scope.datosIniciales.f01_ape_pat_rep;
+                datosci         = $scope.datosIniciales.f01_num_doc_rep;
+                dEmpresa        = $scope.datosIniciales.f01_raz_soc_per_jur;
+                dnit            = $scope.datosIniciales.f01_num_doc_per_jur;
+                datoForm4 = JSON.stringify($rootScope.datosForm401);
+                $.ajax({
+                    url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdfTV.php',
+                    type:"post",
+                    data:{
+                        "soid": oidCiudadano,
+                        "sorigen":"IGOB",
+                        "stipo":tipoPersona,
+                        "usuario": datosCiudadano,
+                        "cedula":  datosci,
+                        "expedido": '',
+                        "empresa": dEmpresa,
+                        "nit": dnit,
+                        "fecha": $scope.fechafinalserver,
+                        "hora": $scope.horafinal,
+                        "data": datoForm4,
+                        "stipo_form": 'DECLARACIONTV'
+                    },
+                    success:function(response){
+                        if(response.length>0){
+                            var urlData = response;
+                            $rootScope.decJuradaNatural = urlData;
+                            $scope.InsertarDocumento(response);
+                            $rootScope.datosEnv.declaracion_jurada = urlData;
+                            $scope.serializarInformacion($rootScope.datosEnv);
+                            $.unblockUI();
+                        }
+                    }
+                });
+            }
+        }
+    };
+    ///********************* panchito fin ********************/
+
+    
+
 });

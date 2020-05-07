@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <legend>{{translateTitulos.lbl_12_07}}:</legend>
+                    <legend>DATOS SOLICITANTE:</legend>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group" >
@@ -234,26 +234,6 @@
                     <legend>DATOS DE LA ACTIVIDAD ECONOMICA </legend>
                 </div>
 
-                 <div class="col-md-12" align="left">
-                    <div class="form-group" class="col-md-12">                                   
-                            <div class="col-md-4">
-                                <div class="form-group" >
-                                    <input type="radio" ng-model="datos.rdTipoTramit1" name="rdTipoTramite1" value="VP" ng-disabled="desabilitado" required/>VENTA DE PRODUCTOS A DOMICILIO
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group" >
-                                    <input type="radio" ng-model="datos.rdTipoTramit2" name="rdTipoTramite1" value="VR" ng-disabled="desabilitado" required/>VENTA PARA RECOJO
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group" >
-                                    <input type="radio" ng-model="datos.rdTipoTramit3" name="rdTipoTramite1" value="DP" ng-disabled="desabilitado" required/>DISTRIBUCION CON MOVILIDAD PROPIA
-                                <br>
-                                </div>
-                            </div>
-                    </div>
-                </div>
                 <div class="col-md-4">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px">  </font>
@@ -307,8 +287,29 @@
                     </div>
                 </div>
 
+                <div class="col-md-12" align="left">
+                    <div class="form-group" class="col-md-12">                                   
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <input type="checkbox" ng-model="datos.f01_venta_productos" name="f01_venta_productos" value="VP" ng-disabled="desabilitado" required/>VENTA DE PRODUCTOS A DOMICILIO
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <input type="checkbox" ng-model="datos.f01_venta_recojo" name="f01_venta_recojo" value="VR" ng-disabled="desabilitado" required/>VENTA PARA RECOJO
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <input type="checkbox" ng-model="datos.f01_distribucion_propia" name="f01_distribucion_propia" value="DP" ng-disabled="desabilitado" required/>DISTRIBUCION CON MOVILIDAD PROPIA
+                                <br>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
                 <div class="col-md-12">
-                    <legend>{{translateTitulos.lbl_12_54}}: </legend>
+                    <legend>CROQUIS DE UBICACION: </legend>
                 </div>
                 <label class="col-sm-4" type ="hidden">UBICACIÓN DE LA ACTIVIDAD ECONÓMICA</label>
                 <div class="col-md-12" >
@@ -427,7 +428,7 @@
                 <div class="col-md-4" ng-show="datos.f01_num_act == 'NINGUNO'">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px"> * </font>
-                        <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
+                        <label for="url" >NOMBRE DE VIA:</label>
                         <div class="controls">
                           <input type="text" ng-model="datos.f01_num_act_n" id="f01_num_act_n" name="f01_num_act_n" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
                         </div>
@@ -495,7 +496,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" >
-                        <label for="url" >Referencia de la Dirección de la Actividad Económica para mayor presición:</label>                        
+                        <label for="url" >REFERENCIA DE LA DIRECCION DE LA ACTIVIDAD ECONOMICA CON MAYOR PRECISION:</label>                        
                         <div class="controls">
                             <input ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" ng-disabled="desabilitadoO || desabilitado" required onchange="document.signupForm.btnFormLicencia.disabled=true;" />
                         </div>
@@ -503,8 +504,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group" >
-                        <font color="#FF0000" size="4px"> * </font>
-                        <label for="url" >Descripción del Servicio Prestado:</label>
+                       
+                        <label for="url" >DESCRIPCION DEL SERIVICIO PRESTADO:</label>
                         <div class="controls">
                             <input type="text" ng-model="datos.f01_productosElaborados" id="f01_productosElaborados" name="f01_productosElaborados" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" required/>
                         </div>
@@ -513,8 +514,7 @@
 
                 <div class="col-md-4">
                     <div class="form-group" >
-                        <font color="#FF0000" size="4px"> * </font>
-                        <label for="url" >Correo Electronico:</label>
+                        <label for="url" >CORREO ELECTRONICO:</label>
                         <div class="controls">
                             <input type="text" ng-model="datos.f01_correo_electronico_ae" id="f01_correo_electronico_ae" name="f01_correo_electronico_ae" class="form-control" value=""  width="30%" height="30" ng-disabled="desabilitado" required/>
                         </div>
@@ -773,12 +773,18 @@
                     </div>
                     <input type="hidden" ng-model="datos.f01_tipo_act_ae_descrip" id="f01_nro_frm" name="f01_nro_frm" class="form-control">
                     <input type="hidden" ng-model="datos.f01_modalidad_pago_descrip" id="f01_nro_frm" name="f01_nro_frm" class="form-control">
+
+                    <input type="hidden" ng-model="datos.f01_venta_productos_domicilio" id="f01_venta_productos_domicilio" name="f01_venta_productos_domicilio" class="form-control">
+                    <input type="hidden" ng-model="datos.f01_venta_para_recojo" id="f01_venta_para_recojo" name="f01_venta_para_recojo" class="form-control">
+                    <input type="hidden" ng-model="datos.f01_distribucion_movilidad_propia" id="f01_distribucion_movilidad_propia" name="f01_distribucion_movilidad_propia" class="form-control">
+
+                
                     
 
             </div>
 
             <div class="col-md-12" align="right" ng-show = "botones != null">
-                <button id="miFormGuardar"  ng-click="verificarCamposInternet(datos);guardarDatos(datos);" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="" tooltip="Guardar Formulario">
+                <button id="miFormGuardar"  ng-click="verificarCamposInternet(datos);" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="" tooltip="Guardar Formulario">
                 <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="" tooltip="Enviar Formulario" >
             </div> 
           </div>

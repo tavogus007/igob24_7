@@ -1122,34 +1122,31 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                     type:"post",
                     data:{
                         "soid": oidCiudadano,
-                        "sorigen":"IGOB",
-                        "stipo":tipoPersona,
+                        "sorigen": "IGOB",
+                        "stipo": tipoPersona,
                         "usuario": datosCiudadano,
                         "cedula":  datosci,
-                        "expedido": '',
-                        "empresa": dEmpresa,
-                        "nit": dnit,
+                        "expedido": datosexpedido,
+                        "empresa": '',
+                        "nit": '',
                         "fecha": $scope.fechafinalserver,
-                        "hora": $scope.horafinal,
+                        "hora": $scope.sHoraFinal,
                         "data": datoForm4,
                         "stipo_form": 'DECLARACIONTV'
                     },
                     success:function(response){
-                        if(response.length>0){
-                            var urlData = response;
-                            $rootScope.decJuradaNatural = urlData;
-                            $scope.InsertarDocumento(response);
-                            $rootScope.datosEnv.declaracion_jurada = urlData;
-                            $scope.guardarDatos($rootScope.datosEnv);
-                            $.unblockUI();
-                        }
+                        var urlData = response;
+                        $rootScope.decJuradaNatural = urlData;
+                        $scope.InsertarDocumento(response);
+                        $rootScope.datosEnv.declaracion_jurada = urlData;
+                        $scope.datos.declaracion_jurada = urlData;
+                        document.signupForm.btnFormLicencia.disabled=false;
+                        $scope.guardarDatos($rootScope.datosEnv);
+                        $.unblockUI();
                     }
                 });
             }
         }
     };
     ///********************* panchito fin ********************/
-
-
-
 });

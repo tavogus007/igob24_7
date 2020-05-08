@@ -2979,7 +2979,82 @@ $scope.getRequisito1 = function(dato){
         }
     }
 
-     $scope.verificarCamposInternet = function (data) {
+    $scope.declaracionJurada = function(datos){
+        $rootScope.datosEnv = "";
+        var fecha= new Date();
+        var fechaActualS = "";
+        fechaActualS= fecha.getDate() +" - "+ (fecha.getMonth() + 1) +" - "+ fecha.getFullYear();
+        var sHora = "";
+        sHora = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+        var stringFormulario40  =   "";
+        var urlFormularioN  =   "";
+        var snombre =   "";
+        var scedulaid   =   "";
+        var sexpedido   =   "";
+        var snombreREP = "";
+        var scirep = "";
+        var sempresa = "";
+        var snit = "";
+        $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
+        if($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona == 'J'){
+            console.log("55555555555555");
+            console.log(datos);
+            datos.f01_tipo_per_desc = 'JURIDICO';
+            urlFormularioJ  =   "../../docs/AE_Formulario_TV.html";
+            $( "#msgformularioJ" ).load(urlFormularioJ, function(data) {
+                stringFormulario40  =   data;
+                datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
+                datos.f01_num_dos_prop = ((typeof(datos.f01_num_doc_rep) == 'undefined' || datos.f01_num_doc_rep == null) ? "" : datos.f01_num_doc_rep);
+                datos.f01_pri_nom_rep = ((typeof(datos.f01_pri_nom_rep) == 'undefined' || datos.f01_pri_nom_rep == null) ? "" : datos.f01_pri_nom_rep);
+                datos.f01_ape_mat_rep = ((typeof(datos.f01_ape_mat_rep) == 'undefined' || datos.f01_ape_mat_rep == null) ? "" : datos.f01_ape_mat_rep);
+                datos.f01_ape_pat_rep = ((typeof(datos.f01_ape_pat_rep) == 'undefined' || datos.f01_ape_pat_rep == null) ? "" : datos.f01_ape_pat_rep);
+                datos.f01_nom_completo = datos.f01_pri_nom_rep + " " + datos.f01_ape_mat_rep + " " + datos.f01_ape_pat_rep;
+                datos.f01_expedido_prop = ((typeof(datos.f01_expedido_rep) == 'undefined' || datos.f01_expedido_rep == null) ? "" : datos.f01_expedido_rep);
+                datos.f01_raz_soc = ((typeof(datos.f01_raz_soc) == 'undefined' || datos.f01_raz_soc == null) ? "" : datos.f01_raz_soc);
+                datos.f01_num_pmc = ((typeof(datos.f01_num_pmc) == 'undefined' || datos.f01_num_pmc == null) ? "" : datos.f01_num_pmc);
+
+                stringFormulario40  =   stringFormulario40.replace("#f01_num_dos_prop#", datos.f01_num_dos_prop);
+                stringFormulario40  =   stringFormulario40.replace("#f01_nom_completo#", datos.f01_nom_completo);
+                stringFormulario40  =   stringFormulario40.replace("#f01_expedido_prop#", datos.f01_expedido_prop);
+                stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.f01_raz_soc);
+                stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
+                stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
+                stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
+                stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
+                $scope.msgformularioJ = stringFormulario40;
+                $scope.notifcondicionesuso = stringFormulario40;
+                setTimeout(function(){
+                    $scope.fmostrarFormulario();
+                },500);
+            })
+            $scope.armarDatosForm(datos,fechaActualS, sHora);
+        }
+    }
+    $scope.armarDatosForm = function(data,sfecha,sHora){
+        $rootScope.datosForm401 = "";
+        var dataForm = {};
+        //CABECERA
+        dataForm['f01_nom_completo'] = data.f01_nom_completo;
+        dataForm['f01_num_dos_prop'] = data.f01_num_dos_prop;
+        dataForm['f01_expedido_prop'] = data.f01_expedido_prop;
+        dataForm['f01_raz_soc'] = data.f01_raz_soc;
+        dataForm['f01_num_pmc'] = data.f01_num_pmc;
+        dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
+
+        dataForm['fecha_sist'] = sfecha;
+        dataForm['fecha_sist2'] = sfecha;
+        dataForm['usuario'] = sessionService.get('USUARIO');
+        dataForm['hora_sist'] = sHora;
+        $rootScope.datosForm401 = dataForm;
+        $rootScope.datosEnv = data;
+    }
+    $scope.fmostrarFormulario   =   function(){
+        $("#exampleModalCenter1").modal({backdrop: 'static', keyboard: false});
+        $('#msgformularioJ').html($scope.msgformularioJ);
+    }
+
+
+    $scope.verificarCamposInternet = function (data) {
         $scope.getRequisito1(data.f01_venta_productos);
         $scope.getRequisito2(data.f01_venta_recojo);
         $scope.getRequisito3(data.f01_distribucion_propia);
@@ -3006,17 +3081,14 @@ $scope.getRequisito1 = function(dato){
               //$rootScope.validacionRequisitosTec();
               $scope.guardarDatos(data);
               $scope.declaracionJurada(data);
-              $("#declaracionN").modal("show");
+              $("#declaracionJ").modal("show");
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
     }
 
     
-    $scope.fmostrarFormulario   =   function(){
-        $("#exampleModalCenter1").modal({backdrop: 'static', keyboard: false});
-        $('#msgformularioJ').html($scope.msgformularioJ);
-    }
+    
     
     $scope.cargarDatosJuridico = function(){
         $scope.sTipoPersona = sessionService.get('TIPO_PERSONA');

@@ -38,7 +38,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 if(typeof sformguardado == 'undefined' || sformguardado != 'G'){
                     $scope.botones = null;
                     $scope.desabilitado = true; 
-                                         
+                    $scope.limpiarDatos();                    
                     swal('', "Favor revisar la información y seleccionar la Actividad Economica que desea registrar.", 'warning');                    
                 }else{
 
@@ -464,6 +464,16 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $scope.datos.FILE_CONTRATO_DELIVERY = "";
         $scope.datos.FILE_FOTO_SOLICITANTE = "";
         $scope.datos.FILE_FOTO_LICENCIA_CI = "";
+        $scope.div_archivoexcelformulario = false;
+        $scope.div_aeserviciosdelivery = false;
+        $scope.div_fotografiafrentenitidasolicitante = false;
+        $scope.div_fotografiaslicenciaconducir = false;
+        $scope.div_fotosvehiculolateralfrontal = false;
+        $scope.div_permisocirculacionvehicular = false;
+        $scope.div_documentosruatvehiculo = false;
+        $scope.divreferencia = false;
+        $scope.div_correelec = false;
+        $scope.divalimentos = false;
     }
 
 
@@ -589,13 +599,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         });
     }
 
-    $scope.GetValueParam = function(){
-        var e = document.getElementById("f01_tipo_act_ae");
-        $scope.datos.f01_tipo_act_ae_descrip = e.options[e.selectedIndex].text;
-        var f = document.getElementById("f01_modalidad_pago");
-        $scope.datos.f01_modalidad_pago_descrip = f.options[f.selectedIndex].text;
-    }
-
     $scope.ultimoArrayAdjunto = function(){
         $scope.capturarImagen();
         datoObjectFiles = [];
@@ -665,7 +668,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     }
 
     $scope.enviarTramiteCeroPapel = function(paramForm){
-        $scope.GetValueParam();
         $scope.ultimoArrayAdjunto();
         console.log(paramForm);
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
@@ -976,6 +978,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 if(data[0].datos.INT_FORM_ALMACENADO == 'G'){
                     $scope.desabilitado = true;
                     $scope.botones = null;
+                    $scope.docdinamicos(data);
                     
                 }else{
                     $scope.desabilitado = false;
@@ -1017,7 +1020,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
                             || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
                             || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
-                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm") {
+                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm" || ext_doc == ".doc") {
                             var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
                             fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
                             $scope.datos.FILE_VEHICULO_FOTO = nombreNuevo;
@@ -1212,7 +1215,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                             || ext_doc == "bmp" || ext_doc == "gif"  || ext_doc == 'xls' 
                             || ext_doc == 'xlsx' || ext_doc == "PNG" || ext_doc == "JPG" || ext_doc == "JPEG" 
                             || ext_doc == "BMP" || ext_doc == "GIF"  || ext_doc == 'XLS' 
-                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm") {
+                            || ext_doc == 'XLSX' || ext_doc == "pdf" || ext_doc == ".docx" || ext_doc == ".docxlm" || ext_doc == ".doc") {
                             var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
                             fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
                             $scope.datos.FILE_FOTO_SOLICITANTE = nombreNuevo;
@@ -1288,6 +1291,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $scope.listadoActividadesEconomicas();
         $scope.open_mapa_ae();
         $scope.macrodistritos();
+
         $.unblockUI();
         document.signupForm.btnFormLicencia.disabled=true;
     };
@@ -1376,81 +1380,37 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     }
 
     $scope.getRequisito1 = function(dato){
-        datoObjectFinal = [];
-        //"VENTA DE PRODUCTOS A DOMICILIO"
-        if(dato == true){
-            datoObject = new Object();
-            datoObject1 = new Object();
-            datoObject.tipo = "CHK";
-            datoObject1.valor= "true";
-            datoObjectFinal[0] = datoObject;
-            datoObjectFinal[1] = datoObject1;
-            $scope.datos.f01_venta_productos_domicilio=datoObjectFinal;
+        if(data == 'VENTAPRODED'){
+            $scope.GetValueParam();
+            $scope.datos.f01_venta_productos_domicilio = "VENTA DE PRODUCTOS CON ENTREGA A DOMICILIO";
         }else{
-            datoObject = new Object();
-            datoObject1 = new Object();
-            datoObject.tipo = "CHK";
-            datoObject1.valor="false";
-            datoObjectFinal[0] = datoObject;
-            datoObjectFinal[1] = datoObject1;
-            $scope.datos.f01_venta_productos_domicilio=datoObjectFinal;
+            //OPCION 3
+             if(data == 'VENTAPRODVP'){
+                $scope.GetValueParam();
+                $scope.datos.f01_distribucion_movilidad_propia = "VENTA DE PRODUCTOS CON VEHICULO PROPIO";
+            }else{
+                //OPCION 2
+                if(data == 'SERVICIODEL'){
+                    $scope.datos.f01_venta_para_recojo = "VENTA DE PRODUCTOS CON VEHICULO PROPIO"; 
+                }
+            }
         }
     }
 
-    $scope.getRequisito2 = function(dato){
-        datoObjectFinal = [];
-        if(dato == true){
-            datoObject = new Object();
-            datoObject1 = new Object();
-            datoObject.tipo = "CHK";
-            datoObject1.valor= "true";
-            datoObjectFinal[0] = datoObject;
-            datoObjectFinal[1] = datoObject1;
-            $scope.datos.f01_venta_para_recojo=datoObjectFinal;
-
-        }else{
-            datoObject = new Object();
-            datoObject1 = new Object();
-            datoObject.tipo = "CHK";
-            datoObject1.valor="false";
-            datoObjectFinal[0] = datoObject;
-            datoObjectFinal[1] = datoObject1;
-            $scope.datos.f01_venta_para_recojo=datoObjectFinal;
-
-        }
+    $scope.GetValueParam = function(){
+        var e = document.getElementById("f01_tipo_act_ae");
+        $scope.datos.f01_tipo_act_ae_descrip = e.options[e.selectedIndex].text;
+        var f = document.getElementById("f01_modalidad_pago");
+        $scope.datos.f01_modalidad_pago_descrip = f.options[f.selectedIndex].text;
     }
-
-    $scope.getRequisito3 = function(dato){
-        datoObjectFinal = [];
-        if(dato == true){
-            datoObject = new Object();
-            datoObject1 = new Object();
-            datoObject.tipo = "CHK";
-            datoObject1.valor= "true";
-            datoObjectFinal[0] = datoObject;
-            datoObjectFinal[1] = datoObject1;
-            $scope.datos.f01_distribucion_movilidad_propia=datoObjectFinal;
-
-        }else{
-            datoObject = new Object();
-            datoObject1 = new Object();
-            datoObject.tipo = "CHK";
-            datoObject1.valor="false";
-            datoObjectFinal[0] = datoObject;
-            datoObjectFinal[1] = datoObject1;
-            $scope.datos.f01_distribucion_movilidad_propia=datoObjectFinal;
-
-        }
-    }
+    
 
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {
-        $scope.getRequisito1(data.f01_venta_productos);
-        $scope.getRequisito2(data.f01_venta_recojo);
-        $scope.getRequisito3(data.f01_distribucion_propia);
-
-        if(data &&
+        $scope.getRequisito1();
+        if(data.f01_validador_servicio == 'VENTAPRODED' || data.f01_validador_servicio == 'VENTAPRODVP'){
+            if(data &&
               data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
               data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
               data.f01_raz_soc != "" && data.f01_raz_soc != null &&
@@ -1459,13 +1419,16 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
               data.f01_categoria_agrupada_descrip != "" && data.f01_categoria_agrupada_descrip != null &&
               data.f01_macro_act != "" && data.f01_macro_act != null &&
               data.f01_zona_act != "" && data.f01_zona_act != null &&
-            
               data.f01_casilla != "" && data.f01_casilla != null &&
+              data.f01_correo_electronico_ae != "" && data.f01_correo_electronico_ae != null &&
+              data.f01_cantidad_personal != "" && data.f01_cantidad_personal != null &&
+              data.f01_categoria_agrupada_descripcion != "" && data.f01_categoria_agrupada_descripcion != null &&
+              data.f01_cantidad_personal != "" && data.f01_cantidad_personal != null &&
+              data.f01_modalidad_pago != "" && data.f01_modalidad_pago != null &&
               data.FILE_VEHICULO_FOTO != "" && data.FILE_VEHICULO_FOTO != null &&
               data.FILE_VEHICULO_PERMISO != "" && data.FILE_VEHICULO_PERMISO != null &&
               data.FILE_FORMVH_EXCEL != "" && data.FILE_FORMVH_EXCEL != null &&
               data.FILE_RUAT_VEHICULO != "" && data.FILE_RUAT_VEHICULO != null &&
-              data.FILE_CONTRATO_DELIVERY != "" && data.FILE_CONTRATO_DELIVERY != null &&
               data.FILE_FOTO_SOLICITANTE != "" && data.FILE_FOTO_SOLICITANTE != null &&
               data.FILE_FOTO_LICENCIA_CI != "" && data.FILE_FOTO_LICENCIA_CI != null
               ){
@@ -1477,8 +1440,99 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
+        }
+
+        if(data.f01_validador_servicio == 'SERVICIODEL'){
+            if(data &&
+              data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
+              data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
+              data.f01_raz_soc != "" && data.f01_raz_soc != null &&
+              data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
+              data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
+              data.f01_categoria_agrupada_descrip != "" && data.f01_categoria_agrupada_descrip != null &&
+              data.f01_macro_act != "" && data.f01_macro_act != null &&
+              data.f01_zona_act != "" && data.f01_zona_act != null &&
+              data.f01_correo_electronico_ae != "" && data.f01_correo_electronico_ae != null &&
+              data.FILE_VEHICULO_FOTO != "" && data.FILE_VEHICULO_FOTO != null &&
+              data.FILE_VEHICULO_PERMISO != "" && data.FILE_VEHICULO_PERMISO != null &&
+              data.FILE_FORMVH_EXCEL != "" && data.FILE_FORMVH_EXCEL != null &&
+              data.FILE_RUAT_VEHICULO != "" && data.FILE_RUAT_VEHICULO != null &&
+              data.FILE_FOTO_SOLICITANTE != "" && data.FILE_FOTO_SOLICITANTE != null &&
+              data.FILE_FOTO_LICENCIA_CI != "" && data.FILE_FOTO_LICENCIA_CI != null
+              ){
+              //$rootScope.validacionRequisitosTec();
+
+              $scope.guardarDatos(data);
+              $scope.declaracionJurada(data);
+              $("#declaracionN").modal("show");
+            }else{
+                swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
+            }
+        }
+        
     }
 
+    //f01_venta_productos
+//f01_venta_recojo
+//f01_distribucion_propia
+
+    $scope.div_archivoexcelformulario = false;
+    $scope.div_aeserviciosdelivery = false;
+    $scope.div_fotografiafrentenitidasolicitante = false;
+    $scope.div_fotografiaslicenciaconducir = false;
+    $scope.div_fotosvehiculolateralfrontal = false;
+    $scope.div_permisocirculacionvehicular = false;
+    $scope.div_documentosruatvehiculo = false;
+    $scope.divreferencia = false;
+    $scope.div_correelec = false;
+    $scope.divalimentos = false;
+
+    $scope.docdinamicos = function(data){
+        console.log(data);
+        //OPCION 1
+        if(data == 'VENTAPRODED'){
+            $scope.div_archivoexcelformulario = true;
+            $scope.div_fotografiafrentenitidasolicitante = true;
+            $scope.div_fotografiaslicenciaconducir = true;
+            $scope.div_fotosvehiculolateralfrontal = true;
+            $scope.div_permisocirculacionvehicular = true;
+            $scope.div_documentosruatvehiculo = true;
+            $scope.div_aeserviciosdelivery = false;
+            $scope.divreferencia = true;
+            $scope.div_correelec = true;
+            $scope.divalimentos = true;
+        }else{
+            //OPCION 3
+             if(data == 'VENTAPRODVP'){
+                $scope.div_archivoexcelformulario = true;
+                $scope.div_aeserviciosdelivery = true
+                $scope.div_fotografiafrentenitidasolicitante = true;
+                $scope.div_fotografiaslicenciaconducir = true;
+                $scope.div_fotosvehiculolateralfrontal = true;
+                $scope.div_permisocirculacionvehicular = true;
+                $scope.div_documentosruatvehiculo = true;
+                $scope.divreferencia = true;
+                $scope.div_correelec = true;
+                $scope.divalimentos = true;
+            }else{
+                //OPCION 2
+                if(data == 'SERVICIODEL'){
+                    $scope.div_archivoexcelformulario = true;
+                    $scope.div_fotografiafrentenitidasolicitante = true;
+                    $scope.div_fotografiaslicenciaconducir = true;
+                    $scope.div_fotosvehiculolateralfrontal = true;
+                    $scope.div_permisocirculacionvehicular = true;
+                    $scope.div_documentosruatvehiculo = true;
+                    $scope.div_aeserviciosdelivery = false;
+                    $scope.divreferencia = false;
+                    $scope.div_correelec = true;
+                    $scope.divalimentos = false;
+                }
+
+            }
+        }
+       
+    }
 
     
 

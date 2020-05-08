@@ -2701,7 +2701,9 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             }
         }
     };
-
+    $scope.mostrarModalRequisitos = function(num){
+        $rootScope.mostrarRequisitos = num;
+    }
     /*REQUISITOS2018 - array*/
     $scope.lstRequisitosMultiples2018 = function(licenciamul){
         var sconsulta   = '[';

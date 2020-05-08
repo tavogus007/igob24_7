@@ -320,17 +320,19 @@
                             <div class="col-md-12">
                                 <div class="form-group" >
                                     <input type="checkbox" ng-model="datos.f01_venta_productos" name="f01_venta_productos" value="VP" ng-disabled="desabilitado" required/> VENTA DE PRODUCTOS CON ENTREGA A DOMICILIO
-
+                                    <button ng-click="mostrarModalRequisitos(1)" type="button" class="btn btn-success fa fa-list " name="req_deliveri" tooltip="Requisitos" data-toggle="modal" data-target="#requisitos_permiso"></button>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group" >
                                     <input type="checkbox" ng-model="datos.f01_venta_recojo" name="f01_venta_recojo" value="VR" ng-disabled="desabilitado" required/>SERVICIO DE DELIVERY
+                                    <button ng-click="mostrarModalRequisitos(2)" type="button" class="btn btn-success fa fa-list" name="req_deliveri" tooltip="Requisitos" data-toggle="modal" data-target="#requisitos_permiso"></button>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group" >
                                     <input type="checkbox" ng-model="datos.f01_distribucion_propia" name="f01_distribucion_propia" value="DP" ng-disabled="desabilitado" required/> VENTA DE PRODUCTOS CON VEHICULO PROPIO
+                                    <button ng-click="mostrarModalRequisitos(3)" type="button" class="btn btn-success fa fa-list " name="req_deliveri" tooltip="Requisitos" data-toggle="modal" data-target="#requisitos_permiso"></button>
                                 <br>
                                 </div>
                             </div>

@@ -315,6 +315,28 @@
                     <legend>DATOS DE LA ACTIVIDAD ECONOMICA QUE PRESTARA SERVICIOS </legend>
                 </div>
 
+                <div class="col-md-12" align="left">
+                    <div class="form-group" class="col-md-12">                                   
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <input type="checkbox" ng-model="datos.f01_venta_productos" name="f01_venta_productos" value="VP" ng-disabled="desabilitado" required/> VENTA DE PRODUCTOS CON ENTREGA A DOMICILIO
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <input type="checkbox" ng-model="datos.f01_venta_recojo" name="f01_venta_recojo" value="VR" ng-disabled="desabilitado" required/>SERVICIO DE DELIVERY
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <input type="checkbox" ng-model="datos.f01_distribucion_propia" name="f01_distribucion_propia" value="DP" ng-disabled="desabilitado" required/> VENTA DE PRODUCTOS CON VEHICULO PROPIO
+                                <br>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
                 <div class="col-md-4">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px">  </font>
@@ -368,27 +390,6 @@
                     </div>
                 </div>
 
-                <div class="col-md-12" align="left">
-                    <div class="form-group" class="col-md-12">                                   
-                            <div class="col-md-12">
-                                <div class="form-group" >
-                                    <input type="checkbox" ng-model="datos.f01_venta_productos" name="f01_venta_productos" value="VP" ng-disabled="desabilitado" required/> VENTA DE PRODUCTOS CON ENTREGA A DOMICILIO
-
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group" >
-                                    <input type="checkbox" ng-model="datos.f01_venta_recojo" name="f01_venta_recojo" value="VR" ng-disabled="desabilitado" required/>SERVICIO DE DELIVERY
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group" >
-                                    <input type="checkbox" ng-model="datos.f01_distribucion_propia" name="f01_distribucion_propia" value="DP" ng-disabled="desabilitado" required/> VENTA DE PRODUCTOS CON VEHICULO PROPIO
-                                <br>
-                                </div>
-                            </div>
-                    </div>
-                </div>
                 <div class="col-md-12">
                     <div class="col-md-12">
                         <legend>{{translateTitulos.lbl_12_54}}: </legend>
@@ -726,7 +727,7 @@
                                                 <div class="input-group">                   
                                                     <input id="txt_FILE_VEHICULO_FOTO" name="txt_FILE_VEHICULO_FOTO" ng-model="datos.FILE_VEHICULO_FOTO" type="text" ng-disabled="true" class="form-control input-lg" required>
                                                         <span class="input-group-btn">
-                                                            <a id="href_FILE_VEHICULO_FOTO" target="_blank"  href="">
+                                                            <a id="href_FILE_VEHICULO_FOTO" target="_blank"  href="">                                                                                                                         
                                                                 <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover != null" ng-click="mostrarimg('FILE_VEHICULO_FOTO');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                               </a>
                                                               <button id="btn_FILE_VEHICULO_FOTO" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_VEHICULO_FOTO');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
@@ -750,7 +751,7 @@
                                                       <input id="txt_FILE_VEHICULO_PERMISO" name="txt_FILE_VEHICULO_PERMISO" ng-model="datos.FILE_VEHICULO_PERMISO" type="text" ng-disabled="true" class="form-control input-lg" required>
                                                       <span class="input-group-btn">
                                                           <a id="href_FILE_VEHICULO_PERMISO" target="_blank"  href="">
-                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover1 != null" ng-click="mostrarimg('FILE_VEHICULO_PERMISO');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover != null" ng-click="mostrarimg('FILE_VEHICULO_PERMISO');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                           </a>
                                                           <button id="btn_FILE_VEHICULO_PERMISO" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_VEHICULO_PERMISO');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                       </span>
@@ -774,7 +775,7 @@
                                                       <input id="txt_FILE_RUAT_VEHICULO" name="txt_FILE_RUAT_VEHICULO" ng-model="datos.FILE_RUAT_VEHICULO" type="text" ng-disabled="true" class="form-control input-lg" required>
                                                       <span class="input-group-btn">
                                                           <a id="href_FILE_RUAT_VEHICULO" target="_blank"  href="">
-                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover1 != null" ng-click="mostrarimg('FILE_RUAT_VEHICULO');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover != null" ng-click="mostrarimg('FILE_RUAT_VEHICULO');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                           </a>
                                                           <button id="btn_FILE_RUAT_VEHICULO" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_RUAT_VEHICULO');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                       </span>
@@ -809,7 +810,7 @@
                                                       <input id="txt_FILE_FORMVH_EXCEL" name="txt_FILE_FORMVH_EXCEL" ng-model="datos.FILE_FORMVH_EXCEL" type="text" ng-disabled="true" class="form-control input-lg" required>
                                                       <span class="input-group-btn">
                                                           <a id="href_FILE_FORMVH_EXCEL" target="_blank" href="">
-                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover1 != null" ng-click="mostrarimg('FILE_FORMVH_EXCEL');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover != null" ng-click="mostrarimg('FILE_FORMVH_EXCEL');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                           </a>
                                                           <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FORMVH_EXCEL');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                       </span>
@@ -833,7 +834,7 @@
                                                       <input id="txt_FILE_CONTRATO_DELIVERY" name="txt_FILE_CONTRATO_DELIVERY" ng-model="datos.FILE_CONTRATO_DELIVERY" type="text" ng-disabled="true" class="form-control input-lg" required>
                                                       <span class="input-group-btn">
                                                           <a id="href_FILE_CONTRATO_DELIVERY" target="_blank"  href="">
-                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover1 != null" ng-click="mostrarimg('FILE_CONTRATO_DELIVERY');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover != null" ng-click="mostrarimg('FILE_CONTRATO_DELIVERY');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                           </a>
                                                           <button id="btn_FILE_CONTRATO_DELIVERY" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_CONTRATO_DELIVERY');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                       </span>
@@ -857,7 +858,7 @@
                                                       <input id="txt_FILE_FOTO_SOLICITANTE" name="txt_FILE_FOTO_SOLICITANTE" ng-model="datos.FILE_FOTO_SOLICITANTE" type="text" ng-disabled="true" class="form-control input-lg" required>
                                                       <span class="input-group-btn">
                                                           <a id="href_FILE_FOTO_SOLICITANTE" target="_blank"  href="">
-                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover1 != null" ng-click="mostrarimg('FILE_FOTO_SOLICITANTE');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover != null" ng-click="mostrarimg('FILE_FOTO_SOLICITANTE');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                           </a>
                                                           <button id="btn_FILE_FOTO_SOLICITANTE" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FOTO_SOLICITANTE');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                       </span>
@@ -880,8 +881,8 @@
                                                   <div class="input-group">
                                                       <input id="txt_FILE_FOTO_LICENCIA_CI" name="txt_FILE_FOTO_LICENCIA_CI" ng-model="datos.FILE_FOTO_LICENCIA_CI" type="text" ng-disabled="true" class="form-control input-lg" required>
                                                       <span class="input-group-btn">
-                                                          <a id="href_FILE_FOTO_LICENCIA_CI" target="_blank" href="">
-                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover1 != null" ng-click="mostrarimg('FILE_FOTO_LICENCIA_CI');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                          <a id="href_FILE_FOTO_LICENCIA_CI" target="_blank" href="">                                                              
+                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover != null" ng-click="mostrarimg('FILE_FOTO_LICENCIA_CI');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                           </a>
                                                           <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FOTO_LICENCIA_CI');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                       </span>

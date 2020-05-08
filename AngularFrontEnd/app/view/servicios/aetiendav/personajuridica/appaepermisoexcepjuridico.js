@@ -3253,6 +3253,7 @@ $scope.getRequisito1 = function(dato){
     });
 
     var clsIniciarHtmlForm = $rootScope.$on('inicializarHtmlForm', function(event, tramite){
+        $scope.btover = "MOSTRAR";
         if (tramite.venviado == 'SI') {
             $scope.btnGuardarForm           =   true;
             $scope.desabilitado             =   true;

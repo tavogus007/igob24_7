@@ -831,18 +831,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             datosNeXO['FILE_FOTOCOPIA_CI_R'] = paramForm.FILE_FOTOCOPIA_CI_R;
             datosNeXO['f01_croquis_ae'] = $scope.datos.ARCHIVOS_MULTIPLES_MAPA[0].nombre_archivo;
             datosNeXO['Licenmul_grilla'] = paramForm.Licenmul_grilla;
-            if(paramForm.f01_tipo_lic == 32 || paramForm.f01_tipo_lic == '32'){
-                datosNeXO['f01_idcat_multi_principal'] = paramForm.xf01_idcat_multi_principal;
-                datosNeXO['f01_descat_multi_principal'] = paramForm.xf01_descat_multi_principal;
-                datosNeXO['f01_act_principal'] = paramForm.f01_act_principal;
-                datosNeXO['f01_act_principal2'] = paramForm.f01_act_principal2;
-                datosNeXO['f01_actividad_principal_array'] = paramForm.f01_actividad_principal_array;
-            }else{
-                datosNeXO['f01_idcat_multi_principal'] = '';
-                datosNeXO['f01_descat_multi_principal'] = '';
-                datosNeXO['f01_act_principal'] = '';
-                datosNeXO['f01_actividad_principal_array'] = '';
-            }
+            
         }  
    
         datosNeXO['f01_categoria_descrip']      =  paramForm.f01_categoria_descripcion;
@@ -866,7 +855,11 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         datosNeXO['f01_venta_productos_domicilio'] = paramForm.f01_venta_productos_domicilio;
         datosNeXO['f01_venta_para_recojo'] = paramForm.f01_venta_para_recojo;
         datosNeXO['f01_distribucion_movilidad_propia'] = paramForm.f01_distribucion_movilidad_propia;
+        datosNeXO['f01_validador_servicio'] = paramForm.f01_validador_servicio;
 
+        datosNeXO['f01_venta_productos_domicilio_descrip'] = paramForm.f01_venta_productos_domicilio_descrip;
+        datosNeXO['f01_distribucion_movilidad_propia_descrip'] = paramForm.f01_distribucion_movilidad_propia_descrip;
+        datosNeXO['f01_venta_para_recojo_descrip'] = paramForm.f01_venta_para_recojo_descrip;
         datosNeXO['g_tipo'] = "AE-TIENDA EN LINEA";
         datosNeXO['g_fecha'] = fechactual;
         datosNeXO['g_origen'] = "IGOB247";
@@ -1379,23 +1372,92 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $('#msgformularioN').html($scope.msgformularioN);
     }
 
-    $scope.getRequisito1 = function(dato){
-        if(data == 'VENTAPRODED'){
+    $scope.getRequisitoAE = function(dato){
+        if(dato == 'VENTAPRODED'){
             $scope.GetValueParam();
-            $scope.datos.f01_venta_productos_domicilio = "VENTA DE PRODUCTOS CON ENTREGA A DOMICILIO";
+            $scope.datos.f01_venta_productos_domicilio_descrip = "VENTA DE PRODUCTOS CON ENTREGA A DOMICILIO";
         }else{
             //OPCION 3
-             if(data == 'VENTAPRODVP'){
+             if(dato == 'VENTAPRODVP'){
                 $scope.GetValueParam();
-                $scope.datos.f01_distribucion_movilidad_propia = "VENTA DE PRODUCTOS CON VEHICULO PROPIO";
+                $scope.datos.f01_distribucion_movilidad_propia_descrip = "VENTA DE PRODUCTOS CON VEHICULO PROPIO";
             }else{
                 //OPCION 2
-                if(data == 'SERVICIODEL'){
-                    $scope.datos.f01_venta_para_recojo = "VENTA DE PRODUCTOS CON VEHICULO PROPIO"; 
+                if(dato == 'SERVICIODEL'){
+                    $scope.datos.f01_venta_para_recojo_descrip = "VENTA DE PRODUCTOS CON VEHICULO PROPIO"; 
                 }
             }
         }
     }
+
+    $scope.getRequisito1 = function(dato){
+        console.log("ingresa::: ",dato);
+        datoObjectFinal = [];
+        datoObjectFinal2 = [];
+        datoObjectFinal3 = [];
+
+        //"VENTA DE PRODUCTOS A DOMICILIO"
+        if(dato == "VENTAPRODED"){
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor= "true";
+            datoObjectFinal[0] = datoObject;
+            datoObjectFinal[1] = datoObject1;
+            $scope.datos.f01_venta_productos_domicilio=datoObjectFinal;
+        }else{
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor="false";
+            datoObjectFinal[0] = datoObject;
+            datoObjectFinal[1] = datoObject1;
+            $scope.datos.f01_venta_productos_domicilio=datoObjectFinal;
+        }
+
+        if(dato == "SERVICIODEL"){
+            console.log("inresa aquuiiiiiiiiiiiii");
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor= "true";
+            datoObjectFinal2[0] = datoObject;
+            datoObjectFinal2[1] = datoObject1;
+            $scope.datos.f01_venta_para_recojo=datoObjectFinal2;
+
+        }else{
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor="false";
+            datoObjectFinal2[0] = datoObject;
+            datoObjectFinal2[1] = datoObject1;
+            $scope.datos.f01_venta_para_recojo=datoObjectFinal2;
+
+        }
+
+        if(dato == "VENTAPRODVP"){
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor= "true";
+            datoObjectFinal3[0] = datoObject;
+            datoObjectFinal3[1] = datoObject1;
+            $scope.datos.f01_distribucion_movilidad_propia=datoObjectFinal3;
+
+        }else{
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor="false";
+            datoObjectFinal3[0] = datoObject;
+            datoObjectFinal3[1] = datoObject1;
+            $scope.datos.f01_distribucion_movilidad_propia=datoObjectFinal3;
+        }
+
+        console.log(datoObjectFinal, datoObjectFinal2, datoObjectFinal3);
+    }
+
 
     $scope.GetValueParam = function(){
         var e = document.getElementById("f01_tipo_act_ae");
@@ -1408,10 +1470,11 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {
-        $scope.getRequisito1();
+        $scope.getRequisitoAE(data.f01_validador_servicio);
+        $scope.getRequisito1(data.f01_validador_servicio);
+
         if(data.f01_validador_servicio == 'VENTAPRODED' || data.f01_validador_servicio == 'VENTAPRODVP'){
-            if(data &&
-              data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
+            if(data && data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
               data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
               data.f01_raz_soc != "" && data.f01_raz_soc != null &&
               data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
@@ -1443,8 +1506,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         }
 
         if(data.f01_validador_servicio == 'SERVICIODEL'){
-            if(data &&
-              data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
+            if(data && data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
               data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
               data.f01_raz_soc != "" && data.f01_raz_soc != null &&
               data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
@@ -1468,13 +1530,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
-        }
-        
+        }        
     }
 
-    //f01_venta_productos
-//f01_venta_recojo
-//f01_distribucion_propia
 
     $scope.div_archivoexcelformulario = false;
     $scope.div_aeserviciosdelivery = false;

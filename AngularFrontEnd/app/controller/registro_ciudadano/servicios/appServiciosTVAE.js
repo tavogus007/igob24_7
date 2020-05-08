@@ -17,6 +17,14 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     ];
 
     $scope.seleccionarProceso = function(proceso){
+        $scope.btnCrearBlk = "mostrar";
+        /*if (proceso.id == "48" || proceso.id == 48) {
+            $scope.btnCrearBlk = "";
+        } */
+        if (proceso.name == "Habilitación de Plataforma Comercial   [ Proximamente ]") {
+            $scope.btnCrearBlk = "";
+        } 
+
         $scope.procesoSeleccionado  =   proceso.id;
         if($scope.procesoSeleccionado == 10){
             sidservicio =   10; 

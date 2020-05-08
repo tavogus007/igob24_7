@@ -1453,8 +1453,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             if(data && data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
               data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
               data.f01_raz_soc != "" && data.f01_raz_soc != null &&
-              data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
-              data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
               data.f01_categoria_agrupada_descrip != "" && data.f01_categoria_agrupada_descrip != null &&
               data.f01_macro_act != "" && data.f01_macro_act != null &&
               data.f01_zona_act != "" && data.f01_zona_act != null &&
@@ -1485,8 +1483,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             if(data && data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
               data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
               data.f01_raz_soc != "" && data.f01_raz_soc != null &&
-              data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
-              data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
               data.f01_categoria_agrupada_descrip != "" && data.f01_categoria_agrupada_descrip != null &&
               data.f01_macro_act != "" && data.f01_macro_act != null &&
               data.f01_zona_act != "" && data.f01_zona_act != null &&

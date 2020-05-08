@@ -391,7 +391,7 @@
                      <div class="col-md-12">
                         <legend>ACTUALIZAR DATOS DE LA ACTIVIDAD ECONÓMICA: </legend>
                     </div>
-                    <div class="col-md-12">
+                    <!--div class="col-md-12">
                         <label>CROQUIS DE UBICACION DE LA ACTIVIDAD ECONÓMICA: </label>
                     </div>
                     <div class="col-md-12" >
@@ -402,7 +402,6 @@
                             <font color="#FF0000" size="4px" align="center"> * </font>
                         </div>
                         <div class="col-md-10">                                    
-                            <!--<div id="mapActividad" ng-disabled="desabilitadoO || desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>-->
                             <div id="map_principal" ng-disabled="desabilitadoO || desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
                         </div>
                         <div class="form-group">
@@ -424,9 +423,8 @@
                 </div>
 
                     <input ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control" type="hidden" readonly>
-                    <input ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control" type="hidden" readonly>
+                    <input ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control" type="hidden" readonly-->
 
-            <!-- UBICACION DE ACTIVIDADES ECONOMICAS -->
                     <div class="col-md-12">
                         <legend>{{translateTitulos.lbl_12_39}}:</legend>
                     </div>
@@ -549,7 +547,7 @@
                             </div>
                         </div>
                     </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <font color="#FF0000" size="4px"></font>
                                 <label for="url" >{{translateTitulos.lbl_12_42}}:</label>
@@ -558,7 +556,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="url" >{{translateTitulos.lbl_12_43}}:</label>
                                 <div class="controls">
@@ -566,7 +564,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="url" >{{translateTitulos.lbl_12_44}}:</label>
                                 <div class="controls">
@@ -574,7 +572,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="url" >{{translateTitulos.lbl_12_45}}:</label>
                                 <div class="controls">
@@ -582,16 +580,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_47}}:</label>
+                                <label for="url" >TELEFONO ACTIVIDAD ECONOMICA:</label>
                                 <div class="controls">
                                     <input ng-model="datos.f01_tel_act1" id="f01_tel_act1" maxlength="7" name="f01_tel_act1" placeholder="Teléfono ej.22451630" class="form-control"  width="30%" height="30" onkeyUp=" valNumeroTelefono(this);"  ng-disabled="desabilitado"/>
                                 </div>
                             </div>
                         </div>
                      <div ng-show="div_correelec">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group" >
                             <label for="url" >CORREO ELECTRONICO:</label>
                             <div class="controls">
@@ -610,7 +608,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group" >
                            
                             <label for="url" >DESCRIPCION DEL SERIVICIO PRESTADO:</label>
@@ -622,7 +620,7 @@
                 </div>
 
                 <div ng-show="divalimentos">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="url" >ACTIVIDAD PRINCIPAL:</label>
                             <div class="controls">
@@ -631,7 +629,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="url" >CANTIDAD DE PERSONAL DEPENDIENTE QUE PRESTARA EL SERVICIO EN EL ESTABLECIMIENTO LOS CUALES DEBEN CONTAR CON SU CARNET DE MANIPULACION GAMLP:</label>
                             <div class="controls">
@@ -640,7 +638,7 @@
                         </div>
                     </div>
 
-                     <div class="col-md-4">
+                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="url" >ESTABLECER LAS MODALIDADES DE PAGO HABILITADAS:</label>
                             <div class="controls">
@@ -656,7 +654,7 @@
                     </div>
 
                     <div ng-show="datos.f01_modalidad_pago == 'OTROS'">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="url" >DETALLE EL TIPO DE PAGO :</label>
                                 <div class="controls">

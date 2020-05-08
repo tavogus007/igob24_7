@@ -161,7 +161,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     $scope.datos.f01_productosElaborados = response[0].productosElaborados;
                     $scope.datos.f01_actividadesSecundarias = response[0].actividadesSecundarias;
                     /*TIPO LICENCIA*/
-                     $scope.datos.f01_tipo_lic = response[0].idTipoLicencia;
+                    $scope.datos.f01_tipo_lic = response[0].idTipoLicencia;
                     $scope.datos.f01_categoria = response[0].idactividad_desarrollada343;
                     $scope.datos.f01_categoria_agrupada = response[0].idActividadDesarrollada;
                     $scope.datos.f01_categoria_descrip = response[0].desc_desarrollada;
@@ -491,7 +491,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     };
 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
-        
+        $scope.docdinamicos(data.f01_validador_servicio);
+        $scope.macrodistritos();
+        $scope.distritoZonas(data.f01_macro_act);
     });
 
     $scope.validarEnvio = function(data){
@@ -971,8 +973,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 if(data[0].datos.INT_FORM_ALMACENADO == 'G'){
                     $scope.desabilitado = true;
                     $scope.botones = null;
-                    $scope.docdinamicos(data);
-                    
+                   
                 }else{
                     $scope.desabilitado = false;
                     $scope.botones = "mostrar";
@@ -1460,8 +1461,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
 
 
     $scope.GetValueParam = function(){
-        var e = document.getElementById("f01_tipo_act_ae");
-        $scope.datos.f01_tipo_act_ae_descrip = e.options[e.selectedIndex].text;
         var f = document.getElementById("f01_modalidad_pago");
         $scope.datos.f01_modalidad_pago_descrip = f.options[f.selectedIndex].text;
     }
@@ -1585,11 +1584,21 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     $scope.divreferencia = false;
                     $scope.div_correelec = true;
                     $scope.divalimentos = false;
+                }else{
+                    $scope.div_archivoexcelformulario = false;
+                    $scope.div_aeserviciosdelivery = false;
+                    $scope.div_fotografiafrentenitidasolicitante = false;
+                    $scope.div_fotografiaslicenciaconducir = false;
+                    $scope.div_fotosvehiculolateralfrontal = false;
+                    $scope.div_permisocirculacionvehicular = false;
+                    $scope.div_documentosruatvehiculo = false;
+                    $scope.divreferencia = false;
+                    $scope.div_correelec = false;
+                    $scope.divalimentos = false;
                 }
 
             }
-        }
-       
+        }  
     }
 
     

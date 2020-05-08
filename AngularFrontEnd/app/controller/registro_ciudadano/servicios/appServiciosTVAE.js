@@ -678,8 +678,10 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                 }               
                 //$rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
                 setTimeout(function(){
+                    $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
                     $rootScope.$broadcast('inicializarGrillaAE', [{'datos':$scope.datos, 'venviado':tramite.venviado}]);
                     $rootScope.$broadcast('inicializarHtmlForm', tramite);
+
                  }, 4000);
                 $.unblockUI();
             });

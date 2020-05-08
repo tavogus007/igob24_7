@@ -551,7 +551,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
 
             datosNeXO['f01_tipo_per']       =   'J';
             datosNeXO['f01_tipo_per_desc']  = 'JURIDICO';
-             datosNeXO['f01_nro_frm'] = sessionService.get('IDTRAMITE') ;
+            datosNeXO['f01_nro_frm'] = sessionService.get('IDTRAMITE') ;
             datosNeXO['f01_tipo_per']                   =    'J';
             datosNeXO['f01_tipo_per_desc']              = 'JURIDICO';
             datosNeXO['INT_SOLICITANTE']                =   paramForm.INT_SOLICITANTE;
@@ -636,6 +636,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             datosNeXO['f01_dist_act']=paramForm.f01_dist_act;//"";
             datosNeXO['f01_dist_act_descrip'] = paramForm.f01_dist_act_descrip;
             datosNeXO['f01_zona_act']=paramForm.f01_zona_act;//paramForm.f01_zona_act_descrip;
+            datosNeXO['f01_zona_act_descrip']=paramForm.f01_zona_act_descrip;//paramForm.f01_zona_act_descrip;
             datosNeXO['f01_tip_via_act']=paramForm.f01_tip_via_act;
             datosNeXO['f01_num_act']=paramForm.f01_num_act;//paramForm.f01_tip_via_act;
             datosNeXO['f01_num_act_n']=paramForm.f01_num_act_n;//paramForm.f01_num_act;
@@ -773,7 +774,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             tramiteIgob.frm_tra_if_codigo = nroTramiteEnviado;
             tramiteIgob.frm_tra_id_usuario = idUsuario;
             tramiteIgob.validarFormProcesos(function(resultado){
-                //$scope.tramitesCiudadano();
+                $scope.ListadoTramitesCiudadano();
                 //$scope.bloquearBtnEnviarForm();
                 swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible para programar la inspección y/o verificación documental. Caso contrario puede apersonarse a la Plataforma Integra de su Macrodistrito para recabar mayor información.");
             });
@@ -1382,8 +1383,6 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             if(data && data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
               data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
               data.f01_raz_soc != "" && data.f01_raz_soc != null &&
-              data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
-              data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
               data.f01_categoria_agrupada_descrip != "" && data.f01_categoria_agrupada_descrip != null &&
               data.f01_macro_act != "" && data.f01_macro_act != null &&
               data.f01_zona_act != "" && data.f01_zona_act != null &&
@@ -1414,8 +1413,6 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             if(data && data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
               data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
               data.f01_raz_soc != "" && data.f01_raz_soc != null &&
-              data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
-              data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
               data.f01_categoria_agrupada_descrip != "" && data.f01_categoria_agrupada_descrip != null &&
               data.f01_macro_act != "" && data.f01_macro_act != null &&
               data.f01_zona_act != "" && data.f01_zona_act != null &&

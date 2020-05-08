@@ -2700,7 +2700,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
                 });
             }
         }
-    };
+    }; 
     $scope.mostrarModalRequisitos = function(num){
         $rootScope.mostrarRequisitos = num;
     }

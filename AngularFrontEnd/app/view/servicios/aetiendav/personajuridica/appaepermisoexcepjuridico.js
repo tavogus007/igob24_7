@@ -539,7 +539,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         $scope.ultimoArrayAdjunto(paramForm.f01_validador_servicio);
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm    =   true;
-        var idProcodigo         =   'GE_AE-';
+        var idProcodigo         =   'REG_AE-';
         var datosNeXO = {};
         datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
         if ($scope.tipoPersona == 'JURIDICO'){
@@ -692,7 +692,8 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         datosNeXO['f01_venta_para_recojo'] = paramForm.f01_venta_para_recojo;
         datosNeXO['f01_distribucion_movilidad_propia'] = paramForm.f01_distribucion_movilidad_propia;
         datosNeXO['f01_validador_servicio'] = paramForm.f01_validador_servicio;
-
+        datosNeXO['f01_detalle_otro_pago'] = paramForm.f01_detalle_otro_pago;
+        
         datosNeXO['f01_venta_productos_domicilio_descrip'] = paramForm.f01_venta_productos_domicilio_descrip;
         datosNeXO['f01_distribucion_movilidad_propia_descrip'] = paramForm.f01_distribucion_movilidad_propia_descrip;
         datosNeXO['f01_venta_para_recojo_descrip'] = paramForm.f01_venta_para_recojo_descrip;

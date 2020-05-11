@@ -737,7 +737,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         console.log(paramForm);
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm    =   true;
-        var idProcodigo         =   'GE_AE-';
+        var idProcodigo         =   'REG_AE-';
         var datosNeXO = {};
         datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
         if ($scope.tipoPersona == 'NATURAL'){

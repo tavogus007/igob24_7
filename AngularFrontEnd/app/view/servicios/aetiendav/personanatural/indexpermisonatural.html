@@ -387,7 +387,7 @@
                                     ng-model="datos.f01_zona_act_descrip"
                                     class="form-control"
                                     ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZona | orderBy:['nombre','dist_nombre']"
-                                    ng-change="actulizarIdDistrito();"
+                                    ng-change="actulizarIdDistrito(datos.f01_zona_act_descrip);"
                                     ng-disabled="desabilitado"  required>
                                 <option value="">--Seleccionar--</option>
                             </select>
@@ -528,7 +528,7 @@
                     <div class="col-md-4">
                         <div class="form-group" >
                            
-                            <label for="url" >DESCRIPCION DEL SERIVICIO PRESTADO:</label>
+                            <label for="url" >DESCRIPCION DEL SERVICIO PRESTADO:</label>
                             <div class="controls">
                                 <input type="text" ng-model="datos.f01_productosElaborados" id="f01_productosElaborados" name="f01_productosElaborados" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" required/>
                             </div>

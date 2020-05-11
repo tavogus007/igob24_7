@@ -280,7 +280,6 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
                                 $scope.datos.f01_tipo_lic_descrip = response[0].descripcion;
                                 $scope.datos.f01_categoria_agrupada_descrip = response[0].ActividadDesarrollada;
                                 $scope.datos.f01_categoria_agrupada_descripcion = response[0].actividad_desarrollada343;
-                                $scope.distritoZonas(response[0].IdMacrodistrito);
                                 $scope.datos.INT_AC_MACRO_ID = response[0].IdMacrodistrito;
                                 $scope.datos.f01_macro_act = response[0].IdMacrodistrito;
                                 $scope.datos.f01_macro_act_descrip = smacrodes;
@@ -300,8 +299,8 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
                                 $scope.datos.f01_tel_act1 = response[0].telefono;
                                 $scope.datos.f01_casilla = response[0].casilla;
                                 $scope.datos.f01_factor          =  response[0].tipoTrayecto;
-                                $scope.actulizarIdDistrito();
-                                $scope.actulizarIdDistrito();
+                                $scope.actulizarIdDistrito(response[0].zona);
+                                $scope.distritoZonas(smacro);
                                 if(response[0].edificio == 'undefined' || response[0].bloque == 'undefined' || response[0].piso == 'undefined' || response[0].departamento == 'undefined' || response[0].telefono == 'undefined' || response[0].casilla == 'undefined'){
                                     response[0].edificio = '';
                                     response[0].bloque = '';
@@ -693,7 +692,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         datosNeXO['f01_distribucion_movilidad_propia'] = paramForm.f01_distribucion_movilidad_propia;
         datosNeXO['f01_validador_servicio'] = paramForm.f01_validador_servicio;
         datosNeXO['f01_detalle_otro_pago'] = paramForm.f01_detalle_otro_pago;
-        
+
         datosNeXO['f01_venta_productos_domicilio_descrip'] = paramForm.f01_venta_productos_domicilio_descrip;
         datosNeXO['f01_distribucion_movilidad_propia_descrip'] = paramForm.f01_distribucion_movilidad_propia_descrip;
         datosNeXO['f01_venta_para_recojo_descrip'] = paramForm.f01_venta_para_recojo_descrip;
@@ -1532,8 +1531,10 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
         $scope.docdinamicos(data.f01_validador_servicio);
         $scope.macrodistritos();
-        $scope.distritoZonas(data.f01_macro_act);
-        $scope.datos.f01_macro_act = data.f01_macro_act;
+        $scope.distritoZonas(data.f01_macro_act_descrip);
+        $scope.actulizarIdDistrito(data.f01_zona_act_descrip);
+        $scope.cargarNombVia(data.f01_tip_via_act,data.f01_zona_act);
+         
     });
     
     $scope.vias= function(zona,tipo){

@@ -977,21 +977,23 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
       }   
     }
 
-     $scope.distritoZonas = function(idMacroJ){     
-    console.log("idMacroJ: ", idMacroJ);   
+    $scope.distritoZonas = function(idMacroJ){     
+        console.log("idMacroJ: ", idMacroJ);   
         $scope.datos.f01_macro_act    =   idMacroJ;
         $scope.datos.INT_AC_MACRO_ID = idMacroJ;
         $scope.aDistritoZona = {};
+        console.log("aDistritoZona: ", $scope.aDistritoZona);   
+
         try{
-            $scope[name] = 'Running';
-            var deferred = $q.defer();
+           
             var parametros = new distritoZona();
             parametros.idMacro = idMacroJ;
             parametros.obtdist(function(resultado){
                 data = JSON.parse(resultado);
                 if(data.success.length > 0){
                     $scope.aDistritoZona = data.success;  
-                    deferred.resolve(data.success);
+                    console.log("aDistritoZona: ", $scope.aDistritoZona);   
+                    
                     $scope.desabilitadoV=true;
                     $scope.desabilitadoNo=true;
                 }else{
@@ -1003,7 +1005,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
             $scope.desabilitadoV=true;
             $scope.desabilitadoNo=true;
         }
-        return deferred.promise;
+       
     };
 
 

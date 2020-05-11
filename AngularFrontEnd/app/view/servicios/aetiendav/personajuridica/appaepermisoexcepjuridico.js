@@ -774,7 +774,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             tramiteIgob.validarFormProcesos(function(resultado){
                 $scope.ListadoTramitesCiudadano();
                 //$scope.bloquearBtnEnviarForm();
-                swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible para programar la inspección y/o verificación documental. Caso contrario puede apersonarse a la Plataforma Integra de su Macrodistrito para recabar mayor información.");
+                swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n La respuesta a su solicitud se realizará a través de su cuenta en la Plataforma iGob 24/7. Ante cualquier duda o consulta, favor comunicarse a nuestro Centro de Contacto Ciudadano 800-13-5555.");
             });
         } catch (error){
             console.log("Error:", error);

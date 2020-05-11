@@ -229,6 +229,8 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 $scope.datos.f01_categoria_agrupada_descrip = $scope.resultadoCP.f01_categoria_agrupada_descrip;
                 $scope.datos.f01_categoria_agrupada_descripcion = $scope.resultadoCP.f01_categoria_agrupada_descripcion;
                 $scope.datos.f01_casilla = $scope.resultadoCP.f01_casilla;
+                $scope.datos.f01_num_act =  $scope.resultadoCP.f01_num_act;
+
                 $scope.open_mapa_ae();
                 $scope.datosAntMulti = $scope.resultadoLotus.success.data[0].datos.licencia_multiple;
                 $q.all($scope.resultadoLotus).then(function(data){
@@ -494,7 +496,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $scope.docdinamicos(data.f01_validador_servicio);
         $scope.macrodistritos();
         $scope.distritoZonas(data.f01_macro_act);
+        console.log("internet::: ",data);
         $scope.datos.f01_macro_act = data.f01_macro_act;
+        console.log("$scope.datos.f01_macro_act:: ", $scope.datos.f01_macro_act);
     });
 
     $scope.validarEnvio = function(data){
@@ -917,11 +921,13 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         datosNeXO['f01_venta_para_recojo'] = paramForm.f01_venta_para_recojo;
         datosNeXO['f01_distribucion_movilidad_propia'] = paramForm.f01_distribucion_movilidad_propia;
         datosNeXO['f01_validador_servicio'] = paramForm.f01_validador_servicio;
+        datosNeXO['f01_detalle_otro_pago'] = paramForm.f01_detalle_otro_pago;
 
         datosNeXO['f01_venta_productos_domicilio_descrip'] = paramForm.f01_venta_productos_domicilio_descrip;
         datosNeXO['f01_distribucion_movilidad_propia_descrip'] = paramForm.f01_distribucion_movilidad_propia_descrip;
         datosNeXO['f01_venta_para_recojo_descrip'] = paramForm.f01_venta_para_recojo_descrip;
         datosNeXO['g_tipo'] = "AE-TIENDA EN LINEA";
+
         datosNeXO['g_fecha'] = fechactual;
         datosNeXO['g_origen'] = "IGOB247";
         if($scope.dataGenesisCidadano && $scope.formDatosAE){

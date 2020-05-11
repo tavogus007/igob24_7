@@ -652,8 +652,6 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             datosNeXO['f04_res_solicitud_upaee']="";
             datosNeXO['rdTipoTramite'] = paramForm.rdTipoTramite;
             datosNeXO['f01_nro_actividad']  =   paramForm.f01_nro_actividad;
-
-
             /*REQUISITOSDELAACTIVIDADECONOMICA - CIUDADANO*/
             datosNeXO['f01_tip_act']=paramForm.f01_tip_act;
             datosNeXO['f01_tipo_lic']=paramForm.f01_tipo_lic;

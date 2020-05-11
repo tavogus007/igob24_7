@@ -168,7 +168,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                      $scope.datos.f01_tipo_lic_descrip = response[0].descripcion;
                     $scope.datos.f01_categoria_agrupada_descrip = response[0].ActividadDesarrollada;
                     $scope.datos.f01_categoria_agrupada_descripcion = response[0].actividad_desarrollada343;
-                    $scope.distritoZonas(response[0].IdMacrodistrito);
+                    
                     $scope.datos.INT_AC_MACRO_ID = response[0].IdMacrodistrito;
                     $scope.datos.f01_macro_act = response[0].IdMacrodistrito;
                     $scope.datos.f01_macro_act_descrip = smacrodes;
@@ -188,7 +188,14 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     $scope.datos.f01_tel_act1 = response[0].telefono;
                     $scope.datos.f01_casilla = response[0].casilla;
                     $scope.datos.f01_factor          =  response[0].tipoTrayecto;
-                    $scope.actulizarIdDistrito();
+                    $scope.distritoZonas(smacrodes);
+                    $scope.actulizarIdDistrito(response[0].zona);
+
+
+                    if(response[0].idactividad_desarrollada343 == '0' || response[0].idactividad_desarrollada343 == 0){
+                      $scope.LicenciaXCategoriaA(response[0].idActividadDesarrollada)  
+                    }
+
                     if(response[0].edificio == 'undefined' || response[0].bloque == 'undefined' || response[0].piso == 'undefined' || response[0].departamento == 'undefined' || response[0].telefono == 'undefined'){
                         response[0].edificio = '';
                         response[0].bloque = '';
@@ -245,6 +252,34 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         }
         return deferred.promise;   
     } 
+
+    $scope.LicenciaXCategoriaA = function(idDesarrollada){
+        //$scope.$apply();
+        try{
+                var tipo = new categoriaagrupadalicenciades();
+                tipo.dependencia = idDesarrollada;
+                tipo.categoriaagrupadalicencia_des(function(res){
+                    $scope.datosActividadLicencia = "";
+                    x = JSON.parse(res);
+                    response = x.success.data;
+                    if(response.length > 0){
+                        console.log("response Licencia:: ",response);
+                        $scope.datosActividadLicencia = response;
+                        $scope.datos.f01_categoria_agrupada = response[0].catagrpuid; 
+                        $scope.datos.f01_categoria_agrupada_dem = response[0].idcategoriaagrupada;
+                        $scope.datos.f01_categoria_agrupada_descrip = response[0].idcategoriaagrupada;
+                        
+                        
+                    }else{
+                        $scope.msg = "Error !!";
+                    }
+                });
+        }catch(e){
+                console.log("Error en la actividad desarrollada");
+        }
+                       
+        //$scope.GetValueZonaSegura($scope.datos.f01_categoria_agrupada);
+    }
 
      $scope.mostrarimg  =   function(imagen){         
         if (typeof($scope.datos.FILE_VEHICULO_FOTO) != 'undefined') {
@@ -495,10 +530,11 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
         $scope.docdinamicos(data.f01_validador_servicio);
         $scope.macrodistritos();
-        $scope.distritoZonas(data.f01_macro_act);
-        console.log("internet::: ",data);
-        $scope.datos.f01_macro_act = data.f01_macro_act;
-        console.log("$scope.datos.f01_macro_act:: ", $scope.datos.f01_macro_act);
+        $scope.distritoZonas(data.f01_macro_act_descrip);
+        $scope.actulizarIdDistrito(data.f01_zona_act_descrip);
+        $scope.cargarNombVia(data.f01_tip_via_act,data.f01_zona_act);
+         
+       
     });
 
     $scope.validarEnvio = function(data){

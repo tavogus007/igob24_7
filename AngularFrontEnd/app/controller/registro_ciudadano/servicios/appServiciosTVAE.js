@@ -977,7 +977,53 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
       }   
     }
 
-    $scope.distritoZonas = function(idMacroJ){     
+    $scope.macrodistritos = function(){
+        $scope.aMacrodistritos = {};
+        var datosP = new macrodistritoLst();
+        datosP.obtmacro(function(resultado){
+            data = JSON.parse(resultado);
+            if(data.success.length > 0){
+                $scope.aMacrodistritos = data.success;
+            }else{
+                $scope.msg = "Error !!";
+            }
+        });
+    };
+
+     $scope.distritoZonas = function(idMacroJ){        
+        var idMacro = "";
+        if($scope.aMacrodistritos){
+            angular.forEach($scope.aMacrodistritos, function(value, key) {
+                if(value.mcdstt_macrodistrito == idMacroJ){
+                    idMacro = value.mcdstt_id;
+                }
+            });
+        }        
+        $scope.idMacro = idMacro;
+        $scope.datos.f01_macro_act    =   idMacro;
+        $scope.datos.INT_AC_MACRO_ID = idMacro;
+        $scope.aDistritoZona = {};
+        try{
+            var parametros = new distritoZona();
+            parametros.idMacro = idMacro;
+            parametros.obtdist(function(resultado){
+                data = JSON.parse(resultado);
+                if(data.success.length > 0){
+                    $scope.aDistritoZona = data.success;
+                    $scope.desabilitadoV=true;
+                    $scope.desabilitadoNo=true;
+                }else{
+                    $scope.msg = "Error !!";
+                }
+            });
+        }catch(error){
+            $scope.desabilitadoZ=true;
+            $scope.desabilitadoV=true;
+            $scope.desabilitadoNo=true;
+        }
+    };
+
+    /*$scope.distritoZonas = function(idMacroJ){     
         console.log("idMacroJ: ", idMacroJ);   
         $scope.datos.f01_macro_act    =   idMacroJ;
         $scope.datos.INT_AC_MACRO_ID = idMacroJ;
@@ -1006,11 +1052,10 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
             $scope.desabilitadoNo=true;
         }
        
-    };
+    };*/
 
 
     $scope.cargarNombVia = function(tipoVia, idZona) {
-
         try{
             var nomvia = new aelstNombreVia();
             nomvia.idzona =  $scope.datos.f01_zona_act;
@@ -1027,11 +1072,11 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         }
     };
 
-    $scope.actulizarIdDistrito  =   function(){
+    $scope.actulizarIdDistrito  =   function(zonadescrip){
         $scope.desabilitadoV=false;
         var idDistrito  = "";
         var idZona      = "";
-        var distNombre  = $scope.datos.f01_zona_act_descrip;
+        var distNombre  = zonadescrip;
         if($scope.aDistritoZona){
             angular.forEach($scope.aDistritoZona, function(value, key) {
                 if(value.dist_nombre == distNombre){
@@ -1044,6 +1089,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         $scope.datos.INT_AC_DISTRITO    =   idDistrito;
         $scope.datos.INT_AC_ID_ZONA     =   idZona;
         $scope.datos.f01_zona_act       = idZona;
+        $scope.datos.f01_zona_act_descrip = zonadescrip;
         $scope.datos.INT_ID_ZONA        =   idZona;
         $scope.desabilitadoNo=true;
     };
@@ -1072,6 +1118,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
        $scope.recuperandoDatosInicialesCiudadano();
        $scope.ListadoTramitesCiudadano();
        $scope.obtenerContribuyente();
+       $scope.macrodistritos();
     };
 
     ///////////*************************panchito inicio ********************/

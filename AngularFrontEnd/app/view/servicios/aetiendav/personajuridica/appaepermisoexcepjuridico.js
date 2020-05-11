@@ -429,7 +429,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
     $scope.validarEnvio = function(data){
         swal({
             title: 'CONFIRMAR',
-            text: 'El envío de la presente solicitud de licencia de funcionamiento de actividad económica, (DD.JJ.) generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',
+            text: 'El envío de la presente solicitud de registro de delivery, (DD.JJ.) generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -536,7 +536,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
     }
 
     $scope.enviarFormProcesosLinea = function(paramForm){
-        $scope.ultimoArrayAdjunto();
+        $scope.ultimoArrayAdjunto(paramForm.f01_validador_servicio);
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm    =   true;
         var idProcodigo         =   'GE_AE-';
@@ -1060,7 +1060,15 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         },800);
     }
 
-    $scope.ultimoArrayAdjunto = function(){
+    $scope.ultimoArrayAdjunto = function(data){
+        if(data == 'VENTAPRODED' || data == 'SERVICIODEL'){
+             $scope.ArrayAdjuntoFor12();
+        }else{
+            $scope.ArrayAdjuntoFor3();
+        }
+    }
+
+    $scope.ArrayAdjuntoFor3 = function(){
         $scope.capturarImagen();
         datoObjectFiles = [];
         var datoObjectFile1 = new Object();
@@ -1108,10 +1116,6 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         datoObjectFile8.campo = "DECLARACION JURADADA";
         datoObjectFile8.nombre = 'DECLARACION JURADA';
 
-        datoObjectFile9.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + nombre_mapa + "?app_name=todoangular";
-        datoObjectFile9.campo = $scope.datos.ARCHIVOS_MULTIPLES_MAPA[0].nombre_archivo;
-        datoObjectFile9.nombre = 'CROQUIS DE UBICACIÓN DE LA ACTIVIDAD ECONÓMICA';
-
         datoObjectFiles[0] = datoObjectFile1;
         datoObjectFiles[1] = datoObjectFile2;
         datoObjectFiles[2] = datoObjectFile3;
@@ -1120,12 +1124,67 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         datoObjectFiles[5] = datoObjectFile6;
         datoObjectFiles[6] = datoObjectFile7;
         datoObjectFiles[7] = datoObjectFile8;
-        datoObjectFiles[8] = datoObjectFile9;
 
         $scope.datos.FileDocumentos = datoObjectFiles;
         $rootScope.FileAdjuntos = datoObjectFiles; 
         $scope.datos.File_Adjunto = datoObjectFiles; 
+    } 
 
+    $scope.ArrayAdjuntoFor12 = function(){
+        $scope.capturarImagen();
+        datoObjectFiles = [];
+        var datoObjectFile1 = new Object();
+        var datoObjectFile2 = new Object();
+        var datoObjectFile3 = new Object();
+        var datoObjectFile4 = new Object();
+        var datoObjectFile5 = new Object();
+        var datoObjectFile6 = new Object();
+        var datoObjectFile7 = new Object();
+        var datoObjectFile8 = new Object();
+        var datoObjectFile9 = new Object();
+
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+        $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+        var nombre_mapa = $scope.datos.ARCHIVOS_MULTIPLES_MAPA[0].nombre_archivo;
+        datoObjectFile1.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_VEHICULO_FOTO + "?app_name=todoangular";
+        datoObjectFile1.campo = $scope.datos.FILE_VEHICULO_FOTO;
+        datoObjectFile1.nombre = 'CARGAR FOTOGRAFÍA(S) FRONTAL Y LATERAL DE LOS VEHÍCULO(S) (Fotografías con buena resolución en un solo archivo formato PDF o DOC)';
+
+        datoObjectFile2.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_VEHICULO_PERMISO + "?app_name=todoangular";
+        datoObjectFile2.campo = $scope.datos.FILE_VEHICULO_PERMISO;
+        datoObjectFile2.nombre = 'CARGAR EL PERMISO DE CIRCULACIÓN VEHICULAR OTORGADO POR EL VICEMINISTERIO DE GOBIERNO DE TODOS LOS VEHÍCULOS (En un solo documento en formato PDF)';
+
+        datoObjectFile3.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_RUAT_VEHICULO + "?app_name=todoangular";
+        datoObjectFile3.campo = $scope.datos.FILE_RUAT_VEHICULO;
+        datoObjectFile3.nombre = 'CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S) (Los documentos deben estar en solo archivo en formato PDF o DOC.)';
+
+        datoObjectFile4.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FORMVH_EXCEL + "?app_name=todoangular";
+        datoObjectFile4.campo = $scope.datos.FILE_FORMVH_EXCEL;
+        datoObjectFile4.nombre = 'CARGAR ARCHIVO EXCEL FORMULARIO N° 1.1 (DEBIDAMENTE LLENADO)';
+
+        datoObjectFile6.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOTO_SOLICITANTE + "?app_name=todoangular";
+        datoObjectFile6.campo = $scope.datos.FILE_FOTO_SOLICITANTE;
+        datoObjectFile6.nombre = 'CARGAR FOTOGRAFÍA DE FRENTE Y NÍTIDA DEL ROSTRO DEL SOLICITANTE SUJETANDO SU CÉDULA DE IDENTIDAD DEL LADO ANVERSO (CARILLA DE LA FIRMA Y FOTO), SIN LENTES, NI GORRA';
+
+        datoObjectFile7.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOTO_LICENCIA_CI + "?app_name=todoangular";
+        datoObjectFile7.campo = $scope.datos.FILE_FOTO_LICENCIA_CI;
+        datoObjectFile7.nombre = 'CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR Y CÉDULA DE IDENTIDAD DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS (En un solo documento en formato PDF)';
+
+        datoObjectFile8.url = $rootScope.decJuradaNatural;
+        datoObjectFile8.campo = "DECLARACION JURADADA";
+        datoObjectFile8.nombre = 'DECLARACION JURADA';
+
+        datoObjectFiles[0] = datoObjectFile1;
+        datoObjectFiles[1] = datoObjectFile2;
+        datoObjectFiles[2] = datoObjectFile3;
+        datoObjectFiles[3] = datoObjectFile4;
+        datoObjectFiles[5] = datoObjectFile6;
+        datoObjectFiles[6] = datoObjectFile7;
+        datoObjectFiles[7] = datoObjectFile8;
+
+        $scope.datos.FileDocumentos = datoObjectFiles;
+        $rootScope.FileAdjuntos = datoObjectFiles; 
+        $scope.datos.File_Adjunto = datoObjectFiles; 
     }   
    
     $scope.mostrarModalRequisitos = function(num){
@@ -1473,6 +1532,9 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
         $scope.docdinamicos(data.f01_validador_servicio);
+        $scope.macrodistritos();
+        $scope.distritoZonas(data.f01_macro_act);
+        $scope.datos.f01_macro_act = data.f01_macro_act;
     });
     
     $scope.vias= function(zona,tipo){

@@ -1171,8 +1171,9 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         } else {
             if(tipoPersona == 'JURIDICO' || tipoPersona == 'J'){
                 oidCiudadano    = sessionService.get('IDSOLICITANTE');
-                datosCiudadano  = $scope.datosIniciales.f01_pri_nom_rep +' '+ $scope.datosIniciales.f01_ape_pat_rep;
+                datosCiudadano  = $scope.datosIniciales.f01_pri_nom_rep +' '+ $scope.datosIniciales.f01_ape_pat_rep + ' ' + $scope.datosIniciales.f01_ape_mat_rep;
                 datosci         = $scope.datosIniciales.f01_num_doc_rep;
+                datosexpedido   = $scope.datosIniciales.f01_expedido_rep;
                 dEmpresa        = $scope.datosIniciales.f01_raz_soc_per_jur;
                 dnit            = $scope.datosIniciales.f01_num_doc_per_jur;
                 datoForm4 = JSON.stringify($rootScope.datosForm401);

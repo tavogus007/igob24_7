@@ -232,7 +232,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 $scope.resultadoCP = $scope.resultadoLotus.success.data[0].datos;
                 $scope.datos.INT_AC_latitud = $scope.resultadoCP.INT_AC_latitud;
                 $scope.datos.INT_AC_longitud = $scope.resultadoCP.INT_AC_longitud;
-                $scope.datos.f01_tipo_lic_descrip = $scope.resultadoCP.f01_tipo_lic_descrip;
+                //$scope.datos.f01_tipo_lic_descrip = $scope.resultadoCP.f01_tipo_lic_descrip;
                 $scope.datos.f01_categoria_agrupada_descrip = $scope.resultadoCP.f01_categoria_agrupada_descrip;
                 $scope.datos.f01_categoria_agrupada_descripcion = $scope.resultadoCP.f01_categoria_agrupada_descripcion;
                 $scope.datos.f01_casilla = $scope.resultadoCP.f01_casilla;

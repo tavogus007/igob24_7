@@ -301,6 +301,10 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
                                 $scope.datos.f01_factor          =  response[0].tipoTrayecto;
                                 $scope.actulizarIdDistrito(response[0].zona);
                                 $scope.distritoZonas(smacro);
+
+                                if(response[0].idactividad_desarrollada343 == '0' || response[0].idactividad_desarrollada343 == 0){
+                                  $scope.LicenciaXCategoriaA(response[0].idActividadDesarrollada)  
+                                }
                                 if(response[0].edificio == 'undefined' || response[0].bloque == 'undefined' || response[0].piso == 'undefined' || response[0].departamento == 'undefined' || response[0].telefono == 'undefined' || response[0].casilla == 'undefined'){
                                     response[0].edificio = '';
                                     response[0].bloque = '';
@@ -319,37 +323,8 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
                             }
                             //INT_TRAMITE_RENOVA
                             $scope.datos.INT_TRAMITE_RENOVA     =   tramite.IdActividad;
-                            if (codhojaruta.substring(0,9) == 'REN-LF' || codhojaruta.substring(0,6) == 'AER-EL' || codhojaruta.substring(0,7) == 'MOD_MOD' || codhojaruta.substring(0,8) == 'LICEN-AE' || codhojaruta.substring(0,9) == 'EM-LF') 
-                            {  
-                                var dataLotus = $scope.getDatosLotus(resultadoApi.success.dataSql.datosAE[0].idActividadEconomica,codhojaruta);
-                                dataLotus.then(function(respuesta){
-                                    datosLotus = respuesta.success.data[0].datos;
-                                    if (datosLotus.File_Adjunto == 'undefined' || datosLotus.File_Adjunto == null) {
-                                        $scope.reqdoc = true;
-                                        $scope.docsAdjuntoAntiguo = '';
-                                        $scope.datosdocanterior = '';
-                                    } else{
-                                        $scope.reqdoc = null;
-                                        $scope.docsAdjuntoAntiguo = datosLotus.File_Adjunto;
-                                        $scope.datosdocanterior = new Object();
-                                        for (var i = 0; i < $scope.docsAdjuntoAntiguo.length; i++) {
-                                            if ($scope.docsAdjuntoAntiguo[i] == null || $scope.docsAdjuntoAntiguo[i] == 'undefined') {
-                                            } else{
-                                                var narchivo = $scope.docsAdjuntoAntiguo[i].url.split('?');
-                                                var achinom = narchivo[0].split('/');
-                                                var dimar = achinom.length;
-                                                var datosdocant = {
-                                                    "titulo": $scope.docsAdjuntoAntiguo[i].nombre,
-                                                    "nombreAcrh": achinom[dimar-1],
-                                                    "url": $scope.docsAdjuntoAntiguo[i].url
-                                                };
-                                                $scope.datosdocanterior[i] = datosdocant;
-                                            };
-                                        };
-                                    };
-                                });
-                            }else{
-                            }
+                            $scope.getDatosLotus(resultadoApi.success.dataSql.datosAE[0].idActividadEconomica,codhojaruta);
+                            
                             /*HABILITANDO CAMPOS*/
                             $scope.botones = "mostrar";
                             $scope.desabilitado = false;                    
@@ -363,9 +338,29 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
    
     };
 
+    $scope.LicenciaXCategoriaA = function(idDesarrollada){
+        try{
+                var tipo = new categoriaagrupadalicenciades();
+                tipo.dependencia = idDesarrollada;
+                tipo.categoriaagrupadalicencia_des(function(res){
+                    $scope.datosActividadLicencia = "";
+                    x = JSON.parse(res);
+                    response = x.success.data;
+                    if(response.length > 0){
+                        $scope.datosActividadLicencia = response;
+                        $scope.datos.f01_categoria_agrupada = response[0].catagrpuid; 
+                        $scope.datos.f01_categoria_agrupada_dem = response[0].idcategoriaagrupada;
+                        $scope.datos.f01_categoria_agrupada_descrip = response[0].idcategoriaagrupada;  
+                    }else{
+                        $scope.msg = "Error !!";
+                    }
+                });
+        }catch(e){
+                console.log("Error en la actividad desarrollada");
+        }
+    }
+
     $scope.getDatosLotus = function(idadcteco, hojar){
-        $scope[name] = 'Running';
-        var deferred = $q.defer();
         try{
             var datosLotus = new getDatosAELotus();                        
             datosLotus.caso = hojar;
@@ -373,17 +368,17 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             datosLotus.getDatosAE_Lotus(function(respuesta){
                 $scope.resultadoLotus = JSON.parse(respuesta);
                 $scope.datosAntMulti = $scope.resultadoLotus.success.data[0].datos.licencia_multiple;
-                $q.all($scope.resultadoLotus).then(function(data){
-                    deferred.resolve($scope.resultadoLotus);
-                })
+                $scope.datos.f01_tipo_lic_descrip = $scope.resultadoCP.f01_tipo_lic_descrip;
+                $scope.datos.f01_categoria_agrupada_descrip = $scope.resultadoCP.f01_categoria_agrupada_descrip;
+                $scope.datos.f01_categoria_agrupada_descripcion = $scope.resultadoCP.f01_categoria_agrupada_descripcion;
+                $scope.datos.f01_casilla = $scope.resultadoCP.f01_casilla;
+                $scope.datos.f01_num_act =  $scope.resultadoCP.f01_num_act;
             });
         }catch(e){
             $scope.exito = "NO";
-            $q.all($scope.resultadoLotus).then(function(data){
-                deferred.resolve($scope.resultadoLotus);
-            });
+           
         }
-        return deferred.promise;   
+ 
     }
 
 

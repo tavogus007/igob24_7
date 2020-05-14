@@ -368,9 +368,9 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             datosLotus.getDatosAE_Lotus(function(respuesta){
                 $scope.resultadoLotus = JSON.parse(respuesta);
                 $scope.datosAntMulti = $scope.resultadoLotus.success.data[0].datos.licencia_multiple;
-                $scope.datos.f01_tipo_lic_descrip = $scope.resultadoCP.f01_tipo_lic_descrip;
-                $scope.datos.f01_categoria_agrupada_descrip = $scope.resultadoCP.f01_categoria_agrupada_descrip;
-                $scope.datos.f01_categoria_agrupada_descripcion = $scope.resultadoCP.f01_categoria_agrupada_descripcion;
+                //$scope.datos.f01_tipo_lic_descrip = $scope.resultadoCP.f01_tipo_lic_descrip;
+                //$scope.datos.f01_categoria_agrupada_descrip = $scope.resultadoCP.f01_categoria_agrupada_descrip;
+                //$scope.datos.f01_categoria_agrupada_descripcion = $scope.resultadoCP.f01_categoria_agrupada_descripcion;
                 $scope.datos.f01_casilla = $scope.resultadoCP.f01_casilla;
                 $scope.datos.f01_num_act =  $scope.resultadoCP.f01_num_act;
             });

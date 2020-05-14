@@ -1431,7 +1431,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         $scope.getRequisitoAE(data.f01_validador_servicio);
         $scope.getRequisito1(data.f01_validador_servicio);
 
-        if(data.f01_validador_servicio == 'VENTAPRODED' || data.f01_validador_servicio == 'VENTAPRODVP'){
+        if(data.f01_validador_servicio == 'VENTAPRODED'){
             if(data && data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
               data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
               data.f01_raz_soc != "" && data.f01_raz_soc != null &&
@@ -1484,8 +1484,34 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
-        }        
-    }
+        }
+
+            if(data.f01_validador_servicio == 'VENTAPRODVP'){
+                if(data && data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
+                  data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
+                  data.f01_raz_soc != "" && data.f01_raz_soc != null &&
+                  data.f01_categoria_agrupada_descrip != "" && data.f01_categoria_agrupada_descrip != null &&
+                  data.f01_macro_act != "" && data.f01_macro_act != null &&
+                  data.f01_zona_act != "" && data.f01_zona_act != null &&
+                  data.f01_correo_electronico_ae != "" && data.f01_correo_electronico_ae != null &&
+                  data.f01_cantidad_personal != "" && data.f01_cantidad_personal != null &&
+                  data.f01_categoria_agrupada_descripcion != "" && data.f01_categoria_agrupada_descripcion != null &&
+                  data.f01_cantidad_personal != "" && data.f01_cantidad_personal != null &&
+                  data.f01_modalidad_pago != "" && data.f01_modalidad_pago != null &&
+                  data.FILE_CONTRATO_DELIVERY != "" && data.FILE_CONTRATO_DELIVERY != null &&
+                  data.FILE_FOTO_SOLICITANTE != "" && data.FILE_FOTO_SOLICITANTE != null
+                  ){
+                  //$rootScope.validacionRequisitosTec();
+
+                  $scope.guardarDatos(data);
+                  $scope.declaracionJurada(data);
+                  $("#declaracionJ").modal("show");
+                }else{
+                    swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
+                }
+               
+            }
+        }
     
     
     

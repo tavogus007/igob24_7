@@ -739,6 +739,23 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                 resultadoApi = JSON.parse(resultado);                           
                 if (resultadoApi.success) {
                     srespuesta  =   "TRUE";
+                    var nomArchivo = urlData.split("?")[0];
+                    var nomArchivo2 = nomArchivo.split("/");
+                    var nombreArchivo = nomArchivo2[nomArchivo2.length-1];
+                    var datosCondicionUso = new guardarCondicionUso();
+                    datosCondicionUso.nombreCU = nombreArchivo;
+                    datosCondicionUso.oid = sDocUsuario;
+                    datosCondicionUso.guardarCondicion_deUso(function(resultado){
+                        var resultadoApi = JSON.parse(resultado);
+                        if( typeof(resultadoApi.success) != 'undefined') {
+                            var mensajeExito = "Condición de Uso almacenada correctamente.";
+                            alertify.success(mensajeExito);
+                        }
+                        else {
+                            var mensajeExito = resultadoApi.error.message;
+                            swal('', mensajeExito, 'error');
+                        }
+                    })
                     return srespuesta;
                 } else {
                     $.unblockUI();

@@ -1574,3 +1574,18 @@ verificarClave.prototype.verificar_Clave = function(functionResp){
     ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
 }
 
+/////////////////////////*GUARDAR CONDICIONES DE USO*/////////////////////////////////
+function guardarCondicionUso(){
+    this.oid;
+    this.nombreCU;
+}
+
+guardarCondicionUso.prototype.guardarCondicion_deUso = function (functionResp){
+    urlComp = "/saveCondicionUso"
+    typeCall = "post";
+    dataParams = {
+      "oid": this.oid,
+      "nombreCU": this.nombreCU
+    };
+    ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+};

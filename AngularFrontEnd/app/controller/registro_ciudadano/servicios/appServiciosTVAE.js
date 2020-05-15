@@ -4,7 +4,8 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
 
     $scope.tablaTramites        =   {};
     $scope.tramitesUsuario      =   [];
-        $scope.datosinic = {};
+    $scope.datosinic = {};
+    $rootScope.tramiteId = "";
     $scope.templates =
     [ { name: 'template0.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexnatural.html'}, 
       { name: 'template1.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexpermisonatural.html'},
@@ -18,20 +19,14 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
 
     $scope.seleccionarProceso = function(proceso){
         $scope.btnCrearBlk = "mostrar";
-        /*if (proceso.id == "48" || proceso.id == 48) {
-            $scope.btnCrearBlk = "";
-        } */
         if (proceso.name == "Habilitación de Plataforma Comercial   [ Proximamente ]") {
             $scope.btnCrearBlk = "";
         } 
-
         $scope.procesoSeleccionado  =   proceso.id;
         if($scope.procesoSeleccionado == 10){
             sidservicio =   10; 
         }
-        if($scope.procesoSeleccionado == $scope.renovacion){
-            sidservicio =   10; 
-        }
+        
         $scope.procesoSeleccionado  =   proceso.id;
         $scope.btnNuevoTramtite     =   false;      
     }; 
@@ -137,16 +132,16 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     });
 
     $scope.seleccionarTramite = function (tramite) {
-        $scope.template =   "";
+       //$scope.template =   "";
         $scope.seleccionarTramiteRender(tramite);    
     }
     
 
     $scope.seleccionarTramiteRender = function (tramite) {
-        $scope.open_mapa_ae();
+        console.log("tramite: ", tramite);
         $scope.procesoSeleccionado   =   tramite.vdvser_id;
         $rootScope.tramiteId = tramite.vtra_id;
-        sessionService.set('IDTRAMITE', $rootScope.tramiteId);
+        sessionService.set('IDTRAMITE', tramite.vtra_id);
         sessionService.set('IDSERVICIO', tramite.vdvser_id);
         sessionService.set('ESTADO', tramite.venviado);
         $scope.template = "";
@@ -615,7 +610,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
 
     $scope.recuperarSerializarInfo = function(tramite){
         $scope.btover_c = true;  
-         $scope.recuperarDatosRegistro();    
+        $scope.recuperarDatosRegistro();    
         var sIdTramite = tramite.vtra_id;
         $scope.sIdTramiteSeleccionado = tramite.vtra_id;
         var sIdCiudadano = sessionService.get('IDSOLICITANTE');//IDCIUDADANO
@@ -776,10 +771,8 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     {
         setTimeout(function()
         {
-            console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICASsssssssss");
             var latitud = $scope.datos.INT_AC_latitud;
             var longitud = $scope.datos.INT_AC_longitud;
-            console.log("latitud...",latitud);
             $("#map_principal").empty();
 
             $scope.map = new ol.Map

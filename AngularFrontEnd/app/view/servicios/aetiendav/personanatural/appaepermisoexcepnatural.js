@@ -769,15 +769,14 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $scope.datos.File_Adjunto = datoObjectFiles; 
     }   
     $scope.enviarTramiteCeroPapel = function(paramForm){
-         $scope.ultimoArrayAdjunto(paramForm.f01_validador_servicio);
+        $scope.ultimoArrayAdjunto(paramForm.f01_validador_servicio);
         console.log(paramForm);
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm    =   true;
         var idProcodigo         =   'REG_AE-';
         var datosNeXO = {};
-        datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
         if ($scope.tipoPersona == 'NATURAL'){
-            console.log($scope.tipoPersona);
+            datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
             datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
             datosNeXO['f01_id_actividad_economica']   =   paramForm.f01_id_actividad_economica;
             datosNeXO['f01_nro_orden']   =   paramForm.f01_nro_orden;
@@ -963,6 +962,13 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         datosNeXO['f01_distribucion_movilidad_propia_descrip'] = paramForm.f01_distribucion_movilidad_propia_descrip;
         datosNeXO['f01_venta_para_recojo_descrip'] = paramForm.f01_venta_para_recojo_descrip;
         datosNeXO['g_tipo'] = "AE-TIENDA EN LINEA";
+        datosNeXO['FILE_VEHICULO_FOTO'] = paramForm.FILE_VEHICULO_FOTO;
+        datosNeXO['FILE_VEHICULO_PERMISO'] = paramForm.FILE_VEHICULO_PERMISO;
+        datosNeXO['FILE_RUAT_VEHICULO'] = paramForm.FILE_RUAT_VEHICULO;
+        datosNeXO['FILE_FORMVH_EXCEL'] = paramForm.FILE_FORMVH_EXCEL;
+        datosNeXO['FILE_CONTRATO_DELIVERY'] = paramForm.FILE_CONTRATO_DELIVERY;
+        datosNeXO['FILE_FOTO_SOLICITANTE'] = paramForm.FILE_FOTO_SOLICITANTE;
+        datosNeXO['FILE_FOTO_LICENCIA_CI'] = paramForm.FILE_FOTO_LICENCIA_CI;
 
         datosNeXO['g_fecha'] = fechactual;
         datosNeXO['g_origen'] = "IGOB247";
@@ -1361,7 +1367,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
 
     $scope.cargarDatosPermiso=function(){
         $scope.listadoActividadesEconomicas();
-        $scope.open_mapa_ae();
         $scope.macrodistritos();
 
         $.unblockUI();

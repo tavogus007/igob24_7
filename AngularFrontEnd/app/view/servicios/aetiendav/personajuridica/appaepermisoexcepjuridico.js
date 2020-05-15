@@ -535,14 +535,12 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         $scope.btnEnviarForm    =   true;
         var idProcodigo         =   'REG_AE-';
         var datosNeXO = {};
-        datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
         if ($scope.tipoPersona == 'JURIDICO'){
             datosNeXO['f01_id_actividad_economica']   =   paramForm.f01_id_actividad_economica;
             datosNeXO['f01_nro_orden']   =   paramForm.f01_nro_orden;
             datosNeXO['f01_id_contribuyente']   =   paramForm.f01_id_contribuyente;
             datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
             datosNeXO['f01_id_representante_legal'] = paramForm.f01_id_representante_legal;
-
             datosNeXO['f01_tipo_per']       =   'J';
             datosNeXO['f01_tipo_per_desc']  = 'JURIDICO';
             datosNeXO['f01_nro_frm'] = sessionService.get('IDTRAMITE') ;
@@ -691,6 +689,13 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         datosNeXO['f01_venta_productos_domicilio_descrip'] = paramForm.f01_venta_productos_domicilio_descrip;
         datosNeXO['f01_distribucion_movilidad_propia_descrip'] = paramForm.f01_distribucion_movilidad_propia_descrip;
         datosNeXO['f01_venta_para_recojo_descrip'] = paramForm.f01_venta_para_recojo_descrip;
+        datosNeXO['FILE_VEHICULO_FOTO'] = paramForm.FILE_VEHICULO_FOTO;
+        datosNeXO['FILE_VEHICULO_PERMISO'] = paramForm.FILE_VEHICULO_PERMISO;
+        datosNeXO['FILE_RUAT_VEHICULO'] = paramForm.FILE_RUAT_VEHICULO;
+        datosNeXO['FILE_FORMVH_EXCEL'] = paramForm.FILE_FORMVH_EXCEL;
+        datosNeXO['FILE_CONTRATO_DELIVERY'] = paramForm.FILE_CONTRATO_DELIVERY;
+        datosNeXO['FILE_FOTO_SOLICITANTE'] = paramForm.FILE_FOTO_SOLICITANTE;
+        datosNeXO['FILE_FOTO_LICENCIA_CI'] = paramForm.FILE_FOTO_LICENCIA_CI;
 
         datosNeXO['g_tipo'] = "AE-TIENDA EN LINEA";
         datosNeXO['g_fecha'] = fechactual;
@@ -1521,7 +1526,6 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
             $scope.divJuridico = "mostrar";
         } 
         $scope.macrodistritos();
-        $scope.open_mapa_ae();
         $scope.datosEA = false;
     };
 

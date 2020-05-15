@@ -138,7 +138,6 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     
 
     $scope.seleccionarTramiteRender = function (tramite) {
-        console.log("tramite: ", tramite);
         $scope.procesoSeleccionado   =   tramite.vdvser_id;
         $rootScope.tramiteId = tramite.vtra_id;
         sessionService.set('IDTRAMITE', tramite.vtra_id);
@@ -595,7 +594,6 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         conGenesis.lstDatosContribuyente(function(resultado){
             resultadoApi = JSON.parse(resultado);
             if (resultadoApi.success) {
-                console.log('resultadoApi.success::: ', resultadoApi.success);
                 var response    =   resultadoApi;
                 $scope.txtMsgConexionGen    =   "";
                 $scope.dataGenesisCidadano  =   response.success.dataSql;
@@ -840,9 +838,6 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                 datos.longitud = longitud;
               
                 var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';   
-                
-                console.log ("latitud: ",latitud);
-                console.log ("longitud: ",longitud);
                 $scope.datos.INT_AC_latitud=latitud;
                 $scope.datos.INT_AC_longitud=longitud;
                 setTimeout(function()
@@ -897,7 +892,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                 feature.setStyle(iconStyle);
                 vectorSource.addFeature(feature);
 
-                console.log("JSON DATOS",datos);
+                //console.log("JSON DATOS",datos);
                 return datos;
             });
             
@@ -909,8 +904,6 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
       var nombre_1 = new Array();
       var f = '';
       var nombre = $('#busqueda_p').val();
-      console.log("ZONA en appServicios343..!!! ",nombre);
-
       nombre = nombre.toUpperCase();
       var ca = "CALLE ";
       ca = ca.concat(nombre);
@@ -922,7 +915,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
       if(nombre==='')
       {
         var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
-        console.log("Vacio :",obj);
+        //console.log("Vacio :",obj);
         vectorLayerZonas.getSource().clear();
       }
       else
@@ -965,7 +958,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         if(c==0)
         {
           var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
-          console.log("Vacio :",obj);
+          //console.log("Vacio :",obj);
         }
       }   
     }
@@ -1015,38 +1008,6 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
             $scope.desabilitadoNo=true;
         }
     };
-
-    /*$scope.distritoZonas = function(idMacroJ){     
-        console.log("idMacroJ: ", idMacroJ);   
-        $scope.datos.f01_macro_act    =   idMacroJ;
-        $scope.datos.INT_AC_MACRO_ID = idMacroJ;
-        $scope.aDistritoZona = {};
-        console.log("aDistritoZona: ", $scope.aDistritoZona);   
-
-        try{
-           
-            var parametros = new distritoZona();
-            parametros.idMacro = idMacroJ;
-            parametros.obtdist(function(resultado){
-                data = JSON.parse(resultado);
-                if(data.success.length > 0){
-                    $scope.aDistritoZona = data.success;  
-                    console.log("aDistritoZona: ", $scope.aDistritoZona);   
-                    
-                    $scope.desabilitadoV=true;
-                    $scope.desabilitadoNo=true;
-                }else{
-                    $scope.msg = "Error !!";
-                }
-            });
-        }catch(error){
-            $scope.desabilitadoZ=true;
-            $scope.desabilitadoV=true;
-            $scope.desabilitadoNo=true;
-        }
-       
-    };*/
-
 
     $scope.cargarNombVia = function(tipoVia, idZona) {
         try{
@@ -1153,7 +1114,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                 success:function(response){
                     var urlData = response;
                     $rootScope.decJuradaNatural = urlData;
-                    $scope.InsertarDocumento(response);
+                    $scope.InsertarDocumentoTv(response);
                     $rootScope.datosEnv.declaracion_jurada = urlData;
                     $scope.datos.declaracion_jurada = urlData;
                     document.signupForm.btnFormLicencia.disabled=false;
@@ -1190,7 +1151,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                     success:function(response){
                         var urlData = response;
                         $rootScope.decJuradaNatural = urlData;
-                        $scope.InsertarDocumento(response);
+                        $scope.InsertarDocumentoTv(response);
                         $rootScope.datosEnv.declaracion_jurada = urlData;
                         $scope.datos.declaracion_jurada = urlData;
                         document.signupForm.btnFormLicencia.disabled=false;
@@ -1201,5 +1162,59 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
             }
         }
     };
+    $scope.InsertarDocumentoTv = function(urlData){
+        var sDocSistema     =   "IGOB247";
+        var sDocProceso     =   "GESTOR EMPRESARIAL - DECLARACION JURADA";
+        var sDocId          =   1;
+        var sDocCiNodo      =   "CU";
+        var sDocDatos       =   "";
+        var sDocUrl         =   urlData;
+        var sDocVersion     =   1;
+        var sDocTiempo      =   400;
+        var sDocFirmaDigital=   0;
+        var sDocUsuario     =   sessionService.get('IDSOLICITANTE');
+        var sDocTipoDoc     =   "pdf";
+        var sDocTamDoc      =   "";
+        var sDocNombre      =   "GESTOR EMPRESARIAL - DECLARACION JURADA";
+        var sDocTpsId       =   0;
+        var sDocUrlLogica   =   urlData;
+        var sDocAcceso      =   "";
+        var sDocTipoExt     =   "";
+        var sDocNroTramNexo =   "";
+        var sCasoCodigo     =   "0";
+         var documento  =   new gDocumentosIgob();
+            documento.doc_sistema = sDocSistema;
+            documento.doc_proceso = sDocProceso;
+            documento.doc_id = sDocId;
+            documento.doc_ci_nodo = sDocCiNodo;
+            documento.doc_datos = sDocDatos;
+            documento.doc_url = sDocUrl;
+            documento.doc_version = sDocVersion;
+            documento.doc_tiempo = sDocTiempo;
+            documento.doc_firma_digital = sDocFirmaDigital;
+            documento.doc_usuario = sDocUsuario;
+            documento.doc_tipo_documento = sDocTipoDoc;
+            documento.doc_tamanio_documento = sDocTamDoc;
+            documento.doc_nombre = sDocNombre;
+            documento.doc_tps_doc_id = sDocTpsId;
+            documento.doc_url_logica = sDocUrlLogica;
+            documento.doc_acceso = sDocAcceso;
+            documento.doc_tipo_documento_ext = sDocTipoExt;
+            documento.doc_nrotramite_nexo = sDocNroTramNexo;
+            documento.doc_id_codigo = sCasoCodigo;
+            documento.insertarDocIgob(function(resultado){
+                resultadoApi = JSON.parse(resultado);                           
+                if (resultadoApi.success) {
+                    srespuesta  =   "TRUE";
+                    return srespuesta;
+                } else {
+                    $.unblockUI();
+                    sweet.show(resultadoApi.error.message);
+                    srespuesta  =   "FALSE";                          
+                    return srespuesta;
+                }
+            });
+
+    }
     ///********************* panchito fin ********************/
 });

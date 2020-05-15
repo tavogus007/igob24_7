@@ -236,6 +236,9 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
                                 if(response[0].IdMacrodistrito == 2 || response[0].IdMacrodistrito == '2'){
                                    smacrodes      =   smacro  +   " " +    response[0].IdMacrodistrito + " MAXIMILIANO PAREDES";
                                 }
+                                if(response[0].IdMacrodistrito == 4 || response[0].IdMacrodistrito == '4'){
+                                   smacrodes      =   smacro  +   " " +    response[0].IdMacrodistrito + " SAN_ANTONIO";
+                                }
                                 if(response[0].establecimiento =='ALQUI'){
                                   $scope.datos.f01_estab_es = "ALQUILADO";
                                 }

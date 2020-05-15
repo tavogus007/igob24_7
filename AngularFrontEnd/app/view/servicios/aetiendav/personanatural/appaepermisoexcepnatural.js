@@ -117,6 +117,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     var smacro      =   "MACRODISTRITO";
                     var smacrodes = "";
                     var szona       =   "DISTRITO";
+
+
+
                     //DATOS DE LA ACTIVIDAD ECONÓMICA
                     $scope.datos.f01_raz_soc   =   response[0].denominacion;
                     $scope.datos.f01_sup  =   response[0].superficie;
@@ -129,6 +132,9 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     }catch(e){}
                     if(response[0].IdMacrodistrito == 2 || response[0].IdMacrodistrito == '2'){
                        smacrodes      =   smacro  +   " " +    response[0].IdMacrodistrito + " MAXIMILIANO PAREDES";
+                    }
+                    if(response[0].IdMacrodistrito == 4 || response[0].IdMacrodistrito == '4'){
+                       smacrodes      =   smacro  +   " " +    response[0].IdMacrodistrito + " SAN_ANTONIO";
                     }
                     if(response[0].establecimiento =='ALQUI'){
                         $scope.datos.f01_estab_es = "ALQUILADO";
@@ -188,6 +194,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     $scope.datos.f01_tel_act1 = response[0].telefono;
                     $scope.datos.f01_casilla = response[0].casilla;
                     $scope.datos.f01_factor          =  response[0].tipoTrayecto;
+                    console.log($scope.datos);
                     $scope.distritoZonas(smacrodes);
                     $scope.actulizarIdDistrito(response[0].zona);
 
@@ -233,12 +240,10 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 $scope.datos.INT_AC_latitud = $scope.resultadoCP.INT_AC_latitud;
                 $scope.datos.INT_AC_longitud = $scope.resultadoCP.INT_AC_longitud;
                 //$scope.datos.f01_tipo_lic_descrip = $scope.resultadoCP.f01_tipo_lic_descrip;
-                $scope.datos.f01_categoria_agrupada_descrip = $scope.resultadoCP.f01_categoria_agrupada_descrip;
-                $scope.datos.f01_categoria_agrupada_descripcion = $scope.resultadoCP.f01_categoria_agrupada_descripcion;
+                //$scope.datos.f01_categoria_agrupada_descrip = $scope.resultadoCP.f01_categoria_agrupada_descrip;
+                //$scope.datos.f01_categoria_agrupada_descripcion = $scope.resultadoCP.f01_categoria_agrupada_descripcion;
                 $scope.datos.f01_casilla = $scope.resultadoCP.f01_casilla;
                 $scope.datos.f01_num_act =  $scope.resultadoCP.f01_num_act;
-
-                $scope.open_mapa_ae();
                 $scope.datosAntMulti = $scope.resultadoLotus.success.data[0].datos.licencia_multiple;
                 $q.all($scope.resultadoLotus).then(function(data){
                     deferred.resolve($scope.resultadoLotus);

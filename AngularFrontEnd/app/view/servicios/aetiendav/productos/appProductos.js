@@ -175,22 +175,24 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       });
 
 
-
       var datosProducto = new dataProducto();
-      dataProducto.ae = sessionService.get("IDAE");
-      datosProducto.categoria = $scope.f01_categoria;
-      datosProducto.item = $scope.f01_item;
+      datosProducto.tramite = sessionService.get("IDTRAMITE");
+      datosProducto.ae = sessionService.get("IDAE");
+      datosProducto.categoria = data.f01_categoria;
+      datosProducto.item = data.f01_item;
       datosProducto.nombre = data.f01_producto;
       datosProducto.descripcion = data.f01_descripcion;
       datosProducto.precio = data.f01_precio;
-      datosProducto.telefono =  sessionService.get("CELULARAE");
-
+      datosProducto.telefono_referencia =  sessionService.get("CELULARAE");
       datosProducto.imagen_p = f0;
       datosProducto.imagen_a1 = f1;
       datosProducto.imagen_a2 = f2;
       datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
       datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
       console.log(datosProducto);
+
+
+
       
       datosProducto.crearProducto(function(response){
         console.log(response);

@@ -143,6 +143,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     }
     $scope.seleccionarProductoRender = function (tramite) {
         sessionService.set('IDAE', tramite.vidae);
+        sessionService.set('IDTRAMITE', tramite.vtra_id);
         sessionService.set('CELULARAE', tramite.datos.f01_cel_prop);
         $scope.template         =   $scope.templates[3];
         

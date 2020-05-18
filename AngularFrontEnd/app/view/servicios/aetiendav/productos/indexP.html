@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+        
+        <script type="text/javascript" src="../../view/servicios/aetiendav/productos/appProductos.js"></script>
+        <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+        <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+        <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+        <style type="text/css">
+            .main1
+            {
+                padding-bottom: 20px;
+                padding-top: 20px;
+                background: rgba(49, 212, 200, 0.15);
+                padding-left: 15px;
+                padding-right: 15px;
+                /*color: #fff;*/
+                border-radius: 10px;
+            }
+        </style>
+        <script type="text/javascript">
+            $('.custom-upload input[type=file]').change(function(){
+                $(this).next().find('input').val($(this).val());
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+            });
+            function iniciarLoadFyle(){
+                $('.custom-upload input[type=file]').change(function(){
+                $(this).next().find('input').val($(this).val());
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+                });
+            }
+            //$('.clockpicker').clockpicker();
+        </script>
+        <style>
+            .switch {
+              position: relative;
+              display: inline-block;
+              width: 60px;
+              height: 34px;
+            }
+
+            .switch input { 
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+
+            .slider {
+              position: absolute;
+              cursor: pointer;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: #ccc;
+              -webkit-transition: .4s;
+              transition: .4s;
+            }
+
+            .slider:before {
+              position: absolute;
+              content: "";
+              height: 26px;
+              width: 26px;
+              left: 4px;
+              bottom: 4px;
+              background-color: white;
+              -webkit-transition: .4s;
+              transition: .4s;
+            }
+
+            input:checked + .slider {
+              background-color: #2196F3;
+            }
+
+            input:focus + .slider {
+              box-shadow: 0 0 1px #2196F3;
+            }
+
+            input:checked + .slider:before {
+              -webkit-transform: translateX(26px);
+              -ms-transform: translateX(26px);
+              transform: translateX(26px);
+            }
+
+            /* Rounded sliders */
+            .slider.round {
+              border-radius: 34px;
+            }
+
+            .slider.round:before {
+              border-radius: 50%;
+            }
+        </style>
+
+    </head>
+
+
+
+    <div class="col-md-12" ng-controller="productosController" ng-init="inicioDocumentosArchivados();">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+            <h4>Productos de la Actividad Economica</h4>
+        </div>
+        <div class="ibox-content">
+          <form name="signupForm"  class="form-horizontal" role="form" novalidate>                   
+            <div class="col-md-12">
+              <div class="panel panel-default">
+                <div class="panel-heading"><B>LISTADO DE PRODUCTOS</B> &nbsp; <a class="btn btn-success ng-binding" tooltip="Adicionar producto" ng-click="newProducto(documento);"><i class="fa fa-plus" aria-hidden="true"></i></a></div>
+                <div class="panel-body" ng-disabled="true">
+                  <div class="table-responsive">
+                    <table ng-table="tablaDocumentos" class="table table-striped responsive">
+                      <thead>
+                      </thead>
+                      <tbody>
+                        <tr class="column" ng-repeat="documento in $data | filter:query1 ">
+                          <td data-title="'#'" class="text-center">&nbsp; {{$index+1}}</td>
+                          <td data-title="'Opciones'" class="text-left">
+                            <a class="btn btn-success ng-binding" tooltip="Modificar producto" ng-click="updProducto(documento);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            <a class="btn btn-success ng-binding" tooltip="Eliminar producto" ng-click="confirmarEliminar(documento);"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            <label class="switch">
+                                <input type="checkbox" ng-checked="documento.prd_estadoc=='A'" ng-click="cambioEstadoB()">
+                                <span class="slider round"></span>
+                            </label>
+                          </td>
+                          <td data-title="'Categoria'" class="text-left">&nbsp; {{documento.prd_categoriac}}</td>
+                          <td data-title="'Item'" class="text-left">&nbsp; {{documento.prd_itemc}}</td>
+                          <td data-title="'Producto'" class="text-left">&nbsp; {{documento.prd_nombrec}}</td>
+                          <td data-title="'Descripción'" class="text-center">&nbsp; {{documento.prd_descripcionc}}</td>
+                          <td data-title="'Precio'" class="text-center">&nbsp; {{documento.prd_precioc}}</td>
+                          <td data-title="'Ver'" class="text-center" align="center">
+                            <!--img src="{{documento.prd_imagen_pc}}" style="width:64px;"-->
+                              <div>
+                                  <a ng-click="ImprimirProforma(documento.prd_imagen_pc)" data-toggle="modal" data-target="#divPopup4" style="color: #ffbf01">
+                                      <i class="fa fa-eye fa-2x flechaOscura"></i>
+                                  </a>
+                              </div>
+                          </td>     
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-show="frmProducto!=null">
+              <div class="col-md-12">
+                  <legend>Datos del producto:</legend>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group" >
+                      <label for="url" >Categoria:</label>
+                      <div class="controls">
+                          <select id="f01_categoria" class="form-control" ng-model="datos.f01_categoria" name="f01_categoria" ng-disabled="desabilitado" required>
+                              <option value="">--Seleccionar--</option>
+                              <option value="1"> SALUD </option>
+                              <option value="2"> COMPUTACION </option>
+                              <option value="3"> VEHICULOS </option>
+                              <option value="4"> COMIDA </option>
+                          </select>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group" >
+                      <label for="url" >Item:</label>
+                      <div class="controls">
+                          <select id="f01_item" class="form-control" ng-model="datos.f01_item" name="f01_item" ng-disabled="desabilitado" required>
+                              <option value="">--Seleccionar--</option>
+                              <option value="21"> TARJETA MADRE </option>
+                              <option value="22"> MONITOR </option>
+                              <option value="23"> CPU </option>
+                              <option value="24"> TECLADO </option>
+                          </select>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group" >
+                      <label for="url" >Producto:</label>
+                      <div class="controls">
+                          <input ng-model="datos.f01_producto" id="f01_producto" name="f01_producto" class="form-control" ng-disabled="desabilitado"/>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group" >
+                      <label for="url" >Descripción:</label>
+                      <div class="controls">
+                          <input ng-model="datos.f01_descripcion" id="f01_descripcion" name="f01_descripcion" class="form-control" ng-disabled="desabilitado"/>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group" >
+                      <label for="url" >Precio:</label>
+                      <div class="controls">
+                          <input ng-model="datos.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado"/>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label id="lbl_f01_upload" class="col-md-2 control-label">Imagen Principal</label>
+                  <div class="controls">
+                      <div class="form-group custom-upload">
+                          <input type="file" id="f01_upload1" name="f01_upload1" accept="image/*"  style="display: none;">
+                          <div class="input-group">
+                              <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                              <input id="txt_f01_upload1" name="txt_f01_upload1"  ng-model="datos['txt_f01_upload1']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                              <span class="input-group-btn">
+                                  <a id="href_f01_upload1" ng-show="fileArRequisitos['f01_upload1'].url || data.idnro == 1 || data.idnro == 2" href="{{fileArRequisitos['f01_upload1'].url}}" target="_blank">
+                                  {{rmostrarviae}}
+                                      <button id="btn_f01_upload1" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_f01_upload1" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload1', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                              </span>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label id="lbl_f01_upload2" class="col-md-2 control-label">Imagen Auxiliar 1</label>
+                  <div class="controls">
+                      <div class="form-group custom-upload">
+                          <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*"  style="display: none;">
+                          <div class="input-group">
+                              <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                              <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datos['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                              <span class="input-group-btn">
+                                  <a id="href_f01_upload2" ng-show="fileArRequisitos['f01_upload2'].url || data.idnro == 1 || data.idnro == 2" href="{{fileArRequisitos['f01_upload2'].url}}" target="_blank">
+                                  {{rmostrarviae}}
+                                      <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_f01_upload2" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload2', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+                </div>    
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label id="lbl_f01_upload" class="col-md-2 control-label">Imagen Auxiliar 2</label>
+                  <div class="controls">
+                      <div class="form-group custom-upload">
+                          <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*"  style="display: none;">
+                          <div class="input-group">
+                              <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                              <input id="txt_f01_upload3" name="txt_f01_upload3"  ng-model="datos['txt_f01_upload3']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                              <span class="input-group-btn">
+                                  <a id="href_f01_upload3" ng-show="fileArRequisitos['f01_upload3'].url || data.idnro == 1 || data.idnro == 2" href="{{fileArRequisitos['f01_upload3'].url}}" target="_blank">
+                                  {{rmostrarviae}}
+                                      <button id="btn_f01_upload3" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_f01_upload3" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload3' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+                </div>    
+              </div>
+            </div>
+            <div class="col-md-12" align="right">
+                <!--button id="miFormGuardar"  ng-click="guardarDatos(datos);" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="" tooltip="Guardar Formulario">
+                <button id="btnFormLicencia"  ng-click="envioDatos(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="" tooltip="Enviar Formulario" -->
+                <button ng-show="nuevo" type="button" class="btn btn-primary" ng-click="registrarProducto(datos)">Registrar</button>
+                <button ng-show="update" type="button" class="btn btn-primary" ng-click="actualizarProducto(datos)">Modificar</button>
+                
+                <button type="button" class="btn btn-default ng-binding" >Cerrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+    </div>
+</html>

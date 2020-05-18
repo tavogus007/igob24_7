@@ -9,7 +9,8 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     $scope.templates =
     [ { name: 'template0.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexnatural.html'}, 
       { name: 'template1.html', url: '../../../app/view/servicios/aetiendav/personanatural/indexpermisonatural.html'},
-      { name: 'template2.html', url: '../../../app/view/servicios/aetiendav/personajuridica/indexpermisojuridico.html'} 
+      { name: 'template2.html', url: '../../../app/view/servicios/aetiendav/personajuridica/indexpermisojuridico.html'},
+      { name: 'template3.html', url: '../../../app/view/servicios/aetiendav/productos/indexP.html'} 
     ];
 
     $scope.serviciosTipoTramite = [
@@ -135,7 +136,46 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
        //$scope.template =   "";
         $scope.seleccionarTramiteRender(tramite);    
     }
-    
+    //nuevo de paquete 
+    $scope.addProducto = function (tramite) {
+        $scope.template =   "";
+        $scope.seleccionarProductoRender(tramite);    
+    }
+    $scope.seleccionarProductoRender = function (tramite) {
+        sessionService.set('IDAE', tramite.vidae);
+        sessionService.set('CELULARAE', tramite.datos.f01_cel_prop);
+        $scope.template         =   $scope.templates[3];
+        
+        //$scope.open_mapa_ae();
+
+
+        /*
+        $scope.procesoSeleccionado   =   tramite.vdvser_id;
+        sessionService.set('IDSERVICIO', tramite.vdvser_id);
+        sessionService.set('ESTADO', tramite.venviado);
+        $scope.template = "";
+        $scope.formulario = "mostrar";
+        var vsidservicio = "";
+        var tipoPersona =   sessionService.get('TIPO_PERSONA');
+        var sidservicio =   $scope.procesoSeleccionado;
+
+
+        if (tramite.venviado == "SI") {
+            $scope.template         =   $scope.templates[vsidservicio];
+        } else {
+            $scope.template         =   $scope.templates[vsidservicio];
+        }*/
+
+        /*if(tipoPersona == 'NATURAL'){
+            $scope.recuperarSerializarInfo(tramite);
+        }
+        else{
+            $scope.recuperarSerializarInfo(tramite);
+        }*/
+
+    };
+
+    // nuevo de paquete fin
 
     $scope.seleccionarTramiteRender = function (tramite) {
         $scope.procesoSeleccionado   =   tramite.vdvser_id;

@@ -10,6 +10,7 @@ var typeCall;
 var urlProducto = "";
 if(jsonURLS){
   var urlProducto = jsonURLS.CONEXION_API_PG_PRODUCTO+"wsRCPG";
+  
 }
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
 function ejecutarAjaxProducto(vurlCompProducto, vTypeCall, vDataCall, vFunctionResp) {
@@ -70,6 +71,20 @@ dataProducto.prototype.lstMisProductosOID = function (functionResp)
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
+
+dataProducto.prototype.lstMisProductosOIDAE = function (functionResp)
+{
+    urlCompProducto = "/listarproductosporidae_oid";
+    typeCall = "post";
+    dataParams = {
+      "oidc":this.oid,
+      "id_ae":this.ae
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+
+
+
 
 dataProducto.prototype.crearProducto = function (functionResp) {
 

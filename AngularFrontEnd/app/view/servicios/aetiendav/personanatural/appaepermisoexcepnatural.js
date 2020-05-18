@@ -194,7 +194,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     $scope.datos.f01_tel_act1 = response[0].telefono;
                     $scope.datos.f01_casilla = response[0].casilla;
                     $scope.datos.f01_factor          =  response[0].tipoTrayecto;
-                    console.log($scope.datos);
                     $scope.distritoZonas(smacrodes);
                     $scope.actulizarIdDistrito(response[0].zona);
 
@@ -216,8 +215,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                     $scope.cargarNombVia($scope.datos.f01_tip_via_act, $scope.datos.f01_zona_act);
                     $scope.getDatosLotus(resultadoApi.success.dataSql.datosAE[0].idActividadEconomica,codhojaruta);
                     $scope.desabilitado = false; 
-                    $scope.botones = "mostrar"
-                    console.log("botonesss33: ", $scope.botones);
+                    $scope.botones = "mostrar";
 
                 }
                 //$rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
@@ -780,6 +778,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $scope.btnEnviarForm    =   true;
         var idProcodigo         =   'REG_AE-';
         var datosNeXO = {};
+        console.log("IDTRAMITE:: ", sessionService.get('IDTRAMITE'));
         if ($scope.tipoPersona == 'NATURAL'){
             datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
             datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
@@ -787,7 +786,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             datosNeXO['f01_nro_orden']   =   paramForm.f01_nro_orden;
             datosNeXO['f01_id_contribuyente']   =   paramForm.f01_id_contribuyente;
             datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
-            datosNeXO['f01_tipo_per']       =   'N';
+            datosNeXO['f01_tipo_per']        =   'N';
             datosNeXO['f01_tipo_per_desc']  = 'NATURAL';
             datosNeXO['f01_expedido_prop']  = paramForm.f01_expedido_prop;
             datosNeXO['f01_email_prop']     = paramForm.f01_email_prop;
@@ -1003,8 +1002,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 $scope.desabilitado = true;
                 response    =   JSON.parse(response);
                 var results = response.success.data;
-                console.log("dkjsnfskdl1", results);
-
                 indice = 0;
                 datosIF = results[0].crear_tramite_ge.split(",");
                 datosIF2 = datosIF[1];
@@ -1035,7 +1032,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         var idTramite = sessionService.get('IDTRAMITE');
         idUsuario = sessionService.get('IDUSUARIO');
         nroTramiteEnviado = sessionService.get('NROTRAMITE');
-        console.log('sessionService.get:: ', sessionService.get('NROTRAMITE'));
         idUsuario = 4;
         try {
             var idTramite = sessionService.get('IDTRAMITE');
@@ -1480,7 +1476,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     }
 
     $scope.getRequisito1 = function(dato){
-        console.log("ingresa::: ",dato);
         datoObjectFinal = [];
         datoObjectFinal2 = [];
         datoObjectFinal3 = [];
@@ -1505,7 +1500,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         }
 
         if(dato == "SERVICIODEL"){
-            console.log("inresa aquuiiiiiiiiiiiii");
             datoObject = new Object();
             datoObject1 = new Object();
             datoObject.tipo = "CHK";
@@ -1544,7 +1538,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             $scope.datos.f01_distribucion_movilidad_propia=datoObjectFinal3;
         }
 
-        console.log(datoObjectFinal, datoObjectFinal2, datoObjectFinal3);
     }
 
 

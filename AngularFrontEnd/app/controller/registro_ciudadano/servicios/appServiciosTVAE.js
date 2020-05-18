@@ -132,10 +132,7 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
         }
     });
 
-    $scope.seleccionarTramite = function (tramite) {
-       //$scope.template =   "";
-        $scope.seleccionarTramiteRender(tramite);    
-    }
+   
     //nuevo de paquete 
     $scope.addProducto = function (tramite) {
         $scope.template =   "";
@@ -176,8 +173,13 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
     };
 
     // nuevo de paquete fin
+     $scope.seleccionarTramite = function (tramite) {
+       //$scope.template =   "";
+        $scope.seleccionarTramiteRender(tramite);    
+    }
 
-    $scope.seleccionarTramiteRender = function (tramite) {
+    $scope.seleccionarTramite = function (tramite) {
+        console.log("seleccionar tramite::: ", tramite);
         $scope.procesoSeleccionado   =   tramite.vdvser_id;
         $rootScope.tramiteId = tramite.vtra_id;
         sessionService.set('IDTRAMITE', tramite.vtra_id);
@@ -207,13 +209,8 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
             $scope.template         =   $scope.templates[vsidservicio];
         }
 
-        if(tipoPersona == 'NATURAL'){
-            $scope.recuperarSerializarInfo(tramite);
-        }
-        else{
-            $scope.recuperarSerializarInfo(tramite);
-        }
-
+        $scope.recuperarSerializarInfo(tramite);
+       
     };
 
     $scope.recuperarDatosRegistro = function(){
@@ -706,9 +703,9 @@ app.controller('serviciosControllerTVAE', function ($scope, $rootScope ,$routePa
                                 $scope.datos = "";
                                 $scope.adjuntosArray = "";
                                 $scope.iniciandoDatos();                        
-                                sessionService.set('IDTRAMITE', sIdTramite);
+                                //sessionService.set('IDTRAMITE', sIdTramite);
                             }
-                }               
+                }       
                 //$rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
                 setTimeout(function(){
                     $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);

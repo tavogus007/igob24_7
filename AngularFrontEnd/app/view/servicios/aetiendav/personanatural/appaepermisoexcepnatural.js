@@ -4,6 +4,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
     $scope.tblTramites        =   {};
     $scope.trmUsuario      =   [];
+
     $scope.listadoActividadesEconomicas = function () {
         var dataGenesis       = ((typeof($rootScope.datosGenesis)    == 'undefined' || $rootScope.datosGenesis == null) ? {}  : $rootScope.datosGenesis); 
         var tipoPersona     =   sessionService.get('TIPO_PERSONA');
@@ -61,7 +62,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             }
             $.unblockUI();
         }
-
     };
 
     $scope.tblTramites = new ngTableParams({

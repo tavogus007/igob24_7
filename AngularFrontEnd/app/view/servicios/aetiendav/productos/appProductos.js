@@ -7,7 +7,8 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
   $scope.valida = 0;
   
   $rootScope.archivosProducto = new Array();
-
+  $scope.tblTramites        =   {};
+  $scope.trmUsuario      =   [];
 
   $scope.cambiarFile = function(obj, valor){
 
@@ -260,7 +261,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
   $scope.inicioDocumentosArchivados = function () {
       $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDAE'));
       //$scope.obtenerContribuyente();
-      //$scope.listadoActividadesEconomicas();
+      $scope.listadoActividadesEconomicas();
       $scope.update = false;
       $scope.nuevo = false;
       $scope.mostrarTxt = false; 
@@ -419,29 +420,271 @@ $scope.obtenerContribuyente = function(){
             //swal(resultadoApi.error.message);
         }
     });
-};
+  };
 
-$scope.listadoActividadesEconomicas = function () {
-    $scope.datos.rdTipoTramite = "RENOVACION";            
+  $scope.listadoActividadesEconomicas = function () {
+    var dataGenesis       = ((typeof($rootScope.datosGenesis)    == 'undefined' || $rootScope.datosGenesis == null) ? {}  : $rootScope.datosGenesis); 
     var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-    var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
+    var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
+    var sNumeroRegistros  = dataGenesis.length;
+    var idContribuyente =   $rootScope.datosGenesis[0].idContribuyente;
     var contribuyente   =   new gLstActividadEconomica();
     contribuyente.idContribuyente   =   idContribuyente;
-    contribuyente.tipo  =   'N'; //N para natural y J para Juridico
+    contribuyente.tipo  =   'N';
     contribuyente.lstActividadEconomica(function(resultado){ 
         $.unblockUI(); 
-        resultadoApi = JSON.parse(resultado);
+        var resultadoApi = JSON.parse(resultado);
         if (resultadoApi.success) {
-            //listado de Actividades Economicas
+            $scope.formDatosAE  =   true;
+            $scope.mostrarMsgActividadTrue  = true;
+            $scope.mostrarMsgActividadFalse = false;
             var response    =   resultadoApi;
-            if(response.success.dataSql.length > 0){
-                $scope.trmUsuario = response.success.dataSql;
-            } 
+            $scope.trmUsuario = response.success.dataSql;
+            var data = response.success.dataSql;
+            $scope.tblTramites.reload(); 
+            $scope.desabilitado = true;  
         } else {
-             swal('', "Datos no Encontrados !!!", 'warning');
+            $scope.mostrarMsgActividadTrue  = false;
+            $scope.mostrarMsgActividadFalse = true;                        
+            $scope.formDatosAE  =   false;
+            $scope.desabilitado = true;
+            swal('', "Datos no Encontrados !!!", 'warning');
         }
-        }); 
-};
+
+        var sformguardado   =   $scope.datos.INT_FORM_ALMACENADO;
+        if(typeof sformguardado == 'undefined' || sformguardado != 'G'){
+            $scope.botones = null;
+            $scope.desabilitado = true;                   
+            swal('', "Favor revisar la información y seleccionar la Actividad Economica que desea registrar.", 'warning');                    
+        }else{
+
+            //$scope.botones = "mostrar";
+            //$scope.desabilitado = false;
+        }
+    });
+      
+  };
+
+  $scope.selActividadEconomica =  function(tramite){  
+        $scope.idActividiadEconomicaActual  =   tramite.IdActividad;
+        $scope.datos.f01_id_actividad_economica = tramite.IdActividad;
+        $scope.sIdAeGrilla  =   tramite.IdActividad;
+        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
+        var datosGenerales = new getDatosAEViae();
+        datosGenerales.idActividadEconomica = tramite.IdActividad;
+        datosGenerales.getDatosAE_Viae(function(resultado){
+            resultadoApi = JSON.parse(resultado);
+            if (resultadoApi.success) {
+                codhojaruta = resultadoApi.success.dataSql.datosAE[0].hojaRuta;
+                var response = resultadoApi.success.dataSql.datosAE;
+                var lstPublicidad = resultadoApi.success.dataSql.datosVIAE;
+                if(response.length > 0){
+                    if(response[0].numeroOrden == 0 || response[0].numeroOrden == null || response[0].numeroOrden == 'null'){
+                        response[0].numeroOrden = 0;
+                        $scope.nroOrdenActividiadEconomicaActual  =  response[0].numeroOrden;
+                        $scope.datos.f01_nro_orden = response[0].numeroOrden;
+                    }
+                    else{
+                        $scope.nroOrdenActividiadEconomicaActual  =  response[0].numeroOrden;
+                        $scope.datos.f01_nro_orden = response[0].numeroOrden;
+                    }
+                    $scope.idContribuyenteAEActual  =    response[0].idContribuyente;
+                    $scope.datos.f01_id_contribuyente = response[0].idContribuyente;
+                   
+                    var hinicio     =   ((typeof(response[0].horarioAtencion) == 'undefined' || response[0].horarioAtencion == null) ? ""   : response[0].horarioAtencion.toUpperCase());
+                    var hfinal      =   ((typeof(response[0].horarioAtencion) == 'undefined' || response[0].horarioAtencion == null) ? ""   : response[0].horarioAtencion.toUpperCase());
+                    var smacro      =   "MACRODISTRITO";
+                    var smacrodes = "";
+                    var szona       =   "DISTRITO";
+
+
+
+                    //DATOS DE LA ACTIVIDAD ECONÓMICA
+                    $scope.datos.f01_raz_soc   =   response[0].denominacion;
+                    $scope.datos.f01_sup  =   response[0].superficie;
+                    $scope.datos.f01_cap_aprox   =   response[0].capacidad;
+                   
+                    try{
+                        smacrodes      =   smacro  +   " " +    response[0].IdMacrodistrito + " " + response[0].Macrodistrito;
+                        hinicio     =   hinicio.split('-')[0].trim();
+                        hfinal      =   hfinal.split('-')[1].trim();
+                    }catch(e){}
+                    if(response[0].IdMacrodistrito == 2 || response[0].IdMacrodistrito == '2'){
+                       smacrodes      =   smacro  +   " " +    response[0].IdMacrodistrito + " MAXIMILIANO PAREDES";
+                    }
+                    if(response[0].IdMacrodistrito == 4 || response[0].IdMacrodistrito == '4'){
+                       smacrodes      =   smacro  +   " " +    response[0].IdMacrodistrito + " SAN_ANTONIO";
+                    }
+                    if(response[0].establecimiento =='ALQUI'){
+                        $scope.datos.f01_estab_es = "ALQUILADO";
+                    }
+                    if(response[0].establecimiento =='PROPI'){
+                        $scope.datos.f01_estab_es = "PROPIO";
+                    }
+                    if(response[0].establecimiento =='ANTIC'){
+                        $scope.datos.f01_estab_es = "ANTICRÉTICO";
+                    }
+                    if(response[0].establecimiento =='OTRO'){
+                        $scope.datos.f01_estab_es = "OTRO";
+                    }
+                    $scope.datos.f01_tip_act = response[0].tipoActividad;
+                    if(response[0].tipoActividad =='MA' || response[0].tipoActividad =='MATRI'){
+                        $scope.datos.f01_tip_act_dec = 'MATRIZ';
+                        $scope.datos.f01_tip_act = 'MA';
+                    }
+                    if(response[0].tipoActividad =='SU' || response[0].tipoActividad =='SUCUR'){
+                        $scope.datos.f01_tip_act_dec = 'SUCURSAL';
+                        $scope.datos.f01_tip_act = 'SU';
+                    }
+                    /*DATOS DE LA ACTIVIDAD*/
+                    $scope.datos.f01_num_pmc = response[0].padron;
+                    $scope.datos.f01_raz_soc = response[0].denominacion;
+                    $scope.datos.f01_sup = response[0].superficie;
+                    $scope.datos.f01_de_hor = hinicio;
+                    $scope.datos.f01_a_hor = hfinal;
+                    $scope.datos.f01_nro_actividad = response[0].numeroActividad;
+                    $scope.datos.f01_productosElaborados = response[0].productosElaborados;
+                    $scope.datos.f01_actividadesSecundarias = response[0].actividadesSecundarias;
+                    /*TIPO LICENCIA*/
+                    $scope.datos.f01_tipo_lic = response[0].idTipoLicencia;
+                    $scope.datos.f01_categoria = response[0].idactividad_desarrollada343;
+                    $scope.datos.f01_categoria_agrupada = response[0].idActividadDesarrollada;
+                    $scope.datos.f01_categoria_descrip = response[0].desc_desarrollada;
+                     $scope.datos.f01_tipo_lic_descrip = response[0].descripcion;
+                    $scope.datos.f01_categoria_agrupada_descrip = response[0].ActividadDesarrollada;
+                    $scope.datos.f01_categoria_agrupada_descripcion = response[0].actividad_desarrollada343;
+                    
+                    $scope.datos.INT_AC_MACRO_ID = response[0].IdMacrodistrito;
+                    $scope.datos.f01_macro_act = response[0].IdMacrodistrito;
+                    $scope.datos.f01_macro_act_descrip = smacrodes;
+                    $scope.datos.INT_AC_DISTRITO = response[0].idDistrito_actividadEconomica;
+                    $scope.datos.f01_dist_act          = response[0].idDistrito_actividadEconomica;
+                    $scope.datos.INT_AC_ID_ZONA = response[0].id_zona_ActividadEconomica;
+                    $scope.datos.INT_ID_ZONA = response[0].id_zona_ActividadEconomica;
+                    $scope.datos.f01_zona_act = response[0].id_zona_ActividadEconomica;
+                    $scope.datos.f01_zona_act_descrip = response[0].zona;
+                    $scope.datos.f01_tip_via_act = response[0].tipoVia;
+                    $scope.datos.f01_num_act = response[0].via;
+                    $scope.datos.f01_num_act1 = response[0].numero;
+                    $scope.datos.f01_edificio_act = response[0].edificio;
+                    $scope.datos.f01_bloque_act = response[0].bloque;
+                    $scope.datos.f01_piso_act = response[0].piso;
+                    $scope.datos.f01_dpto_of_loc = response[0].departamento;
+                    $scope.datos.f01_tel_act1 = response[0].telefono;
+                    $scope.datos.f01_casilla = response[0].casilla;
+                    $scope.datos.f01_factor          =  response[0].tipoTrayecto;
+                    $scope.distritoZonas(smacrodes);
+                    $scope.actulizarIdDistrito(response[0].zona);
+
+
+                    if(response[0].idactividad_desarrollada343 == '0' || response[0].idactividad_desarrollada343 == 0){
+                      $scope.LicenciaXCategoriaA(response[0].idActividadDesarrollada)  
+                    }
+
+                    if(response[0].edificio == 'undefined' || response[0].bloque == 'undefined' || response[0].piso == 'undefined' || response[0].departamento == 'undefined' || response[0].telefono == 'undefined'){
+                        response[0].edificio = '';
+                        response[0].bloque = '';
+                        response[0].piso = '';
+                        response[0].departamento = '';
+                        response[0].telefono = '';
+                    }
+                    $scope.datos.f01_tipo_lic_ant = response[0].descripcion;
+                    $scope.datos.f01_categoria_agrupada_ant = response[0].actividadesSecundarias;
+                    $scope.datos.f01_categoria_descrip_ant = response[0].ActividadDesarrollada;
+                    $scope.cargarNombVia($scope.datos.f01_tip_via_act, $scope.datos.f01_zona_act);
+                    $scope.getDatosLotus(resultadoApi.success.dataSql.datosAE[0].idActividadEconomica,codhojaruta);
+                    $scope.desabilitado = false; 
+                    $scope.botones = "mostrar";
+
+                }
+                //$rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
+            }else{
+                swal('', "Datos no Encontrados !!!", 'warning');
+            }
+        });
+    };  
+
+    $scope.getDatosLotus = function(idadcteco, hojar){
+        $scope[name] = 'Running';
+        var deferred = $q.defer();
+        try{
+            var datosLotus = new getDatosAELotus();                        
+            datosLotus.caso = hojar;
+            datosLotus.idActividad = idadcteco;
+            datosLotus.getDatosAE_Lotus(function(respuesta){
+                $scope.resultadoLotus = JSON.parse(respuesta);
+                $scope.resultadoCP = $scope.resultadoLotus.success.data[0].datos;
+                $scope.datos.INT_AC_latitud = $scope.resultadoCP.INT_AC_latitud;
+                $scope.datos.INT_AC_longitud = $scope.resultadoCP.INT_AC_longitud;
+                //$scope.datos.f01_tipo_lic_descrip = $scope.resultadoCP.f01_tipo_lic_descrip;
+                //$scope.datos.f01_categoria_agrupada_descrip = $scope.resultadoCP.f01_categoria_agrupada_descrip;
+                //$scope.datos.f01_categoria_agrupada_descripcion = $scope.resultadoCP.f01_categoria_agrupada_descripcion;
+                $scope.datos.f01_casilla = $scope.resultadoCP.f01_casilla;
+                $scope.datos.f01_num_act =  $scope.resultadoCP.f01_num_act;
+                $scope.datosAntMulti = $scope.resultadoLotus.success.data[0].datos.licencia_multiple;
+                $q.all($scope.resultadoLotus).then(function(data){
+                    deferred.resolve($scope.resultadoLotus);
+                })
+            });
+        }catch(e){
+            $scope.exito = "NO";
+            $q.all($scope.resultadoLotus).then(function(data){
+                deferred.resolve($scope.resultadoLotus);
+            });
+        }
+        return deferred.promise;   
+    } 
+
+    $scope.LicenciaXCategoriaA = function(idDesarrollada){
+        //$scope.$apply();
+        try{
+                var tipo = new categoriaagrupadalicenciades();
+                tipo.dependencia = idDesarrollada;
+                tipo.categoriaagrupadalicencia_des(function(res){
+                    $scope.datosActividadLicencia = "";
+                    x = JSON.parse(res);
+                    response = x.success.data;
+                    if(response.length > 0){
+                        console.log("response Licencia:: ",response);
+                        $scope.datosActividadLicencia = response;
+                        $scope.datos.f01_categoria_agrupada = response[0].catagrpuid; 
+                        $scope.datos.f01_categoria_agrupada_dem = response[0].idcategoriaagrupada;
+                        $scope.datos.f01_categoria_agrupada_descrip = response[0].idcategoriaagrupada;
+                        
+                        
+                    }else{
+                        $scope.msg = "Error !!";
+                    }
+                });
+        }catch(e){
+                console.log("Error en la actividad desarrollada");
+        }
+                       
+        //$scope.GetValueZonaSegura($scope.datos.f01_categoria_agrupada);
+    }
+
+
+  $scope.tblTramites = new ngTableParams({
+        page: 1,
+        count: 5,
+        filter: {},
+        sorting: {
+            IdActividad: 'desc'
+        }
+    }, {
+        total: $scope.trmUsuario.length,
+        getData: function($defer, params) {
+            var filteredData = params.filter() ?
+            $filter('filter')($scope.trmUsuario, params.filter()) :
+            $scope.trmUsuario;
+            var orderedData = params.sorting() ?
+            $filter('orderBy')(filteredData, params.orderBy()) :
+            $scope.trmUsuario;
+            params.total($scope.trmUsuario.length);
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+        }
+    });
+
 $scope.cargarDatos = function(ae,s){
     $scope.sucursal = parseInt(s);
     $scope.aeAct = parseInt(ae.prod_aec);

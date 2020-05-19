@@ -19,38 +19,31 @@
               <div class="row">
                <div class="col-sm-12 b-r">
                   <form class="form-horizontal ng-pristine ng-valid">
-                        <div class="form-group">    
-                                         
+                        <div class="form-group">          
                            <div class="col-lg-3">
                               <div style="text-align:center;">
-                                 
-                                 <a class="btn btn-success" tooltip = "Crear el trámite" data-toggle="modal" data-target="#seleccionarTramiteVAE"><i class="fa fa-file blanco shake-slow"></i><!--cambios-->
-                                    {{translateTitulos.lbl_10_02}}
-                                  </a>    
-                                 
                               </div>
                            </div>
-                        <label class="col-lg-3 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
-                        <div class="col-lg-6">
-                           <input ng-model = "query" id ="busca1" class="form-control" placeholder="">
-                        </div>
                      </div>
                   </form>       
-                  <table ng-table="tablaTramites"  class="table  table-hover">
-                     <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==sIdTramiteSeleccionado && {'background-color':'#DCDCDC','font-color':'#A2D5AE'}">
-                      <td data-title="'Código'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>
-                      <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite);" >{{tramite.vservicio}}</td>  
-                      <td data-title="'Subtipo'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>    
-                      <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)" >{{tramite.vfecha}} </td>
-                      <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)" >{{tramite.venviado}}</td> 
-                      <td data-title="'Productos'" >
-                        <a ng-show="tramite.vrespuesta =='SI'" class="btn btn-success ng-binding" data-toggle="modal" tooltip="Productos" ng-click="addProducto(tramite);" data-target="#producto">
-                          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                        </a>
-                      </td>
-
-                    </tr>
-                  </table> 
+                   <div class="col-md-12">
+                    <div  class="col-md-12">
+                      <div class="panel panel-default">
+                          <div class="panel-heading"><B>SELECCIONE LA ACTIVIDAD ECONÓMICA PARA LA SOLICITUD DE HABILITACION</B></div>
+                          <div class="panel-body">
+                              <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadECONÓMICA">
+                                  <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}"><!--cambios-->
+                                      <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
+                                      <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
+                                      <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
+                                      <td data-title="'Descripcion'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
+                                      <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
+                                  </tr>
+                              </table>
+                          </div>
+                      </div>
+                    </div>
+                  </div>  
                </div>
             </div>
          </div>

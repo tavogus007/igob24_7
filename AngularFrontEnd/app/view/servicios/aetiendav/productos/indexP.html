@@ -104,24 +104,8 @@
             <h4>Productos de la Actividad Economica</h4>
         </div>
         <div class="ibox-content">
-          <form name="signupForm" ng-controller="serviciosControllerProducto" class="form-horizontal" role="form" novalidate>    <div class="col-md-12">
-                <div  class="col-md-12">
-                  <div class="panel panel-default">
-                      <div class="panel-heading"><B>SELECCIONE LA ACTIVIDAD ECONÓMICA PARA LA SOLICITUD DE HABILITACION</B></div>
-                      <div class="panel-body" ng-disabled="true">
-                          <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadECONÓMICA">
-                              <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}"><!--cambios-->
-                                  <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
-                                  <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
-                                  <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
-                                  <td data-title="'Descripcion'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
-                                  <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
-                              </tr>
-                          </table>
-                      </div>
-                  </div>
-                </div>
-              </div>                
+          <form name="signupForm" ng-controller="serviciosControllerProducto" class="form-horizontal" role="form" novalidate>    
+                         
             <div class="col-md-12">
               <div class="panel panel-default">
                 <div class="panel-heading"><B>LISTADO DE PRODUCTOS</B> &nbsp; <a class="btn btn-success ng-binding" tooltip="Adicionar producto" ng-click="newProducto(documento);"><i class="fa fa-plus" aria-hidden="true"></i></a></div>

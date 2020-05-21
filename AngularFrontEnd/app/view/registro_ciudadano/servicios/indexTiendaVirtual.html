@@ -1,91 +1,99 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
-    <head>
-        <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css" async>
-
-        <script src="../../libs/js/prism.js" async></script>
-        
-    </head>    
-  <body>
-
-<div ng-controller="serviciosControllerProducto" ng-init="inicioServiciosP();">
-   <div class="col-lg-12">
-      <div class="ibox float-e-margins">
-         <div id="mostrar" class="ibox-title">
-            <h5>Registro de Producto de Actividades Economicas</h5>
-            <a href="#" id="cerrar_rc" ><i class="fa fa-sort-asc flechaOscura" id="cerrar_i"></i></a>
-         </div>
-         <div class="ibox-content" id="caja">
-              <div class="row">
-               <div class="col-sm-12 b-r">
-                  <form class="form-horizontal ng-pristine ng-valid">
-                        <div class="form-group">          
-                           <div class="col-lg-3">
-                              <div style="text-align:center;">
-                              </div>
-                           </div>
-                     </div>
-                  </form>       
-                   <div class="col-md-12">
-                    <div  class="col-md-12">
-                      <div class="panel panel-default">
-                          <div class="panel-heading"><B>SELECCIONE LA ACTIVIDAD ECONÓMICA PARA LA SOLICITUD DE HABILITACION</B></div>
-                          <div class="panel-body">
-                              <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadECONÓMICA">
-                                  <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}"><!--cambios-->
-                                      <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
-                                      <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
-                                      <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
-                                      <td data-title="'Descripcion'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
-                                      <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
-                                  </tr>
-                              </table>
-                          </div>
+  <head>
+    <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css" async>
+    <script src="../../libs/js/prism.js" async></script>
+  </head>    
+<body>
+  <div ng-controller="serviciosControllerProducto" ng-init="inicioServiciosP();">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+           <div id="mostrar" class="ibox-title">
+              <h5>Datos para Comercio Virtual</h5>
+              <a href="#" id="cerrar_rc" ><i class="fa fa-sort-asc flechaOscura" id="cerrar_i"></i></a>
+           </div>
+           <div class="ibox-content" id="caja">
+                <div class="row">
+                 <div class="col-sm-12 b-r">
+                    <form class="form-horizontal ng-pristine ng-valid">
+                      <div class="form-group">    
+                          <label class="col-lg-3 control-label">SELECCIONE LA ACTIVIDAD ECONÓMICA PARA LA SOLICITUD DE HABILITACION:</label>
                       </div>
-                    </div>
-                  </div>  
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
+                    </form>    
+                    <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadECONÓMICA">
+                      <!--tr style="cursor: pointer;">
+                          <td data-title="'No'" ng-click="selActividadEconomica(tramite)">100</td>
+                          <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">125445</td>
+                          <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">ZONA SUR</td>
+                          <td data-title="'Descripcion'" ng-click="selActividadEconomica(tramite)">ALIMENTOS Y BEBIDAS CATEGORIA A</td>
+                          <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">SIN DEUDA </td>
+                          <td data-title="'Tienda Virtual'" >
+                            <a class="btn btn-success ng-binding" tooltip="Completar Info" ng-click="addDatosAE(tramite);">
+                              <i class="fa fa-desktop" aria-hidden="true"></i>
+                            </a>
+                          </td>
+                          <td data-title="'Productos'" >
+                            <a class="btn btn-success ng-binding" tooltip="Productos" ng-click="addProductoAE(tramite);">
+                              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            </a>
+                          </td>
+                          <td data-title="'Pago en Linea'" >
+                            <a class="btn btn-success ng-binding" tooltip="Pago en Línea" ng-click="addPagosAE(tramite);">
+                              <i class="fa fa-credit-card" aria-hidden="true"></i>
+                            </a>
+                          </td>
 
-   <div class="col-lg-12">
-      <div ng-include="template.url" class="animated fadeInUp"></div>
-   </div>
-   <!-- Modal PARA SELECCIONAR TRAMITES-->
-   <div class="modal fade" id="seleccionarTramiteVAE" role="dialog">
-      <div class="modal-dialog">
-         <!-- Modal content-->
-         <div class="modal-content">
-            <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal">&times;</button>
-               <h4 class="modal-title">Seleccione el Tipo de Tramite a Realizar </h4>
-            </div>
-            <div class="modal-body">
-              <table class="table table-striped">
-                        <thead style="background: #6F7072;color: #F5F5F6;">
-                           <th>#&nbsp;</th>
-                           <th>Tipo de Trámites&nbsp;</th>                                            
-                        </thead>
-                        <tbody>
-                           <tr  style="cursor: pointer;" class="column" ng-repeat="proceso in serviciosTipoTramite" ng-click="seleccionarProceso(proceso)" ng-style="proceso.id==procesoSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}">
-                                 <td>{{$index+1}}</td>
-                                 <td>{{proceso.name}}</td>
-                           </tr>
-                        </tbody>
-                     </table>
-              
-            </div>
-            <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                  <button class="btn btn-default" ng-show="btnCrearBlk" ng-click="crearTramiteP(procesoSeleccionado);" data-dismiss="modal">Crear</button>
-            </div>
-         </div>
-      </div>
-   </div>
+                          <td data-title="'Publicar Página'" >
+                            <a class="btn btn-success ng-binding" tooltip="Publicar Página" ng-click="confPublicar(tramite);">
+                              <i class="fa fa-cogs" aria-hidden="true"></i>
+                            </a>
+                          </td>
 
-</div>
 
-<!--cambios-->
+                      </tr-->
+                      <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                          <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
+                          <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
+                          <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
+                          <td data-title="'Descripcion'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
+                          <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
+                          <td data-title="'Tienda Virtual'" >
+                            <a class="btn btn-success ng-binding" tooltip="Completar Info" ng-click="addDatosAE(tramite);">
+                              <i class="fa fa-desktop" aria-hidden="true"></i>
+                            </a>
+                          </td>
+                          
+                          <td data-title="'Productos'" >
+                            <a class="btn btn-success ng-binding" tooltip="Productos" ng-click="addProductoAE(tramite);">
+                              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            </a>
+                          </td>
+                          <td data-title="'Publicar Página'" >
+                            <a class="btn btn-success ng-binding" tooltip="Publicar Página" ng-click="confPublicar(tramite);">
+                              <i class="fa fa-cogs" aria-hidden="true"></i>
+                            </a>
+                          </td>
+
+                          
+
+                          <td data-title="'Pago en Linea'" >
+                            <a class="btn btn-success ng-binding" tooltip="Pago en Línea" ng-click="addPagosAE(tramite);">
+                              <i class="fa fa-credit-card" aria-hidden="true"></i>
+                            </a>
+                          </td>
+
+                          
+
+
+                      </tr>
+                    </table>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+     <div class="col-lg-12">
+        <div ng-include="template.url" class="animated fadeInUp"></div>
+     </div>
+  </div>
 </body>

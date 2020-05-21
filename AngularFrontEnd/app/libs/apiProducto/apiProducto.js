@@ -35,22 +35,78 @@ function ejecutarAjaxProducto(vurlCompProducto, vTypeCall, vDataCall, vFunctionR
     });
     return dataResp;
 };
+
+function dataTiendaVirtual(){
+    this.ae_id,
+    this.pagweb_id,
+    this.nombre,
+    this.correo,
+    this.pagina_web,
+    this.descripcion,
+    this.sucursales,
+    this.contactos,
+    this.redes_sociales,
+    this.ofertas,
+    this.oid,
+    this.usr
+};
+dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
+{
+    urlCompProducto = "/addtiendavirtual";
+    typeCall = "post";
+    dataParams = {
+      "stv_ae_id":this.ae_id,
+      "stv_pagweb_id":this.pagweb_id,
+      "stv_nombre":this.nombre,
+      "stv_correo":this.correo,
+      "stv_pagina_web":this.pagina_web,
+      "stv_descripcion":this.descripcion,
+      "stv_sucursales":this.sucursales,
+      "stv_contactos":this.contactos,
+      "stv_redes_sociales":this.redes_sociales,
+      "stv_ofertas":this.ofertas,
+      "stv_oid":this.oid,
+      "stv_usr":this.usr    
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+dataTiendaVirtual.prototype.obtDataTiendaVirtual = function (functionResp)
+{
+    urlCompProducto = "/listarTiendaVirtualPorIdAe";
+    typeCall = "post";
+    dataParams = {
+      "idAe":this.ae_id 
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+
+
 function dataProducto(){
     this.id,
+    this.idtv,
     this.nombre,
     this.descripcion,
     this.precio,
-    this.ae,
-    this.categoria,
-    this.item,
-    this.tramite,
+    this.cantidad,
     this.imagen_p,
     this.imagen_a1,
     this.imagen_a2,
     this.oid,
-    this.telefono_referencia,
     this.usr
 };
+
+dataProducto.prototype.listarProductoTV = function (functionResp)
+{
+  urlCompProducto = "/listarProductosPorIdTv_ae";
+  typeCall = "post";
+  dataParams = {
+    "idTv" : this.idtv    
+  };
+  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+
+};
+
+
 
 dataProducto.prototype.lstMisProductos = function (functionResp)
 {
@@ -74,7 +130,9 @@ dataProducto.prototype.lstMisProductosOID = function (functionResp)
 
 dataProducto.prototype.lstMisProductosOIDAE = function (functionResp)
 {
-    urlCompProducto = "/listarproductosporidae_oid";
+    //urlCompProducto = "/listarproductosporidae_oid";
+    urlCompProducto = "/listarProductosPorIdAe_Oid_Ae";
+
     typeCall = "post";
     dataParams = {
       "oidc":this.oid,
@@ -87,22 +145,19 @@ dataProducto.prototype.lstMisProductosOIDAE = function (functionResp)
 
 
 dataProducto.prototype.crearProducto = function (functionResp) {
-
-    urlCompProducto = "/adicionarProducto";
+    //urlCompProducto = "/adicionarProducto";
+    urlCompProducto = "/adicionarProducto_ae";   
     typeCall = "post";
     dataParams = {
-        "prd_nombrec" : this.nombre ,
+        "prd_tv_idc" : this.idtv,
+        "prd_nombrec" : this.nombre,
         "prd_descripcionc" : this.descripcion,
         "prd_precioc" : parseInt(this.precio),
-        "prd_aec" : parseInt(this.ae),
-        "prd_categoriac" : this.categoria,
-        "prd_itemc" : this.item,
-        "prd_tramitec" : this.tramite,
+        "prd_cantidadc" : parseInt(this.cantidad),
         "prd_imagen_pc" : this.imagen_p,
         "prd_imagen_a1c" : this.imagen_a1,
         "prd_imagen_a2c" : this.imagen_a2,
-        "prd_oidc" : this.oid_ciu,
-        "prd_telefono_referenciac" : this.telefono_referencia,
+        "prd_oidc" : this.oid,
         "prd_usrc" : this.usr
     };
     console.log(dataParams);

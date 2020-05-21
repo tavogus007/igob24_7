@@ -10,7 +10,10 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     $scope.trmUsuario      =   [];
     $scope.templates =
     [ 
-      { name: 'template0.html', url: '../../../app/view/servicios/aetiendav/productos/indexP.html'} 
+      { name: 'template0.html', url: '../../../app/view/servicios/tiendavirtual/tienda/index.html'}, 
+      { name: 'template1.html', url: '../../../app/view/servicios/tiendavirtual/pago/index.html'}, 
+      { name: 'template2.html', url: '../../../app/view/servicios/tiendavirtual/productos/index.html'}, 
+      { name: 'template3.html', url: '../../../app/view/servicios/tiendavirtual/pagina/index.html'} 
     ];
 
     $scope.serviciosTipoTramite = [
@@ -28,7 +31,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $scope.btnNuevoTramtite     =   false;      
     }; 
 
-     $scope.crearTramiteP = function(idproceso) {
+    $scope.crearTramiteP = function(idproceso) {
         if($scope.procesoSeleccionado != ''){
             $scope.adicionarServicioGamlp(idproceso); 
         }
@@ -130,46 +133,90 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
 
    
     //nuevo de paquete 
-    $scope.addProducto = function (tramite) {
+   
+     
+
+    $scope.obtTiendaVirtual = function(){
+        idActividadEconomica = sessionService.get('IDAE');
+        try {
+          var dataTV = new dataTiendaVirtual();
+          dataTV.ae_id = idActividadEconomica;
+          dataTV.obtDataTiendaVirtual(function(res){
+              r = JSON.parse(res);
+              results = r.success;
+              $rootScope.datosTiendaVirtual = results;
+              console.log(results.length);
+              if (results.length == 0){
+                console.log(results);
+                $rootScope.nuevo = 'mostrar';
+                $rootScope.update = null;
+              } else {
+                console.log(results[0].tv_idc);
+                sessionService.set('IDTV', results[0].tv_idc);
+                $rootScope.nuevo = null;
+                $rootScope.update = 'mostrar';
+              }
+          });
+        } catch(error){
+          console.log("Error Interno : ", error);
+        }
+    };
+
+    
+   
+
+
+
+
+    $scope.addDatosAE = function (tramite) {
         $scope.template =   "";
-        $scope.seleccionarProductoRender(tramite);    
+        $scope.seleccionarDatosRender(tramite);  
+        sessionService.set('IDAE', tramite.IdActividad);
+        console.log(tramite);
+        $scope.obtTiendaVirtual();
+        $rootScope.$broadcast('inicializarCampos', $scope.datos);
     }
+    $scope.addPagosAE = function (tramite) {
+        $scope.template =   "";
+        $scope.seleccionarPagoRender(tramite);
+        sessionService.set('IDAE', tramite.IdActividad);
+        console.log(tramite);  
+    }
+    $scope.addProductoAE = function (tramite) {
+        $scope.template =   "";
+        $scope.seleccionarProductoRender(tramite);   
+        sessionService.set('IDAE', tramite.IdActividad);
+        console.log(tramite);  
+    }
+    $scope.confPublicar = function (tramite) {
+        $scope.template =   "";
+        $scope.seleccionarPaginaRender(tramite);   
+        sessionService.set('IDAE', tramite.IdActividad);
+        console.log(tramite); 
+    }
+    
+    $scope.seleccionarDatosRender = function (tramite) {
+        console.log(tramite);
+        //sessionService.set('IDTIENDAVIRTUAL', tramite.vidae);
+        $scope.template         =   $scope.templates[0];
+    };
+    $scope.seleccionarPagoRender = function (tramite) {
+        console.log(tramite);
+        sessionService.set('IDTIENDAVIRTUAL', 1);
+        $scope.template         =   $scope.templates[1];
+    };
     $scope.seleccionarProductoRender = function (tramite) {
-        sessionService.set('IDAE', tramite.vidae);
-        sessionService.set('IDTRAMITE', tramite.vtra_id);
-        sessionService.set('CELULARAE', tramite.datos.f01_cel_prop);
+        console.log(tramite);
+        sessionService.set('IDTIENDAVIRTUAL', 1);
+        $scope.template         =   $scope.templates[2];
+    };
+    $scope.seleccionarPaginaRender = function (tramite) {
+        console.log(tramite);
+        sessionService.set('IDTIENDAVIRTUAL', 1);
         $scope.template         =   $scope.templates[3];
-
     };
 
-    $scope.seleccionarTramite = function (tramite) {
-        $scope.procesoSeleccionado   =   tramite.vdvser_id;
-        $rootScope.tramiteId = tramite.vtra_id;
-        sessionService.set('IDTRAMITE', tramite.vtra_id);
-        sessionService.set('IDSERVICIO', tramite.vdvser_id);
-        sessionService.set('ESTADO', tramite.venviado);
-        $scope.template = "";
-        $scope.formulario = "mostrar";
-        var vsidservicio = "";
-        var tipoPersona =   sessionService.get('TIPO_PERSONA');
-        var sidservicio =   $scope.procesoSeleccionado;
-        if(tipoPersona == 'NATURAL' && sidservicio == 51){
-            vsidservicio =   0;
-        }
-        if(tipoPersona == 'JURIDICO' && sidservicio == 51){
-            vsidservicio = 0;
-        }
-
-        if (tramite.venviado == "SI") {
-            $scope.template         =   $scope.templates[vsidservicio];
-        } else {
-            $scope.template         =   $scope.templates[vsidservicio];
-        }
-
-        $scope.recuperarSerializarInfo(tramite);
-       
-    };
-
+    
     $scope.recuperarDatosRegistro = function(){
         var datosini = {};
         var datosCiudadano = new rcNatural();
@@ -875,6 +922,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
     });
+  /*
     $scope.recuperarSerializarInfo = function(tramite){
         $scope.btover_c = true;  
         $scope.recuperarDatosRegistro();    
@@ -949,7 +997,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             console.log("Error Interno : ", error);
         }
     };
-
+*/
     $scope.recuperandoDatosGenesis = function(){
         var tipoContribuyente   =   sessionService.get('TIPO_PERSONA');
         var ciDocumento =   '';

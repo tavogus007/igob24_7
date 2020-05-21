@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+        
+        <script type="text/javascript" src="../../view/servicios/tiendavirtual/pagina/appPaginaAE.js"></script>
+        <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+        <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+        <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+        <style type="text/css">
+            .main1
+            {
+                padding-bottom: 20px;
+                padding-top: 20px;
+                background: rgba(49, 212, 200, 0.15);
+                padding-left: 15px;
+                padding-right: 15px;
+                /*color: #fff;*/
+                border-radius: 10px;
+            }
+        </style>
+        <script type="text/javascript">
+            $('.custom-upload input[type=file]').change(function(){
+                $(this).next().find('input').val($(this).val());
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+            });
+            function iniciarLoadFyle(){
+                $('.custom-upload input[type=file]').change(function(){
+                $(this).next().find('input').val($(this).val());
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+                });
+            }
+            //$('.clockpicker').clockpicker();
+        </script>
+        <style>
+            .switch {
+              position: relative;
+              display: inline-block;
+              width: 60px;
+              height: 34px;
+            }
+
+            .switch input { 
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+
+            .slider {
+              position: absolute;
+              cursor: pointer;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: #ccc;
+              -webkit-transition: .4s;
+              transition: .4s;
+            }
+
+            .slider:before {
+              position: absolute;
+              content: "";
+              height: 26px;
+              width: 26px;
+              left: 4px;
+              bottom: 4px;
+              background-color: white;
+              -webkit-transition: .4s;
+              transition: .4s;
+            }
+
+            input:checked + .slider {
+              background-color: #2196F3;
+            }
+
+            input:focus + .slider {
+              box-shadow: 0 0 1px #2196F3;
+            }
+
+            input:checked + .slider:before {
+              -webkit-transform: translateX(26px);
+              -ms-transform: translateX(26px);
+              transform: translateX(26px);
+            }
+
+            /* Rounded sliders */
+            .slider.round {
+              border-radius: 34px;
+            }
+
+            .slider.round:before {
+              border-radius: 50%;
+            }
+        </style>
+
+    </head>
+    <div class="col-md-12" ng-controller="pagosAEController" ng-init="inicioTiendaVirtual();">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+            <h4>Datos complementarios de la Publicación de Página</h4>
+        </div>
+        <div class="ibox-content">
+          <form name="signupForm"  class="form-horizontal" role="form" novalidate>                   
+            <div class="row" >
+              <div class="col-md-6">
+                  <div class="form-group" >
+                      <label for="url" >Tipo de Pago:</label>
+                      <div class="controls">
+                          <select id="f01_tipoPago" class="form-control" ng-model="datos.f01_tipoPago" name="f01_tipoPago" ng-disabled="desabilitado" required>
+                              <option value="">--Seleccionar--</option>
+                              <option value="1"> BCP </option>
+                              <option value="2"> RED ENLACE </option>
+                          </select>
+                      </div>
+                  </div>
+              </div>
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Número de cuenta:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_numeroCuenta" id="f01_numeroCuenta" name="f01_numeroCuenta" class="form-control" ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Usuario:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_usuario" id="f01_usuario" name="f01_usuario" class="form-control" ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                </div>
+              
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Contraseña:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_clave" id="f01_clave" name="f01_clave" class="form-control" ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                </div>
+
+
+
+              
+              
+              
+
+
+
+            </div>
+            <div class="col-md-12" align="right">
+                <button ng-show="nuevo" type="button" class="btn btn-default ng-binding" ng-click="registrarDatosAE(datos)">Registrar</button>
+                <button ng-show="update" type="button" class="btn btn-default ng-binding" ng-click="actualizarDatosAE(datos)">Modificar</button>                
+                <button type="button" class="btn btn-default ng-binding" ng-click="cerrarDatosAE(datos)" >Cerrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</html>

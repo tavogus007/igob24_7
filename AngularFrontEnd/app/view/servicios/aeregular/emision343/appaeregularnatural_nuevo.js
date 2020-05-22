@@ -109,7 +109,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         }catch (error){
             console.log("error");
         }
-    };  
+    };
 
     $scope.limpiarmultiple = function(){
         $scope.licdes=[];
@@ -154,7 +154,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         }
     }
 
-    
+
     $scope.LicenciaXCategoriaA = function(idDesarrollada, superficie){
         $.blockUI();
         //$scope.datos.rdTipoTramite = 'NUEVO';
@@ -263,8 +263,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                         objMulti.idTipoLicencia = dataResp[i].idTipoLicencia;
                         objMulti.proceso = dataResp[i].proceso;
                         datosMulti[i] = objMulti;
-                    };                        
-                };                        
+                    };
+                };
                 $scope.datosActividadMul = datosMulti;
                 //$scope.$apply();
                 $.unblockUI();
@@ -459,7 +459,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     $scope.verificarSuperficie = function(superficie){
         $scope.validarRequisitosForm();
     }
-    
+
     $scope.calcularCapacidad = function(superficie){
         if(superficie){
             superficie = superficie.replace(/[^,.0-9]+/g, "");
@@ -535,7 +535,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.datos.f01_categoria_agrupada_dem = e.options[e.selectedIndex].text;
         $scope.datos.f01_categoria_agrupada_descrip = e.options[e.selectedIndex].text;
     }
-    
+
     $scope.GetValueCategoria = function () {
         $scope.limpiaractdes();
         var e = document.getElementById('f01_categoria_descrip');
@@ -619,17 +619,17 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 if(j+1 == datoslicm.length){
                     if(datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == '18' || datoslicm[j].f01_tipo_licmid == 18){
                         datosaux = datosaux + datoslicm[j].f01_cat_agrupadamdescrip;
-                    } 
+                    }
                     else{
                         datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip;
-                    }   
+                    }
                 }else{
                     if(datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == '18' || datoslicm[j].f01_tipo_licmid == 18){
                         datosaux = datosaux + datoslicm[j].f01_cat_agrupadamdescrip +" - ";
                     }
                     else{
                         datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip +" - ";
-                    }   
+                    }
                 }
             }
             var swmul = 0;
@@ -746,9 +746,9 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             }
         });
     };
- 
 
-   /*$scope.distritoZonas = function(idMacroJ){        
+
+   /*$scope.distritoZonas = function(idMacroJ){
         var idMacro = "";
         if($scope.aMacrodistritos){
             angular.forEach($scope.aMacrodistritos, function(value, key) {
@@ -756,7 +756,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     idMacro = value.mcdstt_id;
                 }
             });
-        }        
+        }
         $scope.idMacro = idMacro;
         $scope.datos.f01_macro_act    =   idMacro;
         if($scope.datos.g_origen != 'POS/EMPR2017'){
@@ -829,7 +829,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             });
         }catch(error){
            console.log("error en zonas");
-        }      
+        }
     };
 
     $scope.vias= function(zona,tipo){
@@ -853,7 +853,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             })
         }catch(error){
             console.log("error en via");
-        }        
+        }
     };*/
 
     var clsValidarBtnEnviar = $rootScope.$on('validarBtnEnviar', function(event, data){
@@ -884,8 +884,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         if($scope.sTipoPersona =="NATURAL" || $scope.sTipoPersona =="N"){
             if(sessionService.get('ESTADO') == 'NO'){
                 $scope.botones = "mostrar";
-                $scope.divNatural = "mostrar";               
-            } 
+                $scope.divNatural = "mostrar";
+            }
             if(sessionService.get('ESTADO') == 'SI'){
                 $scope.botones = "null";
             }
@@ -930,10 +930,10 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.mostrarMsgActividadTrue  = false;
         $scope.mostrarMsgActividadFalse = false;
         if(data.length > 0){
-            if(data[0].venviado != 'SI'){                
+            if(data[0].venviado != 'SI'){
                 if(data[0].datos.INT_FORM_ALMACENADO != 'G'){
                     $scope.validarActividadEconomica();
-                }else{                    
+                }else{
                     if(data[0].datos.rdTipoTramite == 'NUEVO'){
                         $scope.mostrarMsgNuevaActividad = true;
                         $scope.formDatosAE              = false;
@@ -945,7 +945,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             }
         }
     });
-    //INICIAR VARIABLES EN EL FORMULARIO 
+    //INICIAR VARIABLES EN EL FORMULARIO
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
         $scope.catactividadDesarrollada();
         $scope.macrodistritos();
@@ -981,8 +981,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             }
         };
         $scope.iniciarRequsitosDoc(data);
-        
-        
+
+
 
         switch (data.chkzonasegura) {
             case 'ZONASEGURA':
@@ -1075,7 +1075,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         }
         /*REQUISITOS2018*/
         $scope.open_mapa_ae();
-       
+
     });//INICIAR CAMPOS INTERNET
 
     //fecha del servidor
@@ -1164,7 +1164,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             $scope.IsVisible = false;
         };
     }
-   
+
    /*CIUDADANO - TIPO INICIO DE TRAMITE NUEVO - RENOVACION*/
    $scope.cambioToggleForm = function () {
         //$scope.validarRequisitosForm();
@@ -1264,7 +1264,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 $scope.desabilitado     =   false;
                 $scope.botones          =   "mostrar";
             }
-        }    
+        }
     });
 
     $scope.$on('$destroy', function() {
@@ -1285,9 +1285,9 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     $scope.trmUsuario      =   [];
 
     /*SELECCIONAR ACTIVIDAD ECONOMICA*/
-    $scope.idActividiadEconomicaActual  =   "";    
-    $scope.nroOrdenActividiadEconomicaActual  =   "";    
-    $scope.idContribuyenteAEActual  =   ""; 
+    $scope.idActividiadEconomicaActual  =   "";
+    $scope.nroOrdenActividiadEconomicaActual  =   "";
+    $scope.idContribuyenteAEActual  =   "";
 
     $scope.validarActividadEconomica  =   function(){
         //$.blockUI();
@@ -1318,7 +1318,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.datos.f01_zona_act_descrip = zonaDes;
         $scope.desabilitadoNo=true;
         //$scope.datos.f01_nom_via_prop = "";
-        //$scope.datos.f01_tip_via_prop = "";      
+        //$scope.datos.f01_tip_via_prop = "";
     };*/
 
     $scope.mostrarCamposJuegos = function(){
@@ -1360,7 +1360,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     $scope.adicionarArrayDeRequisitos = function(aArch,idFile){
         var descDoc = "";
         var fechaNueva = "";
-        var fechaserver = new fechaHoraServer(); 
+        var fechaserver = new fechaHoraServer();
         fechaserver.fechahora(function(resp){
             var sfecha = JSON.parse(resp);
             var fechaServ = (sfecha.success.fecha).split(' ');
@@ -1386,8 +1386,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     var tipoFile = imagenFile[1];
                     nombreFileN = descDoc + '_'+fechaNueva+'.'+tipoFile;
                 });
-            } 
-        }  
+            }
+        }
         var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
         var adatafile   =   {};
         var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() + '" }';
@@ -1427,7 +1427,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     $scope.almacenarRequisitos = function(aArchivos,idFiles){
         var descDoc = "";
         var fechaNueva = "";
-        var fechaserver = new fechaHoraServer(); 
+        var fechaserver = new fechaHoraServer();
         fechaserver.fechahora(function(resp){
             var sfecha = JSON.parse(resp);
             var fechaServ = (sfecha.success.fecha).split(' ');
@@ -1471,9 +1471,9 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                         else{
                             $.unblockUI();
                             swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
-                        };                        
-                    };   
-                }  
+                        };
+                    };
+                }
                 else{
                     if (archivo.size <= 500000) {
                         if (imagenNueva[1] == 'png' || imagenNueva[1] == 'jpg' || imagenNueva[1] == 'jpeg' || imagenNueva[1] == 'bmp' || imagenNueva[1] == 'gif' || imagenNueva[1] == 'pdf' || imagenNueva[1] == 'docx' || imagenNueva[1] == 'docxlm') {
@@ -1507,7 +1507,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             if(value.idnro == 1){
                 document.getElementById('txt_f01_upload'+value.resid).value = 'Cedula de identidad (Anverso).jpg';
                 var sDirTramite = sessionService.get('IDTRAMITE');
-                var scianverso  = $scope.datos.FILE_FOTOCOPIA_CI;          
+                var scianverso  = $scope.datos.FILE_FOTOCOPIA_CI;
                 if(scianverso == '' || scianverso == 'undefined' || scianverso == undefined){
                     document.getElementById('txt_f01_upload'+value.resid).value = 'Edite su informacion de su cuenta, para subir este requisito';
                 }
@@ -1715,7 +1715,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             }
             //////////////////////////////////////////////////////////
         });
-        
+
     }
 
     $scope.iniciarRequsitosDoc = function(data){
@@ -1884,7 +1884,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
 
       var view = new ol.View({
                               //projection: projection19,
-                              center: ol.proj.fromLonLat([ -68.122455, -16.498960]), 
+                              center: ol.proj.fromLonLat([ -68.122455, -16.498960]),
                               zoom: 16
                               //minZoom: 2,
                               //maxZoom: 20
@@ -1918,7 +1918,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
       var geo_fin = ']}';
 
       var coord ='';
-      //$scope.popup = ''; 
+      //$scope.popup = '';
 
       var popup = document.getElementById('popup');
       var popup_closer = document.getElementById('popup-closer');
@@ -2001,7 +2001,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 crossOriginKeyword: 'anonymous'
             })
       });
-      
+
       var distritos_m_2017 = new ol.layer.Tile({
                               title: 'Distritos Municipales 2017',
                               visible: false,
@@ -2013,7 +2013,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                                                               crossOrigin: '1'
                                                             })
       });
-      
+
       var restitucion_2006 = new ol.layer.Tile({
                               title: 'Restitucion 2006',
                               visible: false,
@@ -2025,7 +2025,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                                                               crossOrigin: '1'
                                                             })
       });
-      
+
       var planimetria = new ol.layer.Tile({
                               title: 'Planimetria',
                               visible: false,
@@ -2069,7 +2069,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
           map.removeLayer(vectorLayerZonas);
         }
         else
-        {  
+        {
           if(tipo == 'lugares')
           {
             map.removeLayer(vectorLayerZonas);
@@ -2104,7 +2104,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
           {
             var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
           }
-        }    
+        }
       }
     ///////////////////////////////////////////////////////////////////////////////
     var latitud = 0;
@@ -2280,7 +2280,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.id = $scope.id - 1;
     }
 
-    $scope.eliminarPublicidad= function(data){     
+    $scope.eliminarPublicidad= function(data){
         swal({
                 title: 'Eliminar',
                 text: 'Esta seguro de Eliminar la Publicidad?',
@@ -2289,10 +2289,10 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 confirmButtonColor: '#DD6B55',
                 confirmButtonText: 'SI',
                 closeOnConfirm: true
-            }, function() {                                
+            }, function() {
                 $scope.publicid.splice($scope.publicid.indexOf(data), 1);
                 $scope.eliminarPublicidadGrilla(data);
-        });      
+        });
     }
 
     $scope.eliminarPublicidadGrilla = function(fila){
@@ -2546,7 +2546,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         {"p_idtipoletrero" : "41", "p_descripcion": "MICROPERFORADA - AUTOADHESIVA"},
         {"p_idtipoletrero" : "40", "p_descripcion": "PINTADA"}];
     };
-    
+
     $scope.ltCaracteristica = function(idlee){
         $scope.lCaracteristica = {};
         var idcarac = "";
@@ -2554,11 +2554,11 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         if($scope.TipoLetrero){
             angular.forEach($scope.TipoLetrero, function(value, key) {
                 if(value.p_descripcion == idlee){
-                    idcarac = value.p_idtipoletrero;                    
+                    idcarac = value.p_idtipoletrero;
                 }
             });
-        }        
-        $scope.publi.idcarac=idcarac;        
+        }
+        $scope.publi.idcarac=idcarac;
         if(idlee == "ADOSADA SOBRESALIENTE" || idlee == "ADOSADA" ){
          $scope.lCaracteristica = [
         {"p_idcaracteristica" : "1", "p_caracteristica": "Simple"},
@@ -2575,7 +2575,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         {"p_idcaracteristica" : "1", "p_caracteristica": "Simple"}
         ];}
     };
-    
+
     $scope.addUser = function(user){
         if($scope.carass =='' || $scope.carass == null || $scope.carass =="undefined" ){
             $scope.carass = [];
@@ -2606,7 +2606,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.publi.caras = $scope.carass;
     };
     $scope.toggleMin = function() {
-        $scope.minDate = new Date("2011-09-24".replace(/-/g, '\/')); 
+        $scope.minDate = new Date("2011-09-24".replace(/-/g, '\/'));
     };
 
     $scope.toggleMin();
@@ -2667,7 +2667,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 if (response.length > 0) {
                     $scope.datosNombVia = response;
                     $scope.nombreViaCmb = true;
-                    if (dato.f01_factor == "VA") { 
+                    if (dato.f01_factor == "VA") {
                         $scope.nombreViaTxt = true;
                     } else {
                         $scope.nombreViaTxt = false;
@@ -2675,13 +2675,13 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 } else{
                     $scope.nombreViaCmb = true;
                     $scope.nombreViaTxt = false;
-                }; 
+                };
             });
         }catch (error){
             console.log('datos error via:', error);
-        }        
+        }
     };*/
-    
+
     $scope.cargarNombViaTxt = function(valor) {
         if (valor == "NINGUNO"){
             $scope.nombreViaTxt = true;
@@ -2852,7 +2852,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                                                 '<div class="col-md-6"><label>Otorgado: </label></div>'+
                                                 '<div class="col-md-6">'+ datos.f01_otorgado_ft + '</div>'+
                                             '</div>';
-                                            }                                            
+                                            }
                                             divfoodTruck = divfoodTruck + '<div class="col-md-6">'+
                                                 '<div class="col-md-6"><label>Clase: </label></div>'+
                                                 '<div class="col-md-6">'+ datos.f01_clase_ft + '</div>'+
@@ -3169,7 +3169,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             }
         }
     }
-    
+
     /*enviarFormProcesos*/
     $scope.validarFormProcesos = function(datosForm){
         var idTramite = sessionService.get('IDTRAMITE');
@@ -3179,7 +3179,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         try {
             var idTramite = sessionService.get('IDTRAMITE');
             nroTramiteEnviado = sessionService.get('NROTRAMITE');
-            idUsuario = 4; 
+            idUsuario = 4;
             var tramiteIgob = new datosFormularios();
             tramiteIgob.frm_idTramite = idTramite;
             tramiteIgob.frm_tra_enviado = 'SI';
@@ -3193,7 +3193,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         } catch (error){
             console.log("Error : ", error);
             swal('', 'Registro no modificado', 'error');
-            $.unblockUI(); 
+            $.unblockUI();
         }
     };
     /*CIUDADANO - ENVIAR FORMULARIO NATURAL*/
@@ -3215,6 +3215,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             }, 1000);
         });
     };
+    
 
     $scope.enviarFormProcesosLinea = function(paramForm){
         $scope.ultimoArrayAdjunto();
@@ -3234,7 +3235,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['f01_cel_prop']       = paramForm.f01_cel_prop;
             datosNeXO['f01_telef_prop']     = paramForm.f01_telef_prop;
             datosNeXO['INT_FEC_SOLICITUD']  = paramForm.INT_FEC_SOLICITUD;
-            datosNeXO['CI_BIGDATA']         = paramForm.CI_BIGDATA;
+            datosNeXO['CI_BIGDATA']         =   sessionService.get('IDCIUDADANO');
             datosNeXO['f01_pri_nom_prop']   = paramForm.f01_pri_nom_prop;
             datosNeXO['f01_ape_pat_prop']   = paramForm.f01_ape_pat_prop;
             datosNeXO['f01_ape_mat_prop']   = paramForm.f01_ape_mat_prop;
@@ -3288,11 +3289,11 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['INT_AC_MACRO']       = paramForm.INT_AC_MACRO;
             datosNeXO['INT_AC_MACRO_ID']            = parseInt(paramForm.INT_AC_MACRO_ID);
             datosNeXO['f01_tipo_lic_descrip']       =  paramForm.f01_tipo_lic_descrip;
-            datosNeXO['f01_requisitos_tecnicos']    = $scope.datos.f01_requisitos_tecnicos;            
+            datosNeXO['f01_requisitos_tecnicos']    = $scope.datos.f01_requisitos_tecnicos;
             //PARA LA 70
             datosNeXO['INT_AC_DISTRITO']            =   paramForm.INT_AC_DISTRITO;
             datosNeXO['INT_AC_ID_ZONA']             =   paramForm.INT_AC_ID_ZONA;
-            datosNeXO['INT_ID_ZONA']                =   paramForm.INT_ID_ZONA;           
+            datosNeXO['INT_ID_ZONA']                =   paramForm.INT_ID_ZONA;
             datosNeXO['f01_macro_act_descrip']      =   paramForm.f01_macro_act_descrip;
             datosNeXO['f01_macro_act']              =   parseInt(paramForm.f01_macro_act);
             datosNeXO['f01_zona_act_descrip']       =   paramForm.f01_zona_act_descrip;
@@ -3383,13 +3384,13 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['f01_actividad_desarrollada']= paramForm.f01_categoria_descrip2;
             datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos;
             if(paramForm.g_origen_p){
-               datosNeXO['g_origen_p'] = paramForm.g_origen_p;  
+               datosNeXO['g_origen_p'] = paramForm.g_origen_p;
             }
             else{
                 datosNeXO['g_origen_p']="";
             }
-            datosNeXO['f01_tip_act']                    =   'SU'; 
-            datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;           
+            datosNeXO['f01_tip_act']                    =   'SU';
+            datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;
             /*CAMPOS GENERICOS NATURAL Y JURIDICO*/ //-->EL CAMPO NO SE ESTA GENERANDO CORRECTAMENTE
             if(datosNeXO['f01_requisitos_tecnicos'] == null){
                 datosNeXO['f01_requisitos_tecnicos'] =[];
@@ -3515,7 +3516,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 });
            /* }else{
                 swal('', "Complete sus Datos de Direccion", 'warning');
-            }  */          
+            }  */
         }else{
             swal('', "Datos obligatorios, verifique los datos del formulario E", 'warning');
         }
@@ -3527,5 +3528,5 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $('.modal-backdrop').remove();
     }catch (e) {
         console.log("error", e);
-    }   
+    }
 };

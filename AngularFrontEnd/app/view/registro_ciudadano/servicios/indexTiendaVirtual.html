@@ -21,36 +21,6 @@
                       </div>
                     </form>    
                     <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadECONÓMICA">
-                      <!--tr style="cursor: pointer;">
-                          <td data-title="'No'" ng-click="selActividadEconomica(tramite)">100</td>
-                          <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">125445</td>
-                          <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">ZONA SUR</td>
-                          <td data-title="'Descripcion'" ng-click="selActividadEconomica(tramite)">ALIMENTOS Y BEBIDAS CATEGORIA A</td>
-                          <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">SIN DEUDA </td>
-                          <td data-title="'Tienda Virtual'" >
-                            <a class="btn btn-success ng-binding" tooltip="Completar Info" ng-click="addDatosAE(tramite);">
-                              <i class="fa fa-desktop" aria-hidden="true"></i>
-                            </a>
-                          </td>
-                          <td data-title="'Productos'" >
-                            <a class="btn btn-success ng-binding" tooltip="Productos" ng-click="addProductoAE(tramite);">
-                              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                            </a>
-                          </td>
-                          <td data-title="'Pago en Linea'" >
-                            <a class="btn btn-success ng-binding" tooltip="Pago en Línea" ng-click="addPagosAE(tramite);">
-                              <i class="fa fa-credit-card" aria-hidden="true"></i>
-                            </a>
-                          </td>
-
-                          <td data-title="'Publicar Página'" >
-                            <a class="btn btn-success ng-binding" tooltip="Publicar Página" ng-click="confPublicar(tramite);">
-                              <i class="fa fa-cogs" aria-hidden="true"></i>
-                            </a>
-                          </td>
-
-
-                      </tr-->
                       <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
                           <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
                           <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
@@ -62,7 +32,6 @@
                               <i class="fa fa-desktop" aria-hidden="true"></i>
                             </a>
                           </td>
-                          
                           <td data-title="'Productos'" >
                             <a class="btn btn-success ng-binding" tooltip="Productos" ng-click="addProductoAE(tramite);">
                               <i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -73,18 +42,11 @@
                               <i class="fa fa-cogs" aria-hidden="true"></i>
                             </a>
                           </td>
-
-                          
-
-                          <td data-title="'Pago en Linea'" >
+                          <td data-title="'Pago en Línea'" >
                             <a class="btn btn-success ng-binding" tooltip="Pago en Línea" ng-click="addPagosAE(tramite);">
                               <i class="fa fa-credit-card" aria-hidden="true"></i>
                             </a>
                           </td>
-
-                          
-
-
                       </tr>
                     </table>
                  </div>

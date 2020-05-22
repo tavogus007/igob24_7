@@ -9,6 +9,21 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
   $rootScope.archivosProducto = new Array();
 
 
+  var clsIniciarCamposInternet = $rootScope.$on('inicializarProdutos', function(event, data){
+    $scope.recuperarSerializarProd($rootScope.datosTiendaVirtual);
+  });
+  $scope.recuperarSerializarProd = function(data){
+    console.log(data);
+  }
+  $scope.inicioProductos = function () {
+      $scope.recuperarSerializarProd($rootScope.datosTiendaVirtual);
+      $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDAE'));
+      $scope.update = false;
+      $scope.nuevo = false;
+      $scope.mostrarTxt = false; 
+  };
+
+
   $scope.cambiarFile = function(obj, valor){
 
       $scope.datos[obj.name] = valor;
@@ -277,12 +292,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
   $scope.refrescar = function(){
       $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDAE'));
   };
-  $scope.inicioDocumentosArchivados = function () {
-      $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDAE'));
-      $scope.update = false;
-      $scope.nuevo = false;
-      $scope.mostrarTxt = false; 
-  };
+
   $scope.confirmarEliminar = function(datos){
     swal({
             title: "Estimado(a) Ciudadano(a)",

@@ -145,9 +145,9 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
               r = JSON.parse(res);
               results = r.success;
               $rootScope.datosTiendaVirtual = results;
-              console.log(results.length);
               if (results.length == 0){
                 console.log(results);
+                sessionService.destroy('IDTV');
                 $rootScope.nuevo = 'mostrar';
                 $rootScope.update = null;
               } else {
@@ -162,17 +162,11 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         }
     };
 
-    
-   
-
-
-
-
     $scope.addDatosAE = function (tramite) {
         $scope.template =   "";
-        $scope.seleccionarDatosRender(tramite);  
+        //$scope.seleccionarDatosRender(tramite);  
+        $scope.template         =   $scope.templates[0];
         sessionService.set('IDAE', tramite.IdActividad);
-        console.log(tramite);
         $scope.obtTiendaVirtual();
         $rootScope.$broadcast('inicializarCampos', $scope.datos);
     }
@@ -184,37 +178,69 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     }
     $scope.addProductoAE = function (tramite) {
         $scope.template =   "";
-        $scope.seleccionarProductoRender(tramite);   
         sessionService.set('IDAE', tramite.IdActividad);
-        console.log(tramite);  
+        $scope.obtTiendaVirtual();
+        $rootScope.$broadcast('inicializarProdutos', $scope.datos);
+        try{
+            tvid = $rootScope.datosTiendaVirtual[0].idtv;
+            sessionService.set('IDTIENDAVIRTUAL', tvid);
+            $scope.template         =   $scope.templates[2];
+        } catch(error){
+            swal('', "Debe habilitar la tienda virtual, antes de cargar sus productos.", 'warning');
+            sessionService.destroy('IDTIENDAVIRTUAL');
+            $scope.template =   "";
+        }
     }
     $scope.confPublicar = function (tramite) {
         $scope.template =   "";
-        $scope.seleccionarPaginaRender(tramite);   
+        console.log(tramite);
         sessionService.set('IDAE', tramite.IdActividad);
-        console.log(tramite); 
+        $scope.obtTiendaVirtual();
+        $rootScope.$broadcast('inicializarPagina', $scope.datos);
+        try{
+            tvid = $rootScope.datosTiendaVirtual[0].idtv;
+            sessionService.set('IDTIENDAVIRTUAL', tvid);
+            $scope.template         =   $scope.templates[3];
+        } catch(error){
+            swal('', "Debe habilitar la tienda virtual, antes de cargar sus productos.", 'warning');
+            sessionService.destroy('IDTIENDAVIRTUAL');
+            $scope.template =   "";
+        }
     }
     
-    $scope.seleccionarDatosRender = function (tramite) {
-        console.log(tramite);
-        //sessionService.set('IDTIENDAVIRTUAL', tramite.vidae);
-        $scope.template         =   $scope.templates[0];
-    };
     $scope.seleccionarPagoRender = function (tramite) {
         console.log(tramite);
         sessionService.set('IDTIENDAVIRTUAL', 1);
         $scope.template         =   $scope.templates[1];
     };
+    /*
+    $scope.seleccionarDatosRender = function (tramite) {
+        console.log(tramite);
+        //sessionService.set('IDTIENDAVIRTUAL', tramite.vidae);
+        $scope.template         =   $scope.templates[0];
+    };
     $scope.seleccionarProductoRender = function (tramite) {
         console.log(tramite);
         sessionService.set('IDTIENDAVIRTUAL', 1);
+
         $scope.template         =   $scope.templates[2];
     };
     $scope.seleccionarPaginaRender = function (tramite) {
         console.log(tramite);
-        sessionService.set('IDTIENDAVIRTUAL', 1);
-        $scope.template         =   $scope.templates[3];
+        sessionService.set('IDAE', tramite.IdActividad);
+        $scope.obtTiendaVirtual();
+        $rootScope.$broadcast('inicializarPagina', $scope.datos);
+        try{
+            tvid = $rootScope.datosTiendaVirtual[0].idtv;
+            sessionService.set('IDTIENDAVIRTUAL', tvid);
+            $scope.template         =   $scope.templates[3];
+        } catch(error){
+            swal('', "Debe habilitar la tienda virtual, antes de cargar sus productos.", 'warning');
+            sessionService.destroy('IDTIENDAVIRTUAL');
+            $scope.template =   "";
+        }
     };
+    */
 
     
     $scope.recuperarDatosRegistro = function(){

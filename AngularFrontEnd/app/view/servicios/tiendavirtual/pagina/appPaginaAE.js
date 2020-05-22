@@ -30,52 +30,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
 
     }
 
-    $scope.registrarProducto = function(data){
-    $scope.mostrarTxt = false; 
-    console.log(data);
-      a = 0;
-      angular.forEach($rootScope.archivosProducto, function(archivo, key) {
-        console.log(archivo);
-        archivoP = JSON.parse(archivo);
-        console.log(key);
-        if (a==0)
-          f0 = archivoP.url;
-        if (a==1)
-          f1 = archivoP.url;
-        if (a==2)
-          f2 = archivoP.url;
-        a = a + 1;
-      });
-      var datosProducto = new dataProducto();
-      datosProducto.tramite = sessionService.get("IDTRAMITE");
-      datosProducto.ae = sessionService.get("IDAE");
-      datosProducto.categoria = data.f01_categoria;
-      datosProducto.item = data.f01_item;
-      datosProducto.nombre = data.f01_producto;
-      datosProducto.descripcion = data.f01_descripcion;
-      datosProducto.precio = data.f01_precio;
-      datosProducto.telefono_referencia =  sessionService.get("CELULARAE");
-      datosProducto.imagen_p = f0;
-      datosProducto.imagen_a1 = f1;
-      datosProducto.imagen_a2 = f2;
-      datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
-      datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
-      datosProducto.crearProducto(function(response){
-        console.log(response);
-        results = JSON.parse(response);
-        results = results.success;
-        if(results.length > 0){
-            $.unblockUI();
-            $scope.refrescar();
-            swal('', "Producto Registrado", 'success');
-            $scope.limpiar();
-        } else {
-            $.unblockUI();
-            swal('', "Producto no registrado", 'error');
-        }
-      });
-      
-    }
+   
 
    
 

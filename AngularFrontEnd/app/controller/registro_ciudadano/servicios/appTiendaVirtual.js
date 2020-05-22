@@ -202,7 +202,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             sessionService.set('IDTIENDAVIRTUAL', tvid);
             $scope.template         =   $scope.templates[3];
         } catch(error){
-            swal('', "Debe habilitar la tienda virtual, antes de cargar sus productos.", 'warning');
+            swal('', "Debe habilitar la tienda virtual, antes de habilitar su página Web.", 'warning');
             sessionService.destroy('IDTIENDAVIRTUAL');
             $scope.template =   "";
         }
@@ -1070,7 +1070,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         };
     };
 
-     $scope.guardarDatos = function(obj){
+    $scope.guardarDatos = function(obj){
         var fechactual          = obtFechaActual.obtenerFechaActual();
         obj.INT_FORM_ALMACENADO = 'G';
         obj.f01_tipo_per = sessionService.get('TIPO_PERSONA');

@@ -17,15 +17,15 @@
                  <div class="col-sm-12 b-r">
                     <form class="form-horizontal ng-pristine ng-valid">
                       <div class="form-group">    
-                          <label class="col-lg-3 control-label">SELECCIONE LA ACTIVIDAD ECONÓMICA PARA LA SOLICITUD DE HABILITACION:</label>
+                          <label class="col-lg-3 control-label">SELECCIONE LA ACTIVIDAD ECONÓMICA PARA LA HABILITACIÓN:</label>
                       </div>
                     </form>    
                     <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadECONÓMICA">
                       <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
                           <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
                           <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
-                          <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
-                          <td data-title="'Descripcion'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
+                          <td data-title="'Dirección'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
+                          <td data-title="'Descripción'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
                           <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
                           <td data-title="'Tienda Virtual'" >
                             <a class="btn btn-success ng-binding" tooltip="Completar Info" ng-click="addDatosAE(tramite);">

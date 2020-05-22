@@ -14,10 +14,11 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
   });
   $scope.recuperarSerializarProd = function(data){
     console.log(data);
+    $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
+    alert(sessionService.get('IDTV'));
   }
   $scope.inicioProductos = function () {
       $scope.recuperarSerializarProd($rootScope.datosTiendaVirtual);
-      $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDAE'));
       $scope.update = false;
       $scope.nuevo = false;
       $scope.mostrarTxt = false; 
@@ -248,16 +249,16 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         try{
 
           var datosProducto = new dataProducto();
-          /*datosProducto.oid = usuario;
-          datosProducto.ae =  id_ae;*/
-          datosProducto.idtv = 1;
+          /*datosProducto.oid = usuario;*/
+          datosProducto.idtv = id_ae;
 
           datosProducto.listarProductoTV(function(response){
             resultado = JSON.parse(response);
             $scope.obtDatos = resultado.success;
             if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
                 $scope.tablaDocumentos = null;
-                alertify.warning('No existen datos');  
+                alertify.warning('No existen datos'); 
+                $scope.$apply(); 
             } else {
                 var data = $scope.obtDatos;
                 $scope.tablaDocumentos.reload();

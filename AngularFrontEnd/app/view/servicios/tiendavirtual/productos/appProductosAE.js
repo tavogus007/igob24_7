@@ -13,9 +13,9 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     $scope.recuperarSerializarProd($rootScope.datosTiendaVirtual);
   });
   $scope.recuperarSerializarProd = function(data){
-    console.log(data);
+    //console.log(data);
     $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
-    alert(sessionService.get('IDTV'));
+    //alert(sessionService.get('IDTV'));
   }
   $scope.inicioProductos = function () {
       $scope.recuperarSerializarProd($rootScope.datosTiendaVirtual);

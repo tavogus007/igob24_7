@@ -13,9 +13,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     $scope.recuperarSerializarProd($rootScope.datosTiendaVirtual);
   });
   $scope.recuperarSerializarProd = function(data){
-    //console.log(data);
     $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
-    //alert(sessionService.get('IDTV'));
   }
   $scope.inicioProductos = function () {
       $scope.recuperarSerializarProd($rootScope.datosTiendaVirtual);
@@ -258,7 +256,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
             if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
                 $scope.tablaDocumentos = null;
                 alertify.warning('No existen datos'); 
-                $scope.$apply(); 
+                //$scope.$apply(); 
             } else {
                 var data = $scope.obtDatos;
                 $scope.tablaDocumentos.reload();
@@ -291,7 +289,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     });
 
   $scope.refrescar = function(){
-      $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDAE'));
+      $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
   };
 
   $scope.confirmarEliminar = function(datos){

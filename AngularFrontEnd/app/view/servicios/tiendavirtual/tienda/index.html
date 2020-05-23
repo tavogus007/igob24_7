@@ -149,39 +149,159 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+            </div>
+
+            <div class="row" >
+                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                    <h4>Ingrese los numeros telefónicos de contacto</h4>
+                </div>
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-5">
                     <div class="form-group" >
-                        <label for="url" >Contactos:</label>
+                        <label for="url" >Tipo de Contacto:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_contactosAE" id="f01_contactosAE" name="f01_contactosAE" class="form-control" ng-disabled="desabilitado"/>
+                            <select id="f01_contacto1" class="form-control" ng-model="datos.f01_contacto1" name="f01_contacto1" ng-disabled="desabilitado" required>
+                                <option value="">--Seleccionar--</option>
+                                <option value="TELÉFONO"> TELÉFONO </option>
+                                <option value="CELULAR"> CELULAR </option>
+                            </select>
+                            <br>
+                            <select id="f01_contacto2" class="form-control" ng-model="datos.f01_contacto2" name="f01_contacto2" ng-disabled="desabilitado" required>
+                                <option value="">--Seleccionar--</option>
+                                <option value="TELÉFONO"> TELÉFONO </option>
+                                <option value="CELULAR"> CELULAR </option>
+                            </select>
+                            <br>
+                            <select id="f01_contacto3" class="form-control" ng-model="datos.f01_contacto3" name="f01_contacto3" ng-disabled="desabilitado" required>
+                                <option value="">--Seleccionar--</option>
+                                <option value="TELÉFONO"> TELÉFONO </option>
+                                <option value="CELULAR"> CELULAR </option>
+                            </select>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="form-group" >
-                        <label for="url" >Redes Sociales:</label>
+                        <label for="url" >Número de contacto:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_redessocialesAE" id="f01_redessocialesAE" name="f01_redessocialesAE" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="desabilitado"/>
+                            <br>
+                            <input ng-model="datos.f01_contacto2_nro" id="f01_contacto2_nro" name="f01_contacto2_nro" class="form-control" ng-disabled="desabilitado"/>
+                            <br>
+                            <input ng-model="datos.f01_contacto3_nro" id="f01_contacto3_nro" name="f01_contacto3_nro" class="form-control" ng-disabled="desabilitado"/>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-1">
+                </div>
+            </div>
+
+            <div class="row" >
+                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                    <h4>Ingrese sus redes sociales</h4>
+                </div>
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-5">
                     <div class="form-group" >
-                        <label for="url" >Ofertas:</label>
+                        <label for="url" >Red Social:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_ofertasAE" id="f01_ofertasAE" name="f01_ofertasAE" class="form-control" ng-disabled="desabilitado"/>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE1" name="f01_redessocialesAE1" ng-model="datos.f01_redessocialesAE1">
+                                <label class="custom-control-label" for="defaultUnchecked">Facebook</label>
+                            </div>
+                            <br>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE2" name="f01_redessocialesAE2" ng-model="datos.f01_redessocialesAE2">
+                                <label class="custom-control-label" for="defaultUnchecked">Twitter</label>
+                            </div>
+                            <br>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE3" name="f01_redessocialesAE3" ng-model="datos.f01_redessocialesAE3">
+                                <label class="custom-control-label" for="defaultUnchecked">Instagram</label>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-5">
+                    <div class="form-group" >
+                        <label for="url" >URL de la Red Social:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-disabled="desabilitado"/>
+                            <br>
+                            <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-disabled="desabilitado"/>
+                            <br>
+                            <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+            <div class="row" >
+                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                    <h4>Ofertas de su Actividad Económica</h4>
+                </div>
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group" >
+                        <label for="url" >Tipo de Oferta:</label>
+                        <div class="controls">
+                            <select id="f01_ofertasAE1" class="form-control" ng-model="datos.f01_ofertasAE1" name="f01_ofertasAE1" ng-disabled="desabilitado" required>
+                                <option value="">--Seleccionar--</option>
+                                <option value="DESCUENTO"> DESCUENTO </option>
+                                <option value="OFERTA"> OFERTA </option>
+                            </select>
+                            <br>
+                            <select id="f01_ofertasAE2" class="form-control" ng-model="datos.f01_ofertasAE2" name="f01_ofertasAE2" ng-disabled="desabilitado" required>
+                                <option value="">--Seleccionar--</option>
+                                <option value="DESCUENTO"> DESCUENTO </option>
+                                <option value="OFERTA"> OFERTA </option>
+                            </select>
+                            <br>
+                            <select id="f01_ofertasAE3" class="form-control" ng-model="datos.f01_ofertasAE3" name="f01_ofertasAE3" ng-disabled="desabilitado" required>
+                                <option value="">--Seleccionar--</option>
+                                <option value="DESCUENTO"> DESCUENTO </option>
+                                <option value="OFERTA"> OFERTA </option>
+                            </select>
+                            <br>
+                            <select id="f01_ofertasAE4" class="form-control" ng-model="datos.f01_ofertasAE4" name="f01_ofertasAE4" ng-disabled="desabilitado" required>
+                                <option value="">--Seleccionar--</option>
+                                <option value="DESCUENTO"> DESCUENTO </option>
+                                <option value="OFERTA"> OFERTA </option>
+                            </select>
+                            <br>
+                            <select id="f01_ofertasAE5" class="form-control" ng-model="datos.f01_ofertasAE5" name="f01_ofertasAE5" ng-disabled="desabilitado" required>
+                                <option value="">--Seleccionar--</option>
+                                <option value="DESCUENTO"> DESCUENTO </option>
+                                <option value="OFERTA"> OFERTA </option>
+                            </select>
+                            <br>
 
-
-
-              
-              
-              
-
-
-
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group" >
+                        <label for="url" >Describa la oferta:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_ofertasAE_des1" id="f01_ofertasAE_des1" name="f01_ofertasAE_des1" class="form-control" ng-disabled="desabilitado"/>
+                            <br>
+                            <input ng-model="datos.f01_ofertasAE_des2" id="f01_ofertasAE_des2" name="f01_ofertasAE_des2" class="form-control" ng-disabled="desabilitado"/>
+                            <br>
+                            <input ng-model="datos.f01_ofertasAE_des3" id="f01_ofertasAE_des3" name="f01_ofertasAE_des3" class="form-control" ng-disabled="desabilitado"/>
+                            <br>
+                            <input ng-model="datos.f01_ofertasAE_des4" id="f01_ofertasAE_des4" name="f01_ofertasAE_des4" class="form-control" ng-disabled="desabilitado"/>
+                            <br>
+                            <input ng-model="datos.f01_ofertasAE_des5" id="f01_ofertasAE_des5" name="f01_ofertasAE_des5" class="form-control" ng-disabled="desabilitado"/>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
             </div>
             <div class="col-md-12" align="right">
                 <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-click="registrarDatosAE(datos)">Registrar</button>

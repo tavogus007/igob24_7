@@ -4,6 +4,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   $scope.tablaRedesSociales = {};
   $scope.tablaOfertas = {};
   $scope.datos={};
+  $rootScope.archivosProducto = new Array();
+
   var clsIniciarCamposInternet = $rootScope.$on('inicializarCampos', function(event, data){
     $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
   });
@@ -66,6 +68,131 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     });
   }
 
+
+
+
+
+  $scope.cambiarFile = function(obj, valor){
+
+      $scope.datos[obj.name] = valor;
+      setTimeout(function(){
+          $rootScope.leyenda1 = obj.name;
+      }, 500);
+      /*REQUISITOS2018*/
+      $scope.subirRequisitos(obj, valor);
+  };
+  /*REQUISITOS2018*/
+  $scope.subirRequisitos  =   function(sobj, svalor){
+      var rMisDocs = new Array();
+      var idFiles = new Array();
+      if(sobj.files[0]){
+          rMisDocs.push(sobj.files[0]);
+          var idFile = sobj.name;
+          var tam = idFile.length;
+          idFile = parseInt(idFile.substring(10,tam));
+          idFiles.push(idFile);
+          $scope.almacenarRequisitos(rMisDocs,idFiles);
+          //$scope.adicionarArrayDeRequisitos(sobj,idFile);
+      }
+  };
+
+  /*REQUISITOS2018*/
+    $scope.almacenarRequisitos = function(aArchivos,idFiles){
+        var descDoc = "";
+        var fechaNueva = "";
+        var fechaserver = new fechaHoraServer(); 
+        fechaserver.fechahora(function(resp){
+            var sfecha = JSON.parse(resp);
+            var fechaServ = (sfecha.success.fecha).split(' ');
+            var fecha_ = fechaServ[0].split('-');
+            var hora_ = fechaServ[1].split(':');
+            fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1]+hora_[2];
+        });
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+        var sDirTramite = sessionService.get('IDTRAMITE');
+        $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+        var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/";
+        $.blockUI();
+        angular.forEach(aArchivos, function(archivo, key) {
+            if(typeof(archivo) != 'undefined'){
+                if (idFiles[key]==1){
+                  var descDoc = "catalogo";
+                  var descArchivo = "img_principal";
+                }
+                if (idFiles[key]==2){
+                  var descDoc = "img_aux1";
+                  var descArchivo = "img_auxiliar1";
+                }
+                if (idFiles[key]==3){
+                  var descDoc = "img_aux2";
+                  var descArchivo = "img_auxiliar2";
+                }
+                var imagenFile = archivo.name.split('.');;
+                var tipoFile = imagenFile[1];
+                var nombreNuevo = descDoc + '.'+imagenFile[1];
+                $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
+                fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
+                document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
+                /*var filecompress = compressImage(archivo).then(function(respuestaFile){
+                    var imagenFile = respuestaFile.name.split('.');
+                    var tipoFile = imagenFile[1];
+                    var nombreNuevo = descDoc + '_'+fechaNueva+'.'+tipoFile;
+                    $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
+                    fileUpload1.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
+                    document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
+                });*/
+                
+
+                var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
+
+
+                var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevo + '", "nombre":"' + descArchivo + '" }';
+                $rootScope.archivosProducto.push(myJSON);
+
+
+            } else {
+            }
+        });
+        $.unblockUI();
+    };
+
+    $scope.ejecutarFile = function(idfile){
+      $scope.fileId = idfile;
+        var sid =   document.getElementById(idfile);
+        if(sid){
+            document.getElementById(idfile).click();
+        }else{
+            alert("Error ");
+        }
+    };
+
+    //UPLOAD  FILES
+    $rootScope.vid = sessionService.get('IDCIUDADANO');
+    var idCiu = $rootScope.vid;
+    $scope.img_url = CONFIG.IMG_URL+ "ciudadano/"+idCiu;
+    var uploader = $scope.uploader = new FileUploader({
+        url: CONFIG.UPLOAD_URL
+    });
+    uploader.filters.push({
+        name: 'customFilter',
+        fn: function(item /*{File|FileLikeObject}*/, options) {
+            return this.queue.length < 10;
+        }
+    });
+    $scope.uploader = new FileUploader({
+        url: CONFIG.UPLOAD_URL+"?desripcion=ciudadano&&idCiudadano="+ idCiu
+    });
+    var uploader = $scope.uploader;
+
+    uploader.filters.push({
+        name: 'customFilter',
+        fn: function(item, options) {
+            return this.queue.length <2;
+        }
+    });
+    uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+        console.info('onWhenAddingFileFailed', item, filter, options);
+    };
 
   
   ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////

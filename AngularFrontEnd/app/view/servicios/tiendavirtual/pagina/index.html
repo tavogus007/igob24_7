@@ -95,68 +95,101 @@
         </style>
 
     </head>
-    <div class="col-md-12" ng-controller="pagosAEController" ng-init="inicioTiendaVirtual();">
+    <div class="col-md-12" ng-controller="pagosAEController" ng-init="inicioPaginaWeb();">
       <div class="ibox float-e-margins">
         <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
             <h4>Datos complementarios de la Publicación de Página</h4>
         </div>
-        <div class="ibox-content">
-          <form name="signupForm"  class="form-horizontal" role="form" novalidate>                   
-            <div class="row" >
-              <div class="col-md-6">
+        <form name="signupForm"  class="form-horizontal" role="form" novalidate>   
+          <div class="ibox-content">
+            <div ng-show="nuevo || update" style="text-align: right;">
+              <span  style="color:red;"ng-show="ws_publicado"><strong>PÁGINA PUBLICADA &nbsp;</strong></span>
+              <span style="color:red;" ng-show="!ws_publicado"><strong>PÁGINA EN MENTENIMIENTO &nbsp;</strong></span>
+              <label class="switch">
+              <input type="checkbox" ng-checked="ws_publicado" ng-click="cambioEstado(ws_publicado)" title="PUBLICAR PÁGINA Actividad ECONÓMICA">
+              <span class="slider round"></span>
+              </label>  
+            </div>      
+              <div class="row" >
+                <div class="col-md-6">
+                  <label for="url" >Actividad Económica:</label>
+                    <div class="controls">
+                        <input value="{{descripcionAe}}" id="f01_actividadEconomica" name="f01_actividadEconomica" class="form-control" ng-disabled="desabilitado" readonly/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Dirección Página Web:</label>
+                        <div class="controls">
+                            <input id="f01_paginaWeb" value="{{pagUrl}}" name="f01_paginaWeb" class="form-control" ng-disabled="desabilitado" readonly/>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
                   <div class="form-group" >
-                      <label for="url" >Tipo de Pago:</label>
+                      <label for="url" >Nombre Tienda Virtual:</label>
                       <div class="controls">
-                          <select id="f01_tipoPago" class="form-control" ng-model="datos.f01_tipoPago" name="f01_tipoPago" ng-disabled="desabilitado" required>
-                              <option value="">--Seleccionar--</option>
-                              <option value="1"> BCP </option>
-                              <option value="2"> RED ENLACE </option>
-                          </select>
+                          <input value="{{nombre_tienda}}" id="f01_nombre_tienda" name="f01_nombre_tienda" class="form-control" ng-disabled="desabilitado"/>
                       </div>
                   </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" >
+                      <label for="url" >Pagina Web Privada:</label>
+                      <div class="controls">
+                          <input value="{{pag_web_privada}}" id="f01_web_privada" name="f01_web_privada" class="form-control" ng-disabled="desabilitado"/>
+                      </div>
+                  </div>
+                </div>
               </div>
+              <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group" >
-                        <label for="url" >Número de cuenta:</label>
-                        <div class="controls">
-                            <input ng-model="datos.f01_numeroCuenta" id="f01_numeroCuenta" name="f01_numeroCuenta" class="form-control" ng-disabled="desabilitado"/>
-                        </div>
-                    </div>
+                  <div class="form-group" >
+                      <label for="url" >Descripción Tienda Virtual:</label>
+                      <div class="controls">
+                          <input value="{{descrip_pagina}}" id="f01_descrip_pagina" name="f01_descrip_pagina" class="form-control" ng-disabled="desabilitado"/>
+                      </div>
+                  </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group" >
-                        <label for="url" >Usuario:</label>
-                        <div class="controls">
-                            <input ng-model="datos.f01_usuario" id="f01_usuario" name="f01_usuario" class="form-control" ng-disabled="desabilitado"/>
-                        </div>
-                    </div>
+                  <div class="form-group" >
+                      <label for="url" >Correo Electrónico:</label>
+                      <div class="controls">
+                          <input value="{{correo_tienda}}" id="f01_correo_tienda" name="f01_correo_tienda" class="form-control" ng-disabled="desabilitado"/>
+                      </div>
+                  </div>
                 </div>
-              
+              </div>
+              <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group" >
-                        <label for="url" >Contraseña:</label>
-                        <div class="controls">
-                            <input ng-model="datos.f01_clave" id="f01_clave" name="f01_clave" class="form-control" ng-disabled="desabilitado"/>
-                        </div>
-                    </div>
+                  <div class="form-group" >
+                      <label for="url" >Contactos:</label>
+                      <div class="controls">
+                          <input value="{{contactos}}" id="f01_contactos" name="f01_contactos" class="form-control" ng-disabled="desabilitado"/>
+                      </div>
+                  </div>
                 </div>
-
-
-
-              
-              
-              
-
-
+                <div class="col-md-6">
+                  <div class="form-group" >
+                      <label for="url" >Redes Sociales:</label>
+                      <div class="controls">
+                          <input value="{{redesCiu}}" id="f01_redes" name="f01_redes" class="form-control" ng-disabled="desabilitado"/>
+                      </div>
+                  </div>
+                </div>
+              </div>
 
             </div>
-            <div class="col-md-12" align="right">
-                <button ng-show="nuevo" type="button" class="btn btn-default ng-binding" ng-click="registrarDatosAE(datos)">Registrar</button>
-                <button ng-show="update" type="button" class="btn btn-default ng-binding" ng-click="actualizarDatosAE(datos)">Modificar</button>                
-                <button type="button" class="btn btn-default ng-binding" ng-click="cerrarDatosAE(datos)" >Cerrar</button>
-            </div>
-          </form>
-        </div>
+          </div>  
+          <div class="col-md-12" align="right">
+              <button ng-show="nuevo" type="button" class="btn btn-default ng-binding" ng-click="registrarDatosAE(datos)">Registrar</button>
+              <button ng-show="update" type="button" class="btn btn-default ng-binding" ng-click="actualizarDatosAE(datos)">Modificar</button> 
+                          
+              <button type="button" class="btn btn-default ng-binding" ng-click="cerrarDatosAE(datos)" >Cerrar</button>
+          </div>
+        </form>
       </div>
     </div>
 </html>

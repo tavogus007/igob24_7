@@ -133,26 +133,43 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
 
    
     //nuevo de paquete 
-   
-     
-
+  
     $scope.obtTiendaVirtual = function(){
         idActividadEconomica = sessionService.get('IDAE');
         try {
           var dataTV = new dataTiendaVirtual();
-          dataTV.ae_id = idActividadEconomica;
+          dataTV.idAe = idActividadEconomica;
           dataTV.obtDataTiendaVirtual(function(res){
               r = JSON.parse(res);
               results = r.success;
               $rootScope.datosTiendaVirtual = results;
               if (results.length == 0){
-                console.log(results);
+               
                 sessionService.destroy('IDTV');
                 $rootScope.nuevo = 'mostrar';
                 $rootScope.update = null;
               } else {
-                console.log(results[0].tv_idc);
                 sessionService.set('IDTV', results[0].tv_idc);
+                $rootScope.nombre_tienda = results[0].tv_nombrec;
+                $rootScope.pag_web_privada = results[0].tv_pagina_webc;
+                $rootScope.descrip_pagina = results[0].tv_descripcionc;
+                $rootScope.correo_tienda = results[0].tv_correoc;
+                var contactos =  JSON.stringify(results[0].tv_contactosc);
+                var contactos1 = JSON.parse(contactos);
+                console.log('contactos',contactos,contactos1);
+                var contactosF = contactos1.telfijo;
+                var contactosC = contactos1.celular1;
+                $rootScope.contactos = contactosF +'-'+ contactosC;
+                var ofertas = JSON.stringify(results[0].tv_ofertas);
+                var ofertasC = JSON.parse(ofertas);
+                $rootScope.ofertasCiu = ofertasC.ofertas1;
+                console.log('$rootScope.ofertasCiu',$rootScope.ofertasCiu);
+                var redes = JSON.stringify(results[0].tv_redesc);
+                var redes1 = JSON.parse(redes);
+                var redesface = redes1.facebook;
+                var redestwitter = redes1.twitter;
+                $rootScope.redesCiu = 'Facebook:'+''+redesface+ '-'+'Twitter:'+''+redestwitter;
+                console.log('$rootScope.redesCiu',$rootScope.redesCiu);
                 $rootScope.nuevo = null;
                 $rootScope.update = 'mostrar';
               }
@@ -161,6 +178,115 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
           console.log("Error Interno : ", error);
         }
     };
+    $scope.obtPagina = function(){ 
+        $rootScope.id_web = '';
+        $rootScope.ws_publicado = false;
+        idActividadEconomica = sessionService.get('IDAE');
+        try {
+            var datosPagina = new dataPaginaWeb();
+            datosPagina.idAe =  idActividadEconomica;
+            datosPagina.obtDataPaginaWeb(function(response){
+              results = JSON.parse(response);
+              results = results.success;
+              if (results == '[]' || results == '[{}]' || results == '[{ }]' || results == ' ' || results == '') {
+                $rootScope.pagUrl = '';
+                $rootScope.update = false;   
+                $rootScope.nuevo = true;  
+              }else{
+                if(results.length > 0){
+                    $.unblockUI();
+                    $rootScope.pagUrl = results[0].web_urlc;
+                    $rootScope.estado_publicar = results[0].web_estado_publicarc;
+                    $rootScope.id_web = results[0].web_idc;
+                      if($rootScope.estado_publicar == 'SI'){
+                          $rootScope.ws_publicado = true;
+                          $rootScope.update = true;   
+                          $rootScope.nuevo = false;  
+                          //swal('', "La Actividad económica cuenta con su Página Web publicada", 'success');   
+                      }else{
+                          $rootScope.ws_publicado = false;
+                          $rootScope.update = false;   
+                          $rootScope.nuevo = true;  
+                          swal('', "La Actividad económica cuenta con su Página Web, pero NO se encuentra publicada", 'warning');  
+                      }
+                   
+                   
+                } else {
+                    $.unblockUI();
+                    $rootScope.update = false;   
+                    $rootScope.nuevo = false;  
+                    $rootScope.pagUrl = 'No cuenta con Página WEb';
+                    $rootScope.descripcionAe = $scope.datosAe.Descripcion; 
+                    $rootScope.estado_publicar = 'No se creó la Tienda Virtual para la AE';
+                    swal('Advertencia', "La Actividad Económica NO cuenta con su Tienda Virtual. Debe hacer el registro de la misma.", 'warning');
+                }
+        
+              }
+              
+            });
+            
+        }catch(error){
+            console.log("Error Interno : ", error);
+        }    
+    }
+    $scope.activaPublicacion = function(id_web,id_ae){
+        var cestado = new dataPaginaWeb();
+        cestado.idWeb = id_web;
+        cestado.idAe =  id_ae;
+        cestado.activaEstadoPublicacion(function(response){
+        console.log(response);
+        results = JSON.parse(response);
+        results = results.success;
+        console.log('estado',results);
+        if(results.length > 0){
+            $.unblockUI();
+            
+        } else {
+            $.unblockUI();
+            //swal('', "yyyyy", 'error');
+        }
+        });
+    }
+    $scope.desactivaPublicacion = function(id_web,id_ae){
+        var cestado = new dataPaginaWeb();
+        cestado.idWeb = id_web;
+        cestado.idAe =  id_ae;
+        cestado.desactivaEstadoPublicacion(function(response){
+        console.log(response);
+        results = JSON.parse(response);
+        results = results.success;
+        console.log('estado des',results);
+        if(results.length > 0){
+            $.unblockUI();
+            
+        } else {
+            $.unblockUI();
+            //swal('', "yyyyy", 'error');
+        }
+        });
+    }
+    $scope.cambioEstado = function(dato){
+        console.log('SW:',dato);
+        idActividadEconomica = sessionService.get('IDAE');
+        console.log('ID AE: ',idActividadEconomica);
+        console.log('ID PAGINAWEB: ',$rootScope.id_web);
+        if($rootScope.id_web ){
+            alert('tiene pagina web');
+            if(dato == true){
+                alert('tiene pagina y esta publicado');
+                $scope.desactivaPublicacion($rootScope.id_web,idActividadEconomica);
+                $rootScope.ws_publicado = false;
+            }else{
+                alert('tiene pagina y NO esta publicado');
+                $scope.activaPublicacion($rootScope.id_web,idActividadEconomica);
+                $rootScope.ws_publicado = true;
+            }
+        }else{
+            alert('NO tiene pagina web, insertar a tabla de pagina web');
+        }
+
+    }
+
 
     $scope.addDatosAE = function (tramite) {
         $scope.template =   "";
@@ -195,7 +321,10 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $scope.template =   "";
         console.log(tramite);
         sessionService.set('IDAE', tramite.IdActividad);
+        idActividadEconomica = sessionService.get('IDAE');
+        $rootScope.descripcionAe = tramite.Descripcion;
         $scope.obtTiendaVirtual();
+        $scope.obtPagina();
         $rootScope.$broadcast('inicializarPagina', $scope.datos);
         try{
             tvid = $rootScope.datosTiendaVirtual[0].idtv;

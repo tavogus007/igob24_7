@@ -195,6 +195,49 @@ dataProducto.prototype.modificarMiProducto = function (functionResp) {
   console.log(dataParams);
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
+function dataPaginaWeb(){
+  this.web_id,
+  this.web_contenido,
+  this.web_url,
+  this.web_estado_publicar,
+  this.web_registrado,
+  this.web_modificado,
+  this.web_usr,
+  this.web_estado,
+  this.web_id_ae
+};
+dataPaginaWeb.prototype.obtDataPaginaWeb = function (functionResp)
+{
+    urlCompProducto = "/listarPaginaWebPorIdAe";
+    typeCall = "post";
+    dataParams = {
+      "idAe":this.idAe 
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+dataPaginaWeb.prototype.activaEstadoPublicacion = function (functionResp)
+{
+  urlCompProducto = "/activarPublicacionPaginaWeb";
+    typeCall = "post";
+    dataParams = {
+      "idWeb":this.idWeb, 
+      "idAe":this.idAe 
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+dataPaginaWeb.prototype.desactivaEstadoPublicacion = function (functionResp)
+{
+  urlCompProducto = "/desactivarPublicacionPaginaWeb";
+    typeCall = "post";
+    dataParams = {
+      "idWeb":this.idWeb, 
+      "idAe":this.idAe 
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+
+
+
 
 /*
 

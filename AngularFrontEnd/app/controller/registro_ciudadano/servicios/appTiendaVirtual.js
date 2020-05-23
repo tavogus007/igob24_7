@@ -207,7 +207,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                           $rootScope.ws_publicado = false;
                           $rootScope.update = false;   
                           $rootScope.nuevo = true;  
-                          swal('', "La Actividad económica cuenta con su Página Web, pero NO se encuentra publicada", 'warning');  
+                          //swal('', "La Actividad económica cuenta con su Página Web, pero NO se encuentra publicada", 'warning');  
                       }
                    
                    

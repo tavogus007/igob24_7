@@ -70,12 +70,13 @@ dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
+
 dataTiendaVirtual.prototype.obtDataTiendaVirtual = function (functionResp)
 {
     urlCompProducto = "/listarTiendaVirtualPorIdAe";
     typeCall = "post";
     dataParams = {
-      "idAe":this.ae_id 
+      "idAe":this.idAe 
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };

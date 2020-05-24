@@ -693,7 +693,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     }
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
-                }else if((aNotif.success[i].serdv_descripcion == 'REGISTRO VALOR LIBROS VEHICULOS - ATM VEHICULOS') || (aNotif.success[i].serdv_descripcion == 'REGISTRO VALOR LIBROS IMUEBLES - ATM INMUEBLES') || (aNotif.success[i].serdv_descripcion == 'INSCCRIPCION CASA COMERCIAL VEHICULOS - ATM VEHICULOS') || (aNotif.success[i].serdv_descripcion == 'INSCCRIPCION CASA COMERCIAL MOTO - ATM VEHICULOS')){     //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
+                }else if((aNotif.success[i].obs_tra_actividad == 'ATM RECAUDACIONES') ){     //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
                     datoObjectNoti = new Object();
                     var mensaje = aNotif.success[i].obs_tra_observaciones;
                     var res = mensaje.split("&#34");

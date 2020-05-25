@@ -3106,21 +3106,9 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 data.f01_num_act != "" && data.f01_num_act != null &&
                 data.f01_num_act1 != "" && data.f01_num_act1 != null &&
                 data.f01_casilla != "" && data.f01_casilla != null){
-                if (data.pago_adel == "SI" && data.nro_ges != "") {
-                    $scope.serializarInformacion(data);
-                    $scope.formulario401(data);
-                    $("#declaracionN").modal("show");
-                }
-                else{
-                    if (data.pago_adel == "NO" || (data.pago_adel == "" || data.pago_adel == undefined || data.pago_adel == 'undefined')) {
-                        $scope.serializarInformacion(data);
-                        $scope.formulario401(data);
-                        $("#declaracionN").modal("show");
-                    }
-                    else{
-                        sweet.show('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
-                    }
-                };
+                $scope.serializarInformacion(data);
+                $scope.formulario401(data);
+                $("#declaracionN").modal("show");
             }
             else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
@@ -3149,21 +3137,9 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 data.f01_num_act1 != "" && data.f01_num_act1 != null &&
                 data.f01_casilla != "" && data.f01_casilla != null){
                 //$rootScope.validacionRequisitosTec();
-                if (data.pago_adel == "SI" && data.nro_ges != "") {
                     $scope.serializarInformacion(data);
                     $scope.formulario401(data);
                     $("#declaracionN").modal("show");
-                }
-                else{
-                    if (data.pago_adel == "NO" || (data.pago_adel == "" || data.pago_adel == undefined || data.pago_adel == 'undefined')) {
-                        $scope.serializarInformacion(data);
-                        $scope.formulario401(data);
-                        $("#declaracionN").modal("show");
-                    }
-                    else{
-                        swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
-                    }
-                };
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
@@ -3382,7 +3358,18 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['f01_categoria_agrupada_descripcion'] = paramForm.f01_categoria_agrupada_descripcion.toUpperCase();
             datosNeXO['f01_categoria_agrupada_descrip'] = paramForm.f01_categoria_agrupada_descrip;
             datosNeXO['f01_actividad_desarrollada']= paramForm.f01_categoria_descrip2;
-            datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos;
+            var datoObjectdj = [];
+            var decjuradaN = new Object();
+            if ($rootScope.decJuradaJuridico) {
+                decjuradaN.url = $rootScope.decJuradaJuridico;
+            } else{
+                decjuradaN.url = $scope.datos.declaracion_jurada;
+            };
+            decjuradaN.campo = 'Declaración Jurada Juridico';
+            decjuradaN.nombre = 'DECLARACIÓN JURADA';
+            datoObjectdj[0] = decjuradaN;
+            datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);
+            //datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos;
             if(paramForm.g_origen_p){
                datosNeXO['g_origen_p'] = paramForm.g_origen_p;
             }

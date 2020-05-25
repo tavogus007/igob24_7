@@ -442,7 +442,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                                 $scope.datos.f01_tel_act1 = response[0].telefono;
                                 $scope.datos.f01_casilla = response[0].casilla;
                                 $scope.datos.f01_factor          =  response[0].tipoTrayecto;
-                            $scope.actulizarIdDistrito();
+                                $scope.actulizarIdDistrito();
                                 $scope.actulizarIdDistrito();
                                 if(response[0].edificio == 'undefined' || response[0].bloque == 'undefined' || response[0].piso == 'undefined' || response[0].departamento == 'undefined' || response[0].telefono == 'undefined' || response[0].casilla == 'undefined'){
                                     response[0].edificio = '';
@@ -1966,8 +1966,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             datosNeXO['f01_actividad_desarrollada']     =   "";           
             /*CAMPOS GENERICOS NATURAL Y JURIDICO*/ //-->EL CAMPO NO SE ESTA GENERANDO CORRECTAMENTE
             /*REQUISITOSDELAACTIVIDADECONOMICA*/
-
-             var datoObjectdj = [];
+            var datoObjectdj = [];
             var decjuradaN = new Object();
             if ($rootScope.decJuradaJuridico) {
                 decjuradaN.url = $rootScope.decJuradaJuridico;
@@ -1977,12 +1976,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             decjuradaN.campo = 'Declaración Jurada Juridico';
             decjuradaN.nombre = 'DECLARACIÓN JURADA';
             datoObjectdj[0] = decjuradaN;
-            if($scope.datos.File_Adjunto){
-                datosNeXO['File_Adjunto'] =  $scope.datos.File_Adjunto.concat(decjuradaN);
-            }
-            else{
-                datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);;
-            }
+            datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);
             datosNeXO['Licenmul_grilla'] = paramForm.Licenmul_grilla;
             datosNeXO['f01_tip_act']                    =   paramForm.f01_tip_act;
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;
@@ -2809,15 +2803,21 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
         /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {
-         //DOCS OBLIGATORIOS
-        $scope.adjpublicidad(data);
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
+        var taemayor = 0;
         if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
-            /*data.f01_categoria_agrupada = 3375;
-            data.f01_categoria_descrip = 3375;
-            $scope.datos.f01_categoria_agrupada = 3375;
-            $scope.datos.f01_categoria_descrip = 3375;*/
+            for (var i = 0; i < data.licenciam.length; i++) {
+                if (parseInt(data.licenciam[i].f01_tae) >= taemayor) {
+                    taemayor = parseInt(data.licenciam[i]);
+                    $scope.datos.idLic = data.licenciam[i].f01_tipo_licmid;
+                    $scope.datos.descriplic = data.licenciam[i].f01_tipo_licmdescrip;
+                    $scope.datos.idcat = data.licenciam[i].f01_cat_agrupadamid;
+                    $scope.datos.descripcat = data.licenciam[i].f01_cat_agrupadamdescrip;
+                    $scope.datos.iddesa = data.licenciam[i].f01_act_desarrolladamid;
+                    $scope.datos.descripdesa = data.licenciam[i].f01_act_desarrolladamdescrip;
+                }
+            };
             sarrayobligatorio   =   true;
         }
         if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
@@ -2844,11 +2844,11 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 $scope.serializarInformacion(data);
                 $scope.formulario401(data);
                 $("#declaracionJ").modal("show");
-            }
-            else{
+            }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
-        }
+        }  
+        
         if (data.f01_tipo_lic != 32 || data.f01_tipo_lic != '32'){
             if(data &&  data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
               data.FILE_CI != ""  && data.FILE_CI != null &&

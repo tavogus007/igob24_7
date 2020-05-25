@@ -2886,39 +2886,45 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
     };
 
    /*VERIFICANDO CAMPOS OBLIGATORIOS*/
-    $scope.verificarCamposInternet = function (data) {
+        $scope.verificarCamposInternet = function (data) {
         /*REQUISITOS2018*/
-        $scope.adjpublicidad(data);
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
+        var taemayor = 0;
         //DOCS OBLIGATORIOS
         if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
-            /*data.f01_categoria_agrupada = 3375;
-            data.f01_categoria_descrip = 3375;
-            $scope.datos.f01_categoria_agrupada = 3375;
-            $scope.datos.f01_categoria_descrip = 3375;*/
+            for (var i = 0; i < data.licenciam.length; i++) {
+                if (parseInt(data.licenciam[i].f01_tae) >= taemayor) {
+                    taemayor = parseInt(data.licenciam[i]);
+                    $scope.datos.idLic = data.licenciam[i].f01_tipo_licmid;
+                    $scope.datos.descriplic = data.licenciam[i].f01_tipo_licmdescrip;
+                    $scope.datos.idcat = data.licenciam[i].f01_cat_agrupadamid;
+                    $scope.datos.descripcat = data.licenciam[i].f01_cat_agrupadamdescrip;
+                    $scope.datos.iddesa = data.licenciam[i].f01_act_desarrolladamid;
+                    $scope.datos.descripdesa = data.licenciam[i].f01_act_desarrolladamdescrip;
+                }
+            };
             sarrayobligatorio   =   true;
-        }
-        if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
-          if(data && data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
-            data.FILE_CI != ""  && data.FILE_CI != null &&
-            data.rdTipoTramite != "" && data.rdTipoTramite != null &&
-            data.fileArchivosAd != ""  && data.fileArchivosAd != null &&
-            data.rdTipoTramite1 != "" && data.rdTipoTramite1 != null &&
-            data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
-            data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
-            data.f01_raz_soc != "" && data.f01_raz_soc != null &&
-            data.f01_sup != "" && data.f01_sup != null &&
-            data.f01_de_hor != "" && data.f01_de_hor != null &&
-            data.f01_a_hor != "" && data.f01_a_hor != null &&
-            data.f01_estab_es != "" && data.f01_estab_es != null &&
-            data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
-            data.licenciam != "" && data.licenciam != null &&
-            data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
-            data.f01_zona_act != "" && data.f01_zona_act != null &&
-            data.f01_tip_via_act != "" && data.f01_tip_via_act != null &&
-            data.f01_num_act != "" && data.f01_num_act != null &&
-            data.f01_num_act1 != "" && data.f01_num_act1 != null &&
-            data.f01_casilla != "" && data.f01_casilla != null){
+            if(data && data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
+                data.FILE_CI != ""  && data.FILE_CI != null &&
+                data.rdTipoTramite != "" && data.rdTipoTramite != null &&
+                data.fileArchivosAd != ""  && data.fileArchivosAd != null &&
+                data.rdTipoTramite1 != "" && data.rdTipoTramite1 != null &&
+                data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
+                data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
+                data.f01_raz_soc != "" && data.f01_raz_soc != null &&
+                data.f01_sup != "" && data.f01_sup != null &&
+                data.f01_de_hor != "" && data.f01_de_hor != null &&
+                data.f01_a_hor != "" && data.f01_a_hor != null &&
+                data.f01_estab_es != "" && data.f01_estab_es != null &&
+                data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
+                data.licenciam != "" && data.licenciam != null &&
+                data.f01_macro_act != "" && data.f01_macro_act != null &&
+                data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
+                data.f01_zona_act != "" && data.f01_zona_act != null &&
+                data.f01_tip_via_act != "" && data.f01_tip_via_act != null &&
+                data.f01_num_act != "" && data.f01_num_act != null &&
+                data.f01_num_act1 != "" && data.f01_num_act1 != null &&
+                data.f01_casilla != "" && data.f01_casilla != null){
                 $scope.serializarInformacion(data);
                 $scope.formulario401(data);
                 $("#declaracionN").modal("show");
@@ -2928,32 +2934,31 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
             }
         }
         if (data.f01_tipo_lic != 32 || data.f01_tipo_lic != '32'){
-          if(data &&  data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
-              data.FILE_CI != ""  && data.FILE_CI != null &&
-              data.rdTipoTramite != "" && data.rdTipoTramite != null &&
-              data.rdTipoTramite1 != "" && data.rdTipoTramite1 != null &&
-              data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
-              data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
-              data.f01_raz_soc != "" && data.f01_raz_soc != null &&
-              data.f01_sup != "" && data.f01_sup != null &&
-              data.f01_de_hor != "" && data.f01_de_hor != null &&
-              data.f01_a_hor != "" && data.f01_a_hor != null &&
-              data.f01_estab_es != "" && data.f01_estab_es != null &&
-              data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
-              data.f01_categoria_agrupada != "" && data.f01_categoria_agrupada != null &&
-              data.f01_categoria_descrip != "" && data.f01_categoria_descrip != null &&
-              data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
-              data.f01_zona_act != "" && data.f01_zona_act != null &&
-              data.f01_tip_via_act != "" && data.f01_tip_via_act != null &&
-              data.f01_num_act != "" && data.f01_num_act != null &&
-              data.f01_num_act1 != "" && data.f01_num_act1 != null &&
-              data.f01_casilla != "" && data.f01_casilla != null){
-              //$rootScope.validacionRequisitosTec();
-              $scope.serializarInformacion(data);
-              $scope.formulario401(data);
-              $("#declaracionN").modal("show");
-              declaracionJ
-               $scope.getCaptchasXX();
+            if(data &&  data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
+                data.FILE_CI != ""  && data.FILE_CI != null &&
+                data.rdTipoTramite != "" && data.rdTipoTramite != null &&
+                data.rdTipoTramite1 != "" && data.rdTipoTramite1 != null &&
+                data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
+                data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
+                data.f01_raz_soc != "" && data.f01_raz_soc != null &&
+                data.f01_sup != "" && data.f01_sup != null &&
+                data.f01_de_hor != "" && data.f01_de_hor != null &&
+                data.f01_a_hor != "" && data.f01_a_hor != null &&
+                data.f01_estab_es != "" && data.f01_estab_es != null &&
+                data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
+                data.f01_categoria_agrupada != "" && data.f01_categoria_agrupada != null &&
+                //data.f01_categoria_descrip != "" && data.f01_categoria_descrip != null &&
+                data.f01_macro_act != "" && data.f01_macro_act != null &&
+                data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
+                data.f01_zona_act != "" && data.f01_zona_act != null &&
+                data.f01_tip_via_act != "" && data.f01_tip_via_act != null &&
+                data.f01_num_act != "" && data.f01_num_act != null &&
+                data.f01_num_act1 != "" && data.f01_num_act1 != null &&
+                data.f01_casilla != "" && data.f01_casilla != null){
+                //$rootScope.validacionRequisitosTec();
+                    $scope.serializarInformacion(data);
+                    $scope.formulario401(data);
+                    $("#declaracionN").modal("show");
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }

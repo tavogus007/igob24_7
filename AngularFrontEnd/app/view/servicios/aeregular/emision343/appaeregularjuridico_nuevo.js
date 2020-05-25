@@ -1379,7 +1379,18 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             datosNeXO['f01_macro_des']=paramForm.f01_macro_des;
             datosNeXO['f01_requisitos_actividad_economica'] =  paramForm.f01_requisitos_actividad_economica;
             datosNeXO['rdTipoTramite'] = paramForm.rdTipoTramite;
-            datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos;
+            var datoObjectdj = [];
+            var decjuradaN = new Object();
+            if ($rootScope.decJuradaJuridico) {
+                decjuradaN.url = $rootScope.decJuradaJuridico;
+            } else{
+                decjuradaN.url = $scope.datos.declaracion_jurada;
+            };
+            decjuradaN.campo = 'Declaración Jurada Juridico';
+            decjuradaN.nombre = 'DECLARACIÓN JURADA';
+            datoObjectdj[0] = decjuradaN;
+            datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);
+            //datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos;
             datosNeXO['FILE_FOTOCOPIA_CI'] = paramForm.FILE_FOTOCOPIA_CI;
             datosNeXO['FILE_FOTOCOPIA_CI_R'] = paramForm.FILE_FOTOCOPIA_CI_R;
             datosNeXO['f01_poder_representante'] = paramForm.f01_poder_representante;
@@ -2358,6 +2369,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     $scope.verificarCamposInternet = function (data) {       
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
+        var taemayor = 0;
         if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
             for (var i = 0; i < data.licenciam.length; i++) {
                 if (parseInt(data.licenciam[i].f01_tae) >= taemayor) {
@@ -2391,21 +2403,11 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             data.f01_num_act != "" && data.f01_num_act != null &&
             data.f01_num_act1 != "" && data.f01_num_act1 != null &&
             data.f01_casilla != "" && data.f01_casilla != null){
-                if (data.pago_adel == "SI" && data.nro_ges != "") {
-                    $scope.serializarInformacion(data);
-                    $scope.formulario401(data);
-                    $("#declaracionJ").modal("show");
-                }
-                else{
-                    if (data.pago_adel == "NO" || (data.pago_adel == "" || data.pago_adel == undefined || data.pago_adel == 'undefined')) {
-                        $scope.serializarInformacion(data);
-                        $scope.formulario401(data);
-                        $("#declaracionJ").modal("show");
-                    }
-                    else{
-                        swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
-                    }
-                };
+
+                $scope.serializarInformacion(data);
+                $scope.formulario401(data);
+                $("#declaracionJ").modal("show");
+               
             }
             else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
@@ -2433,21 +2435,9 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
               data.f01_num_act1 != "" && data.f01_num_act1 != null &&
               data.f01_casilla != "" && data.f01_casilla != null){
               //$rootScope.validacionRequisitosTec();
-                if (data.pago_adel == "SI" && data.nro_ges != "") {
-                    $scope.serializarInformacion(data);
-                    $scope.formulario401(data);
-                    $("#declaracionJ").modal("show");
-                }
-                else{
-                    if (data.pago_adel == "NO" || (data.pago_adel == "" || data.pago_adel == undefined || data.pago_adel == 'undefined')) {
-                        $scope.serializarInformacion(data);
-                        $scope.formulario401(data);
-                        $("#declaracionJ").modal("show");
-                    }
-                    else{
-                        swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
-                    }
-                };
+                $scope.serializarInformacion(data);
+                $scope.formulario401(data);
+                $("#declaracionJ").modal("show");  
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }

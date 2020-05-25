@@ -62,7 +62,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         var sDirTramite = sessionService.get('IDTRAMITE');
         $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
-        var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/";
+        var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/"  + sessionService.get('IDTV') +"/";
         $.blockUI();
         angular.forEach(aArchivos, function(archivo, key) {
             if(typeof(archivo) != 'undefined'){
@@ -80,8 +80,8 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
                 }
                 var imagenFile = archivo.name.split('.');;
                 var tipoFile = imagenFile[1];
-                var nombreNuevo = descDoc + '_'+fechaNueva+'.'+imagenFile[1];
-                $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
+                var nombreNuevo = descArchivo +"_"+ fechaNueva +'.'+ imagenFile[1];
+                $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') +'/'+ nombreNuevo + "?app_name=todoangular";
                 fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
                 document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
                 /*var filecompress = compressImage(archivo).then(function(respuestaFile){
@@ -92,15 +92,9 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
                     fileUpload1.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
                     document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
                 });*/
-                
-
-                var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
-
-
+                var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/"  + sessionService.get('IDTV') +'/' + nombreNuevo + "?app_name=todoangular";
                 var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevo + '", "nombre":"' + descArchivo + '" }';
                 $rootScope.archivosProducto.push(myJSON);
-
-
             } else {
             }
         });
@@ -194,6 +188,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       $scope.frmProducto = "mostrar";
       $scope.desabilitado = "";
       $scope.nuevo = true;
+      $rootScope.nuevo = true;
       document.getElementById("txt_f01_upload1").value  = '';
       document.getElementById("txt_f01_upload2").value  = '';
       document.getElementById("txt_f01_upload3").value  = '';
@@ -201,12 +196,9 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
 
     $scope.registrarProducto = function(data){
       $scope.mostrarTxt = false; 
-      console.log(data);
       a = 0;
       angular.forEach($rootScope.archivosProducto, function(archivo, key) {
-        console.log(archivo);
         archivoP = JSON.parse(archivo);
-        console.log(key);
         if (a==0)
           f0 = archivoP.url;
         if (a==1)
@@ -216,7 +208,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         a = a + 1;
       });
       var datosProducto = new dataProducto();
-      datosProducto.idtv = sessionService.get("IDTIENDAVIRTUAL");
+      datosProducto.idtv = sessionService.get("IDTV");
       datosProducto.nombre = data.f01_producto;
       datosProducto.descripcion = data.f01_descripcion;
       datosProducto.precio = data.f01_precio;
@@ -235,6 +227,8 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
             $scope.refrescar();
             swal('', "Producto Registrado", 'success');
             $scope.limpiar();
+            $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
+            $rootScope.nuevo = null;
         } else {
             $.unblockUI();
             swal('', "Producto no registrado", 'error');
@@ -259,6 +253,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
                 //$scope.$apply(); 
             } else {
                 var data = $scope.obtDatos;
+                console.log($scope.obtDatos);
                 $scope.tablaDocumentos.reload();
             }
           });

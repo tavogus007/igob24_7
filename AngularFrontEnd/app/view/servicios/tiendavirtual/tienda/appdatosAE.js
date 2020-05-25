@@ -19,23 +19,165 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_categoria = "";//falta
       $scope.datos.f01_correoTV = "";
       $scope.datos.f01_pagwebAE = "";
-      $scope.datos.f01_contactosAE = "";
-      $scope.datos.f01_redessocialesAE = "";
+      $scope.datos.f01_contacto1_nro = "";
+      $scope.datos.f01_contacto1 = "";
+      $scope.datos.f01_contacto2_nro = "";
+      $scope.datos.f01_contacto2 = "";
+      $scope.datos.f01_contacto3_nro = "";
+      $scope.datos.f01_contacto3 = "";
       $scope.datos.f01_ofertasAE = "";
+      $scope.datos.f01_redessocialesAE1_url = "";
+      $scope.datos.f01_redessocialesAE1 = "";
+      $scope.datos.f01_redessocialesAE2_url = "";
+      $scope.datos.f01_redessocialesAE2 = "";
+      $scope.datos.f01_redessocialesAE3_url = "";
+      $scope.datos.f01_redessocialesAE3 = "";
+      $scope.datos.f01_ofertasAE_des1 = "";
+      $scope.datos.f01_ofertasAE_des2 = "";
+      $scope.datos.f01_ofertasAE_des3 = "";
+      $scope.datos.f01_ofertasAE_des4 = ""; 
+      $scope.datos.f01_ofertasAE_des5 = "";
+      document.getElementById("txt_f01_upload1").value = '';
     } else {
       $scope.datos.f01_nombreTV = data[0].tv_nombrec;
       $scope.datos.f01_descripcionTV = data[0].tv_descripcionc;
-      $scope.datos.f01_categoria = data[0].tv_categoria;//falta
+      $scope.datos.f01_categoria = data[0].tv_categoria_idc;
       $scope.datos.f01_correoTV = data[0].tv_correoc;
       $scope.datos.f01_pagwebAE = data[0].tv_pagina_webc;
-      $scope.datos.f01_contactosAE = data[0].tv_contactosc;
-      $scope.datos.f01_redessocialesAE = data[0].tv_redesc;
-      $scope.datos.f01_ofertasAE = data[0].tv_ofertas;
+
+      //contactos
+      var contactos = data[0].tv_contactosc;
+        
+        for(i=0;i<contactos.length;i++){
+          var conta = JSON.parse(contactos[i]);
+          if (i==0){ 
+            $scope.datos.f01_contacto1_nro = conta.valor;
+            $scope.datos.f01_contacto1 = conta.tipo;
+            if($scope.datos.f01_contacto1_nro == 'undefined' || $scope.datos.f01_contacto1_nro == undefined || $scope.datos.f01_contacto1_nro == null){
+              $scope.datos.f01_contacto1_nro = '';
+            }
+          }
+          if (i==1){
+            $scope.datos.f01_contacto2_nro = conta.valor;
+            $scope.datos.f01_contacto2 = conta.tipo;
+            if($scope.datos.f01_contacto2_nro == 'undefined' || $scope.datos.f01_contacto2_nro == undefined || $scope.datos.f01_contacto2_nro == null){
+              $scope.datos.f01_contacto1_nro = '';
+            }
+          }
+          if (i==2){
+            $scope.datos.f01_contacto3_nro = conta.valor;
+            $scope.datos.f01_contacto3 = conta.tipo;
+            if($scope.datos.f01_contacto3_nro == 'undefined' || $scope.datos.f01_contacto1_nro == undefined || $scope.datos.f01_contacto3_nro == null){
+              $scope.datos.f01_contacto3_nro = '';
+            }
+          }
+        }
+      
+    //redes sociales
+      var redes = data[0].tv_redesc;
+      console.log('redes',redes);
+      $('input:checkbox[name=f01_redessocialesAE1]:checked').val();
+      ///if (redes == {} || redes == [] || redes == '{}' || redes == '[]'){
+      if (redes.length==''){
+        console.log('vacio', redes);
+        $scope.datos.f01_redessocialesAE1_url = "";
+        $scope.datos.f01_redessocialesAE1 = "";
+        $scope.datos.f01_redessocialesAE2_url = "";
+        $scope.datos.f01_redessocialesAE2 = "";
+        $scope.datos.f01_redessocialesAE3_url = "";
+        $scope.datos.f01_redessocialesAE3 = "";
+      }else{
+        for(i=0;i<redes.length;i++){
+          var red = JSON.parse(redes[i]);
+          if (i==0){ 
+            $scope.datos.f01_redessocialesAE1_url = red.url;
+            $scope.datos.f01_redessocialesAE1 = red.tipo; 
+            $scope.datos.f01_redessocialesAE1 = red.checked; 
+            if ($scope.datos.f01_redessocialesAE1 == true){
+              console.log(111,$scope.datos.f01_redessocialesAE1);
+              $('input:checkbox[name=f01_redessocialesAE1]').attr('checked',true);
+              document.getElementById("f01_redessocialesAE1").checked;
+            }
+            if($scope.datos.f01_redessocialesAE1_url == 'undefined' || $scope.datos.f01_redessocialesAE1_url == undefined || $scope.datos.f01_redessocialesAE1_url == null){
+              $scope.datos.f01_redessocialesAE1_url = '';
+            }
+          }
+          if (i==1){
+            $scope.datos.f01_redessocialesAE2_url = red.url;
+            $scope.datos.f01_redessocialesAE2 = red.tipo; 
+            $scope.datos.f01_redessocialesAE2 = red.checked; 
+            if($scope.datos.f01_redessocialesAE2_url == 'undefined' || $scope.datos.f01_redessocialesAE2_url == undefined || $scope.datos.f01_redessocialesAE2_url == null){
+              $scope.datos.f01_redessocialesAE2_url = '';
+            }
+          }
+          if (i==2){
+            $scope.datos.f01_redessocialesAE3_url = red.url;
+            $scope.datos.f01_redessocialesAE3 = red.tipo; 
+            $scope.datos.f01_redessocialesAE3 = red.checked; 
+            if($scope.datos.f01_redessocialesAE3_url == 'undefined' || $scope.datos.f01_redessocialesAE3_url == undefined || $scope.datos.f01_redessocialesAE3_url == null){
+              $scope.datos.f01_redessocialesAE3_url = '';
+            }
+          }
+        }
+      }
+      
+      //ofertas
+      var ofertas = data[0].tv_ofertas;
+      console.log('ofertas',ofertas);
+      for(i=0;i<ofertas.length;i++){
+        var of = JSON.parse(ofertas[i]);
+        if (i==0){ 
+          $scope.datos.f01_ofertasAE_des1 = of.oferta;
+          if($scope.datos.f01_ofertasAE_des1 == 'undefined' || $scope.datos.f01_ofertasAE_des1 == undefined || $scope.datos.f01_ofertasAE_des1 == null){
+            $scope.datos.f01_ofertasAE_des1 = '';
+          }
+        }
+        if (i==1){
+          $scope.datos.f01_ofertasAE_des2 = of.oferta;
+          if($scope.datos.f01_ofertasAE_des2 == 'undefined' || $scope.datos.f01_ofertasAE_des2 == undefined || $scope.datos.f01_ofertasAE_des2 == null){
+            $scope.datos.f01_ofertasAE_des2 = '';
+          }
+        }
+        if (i==2){
+          $scope.datos.f01_ofertasAE_des3 = of.oferta;
+          if($scope.datos.f01_ofertasAE_des3 == 'undefined' || $scope.datos.f01_ofertasAE_des3 == undefined || $scope.datos.f01_ofertasAE_des3== null){
+            $scope.datos.f01_ofertasAE_des3 = '';
+          }
+        }
+        if (i==3){
+          $scope.datos.f01_ofertasAE_des4 = of.oferta;
+          if($scope.datos.f01_ofertasAE_des4 == 'undefined' || $scope.datos.f01_ofertasAE_des4 == undefined || $scope.datos.f01_ofertasAE_des4 == null){
+            $scope.datos.f01_ofertasAE_des4 = '';
+          }
+        }
+        if (i==4){
+          $scope.datos.f01_ofertasAE_des5 = of.oferta;
+          if($scope.datos.f01_ofertasAE_des5 == 'undefined' || $scope.datos.f01_ofertasAE_des5 == undefined || $scope.datos.f01_ofertasAE_des5 == null){
+            $scope.datos.f01_ofertasAE_des5 = '';
+          }
+        }
+        
+
+      }
+
+      //catalogo
+   
+      var catalogo = results[0].tvcatalogo;
+      if(catalogo == 'null'|| catalogo == null){
+       console.log('Sin Url de catalogo');
+       document.getElementById("txt_f01_upload1").value = '';
+      }else{
+        var cataologojson = JSON.parse(catalogo);
+        var cataologojson1 = JSON.parse(cataologojson);
+        document.getElementById("txt_f01_upload1").value = cataologojson1.campo;
+      }
+      
+
     }
   }
   $scope.inicioTiendaVirtual = function () {
       console.log(sessionService.get('IDAE'));
-      console.log($rootScope.datosTiendaVirtual);
+      console.log('datos t ====>', $rootScope.datosTiendaVirtual);
       $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
 
   };

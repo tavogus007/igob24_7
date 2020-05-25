@@ -296,11 +296,10 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $rootScope.$broadcast('inicializarProdutos', $scope.datos);
         try{
             tvid = $rootScope.datosTiendaVirtual[0].idtv;
-            sessionService.set('IDTIENDAVIRTUAL', tvid);
             $scope.template         =   $scope.templates[2];
         } catch(error){
             swal('', "Debe habilitar la tienda virtual, antes de cargar sus productos.", 'warning');
-            sessionService.destroy('IDTIENDAVIRTUAL');
+            sessionService.destroy('IDTV');
             $scope.template =   "";
         }
     }
@@ -315,18 +314,18 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $rootScope.$broadcast('inicializarPagina', $scope.datos);
         try{
             tvid = $rootScope.datosTiendaVirtual[0].idtv;
-            sessionService.set('IDTIENDAVIRTUAL', tvid);
+            sessionService.set('IDTV', tvid);
             $scope.template         =   $scope.templates[3];
         } catch(error){
             swal('', "Debe habilitar la tienda virtual, antes de habilitar su página Web.", 'warning');
-            sessionService.destroy('IDTIENDAVIRTUAL');
+            sessionService.destroy('IDTV');
             $scope.template =   "";
         }
     }
     
     $scope.seleccionarPagoRender = function (tramite) {
         console.log(tramite);
-        sessionService.set('IDTIENDAVIRTUAL', 1);
+        sessionService.set('IDTV', 1);
         $scope.template         =   $scope.templates[1];
     };
     /*

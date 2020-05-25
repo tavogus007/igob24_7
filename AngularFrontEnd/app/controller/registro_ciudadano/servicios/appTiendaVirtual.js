@@ -143,6 +143,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
               r = JSON.parse(res);
               results = r.success;
               $rootScope.datosTiendaVirtual = results;
+              console.log('$rootScope.datosTiendaVirtual',$rootScope.datosTiendaVirtual);
               if (results.length == 0){
                
                 sessionService.destroy('IDTV');
@@ -150,26 +151,12 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 $rootScope.update = null;
               } else {
                 sessionService.set('IDTV', results[0].tv_idc);
-                $rootScope.nombre_tienda = results[0].tv_nombrec;
+                /*$rootScope.nombre_tienda = results[0].tv_nombrec;
                 $rootScope.pag_web_privada = results[0].tv_pagina_webc;
                 $rootScope.descrip_pagina = results[0].tv_descripcionc;
-                $rootScope.correo_tienda = results[0].tv_correoc;
-                var contactos =  JSON.stringify(results[0].tv_contactosc);
-                var contactos1 = JSON.parse(contactos);
-                console.log('contactos',contactos,contactos1);
-                var contactosF = contactos1.telfijo;
-                var contactosC = contactos1.celular1;
-                $rootScope.contactos = contactosF +'-'+ contactosC;
-                var ofertas = JSON.stringify(results[0].tv_ofertas);
-                var ofertasC = JSON.parse(ofertas);
-                $rootScope.ofertasCiu = ofertasC.ofertas1;
-                console.log('$rootScope.ofertasCiu',$rootScope.ofertasCiu);
-                var redes = JSON.stringify(results[0].tv_redesc);
-                var redes1 = JSON.parse(redes);
-                var redesface = redes1.facebook;
-                var redestwitter = redes1.twitter;
-                $rootScope.redesCiu = 'Facebook:'+''+redesface+ '-'+'Twitter:'+''+redestwitter;
-                console.log('$rootScope.redesCiu',$rootScope.redesCiu);
+                $rootScope.correo_tienda = results[0].tv_correoc;*/
+                
+                
                 $rootScope.nuevo = null;
                 $rootScope.update = 'mostrar';
               }

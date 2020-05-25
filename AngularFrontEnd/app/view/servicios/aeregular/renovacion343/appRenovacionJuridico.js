@@ -3659,6 +3659,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }
     });
 
+
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
         $scope.catactividadDesarrollada();
         if (datos.f01_id_actividad_economica) {

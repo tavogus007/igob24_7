@@ -2365,7 +2365,6 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     }
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
-        /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {       
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;

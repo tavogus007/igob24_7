@@ -3071,7 +3071,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         var taemayor = 0;
-        //DOCS OBLIGATORIOS
         if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
             for (var i = 0; i < data.licenciam.length; i++) {
                 if (parseInt(data.licenciam[i].f01_tae) >= taemayor) {

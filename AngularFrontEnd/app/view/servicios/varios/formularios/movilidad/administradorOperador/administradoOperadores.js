@@ -17,50 +17,9 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
 
   $scope.inicio = function () {
     $scope.seleccionarTramite();
+    $scope.getComboMarcaMovilidad();
+    $scope.macrodistritos();
   };
-
-  $scope.tramitesCiudadano = function(){
-    var sparam  = new reglasnegocio();
-    sparam.identificador = "RCCIUDADANO_MOV_AO";
-    sparam.parametros = '{"sidciudadano":"' + sIdCiudadano + '"}';
-    sparam.llamarregla(function(results)
-    {
-      results = JSON.parse(results);
-      $scope.tramites = results;
-      console.log($scope.tramites,888888888);
-      if($scope.tramites != '[{ }]'){
-        angular.forEach(results,function(val, index)
-        {
-          if(val['form_contenido'])
-          {
-            results[index].datos = val['form_contenido'];
-          }
-        });
-        $scope.tramitesUsuario = results;
-        $scope.tablaTramites.reload();
-      }
-    });
-  };
-
-  $scope.tablaTramites = new ngTableParams({
-    page: 1,
-    count: 4,
-    filter: {},
-    sorting: { vtra_id: 'desc' }
-  },{
-    total: $scope.tramitesUsuario.length,
-    getData: function($defer, params)
-    {
-      var filteredData = params.filter() ?
-      $filter('filter')($scope.tramitesUsuario, params.filter()) :
-      $scope.tramitesUsuario;
-      var orderedData = params.sorting() ?
-      $filter('orderBy')(filteredData, params.orderBy()) :
-      $scope.tramitesUsuario;
-      params.total($scope.tramitesUsuario.length);
-      $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-    }
-  });
 
   $scope.seleccionarTramite = function(){
     $scope.desabilita = false;
@@ -70,13 +29,11 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     }else{
       var nroDocCiu = sessionService.get('CICIUDADANO');
     }
-    console.log(nroDocCiu,'nroDocCiu');
     var opeHab = new operadoresHab();
     opeHab.nroDoc = nroDocCiu;
     opeHab.idCiu = sIdCiudadano;
     opeHab.listaOperadoresRep(function(results){
       results = JSON.parse(results).success.data; 
-      console.log(results);
       $scope.lista = true;
       $scope.operadoresUsuario = results;
       $scope.tablaOperadores.reload();
@@ -104,11 +61,11 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   });
 
   $scope.seleccionarOperador = function(ope){
-    var act = new actualizaEstadoVehCond();
+    /*var act = new actualizaEstadoVehCond();
     act.ope_id = ope.xope_id;
     act.actualiza_veh_cond(function(results){
       console.log(results)
-    });
+    });*/
     $scope.operador = ope;
     $scope.registro = true;
     $scope.datos.ope_id = ope.xope_id;
@@ -117,29 +74,18 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     $scope.datos.RO_MOD_VALUE = ope.xope_datos.RO_MOD_VALUE;
     $scope.datos.RO_DEN = ope.xope_denominacion; 
     $scope.datos.RO_MOD = ope.xope_datos.RO_MOD; 
-    console.log(1234,$scope.datos.RO_MOD_VALUE);
     $scope.listaVeh();
     $scope.listaCond();
+    $scope.getComboClaseMovilidad();
+    $scope.buscaOficinas();
   }
 
 //********************Vehiculo*****************************************
   $scope.listaVeh = function (){
-    $scope.listaTodasObservaciones();
     var veh = new listaVehiculo();
     veh.ope_id = $scope.datos.ope_id; 
     veh.lstVehiculo(function(data){
       data = JSON.parse(data).success.data;
-      for (var i = 0; i < data.length; i++) {
-        var obs = 0;
-        for (var j = 0; j < $scope.objObservaciones.length; j++) {
-          console.log(data[i].veh_id,'veh',$scope.objObservaciones[j].obs_id_tipo,111,$scope.objObservaciones[j].obs_tipo);
-          if(data[i].veh_ope_id == $scope.objObservaciones[j].obs_id_tipo && $scope.objObservaciones[j].obs_tipo.trim() == 'V'){
-            obs = obs + 1;
-          }
-        }
-        data[i].veh_obs = obs;
-      }
-      console.log('data veh',data);
       $scope.objVehiculos = data;
       $scope.tablaVehiculo.reload();
     })
@@ -170,9 +116,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     $("#valida1").hide();
     $("#valida").hide();
     $("#validaMN").hide();
-    $scope.getComboClaseMovilidad();
-    $scope.macrodistritos();
-    $scope.buscaOficinas();
     if(acc == 1){
       $scope.tituloVehiculo = "REGISTRAR NUEVO VEHICULO";
       $scope.botonV = "nu";
@@ -197,7 +140,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
         $scope.obtClaseMovilidades=results.success.data;
       }
     });
-    $scope.getComboMarcaMovilidad();
   };
 
   $scope.getComboMarcaMovilidad = function(){
@@ -340,7 +282,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
                 var expd = '';
                 break;
             }
-            $scope.macrodistritos();
             $scope.busquedaCiudadano = x[0];
             if(tipo == 'p'){
               $scope.datos.RO_NRO_P = parseInt(x[0].dtspsl_numero_casa);
@@ -393,7 +334,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       && $scope.datos.RO_ZONA_POO=='' && $scope.datos.RO_CALL_POO=='' 
       && $scope.datos.RO_NRO_POO=='')
     {
-      console.log( $scope.datos.RO_CI_P,34355);
       $scope.datos.RO_CI_POO = $scope.datos.RO_CI_P;  
       $scope.datos.RO_EXP_POO = $scope.datos.RO_EXP_P;  
       $scope.datos.RO_NOM_POO = $scope.datos.RO_NOM_P;  
@@ -422,12 +362,10 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       && $scope.datos.RO_PUE_V!=''&&$scope.datos.RO_PUE_V!=undefined 
       && $scope.datos.RO_RAD_V!=''&&$scope.datos.RO_RAD_V!=undefined && $scope.datos.RO_CI_P!='' && $scope.datos.RO_CI_P!=undefined
       && $scope.datos.RO_EXP_P!=''&&$scope.datos.RO_EXP_P!=undefined && $scope.datos.RO_NOM_P!=''&&$scope.datos.RO_NOM_P!=undefined
-      && $scope.datos.RO_PAT_P!=''&&$scope.datos.RO_PAT_P!=undefined && $scope.datos.RO_MAT_P!=''&&$scope.datos.RO_MAT_P!=undefined
       && $scope.datos.RO_CEL_P!=''&&$scope.datos.RO_CEL_P!=undefined && $scope.datos.RO_MAC_P!='' && $scope.datos.RO_MAC_P!=undefined
       && $scope.datos.RO_ZONA_P!=''&&$scope.datos.RO_ZONA_P!=undefined && $scope.datos.RO_CALL_P!='' && $scope.datos.RO_CALL_P!=undefined
       && $scope.datos.RO_NRO_P!=''&&$scope.datos.RO_NRO_P!=undefined && $scope.datos.RO_CI_POO!='' && $scope.datos.RO_CI_POO!=undefined
       && $scope.datos.RO_EXP_POO!=''&&$scope.datos.RO_EXP_POO!=undefined && $scope.datos.RO_NOM_POO!='' && $scope.datos.RO_NOM_POO!=undefined
-      && $scope.datos.RO_PAT_POO!=''&&$scope.datos.RO_PAT_POO!=undefined && $scope.datos.RO_MAT_POO!='' && $scope.datos.RO_MAT_POO!=undefined
       && $scope.datos.RO_CEL_POO!=''&&$scope.datos.RO_CEL_POO!=undefined && $scope.datos.RO_MAC_POO!='' && $scope.datos.RO_MAC_POO!=undefined
       && $scope.datos.RO_ZONA_POO!=''&&$scope.datos.RO_ZONA_POO!=undefined && $scope.datos.RO_CALL_POO!='' && $scope.datos.RO_CALL_POO!=undefined
       && $scope.datos.RO_NRO_POO!=''&&$scope.datos.RO_NRO_POO!=undefined)
@@ -487,10 +425,9 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       datosVeh.id_ofi = $scope.datos.RO_ID_SUC; 
       datosVeh.opcion = opcion;
       datosVeh.vehiculoAbm(function(results){
-        console.log(results,11111);
         results = JSON.parse(results).success.data[0];
         if(results.sp_abm_operador_vehiculo = 'Insertado'){
-          $scope.crea_tramite_lotus($scope.datos);
+          $scope.crea_tramite_lotus($scope.datos,'V');
         }
         $scope.datos = {};
         $scope.datos.ope_id = $scope.operador.xope_id;
@@ -498,7 +435,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
         $scope.datos.tip_ope = $scope.operador.xope_tipo_operador;
         $scope.datos.RO_MOD_VALUE = $scope.operador.xope_datos.RO_MOD_VALUE; 
         $scope.datos.RO_MOD = $scope.operador.xope_datos.RO_MOD; 
-        $scope.listaVeh();
         $('#vehiculo').modal('hide');
       })
     }
@@ -516,7 +452,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   }
 
   $scope.validaModelo = function (campo){
-    console.log('campo',campo,$scope.datosOfiR);
     if($scope.datos.RO_MOD_VALUE == 1){
       var tipoSuc = '';
       for(var i=0; i<$scope.datosOfiR.length;i++){
@@ -730,32 +665,17 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
             $scope.listaVeh();
           })
         }
-        console.log($scope.observaciones.length,1233);
       }) 
       /**/
     });
   }
 //*******************INICIO CONDUCTOR***************************************
-
   $scope.listaCond = function (){
-    $scope.listaTodasObservaciones();
     var cond = new listaConductor();
     cond.ope_id = $scope.datos.ope_id; 
     cond.lstConductor(function(data){
-      console.log(data);
       data = JSON.parse(data).success.data;
-      console.log('conductor',data);
-      for (var i = 0; i < data.length; i++) {
-        var obs = 0;
-        for (var j = 0; j < $scope.objObservaciones.length; j++) {
-          if(data[i].cond_ofi_id == $scope.objObservaciones[j].obs_id_tipo && $scope.objObservaciones[j].obs_tipo.trim() == 'C'){
-            obs = obs + 1;
-          }
-        }
-        data[i].cond_obs = obs;
-      }
       $scope.objConductores = data;
-      console.log(1234,$scope.objConductores);
       $scope.tablaConductor.reload();
     })
   }
@@ -781,7 +701,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
 
   $scope.crearCond = function(acc){
     $scope.mostrarOtraZona = false;
-    $scope.macrodistritos();
     if(acc == 1){
       $scope.desabilitaCon = true;
       $scope.tituloConductor = "REGISTRAR NUEVO CONDUCTOR";
@@ -847,7 +766,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
             alertify.success('Registre los datos del conductor');
             $scope.desabilitaCon = false;
           }
-          console.log(results,'results');
         })
       }
     });
@@ -858,11 +776,12 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       $scope.datos.RO_ZONA_C = $scope.datos.RO_ZONA_C_OTRO;
     }
     if($scope.datos.RO_EXP_C!='' && $scope.datos.RO_EXP_C!=undefined && $scope.datos.PLACA!='' && $scope.datos.PLACA!=undefined
-      &&$scope.datos.RO_NOM_C!='' && $scope.datos.RO_NOM_C!=undefined && $scope.datos.RO_PAT_C!='' && $scope.datos.RO_PAT_C!=undefined
-      &&$scope.datos.RO_MAT_C!='' && $scope.datos.RO_MAT_C!=undefined && $scope.datos.RO_CEL_C!='' && $scope.datos.RO_CEL_C!=undefined
-      &&$scope.datos.RO_MAC_C!='' && $scope.datos.RO_MAC_C!=undefined && $scope.datos.RO_ZONA_C!='' && $scope.datos.RO_ZONA_C!=undefined
-      &&$scope.datos.RO_CALL_C!='' && $scope.datos.RO_CALL_C!=undefined && $scope.datos.RO_NRO_C!='' && $scope.datos.RO_NRO_C!=undefined
-      &&$scope.datos.RO_CAT_C!='' && $scope.datos.RO_CAT_C!=undefined && $scope.datos.RO_TIP_C!='' && $scope.datos.RO_TIP_C!=undefined){
+      &&$scope.datos.RO_NOM_C!='' && $scope.datos.RO_NOM_C!=undefined &&$scope.datos.RO_MAC_C!='' 
+      && $scope.datos.RO_MAC_C!=undefined && $scope.datos.RO_ZONA_C!='' && $scope.datos.RO_ZONA_C!=undefined
+      &&$scope.datos.RO_CALL_C!='' && $scope.datos.RO_CALL_C!=undefined && $scope.datos.RO_NRO_C!=''
+      && $scope.datos.RO_NRO_C!=undefined
+      &&$scope.datos.RO_CAT_C!='' && $scope.datos.RO_CAT_C!=undefined && $scope.datos.RO_TIP_C!='' 
+      && $scope.datos.RO_TIP_C!=undefined){
       var id_suc = 0;
       var nom_suc = '';
       angular.forEach($scope.objVehiculos,function(val, index)
@@ -904,7 +823,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       datosCond.conductorAbm (function(data){
         data = JSON.parse(data).success.data[0];
         if(data.sp_abm_operador_conductor == 'Insertado'){
-          $scope.crea_tramite_lotus($scope.datos);
+          $scope.crea_tramite_lotus($scope.datos,'C');
         }
         $scope.datos = {};
         $scope.datos.ope_id = $scope.operador.xope_id;
@@ -912,7 +831,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
         $scope.datos.tip_ope = $scope.operador.xope_tipo_operador;
         $scope.datos.RO_MOD_VALUE = $scope.operador.xope_datos.RO_MOD_VALUE; 
         $scope.datos.RO_MOD = $scope.operador.xope_datos.RO_MOD; 
-        $scope.listaCond();
         $('#modalConductor').modal('hide');
       })
     }else{
@@ -959,7 +877,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
             $scope.listaCond();
           })
         }
-        console.log($scope.observaciones.length,1233);
       }) 
       
     });
@@ -967,18 +884,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
 
 //********************FIN DE CONDUCTOR***********************
 //**********************OBSERVACIONES************************
-  $scope.listaTodasObservaciones = function(id,tipo){
-    var obs = new observaciones();
-    obs.lstTodasObservaciones(function(results){
-      results = JSON.parse(results).success.data;
-      if(results.length != 0){
-        $scope.objObservaciones = results;
-      }else{
-        $scope.objObservaciones = results;
-      }
-    });
-  }
-
   $scope.listaObservaciones = function(id,tipo){
     var obs = new listaObservacionesCondVeh();
     obs.idtipo = id;
@@ -995,7 +900,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
           swal("", "El Conductor no tiene observaciones registradas.");
         }
       }
-      console.log(results);
     });
   }
 
@@ -1051,28 +955,8 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     })
   }
 
-  
 //*********************FIN OBSERVACIONES*********************
-  $scope.validarEnvio = function(data){
-    console.log($scope.datos);
-    swal({
-      title: 'CONFIRMAR',
-      text: '¿Se encuentra seguro de realizar el envío?',
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#DD6B55',
-      confirmButtonText: 'SI',
-      cancelButtonText: 'NO',
-      closeOnConfirm: false
-    }, function() {
-      swal.close();
-      setTimeout(function(){
-      $scope.crea_tramite_lotus(data);
-      }, 1000);
-    });
-  };
-
-  $scope.crea_tramite_lotus = function (datos) {
+  $scope.crea_tramite_lotus = function (datos,tipo) {
     $.blockUI({ css: { 
       border: 'none', 
       padding: '10px', 
@@ -1086,30 +970,14 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       var f = new Date();  
       datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
       data_form = JSON.stringify(datos);
-      var tramite = new crear_Tramite_lotus();
-      /*tramite.proid = 373;
-      tramite.actid = 1652;
-      tramite.usr_id = 0;        
+      var tramite = new crearTramiteMovilidad();
+      tramite.usr_id = 1;    
       tramite.datos = data_form;
       tramite.procodigo = 'AO';
-      tramite.macro_id = 0;
-      tramite.nodo_id = 672;
-      tramite.ws_id = 24;*/
-
-      tramite.proid = 66;
-      tramite.actid = 478;
-      tramite.usr_id = 0;        
-      tramite.datos = data_form;
-      tramite.procodigo = 'AO';
-      tramite.macro_id = 0;
-      tramite.nodo_id = 3517;
-      tramite.ws_id = 24;
-      
-      var nroTramiteEnviado = sessionService.get('NROTRAMITE');
-      tramite.tram_lotus(function(results){ 
+      tramite.tramite_linea(function(results){
         results = JSON.parse(results);
         if (results !=null) {
-          var nrot = results.success.data[0].casonro;
+          var nrot = results.success.data[0].crea_tramite_linea;
           swal({
             title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
             text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
@@ -1117,30 +985,21 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
             type: 'success',
             //timer: 5000,
           });
-          console.log('Se envio el tramite',nrot);
+          if(tipo == 'V')
+          {
+            $scope.listaVeh();
+          }
+          if(tipo == 'C')
+          {
+            $scope.listaCond();
+          }
+
         }else{
           console.log('Se envio el tramite');
         }
         $.unblockUI();
       })  
     },300);      
-  }
-
-  $scope.crear_tramite = function(datos)
-  {
-    var fecha        = new Date();
-    var fechactual   = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-    var sIdServicio  = datos;
-    var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-    var sFechaTramite= fechactual;
-    var idusu        = 3;
-    var aServicio    = new reglasnegocio();
-    aServicio.identificador = "RCCIUDADANO_68";
-    aServicio.parametros ='{"frm_tra_dvser_id":32,"frm_tra_id_ciudadano":"' + sIdCiudadano + '","frm_tra_fecha":"' + sFechaTramite + '","frm_tra_enviado":"SI","frm_tra_id_usuario":"' + idusu + '"}';
-    aServicio.llamarregla(function(data)
-    { 
-      console.log(data)  
-    });
   }
 
   //Renovacion de TIC Y TMOV
@@ -1176,21 +1035,21 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
           var f = new Date();  
           $scope.datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
           data_form = JSON.stringify($scope.datos);
-          var tramite = new crear_Tramite_lotus();
-          tramite.proid = 385;
-          tramite.actid = 1726;
-          tramite.usr_id = 0;        
+          var tramite = new crearTramiteMovilidad();
+          tramite.usr_id = 1;    
           tramite.datos = data_form;
           tramite.procodigo = 'REN';
-          tramite.macro_id = 0;
-          tramite.nodo_id = 672;
-          tramite.ws_id = 24;
-          var nroTramiteEnviado = sessionService.get('NROTRAMITE');
-          tramite.tram_lotus(function(results){ 
+          tramite.tramite_linea(function(results){
             results = JSON.parse(results);
             if (results !=null) {
-              swal("","Se procedio al envio del trámite para la renovación del TMOV","warning");
-              console.log('Se envio el tramite');
+              var nrot = results.success.data[0].crea_tramite_linea;
+              swal({
+                title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
+                text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
+                html: true,
+                type: 'success',
+                //timer: 5000,
+              });
             }else{
               console.log('Se envio el tramite');
             }
@@ -1229,27 +1088,27 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
         results = JSON.parse(results).success.data;
         if(results.length > 0){
           $scope.listaCond ();
-          console.log('results',results);
           $scope.datos.REN_ID_COND = cond.cond_ofi_id;
           $scope.datos.REN_TIPO = "COND";
           $scope.datos.REN_COND_CI = cond.cond_ci;
           var f = new Date();  
           $scope.datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
           data_form = JSON.stringify($scope.datos);
-          var tramite = new crear_Tramite_lotus();
-          tramite.proid = 385;
-          tramite.actid = 1726;
-          tramite.usr_id = 0;        
+          var tramite = new crearTramiteMovilidad();
+          tramite.usr_id = 1;    
           tramite.datos = data_form;
           tramite.procodigo = 'REN';
-          tramite.macro_id = 0;
-          tramite.nodo_id = 672;
-          tramite.ws_id = 24;
-          var nroTramiteEnviado = sessionService.get('NROTRAMITE');
-          tramite.tram_lotus(function(results){ 
+          tramite.tramite_linea(function(results){
             results = JSON.parse(results);
             if (results !=null) {
-              swal("","Se procedio al envio del trámite para la renovación del TIC","warning");
+              var nrot = results.success.data[0].crea_tramite_linea;
+              swal({
+                title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
+                text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
+                html: true,
+                type: 'success',
+                //timer: 5000,
+              });
             }else{
               console.log('No se envio el tramite');
             }

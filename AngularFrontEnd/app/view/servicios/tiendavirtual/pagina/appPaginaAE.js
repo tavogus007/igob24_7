@@ -5,9 +5,13 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
     $scope.tablaOfertas = {};
   
     
-    
+    var clsIniciarCamposInternet = $rootScope.$on('inicializarPagina', function(event, data){
+      $scope.inicioPaginaWeb();
+    });
     $scope.inicioPaginaWeb = function () {
-      $scope.idAe = sessionService.get("IDAE");
+      //$scope.idAe = sessionService.get("IDAE");
+      $scope.getProductos(sessionService.get("IDAE"),sessionService.get("IDTV"));
+
         /*$scope.update = false;
         $scope.nuevo = false;
         $scope.mostrarTxt = false; */
@@ -19,6 +23,24 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
     $scope.valida = 0;
     
     $rootScope.archivosProducto = new Array();
+    $scope.getProductos = function(usuario,id_ae){
+        $.blockUI();
+        try{
+
+          var datosProducto = new dataProducto();
+          datosProducto.idtv = id_ae;
+          datosProducto.listarProductoTV(function(response){
+            resultado = JSON.parse(response);
+            $scope.obtDatos = resultado.success;
+            console.log($scope.obtDatos);
+            $rootScope.productosPW = $scope.obtDatos;
+          });
+        } catch(error){
+          console.log(error);
+        }
+        $.unblockUI();
+    };
+
 
     $scope.cambioEstadB = function(dato){
       console.log("-------------------------");
@@ -47,24 +69,9 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       newstr = newstr.replace('}"]', '}]');
       re = /\\"/gi;
       newRedes = newstr.replace(re, '"');
-
-      console.log(newContactos);
-      console.log(newOfertas);
-      console.log(newRedes);
-      console.log("-------------------------");
-            /*
-            soid:123456
-            stitulo:DON POLLO
-            sdescripcion:POLLO PARA LLEVAR
-            scontactos:[{"tipo":"CELULAR", "valor":"74086316" },{ "tipo":"CELULAR", "valor":"74089584" }]
-            sofertas:[{ "tipo":"ofertas", "oferta":"lunes 2x1" }, { "tipo":"ofertas", "oferta":"martes todo lo que puedas comer" }, { "tipo":"ofertas", "oferta":"" }, { "tipo":"ofertas", "oferta":"" }, { "tipo":"ofertas", "oferta":"" }]↵
-            sredes:[{ "tipo":"facebook", "checked":"true", "url":"http://facebok.com/pizza" }]
-            spagina:http
-            scorreo:ger
-            sproductos:[{"celular":"74086316"}]
-            stv:48
-            */
-      
+      console.log(JSON.stringify($rootScope.productosPW));
+      console.log($rootScope.productosPW);
+      console.log("-*-*-*-*-*-*-*-*-*-*-");
       $.ajax({
           url:CONFIG.API_URL_DMS_HTML+'elaborarPdf/elaborar/generadorHTML.php',
           type:"post",
@@ -77,7 +84,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
               "sredes": newRedes,
               "spagina": $rootScope.datosTiendaVirtual[0].tv_pagina_webc,
               "scorreo": $rootScope.datosTiendaVirtual[0].tv_correoc,
-              "sproductos": '[]',
+              "sproductos": JSON.stringify($rootScope.productosPW),
               "stv": $rootScope.datosTiendaVirtual[0].tv_idc
               //"stv": sessionService.get('IDTV')
           },

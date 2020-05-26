@@ -145,18 +145,11 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
               $rootScope.datosTiendaVirtual = results;
               console.log('$rootScope.datosTiendaVirtual',$rootScope.datosTiendaVirtual);
               if (results.length == 0){
-               
-                sessionService.destroy('IDTV');
                 $rootScope.nuevo = 'mostrar';
                 $rootScope.update = null;
               } else {
+                //alert(results[0].tv_idc);
                 sessionService.set('IDTV', results[0].tv_idc);
-                /*$rootScope.nombre_tienda = results[0].tv_nombrec;
-                $rootScope.pag_web_privada = results[0].tv_pagina_webc;
-                $rootScope.descrip_pagina = results[0].tv_descripcionc;
-                $rootScope.correo_tienda = results[0].tv_correoc;*/
-                
-                
                 $rootScope.nuevo = null;
                 $rootScope.update = 'mostrar';
               }
@@ -282,11 +275,15 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         sessionService.set('IDAE', tramite.IdActividad);
         $scope.obtTiendaVirtual();
         $rootScope.$broadcast('inicializarCampos', $scope.datos);
+        $scope.sIdAeGrilla  =   tramite.IdActividad;
+
     }
     $scope.addPagosAE = function (tramite) {
         $scope.template =   "";
         $scope.seleccionarPagoRender(tramite);
         sessionService.set('IDAE', tramite.IdActividad);
+        $scope.sIdAeGrilla  =   tramite.IdActividad;
+
         console.log(tramite);  
     }
     $scope.addProductoAE = function (tramite) {
@@ -294,6 +291,8 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         sessionService.set('IDAE', tramite.IdActividad);
         $scope.obtTiendaVirtual();
         $rootScope.$broadcast('inicializarProdutos', $scope.datos);
+        $scope.sIdAeGrilla  =   tramite.IdActividad;
+
         try{
             tvid = $rootScope.datosTiendaVirtual[0].idtv;
             $scope.template         =   $scope.templates[2];
@@ -312,9 +311,10 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $scope.obtTiendaVirtual();
         $scope.obtPagina();
         $rootScope.$broadcast('inicializarPagina', $scope.datos);
+        $scope.sIdAeGrilla  =   tramite.IdActividad;
+
         try{
             tvid = $rootScope.datosTiendaVirtual[0].idtv;
-            sessionService.set('IDTV', tvid);
             $scope.template         =   $scope.templates[3];
         } catch(error){
             swal('', "Debe habilitar la tienda virtual, antes de habilitar su página Web.", 'warning');
@@ -328,34 +328,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         sessionService.set('IDTV', 1);
         $scope.template         =   $scope.templates[1];
     };
-    /*
-    $scope.seleccionarDatosRender = function (tramite) {
-        console.log(tramite);
-        //sessionService.set('IDTIENDAVIRTUAL', tramite.vidae);
-        $scope.template         =   $scope.templates[0];
-    };
-    $scope.seleccionarProductoRender = function (tramite) {
-        console.log(tramite);
-        sessionService.set('IDTIENDAVIRTUAL', 1);
 
-        $scope.template         =   $scope.templates[2];
-    };
-    $scope.seleccionarPaginaRender = function (tramite) {
-        console.log(tramite);
-        sessionService.set('IDAE', tramite.IdActividad);
-        $scope.obtTiendaVirtual();
-        $rootScope.$broadcast('inicializarPagina', $scope.datos);
-        try{
-            tvid = $rootScope.datosTiendaVirtual[0].idtv;
-            sessionService.set('IDTIENDAVIRTUAL', tvid);
-            $scope.template         =   $scope.templates[3];
-        } catch(error){
-            swal('', "Debe habilitar la tienda virtual, antes de cargar sus productos.", 'warning');
-            sessionService.destroy('IDTIENDAVIRTUAL');
-            $scope.template =   "";
-        }
-    };
-    */
 
     
     $scope.recuperarDatosRegistro = function(){

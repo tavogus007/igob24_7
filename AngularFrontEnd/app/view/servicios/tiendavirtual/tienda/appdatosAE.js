@@ -47,7 +47,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
       //contactos
       var contactos = data[0].tv_contactosc;
-        
+      console.log('contactos',contactos);
         for(i=0;i<contactos.length;i++){
           var conta = JSON.parse(contactos[i]);
           if (i==0){ 
@@ -79,7 +79,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $('input:checkbox[name=f01_redessocialesAE1]:checked').val();
       ///if (redes == {} || redes == [] || redes == '{}' || redes == '[]'){
       if (redes.length==''){
-        console.log('vacio', redes);
         $scope.datos.f01_redessocialesAE1_url = "";
         $scope.datos.f01_redessocialesAE1 = "";
         $scope.datos.f01_redessocialesAE2_url = "";
@@ -93,10 +92,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
             $scope.datos.f01_redessocialesAE1_url = red.url;
             $scope.datos.f01_redessocialesAE1 = red.tipo; 
             $scope.datos.f01_redessocialesAE1 = red.checked; 
-            if ($scope.datos.f01_redessocialesAE1 == true){
-              console.log(111,$scope.datos.f01_redessocialesAE1);
-              $('input:checkbox[name=f01_redessocialesAE1]').attr('checked',true);
-              document.getElementById("f01_redessocialesAE1").checked;
+            if ($scope.datos.f01_redessocialesAE1 == 'true' || $scope.datos.f01_redessocialesAE1 ==   true){
+              $scope.datos.f01_redessocialesAE1 = true; 
             }
             if($scope.datos.f01_redessocialesAE1_url == 'undefined' || $scope.datos.f01_redessocialesAE1_url == undefined || $scope.datos.f01_redessocialesAE1_url == null){
               $scope.datos.f01_redessocialesAE1_url = '';
@@ -106,6 +103,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
             $scope.datos.f01_redessocialesAE2_url = red.url;
             $scope.datos.f01_redessocialesAE2 = red.tipo; 
             $scope.datos.f01_redessocialesAE2 = red.checked; 
+            if ($scope.datos.f01_redessocialesAE2 == 'true' || $scope.datos.f01_redessocialesAE2 == true){
+              $scope.datos.f01_redessocialesAE2 = true; 
+            }
             if($scope.datos.f01_redessocialesAE2_url == 'undefined' || $scope.datos.f01_redessocialesAE2_url == undefined || $scope.datos.f01_redessocialesAE2_url == null){
               $scope.datos.f01_redessocialesAE2_url = '';
             }
@@ -114,6 +114,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
             $scope.datos.f01_redessocialesAE3_url = red.url;
             $scope.datos.f01_redessocialesAE3 = red.tipo; 
             $scope.datos.f01_redessocialesAE3 = red.checked; 
+            if ($scope.datos.f01_redessocialesAE3 == 'true' || $scope.datos.f01_redessocialesAE3 == true){
+              $scope.datos.f01_redessocialesAE3 = true; 
+            }
             if($scope.datos.f01_redessocialesAE3_url == 'undefined' || $scope.datos.f01_redessocialesAE3_url == undefined || $scope.datos.f01_redessocialesAE3_url == null){
               $scope.datos.f01_redessocialesAE3_url = '';
             }
@@ -123,7 +126,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       
       //ofertas
       var ofertas = data[0].tv_ofertas;
-      console.log('ofertas',ofertas);
+      //console.log('ofertas',ofertas);
       for(i=0;i<ofertas.length;i++){
         var of = JSON.parse(ofertas[i]);
         if (i==0){ 
@@ -163,7 +166,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       //catalogo
    
       var catalogo = results[0].tvcatalogo;
-      if(catalogo == 'null'|| catalogo == null){
+      if(catalogo == 'null' || catalogo == null || catalogo == '[]' || catalogo == [] || catalogo == ''){
        console.log('Sin Url de catalogo');
        document.getElementById("txt_f01_upload1").value = '';
       }else{
@@ -177,7 +180,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   }
   $scope.inicioTiendaVirtual = function () {
       console.log(sessionService.get('IDAE'));
-      console.log('datos t ====>', $rootScope.datosTiendaVirtual);
+      //console.log('datos t ====>', $rootScope.datosTiendaVirtual);
       $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
 
   };
@@ -250,7 +253,100 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           swal('', "Error al Activar la Tienda Virtual", 'error');
       }
     });
+  } 
+  $scope.actualizarDatosAE = function(data){
+    //console.log('datamod',data);
+    var datosTiendaVirtual = new dataTiendaVirtual();
+    datosTiendaVirtual.idtv = sessionService.get("IDTV");
+    datosTiendaVirtual.ae_id = sessionService.get("IDAE");
+    datosTiendaVirtual.categoria = data.f01_categoria;
+    datosTiendaVirtual.nombre = data.f01_nombreTV;
+    datosTiendaVirtual.correo = data.f01_correoTV;
+    datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
+    datosTiendaVirtual.descripcion = data.f01_descripcionTV;
+    //actualiza json contactos
+    datosTiendaVirtual.contactos = [];
+    $rootScope.contactosArray = [];
+    var myJSON = '';
+      if (data.f01_contacto1=='TELÉFONO' || data.f01_contacto1=='CELULAR'){
+        myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '" }';
+        $rootScope.contactosArray.push(myJSON);
+      }
+      if (data.f01_contacto2=='TELÉFONO' || data.f01_contacto2=='CELULAR'){
+        myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '" }';
+        $rootScope.contactosArray.push(myJSON);
+      }
+      if (data.f01_contacto3=='TELÉFONO' || data.f01_contacto3=='CELULAR'){
+        myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '" }';
+        $rootScope.contactosArray.push(myJSON);
+      }
+    datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
+
+    //actualiza json redes
+    datosTiendaVirtual.redes_sociales = [];
+    $rootScope.redesSocialesArray = [];  
+    myJSON = '';
+      if (data.f01_redessocialesAE1=='true' || data.f01_redessocialesAE1==true){
+        myJSON = '{ "tipo":"facebook", "checked":"true", "url":"' + data.f01_redessocialesAE1_url + '" }';
+        $rootScope.redesSocialesArray.push(myJSON);
+      }
+      if (data.f01_redessocialesAE2=='true' || data.f01_redessocialesAE2==true){
+        myJSON = '{ "tipo":"twitter", "checked":"true", "url":"' + data.f01_redessocialesAE2_url + '" }';
+        $rootScope.redesSocialesArray.push(myJSON);
+      }
+      if (data.f01_redessocialesAE3=='true' || data.f01_redessocialesAE3==true){
+        myJSON = '{ "tipo":"instagram", "checked":"true", "url":"' + data.f01_redessocialesAE3_url + '" }';
+        $rootScope.redesSocialesArray.push(myJSON);
+      }
+    datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
+      //actualiza json ofertas
+    datosTiendaVirtual.ofertas = [];
+    $rootScope.ofertasArray = [];
+    myJSONOfertas = '';
+    var myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des1 + '" }';
+    $rootScope.ofertasArray.push(myJSONOfertas);
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des2 + '" }';
+    $rootScope.ofertasArray.push(myJSONOfertas);
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des3 + '" }';
+    $rootScope.ofertasArray.push(myJSONOfertas);
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des4 + '" }';
+    $rootScope.ofertasArray.push(myJSONOfertas);
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des5 + '" }';
+    $rootScope.ofertasArray.push(myJSONOfertas); 
+    datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray);
+
+    datosTiendaVirtual.catalogo = JSON.stringify($rootScope.archivosProducto);
+    datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
+    if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
+        datosTiendaVirtual.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_MATERNO') + ' ' + sessionService.get('US_PATERNO');
+    } else {
+        datosTiendaVirtual.usr = "juridico";
+    }
+    datosTiendaVirtual.actualizarTiendaVirtual(function(response){
+      console.log(response);
+      results = JSON.parse(response);
+      results = results.success;
+      if(results.length > 0){
+          $.unblockUI();
+        
+          swal('', "La información de la Tienda Virtual fue actualizada ", 'success');
+          $rootScope.nuevo = null;
+          
+         //$rootScope.update = "mostrar";
+          window.location.href = "#dashboard";
+          
+         
+      } else {
+          $.unblockUI();
+          swal('', "Error al Actualizar información de la Tienda Virtual", 'error');
+          $location.path('dashboard');
+      }
+    });
   }
+
+
+
+
   $scope.cambiarFile = function(obj, valor){
       $scope.datos[obj.name] = valor;
       setTimeout(function(){

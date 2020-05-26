@@ -19,6 +19,84 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
     $scope.valida = 0;
     
     $rootScope.archivosProducto = new Array();
+
+    $scope.cambioEstadB = function(dato){
+      console.log("-------------------------");
+      console.log(dato);
+      console.log($rootScope.datosTiendaVirtual);
+      var re = /}","{/gi;
+      var str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_contactosc);
+      var newstr = str.replace(re, "},{");
+      newstr = newstr.replace('["{', '[{');
+      newstr = newstr.replace('}"]', '}]');
+      re = /\\"/gi;
+      newContactos = newstr.replace(re, '"');
+
+      re = /}","{/gi;
+      str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_ofertas);
+      newstr = str.replace(re, "},{");
+      newstr = newstr.replace('["{', '[{');
+      newstr = newstr.replace('}"]', '}]');
+      re = /\\"/gi;
+      newOfertas = newstr.replace(re, '"');
+
+      re = /}","{/gi;
+      str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_redesc);
+      newstr = str.replace(re, "},{");
+      newstr = newstr.replace('["{', '[{');
+      newstr = newstr.replace('}"]', '}]');
+      re = /\\"/gi;
+      newRedes = newstr.replace(re, '"');
+
+      console.log(newContactos);
+      console.log(newOfertas);
+      console.log(newRedes);
+      console.log("-------------------------");
+            /*
+            soid:123456
+            stitulo:DON POLLO
+            sdescripcion:POLLO PARA LLEVAR
+            scontactos:[{"tipo":"CELULAR", "valor":"74086316" },{ "tipo":"CELULAR", "valor":"74089584" }]
+            sofertas:[{ "tipo":"ofertas", "oferta":"lunes 2x1" }, { "tipo":"ofertas", "oferta":"martes todo lo que puedas comer" }, { "tipo":"ofertas", "oferta":"" }, { "tipo":"ofertas", "oferta":"" }, { "tipo":"ofertas", "oferta":"" }]↵
+            sredes:[{ "tipo":"facebook", "checked":"true", "url":"http://facebok.com/pizza" }]
+            spagina:http
+            scorreo:ger
+            sproductos:[{"celular":"74086316"}]
+            stv:48
+            */
+      
+      $.ajax({
+          url:CONFIG.API_URL_DMS_HTML+'elaborarPdf/elaborar/generadorHTML.php',
+          type:"post",
+          data:{
+              "soid": sessionService.get('IDCIUDADANO'),
+              "stitulo": $rootScope.datosTiendaVirtual[0].tv_nombrec,
+              "sdescripcion": $rootScope.datosTiendaVirtual[0].tv_descripcionc,
+              "scontactos": newContactos,
+              "sofertas":  newOfertas,
+              "sredes": newRedes,
+              "spagina": $rootScope.datosTiendaVirtual[0].tv_pagina_webc,
+              "scorreo": $rootScope.datosTiendaVirtual[0].tv_correoc,
+              "sproductos": '[]',
+              "stv": $rootScope.datosTiendaVirtual[0].tv_idc
+              //"stv": sessionService.get('IDTV')
+          },
+          success:function(response){
+              console.log(response);
+              var urlData = response;
+              $rootScope.urlIndex = urlData;
+              //$scope.InsertarDocumentoTv(response);
+              /*
+              $rootScope.datosEnv.declaracion_jurada = urlData;
+              $scope.datos.declaracion_jurada = urlData;
+              document.signupForm.btnFormLicencia.disabled=false;
+              $scope.guardarDatos($rootScope.datosEnv);
+              $.unblockUI();
+              */
+          }
+      });
+      
+    }
   
       /////////////////////////////////////////////////////////////////
       $scope.newProducto =function(){

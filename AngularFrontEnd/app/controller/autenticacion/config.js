@@ -59,6 +59,9 @@ var jsonURLS    =   {
 
     CONEXION_PUENTE_IMG: "http://200.105.139.183:9090",
     API_URL_DMS_2: "http://192.168.5.141:80/dreamfactory/dist/generarIgobPdf/",
+    API_URL_DMS_HTML: "http://192.168.5.141:80/dreamfactory/dist/generadorPaginas/",
+          ///opt/dreamfactory-1.9.4-2/apps/dreamfactory/htdocs/web/dreamfactory/dist/generadorPaginas/elaborarPdf/elaborar
+    
     CONEXION_SERVICIOATM: "http://172.19.161.3/",//apiATM,
     CONEXION_SERVICIOMASCOTAS: "http://131.0.0.11:90/", //externo MASCOTAS
     SERVICIO_URL_MASCOTAS:"http://40.117.46.159/dreamfactory/crearImagenBase64.php", //externo MASCOTAS

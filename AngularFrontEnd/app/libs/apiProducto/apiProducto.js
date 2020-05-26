@@ -37,6 +37,8 @@ function ejecutarAjaxProducto(vurlCompProducto, vTypeCall, vDataCall, vFunctionR
 };
 
 function dataTiendaVirtual(){
+    
+    this.idTv,
     this.ae_id,
     this.categoria,
     this.nombre,
@@ -58,6 +60,27 @@ dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
       "stv_ae_id":this.ae_id,
       "stv_categoria_id":this.categoria,
 
+      "stv_nombre":this.nombre,
+      "stv_correo":this.correo,
+      "stv_pagina_web":this.pagina_web,
+      "stv_descripcion":this.descripcion,
+      "stv_contactos":this.contactos,
+      "stv_redes_sociales":this.redes_sociales,
+      "stv_ofertas":this.ofertas,
+      "stv_oid":this.oid,
+      "stv_usr":this.usr,    
+      "stv_catalogo":this.catalogo    
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+dataTiendaVirtual.prototype.actualizarTiendaVirtual = function (functionResp)
+{
+    urlCompProducto = "/updatetiendavirtual";
+    typeCall = "post";
+    dataParams = {
+      "idtv":this.idtv,
+      "stv_ae_id":this.ae_id,
+      "stv_categoria_id":this.categoria,
       "stv_nombre":this.nombre,
       "stv_correo":this.correo,
       "stv_pagina_web":this.pagina_web,

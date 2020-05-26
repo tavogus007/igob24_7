@@ -4,11 +4,9 @@
     <script src="../../libs/apiMov/api_mov.js"></script>
     <link href="../../libs/css/sweetalert.css" rel="stylesheet"></link>
     <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
-    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
-    <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/administradorOperador/administradoOperadores.js"></script>
+¡    <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/administradorOperador/administradoOperadores.js"></script>
     <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script> 
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" /> 
-    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
     <link href="../../libs/css/select2.min.css" rel="stylesheet" async/>
     <script src="../../libs/js/select2.min.js" async></script>
   </head>
@@ -102,7 +100,6 @@
     border-color: #f8ac59;
     color: #FFFFFF;
   }
-
 
 </style>
 <script type="text/javascript">
@@ -224,10 +221,10 @@
                         <td class="text-center" style="width:8%" data-title="'Color'" sortable="'RO_COLOR_V'" >
                           {{veh.veh_datos.RO_COLOR_V}}
                         </td>
-                        <td class="text-center" style="width:8%" data-title="'Estado'" sortable="'veh_estado_veh'" filter="{'veh_estado_veh':'text'}">
+                        <td class="text-center" style="width:8%" data-title="'Estado'" sortable="'veh_ope_estado_veh'" filter="{'veh_ope_estado_veh':'text'}">
                           {{veh.veh_ope_estado_veh}}
                         </td>
-                        <td class="text-center" style="width:10%" data-title="'Fecha de Vencimiento TMOV'" sortable="'veh_vigencia_a'" filter="{'veh_vigencia_a':'text'}">
+                        <td class="text-center" style="width:10%" data-title="'Fecha de Vencimiento TMOV'">
                           {{veh.veh_ope_vigencia_a | date:'dd-MM-yyyy'}}
                         </td>
                       </tr>
@@ -435,17 +432,17 @@
                                       </div>
                                       <div class="col-md-4">
                                         <div class="form-group">
-                                          <label class="control-label">Paterno:</label>
+                                          <label class="control-label">Primer Apellido:</label>
                                           <div class="controls">
-                                            <input id="RO_PAT_P" name="RO_PAT_P" type="text"  class="form-control" placeholder="Paterno" ng-model="datos.RO_PAT_P" onkeyup="validaLetras(this);" required ng-disabled="desabilitaVeh"/>
+                                            <input id="RO_PAT_P" name="RO_PAT_P" type="text"  class="form-control" placeholder="Primer Apellido" ng-model="datos.RO_PAT_P" onkeyup="validaLetras(this);"  ng-disabled="desabilitaVeh"/>
                                           </div>
                                         </div>
                                       </div>
                                       <div class="col-sm-4">
                                         <div class="form-group">
-                                          <label class="control-label">Materno:</label>
+                                          <label class="control-label">Segundo Apellido:</label>
                                           <div class="controls">
-                                            <input id="RO_MAT_P" name="RO_MAT_P" type="text" class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_P"  onkeyup="validaLetras(this);" required ng-disabled="desabilitaVeh"/>
+                                            <input id="RO_MAT_P" name="RO_MAT_P" type="text" class="form-control" placeholder="Segundo Apellido" ng-model="datos.RO_MAT_P"  onkeyup="validaLetras(this);"  ng-disabled="desabilitaVeh"/>
                                           </div>
                                         </div>
                                       </div>  
@@ -509,7 +506,7 @@
                                         <div class="form-group">
                                           <label class="control-label">Nro:</label>
                                           <div class="controls">
-                                            <input id="RO_NRO_P" name="RO_NRO_P" type="number" class="form-control" placeholder="Nro" ng-model="datos.RO_NRO_P"    required ng-disabled="desabilitaVeh"/>
+                                            <input id="RO_NRO_P" name="RO_NRO_P" type="text" class="form-control" placeholder="Nro" ng-model="datos.RO_NRO_P"    required ng-disabled="desabilitaVeh"/>
                                           </div>
                                         </div>
                                       </div>  
@@ -562,17 +559,17 @@
                                       </div>                            
                                       <div class="col-md-4">
                                         <div class="form-group">
-                                          <label class="control-label">Paterno:</label>
+                                          <label class="control-label">Primer Apellido:</label>
                                           <div class="controls">
-                                            <input id="RO_PAT_POO" name="RO_PAT_POO" type="text"  class="form-control" placeholder="Paterno" ng-model="datos.RO_PAT_POO" onkeyup="validaLetras(this);" required ng-disabled="desabilitaVeh"/>
+                                            <input id="RO_PAT_POO" name="RO_PAT_POO" type="text"  class="form-control" placeholder="Primer Apellido" ng-model="datos.RO_PAT_POO" onkeyup="validaLetras(this);"  ng-disabled="desabilitaVeh"/>
                                           </div>
                                         </div>
                                       </div>
                                       <div class="col-md-4">
                                         <div class="form-group">
-                                          <label class="control-label">Materno:</label>
+                                          <label class="control-label">Segundo Apellido:</label>
                                           <div class="controls">
-                                            <input id="RO_MAT_POO" name="RO_MAT_POO" type="text"  class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_POO"  onkeyup="validaLetras(this);" required ng-disabled="desabilitaVeh"/>
+                                            <input id="RO_MAT_POO" name="RO_MAT_POO" type="text"  class="form-control" placeholder="Segundo Apellido" ng-model="datos.RO_MAT_POO"  onkeyup="validaLetras(this);"  ng-disabled="desabilitaVeh"/>
                                           </div>
                                         </div>
                                       </div>                                                                 <div class="col-md-4">
@@ -634,7 +631,7 @@
                                         <div class="form-group">
                                           <label class="control-label">Nro:</label>
                                           <div class="controls">
-                                            <input id="RO_NRO_POO" name="RO_NRO_POO" type="number"  class="form-control" placeholder="Nro" ng-model="datos.RO_NRO_POO"  style="text-transform:uppercase;" required ng-disabled="desabilitaVeh"/>
+                                            <input id="RO_NRO_POO" name="RO_NRO_POO" type="text"  class="form-control" placeholder="Nro" ng-model="datos.RO_NRO_POO"  style="text-transform:uppercase;" required ng-disabled="desabilitaVeh"/>
                                           </div>
                                         </div>
                                       </div> 
@@ -731,7 +728,7 @@
                         <td class="text-center" style="width:10%" data-title="'Estado'" sortable="'cond_ofi_estado_doc'" filter="{'cond_ofi_estado_doc':'text'}">
                           {{cond.cond_ofi_estado_doc}}
                         </td>
-                        <td class="text-center" style="width:11%" data-title="'Fecha de Vencimiento TIC'" sortable="'cond_ofi_vigencia_a'" filter="{'cond_ofi_vigencia_a':'text'}">
+                        <td class="text-center" style="width:11%" data-title="'Fecha de Vencimiento TIC'">
                           {{cond.cond_ofi_vigencia_a | date:'dd-MM-yyyy'}}
                         </td>
                       </tr>
@@ -812,17 +809,17 @@
                                 </div>
                                 <div class="col-md-4">
                                   <div class="form-group">
-                                    <label class="control-label">Paterno:</label>
+                                    <label class="control-label">Primer Apellido:</label>
                                     <div class="controls">
-                                      <input id="RO_PAT_C" name="RO_PAT_C" type="text"  class="form-control" placeholder="Paterno" ng-disabled="desabilitaCon" ng-model="datos.RO_PAT_C"   onkeyup="validaLetras(this);" required />
+                                      <input id="RO_PAT_C" name="RO_PAT_C" type="text"  class="form-control" placeholder="Primer Apellido" ng-disabled="desabilitaCon" ng-model="datos.RO_PAT_C"   onkeyup="validaLetras(this);" />
                                     </div>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <div class="form-group">
-                                    <label class="control-label">Materno:</label>
+                                    <label class="control-label">Segundo Apellido:</label>
                                     <div class="controls">
-                                      <input id="RO_MAT_C" name="RO_MAT_C" type="text"  class="form-control" placeholder="Materno" ng-disabled="desabilitaCon" ng-model="datos.RO_MAT_C"  onkeyup="validaLetras(this);" required />
+                                      <input id="RO_MAT_C" name="RO_MAT_C" type="text"  class="form-control" placeholder="Segundo Apellido" ng-disabled="desabilitaCon" ng-model="datos.RO_MAT_C"  onkeyup="validaLetras(this);" />
                                     </div>
                                   </div>
                                 </div>   
@@ -846,7 +843,7 @@
                                   <div class="form-group">
                                     <label class="control-label">Celular:</label>
                                     <div class="controls">
-                                      <input id="RO_CEL_C" name="RO_CEL_C" type="number"  class="form-control" placeholder="Celular" ng-disabled="desabilitaCon" ng-model="datos.RO_CEL_C"  style="text-transform:uppercase;" required />
+                                      <input id="RO_CEL_C" name="RO_CEL_C" type="number"  class="form-control" placeholder="Celular" ng-disabled="desabilitaCon" ng-model="datos.RO_CEL_C"  style="text-transform:uppercase;" />
                                     </div>
                                   </div>
                                 </div> 
@@ -901,14 +898,18 @@
                                     </div>
                                   </div>
                                 </div>
-                                <div class="col-md-4">
-                                  <div class="form-group">
-                                    <label class="control-label">Nro:</label>
-                                    <div class="controls">
-                                      <input id="RO_NRO_C" name="RO_NRO_C" type="number"  class="form-control" ng-disabled="desabilitaCon" placeholder="Nro" ng-model="datos.RO_NRO_C"  style="text-transform:uppercase;" required />
-                                    </div>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label class="control-label">Nro:</label>
+                                        <div class="controls">
+                                          <input id="RO_NRO_C" name="RO_NRO_C" type="text"  class="form-control" ng-disabled="desabilitaCon" placeholder="Nro" ng-model="datos.RO_NRO_C"  style="text-transform:uppercase;" required />
+                                        </div>
+                                      </div>
+                                    </div>   
                                   </div>
-                                </div>                                                                                                          
+                                </div>                                                                                                       
                                 <div class="col-md-12">
                                   <h3><label for="url">Datos adicionales del conductor</label></h3>
                                 </div>                                                      

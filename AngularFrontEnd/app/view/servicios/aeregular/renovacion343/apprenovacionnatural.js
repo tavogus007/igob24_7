@@ -19,6 +19,7 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
     $scope.sCategoria = true;
     $scope.smultiservicios = false;
     $scope.bloqueobtn = "mostrar";
+    $scope.multipleNatural = {};
 
     $scope.getRequisitosCategoria = function(idCategoria, persona){
         if(persona == 'NATURAL'){
@@ -284,8 +285,9 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
         })
     }
 
+    $scope.multiple.f01_cat_agrupadamdescripcion = 'PRUEBA VALOR DE INCIIO';
 
-    $scope.LicenciaXCategoriaM = function(idDesarrolladaM,superficie){
+    $scope.LicenciaXCategoriaMultiservicioRen = function(idDesarrolladaM,superficie){
         //$scope.datos.rdTipoTramite = 'NUEVO';
         $.blockUI();
         datoObjectFile1 = new Object();
@@ -298,29 +300,34 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
             nDatosLicM.getDatos_Licencia(function(resDatosLicM){
                 var obtLicM = JSON.parse(resDatosLicM);
                 var datosLicM = obtLicM.success.dataSql;
-                $scope.multiple = datosLicM;
-                $scope.multiple.f01_tipo_licmid = datosLicM[0].idTipoLicencia;
-                $scope.multiple.f01_tipo_licmdescrip = datosLicM[0].TipoLicenciaDescripcion;
-                $scope.multiple.f01_cat_agrupadamid = datosLicM[0].idActividadDesarrollada;
-                $scope.multiple.f01_cat_agrupadamdescrip = datosLicM[0].ADDescripcion;
-                $scope.multiple.f01_act_desarrolladamid = idDesarrolladaM;
+                //$scope.multiple = datosLicM;
+                $scope.multipleNatural.f01_tipo_licmid = datosLicM[0].idTipoLicencia;
+                $scope.multipleNatural.f01_tipo_licmdescrip = datosLicM[0].TipoLicenciaDescripcion;
+                $scope.multipleNatural.f01_cat_agrupadamid = datosLicM[0].idActividadDesarrollada;
+                $scope.multipleNatural.f01_cat_agrupadamdescrip = datosLicM[0].ADDescripcion;
+                $scope.multipleNatural.f01_act_desarrolladamid = idDesarrolladaM;
                 var combox      = document.getElementById('f01_act_desarrolladamid');
                 selected2   = combox.options[combox.selectedIndex].text;
-                $scope.multiple.f01_act_desarrolladamdescrip  = selected2;
-                $scope.multiple.f01_tae  = datosLicM[0].tae;
+                $scope.multipleNatural.f01_act_desarrolladamdescrip  = selected2;
+                $scope.multipleNatural.f01_tae  = datosLicM[0].tae;
+                console.log($scope.multipleNatural);
                 $scope.getRequisitosFormulario(datosLicM[0].idActividadDesarrollada,$scope.datos.f01_tipo_per);
                 $.unblockUI();
+                //$('#f01_cat_agrupadamdescrip').val(datosLicM[0].ADDescripcion);
+                //$('#f01_tipo_licmdescrip').val(datosLicM[0].TipoLicenciaDescripcion);
+                $rooSscope.$apply();
             });
         }catch(e){
             console.log("Error en la actividad desarrollada");
         }
+
     }
 
 
     $scope.guardarLicencia = function(licencia){
         $scope.dscripcionlic ={};
         if(licencia.f01_tipo_licmid =='' || licencia.f01_tipo_licmid == null || licencia.f01_cat_agrupadamid =='' || licencia.f01_cat_agrupadamid == null ) {
-            swal('', 'Llene lo campos requeridos para la Catergoria Multiple  ', 'error');
+            swal('', 'Llene lo campos requeridos para la Categoria Multiple  ', 'error');
         } else {
             var id=0
             if($scope.datos.licenciam =='' || $scope.datos.licenciam == null || $scope.datos.licenciam =="undefined" ){
@@ -354,7 +361,7 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
                     f01_catagrp_principal: $scope.f01_catagrp_principal
                 });
                 $scope.licdes=[];
-                $scope.multiple=[];
+                $scope.multipleNatural=[];
                 $scope.dscripcionlic = {};
                 $scope.multiple.f01_act_desarrolladamid = "";
                 document.getElementById("f01_act_desarrolladamid").value='';
@@ -1449,6 +1456,8 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
     $scope.nroOrdenActividiadEconomicaActual  =   "";
     $scope.idContribuyenteAEActual  =   "";
 
+
+
     $scope.selActividadEconomica =  function(tramite){
         var fechatram = "";
         var aniotram = "";
@@ -1682,6 +1691,7 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
         }
         return deferred.promise;
     }
+
 
     $scope.validarActividadEconomica  =   function(){
         $.blockUI();

@@ -518,84 +518,86 @@
                 </div>
             </div>
            <!--TIPO DE LICENCIA MULTIPLE-->
-            <div ng-show="smultiservicios">
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><b>Múltiple por Servicios:</b></div>
-                        <div class="panel-body">
-                            <form id="myLicenciaMultiple" name="myLicenciaMultiple">
-                                <div class="col-md-4">
-                                    <font color="#FF0000" size="4px">*</font>
-                                    <label for="url" >Detalle de la Actividad Desarrollada para Multiservicios: </label>
-                                    <div class="form-group" >
-                                        <select class="js-example-basic-single form-control"
-                                              ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividadMul | orderBy:['nombre','descripcion343']"
-                                              ng-model="multiple.f01_act_desarrolladamid"
-                                              id="f01_act_desarrolladamid"
-                                              name="f01_act_desarrolladamid"
-                                              ng-disabled="desabilitado"
-                                              ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid, datos.f01_sup);"
-                                              required>
-                                            <option value="">--Seleccionar--</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <font color="#FF0000" size="4px"> * </font>
-                                        <label for="url" >Tipo de Categoria:</label>
-                                        <div class="controls">
-                                            <input
-                                                  id="f01_cat_agrupadamdescrip" name="f01_cat_agrupadamdescrip" ng-model="multiple.f01_cat_agrupadamdescrip" class="form-control" ng-disabled="true" required />
-                                        </div>
-                                        <span style="color:red" ng-show="myLicenciaMultiple.f01_act_desarrolladamid.$invalid">
-                                            <span class="error" ng-show="myLicenciaMultiple.f01_act_desarrolladamid.$invalid">{{translateMensajes.txt_12_15}}</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <font color="#FF0000" size="4px"> * </font>
-                                        <label for="url" >Tipo de Licencia:</label>
-                                        <div class="controls">
-                                            <input
-                                                id="f01_tipo_licmdescrip" name="f01_tipo_licmdescrip" ng-model="multiple.f01_tipo_licmdescrip" class="form-control" ng-disabled="true" required/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="hidden" ng-model="multiple.f01_act_principal" id="f01_act_principal" name="f01_act_principal" class="form-control" />
-                                <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <div class="col-md-3">
-                                                <a class="btn btn-primary" ng-click="guardarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myLicenciaMultiple.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
-                                                </a>
-                                                <a class="btn btn-primary" ng-click="modificarLicencia(multiple)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
-                                                    <i class="glyphicon glyphicon-plus-sign"></i>Modificar
-                                                </a>
+            <!--TIPO DE LICENCIA MULTIPLE-->
+                        <div ng-show="smultiservicios">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Múltiple por Servicios:</b></div>
+                                    <div class="panel-body">
+                                        <form id="myLicenciaMultiple" name="myLicenciaMultiple">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <font color="#FF0000" size="4px"> * </font>
+                                                    <label for="url" >Detalle de la Actividad Desarrollada:</label>
+                                                    <div class="controls">
+                                                        <select class="js-example-basic-single form-control"
+                                                            ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividadMul | orderBy:['nombre','descripcion343']"
+                                                            ng-model="multipleNatural.f01_act_desarrolladamid"
+                                                            id="f01_act_desarrolladamid"
+                                                            name="f01_act_desarrolladamid"
+                                                            ng-disabled="desabilitado"
+                                                            ng-change="LicenciaXCategoriaMultiservicioRen(multipleNatural.f01_act_desarrolladamid, datos.f01_sup);"
+                                                            required>
+                                                            <option value="">--Seleccionar--</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <table ng-table="tablaRoles" show-filter="true" class="table table-striped table-bordered">
-                                                <tr style="cursor: pointer;" ng-repeat="lic in datos.licenciam" ng-style="lic.id==MultipleSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}" ><!--cambios-->
-                                                    <td align="center" data-title="'Opciones'">
-                                                        <a class="btn btn-default btn-circle" ng-click="modificarLic(lic)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
-                                                        <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
-                                                    </td>
-                                                    <td data-title="'NRO'" ng-click="SeleccionaPrioridad(lic)">{{$index+1}}</td>
-                                                    <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_tipo_licmdescrip}}</td>
-                                                    <td data-title="'TIPO DE CATEGORIA'" sortable="'INT_TIPO_CAT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_cat_agrupadamdescrip}}</td>
-                                                    <td data-title="'TIPO DE ACTIVIDAD'" sortable="'INT_TIPO_ACT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_act_desarrolladamdescrip}}</td>
-                                                </tr>
-                                            </table>
-                                      <!-- fin de la tabla -->
-                                        </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <font color="#FF0000" size="4px"> * </font>
+                                                    <label for="url" > Categoria:</label>
+                                                    <div class="controls">
+                                                        <input id="f01_cat_agrupadamdescrip" name="f01_cat_agrupadamdescrip" ng-model="multipleNatural.f01_cat_agrupadamdescrip" class="form-control" ng-disabled="true" required />
+                                                    </div>
+                                                    <span style="color:red" ng-show="signupForm.f01_categoria_agrupada.$invalid">
+                                                         <span class="error" ng-show="signupForm.f01_categoria_agrupada.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <input type="hidden" ng-model="multiple.f01_act_principal" id="f01_act_principal" name="f01_act_principal" class="form-control" />
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <font color="#FF0000" size="4px"> * </font>
+                                                    <label for="url" >Tipo de Licencia: </label>
+                                                    <div class="controls">
+                                                        <input id="f01_tipo_licmdescrip" name="f01_tipo_licmdescrip" ng-model="multipleNatural.f01_tipo_licmdescrip" class="form-control" ng-disabled="true" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="col-md-3">
+                                                            <a class="btn btn-primary" ng-click="guardarLicencia(multipleNatural);  GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myForm.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
+                                                            </a>
+                                                            <a class="btn btn-primary" ng-click="modificarLicencia(multipleNatural)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
+                                                                  <i class="glyphicon glyphicon-plus-sign"></i>Modificar
+                                                            </a>
+                                                        </div>
+                                                        <table ng-table="tablaRoles" show-filter="true" class="table table-striped table-bordered">
+                                                            <tr style="cursor: pointer;" ng-repeat="lic in datos.licenciam" ng-style="lic.id==MultipleSeleccionado && {'background-color':'rgb(255, 239, 176)','font-color':'#A2D5AE'}" >
+                                                                <td align="center" data-title="'Opciones'">
+                                                                    <a class="btn btn-default btn-circle" ng-click="modificarLic(lic)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
+                                                                    <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
+                                                                </td>
+                                                                <td data-title="'NRO'">{{$index+1}}</td>
+                                                                <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'">{{lic.f01_tipo_licmdescrip}}</td>
+                                                                <td data-title="'TIPO DE CATEGORIA'" sortable="'INT_TIPO_CAT'">{{lic.f01_cat_agrupadamdescrip}}</td>
+                                                                <td data-title="'TIPO DE ACTIVIDAD'" sortable="'INT_TIPO_ACT'">{{lic.f01_act_desarrolladamdescrip}}</td>
+                                                            </tr>
+                                                        </table>
+                                                        <!-- fin de la tabla -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!--TERMINA TIPO DE LICENCIA MULTIPLE-->
-            </div>   
+                            </div>
+                        </div>  
              <div class="col-md-12">
                 <legend>{{translateTitulos.lbl_12_54}}: </legend>
             </div>

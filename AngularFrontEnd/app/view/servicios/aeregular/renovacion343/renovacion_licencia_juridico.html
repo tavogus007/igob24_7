@@ -3,8 +3,8 @@
     <head>
         <script type="text/javascript"  src="../../view/servicios/aeregular/renovacion343/appRenovacionJuridico.js"></script>
         <script type="text/javascript" src="../../libs/js/jic.js"></script>
-        <script type="text/javascript" src="../../libs/js/jszip.js"></script> 
-    </head>   
+        <script type="text/javascript" src="../../libs/js/jszip.js"></script>
+    </head>
 <script type="text/javascript">
     $('.custom-upload input[type=file]').change(function(){
         $(this).next().find('input').val($(this).val());
@@ -46,7 +46,7 @@
     function valNumeroTelefono(Control){
         Control.value = soloNumericoTelefono(Control.value);
     }
-  
+
     function soloNumerico(variable){
         Numer=parseInt(variable);
         if (isNaN(Numer)){
@@ -157,7 +157,7 @@
                             <div class="form-group" >
                                 <label for="url" >{{translateTitulos.lbl_12_24}}:</label>
                                 <div class="controls">
-                                    <div class="col-md-12">                
+                                    <div class="col-md-12">
                                         <div class="col-md-5">
                                             <input  ng-model="datos.f01_num_pod_leg" name="f01_num_pod_leg" id="f01_num_pod_leg" class="form-control" placeholder="Sin dato" onkeyUp="return valNumero(this);" ng-disabled="true" required>
                                         </div>
@@ -167,7 +167,7 @@
                                         <div class="col-md-5">
                                             <input ng-model="datos.f01_ges_vig_pod" id="f01_ges_vig_pod" name="f01_ges_vig_pod" class="form-control" onkeyUp="checkInput(this)"ng-disabled="true" required/>
                                         </div>
-                                    </div>                                    
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -178,7 +178,7 @@
                                     <input ng-model="datos.f01_num_notaria" id="f01_num_notaria" name="f01_num_notaria" class="form-control"  width="30%" height="30" ng-disabled="true">
                                 </div>
                             </div>
-                        </div>                       
+                        </div>
                         <div class="col-md-4" ng-show="false">
                             <div class="form-group" >
                                 <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
@@ -332,7 +332,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>                                             
+                            <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_36}}:</label>
                             <div class="input-group clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true" placeholder="HORA INICIO ATENCION">
                                 <input  ng-model="datos.f01_de_hor" id="f01_de_hor" name="f01_de_hor" class="form-control" type="text" class="form-control" ng-disabled="desabilitado" required>
@@ -344,7 +344,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>                                             
+                            <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_37}}:</label>
                             <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
                                 <input  ng-model="datos.f01_a_hor" id="f01_a_hor" name="f01_a_hor" class="form-control" type="text" class="form-control" ng-disabled="desabilitado" required>
@@ -368,7 +368,7 @@
                                 </select>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="col-md-4">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
@@ -377,8 +377,8 @@
                                 <input type="text" ng-model="datos.f01_productosElaborados" id="f01_productosElaborados" name="f01_productosElaborados" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-change="verificarEstablecimiento(datos.f01_productosElaborados)" ng-disabled="desabilitado" required/>
                             </div>
                         </div>
-                    </div>                 
-                    <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="true">    
+                    </div>
+                    <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="true">
                 </div>
                 <div class="col-md-12">
                     <div class="form-group" >
@@ -452,7 +452,7 @@
                                     <label for="url" >Tipo de Categoria:</label>
                                     <div class="controls">
                                         <input id="f01_categoria_agrupada_descrip" name="f01_categoria_agrupada_descrip" ng-model="datos.f01_categoria_agrupada_descrip" class="form-control" ng-disabled="true" required >
-                                    </div>   
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -480,11 +480,11 @@
                                             <div class="form-group" >
                                                 <select class="js-example-basic-single form-control"
                                                     ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividadMul | orderBy:['nombre','descripcion343']"
-                                                    ng-model="multiple.f01_act_desarrolladamid"
+                                                    ng-model="multipleJuridico.f01_act_desarrolladamid"
                                                     id="f01_act_desarrolladamid"
                                                     name="f01_act_desarrolladamid"
                                                     ng-disabled="desabilitado"
-                                                    ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid, datos.f01_sup);"
+                                                    ng-change="LicenciaXCategoriaM(multipleJuridico.f01_act_desarrolladamid, datos.f01_sup);"
                                                     required>
                                                     <option value="">--Seleccionar--</option>
                                                 </select>
@@ -498,7 +498,7 @@
                                                     <input
                                                         id="f01_cat_agrupadamdescrip"
                                                         name="f01_cat_agrupadamdescrip"
-                                                        ng-model="multiple.f01_cat_agrupadamdescrip"
+                                                        ng-model="multipleJuridico.f01_cat_agrupadamdescrip"
                                                         class="form-control"
                                                         ng-disabled="true"
                                                         required />
@@ -516,7 +516,7 @@
                                                     <input
                                                         id="f01_tipo_licmdescrip"
                                                         name="f01_tipo_licmdescrip"
-                                                        ng-model="multiple.f01_tipo_licmdescrip"
+                                                        ng-model="multipleJuridico.f01_tipo_licmdescrip"
                                                         class="form-control"
                                                         ng-disabled="true"
                                                         required/>
@@ -528,9 +528,9 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
                                                     <div class="col-md-3">
-                                                        <a class="btn btn-primary" ng-click="guardarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myLicenciaMultiple.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
+                                                        <a class="btn btn-primary" ng-click="guardarLicencia(multipleJuridico); GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myLicenciaMultiple.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
                                                         </a>
-                                                        <a class="btn btn-primary" ng-click="modificarLicencia(multiple)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
+                                                        <a class="btn btn-primary" ng-click="modificarLicencia(multipleJuridico)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
                                                             <i class="glyphicon glyphicon-plus-sign"></i>Modificar
                                                         </a>
                                                     </div>
@@ -569,7 +569,7 @@
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <font color="#FF0000" size="4px" align="center"> * </font>
                             </div>
-                            <div class="col-md-10">                                    
+                            <div class="col-md-10">
                                 <!--<div id="mapActividad" ng-disabled="desabilitadoO || desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>-->
                                 <div id="map_principal" ng-disabled="desabilitadoO || desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
                             </div>
@@ -586,12 +586,12 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="col-md-1">
                                 &nbsp;
                             </div>
                         </div>
-                        <div><br><br><br></div> 
+                        <div><br><br><br></div>
                    </div>
 
                     <input ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control" type="hidden" readonly>
@@ -618,7 +618,7 @@
                                     <option ng-repeat="macro in aMacrodistritos | orderBy:['nombre','mcdstt_id']" value="{{macro.mcdstt_id}}">{{macro.mcdstt_macrodistrito}}</option>
                                 </select>
                             <input type="hidden" ng-model="datos.f01_idCodigoZona" id="f01_idCodigoZona" name="f01_idCodigoZona" class="form-control" required/>
-                            <input type="hidden" ng-model="datos.f01_macro_act_descrip" id="f01_macro_act_descrip" name="f01_macro_act_descrip" class="form-control" style="text-transform:uppercase;"/>                     
+                            <input type="hidden" ng-model="datos.f01_macro_act_descrip" id="f01_macro_act_descrip" name="f01_macro_act_descrip" class="form-control" style="text-transform:uppercase;"/>
                             </div>
                             <span style="color:red" ng-show="signupForm.f01_macro_act.$invalid">
                                 <span class="error" ng-show="signupForm.f01_macro_act.$invalid">{{translateMensajes.txt_12_15}}</span>
@@ -764,7 +764,7 @@
                         <div class="col-md-8">
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Referencia de la Dirección de la Actividad Económica para mayor presición:</label>                                        
+                                <label for="url" >Referencia de la Dirección de la Actividad Económica para mayor presición:</label>
                                 <div class="controls">
                                     <input ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" ng-disabled="desabilitadoO || desabilitado" required/>
                                 </div>
@@ -778,12 +778,12 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                 <div class="col-md-12">
                     <legend>Elementos de Identificación de la Actividad Económica (Letreros):</legend>
                 </div>
                 <div class="col-md-12" align="left">
-                    <div class="form-group" class="col-md-12">                                        
+                    <div class="form-group" class="col-md-12">
                         <div class="controls">
                             <font color="#FF0000" size="4px">*  </font>
                             <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" value="NUEVO" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Con Elementos Publicitarios
@@ -815,11 +815,11 @@
                                       </div>
                                       <div class="col-md-12">
                                           <div class="panel panel-default">
-                                              <div class="panel-heading"><font color="#FF0000"><b>SEÑOR CONTRIBUYENTE EL LISTADO DE ELEMENTOS DE IDENTIFICACIÓN EN LA TABLA QUE SE DETALLA SON LOS CUALES SE ENCUENTRAN REGISTRADOS ACTUALMENTE EN EL SISTEMA, SI USTED QUIERE REALIZAR ALGUNA MODIFICACION O RETIRO DEL ELEMENTO DE PUBLICIDAD DEBE APERSONARSE A LA PLATAFORMA MAS CERCANA A SU MACRODISTRITO, CON EL FIN DE EVITAR ALGUN REGISTRO INCORRECTO, ASIMISMO RECORDARLE QUE SI DECEA INCLUIR NUEVOS ELEMENTOS DE IDENTIFICACION PODRA REGISTRARLOS SIN NINGUN PROBLEMA:</b></font></div>                                 
+                                              <div class="panel-heading"><font color="#FF0000"><b>SEÑOR CONTRIBUYENTE EL LISTADO DE ELEMENTOS DE IDENTIFICACIÓN EN LA TABLA QUE SE DETALLA SON LOS CUALES SE ENCUENTRAN REGISTRADOS ACTUALMENTE EN EL SISTEMA, SI USTED QUIERE REALIZAR ALGUNA MODIFICACION O RETIRO DEL ELEMENTO DE PUBLICIDAD DEBE APERSONARSE A LA PLATAFORMA MAS CERCANA A SU MACRODISTRITO, CON EL FIN DE EVITAR ALGUN REGISTRO INCORRECTO, ASIMISMO RECORDARLE QUE SI DECEA INCLUIR NUEVOS ELEMENTOS DE IDENTIFICACION PODRA REGISTRARLOS SIN NINGUN PROBLEMA:</b></font></div>
                                               <div class="panel-body">
                                              <!-- inicio de la tabla -->
                                                   <table ng-table="tablaVA" class="table table-striped table-bordered">
-                                                      <tr ng-repeat="pupan in datos.publicidadAE">                  
+                                                      <tr ng-repeat="pupan in datos.publicidadAE">
                                                           <td data-title="'VIAE'">{{$index+1}}</td>
                                                           <td data-title="'TIPO'" sortable="'INT_TIPO_LETRE'">{{pupan.INT_TIPO_LETRE}}</td>
                                                           <td data-title="'CARACTERÍSTICA'" sortable="'INT_CARA'">{{pupan.INT_CARA}}</td>
@@ -828,7 +828,7 @@
                                                           <td data-title="'DESCRIPCIÓN'" sortable="'descripcion'">{{pupan.INT_DESC}}</td>
                                                           <td data-title="'ALTO'" sortable="'INT_ALTO'">{{pupan.INT_ALTO}}</td>
                                                           <td data-title="'ANCHO'" sortable="'INT_ANCHO'">{{pupan.INT_ANCHO}}</td>
-                                                          <td data-title="'SUPERFICIE'" sortable="'INT_SUP'">{{pupan.INT_SUP}}</td>                      
+                                                          <td data-title="'SUPERFICIE'" sortable="'INT_SUP'">{{pupan.INT_SUP}}</td>
                                                       </tr>
                                                   </table>
                                              <!-- fin de la tabla -->
@@ -836,7 +836,7 @@
                                           </div>
                                       </div>
                                   </div>
-                                  
+
                                 <form id="myPublicidad" name="myPublicidad">
                                     <div class="col-md-4">
                                         <div class="form-group">
@@ -1079,7 +1079,7 @@
                         <input type="hidden" ng-model="datos.INT_AC_MACRO_ID" id="INT_AC_MACRO_ID" name="INT_AC_MACRO_ID" class="form-control">
                         <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro" class="form-control">
                         <input type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30">
-                        <input type="hidden" ng-model="datos.f01_num_pod_leg" name="f01_num_pod_leg" id="f01_num_pod_leg" class="form-control" required> 
+                        <input type="hidden" ng-model="datos.f01_num_pod_leg" name="f01_num_pod_leg" id="f01_num_pod_leg" class="form-control" required>
                         <input type="hidden" ng-model="datos.f01_categoria_agrupada_descripcion" id="f01_categoria_agrupada_descripcion" name="f01_categoria_agrupada_descripcion">
                         <input type="hidden" ng-model="datos.INT_ACTIVIDAD_DESCRIPCION" name="INT_ACTIVIDAD_DESCRIPCION" id="INT_ACTIVIDAD_DESCRIPCION">
                         <input type="hidden" ng-model="datos.f01_id_representante_legal" id="f01_id_representante_legal" name="f01_id_representante_legal" class="form-control">
@@ -1110,7 +1110,7 @@
                         <input type="hidden" ng-model="datos.pubenvio" id="pubenvio" name="pubenvio" class="form-control">
                         <input type="hidden" ng-model="datos.publicidad_grilla" id="publicidad_grilla" name="publicidad_grilla" class="form-control">
 
-                        
+
                     </div>
                     <div class="col-md-6" align="center" ng-show = "botones != null">
                         <!-- GNERADOR DE CAPCHA -->
@@ -1146,14 +1146,13 @@
                         </div>
                     </div>
                     <div class="col-md-12" align="right" ng-show = "botones != null">
-                        <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little fa-lg" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario"><!--{{translateTitulos.lbl_016_29}}--></button><!--cambios-->                         
+                        <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little fa-lg" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario"><!--{{translateTitulos.lbl_016_29}}--></button><!--cambios-->
                         <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little fa-lg" ng-disabled="btnEnviarFormLinea" tooltip="Enviar Formulario"><!--{{translateTitulos.lbl_016_30}}--></button><!--cambios-->
-                    </div> 
+                    </div>
                 </div>
             </form>
-        </div>  
+        </div>
     </div>
 </div>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfKWci28piaE9q8Or0DzmUUJXbbdja54&callback=initMap">
 </script>
-

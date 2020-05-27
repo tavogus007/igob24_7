@@ -333,7 +333,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           $rootScope.nuevo = null;
           
          //$rootScope.update = "mostrar";
-          window.location.href = "#dashboard";
+         
           
          
       } else {
@@ -343,10 +343,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
     });
   }
-
-
-
-
+  /*$scope.cerrarDatosAE = function(dato){
+    window.location.href = "#dashboard";
+    
+  }*/
   $scope.cambiarFile = function(obj, valor){
       $scope.datos[obj.name] = valor;
       setTimeout(function(){

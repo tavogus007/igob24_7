@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
     <head>
-        
+      <script src="../../libs/apiPagos/api_pagos.js"></script>
         <script type="text/javascript" src="../../view/servicios/tiendavirtual/pago/appPagosAE.js"></script>
         <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
         <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
@@ -101,59 +101,62 @@
             <h4>Datos complementarios de la Pago en Linea Virtual</h4>
         </div>
         <div class="ibox-content">
-          <form name="signupForm"  class="form-horizontal" role="form" novalidate>                   
+          <form name="signupForm"  class="" role="form" novalidate>                   
             <div class="row" >
-              <div class="col-md-6">
-                  <div class="form-group" >
-                      <label for="url" >Tipo de Pago:</label>
-                      <div class="controls">
-                          <select id="f01_tipoPago" class="form-control" ng-model="datos.f01_tipoPago" name="f01_tipoPago" ng-disabled="desabilitado" required>
-                              <option value="">--Seleccionar--</option>
-                              <option value="1"> BCP </option>
-                              <option value="2"> RED ENLACE </option>
-                          </select>
+              <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Tipo de Pago:</label>
+                        <div class="controls">
+                            <select id="f01_tipoPago" class="form-control" ng-model="datos.f01_tipoPago" name="f01_tipoPago" ng-change="seleccionaPago(datos.f01_tipoPago);" required>
+                                <option value="">--Seleccionar--</option>
+                                <option value="1"> BCP </option>
+                                <option value="2"> RED ENLACE </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show = "tipo=='QR'">
+                  <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Código de Servicio:</label>
+                        <div class="controls">
+                            <input type="text" ng-model="datos.service_code" id="service_code" name="service_code" class="form-control" ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div ng-show = "tipo=='ATC'">
+                  <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Llave de Acceso:</label>
+                        <div class="controls">
+                            <input type="text" ng-model="datos.access_key" id="access_key" name="access_key" class="form-control" ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group" >
+                          <label for="url" >Perfil Id:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.profile_id" id="profile_id" name="profile_id" class="form-control" ng-disabled="desabilitado"/>
+                          </div>
                       </div>
                   </div>
+                  <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Llave Secreta:</label>
+                        <div class="controls">
+                          <textarea ng-model="datos.secret_key" id="secret_key" name="secret_key" class="form-control" ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-                <div class="col-md-6">
-                    <div class="form-group" >
-                        <label for="url" >Número de cuenta:</label>
-                        <div class="controls">
-                            <input ng-model="datos.f01_numeroCuenta" id="f01_numeroCuenta" name="f01_numeroCuenta" class="form-control" ng-disabled="desabilitado"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group" >
-                        <label for="url" >Usuario:</label>
-                        <div class="controls">
-                            <input ng-model="datos.f01_usuario" id="f01_usuario" name="f01_usuario" class="form-control" ng-disabled="desabilitado"/>
-                        </div>
-                    </div>
-                </div>
-              
-                <div class="col-md-6">
-                    <div class="form-group" >
-                        <label for="url" >Contraseña:</label>
-                        <div class="controls">
-                            <input ng-model="datos.f01_clave" id="f01_clave" name="f01_clave" class="form-control" ng-disabled="desabilitado"/>
-                        </div>
-                    </div>
-                </div>
-
-
-
-              
-              
-              
-
-
-
             </div>
             <div class="col-md-12" align="right">
-                <button ng-show="nuevo" type="button" class="btn btn-default ng-binding" ng-click="registrarDatosAE(datos)">Registrar</button>
-                <button ng-show="update" type="button" class="btn btn-default ng-binding" ng-click="actualizarDatosAE(datos)">Modificar</button>                
-                <button type="button" class="btn btn-default ng-binding" ng-click="cerrarDatosAE(datos)" >Cerrar</button>
+                <button  type="button" class="btn btn-default ng-binding" ng-click="registrarTipoPago(datos)">Registrar</button>
+                <!--button type="button" class="btn btn-default ng-binding" ng-click="cerrarDatosAE(datos)" >Cerrar</button-->
             </div>
           </form>
         </div>

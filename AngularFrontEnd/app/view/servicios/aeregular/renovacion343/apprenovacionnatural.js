@@ -1925,7 +1925,19 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
                 })
                 var imagenNueva = archivo.name.split('.');
                 var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[1];
-                if (archivo.size > 500000 && archivo.size <= 15000000) {
+                if (archivo.size <= 15000000) {
+                    if (imagenNueva[1] == 'png' || imagenNueva[1] == 'jpg' || imagenNueva[1] == 'jpeg' || imagenNueva[1] == 'bmp' || imagenNueva[1] == 'gif' || imagenNueva[1] == 'pdf' || imagenNueva[1] == 'docx' || imagenNueva[1] == 'docxlm' || imagenNueva[1] == 'PNG' || imagenNueva[1] == 'JPG' || imagenNueva[1] == 'JPEG' || imagenNueva[1] == 'BMP' || imagenNueva[1] == 'GIF' || imagenNueva[1] == 'PDF' || imagenNueva[1] == 'DOCX' || imagenNueva[1] == 'DOCXLM') {
+                        $scope.documentosarc[key] = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
+                        fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
+                        document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreFileN;
+                    } else{
+                        swal('Advertencia', 'El archivo  no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                    };
+                };
+                if (archivo.size > 15000000) {
+                    swal('Advertencia', 'Tamaño de Archivo no soportado', 'error');
+                };
+                /*if (archivo.size > 500000 && archivo.size <= 15000000) {
                     if (imagenNueva[1] == "png" || imagenNueva[1] == "jpg" || imagenNueva[1] == "jpeg" || imagenNueva[1] == "bmp" || imagenNueva[1] == "gif") {
                         var filecompress = compressImage(archivo).then(function(respuestaFile){
                             var imagenFile = respuestaFile.name.split('.');
@@ -1950,7 +1962,7 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
                     if (archivo.size > 15000000) {
                         swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
                     };
-                }
+                }*/
             }else{
             }
         });

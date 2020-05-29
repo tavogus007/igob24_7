@@ -1,5 +1,5 @@
 function productosController($scope, $timeout, CONFIG,$window,$rootScope,sessionService,ngTableParams,$filter,$route, sweet, $http,FileUploader,$sce,fileUpload, fileUpload1 ) {
-  $scope.tablaDocumentos        =   {};
+  $scope.tablaDocumentos        =   [];
   $scope.frmProducto = null;
 
   $scope.obtDatos      =   [];
@@ -10,7 +10,10 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
 
 
   var clsIniciarCamposInternet = $rootScope.$on('inicializarProdutos', function(event, data){
-    $scope.recuperarSerializarProd($rootScope.datosTiendaVirtual);
+    //$scope.recuperarSerializarProd($rootScope.datosTiendaVirtual);
+    console.log("cambio de registro");
+    $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
+
   });
   $scope.recuperarSerializarProd = function(data){
     $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
@@ -47,7 +50,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       }
   };
 
-  /*REQUISITOS2018*/
     $scope.almacenarRequisitos = function(aArchivos,idFiles){
         var descDoc = "";
         var fechaNueva = "";
@@ -64,88 +66,82 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
         var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/"  + sessionService.get('IDTV') +"/";
         $.blockUI();
-        angular.forEach(aArchivos, function(archivo, key) {
+        if( $rootScope.swArchivo == 'A'){
+          angular.forEach(aArchivos, function(archivo, key) {
             if(typeof(archivo) != 'undefined'){
-                if (idFiles[key]==1){
-                  var descDoc = "img_pr";
-                  var descArchivo = "img_principal";
-                }
-                if (idFiles[key]==2){
-                  var descDoc = "img_aux1";
-                  var descArchivo = "img_auxiliar1";
-                }
-                if (idFiles[key]==3){
-                  var descDoc = "img_aux2";
-                  var descArchivo = "img_auxiliar2";
-                }
-                var imagenFile = archivo.name.split('.');;
-                var tipoFile = imagenFile[1];
-                var nombreNuevo = descArchivo +"_"+ fechaNueva +'.'+ imagenFile[1];
-                $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') +'/'+ nombreNuevo + "?app_name=todoangular";
-                fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
-                document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
-                /*var filecompress = compressImage(archivo).then(function(respuestaFile){
-                    var imagenFile = respuestaFile.name.split('.');
-                    var tipoFile = imagenFile[1];
-                    var nombreNuevo = descDoc + '_'+fechaNueva+'.'+tipoFile;
-                    $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
-                    fileUpload1.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
-                    document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
-                });*/
-                var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/"  + sessionService.get('IDTV') +'/' + nombreNuevo + "?app_name=todoangular";
-                var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevo + '", "nombre":"' + descArchivo + '" }';
-                $rootScope.archivosProducto.push(myJSON);
+              if (idFiles[key]==1){
+                var descDoc = "img_pr";
+                var descArchivo = "img_principal";
+              }
+              if (idFiles[key]==2){
+                var descDoc = "img_aux1";
+                var descArchivo = "img_auxiliar1";
+              }
+              if (idFiles[key]==3){
+                var descDoc = "img_aux2";
+                var descArchivo = "img_auxiliar2";
+              }
+              var imagenFile = archivo.name.split('.');;
+              var tipoFile = imagenFile[1];
+              var nombreNuevo = descArchivo +"_"+ fechaNueva +'.'+ imagenFile[1];
+              $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') +'/'+ nombreNuevo + "?app_name=todoangular";
+              fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
+              document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
+              /*var filecompress = compressImage(archivo).then(function(respuestaFile){
+                  var imagenFile = respuestaFile.name.split('.');
+                  var tipoFile = imagenFile[1];
+                  var nombreNuevo = descDoc + '_'+fechaNueva+'.'+tipoFile;
+                  $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
+                  fileUpload1.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
+                  document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
+              });*/
+              var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/"  + sessionService.get('IDTV') +'/' + nombreNuevo + "?app_name=todoangular";
+              var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevo + '", "nombre":"' + descArchivo + '" }';
+              $rootScope.archivosProducto.push(myJSON);
             } else {
             }
-        });
+          });
+        } else {
+          angular.forEach(aArchivos, function(archivo, key) {
+            if(typeof(archivo) != 'undefined'){
+              if (idFiles[key]==1){
+                var descDoc = "img_pr";
+                var descArchivo = $rootScope._f01_upload1;
+              }
+              if (idFiles[key]==2){
+                var descDoc = "img_aux1";
+                var descArchivo = $rootScope._f01_upload2;
+              }
+              if (idFiles[key]==3){
+                var descDoc = "img_aux2";
+                var descArchivo = $rootScope._f01_upload3;
+              }
+
+              var imagenFile = archivo.name.split('.');;
+              //var tipoFile = imagenFile[1];
+              var nombreNuevo = descArchivo;
+              $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') +'/'+ nombreNuevo + "?app_name=todoangular";
+              fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
+              document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
+              /*var filecompress = compressImage(archivo).then(function(respuestaFile){
+                  var imagenFile = respuestaFile.name.split('.');
+                  var tipoFile = imagenFile[1];
+                  var nombreNuevo = descDoc + '_'+fechaNueva+'.'+tipoFile;
+                  $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
+                  fileUpload1.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
+                  document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
+              });*/
+              var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/"  + sessionService.get('IDTV') +'/' + nombreNuevo + "?app_name=todoangular";
+              var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevo + '", "nombre":"' + descArchivo + '" }';
+              $rootScope.archivosProducto.push(myJSON);
+            } else {
+            }
+          });
+
+        }
+        
         $.unblockUI();
     };
-
-    /*
-    $scope.adicionarArrayDeRequisitos = function(aArch,idFile){
-        var descDoc = "";
-        var fechaNueva = "";
-        var fechaserver = new fechaHoraServer(); 
-        fechaserver.fechahora(function(resp){
-            var sfecha = JSON.parse(resp);
-            var fechaServ = (sfecha.success.fecha).split(' ');
-            var fecha_ = fechaServ[0].split('-');
-            var hora_ = fechaServ[1].split(':');
-            fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1]+hora_[2];
-        });
-        angular.forEach($scope.docArray, function(doc, pos) {
-            if(doc.resid == idFile){
-                descDoc = doc.desNom;
-            }
-        })
-        var imagenNueva = aArch.files[0].name.split('.');
-        var tam = aArch.files[0];
-        var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[1];
-        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
-        var sDirTramite = sessionService.get('IDTRAMITE');
-        $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
-        if (aArch.files[0].size > 500000 && aArch.files[0].size <= 15000000) {
-            if (imagenNueva[1] == "png" || imagenNueva[1] == "jpg" || imagenNueva[1] == "jpeg" || imagenNueva[1] == "bmp" || imagenNueva[1] == "gif") {
-                var filecompress = compressImage(aArch.files[0]).then(function(respuestaFile){
-                    var imagenFile = respuestaFile.name.split('.');
-                    var tipoFile = imagenFile[1];
-                    nombreFileN = descDoc + '_'+fechaNueva+'.'+tipoFile;
-                });
-            } 
-        }  
-        var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreFileN + "?app_name=todoangular";
-        var adatafile   =   {};
-        var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() + '" }';
-        console.log("2222222222222222222------");
-        console.log(myJSON);
-        console.log("2222222222222222222------");
-        $rootScope.archivosProducto.push(myJSON);
-        console.log($rootScope.archivosProducto);
-        //$scope.fileArRequisitos[aArch.name] = JSON.parse(myJSON);
-        //$scope.clonarRequisitosDocumentales($scope.fileArRequisitos);
-    }
-    */
-
     $scope.ejecutarFile = function(idfile){
       $scope.fileId = idfile;
         var sid =   document.getElementById(idfile);
@@ -192,6 +188,8 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       document.getElementById("txt_f01_upload1").value  = '';
       document.getElementById("txt_f01_upload2").value  = '';
       document.getElementById("txt_f01_upload3").value  = '';
+      $rootScope.swArchivo = "A";
+
     }
 
     $scope.registrarProducto = function(data){
@@ -250,11 +248,10 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
             if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
                 $scope.tablaDocumentos = null;
                 alertify.warning('No existen datos'); 
-                //$scope.$apply(); 
+                $scope.$apply(); 
             } else {
                 var data = $scope.obtDatos;
-                console.log($scope.obtDatos);
-                $scope.tablaDocumentos.reload();
+                $scope.$apply(); 
             }
           });
         } catch(error){
@@ -332,46 +329,75 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       $scope.refrescar();
       });      
   } 
-  $scope.updProducto = function(datosE){
+  $scope.updProducto = function(datosP){
+    console.log("-----------------------------");
+    console.log(datosP);
+    console.log("-----------------------------");
+
     $scope.frmProducto = "mostrar";
-    $scope.desabilitado = "disabled";
-
-    $scope.mostrarTxt = true;  
-    $scope.datosP = datosE;
-    $scope.prd_id= datosE.prd_idc;
+    $scope.desabilitado = "";
     $scope.update = true;
-    $scope.nuevo = false;
-    $scope.titulo = "Modificación de Productos";
-
-    $scope.datos = [];
-    $scope.datos.f01_producto = $scope.datosP.prd_nombrec;
-    $scope.datos.f01_categoria = $scope.datosP.prd_categoriac;
-    
-    $scope.cargarDatos($scope.datosP,$scope.datosP.prod_aec);
-    $scope.datos.f01_ae = $scope.aeAct;
-    //$scope.datos.f01_sucursal =   $scope.datosP.prod_sucursalc;
-
-    document.getElementById("f01_sucursal").value = $scope.datosP.prod_sucursalc;
-    $scope.datos.f01_descripcion = $scope.datosP.prd_descripcionc;
-    $scope.datos.f01_precio = $scope.datosP.prd_precioc;
-    $scope.datos['txt_f01_upload1'] = $scope.datosP.prd_imagen_pc;
-    $scope.datos['txt_f01_upload2'] = $scope.datosP.prd_imagen_a1c;
-    $scope.datos['txt_f01_upload3'] = $scope.datosP.prd_imagen_a2c;
- 
+    $scope.nuevo = false;    
+    $rootScope.idProducto = datosP.prd_idc;
+    document.getElementById("f01_producto").value = datosP.prd_productoc;
+    document.getElementById("f01_descripcion").value = datosP.prd_descripcionc;
+    document.getElementById("f01_precio").value = datosP.prd_precioc;
+    document.getElementById("f01_cantidad").value = datosP.prd_cantidadc;
+    archivo1 = datosP.prd_imagen_pc.split('/');
+    archi1 = archivo1[9].split('?');
+    $rootScope._f01_upload1 = archi1[0];
+    document.getElementById("txt_f01_upload1").value = $rootScope._f01_upload1;    
+    archivo2 = datosP.prd_imagen_a1c.split('/');
+    archi2 = archivo2[9].split('?');
+    $rootScope._f01_upload2 = archi2[0];
+    document.getElementById("txt_f01_upload2").value = $rootScope._f01_upload2;
+    archivo3 = datosP.prd_imagen_a2c.split('/');
+    archi3 = archivo3[9].split('?');
+    $rootScope._f01_upload3 = archi3[0];
+    document.getElementById("txt_f01_upload3").value = $rootScope._f01_upload3;
+    $rootScope.swArchivo = "M";
   }
   $scope.actualizarProducto = function(data){
+
+    console.log("-----------------------------");
+    console.log(data);
+    console.log("-----------------------------");
+
     f0 = data.txt_f01_upload1;
     f1 = data.txt_f01_upload2;
     f2 = data.txt_f01_upload3;
     angular.forEach($rootScope.archivosProducto, function(archivo, key) {
-        archivoP = JSON.parse(archivo);
-        if($scope.fileId == 'f01_upload1')
-        f0 = archivoP.url;
-        if($scope.fileId == 'f01_upload2')
-        f1 = archivoP.url;
-        if($scope.fileId == 'f01_upload3')
-        f2 = archivoP.url;
-       });
+      archivoP = JSON.parse(archivo);
+      if($scope.fileId == 'f01_upload1')
+      f0 = archivoP.url;
+      if($scope.fileId == 'f01_upload2')
+      f1 = archivoP.url;
+      if($scope.fileId == 'f01_upload3')
+      f2 = archivoP.url;
+    });
+
+
+
+/*
+ var datosProducto = new dataProducto();
+      datosProducto.idtv = sessionService.get("IDTV");
+      datosProducto.nombre = data.f01_producto;
+      datosProducto.descripcion = data.f01_descripcion;
+      datosProducto.precio = data.f01_precio;
+      datosProducto.cantidad = data.f01_cantidad;
+      datosProducto.imagen_p = f0;
+      datosProducto.imagen_a1 = f1;
+      datosProducto.imagen_a2 = f2;
+      datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
+      datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
+
+
+
+
+
+//////////////////////////////
+
+
 
     var datosProducto = new dataProducto();
       datosProducto.id = $scope.prd_id;
@@ -400,6 +426,10 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
           swal('', "Producto no Modificado", 'error');
       }
     });
+
+
+
+    */
  }
 $scope.obtenerContribuyente = function(){
     var tipoContribuyente = sessionService.get('TIPO_PERSONA');

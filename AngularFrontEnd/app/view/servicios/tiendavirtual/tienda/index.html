@@ -149,6 +149,29 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                    <label id="lbl_f01_upload" class="col-md-2 control-label">Adjuntar el Logo de la Empresa</label>
+                    <div class="controls">
+                        <!--ssssdiv class="form-group custom-upload">
+                            <input type="file" id="f01_uploadL" name="f01_uploadL" accept="image/*"  style="display: none;">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                <input id="txt_f01_uploadL" name="txt_f01_uploadL"  ng-model="datos['txt_f01_uploadL']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                                <span class="input-group-btn">
+                                    <a id="href_f01_uploadL"  ng-show="documentosarc" href="{{documentosarc}}" target="_blank">
+                                    
+                                        <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_f01_upload1" ng-click="ejecutarFile('f01_uploadL', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                            </div>
+                        </div-->
+                      </div>
+                  </div>
+                </div>
+
             </div>
 
             <div class="row" >
@@ -312,8 +335,8 @@
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
                                 <input id="txt_f01_upload1" name="txt_f01_upload1"  ng-model="datos['txt_f01_upload1']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                                 <span class="input-group-btn">
-                                    <a id="href_f01_upload1" ng-show="fileArRequisitos['f01_upload1'].url || data.idnro == 1 || data.idnro == 2" href="{{fileArRequisitos['f01_upload1'].url}}" target="_blank">
-                                    {{rmostrarviae}}
+                                    <a id="href_f01_upload1"  ng-show="documentosarc" href="{{documentosarc}}" target="_blank">
+                                    
                                         <button id="btn_f01_upload1" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                     </a>
                                     <button id="btn_f01_upload1" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload1', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>

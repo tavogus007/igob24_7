@@ -365,6 +365,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           var tam = idFile.length;
           idFile = parseInt(idFile.substring(10,tam));
           idFiles.push(idFile);
+        
           $scope.almacenarRequisitos(rMisDocs,idFiles);
           //$scope.adicionarArrayDeRequisitos(sobj,idFile);
       }
@@ -372,6 +373,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   /*REQUISITOS2018*/
     $scope.almacenarRequisitos = function(aArchivos,idFiles){
+          console.log("idfiles2:: ", idFiles);
+
         var descDoc = "";
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer(); 

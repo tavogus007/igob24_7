@@ -345,6 +345,25 @@
                         </div>
                       </div>
                   </div>
+                  <div class="form-group">
+                    <label id="lbl_f01_upload2" class="col-md-2 control-label">Logotipo de la Actividad Económica</label>
+                    <div class="controls">
+                        <div class="form-group custom-upload">
+                            <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*"  style="display: none;">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datos['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                                <span class="input-group-btn">
+                                    <a id="href_f01_upload2"  ng-show="documentosarc" href="{{documentosarc}}" target="_blank">
+                                    
+                                        <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_f01_upload2" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload2', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
                 </div>
             </div>
 

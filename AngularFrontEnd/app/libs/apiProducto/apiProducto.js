@@ -50,7 +50,8 @@ function dataTiendaVirtual(){
     this.ofertas,
     this.oid,
     this.usr,
-    this.catalogo
+    this.catalogo,
+    this.logotipo    
 };
 dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
 {
@@ -69,7 +70,8 @@ dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
       "stv_ofertas":this.ofertas,
       "stv_oid":this.oid,
       "stv_usr":this.usr,    
-      "stv_catalogo":this.catalogo    
+      "stv_catalogo":this.catalogo,
+      "stv_logotipo":this.logotipo        
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
@@ -90,7 +92,8 @@ dataTiendaVirtual.prototype.actualizarTiendaVirtual = function (functionResp)
       "stv_ofertas":this.ofertas,
       "stv_oid":this.oid,
       "stv_usr":this.usr,    
-      "stv_catalogo":this.catalogo    
+      "stv_catalogo":this.catalogo,
+      "stv_logotipo":this.logotipo    
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };

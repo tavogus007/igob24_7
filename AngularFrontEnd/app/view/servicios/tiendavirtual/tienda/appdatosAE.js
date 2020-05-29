@@ -37,7 +37,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_ofertasAE_des3 = "";
       $scope.datos.f01_ofertasAE_des4 = ""; 
       $scope.datos.f01_ofertasAE_des5 = "";
-      document.getElementById("txt_f01_upload1").value = '';
+      $scope.datos.txt_f01_upload1 = "";
+      $scope.datos.txt_f01_upload2 = "";
     } else {
       $scope.datos.f01_nombreTV = data[0].tv_nombrec;
       $scope.datos.f01_descripcionTV = data[0].tv_descripcionc;
@@ -168,13 +169,28 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       var catalogo = results[0].tvcatalogo;
       if(catalogo == 'null' || catalogo == null || catalogo == '[]' || catalogo == [] || catalogo == ''){
        console.log('Sin Url de catalogo');
-       document.getElementById("txt_f01_upload1").value = '';
+       $scope.datos.txt_f01_upload1 = '';
       }else{
         var cataologojson = JSON.parse(catalogo);
-        var cataologojson1 = JSON.parse(cataologojson);
-        document.getElementById("txt_f01_upload1").value = cataologojson1.campo;
+        console.log('cataologojson',cataologojson);
+        var cataologojson1 = JSON.parse(cataologojson[0]);
+        console.log('cataologojson1',cataologojson1);
+        $scope.datos.txt_f01_upload1 = cataologojson1.campo;
       }
       
+      //logotipo
+
+      var logotipo = results[0].plogotipo;
+      if(logotipo == 'null' || logotipo == null || logotipo == '[]' || logotipo == [] || logotipo == ''){
+        console.log('Sin Url de logotipo');
+        $scope.datos.txt_f01_upload2 = '';
+      }else{
+        var logotipojson = JSON.parse(logotipo);
+        console.log('logotipojson',logotipojson);
+        var logotipojson1 = JSON.parse(logotipojson[0]);
+        console.log('logotipojson1',logotipojson1);
+        $scope.datos.txt_f01_upload2 = logotipojson1.campo;
+      }
 
     }
   }
@@ -314,8 +330,13 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des5 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas); 
     datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray);
+    //Actualiza adjuntos
 
-    datosTiendaVirtual.catalogo = JSON.stringify($rootScope.archivosProducto);
+    console.log('$rootScope.archivosProducto',$rootScope.archivosProducto);
+    datosTiendaVirtual.catalogo = JSON.stringify($rootScope.archivosProducto[0]);
+    console.log('datosTiendaVirtual.catalogo',datosTiendaVirtual.catalogo);
+    datosTiendaVirtual.logotipo = JSON.stringify($rootScope.archivosProducto[1]);
+    console.log('datosTiendaVirtual.logotipo',datosTiendaVirtual.logotipo);
     datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
     if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
         datosTiendaVirtual.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_MATERNO') + ' ' + sessionService.get('US_PATERNO');
@@ -337,7 +358,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           
          
       } else {
-          $.unblockUI();
+          $.unblockUI();,
           swal('', "Error al Actualizar información de la Tienda Virtual", 'error');
           $location.path('dashboard');
       }
@@ -397,8 +418,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
                   var descArchivo = "catalogo de productos";
                 }
                 if (idFiles[key]==2){
-                  var descDoc = "img_aux1";
-                  var descArchivo = "img_auxiliar1";
+                  var descDoc = "logotipo";
+                  var descArchivo = "logotipo de la AE";
                 }
                 if (idFiles[key]==3){
                   var descDoc = "img_aux2";

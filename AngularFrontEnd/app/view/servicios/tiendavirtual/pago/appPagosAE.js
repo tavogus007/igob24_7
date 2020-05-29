@@ -21,7 +21,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       pagoQr.registroQr(function(resp){
         var respuesta = JSON.parse(resp);
         respuesta = JSON.parse(respuesta);
-        respuesta = "QR: "+respuesta.spregistraredenlace;
+        respuesta = "QR: "+respuesta.spregistrabcp;
         swal('',respuesta, 'success');
       })
     }else{

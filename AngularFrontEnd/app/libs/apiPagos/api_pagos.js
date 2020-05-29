@@ -54,7 +54,7 @@ function qr() {
 };
 
 qr.prototype.registroQr = function (functionResp) {
-    urlCompPago = "/registroREDENLACE";
+    urlCompPago = "/registroBCP";
     typeCallPago = "post";
     dataParamsPago = {
         "id_actividadeconomica" : this.id_actividadeconomica,

@@ -4,7 +4,7 @@
     <script src="../../libs/apiMov/api_mov.js"></script>
     <link href="../../libs/css/sweetalert.css" rel="stylesheet"></link>
     <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
-¡    <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/administradorOperador/administradoOperadores.js"></script>
+  <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/administradorOperador/administradoOperadores.js"></script>
     <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script> 
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" /> 
     <link href="../../libs/css/select2.min.css" rel="stylesheet" async/>
@@ -158,7 +158,6 @@
                   <div class="col-md-12">
                     <legend class="ng-binding">Datos del Operador: </legend>
                   </div>
-
                   <div class="col-md-12">
                     <div class="col-md-4">
                       <div class="form-group" >
@@ -401,7 +400,6 @@
                                             <select id="RO_EXP_P" name="RO_EXP_P" placeholder="Expedido" ng-model="datos.RO_EXP_P" class="form-control" ng-disabled="desabilitaVeh">
                                               <option value="">--Seleccione--</option>
                                               <option value="LA PAZ">LA PAZ</option>
-                                              <option value="EL ALTO">EL ALTO</option>
                                               <option value="COCHABAMBA">COCHABAMBA</option>
                                               <option value="SANTA CRUZ">SANTA CRUZ</option>
                                               <option value="CHUQUISACA">CHUQUISACA</option>
@@ -527,7 +525,6 @@
                                           <select id="RO_EXP_POO" name="RO_EXP_POO" placeholder="Expedido" ng-model="datos.RO_EXP_POO" class="form-control" ng-disabled="desabilitaVeh">
                                             <option value="">--Seleccione--</option>
                                             <option value="LA PAZ">LA PAZ</option>
-                                            <option value="EL ALTO">EL ALTO</option>
                                             <option value="COCHABAMBA">COCHABAMBA</option>
                                             <option value="SANTA CRUZ">SANTA CRUZ</option>
                                             <option value="CHUQUISACA">CHUQUISACA</option>
@@ -768,7 +765,6 @@
                                       <select id="RO_EXP_C" name="RO_EXP_C" placeholder="Expedido" ng-model="datos.RO_EXP_C" ng-disabled="desabilitaCon" class="form-control" required>
                                         <option value="">--Seleccione--</option>
                                         <option value="LA PAZ">LA PAZ</option>
-                                        <option value="EL ALTO">EL ALTO</option>
                                         <option value="COCHABAMBA">COCHABAMBA</option>
                                         <option value="SANTA CRUZ">SANTA CRUZ</option>
                                         <option value="CHUQUISACA">CHUQUISACA</option>
@@ -787,7 +783,7 @@
                                     <div class="controls">
                                       <select class="js-example-basic-single form-control"
                                       ng-options="vehic_vi.veh_placa as vehic_vi.veh_placa for vehic_vi in objVehiculos" ng-model="datos.PLACA" id="PLACA" name="PLACA" ng-disabled="desabilitaCon" style=" width: 100%;" required>
-                                        <option value="">--Seleccionar--</option>
+                                        <option value="-1">--Seleccionar--</option>
                                       </select>
                                       <!--select id="PLACA" name="PLACA" ng-model="datos.PLACA"  class="form-control"  required ng-disabled="desabilitaCon">
                                         <option value = "">Seleccionar</option>

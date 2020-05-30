@@ -61,23 +61,35 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   });
 
   $scope.seleccionarOperador = function(ope){
-    /*var act = new actualizaEstadoVehCond();
-    act.ope_id = ope.xope_id;
-    act.actualiza_veh_cond(function(results){
-      console.log(results)
-    });*/
-    $scope.operador = ope;
-    $scope.registro = true;
-    $scope.datos.ope_id = ope.xope_id;
-    $scope.datos.den_ope = ope.xope_denominacion;
-    $scope.datos.tip_ope = ope.xope_tipo_operador;
-    $scope.datos.RO_MOD_VALUE = ope.xope_datos.RO_MOD_VALUE;
-    $scope.datos.RO_DEN = ope.xope_denominacion; 
-    $scope.datos.RO_MOD = ope.xope_datos.RO_MOD; 
-    $scope.listaVeh();
-    $scope.listaCond();
-    $scope.getComboClaseMovilidad();
-    $scope.buscaOficinas();
+    $.blockUI({ css: { 
+      border: 'none', 
+      padding: '10px', 
+      backgroundColor: '#000', 
+      '-webkit-border-radius': '10px', 
+      '-moz-border-radius': '10px', 
+      opacity: .5, 
+      color: '#fff' 
+    },message: "Espere un momento por favor ..." }); 
+    setTimeout(function(){
+      /*var act = new actualizaEstadoVehCond();
+      act.ope_id = ope.xope_id;
+      act.actualiza_veh_cond(function(results){
+        console.log(results)
+      });*/
+      $scope.operador = ope;
+      $scope.registro = true;
+      $scope.datos.ope_id = ope.xope_id;
+      $scope.datos.den_ope = ope.xope_denominacion;
+      $scope.datos.tip_ope = ope.xope_tipo_operador;
+      $scope.datos.RO_MOD_VALUE = ope.xope_datos.RO_MOD_VALUE;
+      $scope.datos.RO_DEN = ope.xope_denominacion; 
+      $scope.datos.RO_MOD = ope.xope_datos.RO_MOD; 
+      $scope.listaVeh();
+      $scope.listaCond();
+      $scope.getComboClaseMovilidad();
+      $scope.buscaOficinas();
+      $.unblockUI();
+    },200);
   }
 
 //********************Vehiculo*****************************************
@@ -162,7 +174,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       verif.placa = placa;
       verif.verificaPlaca(function(results){
         results = JSON.parse(results).success.data[0];
-        console.log(results,123);
         if(results.vexiste != 0){
           $scope.botonV = "455";
           swal({
@@ -239,7 +250,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     try{
       var buscarRepresentante = new rcNatural();
       buscarRepresentante.tipo_persona = "NATURAL";
-      buscarRepresentante.ci = $scope.datos.RO_CI_P;
+      buscarRepresentante.ci = ci;
       buscarRepresentante.buscarPersona(function(res){
         var x = JSON.parse(res);
         if (x.error) {
@@ -526,7 +537,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       if($scope.datos.g_origen != 'POS/EMPR2017'){
           $scope.datos.INT_AC_MACRO_ID    =   idMacro;
       }
-
       $scope.datos.INT_AC_MACRO_ID = idMacro;
       $scope.aDistritoZona = {};
       try{
@@ -621,9 +631,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
             }
         });
     }
-    $scope.datos.INT_AC_DISTRITO    =   idDistrito;
-    $scope.datos.INT_AC_ID_ZONA     =   idZona;
-    $scope.datos.INT_ID_ZONA        =   idZona;
     $scope.desabilitadoNo=true;
     $scope.datos.RO_ZONA_OF      =    distNombre;       
   };
@@ -705,6 +712,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       $scope.desabilitaCon = true;
       $scope.tituloConductor = "REGISTRAR NUEVO CONDUCTOR";
       $scope.botonC = "ne";
+      $scope.limpiarCon();
     }
     else{
       $scope.desabilitaCon = false;
@@ -714,6 +722,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   }
 
   $scope.limpiarCon = function(){
+    //$("#PLACA").empty().trigger("change");
     $scope.datos.RO_CI_C = '';
     $scope.datos.RO_EXP_C = '';
     $scope.datos.PLACA  = '';
@@ -729,6 +738,9 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     $scope.datos.RO_CAT_C = '';
     $scope.datos.RO_TIP_C= '';
     $scope.mostrarOtraZona = false;
+    $('.js-example-basic-single').select2({
+      placeholder: 'Seleccione una Placa'
+    });
   }
 
   $scope.verificaConductor= function (ci) {      
@@ -999,7 +1011,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
         }
         $.unblockUI();
       })  
-    },300);      
+    },200);      
   }
 
   //Renovacion de TIC Y TMOV

@@ -123,12 +123,8 @@
                     <div class="form-group" >
                         <label for="url" >Categoria:</label>
                         <div class="controls">
-                            <select id="f01_categoria" class="form-control" ng-model="datos.f01_categoria" name="f01_categoria" ng-disabled="desabilitado" required>
+                            <select id="f01_categoria" class="form-control" ng-model="datos.f01_categoria" name="f01_categoria" ng-disabled="desabilitado" ng-options="cat.spcat_id  as cat.spcat_descripcion  for cat in resultCategorias" required>
                                 <option value="">--Seleccionar--</option>
-                                <option value="1"> SALUD </option>
-                                <option value="2"> ALIMENTOS </option>
-                                <option value="3"> BEBIDAS </option>
-                                <option value="4"> COMPUTACION </option>
                             </select>
                         </div>
                     </div>
@@ -336,7 +332,6 @@
                                 <input id="txt_f01_upload1" name="txt_f01_upload1"  ng-model="datos['txt_f01_upload1']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                                 <span class="input-group-btn">
                                     <a id="href_f01_upload1"  ng-show="documentosarc" href="{{documentosarc}}" target="_blank">
-                                    
                                         <button id="btn_f01_upload1" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                     </a>
                                     <button id="btn_f01_upload1" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload1', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
@@ -355,7 +350,6 @@
                                 <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datos['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                                 <span class="input-group-btn">
                                     <a id="href_f01_upload2"  ng-show="documentosarc" href="{{documentosarc}}" target="_blank">
-                                    
                                         <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                     </a>
                                     <button id="btn_f01_upload2" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload2', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>

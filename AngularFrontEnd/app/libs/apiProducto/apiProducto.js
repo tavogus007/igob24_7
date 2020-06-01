@@ -108,6 +108,15 @@ dataTiendaVirtual.prototype.obtDataTiendaVirtual = function (functionResp)
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
 
+dataTiendaVirtual.prototype.obtCategorias = function (functionResp)
+{
+    urlCompProducto = "/listarCategoriasProductos";
+    typeCall = "post";
+    dataParams = {
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+
 
 function dataProducto(){
     this.id,
@@ -263,6 +272,7 @@ dataPaginaWeb.prototype.desactivaEstadoPublicacion = function (functionResp)
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
+
 
 
 

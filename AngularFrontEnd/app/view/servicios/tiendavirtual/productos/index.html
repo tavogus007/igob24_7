@@ -127,7 +127,7 @@
                           <td data-title="'Producto'" class="text-left">&nbsp; {{documento.prd_productoc}}</td>
                           <td data-title="'Descripción'" class="text-center">&nbsp; {{documento.prd_descripcionc}}</td>
                           <td data-title="'Precio'" class="text-center">&nbsp; {{documento.prd_precioc}}</td>
-                          <td data-title="'Cantidad'" class="text-center">&nbsp; {{documento.prd_cantidadc}}</td>
+                          
                           <td data-title="'Imagenes del producto'" class="text-center" align="center">
                             <img src="{{documento.prd_imagen_pc}}" style="width:64px;">
                             <img src="{{documento.prd_imagen_a1c}}" style="width:64px;">
@@ -200,14 +200,7 @@
                       </div>
                   </div>
               </div>
-              <div class="col-md-6">
-                  <div class="form-group" >
-                      <label for="url" >Cantidad:</label>
-                      <div class="controls">
-                          <input ng-model="datos.f01_cantidad" id="f01_cantidad" name="f01_cantidad" class="form-control" ng-disabled="desabilitado"/>
-                      </div>
-                  </div>
-              </div>
+
               <div class="col-md-12">
                 <div class="form-group">
                   <label id="lbl_f01_upload" class="col-md-2 control-label">Imagen Principal</label>

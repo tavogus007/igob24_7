@@ -10,8 +10,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
 
 
   var clsIniciarCamposInternet = $rootScope.$on('inicializarProdutos', function(event, data){
-    //$scope.recuperarSerializarProd($rootScope.datosTiendaVirtual);
-    console.log("cambio de registro");
     $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
 
   });
@@ -210,14 +208,13 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       datosProducto.nombre = data.f01_producto;
       datosProducto.descripcion = data.f01_descripcion;
       datosProducto.precio = data.f01_precio;
-      datosProducto.cantidad = data.f01_cantidad;
+
       datosProducto.imagen_p = f0;
       datosProducto.imagen_a1 = f1;
       datosProducto.imagen_a2 = f2;
       datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
       datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
       datosProducto.crearProducto(function(response){
-        console.log(response);
         results = JSON.parse(response);
         results = results.success;
         if(results.length > 0){
@@ -330,10 +327,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       });      
   } 
   $scope.updProducto = function(datosP){
-    console.log("-----------------------------");
-    console.log(datosP);
-    console.log("-----------------------------");
-
     $scope.frmProducto = "mostrar";
     $scope.desabilitado = "";
     $scope.update = true;
@@ -342,7 +335,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     document.getElementById("f01_producto").value = datosP.prd_productoc;
     document.getElementById("f01_descripcion").value = datosP.prd_descripcionc;
     document.getElementById("f01_precio").value = datosP.prd_precioc;
-    document.getElementById("f01_cantidad").value = datosP.prd_cantidadc;
+    //document.getElementById("f01_cantidad").value = datosP.prd_cantidadc;
     archivo1 = datosP.prd_imagen_pc.split('/');
     archi1 = archivo1[9].split('?');
     $rootScope._f01_upload1 = archi1[0];
@@ -358,11 +351,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     $rootScope.swArchivo = "M";
   }
   $scope.actualizarProducto = function(data){
-
-    console.log("-----------------------------");
-    console.log(data);
-    console.log("-----------------------------");
-
     f0 = data.txt_f01_upload1;
     f1 = data.txt_f01_upload2;
     f2 = data.txt_f01_upload3;
@@ -375,8 +363,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       if($scope.fileId == 'f01_upload3')
       f2 = archivoP.url;
     });
-
-
 
 /*
  var datosProducto = new dataProducto();

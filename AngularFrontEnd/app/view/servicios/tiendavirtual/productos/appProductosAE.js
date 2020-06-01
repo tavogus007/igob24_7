@@ -187,7 +187,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       document.getElementById("txt_f01_upload2").value  = '';
       document.getElementById("txt_f01_upload3").value  = '';
       $rootScope.swArchivo = "A";
-
     }
 
     $scope.registrarProducto = function(data){

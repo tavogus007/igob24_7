@@ -207,6 +207,7 @@ dataProducto.prototype.eliminaMisProductos = function (functionResp)
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
+
 dataProducto.prototype.modificarMiProducto = function (functionResp) {
 
   urlCompProducto = "/modificarProducto";

@@ -611,3 +611,12 @@ buscaInfraccion.prototype.buscaInfraccionesPlaca = function (functionResp) {
   };
   ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
 };
+
+buscaInfraccion.prototype.buscaDecomisoPlacas = function(functionResp){
+  urlComp = "/buscaDecomiso";
+  typeCall = "post";
+  dataParams = {
+    "placa" : this.placa
+  };
+  ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
+}

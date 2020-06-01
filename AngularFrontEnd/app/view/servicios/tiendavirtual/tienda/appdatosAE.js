@@ -195,9 +195,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.inicioTiendaVirtual = function () {
-      console.log(sessionService.get('IDAE'));
-      //console.log('datos t ====>', $rootScope.datosTiendaVirtual);
-      $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
+    $scope.listarCategorias();
+    console.log(sessionService.get('IDAE'));
+    //console.log('datos t ====>', $rootScope.datosTiendaVirtual);
+    $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
 
   };
   $scope.registrarDatosAE = function(data){
@@ -247,13 +248,38 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
     datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
     datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray);
-    datosTiendaVirtual.catalogo = JSON.stringify($rootScope.archivosProducto);
+    //catalogo
+    var cata_array = [];
+    var cata = JSON.stringify($rootScope.archivosProducto[0]);
+    var cata1 = JSON.parse(cata);
+    //$scope.url_catalogo = cata.url;
+    //console.log('$scope.url_catalogo',$scope.url_catalogo);
+    cata_array.push(cata1);
+    console.log('cata_array',cata_array);
+    var catalogo1 =  JSON.stringify(cata_array);
+    console.log('catalogo1',catalogo1);
+    datosTiendaVirtual.catalogo = catalogo1;
+
+    //catalogo
+    var logo_array = [];
+    var logo = JSON.stringify($rootScope.archivosProducto[1]);
+    var logo1 = JSON.parse(logo);
+    //$scope.url_logotipo = cata.url;
+    //console.log('$scope.url_catalogo',$scope.url_catalogo);
+    logo_array.push(logo1);
+    console.log('logo_array',logo_array);
+    var logotipo1 =  JSON.stringify(cata_array);
+    console.log('logotipo1',logotipo1);
+    datosTiendaVirtual.logotipo = logotipo1;
+
+
     datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
     if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
         datosTiendaVirtual.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_MATERNO') + ' ' + sessionService.get('US_PATERNO');
     } else {
         datosTiendaVirtual.usr = "juridico";
     }
+    console.log('datosTiendaVirtual',datosTiendaVirtual);
     datosTiendaVirtual.crearTiendaVirtual(function(response){
       console.log(response);
       results = JSON.parse(response);
@@ -330,8 +356,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des5 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas); 
     datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray);
-    //Actualiza adjuntos
-
     console.log('$rootScope.archivosProducto',$rootScope.archivosProducto);
     datosTiendaVirtual.catalogo = JSON.stringify($rootScope.archivosProducto[0]);
     console.log('datosTiendaVirtual.catalogo',datosTiendaVirtual.catalogo);
@@ -358,11 +382,22 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           
          
       } else {
-          $.unblockUI();,
+          $.unblockUI();
           swal('', "Error al Actualizar información de la Tienda Virtual", 'error');
           $location.path('dashboard');
       }
     });
+  }
+  $scope.listarCategorias = function(){
+    var categorias = new dataTiendaVirtual();
+    categorias.obtCategorias(function(response){
+      console.log(response);
+      $scope.resultCategorias = JSON.parse(response);
+      $scope.resultCategorias = $scope.resultCategorias.success;
+      console.log('resultCategorias',resultCategorias);
+    });
+
+
   }
   /*$scope.cerrarDatosAE = function(dato){
     window.location.href = "#dashboard";
@@ -418,7 +453,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
                   var descArchivo = "catalogo de productos";
                 }
                 if (idFiles[key]==2){
-                  var descDoc = "logotipo";
+                  var descDoc = "logtipo";
                   var descArchivo = "logotipo de la AE";
                 }
                 if (idFiles[key]==3){

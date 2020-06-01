@@ -3,8 +3,9 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
   $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
   $scope.oidCiu = sessionService.get('IDSOLICITANTE');
   $scope.tiposTramite = [
-    { detalle: 'Impugnación de Infracciones', id:43}, 
-    { detalle: 'Conmutación de Infracciones', id:45} 
+    { detalle: 'Impugnación de Infracciones', id:43 ,tipo:$scope.tipo_persona}, 
+    { detalle: 'Conmutación de Infracciones', id:45 ,tipo:$scope.tipo_persona},
+    { detalle: 'Devoluciòn de Placas', id:49 ,tipo:'NATURAL'} 
   ];
   $scope.datos = {};
   $scope.tablaTramites        =   {};
@@ -12,11 +13,13 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
   $scope.templates =
   [ { name: 'template0.html', url: '../../../app/index.html'},
     { name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/impugnacion/impugnacion.html'},
-    { name: 'template2.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/conmutacion/conmutacion.html'} 
+    { name: 'template2.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/conmutacion/conmutacion.html'},
+    { name: 'template2.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/devolucionPlacas/devolucionPlacas.html'} 
   ];
 
   $scope.impugnacion = 43;
   $scope.conmutacion = 45;
+  $scope.devolucion  = 49;
   $scope.template =   "";
 
   $scope.inicio = function(){
@@ -234,13 +237,14 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
             $scope.datos.INF_NOMBRE_VIA = results[0].dtspsl_nombre_via;
             $scope.datos.INF_NRO_V = results[0].dtspsl_numero_casa;
             if (results[0].dtspsl_file_fotocopia_ci != "") {
-              $scope.datos.RO_ARCH1 = CONFIG.APIURL + "/files/RC_CLI/"+results[0]._id+"/"+results[0].dtspsl_file_fotocopia_ci+"?app_name=todoangular";
+              $scope.datos.INF_CI_ANVERSO = CONFIG.APIURL + "/files/RC_CLI/"+results[0]._id+"/"+results[0].dtspsl_file_fotocopia_ci+"?app_name=todoangular";
             }
             if (results[0].dtspsl_file_fotocopia_ci_r != "") {
-              $scope.datos.RO_ARCH2 = CONFIG.APIURL + "/files/RC_CLI/"+results[0]._id+"/"+results[0].dtspsl_file_fotocopia_ci_r+"?app_name=todoangular";
+              $scope.datos.INF_CI_REVERSO = CONFIG.APIURL + "/files/RC_CLI/"+results[0]._id+"/"+results[0].dtspsl_file_fotocopia_ci_r+"?app_name=todoangular";
             }
           }
         }
+        console.log("datos ciudadano",$scope.datos);
       }else{
         console.log("NO EXISTE DATOS");
       }
@@ -366,6 +370,9 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
     }  
     if($scope.procesoSeleccionado == $scope.conmutacion){
       idTemplate = 2;
+    }
+    if($scope.procesoSeleccionado == $scope.devolucion){
+      idTemplate = 3;
     }
     $scope.template = $scope.templates[idTemplate];
     setTimeout(function(){

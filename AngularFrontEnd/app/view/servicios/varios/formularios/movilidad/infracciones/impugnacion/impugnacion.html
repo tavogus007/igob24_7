@@ -604,6 +604,10 @@
                               <td data-title="'Fecha de Infracción'" align="center" sortable="'infraccion_registrado'">{{inf.infraccion_registrado | date:'dd-MM-yyyy'}}</td>
                               <td data-title="'Monto de Infracción'" align="center" sortable="'infraccion_monto_total'">{{inf.infraccion_monto_total}}</td>
                               <td data-title="'Lugar de Infracción'" align="center"> Zona {{inf.infraccion_detalle_ubi.zona}},via {{inf.infraccion_detalle_ubi.via}}</td>
+                              <td data-title="'Justificación'" align="center"> 
+                                <textarea class="form-control" ng-model="inf.inf_justificacion" name="inf_justificacion" ng-disabled="desabilitado">
+                                </textarea>
+                              </td>
                             </tr>
                           </table>
                         </div>
@@ -653,17 +657,7 @@
                         </div>
                       </div>
                     </div-->
-                    <div class="col-md-12">
-                      <div class="col-md-12" >
-                        <div class="form-group" >
-                          <label for="url">Justificación:</label>
-                          <div class="controls">
-                            <textarea class="form-control" ng-model="datos.INF_JUSTIFICACION" name="INF_JUSTIFICACION" ng-disabled="desabilitado">
-                            </textarea>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    
                   </div>
                   <div class="col-md-12">
                     <legend>
@@ -672,27 +666,26 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <div>
+                      <div ng-repeat="reqAdjuntos in adjuntos">
                         <div class="form-group">
                           <div class="col-md-3">
-                            <label id="lbl_f01_upload">Memorandum de Infracción</label>
+                            <label id="lbl_f01_upload{{reqAdjuntos.id}}">{{reqAdjuntos.requisito}}</label>
                           </div>
-                          <div class="col-md-6">
+                          <div class="col-md-9">
                             <div class="form-group custom-upload">
-                              <input type="file" id="f01_upload" ng-disabled="desabilita" name="f01_upload" accept="image/*"  style="display: none;">
+                              <input type="file" id="f01_upload{{reqAdjuntos.id}}" ng-disabled="desabilita" name="f01_upload{{reqAdjuntos.id}}" accept="image/*"  style="display: none;">
                               <div class="input-group">
-                                <input id="txt_f01_upload" ng-disabled="true" ng-model = "datos.File_Adjunto[0].campo" name="txt_f01_upload" type="text" placeholder="Memorandum de Infracción" class="form-control input-lg"  required>
+                                <input id="txt_f01_upload{{reqAdjuntos.id}}" ng-disabled="true" ng-model = "datos.File_Adjunto[reqAdjuntos.id].campo" name="txt_f01_upload{{reqAdjuntos.id}}" type="text" placeholder="{{reqAdjuntos.requisito}}" class="form-control input-lg"  required>
                                 <span class="input-group-btn">
-                                  <a id="href_f01_upload" ng-show="datos.File_Adjunto[0].url" href="{{datos.File_Adjunto[0].url}}" target="_blank">
-                                    <button id="btn_f01_ver" class="browse btn btn-success input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  <a id="href_f01_upload{{reqAdjuntos.id}}" ng-show="datos.File_Adjunto[''+reqAdjuntos.id].url" href="{{datos.File_Adjunto[reqAdjuntos.id].url}}" target="_blank">
+                                    <button id="btn_f01_ver{{reqAdjuntos.id}}" class="browse btn btn-success input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
-                                  <button ng-disabled="desabilitado" id="btn_f01_upload" ng-click="ejecutarFile('f01_upload', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button" ><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                  <button ng-disabled="desabilitado || reqAdjuntos.id == 0 || reqAdjuntos.id == 0" id="btn_f01_upload{{reqAdjuntos.id}}" ng-click="ejecutarFile('f01_upload' + reqAdjuntos.id, 'data' + $reqAdjuntos.requisito)" class="btnupload browse btn btn-primary input-lg" type="button" ><i class="glyphicon glyphicon-upload"></i> Subir</button>
                                 </span>
                               </div>
                             </div>
                           </div>
-                          <div class="col-md-2"></div>
-                        </div>
+                        </div><br>
                       </div>
                     </div>
                   </div><br><br>

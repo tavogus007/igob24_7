@@ -117,7 +117,6 @@ dataTiendaVirtual.prototype.obtCategorias = function (functionResp)
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
 
-
 function dataProducto(){
     this.id,
     this.idtv,

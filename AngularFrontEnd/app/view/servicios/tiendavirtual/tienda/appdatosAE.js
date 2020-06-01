@@ -170,12 +170,14 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       if(catalogo == 'null' || catalogo == null || catalogo == '[]' || catalogo == [] || catalogo == ''){
        console.log('Sin Url de catalogo');
        $scope.datos.txt_f01_upload1 = '';
+       $scope.documentosarc = '';
       }else{
         var cataologojson = JSON.parse(catalogo);
         console.log('cataologojson',cataologojson);
         var cataologojson1 = JSON.parse(cataologojson[0]);
         console.log('cataologojson1',cataologojson1);
         $scope.datos.txt_f01_upload1 = cataologojson1.campo;
+        $scope.documentosarc = cataologojson1.url;
       }
       
       //logotipo
@@ -184,18 +186,19 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       if(logotipo == 'null' || logotipo == null || logotipo == '[]' || logotipo == [] || logotipo == ''){
         console.log('Sin Url de logotipo');
         $scope.datos.txt_f01_upload2 = '';
+        $scope.documentosarc = '';
       }else{
         var logotipojson = JSON.parse(logotipo);
         console.log('logotipojson',logotipojson);
         var logotipojson1 = JSON.parse(logotipojson[0]);
         console.log('logotipojson1',logotipojson1);
         $scope.datos.txt_f01_upload2 = logotipojson1.campo;
+        $scope.documentosarc = logotipojson1.url;
       }
 
     }
   }
   $scope.inicioTiendaVirtual = function () {
-    $scope.listarCategorias();
     console.log(sessionService.get('IDAE'));
     //console.log('datos t ====>', $rootScope.datosTiendaVirtual);
     $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
@@ -387,17 +390,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           $location.path('dashboard');
       }
     });
-  }
-  $scope.listarCategorias = function(){
-    var categorias = new dataTiendaVirtual();
-    categorias.obtCategorias(function(response){
-      console.log(response);
-      $scope.resultCategorias = JSON.parse(response);
-      $scope.resultCategorias = $scope.resultCategorias.success;
-      console.log('resultCategorias',resultCategorias);
-    });
-
-
   }
   /*$scope.cerrarDatosAE = function(dato){
     window.location.href = "#dashboard";

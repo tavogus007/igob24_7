@@ -158,6 +158,15 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
           console.log("Error Interno : ", error);
         }
     };
+    $scope.listarCategorias = function(){
+        var categorias = new dataTiendaVirtual();
+        categorias.obtCategorias(function(response){
+          console.log(response);
+          $rootScope.resultCategorias = JSON.parse(response);
+          $rootScope.resultCategorias = $scope.resultCategorias.success;
+        });
+    }
+    
     $scope.obtPagina = function(){ 
         $rootScope.id_web = '';
         $rootScope.ws_publicado = false;
@@ -273,6 +282,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         //$scope.seleccionarDatosRender(tramite);  
         $scope.template         =   $scope.templates[0];
         sessionService.set('IDAE', tramite.IdActividad);
+        $scope.listarCategorias();
         $scope.obtTiendaVirtual();
         $rootScope.$broadcast('inicializarCampos', $scope.datos);
         $scope.sIdAeGrilla  =   tramite.IdActividad;

@@ -807,7 +807,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         if(typeof sformguardado == 'undefined' || sformguardado != 'G'){
             $scope.botones = null;
             $scope.desabilitado = true;                   
-            swal('', "Favor revisar la información y seleccionar la Actividad Economica que desea registrar.", 'warning');                    
+            swal('', "Actividades Económicas de : " + sessionService.get('US_NOMBRE'), 'warning');                    
         }else{
 
             //$scope.botones = "mostrar";

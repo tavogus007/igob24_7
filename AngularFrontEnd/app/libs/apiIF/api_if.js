@@ -8,7 +8,6 @@ if(jsonURLS){
   var urlIf = jsonURLS.CONEXION_API_PG_IF+"wsIf";
   var urlSitram = jsonURLS.CONEXION_API_PG_IF+"wsSitram";
   var urlSigetuTramite = jsonURLS.CONEXION_API_PG_IF_OFICIAL+"wsSTTF";
-  
 }
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
@@ -831,6 +830,29 @@ gCrearTramiteLinea.prototype.crearTramiteLinea = function (functionResp) {
       "usr_id" : this.usr_id,
       "datos" : this.datos,
       "procodigo" : this.procodigo
+    };
+    ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
+};
+//Sistema de ventas.
+function tiendaVirtual() {
+  this.id_ae;
+  this.estado;
+}
+tiendaVirtual.prototype.crearTiendaVirtual = function (functionResp) {
+    urlComp = "/publicarAEDelivery";
+    typeCall = "post";
+    dataParams = {
+      "idae" : this.id_ae,
+      "estadop" : this.estado
+    };
+    ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
+};
+tiendaVirtual.prototype.modificarTiendaVirtual = function (functionResp) {
+    urlComp = "/modificarAEDelivery";
+    typeCall = "post";
+    dataParams = {
+      "idae_m" : this.id_ae,
+      "estadop_m" : this.estado
     };
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };

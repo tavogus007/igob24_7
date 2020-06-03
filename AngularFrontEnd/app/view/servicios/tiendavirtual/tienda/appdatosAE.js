@@ -8,6 +8,11 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   $rootScope.redesSocialesArray = new Array();
   $rootScope.ofertasArray = new Array();
   $rootScope.archivosProducto = new Array();
+  $rootScope.archivosLogotipo = new Array();
+  $("#mensaje1").hide();
+  $("#mensaje2").hide();
+  
+  
 
   var clsIniciarCamposInternet = $rootScope.$on('inicializarCampos', function(event, data){
     $scope.limpiar();
@@ -47,7 +52,30 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_correoTV = data[0].tv_correoc;
       $scope.datos.f01_pagwebAE = data[0].tv_pagina_webc;
 
+      $rootScope.inicializaC1 = false;
+      $rootScope.inicializaC2 = false;
+      $rootScope.inicializaC3 = false;
+      $rootScope.inicializaFacebook =  false;
+      $rootScope.inicializaTwitter = false;
+      $rootScope.inicializaInstagram = false;
+
       //contactos
+      console.log('$scope.datos.f01_contacto3_nro',$scope.datos.f01_contacto3_nro);
+      if( $scope.datos.f01_contacto1_nro == undefined ||  $scope.datos.f01_contacto1_nro == 'undefined' || $scope.datos.f01_contacto1_nro == ''){
+        $rootScope.inicializaC1 = true;
+      }else{
+        $rootScope.inicializaC1 = false;
+      }
+      if( $scope.datos.f01_contacto2_nro == undefined ||  $scope.datos.f01_contacto2_nro == 'undefined' || $scope.datos.f01_contacto2_nro == ''){
+        $rootScope.inicializaC2 = true;
+      }else{
+        $rootScope.inicializaC2 = false;
+      }
+      if( $scope.datos.f01_contacto3_nro == undefined ||  $scope.datos.f01_contacto3_nro == 'undefined' || $scope.datos.f01_contacto3_nro == ''){
+        $rootScope.inicializaC3 = true;
+      }else{
+        $rootScope.inicializaC3 = false;
+      }
       var contactos = data[0].tv_contactosc;
       console.log('contactos',contactos);
         for(i=0;i<contactos.length;i++){
@@ -57,13 +85,14 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
             $scope.datos.f01_contacto1 = conta.tipo;
             if($scope.datos.f01_contacto1_nro == 'undefined' || $scope.datos.f01_contacto1_nro == undefined || $scope.datos.f01_contacto1_nro == null){
               $scope.datos.f01_contacto1_nro = '';
+             
             }
           }
           if (i==1){
             $scope.datos.f01_contacto2_nro = conta.valor;
             $scope.datos.f01_contacto2 = conta.tipo;
             if($scope.datos.f01_contacto2_nro == 'undefined' || $scope.datos.f01_contacto2_nro == undefined || $scope.datos.f01_contacto2_nro == null){
-              $scope.datos.f01_contacto1_nro = '';
+              $scope.datos.f01_contacto1_nro = '';              
             }
           }
           if (i==2){
@@ -76,6 +105,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         }
       
     //redes sociales
+
       var redes = data[0].tv_redesc;
       console.log('redes',redes);
       $('input:checkbox[name=f01_redessocialesAE1]:checked').val();
@@ -99,6 +129,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
             }
             if($scope.datos.f01_redessocialesAE1_url == 'undefined' || $scope.datos.f01_redessocialesAE1_url == undefined || $scope.datos.f01_redessocialesAE1_url == null){
               $scope.datos.f01_redessocialesAE1_url = '';
+              $rootScope.inicializaFacebook =  true;
             }
           }
           if (i==1){
@@ -110,6 +141,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
             }
             if($scope.datos.f01_redessocialesAE2_url == 'undefined' || $scope.datos.f01_redessocialesAE2_url == undefined || $scope.datos.f01_redessocialesAE2_url == null){
               $scope.datos.f01_redessocialesAE2_url = '';
+              $rootScope.inicializaTwitter = true;
             }
           }
           if (i==2){
@@ -121,6 +153,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
             }
             if($scope.datos.f01_redessocialesAE3_url == 'undefined' || $scope.datos.f01_redessocialesAE3_url == undefined || $scope.datos.f01_redessocialesAE3_url == null){
               $scope.datos.f01_redessocialesAE3_url = '';
+              $rootScope.inicializaInstagram = true;
             }
           }
         }
@@ -161,39 +194,40 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
             $scope.datos.f01_ofertasAE_des5 = '';
           }
         }
-        
 
       }
 
       //catalogo
-   
-      var catalogo = results[0].tvcatalogo;
-      if(catalogo == 'null' || catalogo == null || catalogo == '[]' || catalogo == [] || catalogo == ''){
+      if($scope.catalogo1 == '' || $scope.catalogo1 == [] || $scope.catalogo1 == 'undefined' || $scope.catalogo1 == undefinded){
+        $scope.catalogo1= [];
+      }else{
+      $scope.catalogo1 = results[0].tvcatalogo;
+      $scope.catalogojson = JSON.parse($scope.catalogo1);
+      console.log('$scope.catalogo',$scope.catalogojson);
+      if($scope.catalogojson.length == 0){
        console.log('Sin Url de catalogo');
        $scope.datos.txt_f01_upload1 = '';
-      
       }else{
-        var cataologojson = JSON.parse(catalogo);
-        console.log('cataologojson',cataologojson);
-        var cataologojson1 = JSON.parse(cataologojson[0]);
-        console.log('cataologojson1',cataologojson1);
-        $scope.datos.txt_f01_upload1 = cataologojson1.campo;
+        $scope.catalogojson1 = JSON.parse($scope.catalogojson[0]); 
+        $scope.datos.txt_f01_upload1 = $scope.catalogojson1.campo;
+        $scope.catalogo_url = $scope.catalogojson1.url;
       }
+      }
+      
       
       //logotipo
 
-      var logotipo = results[0].plogotipo;
-      if(logotipo == 'null' || logotipo == null || logotipo == '[]' || logotipo == [] || logotipo == ''){
+      $scope.logotipo1 = results[0].plogotipo;
+      $scope.logotipojson = JSON.parse($scope.logotipo1);
+      if($scope.logotipojson.length == 0){
         console.log('Sin Url de logotipo');
         $scope.datos.txt_f01_upload2 = '';
-      
       }else{
-        var logotipojson = JSON.parse(logotipo);
-        console.log('logotipojson',logotipojson);
-        var logotipojson1 = JSON.parse(logotipojson[0]);
-        console.log('logotipojson1',logotipojson1);
-        $scope.datos.txt_f01_upload2 = logotipojson1.campo;
-      }
+        $scope.logotipojson1 = JSON.parse($scope.logotipojson[0]);
+        console.log(' $scope.logotipojson1', $scope.logotipojson1);
+        $scope.datos.txt_f01_upload2 = $scope.logotipojson1.campo;
+        $scope.logotipo_url = $scope.logotipojson1.url;
+      } 
 
     }
   }
@@ -201,7 +235,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     console.log(sessionService.get('IDAE'));
     //console.log('datos t ====>', $rootScope.datosTiendaVirtual);
     $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
-
+   
   };
   $scope.registrarDatosAE = function(data){
     var datosTiendaVirtual = new dataTiendaVirtual();
@@ -249,32 +283,19 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     $rootScope.ofertasArray.push(myJSONOfertas);
     datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
     datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
-    datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray);
-    //catalogo
-    var cata_array = [];
-    var cata = JSON.stringify($rootScope.archivosProducto[0]);
-    var cata1 = JSON.parse(cata);
-    //$scope.url_catalogo = cata.url;
-    //console.log('$scope.url_catalogo',$scope.url_catalogo);
-    cata_array.push(cata1);
-    console.log('cata_array',cata_array);
-    var catalogo1 =  JSON.stringify(cata_array);
-    console.log('catalogo1',catalogo1);
-    datosTiendaVirtual.catalogo = catalogo1;
-
-    //catalogo
-    var logo_array = [];
-    var logo = JSON.stringify($rootScope.archivosProducto[1]);
-    var logo1 = JSON.parse(logo);
-    //$scope.url_logotipo = cata.url;
-    //console.log('$scope.url_catalogo',$scope.url_catalogo);
-    logo_array.push(logo1);
-    console.log('logo_array',logo_array);
-    var logotipo1 =  JSON.stringify(logo_array);
-    console.log('logotipo1',logotipo1);
-    datosTiendaVirtual.logotipo = logotipo1;
-
-
+    datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray); 
+    //catalogo 
+    if($scope.catalogo1 == '' || $scope.catalogo1 == 'undefined' || $scope.catalogo1 == undefined){
+      datosTiendaVirtual.catalogo = [];
+    }else{
+      datosTiendaVirtual.catalogo = $scope.catalogo1;
+    }
+    //logotipo
+    if($scope.logotipo1 == '' || $scope.logotipo1 == 'undefined' || $scope.logotipo1 == undefined){
+      datosTiendaVirtual.logotipo = '';
+    }else{
+      datosTiendaVirtual.logotipo = $scope.logotipo1;
+    }
     datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
     if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
         datosTiendaVirtual.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_MATERNO') + ' ' + sessionService.get('US_PATERNO');
@@ -289,9 +310,12 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       if(results.length > 0){
           $.unblockUI();
           //$scope.refrescar();
+
           swal('', "Tienda Virtual activada ", 'success');
+          $scope.limpiar();
           $rootScope.nuevo = null;
           $rootScope.update = "mostrar";
+          
         
       } else {
           $.unblockUI();
@@ -300,7 +324,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     });
   } 
   $scope.actualizarDatosAE = function(data){
-    //console.log('datamod',data);
     var datosTiendaVirtual = new dataTiendaVirtual();
     datosTiendaVirtual.idtv = sessionService.get("IDTV");
     datosTiendaVirtual.ae_id = sessionService.get("IDAE");
@@ -360,11 +383,14 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     $rootScope.ofertasArray.push(myJSONOfertas); 
     datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray);
     console.log('$rootScope.archivosProducto',$rootScope.archivosProducto);
-
-    datosTiendaVirtual.catalogo = JSON.stringify($rootScope.archivosProducto[0]);
+    datosTiendaVirtual.catalogo = $scope.catalogo1;
+    //datosTiendaVirtual.catalogo = JSON.stringify($rootScope.archivosProducto[0]);
     console.log('datosTiendaVirtual.catalogo',datosTiendaVirtual.catalogo);
+    
 
-    datosTiendaVirtual.logotipo = JSON.stringify($rootScope.archivosProducto[1]);
+    //datosTiendaVirtual.logotipo = JSON.stringify($rootScope.archivosLogotipo[0]);
+    datosTiendaVirtual.logotipo = $scope.logotipo1;
+
     console.log('datosTiendaVirtual.logotipo',datosTiendaVirtual.logotipo);
 
     datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
@@ -379,8 +405,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       results = results.success;
       if(results.length > 0){
           $.unblockUI();
-        
           swal('', "La información de la Tienda Virtual fue actualizada ", 'success');
+          $scope.limpiar();
           $rootScope.nuevo = null;
           
          //$rootScope.update = "mostrar";
@@ -422,10 +448,90 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_ofertasAE_des5 = "";
       $scope.datos.txt_f01_upload1 = "";
       $scope.datos.txt_f01_upload2 = "";
+      $rootScope.archivosProducto = new Array();
+      $rootScope.archivosLogotipo = new Array();
+      $scope.catalogo1 = '';
+      $scope.logotipo1 = '';
+      $scope.catalogo_url = '';
+      $scope.logotipo_url = '';
+
   }
+  $scope.validaCorreo =function(){
+    var $result = $("#result");
+    var email = $("#f01_correoTV").val();
+    $result.text("");
+    if ($scope.validarEmail(email)) {
+        $("#mensaje1").show();
+        $("#mensaje2").hide();
+        $scope.correoValido=false;
+    } else {
+    $("#mensaje1").hide();
+    $("#mensaje2").show();
+    $scope.correoValido=true;
+    }
+    return false;
+}
+  $scope.validarEmail =function(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+  }
+  $scope.activarCampo1 = function(dato){
+    console.log('dato',dato);
+    if(dato == "" || dato == undefined || dato == 'undefined'){
+      document.getElementById('f01_contacto1_nro').value = '';
+      document.getElementById('f01_contacto1_nro').disabled = true;
+      
+    }else{
+      document.getElementById('f01_contacto1_nro').disabled = false;
+    }
+  }
+  $scope.activarCampo2 = function(dato){
+    if(dato == "" || dato == undefined || dato == 'undefined'){
+      document.getElementById('f01_contacto2_nro').value = '';
+      document.getElementById('f01_contacto2_nro').disabled = true;
+    }else{
+      document.getElementById('f01_contacto2_nro').disabled = false;
+    }
+  }
+  $scope.activarCampo3 = function(dato){
+    if(dato == "" || dato == undefined || dato == 'undefined'){
+      document.getElementById('f01_contacto3_nro').value = '';
+      document.getElementById('f01_contacto3_nro').disabled = true;
+    }else{
+      document.getElementById('f01_contacto3_nro').disabled = false;
+    }
+  }
+  $scope.activaRedes1 = function(dato){
+    console.log('DATO',dato);
+    if(dato == false) {
+      document.getElementById('f01_redessocialesAE1_url').value = '';
+      $rootScope.inicializaFacebook =  true;
+    } else {
+      $rootScope.inicializaFacebook =  false;
+    }
+  }
+  $scope.activaRedes2 = function(dato){
+    console.log('DATO',dato);
+    if(dato == false) {
+      document.getElementById('f01_redessocialesAE2_url').value = '';
+      $rootScope.inicializaTwitter = true;
+    } else {
+      $rootScope.inicializaTwitter = false;
+    }
+  }
+  $scope.activaRedes3 = function(dato){
+    console.log('DATO',dato);
+    if(dato == false) {
+      document.getElementById('f01_redessocialesAE3_url').value = '';
+      $rootScope.inicializaInstagram = true;
+    } else {
+      $rootScope.inicializaInstagram = false;
+    }
+  }
+
+
   /*$scope.cerrarDatosAE = function(dato){
     window.location.href = "#dashboard";
-    
   }*/
   $scope.cambiarFile = function(obj, valor){
       $scope.datos[obj.name] = valor;
@@ -453,8 +559,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   /*REQUISITOS2018*/
     $scope.almacenarRequisitos = function(aArchivos,idFiles){
-          console.log("idfiles2:: ", idFiles);
-
+        console.log("idfiles2:: ", idFiles);
+        $scope.catalogo1 = '';
+        $scope.logotipo1 = '';
         var descDoc = "";
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer(); 
@@ -471,28 +578,47 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/";
         $.blockUI();
         angular.forEach(aArchivos, function(archivo, key) {
+          console.log('archivo',archivo);
             if(typeof(archivo) != 'undefined'){
                 if (idFiles[key]==1){
                   var descDoc = "catalogo";
                   var descArchivo = "catalogo de productos";
+                  var imagenFile = archivo.name.split('.');
+                  var tipoFile = imagenFile[1];
+                  var nombreNuevo = descDoc + '.'+imagenFile[1];
+                  $scope.catalogo_url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
+                  fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
+                  document.getElementById('txt_f01_upload1').value = nombreNuevo;
+                  var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
+                  var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevo + '", "nombre":"' + descArchivo + '" }';
+                  $rootScope.archivosProducto.push(myJSON);
+                  var cata_array = [];
+                  var cata = JSON.stringify($rootScope.archivosProducto[0]);
+                  var cata1 = JSON.parse(cata);
+                  cata_array.push(cata1);
+                  $scope.catalogo1 =  JSON.stringify(cata_array);
+                  console.log('catalogo1',$scope.catalogo1);
+                 
                 }
                 if (idFiles[key]==2){
                   var descDoc = "logotipo";
                   var descArchivo = "logotipo de la AE";
+                  var imagenFile = archivo.name.split('.');
+                  var tipoFile = imagenFile[1];
+                  var nombreNuevoL = descDoc + '.'+imagenFile[1];
+                  $scope.logotipo_url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoL + "?app_name=todoangular";
+                  fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevoL);
+                  document.getElementById('txt_f01_upload2').value = nombreNuevoL;
+                  var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoL + "?app_name=todoangular";
+                  var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevoL + '", "nombre":"' + descArchivo + '" }';
+                  $rootScope.archivosLogotipo.push(myJSON);
+                  var logo_array = [];
+                  var logo = JSON.stringify($rootScope.archivosLogotipo[0]);
+                  var logo1 = JSON.parse(logo);
+                  logo_array.push(logo1);
+                  $scope.logotipo1 =  JSON.stringify(logo_array);
+                  console.log('logotipo1',$scope.logotipo1);
                 }
-                if (idFiles[key]==3){
-                  var descDoc = "img_aux2";
-                  var descArchivo = "img_auxiliar2";
-                }
-                var imagenFile = archivo.name.split('.');;
-                var tipoFile = imagenFile[1];
-                var nombreNuevo = descDoc + '.'+imagenFile[1];
-                $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
-                fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
-                document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
-                var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
-                var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevo + '", "nombre":"' + descArchivo + '" }';
-                $rootScope.archivosProducto.push(myJSON);
             } else {
             }
         });

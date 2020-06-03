@@ -1,8 +1,8 @@
 function productosController($scope, $timeout, CONFIG,$window,$rootScope,sessionService,ngTableParams,$filter,$route, sweet, $http,FileUploader,$sce,fileUpload, fileUpload1 ) {
-  $scope.tablaDocumentos        =   {};
+  $scope.tblDocumentos        =   {};
   $scope.frmProducto = null;
   $scope.datosProd = {};
-  $scope.obtDatos      =   [];
+  $scope.listadoProductos      =   [];
   $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
   $scope.valida = 0;
   
@@ -179,10 +179,14 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     };
     /////////////////////////////////////////////////////////////////
     $scope.newProducto =function(){
+      alertify.warning('Creando nuevo Producto'); 
       $scope.frmProducto = "mostrar";
       $scope.desabilitado = "";
       $scope.nuevo = true;
       $rootScope.nuevo = true;
+      $scope.update = false;
+      $rootScope.update = false;
+      $scope.datosProd = {};
       document.getElementById("txt_f01_upload1").value  = '';
       document.getElementById("txt_f01_upload2").value  = '';
       document.getElementById("txt_f01_upload3").value  = '';
@@ -197,7 +201,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       $scope.f01_upload1 = '';
       $scope.f01_upload2 = '';
       $scope.f01_upload3 = '';
-
       $rootScope.swArchivo = "A";
     }
 
@@ -252,15 +255,14 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
           datosProducto.listarProductoTV(function(response){
             resultado = JSON.parse(response);
             var resultadoProd = resultado.success;
-            $scope.obtDatos = resultadoProd;
-            if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
-                $scope.tablaDocumentos = {};
+            $scope.listadoProductos = resultadoProd;
+            var data = resultadoProd;
+            $scope.tblDocumentos.reload();
+            if ($scope.listadoProductos == '[]' || $scope.listadoProductos == '[{}]' || $scope.listadoProductos == '[{ }]' || $scope.listadoProductos == ' ' || $scope.listadoProductos == '') {
+                $scope.tblDocumentos = {};
                 alertify.warning('No existen datos'); 
                 $rootScope.$apply(); 
             } else {
-                var data = resultadoProd;
-                $scope.tablaDocumentos.reload();
-                
                 $rootScope.$apply(); 
             }
           });
@@ -271,7 +273,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         $.unblockUI();
     };
 
-    $scope.tablaDocumentos = new ngTableParams({
+    $scope.tblDocumentos = new ngTableParams({
         page: 1,
         count: 10,
         filter: {},
@@ -279,15 +281,15 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
           vdoc_idd: 'desc'
         }
         }, {
-        total: $scope.obtDatos.length,
+        total: $scope.listadoProductos.length,
         getData: function($defer, params) {
           var filteredData = params.filter() ?
-          $filter('filter')($scope.obtDatos, params.filter()) :
-          $scope.obtDatos;              
+          $filter('filter')($scope.listadoProductos, params.filter()) :
+          $scope.listadoProductos;              
           var orderedData = params.sorting() ?
           $filter('orderBy')(filteredData, params.orderBy()) :
-          $scope.obtDatos;
-          params.total($scope.obtDatos.length);
+          $scope.listadoProductos;
+          params.total($scope.listadoProductos.length);
           $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));                  
         }
     });

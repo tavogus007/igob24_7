@@ -312,12 +312,6 @@ dataPaginaWeb.prototype.updPaginaWeb = function (functionResp)
 
 
 
-
-
-
-
-
-
 dataPaginaWeb.prototype.activaEstadoPublicacion = function (functionResp)
 {
   urlCompProducto = "/activarPublicacionPaginaWeb";
@@ -337,4 +331,31 @@ dataPaginaWeb.prototype.desactivaEstadoPublicacion = function (functionResp)
       "idAe":this.idAe 
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+
+function dataProductoAc(){
+    this.prd_idc
+};
+
+
+dataProductoAc.prototype.activarProductoAe = function (functionResp)
+{
+  urlCompProducto = "/activarProducto";
+  typeCall = "post";
+  dataParams = {
+    "prd_idc" : this.prd_idc    
+  };
+  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+
+};
+
+dataProductoAc.prototype.desactivarProductoAe = function (functionResp)
+{
+  urlCompProducto = "/desactivarProducto";
+  typeCall = "post";
+  dataParams = {
+    "prd_idc" : this.prd_idc    
+  };
+  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+
 };

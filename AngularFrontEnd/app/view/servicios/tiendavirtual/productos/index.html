@@ -49,6 +49,19 @@
             }
             //$('.clockpicker').clockpicker();
         </script>
+        <script type="text/javascript">
+            function soloNumerico(variable){
+              Numer=parseInt(variable);
+              if (isNaN(Numer)){
+                  return "";
+              }
+              return Numer;
+          }
+
+          function valNumero(Control){
+              Control.value=soloNumerico(Control.value);
+          }
+        </script>
         <style>
             .switch {
               position: relative;
@@ -124,31 +137,31 @@
           <form name="signupForm"  class="form-horizontal" role="form" novalidate>                   
             <div class="col-md-12">
               <div class="panel panel-default">
-                <div class="panel-heading"><B>LISTADO DE PRODUCTOS</B> &nbsp; <a class="btn btn-success ng-binding" tooltip="Adicionar producto" ng-click="newProducto(documento);"><i class="fa fa-plus" aria-hidden="true"></i></a></div>
+                <div class="panel-heading"><B>LISTADO DE PRODUCTOS</B> &nbsp; <a class="btn btn-success ng-binding" tooltip="Adicionar producto" ng-click="newProducto(producto);"><i class="fa fa-plus" aria-hidden="true"></i></a></div>
                 <div class="panel-body" ng-disabled="true">
                   <div class="table-responsive">
-                    <table ng-table="tablaDocumentos" class="table table-striped responsive">
+                    <table ng-table="tblDocumentos" class="table table-striped responsive">
                       <thead>
                       </thead>
                       <tbody>
-                        <tr class="column" ng-repeat="documento in $data | filter:query1 ">
+                        <tr class="column" ng-repeat="producto in $data | filter:query1 ">
                           <td data-title="'#'" class="text-center">&nbsp; {{$index+1}}</td>
                           <td data-title="'Opciones'" class="text-left">
-                            <a class="btn btn-success ng-binding" tooltip="Modificar producto" ng-click="modificarProducto(documento);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                            <a class="btn btn-success ng-binding" tooltip="Eliminar producto" ng-click="eliminarProducto(documento);"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            <a class="btn btn-success ng-binding" tooltip="Modificar producto" ng-click="modificarProducto(producto);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            <a class="btn btn-success ng-binding" tooltip="Eliminar producto" ng-click="eliminarProducto(producto);"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                             <label class="switch">
-                                <input type="checkbox" ng-checked="documento.prd_estadoc=='A'"  ng-click="cambioEstadoProducto(documento)">
+                                <input type="checkbox" ng-checked="producto.prd_estadoc=='A'"  ng-click="cambioEstadoProducto(producto)">
                                 <span class="slider round"></span>
                             </label>
                           </td>
-                          <td data-title="'Producto'" class="text-left">&nbsp; {{documento.prd_productoc}}</td>
-                          <td data-title="'Descripción'" class="text-center">&nbsp; {{documento.prd_descripcionc}}</td>
-                          <td data-title="'Precio'" class="text-center">&nbsp; {{documento.prd_precioc}}</td>
+                          <td data-title="'Producto'" class="text-left">&nbsp; {{producto.prd_productoc}}</td>
+                          <td data-title="'Descripción'" class="text-center">&nbsp; {{producto.prd_descripcionc}}</td>
+                          <td data-title="'Precio'" class="text-center">&nbsp; {{producto.prd_precioc}}</td>
                           
                           <td data-title="'Imagenes del producto'" class="text-center" align="center">
-                            <img src="{{documento.prd_imagen_pc}}" style="width:64px;">
-                            <img src="{{documento.prd_imagen_a1c}}" style="width:64px;">
-                            <img src="{{documento.prd_imagen_a2c}}" style="width:64px;">
+                            <img src="{{producto.prd_imagen_pc}}" style="width:64px;">
+                            <img src="{{producto.prd_imagen_a1c}}" style="width:64px;">
+                            <img src="{{producto.prd_imagen_a2c}}" style="width:64px;">
                               <!--div>
                                   <a ng-click="ImprimirProforma(documento.prd_imagen_pc)" data-toggle="modal" data-target="#divPopup4" style="color: #ffbf01">
                                       <i class="fa fa-eye fa-2x flechaOscura"></i>
@@ -213,7 +226,7 @@
                   <div class="form-group" >
                       <label for="url" >Precio:</label>
                       <div class="controls">
-                          <input ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado"/>
+                          <input ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" onkeyUp="soloNumerico(this);" ng-disabled="desabilitado"/>
                       </div>
                   </div>
               </div>

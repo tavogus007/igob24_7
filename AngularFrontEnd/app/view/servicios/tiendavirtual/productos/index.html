@@ -19,6 +19,23 @@
                 border-radius: 10px;
             }
         </style>
+        <style>
+            input:required:invalid {
+              border: 1px solid red;
+            }
+            input:required:valid {
+              border: 1px solid green;
+            }
+            select:required:invalid {
+              border: 1px solid red;
+            }
+            select:required:valid {
+              border: 1px solid green;
+            }
+            .form-group {
+              padding-left: 8px;
+            }
+          </style>
         <script type="text/javascript">
             $('.custom-upload input[type=file]').change(function(){
                 $(this).next().find('input').val($(this).val());
@@ -117,10 +134,10 @@
                         <tr class="column" ng-repeat="documento in $data | filter:query1 ">
                           <td data-title="'#'" class="text-center">&nbsp; {{$index+1}}</td>
                           <td data-title="'Opciones'" class="text-left">
-                            <a class="btn btn-success ng-binding" tooltip="Modificar producto" ng-click="updProducto(documento);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                            <a class="btn btn-success ng-binding" tooltip="Eliminar producto" ng-click="confirmarEliminar(documento);"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            <a class="btn btn-success ng-binding" tooltip="Modificar producto" ng-click="modificarProducto(documento);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            <a class="btn btn-success ng-binding" tooltip="Eliminar producto" ng-click="eliminarProducto(documento);"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                             <label class="switch">
-                                <input type="checkbox" ng-checked="documento.prd_estadoc=='A'" ng-click="cambioEstadoB()">
+                                <input type="checkbox" ng-checked="documento.prd_estadoc=='A'"  ng-click="cambioEstadoProducto(documento)">
                                 <span class="slider round"></span>
                             </label>
                           </td>
@@ -153,7 +170,7 @@
                   <div class="form-group" >
                       <label for="url" >Categoria:</label>
                       <div class="controls">
-                          <select id="f01_categoria" class="form-control" ng-model="datos.f01_categoria" name="f01_categoria" ng-disabled="desabilitado" required>
+                          <select id="f01_categoria" class="form-control" ng-model="datosProd.f01_categoria" name="f01_categoria" ng-disabled="desabilitado" required>
                               <option value="">--Seleccionar--</option>
                               <option value="1"> SALUD </option>
                               <option value="2"> ALIMENTOS </option>
@@ -167,7 +184,7 @@
                   <div class="form-group" >
                       <label for="url" >Item:</label>
                       <div class="controls">
-                          <select id="f01_item" class="form-control" ng-model="datos.f01_item" name="f01_item" ng-disabled="desabilitado" required>
+                          <select id="f01_item" class="form-control" ng-model="datosProd.f01_item" name="f01_item" ng-disabled="desabilitado" required>
                               <option value="">--Seleccionar--</option>
                               <option value="2"> COMIDA RAPIDA </option>
                               <option value="4"> PIZZAS </option>
@@ -180,7 +197,7 @@
                   <div class="form-group" >
                       <label for="url" >Producto:</label>
                       <div class="controls">
-                          <input ng-model="datos.f01_producto" id="f01_producto" name="f01_producto" class="form-control" ng-disabled="desabilitado"/>
+                          <input ng-model="datosProd.f01_producto" id="f01_producto" name="f01_producto" class="form-control" ng-disabled="desabilitado"/>
                       </div>
                   </div>
               </div>
@@ -188,7 +205,7 @@
                   <div class="form-group" >
                       <label for="url" >Descripción:</label>
                       <div class="controls">
-                          <input ng-model="datos.f01_descripcion" id="f01_descripcion" name="f01_descripcion" class="form-control" ng-disabled="desabilitado"/>
+                          <input ng-model="datosProd.f01_descripcion" id="f01_descripcion" name="f01_descripcion" class="form-control" ng-disabled="desabilitado"/>
                       </div>
                   </div>
               </div>
@@ -196,7 +213,7 @@
                   <div class="form-group" >
                       <label for="url" >Precio:</label>
                       <div class="controls">
-                          <input ng-model="datos.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado"/>
+                          <input ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado"/>
                       </div>
                   </div>
               </div>
@@ -209,9 +226,9 @@
                           <input type="file" id="f01_upload1" name="f01_upload1" accept="image/*"  style="display: none;">
                           <div class="input-group">
                               <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                              <input id="txt_f01_upload1" name="txt_f01_upload1"  ng-model="datos['txt_f01_upload1']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                              <input id="txt_f01_upload1" name="txt_f01_upload1"  ng-model="datosProd['txt_f01_upload1']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                               <span class="input-group-btn">
-                                  <a id="href_f01_upload1" ng-show="fileArRequisitos['f01_upload1'].url || data.idnro == 1 || data.idnro == 2" href="{{fileArRequisitos['f01_upload1'].url}}" target="_blank">
+                                  <a id="href_f01_upload1" ng-show="fileArRequisitos['f01_upload1'].url" href="{{fileArRequisitos['f01_upload1'].url}}" target="_blank">
                                   {{rmostrarviae}}
                                       <button id="btn_f01_upload1" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
@@ -230,9 +247,9 @@
                           <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*"  style="display: none;">
                           <div class="input-group">
                               <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                              <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datos['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                              <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datosProd['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                               <span class="input-group-btn">
-                                  <a id="href_f01_upload2" ng-show="fileArRequisitos['f01_upload2'].url || data.idnro == 1 || data.idnro == 2" href="{{fileArRequisitos['f01_upload2'].url}}" target="_blank">
+                                  <a id="href_f01_upload2" ng-show="fileArRequisitos['f01_upload2'].url" href="{{fileArRequisitos['f01_upload2'].url}}" target="_blank">
                                   {{rmostrarviae}}
                                       <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
@@ -251,9 +268,9 @@
                           <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*"  style="display: none;">
                           <div class="input-group">
                               <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                              <input id="txt_f01_upload3" name="txt_f01_upload3"  ng-model="datos['txt_f01_upload3']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                              <input id="txt_f01_upload3" name="txt_f01_upload3"  ng-model="datosProd['txt_f01_upload3']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                               <span class="input-group-btn">
-                                  <a id="href_f01_upload3" ng-show="fileArRequisitos['f01_upload3'].url || data.idnro == 1 || data.idnro == 2" href="{{fileArRequisitos['f01_upload3'].url}}" target="_blank">
+                                  <a id="href_f01_upload3" ng-show="fileArRequisitos['f01_upload3'].url" href="{{fileArRequisitos['f01_upload3'].url}}" target="_blank">
                                   {{rmostrarviae}}
                                       <button id="btn_f01_upload3" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
@@ -268,8 +285,8 @@
             <div class="col-md-12" align="right">
                 <!--button id="miFormGuardar"  ng-click="guardarDatos(datos);" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="" tooltip="Guardar Formulario">
                 <button id="btnFormLicencia"  ng-click="envioDatos(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="" tooltip="Enviar Formulario" -->
-                <button ng-show="nuevo" type="button" class="btn btn-primary" ng-click="registrarProducto(datos)">Registrar</button>
-                <button ng-show="update" type="button" class="btn btn-primary" ng-click="actualizarProducto(datos)">Modificar</button>
+                <button ng-show="nuevo" type="button" class="btn btn-primary" ng-click="registrarProducto(datosProd)">Registrar</button>
+                <button ng-show="update" type="button" class="btn btn-primary" ng-click="actualizarProducto(datosProd)">Modificar</button>
                 
                 <!--button type="button" class="btn btn-default ng-binding" >Cerrar</button-->
             </div>

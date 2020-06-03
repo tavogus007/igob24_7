@@ -128,7 +128,8 @@ function dataProducto(){
     this.imagen_a1,
     this.imagen_a2,
     this.oid,
-    this.usr
+    this.usr,
+    this.prd_idc
 };
 
 dataProducto.prototype.listarProductoTV = function (functionResp)
@@ -200,7 +201,7 @@ dataProducto.prototype.crearProducto = function (functionResp) {
 };
 dataProducto.prototype.eliminaMisProductos = function (functionResp)
 {
-    urlCompProducto = "/eliminaProducto";
+    urlCompProducto = "/eliminaProducto_ae";
     typeCall = "post";
     dataParams = {
       "prd_idc":this.prd_idc
@@ -209,11 +210,10 @@ dataProducto.prototype.eliminaMisProductos = function (functionResp)
 };
 
 dataProducto.prototype.modificarMiProducto = function (functionResp) {
-
   urlCompProducto = "/modificarProducto";
   typeCall = "post";
   dataParams = {
-      "prd_idc" : this.id,
+      "prd_idc" : this.prd_idc,
       "prd_nombrec" : this.nombre,
       "prd_descripcionc" : this.descripcion,
       "prd_precioc" : parseInt(this.precio),
@@ -228,9 +228,41 @@ dataProducto.prototype.modificarMiProducto = function (functionResp) {
       "prd_telefono_referenciac" : this.telefono_referencia,
       "prd_usrc" : this.usr
   };
-  console.log(dataParams);
+
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
+
+function dataProductoMod(){
+    this.prd_idc,
+    this.prd_tv_idc,
+    this.prd_nombrec,
+    this.prd_descripcionc,
+    this.prd_precioc,
+    this.prd_imagen_pc,
+    this.prd_imagen_a1c,
+    this.prd_imagen_a2c,
+    this.prd_usrc
+    
+};
+
+dataProductoMod.prototype.modificarProductoAe = function (functionResp) {
+  urlCompProducto = "/modificarProducto_ae";
+  typeCall = "post";
+  dataParams = {
+      "prd_idc" : this.prd_idc,
+      "prd_tv_idc" : this.prd_tv_idc,
+      "prd_nombrec" : this.prd_nombrec,
+      "prd_descripcionc" : this.prd_descripcionc,
+      "prd_precioc" : this.prd_precioc,
+      "prd_imagen_pc" : this.prd_imagen_pc,
+      "prd_imagen_a1c" : this.prd_imagen_a1c,
+      "prd_imagen_a2c" : this.prd_imagen_a2c,
+      "prd_usrc" : this.prd_usrc
+  };
+  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+
+
 function dataPaginaWeb(){
   this.web_id,
   this.web_contenido,
@@ -272,452 +304,31 @@ dataPaginaWeb.prototype.desactivaEstadoPublicacion = function (functionResp)
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
 
-
-
-
-
-/*
-
-function historiaClinica() {
-    this.nombres;
-    this.paterno;
-    this.materno;
-    this.ci;
-    this.complemento;
-    this.sexo;
-    this.fechanacimiento;
-    this.estcivil;
-    this.direccion;
-    this.telefono;
-    this.expedido;
-    this.ocupacion;
-    this.usr_id;
-    this.zona;
-    this.correo;
-    this.hospital;
-    this.tp_id;
-    this.codigoexp;
-    this.lugarexpedicion;
-    this.dep_codigo_res;
-    this.prov_cod_res;
-    this.mun_codigo_res;
-    this.estciv;
-    this.nivelestudio;
-    this.idioma;
-    this.vlugtra;
-    this.vdirtra;
-    this.vteltra;
-    this.vnomfam;
-    this.vtelfam;
-    this.vnompad;
-    this.vnommad;
-    this.vcodigoseg;
-    this.vcodigosegsocial;
-    this.vdep_codigo_nac;
-    this.vmun_codigo_nac;
-    this.vembarazada;
-    this.vtipo_atencion;
-    this.vmacrodistrito;
-    this.vdistrito;
-    this.vorigen;
-    this.vcelular;
-    this.vlugarnac;
-    this.fecha_creacion_sice;
+function dataProductoAc(){
+    this.prd_idc
 };
 
 
-historiaClinica.prototype.crearHistoriaClinicaWeb = function (functionResp) {
-    urlComp = "/insertarPacienteSIIS";
-    typeCall = "post";
-    dataParams = {
-        "nombres":this.nombres,
-        "paterno":this.paterno,
-        "materno":this.materno,
-        "ci":this.ci,
-        "complemento":this.complemento,
-        "sexo":this.sexo,
-        "fechanacimiento":this.fechanacimiento,
-        "estcivil":this.estcivil,
-        "direccion":this.direccion,
-        "telefono":this.telefono,
-        "expedido":this.expedido,
-        "ocupacion":this.ocupacion,
-        "usr_id":this.usr_id,
-        "zona":this.zona,
-        "correo":this.correo,
-        "hospital":this.hospital,
-        "tp_id":this.tp_id,
-        "codigoexp":this.codigoexp,
-        "lugarexpedicion":this.lugarexpedicion,
-        "dep_codigo_res":this.dep_codigo_res,
-        "prov_cod_res":this.prov_cod_res,
-        "mun_codigo_res":this.mun_codigo_res,
-        "estciv":this.estciv,
-        "nivelestudio":this.nivelestudio,
-        "idioma":this.idioma,
-        "vlugtra":this.vlugtra,
-        "vdirtra":this.vdirtra,
-        "vteltra":this.vteltra,
-        "vnomfam":this.vnomfam,
-        "vtelfam":this.vtelfam,
-        "vnompad":this.vnompad,
-        "vnommad":this.vnommad,
-        "vcodigoseg":this.vcodigoseg,
-        "vcodigosegsocial":this.vcodigosegsocial,
-        "vdep_codigo_nac":this.vdep_codigo_nac,
-        "vmun_codigo_nac":this.vmun_codigo_nac,
-        "vembarazada":this.vembarazada,
-        "vtipo_atencion":this.vtipo_atencion,
-        "vmacrodistrito":this.vmacrodistrito,
-        "vdistrito":this.vdistrito,
-        "vorigen":this.vorigen,
-        "vcelular":this.vcelular,
-        "vlugarnac":this.vlugarnac,
-        "fecha_creacion_sice":this.fecha_creacion_sice              
-    };
-    ejecutarAjaxSalud(urlComp, typeCall, dataParams, functionResp);
-};
-
-function centros(){
-  
-}
-
-centros.prototype.lstcentrosSalud = function (functionResp)
+dataProductoAc.prototype.activarProductoAe = function (functionResp)
 {
-    urlCompSalud = "/lstCentrosweb";
-    typeCall = "post";
-    dataParams = {
-    
-    };
+  urlCompProducto = "/activarProducto";
+  typeCall = "post";
+  dataParams = {
+    "prd_idc" : this.prd_idc    
+  };
+  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
 };
 
-
-
-
-dataSalud.prototype.listarDptos = function (functionResp)
+dataProductoAc.prototype.desactivarProductoAe = function (functionResp)
 {
-    urlCompSalud = "/lstDptos";
-    typeCall = "post";
-    dataParams = {
-    };
+  urlCompProducto = "/desactivarProducto";
+  typeCall = "post";
+  dataParams = {
+    "prd_idc" : this.prd_idc    
+  };
+  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.listarMunicipios = function (functionResp)
-{
-    urlCompSalud = "/lstMunicipios";
-    typeCall = "post";
-    dataParams = {
-      "vdpto_id":this.vdpto_id
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.listarCentros = function (functionResp)
-{
-    urlCompSalud = "/lstCentros";
-    typeCall = "post";
-    dataParams = {
-      "vdpto_id":this.vdpto_id,
-      "vmun_id":this.vmun_id
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
 };
 
 
-dataSalud.prototype.buscarSeguro = function (functionResp)
-{
-    urlCompSalud = "/VerificarSeguroSocial";
-    typeCall = "post";
-    dataParams = {
-      "ci":  this.ci
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.centralRiesgos = function (functionResp)
-{
-    urlCompSalud = "/centralRiesgos";
-    typeCall = "post";
-    dataParams = {
-      "ci":  this.ci
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.listaHospital = function (functionResp)
-{
-    urlCompSalud = "/listaHospital";
-    typeCall = "post";
-    dataParams = {
-      "ci":  this.ci
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.listaHospitalIgob = function (functionResp)
-{
-    urlCompSalud = "/listaHospitalIgob";
-    typeCall = "post";
-    dataParams = {
-      "ci":  this.ci
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-
-dataSalud.prototype.listaAtencion = function (functionResp)
-{
-    urlCompSalud = "/listaAtencion";
-    typeCall = "post";
-    dataParams = {
-      "ci":  this.ci
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.datosPaciente = function (functionResp)
-{
-    urlCompSalud = "/datosPaciente";
-    typeCall = "post";
-    dataParams = {
-      "ci":  this.ci,
-      "idHospital":  this.idHospital
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.listaServicios = function (functionResp)
-{
-    urlCompSalud = "/listaServicios";
-    typeCall = "post";
-    dataParams = {
-      "genero":  this.genero,
-      "idHospital":  this.idHospital,
-      "idTipoPaciente":  this.idTipoPaciente,
-      "fechaNacimiento":  this.fechaNacimiento
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.fechaServicio = function (functionResp)
-{
-    urlCompSalud = "/fechaServicio";
-    typeCall = "post";
-    dataParams = {
-      "idServicio":  this.idServicio,
-      "idHospital":  this.idHospital
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.doctorServicio = function (functionResp)
-{
-    urlCompSalud = "/doctorServicio";
-    typeCall = "post";
-    dataParams = {
-      "idHospital":  this.idHospital,
-      "fechaDisponible":  this.fechaDisponible,
-      "idServicio":  this.idServicio
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.cronogramaServicio = function (functionResp)
-{
-    urlCompSalud = "/cronogramaServicio";
-    typeCall = "post";
-    dataParams = {
-      "idHospital":  this.idHospital,
-      "idTurno":  this.idTurno
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.graficaFichas = function (functionResp)
-{
-    urlCompSalud = "/graficaFichas";
-    typeCall = "post";
-    dataParams = {
-      "idTurno":  this.idTurno
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.verificaFichas = function (functionResp)
-{
-    urlCompSalud = "/verificaFichas";
-    typeCall = "post";
-    dataParams = {
-      "idTurno":  this.idTurno,
-      "nroFicha":  this.nroFicha
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-dataSalud.prototype.pacienteFicha = function (functionResp)
-{
-    urlCompSalud = "/pacienteFicha";
-    typeCall = "post";
-    dataParams = {
-      "idHospital":  this.idHospital,
-      "idDoctor":  this.idDoctor,
-      "idTurno":  this.idTurno,
-      "fechaDisponible":  this.fechaDisponible
-    };
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-
-
-
-dataSalud.prototype.guardarFicha = function (functionResp)
-{
-    urlCompSalud = "/guardarFicha";
-    typeCall = "post";
-    dataParams = {
-      "idPaciente":  this.idPaciente,
-      "idServicio":  this.idServicio,
-      "fechaDisponible":  this.fechaDisponible,
-      "habilitacion":  this.habilitacion,
-      "nroFicha":  this.nroFicha,
-      "idHospital":  this.idHospital,
-      "idMedico":  this.idMedico,
-      "idTurno":  this.idTurno,
-      "codigoFicha":  this.codigoFicha,
-      "horaInicio":  this.horaInicio,
-      "horaFinal":  this.horaFinal,
-      "fechaSql":  this.fechaSql,
-      "cuaCodigo":  this.cuaCodigo,
-      "codigoMedicoSice":  this.codigoMedicoSice,
-      "idTipoPaciente":  this.idTipoPaciente,
-      "codigoCarpeta":  this.codigoCarpeta,
-      "idGrupo":  this.idGrupo,
-      "idServicioSice":  this.idServicioSice,
-      "nroTrabajoHospital":  this.nroTrabajoHospital,
-      "idConsultorio":  this.idConsultorio,
-      "idHorario":  this.idHorario,
-      "tipoTurno":  this.tipoTurno
-    };
-
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-
-
-function guardarSalud(){
-    this.idHospital
-    this.id_reg_ciudadano
-    this.nombre
-    this.paterno
-    this.materno
-    this.cedula
-    this.complemento
-    this.sexo
-    this.fecha_nacimiento
-    this.fechaSQL
-    this.coddeptoNac
-    this.estado_civil
-    this.direccion
-    this.telefono
-    this.expedido
-    this.ocupacionid
-    this.zonacodigoVive
-    this.correo
-    this.tipoSeguroSalud
-    this.codigoCarpeta
-    this.coddeptoVive
-    this.codmunicipVive
-    this.codproVive
-    this.codigoSeguroSice
-    this.codmunicipNac
-    this.macrodistritoVive
-    this.distritoVive
-
-    this.lugarTrabajo
-    this.direccionTrabajo
-    this.telefonoTrabajo
-    this.responsableFamilia
-    this.nombrePadreTutor
-    this.nombreMadre
-    this.telefonoRef
-};
-
-guardarSalud.prototype.guardarHistoria = function (functionResp)
-{
-    urlCompSalud = "/crearHistoriaClinica";
-    typeCall = "post";
-    dataParams = {
-        "idHospital": this.idHospital,
-        "id_reg_ciudadano": this.id_reg_ciudadano,
-        "nombre": this.nombre,
-        "paterno": this.paterno,
-        "materno": this.materno,
-        "cedula": this.cedula,
-        "complemento": this.complemento,
-        "sexo": this.sexo,
-        "fecha_nacimiento": this.fecha_nacimiento,
-        "fechaSQL": this.fechaSQL,
-        "coddeptoNac": this.coddeptoNac,
-        "estado_civil": this.estado_civil,
-        "direccion": this.direccion,
-        "telefono": this.telefono,
-        "expedido": this.expedido,
-        "ocupacionid": this.ocupacionid,
-        "zonacodigoVive": this.zonacodigoVive,
-        "correo": this.correo,
-        "tipoSeguroSalud": this.tipoSeguroSalud,
-        "codigoCarpeta": this.codigoCarpeta,
-        "coddeptoVive": this.coddeptoVive,
-        "codmunicipVive": this.codmunicipVive,
-        "codproVive": this.codproVive,
-        "codigoSeguroSice": this.codigoSeguroSice,
-        "codmunicipNac": this.codmunicipNac,
-        "macrodistritoVive": this.macrodistritoVive,
-        "distritoVive": this.distritoVive,
-        "lugarTrabajo": this.lugarTrabajo,
-        "direccionTrabajo": this.direccionTrabajo,
-        "telefonoTrabajo": this.telefonoTrabajo,
-        "responsableFamilia": this.responsableFamilia,
-        "nombrePadreTutor": this.nombrePadreTutor,
-        "nombreMadre": this.nombreMadre,
-        "telefonoRef": this.telefonoRef
-
-    };
-    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-function dataDinamic() {
-    this.consulta;
-};
-
-dataDinamic.prototype.SqlDinamic = function (functionResp) {
-    try{
-        urlComp = "/dinamico";
-        typeCall = "post";
-        dataParams = {
-          "consulta" : this.consulta
-        };
-        ejecutarAjaxSalud(urlComp, typeCall, dataParams, functionResp);
-    } catch(e){
-        console.log("Error de conexion : ", e);
-    }
-};
-*/

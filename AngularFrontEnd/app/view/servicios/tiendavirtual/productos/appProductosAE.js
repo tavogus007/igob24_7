@@ -1,7 +1,7 @@
 function productosController($scope, $timeout, CONFIG,$window,$rootScope,sessionService,ngTableParams,$filter,$route, sweet, $http,FileUploader,$sce,fileUpload, fileUpload1 ) {
-  $scope.tablaDocumentos        =   [];
+  $scope.tablaDocumentos        =   {};
   $scope.frmProducto = null;
-
+  $scope.datosProd = {};
   $scope.obtDatos      =   [];
   $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
   $scope.valida = 0;
@@ -26,7 +26,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
 
   $scope.cambiarFile = function(obj, valor){
 
-      $scope.datos[obj.name] = valor;
+      $scope.datosProd[obj.name] = valor;
       setTimeout(function(){
           $rootScope.leyenda1 = obj.name;
       }, 500);
@@ -69,7 +69,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
             if(typeof(archivo) != 'undefined'){
               if (idFiles[key]==1){
                 var descDoc = "img_pr";
-                var descArchivo = "img_principal";
+                var descArchivo = "img_principal"; 
               }
               if (idFiles[key]==2){
                 var descDoc = "img_aux1";
@@ -186,6 +186,18 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       document.getElementById("txt_f01_upload1").value  = '';
       document.getElementById("txt_f01_upload2").value  = '';
       document.getElementById("txt_f01_upload3").value  = '';
+
+      document.getElementById("f01_upload1").value  = '';
+      document.getElementById("f01_upload2").value  = '';
+      document.getElementById("f01_upload3").value  = '';
+      $scope.txt_f01_upload1 = '';
+      $scope.txt_f01_upload2 = '';
+      $scope.txt_f01_upload3 = '';
+
+      $scope.f01_upload1 = '';
+      $scope.f01_upload2 = '';
+      $scope.f01_upload3 = '';
+
       $rootScope.swArchivo = "A";
     }
 
@@ -213,6 +225,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       datosProducto.imagen_a2 = f2;
       datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
       datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
+      
       datosProducto.crearProducto(function(response){
         results = JSON.parse(response);
         results = results.success;
@@ -233,28 +246,31 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     $scope.getProductos = function(usuario,id_ae){
         $.blockUI();
         try{
-
           var datosProducto = new dataProducto();
           /*datosProducto.oid = usuario;*/
           datosProducto.idtv = id_ae;
-
           datosProducto.listarProductoTV(function(response){
             resultado = JSON.parse(response);
-            $scope.obtDatos = resultado.success;
+            var resultadoProd = resultado.success;
+            $scope.obtDatos = resultadoProd;
             if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
-                $scope.tablaDocumentos = null;
+                $scope.tablaDocumentos = {};
                 alertify.warning('No existen datos'); 
-                $scope.$apply(); 
+                $rootScope.$apply(); 
             } else {
-                var data = $scope.obtDatos;
-                $scope.$apply(); 
+                var data = resultadoProd;
+                $scope.tablaDocumentos.reload();
+                
+                $rootScope.$apply(); 
             }
           });
-        } catch(error){
+        }catch(error){
           console.log(error);
         }
+        
         $.unblockUI();
     };
+
     $scope.tablaDocumentos = new ngTableParams({
         page: 1,
         count: 10,
@@ -280,7 +296,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
   };
 
-  $scope.confirmarEliminar = function(datos){
+  $scope.eliminarProducto = function(datos){
     swal({
             title: "Estimado(a) Ciudadano(a)",
             text: "Está seguro(a) de eliminar el producto seleccionado?",
@@ -308,200 +324,248 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     $scope.titulo="Registrar Productos";
     $scope.update = false;
     $scope.nuevo = true;
- }
- $scope.limpiar = function(){
-    $scope.datos = [''];
-    document.getElementById("txt_f01_upload1").value  = '';
-    document.getElementById("txt_f01_upload2").value  = '';
-    document.getElementById("txt_f01_upload3").value  = '';
-    $scope.frmProducto = null;
+  }
 
-}
+   $scope.limpiar = function(){
+      $scope.datosProd = [''];
+      document.getElementById("txt_f01_upload1").value  = '';
+      document.getElementById("txt_f01_upload2").value  = '';
+      document.getElementById("txt_f01_upload3").value  = '';
+      $scope.frmProducto = null;
+
+  }
+
   $scope.delProducto = function(datos){
       var datosDelProducto = new dataProducto();
       datosDelProducto.prd_idc = datos.prd_idc;
       datosDelProducto.eliminaMisProductos(function(response){
-      resultado = JSON.parse(response);
-      $scope.refrescar();
+        resultado = JSON.parse(response);
+        //$scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
+        $scope.refrescar();
       });      
   } 
-  $scope.updProducto = function(datosP){
+
+  $scope.modificarProducto = function(datosP){
+    console.log("datosP:: ", datosP);
     $scope.frmProducto = "mostrar";
     $scope.desabilitado = "";
     $scope.update = true;
     $scope.nuevo = false;    
     $rootScope.idProducto = datosP.prd_idc;
-    document.getElementById("f01_producto").value = datosP.prd_productoc;
-    document.getElementById("f01_descripcion").value = datosP.prd_descripcionc;
-    document.getElementById("f01_precio").value = datosP.prd_precioc;
+    //document.getElementById("f01_producto").value = datosP.prd_productoc;
+    //document.getElementById("f01_descripcion").value = datosP.prd_descripcionc;
+    //document.getElementById("f01_precio").value = datosP.prd_precioc;
+    //$scope.datosProd = datosP;
+    $scope.datosProd.prd_idc = datosP.prd_idc;
+    $scope.datosProd.f01_producto = datosP.prd_productoc;
+    $scope.datosProd.f01_descripcion = datosP.prd_descripcionc;
+    $scope.datosProd.f01_precio = datosP.prd_precioc;
+
+
     //document.getElementById("f01_cantidad").value = datosP.prd_cantidadc;
     archivo1 = datosP.prd_imagen_pc.split('/');
     archi1 = archivo1[9].split('?');
     $rootScope._f01_upload1 = archi1[0];
-    document.getElementById("txt_f01_upload1").value = $rootScope._f01_upload1;    
+    $scope.datosProd.txt_f01_upload1 = $rootScope._f01_upload1;
     archivo2 = datosP.prd_imagen_a1c.split('/');
     archi2 = archivo2[9].split('?');
     $rootScope._f01_upload2 = archi2[0];
-    document.getElementById("txt_f01_upload2").value = $rootScope._f01_upload2;
+    $scope.datosProd.txt_f01_upload2 = $rootScope._f01_upload2;
     archivo3 = datosP.prd_imagen_a2c.split('/');
     archi3 = archivo3[9].split('?');
     $rootScope._f01_upload3 = archi3[0];
-    document.getElementById("txt_f01_upload3").value = $rootScope._f01_upload3;
-    $rootScope.swArchivo = "M";
+    $scope.datosProd.txt_f01_upload3 = $rootScope._f01_upload3;
+    $rootScope.swArchivo = "M"; 
+    $scope.file1 = datosP.prd_imagen_pc;
+    $scope.file2 = datosP.prd_imagen_a1c;
+    $scope.file3 = datosP.prd_imagen_a2c;
+
   }
+
   $scope.actualizarProducto = function(data){
-    f0 = data.txt_f01_upload1;
-    f1 = data.txt_f01_upload2;
-    f2 = data.txt_f01_upload3;
+    console.log("doc: ", $rootScope.archivosProducto);
+    f0 = $scope.file1;
+    f1 = $scope.file2;
+    f2 = $scope.file3;
     angular.forEach($rootScope.archivosProducto, function(archivo, key) {
       archivoP = JSON.parse(archivo);
+      console.log("($scope.fileId:: ", $scope.fileId);
       if($scope.fileId == 'f01_upload1')
-      f0 = archivoP.url;
+        f0 = archivoP.url;
       if($scope.fileId == 'f01_upload2')
-      f1 = archivoP.url;
+        f1 = archivoP.url;
       if($scope.fileId == 'f01_upload3')
-      f2 = archivoP.url;
+        f2 = archivoP.url;
     });
 
-/*
- var datosProducto = new dataProducto();
-      datosProducto.idtv = sessionService.get("IDTV");
-      datosProducto.nombre = data.f01_producto;
-      datosProducto.descripcion = data.f01_descripcion;
-      datosProducto.precio = data.f01_precio;
-      datosProducto.cantidad = data.f01_cantidad;
-      datosProducto.imagen_p = f0;
-      datosProducto.imagen_a1 = f1;
-      datosProducto.imagen_a2 = f2;
-      datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
-      datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
+  /*
+   var datosProducto = new dataProducto();
+        datosProducto.idtv = sessionService.get("IDTV");
+        datosProducto.nombre = data.f01_producto;
+        datosProducto.descripcion = data.f01_descripcion;
+        datosProducto.precio = data.f01_precio;
+        datosProducto.cantidad = data.f01_cantidad;
+        datosProducto.imagen_p = f0;
+        datosProducto.imagen_a1 = f1;
+        datosProducto.imagen_a2 = f2;
+        datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
+        datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
 
+  //////////////////////////////
 
-
-
-
-//////////////////////////////
-
-
-
-    var datosProducto = new dataProducto();
-      datosProducto.id = $scope.prd_id;
-      datosProducto.nombre = data.f01_producto;
-      datosProducto.descripcion = data.f01_descripcion;
-      datosProducto.precio = data.f01_precio;
-      datosProducto.ae = $scope.aeAct;
-      datosProducto.sucursal = $scope.sucursal;
-      datosProducto.marca = "MARCA";
-      datosProducto.categoria = data.f01_categoria;
-      datosProducto.imagen_p = f0;
-      datosProducto.imagen_a1 = f1;
-      datosProducto.imagen_a2 = f2;
-      datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
-      datosProducto.telefono_referencia = "74086316";
-      datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
-      datosProducto.modificarMiProducto(function(response){
-      results = JSON.parse(response);
-      results = results.success;
-      if(results.length > 0){
-          $.unblockUI();
-          $scope.refrescar();
-          swal('', "Producto Modificado", 'success');
-      } else {
-          $.unblockUI();
-          swal('', "Producto no Modificado", 'error');
-      }
-    });
-
-
-
-    */
- }
-$scope.obtenerContribuyente = function(){
-    var tipoContribuyente = sessionService.get('TIPO_PERSONA');
-    if(tipoContribuyente == 'NATURAL'){
-        ciDocumento          =   sessionService.get('CICIUDADANO');
-        sAccion              =  'C01';
-        nitDocumento = '';
-    }else if(tipoContribuyente == 'JURIDICO'){
-        nitDocumento         =   sessionService.get('NITCIUDADANO');
-        sAccion              =  'C02';
-        ciDocumento = '';
-    }
-    var conGenesis  =   new gLstDatos();
-    conGenesis.idContribuyente = "";
-    conGenesis.clase="";
-    conGenesis.padron="";
-    conGenesis.identificacion=ciDocumento;//'40852017'
-    conGenesis.primerNombre="";
-    conGenesis.primerApellido="";
-    conGenesis.segundoApellido="";
-    conGenesis.nit=nitDocumento;
-    conGenesis.empresa="";
-    conGenesis.p_accion=sAccion;
-    conGenesis.lstDatosContribuyente(function(resultado){
-        resultadoApi = JSON.parse(resultado);
-        if (resultadoApi.success) {
-            var response    =   resultadoApi;
-            $scope.txtMsgConexionGen    =   "";
-            if(response.success.dataSql.length > 0){
-                $scope.dataGenesisCidadano  =   response.success.dataSql;
-            } else {
-               
-                $scope.dataGenesisCidadano  =  '';
-            }
-        } else {
-            $scope.txtMsgConexionGen    =   "Se ha producido un problema de conexion al cargar los datos";
+      var datosProducto = new dataProducto();
+        datosProducto.id = $scope.prd_id;
+        datosProducto.nombre = data.f01_producto;
+        datosProducto.descripcion = data.f01_descripcion;
+        datosProducto.precio = data.f01_precio;
+        datosProducto.ae = $scope.aeAct;
+        datosProducto.sucursal = $scope.sucursal;
+        datosProducto.marca = "MARCA";
+        datosProducto.categoria = data.f01_categoria;
+        datosProducto.imagen_p = f0;
+        datosProducto.imagen_a1 = f1;
+        datosProducto.imagen_a2 = f2;
+        datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
+        datosProducto.telefono_referencia = "74086316";
+        datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
+        datosProducto.modificarMiProducto(function(response){
+        results = JSON.parse(response);
+        results = results.success;
+        if(results.length > 0){
             $.unblockUI();
-            //swal(resultadoApi.error.message);
-        }
-    });
-};
-
-$scope.listadoActividadesEconomicas = function () {
-    $scope.datos.rdTipoTramite = "RENOVACION";            
-    var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-    var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
-    var contribuyente   =   new gLstActividadEconomica();
-    contribuyente.idContribuyente   =   idContribuyente;
-    contribuyente.tipo  =   'N'; //N para natural y J para Juridico
-    contribuyente.lstActividadEconomica(function(resultado){ 
-        $.unblockUI(); 
-        resultadoApi = JSON.parse(resultado);
-        if (resultadoApi.success) {
-            //listado de Actividades Economicas
-            var response    =   resultadoApi;
-            if(response.success.dataSql.length > 0){
-                $scope.trmUsuario = response.success.dataSql;
-            } 
+            $scope.refrescar();
+            swal('', "Producto Modificado", 'success');
         } else {
-             swal('', "Datos no Encontrados !!!", 'warning');
+            $.unblockUI();
+            swal('', "Producto no Modificado", 'error');
         }
-        }); 
-};
-$scope.cargarDatos = function(ae,s){
-    $scope.sucursal = parseInt(s);
-    $scope.aeAct = parseInt(ae.prod_aec);
-    document.getElementById("f01_ae").value = $scope.aeAct;
-    document.getElementById("f01_sucursal").value = $scope.sucursal;
-        
+      });
+      */
+    console.log("data a modficar:: ", data);
+    var datosModProducto = new dataProductoMod();
+    datosModProducto.prd_idc = data.prd_idc;
+    datosModProducto.prd_tv_idc = sessionService.get("IDTV");
+    datosModProducto.prd_nombrec = data.f01_producto;
+    datosModProducto.prd_descripcionc = data.f01_descripcion;
+    datosModProducto.prd_precioc = data.f01_precio;
+    datosModProducto.prd_imagen_pc = f0;
+    datosModProducto.prd_imagen_a1c = f1;
+    datosModProducto.prd_imagen_a2c = f2;
+    datosModProducto.prd_usrc = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
+    console.log("datosModProducto x: ", datosModProducto);
+    datosModProducto.modificarProductoAe(function(response){
+       $scope.limpiar();
+      $scope.refrescar();
+    }); 
+  }
 
-}   
-$scope.muestraDatos = function(ae,s){
-    $scope.mostrarTxt = false; 
-   var aeS = JSON.stringify(ae);
-   var aeS1 = JSON.parse(aeS);
-   for(i=0;i<=aeS1.length-1;i++){
-       if(s == aeS1[i].IdActividad){
-         var suc =   aeS1[i].Nro;
-         var aeUp =  aeS1[i].IdActividad;
-         $scope.sucursal = parseInt(suc);
-         $scope.aeAct = parseInt(aeUp);
-         document.getElementById("f01_ae").value = $scope.aeAct;
-         document.getElementById("f01_sucursal").value = $scope.sucursal;
-        
-       }
-   }
-}
+  $scope.obtenerContribuyente = function(){
+      var tipoContribuyente = sessionService.get('TIPO_PERSONA');
+      if(tipoContribuyente == 'NATURAL'){
+          ciDocumento          =   sessionService.get('CICIUDADANO');
+          sAccion              =  'C01';
+          nitDocumento = '';
+      }else if(tipoContribuyente == 'JURIDICO'){
+          nitDocumento         =   sessionService.get('NITCIUDADANO');
+          sAccion              =  'C02';
+          ciDocumento = '';
+      }
+      var conGenesis  =   new gLstDatos();
+      conGenesis.idContribuyente = "";
+      conGenesis.clase="";
+      conGenesis.padron="";
+      conGenesis.identificacion=ciDocumento;//'40852017'
+      conGenesis.primerNombre="";
+      conGenesis.primerApellido="";
+      conGenesis.segundoApellido="";
+      conGenesis.nit=nitDocumento;
+      conGenesis.empresa="";
+      conGenesis.p_accion=sAccion;
+      conGenesis.lstDatosContribuyente(function(resultado){
+          resultadoApi = JSON.parse(resultado);
+          if (resultadoApi.success) {
+              var response    =   resultadoApi;
+              $scope.txtMsgConexionGen    =   "";
+              if(response.success.dataSql.length > 0){
+                  $scope.dataGenesisCidadano  =   response.success.dataSql;
+              } else {
+                 
+                  $scope.dataGenesisCidadano  =  '';
+              }
+          } else {
+              $scope.txtMsgConexionGen    =   "Se ha producido un problema de conexion al cargar los datos";
+              $.unblockUI();
+              //swal(resultadoApi.error.message);
+          }
+      });
+  };
+
+  $scope.listadoActividadesEconomicas = function () {
+      $scope.datosProd.rdTipoTramite = "RENOVACION";            
+      var tipoPersona     =   sessionService.get('TIPO_PERSONA');
+      var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
+      var contribuyente   =   new gLstActividadEconomica();
+      contribuyente.idContribuyente   =   idContribuyente;
+      contribuyente.tipo  =   'N'; //N para natural y J para Juridico
+      contribuyente.lstActividadEconomica(function(resultado){ 
+          $.unblockUI(); 
+          resultadoApi = JSON.parse(resultado);
+          if (resultadoApi.success) {
+              //listado de Actividades Economicas
+              var response    =   resultadoApi;
+              if(response.success.dataSql.length > 0){
+                  $scope.trmUsuario = response.success.dataSql;
+              } 
+          } else {
+               swal('', "Datos no Encontrados !!!", 'warning');
+          }
+          }); 
+  };
+
+  $scope.cambioEstadoProducto = function(data){
+    console.log("cambio estado: ", data);
+    if(data.prd_estadoc == 'A'){
+      console.log("ingresa para DESACTIVAR");
+      var datosDesProducto = new dataProductoAc();
+      datosDesProducto.prd_idc = data.prd_idc;
+      datosDesProducto.desactivarProductoAe(function(response){
+        resultado = JSON.parse(response);
+      });     
+    }else{
+      console.log("ingresa para ACTIVAR");
+      var datosActProducto = new dataProductoAc();
+      datosActProducto.prd_idc = data.prd_idc;
+      datosActProducto.activarProductoAe(function(response){
+        resultado = JSON.parse(response);
+      });     
+    }
+  }
+
+
+  $scope.cargarDatos = function(ae,s){
+      $scope.sucursal = parseInt(s);
+      $scope.aeAct = parseInt(ae.prod_aec);
+      document.getElementById("f01_ae").value = $scope.aeAct;
+      document.getElementById("f01_sucursal").value = $scope.sucursal;
+          
+
+  }   
+  $scope.muestraDatos = function(ae,s){
+      $scope.mostrarTxt = false; 
+     var aeS = JSON.stringify(ae);
+     var aeS1 = JSON.parse(aeS);
+     for(i=0;i<=aeS1.length-1;i++){
+         if(s == aeS1[i].IdActividad){
+           var suc =   aeS1[i].Nro;
+           var aeUp =  aeS1[i].IdActividad;
+           $scope.sucursal = parseInt(suc);
+           $scope.aeAct = parseInt(aeUp);
+           document.getElementById("f01_ae").value = $scope.aeAct;
+           document.getElementById("f01_sucursal").value = $scope.sucursal;
+          
+         }
+     }
+  }
 
   ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
   try{ 

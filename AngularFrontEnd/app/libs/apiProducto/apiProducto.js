@@ -262,7 +262,6 @@ dataProductoMod.prototype.modificarProductoAe = function (functionResp) {
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
 
-
 function dataPaginaWeb(){
   this.web_id,
   this.web_contenido,
@@ -283,6 +282,42 @@ dataPaginaWeb.prototype.obtDataPaginaWeb = function (functionResp)
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
+
+dataPaginaWeb.prototype.addPaginaWeb = function (functionResp)
+{
+    urlCompProducto = "/adicionarPaginaWeb";
+    typeCall = "post";
+    dataParams = {
+      "contenido":this.web_contenido,
+      "url":this.web_url,
+      "usuario":this.web_usr, 
+      "idAe":this.web_id_ae 
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+dataPaginaWeb.prototype.updPaginaWeb = function (functionResp)
+{
+    urlCompProducto = "/modificarPaginaWeb";
+    typeCall = "post";
+    dataParams = {
+      "id":this.web_id,
+      "contenido":this.web_contenido,
+      "url":this.web_url,
+      "estado":this.web_estado_publicar,
+      "usuario":this.web_usr, 
+      "idAe":this.web_id_ae 
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+
+
+
+
+
+
+
+
+
 dataPaginaWeb.prototype.activaEstadoPublicacion = function (functionResp)
 {
   urlCompProducto = "/activarPublicacionPaginaWeb";
@@ -303,32 +338,3 @@ dataPaginaWeb.prototype.desactivaEstadoPublicacion = function (functionResp)
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
-
-function dataProductoAc(){
-    this.prd_idc
-};
-
-
-dataProductoAc.prototype.activarProductoAe = function (functionResp)
-{
-  urlCompProducto = "/activarProducto";
-  typeCall = "post";
-  dataParams = {
-    "prd_idc" : this.prd_idc    
-  };
-  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
-
-};
-
-dataProductoAc.prototype.desactivarProductoAe = function (functionResp)
-{
-  urlCompProducto = "/desactivarProducto";
-  typeCall = "post";
-  dataParams = {
-    "prd_idc" : this.prd_idc    
-  };
-  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
-
-};
-
-

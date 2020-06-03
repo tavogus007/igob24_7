@@ -31,6 +31,34 @@
                 });
             }
             //$('.clockpicker').clockpicker();
+
+            function valNumeroTelefono(Control){
+                Control.value = soloNumericoTelefono(Control.value);
+            }
+            function soloNumericoTelefono(sValo){
+                Numer=parseInt(sValo);
+                if (isNaN(Numer)){
+                return "";
+                }else{
+                $("#mensaje3").hide();
+                var digits = ("" + Numer).split("");
+                if(digits.length < 9 ){
+                    if((digits.length>2) && (digits.length<7)){
+                    $("#mensaje3").show();
+                    $("#mensaje7").show();
+                    }else{
+                    $("#mensaje3").hide();
+                    $("#mensaje7").hide();
+                    }
+                    return Numer;
+                }else{
+                    $("#mensaje3").hide();
+                    $("#mensaje7").hide();
+                    return "";
+
+                }
+                }
+            }
         </script>
         <style>
             .switch {
@@ -105,35 +133,56 @@
             <div class="row" >
                 <div class="col-md-6">
                     <div class="form-group" >
+                        <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Nombre de la Tienda Virtual:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" ng-disabled="desabilitado" required/>
+                            <span style="color:red" ng-show="signupForm.f01_nombreTV.$invalid">
+                                <span align = "right" ng-show="signupForm.f01_nombreTV.$error.required">Nombre de la tienda Virtual es requerido. </span>
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" >
+                        <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Descripción de la Tienda Virtual:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" required/>
+                            <span style="color:red" ng-show="signupForm.f01_descripcionTV.$invalid">
+                                <span align = "right" ng-show="signupForm.f01_descripcionTV.$error.required">Descripción de la tienda Virtual es requerido. </span>
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" >
+                        <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Categoria:</label>
                         <div class="controls">
                             <select id="f01_categoria" class="form-control" ng-model="datos.f01_categoria" name="f01_categoria" ng-disabled="desabilitado" ng-options="cat.spcat_id  as cat.spcat_descripcion  for cat in resultCategorias" required>
                                 <option value="">--Seleccionar--</option>
                             </select>
+                            <span style="color:red" ng-show="signupForm.f01_categoria.$invalid">
+                                <span align = "right" ng-show="signupForm.f01_categoria.$error.required">Categoria es requerido</span>
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" >
+                        <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Correo Electrónico:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_correoTV" id="f01_correoTV" name="f01_correoTV" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_correoTV" id="f01_correoTV" name="f01_correoTV" class="form-control" ng-keyup="validaCorreo();" ng-disabled="desabilitado" required focus/>
+                            <span style="color:red" ng-show="signupForm.f01_correoTV.$invalid">
+                                <span align = "right" ng-show="signupForm.f01_correoTV.$error.required">Correo electrónico es requerido</span>
+                            </span>
+                            <br><span id ="mensaje1" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
+                            <span id ="mensaje2" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span>
+                           <input id="idcorreo" name="idcorreo" type="hidden" value="false">
+                           <span style="color:red" ng-show="signupForm.idcorreo.$invalid">
+                           <span align = "right" ng-show="signupForm.idcorreo.$error.required">{{translateIdioma.lbl_20_32}}</span>
                         </div>
                     </div>
                 </div>
@@ -180,20 +229,20 @@
                     <div class="form-group" >
                         <label for="url" >Tipo de Contacto:</label>
                         <div class="controls">
-                            <select id="f01_contacto1" class="form-control" ng-model="datos.f01_contacto1" name="f01_contacto1" ng-disabled="desabilitado" required>
-                                <option value="">--Seleccionar--</option>
+                            <select id="f01_contacto1" class="form-control" ng-model="datos.f01_contacto1" name="f01_contacto1" ng-disabled="desabilitado" ng-change="activarCampo1(datos.f01_contacto1)" required>
+                                <option value="" selected>--Seleccionar--</option>
                                 <option value="CELULAR"> CELULAR </option>
                                 <option value="TELÉFONO"> TELÉFONO </option>
                             </select>
                             <br>
-                            <select id="f01_contacto2" class="form-control" ng-model="datos.f01_contacto2" name="f01_contacto2" ng-disabled="desabilitado" required>
-                                <option value="">--Seleccionar--</option>
+                            <select id="f01_contacto2" class="form-control" ng-model="datos.f01_contacto2" name="f01_contacto2" ng-disabled="desabilitado" ng-change="activarCampo2(datos.f01_contacto2)"required>
+                                <option value="" selected>--Seleccionar--</option>
                                 <option value="CELULAR"> CELULAR </option>
                                 <option value="TELÉFONO"> TELÉFONO </option>
                             </select>
                             <br>
-                            <select id="f01_contacto3" class="form-control" ng-model="datos.f01_contacto3" name="f01_contacto3" ng-disabled="desabilitado" required>
-                                <option value="">--Seleccionar--</option>
+                            <select id="f01_contacto3" class="form-control" ng-model="datos.f01_contacto3" name="f01_contacto3" ng-disabled="desabilitado" ng-change="activarCampo3(datos.f01_contacto3)" required>
+                                <option value="" selected>--Seleccionar--</option>
                                 <option value="CELULAR"> CELULAR </option>
                                 <option value="TELÉFONO"> TELÉFONO </option>
                             </select>
@@ -204,11 +253,11 @@
                     <div class="form-group" >
                         <label for="url" >Número de contacto:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" onkeyUp="valNumeroTelefono(this);" />
                             <br>
-                            <input ng-model="datos.f01_contacto2_nro" id="f01_contacto2_nro" name="f01_contacto2_nro" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_contacto2_nro" id="f01_contacto2_nro" name="f01_contacto2_nro" class="form-control" ng-disabled="inicializaC2" onkeyUp="valNumeroTelefono(this);"/>
                             <br>
-                            <input ng-model="datos.f01_contacto3_nro" id="f01_contacto3_nro" name="f01_contacto3_nro" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_contacto3_nro" id="f01_contacto3_nro" name="f01_contacto3_nro" class="form-control" ng-disabled="inicializaC3" onkeyUp="valNumeroTelefono(this);"/>
                         </div>
                     </div>
                 </div>
@@ -227,17 +276,17 @@
                         <label for="url" >Red Social:</label>
                         <div class="controls">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE1" name="f01_redessocialesAE1" ng-model="datos.f01_redessocialesAE1">
+                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE1" name="f01_redessocialesAE1" ng-model="datos.f01_redessocialesAE1" ng-change="activaRedes1(datos.f01_redessocialesAE1)">
                                 <label class="custom-control-label" for="defaultUnchecked">Facebook</label>
                             </div>
                             <br>
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE2" name="f01_redessocialesAE2" ng-model="datos.f01_redessocialesAE2">
+                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE2" name="f01_redessocialesAE2" ng-model="datos.f01_redessocialesAE2" ng-change="activaRedes2(datos.f01_redessocialesAE2)">
                                 <label class="custom-control-label" for="defaultUnchecked">Twitter</label>
                             </div>
                             <br>
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE3" name="f01_redessocialesAE3" ng-model="datos.f01_redessocialesAE3">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE3" name="f01_redessocialesAE3" ng-model="datos.f01_redessocialesAE3" ng-change="activaRedes3(datos.f01_redessocialesAE3)">
                                 <label class="custom-control-label" for="defaultUnchecked">Instagram</label>
                             </div>
                         </div>
@@ -247,11 +296,11 @@
                     <div class="form-group" >
                         <label for="url" >URL de la Red Social:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-disabled="inicializaFacebook"/>
                             <br>
-                            <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-disabled="inicializaTwitter"/>
                             <br>
-                            <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-disabled="inicializaInstagram"/>
                         </div>
                     </div>
                 </div>
@@ -331,7 +380,7 @@
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
                                 <input id="txt_f01_upload1" name="txt_f01_upload1"  ng-model="datos['txt_f01_upload1']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                                 <span class="input-group-btn">
-                                    <a id="href_f01_upload1"  ng-show="documentosarc" href="{{documentosarc}}" target="_blank">
+                                    <a id="href_f01_upload1"  ng-show="catalogo_url" href="{{catalogo_url}}" target="_blank">
                                         <button id="btn_f01_upload1" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                     </a>
                                     <button id="btn_f01_upload1" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload1', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
@@ -349,7 +398,7 @@
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
                                 <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datos['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                                 <span class="input-group-btn">
-                                    <a id="href_f01_upload2"  ng-show="documentosarc" href="{{documentosarc}}" target="_blank">
+                                    <a id="href_f01_upload2"  ng-show="logotipo_url" href="{{logotipo_url}}" target="_blank">
                                         <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                     </a>
                                     <button id="btn_f01_upload2" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload2', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
@@ -360,9 +409,12 @@
                   </div>
                 </div>
             </div>
+
+
+
             <div class="col-md-12" align="right">
-                <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-click="registrarDatosAE(datos)">Registrar</button>
-                <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-click="actualizarDatosAE(datos)">Modificar</button>                
+                <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="registrarDatosAE(datos)">Registrar</button>
+                <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="actualizarDatosAE(datos)">Modificar</button>                
                 <button type="button" class="btn btn-default ng-binding" ng-click="cerrarDatosAE(datos)" >Cerrar</button>
             </div>
           </form>

@@ -147,11 +147,23 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
               if (results.length == 0){
                 $rootScope.nuevo = 'mostrar';
                 $rootScope.update = null;
+                $rootScope.inicializaC1 = true;
+                $rootScope.inicializaC2 = true;
+                $rootScope.inicializaC3 = true;
+                $rootScope.inicializaFacebook =  true;
+                $rootScope.inicializaTwitter = true;
+                $rootScope.inicializaInstagram = true;
               } else {
                 //alert(results[0].tv_idc);
                 sessionService.set('IDTV', results[0].tv_idc);
                 $rootScope.nuevo = null;
                 $rootScope.update = 'mostrar';
+                $rootScope.inicializaC1 = false;
+                $rootScope.inicializaC2 = false;
+                $rootScope.inicializaC3 = false;
+                $rootScope.inicializaFacebook =  false;
+                $rootScope.inicializaTwitter = false;
+                $rootScope.inicializaInstagram = false;
               }
           });
         } catch(error){

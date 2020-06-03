@@ -192,13 +192,16 @@ app.service('fileUpload1', ['$http', function ($http) {
         var fd = new FormData();
         fd.append('files', file);
         //console.log(nombre,89);
+        $.blockUI();
         $http.post(uploadUrl + nombre + "?app_name=todoangular", fd, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         })
         .success(function(){
+            $.unblockUI();
         })
         .error(function(){
+            $.unblockUI();
         });
     }
 }]);

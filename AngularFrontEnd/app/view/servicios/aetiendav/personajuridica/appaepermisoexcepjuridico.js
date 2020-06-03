@@ -789,7 +789,408 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
     /*SUBIR REQUISITOS 2018*/
      ////////////////REQUISITOS 2018/////////
     $scope.aDocObligarios = new Array();
+    $scope.btover1 = null;
+    $scope.btover2 = null;
+    $scope.btover3 = null;
+    $scope.btover4 = null;
+    $scope.btover5 = null;
+    $scope.btover6 = null;
+    $scope.btover7 = null;
     $scope.cambiarFile = function(obj, valor){
+        var arraydoc = ["pdf", "doc", "docx", ".docx",".docxlm"];
+        $scope.registroAdj  = [];
+        var fechaNueva      = "";
+        var fechaserver = new fechaHoraServer(); 
+        fechaserver.fechahora(function(resp){
+            var sfecha      = JSON.parse(resp);
+            var fechaServ   = (sfecha.success.fecha).split(' ');
+            var fecha_      = fechaServ[0].split('-');
+            var hora_       = fechaServ[1].split(':');
+            fechaNueva      = fecha_[0] + fecha_[1] +   fecha_[2]   +   '_' +   hora_[0]    +   hora_[1];
+        }); 
+        $.blockUI();
+        setTimeout(function(){         
+            var nombre = obj.getAttribute("name");
+            var objarchivo = obj.files[0];
+            $scope.FILE_VEHICULO_FOTO = obj.files[0];
+            var oidCiudadano = sessionService.get('IDSOLICITANTE');
+            $scope.direccionvirtual = "RC_CLI";
+            var sDirTramite = sessionService.get('IDTRAMITE');
+            var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/" + oidCiudadano + "/" + sDirTramite + "/";
+            // FILE_VEHICULO_FOTO FILE_VEHICULO_FOTO
+            if (nombre == 'FILE_VEHICULO_FOTO' && (typeof(obj.files[0]) != 'undefined')) 
+            {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                if (  arraydoc.indexOf(ext_doc) >= 0 ) {
+                        if (objarchivo.size <= 500000) {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_VEHICULO_FOTO = nombreNuevo;
+                            $scope.FILE_VEHICULO_FOTO = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                            $scope.btover1 = "mostrar";
+                        } else if ( objarchivo.size > 500000 &&  objarchivo.size <= 15000000) {
+                            var zipcir = new JSZip();
+                            zipcir.file(nomdocumento, objarchivo);
+                            zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
+                                var nombreNuevo = nombre + fechaNueva + '.zip';
+                                fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
+                                $scope.datos.FILE_VEHICULO_FOTO = nombreNuevo;
+                                $scope.FILE_VEHICULO_FOTO = blobcir;
+                                $scope.btover1 = "mostrar";
+                            });
+                            $.unblockUI();
+                        }else{
+                            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_VEHICULO_FOTO = "";
+                            $scope.FILE_VEHICULO_FOTO = "";
+                            $.unblockUI();
+                        }
+                            
+                } else{
+                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    document.getElementById("txt_" + nombre).value  = "";
+                    document.getElementById("href_" + nombre).href = "";
+                    $scope.registroAdj.adjunto = '';
+                    $scope.adjunto = '';
+                    valor = '';
+                    $.unblockUI();
+                }
+
+            }
+            // FILE_VEHICULO_PERMISO FILE_VEHICULO_PERMISO
+            if (nombre == 'FILE_VEHICULO_PERMISO' && (typeof(obj.files[0]) != 'undefined')) 
+            {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                if (  ext_doc == "pdf" ) {
+                        if (objarchivo.size <= 500000) {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_VEHICULO_PERMISO = nombreNuevo;
+                            $scope.FILE_VEHICULO_PERMISO = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                            $scope.btover2 = "mostrar";
+                        } else if ( objarchivo.size > 500000 &&  objarchivo.size <= 15000000) {
+                            var zipcir = new JSZip();
+                            zipcir.file(nomdocumento, objarchivo);
+                            zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
+                                var nombreNuevo = nombre + fechaNueva + '.zip';
+                                fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
+                                $scope.datos.FILE_VEHICULO_PERMISO = nombreNuevo;
+                                $scope.FILE_VEHICULO_PERMISO = blobcir;
+                                $scope.btover2 = "mostrar";
+                            });
+                            $.unblockUI();
+                        }else{
+                            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_VEHICULO_PERMISO = "";
+                            $scope.FILE_VEHICULO_PERMISO = "";
+                            $.unblockUI();
+                        }
+                            
+                } else{
+                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+                    document.getElementById("txt_" + nombre).value  = "";
+                    document.getElementById("href_" + nombre).href = "";
+                    $scope.registroAdj.adjunto = '';
+                    $scope.adjunto = '';
+                    valor = '';
+                    $.unblockUI();
+                }
+
+            }
+            //FILE_RUAT_VEHICULO FILE_RUAT_VEHICULO
+            if (nombre == 'FILE_RUAT_VEHICULO' && (typeof(obj.files[0]) != 'undefined')) 
+            {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                if (  arraydoc.indexOf(ext_doc) >= 0 ) {
+                        if (objarchivo.size <= 500000) {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_RUAT_VEHICULO = nombreNuevo;
+                            $scope.FILE_RUAT_VEHICULO = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                            $scope.btover3 = "mostrar";
+                        } else if ( objarchivo.size > 500000 &&  objarchivo.size <= 15000000) {
+                            var zipcir = new JSZip();
+                            zipcir.file(nomdocumento, objarchivo);
+                            zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
+                                var nombreNuevo = nombre + fechaNueva + '.zip';
+                                fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
+                                $scope.datos.FILE_RUAT_VEHICULO = nombreNuevo;
+                                $scope.FILE_RUAT_VEHICULO = blobcir;
+                                $scope.btover3 = "mostrar";
+                            });
+                            $.unblockUI();
+                        }else{
+                            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_RUAT_VEHICULO = "";
+                            $scope.FILE_RUAT_VEHICULO = "";
+                            $.unblockUI();
+                        }
+                            
+                } else{
+                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    document.getElementById("txt_" + nombre).value  = "";
+                    document.getElementById("href_" + nombre).href = "";
+                    $scope.registroAdj.adjunto = '';
+                    $scope.adjunto = '';
+                    valor = '';
+                    $.unblockUI();
+                }
+
+            }
+            //FILE_FORMVH_EXCEL FILE_FORMVH_EXCEL
+            if (nombre == 'FILE_FORMVH_EXCEL' && (typeof(obj.files[0]) != 'undefined')) 
+            {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                if ( ext_doc == 'xls' || ext_doc == 'xlsx' ) {
+                        if (objarchivo.size <= 500000) {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_FORMVH_EXCEL = nombreNuevo;
+                            $scope.FILE_FORMVH_EXCEL = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                            $scope.btover4 = "mostrar";
+                        } else if ( objarchivo.size > 500000 &&  objarchivo.size <= 15000000) {
+                            var zipcir = new JSZip();
+                            zipcir.file(nomdocumento, objarchivo);
+                            zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
+                                var nombreNuevo = nombre + fechaNueva + '.zip';
+                                fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
+                                $scope.datos.FILE_FORMVH_EXCEL = nombreNuevo;
+                                $scope.FILE_FORMVH_EXCEL = blobcir;
+                                $scope.btover4 = "mostrar";
+                            });
+                            $.unblockUI();
+                        }else{
+                            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_FORMVH_EXCEL = "";
+                            $scope.FILE_FORMVH_EXCEL = "";
+                            $.unblockUI();
+                        }
+                            
+                } else{
+                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo Excel', 'error');
+                    document.getElementById("txt_" + nombre).value  = "";
+                    document.getElementById("href_" + nombre).href = "";
+                    $scope.registroAdj.adjunto = '';
+                    $scope.adjunto = '';
+                    valor = '';
+                    $.unblockUI();
+                }
+
+            }
+            //FILE_CONTRATO_DELIVERY FILE_CONTRATO_DELIVERY
+            if (nombre == 'FILE_CONTRATO_DELIVERY' && (typeof(obj.files[0]) != 'undefined')) 
+            {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                if ( ext_doc == "pdf" ) {
+                        if (objarchivo.size <= 500000) {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_CONTRATO_DELIVERY = nombreNuevo;
+                            $scope.FILE_CONTRATO_DELIVERY = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                            $scope.btover5 = "mostrar";
+                        } else if ( objarchivo.size > 500000 &&  objarchivo.size <= 15000000) {
+                            var zipcir = new JSZip();
+                            zipcir.file(nomdocumento, objarchivo);
+                            zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
+                                var nombreNuevo = nombre + fechaNueva + '.zip';
+                                fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
+                                $scope.datos.FILE_CONTRATO_DELIVERY = nombreNuevo;
+                                $scope.FILE_CONTRATO_DELIVERY = blobcir;
+                                $scope.btover5 = "mostrar";
+                            });
+                            $.unblockUI();
+                        }else{
+                            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_CONTRATO_DELIVERY = "";
+                            $scope.FILE_CONTRATO_DELIVERY = "";
+                            $.unblockUI();
+                        }
+                            
+                } else{
+                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+                    document.getElementById("txt_" + nombre).value  = "";
+                    document.getElementById("href_" + nombre).href = "";
+                    $scope.registroAdj.adjunto = '';
+                    $scope.adjunto = '';
+                    valor = '';
+                    $.unblockUI();
+                }
+
+            }
+            //FILE_FOTO_SOLICITANTE FILE_FOTO_SOLICITANTE
+            if (nombre == 'FILE_FOTO_SOLICITANTE' && (typeof(obj.files[0]) != 'undefined')) 
+            {   
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                if ( ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" ) {
+                        if (objarchivo.size <= 500000) {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_FOTO_SOLICITANTE = nombreNuevo;
+                            $scope.FILE_FOTO_SOLICITANTE = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                            $scope.btover6 = "mostrar";
+                        } else if ( objarchivo.size > 500000 &&  objarchivo.size <= 15000000) {
+                            if ( ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" ) {
+                                var filecompress = compressImage(objarchivo).then(function (respuesta_compres) {
+                                    var imagenCir = respuesta_compres.name.split('.');
+                                    var tipoCir   = imagenCir[1];
+                                    var nombreNuevo = nombre + fechaNueva + '.' + tipoCir;
+                                    fileUpload1.uploadFileToUrl1(respuesta_compres, uploadUrl, nombreNuevo);
+                                    $scope.datos.FILE_FOTO_SOLICITANTE = nombreNuevo;
+                                    $scope.FILE_FOTO_SOLICITANTE = respuesta_compres;
+                                    document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                                    document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                                    $scope.btover6 = "mostrar";
+                                });
+                            }else{
+                                var zipcir = new JSZip();
+                                zipcir.file(nomdocumento, objarchivo);
+                                zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
+                                    var nombreNuevo = nombre + fechaNueva + '.zip';
+                                    fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
+                                    $scope.datos.FILE_FOTO_SOLICITANTE = nombreNuevo;
+                                    $scope.FILE_FOTO_SOLICITANTE = blobcir;
+                                    $scope.btover6 = "mostrar";
+                                });
+                                $.unblockUI();
+                            }
+                        }else{
+                            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_FOTO_SOLICITANTE = "";
+                            $scope.FILE_FOTO_SOLICITANTE = "";
+                            $.unblockUI();
+                        }
+                            
+                } else{
+                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo png, jpg o jpeg', 'error');
+                    document.getElementById("txt_" + nombre).value  = "";
+                    document.getElementById("href_" + nombre).href = "";
+                    $scope.registroAdj.adjunto = '';
+                    $scope.adjunto = '';
+                    valor = '';
+                    $.unblockUI();
+                }
+
+            }
+            //FILE_FOTO_LICENCIA_CI FILE_FOTO_LICENCIA_CI
+            if (nombre == 'FILE_FOTO_LICENCIA_CI' && (typeof(obj.files[0]) != 'undefined')) 
+            {   
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                if ( ext_doc == "pdf") {
+                        if (objarchivo.size <= 500000) {
+                            var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_FOTO_LICENCIA_CI = nombreNuevo;
+                            $scope.FILE_FOTO_LICENCIA_CI = objarchivo;
+                            document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                            $scope.btover7 = "mostrar";
+                        } else if ( objarchivo.size > 500000 &&  objarchivo.size <= 15000000) {
+                            if ( ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" ) {
+                                var filecompress = compressImage(objarchivo).then(function (respuesta_compres) {
+                                    var imagenCir = respuesta_compres.name.split('.');
+                                    var tipoCir   = imagenCir[1];
+                                    var nombreNuevo = nombre + fechaNueva + '.' + tipoCir;
+                                    fileUpload1.uploadFileToUrl1(respuesta_compres, uploadUrl, nombreNuevo);
+                                    $scope.datos.FILE_FOTO_LICENCIA_CI = nombreNuevo;
+                                    $scope.FILE_FOTO_LICENCIA_CI = respuesta_compres;
+                                    document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                                    document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                                    $scope.btover7 = "mostrar";
+                                });
+                            }else{
+                                var zipcir = new JSZip();
+                                zipcir.file(nomdocumento, objarchivo);
+                                zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
+                                    var nombreNuevo = nombre + fechaNueva + '.zip';
+                                    fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
+                                    $scope.datos.FILE_FOTO_LICENCIA_CI = nombreNuevo;
+                                    $scope.FILE_FOTO_LICENCIA_CI = blobcir;
+                                    $scope.btover7 = "mostrar";
+                                });
+                                $.unblockUI();
+                            }
+                        }else{
+                            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                            document.getElementById("txt_" + nombre).value  = "";
+                            document.getElementById("href_" + nombre).href = "";
+                            $scope.registroAdj.adjunto = '';
+                            $scope.adjunto = '';
+                            valor = '';
+                            $scope.datos.FILE_FOTO_LICENCIA_CI = "";
+                            $scope.FILE_FOTO_LICENCIA_CI = "";
+                            $.unblockUI();
+                        }
+                } else{
+                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+                    document.getElementById("txt_" + nombre).value  = "";
+                    document.getElementById("href_" + nombre).href = "";
+                    $scope.registroAdj.adjunto = '';
+                    $scope.adjunto = '';
+                    valor = '';
+                    $.unblockUI();
+                }
+
+            }
+        },1000);
+        $.unblockUI();
+    }
+    /* $scope.cambiarFile = function(obj, valor){
         $scope.registroAdj  = [];
         var fechaNueva      = "";
         var fechaserver = new fechaHoraServer(); 
@@ -1059,7 +1460,7 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
 
                 $.unblockUI();
         },800);
-    }
+    } */
 
     $scope.ultimoArrayAdjunto = function(data){
         if(data == 'VENTAPRODED' || data == 'SERVICIODEL'){

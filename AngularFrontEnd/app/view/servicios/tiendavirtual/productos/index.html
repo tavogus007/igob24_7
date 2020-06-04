@@ -65,6 +65,13 @@
           function conMayusculas(field) {
               field.value = field.value.toUpperCase()
           }
+
+          function checkInput(ob){
+            var invalidChars = /[a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ¡!@#\$%\^&\*\¿?_~();:{}'"|<>´ñ,?`=a-zA-Z]/;
+            if(invalidChars.test(ob.value)) {
+                    ob.value = ob.value.replace(invalidChars,"");
+          }
+        };
         </script>
         <style>
             .switch {
@@ -214,7 +221,7 @@
                   <div class="form-group" >
                       <label for="url" >Producto:</label>
                       <div class="controls">
-                          <input ng-model="datosProd.f01_producto" id="f01_producto" name="f01_producto" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado"/>
+                          <input ng-model="datosProd.f01_producto" id="f01_producto" name="f01_producto" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required />
                       </div>
                   </div>
               </div>
@@ -222,7 +229,7 @@
                   <div class="form-group" >
                       <label for="url" >Descripción:</label>
                       <div class="controls">
-                          <input ng-model="datosProd.f01_descripcion" id="f01_descripcion" name="f01_descripcion" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado"/>
+                          <input ng-model="datosProd.f01_descripcion" id="f01_descripcion" name="f01_descripcion" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required />
                       </div>
                   </div>
               </div>
@@ -230,7 +237,7 @@
                   <div class="form-group" >
                       <label for="url" >Precio:</label>
                       <div class="controls">
-                          <input type="number" ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado"/>
+                          <input ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado" onkeyUp="return checkInput(this);" required />
                       </div>
                   </div>
               </div>

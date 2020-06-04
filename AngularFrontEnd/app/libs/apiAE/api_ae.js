@@ -219,3 +219,20 @@ getHomologacion.prototype.get_Homologacion = function (functionResp) {
     };
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
 };
+
+/*Servicio para el ssitema de Ventas*/
+
+function lstActividadEconomicaVentas() {
+    this.idContribuyente;
+    this.tipo;
+};
+
+lstActividadEconomicaVentas.prototype.lstActividadEconomicaVentas = function (functionResp) {
+    urlCompAe = "/lstActividadEconomicaVentas";
+    typeCallAe = "post";
+    dataParamsAe = {
+        "idContribuyente":this.idContribuyente,
+        "tipo":this.tipo
+    };
+    ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};

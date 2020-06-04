@@ -85,6 +85,22 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         miVentana = window.open( $rootScope.urlIndex, "ventana1", "height=400,width=800,left=300,location=yes,menubar=no,resizable=no,scrollbars=yes,status=no,titlebar=yes,top=300" );
         $.unblockUI();
     };
+
+
+    $scope.actualizarTVCeroPapel = function(estado){
+      console.log($rootScope.datosTiendaVirtual);
+        var uptTVCP = new tiendaVirtual();
+        uptTVCP.id_ae = sessionService.get('IDAE');
+        uptTVCP.estado = estado;
+        uptTVCP.categoria = $rootScope.datosTiendaVirtual[0].pcattipo;
+        uptTVCP.imagen = $rootScope.datosTiendaVirtual[0].plogotipo;
+        uptTVCP.modificarTiendaVirtual(function(response){
+          console.log("--------------");
+          console.log(response);
+          console.log("++++++++++++++");
+        });
+    }
+
     $scope.registrarPagina = function(url){
       $.blockUI();
       try{
@@ -96,7 +112,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         datosPaginaWeb.addPaginaWeb(function(response){
           resultado = JSON.parse(response);
           $rootScope.conWeb = true;
-          $rootScope.idPW = resultado.success[0].sp_adicionar_pagina_web
+          $rootScope.idPW = resultado.success[0].sp_adicionar_pagina_web;
         });
       } catch(error){
         console.log(error);
@@ -121,13 +137,13 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           $scope.obtDatos = resultado.success;
           $rootScope.productosPW = $scope.obtDatos;
           console.log($scope.obtDatos);
+          $scope.actualizarTVCeroPapel(estado);
         });
       } catch(error){
         console.log(error);
       }
       $.unblockUI();  
     }
-
     $scope.cambioEstadB = function(dato){
       if ($rootScope.conWeb == true) {
         if ($scope.chkPublicado == false) {

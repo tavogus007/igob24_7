@@ -837,22 +837,17 @@ gCrearTramiteLinea.prototype.crearTramiteLinea = function (functionResp) {
 function tiendaVirtual() {
   this.id_ae;
   this.estado;
+  this.categoria;
+  this.imagen;
 }
-tiendaVirtual.prototype.crearTiendaVirtual = function (functionResp) {
-    urlComp = "/publicarAEDelivery";
-    typeCall = "post";
-    dataParams = {
-      "idae" : this.id_ae,
-      "estadop" : this.estado
-    };
-    ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
-};
 tiendaVirtual.prototype.modificarTiendaVirtual = function (functionResp) {
     urlComp = "/modificarAEDelivery";
     typeCall = "post";
     dataParams = {
       "idae_m" : this.id_ae,
-      "estadop_m" : this.estado
+      "estadop_m" : this.estado,
+      "categoria_m" : this.categoria,
+      "url_imagen_m" : this.imageno
     };
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };

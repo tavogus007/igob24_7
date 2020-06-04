@@ -189,7 +189,7 @@ dataProducto.prototype.crearProducto = function (functionResp) {
         "prd_tv_idc" : this.idtv,
         "prd_nombrec" : this.nombre,
         "prd_descripcionc" : this.descripcion,
-        "prd_precioc" : parseInt(this.precio),
+        "prd_precioc" : this.precio,
         "prd_imagen_pc" : this.imagen_p,
         "prd_imagen_a1c" : this.imagen_a1,
         "prd_imagen_a2c" : this.imagen_a2,

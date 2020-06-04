@@ -158,12 +158,12 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 sessionService.set('IDTV', results[0].tv_idc);
                 $rootScope.nuevo = null;
                 $rootScope.update = 'mostrar';
-                $rootScope.inicializaC1 = false;
+                /*$rootScope.inicializaC1 = false;
                 $rootScope.inicializaC2 = false;
                 $rootScope.inicializaC3 = false;
                 $rootScope.inicializaFacebook =  false;
                 $rootScope.inicializaTwitter = false;
-                $rootScope.inicializaInstagram = false;
+                $rootScope.inicializaInstagram = false;*/
               }
           });
         } catch(error){
@@ -178,6 +178,9 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
           $rootScope.resultCategorias = $scope.resultCategorias.success;
         });
     }
+    
+    
+
     /*
     $scope.obtPagina = function(){ 
         $rootScope.id_web = '';

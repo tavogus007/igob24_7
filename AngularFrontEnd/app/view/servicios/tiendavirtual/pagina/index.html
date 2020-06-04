@@ -104,9 +104,9 @@
           <div class="ibox-content">
             <div ng-show="nuevo || update" style="text-align: right;">
               <span  style="color:red;"ng-show="ws_publicado"><strong>PÁGINA PUBLICADA &nbsp;</strong></span>
-              <span style="color:red;" ng-show="!ws_publicado"><strong>PÁGINA EN MANTENIMIENTO &nbsp;</strong></span>
+              <span style="color:red;" ng-show="!ws_publicado"><strong>PÁGINA NO PUBLICADA &nbsp;</strong></span>
               <label class="switch">
-              <input type="checkbox" ng-checked="ws_publicado" ng-click="cambioEstadB(ws_publicado)" title="PUBLICAR PÁGINA Actividad ECONÓMICA">
+              <input type="checkbox" id="chkPublicado" name="chkPublicado" ng-model="chkPublicado" ng-checked="ws_publicado" ng-click="cambioEstadB(ws_publicado)" title="PUBLICAR PÁGINA Actividad ECONÓMICA">
               <span class="slider round"></span>
               </label>  
             </div>      

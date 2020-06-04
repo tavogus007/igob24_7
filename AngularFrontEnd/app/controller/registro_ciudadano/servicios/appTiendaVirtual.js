@@ -178,7 +178,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
           $rootScope.resultCategorias = $scope.resultCategorias.success;
         });
     }
-    
+    /*
     $scope.obtPagina = function(){ 
         $rootScope.id_web = '';
         $rootScope.ws_publicado = false;
@@ -189,6 +189,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             datosPagina.obtDataPaginaWeb(function(response){
               results = JSON.parse(response);
               results = results.success;
+              console.log(results);
               if (results == '[]' || results == '[{}]' || results == '[{ }]' || results == ' ' || results == '') {
                 $rootScope.pagUrl = '';
                 $rootScope.update = false;   
@@ -230,6 +231,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             console.log("Error Interno : ", error);
         }    
     }
+    */
     $scope.activaPublicacion = function(id_web,id_ae){
         var cestado = new dataPaginaWeb();
         cestado.idWeb = id_web;
@@ -331,7 +333,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         idActividadEconomica = sessionService.get('IDAE');
         $rootScope.descripcionAe = tramite.Descripcion;
         $scope.obtTiendaVirtual();
-        $scope.obtPagina();
+        //$scope.obtPagina();
         $rootScope.$broadcast('inicializarPagina', $scope.datos);
         $scope.sIdAeGrilla  =   tramite.IdActividad;
 

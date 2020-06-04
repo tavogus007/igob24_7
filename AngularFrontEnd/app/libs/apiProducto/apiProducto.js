@@ -278,7 +278,7 @@ dataPaginaWeb.prototype.obtDataPaginaWeb = function (functionResp)
     urlCompProducto = "/listarPaginaWebPorIdAe";
     typeCall = "post";
     dataParams = {
-      "idAe":this.idAe 
+      "idAe":this.web_id_ae
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
@@ -288,10 +288,10 @@ dataPaginaWeb.prototype.addPaginaWeb = function (functionResp)
     urlCompProducto = "/adicionarPaginaWeb";
     typeCall = "post";
     dataParams = {
-      "contenido":this.web_contenido,
-      "url":this.web_url,
-      "usuario":this.web_usr, 
-      "idAe":this.web_id_ae 
+      "web_contenido":this.web_contenido,
+      "web_url":this.web_url,
+      "web_usuario":this.web_usr, 
+      "web_idae":this.web_id_ae 
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
@@ -300,12 +300,12 @@ dataPaginaWeb.prototype.updPaginaWeb = function (functionResp)
     urlCompProducto = "/modificarPaginaWeb";
     typeCall = "post";
     dataParams = {
-      "id":this.web_id,
-      "contenido":this.web_contenido,
-      "url":this.web_url,
-      "estado":this.web_estado_publicar,
-      "usuario":this.web_usr, 
-      "idAe":this.web_id_ae 
+      "web_id":this.web_id,
+      "web_contenido":this.web_contenido,
+      "web_url":this.web_url,
+      "web_estado":this.web_estado_publicar,
+      "web_usuario":this.web_usr, 
+      "web_idae":this.web_id_ae 
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };

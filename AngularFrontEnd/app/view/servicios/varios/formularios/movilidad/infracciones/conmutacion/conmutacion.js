@@ -71,7 +71,51 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
     }, function() {
       swal.close();
       setTimeout(function(){
-        $scope.crea_tramite_lotus(data);
+        console.log("datos",$scope.datos);
+        if($scope.datos.infracciones.length >0){
+          var busca = new buscaInfraccion();
+          busca.placa = $scope.datos.INF_PLACA;
+          busca.buscaCantidadConmutaciones(function(resultado){
+            var respuesta = JSON.parse(resultado).success.data;
+            if(respuesta[0].sp_busca_conmutaciones == 0){
+              if($scope.datos.INF_TIPO_SERVICIO =='TRANSPORTE URBANO'){
+                var buscaRoseta = new buscaInfraccion();
+                buscaRoseta.placa = $scope.datos.INF_PLACA;
+                buscaRoseta.buscaCantidadRosetas(function(resultado){
+                  var respuestaRoseta = JSON.parse(resultado).success.data;
+                  if(respuestaRoseta[0].sp_busca_roseta > 0){
+                    $scope.crea_tramite_lotus(data);
+                  }else{
+                    swal({
+                      title: 'Señor(a) Ciudadano(a) la placa no cuenta con roseta',
+                      text: '',
+                      html: true,
+                      type: 'error',
+                    });
+                  }
+                })
+              }else{
+                $scope.crea_tramite_lotus(data);
+              }
+            }else{
+              swal({
+                title: 'Señor(a) Ciudadano(a) ya realizo una conmutación en la gestión vigente',
+                text: '',
+                html: true,
+                type: 'error',
+              });
+            }
+            console.log("tamaño",respuesta);
+            
+          })
+        }else{
+          swal({
+            title: 'Señor(a) Ciudadano(a) la placa registrada no cuenta con deudas.',
+            text: '',
+            html: true,
+            type: 'error',
+          });
+        }
       }, 1000);
     });
   };
@@ -140,6 +184,20 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
     }
   };
 
+  $scope.listaInfracciones = function(placa){
+    if(placa.length>5){
+      var busca = new buscaInfraccion();
+      busca.placa = placa;
+      busca.buscaInfraccionesPlaca(function(resultado){
+        $scope.datos.infracciones = JSON.parse(resultado).success.data;
+        console.log("tamaño",$scope.datos.infracciones);
+        if($scope.datos.infracciones.length==0){
+          swal('Advertencia', 'La placa no cuenta no infracciones', 'warning');
+          $swCantidad = 0;
+        }
+      })
+    }
+  }
 
   $scope.ocultar = function(tipo){
     if(tipo=='OTRO'){

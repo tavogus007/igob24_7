@@ -576,7 +576,7 @@
                         <div class="col-md-5">
                           <div class="form-check">
                             <label class="tamañoLabel">
-                              <input type="radio" name="INF_TIPO_SERVICIO" id="INF_TIPO_SERVICIO" ng-model="datos.INF_TIPO_SERVICIO" value="{{tipo.desc}}" > <span class="label-text"></span>
+                              <input type="radio" name="INF_TIPO_SERVICIO" id="INF_TIPO_SERVICIO" ng-model="datos.INF_TIPO_SERVICIO" value="{{tipo.desc}}" > <span class="label-text" ></span>
                             </label>{{tipo.desc}}
                           </div>
                         </div>
@@ -596,7 +596,7 @@
                             <tr ng-repeat="inf in datos.infracciones" >
                               <td align="center" data-title="'Seleccionar'" align="center">
                                 <label class="tamañoLabel">
-                                  <input type="checkbox" ng-model="inf.INF_TIPO_SOLICITANTE" />
+                                  <input type="checkbox" ng-model="inf.INF_TIPO_SOLICITANTE" ng-disabled="desabilitado"/>
                                 </label>
                               </td>
                               <td data-title="'#'" align="center">{{$index+1}}</td>
@@ -686,8 +686,8 @@
                             </div>
                           </div>
                         </div><br>
-                      </div>
-                    </div>
+                      </div><br>
+                    </div><br>
                   </div><br><br>
                   <div class="col-md-12" align="right"><br>
                     <button id="miFormGuardar" ng-show="desabilitado

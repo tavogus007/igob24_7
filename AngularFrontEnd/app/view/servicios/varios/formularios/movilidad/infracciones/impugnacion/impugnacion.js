@@ -30,9 +30,9 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
     $scope.enviado = sessionService.get('ESTADO');
     if($scope.datos.File_Adjunto == undefined){
       $scope.datos.File_Adjunto = [];
-      var myJSON = '{ "url":"' + $scope.datos.INF_CI_ANVERSO + '", "campo":"Carnet de Identidad (Anverso)", "idRequisito":0,"desc":"Carnet de Identidad (Anverso)"}';
+      var myJSON = '{ "url":"' + $scope.datos.INF_CI_ANVERSO + '", "campo":"Carnet de Identidad (Anverso)", "idRequisito":0,"nombre":"Carnet de Identidad (Anverso)"}';
       $scope.datos.File_Adjunto[0] = JSON.parse(myJSON);
-      var myJSON = '{ "url":"' + $scope.datos.INF_CI_REVERSO + '", "campo":"Carnet de Identidad (Reverso)", "idRequisito":1,"desc":"Carnet de Identidad (Reverso)"}';
+      var myJSON = '{ "url":"' + $scope.datos.INF_CI_REVERSO + '", "campo":"Carnet de Identidad (Reverso)", "idRequisito":1,"nombre":"Carnet de Identidad (Reverso)"}';
       $scope.datos.File_Adjunto[1] = JSON.parse(myJSON);
     }
     if($scope.enviado == 'SI'){
@@ -40,7 +40,6 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
     }else{
       $scope.desabilitado = false;
     }
-    $scope.listaInfracciones
     document.getElementById('gu').disabled=true;
     $scope.$apply();
     setTimeout(function(){
@@ -178,7 +177,7 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
     var descrip =  document.getElementById('lbl_f01_upload'+idFile).innerHTML;
     descrip = descrip.replace("\n","");
     console.log(uploadUrl);
-    var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "idRequisito":'+idFile+',"desc":"'+descrip+'"}';
+    var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "idRequisito":'+idFile+',"nombre":"'+descrip+'"}';
     console.log("uno",myJSON);
     $scope.datos.File_Adjunto[idFile] = JSON.parse(myJSON);
     console.log($scope.datos.File_Adjunto);
@@ -231,7 +230,39 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
     }, function() {
       swal.close();
       setTimeout(function(){
-        $scope.crea_tramite_lotus(data);
+        var contador = 0
+        var mayorDias = 0;
+        var message = ''
+        for (var i=0; i< $scope.datos.infracciones.length; i++) {
+          if($scope.datos.infracciones[i].INF_TIPO_SOLICITANTE == true){
+            contador ++;
+            if($scope.datos.infracciones[i].infraccion_dias>10){
+              mayorDias ++;
+              message = message + $scope.datos.infracciones[i].infraccion_boleta_auto+',';
+            }
+          }
+        }
+        if(contador == 0){
+          swal({
+            title: 'Señor(a) Ciudadano(a) no selecciono ninguna infracción para la impugnacion.',
+            text: '',
+            html: true,
+            type: 'error',
+          });
+        }else{
+          if(mayorDias>0)
+          {
+            message = message.substring(0, message.length - 1);
+            swal({
+              title: 'Señor(a) Ciudadano(a).',
+              text: 'Los siguientes números de Memorandum sobre pasa los 10 dias: '+message,
+              html: true,
+              type: 'error',
+            });
+          }else{
+            $scope.crea_tramite_lotus(data);
+          }
+        }
       }, 1000);
     });
   };
@@ -340,7 +371,7 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
       busca.placa = placa;
       busca.buscaInfraccionesPlaca(function(resultado){
         $scope.datos.infracciones = JSON.parse(resultado).success.data;
-        console.log("tamaño",$scope.datos.infracciones.length);
+        console.log("tamaño",$scope.datos.infracciones);
         if($scope.datos.infracciones.length==0){
           swal('Advertencia', 'La placa no cuenta no infracciones', 'warning');
           $swCantidad = 0;

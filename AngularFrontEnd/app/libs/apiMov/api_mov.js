@@ -604,7 +604,7 @@ function buscaInfraccion(){
 };
 
 buscaInfraccion.prototype.buscaInfraccionesPlaca = function (functionResp) {
-  urlComp = "/buscaInfracciones";
+  urlComp = "/buscaInfraccionesPlaca";
   typeCall = "post";
   dataParams = {
     "placa" : this.placa
@@ -614,6 +614,24 @@ buscaInfraccion.prototype.buscaInfraccionesPlaca = function (functionResp) {
 
 buscaInfraccion.prototype.buscaDecomisoPlacas = function(functionResp){
   urlComp = "/buscaDecomiso";
+  typeCall = "post";
+  dataParams = {
+    "placa" : this.placa
+  };
+  ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
+}
+
+buscaInfraccion.prototype.buscaCantidadConmutaciones = function(functionResp){
+  urlComp = "/buscaCantidadConmutaciones";
+  typeCall = "post";
+  dataParams = {
+    "placa" : this.placa
+  };
+  ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
+}
+
+buscaInfraccion.prototype.buscaCantidadRosetas = function(functionResp){
+  urlComp = "/buscaCantidadRosetas";
   typeCall = "post";
   dataParams = {
     "placa" : this.placa

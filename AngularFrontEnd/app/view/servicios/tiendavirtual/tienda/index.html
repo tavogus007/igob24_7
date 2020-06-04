@@ -59,6 +59,25 @@
                 }
                 }
             }
+            function cargando(){
+                var texto   = $("<div>", {
+                text    : "CARGANDO....",
+                    id      : "myEstilo",
+                    css     : {
+                    "font-size" : "30px",
+                        "position": "relative",
+                        "width": "500px",
+                        "height": "300px",
+                        "left": "180px",
+                        "top":"50px"
+                    },
+                    fontawesome : "fa fa-spinner fa-pulse"
+                });
+                $.LoadingOverlay("show",{
+                        custom  : texto,
+                        color:"rgba(255, 255, 255, 0.8)",
+                });
+            }
         </script>
         <style>
             .switch {
@@ -194,6 +213,29 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-1"></div>
+
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="url" >Logotipo de la Actividad Económica:</label>
+                        <div class="controls">
+                            <div class="form-group custom-upload">
+                                <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*"  style="display: none;">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                    <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datos['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                                    <span class="input-group-btn">
+                                        <a id="href_f01_upload2"  ng-show="logotipo_url" href="{{logotipo_url}}" target="_blank">
+                                            <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                        </a>
+                                        <button id="btn_f01_upload2" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload2', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                    </span>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                </div>
+            
 
                 <!--div class="col-md-12">
                     <div class="form-group">
@@ -230,19 +272,19 @@
                         <label for="url" >Tipo de Contacto:</label>
                         <div class="controls">
                             <select id="f01_contacto1" class="form-control" ng-model="datos.f01_contacto1" name="f01_contacto1" ng-disabled="desabilitado" ng-change="activarCampo1(datos.f01_contacto1)" required>
-                                <option value="" selected>--Seleccionar--</option>
+                                <option value="">--Seleccionar--</option>
                                 <option value="CELULAR"> CELULAR </option>
                                 <option value="TELÉFONO"> TELÉFONO </option>
                             </select>
                             <br>
                             <select id="f01_contacto2" class="form-control" ng-model="datos.f01_contacto2" name="f01_contacto2" ng-disabled="desabilitado" ng-change="activarCampo2(datos.f01_contacto2)"required>
-                                <option value="" selected>--Seleccionar--</option>
+                                <option value="">--Seleccionar--</option>
                                 <option value="CELULAR"> CELULAR </option>
                                 <option value="TELÉFONO"> TELÉFONO </option>
                             </select>
                             <br>
                             <select id="f01_contacto3" class="form-control" ng-model="datos.f01_contacto3" name="f01_contacto3" ng-disabled="desabilitado" ng-change="activarCampo3(datos.f01_contacto3)" required>
-                                <option value="" selected>--Seleccionar--</option>
+                                <option value="">--Seleccionar--</option>
                                 <option value="CELULAR"> CELULAR </option>
                                 <option value="TELÉFONO"> TELÉFONO </option>
                             </select>
@@ -389,24 +431,6 @@
                         </div>
                       </div>
                   </div>
-                  <div class="form-group">
-                    <label id="lbl_f01_upload2" class="col-md-2 control-label">Logotipo de la Actividad Económica</label>
-                    <div class="controls">
-                        <div class="form-group custom-upload">
-                            <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*"  style="display: none;">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                                <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datos['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
-                                <span class="input-group-btn">
-                                    <a id="href_f01_upload2"  ng-show="logotipo_url" href="{{logotipo_url}}" target="_blank">
-                                        <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                    </a>
-                                    <button id="btn_f01_upload2" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload2', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
-                                </span>
-                            </div>
-                        </div>
-                      </div>
-                  </div>
                 </div>
             </div>
 
@@ -415,7 +439,6 @@
             <div class="col-md-12" align="right">
                 <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="registrarDatosAE(datos)">Registrar</button>
                 <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="actualizarDatosAE(datos)">Modificar</button>                
-                <button type="button" class="btn btn-default ng-binding" ng-click="cerrarDatosAE(datos)" >Cerrar</button>
             </div>
           </form>
         </div>

@@ -61,6 +61,10 @@
           function valNumero(Control){
               Control.value=soloNumerico(Control.value);
           }
+
+          function conMayusculas(field) {
+              field.value = field.value.toUpperCase()
+          }
         </script>
         <style>
             .switch {
@@ -210,7 +214,7 @@
                   <div class="form-group" >
                       <label for="url" >Producto:</label>
                       <div class="controls">
-                          <input ng-model="datosProd.f01_producto" id="f01_producto" name="f01_producto" class="form-control" ng-disabled="desabilitado"/>
+                          <input ng-model="datosProd.f01_producto" id="f01_producto" name="f01_producto" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado"/>
                       </div>
                   </div>
               </div>
@@ -218,7 +222,7 @@
                   <div class="form-group" >
                       <label for="url" >Descripción:</label>
                       <div class="controls">
-                          <input ng-model="datosProd.f01_descripcion" id="f01_descripcion" name="f01_descripcion" class="form-control" ng-disabled="desabilitado"/>
+                          <input ng-model="datosProd.f01_descripcion" id="f01_descripcion" name="f01_descripcion" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado"/>
                       </div>
                   </div>
               </div>
@@ -226,7 +230,7 @@
                   <div class="form-group" >
                       <label for="url" >Precio:</label>
                       <div class="controls">
-                          <input ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" onkeyUp="soloNumerico(this);" ng-disabled="desabilitado"/>
+                          <input type="number" ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado"/>
                       </div>
                   </div>
               </div>
@@ -241,7 +245,7 @@
                               <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
                               <input id="txt_f01_upload1" name="txt_f01_upload1"  ng-model="datosProd['txt_f01_upload1']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                               <span class="input-group-btn">
-                                  <a id="href_f01_upload1" ng-show="fileArRequisitos['f01_upload1'].url" href="{{fileArRequisitos['f01_upload1'].url}}" target="_blank">
+                                  <a id="href_f01_upload1" ng-show="imagenprincipal" href="{{imagenprincipal}}"target="_blank">
                                   {{rmostrarviae}}
                                       <button id="btn_f01_upload1" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
@@ -262,9 +266,8 @@
                               <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
                               <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datosProd['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                               <span class="input-group-btn">
-                                  <a id="href_f01_upload2" ng-show="fileArRequisitos['f01_upload2'].url" href="{{fileArRequisitos['f01_upload2'].url}}" target="_blank">
-                                  {{rmostrarviae}}
-                                      <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  <a id="href_f01_upload2" ng-show="imagenaux1" href="{{imagenaux1}}" target="_blank">
+                                  <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
                                   <button id="btn_f01_upload2" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload2', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                               </span>
@@ -283,7 +286,7 @@
                               <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
                               <input id="txt_f01_upload3" name="txt_f01_upload3"  ng-model="datosProd['txt_f01_upload3']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                               <span class="input-group-btn">
-                                  <a id="href_f01_upload3" ng-show="fileArRequisitos['f01_upload3'].url" href="{{fileArRequisitos['f01_upload3'].url}}" target="_blank">
+                                  <a id="href_f01_upload3" ng-show="imagenaux2" href="{{imagenaux2}}" target="_blank">
                                   {{rmostrarviae}}
                                       <button id="btn_f01_upload3" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>

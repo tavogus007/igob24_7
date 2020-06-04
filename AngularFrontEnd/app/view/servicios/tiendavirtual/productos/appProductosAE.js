@@ -137,9 +137,11 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
           });
 
         }
-        
+        //console.log("$rootScope.archivosProducto:: ", $rootScope.archivosProducto);
+        $scope.mostrarDocumentos($rootScope.archivosProducto);
         $.unblockUI();
     };
+
     $scope.ejecutarFile = function(idfile){
       $scope.fileId = idfile;
         var sid =   document.getElementById(idfile);
@@ -149,6 +151,42 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
             alert("Error ");
         }
     };
+
+    $scope.mostrarDocumentos = function(documentos){
+      if(documentos[0]){
+        var docmostrarimgp = JSON.parse(documentos[0]);
+        $scope.imagenprincipal = docmostrarimgp.url;
+
+      }
+
+      if(documentos[1]){
+        var docmostrarimgaux1 = JSON.parse(documentos[1]);
+        $scope.imagenaux1 = docmostrarimgaux1.url;
+      }
+
+      if(documentos[2]){
+        var docmostrarimgaux2 = JSON.parse(documentos[2]);
+        $scope.imagenaux2 = docmostrarimgaux2.url;
+      }
+    }
+
+    $scope.recuperarDocumentos = function(documentos){
+      if(documentos[0]){
+        var docmostrarimgp = JSON.parse(documentos[0]);
+        $scope.imagenprincipal = docmostrarimgp.url;
+
+      }
+
+      if(documentos[1]){
+        var docmostrarimgaux1 = JSON.parse(documentos[1]);
+        $scope.imagenaux1 = docmostrarimgaux1.url;
+      }
+
+      if(documentos[2]){
+        var docmostrarimgaux2 = JSON.parse(documentos[2]);
+        $scope.imagenaux2 = docmostrarimgaux2.url;
+      }
+    }
 
     //UPLOAD  FILES
     $rootScope.vid = sessionService.get('IDCIUDADANO');
@@ -177,7 +215,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
         console.info('onWhenAddingFileFailed', item, filter, options);
     };
-    /////////////////////////////////////////////////////////////////
+    
     $scope.newProducto =function(){
       alertify.warning('Creando nuevo Producto'); 
       $scope.frmProducto = "mostrar";
@@ -217,18 +255,17 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
           f2 = archivoP.url;
         a = a + 1;
       });
+
       var datosProducto = new dataProducto();
       datosProducto.idtv = sessionService.get("IDTV");
       datosProducto.nombre = data.f01_producto;
       datosProducto.descripcion = data.f01_descripcion;
       datosProducto.precio = data.f01_precio;
-
       datosProducto.imagen_p = f0;
       datosProducto.imagen_a1 = f1;
       datosProducto.imagen_a2 = f2;
       datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
       datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
-      
       datosProducto.crearProducto(function(response){
         results = JSON.parse(response);
         results = results.success;
@@ -257,14 +294,16 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
             var resultadoProd = resultado.success;
             $scope.listadoProductos = resultadoProd;
             var data = resultadoProd;
-            $scope.tblDocumentos.reload();
+            
             if ($scope.listadoProductos == '[]' || $scope.listadoProductos == '[{}]' || $scope.listadoProductos == '[{ }]' || $scope.listadoProductos == ' ' || $scope.listadoProductos == '') {
-                $scope.tblDocumentos = {};
+                
                 alertify.warning('No existen datos'); 
                 $rootScope.$apply(); 
             } else {
                 $rootScope.$apply(); 
             }
+
+            $scope.tblDocumentos.reload();
           });
         }catch(error){
           console.log(error);
@@ -381,6 +420,9 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     $scope.file1 = datosP.prd_imagen_pc;
     $scope.file2 = datosP.prd_imagen_a1c;
     $scope.file3 = datosP.prd_imagen_a2c;
+    $scope.imagenprincipal = datosP.prd_imagen_pc;
+    $scope.imagenaux1 = datosP.prd_imagen_a1c;
+    $scope.imagenaux2 = datosP.prd_imagen_a2c;
 
   }
 
@@ -400,50 +442,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         f2 = archivoP.url;
     });
 
-  /*
-   var datosProducto = new dataProducto();
-        datosProducto.idtv = sessionService.get("IDTV");
-        datosProducto.nombre = data.f01_producto;
-        datosProducto.descripcion = data.f01_descripcion;
-        datosProducto.precio = data.f01_precio;
-        datosProducto.cantidad = data.f01_cantidad;
-        datosProducto.imagen_p = f0;
-        datosProducto.imagen_a1 = f1;
-        datosProducto.imagen_a2 = f2;
-        datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
-        datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
-
-  //////////////////////////////
-
-      var datosProducto = new dataProducto();
-        datosProducto.id = $scope.prd_id;
-        datosProducto.nombre = data.f01_producto;
-        datosProducto.descripcion = data.f01_descripcion;
-        datosProducto.precio = data.f01_precio;
-        datosProducto.ae = $scope.aeAct;
-        datosProducto.sucursal = $scope.sucursal;
-        datosProducto.marca = "MARCA";
-        datosProducto.categoria = data.f01_categoria;
-        datosProducto.imagen_p = f0;
-        datosProducto.imagen_a1 = f1;
-        datosProducto.imagen_a2 = f2;
-        datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
-        datosProducto.telefono_referencia = "74086316";
-        datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
-        datosProducto.modificarMiProducto(function(response){
-        results = JSON.parse(response);
-        results = results.success;
-        if(results.length > 0){
-            $.unblockUI();
-            $scope.refrescar();
-            swal('', "Producto Modificado", 'success');
-        } else {
-            $.unblockUI();
-            swal('', "Producto no Modificado", 'error');
-        }
-      });
-      */
-    console.log("data a modficar:: ", data);
     var datosModProducto = new dataProductoMod();
     datosModProducto.prd_idc = data.prd_idc;
     datosModProducto.prd_tv_idc = sessionService.get("IDTV");
@@ -454,12 +452,22 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     datosModProducto.prd_imagen_a1c = f1;
     datosModProducto.prd_imagen_a2c = f2;
     datosModProducto.prd_usrc = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
-    console.log("datosModProducto x: ", datosModProducto);
     datosModProducto.modificarProductoAe(function(response){
-       $scope.limpiar();
-      $scope.refrescar();
+      results = JSON.parse(response);
+      results = results.success;
+      if(results.length > 0){
+          $.unblockUI();
+          $scope.refrescar();
+          swal('', "Producto Modificado", 'success');  
+          $scope.update = false;  
+      } else {
+          $.unblockUI();
+          swal('', "Producto no Modificado", 'error');
+      }
+      $scope.limpiar(); 
     }); 
   }
+
 
   $scope.obtenerContribuyente = function(){
       var tipoContribuyente = sessionService.get('TIPO_PERSONA');

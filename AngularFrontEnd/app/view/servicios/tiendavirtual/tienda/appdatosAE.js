@@ -277,9 +277,15 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $rootScope.redesSocialesArray.push(myJSON);
     }
     if (data.f01_redessocialesAE3=='true' || data.f01_redessocialesAE3==true){
+      myJSON = '{ "tipo":"instagram", "checked":"true","url":"' + data.f01_redessocialesAE3_url + '"  }';
+      $rootScope.redesSocialesArray.push(myJSON);
+    }else{
       myJSON = '{ "tipo":"instagram", "checked":"false", "url":"" }';
       $rootScope.redesSocialesArray.push(myJSON);
     }
+
+    datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
+
     var myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des1 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
     myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des2 + '" }';
@@ -291,7 +297,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des5 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
     datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
-    datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
     datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray); 
     //catalogo 
     if($scope.catalogo1 == '' || $scope.catalogo1 == 'undefined' || $scope.catalogo1 == undefined){
@@ -308,6 +313,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     } else {
         datosTiendaVirtual.usr = "juridico";
     }
+    console.log('datosTiendaVirtual',datosTiendaVirtual);
     datosTiendaVirtual.crearTiendaVirtual(function(response){
       console.log(response);
       results = JSON.parse(response);

@@ -21,6 +21,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       $scope.update = false;
       $scope.nuevo = false;
       $scope.mostrarTxt = false; 
+      $scope.swP = false;
   };
 
 
@@ -48,7 +49,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       }
   };
 
-    $scope.almacenarRequisitos = function(aArchivos,idFiles){
+  $scope.almacenarRequisitos = function(aArchivos,idFiles){
         var descDoc = "";
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer(); 
@@ -64,7 +65,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
         var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/"  + sessionService.get('IDTV') +"/";
         $.blockUI();
-        if( $rootScope.swArchivo == 'A'){
+        if($rootScope.swArchivo == 'A'){
           angular.forEach(aArchivos, function(archivo, key) {
             if(typeof(archivo) != 'undefined'){
               if (idFiles[key]==1){
@@ -104,20 +105,20 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
             if(typeof(archivo) != 'undefined'){
               if (idFiles[key]==1){
                 var descDoc = "img_pr";
-                var descArchivo = $rootScope._f01_upload1;
+                var descArchivo = "img_principal"; 
               }
               if (idFiles[key]==2){
                 var descDoc = "img_aux1";
-                var descArchivo = $rootScope._f01_upload2;
+                var descArchivo = "img_auxiliar1";
               }
               if (idFiles[key]==3){
                 var descDoc = "img_aux2";
-                var descArchivo = $rootScope._f01_upload3;
+                var descArchivo = "img_auxiliar2";
               }
 
               var imagenFile = archivo.name.split('.');;
               //var tipoFile = imagenFile[1];
-              var nombreNuevo = descArchivo;
+              var nombreNuevo = descArchivo +"_"+ fechaNueva +'.'+ imagenFile[1];
               $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') +'/'+ nombreNuevo + "?app_name=todoangular";
               fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
               document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
@@ -240,6 +241,9 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       $scope.f01_upload2 = '';
       $scope.f01_upload3 = '';
       $rootScope.swArchivo = "A";
+      $scope.imagenprincipal = false;
+      $scope.imagenaux1 = false;
+      $scope.imagenaux2 = false;
     }
 
     $scope.registrarProducto = function(data){
@@ -286,6 +290,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     $scope.getProductos = function(usuario,id_ae){
         $.blockUI();
         try{
+          
           var datosProducto = new dataProducto();
           /*datosProducto.oid = usuario;*/
           datosProducto.idtv = id_ae;
@@ -296,8 +301,11 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
             var data = resultadoProd;
             
             if ($scope.listadoProductos == '[]' || $scope.listadoProductos == '[{}]' || $scope.listadoProductos == '[{ }]' || $scope.listadoProductos == ' ' || $scope.listadoProductos == '') {
+                if($scope.swP == false){
+                   $scope.swP = true;
+                  alertify.warning('No existen datos'); 
+                }
                 
-                alertify.warning('No existen datos'); 
                 $rootScope.$apply(); 
             } else {
                 $rootScope.$apply(); 
@@ -433,7 +441,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     f2 = $scope.file3;
     angular.forEach($rootScope.archivosProducto, function(archivo, key) {
       archivoP = JSON.parse(archivo);
-      console.log("($scope.fileId:: ", $scope.fileId);
       if($scope.fileId == 'f01_upload1')
         f0 = archivoP.url;
       if($scope.fileId == 'f01_upload2')

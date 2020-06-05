@@ -5,11 +5,9 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
     $scope.tablaOfertas = {};
     $scope.ws_publicado=false;
     $rootScope.conWeb = false;
-
-    
     var clsIniciarCamposInternet = $rootScope.$on('inicializarPagina', function(event, data){
       $scope.inicioPaginaWeb();
-      alert('CARGANDO DATOS');
+      //alert('CARGANDO DATOS');
     });
 
     $scope.inicioPaginaWeb = function () {
@@ -19,7 +17,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       $scope.pag_web_privada = $rootScope.datosTiendaVirtual[0].tv_pagina_webc;
       $scope.desabilitado = "disabled";
       $scope.getPagina();
-      $scope.getProductos(sessionService.get('IDTV'));
+      $scope.getProductos();
     };
     $scope.frmProducto = null;
   
@@ -36,11 +34,11 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           datosPaginaWeb.obtDataPaginaWeb(function(response){
             resultado = JSON.parse(response);
             $scope.obtDatos = resultado.success;
-            console.log($scope.obtDatos);
+            console.log($scope.obtDatos.length);
             if ($scope.obtDatos.length == 0) {
               $scope.ws_publicado=false;
               document.getElementById('urlIndex').value = '';
-              $scope.urlIndex = '';
+              $rootScope.urlIndex = '';
               $rootScope.idPW = '';
               $rootScope.conWeb = false;
               $scope.chkPublicado = false;
@@ -49,14 +47,14 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
               $rootScope.idPW = $scope.obtDatos[0].web_idc;
               if ($scope.obtDatos[0].web_estado_publicarc=='SI'){
                 $scope.ws_publicado=true;
+                $scope.chkPublicado = true;
                 document.getElementById('urlIndex').value = $scope.obtDatos[0].web_urlc;
                 $rootScope.urlIndex = $scope.obtDatos[0].web_urlc;
-                $scope.chkPublicado = true;
               } else {
                 $scope.ws_publicado=false;
-                document.getElementById('urlIndex').value = '';
-                $scope.urlIndex = '';
                 $scope.chkPublicado = false;
+                document.getElementById('urlIndex').value = '';
+                $rootScope.urlIndex = '';
               }
             }
           });
@@ -65,11 +63,11 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         }
         $.unblockUI();
     };
-    $scope.getProductos = function(usuario,id_ae){
+    $scope.getProductos = function(){
       $.blockUI();
       try{
         var datosProducto = new dataProducto();
-        datosProducto.idtv = id_ae;
+        datosProducto.idtv = sessionService.get('IDTV');
         datosProducto.listarProductoTV(function(response){
           resultado = JSON.parse(response);
           $scope.obtDatos = resultado.success;
@@ -86,26 +84,33 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         $.unblockUI();
     };
 
-
     $scope.actualizarTVCeroPapel = function(estado){
-      console.log($rootScope.datosTiendaVirtual);
         var uptTVCP = new tiendaVirtual();
         uptTVCP.id_ae = sessionService.get('IDAE');
         uptTVCP.estado = estado;
         uptTVCP.categoria = $rootScope.datosTiendaVirtual[0].pcattipo;
-        uptTVCP.imagen = $rootScope.datosTiendaVirtual[0].plogotipo;
+        logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
+        logotipo = logotipo.replace('["{','[{');
+        logotipo = logotipo.replace('}"]','}]');
+        logotipo = logotipo.replace('}"{','}{');
+        logotipo = logotipo.replace(/\\"/gi,'"');
+        logo =JSON.parse(logotipo);
+        uptTVCP.imagen = logo[0].url;
         uptTVCP.modificarTiendaVirtual(function(response){
-          console.log("--------------");
-          console.log(response);
-          console.log("++++++++++++++");
+          resultado = JSON.parse(response);
+          if (resultado.success.data[0].regp_estado == 'SI')
+            swal('', "Página publicada en Sistema de Comercio GAMLP", 'success');
+          else
+            swal('', "Página NO publicada en Sistema de Comercio GAMLP", 'error');
+
         });
     }
 
-    $scope.registrarPagina = function(url){
+    $scope.registrarPagina = function(url, html){
       $.blockUI();
       try{
         var datosPaginaWeb = new dataPaginaWeb();
-        datosPaginaWeb.web_contenido = '<html>';
+        datosPaginaWeb.web_contenido = html.replace(/'/gi,'\\"');
         datosPaginaWeb.web_url = url;
         datosPaginaWeb.web_usr =  sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
         datosPaginaWeb.web_id_ae = sessionService.get('IDAE');
@@ -119,24 +124,18 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       }
       $.unblockUI();  
     }
-    $scope.modificarPagina = function(url, estado){
+    $scope.modificarPagina = function(url, html, estado){
       $.blockUI();
       try{
         var datosPaginaWeb = new dataPaginaWeb();
-
         datosPaginaWeb.web_id = $rootScope.idPW;
-        datosPaginaWeb.web_contenido = '<html>';
+        datosPaginaWeb.web_contenido = html.replace(/'/gi,'\\"');
         datosPaginaWeb.web_url = url;
         datosPaginaWeb.web_estado_publicar = estado;
         datosPaginaWeb.web_usr =  sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
         datosPaginaWeb.web_id_ae = sessionService.get('IDAE');
-        console.log(datosPaginaWeb);
         datosPaginaWeb.updPaginaWeb(function(response){
           resultado = JSON.parse(response);
-          console.log(resultado);
-          $scope.obtDatos = resultado.success;
-          $rootScope.productosPW = $scope.obtDatos;
-          console.log($scope.obtDatos);
           $scope.actualizarTVCeroPapel(estado);
         });
       } catch(error){
@@ -185,16 +184,17 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc
               },
               success:function(response){
-                  $rootScope.urlIndex = response;
-                  document.getElementById('urlIndex').value = response;
-                  $scope.modificarPagina(response,'SI');
+                  resultado = JSON.parse(response);
+                  $rootScope.urlIndex = resultado.url;
+                  document.getElementById('urlIndex').value = resultado.url;
+                  $scope.modificarPagina(resultado.url,resultado.html,'SI');
               }
           });
         } else {
           $scope.ws_publicado = false;
           document.getElementById('urlIndex').value = "";
           response = '';
-          $scope.modificarPagina(response,'NO');
+          $scope.modificarPagina(response, '<html></html>', 'NO');
         }
       } else {
         if ($scope.chkPublicado == false) {
@@ -236,9 +236,10 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc
               },
               success:function(response){
-                  $rootScope.urlIndex = response;
-                  document.getElementById('urlIndex').value = response;
-                  $scope.registrarPagina(response);
+                  resultado = JSON.parse(response);
+                  $rootScope.urlIndex = resultado.url;
+                  document.getElementById('urlIndex').value = resultado.url;
+                  $scope.registrarPagina(resultado.url, resultado.html);
               }
           });
         } else {
@@ -247,11 +248,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         }
       }
     }
-  
-     
-  
- 
-  
     ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
     try{ 
         $('body').removeClass('modal-open');

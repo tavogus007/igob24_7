@@ -847,7 +847,7 @@ tiendaVirtual.prototype.modificarTiendaVirtual = function (functionResp) {
       "idae_m" : this.id_ae,
       "estadop_m" : this.estado,
       "categoria_m" : this.categoria,
-      "url_imagen_m" : this.imageno
+      "url_imagen_m" : this.imagen
     };
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };

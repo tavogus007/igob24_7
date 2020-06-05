@@ -738,9 +738,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     $scope.datos.RO_CAT_C = '';
     $scope.datos.RO_TIP_C= '';
     $scope.mostrarOtraZona = false;
-    $('.js-example-basic-single').select2({
-      placeholder: 'Seleccione una Placa'
-    });
+    $('.js-example-basic-single').select2();
   }
 
   $scope.verificaConductor= function (ci) {      
@@ -794,6 +792,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       && $scope.datos.RO_NRO_C!=undefined
       &&$scope.datos.RO_CAT_C!='' && $scope.datos.RO_CAT_C!=undefined && $scope.datos.RO_TIP_C!='' 
       && $scope.datos.RO_TIP_C!=undefined){
+      console.log("daaaa",$scope.datos.PLACA);
       var id_suc = 0;
       var nom_suc = '';
       angular.forEach($scope.objVehiculos,function(val, index)

@@ -571,7 +571,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   /*REQUISITOS2018*/
     $scope.almacenarRequisitos = function(aArchivos,idFiles){
-        console.log("idfiles2:: ", idFiles);
+    $scope.id_ae = sessionService.get('IDAE');
+
+        console.log("idfiles2:: ", idFiles, aArchivos);
         var descDoc = "";
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer(); 
@@ -594,7 +596,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
                   var descArchivo = "catalogo de productos";
                   var imagenFile = archivo.name.split('.');
                   var tipoFile = imagenFile[1];
-                  var nombreNuevo = descDoc + '.'+imagenFile[1];
+                  var nombreNuevo = descDoc + '_' + $scope.id_ae + '.'+imagenFile[1];
                   $scope.catalogo_url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
                   fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
                   document.getElementById('txt_f01_upload1').value = nombreNuevo;
@@ -609,22 +611,30 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
                  
                 }
                 if (idFiles[key]==2){
-                  var descDoc = "logotipo";
-                  var descArchivo = "logotipo de la AE";
-                  var imagenFile = archivo.name.split('.');
-                  var tipoFile = imagenFile[1];
-                  var nombreNuevoL = descDoc + '.'+imagenFile[1];
-                  $scope.logotipo_url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoL + "?app_name=todoangular";
-                  fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevoL);
-                  document.getElementById('txt_f01_upload2').value = nombreNuevoL;
-                  var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoL + "?app_name=todoangular";
-                  var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevoL + '", "nombre":"' + descArchivo + '" }';
-                  $rootScope.archivosLogotipo.push(myJSON);
-                  var logo_array = [];
-                  var logo = JSON.stringify($rootScope.archivosLogotipo[0]);
-                  var logo1 = JSON.parse(logo);
-                  logo_array.push(logo1);
-                  $scope.logotipo1 =  JSON.stringify(logo_array);
+                  if(aArchivos[0].type == 'image/png'){
+                    var descDoc = "logotipo";
+                    var descArchivo = "logotipo de la AE";
+                    var imagenFile = archivo.name.split('.');
+                    var tipoFile = imagenFile[1];
+                    var nombreNuevoL = descDoc + '_' + $scope.id_ae +'.'+imagenFile[1];
+                    $scope.logotipo_url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoL + "?app_name=todoangular";
+                    fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevoL);
+                    document.getElementById('txt_f01_upload2').value = nombreNuevoL;
+                    var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoL + "?app_name=todoangular";
+                    var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevoL + '", "nombre":"' + descArchivo + '" }';
+                    $rootScope.archivosLogotipo.push(myJSON);
+                    var logo_array = [];
+                    var logo = JSON.stringify($rootScope.archivosLogotipo[0]);
+                    var logo1 = JSON.parse(logo);
+                    logo_array.push(logo1);
+                    $scope.logotipo1 =  JSON.stringify(logo_array);
+                  }else{
+                    var descDoc = '';
+                    var descArchivo = '';
+                    swal('Error', "Seleccione un archivo tipo Imagen", 'error');
+                  }
+
+
                 }
             } else {
             }

@@ -144,6 +144,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       $.unblockUI();  
     }
     $scope.cambioEstadB = function(dato){
+      console.log(dato);
       if ($rootScope.conWeb == true) {
         if ($scope.chkPublicado == false) {
           $scope.ws_publicado = true;
@@ -169,7 +170,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           re = /\\"/gi;
           newRedes = newstr.replace(re, '"');
           $.ajax({
-              url:CONFIG.API_URL_DMS_HTML+'elaborarPdf/elaborar/generadorHTML.php',
+              url:CONFIG.API_URL_DMS_HTML+'generadorHTML.php',
               type:"post",
               data:{
                   "soid": sessionService.get('IDCIUDADANO'),
@@ -181,13 +182,22 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "spagina": $rootScope.datosTiendaVirtual[0].tv_pagina_webc,
                   "scorreo": $rootScope.datosTiendaVirtual[0].tv_correoc,
                   "sproductos": JSON.stringify($rootScope.productosPW),
-                  "stv": $rootScope.datosTiendaVirtual[0].tv_idc
+                  "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
+                  "sae": sessionService.get('IDAE')
               },
               success:function(response){
-                  resultado = JSON.parse(response);
-                  $rootScope.urlIndex = resultado.url;
-                  document.getElementById('urlIndex').value = resultado.url;
-                  $scope.modificarPagina(resultado.url,resultado.html,'SI');
+                  console.log(response);
+                  if (response == 'error creando fichero'){
+                    swal('', "Página NO publicada," + response, 'error');
+                    $scope.ws_publicado = false;
+                    $scope.chkPublicado == false;
+                    document.getElementById('chkPublicado').checked = false;
+                  } else {
+                    resultado = JSON.parse(response);
+                    $rootScope.urlIndex = resultado.url;
+                    document.getElementById('urlIndex').value = resultado.url;
+                    $scope.modificarPagina(resultado.url,resultado.html,'SI');
+                  }
               }
           });
         } else {
@@ -221,7 +231,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           re = /\\"/gi;
           newRedes = newstr.replace(re, '"');
           $.ajax({
-              url:CONFIG.API_URL_DMS_HTML+'elaborarPdf/elaborar/generadorHTML.php',
+              url:CONFIG.API_URL_DMS_HTML+'generadorHTML.php',
               type:"post",
               data:{
                   "soid": sessionService.get('IDCIUDADANO'),
@@ -233,13 +243,21 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "spagina": $rootScope.datosTiendaVirtual[0].tv_pagina_webc,
                   "scorreo": $rootScope.datosTiendaVirtual[0].tv_correoc,
                   "sproductos": JSON.stringify($rootScope.productosPW),
-                  "stv": $rootScope.datosTiendaVirtual[0].tv_idc
+                  "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
+                  "sae": sessionService.get('IDAE')
               },
               success:function(response){
-                  resultado = JSON.parse(response);
-                  $rootScope.urlIndex = resultado.url;
-                  document.getElementById('urlIndex').value = resultado.url;
-                  $scope.registrarPagina(resultado.url, resultado.html);
+                  if (response == 'error creando fichero'){
+                    swal('', "Página NO publicada," + response, 'error');
+                    $scope.ws_publicado = false;
+                    $scope.chkPublicado == false;
+                    document.getElementById('chkPublicado').checked = false;
+                  } else {
+                    resultado = JSON.parse(response);
+                    $rootScope.urlIndex = resultado.url;
+                    document.getElementById('urlIndex').value = resultado.url;
+                    $scope.registrarPagina(resultado.url, resultado.html);
+                  }
               }
           });
         } else {

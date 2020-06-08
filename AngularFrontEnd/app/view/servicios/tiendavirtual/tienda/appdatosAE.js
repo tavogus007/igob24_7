@@ -571,6 +571,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   /*REQUISITOS2018*/
     $scope.almacenarRequisitos = function(aArchivos,idFiles){
+      console.log('aArchivos',aArchivos);
+
     $scope.id_ae = sessionService.get('IDAE');
 
         console.log("idfiles2:: ", idFiles, aArchivos);
@@ -611,7 +613,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
                  
                 }
                 if (idFiles[key]==2){
-                  if(aArchivos[0].type == 'image/png'){
+                  if(aArchivos[0].type == 'image/png' || aArchivos[0].type == 'image/jpeg'){
                     var descDoc = "logotipo";
                     var descArchivo = "logotipo de la AE";
                     var imagenFile = archivo.name.split('.');

@@ -558,6 +558,36 @@
                       </div>
                     </div>
                   </div>
+                  <div class="col-md-12">
+                    <legend>
+                      <h2>Requisitos</h2>
+                    </legend>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div ng-repeat="reqAdjuntos in adjuntos">
+                        <div class="form-group">
+                          <div class="col-md-3">
+                            <label id="lbl_f01_upload{{reqAdjuntos.id}}">{{reqAdjuntos.requisito}}</label>
+                          </div>
+                          <div class="col-md-9">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="f01_upload{{reqAdjuntos.id}}" ng-disabled="desabilita" name="f01_upload{{reqAdjuntos.id}}" accept="image/*"  style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_f01_upload{{reqAdjuntos.id}}" ng-disabled="true" ng-model = "datos.File_Adjunto[reqAdjuntos.id].campo" name="txt_f01_upload{{reqAdjuntos.id}}" type="text" placeholder="{{reqAdjuntos.requisito}}" class="form-control input-lg"  required>
+                                <span class="input-group-btn">
+                                  <a id="href_f01_upload{{reqAdjuntos.id}}" ng-show="datos.File_Adjunto[''+reqAdjuntos.id].url" href="{{datos.File_Adjunto[reqAdjuntos.id].url}}" target="_blank">
+                                    <button id="btn_f01_ver{{reqAdjuntos.id}}" class="browse btn btn-success input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button ng-disabled="desabilitado || reqAdjuntos.id == 0 || reqAdjuntos.id == 0" id="btn_f01_upload{{reqAdjuntos.id}}" ng-click="ejecutarFile('f01_upload' + reqAdjuntos.id, 'data' + $reqAdjuntos.requisito)" class="btnupload browse btn btn-primary input-lg" type="button" ><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div><br>
+                      </div><br>
+                    </div><br>
+                  </div><br><br>
                   <div class="col-md-12" align="right"><br>
                     <button id="miFormGuardar" ng-show="desabilitado
                     ==false" ng-click="guardar_tramite(datos);"  type="button" class="btn btn-success fa fa-save" name="formEnviar">{{translateTitulos.lbl_016_29}}</button>

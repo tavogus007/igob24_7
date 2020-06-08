@@ -6,7 +6,7 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
     $scope.ocultaTipo = false;
     $scope.desabilitado = false;
     $scope.adjuntos = [{id:0,requisito:'Boleta de Decomiso'},{id:1,requisito:'Comprobante de Pago'}];
-
+    $scope.muestraTipo = 0;
     $scope.inicio = function(){
     }
 
@@ -86,16 +86,26 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
       }, function() {
         swal.close();
         setTimeout(function(){
-          var decomiso = new buscaInfraccion();
-          decomiso.placa = $scope.datos.INF_PLACA;
-          decomiso.buscaDecomisoPlacas(function(results){
-            var dataDecomiso = JSON.parse(results).success.data[0].sp_busca_placa_decomisada;
-            if(dataDecomiso >0){
+          if(data.INF_TIPO_DEVOLUCION == 'Placa'){
+            var decomiso = new buscaInfraccion();
+            decomiso.placa = $scope.datos.INF_PLACA;
+            decomiso.buscaDecomisoPlacas(function(results){
+              var dataDecomiso = JSON.parse(results).success.data[0].sp_busca_placa_decomisada;
+              if(dataDecomiso >0){
+                data.INF_NRO_BOLETA = dataDecomiso;
+                console.log("data",data);
+                //$scope.crea_tramite_lotus(data);
+              }else{
+                swal('Advertencia', 'La placa no se encuentra decomisada', 'error');
+              }
+            })
+          }else{
+            if(data.INF_NOMBRE_EMPRESA != ''){
               $scope.crea_tramite_lotus(data);
             }else{
-              swal('Advertencia', 'La placa no se encuentra decomisada', 'error');
+              swal('Advertencia', 'No tiene registrado ningun operador de radio taxi', 'error');
             }
-          })
+          }
         }, 1000);
       });
     };
@@ -317,6 +327,22 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
         $scope.desabilitaVeh = true;
       };
     }
+
+    $scope.validaDevolucion = function(tipo){
+      if(tipo == 'Luminaria'){
+        $scope.muestraTipo = 2;
+        var ope = new buscaOperador();
+        ope.uid_ciudadano = $scope.oidCiu;
+        ope.buscaOperadorRT(function(resultado){
+          var res = JSON.parse(resultado).success.data[0].sp_busca_denominacion_operador;
+          $scope.datos.INF_NOMBRE_EMPRESA = res;
+
+        })
+      }else{
+        $scope.muestraTipo = 1;
+      }
+    }
+
 
   }
   

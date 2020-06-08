@@ -5,6 +5,7 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
   $scope.datos = {};
   $scope.ocultaTipo = false;
   $scope.desabilitado = false;
+  $scope.adjuntos = [{id:0,requisito:'Carnet de Identidad (Anverso)'},{id:1,requisito:'Carnet de ntidad (Reverso)'}];
 
   $scope.inicio = function(){
   }
@@ -12,6 +13,13 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
   var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
     $scope.datos = JSON.parse(data);
     $scope.enviado = sessionService.get('ESTADO');
+    if($scope.datos.File_Adjunto == undefined){
+      $scope.datos.File_Adjunto = [];
+      var myJSON = '{ "url":"' + $scope.datos.INF_CI_ANVERSO + '", "campo":"Carnet de Identidad (Anverso)", "idRequisito":0,"nombre":"Carnet de Identidad (Anverso)"}';
+      $scope.datos.File_Adjunto[0] = JSON.parse(myJSON);
+      var myJSON = '{ "url":"' + $scope.datos.INF_CI_REVERSO + '", "campo":"Carnet de Identidad (Reverso)", "idRequisito":1,"nombre":"Carnet de Identidad (Reverso)"}';
+      $scope.datos.File_Adjunto[1] = JSON.parse(myJSON);
+    }
     if($scope.enviado == 'SI'){
       $scope.desabilitado = true;
     }else{

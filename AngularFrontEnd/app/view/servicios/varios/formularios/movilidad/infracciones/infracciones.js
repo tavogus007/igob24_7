@@ -5,7 +5,7 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
   $scope.tiposTramite = [
     { detalle: 'Impugnación de Infracciones', id:43 ,tipo:$scope.tipo_persona}, 
     { detalle: 'Conmutación de Infracciones', id:45 ,tipo:$scope.tipo_persona},
-    { detalle: 'Devoluciòn de Placas', id:49 ,tipo:'NATURAL'} 
+    { detalle: 'Devoluciòn de Placas y Luminarias', id:49 ,tipo:$scope.tipo_persona} 
   ];
   $scope.datos = {};
   $scope.tablaTramites        =   {};

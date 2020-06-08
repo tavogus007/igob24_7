@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
   <head>
-    <script src="../../libs/apiMov/api_mov.js"></script>
+    <script src="../../libs/apiMov/api_mov_infracciones.js"></script>
     <link href="../../libs/css/sweetalert.css" rel="stylesheet"></link>
     <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
     <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
@@ -429,16 +429,35 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                        <div class="col-md-6" >
-                          <div class="form-group" >
-                            <label for="url">Placa de Circulación:</label>
-                            <div class="controls">
-                              <input type="text" class="form-control" ng-model="datos.INF_PLACA" name="INF_PLACA" placeholder="Ejemplo: 1234ABC" maxlength="7" required ng-disabled="desabilitado" ng-keyup ="validaPlaca(datos.INF_PLACA);" onkeyup="mayus(this);">
-                              <span id="valida" style = "color:red;font-weight:bold; font-size:14px">La Placa es Incorrecta</span>
-                              <span id ="valida1" style = "color:green;font-weight:bold; font-size:14px">La Placa es Correcta</span>
-                            </div>
+                      <div class="col-md-6" >
+                        <div class="form-group" >
+                          <label for="url">Tipo de Devolución:</label>
+                          <div class="controls">
+                            <select class="form-control" name="INF_TIPO_DEVOLUCION" ng-model="datos.INF_TIPO_DEVOLUCION" ng-change="validaDevolucion(datos.INF_TIPO_DEVOLUCION)">
+                              <option value="Placa">Placa</option>
+                              <option value="Luminaria">Luminaria</option>
+                            </select>
                           </div>
-                        </div>   
+                        </div>
+                      </div>
+                      <div class="col-md-6" ng-show="muestraTipo ==2">
+                        <div class="form-group" >
+                          <label for="url">Nombre Empresa:</label>
+                          <div class="controls">
+                            <input type="text" class="form-control" ng-model="datos.INF_NOMBRE_EMPRESA" name="INF_NOMBRE_EMPRESA" placeholder="Ejemplo: 1234ABC" maxlength="7" required ng-disabled="true" >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6" ng-show="muestraTipo ==1">
+                        <div class="form-group" >
+                          <label for="url">Placa de Circulación:</label>
+                          <div class="controls">
+                            <input type="text" class="form-control" ng-model="datos.INF_PLACA" name="INF_PLACA" placeholder="Ejemplo: 1234ABC" maxlength="7" required ng-disabled="desabilitado" ng-keyup ="validaPlaca(datos.INF_PLACA);" onkeyup="mayus(this);">
+                            <span id="valida" style = "color:red;font-weight:bold; font-size:14px">La Placa es Incorrecta</span>
+                            <span id ="valida1" style = "color:green;font-weight:bold; font-size:14px">La Placa es Correcta</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div><br><br>
                   <div class="row">

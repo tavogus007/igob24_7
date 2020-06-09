@@ -46,7 +46,6 @@ var jsonURLS    =   {
     //CONEXION_API_PG_IF: "http://172.19.161.199:9091/",//login, apirc, lotus
     CONEXION_API_PG_IF: "http://192.168.5.141:9091/",
     CONEXION_API_PG_GENESIS: "http://192.168.5.141:9097/",
-
     //CONEXION_API_PG_RC: "http://40.117.46.159:9093/",//login, apirc, lotus
     CONEXION_API_PG_RC: "http://192.168.5.141:8003/",//login, apirc, lotusoficial
     CONEXION_MOTOR_SERVICIO: "http://192.168.5.69/motorservicio_pruebas/public/",//apirc
@@ -56,18 +55,14 @@ var jsonURLS    =   {
     CONEXION_API_PG_SALUD: "http://localhost:9094/",//apisalud pruebas
     CONEXION_GENERAR_FUM: "http://200.105.139.183:9090/igob247/",//generador de fum pruebas
     //CONEXION_GENERAR_FUM: "https://gamlpmotores.lapaz.bo/gamlp179/",//generador de fum oficial
-
     CONEXION_PUENTE_IMG: "http://200.105.139.183:9090",
     API_URL_DMS_2: "http://192.168.5.141:80/dreamfactory/dist/generarIgobPdf/",
     API_URL_DMS_HTML: "http://192.168.5.141:80/dreamfactory/dist/generadorPaginas/",
-          ///opt/dreamfactory-1.9.4-2/apps/dreamfactory/htdocs/web/dreamfactory/dist/generadorPaginas/elaborarPdf/elaborar
-    
-    CONEXION_SERVICIOATM: "http://172.19.161.3/",//apiATM,
+    ///opt/dreamfactory-1.9.4-2/apps/dreamfactory/htdocs/web/dreamfactory/dist/generadorPaginas/elaborarPdf/elaborar    
+    CONEXION_SERVICIOATM: "http://172.19.161.3/",//apiATM, CORREGIR SEGUN  EL AUTCONTROLLER
     CONEXION_SERVICIOMASCOTAS: "http://131.0.0.11:90/", //externo MASCOTAS
     SERVICIO_URL_MASCOTAS:"http://40.117.46.159/dreamfactory/crearImagenBase64.php", //externo MASCOTAS
     URL_FILES:"http://40.117.46.159:80", //SERVICIO QUE GENERA URL
-    
-
     //CONEXION_MOVILIDAD: "http://serigobvprueba.lapaz.bo/"
     CONEXION_MOVILIDAD: "http://192.168.5.141:2020/",
     CONEXION_SITV3: "http://192.168.6.111/SITv3Desarrollo/",
@@ -75,15 +70,10 @@ var jsonURLS    =   {
     SIT_GEO: "https://gamlpmotores.lapaz.bo/sitgeo",
     URL_SITRAM: "http://192.168.5.141",
     CONEXION_SITRAM: "http://192.168.34.70",
-
     API_URL_GUARDAR_IMG: "http://192.168.5.141/dreamfactory/igob/", 
-
     CONEXION_API_PG_PRODUCTO: "http://192.168.5.141:8003/",//apirc
-    CONEXION_PAGOS: "http://52.226.130.135:5433/",//apirc
-
-    
+    CONEXION_PAGOS: "http://52.226.130.135:5433/",//apirc    
     //https://gamlpmotores.lapaz.bo/gamlp179/igob247/generarFumOficial.php
-
 };
 try{
     if(app){

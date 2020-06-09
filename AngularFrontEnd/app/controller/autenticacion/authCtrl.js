@@ -135,7 +135,8 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
         });
     }
 
-    $scope.sesionTokenATM=function(){
+    //LA LLAMDADA NO DEBERIA SER DESDE AQUI
+    /*$scope.sesionTokenATM=function(){
         var urlTokenA = CONFIG.CONEXION_SERVICIOATM + "api/apiLogin";
         $.ajax({
             dataType: "json",
@@ -151,7 +152,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                 dataRespa = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
             }
         });
-    }
+    }*/
 
     $scope.sesionTokenMas=function(){
         var urlTokenM = CONFIG.CONEXION_SERVICIOMASCOTAS + "api/apiLogin";
@@ -211,7 +212,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             var sActFisica  =   "";
             var sActDigital =   "";
             $scope.sesionToken();
-            $scope.sesionTokenATM();
+            //$scope.sesionTokenATM();
             $scope.sesionTokenMas();
             $rootScope.mostrarMenuMascota = "NO";
             if(results.length > 0 && sTipoPersona=='NATURAL'){

@@ -29,6 +29,7 @@ function ejecutarAjaxPago(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
 /*///////////////GUARDAR ATC//////////////////////*/
 function atc() {
     this.id_actividadeconomica;
+    this.id_organizacion;
     this.access_key;
     this.profile_id;
     this.secret_key;
@@ -39,13 +40,22 @@ atc.prototype.registroAtc = function (functionResp) {
     typeCallPago = "post";
     dataParamsPago = {
         "id_actividadeconomica" : this.id_actividadeconomica,
-        "access_key" : this.access_key,
-        "profile_id" : this.profile_id,
-        "secret_key" : this.secret_key,
+        "id_organizacion"       : this.id_organizacion,
+        "access_key"            : this.access_key,
+        "profile_id"            : this.profile_id,
+        "secret_key"            : this.secret_key,
     };
     ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
 };
 
+atc.prototype.getRegistroAtc = function (functionResp) {
+  urlCompPago = "/get-credenciales-redenlace-ae";
+  typeCallPago = "post";
+  dataParamsPago = {
+      "id_actividadeconomica" : this.id_actividadeconomica
+  };
+  ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
+};
 
 /*///////////////qr//////////////////////*/
 function qr() {
@@ -61,4 +71,50 @@ qr.prototype.registroQr = function (functionResp) {
         "service_code" : this.service_code
     };
     ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
+};
+/*/////////////// Transferencia Bancaria //////////////////////*/
+function tbancaria() {
+  this.id_actividadeconomica;
+  this.entidad_financiera;
+  this.numero_cuenta;
+  this.nombre_abono;
+  this.ci_nit_abono;
+};
+
+tbancaria.prototype.registroTransferencia = function (functionResp) {
+  urlCompPago = "/registroTRANSFERENCIA";
+  typeCallPago = "post";
+  dataParamsPago = {
+      "id_actividadeconomica" : this.id_actividadeconomica,
+      "entidad_financiera"    : this.entidad_financiera,
+      "numero_cuenta"         : this.numero_cuenta,
+      "nombre_abono"          : this.nombre_abono,
+      "ci_nit_abono"          : this.ci_nit_abono
+  };
+  ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
+};
+tbancaria.prototype.getCredTransferencia = function (functionResp) {
+  urlCompPago = "/get-credenciales-transferencia-ae";
+  typeCallPago = "post";
+  dataParamsPago = {
+      "id_actividadeconomica" : this.id_actividadeconomica
+  };
+  ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
+};
+/*/////////////// Mis Transacciones //////////////////////*/
+function lstTransaciones() {
+  this.id_actividadeconomica;
+  this.fecha_inicio;
+  this.fecha_fin;
+};
+
+lstTransaciones.prototype.listaTransaciones = function (functionResp) {
+  urlCompPago = "/listar-pago-ae";
+  typeCallPago = "post";
+  dataParamsPago = {
+      "id_actividadeconomica" : this.id_actividadeconomica,
+      "fecha_inicio"          : this.fecha_inicio,
+      "fecha_fin"             : this.fecha_fin
+  };
+  ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
 };

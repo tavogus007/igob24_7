@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <link href="../../libs/css/sweetalert.css" rel="stylesheet">
+    <script src="../../libs/apiPagos/api_pagos.js"></script>
+    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+    <!-- Lllamada del Controlador -->
+    <script type="text/javascript"
+        src="../../view/servicios/varios/formularios/misTransacciones/misTransacciones.js"></script>
+    <!-- Lllamada de Librerias -->
+    <script src="../../libs/loading/loadingoverlay.js"></script>
+    <script type="text/javascript" src="../../libs/js/jic.js"></script>
+    <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+    <link rel="stylesheet"
+        href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+    <link rel="stylesheet"
+        href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css"
+        id="toggleCSS" />
+</head>
+
+
+<style type="text/css">
+    .nav-tabs1>li.active>a,
+    .nav-tabs1>li.active>a:hover,
+    .nav-tabs1>li.active>a:focus {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        background: linear-gradient(rgba(12, 203, 158, 0.65), rgb(0, 173, 181));
+        border-color: #dddddd #dddddd rgba(0, 0, 0, 0);
+        border-bottom: #f3f3f4;
+        border-image: none;
+        border-style: solid;
+        border-top-style: 15px;
+        border-width: 1px;
+        color: #f3f3f4;
+        cursor: default;
+        border-radius: 10px;
+    }
+
+    .nav>li>a {
+        color: #212529;
+        font-weight: 600;
+        padding: 14px 20px 14px 25px;
+    }
+
+    .sinBorde table {
+        border: 0;
+        border-bottom: 1px solid #000
+    }
+
+    .btn-default1 {
+        background: rgb(0, 185, 194, 0.6);
+        box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.34);
+        color: #FFFFFF !important;
+        font-weight: bold;
+        border: none !important;
+        color: #FFFFFF;
+        border-radius: 8px;
+    }
+</style>
+
+<div class="page-content" ng-controller="misTransaccioneController" data-ng-init="inicioComponente();">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5 class="ng-binding">Mis Transacciones</h5>
+            </div>
+            <div>
+                <form name="empForm" class="form-horizontal" role="form" novalidate>
+
+                    <div class="ng-binding">
+                        <div class="row" ng-if="vistaInfoGenesis != null">
+                            <br>
+                            <div class="bandejaUser">
+                                <p class="blanco">
+                                    <strong class="ng-binding">NO TENEMOS INFORMACIÓN PARA MOSTRAR GRACIAS..!</strong>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row justify-content-md-center" ng-if="vistaInfoTit != null">
+                            <br>
+                            <div class="col-sm-8">
+                                <strong class="ng-binding" style="color: #00adb5;">{{nomAEconomicas}}</strong>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="vistaInfoAE != null">
+                            <br>
+                            <div class="col-sm-4">
+                                <div class="form-group" >
+                                    <label for="url" >Mis Actividades Ecónomicas:</label>
+                                    <div class="controls">
+                                        <select id="id_ae" class="form-control" ng-model="registro.id_ae" name="id_ae" ng-change="asignarAcEconomica(registro.id_ae);" required>
+                                            <option value="">--Seleccionar--</option>
+                                            <option ng-repeat="acEconomica in misAcEconomicas"
+                                            value="{{acEconomica.IdActividad}}">
+                                            {{acEconomica.IdActividad}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <strong class="ng-binding" style="color: #00adb5;">{{nomAEconomicasCombo}}</strong>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="vistaInfo != null">
+                            <br>
+                            <div class="col-sm-4">
+                                <!-- <label for="basic-url">Fecha Inicio</label> -->
+                                <div class="input-group mb-3">
+                                    <p class="input-group"><input name="fechaIni" id="fechaIni"
+                                            placeholder="Fecha Inicio" class="form-control"
+                                            datepicker-popup="dd/MM/yyyy" ng-model="registro.fecha_inicio"
+                                            is-open="startDateOpened1" close-text="Close" ng-disabled="true"
+                                            min-date="model.endDate" style="width: 100% !important" required />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default"
+                                                ng-click="startDateOpen1($event)"><i
+                                                    class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                            </div>
+                            <div class="col-sm-4">
+                                <!-- <label for="basic-url">Fecha Final</label> -->
+                                <div class="input-group mb-3">
+                                    <p class="input-group"><input name="fechaFin" id="fechaFin" placeholder="Fecha Fin"
+                                            class="form-control" datepicker-popup="dd/MM/yyyy"
+                                            ng-model="registro.fecha_fin" is-open="startDateOpened2" close-text="Close"
+                                            ng-disabled="true" min-date="model.endDate" style="width: 100% !important"
+                                            required />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default"
+                                                ng-click="startDateOpen2($event)"><i
+                                                    class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button id="lstTransaccion" name="lstTransaccion" type="button"
+                                    class="btn btn-success mb-3" ng-click="listarTransacciones();">Consultar Mis
+                                    Transacciones
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-if="vistaInfo != null">
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                    <table ng-table="tablaTransaciones" show-filter="true"
+                                        class="table table-striped table-bordered">
+                                        <tr ng-repeat="obtTransaccion in $data" style="background-color:#f5f5f5">
+                                            <td align="center" data-title="'#'">{{$index+1}}</td>
+                                            <td data-title="'ID VENTA'" sortable="'id_venta'">
+                                                {{obtTransaccion.id_venta}}
+                                            </td>
+                                            <td data-title="'FECHA'" sortable="'fecha'">
+                                                {{obtTransaccion.fecha}}
+                                            </td>
+                                            <td data-title="'COMPRADOR'" sortable="'comprador'">
+                                                {{obtTransaccion.comprador}}
+                                            </td>
+                                            <td data-title="'EMAIL'" sortable="'email'">
+                                                {{obtTransaccion.email}}
+                                            </td>
+                                            <td data-title="'TELÉFONO'" sortable="'telefono'">
+                                                {{obtTransaccion.telefono}}
+                                            </td>
+                                            <td data-title="'METODO DE PAGO'" sortable="'metodo_pago'">
+                                                {{obtTransaccion.metodo_pago}}
+                                            </td>
+                                            <td data-title="'ESTADO'" sortable="'estado_pago'">
+                                                {{obtTransaccion.estado_pago}}
+                                            </td>
+                                            <td data-title="'TOTAL'" sortable="'monto_total'">
+                                                {{obtTransaccion.monto_total}}
+                                            </td>
+                                            <td data-title="'DETALLE'" class="text-center">
+                                                <a class="btn btn-info btn-circle"
+                                                    style="background-color:rgb(47, 228, 152);border: 0px !important;color:black;"
+                                                    ng-click="detalleTransaccion(obtTransaccion)" data-toggle="modal"
+                                                    data-target="#modaldetTransaccion"><i class="fa fa-eye"
+                                                        title="Ver mas detalle de la transacción"></i></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="modal fade" id="modaldetTransaccion" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">&times;</span><span
+                                        class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+                                <h4 class="modal-title" id="myModalLabel">DETALLE DE LA TRANSACCIÓN</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <p class="text-center" style="color: #00adb5;"><b> COMPRADOR <span
+                                                    class="glyphicon glyphicon-user"></span></b></p>
+                                        <p class="text-center text-uppercase">{{comprador}}
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p class="text-center" style="color: #00adb5;"><b> MONTO TOTAL <span
+                                                    class="glyphicon glyphicon-usd"></span></b></p>
+
+                                        <p class="text-center">{{montototal}}
+                                        </p>
+
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p class="text-center" style="color: #00adb5;"><b> TIPO DE PAGO <span
+                                                    class="glyphicon glyphicon-briefcase"></span></b></p>
+                                        <p class="text-center">{{tppago}}
+                                        </p>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-sm-1">
+                                        <div class="form-group">
+                                            <label for="basic-url"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="table-responsive">
+                                            <table class="table">
+
+                                                <head>
+                                                    <tr style="background-color: #c9a990; color: #fff;">
+                                                        <th class="text-left">#</th>
+                                                        <th class="text-center">CONCEPTO</th>
+                                                        <th class="text-center">CANTIDAD</th>
+                                                        <th class="text-center">P. UNITARIO</th>
+                                                        <th class="text-center">SUB TOTAL</th>
+                                                    </tr>
+                                                </head>
+
+                                                <body>
+                                                    <tr style="background-color:#f5f5f5"
+                                                        ng-repeat="detalleT in detallesT">
+                                                        <td> {{$index+1}} </td>
+                                                        <td class="text-left text-uppercase">{{detalleT.concepto}}</td>
+                                                        <td class="text-center">{{detalleT.cantidad}}</td>
+                                                        <td class="text-center">{{detalleT.precio_unitario}}</td>
+                                                        <td class="text-center">{{detalleT.subtotal}}</td>
+                                                    </tr>
+                                                </body>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="{{translateTitulos.lbl_05_05_05}}" name="{{translateTitulos.lbl_05_05_05}}"
+                                    type="button" class="btn btn-default1"
+                                    data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

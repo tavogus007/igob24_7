@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
     <head>
-      <script src="../../libs/apiPagos/api_pagos.js"></script>
+        <script src="../../libs/apiPagos/api_pagos.js"></script>
         <script type="text/javascript" src="../../view/servicios/tiendavirtual/pago/appPagosAE.js"></script>
         <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
         <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
@@ -29,6 +29,12 @@
                 $(this).next().find('input').val($(this).val());
                 angular.element(this).scope().cambiarFile(this, $(this).val());
                 });
+            }
+            function valNumero(Control) {
+                Control.value = soloNumerico(Control.value);
+            }
+            function mayus(e) {
+                e.value = e.value.toUpperCase();
             }
             //$('.clockpicker').clockpicker();
         </script>
@@ -112,6 +118,7 @@
                                 <option value="">--Seleccionar--</option>
                                 <option value="1"> BCP </option>
                                 <option value="2"> RED ENLACE </option>
+                                <option value="3"> TRANSFERENCIA BANCARIA </option>
                             </select>
                         </div>
                     </div>
@@ -132,6 +139,8 @@
                         <label for="url" >Llave de Acceso:</label>
                         <div class="controls">
                             <input type="text" ng-model="datos.access_key" id="access_key" name="access_key" class="form-control" ng-disabled="desabilitado"/>
+                            <br><span ng-if ="smal_acc_key"
+                              style="color:red;font-weight:bold; font-size:14px">El Campo Llave de Acceso debe ser Llenado)</span>
                         </div>
                     </div>
                   </div>
@@ -140,6 +149,8 @@
                           <label for="url" >Perfil Id:</label>
                           <div class="controls">
                             <input type="text" ng-model="datos.profile_id" id="profile_id" name="profile_id" class="form-control" ng-disabled="desabilitado"/>
+                            <br><span ng-if ="smal_perfil"
+                              style="color:red;font-weight:bold; font-size:14px">El Campo Perfil Id debe ser Llenado)</span>
                           </div>
                       </div>
                   </div>
@@ -148,14 +159,75 @@
                         <label for="url" >Llave Secreta:</label>
                         <div class="controls">
                           <textarea ng-model="datos.secret_key" id="secret_key" name="secret_key" class="form-control" ng-disabled="desabilitado"/>
+                          <br><span ng-if ="smal_sec_key"
+                              style="color:red;font-weight:bold; font-size:14px">El Campo Llave Secreta debe ser Llenado)</span>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Organización Id:</label>
+                        <div class="controls">
+                          <input type="text" ng-keyup="validaCampo('id_organizacion' ,datos.id_organizacion)" ng-model="datos.id_organizacion" id="id_organizacion" name="id_organizacion" class="form-control" ng-disabled="desabilitado"/>
+                          <br><span ng-if ="smal_idOrg"
+                              style="color:red;font-weight:bold; font-size:14px">El Campo Organización Id debe ser Llenado</span>
                         </div>
                     </div>
                   </div>
                 </div>
+                <div ng-show = "tipo=='TB'">
+                  <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Entidad Financiera:</label>
+                        <div class="controls">
+                            <input type="text" onkeyUp="return mayus(this);" ng-model="datos.ent_financiera" id="ent_financiera" name="ent_financiera" class="form-control" ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group" >
+                          <label for="url" >Nro. Cuenta:</label>
+                          <div class="controls">
+                            <input type="text" onkeyUp="return valNumero(this);" ng-model="datos.nro_cuenta" id="nro_cuenta" name="nro_cuenta" class="form-control" ng-disabled="desabilitado"/>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Nombre Abono:</label>
+                        <div class="controls">
+                          <input type="text" onkeyUp="return mayus(this);" ng-model="datos.nom_abono" id="nom_abono" name="nom_abono" class="form-control" ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >CI/NIT Abono:</label>
+                        <div class="controls">
+                          <input type="text" onkeyUp="return valNumero(this);" ng-model="datos.ci_nit_abono" id="ci_nit_abono" name="ci_nit_abono" class="form-control" ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-sm-4">
+                  <div class="input-group mb-3">
+                      <p class="input-group"><input name="fechaIni" id="fechaIni"
+                              placeholder="Fecha Inicio" class="form-control"
+                              datepicker-popup="dd/MM/yyyy" ng-model="registro.fecha_inicio"
+                              is-open="startDateOpened1" close-text="Close" ng-disabled="true"
+                              min-date="model.endDate" style="width: 100% !important" required />
+                          <span class="input-group-btn">
+                              <button type="button" class="btn btn-default"
+                                  ng-click="startDateOpen1($event)"><i
+                                      class="glyphicon glyphicon-calendar"></i></button>
+                          </span>
+                      </p>
+                  </div>
+                </div> -->
               </div>
             </div>
             <div class="col-md-12" align="right">
-                <button  type="button" class="btn btn-default ng-binding" ng-click="registrarTipoPago(datos)">Registrar</button>
+                <button  type="button" class="btn btn-default ng-binding" ng-click="registrarTipoPago(datos)">{{textbtnguardar}}</button>
                 <!--button type="button" class="btn btn-default ng-binding" ng-click="cerrarDatosAE(datos)" >Cerrar</button-->
             </div>
           </form>

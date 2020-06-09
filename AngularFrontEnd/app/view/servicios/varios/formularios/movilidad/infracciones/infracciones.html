@@ -231,7 +231,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr ng-repeat="tramite in tiposTramite"  height="50%" ng-show = "tramite.tipo == tipo_persona" ng-style="tramite.id==tramiteId && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}" ng-click="seleccionaServicio(tramite.id);">
+                                  <tr ng-repeat="tramite in tiposTramite"  height="50%" ng-style="tramite.id==tramiteId && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}" ng-click="seleccionaServicio(tramite.id);">
                                     <td scope="row" width="15%" ><center>{{$index+1}}</center></td>
                                     <td width="50%">{{tramite.detalle}}</td>
                                   </tr>

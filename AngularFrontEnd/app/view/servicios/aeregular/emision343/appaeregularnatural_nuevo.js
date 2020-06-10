@@ -3359,12 +3359,12 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['f01_actividad_desarrollada']= paramForm.f01_categoria_descrip2;
             var datoObjectdj = [];
             var decjuradaN = new Object();
-            if ($rootScope.decJuradaJuridico) {
-                decjuradaN.url = $rootScope.decJuradaJuridico;
+            if ($rootScope.decJuradaNatural) {
+                decjuradaN.url = $rootScope.decJuradaNatural;
             } else{
                 decjuradaN.url = $scope.datos.declaracion_jurada;
             };
-            decjuradaN.campo = 'Declaración Jurada Juridico';
+            decjuradaN.campo = 'Declaración Jurada Natural';
             decjuradaN.nombre = 'DECLARACIÓN JURADA';
             datoObjectdj[0] = decjuradaN;
             datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);

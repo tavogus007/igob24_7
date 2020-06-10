@@ -839,6 +839,7 @@ function tiendaVirtual() {
   this.estado;
   this.categoria;
   this.imagen;
+  this.datosAuxiliares;
 }
 tiendaVirtual.prototype.modificarTiendaVirtual = function (functionResp) {
     urlComp = "/modificarAEDelivery";
@@ -847,7 +848,8 @@ tiendaVirtual.prototype.modificarTiendaVirtual = function (functionResp) {
       "idae_m" : this.id_ae,
       "estadop_m" : this.estado,
       "categoria_m" : this.categoria,
-      "url_imagen_m" : this.imagen
+      "url_imagen_m" : this.imagen,
+      "data_m" : this.datosAuxiliares
     };
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };

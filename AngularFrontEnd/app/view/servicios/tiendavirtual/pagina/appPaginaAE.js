@@ -1,5 +1,6 @@
 function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionService,ngTableParams,$filter,$route, sweet, $http,FileUploader,$sce,fileUpload, fileUpload1 ) {
     $scope.desabilitado=""
+    //$rootScope.datosAuxiliares = {};
     $scope.tablaContactos = {};
     $scope.tablaRedesSociales = {};
     $scope.tablaOfertas = {};
@@ -10,6 +11,28 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       //alert('CARGANDO DATOS');
     });
 
+    $scope.dataAdicional = function () {
+      $rootScope.datosAuxiliares = [];
+      sw = 0;
+      angular.forEach($rootScope.datosTiendaVirtual[0].tv_contactosc, function(contacto, key) {
+        contactc = JSON.parse(contacto);
+        if (sw == 0){
+          console.log(contactc.tipo);
+          if(contactc.tipo=="CELULAR"){
+            console.log("CELULAR");
+            console.log("CAMBIO DE SW");
+            var myJSON = '{ "celular":"' + contactc.valor + '" }';
+            myJSON2 = JSON.parse(myJSON);
+            $rootScope.datosAuxiliares.push(myJSON2);
+            sw = 1;
+          } 
+        }
+      });
+      //$rootScope.datosAuxiliares = [];
+      /*console.log(data);
+      $rootScope.datosAuxiliares = data;
+      console.log($rootScope.datosAuxiliares);*/
+    }
     $scope.inicioPaginaWeb = function () {
       $scope.nombre_tienda = $rootScope.datosTiendaVirtual[0].tv_nombrec;
       $scope.descrip_pagina = $rootScope.datosTiendaVirtual[0].tv_descripcionc;
@@ -17,6 +40,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       $scope.pag_web_privada = $rootScope.datosTiendaVirtual[0].tv_pagina_webc;
       $scope.desabilitado = "disabled";
       $scope.getPagina();
+      $scope.dataAdicional();
       $scope.getProductos();
     };
     $scope.frmProducto = null;
@@ -96,6 +120,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         logotipo = logotipo.replace(/\\"/gi,'"');
         logo =JSON.parse(logotipo);
         uptTVCP.imagen = logo[0].url;
+        uptTVCP.datosAuxiliares = JSON.stringify($rootScope.datosAuxiliares);
         uptTVCP.modificarTiendaVirtual(function(response){
           resultado = JSON.parse(response);
           if (resultado.success.data[0].regp_estado == 'SI')

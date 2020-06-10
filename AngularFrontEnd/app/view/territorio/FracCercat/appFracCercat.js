@@ -867,6 +867,8 @@ function FracCercatController($scope, $rootScope, $routeParams, $location, $http
         {
             $scope.solicitud.restricciones = 1;
         }
+        //se anulan restricciones JFC a solictud de hilation huasco
+        $scope.solicitud.restricciones = 0;
         $scope.configCartilla.patron = $scope.solicitud.lusu;
         $scope.configCartilla.url = $scope.configCartilla.urlTemplate.replace('{distrito}',$scope.solicitud.distritoMunicipal).replace('{patron}',data.patronLusu);
         $scope.getAlturasMaximas($scope.solicitud.idPCCartilla,$scope.solicitud.anchoVia);

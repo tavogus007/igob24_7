@@ -796,10 +796,16 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     var tipoPersona     =   sessionService.get('TIPO_PERSONA');
     var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
     var sNumeroRegistros  = dataGenesis.length;
+    var tipoP = "";
+    if(tipoPersona == 'NATURAL'){
+        tipoP = 'N';
+    }else{
+        tipoP = 'J';
+    }
     var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
     var contribuyente   =   new lstActividadEconomicaVentas();
     contribuyente.idContribuyente   =   idContribuyente;
-    contribuyente.tipo  =   'N';
+    contribuyente.tipo  =   tipoP;
     contribuyente.lstActividadEconomicaVentas(function(resultado){ 
         $.unblockUI(); 
         var resultadoApi = JSON.parse(resultado);

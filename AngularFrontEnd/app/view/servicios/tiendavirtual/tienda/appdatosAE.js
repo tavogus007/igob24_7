@@ -9,21 +9,13 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   $rootScope.ofertasArray = new Array();
   $rootScope.archivosProducto = new Array();
   $rootScope.archivosLogotipo = new Array();
-  $("#mensaje1").hide();
-  $("#mensaje2").hide();
-      /*document.getElementById('f01_contacto1').value = '';
-      document.getElementById('f01_contacto2').value = '';
-      document.getElementById('f01_contacto3').value = '';
-      $('#f01_redessocialesAE1').prop("checked", false);
-      $('#f01_redessocialesAE2').prop("checked", false);
-      $('#f01_redessocialesAE3').prop("checked", false);*/
   
   
 
   var clsIniciarCamposInternet = $rootScope.$on('inicializarCampos', function(event, data){
+    $scope.limpiar(); 
     $scope[name] = 'Running';
-    var deferred = $q.defer();
-    $scope.limpiar();     
+    var deferred = $q.defer(); 
     $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
     return deferred.promise;
   });
@@ -228,6 +220,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   $scope.inicioTiendaVirtual = function () {
     console.log(sessionService.get('IDAE'));
+    $scope.limpiar();    
     $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);  
   };
   
@@ -241,44 +234,77 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     datosTiendaVirtual.descripcion = data.f01_descripcionTV;
     var myJSON = '';
     if (data.f01_contacto1=='TELÉFONO' || data.f01_contacto1=='CELULAR'){
-      myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '" }';
-      $rootScope.contactosArray.push(myJSON);
+      if(data.f01_contacto1_nro != ''){
+        myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '" }';
+        $rootScope.contactosArray.push(myJSON);
+      }else{
+        myJSON = '{ "tipo":"", "valor":"" }';
+        $rootScope.contactosArray.push(myJSON);
+        $scope.sinDato1 = true;
+      }
     }else{
       myJSON = '{ "tipo":"", "valor":"" }';
       $rootScope.contactosArray.push(myJSON);
     }
     if (data.f01_contacto2=='TELÉFONO' || data.f01_contacto2=='CELULAR'){
-      myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '" }';
-      $rootScope.contactosArray.push(myJSON);
+      if(data.f01_contacto2_nro != ''){
+        myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '" }';
+        $rootScope.contactosArray.push(myJSON);
+      }else{
+        myJSON = '{ "tipo":"", "valor":"" }';
+        $rootScope.contactosArray.push(myJSON);
+        $scope.sinDato2 = true;
+      }
     }else{
       myJSON = '{ "tipo":"", "valor":"" }';
       $rootScope.contactosArray.push(myJSON);
     }
     if (data.f01_contacto3=='TELÉFONO' || data.f01_contacto3=='CELULAR'){
-      myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '" }';
-      $rootScope.contactosArray.push(myJSON);
+      if(data.f01_contacto3_nro != ''){
+        myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '" }';
+        $rootScope.contactosArray.push(myJSON);
+      }else{
+        myJSON = '{ "tipo":"", "valor":"" }';
+        $rootScope.contactosArray.push(myJSON);
+        $scope.sinDato3 = true;
+      }
     }else{
       myJSON = '{ "tipo":"", "valor":"" }';
       $rootScope.contactosArray.push(myJSON);
     }
     myJSON = '';
     if (data.f01_redessocialesAE1=='true' || data.f01_redessocialesAE1==true){
-      myJSON = '{ "tipo":"facebook", "checked":"true", "url":"' + data.f01_redessocialesAE1_url + '" }';
-      $rootScope.redesSocialesArray.push(myJSON);
+      if(data.f01_redessocialesAE1_url != ''){
+        myJSON = '{ "tipo":"facebook", "checked":"true", "url":"' + data.f01_redessocialesAE1_url + '" }';
+         $rootScope.redesSocialesArray.push(myJSON);
+      }else{
+        myJSON = '{ "tipo":"facebook", "checked":"false", "url":"" }';
+        $rootScope.redesSocialesArray.push(myJSON);
+      }
     }else{
       myJSON = '{ "tipo":"facebook", "checked":"false", "url":"" }';
       $rootScope.redesSocialesArray.push(myJSON);
     }
     if (data.f01_redessocialesAE2=='true' || data.f01_redessocialesAE2==true){
-      myJSON = '{ "tipo":"twitter", "checked":"true", "url":"' + data.f01_redessocialesAE2_url + '" }';
-      $rootScope.redesSocialesArray.push(myJSON);
+      if(data.f01_redessocialesAE2_url != ''){
+        myJSON = '{ "tipo":"twitter", "checked":"true", "url":"' + data.f01_redessocialesAE2_url + '" }';
+         $rootScope.redesSocialesArray.push(myJSON);
+      }else{
+        myJSON = '{ "tipo":"twitter", "checked":"false", "url":"" }';
+        $rootScope.redesSocialesArray.push(myJSON);
+      }
     }else{
       myJSON = '{ "tipo":"twitter", "checked":"false", "url":"" }';
       $rootScope.redesSocialesArray.push(myJSON);
     }
     if (data.f01_redessocialesAE3=='true' || data.f01_redessocialesAE3==true){
-      myJSON = '{ "tipo":"instagram", "checked":"true","url":"' + data.f01_redessocialesAE3_url + '"  }';
-      $rootScope.redesSocialesArray.push(myJSON);
+      if(data.f01_redessocialesAE3_url != ''){
+        myJSON = '{ "tipo":"instagram", "checked":"true", "url":"' + data.f01_redessocialesAE3_url + '" }';
+         $rootScope.redesSocialesArray.push(myJSON);
+      }else{
+        myJSON = '{ "tipo":"instagram", "checked":"false", "url":"" }';
+        $rootScope.redesSocialesArray.push(myJSON);
+      }
     }else{
       myJSON = '{ "tipo":"instagram", "checked":"false", "url":"" }';
       $rootScope.redesSocialesArray.push(myJSON);
@@ -344,22 +370,40 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     $rootScope.contactosArray = [];
     var myJSON = '';
       if (data.f01_contacto1=='TELÉFONO' || data.f01_contacto1=='CELULAR'){
-        myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '" }';
-        $rootScope.contactosArray.push(myJSON);
+        if(data.f01_contacto1_nro != ''){
+          myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '" }';
+          $rootScope.contactosArray.push(myJSON);
+        }else{
+          myJSON = '{ "tipo":"", "valor":"" }';
+          $rootScope.contactosArray.push(myJSON);
+          $scope.sinDato1 = true;
+        }
       }else{
         myJSON = '{ "tipo":"", "valor":"" }';
         $rootScope.contactosArray.push(myJSON);
       }
       if (data.f01_contacto2=='TELÉFONO' || data.f01_contacto2=='CELULAR'){
-        myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '" }';
-        $rootScope.contactosArray.push(myJSON);
+        if(data.f01_contacto2_nro != ''){
+          myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '" }';
+          $rootScope.contactosArray.push(myJSON);
+        }else{
+          myJSON = '{ "tipo":"", "valor":"" }';
+          $rootScope.contactosArray.push(myJSON);
+          $scope.sinDato2 = true;
+        }
       }else{
         myJSON = '{ "tipo":"", "valor":"" }';
         $rootScope.contactosArray.push(myJSON);
       }
       if (data.f01_contacto3=='TELÉFONO' || data.f01_contacto3=='CELULAR'){
-        myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '" }';
-        $rootScope.contactosArray.push(myJSON);
+        if(data.f01_contacto3_nro != ''){
+          myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '" }';
+          $rootScope.contactosArray.push(myJSON);
+        }else{
+          myJSON = '{ "tipo":"", "valor":"" }';
+          $rootScope.contactosArray.push(myJSON);
+          $scope.sinDato3 = true;
+        }
       }else{
         myJSON = '{ "tipo":"", "valor":"" }';
         $rootScope.contactosArray.push(myJSON);
@@ -370,22 +414,37 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     $rootScope.redesSocialesArray = [];  
     myJSON = '';
       if (data.f01_redessocialesAE1=='true' || data.f01_redessocialesAE1==true){
-        myJSON = '{ "tipo":"facebook", "checked":"true", "url":"' + data.f01_redessocialesAE1_url + '" }';
-        $rootScope.redesSocialesArray.push(myJSON);
+        if(data.f01_redessocialesAE1_url != ''){
+          myJSON = '{ "tipo":"facebook", "checked":"true", "url":"' + data.f01_redessocialesAE1_url + '" }';
+           $rootScope.redesSocialesArray.push(myJSON);
+        }else{
+          myJSON = '{ "tipo":"facebook", "checked":"false", "url":"" }';
+          $rootScope.redesSocialesArray.push(myJSON);
+        }
       }else{
         myJSON = '{ "tipo":"facebook", "checked":"false", "url":"" }';
         $rootScope.redesSocialesArray.push(myJSON);
       }
       if (data.f01_redessocialesAE2=='true' || data.f01_redessocialesAE2==true){
-        myJSON = '{ "tipo":"twitter", "checked":"true", "url":"' + data.f01_redessocialesAE2_url + '" }';
-        $rootScope.redesSocialesArray.push(myJSON);
-      }else{
+        if(data.f01_redessocialesAE2_url != ''){
+          myJSON = '{ "tipo":"twitter", "checked":"true", "url":"' + data.f01_redessocialesAE2_url + '" }';
+           $rootScope.redesSocialesArray.push(myJSON);
+        }else{
+          myJSON = '{ "tipo":"twitter", "checked":"false", "url":"" }';
+          $rootScope.redesSocialesArray.push(myJSON);
+        }
+       }else{
         myJSON = '{ "tipo":"twitter", "checked":"false", "url":"" }';
         $rootScope.redesSocialesArray.push(myJSON);
       }
       if (data.f01_redessocialesAE3=='true' || data.f01_redessocialesAE3==true){
-        myJSON = '{ "tipo":"instagram", "checked":"true", "url":"' + data.f01_redessocialesAE3_url + '" }';
-        $rootScope.redesSocialesArray.push(myJSON);
+        if(data.f01_redessocialesAE3_url != ''){
+          myJSON = '{ "tipo":"instagram", "checked":"true", "url":"' + data.f01_redessocialesAE3_url + '" }';
+           $rootScope.redesSocialesArray.push(myJSON);
+        }else{
+          myJSON = '{ "tipo":"instagram", "checked":"false", "url":"" }';
+          $rootScope.redesSocialesArray.push(myJSON);
+        }
       }else{
         myJSON = '{ "tipo":"instagram", "checked":"false", "url":"" }';
         $rootScope.redesSocialesArray.push(myJSON);
@@ -430,8 +489,13 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
     });
   }
-
+  /* $scope.verificarContactos = function(){
+    if($scope.sinDato1 == true || $scope.sinDato2 == true || $scope.sinDato3 == true){
+      swal('', "Debe completar la información de contactos ", 'warning');
+    }else{}
+  }*/
   $scope.limpiar = function(){
+    console.log('limpiando Campos');
       $scope.datos.f01_nombreTV = "";
       $scope.datos.f01_descripcionTV = "";
       $scope.datos.f01_categoria = "";//falta
@@ -457,12 +521,32 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_ofertasAE_des5 = "";
       $scope.datos.txt_f01_upload1 = "";
       $scope.datos.txt_f01_upload2 = "";
-      $rootScope.archivosProducto = new Array();
-      $rootScope.archivosLogotipo = new Array();
+      $rootScope.archivosProducto = [];
+      $rootScope.archivosLogotipo = [];
       $scope.catalogo1 = '';
       $scope.logotipo1 = '';
       $scope.catalogo_url = '';
       $scope.logotipo_url = '';
+      $scope.sinDato1 = false;
+      $scope.sinDato2 = false;
+      $scope.sinDato3 = false;
+      $("#mensaje1").hide();
+      $("#mensaje2").hide();
+      $("#mensajeT1").hide();
+      $("#mensajeT2").hide();
+      $("#mensajeT3").hide();
+      $("#mensajeT4").hide();
+      $("#mensajeT5").hide();
+      $("#mensajeT6").hide();
+      $("#mensajeT7").hide();
+      $("#mensajeT8").hide();
+      $("#mensajeT9").hide();
+      $("#mensajeR1").hide();
+      $("#mensajeR2").hide();
+      $("#mensajeR3").hide();
+      $("#mensajeR4").hide();
+      $("#mensajeR5").hide();
+      $("#mensajeR6").hide();
 
   }
   $scope.validaCorreo =function(){
@@ -489,9 +573,11 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       document.getElementById('f01_contacto1_nro').value = '';
       document.getElementById('f01_contacto1_nro').disabled = true;
       $rootScope.inicializaC1 = true;
-      
+      //$("#mensajeT1").hide();
    }else{
-      document.getElementById('f01_contacto1_nro').disabled = false;
+    $rootScope.inicializaC1 = false;
+    document.getElementById('f01_contacto1_nro').disabled = false;
+    $("#mensajeT1").show();
     }
   }
   $scope.activarCampo2 = function(dato){
@@ -499,8 +585,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       document.getElementById('f01_contacto2_nro').value = '';
       document.getElementById('f01_contacto2_nro').disabled = true;
       $rootScope.inicializaC2 = true;
+      //$("#mensajeT2").hide();
     }else{
       document.getElementById('f01_contacto2_nro').disabled = false;
+     $("#mensajeT4").show();
     }
   }
   $scope.activarCampo3 = function(dato){
@@ -508,43 +596,88 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       document.getElementById('f01_contacto3_nro').value = '';
       document.getElementById('f01_contacto3_nro').disabled = true;
       $rootScope.inicializaC3 = true;
+      //$("#mensajeT3").hide();
     }else{
       document.getElementById('f01_contacto3_nro').disabled = false;
+      $("#mensajeT7").show();
     }
   }
+
+    
+
   $scope.activaRedes1 = function(dato){
+    $scope.redFacebook = dato;
     if(dato == false) {
       $scope.inicializaFacebook = true;
       document.getElementById('f01_redessocialesAE1_url').value = '';
     } else {
       $scope.inicializaFacebook =  false;
+      $("#mensajeR1").show();
     }
   }
   $scope.activaRedes2 = function(dato){
+    $scope.redTwitter = dato
     if(dato == false) {
       $scope.inicializaTwitter = true;
       document.getElementById('f01_redessocialesAE2_url').value = '';
     } else {
       $scope.inicializaTwitter = false;
+      $("#mensajeR3").show();
+      
     }
   }
   $scope.activaRedes3 = function(dato){
+    $scope.redInstagram = dato;
     if(dato == false) {
       $scope.inicializaInstagram = true;
       document.getElementById('f01_redessocialesAE3_url').value = ''; 
     } else {
       $scope.inicializaInstagram = false;
+      $("#mensajeR5").show();
+    }
+  }
+  $scope.validaRedes1 = function (datos){
+    if($scope.redFacebook == true){
+      $("#mensajeR1").show();
+      $("#mensajeR2").hide();
+      if(datos.length > 10){
+        $("#mensajeR1").hide();
+        $("#mensajeR2").show();
+      }
+    }else{
+      $("#mensajeR1").hide();
+      $("#mensajeR2").hide();
+    }
+  }
+  $scope.validaRedes2 = function (datos){
+    if($scope.redTwitter == true){
+      $("#mensajeR3").show();
+      $("#mensajeR4").hide();
+      if(datos.length > 10){
+        $("#mensajeR3").hide();
+        $("#mensajeR4").show();
+      }
+    }else{
+      $("#mensajeR3").hide();
+      $("#mensajeR4").hide();
+    }
+  }
+  $scope.validaRedes3 = function (datos){
+    if($scope.redInstagram == true){
+      $("#mensajeR5").show();
+      $("#mensajeR6").hide();
+      if(datos.length > 10){
+        $("#mensajeR5").hide();
+        $("#mensajeR6").show();
+      }
+    }else{
+      $("#mensajeR5").hide();
+      $("#mensajeR6").hide();
     }
   }
 
 
 
- 
-
-
-  /*$scope.cerrarDatosAE = function(dato){
-    window.location.href = "#dashboard";
-  }*/
   $scope.cambiarFile = function(obj, valor){
       $scope.datos[obj.name] = valor;
       setTimeout(function(){

@@ -32,28 +32,93 @@
             }
             //$('.clockpicker').clockpicker();
 
-            function valNumeroTelefono(Control){
-                Control.value = soloNumericoTelefono(Control.value);
+            function valNumeroTelefono1(Control, datoTel){
+                Control.value = soloNumericoTelefono1(Control.value);
             }
-            function soloNumericoTelefono(sValo){
+            function soloNumericoTelefono1(sValo){
                 Numer=parseInt(sValo);
                 if (isNaN(Numer)){
                 return "";
                 }else{
-                $("#mensaje3").hide();
                 var digits = ("" + Numer).split("");
-                if(digits.length < 9 ){
-                    if((digits.length>2) && (digits.length<7)){
-                    $("#mensaje3").show();
-                    $("#mensaje7").show();
+                if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6 || digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+                    if((digits.length>0) && (digits.length<7)){
+                    $("#mensajeT3").show();
+                    $("#mensajeT1").hide();
+                    $("#mensajeT2").hide();
+
                     }else{
-                    $("#mensaje3").hide();
-                    $("#mensaje7").hide();
+                    $("#mensajeT2").show();
+                    $("#mensajeT1").hide();
+                    $("#mensajeT3").hide();
                     }
                     return Numer;
                 }else{
-                    $("#mensaje3").hide();
-                    $("#mensaje7").hide();
+                    $("#mensajeT1").show();
+                    $("#mensajeT2").hide();
+                    $("#mensajeT3").hide();
+                    return "";
+
+                }
+                }
+            }
+
+            function valNumeroTelefono2(Control, datoTel){
+                Control.value = soloNumericoTelefono2(Control.value);
+            }
+            function soloNumericoTelefono2(sValo){
+                Numer=parseInt(sValo);
+                if (isNaN(Numer)){
+                return "";
+                }else{
+                var digits = ("" + Numer).split("");
+                if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6 || digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+                    if((digits.length>0) && (digits.length<7)){
+                    $("#mensajeT6").show();
+                    $("#mensajeT5").hide();
+                    $("#mensajeT4").hide();
+
+                    }else{
+                    $("#mensajeT5").show();
+                    $("#mensajeT4").hide();
+                    $("#mensajeT6").hide();
+                    }
+                    return Numer;
+                }else{
+                    $("#mensajeT4").show();
+                    $("#mensajeT5").hide();
+                    $("#mensajeT6").hide();
+                    return "";
+
+                }
+                }
+            }
+
+            function valNumeroTelefono3(Control, datoTel){
+                Control.value = soloNumericoTelefono3(Control.value);
+            }
+            function soloNumericoTelefono3(sValo){
+                Numer=parseInt(sValo);
+                if (isNaN(Numer)){
+                return "";
+                }else{
+                var digits = ("" + Numer).split("");
+                if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6 || digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+                    if((digits.length>0) && (digits.length<7)){
+                    //$("#mensajeT9").show();
+                    $("#mensajeT8").hide();
+                    $("#mensajeT7").hide();
+
+                    }else{
+                    $("#mensajeT7").hide();
+                    $("#mensajeT8").show();
+                    $("#mensajeT6").hide();
+                    }
+                    return Numer;
+                }else{
+                    $("#mensajeT7").show();
+                    $("#mensajeT8").hide();
+                    $("#mensajeT9").hide();
                     return "";
 
                 }
@@ -155,7 +220,7 @@
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Nombre de la Tienda Virtual:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" ng-disabled="desabilitado" required/>
+                            <input ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" style="text-transform:uppercase;" ng-disabled="desabilitado" required/>
                             <span style="color:red" ng-show="signupForm.f01_nombreTV.$invalid">
                                 <span align = "right" ng-show="signupForm.f01_nombreTV.$error.required">Nombre de la tienda Virtual es requerido. </span>
                             </span>
@@ -167,7 +232,7 @@
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Descripción de la Tienda Virtual:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" required/>
+                            <input ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" style="text-transform:uppercase;" ng-disabled="desabilitado" required/>
                             <span style="color:red" ng-show="signupForm.f01_descripcionTV.$invalid">
                                 <span align = "right" ng-show="signupForm.f01_descripcionTV.$error.required">Descripción de la tienda Virtual es requerido. </span>
                             </span>
@@ -271,11 +336,24 @@
                     <div class="form-group" >
                         <label for="url" >Número de contacto:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" onkeyUp="valNumeroTelefono(this);" />
+                            <input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" maxlength="8" onkeyUp="return valNumeroTelefono1(this);" />
+                            <span style="color:red" ng-show="signupForm.f01_contacto1_nro.$invalid">
+                                <span align = "right" ng-show="signupForm.f01_contacto1_nro.$error.required">*</span>
+                            </span>
+                            <span id ="mensajeT1" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido, tel. Fijo Ej. 2414141 tel. Celular Ej. 7858585</span>
+                            <span id ="mensajeT2" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido para teléfono Fijo ó Celular</span>
+                            <span id ="mensajeT3" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
                             <br>
-                            <input ng-model="datos.f01_contacto2_nro" id="f01_contacto2_nro" name="f01_contacto2_nro" class="form-control" ng-disabled="inicializaC2" onkeyUp="valNumeroTelefono(this);"/>
+                            <input ng-model="datos.f01_contacto2_nro" id="f01_contacto2_nro" name="f01_contacto2_nro" class="form-control" ng-disabled="inicializaC2" maxlength="8" onkeyUp="return valNumeroTelefono2(this);" />
+                            <span id ="mensajeT4" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido, tel. Fijo Ej. 2414141 tel. Celular Ej. 7858585</span>
+                            <span id ="mensajeT5" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido tléfono Fijo ó Celular</span>
+                            <span id ="mensajeT6" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
                             <br>
-                            <input ng-model="datos.f01_contacto3_nro" id="f01_contacto3_nro" name="f01_contacto3_nro" class="form-control" ng-disabled="inicializaC3" onkeyUp="valNumeroTelefono(this);"/>
+                            <input ng-model="datos.f01_contacto3_nro" id="f01_contacto3_nro" name="f01_contacto3_nro" class="form-control" ng-disabled="inicializaC3" maxlength="8" onkeyUp="return valNumeroTelefono3(this);" />
+                            <span id ="mensajeT7" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido, tel. Fijo Ej. 2414141 tel. Celular Ej. 7858585</span>
+                            <span id ="mensajeT8" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido teléfono  Fijo ó Celular</span>
+                            <span id ="mensajeT9" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
+                            
                         </div>
                     </div>
                 </div>
@@ -314,11 +392,18 @@
                     <div class="form-group" >
                         <label for="url" >URL de la Red Social:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-disabled="inicializaFacebook"/>
+                            <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-keyUp="validaRedes1(datos.f01_redessocialesAE1_url);" ng-disabled="inicializaFacebook"/>
+                            <span id ="mensajeR1" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
+                            <span id ="mensajeR2" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
                             <br>
-                            <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-disabled="inicializaTwitter"/>
+                            <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-keyUp="validaRedes2(datos.f01_redessocialesAE2_url);" ng-disabled="inicializaTwitter"/>
+                            <span id ="mensajeR3" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
+                            <span id ="mensajeR4" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
                             <br>
-                            <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-disabled="inicializaInstagram"/>
+                            <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-keyUp="validaRedes3(datos.f01_redessocialesAE3_url);" ng-disabled="inicializaInstagram"/>
+                            <span id ="mensajeR5" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
+                            <span id ="mensajeR6" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
+                           
                         </div>
                     </div>
                 </div>
@@ -373,15 +458,15 @@
                     <div class="form-group" >
                         <label for="url" >Describa la oferta:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_ofertasAE_des1" id="f01_ofertasAE_des1" name="f01_ofertasAE_des1" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_ofertasAE_des1" id="f01_ofertasAE_des1" name="f01_ofertasAE_des1" class="form-control" style="text-transform:uppercase;" ng-disabled="desabilitado"/>
                             <br>
-                            <input ng-model="datos.f01_ofertasAE_des2" id="f01_ofertasAE_des2" name="f01_ofertasAE_des2" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_ofertasAE_des2" id="f01_ofertasAE_des2" name="f01_ofertasAE_des2" class="form-control" style="text-transform:uppercase;" ng-disabled="desabilitado"/>
                             <br>
-                            <input ng-model="datos.f01_ofertasAE_des3" id="f01_ofertasAE_des3" name="f01_ofertasAE_des3" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_ofertasAE_des3" id="f01_ofertasAE_des3" name="f01_ofertasAE_des3" class="form-control" style="text-transform:uppercase;" ng-disabled="desabilitado"/>
                             <br>
-                            <input ng-model="datos.f01_ofertasAE_des4" id="f01_ofertasAE_des4" name="f01_ofertasAE_des4" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_ofertasAE_des4" id="f01_ofertasAE_des4" name="f01_ofertasAE_des4" class="form-control" style="text-transform:uppercase;" ng-disabled="desabilitado"/>
                             <br>
-                            <input ng-model="datos.f01_ofertasAE_des5" id="f01_ofertasAE_des5" name="f01_ofertasAE_des5" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_ofertasAE_des5" id="f01_ofertasAE_des5" name="f01_ofertasAE_des5" class="form-control" style="text-transform:uppercase;" ng-disabled="desabilitado"/>
                             <br>
                         </div>
                     </div>
@@ -409,12 +494,9 @@
                   </div>
                 </div>
             </div>
-
-
-
             <div class="col-md-12" align="right">
                 <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="registrarDatosAE(datos)">Registrar</button>
-                <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="actualizarDatosAE(datos)">Modificar</button>                
+                <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                
             </div>
           </form>
         </div>

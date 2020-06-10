@@ -5,7 +5,8 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
   $scope.tiposTramite = [
     { detalle: 'Impugnación de Infracciones', id:43 ,tipo:$scope.tipo_persona}, 
     { detalle: 'Conmutación de Infracciones', id:45 ,tipo:$scope.tipo_persona},
-    { detalle: 'Devoluciòn de Placas y Luminarias', id:49 ,tipo:$scope.tipo_persona} 
+    { detalle: 'Devoluciòn de Placas y Luminarias', id:49 ,tipo:$scope.tipo_persona},
+    { detalle: 'Denuncia Operador de Radio Taxi', id:52 ,tipo:'NATURAL'} 
   ];
   $scope.datos = {};
   $scope.tablaTramites        =   {};
@@ -14,12 +15,14 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
   [ { name: 'template0.html', url: '../../../app/index.html'},
     { name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/impugnacion/impugnacion.html'},
     { name: 'template2.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/conmutacion/conmutacion.html'},
-    { name: 'template2.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/devolucionPlacas/devolucionPlacas.html'} 
+    { name: 'template2.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/devolucionPlacas/devolucionPlacas.html'},
+    { name: 'template4.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/denunciaOperadorRadioTaxi/denunciaOperadorRadioTaxi.html'}
   ];
 
   $scope.impugnacion = 43;
   $scope.conmutacion = 45;
   $scope.devolucion  = 49;
+  $scope.denunciaOperadorRadioTaxi  = 52;
   $scope.template =   "";
 
   $scope.inicio = function(){
@@ -373,6 +376,9 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
     }
     if($scope.procesoSeleccionado == $scope.devolucion){
       idTemplate = 3;
+    }
+    if($scope.procesoSeleccionado == $scope.denunciaOperadorRadioTaxi){
+      idTemplate = 4;
     }
     $scope.template = $scope.templates[idTemplate];
     setTimeout(function(){

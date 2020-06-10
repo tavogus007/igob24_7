@@ -5,9 +5,10 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
   $scope.listadoProductos      =   [];
   $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
   $scope.valida = 0;
-  
   $rootScope.archivosProducto = new Array();
-
+  $scope.imagenprincipalm = false;
+  $scope.imagenaux1m = false;
+  $scope.imagenaux2m = false;
 
   var clsIniciarCamposInternet = $rootScope.$on('inicializarProdutos', function(event, data){
     $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
@@ -71,14 +72,18 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
               if (idFiles[key]==1){
                 var descDoc = "img_pr";
                 var descArchivo = "img_principal"; 
+                $scope.imagenprincipalm = true;
               }
               if (idFiles[key]==2){
                 var descDoc = "img_aux1";
                 var descArchivo = "img_auxiliar1";
+                $scope.imagenaux1m = true;
+
               }
               if (idFiles[key]==3){
                 var descDoc = "img_aux2";
                 var descArchivo = "img_auxiliar2";
+                $scope.imagenaux2m = true;
               }
               var imagenFile = archivo.name.split('.');;
               var tipoFile = imagenFile[1];
@@ -153,23 +158,49 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         }
     };
 
-    $scope.mostrarDocumentos = function(documentos){
-      if(documentos[0]){
-        var docmostrarimgp = JSON.parse(documentos[0]);
-        $scope.imagenprincipal = docmostrarimgp.url;
-
+    $scope.mostrarDocumentos = function(documentosSub){
+      var img1 = "";
+      var img2 = ""; 
+      var img3 = ""; 
+      console.log(documentosSub);
+      if($rootScope.swArchivo == 'A'){
+        for (i = 0; i < documentosSub.length; i++) {
+          var imagenesRecorrido = JSON.parse(documentosSub[i]);
+            if(imagenesRecorrido.nombre == "img_principal"){
+              img1 = imagenesRecorrido.url;
+              $scope.imagenprincipal = img1;
+            }
+            if(imagenesRecorrido.nombre == "img_auxiliar1"){
+              img2 = imagenesRecorrido.url;
+              $scope.imagenaux1 = img2;
+            }
+            if(imagenesRecorrido.nombre == "img_auxiliar2"){
+              img3 = imagenesRecorrido.url;
+              $scope.imagenaux2 = img3;
+            }
+        }
       }
-
-      if(documentos[1]){
-        var docmostrarimgaux1 = JSON.parse(documentos[1]);
-        $scope.imagenaux1 = docmostrarimgaux1.url;
-      }
-
-      if(documentos[2]){
-        var docmostrarimgaux2 = JSON.parse(documentos[2]);
-        $scope.imagenaux2 = docmostrarimgaux2.url;
+      else{
+        if($rootScope.swArchivo == 'M'){
+          for (i = 0; i < documentosSub.length; i++) {
+          var imagenesRecorrido = JSON.parse(documentosSub[i]);
+            if(imagenesRecorrido.nombre == "img_principal"){
+              img1 = imagenesRecorrido.url;
+              $scope.imagenprincipal = img1;
+            }
+            if(imagenesRecorrido.nombre == "img_auxiliar1"){
+              img2 = imagenesRecorrido.url;
+              $scope.imagenaux1 = img2;
+            }
+            if(imagenesRecorrido.nombre == "img_auxiliar2"){
+              img3 = imagenesRecorrido.url;
+              $scope.imagenaux2 = img3;
+            }
+        }
+        }
       }
     }
+
 
     $scope.recuperarDocumentos = function(documentos){
       if(documentos[0]){
@@ -241,9 +272,13 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       $scope.f01_upload2 = '';
       $scope.f01_upload3 = '';
       $rootScope.swArchivo = "A";
-      $scope.imagenprincipal = false;
-      $scope.imagenaux1 = false;
-      $scope.imagenaux2 = false;
+      $scope.imagenprincipal = "";
+      $scope.imagenaux1 = "";
+      $scope.imagenaux2 = "";
+      $rootScope.archivosProducto = new Array();
+      $scope.imagenprincipalm = false;
+      $scope.imagenaux1m = false;
+      $scope.imagenaux2m = false;
     }
 
     $scope.registrarProducto = function(data){
@@ -395,7 +430,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
   } 
 
   $scope.modificarProducto = function(datosP){
-    console.log("datosP:: ", datosP);
     $scope.frmProducto = "mostrar";
     $scope.desabilitado = "";
     $scope.update = true;
@@ -431,23 +465,33 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     $scope.imagenprincipal = datosP.prd_imagen_pc;
     $scope.imagenaux1 = datosP.prd_imagen_a1c;
     $scope.imagenaux2 = datosP.prd_imagen_a2c;
-
+    $rootScope.archivosProducto = new Array();
+    $scope.imagenprincipalm = true;
+    if(datosP.prd_imagen_a1c){
+       $scope.imagenaux1m = true;
+    }
+    if($scope.imagenaux2){
+      $scope.imagenaux2m = true;
+    }
   }
 
   $scope.actualizarProducto = function(data){
-    console.log("doc: ", $rootScope.archivosProducto);
-    f0 = $scope.file1;
-    f1 = $scope.file2;
-    f2 = $scope.file3;
-    angular.forEach($rootScope.archivosProducto, function(archivo, key) {
-      archivoP = JSON.parse(archivo);
-      if($scope.fileId == 'f01_upload1')
-        f0 = archivoP.url;
-      if($scope.fileId == 'f01_upload2')
-        f1 = archivoP.url;
-      if($scope.fileId == 'f01_upload3')
-        f2 = archivoP.url;
-    });
+    var img1 = $scope.file1;
+    var img2 = $scope.file2; 
+    var img3 = $scope.file3; 
+    for (i = 0; i < $rootScope.archivosProducto.length; i++) {
+        var imagenesRecorrido = JSON.parse($rootScope.archivosProducto[i]);
+          if(imagenesRecorrido.nombre == "img_principal"){
+            img1 = imagenesRecorrido.url;
+          }
+          if(imagenesRecorrido.nombre == "img_auxiliar1"){
+            img2 = imagenesRecorrido.url;
+          }
+    
+          if(imagenesRecorrido.nombre == "img_auxiliar2"){
+            img3 = imagenesRecorrido.url;
+          }
+      }
 
     var datosModProducto = new dataProductoMod();
     datosModProducto.prd_idc = data.prd_idc;
@@ -455,9 +499,9 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     datosModProducto.prd_nombrec = data.f01_producto;
     datosModProducto.prd_descripcionc = data.f01_descripcion;
     datosModProducto.prd_precioc = data.f01_precio;
-    datosModProducto.prd_imagen_pc = f0;
-    datosModProducto.prd_imagen_a1c = f1;
-    datosModProducto.prd_imagen_a2c = f2;
+    datosModProducto.prd_imagen_pc = img1;
+    datosModProducto.prd_imagen_a1c = img2;
+    datosModProducto.prd_imagen_a2c = img3;
     datosModProducto.prd_usrc = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
     datosModProducto.modificarProductoAe(function(response){
       results = JSON.parse(response);

@@ -797,10 +797,10 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
     var sNumeroRegistros  = dataGenesis.length;
     var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
-    var contribuyente   =   new gLstActividadEconomica();
+    var contribuyente   =   new lstActividadEconomicaVentas();
     contribuyente.idContribuyente   =   idContribuyente;
     contribuyente.tipo  =   'N';
-    contribuyente.lstActividadEconomica(function(resultado){ 
+    contribuyente.lstActividadEconomicaVentas(function(resultado){ 
         $.unblockUI(); 
         var resultadoApi = JSON.parse(resultado);
         if (resultadoApi.success) {

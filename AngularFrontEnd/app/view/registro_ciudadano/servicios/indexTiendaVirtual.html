@@ -24,9 +24,10 @@
                       <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
                           <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
                           <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
+                          <td data-title="'Denominación'" ng-click="selActividadEconomica(tramite)">{{tramite.denominacion}}</td>
                           <td data-title="'Dirección'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
                           <td data-title="'Descripción'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
-                          <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
+                          <!--td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td-->
                           <td data-title="'Tienda Virtual'" >
                             <a class="btn btn-success ng-binding" tooltip="Completar Info" ng-click="addDatosAE(tramite);">
                               <i class="fa fa-desktop" aria-hidden="true"></i>

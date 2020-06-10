@@ -166,6 +166,7 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
         contribuyente.lstActividadEconomica(function (resultado) {
             $.unblockUI();
             var resultadoApi = JSON.parse(resultado);
+            console.log("resultado  ==> ", resultadoApi);
             if (resultadoApi.success) {
                 $scope.vistaInfo        = "mostrar";
                 $scope.vistaInfoGenesis = null;

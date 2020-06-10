@@ -16,9 +16,9 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
       pagoQr.getCredencialQr(function (resp) {
         var respuesta = JSON.parse(resp);
         respuesta = JSON.parse(respuesta);
-        console.log("REspuestaaa", respuesta);
         if (respuesta.sp_get_credenciales_bcp == "00") {
           $scope.textbtnguardar = 'Registrar';
+          $scope.datos.service_code = "";
           $scope.btndelete = false;
         } else {
           $scope.datos.service_code = respuesta.sp_get_credenciales_bcp;
@@ -119,32 +119,37 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
 
   $scope.anularData = function (datos) {
     $.blockUI();
-    var tipo_cred = ""
+    var tipo_cred    = ""
+    var valortipoent = "";
     if( datos.f01_tipoPago == "1") {
       tipo_cred = "BCP";
+      valortipoent = "con número "+ datos.service_code;
     }else if (datos.f01_tipoPago == "2") {
       tipo_cred = "REDENLACE";
+      valortipoent = "con perfil id "+ datos.profile_id;
+
     }else if (datos.f01_tipoPago == "3") {
       tipo_cred = "TRANSFERENCIAS";
+      valortipoent = "con Nro. de Cuenta "+ datos.nro_cuenta;//140220
+
     }else {
       alertify.error("No tenemos el tipo de credencial para realizar esta operación");
       return false;
     }
-    console.log("tipo_cred",tipo_cred);
     swal({
-      title: "Esta Seguro de Inhabilitar la(s) Credencial(es)?",
-      text: "Presione Si.! para Inhabilitar!",
+      title: "¿Usted esta Deshabilitado la Credencial de la Entidad "+ tipo_cred + " " + valortipoent,
+      text: "Presione Si.! para Continuar!",
       type: "warning", showCancelButton: true,
-      confirmButtonColor: "#DD6B55",
+      confirmButtonColor: "#dc3545",
       confirmButtonText: "Si",
-      cancelButtonText: "Cancelar",
+      cancelButtonText: "No",
       closeOnConfirm: false
     }, function () {
      
       var inCredenciales = new inCredencial();
       inCredenciales.id_actividadeconomica = sessionService.get("IDAE");
       inCredenciales.tipo_credencial       = tipo_cred;
-      inCredenciales.registroQr(function (resp) {
+      inCredenciales.eliminaCredencial(function (resp) {
         var respuesta = JSON.parse(resp);
         respuesta = JSON.parse(respuesta);
         if (respuesta.delete_credenciales == "Registro Inhabilitado" ) {
@@ -172,6 +177,8 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           respuesta = JSON.parse(respuesta);
           respuesta = "QR: " + respuesta.spregistrabcp;
           swal('', respuesta, 'success');
+          $scope.textbtnguardar = 'Modificar';
+          $scope.btndelete = true;
         });
         break;
       case "2":
@@ -209,6 +216,8 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           respuesta = JSON.parse(respuesta);
           respuesta = "RED ENLACE: " + respuesta.spregistraredenlace;
           swal('', respuesta, 'success');
+          $scope.textbtnguardar = 'Modificar';
+          $scope.btndelete = true;
         });
 
         break;
@@ -226,13 +235,15 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           console.log("respuesta", respuesta);
           respuesta = "TRANSFERENCIA: " + respuesta.spregistratransferencia;
           swal('', respuesta, 'success');
-          $scope.textbtnguardar = 'Registrar';
+          $scope.textbtnguardar = 'Modificar';
+          $scope.btndelete = true;
+          /* $scope.textbtnguardar = 'Registrar';
           $scope.datos.ent_financiera = "";
           $scope.datos.nro_cuenta = "";
           $scope.datos.nom_abono = "";
           $scope.datos.ci_nit_abono = "";
           $scope.datos.f01_tipoPago = "";
-          $scope.tipo = '';
+          $scope.tipo = ''; */
 
         });
         break;

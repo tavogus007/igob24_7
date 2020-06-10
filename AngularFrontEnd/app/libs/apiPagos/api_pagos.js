@@ -72,6 +72,15 @@ qr.prototype.registroQr = function (functionResp) {
     };
     ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
 };
+
+qr.prototype.getCredencialQr = function (functionResp) {
+  urlCompPago = "/get-credenciales-bcp-ae";
+  typeCallPago = "post";
+  dataParamsPago = {
+      "id_actividadeconomica" : this.id_actividadeconomica
+  };
+  ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
+};
 /*/////////////// Transferencia Bancaria //////////////////////*/
 function tbancaria() {
   this.id_actividadeconomica;
@@ -115,6 +124,21 @@ lstTransaciones.prototype.listaTransaciones = function (functionResp) {
       "id_actividadeconomica" : this.id_actividadeconomica,
       "fecha_inicio"          : this.fecha_inicio,
       "fecha_fin"             : this.fecha_fin
+  };
+  ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
+};
+/*/////////////// Inhabilitar credencial //////////////////////*/
+function inCredencial() {
+  this.id_actividadeconomica;
+  this.tipo_credencial;
+};
+
+inCredencial.prototype.eliminaCredencial = function (functionResp) {
+  urlCompPago = "/eliminarCREDENCIALES";
+  typeCallPago = "post";
+  dataParamsPago = {
+      "id_actividadeconomica" : this.id_actividadeconomica,
+      "tipo_credencial"       : this.tipo_credencial
   };
   ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
 };

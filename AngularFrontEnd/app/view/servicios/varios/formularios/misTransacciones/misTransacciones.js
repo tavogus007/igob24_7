@@ -65,43 +65,6 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
             $("#fechaFin").val("");
         });
         $.unblockUI();
-
-
-        /* $.ajax({
-            type: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            url: CONFIG.CONEXION_PAGOS + 'api/listar-pago-ae',
-            dataType: 'json',
-            data: '{  "id_actividadeconomica":"'+idAE+'","fecha_inicio":"' + fechaIni + '","fecha_fin":"' + fechaFin + '"}',
-            success: function (respuesta) {
-                console.log("data resp:=> ", respuesta);
-                if (respuesta.length > 0) {
-                    alertify.success("Exito...");
-                    $scope.obtmisTransacciones = respuesta;
-                    var data = respuesta;
-                    $scope.tablaTransaciones.reload();
-                    $scope.vistaInfo = "mostrar";
-                    $.unblockUI();
-
-                } else {
-                    alertify.error("Transacciones no encontrados...");
-                    data = [];
-                    $scope.obtmisTransacciones = [];
-                    $scope.tablaTransaciones.reload();
-                    $.unblockUI();
-                    $scope.vistaInfo = "mostrar";
-
-                }
-                $("#fechaIni").val("");
-                $("#fechaFin").val("");
-
-            },
-            error: function (data) {
-                console.log(data);
-                $.unblockUI();
-            }
-        }); */
-
     }
     $scope.tablaTransaciones = new ngTableParams({
         page: 1,

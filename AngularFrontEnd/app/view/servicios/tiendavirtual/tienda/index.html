@@ -32,117 +32,7 @@
             }
             //$('.clockpicker').clockpicker();
 
-            function valNumeroTelefono1(Control, datoTel){
-                Control.value = soloNumericoTelefono1(Control.value);
-            }
-            function soloNumericoTelefono1(sValo){
-                Numer=parseInt(sValo);
-                if (isNaN(Numer)){
-                return "";
-                }else{
-                var digits = ("" + Numer).split("");
-                if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6 || digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
-                    if((digits.length>0) && (digits.length<7)){
-                    $("#mensajeT3").show();
-                    $("#mensajeT1").hide();
-                    $("#mensajeT2").hide();
-
-                    }else{
-                    $("#mensajeT2").show();
-                    $("#mensajeT1").hide();
-                    $("#mensajeT3").hide();
-                    }
-                    return Numer;
-                }else{
-                    $("#mensajeT1").show();
-                    $("#mensajeT2").hide();
-                    $("#mensajeT3").hide();
-                    return "";
-
-                }
-                }
-            }
-
-            function valNumeroTelefono2(Control, datoTel){
-                Control.value = soloNumericoTelefono2(Control.value);
-            }
-            function soloNumericoTelefono2(sValo){
-                Numer=parseInt(sValo);
-                if (isNaN(Numer)){
-                return "";
-                }else{
-                var digits = ("" + Numer).split("");
-                if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6 || digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
-                    if((digits.length>0) && (digits.length<7)){
-                    $("#mensajeT6").show();
-                    $("#mensajeT5").hide();
-                    $("#mensajeT4").hide();
-
-                    }else{
-                    $("#mensajeT5").show();
-                    $("#mensajeT4").hide();
-                    $("#mensajeT6").hide();
-                    }
-                    return Numer;
-                }else{
-                    $("#mensajeT4").show();
-                    $("#mensajeT5").hide();
-                    $("#mensajeT6").hide();
-                    return "";
-
-                }
-                }
-            }
-
-            function valNumeroTelefono3(Control, datoTel){
-                Control.value = soloNumericoTelefono3(Control.value);
-            }
-            function soloNumericoTelefono3(sValo){
-                Numer=parseInt(sValo);
-                if (isNaN(Numer)){
-                return "";
-                }else{
-                var digits = ("" + Numer).split("");
-                if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6 || digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
-                    if((digits.length>0) && (digits.length<7)){
-                    //$("#mensajeT9").show();
-                    $("#mensajeT8").hide();
-                    $("#mensajeT7").hide();
-
-                    }else{
-                    $("#mensajeT7").hide();
-                    $("#mensajeT8").show();
-                    $("#mensajeT6").hide();
-                    }
-                    return Numer;
-                }else{
-                    $("#mensajeT7").show();
-                    $("#mensajeT8").hide();
-                    $("#mensajeT9").hide();
-                    return "";
-
-                }
-                }
-            }
-            function cargando(){
-                var texto   = $("<div>", {
-                text    : "CARGANDO....",
-                    id      : "myEstilo",
-                    css     : {
-                    "font-size" : "30px",
-                        "position": "relative",
-                        "width": "500px",
-                        "height": "300px",
-                        "left": "180px",
-                        "top":"50px"
-                    },
-                    fontawesome : "fa fa-spinner fa-pulse"
-                });
-                $.LoadingOverlay("show",{
-                        custom  : texto,
-                        color:"rgba(255, 255, 255, 0.8)",
-                });
-            }
+            
         </script>
         <style>
             .switch {
@@ -336,19 +226,21 @@
                     <div class="form-group" >
                         <label for="url" >Número de contacto:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" maxlength="8" onkeyUp="return valNumeroTelefono1(this);" />                         
-                            <span id ="mensajeT1" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido, tel. Fijo Ej. 2414141 tel. Celular Ej. 7858585</span>
-                            <span id ="mensajeT2" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido para teléfono Fijo ó Celular</span>
+                            <!--input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" maxlength="8" onkeyUp="return valNumeroTelefono1(this);" /-->                         
+
+                            <input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" maxlength="8" ng-keyUp="valNumTelefono1(datos.f01_contacto1_nro);" />                         
+                            <span id ="mensajeT1" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
+                            <span id ="mensajeT2" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido.</span>
                             <span id ="mensajeT3" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
                             <br>
-                            <input ng-model="datos.f01_contacto2_nro" id="f01_contacto2_nro" name="f01_contacto2_nro" class="form-control" ng-disabled="inicializaC2" maxlength="8" onkeyUp="return valNumeroTelefono2(this);" />
-                            <span id ="mensajeT4" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido, tel. Fijo Ej. 2414141 tel. Celular Ej. 7858585</span>
-                            <span id ="mensajeT5" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido teléfono Fijo ó Celular</span>
+                            <input ng-model="datos.f01_contacto2_nro" id="f01_contacto2_nro" name="f01_contacto2_nro" class="form-control" ng-disabled="inicializaC2" maxlength="8" ng-keyUp="valNumTelefono2(datos.f01_contacto2_nro);" />
+                            <span id ="mensajeT4" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
+                            <span id ="mensajeT5" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido</span>
                             <span id ="mensajeT6" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
                             <br>
-                            <input ng-model="datos.f01_contacto3_nro" id="f01_contacto3_nro" name="f01_contacto3_nro" class="form-control" ng-disabled="inicializaC3" maxlength="8" onkeyUp="return valNumeroTelefono3(this);" />
-                            <span id ="mensajeT7" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido, tel. Fijo Ej. 2414141 tel. Celular Ej. 7858585</span>
-                            <span id ="mensajeT8" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido teléfono  Fijo ó Celular</span>
+                            <input ng-model="datos.f01_contacto3_nro" id="f01_contacto3_nro" name="f01_contacto3_nro" class="form-control" ng-disabled="inicializaC3" maxlength="8" ng-keyUp="valNumTelefono3(datos.f01_contacto3_nro);" />
+                            <span id ="mensajeT7" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
+                            <span id ="mensajeT8" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido</span>
                             <span id ="mensajeT9" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
                             
                         </div>

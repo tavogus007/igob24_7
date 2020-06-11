@@ -98,13 +98,38 @@
             .slider.round:before {
               border-radius: 50%;
             }
+            .btn-defaultih {
+              background: #dc3545;
+                box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.34);
+                color: #FFFFFF !important;
+                font-weight: bold;
+                border: none !important;
+                color: #FFFFFF;
+                border-radius: 8px;
+            }
+            .btn-defaul1 {
+              background: #67d5da;
+                box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.34);
+                color: #FFFFFF !important;
+                font-weight: bold;
+                border: none !important;
+                color: #FFFFFF;
+                border-radius: 8px;
+            }
+            .swal-title {
+              margin: 0px;
+              font-size: 25px;
+              box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
+              margin-bottom: 28px;
+            }
+            
         </style>
 
     </head>
     <div class="col-md-12" ng-controller="pagosAEController" ng-init="inicioTiendaVirtual();">
       <div class="ibox float-e-margins">
         <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-            <h4>Datos complementarios de la Pago en Linea Virtual</h4>
+            <h4>Datos complementarios del Pago en Linea Virtual</h4>
         </div>
         <div class="ibox-content">
           <form name="signupForm"  class="" role="form" novalidate>                   
@@ -179,9 +204,15 @@
                   <div class="col-md-6">
                     <div class="form-group" >
                         <label for="url" >Entidad Financiera:</label>
-                        <div class="controls">
+                        <select id="ent_financiera" class="form-control" ng-model="datos.ent_financiera" name="ent_financiera" required>
+                            <option value="">--Seleccionar--</option>
+                            <option ng-repeat="entidad in entidades"
+                                            value="{{entidad.entidad_financiera}}">
+                                            {{entidad.entidad_financiera}}</option>
+                        </select>
+                        <!-- <div class="controls">
                             <input type="text" onkeyUp="return mayus(this);" ng-model="datos.ent_financiera" id="ent_financiera" name="ent_financiera" class="form-control" ng-disabled="desabilitado"/>
-                        </div>
+                        </div> -->
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -227,8 +258,8 @@
               </div>
             </div>
             <div class="col-md-12" align="right">
-                <button  ng-show = "btndelete" type="button" class="btn btn-default ng-binding" ng-click="anularData(datos)">Inhabilitar</button>
-                <button  type="button" class="btn btn-default ng-binding" ng-click="registrarTipoPago(datos)">{{textbtnguardar}}</button>
+                <button  ng-show = "btndelete" type="button" class="btn btn-defaultih ng-binding" ng-click="anularData(datos)">Inhabilitar</button>
+                <button  type="button" class="btn btn-defaul1 ng-binding" ng-click="registrarTipoPago(datos)">{{textbtnguardar}}</button>
             </div>
           </form>
         </div>

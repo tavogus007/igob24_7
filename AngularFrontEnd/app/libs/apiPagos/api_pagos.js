@@ -110,6 +110,13 @@ tbancaria.prototype.getCredTransferencia = function (functionResp) {
   };
   ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
 };
+tbancaria.prototype.getEntidades = function (functionResp) {
+  urlCompPago = "/get-entidad-financiera";
+  typeCallPago = "post";
+  dataParamsPago = {
+  };
+  ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
+};
 /*/////////////// Mis Transacciones //////////////////////*/
 function lstTransaciones() {
   this.id_actividadeconomica;

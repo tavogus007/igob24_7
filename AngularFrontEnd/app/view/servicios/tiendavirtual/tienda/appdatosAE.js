@@ -489,11 +489,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
     });
   }
-  /* $scope.verificarContactos = function(){
-    if($scope.sinDato1 == true || $scope.sinDato2 == true || $scope.sinDato3 == true){
-      swal('', "Debe completar la información de contactos ", 'warning');
-    }else{}
-  }*/
   $scope.limpiar = function(){
     console.log('limpiando Campos');
       $scope.datos.f01_nombreTV = "";
@@ -530,6 +525,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.sinDato1 = false;
       $scope.sinDato2 = false;
       $scope.sinDato3 = false;
+      $scope.swTel = false;
+      $scope.swCel = false;
       $("#mensaje1").hide();
       $("#mensaje2").hide();
       $("#mensajeT1").hide();
@@ -569,39 +566,291 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       return re.test(email);
   }
   $scope.activarCampo1 = function(dato){
+    $scope.tipoTel = dato;
     if(dato == "" || dato == undefined || dato == 'undefined'){
       document.getElementById('f01_contacto1_nro').value = '';
       document.getElementById('f01_contacto1_nro').disabled = true;
       $rootScope.inicializaC1 = true;
-      //$("#mensajeT1").hide();
+      $("#mensajeT1").hide();
+      $("#mensajeT3").hide();
+      $("#mensajeT2").hide();
    }else{
-    $rootScope.inicializaC1 = false;
-    document.getElementById('f01_contacto1_nro').disabled = false;
-    $("#mensajeT1").show();
+      $rootScope.inicializaC1 = false;
+      document.getElementById('f01_contacto1_nro').disabled = false;
+      document.getElementById('f01_contacto1_nro').value = '';
+      $("#mensajeT1").show();
+      $("#mensajeT3").hide();
+      $("#mensajeT2").hide();
     }
   }
+  $scope.valNumTelefono1 = function(datoTel){
+    if($scope.tipoTel == 'TELÉFONO'){
+     Numer=parseInt(datoTel);
+      if (isNaN(Numer)){
+      document.getElementById('f01_contacto1_nro').value = '';
+      }else{
+      var digits = ("" + Numer).split("");
+      if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+          if((digits.length>0) && (digits.length<7)){
+            $("#mensajeT3").show();
+            $("#mensajeT1").hide();
+            $("#mensajeT2").hide();
+          }else{
+            $("#mensajeT2").show();
+            $("#mensajeT1").hide();
+            $("#mensajeT3").hide();
+          }
+          if(digits.length == 8 ){
+            $("#mensajeT3").show();
+            $("#mensajeT1").hide();
+            $("#mensajeT2").hide();
+          }
+      }else{
+          $("#mensajeT1").show();
+          $("#mensajeT2").hide();
+          $("#mensajeT3").hide();
+          document.getElementById('f01_contacto1_nro').value = '';
+      }
+      }
+    }
+    if($scope.tipoTel == 'CELULAR'){
+      Numer=parseInt(datoTel);
+      if (isNaN(Numer)){
+      document.getElementById('f01_contacto1_nro').value = '';
+      }else{
+      var digits = ("" + Numer).split("");
+      console.log('digits',digits,digits[0]);
+      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 )){
+          if((digits.length>0) && (digits.length<8)){
+            $("#mensajeT3").show();
+            $("#mensajeT1").hide();
+            $("#mensajeT2").hide();
+          }else{
+            $("#mensajeT2").show();
+            $("#mensajeT1").hide();
+            $("#mensajeT3").hide();
+          }
+      }else{
+          $("#mensajeT1").show();
+          $("#mensajeT2").hide();
+          $("#mensajeT3").hide();
+          document.getElementById('f01_contacto1_nro').value = '';
+      }
+      }
+
+    }
+
+  }
   $scope.activarCampo2 = function(dato){
+    $scope.tipoTel = dato;
     if(dato == "" || dato == undefined || dato == 'undefined'){
       document.getElementById('f01_contacto2_nro').value = '';
       document.getElementById('f01_contacto2_nro').disabled = true;
       $rootScope.inicializaC2 = true;
-      //$("#mensajeT2").hide();
+      $("#mensajeT6").hide()
+      $("#mensajeT5").hide();
+      $("#mensajeT4").hide();
     }else{
       document.getElementById('f01_contacto2_nro').disabled = false;
+      document.getElementById('f01_contacto2_nro').value = '';
      $("#mensajeT4").show();
+     $("#mensajeT6").hide()
+     $("#mensajeT5").hide();
     }
   }
+  $scope.valNumTelefono2 = function(datoTel){
+    if($scope.tipoTel == 'TELÉFONO'){
+     Numer=parseInt(datoTel);
+      if (isNaN(Numer)){
+      document.getElementById('f01_contacto2_nro').value = '';
+      }else{
+      var digits = ("" + Numer).split("");
+      if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+          if((digits.length>0) && (digits.length<7)){
+            $("#mensajeT6").show();
+            $("#mensajeT5").hide();
+            $("#mensajeT4").hide();
+          }else{
+            $("#mensajeT5").show();
+            $("#mensajeT4").hide();
+            $("#mensajeT6").hide();
+          }
+          if(digits.length == 8 ){
+            $("#mensajeT6").show();
+            $("#mensajeT5").hide();
+            $("#mensajeT4").hide();
+          }
+      }else{
+        $("#mensajeT4").show();
+        $("#mensajeT5").hide();
+        $("#mensajeT6").hide();
+          document.getElementById('f01_contacto2_nro').value = '';
+      }
+      }
+    }
+    if($scope.tipoTel == 'CELULAR'){
+      Numer=parseInt(datoTel);
+      if (isNaN(Numer)){
+      document.getElementById('f01_contacto2_nro').value = '';
+      }else{
+      var digits = ("" + Numer).split("");
+      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 )){
+          if((digits.length>0) && (digits.length<8)){
+            $("#mensajeT6").show();
+            $("#mensajeT5").hide();
+            $("#mensajeT4").hide();
+          }else{
+            $("#mensajeT5").show();
+            $("#mensajeT4").hide();
+            $("#mensajeT6").hide();
+          }
+      }else{
+        $("#mensajeT4").show();
+        $("#mensajeT5").hide();
+        $("#mensajeT6").hide();
+          document.getElementById('f01_contacto2_nro').value = '';
+      }
+      }
+    }
+
+  }
   $scope.activarCampo3 = function(dato){
+    $scope.tipoTel = dato;
     if(dato == "" || dato == undefined || dato == 'undefined'){
       document.getElementById('f01_contacto3_nro').value = '';
       document.getElementById('f01_contacto3_nro').disabled = true;
       $rootScope.inicializaC3 = true;
-      //$("#mensajeT3").hide();
+      $("#mensajeT9").hide();
+      $("#mensajeT8").hide();
+      $("#mensajeT7").hide();
     }else{
       document.getElementById('f01_contacto3_nro').disabled = false;
+      document.getElementById('f01_contacto3_nro').value = '';
       $("#mensajeT7").show();
+      $("#mensajeT9").hide();
+      $("#mensajeT8").hide();
     }
   }
+  $scope.valNumTelefono3 = function(datoTel){
+    if($scope.tipoTel == 'TELÉFONO'){
+     Numer=parseInt(datoTel);
+      if (isNaN(Numer)){
+      document.getElementById('f01_contacto3_nro').value = '';
+      }else{
+      var digits = ("" + Numer).split("");
+      if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+          if((digits.length>0) && (digits.length<7)){
+            $("#mensajeT9").show();
+            $("#mensajeT8").hide();
+            $("#mensajeT7").hide();
+          }else{
+            $("#mensajeT7").hide();
+            $("#mensajeT8").show();
+            $("#mensajeT9").hide();
+          }
+          if(digits.length == 8 ){
+            $("#mensajeT9").show();
+            $("#mensajeT8").hide();
+            $("#mensajeT7").hide();
+          }
+      }else{
+        $("#mensajeT7").show();
+        $("#mensajeT8").hide();
+        $("#mensajeT9").hide();
+          document.getElementById('f01_contacto3_nro').value = '';
+      }
+      }
+    }
+    if($scope.tipoTel == 'CELULAR'){
+      Numer=parseInt(datoTel);
+      if (isNaN(Numer)){
+      document.getElementById('f01_contacto3_nro').value = '';
+      }else{
+      var digits = ("" + Numer).split("");
+      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 )){
+          if((digits.length>0) && (digits.length<8)){
+            $("#mensajeT9").show();
+            $("#mensajeT8").hide();
+            $("#mensajeT7").hide();
+          }else{
+            $("#mensajeT7").hide();
+            $("#mensajeT8").show();
+            $("#mensajeT9").hide();
+          }
+      }else{
+        $("#mensajeT7").show();
+        $("#mensajeT8").hide();
+        $("#mensajeT9").hide();
+          document.getElementById('f01_contacto3_nro').value = '';
+      }
+      }
+    }
+
+  }
+
+
+  /*$scope.valNumTelefono3 = function(datoTel){
+    if($scope.tipoTel == 'TELÉFONO'){
+     Numer=parseInt(datoTel);
+      if (isNaN(Numer)){
+      document.getElementById('f01_contacto3_nro').value = '';
+      }else{
+      var digits = ("" + Numer).split("");
+      if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+          if((digits.length>0) && (digits.length<7)){
+            $("#mensajeT9").show();
+            $("#mensajeT8").hide();
+            $("#mensajeT7").hide();
+            }else{
+            $("#mensajeT7").hide();
+            $("#mensajeT8").show();
+            $("#mensajeT6").hide();
+            }
+            if(digits.length ==8 ){
+              $("#mensajeT9").show();
+              $("#mensajeT8").hide();
+              $("#mensajeT7").hide();
+            }
+        }else{
+          $("#mensajeT7").show();
+          $("#mensajeT8").hide();
+          $("#mensajeT9").hide();
+          document.getElementById('f01_contacto3_nro').value = '';
+      }
+      }
+    }
+    if($scope.tipoTel == 'CELULAR'){
+      Numer=parseInt(datoTel);
+      if (isNaN(Numer)){
+      document.getElementById('f01_contacto3_nro').value = '';
+      }else{
+      var digits = ("" + Numer).split("");
+      console.log('digits',digits,digits[0]);
+      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 )){
+          if((digits.length>0) && (digits.length<8)){
+            $("#mensajeT9").show();
+            $("#mensajeT8").hide();
+            $("#mensajeT7").hide();
+
+            }else{
+            $("#mensajeT7").hide();
+            $("#mensajeT8").show();
+            $("#mensajeT6").hide();
+            }
+      }else{
+        $("#mensajeT9").hide();
+        $("#mensajeT8").hide();
+        $("#mensajeT7").hide();
+          document.getElementById('f01_contacto3_nro').value = '';
+      }
+      }
+
+    }
+
+  }*/
+
+ 
+
 
     
 

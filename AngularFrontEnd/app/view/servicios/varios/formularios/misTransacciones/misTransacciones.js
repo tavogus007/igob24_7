@@ -9,8 +9,6 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
         $scope.startDateOpened = true;
      };
     $scope.startDateOpen1 = function ($event) {
-        console.log("$event",$event);
-        console.log("$scope.startDateOpened1", $scope.startDateOpened1);
         $event.preventDefault();
         $event.stopPropagation();
         $scope.startDateOpened1 = true;
@@ -34,17 +32,14 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
     $scope.fechaFin;
     $scope.lstMistransacciones = function (fechaIni, fechaFin) {
         $.blockUI();
-        console.log("iiii ",$scope.idAEconomicas);
         var idAE = $scope.idAEconomicas;
         //var idAE = "123456";
-        console.log("idAE",idAE);
         var lstTransferencias = new lstTransaciones(); 
         lstTransferencias.id_actividadeconomica = idAE;
         lstTransferencias.fecha_inicio          = fechaIni;
         lstTransferencias.fecha_fin             = fechaFin;
         lstTransferencias.listaTransaciones(function(resp){
           var respuesta = JSON.parse(resp);
-          console.log("respuesta", respuesta);
             if (respuesta.length > 0) {
                 $scope.obtmisTransacciones = respuesta;
                 var data = respuesta;
@@ -59,7 +54,6 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
                 $.unblockUI();
                 alertify.error("Transacciones no encontrados...");
                 $scope.vistaInfo = "mostrar";
-
             }
             $("#fechaIni").val("");
             $("#fechaFin").val("");
@@ -158,15 +152,21 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
 
     $scope.listadoActividadesEconomicas = function () {
         var dataGenesis = ((typeof ($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {} : $scope.dataGenesisCidadano);
-        var sNumeroRegistros = dataGenesis.length;
         var idContribuyente = $scope.dataGenesisCidadano[0].idContribuyente;
-        var contribuyente = new gLstActividadEconomica();
-        contribuyente.idContribuyente = idContribuyente;
-        contribuyente.tipo = 'N';
-        contribuyente.lstActividadEconomica(function (resultado) {
+        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
+        if( tipoPersona == "NATURAL") {
+            tipoPersona     = "N";
+        }else {
+            tipoPersona     = "J";
+        }
+        var idContribuyente           =   $scope.dataGenesisCidadano[0].idContribuyente;
+        var contribuyente             =   new lstActividadEconomicaVentas();
+        contribuyente.idContribuyente =   idContribuyente;
+        contribuyente.tipo            =   tipoPersona;
+        contribuyente.lstActividadEconomicaVentas(function(resultado){ 
+
             $.unblockUI();
             var resultadoApi = JSON.parse(resultado);
-            console.log("resultado  ==> ", resultadoApi);
             if (resultadoApi.success) {
                 $scope.vistaInfo        = "mostrar";
                 $scope.vistaInfoGenesis = null;
@@ -182,11 +182,9 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
                     $scope.vistaInfoAE         = "mostrar";
                     $scope.vistaInfoTit           = null;
                     $scope.nomAEconomicasCombo = $scope.nomAEconomicas;
-                   //   $("#id_ae").val(0);
                 }
                 $scope.fechaIni         = obtFechaActual.obtenerFechaActual();
                 $scope.fechaFin         = $scope.fechaIni;
-                console.log("$scope.fechaFin",$scope.fechaFin);        
                 /* $scope.fechaIni         = "2020-06-03";
                 $scope.fechaFin         = "2020-06-04"; */
                 $scope.lstMistransacciones($scope.fechaIni, $scope.fechaFin);
@@ -203,15 +201,12 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
 
     };
     $scope.asignarAcEconomica = function( dato) {
-        console.log("datttt ",dato);
-        console.log("$scope.misAcEconomicas",$scope.misAcEconomicas);
         $scope.misAcEconomicas.forEach(element => {
             if (element.IdActividad == dato) {
                 $scope.nomAEconomicasCombo = element.Descripcion;
                 $scope.idAEconomicas       = element.IdActividad;
                 $scope.fechaIni            = obtFechaActual.obtenerFechaActual();
                 $scope.fechaFin            = $scope.fechaIni;
-                console.log("$scope.fechaFin",$scope.fechaFin);        
                 /* $scope.fechaIni            = "2020-06-03";
                 $scope.fechaFin            = "2020-06-04"; */
                 $scope.lstMistransacciones($scope.fechaIni, $scope.fechaFin);

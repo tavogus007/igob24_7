@@ -222,7 +222,7 @@
                         <div class="controls">
                             <input ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" style="text-transform:uppercase;" ng-disabled="desabilitado" required/>
                             <span style="color:red" ng-show="signupForm.f01_nombreTV.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_nombreTV.$error.required">Nombre de la tienda Virtual es requerido. </span>
+                                <span align = "right" ng-show="signupForm.f01_nombreTV.$error.required">Nombre de la Tienda Virtual es requerido. </span>
                             </span>
                         </div>
                     </div>
@@ -234,7 +234,7 @@
                         <div class="controls">
                             <input ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" style="text-transform:uppercase;" ng-disabled="desabilitado" required/>
                             <span style="color:red" ng-show="signupForm.f01_descripcionTV.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_descripcionTV.$error.required">Descripción de la tienda Virtual es requerido. </span>
+                                <span align = "right" ng-show="signupForm.f01_descripcionTV.$error.required">Descripción de la Tienda Virtual es requerido. </span>
                             </span>
                         </div>
                     </div>
@@ -248,7 +248,7 @@
                                 <option value="">--Seleccionar--</option>
                             </select>
                             <span style="color:red" ng-show="signupForm.f01_categoria.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_categoria.$error.required">Categoria es requerido</span>
+                                <span align = "right" ng-show="signupForm.f01_categoria.$error.required">Categoría es requerido</span>
                             </span>
                         </div>
                     </div>
@@ -260,7 +260,7 @@
                         <div class="controls">
                             <input ng-model="datos.f01_correoTV" id="f01_correoTV" name="f01_correoTV" class="form-control" ng-keyup="validaCorreo();" ng-disabled="desabilitado" required focus/>
                             <span style="color:red" ng-show="signupForm.f01_correoTV.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_correoTV.$error.required">Correo electrónico es requerido</span>
+                                <span align = "right" ng-show="signupForm.f01_correoTV.$error.required">Correo Electrónico es requerido</span>
                             </span>
                             <br><span id ="mensaje1" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
                             <span id ="mensaje2" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span>
@@ -272,7 +272,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" >
-                        <label for="url" >Pagina Web:</label>
+                        <label for="url" >Página Web:</label>
                         <div class="controls">
                             <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control" ng-disabled="desabilitado"/>
                         </div>
@@ -304,7 +304,7 @@
 
             <div class="row" >
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>Ingrese los numeros telefónicos de contacto</h4>
+                    <h4>Ingrese los números telefónicos de contacto</h4>
                 </div>
                 <div class="col-md-1">
                 </div>
@@ -336,17 +336,14 @@
                     <div class="form-group" >
                         <label for="url" >Número de contacto:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" maxlength="8" onkeyUp="return valNumeroTelefono1(this);" />
-                            <span style="color:red" ng-show="signupForm.f01_contacto1_nro.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_contacto1_nro.$error.required">*</span>
-                            </span>
+                            <input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" maxlength="8" onkeyUp="return valNumeroTelefono1(this);" />                         
                             <span id ="mensajeT1" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido, tel. Fijo Ej. 2414141 tel. Celular Ej. 7858585</span>
                             <span id ="mensajeT2" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido para teléfono Fijo ó Celular</span>
                             <span id ="mensajeT3" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
                             <br>
                             <input ng-model="datos.f01_contacto2_nro" id="f01_contacto2_nro" name="f01_contacto2_nro" class="form-control" ng-disabled="inicializaC2" maxlength="8" onkeyUp="return valNumeroTelefono2(this);" />
                             <span id ="mensajeT4" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido, tel. Fijo Ej. 2414141 tel. Celular Ej. 7858585</span>
-                            <span id ="mensajeT5" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido tléfono Fijo ó Celular</span>
+                            <span id ="mensajeT5" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido teléfono Fijo ó Celular</span>
                             <span id ="mensajeT6" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
                             <br>
                             <input ng-model="datos.f01_contacto3_nro" id="f01_contacto3_nro" name="f01_contacto3_nro" class="form-control" ng-disabled="inicializaC3" maxlength="8" onkeyUp="return valNumeroTelefono3(this);" />
@@ -475,7 +472,7 @@
                 </div>
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label id="lbl_f01_upload" class="col-md-2 control-label">Catalogo de productos (Introducir Archivos tipo .jpg, .png ó .pdf)</label>
+                    <label id="lbl_f01_upload" class="col-md-2 control-label">Catálogo de productos (Introducir Archivos tipo .jpg, .png ó .pdf)</label>
                     <div class="controls">
                         <div class="form-group custom-upload">
                             <input type="file" id="f01_upload1" name="f01_upload1" accept="image/*"  style="display: none;">

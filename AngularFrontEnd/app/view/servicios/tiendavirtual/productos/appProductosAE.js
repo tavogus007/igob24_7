@@ -282,6 +282,10 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     }
 
     $scope.registrarProducto = function(data){
+      var f0 = "";
+      var f1 = "";
+      var f2 = "";
+
       $scope.mostrarTxt = false; 
       a = 0;
       angular.forEach($rootScope.archivosProducto, function(archivo, key) {

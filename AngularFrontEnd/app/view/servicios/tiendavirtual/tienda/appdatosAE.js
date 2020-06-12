@@ -612,7 +612,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       return re.test(email);
   }
   $scope.activarCampo1 = function(dato){
-    $scope.tipoTel = dato;
+    $scope.tipoTel1 = dato;
     if(dato == "" || dato == undefined || dato == 'undefined'){
       document.getElementById('f01_contacto1_nro').value = '';
       document.getElementById('f01_contacto1_nro').disabled = true;
@@ -630,7 +630,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.valNumTelefono1 = function(datoTel){
-    if($scope.tipoTel == 'TELÉFONO'){
+    if($scope.tipoTel1== 'TELÉFONO'){
      Numer=parseInt(datoTel);
       if (isNaN(Numer)){
       document.getElementById('f01_contacto1_nro').value = '';
@@ -659,7 +659,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       }
     }
-    if($scope.tipoTel == 'CELULAR'){
+    if($scope.tipoTel1 == 'CELULAR'){
       Numer=parseInt(datoTel);
       if (isNaN(Numer)){
       document.getElementById('f01_contacto1_nro').value = '';
@@ -688,7 +688,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   }
   $scope.activarCampo2 = function(dato){
-    $scope.tipoTel = dato;
+    $scope.tipoTel2 = dato;
     if(dato == "" || dato == undefined || dato == 'undefined'){
       document.getElementById('f01_contacto2_nro').value = '';
       document.getElementById('f01_contacto2_nro').disabled = true;
@@ -705,7 +705,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.valNumTelefono2 = function(datoTel){
-    if($scope.tipoTel == 'TELÉFONO'){
+    if($scope.tipoTel2 == 'TELÉFONO'){
      Numer=parseInt(datoTel);
       if (isNaN(Numer)){
       document.getElementById('f01_contacto2_nro').value = '';
@@ -734,7 +734,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       }
     }
-    if($scope.tipoTel == 'CELULAR'){
+    if($scope.tipoTel2 == 'CELULAR'){
       Numer=parseInt(datoTel);
       if (isNaN(Numer)){
       document.getElementById('f01_contacto2_nro').value = '';
@@ -761,7 +761,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   }
   $scope.activarCampo3 = function(dato){
-    $scope.tipoTel = dato;
+    $scope.tipoTel3 = dato;
     if(dato == "" || dato == undefined || dato == 'undefined'){
       document.getElementById('f01_contacto3_nro').value = '';
       document.getElementById('f01_contacto3_nro').disabled = true;
@@ -778,7 +778,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.valNumTelefono3 = function(datoTel){
-    if($scope.tipoTel == 'TELÉFONO'){
+    if($scope.tipoTel3 == 'TELÉFONO'){
      Numer=parseInt(datoTel);
       if (isNaN(Numer)){
       document.getElementById('f01_contacto3_nro').value = '';
@@ -807,7 +807,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       }
     }
-    if($scope.tipoTel == 'CELULAR'){
+    if($scope.tipoTel3 == 'CELULAR'){
       Numer=parseInt(datoTel);
       if (isNaN(Numer)){
       document.getElementById('f01_contacto3_nro').value = '';

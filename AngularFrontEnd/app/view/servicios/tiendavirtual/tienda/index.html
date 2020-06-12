@@ -110,7 +110,7 @@
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Nombre de la Tienda Virtual:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" style="text-transform:uppercase;" ng-disabled="desabilitado" required/>
+                            <input ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" ng-disabled="desabilitado" required/>
                             <span style="color:red" ng-show="signupForm.f01_nombreTV.$invalid">
                                 <span align = "right" ng-show="signupForm.f01_nombreTV.$error.required">Nombre de la Tienda Virtual es requerido. </span>
                             </span>
@@ -122,7 +122,7 @@
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Descripción de la Tienda Virtual:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" style="text-transform:uppercase;" ng-disabled="desabilitado" required/>
+                            <input ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" required/>
                             <span style="color:red" ng-show="signupForm.f01_descripcionTV.$invalid">
                                 <span align = "right" ng-show="signupForm.f01_descripcionTV.$error.required">Descripción de la Tienda Virtual es requerido. </span>
                             </span>
@@ -271,9 +271,14 @@
                             </div>
                             <br>
                             <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE3" name="f01_redessocialesAE3" ng-model="datos.f01_redessocialesAE3" ng-change="activaRedes3(datos.f01_redessocialesAE3)">
+                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE3" name="f01_redessocialesAE3" ng-model="datos.f01_redessocialesAE3" ng-change="activaRedes3(datos.f01_redessocialesAE3)">
                                 <label class="custom-control-label" for="defaultUnchecked">Instagram</label>
-                            </div>
+                            </div><br>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE4" name="f01_redessocialesAE4" ng-model="datos.f01_redessocialesAE4" ng-change="activaRedes4(datos.f01_redessocialesAE4)">
+                            <label class="custom-control-label" for="defaultUnchecked">Youtube</label>
+                        </div>
+
                         </div>
                     </div>
                 </div>
@@ -292,7 +297,10 @@
                             <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-keyUp="validaRedes3(datos.f01_redessocialesAE3_url);" ng-disabled="inicializaInstagram"/>
                             <span id ="mensajeR5" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
                             <span id ="mensajeR6" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
-                           
+                            <br>
+                            <input ng-model="datos.f01_redessocialesAE4_url" id="f01_redessocialesAE4_url" name="f01_redessocialesA4_url" class="form-control" ng-keyUp="validaRedes4(datos.f01_redessocialesAE4_url);" ng-disabled="inicializaYoutube"/>
+                            <span id ="mensajeR7" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
+                            <span id ="mensajeR8" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
                         </div>
                     </div>
                 </div>

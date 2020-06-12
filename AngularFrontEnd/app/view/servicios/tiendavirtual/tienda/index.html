@@ -105,7 +105,7 @@
         <div class="ibox-content">
           <form name="signupForm"  class="form-horizontal" role="form" novalidate>                   
             <div class="row" >
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Nombre de la Tienda Virtual:</label>
@@ -117,12 +117,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Descripción de la Tienda Virtual:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" required/>
+                            <textarea ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" rows="4" cols="150"></textarea>
                             <span style="color:red" ng-show="signupForm.f01_descripcionTV.$invalid">
                                 <span align = "right" ng-show="signupForm.f01_descripcionTV.$error.required">Descripción de la Tienda Virtual es requerido. </span>
                             </span>

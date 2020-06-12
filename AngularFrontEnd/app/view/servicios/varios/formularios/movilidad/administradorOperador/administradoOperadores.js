@@ -969,26 +969,32 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
 //*********************FIN OBSERVACIONES*********************
   $scope.crea_tramite_lotus = function (datos,tipo) {
     $.blockUI({ css: { 
-      border: 'none', 
-      padding: '10px', 
+        border: 'none', 
+        padding: '10px', 
       backgroundColor: '#000', 
-      '-webkit-border-radius': '10px', 
-      '-moz-border-radius': '10px', 
-      opacity: .5, 
-      color: '#fff' 
-    },message: "Espere un momento por favor ..." }); 
+        '-webkit-border-radius': '10px', 
+        '-moz-border-radius': '10px', 
+        opacity: .5, 
+        color: '#fff' 
+      },message: "Espere un momento por favor ..." }); 
     setTimeout(function(){
       var f = new Date();  
       datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
       data_form = JSON.stringify(datos);
-      var tramite = new crearTramiteMovilidad();
-      tramite.usr_id = 1;    
+      var tramite = new crear_Tramite_lotus();
+      tramite.proid = 66;
+      tramite.actid = 478;
+      tramite.usr_id = 0;        
       tramite.datos = data_form;
       tramite.procodigo = 'AO';
-      tramite.tramite_linea(function(results){
+      tramite.macro_id = 0;
+      tramite.nodo_id = 3517;
+      tramite.ws_id = 24;
+      var nroTramiteEnviado = sessionService.get('NROTRAMITE');
+      tramite.tram_lotus(function(results){ 
         results = JSON.parse(results);
         if (results !=null) {
-          var nrot = results.success.data[0].crea_tramite_linea;
+          var nrot = results.success.data[0].casonro;
           swal({
             title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
             text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
@@ -1004,13 +1010,12 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
           {
             $scope.listaCond();
           }
-
         }else{
           console.log('Se envio el tramite');
         }
         $.unblockUI();
       })  
-    },200);      
+    },300);      
   }
 
   //Renovacion de TIC Y TMOV

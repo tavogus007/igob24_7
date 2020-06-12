@@ -41,6 +41,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_redessocialesAE2 = "";
       $scope.datos.f01_redessocialesAE3_url = "";
       $scope.datos.f01_redessocialesAE3 = "";
+      $scope.datos.f01_redessocialesAE4_url = "";
+      $scope.datos.f01_redessocialesAE4 = "";
       $scope.datos.f01_ofertasAE_des1 = "";
       $scope.datos.f01_ofertasAE_des2 = "";
       $scope.datos.f01_ofertasAE_des3 = "";
@@ -54,6 +56,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.inicializaFacebook = true;
       $scope.inicializaTwitter = true;
       $scope.inicializaInstagram = true;
+      $scope.inicializaYoutube = true;
     } else {
 
       $scope.datos.f01_nombreTV = data[0].tv_nombrec;
@@ -107,9 +110,12 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.datos.f01_redessocialesAE2 = "";
         $scope.datos.f01_redessocialesAE3_url = "";
         $scope.datos.f01_redessocialesAE3 = "";
+        $scope.datos.f01_redessocialesAE4_url = "";
+        $scope.datos.f01_redessocialesAE4 = "";
         $scope.inicializaFacebook = true;
         $scope.inicializaTwitter =  true;
         $scope.inicializaInstagram = true;
+        $scope.inicializaYoutube = true;
 
       }else{
         for(i=0;i<redes.length;i++){
@@ -149,6 +155,18 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
             }else{
               $scope.inicializaInstagram = true;
               $scope.datos.f01_redessocialesAE3_url = '';
+            }
+          }
+          if (i==3){
+            $scope.datos.f01_redessocialesAE4_url = red.url;
+            $scope.datos.f01_redessocialesAE4 = red.tipo; 
+            $scope.datos.f01_redessocialesAE4 = red.checked; 
+            if ($scope.datos.f01_redessocialesAE4 == 'true' || $scope.datos.f01_redessocialesAE4 == true){
+              $scope.datos.f01_redessocialesAE4 = true; 
+              $scope.inicializaYoutube = false;
+            }else{
+              $scope.inicializaYoutube = true;
+              $scope.datos.f01_redessocialesAE4_url = '';
             }
           }
         }
@@ -309,6 +327,18 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       myJSON = '{ "tipo":"instagram", "checked":"false", "url":"" }';
       $rootScope.redesSocialesArray.push(myJSON);
     }
+    if (data.f01_redessocialesAE4=='true' || data.f01_redessocialesAE4==true){
+      if(data.f01_redessocialesAE4_url != ''){
+        myJSON = '{ "tipo":"youtube", "checked":"true", "url":"' + data.f01_redessocialesAE4_url + '" }';
+         $rootScope.redesSocialesArray.push(myJSON);
+      }else{
+        myJSON = '{ "tipo":"youtube", "checked":"false", "url":"" }';
+        $rootScope.redesSocialesArray.push(myJSON);
+      }
+    }else{
+      myJSON = '{ "tipo":"youtube", "checked":"false", "url":"" }';
+      $rootScope.redesSocialesArray.push(myJSON);
+    }
 
     datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
 
@@ -347,12 +377,12 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       if(results.length > 0){
           $.unblockUI();
           //$scope.refrescar();
-          swal('', "Tienda Virtual activada ", 'success');
+          swal('', "Los datos de la Tienda Virtual fueron guardados correctamente.", 'success');
           $rootScope.nuevo = null;
           $rootScope.update = "mostrar";
       } else {
           $.unblockUI();
-          swal('', "Error al Activar la Tienda Virtual", 'error');
+          swal('', "Error al guardar los datos de la Tienda Virtual", 'error');
       }
     });
   } 
@@ -449,6 +479,18 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         myJSON = '{ "tipo":"instagram", "checked":"false", "url":"" }';
         $rootScope.redesSocialesArray.push(myJSON);
       }
+      if (data.f01_redessocialesAE4=='true' || data.f01_redessocialesAE4==true){
+        if(data.f01_redessocialesAE4_url != ''){
+          myJSON = '{ "tipo":"youtube", "checked":"true", "url":"' + data.f01_redessocialesAE4_url + '" }';
+           $rootScope.redesSocialesArray.push(myJSON);
+        }else{
+          myJSON = '{ "tipo":"youtube", "checked":"false", "url":"" }';
+          $rootScope.redesSocialesArray.push(myJSON);
+        }
+      }else{
+        myJSON = '{ "tipo":"youtube", "checked":"false", "url":"" }';
+        $rootScope.redesSocialesArray.push(myJSON);
+      }
     datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
       //actualiza json ofertas
     datosTiendaVirtual.ofertas = [];
@@ -509,6 +551,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_redessocialesAE2 = "";
       $scope.datos.f01_redessocialesAE3_url = "";
       $scope.datos.f01_redessocialesAE3 = "";
+      $scope.datos.f01_redessocialesAE4_url = "";
+      $scope.datos.f01_redessocialesAE4 = "";
       $scope.datos.f01_ofertasAE_des1 = "";
       $scope.datos.f01_ofertasAE_des2 = "";
       $scope.datos.f01_ofertasAE_des3 = "";
@@ -544,6 +588,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $("#mensajeR4").hide();
       $("#mensajeR5").hide();
       $("#mensajeR6").hide();
+      $("#mensajeR7").hide();
+      $("#mensajeR8").hide();
 
   }
   $scope.validaCorreo =function(){
@@ -560,7 +606,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     $scope.correoValido=true;
     }
     return false;
-}
+  }
   $scope.validarEmail =function(email) {
       var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
@@ -788,77 +834,12 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   }
 
-
-  /*$scope.valNumTelefono3 = function(datoTel){
-    if($scope.tipoTel == 'TELÉFONO'){
-     Numer=parseInt(datoTel);
-      if (isNaN(Numer)){
-      document.getElementById('f01_contacto3_nro').value = '';
-      }else{
-      var digits = ("" + Numer).split("");
-      if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
-          if((digits.length>0) && (digits.length<7)){
-            $("#mensajeT9").show();
-            $("#mensajeT8").hide();
-            $("#mensajeT7").hide();
-            }else{
-            $("#mensajeT7").hide();
-            $("#mensajeT8").show();
-            $("#mensajeT6").hide();
-            }
-            if(digits.length ==8 ){
-              $("#mensajeT9").show();
-              $("#mensajeT8").hide();
-              $("#mensajeT7").hide();
-            }
-        }else{
-          $("#mensajeT7").show();
-          $("#mensajeT8").hide();
-          $("#mensajeT9").hide();
-          document.getElementById('f01_contacto3_nro').value = '';
-      }
-      }
-    }
-    if($scope.tipoTel == 'CELULAR'){
-      Numer=parseInt(datoTel);
-      if (isNaN(Numer)){
-      document.getElementById('f01_contacto3_nro').value = '';
-      }else{
-      var digits = ("" + Numer).split("");
-      console.log('digits',digits,digits[0]);
-      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 )){
-          if((digits.length>0) && (digits.length<8)){
-            $("#mensajeT9").show();
-            $("#mensajeT8").hide();
-            $("#mensajeT7").hide();
-
-            }else{
-            $("#mensajeT7").hide();
-            $("#mensajeT8").show();
-            $("#mensajeT6").hide();
-            }
-      }else{
-        $("#mensajeT9").hide();
-        $("#mensajeT8").hide();
-        $("#mensajeT7").hide();
-          document.getElementById('f01_contacto3_nro').value = '';
-      }
-      }
-
-    }
-
-  }*/
-
- 
-
-
-    
-
-  $scope.activaRedes1 = function(dato){
+ $scope.activaRedes1 = function(dato){
     $scope.redFacebook = dato;
     if(dato == false) {
       $scope.inicializaFacebook = true;
       document.getElementById('f01_redessocialesAE1_url').value = '';
+      $("#mensajeR1").hide();
     } else {
       $scope.inicializaFacebook =  false;
       $("#mensajeR1").show();
@@ -869,6 +850,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     if(dato == false) {
       $scope.inicializaTwitter = true;
       document.getElementById('f01_redessocialesAE2_url').value = '';
+      $("#mensajeR3").hide();
     } else {
       $scope.inicializaTwitter = false;
       $("#mensajeR3").show();
@@ -880,9 +862,21 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     if(dato == false) {
       $scope.inicializaInstagram = true;
       document.getElementById('f01_redessocialesAE3_url').value = ''; 
+      $("#mensajeR5").hide();
     } else {
       $scope.inicializaInstagram = false;
       $("#mensajeR5").show();
+    }
+  }
+  $scope.activaRedes4 = function(dato){
+    $scope.redYoutube = dato;
+    if(dato == false) {
+      $scope.inicializaYoutube = true;
+      document.getElementById('f01_redessocialesAE4_url').value = ''; 
+      $("#mensajeR7").hide();
+    } else {
+      $scope.inicializaYoutube = false;
+      $("#mensajeR7").show();
     }
   }
   $scope.validaRedes1 = function (datos){
@@ -922,6 +916,19 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }else{
       $("#mensajeR5").hide();
       $("#mensajeR6").hide();
+    }
+  }
+  $scope.validaRedes4 = function (datos){
+    if($scope.redYoutube == true){
+      $("#mensajeR7").show();
+      $("#mensajeR8").hide();
+      if(datos.length > 10){
+        $("#mensajeR7").hide();
+        $("#mensajeR8").show();
+      }
+    }else{
+      $("#mensajeR7").hide();
+      $("#mensajeR8").hide();
     }
   }
 

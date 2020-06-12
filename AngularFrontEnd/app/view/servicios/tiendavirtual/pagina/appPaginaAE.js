@@ -121,6 +121,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         logo =JSON.parse(logotipo);
         uptTVCP.imagen = logo[0].url;
         uptTVCP.datosAuxiliares = JSON.stringify($rootScope.datosAuxiliares);
+        uptTVCP.nombre = $rootScope.datosTiendaVirtual[0].tv_nombrec;
         uptTVCP.modificarTiendaVirtual(function(response){
           resultado = JSON.parse(response);
           if (resultado.success.data[0].regp_estado == 'SI')

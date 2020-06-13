@@ -70,12 +70,12 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           $scope.textbtnguardar = 'Registrar';
           $scope.btndelete = false;
         } else {
-          $scope.datos.ent_financiera   = respuesta.entidad_financiera;
-          $scope.datos.nro_cuenta       = respuesta.numero_cuenta;
-          $scope.datos.nom_abono        = respuesta.abono_cuenta;
-          $scope.datos.ci_nit_abono     = respuesta.ci_nit_abono;
-          $scope.textbtnguardar         = 'Modificar';
-          $scope.btndelete              = true;
+          $scope.datos.ent_financiera = respuesta.entidad_financiera;
+          $scope.datos.nro_cuenta = respuesta.numero_cuenta;
+          $scope.datos.nom_abono = respuesta.abono_cuenta;
+          $scope.datos.ci_nit_abono = respuesta.ci_nit_abono;
+          $scope.textbtnguardar = 'Modificar';
+          $scope.btndelete = true;
         }
       });
 
@@ -119,37 +119,36 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
   };
 
   $scope.anularData = function (datos) {
-    
+
     $.blockUI();
-    var tipo_cred = ""
+    var tipo_cred = "";
+    var tipo_cred1 = "";
     var valortipoent = "";
     if (datos.f01_tipoPago == "1") {
       tipo_cred = "BCP";
-      valortipoent = "con número " + datos.service_code;
+      tipo_cred1 = " BCP ";
+      valortipoent = "con código " + datos.service_code;
     } else if (datos.f01_tipoPago == "2") {
       tipo_cred = "REDENLACE";
-      valortipoent = "con perfil id " + datos.profile_id;
-
+      tipo_cred1 = "RED ENLACE";
+      valortipoent = "";
     } else if (datos.f01_tipoPago == "3") {
       tipo_cred = "TRANSFERENCIAS";
-      valortipoent = "con Nro. de Cuenta " + datos.nro_cuenta;//140220
-
+      tipo_cred1 = "TRANSFERENCIA";
+      valortipoent = "";
     } else {
       alertify.error("No tenemos el tipo de credencial para realizar esta operación");
       return false;
     }
-    /* swal({
-      title: "¿Usted esta Deshabilitando la Credencial de la Entidad "+ tipo_cred + " " + valortipoent,
-      text: "Presione Si.! para Continuar!",
+    swal({
+      title: "¿Esta seguro de Inhabilitar el cobro mediante " + tipo_cred1 + "" + valortipoent + "?",
       type: "warning",
       showCancelButton: true,
-      //confirmButtonColor: "#dc3545",
+      confirmButtonColor: "#dc3545",
       confirmButtonText: "Si",
       cancelButtonText: "No",
       closeOnConfirm: false,
       buttonsStyling: false,
-      confirmButtonClass: 'btn btn-success w-25 mr-05',
-      cancelButtonClass: 'btn btn-secondary w-25 ml-05'
     },
       function () {
         $scope.$apply(function () {
@@ -159,11 +158,9 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           inCredenciales.eliminaCredencial(function (resp) {
             var respuesta = JSON.parse(resp);
             respuesta = JSON.parse(respuesta);
-            console.log("respuesta", respuesta);
+            console.log("respuesta.", respuesta);
             if (respuesta.delete_credenciales == "Registro Inhabilitado") {
-              console.log("$scope.textbtnguardar", $scope.textbtnguardar);
               $scope.textbtnguardar = 'Registrar';
-              console.log("$scope.textbtnguardar", $scope.textbtnguardar);
               $scope.btndelete = false;
               $scope.datos.service_code = "";
               $scope.datos.access_key = "";
@@ -174,7 +171,7 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
               $scope.datos.nom_abono = "";
               $scope.datos.ci_nit_abono = "";
               //$("#service_code").val("");
-              swal('Ok!', 'La(s) Credencial(es) se Inhabilito Correctamente...', 'success');
+              swal('', 'El cobro ' + tipo_cred1 + ' se Inhabilito Correctamente...', 'success');
             } else {
               swal('Error!', 'No existe el registro', 'error');
             }
@@ -182,28 +179,29 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           });
 
         });
-      }); */
+      });
     $.unblockUI();
   }
 
   $scope.registrarTipoPago = function (datos) {
-    $scope.msError   = "Encontramos campos vacios";
-    var tipo_cred    = ""
+    $scope.msError = "Encontramos campos vacios";
+    var tipo_cred = ""
     var valortipoent = "";
-    var msgguardar   = "";
-    console.log("vvv", $scope.textbtnguardar);
+    var msgguardar = "";
+    var msgguarresp = "";
     if ($scope.textbtnguardar == "Modificar") {
-      msgguardar = "la modificación";
-    }else {
-      msgguardar = "el registro";
+      msgguardar = "modificar el cobro";
+      msgguarresp = "modificó";
+    } else {
+      msgguardar = "habilitar el cobro";
+      msgguarresp = "habilitó";
     }
     switch (datos.f01_tipoPago) {
       case "1":
         tipo_cred = "BCP";
-        valortipoent = "con número " + datos.service_code;
+        valortipoent = "con código " + datos.service_code;
         swal({
-          title: "¿Usted esta seguro de realizar " + msgguardar + " de la entidad " + tipo_cred + " " + valortipoent,
-          text: "Presione Si.! para Continuar!",
+          title: "¿Esta seguro de  " + msgguardar + " mediante pago " + tipo_cred + " " + valortipoent + " ?",
           type: "info",
           showCancelButton: true,
           confirmButtonColor: "#dc3545",
@@ -219,7 +217,7 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
             pagoQr.registroQr(function (resp) {
               var respuesta = JSON.parse(resp);
               respuesta = JSON.parse(respuesta);
-              respuesta = "QR: " + respuesta.spregistrabcp;
+              respuesta = "Se " + msgguarresp + " el cobro mediante QR correctamente";
               swal('', respuesta, 'success');
               $scope.textbtnguardar = 'Modificar';
               $scope.btndelete = true;
@@ -228,16 +226,14 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
         });
         break;
       case "2":
-        console.log("id_org ", datos.id_organizacion);
-
-        if (datos.access_key == "") {
-          $scope.smal_acc_key = true;
+        
+        if (datos.profile_id == "" ) {
+          $scope.smal_perfil = true;
           alertify.error($scope.msError);
-
           return false;
         }
-        if (datos.profile_id == "") {
-          $scope.smal_perfil = true;
+        if (datos.access_key == "") {
+          $scope.smal_acc_key = true;
           alertify.error($scope.msError);
           return false;
         }
@@ -251,11 +247,10 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           alertify.error($scope.msError);
           return false;
         }
-        tipo_cred = "REDENLACE";
+        tipo_cred = "RED ENLACE";
         valortipoent = "con perfil id " + datos.profile_id;
         swal({
-          title: "¿Usted esta seguro de realizar " + msgguardar + " de la entidad " + tipo_cred + " " + valortipoent,
-          text: "Presione Si.! para Continuar!",
+          title: "¿Esta seguro de " + msgguardar + " mediante pago " + tipo_cred + "? ",
           type: "info",
           showCancelButton: true,
           confirmButtonColor: "#dc3545",
@@ -273,7 +268,7 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
             pagoAtc.registroAtc(function (resp) {
               var respuesta = JSON.parse(resp);
               respuesta = JSON.parse(respuesta);
-              respuesta = "RED ENLACE: " + respuesta.spregistraredenlace;
+              respuesta = "Se " + msgguarresp + " el cobro mediante RED ENLACE correctamente";
               swal('', respuesta, 'success');
               $scope.textbtnguardar = 'Modificar';
               $scope.btndelete = true;
@@ -283,36 +278,69 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
 
         break;
       case "3":
-        tipo_cred = "TRANSFERENCIAS";
+        tipo_cred = "TRANSFERENCIA";
         valortipoent = "con Nro. de Cuenta " + datos.nro_cuenta;//140220 
         console.log("msgguardar", msgguardar);
         swal({
-          title: "¿Usted esta seguro de realizar " + msgguardar + " de la entidad " + tipo_cred + " " + valortipoent,
-          text: "Presione Si.! para Continuar!",
+          title: "¿Esta seguro de " + msgguardar + " mediante pago " + tipo_cred + "? ",
           type: "info",
           showCancelButton: true,
           confirmButtonColor: "#dc3545",
           confirmButtonText: "Si",
           cancelButtonText: "No",
           closeOnConfirm: false
-        }, function () {
-          $scope.$apply(function () {
-            var transBanc = new tbancaria();
-            transBanc.id_actividadeconomica = sessionService.get("IDAE");
-            transBanc.entidad_financiera = datos.ent_financiera;
-            transBanc.numero_cuenta = datos.nro_cuenta;
-            transBanc.nombre_abono = datos.nom_abono;
-            transBanc.ci_nit_abono = datos.ci_nit_abono;
-            transBanc.registroTransferencia(function (resp) {
-              var respuesta = JSON.parse(resp);
-              respuesta = JSON.parse(respuesta);
-              console.log("respuesta", respuesta);
-              respuesta = "TRANSFERENCIA: " + respuesta.spregistratransferencia;
-              swal('', respuesta, 'success');
-              $scope.textbtnguardar = 'Modificar';
-              $scope.btndelete = true;
-            });
-          });
+        }, function (swalresp) {
+          if (swalresp) {
+            if ($scope.textbtnguardar != "Modificar") {
+              swal({
+                title: "Esta habilitando el número de cuenta " + datos.nro_cuenta + " de la entidad financiera " + datos.ent_financiera,
+                text: "¿Esta seguro?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: false
+              }, function (swalresp1) {
+                if (swalresp1) {
+                  $scope.$apply(function () {
+                    var transBanc = new tbancaria();
+                    transBanc.id_actividadeconomica = sessionService.get("IDAE");
+                    transBanc.entidad_financiera = datos.ent_financiera;
+                    transBanc.numero_cuenta = datos.nro_cuenta;
+                    transBanc.nombre_abono = datos.nom_abono;
+                    transBanc.ci_nit_abono = datos.ci_nit_abono;
+                    transBanc.registroTransferencia(function (resp) {
+                      var respuesta = JSON.parse(resp);
+                      respuesta = JSON.parse(respuesta);
+                      respuesta = "Se " + msgguarresp + " el cobro mediante TRANSFERENCIA correctamente";
+                      swal('', respuesta, 'success');
+                      $scope.textbtnguardar = 'Modificar';
+                      $scope.btndelete = true;
+                    });
+                  });
+                }
+              });
+            } else {
+              $scope.$apply(function () {
+                var transBanc = new tbancaria();
+                transBanc.id_actividadeconomica = sessionService.get("IDAE");
+                transBanc.entidad_financiera = datos.ent_financiera;
+                transBanc.numero_cuenta = datos.nro_cuenta;
+                transBanc.nombre_abono = datos.nom_abono;
+                transBanc.ci_nit_abono = datos.ci_nit_abono;
+                transBanc.registroTransferencia(function (resp) {
+                  var respuesta = JSON.parse(resp);
+                  respuesta = JSON.parse(respuesta);
+                  respuesta = "Se " + msgguarresp + " el cobro mediante TRANSFERENCIA correctamente";
+                  swal('', respuesta, 'success');
+                  $scope.textbtnguardar = 'Modificar';
+                  $scope.btndelete = true;
+                });
+              });
+            }
+          }
+
         });
         break;
       default:
@@ -323,12 +351,12 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
     }
   }
   $scope.inicioTiendaVirtual = function () {
-  
+
     var getEntidades = new tbancaria();
-        getEntidades.getEntidades(function (resp) {
-          var respuesta = JSON.parse(resp);
-          console.log("respuesta=> ",respuesta);
-          $scope.entidades = JSON.parse(respuesta);
-        });
+    getEntidades.getEntidades(function (resp) {
+      var respuesta = JSON.parse(resp);
+      $scope.entidades = JSON.parse(respuesta);
+    });
+    $scope.tipo = '';
   }
 };

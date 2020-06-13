@@ -163,9 +163,9 @@
                     <div class="form-group" >
                         <label for="url" >Llave de Acceso:</label>
                         <div class="controls">
-                            <input type="text" ng-model="datos.access_key" id="access_key" name="access_key" class="form-control" ng-disabled="desabilitado"/>
+                            <input type="text" ng-keyup="validaCampo('access_key' ,datos.access_key)" ng-model="datos.access_key" id="access_key" name="access_key" class="form-control" ng-disabled="desabilitado"/>
                             <br><span ng-if ="smal_acc_key"
-                              style="color:red;font-weight:bold; font-size:14px">El Campo Llave de Acceso debe ser Llenado)</span>
+                              style="color:red;font-weight:bold; font-size:14px">El Campo Llave de Acceso debe ser Llenado</span>
                         </div>
                     </div>
                   </div>
@@ -173,9 +173,9 @@
                       <div class="form-group" >
                           <label for="url" >Perfil Id:</label>
                           <div class="controls">
-                            <input type="text" ng-model="datos.profile_id" id="profile_id" name="profile_id" class="form-control" ng-disabled="desabilitado"/>
+                            <input type="text" ng-keyup="validaCampo('profile_id' ,datos.profile_id)" ng-model="datos.profile_id" id="profile_id" name="profile_id" class="form-control" ng-disabled="desabilitado"/>
                             <br><span ng-if ="smal_perfil"
-                              style="color:red;font-weight:bold; font-size:14px">El Campo Perfil Id debe ser Llenado)</span>
+                              style="color:red;font-weight:bold; font-size:14px">El Campo Perfil Id debe ser Llenado</span>
                           </div>
                       </div>
                   </div>
@@ -183,9 +183,9 @@
                     <div class="form-group" >
                         <label for="url" >Llave Secreta:</label>
                         <div class="controls">
-                          <textarea ng-model="datos.secret_key" id="secret_key" name="secret_key" class="form-control" ng-disabled="desabilitado"/>
+                          <textarea ng-model="datos.secret_key" ng-keyup="validaCampo('secret_key' ,datos.secret_key)" id="secret_key" name="secret_key" class="form-control" ng-disabled="desabilitado"/>
                           <br><span ng-if ="smal_sec_key"
-                              style="color:red;font-weight:bold; font-size:14px">El Campo Llave Secreta debe ser Llenado)</span>
+                              style="color:red;font-weight:bold; font-size:14px">El Campo Llave Secreta debe ser Llenado</span>
                         </div>
                     </div>
                   </div>
@@ -193,7 +193,7 @@
                     <div class="form-group" >
                         <label for="url" >Organización Id:</label>
                         <div class="controls">
-                          <input type="text" ng-keyup="validaCampo('id_organizacion' ,datos.id_organizacion)" ng-model="datos.id_organizacion" id="id_organizacion" name="id_organizacion" class="form-control" ng-disabled="desabilitado"/>
+                          <input type="text" ng-model="datos.id_organizacion" ng-keyup="validaCampo('id_organizacion' ,datos.id_organizacion)"  id="id_organizacion" name="id_organizacion" class="form-control" ng-disabled="desabilitado"/>
                           <br><span ng-if ="smal_idOrg"
                               style="color:red;font-weight:bold; font-size:14px">El Campo Organización Id debe ser Llenado</span>
                         </div>

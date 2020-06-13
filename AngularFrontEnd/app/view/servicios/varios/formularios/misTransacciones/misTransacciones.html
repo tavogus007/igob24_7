@@ -33,13 +33,29 @@
         color: #FFFFFF;
         border-radius: 8px;
     }
+    select {
+        text-align: center;
+        text-align-last: center;
+        /* webkit*/
+    }
+    option {
+        text-align: center;
+        text-align-last: center;
+        /* reset to left*/
+    }
 </style>
 
 <div class="page-content" ng-controller="misTransaccioneController" data-ng-init="inicioComponente();">
     <div class="col-md-12">
         <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5 class="ng-binding">Mis Transacciones</h5>
+            <div class="ibox-title col-mb-3">
+                <!-- <h5 class="ng-binding"> Mis Transacciones  </h5>  -->
+                <div class="row justify-content-md-rigth">
+                    <div class="col-sm-12">
+                        <strong class="ng-binding" style="color: #0d0d0e;" > <h5> Mis Transacciones  &nbsp; &nbsp; &nbsp;</h5></strong> <strong class="ng-binding" style="color: #00adb5;">{{nomAEconomicas}}</strong>
+                    </div>
+                    <br>
+                </div>
             </div>
             <div>
                 <form name="empForm" class="form-horizontal" role="form" novalidate>
@@ -53,36 +69,26 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="row justify-content-md-center" ng-if="vistaInfoTit != null">
-                            <br>
-                            <div class="col-sm-8">
-                                <strong class="ng-binding" style="color: #00adb5;">{{nomAEconomicas}}</strong>
-                            </div>
-                        </div>
-                        <div class="row" ng-if="vistaInfoAE != null">
+                        <div class="row" ng-show="vistaInfoAE != null">
                             <br>
                             <div class="col-sm-4">
                                 <div class="form-group" >
                                     <label for="url" >Mis Actividades Ecónomicas:</label>
                                     <div class="controls">
                                         <select id="id_ae" class="form-control" ng-model="registro.id_ae" name="id_ae" ng-change="asignarAcEconomica(registro.id_ae);" required>
-                                            <option value="">--Seleccionar--</option>
+                                            <option value=""> -- Todos --</option>
                                             <option ng-repeat="acEconomica in misAcEconomicas"
                                             value="{{acEconomica.IdActividad}}">
-                                            {{acEconomica.IdActividad}}</option>
+                                            {{acEconomica.RazonSocial}} Sucursal Nro. {{acEconomica.sucursal}}</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-8">
-                                <strong class="ng-binding" style="color: #00adb5;">{{nomAEconomicasCombo}}</strong>
+                            <div class="col-sm-1">
                             </div>
-                        </div>
-                        <div class="row" ng-show="vistaInfo != null">
-                            <br>
-                            <div class="col-sm-4">
-                                <!-- <label for="basic-url">Fecha Inicio</label> -->
+                            <div class="col-sm-2 mb-3">
                                 <div class="input-group mb-3">
+                                    <label for="basic-url"></label>
                                     <p class="input-group"><input name="fechaIni" id="fechaIni"
                                             placeholder="Fecha Inicio" class="form-control"
                                             datepicker-popup="dd/MM/yyyy" ng-model="registro.fecha_inicio"
@@ -97,9 +103,9 @@
                                 </div>
                                 <div class="hr-line-dashed"></div>
                             </div>
-                            <div class="col-sm-4">
-                                <!-- <label for="basic-url">Fecha Final</label> -->
+                            <div class="col-sm-2">
                                 <div class="input-group mb-3">
+                                    <label for="basic-url"></label>
                                     <p class="input-group"><input name="fechaFin" id="fechaFin" placeholder="Fecha Fin"
                                             class="form-control" datepicker-popup="dd/MM/yyyy"
                                             ng-model="registro.fecha_fin" is-open="startDateOpened2" close-text="Close"
@@ -115,13 +121,72 @@
                                 <div class="hr-line-dashed"></div>
                             </div>
                             <div class="col-sm-2">
+                                <label for="basic-url"></label>
                                 <button id="lstTransaccion" name="lstTransaccion" type="button"
-                                    class="btn btn-success mb-3" ng-click="listarTransacciones();">Consultar Mis
+                                    class="btn btn-success mb-3" ng-click="listarTransacciones();"><span class="glyphicon glyphicon-list-alt"></span> Mis
                                     Transacciones
                                 </button>
                             </div>
                         </div>
-
+                        <div class="row justify-content-md-center" ng-show="vistaInfoTit != null">
+                            <br>
+                            <div class="col-sm-2">
+                                <!-- <div class="form-group" >
+                                    <label for="url" >Mis Actividades Ecónomicas:</label>
+                                    <div class="controls">
+                                        <select id="id_ae" style="text-align:center;" class="form-control" ng-model="registro.id_ae" name="id_ae" ng-change="asignarAcEconomica(registro.id_ae);" required>
+                                            <option value=""> -- Todos --</option>
+                                            <option ng-repeat="acEconomica in misAcEconomicas"
+                                            value="{{acEconomica.IdActividad}}">
+                                            {{acEconomica.RazonSocial}} Sucursal Nro. {{acEconomica.sucursal}}</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class="col-sm-2 mb-3">
+                                <div class="input-group mb-3">
+                                    <label for="basic-url"></label>
+                                    <p class="input-group"><input name="fechaIni" id="fechaIni"
+                                            placeholder="Fecha Inicio" class="form-control"
+                                            datepicker-popup="dd/MM/yyyy" ng-model="registro.fecha_inicio"
+                                            is-open="startDateOpened1" close-text="Close" ng-disabled="true"
+                                            min-date="model.endDate" style="width: 100% !important" required />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default"
+                                                ng-click="startDateOpen1($event)"><i
+                                                    class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="input-group mb-3">
+                                    <label for="basic-url"></label>
+                                    <p class="input-group"><input name="fechaFin" id="fechaFin" placeholder="Fecha Fin"
+                                            class="form-control" datepicker-popup="dd/MM/yyyy"
+                                            ng-model="registro.fecha_fin" is-open="startDateOpened2" close-text="Close"
+                                            ng-disabled="true" min-date="model.endDate" style="width: 100% !important"
+                                            required />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default"
+                                                ng-click="startDateOpen2($event)"><i
+                                                    class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="basic-url"></label>
+                                <button id="lstTransaccion" name="lstTransaccion" type="button"
+                                    class="btn btn-success mb-3" ng-click="listarTransacciones();"><span class="glyphicon glyphicon-list-alt"></span> Mis
+                                    Transacciones
+                                </button>
+                            </div>
+                        </div>
                         <div class="row" ng-if="vistaInfo != null">
                             <div class="col-sm-12">
                                 <div class="table-responsive">
@@ -131,6 +196,9 @@
                                             <td align="center" data-title="'#'">{{$index+1}}</td>
                                             <td data-title="'ID VENTA'" sortable="'id_venta'">
                                                 {{obtTransaccion.id_venta}}
+                                            </td>
+                                            <td class="text-center" data-title="'NRO. SUC'" sortable="'sucursal'">
+                                                {{obtTransaccion.sucursal}}
                                             </td>
                                             <td data-title="'FECHA'" sortable="'fecha'">
                                                 {{obtTransaccion.fecha}}

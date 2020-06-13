@@ -1,13 +1,9 @@
-function misTransaccioneController($scope, $q, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter, FileUploader, fileUpload, fileUpload1, $timeout,obtFechaActual, obtFechaCorrecta) {
-    $scope.model = {
-        startDate: new Date('09/21/2015'),
-        endDate: new Date()
-    };
-    $scope.startDateOpen = function($event) {
+function misTransaccioneController($scope, $q, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter, FileUploader, fileUpload, fileUpload1, $timeout, obtFechaActual, obtFechaCorrecta) {
+    $scope.startDateOpen = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.startDateOpened = true;
-     };
+    };
     $scope.startDateOpen1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -18,51 +14,97 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
         $event.stopPropagation();
         $scope.startDateOpened2 = true;
     };
-    
-    $scope.trmUsuario          = [];
+
+    $scope.trmUsuario = [];
     $scope.obtmisTransacciones = [];
-    $scope.misAcEconomicas     = [];
-    $scope.vistaInfo           = null; 
-    $scope.vistaInfoTit        = null; 
-    $scope.vistaInfoGenesis    = null;
-    $scope.vistaInfoAE         = null;
+    $scope.misAcEconomicas = [];
+    $scope.vistaInfo = null;
+    $scope.vistaInfoTit = null;
+    $scope.vistaInfoGenesis = null;
+    $scope.vistaInfoAE = null;
     $scope.nomAEconomicasCombo = "";
+    $scope.constlista = "todos";
     $scope.idAEconomicas;
     $scope.fechaIni;
     $scope.fechaFin;
+    
     $scope.lstMistransacciones = function (fechaIni, fechaFin) {
         $.blockUI();
-        var idAE = $scope.idAEconomicas;
-        //var idAE = "123456";
-        var lstTransferencias = new lstTransaciones(); 
-        lstTransferencias.id_actividadeconomica = idAE;
-        lstTransferencias.fecha_inicio          = fechaIni;
-        lstTransferencias.fecha_fin             = fechaFin;
-        lstTransferencias.listaTransaciones(function(resp){
-          var respuesta = JSON.parse(resp);
-            if (respuesta.length > 0) {
-                $scope.obtmisTransacciones = respuesta;
-                var data = respuesta;
+        if ($scope.constlista != "todos") {
+            var idAE = $scope.idAEconomicas;
+            var lstTransferencias = new lstTransaciones();
+            lstTransferencias.id_actividadeconomica = idAE;
+            lstTransferencias.fecha_inicio = fechaIni;
+            lstTransferencias.fecha_fin = fechaFin;
+            lstTransferencias.listaTransaciones(function (resp) {
+                var respuesta = JSON.parse(resp);
+                if (respuesta.length > 0) {
+                    $scope.arraytransaccion = [];
+                    respuesta.forEach(element => {
+                        element.sucursal = $scope.sucursal;
+                        $scope.arraytransaccion.push(element);
+                    });
+                    $scope.obtmisTransacciones = $scope.arraytransaccion;
+                    var data = $scope.arraytransaccion;
+                    $scope.tablaTransaciones.reload();
+                    $scope.vistaInfo = "mostrar";
+                    alertify.success("Mis Transacciones...");
+                    $.unblockUI();
+                } else {
+                    data = [];
+                    $scope.obtmisTransacciones = [];
+                    $scope.tablaTransaciones.reload();
+                    $.unblockUI();
+                    alertify.error("Sin Transacciones...");
+                    $scope.vistaInfo = "mostrar";
+                }
+                $("#fechaIni").val("");
+                $("#fechaFin").val("");
+            });
+        } else {
+            $.blockUI();
+            $scope.arrayTransacciones = [];
+            $scope.misAcEconomicas.forEach(element => {
+                var Sucursal = element.sucursal; 
+                var idAE     = element.IdActividad;
+                var lstTransferencias = new lstTransaciones();
+                lstTransferencias.id_actividadeconomica = idAE;
+                lstTransferencias.fecha_inicio = fechaIni;
+                lstTransferencias.fecha_fin = fechaFin;
+                lstTransferencias.listaTransaciones(function (resp) {
+                    var respuesta = JSON.parse(resp);
+                    if (respuesta.length > 0 ) {
+                        respuesta.forEach(element => {
+                            element.sucursal = Sucursal;
+                            $scope.arrayTransacciones.push(element);
+                        });
+                    }
+                });
+            });
+            $.unblockUI();
+            if ($scope.arrayTransacciones.length > 0) {
+                $scope.obtmisTransacciones = $scope.arrayTransacciones;
+                var data = $scope.arrayTransacciones;
                 $scope.tablaTransaciones.reload();
                 $scope.vistaInfo = "mostrar";
-                alertify.success("Exito...");
+                alertify.success("Mis Transacciones...");
                 $.unblockUI();
             } else {
                 data = [];
                 $scope.obtmisTransacciones = [];
                 $scope.tablaTransaciones.reload();
-                $.unblockUI();
-                alertify.error("Transacciones no encontrados...");
+                alertify.error("Sin Transacciones...");
                 $scope.vistaInfo = "mostrar";
+                $.unblockUI();
             }
             $("#fechaIni").val("");
             $("#fechaFin").val("");
-        });
+        }
         $.unblockUI();
     }
     $scope.tablaTransaciones = new ngTableParams({
         page: 1,
-        count: 20,
+        count: 15,
         filter: {},
         sorting: {}
     }, {
@@ -103,6 +145,7 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
         $scope.detallesT = JSON.parse(dataTrans.detalle);
     }
     $scope.obtenerContribuyente = function () {
+        $.blockUI();
         var tipoContribuyente = sessionService.get('TIPO_PERSONA');
         if (tipoContribuyente == 'NATURAL') {
             ciDocumento = sessionService.get('CICIUDADANO');
@@ -128,93 +171,105 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
             resultadoApi = JSON.parse(resultado);
             if (resultadoApi.success) {
                 var response = resultadoApi;
-                $scope.txtMsgConexionGen = "";
                 if (response.success.dataSql.length > 0) {
                     $scope.dataGenesisCidadano = response.success.dataSql;
                     $scope.listadoActividadesEconomicas();
                 } else {
                     $scope.dataGenesisCidadano = '';
-                    $scope.vistaInfo         = null;
-                    $scope.vistaInfoGenesis  = "mostrar";
+                    $scope.vistaInfo = null;
+                    $scope.vistaInfoGenesis = "mostrar";
                     swal({
                         type: "info",
                         title: "Nota!",
                         text: "No logramos encontrar información para ver sus transacciones",
                         confirmButtonText: "OK"
                     });
+                    $.unblockUI();
                 }
             } else {
-                $scope.txtMsgConexionGen = "Se ha producido un problema de conexion al cargar los datos";
                 $.unblockUI();
             }
         });
     };
 
     $scope.listadoActividadesEconomicas = function () {
+        $.blockUI();
         var dataGenesis = ((typeof ($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {} : $scope.dataGenesisCidadano);
         var idContribuyente = $scope.dataGenesisCidadano[0].idContribuyente;
-        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-        if( tipoPersona == "NATURAL") {
-            tipoPersona     = "N";
-        }else {
-            tipoPersona     = "J";
+        var tipoPersona = sessionService.get('TIPO_PERSONA');
+        if (tipoPersona == "NATURAL") {
+            tipoPersona = "N";
+        } else {
+            tipoPersona = "J";
         }
-        var idContribuyente           =   $scope.dataGenesisCidadano[0].idContribuyente;
-        var contribuyente             =   new lstActividadEconomicaVentas();
-        contribuyente.idContribuyente =   idContribuyente;
-        contribuyente.tipo            =   tipoPersona;
-        contribuyente.lstActividadEconomicaVentas(function(resultado){ 
 
-            $.unblockUI();
+        var idContribuyente = $scope.dataGenesisCidadano[0].idContribuyente;
+        var contribuyente = new lstActividadEconomicaVentas();
+        contribuyente.idContribuyente = idContribuyente;
+        contribuyente.tipo = tipoPersona;
+        contribuyente.lstActividadEconomicaVentas(function (resultado) {
             var resultadoApi = JSON.parse(resultado);
             if (resultadoApi.success) {
-                $scope.vistaInfo        = "mostrar";
+                $scope.vistaInfo = "mostrar";
                 $scope.vistaInfoGenesis = null;
-                var response            = resultadoApi;
-                $scope.trmUsuario       = response.success.dataSql;
-                $scope.misAcEconomicas  = $scope.trmUsuario;
-                $scope.idAEconomicas    = $scope.trmUsuario[0].IdActividad;      
-                $scope.nomAEconomicas   = $scope.trmUsuario[0].Descripcion;
-                if ( $scope.trmUsuario.length == 1 ) {
+                var response = resultadoApi;
+                $scope.trmUsuario = response.success.dataSql;
+                $scope.misAcEconomicas = $scope.trmUsuario;
+                $scope.idAEconomicas   = $scope.trmUsuario[0].IdActividad;
+                $scope.nomAEconomicas  = $scope.trmUsuario[0].RazonSocial;
+                $scope.sucursal        = $scope.trmUsuario[0].sucursal;
+                if ($scope.trmUsuario.length == 1) {
                     $scope.vistaInfoAE = null;
-                    $scope.vistaInfoTit   = "mostrar";
-                }else if ($scope.trmUsuario.length > 1) {
-                    $scope.vistaInfoAE         = "mostrar";
-                    $scope.vistaInfoTit           = null;
+                    $scope.vistaInfoTit = "mostrar";
+                } else if ($scope.trmUsuario.length > 1) {
+                    $scope.vistaInfoAE = "mostrar";
+                    $scope.vistaInfoTit = null;
                     $scope.nomAEconomicasCombo = $scope.nomAEconomicas;
                 }
-                $scope.fechaIni         = obtFechaActual.obtenerFechaActual();
-                $scope.fechaFin         = $scope.fechaIni;
-                /* $scope.fechaIni         = "2020-06-03";
-                $scope.fechaFin         = "2020-06-04"; */
+                $scope.fechaIni = obtFechaActual.obtenerFechaActual();
+                $scope.fechaFin = $scope.fechaIni;
                 $scope.lstMistransacciones($scope.fechaIni, $scope.fechaFin);
-
             } else {
-                $scope.vistaInfo         = null;
-                $scope.vistaInfoGenesis  = "mostrar";
+                $scope.vistaInfo = null;
+                $scope.vistaInfoGenesis = "mostrar";
                 $scope.mostrarMsgActividadFalse = true;
-                $scope.formDatosAE       = false;
-                $scope.desabilitado      = true;
+                $scope.formDatosAE = false;
+                $scope.desabilitado = true;
                 swal('', "Datos no Encontrados !!!", 'warning');
             }
+            $.unblockUI();
         });
-
+        $.unblockUI();
     };
-    $scope.asignarAcEconomica = function( dato) {
-        $scope.misAcEconomicas.forEach(element => {
-            if (element.IdActividad == dato) {
-                $scope.nomAEconomicasCombo = element.Descripcion;
-                $scope.idAEconomicas       = element.IdActividad;
-                $scope.fechaIni            = obtFechaActual.obtenerFechaActual();
-                $scope.fechaFin            = $scope.fechaIni;
-                /* $scope.fechaIni            = "2020-06-03";
-                $scope.fechaFin            = "2020-06-04"; */
-                $scope.lstMistransacciones($scope.fechaIni, $scope.fechaFin);
-            }
-        });
+    $scope.asignarAcEconomica = function (dato) {
+        $.blockUI();
+        if (dato === undefined) {
+            $.blockUI();
+            $scope.constlista = "todos";
+            $scope.fechaIni = obtFechaActual.obtenerFechaActual();
+            $scope.fechaFin = $scope.fechaIni;
+            $scope.lstMistransacciones($scope.fechaIni, $scope.fechaFin);
+            $.unblockUI();
+        } else {
+            $.blockUI();
+            $scope.constlista = "uae";
+            $scope.misAcEconomicas.forEach(element => {
+                if (element.IdActividad == dato) {
+                    $scope.nomAEconomicasCombo = element.Descripcion;
+                    $scope.idAEconomicas = element.IdActividad;
+                    $scope.sucursal      = element.sucursal;
+                    $scope.fechaIni = obtFechaActual.obtenerFechaActual();
+                    $scope.fechaFin = $scope.fechaIni;
+                    $scope.lstMistransacciones($scope.fechaIni, $scope.fechaFin);
+                }
+            });
+            $.unblockUI();
+        }
+        $.unblockUI();
+
     }
     $scope.inicioComponente = function () {
         $scope.obtenerContribuyente();
-    
+
     }
 }

@@ -60,7 +60,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     } else {
 
       $scope.datos.f01_nombreTV = data[0].tv_nombrec;
-      $scope.datos.f01_descripcionTV = data[0].tv_descripcionc;
+      //textarea
+      var recDesc = data[0].tv_descripcionc;
+      recDesc = recDesc.replace(/<br ?\/?>/g, "\n")
+      $scope.datos.f01_descripcionTV = recDesc;
       $scope.datos.f01_categoria = data[0].tv_categoria_idc;
       $scope.datos.f01_correoTV = data[0].tv_correoc;
       $scope.datos.f01_pagwebAE = data[0].tv_pagina_webc;
@@ -249,7 +252,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     datosTiendaVirtual.nombre = data.f01_nombreTV;
     datosTiendaVirtual.correo = data.f01_correoTV;
     datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
-    datosTiendaVirtual.descripcion = data.f01_descripcionTV;
+    var descTV = data.f01_descripcionTV;
+    descTV = descTV.replace(/\n/g, "<br>");
+    datosTiendaVirtual.descripcion = descTV;
     var myJSON = '';
     if (data.f01_contacto1=='TELÉFONO' || data.f01_contacto1=='CELULAR'){
       if(data.f01_contacto1_nro != ''){
@@ -394,7 +399,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     datosTiendaVirtual.nombre = data.f01_nombreTV;
     datosTiendaVirtual.correo = data.f01_correoTV;
     datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
-    datosTiendaVirtual.descripcion = data.f01_descripcionTV;
+    var descTV = data.f01_descripcionTV;
+    descTV = descTV.replace(/\n/g, "<br>");
+    datosTiendaVirtual.descripcion = descTV;
     //actualiza json contactos
     datosTiendaVirtual.contactos = [];
     $rootScope.contactosArray = [];

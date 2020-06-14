@@ -253,7 +253,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       $scope.frmProducto = "mostrar";
       $scope.desabilitado = "";
       $scope.nuevo = true;
-      $rootScope.nuevo = true;
       $scope.update = false;
       $rootScope.update = false;
       $scope.datosProd = {};
@@ -318,7 +317,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
             swal('', "Producto Registrado", 'success');
             $scope.limpiar();
             $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
-            $rootScope.nuevo = null;
+            $scope.nuevo = false;
         } else {
             $.unblockUI();
             swal('', "Producto no registrado", 'error');

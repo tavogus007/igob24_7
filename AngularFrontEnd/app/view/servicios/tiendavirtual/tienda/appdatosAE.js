@@ -562,6 +562,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.txt_f01_upload2 = "";
       $rootScope.archivosProducto = [];
       $rootScope.archivosLogotipo = [];
+      document.getElementById('txt_f01_upload1').value = "";
+      document.getElementById('txt_f01_upload2').value = "";
       $scope.catalogo1 = '';
       $scope.logotipo1 = '';
       $scope.catalogo_url = '';

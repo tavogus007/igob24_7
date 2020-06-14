@@ -156,7 +156,7 @@
               </div>
               <div class="col-md-6">
                   <div class="form-group" >
-                      <label for="url" >Producto:</label>
+                      <label for="url" > Nombre del Producto:</label>
                       <div class="controls">
                           <input ng-model="datosProd.f01_producto" id="f01_producto" name="f01_producto" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required />
                       </div>
@@ -172,7 +172,8 @@
               </div>
               <div class="col-md-6">
                   <div class="form-group" >
-                      <label for="url" >Precio:</label>
+                      <label for="url" >Precio: </label>
+                      <font color="#FF0000" size="2px"> (Ej. 1.99 - 2.50 - 3 - 5.85)</font>
                       <div class="controls">
                           <input ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado" onkeyUp="return checkInput(this);" required />
                       </div>

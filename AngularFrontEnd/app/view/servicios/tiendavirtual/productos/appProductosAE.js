@@ -162,7 +162,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       var img1 = "";
       var img2 = ""; 
       var img3 = ""; 
-      console.log(documentosSub);
       if($rootScope.swArchivo == 'A'){
         for (i = 0; i < documentosSub.length; i++) {
           var imagenesRecorrido = JSON.parse(documentosSub[i]);
@@ -298,31 +297,40 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         a = a + 1;
       });
 
-      var datosProducto = new dataProducto();
-      datosProducto.idtv = sessionService.get("IDTV");
-      datosProducto.nombre = data.f01_producto;
-      datosProducto.descripcion = data.f01_descripcion;
-      datosProducto.precio = parseFloat(data.f01_precio).toFixed(2);
-      datosProducto.imagen_p = f0;
-      datosProducto.imagen_a1 = f1;
-      datosProducto.imagen_a2 = f2;
-      datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
-      datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
-      datosProducto.crearProducto(function(response){
-        results = JSON.parse(response);
-        results = results.success;
-        if(results.length > 0){
-            $.unblockUI();
-            $scope.refrescar();
-            swal('', "Producto Registrado", 'success');
-            $scope.limpiar();
-            $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
-            $scope.nuevo = false;
-        } else {
-            $.unblockUI();
-            swal('', "Producto no registrado", 'error');
+      if(f0 != "" && f0 != null && 
+        data.f01_producto != "" && data.f01_producto != null && 
+        data.f01_descripcion != "" && data.f01_descripcion != null && 
+        data.f01_precio!= "" && data.f01_precio != null){
+        var descripcionsrt = document.getElementById('f01_descripcion').value.replace(/↵/g, "<br />");
+        var datosProducto = new dataProducto();
+        datosProducto.idtv = sessionService.get("IDTV");
+        datosProducto.nombre = data.f01_producto;
+        datosProducto.descripcion = descripcionsrt;
+        datosProducto.precio = parseFloat(data.f01_precio).toFixed(2);
+        datosProducto.imagen_p = f0;
+        datosProducto.imagen_a1 = f1;
+        datosProducto.imagen_a2 = f2;
+        datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
+        datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
+        datosProducto.crearProducto(function(response){
+          results = JSON.parse(response);
+          results = results.success;
+          if(results.length > 0){
+              $.unblockUI();
+              $scope.refrescar();
+              swal('', "Producto Registrado", 'success');
+              $scope.limpiar();
+              $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
+              $scope.nuevo = false;
+          } else {
+              $.unblockUI();
+              swal('', "Producto no registrado", 'error');
+          }
+        });
+
+       }else{
+            swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
         }
-      });
     }
 
     $scope.getProductos = function(usuario,id_ae){
@@ -453,14 +461,24 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     archi1 = archivo1[9].split('?');
     $rootScope._f01_upload1 = archi1[0];
     $scope.datosProd.txt_f01_upload1 = $rootScope._f01_upload1;
-    archivo2 = datosP.prd_imagen_a1c.split('/');
-    archi2 = archivo2[9].split('?');
-    $rootScope._f01_upload2 = archi2[0];
-    $scope.datosProd.txt_f01_upload2 = $rootScope._f01_upload2;
-    archivo3 = datosP.prd_imagen_a2c.split('/');
-    archi3 = archivo3[9].split('?');
-    $rootScope._f01_upload3 = archi3[0];
-    $scope.datosProd.txt_f01_upload3 = $rootScope._f01_upload3;
+    if(datosP.prd_imagen_a1c != "" && datosP.prd_imagen_a1c != null && datosP.prd_imagen_a1c != undefined && datosP.prd_imagen_a1c != 'undefined'){
+      archivo2 = datosP.prd_imagen_a1c.split('/');
+      archi2 = archivo2[9].split('?');
+      $rootScope._f01_upload2 = archi2[0];
+      $scope.datosProd.txt_f01_upload2 = $rootScope._f01_upload2;
+    }else{
+      $scope.datosProd.txt_f01_upload2 = "";
+    }
+    if(datosP.prd_imagen_a2c != "" && datosP.prd_imagen_a2c != null && datosP.prd_imagen_a2c != undefined && datosP.prd_imagen_a2c != 'undefined'){
+      archivo3 = datosP.prd_imagen_a2c.split('/');
+      archi3 = archivo3[9].split('?');
+      $rootScope._f01_upload3 = archi3[0];
+      $scope.datosProd.txt_f01_upload3 = $rootScope._f01_upload3;
+    }else{
+      $scope.datosProd.txt_f01_upload3 = "";
+    }
+    
+    
     $rootScope.swArchivo = "M"; 
     $scope.file1 = datosP.prd_imagen_pc;
     $scope.file2 = datosP.prd_imagen_a1c;
@@ -587,16 +605,13 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
   };
 
   $scope.cambioEstadoProducto = function(data){
-    console.log("cambio estado: ", data);
     if(data.prd_estadoc == 'A'){
-      console.log("ingresa para DESACTIVAR");
       var datosDesProducto = new dataProductoAc();
       datosDesProducto.prd_idc = data.prd_idc;
       datosDesProducto.desactivarProductoAe(function(response){
         resultado = JSON.parse(response);
       });     
     }else{
-      console.log("ingresa para ACTIVAR");
       var datosActProducto = new dataProductoAc();
       datosActProducto.prd_idc = data.prd_idc;
       datosActProducto.activarProductoAe(function(response){

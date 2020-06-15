@@ -850,9 +850,10 @@ img {
                                 </thead>
                                 <tbody>
                                   <tr style="cursor: pointer;" class="column" ng-repeat="proceso in serviciosLotus | filter:query " >
-                                      <td data-title="'Trámite'"  ng-click="seleccionarProcesoT(proceso)" align="left" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style"  ng-show="proceso.name=='Correspondencia ciudadana'">{{$index+1}}</td>
-                                      <td data-title="'Crear Tramite'"  align="left" ng-click="seleccionarProcesoT(proceso)" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style"  ng-show="proceso.name=='Correspondencia ciudadana'">
-                                          <div class="fixed-action-btn">
+                                      <td data-title="'Trámite'"  ng-click="seleccionarProcesoT(proceso)" align="left" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style"  ng-show="proceso.name=='Correspondencia ciudadana' || proceso.name=='Corrrespondencia al Concejo Municipal'">{{$index+1}}</td>
+                                              <ul class="horizontal">
+                                      <td data-title="'Crear Tramite'"  align="left" ng-click="seleccionarProcesoT(proceso)" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style"  ng-show="proceso.name=='Correspondencia ciudadana' || proceso.name=='Corrrespondencia al Concejo Municipal'">                                        
+                                        <div class="fixed-action-btn">
                                               <ul class="horizontal">
                                                   <li style="background: #ffffff;color: #ffffff;">
                                                       <a tooltip = "Crear" ng-click="adicionarServicioGamlpV(proceso);" data-dismiss="modal" ng-disabled="btnNuevoTramtite" type="button" >
@@ -868,6 +869,8 @@ img {
                                           </div>
                                       </td>
                                       <td data-title="'Proceso'" sortable="'name'" filter="{'name':'text'}" ng-click="seleccionarProcesoT(proceso)" align="left" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style" ng-show="proceso.name=='Correspondencia ciudadana'">{{proceso.name}}</td>
+                                      <td data-title="'Proceso'" sortable="'name'" filter="{'name':'text'}" ng-click="seleccionarProcesoT(proceso)" align="left" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style" ng-show="proceso.name=='Corrrespondencia al Concejo Municipal'">{{proceso.name}}</td>
+
                                   </tr>
                               </tbody>
                             </table>

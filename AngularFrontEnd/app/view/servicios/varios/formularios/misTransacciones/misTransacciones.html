@@ -22,8 +22,6 @@
 
 
 <style type="text/css">
-   
-
     .btn-default1 {
         background: rgb(0, 185, 194, 0.6);
         box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.34);
@@ -33,11 +31,13 @@
         color: #FFFFFF;
         border-radius: 8px;
     }
+
     select {
         text-align: center;
         text-align-last: center;
         /* webkit*/
     }
+
     option {
         text-align: center;
         text-align-last: center;
@@ -49,14 +49,22 @@
     <div class="col-md-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title col-mb-3">
-                <!-- <h5 class="ng-binding"> Mis Transacciones  </h5>  -->
                 <div class="row justify-content-md-rigth">
-                    <div class="col-sm-12">
-                        <strong class="ng-binding" style="color: #0d0d0e;" > <h5> Mis Transacciones  &nbsp; &nbsp; &nbsp;</h5></strong> <strong class="ng-binding" style="color: #00adb5;">{{nomAEconomicas}}</strong>
+                    <div class="col-sm-6">
+                        <strong class="ng-binding" style="color: #0d0d0e;">
+                            <h5> Mis Transacciones &nbsp; &nbsp; &nbsp;</h5>
+                        </strong> <strong class="ng-binding" style="color: #00adb5;">{{nomAEconomicas}}</strong>
+                    </div>
+                    <div class="col-sm-6">
+                        <!-- <span style="color:#00adb5;font-weight:bold; font-size:12px" >Actualizando Mis Transacciones {{porcentaje}}%</span> -->
+                        <div class="progress mt-9">
+                            <div class="progress-bar" role="progressbar" title="Actualizando Mis Transacciones" ng-style="{ 'width': porcentaje + '%' }"  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{porcentaje}}%</div>
+                        </div>
                     </div>
                     <br>
                 </div>
             </div>
+            
             <div>
                 <form name="empForm" class="form-horizontal" role="form" novalidate>
 
@@ -72,14 +80,16 @@
                         <div class="row" ng-show="vistaInfoAE != null">
                             <br>
                             <div class="col-sm-4">
-                                <div class="form-group" >
-                                    <label for="url" >Mis Actividades Ecónomicas:</label>
+                                <div class="form-group">
+                                    <label for="url">Mis Actividades Ecónomicas:</label>
                                     <div class="controls">
-                                        <select id="id_ae" class="form-control" ng-model="registro.id_ae" name="id_ae" ng-change="asignarAcEconomica(registro.id_ae);" required>
+                                        <select id="id_ae" class="form-control" ng-model="registro.id_ae" name="id_ae"
+                                            ng-change="asignarAcEconomica(registro.id_ae);" required>
                                             <option value=""> -- Todos --</option>
                                             <option ng-repeat="acEconomica in misAcEconomicas"
-                                            value="{{acEconomica.IdActividad}}">
-                                            {{acEconomica.RazonSocial}} Sucursal Nro. {{acEconomica.sucursal}}</option>
+                                                value="{{acEconomica.IdActividad}}">
+                                                {{acEconomica.denominacion}} Sucursal Nro. {{acEconomica.sucursal}}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -123,7 +133,8 @@
                             <div class="col-sm-2">
                                 <label for="basic-url"></label>
                                 <button id="lstTransaccion" name="lstTransaccion" type="button"
-                                    class="btn btn-success mb-3" ng-click="listarTransacciones();"><span class="glyphicon glyphicon-list-alt"></span> Mis
+                                    class="btn btn-success mb-3" ng-click="listarTransacciones();"><span
+                                        class="glyphicon glyphicon-list-alt"></span> Mis
                                     Transacciones
                                 </button>
                             </div>
@@ -131,17 +142,6 @@
                         <div class="row justify-content-md-center" ng-show="vistaInfoTit != null">
                             <br>
                             <div class="col-sm-2">
-                                <!-- <div class="form-group" >
-                                    <label for="url" >Mis Actividades Ecónomicas:</label>
-                                    <div class="controls">
-                                        <select id="id_ae" style="text-align:center;" class="form-control" ng-model="registro.id_ae" name="id_ae" ng-change="asignarAcEconomica(registro.id_ae);" required>
-                                            <option value=""> -- Todos --</option>
-                                            <option ng-repeat="acEconomica in misAcEconomicas"
-                                            value="{{acEconomica.IdActividad}}">
-                                            {{acEconomica.RazonSocial}} Sucursal Nro. {{acEconomica.sucursal}}</option>
-                                        </select>
-                                    </div>
-                                </div> -->
                             </div>
                             <div class="col-sm-1">
                             </div>
@@ -182,7 +182,8 @@
                             <div class="col-sm-2">
                                 <label for="basic-url"></label>
                                 <button id="lstTransaccion" name="lstTransaccion" type="button"
-                                    class="btn btn-success mb-3" ng-click="listarTransacciones();"><span class="glyphicon glyphicon-list-alt"></span> Mis
+                                    class="btn btn-success mb-3" ng-click="listarTransacciones();"><span
+                                        class="glyphicon glyphicon-list-alt"></span> Mis
                                     Transacciones
                                 </button>
                             </div>
@@ -218,7 +219,7 @@
                                             <td data-title="'ESTADO'" sortable="'estado_pago'">
                                                 {{obtTransaccion.estado_pago}}
                                             </td>
-                                            <td data-title="'TOTAL'" sortable="'monto_total'">
+                                            <td data-title="'TOTAL'" sortable="'monto_total'"  class="text-right">
                                                 {{obtTransaccion.monto_total}}
                                             </td>
                                             <td data-title="'DETALLE'" class="text-center">

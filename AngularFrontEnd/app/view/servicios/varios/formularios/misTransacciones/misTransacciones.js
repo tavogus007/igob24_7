@@ -1,4 +1,4 @@
-function misTransaccioneController($scope, $q, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter, FileUploader, fileUpload, fileUpload1, $timeout, obtFechaActual, obtFechaCorrecta) {
+function misTransaccioneController($scope, $interval, $q, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter, FileUploader, fileUpload, fileUpload1, $timeout, obtFechaActual, obtFechaCorrecta) {
     $scope.startDateOpen = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -27,7 +27,7 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
     $scope.idAEconomicas;
     $scope.fechaIni;
     $scope.fechaFin;
-    
+
     $scope.lstMistransacciones = function (fechaIni, fechaFin) {
         $.blockUI();
         if ($scope.constlista != "todos") {
@@ -58,22 +58,22 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
                     alertify.error("Sin Transacciones...");
                     $scope.vistaInfo = "mostrar";
                 }
-                $("#fechaIni").val("");
-                $("#fechaFin").val("");
+                //$("#fechaIni").val("");
+                //$("#fechaFin").val("");
             });
         } else {
             $.blockUI();
             $scope.arrayTransacciones = [];
             $scope.misAcEconomicas.forEach(element => {
-                var Sucursal = element.sucursal; 
-                var idAE     = element.IdActividad;
+                var Sucursal = element.sucursal;
+                var idAE = element.IdActividad;
                 var lstTransferencias = new lstTransaciones();
                 lstTransferencias.id_actividadeconomica = idAE;
                 lstTransferencias.fecha_inicio = fechaIni;
                 lstTransferencias.fecha_fin = fechaFin;
                 lstTransferencias.listaTransaciones(function (resp) {
                     var respuesta = JSON.parse(resp);
-                    if (respuesta.length > 0 ) {
+                    if (respuesta.length > 0) {
                         respuesta.forEach(element => {
                             element.sucursal = Sucursal;
                             $scope.arrayTransacciones.push(element);
@@ -97,8 +97,8 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
                 $scope.vistaInfo = "mostrar";
                 $.unblockUI();
             }
-            $("#fechaIni").val("");
-            $("#fechaFin").val("");
+            //$("#fechaIni").val("");
+            //$("#fechaFin").val("");
         }
         $.unblockUI();
     }
@@ -137,6 +137,8 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
         $scope.fechaFin = $scope.fechaFin.split("/");
         $scope.fechaFin = $scope.fechaFin[2] + "-" + $scope.fechaFin[1] + "-" + $scope.fechaFin[0];
         $scope.lstMistransacciones($scope.fechaIni, $scope.fechaFin);
+        $scope.porcentaje = 0;
+
     }
     $scope.detalleTransaccion = function (dataTrans) {
         $scope.comprador = dataTrans.comprador;
@@ -215,9 +217,9 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
                 var response = resultadoApi;
                 $scope.trmUsuario = response.success.dataSql;
                 $scope.misAcEconomicas = $scope.trmUsuario;
-                $scope.idAEconomicas   = $scope.trmUsuario[0].IdActividad;
-                $scope.nomAEconomicas  = $scope.trmUsuario[0].RazonSocial;
-                $scope.sucursal        = $scope.trmUsuario[0].sucursal;
+                $scope.idAEconomicas = $scope.trmUsuario[0].IdActividad;
+                $scope.nomAEconomicas = $scope.trmUsuario[0].RazonSocial;
+                $scope.sucursal = $scope.trmUsuario[0].sucursal;
                 if ($scope.trmUsuario.length == 1) {
                     $scope.vistaInfoAE = null;
                     $scope.vistaInfoTit = "mostrar";
@@ -257,7 +259,7 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
                 if (element.IdActividad == dato) {
                     $scope.nomAEconomicasCombo = element.Descripcion;
                     $scope.idAEconomicas = element.IdActividad;
-                    $scope.sucursal      = element.sucursal;
+                    $scope.sucursal = element.sucursal;
                     $scope.fechaIni = obtFechaActual.obtenerFechaActual();
                     $scope.fechaFin = $scope.fechaIni;
                     $scope.lstMistransacciones($scope.fechaIni, $scope.fechaFin);
@@ -265,9 +267,46 @@ function misTransaccioneController($scope, $q, $rootScope, $routeParams, $locati
             });
             $.unblockUI();
         }
+        $scope.porcentaje = 0;
         $.unblockUI();
 
     }
+
+    $scope.contador = 0;
+    $scope.porcentaje = 0;
+
+    var interval = $interval(function () {
+
+        if ( $scope.porcentaje >= 100 ) {
+            $scope.porcentaje = 100;
+        }
+      //derecho total doble decimal
+        $scope.contador = $scope.contador + 1;
+        $scope.porcentaje = $scope.porcentaje + 1;
+
+        if ($scope.porcentaje == 101 ) {
+            if ( $("#fechaIni").val() != "" && $("#fechaFin").val() != "") {
+                $scope.fechaIni = $("#fechaIni").val();
+                $scope.fechaFin = $("#fechaFin").val();
+                $scope.fechaIni = $scope.fechaIni.split("/");
+                $scope.fechaIni = $scope.fechaIni[2] + "-" + $scope.fechaIni[1] + "-" + $scope.fechaIni[0];
+                $scope.fechaFin = $scope.fechaFin.split("/");
+                $scope.fechaFin = $scope.fechaFin[2] + "-" + $scope.fechaFin[1] + "-" + $scope.fechaFin[0];
+            }else {
+                $scope.fechaIni = obtFechaActual.obtenerFechaActual();
+                $scope.fechaFin = $scope.fechaIni;
+            }
+            $scope.lstMistransacciones($scope.fechaIni, $scope.fechaFin); 
+            $scope.porcentaje = 0;
+        }
+    }, 500);
+    $scope.stop = function() {
+        $interval.cancel(interval);
+    };
+    $scope.$on('$destroy', function () {
+        $scope.stop();
+
+    });
     $scope.inicioComponente = function () {
         $scope.obtenerContribuyente();
 

@@ -120,6 +120,7 @@ dataTiendaVirtual.prototype.obtCategorias = function (functionResp)
 function dataProducto(){
     this.id,
     this.idtv,
+    this.idae,
     this.nombre,
     this.descripcion,
     this.precio,
@@ -142,6 +143,18 @@ dataProducto.prototype.listarProductoTV = function (functionResp)
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 
 };
+dataProducto.prototype.listarProductoTVPW = function (functionResp)
+{
+  urlCompProducto = "/listarProductosPorIdAe_ae";
+  typeCall = "post";
+  dataParams = {
+    "idAe" : this.idae    
+  };
+  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+
+};
+
+
 
 
 

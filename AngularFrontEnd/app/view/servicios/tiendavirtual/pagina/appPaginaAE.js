@@ -17,10 +17,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       angular.forEach($rootScope.datosTiendaVirtual[0].tv_contactosc, function(contacto, key) {
         contactc = JSON.parse(contacto);
         if (sw == 0){
-          console.log(contactc.tipo);
           if(contactc.tipo=="CELULAR"){
-            console.log("CELULAR");
-            console.log("CAMBIO DE SW");
             var myJSON = '{ "celular":"' + contactc.valor + '" }';
             myJSON2 = JSON.parse(myJSON);
             $rootScope.datosAuxiliares.push(myJSON2);
@@ -28,10 +25,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           } 
         }
       });
-      //$rootScope.datosAuxiliares = [];
-      /*console.log(data);
-      $rootScope.datosAuxiliares = data;
-      console.log($rootScope.datosAuxiliares);*/
     }
     $scope.inicioPaginaWeb = function () {
       $scope.nombre_tienda = $rootScope.datosTiendaVirtual[0].tv_nombrec;
@@ -44,7 +37,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       $scope.getProductos();
     };
     $scope.frmProducto = null;
-  
     $scope.obtDatos      =   [];
     $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
     $scope.valida = 0;
@@ -58,7 +50,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           datosPaginaWeb.obtDataPaginaWeb(function(response){
             resultado = JSON.parse(response);
             $scope.obtDatos = resultado.success;
-            console.log($scope.obtDatos.length);
             if ($scope.obtDatos.length == 0) {
               $scope.ws_publicado=false;
               document.getElementById('urlIndex').value = '';
@@ -91,8 +82,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       $.blockUI();
       try{
         var datosProducto = new dataProducto();
-        datosProducto.idtv = sessionService.get('IDTV');
-        datosProducto.listarProductoTV(function(response){
+        datosProducto.idae = sessionService.get('IDAE');
+        datosProducto.listarProductoTVPW(function(response){
           resultado = JSON.parse(response);
           $scope.obtDatos = resultado.success;
           $rootScope.productosPW = $scope.obtDatos;
@@ -104,7 +95,12 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
     };
     $scope.verPagina = function(){
         $.blockUI();
-        miVentana = window.open( $rootScope.urlIndex, "ventana1", "height=400,width=800,left=300,location=yes,menubar=no,resizable=no,scrollbars=yes,status=no,titlebar=yes,top=300" );
+        urlTexto = document.getElementById('urlIndex').value;
+        if (urlTexto==""){
+            swal('', "Página NO disponible", 'error');
+        } else {
+          miVentana = window.open( $rootScope.urlIndex, "ventana1", "height=400,width=800,left=300,location=yes,menubar=no,resizable=no,scrollbars=yes,status=no,titlebar=yes,top=300" );
+        }
         $.unblockUI();
     };
 
@@ -124,12 +120,13 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         uptTVCP.nombre = $rootScope.datosTiendaVirtual[0].tv_nombrec;
         uptTVCP.modificarTiendaVirtual(function(response){
           resultado = JSON.parse(response);
-          if (resultado.success.data[0].regp_estado == 'SI')
+          if (resultado.success.data[0].regp_estado == 'SI') {
             swal('', "Página publicada en Sistema de Comercio GAMLP", 'success');
-          else
+          } else {
             swal('', "Página NO publicada en Sistema de Comercio GAMLP", 'error');
-
+          }
         });
+        $.unblockUI();
     }
 
     $scope.registrarPagina = function(url, html){
@@ -142,6 +139,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         datosPaginaWeb.web_id_ae = sessionService.get('IDAE');
         datosPaginaWeb.addPaginaWeb(function(response){
           resultado = JSON.parse(response);
+          $scope.actualizarTVCeroPapel('SI');
           $rootScope.conWeb = true;
           $rootScope.idPW = resultado.success[0].sp_adicionar_pagina_web;
         });
@@ -170,7 +168,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       $.unblockUI();  
     }
     $scope.cambioEstadB = function(dato){
-      console.log(dato);
+      $.blockUI();
       if ($rootScope.conWeb == true) {
         if ($scope.chkPublicado == false) {
           $scope.ws_publicado = true;
@@ -195,6 +193,12 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           newstr = newstr.replace('}"]', '}]');
           re = /\\"/gi;
           newRedes = newstr.replace(re, '"');
+          logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
+          logotipo = logotipo.replace('["{','[{');
+          logotipo = logotipo.replace('}"]','}]');
+          logotipo = logotipo.replace('}"{','}{');
+          logotipo = logotipo.replace(/\\"/gi,'"');
+          logo =JSON.parse(logotipo);
           $.ajax({
               url:CONFIG.API_URL_DMS_HTML+'generadorHTML.php',
               type:"post",
@@ -209,10 +213,10 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "scorreo": $rootScope.datosTiendaVirtual[0].tv_correoc,
                   "sproductos": JSON.stringify($rootScope.productosPW),
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
-                  "sae": sessionService.get('IDAE')
+                  "sae": sessionService.get('IDAE'),
+                  "slogo": logo[0].url
               },
               success:function(response){
-                  console.log(response);
                   if (response == 'error creando fichero'){
                     swal('', "Página NO publicada," + response, 'error');
                     $scope.ws_publicado = false;
@@ -227,6 +231,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
               }
           });
         } else {
+
           $scope.ws_publicado = false;
           document.getElementById('urlIndex').value = "";
           response = '';
@@ -256,6 +261,13 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           newstr = newstr.replace('}"]', '}]');
           re = /\\"/gi;
           newRedes = newstr.replace(re, '"');
+          logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
+          logotipo = logotipo.replace('["{','[{');
+          logotipo = logotipo.replace('}"]','}]');
+          logotipo = logotipo.replace('}"{','}{');
+          logotipo = logotipo.replace(/\\"/gi,'"');
+          logo =JSON.parse(logotipo);
+          console.log(logo);
           $.ajax({
               url:CONFIG.API_URL_DMS_HTML+'generadorHTML.php',
               type:"post",
@@ -270,7 +282,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "scorreo": $rootScope.datosTiendaVirtual[0].tv_correoc,
                   "sproductos": JSON.stringify($rootScope.productosPW),
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
-                  "sae": sessionService.get('IDAE')
+                  "sae": sessionService.get('IDAE'),
+                  "slogo": logo[0].url
               },
               success:function(response){
                   if (response == 'error creando fichero'){

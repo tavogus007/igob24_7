@@ -141,10 +141,10 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
 
     }
     $scope.detalleTransaccion = function (dataTrans) {
-        $scope.comprador = dataTrans.comprador;
+        $scope.comprador  = dataTrans.comprador;
         $scope.montototal = dataTrans.monto_total;
-        $scope.tppago = dataTrans.metodo_pago;
-        $scope.detallesT = JSON.parse(dataTrans.detalle);
+        $scope.tppago     = dataTrans.metodo_pago;
+        $scope.detallesT  = JSON.parse(dataTrans.detalle);
     }
     $scope.obtenerContribuyente = function () {
         $.blockUI();
@@ -280,7 +280,6 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
         if ( $scope.porcentaje >= 100 ) {
             $scope.porcentaje = 100;
         }
-      //derecho total doble decimal
         $scope.contador = $scope.contador + 1;
         $scope.porcentaje = $scope.porcentaje + 1;
 
@@ -305,10 +304,8 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
     };
     $scope.$on('$destroy', function () {
         $scope.stop();
-
     });
     $scope.inicioComponente = function () {
         $scope.obtenerContribuyente();
-
     }
 }

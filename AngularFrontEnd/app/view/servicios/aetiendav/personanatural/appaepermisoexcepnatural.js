@@ -1945,7 +1945,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         var f = document.getElementById("f01_modalidad_pago");
         $scope.datos.f01_modalidad_pago_descrip = f.options[f.selectedIndex].text;
     }
-    
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {

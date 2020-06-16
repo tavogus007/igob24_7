@@ -103,7 +103,6 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
         var siexiste7 = nrocaso.search(miRegExa7);
         var siexiste8 = nrocaso.search(miRegExa8);
 
-
         if (siexiste1 != -1 || siexiste2 != -1 || siexiste3 != -1 || siexiste4 != -1 || siexiste5 != -1 || siexiste6 != -1 || siexiste7 != -1 || siexiste8 != -1) {
             $scope.getTramiteLotus(datos);
         } else {

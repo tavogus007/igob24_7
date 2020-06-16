@@ -89,13 +89,21 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
         var miRegExa2 = /AER-LICEN/g;
         var miRegExa3 = /LICEN-AE/g;
         var miRegExa4 = /MOD_MOD/g;
+        var miRegExa5 = /RE-LF/g;
+        var miRegExa6 = /EM-LF/g;
+        var miRegExa7 = /REG_AE/g;
+        var miRegExa8 = /MOD-LF/g;
         var nrocaso = '000' + datos.tramite;
         var siexiste1 = nrocaso.search(miRegExa1);
         var siexiste2 = nrocaso.search(miRegExa2);
         var siexiste3 = nrocaso.search(miRegExa3);
         var siexiste4 = nrocaso.search(miRegExa4);
+        var siexiste5 = nrocaso.search(miRegExa5);
+        var siexiste6 = nrocaso.search(miRegExa6);
+        var siexiste7 = nrocaso.search(miRegExa7);
+        var siexiste8 = nrocaso.search(miRegExa8);
 
-        if (siexiste1 != -1 || siexiste2 != -1 || siexiste3 != -1 || siexiste4 != -1) {
+        if (siexiste1 != -1 || siexiste2 != -1 || siexiste3 != -1 || siexiste4 != -1 || siexiste5 != -1 || siexiste6 != -1 || siexiste7 != -1 || siexiste8 != -1) {
             $scope.getTramiteLotus(datos);
         } else {
             var miRegEx = /[\/]/g;

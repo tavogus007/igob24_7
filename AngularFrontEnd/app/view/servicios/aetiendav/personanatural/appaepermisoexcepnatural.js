@@ -1945,8 +1945,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         var f = document.getElementById("f01_modalidad_pago");
         $scope.datos.f01_modalidad_pago_descrip = f.options[f.selectedIndex].text;
     }
-    
-
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {
@@ -1967,7 +1965,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
               data.f01_cantidad_personal != "" && data.f01_cantidad_personal != null &&
               data.f01_modalidad_pago != "" && data.f01_modalidad_pago != null &&
               data.FILE_VEHICULO_FOTO != "" && data.FILE_VEHICULO_FOTO != null &&
-              data.FILE_VEHICULO_PERMISO != "" && data.FILE_VEHICULO_PERMISO != null &&
               data.FILE_FORMVH_EXCEL != "" && data.FILE_FORMVH_EXCEL != null &&
               data.FILE_RUAT_VEHICULO != "" && data.FILE_RUAT_VEHICULO != null &&
               data.FILE_FOTO_SOLICITANTE != "" && data.FILE_FOTO_SOLICITANTE != null &&
@@ -1992,7 +1989,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
               data.f01_zona_act != "" && data.f01_zona_act != null &&
               data.f01_correo_electronico_ae != "" && data.f01_correo_electronico_ae != null &&
               data.FILE_VEHICULO_FOTO != "" && data.FILE_VEHICULO_FOTO != null &&
-              data.FILE_VEHICULO_PERMISO != "" && data.FILE_VEHICULO_PERMISO != null &&
               data.FILE_FORMVH_EXCEL != "" && data.FILE_FORMVH_EXCEL != null &&
               data.FILE_RUAT_VEHICULO != "" && data.FILE_RUAT_VEHICULO != null &&
               data.FILE_FOTO_SOLICITANTE != "" && data.FILE_FOTO_SOLICITANTE != null &&

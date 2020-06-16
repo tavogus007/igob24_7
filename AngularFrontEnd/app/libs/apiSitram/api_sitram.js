@@ -1,5 +1,5 @@
 if(jsonURLS){
-  var urlSitram =  jsonURLS.CONEXION_SITRAM+":91/wsSitram"; //crearTramiteDigital
+  var urlSitram =  jsonURLS.CONEXION_SITRAM+":9091/wsSitram"; //crearTramiteDigital
 }
 
 

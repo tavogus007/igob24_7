@@ -71,7 +71,7 @@ var jsonURLS    =   {
     //CONEXION_SITV3_Antena: "http://sitservicios.lapaz.bo/",
     SIT_GEO: "https://gamlpmotores.lapaz.bo/sitgeo",
     URL_SITRAM: "http://192.168.5.141",
-    CONEXION_SITRAM: "http://192.168.34.70",
+    CONEXION_SITRAM: "http://192.168.5.141",
     API_URL_GUARDAR_IMG: "http://192.168.5.141/dreamfactory/igob/", 
     CONEXION_API_PG_PRODUCTO: "http://192.168.5.141:8003/",//apirc
     CONEXION_PAGOS: "http://52.226.130.135:5433/",//apirc    

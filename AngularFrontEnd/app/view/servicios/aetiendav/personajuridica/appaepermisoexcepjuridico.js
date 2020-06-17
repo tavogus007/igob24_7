@@ -1153,7 +1153,6 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         $scope.capturarImagen();
         datoObjectFiles = [];
         var datoObjectFile1 = new Object();
-        var datoObjectFile2 = new Object();
         var datoObjectFile3 = new Object();
         var datoObjectFile4 = new Object();
         var datoObjectFile5 = new Object();
@@ -1194,13 +1193,12 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         datoObjectFile8.nombre = 'DECLARACION JURADA';
 
         datoObjectFiles[0] = datoObjectFile1;
-        datoObjectFiles[1] = datoObjectFile2;
-        datoObjectFiles[2] = datoObjectFile3;
-        datoObjectFiles[3] = datoObjectFile4;
-        datoObjectFiles[4] = datoObjectFile5;
-        datoObjectFiles[5] = datoObjectFile6;
-        datoObjectFiles[6] = datoObjectFile7;
-        datoObjectFiles[7] = datoObjectFile8;
+        datoObjectFiles[1] = datoObjectFile3;
+        datoObjectFiles[2] = datoObjectFile4;
+        datoObjectFiles[3] = datoObjectFile5;
+        datoObjectFiles[4] = datoObjectFile6;
+        datoObjectFiles[5] = datoObjectFile7;
+        datoObjectFiles[6] = datoObjectFile8;
 
         $scope.datos.FileDocumentos = datoObjectFiles;
         $rootScope.FileAdjuntos = datoObjectFiles; 
@@ -1211,7 +1209,6 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         $scope.capturarImagen();
         datoObjectFiles = [];
         var datoObjectFile1 = new Object();
-        var datoObjectFile2 = new Object();
         var datoObjectFile3 = new Object();
         var datoObjectFile4 = new Object();
         var datoObjectFile5 = new Object();
@@ -1248,12 +1245,11 @@ function aepermisoexcepcionaljuridicoController($scope,$timeout, $rootScope, $ro
         datoObjectFile8.nombre = 'DECLARACION JURADA';
 
         datoObjectFiles[0] = datoObjectFile1;
-        datoObjectFiles[1] = datoObjectFile2;
-        datoObjectFiles[2] = datoObjectFile3;
-        datoObjectFiles[3] = datoObjectFile4;
-        datoObjectFiles[5] = datoObjectFile6;
-        datoObjectFiles[6] = datoObjectFile7;
-        datoObjectFiles[7] = datoObjectFile8;
+        datoObjectFiles[1] = datoObjectFile3;
+        datoObjectFiles[2] = datoObjectFile4;
+        datoObjectFiles[3] = datoObjectFile6;
+        datoObjectFiles[4] = datoObjectFile7;
+        datoObjectFiles[5] = datoObjectFile8;
 
         $scope.datos.FileDocumentos = datoObjectFiles;
         $rootScope.FileAdjuntos = datoObjectFiles; 

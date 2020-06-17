@@ -62,7 +62,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_nombreTV = data[0].tv_nombrec;
       //textarea
       var recDesc = data[0].tv_descripcionc;
-      recDesc = recDesc.replace(/<br ?\/?>/g, "\n")
+      recDesc = recDesc.replace(/<br ?\/?>/g, "\n");
       $scope.datos.f01_descripcionTV = recDesc;
       $scope.datos.f01_categoria = data[0].tv_categoria_idc;
       $scope.datos.f01_correoTV = data[0].tv_correoc;
@@ -180,31 +180,42 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       for(i=0;i<ofertas.length;i++){
         var of = JSON.parse(ofertas[i]);
         if (i==0){ 
-          $scope.datos.f01_ofertasAE_des1 = of.oferta;
+           //textarea
+          var recOf1 = of.oferta;
+          recOf1 = recOf1.replace(/<br ?\/?>/g, "\n");
+          $scope.datos.f01_ofertasAE_des1 = recOf1;
           if($scope.datos.f01_ofertasAE_des1 == 'undefined' || $scope.datos.f01_ofertasAE_des1 == undefined || $scope.datos.f01_ofertasAE_des1 == null){
             $scope.datos.f01_ofertasAE_des1 = '';
           }
         }
         if (i==1){
-          $scope.datos.f01_ofertasAE_des2 = of.oferta;
+          var recOf2 = of.oferta;
+          recOf2 = recOf2.replace(/<br ?\/?>/g, "\n");
+          $scope.datos.f01_ofertasAE_des2 = recOf2;
           if($scope.datos.f01_ofertasAE_des2 == 'undefined' || $scope.datos.f01_ofertasAE_des2 == undefined || $scope.datos.f01_ofertasAE_des2 == null){
             $scope.datos.f01_ofertasAE_des2 = '';
           }
         }
         if (i==2){
-          $scope.datos.f01_ofertasAE_des3 = of.oferta;
+          var recOf3 = of.oferta;
+          recOf3 = recOf3.replace(/<br ?\/?>/g, "\n");
+          $scope.datos.f01_ofertasAE_des3 = recOf3;
           if($scope.datos.f01_ofertasAE_des3 == 'undefined' || $scope.datos.f01_ofertasAE_des3 == undefined || $scope.datos.f01_ofertasAE_des3== null){
             $scope.datos.f01_ofertasAE_des3 = '';
           }
         }
         if (i==3){
-          $scope.datos.f01_ofertasAE_des4 = of.oferta;
+          var recOf4 = of.oferta;
+          recOf4 = recOf4.replace(/<br ?\/?>/g, "\n");
+          $scope.datos.f01_ofertasAE_des4 = recOf4;
           if($scope.datos.f01_ofertasAE_des4 == 'undefined' || $scope.datos.f01_ofertasAE_des4 == undefined || $scope.datos.f01_ofertasAE_des4 == null){
             $scope.datos.f01_ofertasAE_des4 = '';
           }
         }
         if (i==4){
-          $scope.datos.f01_ofertasAE_des5 = of.oferta;
+          var recOf5 = of.oferta;
+          recOf5 = recOf5.replace(/<br ?\/?>/g, "\n");
+          $scope.datos.f01_ofertasAE_des5 = recOf5;
           if($scope.datos.f01_ofertasAE_des5 == 'undefined' || $scope.datos.f01_ofertasAE_des5 == undefined || $scope.datos.f01_ofertasAE_des5 == null){
             $scope.datos.f01_ofertasAE_des5 = '';
           }
@@ -346,16 +357,26 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
 
     datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
-
-    var myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des1 + '" }';
+   //Textareas ofertas
+    var descOf1 = data.f01_ofertasAE_des1;
+    descOf1 = descOf1.replace(/\n/g, "<br>");
+    var myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf1 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
-    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des2 + '" }';
+    var descOf2 = data.f01_ofertasAE_des2;
+    descOf2 = descOf2.replace(/\n/g, "<br>");
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf2 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
-    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des3 + '" }';
+    var descOf3 = data.f01_ofertasAE_des3;
+    descOf3 = descOf3.replace(/\n/g, "<br>");
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf3 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
-    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des4 + '" }';
+    var descOf4 = data.f01_ofertasAE_des4;
+    descOf4 = descOf4.replace(/\n/g, "<br>");
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf4 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
-    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des5 + '" }';
+    var descOf5 = data.f01_ofertasAE_des5;
+    descOf5 = descOf5.replace(/\n/g, "<br>");
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf5 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
     datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
     datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray); 
@@ -503,15 +524,25 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     datosTiendaVirtual.ofertas = [];
     $rootScope.ofertasArray = [];
     myJSONOfertas = '';
-    var myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des1 + '" }';
+    var descOf1 = data.f01_ofertasAE_des1;
+    descOf1 = descOf1.replace(/\n/g, "<br>");
+    var myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf1 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
-    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des2 + '" }';
+    var descOf2 = data.f01_ofertasAE_des2;
+    descOf2 = descOf2.replace(/\n/g, "<br>");
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf2 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
-    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des3 + '" }';
+    var descOf3 = data.f01_ofertasAE_des3;
+    descOf3 = descOf3.replace(/\n/g, "<br>");
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf3 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
-    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des4 + '" }';
+    var descOf4 = data.f01_ofertasAE_des4;
+    descOf4 = descOf4.replace(/\n/g, "<br>");
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf4 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
-    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + data.f01_ofertasAE_des5 + '" }';
+    var descOf5 = data.f01_ofertasAE_des5;
+    descOf5 = descOf5.replace(/\n/g, "<br>");
+    myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf5 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas); 
     datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray);
     //catalogo

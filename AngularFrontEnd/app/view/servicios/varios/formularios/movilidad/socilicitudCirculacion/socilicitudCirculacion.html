@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+        <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css" async>
+        <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/socilicitudCirculacion/socilicitudCirculacion.js"></script>
+        <script src="../../libs/js/prism.js" async></script>
+        
+    </head>    
+  <body>
+
+<div ng-controller="permisosController" ng-init="inicioServiciosVAECopia();">
+   <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+         <div class="ibox-content" id="caja">
+              <div class="row">
+               <div class="col-sm-12 b-r">
+                  <form class="form-horizontal ng-pristine ng-valid">
+                        <div class="form-group">    
+                                         
+                           <div class="col-lg-3">
+                              <div style="text-align:center;">
+                                 
+                                 <a class="btn btn-success" tooltip = "Crear el trámite" data-toggle="modal" data-target="#seleccionarTramiteVAE"><i class="fa fa-file blanco shake-slow"></i><!--cambios-->
+                                    {{translateTitulos.lbl_10_02}}
+                                  </a>    
+                                 
+                              </div>
+                           </div>
+                        <label class="col-lg-3 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
+                        <div class="col-lg-6">
+                           <input ng-model = "query" id ="busca1" class="form-control" placeholder="">
+                        </div>
+                     </div>
+                  </form>       
+                  <table ng-table="tablaTramites"  class="table  table-hover">
+                     <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==sIdTramiteSeleccionado && {'background-color':'#DCDCDC','font-color':'#A2D5AE'}">
+                      <td data-title="'Código'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>
+                      <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite);" >{{tramite.vservicio}}</td>  
+                      <td data-title="'Subtipo'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>    
+                      <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)" >{{tramite.vfecha}} </td>
+                      <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)" >{{tramite.venviado}}</td> 
+                      <td data-title="'Productos'" >
+                        <a ng-show="tramite.vrespuesta =='SI'" class="btn btn-success ng-binding" data-toggle="modal" tooltip="Productos" ng-click="addProducto(tramite);" data-target="#producto">
+                          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        </a>
+                      </td>
+
+                    </tr>
+                  </table> 
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-lg-12">
+      <div ng-include="template.url" class="animated fadeInUp"></div>
+   </div>
+   <!-- Modal PARA SELECCIONAR TRAMITES-->
+   <div class="modal fade" id="seleccionarTramiteVAE" role="dialog">
+      <div class="modal-dialog">
+         <!-- Modal content-->
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">Seleccione el Tipo de Tramite a Realizar </h4>
+            </div>
+            <div class="modal-body">
+              <table class="table table-striped">
+                        <thead style="background: #6F7072;color: #F5F5F6;">
+                           <th>#&nbsp;</th>
+                           <th>Tipo de Trámites&nbsp;</th>                                            
+                        </thead>
+                        <tbody>
+                           <tr  style="cursor: pointer;" class="column" ng-repeat="proceso in serviciosTipoTramite" ng-click="seleccionarProceso(proceso)" ng-style="proceso.id==procesoSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}">
+                                 <td>{{$index+1}}</td>
+                                 <td>{{proceso.name}}</td>
+                           </tr>
+                        </tbody>
+                     </table>
+              
+            </div>
+            <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                  <button class="btn btn-default" ng-show="btnCrearBlk" ng-click="crearTramiteVAE(procesoSeleccionado);" data-dismiss="modal">Crear</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+  <!-- panchito -->
+  <div class="modal fade" id="declaracionN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header" style="background: #ffcb05;" >
+                  <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO DE DECLARACION JURADA</h2>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+                      <form name="formulario" readOnly="true" novalidate>
+                          <div class="row">
+                              <div id="msgformularioN">
+                                  {{msgformularioN}}
+                              </div>
+                          </div>          
+                      </form>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="generarDocumentoPhp();" data-dismiss="modal">Aceptar</button>
+                  <!--button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button-->
+              </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- MODAL EMISION JURIDICO-->
+   <div class="modal fade" id="declaracionJ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header" style="background: #ffcb05;" >
+                  <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO DE DECLARACION JURADA PERSONA JURÍDICA</h2>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+                      <form name="formulario" readOnly="true" novalidate>
+                          <div class="row">
+                              <div id="msgformularioJ">
+                                  {{msgformularioJ}}
+                              </div>
+                          </div>      
+                      </form>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="generarDocumentoPhp();" data-dismiss="modal">Aceptar</button>
+                  <!--button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button-->
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- panchito fin  -->
+
+<!-- Modal PARA requisitos-->
+<div class="modal fade" id="requisitos_permiso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Requisitos</h4>
+        </div>
+        <div class="modal-body">
+           <div ng-show="mostrarRequisitos == 1 || mostrarRequisitos == 2">
+            <ul  style="list-style-type:circle" >
+                <li class="">CARGAR FOTOGRAFÍA(S) FRONTAL Y LATERAL DE LOS VEHÍCULO(S) (Fotografías con buena resolución en un solo archivo formato PDF o DOC) </li>
+                <li class="">CARGAR EL PERMISO DE CIRCULACIÓN VEHICULAR OTORGADO POR EL VICEMINISTERIO DE GOBIERNO DE TODOS LOS VEHÍCULOS (En un solo documento en formato PDF) </li>
+                <li class="">CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S) (Los documentos deben estar en solo archivo en formato PDF o DOC.) </li>
+                <li class="">DEBE LLENAR EL FORMULARIO N° 1.1 PARA LOS VEHÍCULOS UTILIZADOS COMO DELIVERY </li>
+                <li class="">CARGAR FOTOGRAFÍA DE FRENTE Y NÍTIDA DEL ROSTRO DEL SOLICITANTE SUJETANDO SU CÉDULA DE IDENTIDAD DEL LADO ANVERSO (CARILLA DE LA FIRMA Y FOTO), SIN LENTES, NI GORRA </li>
+                <li class="">CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR Y CÉDULA DE IDENTIDAD DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS (En un solo documento en formato PDF) </li>
+            </ul>
+          </div>
+            <div ng-show="mostrarRequisitos == 3">
+            <ul style="list-style-type:circle" >
+                <li class="">CARGAR FOTOGRAFÍA(S) FRONTAL Y LATERAL DE LOS VEHÍCULO(S) (Fotografías con buena resolución en un solo archivo formato PDF o DOC) </li>
+                <li class="">CARGAR EL PERMISO DE CIRCULACIÓN VEHICULAR OTORGADO POR EL VICEMINISTERIO DE GOBIERNO DE TODOS LOS VEHÍCULOS (En un solo documento en formato PDF) </li>
+                <li class="">CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S) (Los documentos deben estar en solo archivo en formato PDF o DOC.) </li>
+                <li class="">DEBE LLENAR EL FORMULARIO N° 1.1 PARA LOS VEHÍCULOS UTILIZADOS COMO DELIVERY </li>
+                <li class="">DEBE CARGAR EL CONTRATO VIGENTE EN FORMATO PDF (LA EMPRESA DELIVERY DEBE CONTAR CON LAS AUTORIZACIONES PARA OPERAR Y ESTAR REGISTRADO EN EL GAMLP) </li>
+                <li class="">CARGAR FOTOGRAFÍA DE FRENTE Y NÍTIDA DEL ROSTRO DEL SOLICITANTE SUJETANDO SU CÉDULA DE IDENTIDAD DEL LADO ANVERSO (CARILLA DE LA FIRMA Y FOTO), SIN LENTES, NI GORRA </li>
+                <li class="">CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR Y CÉDULA DE IDENTIDAD DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS (En un solo documento en formato PDF) </li>
+            </ul></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+    </div> 
+ </div>
+
+
+</div>
+
+
+
+
+
+
+<!--cambios-->
+</body>

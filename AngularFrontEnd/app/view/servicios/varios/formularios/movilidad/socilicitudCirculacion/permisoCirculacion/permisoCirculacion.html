@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+      <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/socilicitudCirculacion/permisoCirculacion/permisoCirculacion.js"></script>
+      <script type="text/javascript" src="../../libs/js/jic.js"></script>
+      <script type="text/javascript" src="../../libs/js/jszip.js"></script> 
+  </head> 
+
+<style>
+  input:required:invalid {
+    border: 1px solid red;
+  }
+  input:required:valid {
+    border: 1px solid green;
+  }
+  select:required:invalid {
+    border: 1px solid red;
+  }
+  select:required:valid {
+    border: 1px solid green;
+  }
+  .form-group {
+    padding-left: 8px;
+  }
+</style> 
+
+<script type="text/javascript">
+      $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+    function iniciarLoadFyle(){
+        $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+        });
+    }
+
+    $('#file-input').change(function(e) {
+        var id = 0;
+        angular.element(this).scope().addImage(e,id);
+    });
+</script> 
+
+
+<div id="aevirtual" ng-controller="aepermisoexcepcionalnaturalController" data-ng-init="cargarDatosPermiso();">
+  <div class="ibox float-e-margins">
+    <!--div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+        <h4>TIPO DE SOLICITUD AL CUAL ACCEDERA</h4>
+    </div-->
+    <div class="ibox float-e-margins">
+    <div class="col-md-12">
+        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+          <h4>{{txtMsgDataNuevaActividad}}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <form name="signupForm"  ng-controller="serviciosControllerTVAE" class="form-horizontal" role="form" novalidate>                   
+        <div class="col-md-12">
+            <div class="row">                
+                <div class="col-md-12" ng-show="mostrarMsgNuevaActividad">
+                    <div class="form-group" >
+                        <label class="col-sm-12 control-label no-padding-right" for="url" ><font color="#FF0000" size="5px"></font></label>
+ 
+                    </div>
+                </div>
+                <div ng-show="div_natural">
+            
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_pri_nom_prop" id="f01_pri_nom_prop" name="f01_pri_nom_prop" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_ape_pat_prop" id="f01_ape_pat_prop" name="f01_ape_pat_prop" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_ape_mat_prop" id="f01_ape_mat_prop" name="f01_ape_mat_prop" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_09}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_tip_doc_prop" id="f01_tip_doc_prop" name="f01_tip_doc_prop" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_10}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_num_dos_prop" id="f01_num_dos_prop" name="f01_num_dos_prop" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_11}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_expedido_prop" id="f01_expedido_prop" name="f01_expedido_prop" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_12}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_email_prop" id="f01_email_prop" name="f01_email_prop" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_13}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_cel_prop" id="f01_cel_prop" name="f01_cel_prop" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- datos de la direccion del contribuyente-->
+                <div class="col-md-4" ng-show="false">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_macro_des" id="f01_macro_des" name="f01_macro_des" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                            <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                        <span style="color:red" ng-show="signupForm.f01_macro.$invalid">
+                            <span class="error" ng-show="signupForm.f01_macro.$invalid">{{translateMensajes.txt_12_15}}</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4" ng-show="false">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_16}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_distrito_desc" id="f01_distrito_desc" name="f01_distrito_desc" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                            <input  type="hidden"  ng-model="datos.f01_distrito" id="f01_distrito" name="f01_distrito" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                        <span style="color:red" ng-show="signupForm.f01_distrito.$invalid">
+                            <span class="error" ng-show="signupForm.f01_distrito.$invalid">{{translateMensajes.txt_12_15}}</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_zon_prop_valor" id="f01_zon_prop_valor" name="f01_zon_prop_valor" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                            <input  type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                        <span style="color:red" ng-show="signupForm.f01_zona.$invalid">
+                            <span class="error" ng-show="signupForm.f01_zona.$invalid">{{translateMensajes.txt_12_15}}</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_tip_via_prop" id="f01_tip_via_prop" name="f01_tip_via_prop" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                        <span style="color:red" ng-show="signupForm.f01_tip_via_prop.$invalid">
+                            <span class="error" ng-show="signupForm.f01_tip_via_prop.$invalid">{{translateMensajes.txt_12_15}}</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_nom_via_prop" id="f01_nom_via_prop" name="f01_nom_via_prop" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                        <span style="color:red" ng-show="signupForm.f01_nom_via_prop.$invalid">
+                            <span class="error" ng-show="signupForm.f01_nom_via_prop.$invalid">{{translateMensajes.txt_12_15}}</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >{{translateTitulos.lbl_12_20}}:</label>
+                        <div class="controls">
+                            <input ng-model="datos.f01_num_prop" id="f01_num_prop" name="f01_num_prop" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                        </div>
+                        <span style="color:red" ng-show="signupForm.f01_num_prop.$invalid">
+                            <span class="error" ng-show="signupForm.f01_num_prop.$invalid">{{translateMensajes.txt_12_15}}</span>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+
+                <div ng-show="div_juridico">
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_22}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_num_doc_per_jur" id="f01_num_doc_per_jur" name="f01_num_doc_per_jur" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_23}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_raz_soc_per_jur" id="f01_raz_soc_per_jur" name="f01_raz_soc_per_jur" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_24}}:</label>
+                            <div class="controls">
+                                <div class="col-md-12">                
+                                    <div class="col-md-5">
+                                        <input  ng-model="datos.f01_num_pod_leg" name="f01_num_pod_leg" id="f01_num_pod_leg" class="form-control" placeholder="Sin dato" onkeyUp="return valNumero(this);" ng-disabled="true" required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        /
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input ng-model="datos.f01_ges_vig_pod" id="f01_ges_vig_pod" name="f01_ges_vig_pod" class="form-control" onkeyUp="checkInput(this)"ng-disabled="true" required/>
+                                    </div>
+                                </div>                                    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_25}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_num_notaria" id="f01_num_notaria" name="f01_num_notaria" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>                       
+                    <div class="col-md-4" ng-show="false">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_macro_des" id="f01_macro_des" name="f01_macro_des" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                            <span style="color:red" ng-show="signupForm.f01_macro.$invalid">
+                                <span class="error" ng-show="signupForm.f01_macro.$invalid">{{translateMensajes.txt_12_15}}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4" ng-show ="false" >
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_16}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_distrito_desc" id="f01_distrito_desc" name="f01_distrito_desc" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                <input  type="hidden"  ng-model="datos.f01_distrito" id="f01_distrito" name="f01_distrito" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                <input  type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_tipo_viarep" id="f01_tipo_viarep" name="f01_tipo_viarep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_nom_via_rep" id="f01_nom_via_rep" name="f01_nom_via_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="url" >{{translateTitulos.lbl_12_20}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_num_rep" id="f01_num_rep" name="f01_num_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox float-e-margins">
+                        <div class="col-md-12">
+                                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                                  <h4>{{translateTitulos.lbl_12_26}}</h4>
+                                </div>
+                              </div>
+                            </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_pri_nom_rep" id="f01_pri_nom_rep" name="f01_pri_nom_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_ape_pat_rep" id="f01_ape_pat_rep" name="f01_ape_pat_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_ape_mat_rep" id="f01_ape_mat_rep" name="f01_ape_mat_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_30}}:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_ape_cas_rep" id="f01_ape_cas_rep" name="f01_ape_cas_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >Número de documento:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_num_doc_rep" id="f01_num_doc_rep" name="f01_num_doc_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url">Expedido:</label>
+                            <div class="controls">
+                                <select id="f01_expedido_rep" name="f01_expedido_rep" placeholder="expedido" ng-model="datos.f01_expedido_rep" class="form-control" ng-disabled="true" required>
+                                    <option value="">--Seleccione--</option>
+                                    <option value="LPZ">LA PAZ</option>
+                                    <option value="CBB">COCHABAMBA</option>
+                                    <option value="SCZ">SANTA CRUZ</option>
+                                    <option value="CHQ">CHUQUISACA</option>
+                                    <option value="TJA">TARIJA</option>
+                                    <option value="PTS">POTOSI</option>
+                                    <option value="ORU">ORURO</option>
+                                    <option value="BNI">BENI</option>
+                                    <option value="PND">PANDO</option>
+                                    <option value="EXP">EXPEDIDO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+    
+            
+                <div class="ibox float-e-margins">
+                    <div class="col-md-12">
+                            <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                              <h4>TIPO DE SERVICIO AL CUAL ACCEDERA :</h4>
+                            </div>
+                          </div>
+                        </div>
+<br>
+<br>
+                <div class="col-md-12">
+                    <div class="form-group">   
+                        <div class="controls">                                
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <input type="radio" ng-model="datos.f01_validador_servicio" name="f01_validador_servicio" value="TRANSPORTE_DE_ENTREGA_ALIMENTOS" ng-change="docdinamicos(datos.f01_validador_servicio);" required/>  PARA LA PRESTACIÒN DEL SERVICIO DE TRANSPORTE DE ENTREGA DE ALIMENTOS PREPARADOS A DOMICILIO
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <input type="radio" ng-model="datos.f01_validador_servicio" name="f01_validador_servicio" value="TRANSPORTE_PERSONAL" ng-change="docdinamicos(datos.f01_validador_servicio);" required/>  PARA LA PRESTACIÒN DEL SERVICIO DE TRANSPORTE DE PERSONAL
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <input type="radio" ng-model="datos.f01_validador_servicio" name="f01_validador_servicio" ng-change="docdinamicos(datos.f01_validador_servicio);" value="TRANSPORTE_DE_ENTREGA_PRODUCTOS" required/>  PARA LA PRESTACION DEL SERVICIO DE TRANSPORTE DE ENTREGA DE PRODUCTOS A DOMICILIO
+                                <br>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                    <div class="form-group" >
+                                        <input type="radio" ng-model="datos.f01_validador_servicio" name="f01_validador_servicio" ng-change="docdinamicos(datos.f01_validador_servicio);" value="TRANSPORTE_MATERIA_PRIMA" required/>  PARA LA PRESTACION DEL SERVICIO DE TRANSPORTE DE CARGA DE INSUMOS, MATERIAS PRIMAS Y PRODUCTOS DE ABASTECIMIENTO
+                                    <br>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div ng-show="div_actividad_economica">
+                <div class="ibox float-e-margins">
+                    <div class="col-md-12">
+                            <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                              <h4>DATOS DEL DE LA ACTIVIDAD ECONOMICA : "seleccione uno de la tabla".</h4>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <div  class="col-md-12">
+                              <div class="panel panel-default">
+                                  <div class="panel-heading"><B></B></div>
+                                  <div class="panel-body" ng-disabled="true">
+                                      <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadECONÓMICA">
+                                          <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}"><!--cambios-->
+                                              <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
+                                              <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
+                                              <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
+                                              <td data-title="'Descripcion'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
+                                              <td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
+                                          </tr>
+                                      </table>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >NUMERO PMC DE LICENCIA DE FUNCIONAMIENTO:</label>
+                        <div class="controls">
+                            <input type="text" ng-model="datos.f01_num_pmc" id="f01_num_pmc" name="f01_num_pmc" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="true" requerid />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >DENOMINACION:</label>
+                        <div class="controls">
+                            <input type="text" ng-model="datos.f01_raz_soc" id="f01_raz_soc" name="f01_raz_soc" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="true" required/>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >TIPO DE LICENCIA:</label>
+                        <div class="controls">
+                            <input type="text" ng-model="datos.f01_tipo_lic_descrip" id="f01_tipo_lic_descrip" name="f01_tipo_lic_descrip" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-disabled="true" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url">TIPO DE CATEGORIA:</label>
+                        <div class="controls">
+                            <input type="text" ng-model="datos.f01_categoria_agrupada_descrip" id="f01_categoria_agrupada_descrip" name="f01_categoria_agrupada_descrip" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-disabled="true" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="url" >ACTIVIDAD DESARROLLADA:</label>
+                        <div class="controls">
+                            <input type="text" ng-model="datos.f01_categoria_agrupada_descripcion" id="f01_categoria_agrupada_descripcion" name="f01_categoria_agrupada_descripcion" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-disabled="desabilitado" required/>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="div_nit_jn">
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >NIT:</label>
+                        <div class="controls">
+                            <input type="text" ng-model="datos.f01_nit" id="f01_nit" name="f01_nit" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" requerid/>
+                        </div>
+                    </div>
+                </div>
+                </div>
+       
+
+            </div>
+
+
+
+            <div ng-show="div_solicitante">
+                      
+                <div class="ibox float-e-margins">
+                    <div class="col-md-12">
+                            <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                              <h4>DATOS NECESARIOS PARA LA SOLICITUD :</h4>
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <br>
+                <!--div ng-show="divreferencia"-->
+                <div>
+                <div ng-show="div_descripcion_prestado">
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                           
+                            <label for="url" >DESCRIPCION DEL SERVICIO PRESTADO:</label>
+                            <div class="controls">
+                                <input type="text" ng-model="datos.f01_productosElaborados" id="f01_productosElaborados" name="f01_productosElaborados" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >CANTIDAD DE VEHICULOS A SOLICITAR</label>                        
+                            <div class="controls">
+                                <input ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" required onchange="document.signupForm.btnFormLicencia.disabled=true;" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url" >JUSTICACION BREVE DE LA SOLICITUD:</label>
+                                <div class="controls">
+                                    <textarea type="text" ng-model="datos.PER_TRA_JUSTI" id="PER_TRA_JUSTI" name="PER_TRA_JUSTI" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url" >HORA INICIO:</label>
+                                <div class="controls">
+                                    <input type="time" ng-model="datos.PER_TRA_HORA_INICIO" id="PER_TRA_HORA_INICIO" name="PER_TRA_HORA_INICIO" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url" >HORA FINAL:</label>
+                                <div class="controls">
+                                    <input type="time" ng-model="datos.PER_TRA_HORA_FIN" id="PER_TRA_HORA_FIN" name="PER_TRA_HORA_FIN" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url" >INTRODUZCA AL MENOS DOS NUMEROS TELEFONICOS DE CONTACTOS ALTERNATIVOS:</label>
+                                <div class="controls">
+                                    <input type="text" ng-model="datos.PER_TRA_NUM_CONTACTO" id="PER_TRA_NUM_CONTACTO" name="PER_TRA_NUM_CONTACTO" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="url" >SELECCIONA LA MODALIDAD DE LOS DIAS QUE CIRCULARA :</label>
+                            <br>
+                            <br>
+                            <div class="form-group">   
+                                <div class="controls">                                
+                                    <div class="col-md-3">
+                                        <div class="form-group" >
+                                            <input type="radio" ng-model="datos.DIAS_VALIDADOR" name="DIAS_VALIDADOR" value="TODOS LOS DIAS" ng-change="docDiasDimaico(datos.DIAS_VALIDADOR);" required/> TODOS LOS DIAS
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group" >
+                                            <input type="radio" ng-model="datos.DIAS_VALIDADOR" name="DIAS_VALIDADOR" value="SELECCIONAR DIAS" ng-change="docDiasDimaico(datos.DIAS_VALIDADOR);" required/>  SELECCIONAR DIAS
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-show="div_dias_div">
+                            <div class="col-md-12">
+                                <div class="form-group">   
+                                    <div class="controls">                                
+                                        <div class="col-md-2">
+                                            <div class="form-group" >
+                                                <input type="radio" ng-model="datos.DIAS_LUNES" name="DIAS_LUNES" value="LUNES" required/> LUNES
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group" >
+                                                <input type="radio" ng-model="datos.DIAS_MARTES" name="DIAS_MARTES" value="MARTES" required/>  MARTES
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group" >
+                                                <input type="radio" ng-model="datos.DIAS_MIERCOLES" name="DIAS_MIERCOLES" value="MIERCOLES" required/> MIERCOLES
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group" >
+                                                <input type="radio" ng-model="datos.DIAS_JUEVES" name="DIAS_JUEVES" value="JUEVES" required/>  JUEVES
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group" >
+                                                <input type="radio" ng-model="datos.DIAS_VIERNES" name="DIAS_VIERNES" value="VIERNES" required/> VIERNES
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group" >
+                                                <input type="radio" ng-model="datos.DIAS_SABADO" name="DIAS_SABADO" value="SABADO" required/>  SABADO
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group" >
+                                                <input type="radio" ng-model="datos.DIAS_DOMINGO" name="DIAS_DOMINGO" value="DOMINGO" required/>  DOMINGO
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+                <div class="col-md-12">
+                    <legend>REQUISITOS: </legend>
+                </div>
+                <div class="col-md-12" id="">
+                    <div class="ng-binding">
+                        <div class="col-md-12">
+                            <!--div ng-show="div_fotosvehiculolateralfrontal"-->
+
+                                <div class="form-group" >
+                                    <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                           <label for="url">CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S) (Los documentos deben estar en solo archivo en formato PDF o DOC.):</label>
+                                        </div>
+                                          <div class="col-md-8">
+                                              <div class="form-group custom-upload">
+                                                  <input type="file" id="FILE_RUAT_VEHICULO" name="FILE_RUAT_VEHICULO" uploader-model="FILE_RUAT_VEHICULO" accept="image/*" style="display: none;">
+                                                  <div class="input-group">
+                                                      <input id="txt_FILE_RUAT_VEHICULO" name="txt_FILE_RUAT_VEHICULO" ng-model="datos.FILE_RUAT_VEHICULO" type="text" ng-disabled="true" class="form-control input-lg" required>
+                                                      <span class="input-group-btn">
+                                                          <a id="href_FILE_RUAT_VEHICULO" target="_blank"  href="">
+                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover3 != null" ng-click="mostrarimg('FILE_RUAT_VEHICULO');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                          </a>
+                                                          <button id="btn_FILE_RUAT_VEHICULO" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_RUAT_VEHICULO');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                                      </span>
+                                                  </div>
+                                                  
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                    </div>
+                                </div>
+                            <br>
+
+                                <div class="form-group" >
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                               <label for="url">ADJUNTAR LOS CARNETS DE LOS SOLICITANTES (Los documentos deben estar en solo archivo en formato PDF o DOC.):</label>
+                                            </div>
+                                              <div class="col-md-8">
+                                                  <div class="form-group custom-upload">
+                                                      <input type="file" id="FILE_FOTO_SOLICITANTE" name="FILE_FOTO_SOLICITANTE" uploader-model="FILE_FOTO_SOLICITANTE" accept="image/*" style="display: none;">
+                                                      <div class="input-group">
+                                                          <input id="txt_FILE_FOTO_SOLICITANTE" name="txt_FILE_FOTO_SOLICITANTE" ng-model="datos.FILE_FOTO_SOLICITANTE" type="text" ng-disabled="true" class="form-control input-lg" required>
+                                                          <span class="input-group-btn">
+                                                              <a id="href_FILE_FOTO_SOLICITANTE" target="_blank"  href="">
+                                                                  <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover6 != null" ng-click="mostrarimg('FILE_FOTO_SOLICITANTE');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                              </a>
+                                                              <button id="btn_FILE_FOTO_SOLICITANTE" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FOTO_SOLICITANTE');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                                          </span>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                    </div>
+                                </div>
+                            <br>
+                            <div class="form-group" >
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                           <label for="url">CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS (En un solo documento en formato PDF) *:</label>
+                                        </div>
+                                          <div class="col-md-8">
+                                              <div class="form-group custom-upload">
+                                                  <input type="file" id="FILE_FOTO_LICENCIA_CI" name="FILE_FOTO_LICENCIA_CI" uploader-model="FILE_FOTO_LICENCIA_CI" accept="image/*" style="display: none;">
+                                                  <div class="input-group">
+                                                      <input id="txt_FILE_FOTO_LICENCIA_CI" name="txt_FILE_FOTO_LICENCIA_CI" ng-model="datos.FILE_FOTO_LICENCIA_CI" type="text" ng-disabled="true" class="form-control input-lg" required>
+                                                      <span class="input-group-btn">
+                                                          <a id="href_FILE_FOTO_LICENCIA_CI" target="_blank" href="">
+                                                              <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover7 != null" ng-click="mostrarimg('FILE_FOTO_LICENCIA_CI');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                          </a>
+                                                          <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FOTO_LICENCIA_CI');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                                      </span>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div ng-show="div_respaldo_solicitud_pdf">
+                                <div class="form-group" >
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                               <label for="url">ADJUNTE EL RESPALDO DE LA SOLICITUD: LICENCIA DE FUNCIONAMIENTO, RESOLUCION ADMINISTRATIVA DEL OPERADOR, CONTRATO DE PRESTACIÓN DE SERVICIOS, AUTORIZACIÓN DE LA DIRECCIÓN DE MERCADOS, PARA CONSTRUCCIONES LA AUTORIZACIÓN DEL GAMLP PARA EJECUCIÓN DE OBRAS.:</label>
+                                            </div>
+                                              <div class="col-md-8">
+                                                  <div class="form-group custom-upload">
+                                                      <input type="file" id="FILE_FORMVH_EXCEL" name="FILE_FORMVH_EXCEL" uploader-model="FILE_FORMVH_EXCEL" accept="image/*" style="display: none;">
+                                                      <div class="input-group">
+                                                          <input id="txt_FILE_FORMVH_EXCEL" name="txt_FILE_FORMVH_EXCEL" ng-model="datos.FILE_FORMVH_EXCEL" type="text" ng-disabled="true" class="form-control input-lg" required>
+                                                          <span class="input-group-btn">
+                                                              <a id="href_FILE_FORMVH_EXCEL" target="_blank" href="">
+                                                                  <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover4 != null" ng-click="mostrarimg('FILE_FORMVH_EXCEL');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                              </a>
+                                                              <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FORMVH_EXCEL');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                                          </span>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                    </div>
+                                </div>
+    
+                            </div>
+                            <br>
+                            <div class="form-group" >
+                                <div class="col-md-12">
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="url"> CARGAR FOTOGRAFÍA(S) FRONTAL Y LATERAL DE LOS VEHÍCULO(S) (Fotografías con buena resolución en un solo archivo formato PDF o DOC):</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group custom-upload">
+                                            <div>
+                                                <input type="file" id="FILE_VEHICULO_FOTO" name="FILE_VEHICULO_FOTO"
+                                                    uploader-model="FILE_VEHICULO_FOTO" accept="image/*"
+                                                    style="display: none;">
+                                                <div class="input-group">
+                                                    <input id="txt_FILE_VEHICULO_FOTO" name="txt_FILE_VEHICULO_FOTO"
+                                                        ng-model="datos.FILE_VEHICULO_FOTO" type="text"
+                                                        ng-disabled="true" class="form-control input-lg"
+                                                        required>
+                                                    <span class="input-group-btn">
+                                                        <a id="FILE_VEHICULO_FOTO" href="">
+                                                            <button id="href_FILE_VEHICULO_FOTO"
+                                                                class="browse btn btn-primary input-lg"
+                                                                type="button" ng-show="btover1 != null"
+                                                                ng-click="mostrarimg('FILE_VEHICULO_FOTO');"
+                                                                data-toggle="modal"><i
+                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                        </a>
+                                                        <button id="btn_FILE_VEHICULO_FOTO"
+                                                            class="btnupload browse btn btn-primary input-lg"
+                                                            type="button"
+                                                            ng-click="ejecutarFile('FILE_VEHICULO_FOTO');"><i
+                                                                class="glyphicon glyphicon-upload"></i>
+                                                            Subir</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="col-md-12" id="">
+                    <div class="ng-binding">
+
+                        <br>                        
+                        <div>
+                        </div>
+                        <br>
+                        <div>
+                        </div>
+                            <br>
+
+                            <div class="modal fade" id="fo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+                                              <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_09_03_1}} (Anverso)</h4>
+                                          </div>
+                                          <img id="imgSalida" ng-src="{{archivoCI}}" width="100%" height="100%">
+                                          <div class="modal-footer">
+                                              <button id="{{translateTitulos.lbl_05_05_05}}" name="{{translateTitulos.lbl_05_05_05}}" type="button" class="btn btn-default" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                </div>
+            </div>
+                </div>
+                    <!--input type="hidden" ng-model="datos.f01_zona_act" id="f01_zona_act" name="f01_zona_act" class="form-control">
+                    <input type="hidden" ng-model="datos.f01_tipo_act_ae_descrip" id="f01_nro_frm" name="f01_nro_frm" class="form-control">
+                    <input type="hidden" ng-model="datos.f01_modalidad_pago_descrip" id="f01_nro_frm" name="f01_nro_frm" class="form-control">
+
+                    <input type="hidden" ng-model="datos.f01_venta_productos_domicilio" id="f01_venta_productos_domicilio" name="f01_venta_productos_domicilio" class="form-control">
+                    <input type="hidden" ng-model="datos.f01_venta_para_recojo" id="f01_venta_para_recojo" name="f01_venta_para_recojo" class="form-control">
+                    <input type="hidden" ng-model="datos.f01_distribucion_movilidad_propia" id="f01_distribucion_movilidad_propia" name="f01_distribucion_movilidad_propia" class="form-control">
+
+                    <input type="hidden" ng-model="datos.f01_venta_productos_domicilio_descrip" id="f01_venta_productos_domicilio_descrip" name="f01_venta_productos_domicilio_descrip" class="form-control">
+
+                    <input type="hidden" ng-model="datos.f01_distribucion_movilidad_propia_descrip" id="f01_distribucion_movilidad_propia_descrip" name="f01_distribucion_movilidad_propia_descrip" class="form-control">
+
+                    <input type="hidden" ng-model="datos.f01_venta_para_recojo_descrip" id="f01_venta_para_recojo_descrip" name="f01_venta_para_recojo_descrip" class="form-control">
+
+                     <input type="hidden" ng-model="datos.f01_tipo_lic" id="f01_tipo_lic" name="f01_tipo_lic" class="form-control">
+                    <input type="hidden" ng-model="datos.f01_categoria" id="f01_categoria" name="f01_categoria" class="form-control">
+                    <input type="hidden" ng-model="datos.f01_categoria_agrupada" id="f01_categoria_agrupada" name="f01_categoria_agrupada" class="form-control">
+                    <input type="hidden" ng-model="datos.f01_categoria_descrip" id="f01_categoria_descrip" name="f01_categoria_descrip" class="form-control"-->
+
+            </div>
+
+            <div class="col-md-12" align="right" ng-show = "botones != null">
+                <button id="miFormGuardar"  ng-click="verificasLuis(datos);" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="" tooltip="Guardar Formulario">
+                <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little" ng-disabled="" tooltip="Enviar Formulario" >
+            </div> 
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

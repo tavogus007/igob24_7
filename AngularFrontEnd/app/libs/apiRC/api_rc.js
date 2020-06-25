@@ -1176,6 +1176,7 @@ rcTramitesAe.prototype.listarProducto = function (functionResp)
   };
   ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 }
+//**********************************MOVILIDAD**********************************
 
 function listaTramitesMov(){
   this.idCiudadano;
@@ -1200,6 +1201,22 @@ listaTramitesMov.prototype.busquedaMovilidadInfracciones=function(functionResp){
   };
   ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 };
+
+function tramitesMovilidad(){
+  this.idCiudadano;
+  this.descripcion;
+}
+
+tramitesMovilidad.prototype.listaTramitesMovilidad=function(functionResp){
+  urlComp = "/listaTramitesMovilidad";
+  typeCall = "post";
+  dataParams= {
+      "idCiudadano" : this.idCiudadano,
+      "descripcion" : this.descripcion
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+};
+
 
 function rcTramites(){
     this.oid;

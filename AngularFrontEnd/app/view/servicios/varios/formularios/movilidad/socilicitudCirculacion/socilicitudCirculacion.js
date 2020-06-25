@@ -34,6 +34,67 @@ function permisosController($scope, $rootScope ,$routeParams, $location, $http, 
             $scope.adicionarServicioGamlp(idproceso); 
         }
     }
+    //$scope.crearTramiteVAE = function()
+    $scope.crearTramiteVAEdd = function(idproceso){
+      $.blockUI();
+      console.log($scope.tramiteId);
+      if($idproceso != undefined || idproceso != null){
+        if ($scope.datosCiudadano.dtspsl_activaciond == 'SI' && $scope.datosCiudadano.dtspsl_activacionf == 'SI') 
+        {
+          var dataInicio = $scope.datos;
+          var fecha= new Date();
+          var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+          var sIdServicio = $scope.tramiteId;
+          var sIdCiudadano = $scope.oidCiu;
+          var sFechaTramite = fechactual;
+          var datosSerializados   =  JSON.stringify(dataInicio);
+          try{
+            var crea = new adicionaTramitesFormulario();
+            crea.frm_tra_fecha = sFechaTramite;
+            crea.frm_tra_enviado = "NO";
+            crea.frm_tra_registrado = fechactual;
+            crea.frm_tra_modificado = fechactual;
+            crea.id_servicio = sIdServicio;
+            crea.data_json = datosSerializados;
+            crea.oid_ciudadano = sIdCiudadano;
+            crea.id_usuario = 3;
+            crea.adiciona_Tramites_Formulario(function(res){
+              x = JSON.parse(res);
+              response = x.success;
+              if(response.length  > 0){
+                $scope.template =   "";
+                sessionService.set('IDTRAMITE', '');
+                sessionService.set('IDSERVICIO', '');
+                sessionService.set('ESTADO', '');
+                var nro_tramite = response[0].sp_insertar_formulario_tramites_datos;
+                datosTramite = {};
+                datosTramite.vtra_id = nro_tramite;
+                datosTramite.vdvser_id = sIdServicio;
+                datosTramite.venviado = "NO";
+                datosTramite.form_contenido = datosSerializados;
+                $scope.seleccionarTramite(datosTramite);
+                $.unblockUI();
+                alertify.success('Tramite creado correctamente');
+                $('#crearTramite').modal('hide');
+                $scope.tramitesCiudadano();
+              }
+              else{
+                $.unblockUI();
+              }
+            });
+          }catch(e){
+            console.log('*Error*', e);
+            $.unblockUI();
+          }
+        } else{
+          $.unblockUI();
+          swal('', "Debe realizar las activaciones fisica y digital para poder realizar el trámite", 'warning');
+        };
+      }else{
+        $.unblockUI();
+        swal('',"Dede seleccionar uno de los servicios",'warning');
+      }
+    }
 
     $scope.adicionarServicioGamlp = function(idproceso){ 
         var tipoPersona     =   sessionService.get('TIPO_PERSONA');
@@ -85,9 +146,10 @@ function permisosController($scope, $rootScope ,$routeParams, $location, $http, 
     $scope.ListadoTramitesCiudadano = function(){
         sIdCiudadano = sessionService.get('IDSOLICITANTE');
         try {
-            var rData = new rcTramitesAe();
-            rData.oid = sIdCiudadano;
-            rData.listaraevirtual(function(res){
+            var rData = new tramitesMovilidad();
+            rData.idCiudadano=sIdCiudadano;
+            rData.descripcion="MOVILIDAD_PER_TRA";
+            rData.listaTramitesMovilidad(function(res){
                 r = JSON.parse(res);
                 results = r.success;
                 angular.forEach(results,function(val, index){
@@ -171,10 +233,10 @@ function permisosController($scope, $rootScope ,$routeParams, $location, $http, 
     };
 
     // nuevo de paquete fin
-     $scope.seleccionarTramite = function (tramite) {
+     /*$scope.seleccionarTramite = function (tramite) {
        //$scope.template =   "";
         $scope.seleccionarTramiteRender(tramite);    
-    }
+    }*/
 
     $scope.seleccionarTramite = function (tramite) {
         console.log("seleccionar tramite::: ", tramite);
@@ -1117,14 +1179,15 @@ function permisosController($scope, $rootScope ,$routeParams, $location, $http, 
         var datoForm4 = '';
         var stform = '';
         tipoPersona     = sessionService.get('TIPO_PERSONA');
-        if(tipoPersona == 'NATURAL' || tipoPersona == 'N'){
+
             oidCiudadano    = sessionService.get('IDSOLICITANTE');
             datosCiudadano  = (sessionService.get('US_NOMBRE')+' '+sessionService.get('US_PATERNO')+' '+sessionService.get('US_MATERNO'));
             datosci         = sessionService.get('CICIUDADANO');
             datosexpedido   = sessionService.get('CIEXPEDIDO');
             datoForm4 = JSON.stringify($rootScope.datosForm401);
+            console.log("datoForm4",datoForm4);
             $.ajax({
-                url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdfTV.php',
+                url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdfPTMovilidad.php',
                 type:"post",
                 data:{
                     "soid": oidCiudadano,
@@ -1154,45 +1217,7 @@ function permisosController($scope, $rootScope ,$routeParams, $location, $http, 
                     $.unblockUI();
                 }
             });
-        } else {
-            if(tipoPersona == 'JURIDICO' || tipoPersona == 'J'){
-                oidCiudadano    = sessionService.get('IDSOLICITANTE');
-                datosCiudadano  = $scope.datosIniciales.f01_pri_nom_rep +' '+ $scope.datosIniciales.f01_ape_pat_rep + ' ' + $scope.datosIniciales.f01_ape_mat_rep;
-                datosci         = $scope.datosIniciales.f01_num_doc_rep;
-                datosexpedido   = $scope.datosIniciales.f01_expedido_rep;
-                dEmpresa        = $scope.datosIniciales.f01_raz_soc_per_jur;
-                dnit            = $scope.datosIniciales.f01_num_doc_per_jur;
-                datoForm4 = JSON.stringify($rootScope.datosForm401);
-                $.ajax({
-                    url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdfTV.php',
-                    type:"post",
-                    data:{
-                        "soid": oidCiudadano,
-                        "sorigen": "IGOB",
-                        "stipo": tipoPersona,
-                        "usuario": datosCiudadano,
-                        "cedula":  datosci,
-                        "expedido": datosexpedido,
-                        "empresa": '',
-                        "nit": '',
-                        "fecha": $scope.fechafinalserver,
-                        "hora": $scope.sHoraFinal,
-                        "data": datoForm4,
-                        "stipo_form": 'DECLARACIONTV'
-                    },
-                    success:function(response){
-                        var urlData = response;
-                        $rootScope.decJuradaNatural = urlData;
-                        $scope.InsertarDocumentoTv(response);
-                        $rootScope.datosEnv.declaracion_jurada = urlData;
-                        $scope.datos.declaracion_jurada = urlData;
-                        document.signupForm.btnFormLicencia.disabled=false;
-                        $scope.guardarDatos($rootScope.datosEnv);
-                        $.unblockUI();
-                    }
-                });
-            }
-        }
+        
     };
     $scope.InsertarDocumentoTv = function(urlData){
         var sDocSistema     =   "IGOB247";

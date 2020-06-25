@@ -64,6 +64,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         }
     };*/
     $scope.listadoActividadesEconomicas = function () {
+       
         $scope.sIdAeGrilla    = $scope.datos.INT_TRAMITE_RENOVA;
         var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
         var sNumeroRegistros  = dataGenesis.length;
@@ -115,7 +116,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                         swal('Estimado Ciudadano', "Antes de realizar el registro, debe seleccionar la Actividad Economica.", 'warning');
                     }else{
                         $scope.botones = "mostrar";
-                        $scope.desabilitado = false;
+                        $scope.desabilitado = true;
                     }
                 } else {
                     swal('', "Datos no Encontrados !!!", 'warning');
@@ -123,7 +124,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             });
         }else{
             $scope.botones = "mostrar";
-            $scope.desabilitado = false;
+            $scope.desabilitado = true;
             $scope.mostrarMsgActividadTrue  = false;
             $scope.mostrarMsgActividadFalse = true;
             $scope.mostrarMsgNuevaActividad = true;
@@ -508,12 +509,44 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     }
 
     $scope.ejecutarFile = function(idfile){
-        var sid =   document.getElementById(idfile);
-        if(sid){
-            document.getElementById(idfile).click();
+
+        console.log(idfile,"idfile");
+
+        if(idfile == 'FILE_FOTO_SOLICITANTE' || idfile == 'FILE_FOTO_LICENCIA_CI'){
+            swal({
+                title: 'ALERTA',
+                text: 'El cargado de documentos debe seguir el orden de los documentos de vehiculos.',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: 'SI',
+                cancelButtonText: 'NO',
+                closeOnConfirm: false
+              }, function() {
+                swal.close();
+                setTimeout(function(){
+    
+                    var sid =   document.getElementById(idfile);
+                    if(sid){
+                        document.getElementById(idfile).click();
+                    }else{
+                        alert("Error ");
+                    }
+    
+                }, 1000);
+              });
+
         }else{
-            alert("Error ");
+
+            var sid =   document.getElementById(idfile);
+            if(sid){
+                document.getElementById(idfile).click();
+            }else{
+                alert("Error ");
+            }
         }
+
+
     };
 
     $scope.limpiarDatos = function(){
@@ -566,13 +599,14 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $scope.licmul_grilla = '';
         $scope.datos.Licenmul_grilla = '';
         $scope.datos.mulact_principal = '';
+        $scope.datos.mulact_principal = '';
         $scope.publicid='';
         $scope.datos.f01_actividad_principal_array =[];
         $scope.datos.fileArchivosAd = '';
         $scope.datos.FILE_CI = '';
         $scope.datos.FILE_MAPA='';
         $scope.datos.f01_nro_actividad ='';
-
+        $scope.datos.f01_num_pmc ='';
         $scope.datos.FILE_VEHICULO_FOTO = "";
         $scope.datos.FILE_RUAT_VEHICULO = "";
         $scope.datos.FILE_FORMVH_EXCEL = "";
@@ -584,10 +618,10 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $scope.div_fotografiafrentenitidasolicitante = false;
         //$scope.div_fotografiaslicenciaconducir = false;
         $scope.div_actividad_economica = false;
-        $scope.div_respaldo_solicitud_pdf = false;
         $scope.div_descripcion_prestado = false;
         $scope.div_solicitante = false;
         $scope.div_dias_div = false;
+        $scope.desabilitado = false;
         //$scope.botones = "mostrar";
       //  $scope.div_fotosvehiculolateralfrontal = false;
         $scope.div_permisocirculacionvehicular = false;
@@ -709,11 +743,16 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     }
 
     $scope.ultimoArrayAdjunto = function(data){
-        if(data == 'TRANSPORTE_DE_ENTREGA_ALIMENTOS' || data == 'TRANSPORTE_PERSONAL' || data == 'TRANSPORTE_DE_ENTREGA_PRODUCTOS'){
+
+        $scope.ArrayAdjuntoFor4();
+
+
+
+       /* if(data == 'TRANSPORTE_DE_ENTREGA_ALIMENTOS' || data == 'TRANSPORTE_PERSONAL' || data == 'TRANSPORTE_DE_ENTREGA_PRODUCTOS'){
              $scope.ArrayAdjuntoFor3();
         }else{
             $scope.ArrayAdjuntoFor4();
-        }
+        }*/
     }
 
     $scope.ArrayAdjuntoFor3 = function(){
@@ -796,7 +835,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
 
         datoObjectFile5.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_VEHICULO_FOTO + "?app_name=todoangular";
         datoObjectFile5.campo = $scope.datos.FILE_VEHICULO_FOTO;
-        datoObjectFile5.nombre = 'CARGAR FOTOGRAFÍA(S) FRONTAL Y LATERAL DE LOS VEHÍCULO(S) (Fotografías con buena resolución en un solo archivo formato PDF o DOC)';
+        datoObjectFile5.nombre = $scope.nombreRespaldos;
 
         datoObjectFile6.url = $rootScope.decJuradaNaturalPermiso;
         datoObjectFile6.campo = "DECLARACION JURADADA";
@@ -1086,7 +1125,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
               tramiteIgob.validarFormProcesos(function(resultado){
                 swal({
                   title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
-                  text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2>\n',
+                  text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2>\n'+'“SU SOLICITUD SERA ATENDIDA EN UN PLAZO DE 48 HORAS”\n',
                   html: true,
                   type: 'success',
                   //timer: 5000,
@@ -1572,16 +1611,13 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 $( "#msgformularioN" ).load(urlFormularioJ, function(data) {
                     stringFormulario40  =   data;
                     datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
-                    datos.f01_num_dos_prop = ((typeof(datos.f01_num_doc_rep) == 'undefined' || datos.f01_num_doc_rep == null) ? "" : datos.f01_num_doc_rep);
-                    datos.f01_pri_nom_rep = ((typeof(datos.f01_pri_nom_rep) == 'undefined' || datos.f01_pri_nom_rep == null) ? "" : datos.f01_pri_nom_rep);
-                    datos.f01_ape_mat_rep = ((typeof(datos.f01_ape_mat_rep) == 'undefined' || datos.f01_ape_mat_rep == null) ? "" : datos.f01_ape_mat_rep);
-                    datos.f01_ape_pat_rep = ((typeof(datos.f01_ape_pat_rep) == 'undefined' || datos.f01_ape_pat_rep == null) ? "" : datos.f01_ape_pat_rep);
-                    datos.f01_nom_completo = datos.f01_pri_nom_rep + " " + datos.f01_ape_mat_rep + " " + datos.f01_ape_pat_rep;
+                    datos.f01_nom_completo = datos.f01_pri_nom_rep+" "+datos.f01_ape_pat_rep+" "+datos.f01_ape_mat_rep;
+                    datos.f01_num_dos_prop = datos.f01_num_doc_rep;
                     datos.f01_expedido_prop = ((typeof(datos.f01_expedido_rep) == 'undefined' || datos.f01_expedido_rep == null) ? "" : datos.f01_expedido_rep);
-                    datos.f01_raz_soc = ((typeof(datos.f01_raz_soc) == 'undefined' || datos.f01_raz_soc == null) ? "" : datos.f01_raz_soc);
+                    datos.f01_raz_soc = ((typeof(datos.f01_raz_soc_per_jur) == 'undefined' || datos.f01_raz_soc_per_jur == null) ? "" : datos.f01_raz_soc_per_jur);
                     datos.f01_num_pmc = ((typeof(datos.f01_num_pmc) == 'undefined' || datos.f01_num_pmc == null) ? "" : datos.f01_num_pmc);
-                    stringFormulario40  =   stringFormulario40.replace("#f01_num_dos_prop#", datos.f01_num_dos_prop);
                     stringFormulario40  =   stringFormulario40.replace("#f01_nom_completo#", datos.f01_nom_completo);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_num_dos_prop#", datos.f01_num_dos_prop);
                     stringFormulario40  =   stringFormulario40.replace("#f01_expedido_prop#", datos.f01_expedido_prop);
                     stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.f01_raz_soc);
                     stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
@@ -1601,22 +1637,41 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
 
 
         $scope.armarDatosForm = function(data,sfecha,sHora){
+            console.log("dataaaaaaa",data),
             $rootScope.datosForm401 = "";
             var dataForm = {};
             //CABECERA
-            dataForm['f01_nom_completo'] = data.f01_nom_completo;
-            dataForm['f01_num_dos_prop'] = data.f01_num_dos_prop;
-            dataForm['f01_expedido_prop'] = data.f01_expedido_prop;
-            dataForm['f01_raz_soc'] = data.f01_raz_soc;
-            dataForm['f01_num_pmc'] = data.f01_num_pmc;
-            dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
-    
-            dataForm['fecha_sist'] = sfecha;
-            dataForm['fecha_sist2'] = sfecha;
-            dataForm['usuario'] = sessionService.get('USUARIO');
-            dataForm['hora_sist'] = sHora;
-            $rootScope.datosForm401 = dataForm;
-            $rootScope.datosEnv = data;
+          /*  $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
+            if($scope.tipoPersona == 'NATURAL' || $scope.tipoPersona == 'N'){*/
+                dataForm['f01_nom_completo'] = data.f01_nom_completo;
+                dataForm['f01_num_dos_prop'] = data.f01_num_dos_prop;
+                dataForm['f01_expedido_prop'] = data.f01_expedido_prop;
+                dataForm['f01_raz_soc'] = data.f01_raz_soc;
+                dataForm['f01_num_pmc'] = data.f01_num_pmc;
+                dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
+        
+                dataForm['fecha_sist'] = sfecha;
+                dataForm['fecha_sist2'] = sfecha;
+                dataForm['usuario'] = sessionService.get('USUARIO');
+                dataForm['hora_sist'] = sHora;
+                $rootScope.datosForm401 = dataForm;
+                $rootScope.datosEnv = data;
+            /*} else {
+                dataForm['f01_nom_completo'] = data.f01_nom_completo;
+                dataForm['f01_num_dos_prop'] = data.f01_num_doc_rep;
+                dataForm['f01_expedido_prop'] = data.f01_expedido_rep;
+                dataForm['f01_raz_soc'] = data.f01_raz_soc_per_jur;
+                dataForm['f01_num_pmc'] = data.f01_num_pmc;
+                dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
+        
+                dataForm['fecha_sist'] = sfecha;
+                dataForm['fecha_sist2'] = sfecha;
+                dataForm['usuario'] = sessionService.get('USUARIO');
+                dataForm['hora_sist'] = sHora;
+                $rootScope.datosForm401 = dataForm;
+                $rootScope.datosEnv = data;
+            }*/
+
         }
 
     $scope.fmostrarFormulario   =   function(){
@@ -1716,15 +1771,14 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {
         if(data.f01_validador_servicio == 'TRANSPORTE_DE_ENTREGA_ALIMENTOS' || data.f01_validador_servicio == 'TRANSPORTE_PERSONAL' || data.f01_validador_servicio == 'TRANSPORTE_DE_ENTREGA_PRODUCTOS'){
-            if(/*data && data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
+            if(data && data.f01_num_pmc != ""  && data.f01_num_pmc != null &&
               data.f01_nit != ""  && data.f01_nit != null &&
               data.f01_raz_soc != "" && data.f01_raz_soc != null &&
               data.f01_tipo_lic_descrip != "" && data.f01_tipo_lic_descrip != null &&
               data.f01_categoria_agrupada_descrip != "" && data.f01_categoria_agrupada_descrip != null &&
               data.f01_categoria_agrupada_descripcion != "" && data.f01_categoria_agrupada_descripcion != null &&
-              data.f01_productosElaborados != "" && data.f01_productosElaborados != null &&*/
+              data.f01_productosElaborados != "" && data.f01_productosElaborados != null &&
               data.f01_casilla != "" && data.f01_casilla != null &&
-              data.PER_TRA_JUSTI != "" && data.PER_TRA_JUSTI != null &&
               data.PER_TRA_HORA_INICIO != "" && data.PER_TRA_HORA_INICIO != null &&
               data.PER_TRA_HORA_FIN != "" && data.PER_TRA_HORA_FIN != null &&
               data.PER_TRA_NUM_CONTACTO != "" && data.PER_TRA_NUM_CONTACTO != null &&
@@ -1743,7 +1797,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         }
         if(data.f01_validador_servicio == 'TRANSPORTE_MATERIA_PRIMA'){
             if(data.f01_casilla != "" && data.f01_casilla != null &&
-              data.PER_TRA_JUSTI != "" && data.PER_TRA_JUSTI != null &&
               data.PER_TRA_HORA_INICIO != "" && data.PER_TRA_HORA_INICIO != null &&
               data.PER_TRA_HORA_FIN != "" && data.PER_TRA_HORA_FIN != null &&
               data.PER_TRA_NUM_CONTACTO != "" && data.PER_TRA_NUM_CONTACTO != null &&
@@ -1793,7 +1846,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             $scope.datos.PER_TRA_DIAS=lunes+" "+martes+" "+miercoles+" "+jueves+" "+viernes+" "+sabado+" "+domingo;
             console.log("$scope.datos.PER_TRA_DIAS ::::::::: ",$scope.datos.PER_TRA_DIAS);
         }
-        
+        $scope.datos.Tipo_tramite_creado="WEB";
         if(sessionService.get('TIPO_PERSONA') == "NATURAL"){
 
             $scope.datos.PER_TRA_NOMBRE=data.f01_pri_nom_prop;
@@ -1815,7 +1868,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             $scope.datos.PER_TRA_DESCRIP_AE=data.f01_productosElaborados;
             $scope.datos.PER_TRA_CANT_VEHI_SOL=data.f01_casilla;
             $scope.datos.PER_TRA_DESCRIP_FOR=data.f01_validador_servicio;
-            $scope.datos.PT_DESCRIP_AE=data.f01_categoria_agrupada_descripcion;
+            $scope.datos.PT_DESCRIP_AE=data.f01_raz_soc;
             $scope.datos.PER_TRA_ID_CIUDADANO=sessionService.get('IDSOLICITANTE');
             $scope.verificarCamposInternet(data);
 
@@ -1833,13 +1886,13 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             $scope.datos.PER_TRA_DESCRIP_AE=data.f01_productosElaborados;
             $scope.datos.PER_TRA_CANT_VEHI_SOL=data.f01_casilla;
             $scope.datos.PER_TRA_DESCRIP_FOR=data.f01_validador_servicio;
-            $scope.datos.PT_DESCRIP_AE=data.f01_categoria_agrupada_descripcion;
+            $scope.datos.PT_DESCRIP_AE=data.f01_raz_soc;
             $scope.datos.PER_TRA_ID_CIUDADANO=sessionService.get('IDSOLICITANTE');
     
             $scope.datos.PER_TRA_RAZON_SCI=data.f01_raz_soc_per_jur;
             $scope.datos.PER_TRA_PODER=data.f01_num_pod_leg+"/"+data.f01_ges_vig_pod;
             $scope.datos.PER_TRA_NRO_NOTARIA=data.f01_num_notaria;
-            $scope.datos.PER_TRA_ZONA_J=data.f01_zona;
+            $scope.datos.PER_TRA_ZONA_J=data.f01_zona_desc;
             $scope.datos.PER_TRA_VIA_J=data.f01_tipo_viarep;
             $scope.datos.PER_TRA_NOMBRE_VIA_J=data.f01_nom_via_rep;
             $scope.datos.PER_TRA_NOMBRE_VIA_J=data.f01_nom_via_rep;
@@ -1871,23 +1924,70 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $scope.botones = "mostrar";
         //OPCION 1
         if(data == 'TRANSPORTE_DE_ENTREGA_ALIMENTOS' || data == 'TRANSPORTE_PERSONAL'  || data == 'TRANSPORTE_DE_ENTREGA_PRODUCTOS'){
+            $scope.limpiarDatos();
+            $scope.desabilitado=true;
             $scope.div_archivoexcelformulario = true;
             $scope.div_permisocirculacionvehicular = true;
             $scope.div_correelec = true;
             $scope.divalimentos = true;
             $scope.div_actividad_economica = true;
             $scope.div_solicitante = true;
-            $scope.div_respaldo_solicitud_pdf = false;
+            $scope.nombreRespaldos ='ADJUNTAR DOCUMENTACION DE RESPALDO, EJEMPLO CONTRATO DE SERVICIOS, PERMISO DE CONSTRUCCION U OTROS (Fotografías con buena resolución en un solo archivo formato PDF)';
             $scope.div_descripcion_prestado = false;
+            switch (data) {
+                case 'TRANSPORTE_DE_ENTREGA_ALIMENTOS':
+                    swal({
+                        title: "Estimado Ciudadano.",
+                        text: 'para la prestación de entrega de alimentos preparados a domicilio:<span style="color:#FF0303"> “LOS HORARIOS DE ESTE SERVICIO SON DE 7:00 A 22:00 (LUNES A DOMINGO)”<span>',
+                        html: true,
+                        type: 'warning',
+                        confirmButtonColor: '#DD6B55'
+                      });
+                  break;
+                  case 'TRANSPORTE_PERSONAL':
+                    swal({
+                        title: "Estimado Ciudadano.",
+                        text: 'para la prestación servicio de trasporte de personal:<span style="color:#FF0303"> “LOS HORARIOS DE ESTE SERVICIO SON DE 24 HORAS (LUNES A DOMINGO)”<span>',
+                        html: true,
+                        type: 'warning',
+                        confirmButtonColor: '#DD6B55'
+                      });
+                  break;
+                  case 'TRANSPORTE_DE_ENTREGA_PRODUCTOS':
+                    swal({
+                        title: "Estimado Ciudadano.",
+                        text: 'para la prestación de entrega de productos en general a domicilio:<span style="color:#FF0303"> “LOS HORARIOS DE ESTE SERVICIO SON DE 24 HORAS (LUNES A DOMINGO)”<span>',
+                        html: true,
+                        type: 'warning',
+                        confirmButtonColor: '#DD6B55'
+                      });
+                  break;
+              }
+
+
+
             }else if(data == 'TRANSPORTE_MATERIA_PRIMA'){
+                $scope.limpiarDatos();
+                $scope.desabilitado=false;
                 $scope.div_archivoexcelformulario = true;
                 $scope.div_permisocirculacionvehicular = true;
                 $scope.div_correelec = true;
                 $scope.divalimentos = true;
                 $scope.div_actividad_economica = false;
                 $scope.div_solicitante = true;
-                $scope.div_respaldo_solicitud_pdf = true;
                 $scope.div_descripcion_prestado = true;
+                $scope.nombreRespaldos ='RRESOLUCIÓN ADMINISTRATIVA PARA OPERADORES DE TRANSPORTE DE CARGA, PERMISO DE CONSTRUCCIÓN O AUTORIZACIONES MENORES OTORGADAS POR EL SERVICIO MUNICIPAL DE ADMINISTRACIÓN TERRITORIAL SERMAT, LICENCIA DE FUNCIONAMIENTO, PATENTE ÚNICA MUNICIPAL O CERTIFICADO DE PRODUCTOR AGROPECUARIO, ENTRE OTROS. (Fotografías con buena resolución en un solo archivo formato PDF)';
+                switch (data) {
+                    case 'TRANSPORTE_MATERIA_PRIMA':
+                        swal({
+                            title: "Estimado Ciudadano.",
+                            text: 'para la prestación de entrega de carga, insumos, materias primas y productos de abastecimiento se debe indicar que:<span style="color:#FF0303"> “LOS HORARIOS DE ESTE SERVICIO SON:<br><br> A) MATERIALES DE CONSTRUCCIÓN: MOVIMIENTO DE ÁRIDOS Y TIERRAS 24 HORAS (LUNES A VIERNES), MAYORISTAS 24 HORAS (LUNES A VIERNES), MINORISTAS DE 9:00 A 17:00 (LUNES A VIERNES).<br><br> B) MATERIAS PRIMAS: 24 HORAS (LUNES A DOMINGO)<br><br> C) PRODUCTOS DE 1ERA NECESIDAD: MAYORISTAS: 24 HORAS (LUNES A DOMINGO) Y MINORISTAS: 5:00 A 17:00 (LUNES A VIERNES)”<span>',
+                            html: true,
+                            type: 'warning',
+                            confirmButtonColor: '#DD6B55'
+                          });
+                      break;
+                        }
         }  
     }
 
@@ -1904,6 +2004,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     }
     
     $scope.validarEnvio = function(data){
+        console.log("data",data);
         swal({
           title: 'CONFIRMAR',
           text: 'El envío de la presente solicitud  generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',

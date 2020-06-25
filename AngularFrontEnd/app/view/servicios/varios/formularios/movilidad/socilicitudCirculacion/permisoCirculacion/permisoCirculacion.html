@@ -274,8 +274,8 @@
                         <div class="form-group" >
                             <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
                             <div class="controls">
-                                <input ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                <input  type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                <input ng-model="datos.f01_zona_desc" id="f01_zona_desc" name="f01_zona_desc" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                <input  type="hidden" ng-model="datos.f01_zona_desc" id="f01_zona_desc" name="f01_zona_desc" class="form-control"  width="30%" height="30" ng-disabled="true">
                             </div>
                         </div>
                     </div>
@@ -398,7 +398,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group" >
-                                    <input type="radio" ng-model="datos.f01_validador_servicio" name="f01_validador_servicio" ng-change="docdinamicos(datos.f01_validador_servicio);" value="TRANSPORTE_DE_ENTREGA_PRODUCTOS" required/>  PARA LA PRESTACION DEL SERVICIO DE TRANSPORTE DE ENTREGA DE PRODUCTOS A DOMICILIO
+                                    <input type="radio" ng-model="datos.f01_validador_servicio" name="f01_validador_servicio" ng-change="docdinamicos(datos.f01_validador_servicio);" value="TRANSPORTE_DE_ENTREGA_PRODUCTOS" required/>  PARA LA PRESTACION DEL SERVICIO DE TRANSPORTE DE ENTREGA DE PRODUCTOS EN GENERAL A DOMICILIO
                                 <br>
                                 </div>
                             </div>
@@ -476,14 +476,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <!--div class="col-md-6">
                     <div class="form-group">
                         <label for="url" >ACTIVIDAD DESARROLLADA:</label>
                         <div class="controls">
                             <input type="text" ng-model="datos.f01_categoria_agrupada_descripcion" id="f01_categoria_agrupada_descripcion" name="f01_categoria_agrupada_descripcion" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-disabled="desabilitado" required/>
                         </div>
                     </div>
-                </div>
+                </div-->
                 <div ng-show="div_nit_jn">
                 <div class="col-md-6">
                     <div class="form-group" >
@@ -519,7 +519,7 @@
                            
                             <label for="url" >DESCRIPCION DEL SERVICIO PRESTADO:</label>
                             <div class="controls">
-                                <input type="text" ng-model="datos.f01_productosElaborados" id="f01_productosElaborados" name="f01_productosElaborados" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required/>
+                                <input type="text" ng-model="datos.f01_productosElaborados" id="f01_productosElaborados" name="f01_productosElaborados" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required ng-disabled="desabilitado"/>
                             </div>
                         </div>
                     </div>
@@ -528,24 +528,24 @@
                         <div class="form-group" >
                             <label for="url" >CANTIDAD DE VEHICULOS A SOLICITAR</label>                        
                             <div class="controls">
-                                <input ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" required onchange="document.signupForm.btnFormLicencia.disabled=true;" />
+                                <input ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" required onchange="document.signupForm.btnFormLicencia.disabled=true;" ng-disabled="desabilitado"/>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <!--div class="col-md-6">
                             <div class="form-group">
                                 <label for="url" >JUSTICACION BREVE DE LA SOLICITUD:</label>
                                 <div class="controls">
                                     <textarea type="text" ng-model="datos.PER_TRA_JUSTI" id="PER_TRA_JUSTI" name="PER_TRA_JUSTI" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required/>
                                 </div>
                             </div>
-                        </div>
+                        </div-->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="url" >HORA INICIO:</label>
                                 <div class="controls">
-                                    <input type="time" ng-model="datos.PER_TRA_HORA_INICIO" id="PER_TRA_HORA_INICIO" name="PER_TRA_HORA_INICIO" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required/>
+                                    <input type="time" ng-model="datos.PER_TRA_HORA_INICIO" id="PER_TRA_HORA_INICIO" name="PER_TRA_HORA_INICIO" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required ng-disabled="desabilitado"/>
                                 </div>
                             </div>
                         </div>
@@ -553,7 +553,7 @@
                             <div class="form-group">
                                 <label for="url" >HORA FINAL:</label>
                                 <div class="controls">
-                                    <input type="time" ng-model="datos.PER_TRA_HORA_FIN" id="PER_TRA_HORA_FIN" name="PER_TRA_HORA_FIN" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required/>
+                                    <input type="time" ng-model="datos.PER_TRA_HORA_FIN" id="PER_TRA_HORA_FIN" name="PER_TRA_HORA_FIN" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required ng-disabled="desabilitado"/>
                                 </div>
                             </div>
                         </div>
@@ -561,7 +561,7 @@
                             <div class="form-group">
                                 <label for="url" >INTRODUZCA AL MENOS DOS NUMEROS TELEFONICOS DE CONTACTOS ALTERNATIVOS:</label>
                                 <div class="controls">
-                                    <input type="text" ng-model="datos.PER_TRA_NUM_CONTACTO" id="PER_TRA_NUM_CONTACTO" name="PER_TRA_NUM_CONTACTO" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required/>
+                                    <input type="text" ng-model="datos.PER_TRA_NUM_CONTACTO" id="PER_TRA_NUM_CONTACTO" name="PER_TRA_NUM_CONTACTO" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required ng-disabled="desabilitado"/>
                                 </div>
                             </div>
                         </div>
@@ -573,12 +573,12 @@
                                 <div class="controls">                                
                                     <div class="col-md-3">
                                         <div class="form-group" >
-                                            <input type="radio" ng-model="datos.DIAS_VALIDADOR" name="DIAS_VALIDADOR" value="TODOS LOS DIAS" ng-change="docDiasDimaico(datos.DIAS_VALIDADOR);" required/> TODOS LOS DIAS
+                                            <input type="radio" ng-model="datos.DIAS_VALIDADOR" name="DIAS_VALIDADOR" value="TODOS LOS DIAS" ng-change="docDiasDimaico(datos.DIAS_VALIDADOR);" required ng-disabled="desabilitado"/> TODOS LOS DIAS
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group" >
-                                            <input type="radio" ng-model="datos.DIAS_VALIDADOR" name="DIAS_VALIDADOR" value="SELECCIONAR DIAS" ng-change="docDiasDimaico(datos.DIAS_VALIDADOR);" required/>  SELECCIONAR DIAS
+                                            <input type="radio" ng-model="datos.DIAS_VALIDADOR" name="DIAS_VALIDADOR" value="SELECCIONAR DIAS" ng-change="docDiasDimaico(datos.DIAS_VALIDADOR);" required ng-disabled="desabilitado"/>  SELECCIONAR DIAS
                                         </div>
                                     </div>
                                 </div>
@@ -591,37 +591,37 @@
                                     <div class="controls">                                
                                         <div class="col-md-2">
                                             <div class="form-group" >
-                                                <input type="radio" ng-model="datos.DIAS_LUNES" name="DIAS_LUNES" value="LUNES" required/> LUNES
+                                                <input type="radio" ng-model="datos.DIAS_LUNES" name="DIAS_LUNES" value="LUNES" required ng-disabled="desabilitado"/> LUNES
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group" >
-                                                <input type="radio" ng-model="datos.DIAS_MARTES" name="DIAS_MARTES" value="MARTES" required/>  MARTES
+                                                <input type="radio" ng-model="datos.DIAS_MARTES" name="DIAS_MARTES" value="MARTES" required ng-disabled="desabilitado"/>  MARTES
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group" >
-                                                <input type="radio" ng-model="datos.DIAS_MIERCOLES" name="DIAS_MIERCOLES" value="MIERCOLES" required/> MIERCOLES
+                                                <input type="radio" ng-model="datos.DIAS_MIERCOLES" name="DIAS_MIERCOLES" value="MIERCOLES" required ng-disabled="desabilitado"/> MIERCOLES
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group" >
-                                                <input type="radio" ng-model="datos.DIAS_JUEVES" name="DIAS_JUEVES" value="JUEVES" required/>  JUEVES
+                                                <input type="radio" ng-model="datos.DIAS_JUEVES" name="DIAS_JUEVES" value="JUEVES" required ng-disabled="desabilitado"/>  JUEVES
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group" >
-                                                <input type="radio" ng-model="datos.DIAS_VIERNES" name="DIAS_VIERNES" value="VIERNES" required/> VIERNES
+                                                <input type="radio" ng-model="datos.DIAS_VIERNES" name="DIAS_VIERNES" value="VIERNES" required ng-disabled="desabilitado"/> VIERNES
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group" >
-                                                <input type="radio" ng-model="datos.DIAS_SABADO" name="DIAS_SABADO" value="SABADO" required/>  SABADO
+                                                <input type="radio" ng-model="datos.DIAS_SABADO" name="DIAS_SABADO" value="SABADO" required ng-disabled="desabilitado"/>  SABADO
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group" >
-                                                <input type="radio" ng-model="datos.DIAS_DOMINGO" name="DIAS_DOMINGO" value="DOMINGO" required/>  DOMINGO
+                                                <input type="radio" ng-model="datos.DIAS_DOMINGO" name="DIAS_DOMINGO" value="DOMINGO" required ng-disabled="desabilitado"/>  DOMINGO
                                             </div>
                                         </div>
                                     </div>
@@ -654,7 +654,7 @@
                                                           <a id="href_FILE_RUAT_VEHICULO" target="_blank"  href="">
                                                               <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover3 != null" ng-click="mostrarimg('FILE_RUAT_VEHICULO');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                           </a>
-                                                          <button id="btn_FILE_RUAT_VEHICULO" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_RUAT_VEHICULO');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                                          <button id="btn_FILE_RUAT_VEHICULO" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_RUAT_VEHICULO');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                       </span>
                                                   </div>
                                                   
@@ -681,7 +681,7 @@
                                                               <a id="href_FILE_FOTO_SOLICITANTE" target="_blank"  href="">
                                                                   <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover6 != null" ng-click="mostrarimg('FILE_FOTO_SOLICITANTE');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                               </a>
-                                                              <button id="btn_FILE_FOTO_SOLICITANTE" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FOTO_SOLICITANTE');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                                              <button id="btn_FILE_FOTO_SOLICITANTE" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FOTO_SOLICITANTE');" ng-disabled="desabilitado" ><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                           </span>
                                                       </div>
                                                   </div>
@@ -705,7 +705,7 @@
                                                           <a id="href_FILE_FOTO_LICENCIA_CI" target="_blank" href="">
                                                               <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover7 != null" ng-click="mostrarimg('FILE_FOTO_LICENCIA_CI');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                           </a>
-                                                          <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FOTO_LICENCIA_CI');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                                          <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FOTO_LICENCIA_CI');" ng-disabled="desabilitado" ><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                       </span>
                                                   </div>
                                               </div>
@@ -714,12 +714,12 @@
                                 </div>
                             </div>
                             <br>
-                            <div ng-show="div_respaldo_solicitud_pdf">
+                       
                                 <div class="form-group" >
                                     <div class="col-md-12">
                                         <div class="row">
                                             <div class="col-md-4">
-                                               <label for="url">ADJUNTE EL RESPALDO DE LA SOLICITUD: LICENCIA DE FUNCIONAMIENTO, RESOLUCION ADMINISTRATIVA DEL OPERADOR, CONTRATO DE PRESTACIÓN DE SERVICIOS, AUTORIZACIÓN DE LA DIRECCIÓN DE MERCADOS, PARA CONSTRUCCIONES LA AUTORIZACIÓN DEL GAMLP PARA EJECUCIÓN DE OBRAS.:</label>
+                                               <label for="url">{{nombreRespaldos}}</label>
                                             </div>
                                               <div class="col-md-8">
                                                   <div class="form-group custom-upload">
@@ -730,7 +730,7 @@
                                                               <a id="href_FILE_FORMVH_EXCEL" target="_blank" href="">
                                                                   <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover4 != null" ng-click="mostrarimg('FILE_FORMVH_EXCEL');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                               </a>
-                                                              <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FORMVH_EXCEL');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                                              <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FORMVH_EXCEL');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                           </span>
                                                       </div>
                                                   </div>
@@ -739,7 +739,7 @@
                                     </div>
                                 </div>
     
-                            </div>
+                         
                             <br>
                             <div class="form-group" >
                                 <div class="col-md-12">
@@ -771,7 +771,7 @@
                                                         <button id="btn_FILE_VEHICULO_FOTO"
                                                             class="btnupload browse btn btn-primary input-lg"
                                                             type="button"
-                                                            ng-click="ejecutarFile('FILE_VEHICULO_FOTO');"><i
+                                                            ng-click="ejecutarFile('FILE_VEHICULO_FOTO');" ng-disabled="desabilitado"><i
                                                                 class="glyphicon glyphicon-upload"></i>
                                                             Subir</button>
                                                     </span>

@@ -9,7 +9,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   $rootScope.ofertasArray = new Array();
   $rootScope.archivosProducto = new Array();
   $rootScope.archivosLogotipo = new Array();
-  
+  $rootScope.archivosEncabezado = new Array();
   
 
   var clsIniciarCamposInternet = $rootScope.$on('inicializarCampos', function(event, data){
@@ -19,9 +19,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
     return deferred.promise;
   });
+
   $scope.recuperarSerializarInfo = function(data){
-  $scope[name] = 'Running';
-  var deferred = $q.defer();
+    $scope[name] = 'Running';
+    var deferred = $q.defer();
     if (data.length == 0){
       $scope.datos.f01_nombreTV = "";
       $scope.datos.f01_descripcionTV = "";
@@ -50,6 +51,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_ofertasAE_des5 = "";
       $scope.datos.txt_f01_upload1 = "";
       $scope.datos.txt_f01_upload2 = "";
+      $scope.datos.txt_f01_upload3 = "";
       $scope.inicializaC1 = true;
       $scope.inicializaC2 = true;
       $scope.inicializaC3 = true;
@@ -68,7 +70,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_correoTV = data[0].tv_correoc;
       $scope.datos.f01_pagwebAE = data[0].tv_pagina_webc;
       //contactos
-
       var contactos = data[0].tv_contactosc;
         for(i=0;i<contactos.length;i++){
           var conta = JSON.parse(contactos[i]);
@@ -234,7 +235,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.catalogo_url = $scope.catalogojson1.url;
       }  
       //logotipo
-
       $scope.logotipo1 = results[0].plogotipo;
       $scope.logotipojson = JSON.parse($scope.logotipo1);
       if($scope.logotipojson.length == 0){
@@ -244,7 +244,18 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.logotipojson1 = JSON.parse($scope.logotipojson[0]);
         $scope.datos.txt_f01_upload2 = $scope.logotipojson1.campo;
         $scope.logotipo_url = $scope.logotipojson1.url;
-      } 
+      }
+
+      $scope.encabezado1 = results[0].pencabezado;
+      $scope.encabezadotipojson = JSON.parse($scope.encabezado1);
+      if($scope.encabezadotipojson.length == 0){
+        console.log('Sin Url de encabezado');
+        $scope.datos.txt_f01_upload3 = '';
+      }else{
+        $scope.encabezadotipojson1 = JSON.parse($scope.encabezadotipojson[0]);
+        $scope.datos.txt_f01_upload3 = $scope.encabezadotipojson1.campo;
+        $scope.encabezadotipo_url = $scope.encabezadotipojson1.url;
+      }  
      
     } 
     return deferred.promise;
@@ -388,6 +399,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
     //logotipo
     datosTiendaVirtual.logotipo = $scope.logotipo1;
+    datosTiendaVirtual.encabezado = $scope.encabezado1;
 
     datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
     if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
@@ -548,6 +560,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     //catalogo
     datosTiendaVirtual.catalogo = $scope.catalogo1;
     datosTiendaVirtual.logotipo = $scope.logotipo1;
+    datosTiendaVirtual.encabezado = $scope.encabezado1;
+
     datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
     if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
         datosTiendaVirtual.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_MATERNO') + ' ' + sessionService.get('US_PATERNO');
@@ -598,14 +612,19 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_ofertasAE_des5 = "";
       $scope.datos.txt_f01_upload1 = "";
       $scope.datos.txt_f01_upload2 = "";
+      $scope.datos.txt_f01_upload3 = "";
       $rootScope.archivosProducto = [];
       $rootScope.archivosLogotipo = [];
+      $rootScope.archivosEncabezado = [];
       document.getElementById('txt_f01_upload1').value = "";
       document.getElementById('txt_f01_upload2').value = "";
+      document.getElementById('txt_f01_upload3').value = "";
       $scope.catalogo1 = '';
       $scope.logotipo1 = '';
+      $scope.encabezado1 = '';
       $scope.catalogo_url = '';
       $scope.logotipo_url = '';
+      $scope.encabezadotipo_url = '';
       $scope.sinDato1 = false;
       $scope.sinDato2 = false;
       $scope.sinDato3 = false;
@@ -1000,11 +1019,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   /*REQUISITOS2018*/
     $scope.almacenarRequisitos = function(aArchivos,idFiles){
-      console.log('aArchivos',aArchivos);
-
-    $scope.id_ae = sessionService.get('IDAE');
-
-        console.log("idfiles2:: ", idFiles, aArchivos);
+        $scope.id_ae = sessionService.get('IDAE');
         var descDoc = "";
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer(); 
@@ -1022,6 +1037,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $.blockUI();
         angular.forEach(aArchivos, function(archivo, key) {
             if(typeof(archivo) != 'undefined'){
+                console.log("idfiles key:: ", idFiles[key]);
                 if (idFiles[key]==1){
                   var descDoc = "catalogo";
                   var descArchivo = "catalogo de productos";
@@ -1059,6 +1075,31 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
                     var logo1 = JSON.parse(logo);
                     logo_array.push(logo1);
                     $scope.logotipo1 =  JSON.stringify(logo_array);
+                  }else{
+                    var descDoc = '';
+                    var descArchivo = '';
+                    swal('Error', "Seleccione un archivo tipo Imagen", 'error');
+                  }
+                }
+
+                if (idFiles[key]==3){
+                  if(aArchivos[0].type == 'image/png' || aArchivos[0].type == 'image/jpeg'){
+                    var descDoc = "encabezado";
+                    var descArchivo = "Encabezado de la Pagina Web";
+                    var imagenFile = archivo.name.split('.');
+                    var tipoFile = imagenFile[1];
+                    var nombreNuevoE = descDoc + '_' + $scope.id_ae +'.'+imagenFile[1];
+                    $scope.encabezadotipo_url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoE + "?app_name=todoangular";
+                    fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevoE);
+                    document.getElementById('txt_f01_upload3').value = nombreNuevoE;
+                    var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoE + "?app_name=todoangular";
+                    var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevoE + '", "nombre":"' + descArchivo + '" }';
+                    $rootScope.archivosEncabezado.push(myJSON);
+                    var encabezado_array = [];
+                    var encabezado = JSON.stringify($rootScope.archivosEncabezado[0]);
+                    var encabezado1 = JSON.parse(encabezado);
+                    encabezado_array.push(encabezado1);
+                    $scope.encabezado1 =  JSON.stringify(encabezado_array);
                   }else{
                     var descDoc = '';
                     var descArchivo = '';

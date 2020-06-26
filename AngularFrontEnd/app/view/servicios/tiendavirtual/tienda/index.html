@@ -168,7 +168,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-1"></div>
+
+                 <div class="col-md-1"></div>
+
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="url" >Encabezado de la Pagina Web (Introducir archivos .jpg ó .jpeg ó .png) :</label>
+                        <div class="controls">
+                            <div class="form-group custom-upload">
+                                <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*"  style="display: none;">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                    <input id="txt_f01_upload3" name="txt_f01_upload3"  ng-model="datos['txt_f01_upload3']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                                    <span class="input-group-btn">
+                                        <a id="href_f01_upload3"  ng-show="encabezadotipo_url" href="{{encabezadotipo_url}}" target="_blank">
+                                            <button id="btn_f01_upload3" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                        </a>
+                                        <button id="btn_f01_upload3" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload3', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                    </span>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                </div>
+
 
                 <div class="col-md-5">
                     <div class="form-group">

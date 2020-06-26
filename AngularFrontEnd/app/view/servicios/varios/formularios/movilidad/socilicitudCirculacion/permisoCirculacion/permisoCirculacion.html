@@ -528,7 +528,7 @@
                         <div class="form-group" >
                             <label for="url" >CANTIDAD DE VEHICULOS A SOLICITAR</label>                        
                             <div class="controls">
-                                <input ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" required onchange="document.signupForm.btnFormLicencia.disabled=true;" ng-disabled="desabilitado"/>
+                                <input type="number" ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" required onchange="document.signupForm.btnFormLicencia.disabled=true;" ng-disabled="desabilitado"/>
                             </div>
                         </div>
                     </div>
@@ -561,7 +561,7 @@
                             <div class="form-group">
                                 <label for="url" >INTRODUZCA AL MENOS DOS NUMEROS TELEFONICOS DE CONTACTOS ALTERNATIVOS:</label>
                                 <div class="controls">
-                                    <input type="text" ng-model="datos.PER_TRA_NUM_CONTACTO" id="PER_TRA_NUM_CONTACTO" name="PER_TRA_NUM_CONTACTO" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required ng-disabled="desabilitado"/>
+                                    <input type="number" ng-model="datos.PER_TRA_NUM_CONTACTO" id="PER_TRA_NUM_CONTACTO" name="PER_TRA_NUM_CONTACTO" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required ng-disabled="desabilitado"/>
                                 </div>
                             </div>
                         </div>

@@ -123,7 +123,8 @@ function permisosController($scope, $rootScope ,$routeParams, $location, $http, 
                 x = JSON.parse(res);
                 response = x.success;
                 if(response.length  > 0){
-                    sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
+
+                    /*sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
                     $.unblockUI();
                     $scope.ListadoTramitesCiudadano();
                     swal('', 'Registro almacenado correctamente', 'success');
@@ -131,7 +132,31 @@ function permisosController($scope, $rootScope ,$routeParams, $location, $http, 
                     sessionService.destroy('NROTRAMITEID');
                     sessionService.destroy('IDPROCESO');
                     $scope.btnEnviarForm    =   false;
-                    $scope.btnGuardarForm   =   false;
+                    $scope.btnGuardarForm   =   false;*/
+
+
+                    $scope.template =   "";
+                    sessionService.set('IDTRAMITE', '');
+                    sessionService.set('IDSERVICIO', '');
+                    sessionService.set('ESTADO', '');
+                    var nro_tramite = response[0].sp_insertar_formulario_tramites_datos;
+                    datosTramite = {};
+                    datosTramite.vtra_id = nro_tramite;
+                    datosTramite.vdvser_id = sIdServicio;
+                    datosTramite.venviado = "NO";
+                    datosTramite.form_contenido = datosSerializados;
+                    $scope.seleccionarTramite(datosTramite);
+                    $.unblockUI();
+                    alertify.success('Tramite creado correctamente');
+                    $('#crearTramite').modal('hide');
+                    $scope.ListadoTramitesCiudadano();
+
+
+
+
+
+
+
                 }
                 else{
                     $.unblockUI();
@@ -233,10 +258,10 @@ function permisosController($scope, $rootScope ,$routeParams, $location, $http, 
     };
 
     // nuevo de paquete fin
-     /*$scope.seleccionarTramite = function (tramite) {
+    $scope.seleccionarTramite = function (tramite) {
        //$scope.template =   "";
         $scope.seleccionarTramiteRender(tramite);    
-    }*/
+    }
 
     $scope.seleccionarTramite = function (tramite) {
         console.log("seleccionar tramite::: ", tramite);
@@ -1192,7 +1217,7 @@ function permisosController($scope, $rootScope ,$routeParams, $location, $http, 
                 data:{
                     "soid": oidCiudadano,
                     "sorigen": "IGOB",
-                    "stipo": tipoPersona,
+                    "stipo": "NATURAL",
                     "usuario": datosCiudadano,
                     "cedula":  datosci,
                     "expedido": datosexpedido,

@@ -5,6 +5,64 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
     $scope.tblTramites        =   {};
     $scope.trmUsuario      =   [];
     $scope.domicilio_xxx ="";
+   /* $scope.listadoActividadesEconomicas = function () {
+        var dataGenesis       = ((typeof($rootScope.datosGenesis)    == 'undefined' || $rootScope.datosGenesis == null) ? {}  : $rootScope.datosGenesis); 
+        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
+        var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
+        var sNumeroRegistros  = dataGenesis.length;
+        if(sNumeroRegistros > 0 ){
+            var idContribuyente =   $rootScope.datosGenesis[0].idContribuyente;
+            var contribuyente   =   new gLstActividadEconomica();
+            contribuyente.idContribuyente   =   idContribuyente;
+            contribuyente.tipo  =   'N';
+            contribuyente.lstActividadEconomica(function(resultado){ 
+                $.unblockUI(); 
+                resultadoApi = JSON.parse(resultado);
+                if (resultadoApi.success) {
+                    $scope.formDatosAE  =   true;
+                    $scope.mostrarMsgActividadTrue  = true;
+                    $scope.mostrarMsgActividadFalse = false;
+                    var response    =   resultadoApi;
+                    $scope.trmUsuario = response.success.dataSql;
+                    var data = response.success.dataSql;
+                    $scope.tblTramites.reload(); 
+                    $scope.desabilitado = true;  
+                } else {
+                    $scope.mostrarMsgActividadTrue  = false;
+                    $scope.mostrarMsgActividadFalse = true;                        
+                    $scope.formDatosAE  =   false;
+                    $scope.desabilitado = true;
+                    swal('', "Datos no Encontrados !!!", 'warning');
+                }
+
+                var sformguardado   =   $scope.datos.INT_FORM_ALMACENADO;
+                if(typeof sformguardado == 'undefined' || sformguardado != 'G'){
+                    $scope.botones = null;
+                    $scope.desabilitado = true; 
+                    $scope.limpiarDatos();                    
+                    swal('', "Favor revisar la información y seleccionar la Actividad Economica que desea registrar.", 'warning');                    
+                }else{
+
+                    $scope.botones = "mostrar";
+                    $scope.desabilitado = false;
+                }
+            });
+        }else{
+            $scope.txtMsgDataRenovacion =   "Estimado Ciudadano no tiene actividad económica registrada.";                                
+            $scope.txtMsgDataNuevaActividad =   "Favor revisar la informacion de la nueva Actividad Economica que Creara.";
+            $scope.mostrarMsgActividadTrue  = false;
+            $scope.mostrarMsgActividadFalse = true;
+            $scope.mostrarMsgNuevaActividad = true;
+            $scope.formDatosAE  =   false;  
+            if($scope.txtMsgConexionGen != ''){
+                $scope.txtMsgDataRenovacion =   $scope.txtMsgConexionGen;
+            }else{
+                $scope.txtMsgDataRenovacion =   "Estimado Ciudadano no tiene actividad económica registrada.";                                
+                $scope.txtMsgDataNuevaActividad =   "Favor revisar la informacion de la nueva Actividad Economica que Creara.";
+            }
+            $.unblockUI();
+        }
+    };*/
     $scope.listadoActividadesEconomicas = function () {
        
         $scope.sIdAeGrilla    = $scope.datos.INT_TRAMITE_RENOVA;
@@ -55,7 +113,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                         $scope.botones = null;
                         $scope.desabilitado = true;
                         $scope.limpiarDatos();
-                        swal('Estimado Ciudadano', "Antes de realizar el registro, debe seleccionar la Actividad Economica.", 'warning');
+                        //swal('Estimado Ciudadano', "Antes de realizar el registro, debe seleccionar la Actividad Economica.", 'warning');
                     }else{
                         $scope.botones = "mostrar";
                         $scope.desabilitado = true;
@@ -1503,7 +1561,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         //////////////////////////////nuevo /////////////////////////////
 
         $scope.declaracionJurada = function(datos){
-           
+            $rootScope.datosEnv = "";
             $rootScope.datosEnv = "";
             var fecha= new Date();
             var fechaActualS = "";
@@ -1520,6 +1578,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             var scirep = "";
             var sempresa = "";
             var snit = ""; 
+            $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
             $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
             if($scope.tipoPersona == 'NATURAL' || $scope.tipoPersona == 'N'){
                 $scope.domicilio_xxx= datos.f01_zon_prop_valor+" "+datos.f01_nom_via_prop+" Nº "+datos.f01_num_prop;
@@ -1591,8 +1650,12 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
 
 
         $scope.armarDatosForm = function(data,sfecha,sHora){
+            console.log("dataaaaaaa",data),
             $rootScope.datosForm401 = "";
             var dataForm = {};
+            //CABECERA
+          /*  $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
+            if($scope.tipoPersona == 'NATURAL' || $scope.tipoPersona == 'N'){*/
                 dataForm['f01_nom_completo'] = data.f01_nom_completo;
                 dataForm['f01_num_dos_prop'] = data.f01_num_dos_prop;
                 dataForm['f01_expedido_prop'] = data.f01_expedido_prop;
@@ -1600,14 +1663,27 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 dataForm['f01_num_pmc'] = data.f01_num_pmc;
                 dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
                 dataForm['f01_domiciliado'] = $scope.domicilio_xxx;
-                dataForm['luis'] = "asd";
                 dataForm['fecha_sist'] = sfecha;
                 dataForm['fecha_sist2'] = sfecha;
                 dataForm['usuario'] = sessionService.get('USUARIO');
                 dataForm['hora_sist'] = sHora;
                 $rootScope.datosForm401 = dataForm;
-                console.log($rootScope.datosForm401,"888888888888888888888888888"),
                 $rootScope.datosEnv = data;
+            /*} else {
+                dataForm['f01_nom_completo'] = data.f01_nom_completo;
+                dataForm['f01_num_dos_prop'] = data.f01_num_doc_rep;
+                dataForm['f01_expedido_prop'] = data.f01_expedido_rep;
+                dataForm['f01_raz_soc'] = data.f01_raz_soc_per_jur;
+                dataForm['f01_num_pmc'] = data.f01_num_pmc;
+                dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
+        
+                dataForm['fecha_sist'] = sfecha;
+                dataForm['fecha_sist2'] = sfecha;
+                dataForm['usuario'] = sessionService.get('USUARIO');
+                dataForm['hora_sist'] = sHora;
+                $rootScope.datosForm401 = dataForm;
+                $rootScope.datosEnv = data;
+            }*/
 
         }
 
@@ -1616,7 +1692,90 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         $('#msgformularioN').html($scope.msgformularioN);
     }
 
+   /* $scope.getRequisitoAE = function(dato){
+        if(dato == 'TRANSPORTE_DE_ENTREGA_ALIMENTOS'){
+            //$scope.GetValueParam();
+            $scope.datos.f01_venta_productos_domicilio_descrip = "VENTA DE PRODUCTOS CON ENTREGA A DOMICILIO";
+        }else{
+            //OPCION 3
+             if(dato == 'TRANSPORTE_DE_ENTREGA_PRODUCTOS'){
+                //$scope.GetValueParam();
+                $scope.datos.f01_distribucion_movilidad_propia_descrip = "VENTA DE PRODUCTOS CON VEHICULO PROPIO";
+            }else{
+                //OPCION 2
+                if(dato == 'TRANSPORTE_PERSONAL'){
+                    $scope.datos.f01_venta_para_recojo_descrip = "VENTA DE PRODUCTOS CON VEHICULO PROPIO"; 
+                }
+            }
+        }
+    }*/
+/*
+    $scope.getRequisito1 = function(dato){
+        datoObjectFinal = [];
+        datoObjectFinal2 = [];
+        datoObjectFinal3 = [];
 
+        //"VENTA DE PRODUCTOS A DOMICILIO"
+        if(dato == "TRANSPORTE_DE_ENTREGA_ALIMENTOS"){
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor= "true";
+            datoObjectFinal[0] = datoObject;
+            datoObjectFinal[1] = datoObject1;
+            $scope.datos.f01_venta_productos_domicilio=datoObjectFinal;
+        }else{
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor="false";
+            datoObjectFinal[0] = datoObject;
+            datoObjectFinal[1] = datoObject1;
+            $scope.datos.f01_venta_productos_domicilio=datoObjectFinal;
+        }
+
+        if(dato == "TRANSPORTE_PERSONAL"){
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor= "true";
+            datoObjectFinal2[0] = datoObject;
+            datoObjectFinal2[1] = datoObject1;
+            $scope.datos.f01_venta_para_recojo=datoObjectFinal2;
+
+        }else{
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor="false";
+            datoObjectFinal2[0] = datoObject;
+            datoObjectFinal2[1] = datoObject1;
+            $scope.datos.f01_venta_para_recojo=datoObjectFinal2;
+
+        }
+
+        if(dato == "TRANSPORTE_DE_ENTREGA_PRODUCTOS"){
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor= "true";
+            datoObjectFinal3[0] = datoObject;
+            datoObjectFinal3[1] = datoObject1;
+            $scope.datos.f01_distribucion_movilidad_propia=datoObjectFinal3;
+
+        }else{
+            datoObject = new Object();
+            datoObject1 = new Object();
+            datoObject.tipo = "CHK";
+            datoObject1.valor="false";
+            datoObjectFinal3[0] = datoObject;
+            datoObjectFinal3[1] = datoObject1;
+            $scope.datos.f01_distribucion_movilidad_propia=datoObjectFinal3;
+        }
+
+    }
+
+*/
     $scope.GetValueParam = function(){
       /*  var f = document.getElementById("f01_modalidad_pago");
         $scope.datos.f01_modalidad_pago_descrip = f.options[f.selectedIndex].text;*/
@@ -1692,8 +1851,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         }
 
     }
-
-
     $scope.verificasLuis = function (data) {
         console.log("TIPO_PERSONA",sessionService.get('TIPO_PERSONA'));
         if(data.DIAS_VALIDADOR == "TODOS LOS DIAS"){
@@ -1726,7 +1883,6 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         }
         $scope.datos.Tipo_tramite_creado="WEB";
         $scope.datos.PER_TRA_NRO_TRAMITE = sessionService.get('IDTRAMITE');
-        sessionService.set('IDTRAMITE', '');
         if(sessionService.get('TIPO_PERSONA') == "NATURAL"){
 
             $scope.datos.PER_TRA_NOMBRE=data.f01_pri_nom_prop;

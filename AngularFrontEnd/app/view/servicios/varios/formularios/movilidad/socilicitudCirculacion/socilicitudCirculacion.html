@@ -36,14 +36,14 @@
                      <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==sIdTramiteSeleccionado && {'background-color':'#DCDCDC','font-color':'#A2D5AE'}">
                       <td data-title="'Código'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>
                       <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite);" >{{tramite.vservicio}}</td>  
-                      <td data-title="'Subtipo'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>    
+                      <!--td data-title="'Subtipo'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td-->    
                       <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)" >{{tramite.vfecha}} </td>
                       <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)" >{{tramite.venviado}}</td> 
-                      <td data-title="'Productos'" >
+                      <!--td data-title="'Productos'" >
                         <a ng-show="tramite.vrespuesta =='SI'" class="btn btn-success ng-binding" data-toggle="modal" tooltip="Productos" ng-click="addProducto(tramite);" data-target="#producto">
                           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                         </a>
-                      </td>
+                      </td-->
 
                     </tr>
                   </table> 

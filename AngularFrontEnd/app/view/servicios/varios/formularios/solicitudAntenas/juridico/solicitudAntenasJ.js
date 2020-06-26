@@ -736,16 +736,18 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
 
   $scope.eliminarSoporte = function (datos, posicion) {
     swal({
-      title: "Esta seguro de eliminar el Registro del Soporte?",
-      text: "Presione Si para eliminar el Registro!",
-      type: "warning", showCancelButton: true,
+      title: "¿Esta seguro de eliminar el Registro del Soporte?",
+      text: "",
+      type: "warning", 
+      showCancelButton: true,
       confirmButtonColor: "#DD6B55",
+      cancelButtonText: "Cancelar",
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
     }, function () {
 
       $scope.lstSoporteprevio.splice(posicion, 1);
-      swal('Ok!', 'El registro del soporte se elimino correctamente', 'success');
+      swal('', 'El registro del soporte se elimino correctamente', 'success');
 
       $scope.lstSoportes();
     });
@@ -2024,9 +2026,11 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
   };
   $scope.eliminarArchivo = function (archivo, index) {
     swal({
-      title: "Esta seguro de eliminar el Registro?",
-      text: "Presione Si para eliminar el Registro!",
-      type: "warning", showCancelButton: true,
+      title: "¿Esta seguro de eliminar el Registro?",
+      text: "",
+      type: "warning", 
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
@@ -2184,9 +2188,11 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
   }
   $scope.eliminar = function (dataR) {
     swal({
-      title: "Esta seguro de eliminar el Registro?",
-      text: "Presione Si para eliminar el Registro!",
-      type: "warning", showCancelButton: true,
+      title: "¿Esta seguro de eliminar el Registro?",
+      text: "",
+      type: "warning", 
+      cancelButtonText: "Cancelar",
+      showCancelButton: true,
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
@@ -2858,12 +2864,14 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
   }
   $scope.elim_reg_radiobase = function (datos, posicion) {
     swal({
-      title: "Esta seguro de eliminar el Registro?",
-      text: "Presione Si para eliminar el Registro!",
-      type: "warning", showCancelButton: true,
+      title: "¿Esta seguro de eliminar el Registro?",
+      text: "",
+      type: "warning", 
+      showCancelButton:   true,
+      cancelButtonText:   "Cancelar",
       confirmButtonColor: "#DD6B55",
-      confirmButtonText: "Si, Eliminar!",
-      closeOnConfirm: false
+      confirmButtonText:  "Si, Eliminar!",
+      closeOnConfirm:     false
     }, function () {
       swal('Ok!', 'El registro se elimino correctamente', 'success');
       $scope.grilla_rbmultiple.splice(posicion, 1);
@@ -3326,11 +3334,9 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     }
   }
   $scope.validaTipo = function (file) {
-
     if (file != undefined) {
       $ex = file.type.split("/");
       if ($ex[1] == "pdf" || $ex[1] == "jpeg" || $ex[1] == "jpg" || $ex[1] == "png") {
-
         return true;
       } else {
         return false;
@@ -4577,29 +4583,31 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
   ///////////////////////INICIO DE ADJUNTOS V02//////////////////
   $scope.cambiarFile = function (obj, valor) {
     if (typeof (obj.files[0]) != 'undefined') {
-      $.blockUI();
       setTimeout(function () {
         var nombre = obj.getAttribute("name");
         var tamaniofile = obj.files[0];
         var tipoDoc = obj.files[0].name;
         var nameArrayci = tipoDoc.split('.');
-        tipoDoc = nameArrayci[1];
+        tipoDoc = nameArrayci[nameArrayci.length - 1].toLowerCase();
         tipoDoc = tipoDoc.toLowerCase();
         if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm') {
           $scope.datos[obj.name] = obj.files[0].name;
+          $.blockUI();
           $scope.subirRequisitos(obj, valor);
+          //$.unblockUI();
         } else {
           swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
           document.getElementById(obj.name + '_campo').value = '';
           valor = '';
           $.unblockUI();
         };
-        $.unblockUI();
+        //$.unblockUI();
       }, 1000);
     }
   };
   $scope.img = [];
   $scope.subirRequisitos = function (sobj, svalor) {
+    $.blockUI();
     var fechaNueva = "";
     var fechaserver = new fechaHoraServer();
     fechaserver.fechahora(function (resp) {
@@ -4613,7 +4621,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     var nombrecampo = sobj.id;
     var tipoDoc = sobj.files[0].name;
     var nameArray = tipoDoc.split('.');
-    tipoDoc = nameArray[1].toLowerCase();
+    tipoDoc = nameArray[nameArray.length - 1].toLowerCase();
     var idTramite = sessionService.get('IDTRAMITE');
     var nombreNuevo = nombrecampo.substring(5, nombrecampo.length) + '_' + fechaNueva + '.' + tipoDoc;
     $scope.url_img = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/Antenas/" + idTramite + "/";
@@ -4621,31 +4629,10 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     if (sobj.files[0]) {
       rMisDocs.push(sobj.files[0]);
       $scope.almacenarRequisitos(rMisDocs, sobj.id, nombreNuevo, $scope.url_img);
-    }
-
-    /*if(!$scope.verficaFIle(sobj.id,$scope.img)){
-        $scope.pos = $scope.obtOrdenRequisito(sobj.id);
-        $scope.img.push({
-          campo : nombreNuevo,//sobj.files[0].name,
-          nombre : sobj.id,
-          url : $scope.url_img,
-          posicion : $scope.pos
-
-       });
+      //$.unblockUI();
     }else{
-      $scope.posicion  = $scope.obt_pos(sobj.id,$scope.img);
-      $scope.remplazarArchivo($scope.posicion);
-      $scope.pos = $scope.obtOrdenRequisito(sobj.id);
-        $scope.img.push({
-          campo : nombreNuevo,//sobj.files[0].name,
-          nombre : sobj.id,
-          url : $scope.url_img,
-          posicion : $scope.pos
-
-       });
+      $.unblockUI();
     }
-    */
-
   };
   $scope.registroFileobjImg = function (nombre, sobjid, urlImg) {
     if (!$scope.verficaFIle(sobjid, $scope.img)) {
@@ -4687,7 +4674,6 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       var hora_ = fechaServ[1].split(':');
       fechaNueva = fecha_[0] + fecha_[1] + fecha_[2] + '_' + hora_[0] + hora_[1];
     });
-
     $.blockUI();
     setTimeout(function () {
       var nombre = aArchivos[0].name;
@@ -4697,24 +4683,25 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       $scope.direccionvirtual = "RC_CLI";
       var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/" + oidCiudadano + "/Antenas/" + idTramite + "/";
       $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/Antenas/" + aArchivos[0].name + "?app_name=todoangular";
+
       if (typeof (aArchivos[0]) != 'undefined') {
         var tipoDoc = aArchivos[0].name;
         var nameArray = tipoDoc.split('.');
-        tipoDoc = nameArray[1].toLowerCase();
+        tipoDoc = nameArray[nameArray.length -1 ].toLowerCase();
         var nombre = nameArray[0] + '.zip';
         if (tamaniofile > 500000 || tamaniofile.size <= 15000000) {
           if (tipoDoc == "png" || tipoDoc == "jpg" || tipoDoc == "jpeg" || tipoDoc == "bmp" || tipoDoc == "gif") {
-            $.blockUI();
             $scope.veriCompFile = true;
             var filecompress = compressImage(aArchivos[0]).then(function (respuesta) {
               var imagenCompr = respuesta.name.split('.');
               var tipoCia = imagenCompr[1];
               nombreNuevo = nombrecampo.substring(5, nombrecampo.length) + '_' + fechaNueva + '.' + tipoCia;
+              $.blockUI();
               fileUpload1.uploadFileToUrl1(respuesta, uploadUrl, nombreNuevo);
               document.getElementById(nombrecampo + '_campo').value = nombreNuevo;
               var urlImagen = url_img + nombreNuevo + "?app_name=todoangular";
               $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
-              $.unblockUI();
+              //$.unblockUI();
             });
           } else {
             if (tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm') {
@@ -4722,11 +4709,13 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
               zipci.file(aArchivos[0].name, aArchivos[0]);
               zipci.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blob) {
                 nombreNuevo = nombrecampo.substring(5, nombrecampo.length) + '_' + fechaNueva + '.zip';
-                fileUpload1.uploadFileToUrl1(blob, uploadUrl, nombreNuevo);
+                $.blockUI();
+                var resp = fileUpload1.uploadFileToUrl1(blob, uploadUrl, nombreNuevo);
                 document.getElementById(nombrecampo + '_campo').value = nombreNuevo;
                 var urlImagen = url_img + nombreNuevo + "?app_name=todoangular";
                 $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
-              })
+              });
+              //$.unblockUI();
             }
             else {
               swal('Advertencia', 'El archivo que esta enviando no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -4736,13 +4725,13 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
         } else {
           if (tamaniofile <= 500000) {
             if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm' || tipoDoc == 'PDF') {
-              $.blockUI();
               nombreNuevo = nombrecampo.substring(5, nombrecampo.length) + '_' + fechaNueva + '.' + tipoDoc;
+              $.blockUI();
               fileUpload1.uploadFileToUrl1(aArchivos[0], uploadUrl, nombreNuevo);
               document.getElementById(nombrecampo + '_campo').value = nombreNuevo;
               var urlImagen = url_img + nombreNuevo + "?app_name=todoangular";
               $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
-              $.unblockUI();
+              //$.unblockUI();
             } else {
               swal('Advertencia', 'El archivo que esta enviando no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
               document.getElementById('btn_ANTT_CON_ARR').value = "";
@@ -4751,13 +4740,11 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
               $.unblockUI();
             };
           } else {
-            swal('Advertencia', 'El tamaño de la imagen es muy grande Ingrese otra por favor.', 'error');
+            swal('Advertencia', 'El tamaño de la imagen es muy alta, seleccione otra por favor.', 'error');
             $(this).val("");
             $.unblockUI();
           };
         }
-
-
       }
 
       $.unblockUI();
@@ -5012,7 +4999,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
         break;
 
       default:
-        swal("Error!..", "Por favor selecione el tipo de registro que realizara Gracias222..", "error");
+        swal("Error!..", "Por favor selecione el tipo de registro que realizara Gracias..", "error");
 
 
     }

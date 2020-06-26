@@ -40,53 +40,53 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     }; 
      $scope.cambiarFile = function(obj, valor){
         if(typeof(obj.files[0]) != 'undefined'){
-          $.blockUI(); 
-          setTimeout(function(){ 
-            var nombre = obj.getAttribute("name");
-            var tamaniofile = obj.files[0];
-            var tipoDoc = obj.files[0].name;
-            var nameArrayci = tipoDoc.split('.');
-            tipoDoc = nameArrayci[1];
-            tipoDoc = tipoDoc.toLowerCase();
-            if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm') {
-                 $scope.datos[obj.name] =  obj.files[0].name;
-                 $scope.subirRequisitos(obj, valor);
-            } else{
-                swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
-                document.getElementById(obj.name+'_campo').value = '';
-                valor = '';
-                $.unblockUI();
-            };
-          $.unblockUI();
-          },1000);
+            setTimeout(function(){ 
+                $.blockUI(); 
+                var nombre = obj.getAttribute("name");
+                var tamaniofile = obj.files[0];
+                var tipoDoc = obj.files[0].name;
+                var nameArrayci = tipoDoc.split('.');
+                tipoDoc = nameArrayci[nameArrayci.length - 1].toLowerCase();
+                tipoDoc = tipoDoc.toLowerCase();
+                if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm') {
+                    $scope.datos[obj.name] =  obj.files[0].name;
+                    $scope.subirRequisitos(obj, valor);
+                } else{
+                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                    document.getElementById(obj.name+'_campo').value = '';
+                    valor = '';
+                    $.unblockUI();
+                };
+            //$.unblockUI();
+            },1000);
         }   
     };
     $scope.img = [];
     $scope.subirRequisitos  =   function(sobj, svalor){
-      var fechaNueva = "";
-      var fechaserver = new fechaHoraServer(); 
-      fechaserver.fechahora(function(resp){
-          var sfecha = JSON.parse(resp);
-          var fechaServ = (sfecha.success.fecha).split(' ');
-          var fecha_ = fechaServ[0].split('-');
-          var hora_ = fechaServ[1].split(':');
-          fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
-      });
+        var fechaNueva = "";
+        var fechaserver = new fechaHoraServer(); 
+        fechaserver.fechahora(function(resp){
+            var sfecha = JSON.parse(resp);
+            var fechaServ = (sfecha.success.fecha).split(' ');
+            var fecha_ = fechaServ[0].split('-');
+            var hora_ = fechaServ[1].split(':');
+            fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
+        });
 
-      var nombrecampo = sobj.id;
-      var tipoDoc = sobj.files[0].name;
-      var nameArray = tipoDoc.split('.');
-      tipoDoc = nameArray[1].toLowerCase();
-      var idTramite = sessionService.get('IDTRAMITE');
-      var nombreNuevo = nombrecampo.substring(5 , nombrecampo.length) +'_'+fechaNueva+'.'+tipoDoc;
-      //$scope.url_img = CONFIG.APIURL +"/files/RC_CLI/"+sessionService.get('IDSOLICITANTE')+"/Antenas/"+idTramite + "/";
-      $scope.url_img = CONFIG.APIURL +"/files/RC_CLI/"+sessionService.get('IDSOLICITANTE')+ "/";
-      var rMisDocs = new Array();
-      if(sobj.files[0]){
-          rMisDocs.push(sobj.files[0]);
-          $scope.almacenarRequisitos(rMisDocs,sobj.id,nombreNuevo,$scope.url_img);
-      }
-      
+        var nombrecampo = sobj.id;
+        var tipoDoc = sobj.files[0].name;
+        var nameArray = tipoDoc.split('.');
+        tipoDoc = nameArray[nameArray.length -1 ].toLowerCase();
+        var idTramite = sessionService.get('IDTRAMITE');
+        var nombreNuevo = nombrecampo.substring(5 , nombrecampo.length) +'_'+fechaNueva+'.'+tipoDoc;
+        //$scope.url_img = CONFIG.APIURL +"/files/RC_CLI/"+sessionService.get('IDSOLICITANTE')+"/Antenas/"+idTramite + "/";
+        $scope.url_img = CONFIG.APIURL +"/files/RC_CLI/"+sessionService.get('IDSOLICITANTE')+ "/";
+        var rMisDocs = new Array();
+        if(sobj.files[0]){
+            rMisDocs.push(sobj.files[0]);
+            $.blockUI();  
+            $scope.almacenarRequisitos(rMisDocs,sobj.id,nombreNuevo,$scope.url_img);
+        }
     };
     
     $scope.ejecutarFile = function(idfile){
@@ -108,7 +108,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
         });
         $scope.urlImagenfile = '';
-        $.blockUI();  
         setTimeout(function(){ 
             var nombre = aArchivos[0].name;
             var tamaniofile = aArchivos[0].size;
@@ -121,16 +120,17 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             if(typeof(aArchivos[0]) != 'undefined'){
                 var tipoDoc = aArchivos[0].name;
                 var nameArray = tipoDoc.split('.');
-                tipoDoc = nameArray[1].toLowerCase();
+                tipoDoc = nameArray[nameArray.length - 1].toLowerCase();
                 var nombre = nameArray[0] + '.zip';
                 if (tamaniofile > 500000 || tamaniofile.size <= 15000000) { 
                   if (tipoDoc == "png" || tipoDoc == "jpg" || tipoDoc == "jpeg" || tipoDoc == "bmp" || tipoDoc == "gif") {
-                        $.blockUI();  
                         $scope.veriCompFile = true;
+                        console.log("compress imagenn");
                         var filecompress = compressImage(aArchivos[0]).then(function(respuesta){
                             var imagenCompr = respuesta.name.split('.');
                             var tipoCia = imagenCompr[1];
                             nombreNuevo = nombrecampo.substring(5 , nombrecampo.length)+'_'+fechaNueva+'.'+tipoCia;
+                            $.blockUI();  
                             fileUpload1.uploadFileToUrl1(respuesta, uploadUrl, nombreNuevo);
                             document.getElementById(nombrecampo+'_campo').value = nombreNuevo; 
                             var urlImagen = url_img+nombreNuevo+"?app_name=todoangular";
@@ -144,8 +144,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                             } else{
                                 $scope.nombrefile    = nombreNuevo;
                             }
-
-                            $.unblockUI();
+                            //$.unblockUI();
                         });
                     } else{
                         if (tipoDoc == 'pdf' ||  tipoDoc == 'docx' ||  tipoDoc == 'docxlm') {
@@ -153,6 +152,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                             zipci.file(aArchivos[0].name, aArchivos[0]);
                             zipci.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blob) {
                                 nombreNuevo = nombrecampo.substring(5 , nombrecampo.length)+'_'+fechaNueva+'.zip';
+                                $.blockUI();  
                                 fileUpload1.uploadFileToUrl1(blob, uploadUrl, nombreNuevo);
                                 document.getElementById(nombrecampo+'_campo').value = nombreNuevo; 
                                 var urlImagen = url_img+nombreNuevo+"?app_name=todoangular";
@@ -166,8 +166,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                                 } else{
                                     $scope.nombrefile    = nombreNuevo;
                                 }
-
-
                             })
                         }
                         else{
@@ -178,8 +176,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 }else{
                   if (tamaniofile <= 500000) {
                         if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm' || tipoDoc == 'PDF') {
-                            $.blockUI();  
                             nombreNuevo = nombrecampo.substring(5 , nombrecampo.length) +'_'+fechaNueva+'.'+tipoDoc;
+                            $.blockUI();  
                             fileUpload1.uploadFileToUrl1(aArchivos[0], uploadUrl,nombreNuevo);
                             document.getElementById(nombrecampo+'_campo').value = nombreNuevo;
                             var urlImagen = url_img+nombreNuevo+"?app_name=todoangular";
@@ -193,8 +191,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                             } else{
                                 $scope.nombrefile    = nombreNuevo;
                             }
-
-                            $.unblockUI();
+                            //$.unblockUI();
                         } else{
                             swal('Advertencia', 'El archivo que esta enviando no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                             document.getElementById('btn_ANTT_CON_ARR').value = ""; 
@@ -208,14 +205,10 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                         $.unblockUI();
                   };
                 }
-
-              
             }
-
         $.unblockUI();
         },1000);
     };
-    //http://192.168.5.141/rest/files/RC_CLI/5b9c6a081a3fe6e3e2000003/LIC_RADIODIFUSION_20191115_99.jpg?app_name=todoangular
 
     $scope.addImage=function(e,idFoto){
         $.blockUI(); 
@@ -261,13 +254,11 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
               $.unblockUI();
             }   
         }else{
-          swal('Error', 'Por favor seleccione un documento desde  su equipo', 'error');
+          swal('Error', 'Debe ingresar el Adjunto correspondiente', 'error');
         }
-              
         $.unblockUI();
     }
     $scope.mostrarimgrepresentante  =   function(imagen){ 
-        console.log("imagen",imagen);
         $scope.urlci_anv = "CEDULA DE IDENTIDAD DIGITALIZADA (Anverso)";
         $scope.urlci_rev = "CEDULA DE IDENTIDAD DIGITALIZADA (Reverso)";
         $scope.reppodleg = "PODER DE REPRESENTANTE LEGAL";
@@ -320,13 +311,10 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             }else{
               swal('Error', 'Por favor seleccione un documento desde  su equipo', 'error');
             }
-                  
             $.unblockUI();
         }else{
             //alertify.success('Registro no modificado');
             alertify.warning('Archivo no Almacenado');
-
-            
         }
     }
     /////////////////////////////////////////////////////////////////
@@ -338,12 +326,10 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
             $scope.isDisabled = false;
             $scope.getCaptchasX();
             if(tipoPersona == 'NATURAL'){
-                //alert(1111);
                 $scope.opcionpersonaNatural = true;
                 $scope.opcionpersonaJuridico = null;
                 $scope.tituloVentana = 'Verificacion de número de carnet de identidad';         
             } else {
-                //alert(2222);
                 $scope.opcionpersonaJuridico = true;
                 $scope.opcionpersonaNatural = null;
                 $scope.tituloVentana = 'Verificacion de número de NIT';                     
@@ -464,9 +450,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 $scope.almacenarDocumentos(misDocs);
             }
         });
-        
-
-        
     };
     
     $scope.verificacionFiles = function(oid_ciu,tipo_file){
@@ -495,10 +478,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
             }else{
                 $scope.verifica = true;
-                
             }
         });
-
     }
     $scope.actualizarDocumentos = function(aFiles){
 
@@ -513,7 +494,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         });
         var tipoDoc = aFiles[0].name;
         var nameArray = tipoDoc.split('.');
-        tipoDoc = nameArray[1];
+        tipoDoc = nameArray[nameArray.length -1].toLowerCase();
         nombreNuevo = 'lic_radiodifusion_'+fechaNueva+'.'+tipoDoc;
 
         var oidCiudadano = sessionService.get('IDSOLICITANTE');
@@ -550,7 +531,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         });
         var tipoDoc = aFiles[0].name;
         var nameArray = tipoDoc.split('.');
-        tipoDoc = nameArray[1];
+        tipoDoc = nameArray[nameArray.length - 1].toLowerCase();
         nombreNuevo = 'lic_radiodifusion_'+fechaNueva+'.'+tipoDoc;
         var oidCiudadano = sessionService.get('IDSOLICITANTE');
         $scope.direccionvirtual = "RC_CLI";
@@ -577,23 +558,17 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     }; 
 
     $scope.iniAntenasAdjuntos = function() {
-
-      //http://192.168.5.141/rest/files/req_Antenas/5b7ec213def215dfdc000005/imagennn.jpg?app_name=todoangular
-      //http://192.168.5.141/rest/files/RC_CLI/5b7ec213def215dfdc000005/carnet_ciudadano.jpeg?app_name=todoangular
       $scope.getDatosRegistro();
       var tipo_file = "FILE_LIC_RADIODIFUSION";
       var oid_ciu = sessionService.get('IDSOLICITANTE');
       $scope.verificacionFiles(oid_ciu,tipo_file);
       $scope.getRepresentantes(sessionService.get('NITCIUDADANO'));
       $scope.principalRegistro = false;
-
     };
 
     $scope.$on('api:ready',function(){
       $scope.getDatosRegistro();
       $scope.verificacionFiles(oid_ciu,tipo_file);
-      //scope.imagenPortada = 'http://192.168.5.141/rest/files/RC_CLI/57798e502f59181eb2873e5d/carnetrdo.jpeg?app_name=todoangular';
-
     });
     /////////////////REPRESENTANTES LEGALES/////////////
     $scope.getRepresentantes = function(nit_representante){
@@ -609,13 +584,10 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
                 $.unblockUI();
             } else{
-
                 $scope.obtRepresentanteLegal = $scope.obtDatos;
                 var data = response;
                 $scope.tablalstReprLegal.reload();
-                  
                 $.unblockUI();
-
             };
         });      
     };
@@ -700,9 +672,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
 
                     }else{
                         $.unblockUI();
-
                     }
-
                 };
             });
         }else{
@@ -718,12 +688,13 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     
     $scope.eliminarRepresnte = function(dataRepre){
         $.blockUI();
-        swal({   title: "Esta Seguro de Eliminar el Represetnate?",
-            text: "Presione Si para eliminar el Registro!",
-            type: "warning",   showCancelButton: true,
+        swal({   title: "¿Esta Seguro de Eliminar el Represetante?",
+            text: "",
+            type: "warning",   
+            cancelButtonText: "Cancelar",
+            showCancelButton:   true,
             confirmButtonColor: "#DD6B55",  
-            confirmButtonText: "Si, Eliminar!",
-            cancelButtonText: "Cancelar!",
+            confirmButtonText:  "Si, Eliminar!",
             closeOnConfirm: false
             }, function(){
                 var datausuario = sessionService.get('IDUSUARIO');
@@ -738,16 +709,13 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                         $.unblockUI(); 
                     } else{
                         if ($scope.obtDatos[0].sp_delete_representante_id) {
-                            
                             $("#divMsj").css({'display' : 'block' });
                             swal('Ok!', 'El Representante se Elimino Correctamente', 'success');
                             $scope.getRepresentantes(sessionService.get('NITCIUDADANO'));
                             $.unblockUI();
                         }else{
                             $.unblockUI();
-
                         }
-
                     };
                 });
         }); 
@@ -779,7 +747,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
     }
 
     $scope.act_representante = function(dataRepre){
-        
         
         $scope.ci_inv  = $("#FILE_CI_REP_LEGAL_INV_campo").val();
         $scope.ci_rev  = $("#FILE_CI_REP_LEGAL_REV_campo").val();
@@ -816,18 +783,16 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                         $("#FILE_CI_REP_LEGAL_REV_campo").val("");
                         $("#FILE_PODER_REP_LEGAL_campo").val("");
 
-
                     }else{
                         $.unblockUI();
-
                     }
-
                 };
             });
             $.blockUI();
         }else{
             if ($scope.ci_inv == "") {
                 alertify.warning('Archivo CI del Representante Anverso no Almacenado');
+                return false;
             } if ($scope.ci_rev == "") {
                 alertify.warning('Archivo CI del Representante Reverso no Almacenado');
             } if ($scope.poderLegal == "") {

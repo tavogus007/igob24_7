@@ -64,30 +64,34 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
         }
     };*/
     $scope.listadoActividadesEconomicas = function () {
-       
+       console.log("ingreso listado actividad economica");
         $scope.sIdAeGrilla    = $scope.datos.INT_TRAMITE_RENOVA;
         var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
         var sNumeroRegistros  = dataGenesis.length;
-        console.log("$scope.dataGenesisCidadano:: ", $scope.dataGenesisCidadano);
-        console.log("sNumeroRegistros: ", sNumeroRegistros);
-        if(sNumeroRegistros > 0 ){
 
-            $scope.datos.rdTipoTramite = "RENOVACION";            
-            var tipoPersona     =   sessionService.get('TIPO_PERSONA');
+
+
+        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
+      
+        if(tipoPersona == "NATURAL"){
+            console.log("ingreso natural");
+            tipoPersona = "N";
+            $scope.div_natural = true;
+            $scope.div_juridico = false;
+            $scope.div_nit_jn = true;
+            $scope.txtMsgDataNuevaActividad =   "DATOS DEL SOLICITANTE :";
+        }else{
+            tipoPersona = "J";
+            $scope.div_natural = false;
+            $scope.div_juridico = true;
+            $scope.div_nit_jn = false;
+            $scope.txtMsgDataNuevaActividad =   "DATOS PERSONA JURIDICA :";
+        }
+        
+        if(sNumeroRegistros > 0 ){
             var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
-            if(tipoPersona == "NATURAL"){
-                tipoPersona = "N";
-                $scope.div_natural = true;
-                $scope.div_juridico = false;
-                $scope.div_nit_jn = true;
-                $scope.txtMsgDataNuevaActividad =   "DATOS DEL SOLICITANTE :";
-            }else{
-                tipoPersona = "J";
-                $scope.div_natural = false;
-                $scope.div_juridico = true;
-                $scope.div_nit_jn = false;
-                $scope.txtMsgDataNuevaActividad =   "DATOS PERSONA JURIDICA :";
-            }
+            $scope.datos.rdTipoTramite = "RENOVACION";            
+         
             var contribuyente   =   new gLstActividadEconomica();
             contribuyente.idContribuyente   =   idContribuyente;
             contribuyente.tipo  =   tipoPersona;

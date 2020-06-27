@@ -779,7 +779,7 @@ function crearTramiteMovilidad(){
 }
 
 crearTramiteMovilidad.prototype.tramite_linea = function(functionResp){
-  urlComp = "/creaTramiteMov";
+  urlComp = "/crearTramiteMovPermiso";
   typeCall = "post";
   dataParams = {
     "usr_id" : this.usr_id,

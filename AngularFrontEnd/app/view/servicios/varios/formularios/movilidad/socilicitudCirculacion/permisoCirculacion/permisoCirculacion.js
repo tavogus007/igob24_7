@@ -138,7 +138,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
             }else{
                 $scope.datos.rdTipoTramite = "NUEVO";
                 $scope.txtMsgDataRenovacion =   "Estimado Ciudadano no tiene actividad económica registrada.";
-                $scope.txtMsgDataNuevaActividad =   "Favor revisar la informacion de la nueva Actividad Economica que Creara.";
+                $scope.txtMsgDataNuevaActividad =   "Puede registrar una actividad económica a travez de esta página web o visitarnos en plataforma";
             }
         }
     };

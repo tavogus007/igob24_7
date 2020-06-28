@@ -2016,7 +2016,7 @@ function aepermisoexcepcionalnaturalController($scope,$timeout, $q, $rootScope, 
                 $scope.div_actividad_economica = false;
                 $scope.div_solicitante = true;
                 $scope.div_descripcion_prestado = true;
-                $scope.nombreRespaldos ='RRESOLUCIÓN ADMINISTRATIVA PARA OPERADORES DE TRANSPORTE DE CARGA, PERMISO DE CONSTRUCCIÓN O AUTORIZACIONES MENORES OTORGADAS POR EL SERVICIO MUNICIPAL DE ADMINISTRACIÓN TERRITORIAL SERMAT, LICENCIA DE FUNCIONAMIENTO, PATENTE ÚNICA MUNICIPAL O CERTIFICADO DE PRODUCTOR AGROPECUARIO, ENTRE OTROS. (Fotografías con buena resolución en un solo archivo formato PDF)';
+                $scope.nombreRespaldos ='RESOLUCIÓN ADMINISTRATIVA PARA OPERADORES DE TRANSPORTE DE CARGA, PERMISO DE CONSTRUCCIÓN O AUTORIZACIONES MENORES OTORGADAS POR EL SERVICIO MUNICIPAL DE ADMINISTRACIÓN TERRITORIAL SERMAT, LICENCIA DE FUNCIONAMIENTO, PATENTE ÚNICA MUNICIPAL O CERTIFICADO DE PRODUCTOR AGROPECUARIO, ENTRE OTROS. (Fotografías con buena resolución en un solo archivo formato PDF)';
                 switch (data) {
                     case 'TRANSPORTE_MATERIA_PRIMA':
                         swal({

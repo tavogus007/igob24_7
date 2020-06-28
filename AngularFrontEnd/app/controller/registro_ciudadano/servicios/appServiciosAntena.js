@@ -57,7 +57,6 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         //aServicio.id = 68;
         aServicio.parametros ='{"frm_tra_dvser_id":"' + sIdServicio + '","frm_tra_id_ciudadano":"' + sIdCiudadano + '","frm_tra_fecha":"' + sFechaTramite + '","frm_tra_enviado":"NO","frm_tra_id_usuario":"' + idusu + '"}';
         aServicio.llamarregla(function(data){
-            console.log("dataaa",data);
             $.blockUI();
             $scope.tramitesCiudadano();
             swal('', 'Tramite creado correctamente', 'success');
@@ -66,7 +65,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         });
     }
 
-    $scope.tramitesCiudadano = function(){    
+    $scope.tramitesCiudadano = function(){   
         sIdCiudadano = sessionService.get('IDSOLICITANTE');
         var sparam = new reglasnegocio();
         sparam.identificador = "RCCIUDADANO_269";
@@ -74,21 +73,20 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         $scope.razonsocial = sessionService.get('US_NOMBRE');
         sparam.parametros='{"sidciudadano":"' + sIdCiudadano + '"}';
         sparam.llamarregla(function(results){
-            if( results != "[{}]"){
+            if (results != "\"[{}]\"") {
                 results = JSON.parse(results);
             }else {
                 results = "";
-                
+                swal('', "No se encontraron Tramites creados", 'warning');
             }
             $scope.tramites = results;     
             angular.forEach(results,function(val, index){
 
-
-             if(val['form_contenido'])
-             {
-               results[index].datos = val['form_contenido'];
-                 //results[index].datos = JSON.parse(val['form_contenido']);
-             }
+            if(val['form_contenido'])
+            {
+            results[index].datos = val['form_contenido'];
+                //results[index].datos = JSON.parse(val['form_contenido']);
+            }
          });
             $scope.tramitesUsuario = results;
             $scope.tablaTramites.reload();

@@ -228,6 +228,10 @@
                                                     ng-click="detalleTransaccion(obtTransaccion)" data-toggle="modal"
                                                     data-target="#modaldetTransaccion"><i class="fa fa-eye"
                                                         title="Ver mas detalle de la transacción"></i></a>
+                                                <a class="btn btn-info btn-circle" ng-show = "{{obtTransaccion.metodo_pago}} == TRANSFERENCIA "
+                                                    style="background-color:rgb(30, 163, 108);border: 0px !important;color:black;"
+                                                    ng-click="mostrarImg(obtTransaccion)" ><i class="fa fa-file-text-o"
+                                                    title="Ver recibo del deposito"></i></a>
                                             </td>
                                         </tr>
                                     </table>
@@ -310,6 +314,24 @@
                             <div class="modal-footer">
                                 <button id="{{translateTitulos.lbl_05_05_05}}" name="{{translateTitulos.lbl_05_05_05}}"
                                     type="button" class="btn btn-default1"
+                                    data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="fotpod" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">&times;</span><span
+                                        class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+                                <h4 class="modal-title" id="myModalLabel">{{nombreVistaadj}}</h4>
+                            </div>
+                            <img id="imgSalida" ng-src="{{archivoPOD}}" width="100%" height="100%">
+                            <div class="modal-footer">
+                                <button id="{{translateTitulos.lbl_05_05_05}}" name="{{translateTitulos.lbl_05_05_05}}"
+                                    type="button" class="btn btn-default"
                                     data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
                             </div>
                         </div>

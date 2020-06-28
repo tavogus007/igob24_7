@@ -271,7 +271,36 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
         $.unblockUI();
 
     }
-
+   
+    $scope.mostrarImg  =   function(dataimg){ 
+        $scope.archivoPOD     = "";
+        $scope.nombreVistaadj = "RECIBO DEL DEPOSITO POR CONCEPTO DE LA COMPRA:";
+        $scope.nombreVistaadj = dataimg.nombreVistaadj;
+        $scope.urlImagenfile  = dataimg.imagen_transaccion;
+        $.blockUI();
+        var estado = true;
+        if ($scope.urlImagenfile != '' && $scope.urlImagenfile != undefined ) {
+            try{
+                $scope.archivoPOD =  $scope.urlImagenfile;             
+                var extPod        =  $scope.urlImagenfile.split("?app_name=todoangular");
+                extPod            =  extPod[0].split(".");
+                extPod            =  extPod[extPod.length-1];
+                if(extPod == 'pdf' || extPod == 'docx' ||  extPod == 'docxlm' || extPod == 'zip'){
+                    window.open($scope.archivoPOD, "_blank");
+                }else{
+                    $scope.archivoPOD = "http://" + $scope.archivoPOD;
+                    $("#fotpod").modal("show");             
+                }
+                $.unblockUI();
+            }catch(e){
+              console.log("error",e);
+              $.unblockUI();
+            }   
+        }else{
+          swal('Error', 'Debe ingresar el Adjunto correspondiente', 'error');
+        }
+        $.unblockUI();
+    }
     $scope.contador = 0;
     $scope.porcentaje = 0;
 

@@ -44,27 +44,42 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         href="#registro_ciudadano|servicios|indexAntena.html"
         $scope.mostrarboton = false;
     };
-
-      $scope.adicionarServicioGamlp = function(datos){    
+      $scope.ser_idServicio;
+      $scope.adicionarServicioGamlp = function(datos){   
         var fecha = new Date();
         var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-        var sIdServicio = 21;
-        var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-        var sFechaTramite = fechactual;
-        var idusu = 3;
-        var aServicio = new reglasnegocio();
-        aServicio.identificador = "RCCIUDADANO_68";
-        //aServicio.id = 68;
-        aServicio.parametros ='{"frm_tra_dvser_id":"' + sIdServicio + '","frm_tra_id_ciudadano":"' + sIdCiudadano + '","frm_tra_fecha":"' + sFechaTramite + '","frm_tra_enviado":"NO","frm_tra_id_usuario":"' + idusu + '"}';
-        aServicio.llamarregla(function(data){
-            $.blockUI();
-            $scope.tramitesCiudadano();
-            swal('', 'Tramite creado correctamente', 'success');
-            $.unblockUI();
 
+        $.blockUI();
+        var ser_idServicio = new reglasnegocio();
+        var desIdServicio = "ANTENA";
+        ser_idServicio.identificador = "RCCIUDADANO_ANTENA-20-8";
+        ser_idServicio.parametros = '{"desIdServicio":"'+desIdServicio+'"}';
+        ser_idServicio.llamarregla(function(resp_servicio){
+            if (resp_servicio != "\"[{}]\"") {
+                resp_servicio = JSON.parse(resp_servicio);
+                $scope.ser_idServicio = resp_servicio[0].serdv_id;
+                var sIdServicio = resp_servicio[0].serdv_id;
+                var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+                var sFechaTramite = fechactual;
+                var idusu = 3;
+                var aServicio = new reglasnegocio();
+                aServicio.identificador = "RCCIUDADANO_68";
+                //aServicio.id = 68;
+                aServicio.parametros ='{"frm_tra_dvser_id":"' + sIdServicio + '","frm_tra_id_ciudadano":"' + sIdCiudadano + '","frm_tra_fecha":"' + sFechaTramite + '","frm_tra_enviado":"NO","frm_tra_id_usuario":"' + idusu + '"}';
+                aServicio.llamarregla(function(data){
+                    $.blockUI();
+                    $scope.tramitesCiudadano();
+                    swal('', 'Tramite creado correctamente', 'success');
+                    $.unblockUI();
+                });
+            }else {
+                resp_servicio = "";
+                swal('', "Error en obtener el id Servicio por favor comuniquese con el administrador", 'warning');
+            }
         });
+        
     }
-
+    $scope.ser_id_servicio;
     $scope.tramitesCiudadano = function(){   
         sIdCiudadano = sessionService.get('IDSOLICITANTE');
         var sparam = new reglasnegocio();
@@ -75,6 +90,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         sparam.llamarregla(function(results){
             if (results != "\"[{}]\"") {
                 results = JSON.parse(results);
+                $scope.ser_id_servicio = results[0].vdvser_id;
             }else {
                 results = "";
                 swal('', "No se encontraron Tramites creados", 'warning');
@@ -328,7 +344,6 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         sessionService.set('ESTADO', tramite.venviado);
         //$rootScope.recuperarrepresentante();
         if(tramite.venviado ==='SI' || tramite.venviado === 'RECHAZADO'){
-            //alert("si");
             $.blockUI();          
             setTimeout(function(){
                 $scope.recuperarSerializarInfo(tramite);
@@ -337,11 +352,8 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
             },1000);
 
         } else {
-            //alert("NO");
             
             if(tramite.form_contenido != undefined){
-
-                //alert("eeee");
                 
                 $rootScope.botones = false;  
                 $.blockUI();          
@@ -351,9 +363,7 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
                     $scope.$apply();
                 },1000);
             }else{
-                //alert("no form_contenido undefined");
-                //camino tramite nuevo
-                //alert("ffff");
+
                 $rootScope.mostrardiv = null;
                 $rootScope.mostrardivform = null;
                 $rootScope.botones= false;//"mostrar";
@@ -373,13 +383,13 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
         //TIPO_PERSONA
         var tipoPersona =   sessionService.get('TIPO_PERSONA');
         var sidservicio =   tramite.vdvser_id;
-        if(tipoPersona == 'NATURAL' && sidservicio == 21){
+        /*if(tipoPersona == 'NATURAL' && sidservicio == 12){
             sidservicio =   1;
-        }
-        if(tipoPersona == 'JURIDICO' && sidservicio == 21){         
+        }*/
+        /*if(tipoPersona == 'JURIDICO' && sidservicio == 21){         
             sidservicio = 2;
-        }
-
+        }*/
+        sidservicio = 2;
         if (tramite.venviado == "SI") {
             $scope.template         =   $scope.templates[sidservicio];
             $rootScope.botones= true;
@@ -575,8 +585,6 @@ app.controller('serviciosAntenaController', function ($scope, $rootScope, $route
                         $rootScope.datarecuperada = datos;
 
                         if($rootScope.vcodigo != null && $rootScope.enviados == "NO" ){
-                        
-                            //alert("123456");
                             $rootScope.recuperaInf(datos);
                         }
 

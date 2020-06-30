@@ -37,12 +37,11 @@
         scope.$apply(func);
     }
 
-    function initMap() {
+    /*function initMap() {
         accessScope('#outerMapaActividadM', function (scope) {
             scope.initMap();
         });
-
-    }
+    }*/
 
     function soloNumericoTelefono(sValor){
         Numer=parseInt(sValor);
@@ -88,7 +87,6 @@
         }
         return "";
     }*/
-
     function vsuperficie(ob) {
         var invalidChars = /[a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ¡!@#/;//\$%\^&\*\¿?_~();:{}'"|<>´ñ?`=a-zA-Z]/;
         if(invalidChars.test(ob.value)) {
@@ -843,24 +841,6 @@
                             <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
                             <div class="controls">
                               <input type="text" ng-model="datos.f01_num_act_n" id="f01_num_act_n" name="f01_num_act_n" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div ng-show="false">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="url" >{{translateTitulos.lbl_12_40}} :</label>
-                                <div class="controls">
-                                  <input type="text" ng-model="datos.OTRO_VIA" id="OTRO_VIA" name="OTRO_VIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4" ng-show="false">
-                        <div class="form-group" ng-show="divOcultarJuegos">
-                            <label for="url" >Tipo Trayecto:</label>
-                            <div class="controls">
-                                <input type="text" ng-model="datos.f01_factor" id="f01_factor" name="f01_factor" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required>
                             </div>
                         </div>
                     </div>

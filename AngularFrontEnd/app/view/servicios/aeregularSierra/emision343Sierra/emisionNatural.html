@@ -136,11 +136,11 @@
         scope.$apply(func);
     }
 
-    function initMap() {
+    /*function initMap() {
         accessScope('#outerMapaActividad', function (scope) {
             scope.initMap();
         });
-    }
+    }*/
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -839,24 +839,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div ng-show="false">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="url" >{{translateTitulos.lbl_12_40}} :</label>
-                                    <div class="controls">
-                                      <input type="text" ng-model="datos.OTRO_VIA" id="OTRO_VIA" name="OTRO_VIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4" ng-show="false">
-                            <div class="form-group">
-                                <label for="url" >Tipo Trayecto:</label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_factor" id="f01_factor" name="f01_factor" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <font color="#FF0000" size="4px"> * </font>
@@ -877,6 +859,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
+                                <font color="#FF0000" size="4px"></font>
                                 <label for="url" >{{translateTitulos.lbl_12_43}}:</label>
                                 <div class="controls">
                                     <input ng-model="datos.f01_bloque_act" id="f01_bloque_act" name="f01_bloque_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
@@ -885,6 +868,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
+                                <font color="#FF0000" size="4px"></font>
                                 <label for="url" >{{translateTitulos.lbl_12_44}}:</label>
                                 <div class="controls">
                                     <input ng-model="datos.f01_piso_act" id="f01_piso_act" name="f01_piso_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
@@ -893,6 +877,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
+                                <font color="#FF0000" size="4px"></font>
                                 <label for="url" >{{translateTitulos.lbl_12_45}}:</label>
                                 <div class="controls">
                                     <input ng-model="datos.f01_dpto_of_loc" id="f01_dpto_of_loc" name="f01_dpto_of_loc" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
@@ -901,6 +886,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group" >
+                                <font color="#FF0000" size="4px"></font>
                                 <label for="url" >Tel&eacute;fono/Celular::</label>
                                 <div class="controls">
                                     <input ng-model="datos.f01_tel_act1" id="f01_tel_act1" maxlength="7" name="f01_tel_act1" placeholder="Teléfono ej.22451630" class="form-control"  width="30%" height="30" onkeyUp="soloNumerico(this);"  ng-disabled="desabilitadoO || desabilitado"/>
@@ -913,14 +899,6 @@
                                 <label for="url" >Referencia de la Dirección de la Actividad Económica para mayor presición:</label>
                                 <div class="controls">
                                     <input ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" ng-disabled="desabilitadoO || desabilitado" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4" ng-show="false">
-                            <div class="form-group" >
-                                <label for="url" >Cuenta Energia Electrica:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_cod_luz" id="f01_cod_luz" name="f01_cod_luz"  class="form-control"  width="30%" height="30" style="text-transform:uppercase;" ng-disabled="desabilitadoO || desabilitado" />
                                 </div>
                             </div>
                         </div>
@@ -998,6 +976,7 @@
                                                                 </span>
                                                             </span>
                                                         </th>
+                                                        
                                                         <th ng-show="especial==null">
                                                             <input class="form-control" type="number" min="0" max="1500" id="INT_ANCHO" name="INT_ANCHO" placeholder="Ancho" ng-model="publi.INT_ANCHO"ng-disabled="desabilitadoO || desabilitado" required>
                                                             <span style="color:red" ng-show="formularioRegistro.INT_ANCHO.$invalid">

@@ -263,7 +263,12 @@ lstActividadEconomicaVentas.prototype.lstActividadEconomicaVentas = function (fu
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
 };
 
-reglasnegocio.prototype.llamarregla = function(functionResp){
+function reglasnegocioSierra() {
+    this.identificador;
+    this.parametros;
+};
+
+reglasnegocioSierra.prototype.llamarregla_sierra = function(functionResp){
   var idtoken =   sessionStorage.getItem('TOKEN_MOTORS');
   var stoquen =  'Bearer ' + idtoken ;
     urlComp = "";

@@ -160,10 +160,10 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         $scope.datosActividad = "";
         try{
             var dataActDes = '{}';
-            var resLstActDes = new reglasnegocio();
+            var resLstActDes = new reglasnegocioSierra();
             resLstActDes.identificador = 'VALLE_PRUEBA-SGEN-3149';
             resLstActDes.parametros = dataActDes;
-            resLstActDes.llamarregla(function(responseActDes){
+            resLstActDes.llamarregla_sierra(function(responseActDes){
                 var lstActDes =  JSON.parse(responseActDes);
                 if(lstActDes.length > 0){
                     for (var i = lstActDes.length - 1; i >= 0; i--) {
@@ -251,10 +251,10 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datoObjectFiles_ci = [];
             try{
                 var dataDesLic = '{"id_actividad_desarrollada":"'+idDesarrollada+'", "superficie":"'+superficie+'"}';
-                var resDatosLic = new reglasnegocio();
+                var resDatosLic = new reglasnegocioSierra();
                 resDatosLic.identificador = 'VALLE_PRUEBA-SGEN-3151';
                 resDatosLic.parametros = dataDesLic;
-                resDatosLic.llamarregla(function(responseDatosLic){
+                resDatosLic.llamarregla_sierra(function(responseDatosLic){
                     var datosLic = JSON.parse(responseDatosLic);
                     if(datosLic.length > 0){
                         $scope.sCategoria = true;
@@ -372,10 +372,10 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         var datosMulti = [];
         try{
             var dataActDesM = '{}';
-            var resLstActDesM = new reglasnegocio();
+            var resLstActDesM = new reglasnegocioSierra();
             resLstActDesM.identificador = 'VALLE_PRUEBA-SGEN-3149';
             resLstActDesM.parametros = dataActDesM;
-            resLstActDesM.llamarregla(function(responseActDesM){
+            resLstActDesM.llamarregla_sierra(function(responseActDesM){
                 var lstActividadDesM = JSON.parse(responseActDesM);
                 var dataResp = lstActividadDesM;
                 for (var i = 0; i < dataResp.length; i++) {
@@ -469,10 +469,10 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datoObjectFiles_ci = [];
             try{
                 var dataDesLicM = '{"id_actividad_desarrollada":"'+idDesarrollada+'", "superficie":"'+superficie+'"}';
-                var resDatosLicM = new reglasnegocio();
+                var resDatosLicM = new reglasnegocioSierra();
                 resDatosLicM.identificador = 'VALLE_PRUEBA-SGEN-3151';
                 resDatosLicM.parametros = dataDesLicM;
-                resDatosLicM.llamarregla(function(responseDatosLicM){
+                resDatosLicM.llamarregla_sierra(function(responseDatosLicM){
                     var obtLicM = JSON.parse(responseDatosLicM);
                     var datosLicM = obtLicM;
                     if(datosLicM.length > 0){
@@ -1533,7 +1533,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             swal('', " Estimado Ciudadano no tiene actividad económica registrada.", 'warning');
         }
     };
-
     // =========================================FIN DE LA PARTE DE LA VIA===================================//
     //DOCUMENTOS ADJUNTOS OBLIGATORIOS
     var clsIniciarFechaObligatorio = $rootScope.$on('inicializarFechaOblitatorio', function(event, data){
@@ -1578,10 +1577,10 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     $scope.datosAnterioresNatural = function(datos){
         $scope.datosMod = datos;
         var paramidAE = '{"id_actividad_economica":'+datos+'}';
-        var envioIdAe = new reglasnegocio();
+        var envioIdAe = new reglasnegocioSierra();
         envioIdAe.identificador = 'VALLE_PRUEBA-SGEN-3145';
         envioIdAe.parametros = paramidAE;
-        envioIdAe.llamarregla(function(responsedatosAE){
+        envioIdAe.llamarregla_sierra(function(responsedatosAE){
             var respuestaDatos = JSON.parse(responsedatosAE);
             var respuestaDatosPrimerNivel = respuestaDatos[0].sp_obtener_actividad_economica;
             var datosActividadEconomica = JSON.parse(respuestaDatosPrimerNivel);
@@ -1661,10 +1660,10 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 tipoPersona = "N";
             }
             var paramidAE = '{"id_actividad_economica":'+tramite.idactividad+'}';
-            var envioIdAe = new reglasnegocio();
+            var envioIdAe = new reglasnegocioSierra();
             envioIdAe.identificador = 'VALLE_PRUEBA-SGEN-3145';
             envioIdAe.parametros = paramidAE;
-            envioIdAe.llamarregla(function(responsedatosAE){
+            envioIdAe.llamarregla_sierra(function(responsedatosAE){
                 var respuestaDatos = JSON.parse(responsedatosAE);
                 var respuestaDatosPrimerNivel = respuestaDatos[0].sp_obtener_actividad_economica;
                 var datosActividadEconomica = JSON.parse(respuestaDatosPrimerNivel);
@@ -1965,10 +1964,10 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             var tipoPersona     =   sessionService.get('TIPO_PERSONA');
             var idContribuyente =   dataGenesis.contribuyente_id;
             var dataNat = '{"id_contribuyente":'+idContribuyente+',"tipo":"N"}';
-            var lstActEco = new reglasnegocio();
+            var lstActEco = new reglasnegocioSierra();
             lstActEco.identificador = 'VALLE_PRUEBA-SGEN-3150';
             lstActEco.parametros = dataNat;
-            lstActEco.llamarregla(function(responseActEco){
+            lstActEco.llamarregla_sierra(function(responseActEco){
                 $.unblockUI();
                 if (responseActEco == '"{}"' || responseActEco == '"[{}]"' || responseActEco == '"[{ }]"') {
                     swal('', "El contribuyente no cuenta con Actividades Económicas.", 'warning');

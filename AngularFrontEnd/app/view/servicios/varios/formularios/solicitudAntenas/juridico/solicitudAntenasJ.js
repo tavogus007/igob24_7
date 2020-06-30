@@ -4700,6 +4700,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
               fileUpload1.uploadFileToUrl1(respuesta, uploadUrl, nombreNuevo);
               document.getElementById(nombrecampo + '_campo').value = nombreNuevo;
               var urlImagen = url_img + nombreNuevo + "?app_name=todoangular";
+              UrlExists(urlImagen);
               $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
               //$.unblockUI();
             });
@@ -4713,6 +4714,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
                 var resp = fileUpload1.uploadFileToUrl1(blob, uploadUrl, nombreNuevo);
                 document.getElementById(nombrecampo + '_campo').value = nombreNuevo;
                 var urlImagen = url_img + nombreNuevo + "?app_name=todoangular";
+                UrlExists(urlImagen);
                 $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
               });
               //$.unblockUI();
@@ -4730,6 +4732,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
               fileUpload1.uploadFileToUrl1(aArchivos[0], uploadUrl, nombreNuevo);
               document.getElementById(nombrecampo + '_campo').value = nombreNuevo;
               var urlImagen = url_img + nombreNuevo + "?app_name=todoangular";
+              //UrlExists(urlImagen);
               $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
               //$.unblockUI();
             } else {
@@ -4746,10 +4749,20 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
           };
         }
       }
-
       $.unblockUI();
     }, 1000);
   };
+  function UrlExists(url) {
+    $.blockUI();
+    $.get(url)
+       .done(function() { 
+           $.unblockUI();
+          }).fail(function() { 
+            setTimeout(() => {
+              UrlExists(url);
+            }, 3000);
+       }) 
+  }
   $scope.mosDetAdj = function (data) {
     var texto = '';
     switch (data) {
@@ -5091,6 +5104,13 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     $scope.enviarTRamiteRBM = true;
     $scope.verTRamiteRBM = false;
     $scope.mostrarbtn_multiple = true;
+    var contgrilla_rbm = 0;
+    $scope.grilla_rbm.forEach(element => {
+      if ( data.f01_DENOMINACION == element.f01_DENOMINACION && data.f01_UBI_RB == element.f01_UBI_RB && data.f01_TIPO_UBIC == element.f01_TIPO_UBIC) {
+        pos_grilla_i = contgrilla_rbm;
+      }
+      contgrilla_rbm =  contgrilla_rbm + 1;
+    });
     $scope.codigoAntena = pos_grilla_i;
     $scope.ANTT_NROAUTORIZACION = data.f01_NRO_AUTORIZACION;
     $("#den_auto").val("");

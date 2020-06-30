@@ -125,7 +125,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                 if (tamaniofile > 500000 || tamaniofile.size <= 15000000) { 
                   if (tipoDoc == "png" || tipoDoc == "jpg" || tipoDoc == "jpeg" || tipoDoc == "bmp" || tipoDoc == "gif") {
                         $scope.veriCompFile = true;
-                        console.log("compress imagenn");
                         var filecompress = compressImage(aArchivos[0]).then(function(respuesta){
                             var imagenCompr = respuesta.name.split('.');
                             var tipoCia = imagenCompr[1];
@@ -134,6 +133,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                             fileUpload1.uploadFileToUrl1(respuesta, uploadUrl, nombreNuevo);
                             document.getElementById(nombrecampo+'_campo').value = nombreNuevo; 
                             var urlImagen = url_img+nombreNuevo+"?app_name=todoangular";
+                            UrlExists(urlImagen);
                             $scope.urlImagenfile = urlImagen;
                             if (nombrecampo == "FILE_CI_REP_LEGAL_INV") {
                                 $scope.doc_ci_inv = nombreNuevo;
@@ -143,6 +143,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                                 $scope.doc_po_leg = nombreNuevo;
                             } else{
                                 $scope.nombrefile    = nombreNuevo;
+                                $scope.urlImagenfileLicencia = $scope.urlImagenfile;
                             }
                             //$.unblockUI();
                         });
@@ -156,6 +157,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                                 fileUpload1.uploadFileToUrl1(blob, uploadUrl, nombreNuevo);
                                 document.getElementById(nombrecampo+'_campo').value = nombreNuevo; 
                                 var urlImagen = url_img+nombreNuevo+"?app_name=todoangular";
+                                UrlExists(urlImagen);
                                 $scope.urlImagenfile = urlImagen;
                                 if (nombrecampo == "FILE_CI_REP_LEGAL_INV") {
                                     $scope.doc_ci_inv = nombreNuevo;
@@ -165,6 +167,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                                     $scope.doc_po_leg = nombreNuevo;
                                 } else{
                                     $scope.nombrefile    = nombreNuevo;
+                                    $scope.urlImagenfileLicencia = $scope.urlImagenfile;
+
                                 }
                             })
                         }
@@ -181,6 +185,7 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                             fileUpload1.uploadFileToUrl1(aArchivos[0], uploadUrl,nombreNuevo);
                             document.getElementById(nombrecampo+'_campo').value = nombreNuevo;
                             var urlImagen = url_img+nombreNuevo+"?app_name=todoangular";
+                            //UrlExists(urlImagen);
                             $scope.urlImagenfile = urlImagen;
                             if (nombrecampo == "FILE_CI_REP_LEGAL_INV") {
                                 $scope.doc_ci_inv = nombreNuevo;
@@ -190,6 +195,8 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
                                 $scope.doc_po_leg = nombreNuevo;
                             } else{
                                 $scope.nombrefile    = nombreNuevo;
+                                $scope.urlImagenfileLicencia = $scope.urlImagenfile;
+
                             }
                             //$.unblockUI();
                         } else{
@@ -209,7 +216,18 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         $.unblockUI();
         },1000);
     };
-
+    
+    function UrlExists(url) {
+        $.blockUI();
+        $.get(url)
+           .done(function() { 
+               $.unblockUI();
+              }).fail(function() { 
+                setTimeout(() => {
+                  UrlExists(url);
+            }, 3000);
+        }) 
+    }
     $scope.addImage=function(e,idFoto){
         $.blockUI(); 
         $scope.img_hoja_referencia = true;
@@ -287,7 +305,6 @@ function solicitudJAntenasController($scope,$timeout,CONFIG,$window,$rootScope,s
         if (nombreNuevo != "" && nombreNuevo != undefined) {
             
             urlImagen = CONFIG.APIURL +"/files/RC_CLI/"+sessionService.get('IDSOLICITANTE')+ "/" +nombreNuevo+"?app_name=todoangular";
-            console.log("urlImagen ",urlImagen);
             $.blockUI();
             $scope.urlImagenrepreleg = urlImagen;
             var estado = true;

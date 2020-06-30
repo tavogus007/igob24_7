@@ -149,14 +149,15 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
     $scope.catactividadDesarrollada = function(){
         $.blockUI();
         $scope.datos.rdTipoTramite = 'NUEVO';
+        console.log('token sierra    ',sessionService.get('TOKEN_MOTORS'));
         //$scope.datos.f01_actividad_desarrollada = "";
         $scope.datosActividad = "";
         try{
             var dataActDes = '{}';
-            var resLstActDes = new reglasnegocio();
+            var resLstActDes = new reglasnegocioSierra();
             resLstActDes.identificador = 'VALLE_PRUEBA-SGEN-3149';
             resLstActDes.parametros = dataActDes;
-            resLstActDes.llamarregla(function(responseActDes){
+            resLstActDes.llamarregla_sierra(function(responseActDes){
                 var lstActDes =  JSON.parse(responseActDes);
                 console.log('listadooooooooooo     ',lstActDes);
                 if(lstActDes.length > 0){
@@ -247,10 +248,10 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
             datoObjectFiles_ci = [];
             try{
                 var dataDesLic = '{"id_actividad_desarrollada":"'+idDesarrollada+'", "superficie":"'+superficie+'"}';
-                var resDatosLic = new reglasnegocio();
+                var resDatosLic = new reglasnegocioSierra();
                 resDatosLic.identificador = 'VALLE_PRUEBA-SGEN-3151';
                 resDatosLic.parametros = dataDesLic;
-                resDatosLic.llamarregla(function(responseDatosLic){
+                resDatosLic.llamarregla_sierra(function(responseDatosLic){
                     var datosLic = JSON.parse(responseDatosLic);
                     if(datosLic.length > 0){
                         $scope.sCategoria = true;
@@ -371,10 +372,10 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         var datosMulti = [];
         try{
             var dataActDesM = '{}';
-            var resLstActDesM = new reglasnegocio();
+            var resLstActDesM = new reglasnegocioSierra();
             resLstActDesM.identificador = 'VALLE_PRUEBA-SGEN-3149';
             resLstActDesM.parametros = dataActDesM;
-            resLstActDesM.llamarregla(function(responseActDesM){
+            resLstActDesM.llamarregla_sierra(function(responseActDesM){
                 var lstActividadDesM = JSON.parse(responseActDesM);
                 var dataResp = lstActividadDesM;
                 for (var i = 0; i < dataResp.length; i++) {
@@ -464,10 +465,10 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
             datoObjectFiles_ci = [];
             try{
                 var dataDesLicM = '{"id_actividad_desarrollada":"'+idDesarrollada+'", "superficie":"'+superficie+'"}';
-                var resDatosLicM = new reglasnegocio();
+                var resDatosLicM = new reglasnegocioSierra();
                 resDatosLicM.identificador = 'VALLE_PRUEBA-SGEN-3151';
                 resDatosLicM.parametros = dataDesLicM;
-                resDatosLicM.llamarregla(function(responseDatosLicM){
+                resDatosLicM.llamarregla_sierra(function(responseDatosLicM){
                     var obtLicM = JSON.parse(responseDatosLicM);
                     var datosLicM = obtLicM;
                     if(datosLicM.length > 0){
@@ -1072,10 +1073,12 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         } else{
             //console.log('los mmmmmm  ',$rootScope.aMacrodistritos);
             $scope.datos.f01_macro_act = data.f01_macro_act;
+            document.getElementById('f01_macro_act').value = $scope.datos.f01_macro_act;
             $scope.datos.f01_zona_act = data.f01_zona_act;
             $scope.distritoZonas($scope.datos.f01_macro_act);
         };
         $scope.GetValueZonaSegura(data.f01_categoria_agrupada_sierra);
+        console.log('data.f01_macro_act    ',data.f01_macro_act);
         /*if ((data.INT_AC_latitud == 'undefined' && data.INT_AC_longitud == 'undefined') || (data.INT_AC_latitud == undefined && data.INT_AC_longitud == undefined) || (data.INT_AC_latitud == '' && data.INT_AC_longitud == '')) {
         } else{
             //$scope.open_map_ae2(data.INT_AC_latitud, data.INT_AC_longitud);
@@ -1130,7 +1133,11 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
                 break;
             };
         } else{
-            $scope.mostrarzonasegura = false;
+            if (data.chkzonasegura == undefined || data.chkzonasegura == 'undefined' || data.chkzonasegura == '') {
+                $scope.mostrarzonasegura = false;
+            } else{
+                $scope.mostrarzonasegura = true;
+            };
         };
         //MOSTRAR VIAE
         //MOSTRAR VIAE
@@ -1156,6 +1163,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
             $scope.IsVisible = false;
             $scope.datos.pago_adel = 'NO';
         };
+        $scope.datos.f01_macro_act = data.f01_macro_act;
 
         /*if(typeof(data.INT_AC_MACRO_ID) != 'undefined'){
             //LISTANDO ZONAS
@@ -2197,27 +2205,11 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         };
         aDocAdjuntosmapa[0]=datosAdjuntosmapa;
         $scope.datos.ARCHIVOS_MULTIPLES_MAPA = aDocAdjuntosmapa;
-        /*$scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center='+ latitud +','+ longitud +'&zoom=18&size=900x500&maptype=roadmap&markers=color:red|label:S|'+ latitud +','+ longitud +'&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img){
+        $scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center='+ latitud +','+ longitud +'&zoom=18&size=900x500&maptype=roadmap&markers=color:red|label:S|'+ latitud +','+ longitud +'&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img){
             var Imagen = base64Img.replace(/data:image\/png;base64,/i,'');
             $scope.Imagenb = Imagen;
             $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);
-        });*/
-        $scope.mapa.once('postcompose', function(event) {
-            var canvas = event.context.canvas;
-            if (navigator.msSaveBlob) {
-                //navigator.msSaveBlob(canvas.msToBlob(), 'mapa.jpg');
-            }
-            else {
-                canvas.toBlob(function(blob) {
-                    var data_mapa1 = canvas.toDataURL();
-                    var d = data_mapa1;
-                    data_mapa1 = d.replace("data:image/png;base64,", "");
-                    $scope.Imagenb = data_mapa1;
-                    $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);
-                });
-            }
         });
-        $scope.mapa.renderSync();
     }
     //DATOS PUBLICIDAD ->   categoria -> tipo de letrero  ***********************************************************************************************************************************
     $scope.verSuperficie = function(p){
@@ -2922,6 +2914,15 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
                 } else{
                     stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act);
                 };
+                if (datos.chkzonasegura == '' || datos.chkzonasegura == 'undefined' || datos.chkzonasegura == undefined) {
+                    stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '');
+                } else{
+                    if (datos.chkzonasegura == 'ZONASEGURA') {
+                        stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> SI');
+                    } else{
+                        stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> NO');
+                    };
+                };
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
                 stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
@@ -2979,7 +2980,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
             dataForm['f01_tip_act'] = 'SUCURSAL';
         }
         var multi = '';
-        if (data.f01_tipo_lic == 26 || data.f01_tipo_lic == '26') {
+        if (data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26') {
             dataForm['f01_tipo_lic_descrip'] = data.f01_tipo_lic_descrip;
             dataForm['f01_categoria_agrupada_descrip'] = data.f01_tipo_lic_descrip;
             dataForm['f01_categoria_agrupada_descripcion'] = data.f01_tipo_lic_descrip;
@@ -3034,6 +3035,15 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         }else{
             dataForm['f01_num_act'] = data.f01_num_act;
         }
+        if (data.chkzonasegura == '' || data.chkzonasegura == 'undefined' || data.chkzonasegura == undefined) {
+            dataForm['zonaSegura'] = '';
+        } else{
+            if (datos.chkzonasegura == 'ZONASEGURA') {
+                dataForm['zonaSegura'] = '<label>Zona Segura:</label> SI';
+            } else{
+                dataForm['zonaSegura'] = '<label>Zona Segura:</label> NO';
+            };
+        };
         dataForm['f01_num_act1'] = data.f01_num_act1;
         dataForm['f01_edificio_act'] = data.f01_edificio_act;
         dataForm['f01_bloque_act'] = data.f01_bloque_act;
@@ -3042,7 +3052,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         dataForm['f01_tel_act1'] = data.f01_tel_act1;
         dataForm['fecha_sist'] = sfecha;
         dataForm['fecha_sist2'] = sfecha;
-        dataForm['usuario'] = sessionService.get('USUARIO');
+        dataForm['usuario'] = 'IGOB247 CIUDADANO';
         dataForm['hora_sist'] = sHora;
         //pago adelantado
         if($scope.pago_adelantado == 'undefined' || $scope.pago_adelantado == undefined  || $scope.pago_adelantado == 'NO'){
@@ -3213,7 +3223,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
             datosNeXO['f01_num_dos_prop']   = paramForm.f01_num_dos_prop;
             datosNeXO['f01_fecha_nac']      = paramForm.f01_fecha_nac;
             //DATOS DE DIRECION DEL CONTRIBUYENTE
-            datosNeXO['f01_macro']          =   paramForm.f01_macro;
+            //datosNeXO['f01_macro']          =   paramForm.f01_macro;
             datosNeXO['f01_macro_des']      =   paramForm.f01_macro_des;
             datosNeXO['INT_ZONA']           =   paramForm.INT_ZONA;
             datosNeXO['INT_DISTRITO']       =   paramForm.INT_DISTRITO;

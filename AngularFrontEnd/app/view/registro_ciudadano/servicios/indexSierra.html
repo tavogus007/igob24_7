@@ -1,86 +1,66 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
-    <head>
-        <!--<link href="../../libs/css/sweetalert.css" rel="stylesheet" async>-->
-        <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css" async>
-        <!--<script type="text/javascript" src="../../libs/js/sweetalert.min.js" async></script>-->
-        <!--<script type="text/javascript" src="../../libs/js/ngSweetAlert.js" async></script>-->
-        <link href="../../libs/css/select2.min.css" rel="stylesheet" async/>
-        <script src="../../libs/js/select2.min.js" async></script>
-        <script src="../../libs/js/prism.js" async></script>
-        <script type="text/javascript" src="../../libs/js/bootstrap-clockpicker.min.js" async></script>
-      <!--
-      <link rel="stylesheet" href="../../libs/Librerias/ol_4.6.5_dist/ol.css"/>
-      <link rel="stylesheet" href="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css"/>
-
-      <script type="text/javascript" src="../../libs/Librerias/ol_4.6.5_dist/ol.js"></script>
-      <script type="text/javascript" src="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
-      <script type="text/javascript" src="../../libs/Librerias/proj_4/proj4.js"></script>
-      <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas.js"></script>
-      <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas_centroides.js"></script>
-      <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_calles.js"></script>
-      <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_lugares.js"></script>
-      <script type="text/javascript" src="../../libs/Librerias/reqwest-master/src/reqwest.js"></script>
-      <script type="text/javascript" src="../../libs/Librerias/busqueda/mapa_ae.js"></script>
-      --> 
-    </head>    
+  <head>
+      <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css" async>
+      <link href="../../libs/css/select2.min.css" rel="stylesheet" async/>
+      <script src="../../libs/js/select2.min.js" async></script>
+      <script src="../../libs/js/prism.js" async></script>
+      <script type="text/javascript" src="../../libs/js/bootstrap-clockpicker.min.js" async></script>
+  </head>    
   <body>
-   <style type="text/css">
-      #caja {
-         display: block;
+    <style type="text/css">
+        #caja {
+          display: block;
+        }
+        #mostrar{
+          display:block;
+        }
+        #cerrar_rc{
+          position: absolute;
+          top: 5px;
+          left: 92%;
+          font-size: 38px;
+          color: #FFCB05 !important;
+        }
+    </style>
+    <style>
+      .ejemplo3 {
+        background-color: #6F7072;
+        color: #6F7072;
+        margin: 1px auto;
+        padding: 4px;
+        text-align: center;
+        width: 350px;
       }
-      #mostrar{
-         display:block;
-      }
-      #cerrar_rc{
-         position: absolute;
-         top: 5px;
-         left: 92%;
-         font-size: 38px;
-         color: #FFCB05 !important;
-      }
-   </style>
-   <style>
-   .ejemplo3 {
-      background-color: #6F7072;
-
-      color: #6F7072;
-      margin: 1px auto;
-      padding: 4px;
-      text-align: center;
-      width: 350px;
-    }
-  
       input:required:invalid {
         border: 1px solid red;
-    }
-    input:required:valid {
+      }
+      input:required:valid {
         border: 1px solid green;
-    }
-    select:required:invalid {
+      }
+      select:required:invalid {
         border: 1px solid red;
-    }
-    select:required:valid {
+      }
+      select:required:valid {
         border: 1px solid green;
-    }
-    .form-group {
+      }
+      .form-group {
         padding-left: 8px;
-    }
-     .box2{
+      }
+      .box2{
         display: inline-block;
         width: 190px;
         margin: 2px;
-    }
-    .ng-table th {
+      }
+      .ng-table th {
         text-align: left!important;
-    }       
-   </style>
-   <script type="text/javascript">
-   var icon= 0;  
-      $('#mostrar').click(function(event) {          
+      }       
+    </style>
+    <script type="text/javascript">
+      var icon= 0;  
+        $('#mostrar').click(function(event) {          
           event.preventDefault();
           $("#caja").slideToggle();
-                 
           if (icon==0) {
             $("#cerrar_i").removeClass("fa fa-sort-asc");
             $("#cerrar_i").addClass("fa fa-sort-desc");
@@ -97,322 +77,248 @@
           event.preventDefault();
           $('#caja').slideUp();
       });   
-   </script>
-  <script type="text/javascript">
+    </script>
+    <script type="text/javascript">
       $(document).ready(function() {
         $(".js-example-basic-single").select2();
         $('html,body').scrollTop(0);
       });
-  </script>
-
-<div ng-controller="serviciosController343Sierra" ng-init="inicioServicios343Sierra();">
-   <div class="col-lg-12">
-      <div class="ibox float-e-margins">
-         <div id="mostrar" class="ibox-title">
-            <h5>{{translateTitulos.lbl_04_04}}</h5>
-            <a href="#" id="cerrar_rc" ><i class="fa fa-sort-asc flechaOscura" id="cerrar_i"></i></a>
-         </div>
-         <div class="ibox-content" id="caja">
-              <div class="row">
-               <div class="col-sm-12 b-r">
-                  <form class="form-horizontal ng-pristine ng-valid">
-                        <div class="form-group">
-                           <div class="col-lg-3">
-                              <div style="text-align:center;">
-                                 <!--a class="btn btn-success" tooltip = "Crear el trámite" ng-click="crearTramiteAE();"><i class="fa fa-file blanco shake-slow"></i>
-                                   {{translateTitulos.lbl_10_02}}
-                                 <a-->
-                                 <a class="btn btn-success" tooltip = "Crear el trámite" data-toggle="modal" data-target="#seleccionarTramiteAE"><i class="fa fa-file blanco shake-slow"></i><!--cambios-->
-                                    {{translateTitulos.lbl_10_02}}
-                                  </a>    
-                                 <!--button type="button" class="btn btn-success"  tooltip = "Crear el trámite" data-toggle="modal" data-target="#seleccionarTramiteAE"><i class="fa fa-file blanco shake-slow"></i>Crear Trámite</button-->                                
-
-                                 
-                                 <!--a class="btn btn-redondo" data-toggle="modal" tooltip = "Ayuda para crear tramites" data-target="#ayudasm">
-                                    Ayudas
-                                 </a-->
+    </script>
+    <div ng-controller="serviciosController343Sierra" ng-init="inicioServicios343Sierra();">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div id="mostrar" class="ibox-title">
+                    <h5>{{translateTitulos.lbl_04_04}}</h5>
+                    <a href="#" id="cerrar_rc" ><i class="fa fa-sort-asc flechaOscura" id="cerrar_i"></i></a>
+                </div>
+                <div class="ibox-content" id="caja">
+                    <div class="row">
+                      <div class="col-sm-12 b-r">
+                          <form class="form-horizontal ng-pristine ng-valid">
+                              <div class="form-group">
+                                  <div class="col-lg-3">
+                                      <div style="text-align:center;">
+                                          <a class="btn btn-success" tooltip = "Crear el trámite" data-toggle="modal" data-target="#seleccionarTramiteAE"><i class="fa fa-file blanco shake-slow"></i><!--cambios-->
+                                              {{translateTitulos.lbl_10_02}}
+                                          </a>
+                                      </div>
+                                  </div>
+                                  <label class="col-lg-3 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
+                                  <div class="col-lg-6">
+                                      <input ng-model = "query" id ="busca1" class="form-control" placeholder="">
+                                  </div>
                               </div>
-                           </div>
-                        <label class="col-lg-3 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
-                        <div class="col-lg-6">
-                           <input ng-model = "query" id ="busca1" class="form-control" placeholder="">
-                        </div>
-                     </div>
-                  </form>       
-                  <table ng-table="tablaTramites"  class="table  table-hover">
-                     <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==sIdTramiteSeleccionado && {'background-color':'#DCDCDC','font-color':'#A2D5AE'}">
-                      <td data-title="'Código'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>
-                      <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite);" >{{tramite.vservicio}}</td>  
-                      <td data-title="'Subtipo'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>    
-                      <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)" >{{tramite.vfecha}} </td>
-                      <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)" >{{tramite.venviado}}</td> 
-                    </tr>
-                  </table> 
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
-   <!-- modall -->
-   <div class="modal fade" id="registro" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                         <div class="modal-dialog">
-                             <div class="modal-content">
-                                 <div class="modal-header">
-                                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateImagenes.img_11_06}}aaaaaaaaaaaaaa</span></button>
-                                     <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_11_01}}</h4>
-                                 </div>
-                                 <div class="modal-body" >
-                                     <form name="formularioCasos"  readOnly="true" novalidate>
-                                         <div class="row">
-                                             <table class="table table-striped">
-                                              <thead style="background: #6F7072;color: #F5F5F6;">                                      
-                                                </thead>
-                                                <!--div class="col-md-12">
-                                                      <div class="row">
-                                                             <tbody>
-                                                                <td>
-                                                                    <div class="controls">
-                                                                      <h4 class="modal-title" id="myModalLabel">Tipo de Licencia</h4>
-                                                                          <select
-                                                                              id="f01_tipo_lic"
-                                                                              name="f01_tipo_lic"
-                                                                              placeholder="-- Seleccione --"
-                                                                              ng-model="datos.f01_tipo_lic"
-                                                                              class="form-control"
-                                                                              ng-options="dato.idtipolicencia as dato.tipolicencia for dato in datosLicencia | orderBy:['nombre','tipolicencia']"
-                                                                              ng-change="lista_categorias(datos.f01_tipo_lic);" ng-disabled="desabilitado"
-                                                                              required >
-                                                                              <option value="">--Seleccionar--</option>
-                                                                          </select>
-                                                                    </div>
-                                                                </td>  
-                                                            </tbody>
-                                                       </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                      <tbody ng-show="mostrarCategoria">
-                                                        <td >
-                                                          <div class="controls">
-                                                            <h4 class="modal-title" id="myModalLabel">Tipo de Categoria</h4>
-                                                            <select
-                                                              id="f01_categoria_agrupada_r"
-                                                              name="f01_categoria_agrupada_r"
-                                                              placeholder="-- Seleccione --"
-                                                              ng-model="datos.f01_categoria_agrupada_r"
-                                                              class="form-control"
-                                                              ng-options="dato.idtipolicencia as dato.tipolicencia for dato in datoscategoria | orderBy:['nombre','tipolicencia']"
-                                                              ng-change="lista_actividad(datos.f01_categoria_agrupada_r);" ng-disabled="desabilitadocat"
-                                                              required >
-                                                              <option value="">--Seleccionar--</option>
-                                                            </select>
-                                                              <!--select id="f01_categoria_agrupada" name="f01_categoria_agrupada" ng-model="datos.f01_categoria_agrupada" class="form-control" ng-change="getRequisitosCategoria(datos.f01_categoria_agrupada, datos.f01_tipo_per); GetValueCategoriaAgrupada();" required>
-                                                                  <option ng-repeat="dato in datosCategoria" value="{{dato.idtipolicencia}}" ng-selected="{{dato.idtipolicencia==datos.f01_categoria_agrupada}}"> {{dato.tipolicencia}} </option >
-                                                              </select-->
-                                                          <!--/div>
-                                                        </td>
-                                                      </tbody>
-                                                    </div>
-                                                </div-->
-                                                <div class="col-md-12">
-                                                  <div class="row">
-                                                    <tbody ng-show="f01_categoria_agrupada12">
-                                                      <td>
-                                                        <div class="controls">
-                                                        <h4 class="modal-title" id="myModalLabel">Detalle Actividad Desarrolladora</h4>
-                                                            <select 
-                                                                    id = "f01_actividad_desarrollada"
-                                                                    ng-model="datos.f01_actividad_desarrollada" 
-                                                                    class="form-control js-example-basic-single"
-                                                                    name=  "f01_actividad_desarrollada"
-                                                                    data-placeholder="-- Seleccione --"
-                                                                    style="width: 300px"
-                                                                    ng-options="dato.id_act_des as dato.descripcion for dato in datosActividad | orderBy:['nombre','descripcion']"
-                                                                    ng-disabled="desabilitadoact"
-                                                                    ng-change="habilitarCrear();LicenciaXCategoria(datos.f01_actividad_desarrollada);"
-                                                                    ng-required="true">
-                                                                <option value="">--Seleccionar--</option>
-                                                            </select>
-                                                        </div>
-                                                      </td>
-                                                    </tbody>
-                                                  </div>
-                                                </div>                                                                         
-                                             </table>
-                                             <input type="hidden" ng-model="datos.datosActividadLicencia" id="datosActividadLicencia" name="datosActividadLicencia" class="form-control" />
-                                         </div>
-                                           <!-- GNERADOR DE CAPCHA -->
-                                             <div class="col-md-12" align="center" >
-                                    <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
-                                        <tr class="color">
-                                            <div style="background: #ffffff;" >
-                                                <div class="box2">
-                                                    <img class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
-                                                </div>
-                                                <div class="box2">
-                                                    <img class="img-responsive" src="{{imageLNG}}"  title="Palabra en CASTELLANO">
-                                                </div>
-                                            </div>
-                                        </tr>
-                                        <tr class="color">
-                                            <td class="color22" colspan="3" width="70"  align="center">
-                                                <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" ng-change ="lmpCaptcha()" placeholder="{{palabraT}}" ng-model="resultadoC"  required/>
-                                                    <span  ng-show="formulario.palabraT.$invalid">
-                                                        <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
-                                                    </span>
-                                                    <label >{{palabraT}}</label>
-                                            </td>
-                                                <td class="color2" width="30"  align="center">
-                                                    <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
-                                                    </a>
-                                                </td>
-                                        </tr>
-                                    </table>
-                                    <b><font SIZE=3 color="red">{{ErrorCapcha}}</font></b>
-                                 </div>
-                                            <!-- ********************* -->
-                                            <br>
-                                            <br>
-                                            <br>
-                                            <br>
-                                            <br> 
-                                            <br>
-                                            <br>
-                                            <br>                                         
-                                     </form>
-                                 </div>
-
-                                 <div class="modal-footer">
-                                     <button type="button" class="btn btn-default" data-dismiss="modal">{{translateImagenes.img_11_06}}</button>
-                                    <button ng-click="confirmarServicioGamlp(data,datos)"  ng-disabled="btnNuevoTramtite || formularioCasos.resultadoC.$invalid" type="button" class="btn btn-primary"  ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'">{{translateImagenes.img_11_07}}</button>                                                          
-                                 </div>
-                             </div>
-
-
-
-                         </div>
-   </div>
-
-
-
- 
-
-   <div class="col-lg-12">
-      <div ng-include="template.url" class="animated fadeInUp"></div>
-   </div>
-   <!-- Modal PARA SELECCIONAR TRAMITES-->
-   <div class="modal fade" id="seleccionarTramiteAE" role="dialog">
-      <div class="modal-dialog">
-         <!-- Modal content-->
-         <div class="modal-content">
-            <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal">&times;</button>
-               <h4 class="modal-title">Servicios</h4>
-            </div>
-            <div class="modal-body">
-               <p>Seleccione el tipo de trámite que desea realizar.</p>
-               <div class="row">
-                     <table class="table table-striped">
-                        <thead style="background: #6F7072;color: #F5F5F6;">
-                           <th>#&nbsp;</th>
-                           <th>Tipo de Trámites&nbsp;</th>                                            
-                        </thead>
-                        <tbody>
-                           <tr  style="cursor: pointer;" class="column" ng-repeat="proceso in serivicosInternet" ng-click="seleccionarProceso(proceso)" ng-style="proceso.id==procesoSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}">
-                                 <td>{{$index+1}}</td>
-                                 <td>{{proceso.name}}</td>
-                           </tr>
-                        </tbody>
-                     </table>
-               </div>
-            </div>
-            <div class="modal-footer">
-               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-               <button class="btn btn-default" ng-click="crearTramiteAE();" data-dismiss="modal">Crear</button>                                  
-            </div>
-         </div>
-      </div>
-   </div>
-   <!-- Modal PARA SELECCIONAR TRAMITES-->
-
-   <!-- MODAL EMISION NATURAL -->
-
-    <div class="modal fade" id="divPopupAviso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header" style="background: #ffcb05;" >
-                  <h2 class="modal-title " id="exampleModalLongTitle1" align="center">AVISO!!!</h2>
-              </div>
-              <div class="modal-body">
-                  <div class="row">
-                      <form name="formulario" readOnly="true" novalidate>
-                          <div class="row">
-                              <h3>Estamos realizando actualizaciones. Para realizar la renovacion de su Licencia de Funcionamiento debe apersonarse a las Plataformas 24/7.</h3>
-                          </div>          
-                      </form>
+                          </form>       
+                          <table ng-table="tablaTramites"  class="table  table-hover">
+                              <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==sIdTramiteSeleccionado && {'background-color':'#DCDCDC','font-color':'#A2D5AE'}">
+                                  <td data-title="'Código'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>
+                                  <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite);" >{{tramite.vservicio}}</td>  
+                                  <td data-title="'Subtipo'" ng-click="seleccionarTramite(tramite)" >{{tramite.vcodigo}}</td>    
+                                  <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)" >{{tramite.vfecha}} </td>
+                                  <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)" >{{tramite.venviado}}</td> 
+                              </tr>
+                          </table> 
+                      </div>
                   </div>
-              </div>
-              <div class="modal-footer">
-                  <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button>
-              </div>
-         </div>
-      </div>
-   </div>
-
-
-   <div class="modal fade" id="declaracionN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header" style="background: #ffcb05;" >
-                  <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO DE DECLARACION JURADA</h2>
-              </div>
-              <div class="modal-body">
-                  <div class="row">
-                      <form name="formulario" readOnly="true" novalidate>
-                          <div class="row">
-                              <div id="msgformularioN">
-                                  {{msgformularioN}}
-                              </div>
-                          </div>          
-                      </form>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="generarDocumentoPhp401_402();" data-dismiss="modal">Aceptar</button>
-                  <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button>
-              </div>
-         </div>
-      </div>
-   </div>
-
-   <!-- MODAL EMISION JURIDICO-->
-   <div class="modal fade" id="declaracionJ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header" style="background: #ffcb05;" >
-                  <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO DE DECLARACION JURADA</h2>
-              </div>
-              <div class="modal-body">
-                  <div class="row">
-                      <form name="formulario" readOnly="true" novalidate>
-                          <div class="row">
-                              <div id="msgformularioJ">
-                                  {{msgformularioJ}}
-                              </div>
-                          </div>      
-                      </form>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="generarDocumentoPhp401_402();" data-dismiss="modal">Aceptar</button>
-                  <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button>
               </div>
           </div>
       </div>
-  </div>
-
-
-
+   <!-- modall -->
+      <div class="modal fade" id="registro" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateImagenes.img_11_06}}</span></button>
+                      <h4 class="modal-title" id="myModalLabel">{{translateTitulos.lbl_11_01}}</h4>
+                  </div>
+                  <div class="modal-body" >
+                      <form name="formularioCasos"  readOnly="true" novalidate>
+                          <div class="row">
+                              <table class="table table-striped">
+                                  <thead style="background: #6F7072;color: #F5F5F6;">
+                                  </thead>
+                                      <div class="col-md-12">
+                                          <div class="row">
+                                              <tbody ng-show="f01_categoria_agrupada12">
+                                                  <td>
+                                                      <div class="controls">
+                                                          <h4 class="modal-title" id="myModalLabel">Detalle Actividad Desarrolladora</h4>
+                                                              <select 
+                                                                  id = "f01_actividad_desarrollada"
+                                                                  ng-model="datos.f01_actividad_desarrollada" 
+                                                                  class="form-control js-example-basic-single"
+                                                                  name=  "f01_actividad_desarrollada"
+                                                                  data-placeholder="-- Seleccione --"
+                                                                  style="width: 300px"
+                                                                  ng-options="dato.id_act_des as dato.descripcion for dato in datosActividad | orderBy:['nombre','descripcion']"
+                                                                  ng-disabled="desabilitadoact"
+                                                                  ng-change="habilitarCrear();LicenciaXCategoria(datos.f01_actividad_desarrollada);"
+                                                                  ng-required="true">
+                                                                  <option value="">--Seleccionar--</option>
+                                                              </select>
+                                                          </div>
+                                                      </td>
+                                                  </tbody>
+                                              </div>
+                                          </div>
+                                      </table>
+                                      <input type="hidden" ng-model="datos.datosActividadLicencia" id="datosActividadLicencia" name="datosActividadLicencia" class="form-control" />
+                                  </div>
+                                           <!-- GNERADOR DE CAPCHA -->
+                                  <div class="col-md-12" align="center" >
+                                      <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                                          <tr class="color">
+                                              <div style="background: #ffffff;" >
+                                                  <div class="box2">
+                                                      <img class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
+                                                  </div>
+                                                  <div class="box2">
+                                                      <img class="img-responsive" src="{{imageLNG}}"  title="Palabra en CASTELLANO">
+                                                  </div>
+                                              </div>
+                                          </tr>
+                                          <tr class="color">
+                                              <td class="color22" colspan="3" width="70"  align="center">
+                                                  <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" ng-change ="lmpCaptcha()" placeholder="{{palabraT}}" ng-model="resultadoC"  required/>
+                                                  <span  ng-show="formulario.palabraT.$invalid">
+                                                      <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                                  </span>
+                                                  <label >{{palabraT}}</label>
+                                              </td>
+                                                  <td class="color2" width="30"  align="center">
+                                                      <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                                                      </a>
+                                                  </td>
+                                              </tr>
+                                          </table>
+                                          <b><font SIZE=3 color="red">{{ErrorCapcha}}</font></b>
+                                      </div>
+                                      <!-- ********************* -->
+                                      <br>
+                                      <br>
+                                      <br>
+                                      <br>
+                                      <br> 
+                                      <br>
+                                      <br>
+                                      <br>                                         
+                                  </form>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">{{translateImagenes.img_11_06}}</button>
+                                  <button ng-click="confirmarServicioGamlp(data,datos)"  ng-disabled="btnNuevoTramtite || formularioCasos.resultadoC.$invalid" type="button" class="btn btn-primary"  ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'">{{translateImagenes.img_11_07}}</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-12">
+                      <div ng-include="template.url" class="animated fadeInUp"></div>
+                  </div>
+                  <!-- Modal PARA SELECCIONAR TRAMITES-->
+                  <div class="modal fade" id="seleccionarTramiteAE" role="dialog">
+                      <div class="modal-dialog">
+                       <!-- Modal content-->
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                 <h4 class="modal-title">Servicios</h4>
+                              </div>
+                              <div class="modal-body">
+                                  <p>Seleccione el tipo de trámite que desea realizar.</p>
+                                  <div class="row">
+                                      <table class="table table-striped">
+                                          <thead style="background: #6F7072;color: #F5F5F6;">
+                                              <th>#&nbsp;</th>
+                                              <th>Tipo de Trámites&nbsp;</th>
+                                          </thead>
+                                  <tbody>
+                                      <tr  style="cursor: pointer;" class="column" ng-repeat="proceso in serivicosInternet" ng-click="seleccionarProceso(proceso)" ng-style="proceso.id==procesoSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}">
+                                          <td>{{$index+1}}</td>
+                                          <td>{{proceso.name}}</td>
+                                     </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                          <button class="btn btn-default" ng-click="crearTramiteAE();" data-dismiss="modal">Crear</button>                                  
+                      </div>
+                  </div>
+              </div>
+          </div>
+   <!-- Modal PARA SELECCIONAR TRAMITES-->
+   <!-- MODAL EMISION NATURAL -->
+          <div class="modal fade" id="divPopupAviso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header" style="background: #ffcb05;" >
+                          <h2 class="modal-title " id="exampleModalLongTitle1" align="center">AVISO!!!</h2>
+                      </div>
+                      <div class="modal-body">
+                          <div class="row">
+                              <form name="formulario" readOnly="true" novalidate>
+                                  <div class="row">
+                                      <h3>Estamos realizando actualizaciones. Para realizar la renovacion de su Licencia de Funcionamiento debe apersonarse a las Plataformas 24/7.</h3>
+                                  </div>          
+                              </form>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button>
+                      </div>
+                 </div>
+              </div>
+          </div>
+         <div class="modal fade" id="declaracionN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header" style="background: #ffcb05;" >
+                          <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO DE DECLARACION JURADA</h2>
+                      </div>
+                      <div class="modal-body">
+                          <div class="row">
+                              <form name="formulario" readOnly="true" novalidate>
+                                  <div class="row">
+                                      <div id="msgformularioN">
+                                          {{msgformularioN}}
+                                      </div>
+                                  </div>          
+                              </form>
+                          </div>
+                      </div>
+                  <div class="modal-footer">
+                      <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="generarDocumentoPhp401_402();" data-dismiss="modal">Aceptar</button>
+                      <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+     <!-- MODAL EMISION JURIDICO-->
+     <div class="modal fade" id="declaracionJ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header" style="background: #ffcb05;" >
+                      <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO DE DECLARACION JURADA</h2>
+                  </div>
+                  <div class="modal-body">
+                      <div class="row">
+                          <form name="formulario" readOnly="true" novalidate>
+                              <div class="row">
+                                  <div id="msgformularioJ">
+                                      {{msgformularioJ}}
+                                  </div>
+                              </div>      
+                          </form>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success" ng-click="generarDocumentoPhp401_402();" data-dismiss="modal">Aceptar</button>
+                      <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();" data-dismiss="modal">Cerrar</button>
+                  </div>
+              </div>
+          </div>
+      </div>
 <!--cambios-->
-</div>
+  </div>
 </body>

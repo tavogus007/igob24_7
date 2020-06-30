@@ -498,10 +498,10 @@
         var dataNatural = '';
         dataNatural = '{"ycontribuyente_nro_documento":"'+ciDocumento+'","ycontribuyente_nit":"'+nitDocumento+'"}';
         try{
-            var resAct = new reglasnegocio();
+            var resAct = new reglasnegocioSierra();
             resAct.identificador = 'VALLE_PRUEBA-SGEN-3148';
             resAct.parametros = dataNatural;
-            resAct.llamarregla(function(responseN){
+            resAct.llamarregla_sierra(function(responseN){
                 dataN = JSON.parse(responseN);
                 if(JSON.stringify(dataN) == '[{}]' || JSON.stringify(dataN) == "[{ }]" || JSON.stringify(dataN) == '{}'){
                     $scope.txtMsgConexionGen = "Se ha producido un problema de conexion al cargar los datos";
@@ -517,10 +517,10 @@
                         else
                             tipoper = 'J';
                         var dataNat = '{"id_contribuyente":'+$scope.dataGenesisCidadano.contribuyente_id+',"tipo":"'+tipoper+'"}';
-                        var lstActEco = new reglasnegocio();
+                        var lstActEco = new reglasnegocioSierra();
                         lstActEco.identificador = 'VALLE_PRUEBA-SGEN-3150';
                         lstActEco.parametros = dataNat;
-                        lstActEco.llamarregla(function(responseActEco){
+                        lstActEco.llamarregla_sierra(function(responseActEco){
                             if (responseActEco == '"{}"' || responseActEco == '"[{}]"' || responseActEco == '"[{ }]"') {
                             } else{
                                 var respLstActEco = JSON.parse(responseActEco);
@@ -1304,10 +1304,10 @@
             $scope[name] = 'Running';
             var deferred = $q.defer();
             var dataIdZona = '{"xzona":'+idZona+',"tipo_via":"'+tipoVia+'"}';
-            var resAct = new reglasnegocio();
+            var resAct = new reglasnegocioSierra();
             resAct.identificador = 'SERVICIO_VALLE_PAR-3253';
             resAct.parametros = dataIdZona;
-            resAct.llamarregla(function(responseNomZ){
+            resAct.llamarregla_sierra(function(responseNomZ){
                 x = JSON.parse(responseNomZ);
                 $scope.datosNombVia = x;
                 deferred.resolve($scope.datosNombVia);
@@ -2180,6 +2180,8 @@
         $scope.recuperandoDatosGenesis();
         //$scope.getCaptchasX();
         $scope.getCaptchasXX();
+        $scope.sesionTokenSierra();
+
     });
 
     $scope.inicioServicios343Sierra = function () {
@@ -2189,6 +2191,7 @@
         //$scope.getCaptchasX();
         $scope.getCaptchasXX();
         $scope.cargarMacrodistrito();
+        $scope.sesionTokenSierra();
     };
 
 
@@ -2360,7 +2363,7 @@
                 success:function(response){
                     var urlData = response;
                     $rootScope.decJuradaNatural = urlData;
-                    $scope.InsertarDocumento(response);
+                    $scope.InsertarDocumentoDJ(response);
                     $rootScope.datosEnv.declaracion_jurada = urlData;
                     $scope.serializarInformacion($rootScope.datosEnv);
                     $.unblockUI();
@@ -2395,7 +2398,7 @@
                         if(response.length>0){
                             var urlData = response;
                             $rootScope.decJuradaNatural = urlData;
-                            $scope.InsertarDocumento(response);
+                            $scope.InsertarDocumentoDJ(response);
                             $rootScope.datosEnv.declaracion_jurada = urlData;
                             $scope.serializarInformacion($rootScope.datosEnv);
                             $.unblockUI();
@@ -2405,6 +2408,86 @@
             }
         }
     };
+
+    $scope.InsertarDocumentoDJ = function(urlData){
+        var sDocSistema     =   "IGOB247";
+        var sDocProceso     =   "DECLARACIÓN JURADA";
+        var sDocId          =   1;
+        var sDocCiNodo      =   "CU";
+        var sDocDatos       =   "";
+        var sDocUrl         =   urlData;
+        var sDocVersion     =   1;
+        var sDocTiempo      =   400;
+        var sDocFirmaDigital=   0;
+        var sDocUsuario     =   sessionService.get('IDSOLICITANTE');
+        var sDocTipoDoc     =   "pdf";
+        var sDocTamDoc      =   "";
+        var sDocNombre      =   "DECLARACIÓN JURADA";
+        var sDocTpsId       =   0;
+        var sDocUrlLogica   =   urlData;
+        var sDocAcceso      =   "";
+        var sDocTipoExt     =   "";
+        var sDocNroTramNexo =   "";
+        var sCasoCodigo     =   "0";
+        var documento  =   new gDocumentosIgob();
+        documento.doc_sistema = sDocSistema;
+        documento.doc_proceso = sDocProceso;
+        documento.doc_id = sDocId;
+        documento.doc_ci_nodo = sDocCiNodo;
+        documento.doc_datos = sDocDatos;
+        documento.doc_url = sDocUrl;
+        documento.doc_version = sDocVersion;
+        documento.doc_tiempo = sDocTiempo;
+        documento.doc_firma_digital = sDocFirmaDigital;
+        documento.doc_usuario = sDocUsuario;
+        documento.doc_tipo_documento = sDocTipoDoc;
+        documento.doc_tamanio_documento = sDocTamDoc;
+        documento.doc_nombre = sDocNombre;
+        documento.doc_tps_doc_id = sDocTpsId;
+        documento.doc_url_logica = sDocUrlLogica;
+        documento.doc_acceso = sDocAcceso;
+        documento.doc_tipo_documento_ext = sDocTipoExt;
+        documento.doc_nrotramite_nexo = sDocNroTramNexo;
+        documento.doc_id_codigo = sCasoCodigo;
+        documento.insertarDocIgob(function(resultado){
+            resultadoApi = JSON.parse(resultado);
+            if (resultadoApi.success) {
+                srespuesta  =   "TRUE";
+                swal('DDJJ', 'Declaracion Jurada Registrada', 'success');
+                return srespuesta;
+            } else {
+                $.unblockUI();
+                sweet.show(resultadoApi.error.message);
+                srespuesta  =   "FALSE";
+                return srespuesta;
+            }
+        });
+    }
+
+    $scope.sesionTokenSierra = function(){
+        var urlToken = CONFIG.SERVICE_SIERRAM+"apiLogin";
+        console.log('sssssssssssssssssssssssssssss    ',urlToken);
+        $scope[name] = 'Running';
+        var deferred = $q.defer();
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url : urlToken,
+            data: CONFIG.CREDENCIAL_MOTORESSIERRA,
+            async: false,
+            success: function(response) {
+                dataResp = JSON.stringify(response);
+                deferred.resolve(dataResp);
+                console.log('token sierraaa    ',dataResp);
+                sessionStorage.setItem('TOKEN_MOTORS', response.token);
+            },
+            error: function (response, status, error) {
+                dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+                console.log(dataResp);
+            }
+        });
+        return deferred.promise;
+    }
 
     $scope.combo = "<select id='servicio' class='seleccionaServicio'>  <option value='1'>Internet</option> <option value='3'>Salud</option> <option value='4'>Publicidad</option> </select> <br>";
 

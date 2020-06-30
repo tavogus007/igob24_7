@@ -157,10 +157,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             console.log('representante antiguooooo     ',$scope.datos.f01_id_representante_legal_antiguo);
             var dataRepLegal = '';
             dataRepLegal = '{"ycontribuyente_nro_documento":"'+$scope.datos.f01_num_doc_rep+'","ycontribuyente_nit":""}';
-            var resAct = new reglasnegocio();
+            var resAct = new reglasnegocioSierra();
             resAct.identificador = 'VALLE_PRUEBA-SGEN-3148';
             resAct.parametros = dataRepLegal;
-            resAct.llamarregla(function(responseN){
+            resAct.llamarregla_sierra(function(responseN){
                 console.log('responseN    ',responseN);
                 var responseLegal = JSON.parse(responseN);
                 console.log('responseLegal    ',responseLegal);
@@ -230,10 +230,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         $scope.datosActividad = "";
         try{
             var dataActDes = '{}';
-            var resLstActDes = new reglasnegocio();
+            var resLstActDes = new reglasnegocioSierra();
             resLstActDes.identificador = 'VALLE_PRUEBA-SGEN-3149';
             resLstActDes.parametros = dataActDes;
-            resLstActDes.llamarregla(function(responseActDes){
+            resLstActDes.llamarregla_sierra(function(responseActDes){
                 var lstActDes =  JSON.parse(responseActDes);
                 if(lstActDes.length > 0){
                     for (var i = lstActDes.length - 1; i >= 0; i--) {
@@ -355,10 +355,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             $scope.datos.fileArchivosAd = '';
             try{
                 var dataDesLic = '{"id_actividad_desarrollada":"'+idDesarrollada+'", "superficie":"'+superficie+'"}';
-                var resDatosLic = new reglasnegocio();
+                var resDatosLic = new reglasnegocioSierra();
                 resDatosLic.identificador = 'VALLE_PRUEBA-SGEN-3151';
                 resDatosLic.parametros = dataDesLic;
-                resDatosLic.llamarregla(function(responseDatosLic){
+                resDatosLic.llamarregla_sierra(function(responseDatosLic){
                     var datosLic = JSON.parse(responseDatosLic);
                     if(datosLic.length > 0){
                         $scope.sCategoria = true;
@@ -468,10 +468,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         var datosMulti = [];
         try{
             var dataActDesM = '{}';
-            var resLstActDesM = new reglasnegocio();
+            var resLstActDesM = new reglasnegocioSierra();
             resLstActDesM.identificador = 'VALLE_PRUEBA-SGEN-3149';
             resLstActDesM.parametros = dataActDesM;
-            resLstActDesM.llamarregla(function(responseActDesM){
+            resLstActDesM.llamarregla_sierra(function(responseActDesM){
                 var lstActividadDesM = JSON.parse(responseActDesM);
                 var dataResp = lstActividadDesM;
                 for (var i = 0; i < dataResp.length; i++) {
@@ -552,10 +552,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             datoObjectFiles_ci = [];
             try{
                 var dataDesLicM = '{"id_actividad_desarrollada":"'+idDesarrollada+'", "superficie":"'+superficie+'"}';
-                var resDatosLicM = new reglasnegocio();
+                var resDatosLicM = new reglasnegocioSierra();
                 resDatosLicM.identificador = 'VALLE_PRUEBA-SGEN-3151';
                 resDatosLicM.parametros = dataDesLicM;
-                resDatosLicM.llamarregla(function(responseDatosLicM){
+                resDatosLicM.llamarregla_sierra(function(responseDatosLicM){
                     var obtLicM = JSON.parse(responseDatosLicM);
                     var datosLicM = obtLicM;
                     if(datosLicM.length > 0){
@@ -1591,7 +1591,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             datosNeXO['f01_a_hor']                      =   paramForm.f01_a_hor;
             datosNeXO['INT_AC_ESTADO']                  =   paramForm.INT_AC_ESTADO;
             datosNeXO['INT_AC_MACRO']                   =   paramForm.INT_AC_MACRO;
-            datosNeXO['f01_zon_rep_valor']              =   paramForm.f01_zon_rep_valor;
+            //datosNeXO['f01_zon_rep_valor']              =   paramForm.f01_zon_rep_valor;
             datosNeXO['f01_tipo_viarep']                =   paramForm.f01_tipo_viarep;
             datosNeXO['f01_nom_via_rep']                =   paramForm.f01_nom_via_rep;
             datosNeXO['OTRO_VIA']                       =   paramForm.OTRO_VIA;
@@ -2649,7 +2649,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
     $scope.deleteMarkers = function() {
         $scope.clearMarkers();
         markers = [];
-    }
+    }*/
 
     $scope.convertToDataURLviaCanvas = function (url, callback, outputFormat){
         var img = new Image();
@@ -2666,7 +2666,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             canvas = null;
         };
         img.src = url;        
-    };*/
+    };
 
     $scope.subirImgBase64= function(imagen,url,nombre){
         var contentType = 'image/png';
@@ -2731,27 +2731,11 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         };
         aDocAdjuntosmapa[0]=datosAdjuntosmapa;
         $scope.datos.ARCHIVOS_MULTIPLES_MAPA = aDocAdjuntosmapa;
-        /*$scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center='+ latitud +','+ longitud +'&zoom=18&size=900x500&maptype=roadmap&markers=color:red|label:S|'+ latitud +','+ longitud +'&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img){
+        $scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center='+ latitud +','+ longitud +'&zoom=18&size=900x500&maptype=roadmap&markers=color:red|label:S|'+ latitud +','+ longitud +'&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img){
             var Imagen = base64Img.replace(/data:image\/png;base64,/i,'');
             $scope.Imagenb = Imagen;
             $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);
-        });*/
-        $scope.mapa.once('postcompose', function(event) {
-            var canvas = event.context.canvas;
-            if (navigator.msSaveBlob) {
-                //navigator.msSaveBlob(canvas.msToBlob(), 'mapa.jpg');
-            }
-            else {
-                canvas.toBlob(function(blob) {
-                    var data_mapa1 = canvas.toDataURL();
-                    var d = data_mapa1;
-                    data_mapa1 = d.replace("data:image/png;base64,", "");
-                    $scope.Imagenb = data_mapa1;
-                    $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);
-                });
-            }
-        });
-        $scope.mapa.renderSync();
+        });        
     }
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
@@ -3014,7 +2998,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                     stringFormulario40  =   stringFormulario40.replace("#divft#", divfoodTruck);
                 };
                 var multi = '';
-                if (datos.f01_tipo_lic == 26 || datos.f01_tipo_lic == '26') {
+                if (datos.f01_tipo_lic_sierra == 26 || datos.f01_tipo_lic_sierra == '26') {
                     stringFormulario40  =   stringFormulario40.replace("#f01_tipo_lic_descrip#", datos.f01_tipo_lic_descrip);
                     stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descrip#", datos.f01_categoria_agrupada_descrip);
                     stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descripcion#", datos.f01_categoria_agrupada_descrip);
@@ -3054,6 +3038,15 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                 } else{
                     stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act);
                 };
+                if (datos.chkzonasegura == '' || datos.chkzonasegura == 'undefined' || datos.chkzonasegura == undefined) {
+                    stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '');
+                } else{
+                    if (datos.chkzonasegura == 'ZONASEGURA') {
+                        stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> SI');
+                    } else{
+                        stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> NO');
+                    };
+                };
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
                 stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
@@ -3089,6 +3082,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             dataForm['f01_ges_vig_pod'] = data.f01_ges_vig_pod;
             dataForm['f01_nit'] = data.f01_nit;
             dataForm['f01_zona_rep'] = data.f01_zona_rep;
+            dataForm['f01_zon_rep_valor']  =  data.f01_zon_rep_valor;
             dataForm['f01_num_prop'] = data.f01_num_prop;
             dataForm['f01_telef_rep'] = data.f01_telef_rep;
             dataForm['f01_tipo_viarep'] = data.f01_tipo_viarep;
@@ -3105,6 +3099,15 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             }else{
                 dataForm['f01_num_act'] = data.f01_num_act;
             }
+            if (data.chkzonasegura == '' || data.chkzonasegura == 'undefined' || data.chkzonasegura == undefined) {
+                dataForm['zonaSegura'] = '';
+            } else{
+                if (datos.chkzonasegura == 'ZONASEGURA') {
+                    dataForm['zonaSegura'] = '<label>Zona Segura:</label> SI';
+                } else{
+                    dataForm['zonaSegura'] = '<label>Zona Segura:</label> NO';
+                };
+            };
             dataForm['f01_num_act1'] = data.f01_num_act1;
             dataForm['f01_sup'] = data.f01_sup;
             dataForm['f01_edificio_act'] = data.f01_edificio_act;
@@ -3130,7 +3133,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                 dataForm['f01_tip_act'] = 'SUCURSAL';
             }
             var multi = '';
-            if (data.f01_tipo_lic == 26 || data.f01_tipo_lic == '26') {
+            if (data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26') {
                 dataForm['f01_tipo_lic_descrip'] = data.f01_tipo_lic_descrip;
                 dataForm['f01_categoria_agrupada_descrip'] = data.f01_tipo_lic_descrip;
                 dataForm['f01_categoria_agrupada_descripcion'] = data.f01_tipo_lic_descrip;
@@ -3177,7 +3180,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             dataForm['publicidad_grilla'] = pubMod;
             dataForm['fecha_sist'] = sfecha;
             dataForm['fecha_sist2'] = sfecha;
-            dataForm['usuario'] = sessionService.get('USUARIO');
+            dataForm['usuario'] = 'IGOB247 CIUDADANO';
             dataForm['hora_sist'] = sHora;
             $rootScope.datosForm401 = dataForm;
             $rootScope.datosEnv = data;
@@ -3198,10 +3201,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         $.blockUI();
         try{
             var tipoSoc = '{"xclasifica":"2002"}';
-            var tipoSociedad = new reglasnegocio();
+            var tipoSociedad = new reglasnegocioSierra();
             tipoSociedad.identificador = 'SERVICIO_VALLE-PAR-2521';
             tipoSociedad.parametros = tipoSoc;
-            tipoSociedad.llamarregla(function(responseActDes){
+            tipoSociedad.llamarregla_sierra(function(responseActDes){
                 var lstSoc =  JSON.parse(responseActDes);
                 if(lstSoc.length > 0){
                     $scope.datosSociedad = lstSoc;
@@ -3223,10 +3226,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         $.blockUI();
         try{
             var tipoSoc = '{"xclasifica":"2010"}';
-            var tipoSociedad = new reglasnegocio();
+            var tipoSociedad = new reglasnegocioSierra();
             tipoSociedad.identificador = 'SERVICIO_VALLE-PAR-2521';
             tipoSociedad.parametros = tipoSoc;
-            tipoSociedad.llamarregla(function(responseActDes){
+            tipoSociedad.llamarregla_sierra(function(responseActDes){
                 var lstSoc =  JSON.parse(responseActDes);
                 if(lstSoc.length > 0){
                     $scope.datosRespaldo = lstSoc;
@@ -3294,6 +3297,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
     });
 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
+        console.log('dataaaa    ',data);
         $scope.catactividadDesarrollada();
         $scope.tipoSociedad();
         //$scope.macrodistritos();
@@ -3306,6 +3310,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         if (data.f01_zona_act == undefined || data.f01_zona_act == 'undefined' || data.f01_zona_act == null || data.f01_zona_act == '') {
         } else{
             $scope.datos.f01_macro_act = data.f01_macro_act;
+            document.getElementById('f01_macro_act').value = $scope.datos.f01_macro_act;
             $scope.datos.f01_zona_act = data.f01_zona_act;
             $scope.distritoZonas($scope.datos.f01_macro_act);
         };
@@ -3348,7 +3353,13 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                     $scope.mostrarzonasegura = false;
                 break;
             };
-        }
+        } else{
+            if (data.chkzonasegura == undefined || data.chkzonasegura == 'undefined' || data.chkzonasegura == '') {
+                $scope.mostrarzonasegura = false;
+            } else{
+                $scope.mostrarzonasegura = true;
+            };
+        };
         //MOSTRAR VIAE
         if(data.rdTipoTramite1 == 'NUEVO'){
             $scope.licenciaToogle4 = true;
@@ -3549,7 +3560,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         console.log('$scope.datos.f01_id_contribuyente     ',$scope.datos.f01_id_contribuyente);
         $scope.datosRepresentanteLegal();
         $.unblockUI();
-        $scope.initMap();
+        //$scope.initMap();
     });
 
     $scope.$on('$destroy', function() {

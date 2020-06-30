@@ -4590,7 +4590,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
         var nameArrayci = tipoDoc.split('.');
         tipoDoc = nameArrayci[nameArrayci.length - 1].toLowerCase();
         tipoDoc = tipoDoc.toLowerCase();
-        if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm') {
+        if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm'|| tipoDoc == 'rar'|| tipoDoc == 'zip' || tipoDoc == '7Z') {
           $scope.datos[obj.name] = obj.files[0].name;
           $.blockUI();
           $scope.subirRequisitos(obj, valor);
@@ -4718,6 +4718,15 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
                 $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
               });
               //$.unblockUI();
+            } else if (tipoDoc == 'rar' || tipoDoc == 'zip' || tipoDoc == '7Z'){
+              nombreNuevo = nombrecampo.substring(5, nombrecampo.length) + '_' + fechaNueva + '.' + tipoDoc;
+              $.blockUI();
+              fileUpload1.uploadFileToUrl1(aArchivos[0], uploadUrl, nombreNuevo);
+              document.getElementById(nombrecampo + '_campo').value = nombreNuevo;
+              var urlImagen = url_img + nombreNuevo + "?app_name=todoangular";
+              UrlExists(urlImagen);
+              $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
+              //$.unblockUI();
             }
             else {
               swal('Advertencia', 'El archivo que esta enviando no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -4726,7 +4735,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
           };
         } else {
           if (tamaniofile <= 500000) {
-            if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm' || tipoDoc == 'PDF') {
+            if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm' || tipoDoc == 'PDF' || tipoDoc == 'rar' || tipoDoc == 'zip' || tipoDoc == '7Z') {
               nombreNuevo = nombrecampo.substring(5, nombrecampo.length) + '_' + fechaNueva + '.' + tipoDoc;
               $.blockUI();
               fileUpload1.uploadFileToUrl1(aArchivos[0], uploadUrl, nombreNuevo);
@@ -4750,7 +4759,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
         }
       }
       $.unblockUI();
-    }, 1000);
+    }, 500);
   };
   function UrlExists(url) {
     $.blockUI();
@@ -5035,7 +5044,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       var extPod = $scope.extension.split(".")[1];
       try {
         $scope.archivoPOD = url;
-        if (extPod == 'pdf' || extPod == 'docx' || extPod == 'docxlm' || extPod == 'zip' || extPod == 'jpeg' || extPod == 'jpg' || extPod == 'png' || extPod == 'gif') {
+        if (extPod == 'pdf' || extPod == 'docx' || extPod == 'docxlm' || extPod == 'zip' || extPod == '7Z'|| extPod == 'rar' || extPod == 'jpeg' || extPod == 'jpg' || extPod == 'png' || extPod == 'gif') {
           window.open($scope.archivoPOD, "_blank");
         }/*else if(){
                     $("#fotpod").modal("show");             

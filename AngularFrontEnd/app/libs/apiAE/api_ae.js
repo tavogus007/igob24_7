@@ -14,6 +14,7 @@ var typeCall;
 if(jsonURLS){
   var urlGENESIS = jsonURLS.CONEXION_API_PG_GENESIS+"wsGENESIS";
   var urlIf2 = jsonURLS.CONEXION_API_PG_IF+"wsIf"; 
+  var urlMotorSierra = jsonURLS.SERVICE_SIERRAM+"reglaNegocio/ejecutarWeb";
 }
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
@@ -55,6 +56,31 @@ function ejecutarAjaxAE(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
       }
     });
     return dataRespAe;
+};
+
+///////////////////////CONEXION SERVICIOS SIERRA/////////////////////////////////////////////////
+function ejecutarAjaxMotorSierra(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
+    var headers = {};
+    $.ajax({
+        url: urlMotorSierra,
+        data: vDataCall,
+        type:"POST",
+        dataType: "json",
+        //crossDomain : true,
+        headers: {
+            'authorization': token
+        },
+        success: function(response) {
+            dataResp = JSON.stringify(response);
+            vFunctionResp(dataResp);
+        },
+        error: function (response, status, error) {
+            dataResp = "{\"error\":{\"message\":\""+response+"\",\"code\":700}}";
+            console.log("error",dataResp);
+            vFunctionResp(dataResp);
+        }
+    });
+    return dataResp;
 };
 /*///////////////spsp_categoria_agrupada_licencia//////////////////////*/
 
@@ -235,4 +261,16 @@ lstActividadEconomicaVentas.prototype.lstActividadEconomicaVentas = function (fu
         "tipo":this.tipo
     };
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};
+
+reglasnegocio.prototype.llamarregla = function(functionResp){
+  var idtoken =   sessionStorage.getItem('TOKEN_MOTORS');
+  var stoquen =  'Bearer ' + idtoken ;
+    urlComp = "";
+    typeCall = "post";
+    dataParams= {
+        "identificador" : this.identificador,
+        "parametros": this.parametros
+    };
+    ejecutarAjaxMotorSierra(urlComp, typeCall, dataParams, functionResp,stoquen);
 };

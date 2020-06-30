@@ -27,8 +27,14 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       });
     }
     $scope.inicioPaginaWeb = function () {
+
+      console.log("---------------");
+      console.log($rootScope.datosTiendaVirtual[0].pencabezado);
+      console.log("---------------");
       $scope.nombre_tienda = $rootScope.datosTiendaVirtual[0].tv_nombrec;
-      $scope.descrip_pagina = $rootScope.datosTiendaVirtual[0].tv_descripcionc;
+      recDesc = $rootScope.datosTiendaVirtual[0].tv_descripcionc;
+      recDesc = recDesc.replace(/<br ?\/?>/g, "\n");
+      $scope.descrip_pagina = recDesc;
       $scope.correo_tienda = $rootScope.datosTiendaVirtual[0].tv_correoc;
       $scope.pag_web_privada = $rootScope.datosTiendaVirtual[0].tv_pagina_webc;
       $scope.desabilitado = "disabled";
@@ -116,6 +122,16 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         logotipo = logotipo.replace(/\\"/gi,'"');
         logo =JSON.parse(logotipo);
         uptTVCP.imagen = logo[0].url;
+        
+        /*encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
+        encabezado = encabezado.replace('["{','[{');
+        encabezado = encabezado.replace('}"]','}]');
+        encabezado = encabezado.replace('}"{','}{');
+        encabezado = encabezado.replace(/\\"/gi,'"');
+        enca =JSON.parse(encabezado);
+        uptTVCP.encabezado = enca[0].url;*/
+
+        
         uptTVCP.datosAuxiliares = JSON.stringify($rootScope.datosAuxiliares);
         uptTVCP.nombre = $rootScope.datosTiendaVirtual[0].tv_nombrec;
         uptTVCP.modificarTiendaVirtual(function(response){
@@ -193,12 +209,30 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           newstr = newstr.replace('}"]', '}]');
           re = /\\"/gi;
           newRedes = newstr.replace(re, '"');
-          logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
-          logotipo = logotipo.replace('["{','[{');
-          logotipo = logotipo.replace('}"]','}]');
-          logotipo = logotipo.replace('}"{','}{');
-          logotipo = logotipo.replace(/\\"/gi,'"');
-          logo =JSON.parse(logotipo);
+           try{
+            logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
+            logotipo = logotipo.replace('["{','[{');
+            logotipo = logotipo.replace('}"]','}]');
+            logotipo = logotipo.replace('}"{','}{');
+            logotipo = logotipo.replace(/\\"/gi,'"');
+            logo = JSON.parse(logotipo);
+            urllogo = logo[0].url;
+          } catch(errorL){
+            urllogo = "";
+          }
+          try{
+            encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
+            encabezado = encabezado.replace('["{','[{');
+            encabezado = encabezado.replace('}"]','}]');
+            encabezado = encabezado.replace('}"{','}{');
+            encabezado = encabezado.replace(/\\"/gi,'"');
+            enca = JSON.parse(encabezado);
+            urlenca = enca[0].url;
+          } catch(errorL){
+            urlenca = "";
+          }
+
+
           $.ajax({
               url:CONFIG.API_URL_DMS_HTML+'generadorHTML.php',
               type:"post",
@@ -214,7 +248,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "sproductos": JSON.stringify($rootScope.productosPW),
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
                   "sae": sessionService.get('IDAE'),
-                  "slogo": logo[0].url
+                  "slogo": urllogo,
+                  "sencabezado": urlenca
               },
               success:function(response){
                   if (response == 'error creando fichero'){
@@ -261,12 +296,28 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           newstr = newstr.replace('}"]', '}]');
           re = /\\"/gi;
           newRedes = newstr.replace(re, '"');
-          logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
-          logotipo = logotipo.replace('["{','[{');
-          logotipo = logotipo.replace('}"]','}]');
-          logotipo = logotipo.replace('}"{','}{');
-          logotipo = logotipo.replace(/\\"/gi,'"');
-          logo =JSON.parse(logotipo);
+          try{
+            logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
+            logotipo = logotipo.replace('["{','[{');
+            logotipo = logotipo.replace('}"]','}]');
+            logotipo = logotipo.replace('}"{','}{');
+            logotipo = logotipo.replace(/\\"/gi,'"');
+            logo = JSON.parse(logotipo);
+            urllogo = logo[0].url;
+          } catch(errorL){
+            urllogo = "";
+          }
+          try{
+            encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
+            encabezado = encabezado.replace('["{','[{');
+            encabezado = encabezado.replace('}"]','}]');
+            encabezado = encabezado.replace('}"{','}{');
+            encabezado = encabezado.replace(/\\"/gi,'"');
+            enca = JSON.parse(encabezado);
+            urlenca = enca[0].url;
+          } catch(errorL){
+            urlenca = "";
+          }
           console.log(logo);
           $.ajax({
               url:CONFIG.API_URL_DMS_HTML+'generadorHTML.php',
@@ -283,7 +334,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "sproductos": JSON.stringify($rootScope.productosPW),
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
                   "sae": sessionService.get('IDAE'),
-                  "slogo": logo[0].url
+                  "slogo": urllogo,
+                  "sencabezado": urlenca
               },
               success:function(response){
                   if (response == 'error creando fichero'){

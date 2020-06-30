@@ -111,7 +111,7 @@
               </label>  
             </div>      
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <div class="form-group" >
                       <label for="url" >Nombre Tienda Virtual: </label>
                       <div class="controls">
@@ -120,11 +120,17 @@
                       </div>
                   </div>
                 </div>
-                <div class="col-md-6">
+              </div>
+              <div class="row">
+                <div class="col-md-12">
                   <div class="form-group" >
                       <label for="url" >Descripción Tienda Virtual:</label>
                       <div class="controls">
-                          <input id="descrip_pagina" name="descrip_pagina" ng-model="descrip_pagina" class="form-control" ng-disabled="desabilitado"/>
+                          <!--input id="descrip_pagina" name="descrip_pagina" ng-model="descrip_pagina" class="form-control" ng-disabled="desabilitado"/-->
+
+                          <textarea ng-model="descrip_pagina" id="descrip_pagina" name="descrip_pagina" class="form-control" ng-disabled="desabilitado" rows="4" cols="150"></textarea>
+
+
                       </div>
                   </div>
                 </div>

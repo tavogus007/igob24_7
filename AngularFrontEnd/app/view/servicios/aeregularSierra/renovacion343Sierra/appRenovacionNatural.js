@@ -1533,7 +1533,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             swal('', " Estimado Ciudadano no tiene actividad económica registrada.", 'warning');
         }
     };
-
     // =========================================FIN DE LA PARTE DE LA VIA===================================//
     //DOCUMENTOS ADJUNTOS OBLIGATORIOS
     var clsIniciarFechaObligatorio = $rootScope.$on('inicializarFechaOblitatorio', function(event, data){

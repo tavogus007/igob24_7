@@ -476,8 +476,6 @@
             }
         });
     };
-
- 
     
     $scope.re=false;
     $scope.rej=false;

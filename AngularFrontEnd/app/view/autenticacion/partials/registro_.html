@@ -1941,6 +1941,22 @@
                     resultadoApi = JSON.parse(resultado);                           
                     if (resultadoApi.success) {
                         srespuesta  =   "TRUE";
+                        var nomArchivo = urlData.split("?")[0];
+                        var nomArchivo2 = nomArchivo.split("/");
+                        var nombreArchivo = nomArchivo2[nomArchivo2.length-1];
+                        var datosCondicionUso = new guardarCondicionUso();
+                        datosCondicionUso.nombreCU = nombreArchivo;
+                        datosCondicionUso.oid = sDocUsuario;
+                        datosCondicionUso.guardarCondicion_deUso(function(resultadoCU){
+                            var resultadoApiCU = JSON.parse(resultadoCU);
+                            if( typeof(resultadoApiCU.success) != 'undefined') {
+                                var mensajeExito = "Condición de Uso almacenada correctamente.";
+                            }
+                            else {
+                                var mensajeExito = resultadoApi.error.message;
+                            }
+                        })
+                        
                         return srespuesta;
                     } else {
                         $.unblockUI();

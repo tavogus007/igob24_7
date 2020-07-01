@@ -618,7 +618,11 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
   }
   $scope.requiRecuperados = [];
   $scope.cert_difusion = function (nombre) {
+    $scope.banderaestTramite = "";
+    $scope.btnEnviarFormLinea = false;
     $rootScope.opcioncheck = false;
+    $scope.repPrincipal  = true;
+    $rootScope.datosIniciales.opcional  = "NO";
     $scope.tipoTramite = "NUEVO";
     $scope.btnEnviarFormLinea = true;
     $scope.rutaArchEnvioLotus = [];
@@ -1699,8 +1703,12 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
   $scope.grilla_rbmultiple_reenvio = [];
   $rootScope.asgnvalores = function (data, estado) {
     //////////////////  CODIGO MARAVILLA ///////////
-    //$rootScope.datosIniciales  = data;
+    $scope.banderainforep = true;
+
+    $scope.banderaestTramite = estado;
     $scope.btnEnviarFormLinea = true;
+    $scope.repPrincipal  = true;
+    $rootScope.datosIniciales.opcional  = "NO";
     $scope.fechaVerifica = obtFechaActual.obtenerFechaActual();
     $scope.fechaVerifica = $scope.fechaVerifica.split(" ")[0];
     $scope.fechaDia = $scope.fechaVerifica.split("-");
@@ -2574,7 +2582,6 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
           var valor = $('#condiciones:checked').val();
           if (valor == 1) {
             if ($("#den_auto").val() != "" && $("#fecha_venRA").val() != "") {
-
               $scope.grilla_rbmultiple.push(JSON.parse(dataGrilla));
               $scope.lst_grilla_multiple();
               $scope.lstSoporte_m = [];
@@ -4434,6 +4441,16 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
 
     try {
       $rootScope.datosIniciales = JSON.parse(datosGradarCd);
+      if (!$scope.banderainforep && $scope.banderaestTramite == "SI" && ($scope.tipoProceso == "GM" || $scope.tipoProceso == "RBM" )) {
+        var data_datosGradarCd = JSON.parse(datosGradarCd);
+        data_datosGradarCd.f01_ape_pat_rep  = $scope.patrep_ini; 
+        data_datosGradarCd.f01_ape_mat_rep  = $scope.matrep_ini; 
+        data_datosGradarCd.f01_pri_nom_rep  = $scope.nomrep_ini; 
+        data_datosGradarCd.f01_expedido_rep  = $scope.exprep_ini; 
+        data_datosGradarCd.f01_num_doc_rep  = $scope.numdocrep_ini;
+        data_datosGradarCd.f01_ges_vig_pod  = $scope.gesvigrep_ini;
+        datosGradarCd = JSON.stringify(data_datosGradarCd);
+      }
       var datosSerializados = datosGradarCd;
       var idCiudadano = sessionService.get('IDSOLICITANTE');
       var idTramite = sessionService.get('IDTRAMITE');
@@ -4590,7 +4607,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
         var nameArrayci = tipoDoc.split('.');
         tipoDoc = nameArrayci[nameArrayci.length - 1].toLowerCase();
         tipoDoc = tipoDoc.toLowerCase();
-        if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm') {
+        if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm'|| tipoDoc == 'rar'|| tipoDoc == 'zip' || tipoDoc == '7Z') {
           $scope.datos[obj.name] = obj.files[0].name;
           $.blockUI();
           $scope.subirRequisitos(obj, valor);
@@ -4718,6 +4735,15 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
                 $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
               });
               //$.unblockUI();
+            } else if (tipoDoc == 'rar' || tipoDoc == 'zip' || tipoDoc == '7Z'){
+              nombreNuevo = nombrecampo.substring(5, nombrecampo.length) + '_' + fechaNueva + '.' + tipoDoc;
+              $.blockUI();
+              fileUpload1.uploadFileToUrl1(aArchivos[0], uploadUrl, nombreNuevo);
+              document.getElementById(nombrecampo + '_campo').value = nombreNuevo;
+              var urlImagen = url_img + nombreNuevo + "?app_name=todoangular";
+              UrlExists(urlImagen);
+              $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
+              //$.unblockUI();
             }
             else {
               swal('Advertencia', 'El archivo que esta enviando no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -4726,7 +4752,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
           };
         } else {
           if (tamaniofile <= 500000) {
-            if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm' || tipoDoc == 'PDF') {
+            if (tipoDoc == 'png' || tipoDoc == 'jpg' || tipoDoc == 'jpeg' || tipoDoc == 'bmp' || tipoDoc == 'gif' || tipoDoc == 'pdf' || tipoDoc == 'docx' || tipoDoc == 'docxlm' || tipoDoc == 'PDF' || tipoDoc == 'rar' || tipoDoc == 'zip' || tipoDoc == '7Z') {
               nombreNuevo = nombrecampo.substring(5, nombrecampo.length) + '_' + fechaNueva + '.' + tipoDoc;
               $.blockUI();
               fileUpload1.uploadFileToUrl1(aArchivos[0], uploadUrl, nombreNuevo);
@@ -4750,7 +4776,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
         }
       }
       $.unblockUI();
-    }, 1000);
+    }, 500);
   };
   function UrlExists(url) {
     $.blockUI();
@@ -5035,7 +5061,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       var extPod = $scope.extension.split(".")[1];
       try {
         $scope.archivoPOD = url;
-        if (extPod == 'pdf' || extPod == 'docx' || extPod == 'docxlm' || extPod == 'zip' || extPod == 'jpeg' || extPod == 'jpg' || extPod == 'png' || extPod == 'gif') {
+        if (extPod == 'pdf' || extPod == 'docx' || extPod == 'docxlm' || extPod == 'zip' || extPod == '7Z'|| extPod == 'rar' || extPod == 'jpeg' || extPod == 'jpg' || extPod == 'png' || extPod == 'gif') {
           window.open($scope.archivoPOD, "_blank");
         }/*else if(){
                     $("#fotpod").modal("show");             
@@ -5352,7 +5378,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     } else {
       
       //swal("Error!", "Para guardar el formulario es necesario completar todos los campos y los documentos", "error");
-      alertify.warning('Información Incompleta es Necesario Registrar el Número y Fecha de Vencimiento del R.A.');
+      alertify.warning('Información Incompleta es Necesario Registrar los Adjuntos para enviar el tramite');
 
     }
     $scope.estadoTramite = "";
@@ -5668,6 +5694,16 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
 
     try {
       $rootScope.datosIniciales = JSON.parse(datosGradarCd);
+      if (!$scope.banderainforep && $scope.banderaestTramite == "SI" && ($scope.tipoProceso == "GM" || $scope.tipoProceso == "RBM" )) {
+        var data_datosGradarCd = JSON.parse(datosGradarCd);
+        data_datosGradarCd.f01_ape_pat_rep  = $scope.patrep_ini; 
+        data_datosGradarCd.f01_ape_mat_rep  = $scope.matrep_ini; 
+        data_datosGradarCd.f01_pri_nom_rep  = $scope.nomrep_ini; 
+        data_datosGradarCd.f01_expedido_rep  = $scope.exprep_ini; 
+        data_datosGradarCd.f01_num_doc_rep  = $scope.numdocrep_ini;
+        data_datosGradarCd.f01_ges_vig_pod  = $scope.gesvigrep_ini;
+        datosGradarCd = JSON.stringify(data_datosGradarCd);
+      }
       var datosSerializados = datosGradarCd;
       var idCiudadano = sessionService.get('IDSOLICITANTE');
       var idTramite = sessionService.get('IDTRAMITE');
@@ -5952,6 +5988,16 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
   }
 
   $scope.recuperarRepLegal = function (dataRepreSec) {
+    
+    if($scope.banderainforep){
+      $scope.banderainforep = false;
+      $scope.nomrep_ini    = $('#f01_pri_nom_rep').val();
+      $scope.patrep_ini    = $('#f01_ape_pat_rep').val();
+      $scope.matrep_ini    = $('#f01_ape_mat_rep').val();
+      $scope.numdocrep_ini = $('#f01_num_doc_rep').val();
+      $scope.exprep_ini    = $('#f01_expedido_rep').val();
+      $scope.gesvigrep_ini = $('#f01_ges_vig_pod').val();
+    }
     idRepresentante = dataRepreSec.idrepresentante;
     var resRepresentante = new reglasnegocio();
     resRepresentante.identificador = 'RCCIUDADANO_ANTENA-20-5';

@@ -521,9 +521,9 @@ textarea::-webkit-scrollbar-thumb {
                       <div class="vertical-timeline-content">
                         <h3><strong>NOTIFICACIÓN : TRÁMITE {{data.frm_tra_if_codigo}}</strong></h3>
                             <p>{{data.serdv_descripcion}} </p>
-                            <label for="TextareaMensaje"ng-show ="data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA'">ASUNTO: {{data.obs_tra_actividad}}</label>
-                            <textarea class="form-control rounded-0" id="TextareaMensaje" rows="4" ng-show ="data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA'" disabled="true">{{data.obs_tra_observaciones}}</textarea><br>
-                            <p ng-show ="data.serdv_descripcion!=='CORRESPONDENCIA CIUDADANA'">{{data.obs_tra_observaciones}}</p>
+                            <label for="TextareaMensaje"ng-show ="data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA' || data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA CM DIGITAL' ">ASUNTO: {{data.obs_tra_actividad}}</label>
+                            <textarea class="form-control rounded-0" id="TextareaMensaje" rows="4" ng-show ="data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA' || data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA CM DIGITAL'" disabled="true">{{data.obs_tra_observaciones}}</textarea><br>
+                            <!--p ng-show ="data.serdv_descripcion!=='CORRESPONDENCIA CIUDADANA' || data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA CM DIGITAL'">{{data.obs_tra_observaciones}}</p-->
                             <div class="row" ng-show="data.obs_tra_tipo_resp!='F' && data.obs_tra_tipo_resp!=null">
                                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#ModalAdjuntar" data-dismiss="modal" ng-click="cargarData(data)"><i class="glyphicon glyphicon-file"></i>  Responder</button>
                             </div>
@@ -546,7 +546,7 @@ textarea::-webkit-scrollbar-thumb {
                               <button   id="ra2"  type="button" class="btn btn-success fa fa-download">FORMULARIO RUAT</button>
                               </a>
                             </div>
-                            <div ng-show ="data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA' && data.obj_url !='noSitram'">
+                            <div ng-show ="(data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA' && data.obj_url !='noSitram')||(data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA CM DIGITAL' && data.obj_url !='noSitram')">
                               <a href="{{data.obj_url}}" target="_blank"  data-toggle="tooltip" data-placement="left"  title="Ver/Descargar">
                               <button   id="btnSitram"  type="button" class="btn btn-success fa fa-download">DESCARGAR</button>
                               </a>

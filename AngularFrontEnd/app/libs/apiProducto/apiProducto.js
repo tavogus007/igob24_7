@@ -38,69 +38,72 @@ function ejecutarAjaxProducto(vurlCompProducto, vTypeCall, vDataCall, vFunctionR
 
 function dataTiendaVirtual(){
     
-    this.idTv,
-    this.ae_id,
-    this.categoria,
-    this.nombre,
-    this.correo,
-    this.pagina_web,
-    this.descripcion,
-    this.contactos,
-    this.redes_sociales,
-    this.ofertas,
-    this.oid,
-    this.usr,
-    this.catalogo,
-    this.logotipo,
-    this.encabezado    
+  this.idTv,
+  this.ae_id,
+  this.categoria,
+  this.nombre,
+  this.correo,
+  this.pagina_web,
+  this.descripcion,
+  this.contactos,
+  this.redes_sociales,
+  this.ofertas,
+  this.oid,
+  this.usr,
+  this.catalogo,
+  this.logotipo,
+  this.encabezado,
+  this.cel_whatsapp
 };
 dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
 {
-    urlCompProducto = "/addtiendavirtual";
-    typeCall = "post";
-    dataParams = {
-      "stv_ae_id":this.ae_id,
-      "stv_categoria_id":this.categoria,
+  urlCompProducto = "/addtiendavirtual";
+  typeCall = "post";
+  dataParams = {
+    "stv_ae_id":this.ae_id,
+    "stv_categoria_id":this.categoria,
 
-      "stv_nombre":this.nombre,
-      "stv_correo":this.correo,
-      "stv_pagina_web":this.pagina_web,
-      "stv_descripcion":this.descripcion,
-      "stv_contactos":this.contactos,
-      "stv_redes_sociales":this.redes_sociales,
-      "stv_ofertas":this.ofertas,
-      "stv_oid":this.oid,
-      "stv_usr":this.usr,    
-      "stv_catalogo":this.catalogo,
-      "stv_logotipo":this.logotipo,
-      "stv_encabezado":this.encabezado        
+    "stv_nombre":this.nombre,
+    "stv_correo":this.correo,
+    "stv_pagina_web":this.pagina_web,
+    "stv_descripcion":this.descripcion,
+    "stv_contactos":this.contactos,
+    "stv_redes_sociales":this.redes_sociales,
+    "stv_ofertas":this.ofertas,
+    "stv_oid":this.oid,
+    "stv_usr":this.usr,    
+    "stv_catalogo":this.catalogo,
+    "stv_logotipo":this.logotipo,
+    "stv_encabezado":this.encabezado,
+    "stv_cel_whatsapp":this.cel_whatsapp        
 
-    };
-    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+  };
+  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
 dataTiendaVirtual.prototype.actualizarTiendaVirtual = function (functionResp)
 {
-    urlCompProducto = "/updatetiendavirtual";
-    typeCall = "post";
-    dataParams = {
-      "idtv":this.idtv,
-      "stv_ae_id":this.ae_id,
-      "stv_categoria_id":this.categoria,
-      "stv_nombre":this.nombre,
-      "stv_correo":this.correo,
-      "stv_pagina_web":this.pagina_web,
-      "stv_descripcion":this.descripcion,
-      "stv_contactos":this.contactos,
-      "stv_redes_sociales":this.redes_sociales,
-      "stv_ofertas":this.ofertas,
-      "stv_oid":this.oid,
-      "stv_usr":this.usr,    
-      "stv_catalogo":this.catalogo,
-      "stv_logotipo":this.logotipo,
-      "stv_encabezado":this.encabezado        
+  urlCompProducto = "/updatetiendavirtual";
+  typeCall = "post";
+  dataParams = {
+    "idtv":this.idtv,
+    "stv_ae_id":this.ae_id,
+    "stv_categoria_id":this.categoria,
+    "stv_nombre":this.nombre,
+    "stv_correo":this.correo,
+    "stv_pagina_web":this.pagina_web,
+    "stv_descripcion":this.descripcion,
+    "stv_contactos":this.contactos,
+    "stv_redes_sociales":this.redes_sociales,
+    "stv_ofertas":this.ofertas,
+    "stv_oid":this.oid,
+    "stv_usr":this.usr,    
+    "stv_catalogo":this.catalogo,
+    "stv_logotipo":this.logotipo,
+    "stv_encabezado":this.encabezado,
+    "stv_cel_whatsapp":this.cel_whatsapp               
 
-    };
-    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+  };
+  ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
 
 dataTiendaVirtual.prototype.obtDataTiendaVirtual = function (functionResp)

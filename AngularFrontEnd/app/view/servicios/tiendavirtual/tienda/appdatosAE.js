@@ -14,7 +14,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   var clsIniciarCamposInternet = $rootScope.$on('inicializarCampos', function(event, data){
     $scope.limpiar(); 
-    $scope[name] = 'Running';
+    $scope[name] = 'Running'; 
     var deferred = $q.defer(); 
     $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
     return deferred.promise;
@@ -35,7 +35,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_contacto2 = "";
       $scope.datos.f01_contacto3_nro = "";
       $scope.datos.f01_contacto3 = "";
-      $scope.datos.f01_ofertasAE = "";
+      $scope.datos.f01_contacto_whatsapp = "";
+      //$scope.datos.f01_ofertasAE = "";
       $scope.datos.f01_redessocialesAE1_url = "";
       $scope.datos.f01_redessocialesAE1 = "";
       $scope.datos.f01_redessocialesAE2_url = "";
@@ -44,11 +45,11 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_redessocialesAE3 = "";
       $scope.datos.f01_redessocialesAE4_url = "";
       $scope.datos.f01_redessocialesAE4 = "";
-      $scope.datos.f01_ofertasAE_des1 = "";
-      $scope.datos.f01_ofertasAE_des2 = "";
-      $scope.datos.f01_ofertasAE_des3 = "";
-      $scope.datos.f01_ofertasAE_des4 = ""; 
-      $scope.datos.f01_ofertasAE_des5 = "";
+      //$scope.datos.f01_ofertasAE_des1 = "";
+      //$scope.datos.f01_ofertasAE_des2 = "";
+     // $scope.datos.f01_ofertasAE_des3 = "";
+      //$scope.datos.f01_ofertasAE_des4 = ""; 
+      //$scope.datos.f01_ofertasAE_des5 = "";
       $scope.datos.txt_f01_upload1 = "";
       $scope.datos.txt_f01_upload2 = "";
       $scope.datos.txt_f01_upload3 = "";
@@ -68,7 +69,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_descripcionTV = recDesc;
       $scope.datos.f01_categoria = data[0].tv_categoria_idc;
       $scope.datos.f01_correoTV = data[0].tv_correoc;
-      $scope.datos.f01_pagwebAE = data[0].tv_pagina_webc;
+      $scope.datos.f01_pagwebAE =   data[0].tv_pagina_webc;
+      $scope.datos.f01_contacto_whatsapp = data[0].pcel_whatsapp;
       //contactos
       var contactos = data[0].tv_contactosc;
         for(i=0;i<contactos.length;i++){
@@ -120,7 +122,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.inicializaTwitter =  true;
         $scope.inicializaInstagram = true;
         $scope.inicializaYoutube = true;
-
       }else{
         for(i=0;i<redes.length;i++){
           var red = JSON.parse(redes[i]);
@@ -177,7 +178,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       
       //ofertas
-      var ofertas = data[0].tv_ofertas;
+      /*var ofertas = data[0].tv_ofertas;
       for(i=0;i<ofertas.length;i++){
         var of = JSON.parse(ofertas[i]);
         if (i==0){ 
@@ -222,7 +223,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           }
         }
 
-      }
+      }*/
       //catalogo
       $scope.catalogo1 = results[0].tvcatalogo;
       $scope.catalogojson = JSON.parse($scope.catalogo1);
@@ -264,7 +265,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   $scope.inicioTiendaVirtual = function () {
     console.log(sessionService.get('IDAE'));
     $scope.limpiar();    
-    $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);  
+    $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
   };
   
   $scope.registrarDatosAE = function(data){
@@ -277,6 +278,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     var descTV = data.f01_descripcionTV;
     descTV = descTV.replace(/\n/g, "<br>");
     datosTiendaVirtual.descripcion = descTV;
+    datosTiendaVirtual.cel_whatsapp = data.f01_contacto_whatsapp;
     var myJSON = '';
     if (data.f01_contacto1=='TELÉFONO' || data.f01_contacto1=='CELULAR'){
       if(data.f01_contacto1_nro != ''){
@@ -369,7 +371,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
     datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
    //Textareas ofertas
-    var descOf1 = data.f01_ofertasAE_des1;
+   /* var descOf1 = data.f01_ofertasAE_des1;
     descOf1 = descOf1.replace(/\n/g, "<br>");
     var myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf1 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
@@ -389,9 +391,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     descOf5 = descOf5.replace(/\n/g, "<br>");
     myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf5 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas);
-    datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
-    datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray); 
+    datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray); */
     //catalogo 
+    datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
+
     if($scope.catalogo1 == '' || $scope.catalogo1 == 'undefined' || $scope.catalogo1 == undefined){
       datosTiendaVirtual.catalogo = [];
     }else{
@@ -435,9 +438,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     var descTV = data.f01_descripcionTV;
     descTV = descTV.replace(/\n/g, "<br>");
     datosTiendaVirtual.descripcion = descTV;
+    datosTiendaVirtual.cel_whatsapp = data.f01_contacto_whatsapp;
     //actualiza json contactos
     datosTiendaVirtual.contactos = [];
-    $rootScope.contactosArray = [];
+    $rootScope.contactosArray = []; 
     var myJSON = '';
       if (data.f01_contacto1=='TELÉFONO' || data.f01_contacto1=='CELULAR'){
         if(data.f01_contacto1_nro != ''){
@@ -533,7 +537,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
     datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
       //actualiza json ofertas
-    datosTiendaVirtual.ofertas = [];
+    /*datosTiendaVirtual.ofertas = [];
     $rootScope.ofertasArray = [];
     myJSONOfertas = '';
     var descOf1 = data.f01_ofertasAE_des1;
@@ -556,7 +560,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     descOf5 = descOf5.replace(/\n/g, "<br>");
     myJSONOfertas = '{ "tipo":"ofertas", "oferta":"' + descOf5 + '" }';
     $rootScope.ofertasArray.push(myJSONOfertas); 
-    datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray);
+    datosTiendaVirtual.ofertas = JSON.stringify($rootScope.ofertasArray);*/
     //catalogo
     datosTiendaVirtual.catalogo = $scope.catalogo1;
     datosTiendaVirtual.logotipo = $scope.logotipo1;
@@ -596,7 +600,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_contacto2 = "";
       $scope.datos.f01_contacto3_nro = "";
       $scope.datos.f01_contacto3 = "";
-      $scope.datos.f01_ofertasAE = "";
+      $scope.datos.f01_contacto_whatsapp = "";
+      //$scope.datos.f01_ofertasAE = "";
       $scope.datos.f01_redessocialesAE1_url = "";
       $scope.datos.f01_redessocialesAE1 = "";
       $scope.datos.f01_redessocialesAE2_url = "";
@@ -605,11 +610,11 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_redessocialesAE3 = "";
       $scope.datos.f01_redessocialesAE4_url = "";
       $scope.datos.f01_redessocialesAE4 = "";
-      $scope.datos.f01_ofertasAE_des1 = "";
-      $scope.datos.f01_ofertasAE_des2 = "";
-      $scope.datos.f01_ofertasAE_des3 = "";
-      $scope.datos.f01_ofertasAE_des4 = ""; 
-      $scope.datos.f01_ofertasAE_des5 = "";
+      //$scope.datos.f01_ofertasAE_des1 = "";
+      //$scope.datos.f01_ofertasAE_des2 = "";
+      //$scope.datos.f01_ofertasAE_des3 = "";
+      //$scope.datos.f01_ofertasAE_des4 = ""; 
+      //$scope.datos.f01_ofertasAE_des5 = "";
       $scope.datos.txt_f01_upload1 = "";
       $scope.datos.txt_f01_upload2 = "";
       $scope.datos.txt_f01_upload3 = "";
@@ -649,6 +654,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $("#mensajeR6").hide();
       $("#mensajeR7").hide();
       $("#mensajeR8").hide();
+      $("#mensajeT11").hide();
+      $("#mensajeT12").hide();
+      $("#mensajeT10").hide();
+      
 
   }
   $scope.validaCorreo =function(){
@@ -669,6 +678,33 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   $scope.validarEmail =function(email) {
       var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
+  }
+  
+  $scope.valWhatsapp = function(datoTel){
+    console.log('datoTel',datoTel);
+      Numer=parseInt(datoTel);
+      if (isNaN(Numer)){
+      document.getElementById('f01_contacto_whatsapp').value = '';
+      }else{
+      var digits = ("" + Numer).split("");
+      console.log('digits',digits,digits[0]);
+      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 )){
+          if((digits.length>0) && (digits.length<8)){
+            $("#mensajeT12").show();
+            $("#mensajeT10").hide();
+            $("#mensajeT11").hide();
+          }else{
+            $("#mensajeT10").hide();
+            $("#mensajeT11").show();
+            $("#mensajeT12").hide();
+          }
+      }else{
+          $("#mensajeT11").hide();
+          $("#mensajeT10").show();
+          $("#mensajeT12").hide();
+          document.getElementById('f01_contacto_whatsapp').value = '';
+      }
+      }
   }
   $scope.activarCampo1 = function(dato){
     $scope.tipoTel1 = dato;

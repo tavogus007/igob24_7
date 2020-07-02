@@ -21,7 +21,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   });
 
   $scope.recuperarSerializarInfo = function(data){
-    console.log('dataaaaaaaaaaaaaaaaaaaaaaaaaaaaa',data);
     $scope[name] = 'Running';
     var deferred = $q.defer();
     if (data.length == 0){
@@ -266,7 +265,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   $scope.inicioTiendaVirtual = function () {
     console.log(sessionService.get('IDAE'));
     $scope.limpiar();    
-    $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);  
+    $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
   };
   
   $scope.registrarDatosAE = function(data){
@@ -655,6 +654,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $("#mensajeR6").hide();
       $("#mensajeR7").hide();
       $("#mensajeR8").hide();
+      $("#mensajeT11").hide();
+      $("#mensajeT12").hide();
+      $("#mensajeT10").hide();
+      
 
   }
   $scope.validaCorreo =function(){
@@ -675,6 +678,33 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   $scope.validarEmail =function(email) {
       var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
+  }
+  
+  $scope.valWhatsapp = function(datoTel){
+    console.log('datoTel',datoTel);
+      Numer=parseInt(datoTel);
+      if (isNaN(Numer)){
+      document.getElementById('f01_contacto_whatsapp').value = '';
+      }else{
+      var digits = ("" + Numer).split("");
+      console.log('digits',digits,digits[0]);
+      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 )){
+          if((digits.length>0) && (digits.length<8)){
+            $("#mensajeT12").show();
+            $("#mensajeT10").hide();
+            $("#mensajeT11").hide();
+          }else{
+            $("#mensajeT10").hide();
+            $("#mensajeT11").show();
+            $("#mensajeT12").hide();
+          }
+      }else{
+          $("#mensajeT11").hide();
+          $("#mensajeT10").show();
+          $("#mensajeT12").hide();
+          document.getElementById('f01_contacto_whatsapp').value = '';
+      }
+      }
   }
   $scope.activarCampo1 = function(dato){
     $scope.tipoTel1 = dato;

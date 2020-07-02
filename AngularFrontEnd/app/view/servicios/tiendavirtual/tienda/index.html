@@ -168,32 +168,44 @@
                         </div>
                     </div>
                 </div>
-
-                 <div class="col-md-1"></div>
-
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label for="url" >Encabezado de la Pagina Web (Introducir archivos .jpg ó .jpeg ó .png) :</label>
+                <!--div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Forma de Entrega del Producto:</label>
                         <div class="controls">
-                            <div class="form-group custom-upload">
-                                <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*"  style="display: none;">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                                    <input id="txt_f01_upload3" name="txt_f01_upload3"  ng-model="datos['txt_f01_upload3']"  type="text" placeholder="" class="form-control input-lg" disabled required>
-                                    <span class="input-group-btn">
-                                        <a id="href_f01_upload3"  ng-show="encabezadotipo_url" href="{{encabezadotipo_url}}" target="_blank">
-                                            <button id="btn_f01_upload3" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                        </a>
-                                        <button id="btn_f01_upload3" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload3', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
-                                    </span>
+                            <input ng-model="datos.f01_forma_entrega" id="f01_forma_entrega" name="f01_forma_entrega" class="form-control" ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                </div-->
+            </div>
+            <div class="row"> 
+                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                    <h4>Adjuntar Imágenes de la Tienda Virtual</h4>
+                </div><br>
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                        <div class="form-group">
+                            <label for="url" >Encabezado de la Pagina Web (Introducir archivos .jpg ó .jpeg ó .png) :</label>
+                            <div class="controls">
+                                <div class="form-group custom-upload">
+                                    <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*"  style="display: none;">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                        <input id="txt_f01_upload3" name="txt_f01_upload3"  ng-model="datos['txt_f01_upload3']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                                        <span class="input-group-btn">
+                                            <a id="href_f01_upload3"  ng-show="encabezadotipo_url" href="{{encabezadotipo_url}}" target="_blank">
+                                                <button id="btn_f01_upload3" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                            </a>
+                                            <button id="btn_f01_upload3" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload3', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                          </div>
-                      </div>
+                        </div>
                 </div>
-
-
-                <div class="col-md-5">
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
                     <div class="form-group">
                         <label for="url" >Logotipo de la Actividad Económica (Introducir archivos .jpg ó .jpeg ó .png) :</label>
                         <div class="controls">
@@ -210,15 +222,27 @@
                                     </span>
                                 </div>
                             </div>
-                          </div>
-                      </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <div class="row" >
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
                     <h4>Ingrese los números telefónicos de contacto</h4>
+                </div><br>
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                    <div class="form-group" >
+                        <label for="url" >Contacto Celular para Whatsapp:</label>
+                    </div>
                 </div>
+                <div class="col-md-5">
+                    <div class="form-group" >
+                        <input ng-model="datos.f01_contacto_whatsapp" id="f01_contacto_whatsapp" name="f01_contacto_whatsapp" class="form-control"  maxlength="8"  />
+                    </div>
+                </div>
+            </div>
+            <div class="row">   
                 <div class="col-md-1">
                 </div>
                 <div class="col-md-5">
@@ -276,7 +300,7 @@
             <div class="row" >
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
                     <h4>Ingrese sus redes sociales</h4>
-                </div>
+                </div><br>
                 <div class="col-md-1">
                 </div>
                 <div class="col-md-5">
@@ -332,8 +356,8 @@
             </div>
             <div class="row" >
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>Ofertas de su Actividad Económica</h4>
-                </div>
+                    <h4>Catálogo de Productos</h4>
+                </div><br>
                 <div class="col-md-1">
                 </div>
                 <!--div class="col-md-5">
@@ -373,7 +397,7 @@
 
                         </div>
                     </div>
-                </div-->
+                </div
                 <div class="col-md-10">
                     <div class="form-group" >
                         <label for="url" >Describa la oferta:</label>
@@ -390,10 +414,10 @@
                             <br>
                         </div>
                     </div>
-                </div>
+                </div-->
                 <div class="col-md-1">
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-11">
                   <div class="form-group">
                     <label id="lbl_f01_upload" class="col-md-2 control-label">Catálogo de productos (Introducir Archivos tipo .jpg, .png ó .pdf)</label>
                     <div class="controls">
@@ -414,6 +438,10 @@
                   </div>
                 </div>
             </div>
+            <!--div class="col-md-12" align="right">
+                <button  type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="registrarDatosAE(datos)">Registrar</button>
+                <button  type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                
+            </div-->
             <div class="col-md-12" align="right">
                 <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="registrarDatosAE(datos)">Registrar</button>
                 <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                

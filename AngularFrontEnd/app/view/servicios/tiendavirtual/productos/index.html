@@ -172,10 +172,21 @@
               </div>
               <div class="col-md-6">
                   <div class="form-group" >
-                      <label for="url" >Precio: </label>
+                      <label for="url" >Precio333: </label>
                       <font color="#FF0000" size="2px"> (Ej. 1.99 - 2.50 - 3 - 5.85)</font>
                       <div class="controls">
                           <input ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado" onkeyUp="return checkInput(this);" required />
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group" >
+                      <label for="url" > </label>
+                      <div class="controls">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input"  id="f01_oferta_producto" name="f01_oferta_producto" ng-model="datosProd.f01_oferta_producto" ng-change="activaOferta(datosProd.f01_oferta_producto)" style="width: 20px; height: 20px;">
+                            <label class="custom-control-label" for="defaultUnchecked">Producto en Oferta</label>
+                        </div>
                       </div>
                   </div>
               </div>

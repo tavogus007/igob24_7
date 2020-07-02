@@ -297,6 +297,12 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         a = a + 1;
       });
 
+      if(data.f01_oferta_producto == true) {
+        $scope.datosProd.f01_producto_oferta = "CON OFERTA";
+      } else {
+        $scope.datosProd.f01_producto_oferta = "SIN OFERTA";
+      }
+
       if(f0 != "" && f0 != null && 
         data.f01_producto != "" && data.f01_producto != null && 
         data.f01_descripcion != "" && data.f01_descripcion != null && 
@@ -312,6 +318,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         datosProducto.imagen_a2 = f2;
         datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
         datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
+        datosProducto.prd_ofertac = $scope.datosProd.f01_producto_oferta;
         datosProducto.crearProducto(function(response){
           results = JSON.parse(response);
           results = results.success;
@@ -494,6 +501,12 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     if($scope.imagenaux2){
       $scope.imagenaux2m = true;
     }
+
+    if(datosP.prd_ofertac == "CON OFERTA") {
+      $scope.datosProd.f01_oferta_producto = true;
+    } else {
+      $scope.datosProd.f01_oferta_producto = false;
+    }
   }
 
   $scope.actualizarProducto = function(data){
@@ -501,19 +514,24 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     var img2 = $scope.file2; 
     var img3 = $scope.file3; 
     for (i = 0; i < $rootScope.archivosProducto.length; i++) {
-        var imagenesRecorrido = JSON.parse($rootScope.archivosProducto[i]);
-          if(imagenesRecorrido.nombre == "img_principal"){
-            img1 = imagenesRecorrido.url;
-          }
-          if(imagenesRecorrido.nombre == "img_auxiliar1"){
-            img2 = imagenesRecorrido.url;
-          }
-    
-          if(imagenesRecorrido.nombre == "img_auxiliar2"){
-            img3 = imagenesRecorrido.url;
-          }
-      }
+      var imagenesRecorrido = JSON.parse($rootScope.archivosProducto[i]);
+        if(imagenesRecorrido.nombre == "img_principal"){
+          img1 = imagenesRecorrido.url;
+        }
+        if(imagenesRecorrido.nombre == "img_auxiliar1"){
+          img2 = imagenesRecorrido.url;
+        }
+  
+        if(imagenesRecorrido.nombre == "img_auxiliar2"){
+          img3 = imagenesRecorrido.url;
+        }
+    }
 
+    if(data.f01_oferta_producto == true) {
+      $scope.datosProd.f01_producto_oferta = "CON OFERTA";
+    } else {
+      $scope.datosProd.f01_producto_oferta = "SIN OFERTA";
+    }
     var datosModProducto = new dataProductoMod();
     datosModProducto.prd_idc = data.prd_idc;
     datosModProducto.prd_tv_idc = sessionService.get("IDTV");
@@ -524,6 +542,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     datosModProducto.prd_imagen_a1c = img2;
     datosModProducto.prd_imagen_a2c = img3;
     datosModProducto.prd_usrc = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
+    datosModProducto.prd_ofertac = $scope.datosProd.f01_producto_oferta;
     datosModProducto.modificarProductoAe(function(response){
       results = JSON.parse(response);
       results = results.success;
@@ -646,6 +665,14 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
      }
   }
 
+  $scope.activaOferta = function(dato){
+      $scope.Ofertaproducto = dato;
+      if(dato == true) {
+        $scope.datosProd.f01_producto_oferta = "CON OFERTA";
+      } else {
+        $scope.datosProd.f01_producto_oferta = "SIN OFERTA";
+      }
+  } 
   ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
   try{ 
       $('body').removeClass('modal-open');

@@ -212,7 +212,9 @@ dataProducto.prototype.crearProducto = function (functionResp) {
         "prd_imagen_a1c" : this.imagen_a1,
         "prd_imagen_a2c" : this.imagen_a2,
         "prd_oidc" : this.oid,
-        "prd_usrc" : this.usr
+        "prd_usrc" : this.usr,
+        "prd_ofertac" : this.prd_ofertac
+
     };
     console.log(dataParams);
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
@@ -244,7 +246,9 @@ dataProducto.prototype.modificarMiProducto = function (functionResp) {
       "prd_imagen_a2c" : this.imagen_a2,
       "prd_oidc" : this.oid_ciu,
       "prd_telefono_referenciac" : this.telefono_referencia,
-      "prd_usrc" : this.usr
+      "prd_usrc" : this.usr,
+      "prd_ofertac" : this.prd_ofertac
+
   };
 
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
@@ -275,7 +279,8 @@ dataProductoMod.prototype.modificarProductoAe = function (functionResp) {
       "prd_imagen_pc" : this.prd_imagen_pc,
       "prd_imagen_a1c" : this.prd_imagen_a1c,
       "prd_imagen_a2c" : this.prd_imagen_a2c,
-      "prd_usrc" : this.prd_usrc
+      "prd_usrc" : this.prd_usrc,
+      "prd_ofertac" : this.prd_ofertac
   };
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };

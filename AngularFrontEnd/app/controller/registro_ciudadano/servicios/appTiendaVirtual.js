@@ -174,7 +174,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     $scope.listarCategorias = function(){
         var categorias = new dataTiendaVirtual();
         categorias.obtCategorias(function(response){
-          console.log(response);
+          //console.log(response);
           $rootScope.resultCategorias = JSON.parse(response);
           $rootScope.resultCategorias = $scope.resultCategorias.success;
         });

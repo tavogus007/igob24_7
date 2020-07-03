@@ -129,6 +129,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group" >
+                        <label for="url" >Forma de Entrega del Producto:</label>
+                        <div class="controls">
+                            <textarea ng-model="datos.f01_forma_entrega" id="f01_forma_entrega" name="f01_forma_entrega" class="form-control" ng-disabled="desabilitado" rows="4" cols="150"></textarea>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px" align="center"> * </font>
@@ -168,14 +176,7 @@
                         </div>
                     </div>
                 </div>
-                <!--div class="col-md-6">
-                    <div class="form-group" >
-                        <label for="url" >Forma de Entrega del Producto:</label>
-                        <div class="controls">
-                            <input ng-model="datos.f01_forma_entrega" id="f01_forma_entrega" name="f01_forma_entrega" class="form-control" ng-disabled="desabilitado"/>
-                        </div>
-                    </div>
-                </div-->
+                
             </div>
             <div class="row"> 
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
@@ -226,7 +227,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" >
+            <!--div class="row" >
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
                     <h4>Ingrese los números telefónicos de contacto</h4>
                 </div><br>
@@ -240,9 +241,6 @@
                 <div class="col-md-4">
                     <div class="form-group" >
                         <input ng-model="datos.f01_contacto_whatsapp" id="f01_contacto_whatsapp" name="f01_contacto_whatsapp" class="form-control"  maxlength="8" ng-keyUp="valWhatsapp(datos.f01_contacto_whatsapp);" required/>
-                        <span style="color:red" ng-show="signupForm.f01_contacto_whatsapp.$invalid">
-                            <span align = "right" ng-show="signupForm.f01_contacto_whatsapp.$error.required">El número de contacto es requerido.</span>
-                        </span>
                         <span id ="mensajeT10" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
                         <span id ="mensajeT11" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido.</span>
                         <span id ="mensajeT12" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
@@ -252,11 +250,11 @@
                 <div class="col-md-1">
                     <img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="40" width="40">
                 </div>
-            </div>
+            </div--!>
             <div class="row">   
                 <div class="col-md-1">
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <div class="form-group" >
                         <label for="url" >Tipo de Contacto:</label>
                         <div class="controls">
@@ -290,7 +288,8 @@
                             <span id ="mensajeT1" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
                             <span id ="mensajeT2" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido.</span>
                             <span id ="mensajeT3" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
-                            <br>
+                            <label for="url" > </label>
+                                        <br>
                             <input ng-model="datos.f01_contacto2_nro" id="f01_contacto2_nro" name="f01_contacto2_nro" class="form-control" ng-disabled="inicializaC2" maxlength="8" ng-keyUp="valNumTelefono2(datos.f01_contacto2_nro);" />
                             <span id ="mensajeT4" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
                             <span id ="mensajeT5" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido</span>
@@ -303,6 +302,34 @@
                             
                         </div>
                     </div>
+                </div><br>
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <div class="controls" >
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_celular1_whatsapp" name="f01_celular1_whatsapp" ng-model="datos.f01_celular1_whatsapp"  ng-disabled="!swWhats1" ng-change="activaWhatsapp1(datos.f01_celular1_whatsapp)" style="width: 20px; height: 20px;">
+                                <label class="custom-control-label" for="defaultUnchecked">&nbsp;Whatsapp</label>
+                                <!--img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="30" width="30"-->
+                            </div>
+                        </div>
+                        <label for="url" > </label>
+                        <div class="controls">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_celular22_whatsapp" name="f01_celular22whatsapp" ng-model="datos.f01_celular22_whatsapp" ng-disabled="!swWhats2" ng-change="activaWhatsapp2(datos.f01_celular22_whatsapp)" style="width: 20px; height: 20px;">
+                                <label class="custom-control-label" for="defaultUnchecked">&nbsp;Whatsapp</label>
+                                <!--img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="30" width="30"-->
+                            </div>
+                        </div>
+                        <label for="url" > </label>
+                        <div class="controls">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_celular3_whatsapp" name="f01_celular3_whatsapp" ng-model="datos.f01_celular3_whatsapp" ng-disabled="!swWhats3" ng-change="activaWhatsapp3(datos.f01_celular3_whatsapp)" style="width: 20px; height: 20px;">
+                                <label class="custom-control-label" for="defaultUnchecked">&nbsp;Whatsapp</label>
+                                <!--img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="30" width="30"-->
+                            </div>
+                        </div>
+                </div>
+                   
                 </div>
                 <div class="col-md-1">
                 </div>
@@ -449,13 +476,9 @@
                   </div>
                 </div>
             </div>
-            <!--div class="col-md-12" align="right">
-                <button  type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="registrarDatosAE(datos)">Registrar</button>
-                <button  type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                
-            </div-->
             <div class="col-md-12" align="right">
-                <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid || signupForm.f01_contacto_whatsapp.$invalid" ng-click="registrarDatosAE(datos)">Registrar</button>
-                <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid || signupForm.f01_contacto_whatsapp.$invalid" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                
+                <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="registrarDatosAE(datos)">Registrar</button>
+                <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid ||  signupForm.f01_correoTV.$invalid" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                
             </div>
           </form>
         </div>

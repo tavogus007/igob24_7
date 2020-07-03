@@ -35,7 +35,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_contacto2 = "";
       $scope.datos.f01_contacto3_nro = "";
       $scope.datos.f01_contacto3 = "";
-      $scope.datos.f01_contacto_whatsapp = "";
+      $scope.datos.f01_forma_entrega = "";
       //$scope.datos.f01_ofertasAE = "";
       $scope.datos.f01_redessocialesAE1_url = "";
       $scope.datos.f01_redessocialesAE1 = "";
@@ -61,11 +61,15 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       //textarea
       var recDesc = data[0].tv_descripcionc;
       recDesc = recDesc.replace(/<br ?\/?>/g, "\n");
-      $scope.datos.f01_descripcionTV = recDesc;
+      $scope.datos.f01_descripcionTV = recDesc;  
+      var rec_formaP = data[0].pforma_entrega;
+      rec_formaP = rec_formaP.replace(/<br ?\/?>/g, "\n");
+      $scope.datos.f01_forma_entrega = rec_formaP;
+
       $scope.datos.f01_categoria = data[0].tv_categoria_idc;
       $scope.datos.f01_correoTV = data[0].tv_correoc;
       $scope.datos.f01_pagwebAE =   data[0].tv_pagina_webc;
-      $scope.datos.f01_contacto_whatsapp = data[0].pcel_whatsapp;
+    
       //contactos
       var contactos = data[0].tv_contactosc;
       console.log('contactos',contactos);
@@ -261,7 +265,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     var descTV = data.f01_descripcionTV;
     descTV = descTV.replace(/\n/g, "<br>");
     datosTiendaVirtual.descripcion = descTV;
-    datosTiendaVirtual.cel_whatsapp = 1111;
+    var form_entr = data.f01_forma_entrega;
+    form_entr = form_entr.replace(/\n/g, "<br>");
+    datosTiendaVirtual.forma_pago = form_entr;
 
   /////////
     var myJSON = '';
@@ -321,6 +327,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       $rootScope.contactosArray.push(myJSON);
     }
+    ////////
     console.log('$rootScope.contactosArray',$rootScope.contactosArray);
     myJSON = '';
     if (data.f01_redessocialesAE1=='true' || data.f01_redessocialesAE1==true){
@@ -409,7 +416,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     });
   } 
   $scope.actualizarDatosAE = function(data){
-    console.log('data',data);
     var datosTiendaVirtual = new dataTiendaVirtual();
     datosTiendaVirtual.idtv = sessionService.get("IDTV");
     datosTiendaVirtual.ae_id = sessionService.get("IDAE");
@@ -420,93 +426,72 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     var descTV = data.f01_descripcionTV;
     descTV = descTV.replace(/\n/g, "<br>");
     datosTiendaVirtual.descripcion = descTV;
-    datosTiendaVirtual.cel_whatsapp = data.f01_contacto_whatsapp;
+    var formaE = data.f01_forma_entrega;
+    formaE = formaE.replace(/\n/g, "<br>");
+    datosTiendaVirtual.forma_entrega= formaE;
     //actualiza json contactos
     datosTiendaVirtual.contactos = [];
     $rootScope.contactosArray = []; 
-    var myJSON = '';
-      if (data.f01_contacto1=='TELÉFONO'){
-      if(data.f01_contacto1_nro != ''){
-        myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '", "estado":"" }';
-        //$rootScope.contactosArray.push(myJSON);
-      }else{
-        myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-        //$rootScope.contactosArray.push(myJSON);
-        $scope.sinDato1 = true;
-      }
-    }else{
-      myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-      //$rootScope.contactosArray.push(myJSON);
-    }
-    if (data.f01_contacto1=='CELULAR'){
-      if(data.f01_contacto1_nro != ''){
-        myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '", "estado":"' + $scope.datos.whatsapp1 + '" }';
-        //$rootScope.contactosArray.push(myJSON);
-      }else{
-        myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-       // $rootScope.contactosArray.push(myJSON);
-        $scope.sinDato1 = true;
-      }
-    }else{
-      myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-      //$rootScope.contactosArray.push(myJSON);
-    }
-    $rootScope.contactosArray.push(myJSON);
-//////////
-    if (data.f01_contacto2=='TELÉFONO'){
-      if(data.f01_contacto2_nro != ''){
-        myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '", "estado":"" }';
-        //$rootScope.contactosArray.push(myJSON);
-      }else{
-        myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-        //$rootScope.contactosArray.push(myJSON);
-        $scope.sinDato2 = true;
-      }
-    }else{
-      myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-      //$rootScope.contactosArray.push(myJSON);
-    }
-    if (data.f01_contacto2=='CELULAR'){
-      if(data.f01_contacto2_nro != ''){
-        myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '", "estado":"' +  $scope.datos.whatsapp2 + '" }';
-        //$rootScope.contactosArray.push(myJSON);
-      }else{
-        myJSON = '{ "tipo":"", "valor":"","estado":""}';
-        //$rootScope.contactosArray.push(myJSON);
-        $scope.sinDato2 = true;
-      }
-    }else{
-      myJSON = '{ "tipo":"", "valor":"","estado":""}';
-      //$rootScope.contactosArray.push(myJSON);
-    }
-    $rootScope.contactosArray.push(myJSON);
-////////////
-    if (data.f01_contacto3=='TELÉFONO'){
-      if(data.f01_contacto3_nro != ''){
-        myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '",  "estado":"" }';
-        //$rootScope.contactosArray.push(myJSON);
-      }else{
-        myJSON = '{ "tipo":"", "valor":"","estado":""}';
-        //$rootScope.contactosArray.push(myJSON);
-        //$scope.sinDato3 = true;
-      }
-    }else{
-      myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-      //$rootScope.contactosArray.push(myJSON);
-    }
-    if (data.f01_contacto3=='CELULAR'){
-      if(data.f01_contacto3_nro != ''){
-        myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '",  "estado":"' +  $scope.datos.whatsapp3 + '" }';
-        //$rootScope.contactosArray.push(myJSON);
-      }else{
-        myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-        //$rootScope.contactosArray.push(myJSON);
-        $scope.sinDato3 = true;
-      }
-    }else{
-      myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-      //$rootScope.contactosArray.push(myJSON);
-    }
+    /////////
+     var myJSON = '';
+     if (data.f01_contacto1=='TELÉFONO'){
+       if(data.f01_contacto1_nro != ''){
+         myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '", "estado":"FIJO" }';
+       }else{
+         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+         $scope.sinDato1 = true;
+       }
+       $rootScope.contactosArray.push(myJSON);
+     }
+     if (data.f01_contacto1=='CELULAR'){
+       if(data.f01_contacto1_nro != ''){
+         myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '", "estado":"' + $scope.datos.whatsapp1 + '" }';
+       }else{
+         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+         $scope.sinDato1 = true;
+       }
+       $rootScope.contactosArray.push(myJSON);
+     }
+ //////////
+     if (data.f01_contacto2=='TELÉFONO'){
+       if(data.f01_contacto2_nro != ''){
+         myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '", "estado":"FIJO" }';
+       }else{
+         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+         $scope.sinDato2 = true;
+       }
+       $rootScope.contactosArray.push(myJSON);
+     }
+     if (data.f01_contacto2=='CELULAR'){
+       if(data.f01_contacto2_nro != ''){
+         myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '", "estado":"' +  $scope.datos.whatsapp2 + '" }';
+       }else{
+         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+         $scope.sinDato2 = true;
+       }
+       $rootScope.contactosArray.push(myJSON);
+     }
+ ////////////
+     if (data.f01_contacto3=='TELÉFONO'){
+       if(data.f01_contacto3_nro != ''){
+         myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '",  "estado": "FIJO" }';
+       }else{
+         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+         $scope.sinDato3 = true;
+       }
+       $rootScope.contactosArray.push(myJSON);
+     }
+     if (data.f01_contacto3=='CELULAR'){
+       if(data.f01_contacto3_nro != ''){
+         myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '",  "estado":"' +  $scope.datos.whatsapp3 + '" }';
+       }else{
+         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+         $scope.sinDato3 = true;
+       }
+       $rootScope.contactosArray.push(myJSON);
+     }
+     ////////
+     
     $rootScope.contactosArray.push(myJSON);
     console.log('$rootScope.contactosArray',$rootScope.contactosArray);
     datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
@@ -574,7 +559,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     } else {
         datosTiendaVirtual.usr = "juridico";
     }
-    /*datosTiendaVirtual.actualizarTiendaVirtual(function(response){
+    datosTiendaVirtual.actualizarTiendaVirtual(function(response){
       console.log(response);
       results = JSON.parse(response);
       results = results.success;
@@ -587,7 +572,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           swal('', "Error al Actualizar información de la Tienda Virtual", 'error');
           $location.path('dashboard');
       }
-    });*/
+    });
   }
   $scope.limpiar = function(){
     console.log('limpiando Campos');
@@ -605,7 +590,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_contacto2 = "";
       $scope.datos.f01_contacto3_nro = "";
       $scope.datos.f01_contacto3 = "";
-      $scope.datos.f01_contacto_whatsapp = "";
+      $scope.datos.f01_forma_entrega = "";
       //$scope.datos.f01_ofertasAE = "";
       $scope.datos.f01_redessocialesAE1_url = "";
       $scope.datos.f01_redessocialesAE1 = "";

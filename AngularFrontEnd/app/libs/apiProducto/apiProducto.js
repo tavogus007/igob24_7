@@ -75,7 +75,7 @@ dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
     "stv_catalogo":this.catalogo,
     "stv_logotipo":this.logotipo,
     "stv_encabezado":this.encabezado,
-    "stv_cel_whatsapp":this.cel_whatsapp        
+    "stv_forma_entrega":this.forma_entrega       
 
   };
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
@@ -100,7 +100,7 @@ dataTiendaVirtual.prototype.actualizarTiendaVirtual = function (functionResp)
     "stv_catalogo":this.catalogo,
     "stv_logotipo":this.logotipo,
     "stv_encabezado":this.encabezado,
-    "stv_cel_whatsapp":this.cel_whatsapp               
+    "stv_forma_entrega":this.forma_entrega               
 
   };
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);

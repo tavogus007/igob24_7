@@ -168,7 +168,7 @@
               </div>
               <div class="col-md-6">
                   <div class="form-group" >
-                      <label for="url" >Precio333: </label>
+                      <label for="url" >Precio: </label>
                       <font color="#FF0000" size="2px"> (Ej. 1.99 - 2.50 - 3 - 5.85)</font>
                       <div class="controls">
                           <input ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado" onkeyUp="return checkInput(this);" required />
@@ -210,7 +210,7 @@
               </div>
               <div class="col-md-12">
                 <div class="form-group">
-                  <label id="lbl_f01_upload2" class="col-md-2 control-label">Imagen Auxiliar 1</label>
+                  <label id="lbl_f01_upload2" class="col-md-2 control-label">Imagen Complementaria</label>
                   <div class="controls">
                       <div class="form-group custom-upload">
                           <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*"  style="display: none;">
@@ -230,7 +230,7 @@
               </div>
               <div class="col-md-12">
                 <div class="form-group">
-                  <label id="lbl_f01_upload" class="col-md-2 control-label">Imagen Auxiliar 2</label>
+                  <label id="lbl_f01_upload" class="col-md-2 control-label">Imagen Complementaria</label>
                   <div class="controls">
                       <div class="form-group custom-upload">
                           <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*"  style="display: none;">
@@ -278,7 +278,7 @@
                           <td data-title="'Producto'" class="text-left">&nbsp; {{producto.prd_productoc}}</td>
                           <td data-title="'Descripción'" class="text-center">&nbsp; {{producto.prd_descripcionc}}</td>
                           <td data-title="'Precio'" class="text-center">&nbsp; {{producto.prd_precioc}}</td>
-                          <td data-title="'Precio'" class="text-center">&nbsp; {{producto.prd_ofertac}}</td>
+                          <td data-title="'Oferta'" class="text-center">&nbsp; {{producto.prd_ofertac}}</td>
                           <td data-title="'Imagenes del producto'" class="text-center" align="center">
                             <img src="{{producto.prd_imagen_pc}}" style="width:64px;">
                             <img src="{{producto.prd_imagen_a1c}}" style="width:64px;">

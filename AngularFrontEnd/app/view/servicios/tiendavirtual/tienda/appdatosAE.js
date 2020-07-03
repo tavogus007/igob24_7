@@ -63,8 +63,12 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       recDesc = recDesc.replace(/<br ?\/?>/g, "\n");
       $scope.datos.f01_descripcionTV = recDesc;  
       var rec_formaP = data[0].pforma_entrega;
-      rec_formaP = rec_formaP.replace(/<br ?\/?>/g, "\n");
-      $scope.datos.f01_forma_entrega = rec_formaP;
+      if(rec_formaP == null || rec_formaP == 'null' || rec_formaP == 'undefined' || rec_formaP == undefined){
+        $scope.datos.f01_forma_entrega = data[0].pforma_entrega;
+      }else{
+        rec_formaP = rec_formaP.replace(/<br ?\/?>/g, "\n");
+        $scope.datos.f01_forma_entrega = rec_formaP;
+      }
 
       $scope.datos.f01_categoria = data[0].tv_categoria_idc;
       $scope.datos.f01_correoTV = data[0].tv_correoc;

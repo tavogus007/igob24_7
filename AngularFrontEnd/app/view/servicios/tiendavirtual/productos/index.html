@@ -141,13 +141,9 @@
 
     <div class="col-md-12" ng-controller="productosController" ng-init="inicioProductos();">
       <div class="ibox float-e-margins">
-        <!--div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-            <h4>Productos de la Actividad Economica</h4>
-        </div-->
         <div>
           <a class="btn btn-success ng-binding" tooltip="Adicionar producto" ng-click="newProducto(producto);"><i class="fa fa-plus blanco shake-slow"></i> Crear Producto</a>
         </div>
-        
         <div class="ibox-content">
           <form name="signupForm"  class="form-horizontal" role="form" novalidate>                   
             <div class="row" ng-show="frmProducto!=null">
@@ -164,7 +160,7 @@
               </div>
               <div class="col-md-6">
                   <div class="form-group" >
-                      <label for="url" >Descripción:</label>
+                      <label for="url" >Descripción del Producto:</label>
                       <div class="controls">
                           <textarea ng-model="datosProd.f01_descripcion" id="f01_descripcion" name="f01_descripcion" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required></textarea>
                       </div>
@@ -256,10 +252,10 @@
             </div>
 
             <div class="col-md-12" align="right">
-                <button ng-show="nuevo" type="button" class="btn btn-primary" ng-click="registrarProducto(datosProd)">Registrar</button>
-                <button ng-show="update" type="button" class="btn btn-primary" ng-click="actualizarProducto(datosProd)">Modificar</button>
+                <button ng-show="nuevo" type="button" class="btn btn-success ng-binding" ng-click="registrarProducto(datosProd)">Registrar</button>
+                <button ng-show="update" type="button" class="btn btn-success ng-binding" ng-click="actualizarProducto(datosProd)">Modificar</button>
+                 <br>
             </div>
-            <br><br><br>
             <div class="col-md-12">
               <div class="panel panel-default">
                 <div class="panel-heading"><B>LISTADO DE PRODUCTOS</B></div>
@@ -275,14 +271,14 @@
                             <a class="btn btn-success ng-binding" tooltip="Modificar producto" ng-click="modificarProducto(producto);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                             <a class="btn btn-success ng-binding" tooltip="Eliminar producto" ng-click="eliminarProducto(producto);"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                             <label class="switch">
-                                <input type="checkbox" ng-checked="producto.prd_estadoc=='A'"  ng-click="cambioEstadoProducto(producto)">
+                                <input tooltip="Habilitar producto"  type="checkbox" ng-checked="producto.prd_estadoc=='A'"  ng-click="cambioEstadoProducto(producto)">
                                 <span class="slider round"></span>
                             </label>
                           </td>
                           <td data-title="'Producto'" class="text-left">&nbsp; {{producto.prd_productoc}}</td>
                           <td data-title="'Descripción'" class="text-center">&nbsp; {{producto.prd_descripcionc}}</td>
                           <td data-title="'Precio'" class="text-center">&nbsp; {{producto.prd_precioc}}</td>
-                          
+                          <td data-title="'Precio'" class="text-center">&nbsp; {{producto.prd_ofertac}}</td>
                           <td data-title="'Imagenes del producto'" class="text-center" align="center">
                             <img src="{{producto.prd_imagen_pc}}" style="width:64px;">
                             <img src="{{producto.prd_imagen_a1c}}" style="width:64px;">

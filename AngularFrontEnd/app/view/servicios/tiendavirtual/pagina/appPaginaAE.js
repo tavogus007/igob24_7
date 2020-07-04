@@ -13,24 +13,31 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
 
     $scope.dataAdicional = function () {
       $rootScope.datosAuxiliares = [];
-      sw = 0;
       angular.forEach($rootScope.datosTiendaVirtual[0].tv_contactosc, function(contacto, key) {
         contactc = JSON.parse(contacto);
-        if (sw == 0){
           if(contactc.tipo=="CELULAR"){
-            var myJSON = '{ "celular":"' + contactc.valor + '" }';
-            myJSON2 = JSON.parse(myJSON);
-            $rootScope.datosAuxiliares.push(myJSON2);
-            sw = 1;
-          } 
-        }
+            if(contactc.estado=="CON WHATSAPP"){
+              var myJSON = '{ "celular":"' + contactc.valor + '", "whatsapp":"SI" }';
+              myJSON2 = JSON.parse(myJSON);
+              $rootScope.datosAuxiliares.push(myJSON2);
+            } else {
+              var myJSON = '{ "celular":"' + contactc.valor + '", "whatsapp":"NO" }';
+              myJSON2 = JSON.parse(myJSON);
+              $rootScope.datosAuxiliares.push(myJSON2);
+            }
+          } else {
+            if(contactc.estado=="FIJO"){
+              var myJSON = '{ "telefono":"' + contactc.valor + '" }';
+              myJSON2 = JSON.parse(myJSON);
+              $rootScope.datosAuxiliares.push(myJSON2);
+            } 
+          }
       });
+      myJSON = '{ "direccion":"' + $rootScope.direccionAe + '" }';
+      myJSON2 = JSON.parse(myJSON);
+      $rootScope.datosAuxiliares.push(myJSON2);
     }
     $scope.inicioPaginaWeb = function () {
-
-      console.log("---------------");
-      console.log($rootScope.datosTiendaVirtual[0].pencabezado);
-      console.log("---------------");
       $scope.nombre_tienda = $rootScope.datosTiendaVirtual[0].tv_nombrec;
       recDesc = $rootScope.datosTiendaVirtual[0].tv_descripcionc;
       recDesc = recDesc.replace(/<br ?\/?>/g, "\n");
@@ -196,13 +203,14 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           re = /\\"/gi;
           newContactos = newstr.replace(re, '"');
           re = /}","{/gi;
-          str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_ofertas);
+          /*str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_ofertas);
           newstr = str.replace(re, "},{");
           newstr = newstr.replace('["{', '[{');
           newstr = newstr.replace('}"]', '}]');
           re = /\\"/gi;
           newOfertas = newstr.replace(re, '"');
           re = /}","{/gi;
+          */
           str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_redesc);
           newstr = str.replace(re, "},{");
           newstr = newstr.replace('["{', '[{');
@@ -241,7 +249,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "stitulo": $rootScope.datosTiendaVirtual[0].tv_nombrec,
                   "sdescripcion": $rootScope.datosTiendaVirtual[0].tv_descripcionc,
                   "scontactos": newContactos,
-                  "sofertas":  newOfertas,
+                  //"sofertas":  newOfertas,
+                  "sofertas": JSON.stringify($rootScope.productosPW),
                   "sredes": newRedes,
                   "spagina": $rootScope.datosTiendaVirtual[0].tv_pagina_webc,
                   "scorreo": $rootScope.datosTiendaVirtual[0].tv_correoc,
@@ -283,13 +292,14 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           re = /\\"/gi;
           newContactos = newstr.replace(re, '"');
           re = /}","{/gi;
-          str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_ofertas);
+          /*str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_ofertas);
           newstr = str.replace(re, "},{");
           newstr = newstr.replace('["{', '[{');
           newstr = newstr.replace('}"]', '}]');
           re = /\\"/gi;
           newOfertas = newstr.replace(re, '"');
           re = /}","{/gi;
+          */
           str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_redesc);
           newstr = str.replace(re, "},{");
           newstr = newstr.replace('["{', '[{');
@@ -327,7 +337,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "stitulo": $rootScope.datosTiendaVirtual[0].tv_nombrec,
                   "sdescripcion": $rootScope.datosTiendaVirtual[0].tv_descripcionc,
                   "scontactos": newContactos,
-                  "sofertas":  newOfertas,
+                  //"sofertas":  newOfertas,
+                  "sofertas": JSON.stringify($rootScope.productosPW),
                   "sredes": newRedes,
                   "spagina": $rootScope.datosTiendaVirtual[0].tv_pagina_webc,
                   "scorreo": $rootScope.datosTiendaVirtual[0].tv_correoc,

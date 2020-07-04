@@ -336,6 +336,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         sessionService.set('IDAE', tramite.IdActividad);
         idActividadEconomica = sessionService.get('IDAE');
         $rootScope.descripcionAe = tramite.Descripcion;
+        $rootScope.direccionAe = tramite.Direccion;
         $scope.obtTiendaVirtual();
         //$scope.obtPagina();
         $rootScope.$broadcast('inicializarPagina', $scope.datos);

@@ -76,10 +76,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     
       //contactos
       var contactos = data[0].tv_contactosc;
-      console.log('contactos',contactos);
         for(i=0;i<contactos.length;i++){
           var conta = JSON.parse(contactos[i]);
-          console.log('conta',conta);
           if (i==0){ 
             $scope.datos.f01_celular1_whatsapp = conta.estado;
             if (conta.estado == 'CON WHATSAPP'){
@@ -269,10 +267,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     var descTV = data.f01_descripcionTV;
     descTV = descTV.replace(/\n/g, "<br>");
     datosTiendaVirtual.descripcion = descTV;
-    var form_entr = data.f01_forma_entrega;
-    form_entr = form_entr.replace(/\n/g, "<br>");
-    datosTiendaVirtual.forma_pago = form_entr;
-
+    var formaE = data.f01_forma_entrega;
+    formaE = formaE.replace(/\n/g, "<br>");
+    datosTiendaVirtual.forma_entrega = formaE;
+ 
   /////////
     var myJSON = '';
     if (data.f01_contacto1=='TELÉFONO'){
@@ -332,7 +330,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $rootScope.contactosArray.push(myJSON);
     }
     ////////
-    console.log('$rootScope.contactosArray',$rootScope.contactosArray);
     myJSON = '';
     if (data.f01_redessocialesAE1=='true' || data.f01_redessocialesAE1==true){
       if(data.f01_redessocialesAE1_url != ''){
@@ -402,7 +399,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     } else {
         datosTiendaVirtual.usr = "juridico";
     }
-    console.log('datosTiendaVirtual',datosTiendaVirtual);
+    //console.log('datosTiendaVirtual',datosTiendaVirtual);
     datosTiendaVirtual.crearTiendaVirtual(function(response){
       console.log(response);
       results = JSON.parse(response);
@@ -449,6 +446,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
      }
      if (data.f01_contacto1=='CELULAR'){
        if(data.f01_contacto1_nro != ''){
+         var w1 = data.f01_celular1_whatsapp;
+         $scope.activaWhatsapp1(w1);
          myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '", "estado":"' + $scope.datos.whatsapp1 + '" }';
        }else{
          myJSON = '{ "tipo":"", "valor":"","estado":"" }';
@@ -468,6 +467,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
      }
      if (data.f01_contacto2=='CELULAR'){
        if(data.f01_contacto2_nro != ''){
+        var w2 = data.f01_celular22_whatsapp;
+        $scope.activaWhatsapp2(w2);
          myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '", "estado":"' +  $scope.datos.whatsapp2 + '" }';
        }else{
          myJSON = '{ "tipo":"", "valor":"","estado":"" }';
@@ -487,6 +488,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
      }
      if (data.f01_contacto3=='CELULAR'){
        if(data.f01_contacto3_nro != ''){
+        var w3 = data.f01_celular3_whatsapp;
+        $scope.activaWhatsapp3(w3);
          myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '",  "estado":"' +  $scope.datos.whatsapp3 + '" }';
        }else{
          myJSON = '{ "tipo":"", "valor":"","estado":"" }';
@@ -497,7 +500,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
      ////////
      
     $rootScope.contactosArray.push(myJSON);
-    console.log('$rootScope.contactosArray',$rootScope.contactosArray);
     datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
 
     //actualiza json redes
@@ -941,7 +943,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   $scope.activaWhatsapp1 = function(dato){
     $scope.whatsapp1 = dato;
-    console.log('dato1',dato);
     if(dato == true) {
       $scope.datos.whatsapp1 = "CON WHATSAPP";
     } else {
@@ -950,17 +951,14 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   } 
   $scope.activaWhatsapp2 = function(dato2){
     $scope.whatsapp2 = dato2;
-    console.log('dato2',dato2);
-
-    /*if(dato2 == true) {
+    if(dato2 == true) {
       $scope.datos.whatsapp2 = "CON WHATSAPP";
     } else {
       $scope.datos.whatsapp2 = "SIN WHATSAPP";
-    }*/
+    }
   } 
   $scope.activaWhatsapp3 = function(dato){
     $scope.whatsapp3 = dato;
-    console.log('dato3',dato);
 
     if(dato == true) {
       $scope.datos.whatsapp3 = "CON WHATSAPP";

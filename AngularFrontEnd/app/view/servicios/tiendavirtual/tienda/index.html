@@ -110,9 +110,9 @@
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Nombre de la Tienda Virtual:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" ng-disabled="desabilitado" required/>
+                            <input ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" ng-disabled="desabilitado" placeholder="Escriba el nombre de la Tienda Virtual" required/>
                             <span style="color:red" ng-show="signupForm.f01_nombreTV.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_nombreTV.$error.required">Nombre de la Tienda Virtual es requerido. </span>
+                                <span align = "right" ng-show="signupForm.f01_nombreTV.$error.required">Nombre de la Tienda Virtual es requerido.</span>
                             </span>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Descripción de la Tienda Virtual:</label>
                         <div class="controls">
-                            <textarea ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" rows="4" cols="150"></textarea>
+                            <textarea ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Escribir una breve descricpión acerca de la Tienda Virtual"></textarea>
                             <span style="color:red" ng-show="signupForm.f01_descripcionTV.$invalid">
                                 <span align = "right" ng-show="signupForm.f01_descripcionTV.$error.required">Descripción de la Tienda Virtual es requerido. </span>
                             </span>
@@ -133,7 +133,7 @@
                     <div class="form-group" >
                         <label for="url" >Forma de Entrega:</label>
                         <div class="controls">
-                            <textarea ng-model="datos.f01_forma_entrega" id="f01_forma_entrega" name="f01_forma_entrega" class="form-control" ng-disabled="desabilitado"rows="4" cols="150"></textarea>
+                            <textarea ng-model="datos.f01_forma_entrega" id="f01_forma_entrega" name="f01_forma_entrega" class="form-control" ng-disabled="desabilitado"rows="4" cols="150" placeholder="Describa la forma de entrega de los Productos"></textarea>
                         </div>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Correo Electrónico:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_correoTV" id="f01_correoTV" name="f01_correoTV" class="form-control" ng-keyup="validaCorreo();" ng-disabled="desabilitado" required focus/>
+                            <input ng-model="datos.f01_correoTV" id="f01_correoTV" name="f01_correoTV" class="form-control" ng-keyup="validaCorreo();" ng-disabled="desabilitado" placeholder="Correo: ejemplo@gmail.com" required focus/>
                             <span style="color:red" ng-show="signupForm.f01_correoTV.$invalid">
                                 <span align = "right" ng-show="signupForm.f01_correoTV.$error.required">Correo Electrónico es requerido</span>
                             </span>
@@ -172,7 +172,7 @@
                     <div class="form-group" >
                         <label for="url" >Página Web:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control" placeholder="Copie aquí el enlace de su Página Wseb" ng-disabled="desabilitado"/>
                         </div>
                     </div>
                 </div>

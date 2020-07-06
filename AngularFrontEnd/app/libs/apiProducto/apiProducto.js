@@ -138,7 +138,11 @@ function dataProducto(){
     this.imagen_a2,
     this.oid,
     this.usr,
-    this.prd_idc
+    this.prd_idc,
+    this.prd_ofertac,
+    this.prd_descripcion_ofertac,
+    this.prd_oferta_defechac,
+    this.prd_ofertac_hastafechac
 };
 
 dataProducto.prototype.listarProductoTV = function (functionResp)
@@ -216,7 +220,10 @@ dataProducto.prototype.crearProducto = function (functionResp) {
         "prd_imagen_a2c" : this.imagen_a2,
         "prd_oidc" : this.oid,
         "prd_usrc" : this.usr,
-        "prd_ofertac" : this.prd_ofertac
+        "prd_ofertac" : this.prd_ofertac,
+        "prd_descripcion_ofertac" : this.prd_descripcion_ofertac,
+        "prd_oferta_defechac" : this.prd_oferta_defechac,
+        "prd_oferta_hastafechac" : this.prd_oferta_hastafechac
 
     };
     console.log(dataParams);
@@ -250,7 +257,10 @@ dataProducto.prototype.modificarMiProducto = function (functionResp) {
       "prd_oidc" : this.oid_ciu,
       "prd_telefono_referenciac" : this.telefono_referencia,
       "prd_usrc" : this.usr,
-      "prd_ofertac" : this.prd_ofertac
+      "prd_ofertac" : this.prd_ofertac,
+      "prd_descripcion_ofertac" : this.prd_descripcion_ofertac,
+      "prd_oferta_defechac" : this.prd_oferta_defechac,
+      "prd_oferta_hastafechac" : this.prd_oferta_hastafechac
 
   };
 
@@ -283,7 +293,10 @@ dataProductoMod.prototype.modificarProductoAe = function (functionResp) {
       "prd_imagen_a1c" : this.prd_imagen_a1c,
       "prd_imagen_a2c" : this.prd_imagen_a2c,
       "prd_usrc" : this.prd_usrc,
-      "prd_ofertac" : this.prd_ofertac
+      "prd_ofertac" : this.prd_ofertac,
+      "prd_descripcion_ofertac" : this.prd_descripcion_ofertac,
+      "prd_oferta_defechac" : this.prd_oferta_defechac,
+      "prd_oferta_hastafechac" : this.prd_oferta_hastafechac
   };
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };

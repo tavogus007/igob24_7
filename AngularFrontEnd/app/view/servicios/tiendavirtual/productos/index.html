@@ -187,6 +187,35 @@
                   </div>
               </div>
 
+              <div ng-if="datosProd.f01_oferta_producto == true">
+                  <div class="col-md-12">
+                      <div class="form-group" >
+                        <label for="url" >Descripcion de la Oferta:</label>
+                        <div class="controls">
+                            <textarea ng-model="datosProd.f01_descripcion_oferta" id="f01_descripcion_oferta" name="f01_descripcion_oferta" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required></textarea>
+                        </div>
+                      </div>
+                  </div>    
+
+                  <div class="col-md-6">
+                      <div class="form-group" >
+                          <label for="url" >Oferta Valida desde:</label>
+                          <div class="controls">
+                              <input  ng-model="datosProd.f01_de_fecha" id="f01_de_fecha" name="f01_de_fecha" class="form-control" type="date" class="form-control" ng-disabled="desabilitado" placeholder="DD/MM/AAAA" required/>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="col-md-6">
+                      <div class="form-group" >
+                          <label for="url" >Oferta Valida hasta:</label>
+                          <div class="controls">
+                              <input  ng-model="datosProd.f01_hasta_fecha" id="f01_hasta_fecha" name="f01_hasta_fecha" class="form-control" type="date" class="form-control" ng-disabled="desabilitado" placeholder="DD/MM/AAAA" required/>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
               <div class="col-md-12">
                 <div class="form-group">
                   <label id="lbl_f01_upload" class="col-md-2 control-label">Imagen Principal</label>

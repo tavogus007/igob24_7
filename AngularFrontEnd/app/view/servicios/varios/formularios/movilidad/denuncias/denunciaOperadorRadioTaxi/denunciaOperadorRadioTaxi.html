@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <script src="../../libs/apiMov/api_mov_infracciones.js"></script>
+    <link href="../../libs/css/sweetalert.css" rel="stylesheet"></link>
+    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+    <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/denuncias/denunciaOperadorRadioTaxi/denunciaOperadorRadioTaxi.js"></script>
+    <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script> 
+    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" /> 
+    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+    <link href="../../libs/css/select2.min.css" rel="stylesheet" async/>
+    <script src="../../libs/js/select2.min.js" async></script>
+  </head>
+<style>
+  #caja {
+    display: block;
+  }
+  #mostrar{
+    display:block;
+  }
+  #cerrar_rc{
+    position: absolute;
+    top: 5px;
+    left: 92%;
+    font-size: 38px;
+    color: #FFCB05 !important;
+  }
+  input:required:invalid {
+    border: 1px solid red;
+  }
+  input:required:valid {
+    border: 1px solid green;
+  }
+  select:required:invalid {
+    border: 1px solid red;
+  }
+  select:required:valid {
+    border: 1px solid green;
+  }
+  body{
+    background: #ecf0f1;
+  }
+
+  .table1 th {
+    background-color: #fff !important;
+  }
+
+  #cerrar_rc{
+    position: absolute;
+    top: 5px;
+    left: 92%;
+    font-size: 38px;
+    color: #FFCB05 !important;
+  }
+  .accordion-titulo {
+    position: relative;
+    display: block;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: 300;
+    background: #2c3e50;
+    color: #fff;
+    text-decoration: none;
+  }
+  .accordion-titulo.open {
+    background: #16a085;
+    color: #fff;
+  }
+  .accordion-titulo:hover {
+    background: #1abc9c;
+  }
+  .accordion-titulo span.toggle-icon:before {
+    content:"+";
+  }
+  .accordion-titulo.open span.toggle-icon:before {
+    content:"-";
+  }
+  .accordion-titulo span.toggle-icon {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight:bold;
+  }
+
+  .tableE > thead > tr > th {
+    border-bottom: 1px solid #FFFFE0;
+    vertical-align: bottom;
+    background: #FFEFD5;
+    color: black;
+  }
+
+  #modalTamanio{
+    width: 31% !important;
+  }
+
+  .resaltado { background-color: #F9B1A7; }
+
+  .btn-warning {
+    background-color: #f8ac59;
+    border-color: #f8ac59;
+    color: #FFFFFF;
+  }
+  input:required:invalid {
+    border: 1px solid red;
+  }
+  input:required:valid {
+    border: 1px solid green;
+  }
+  select:required:invalid {
+    border: 1px solid red;
+  }
+  select:required:valid {
+      border: 1px solid green;
+  }
+  .form-group {
+      padding-left: 8px;
+  }
+
+  .tamañoLabel{
+      font-size: 18px;
+  }
+
+  input[type="radio"]{
+      position: absolute;
+      right: 9000px;
+  }
+  /*Check box*/
+  input[type="radio"] + .label-text:before{
+      content: "\f096";
+      font-family: "FontAwesome";
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      -webkit-font-smoothing:antialiased;
+      width: 1em;
+      display: inline-block;
+      margin-right: 5px;
+  }
+
+  input[type="radio"]:checked + .label-text:before{
+      content: "\f14a";
+      color: #2980b9;
+      animation: effect 250ms ease-in;
+  }
+
+  input[type="radio"]:disabled + .label-text{
+      color: #aaa;
+  }
+
+  input[type="radio"]:disabled + .label-text:before{
+      content: "\f0c8";
+      color: #ccc;
+  }
+
+</style>
+<script type="text/javascript">
+
+  function validaLetras(campo){
+    campo.value = campo.value.toUpperCase();
+    var color = campo.value;
+    emailRegex = /^[a-zA-Z ]+$/;
+    if (emailRegex.test(color)) {
+    }
+    else{
+      $("#"+campo.name).val('');
+    }
+  }
+
+  function iniciarLoadFyle(){
+    $('.custom-upload input[type=file]').change(function(){
+    $(this).next().find('input').val($(this).val());
+    angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+  }
+
+  function mayus(e) {
+    e.value = e.value.toUpperCase();
+  }
+</script>
+<script type="text/javascript">
+   
+</script>
+  <div id="principal" class="page-content" ng-controller="denunciaOperadorRadioTaxiFuncion" data-ng-init="inicio();">
+    <div class="col-lg-12">
+      <div  class="ibox-content" id="caja"> 
+        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+          <h4>DENUNCIA DE OPERADOR DE RADIO TAXI</h4>
+        </div> 
+        <div  class="row">                
+          <form name="signupForm" class="" role="form" novalidate>
+            <div id="container-main" class="ibox float-e-margins">
+              <div>
+                <form name="regrepresentante" class="form-horizontal" role="form" novalidate><br>
+                  <div class="col-md-12">
+                    <legend>
+                      <h2>Datos del Solicitante</h2>
+                    </legend>
+                  </div>
+                  <div ng-show = "tipo_persona == 'NATURAL'">
+                    <div class="row" >
+                      <div class="col-md-12"><br>  
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_27}}:</label>   
+                            <div class="controls">
+                              <input ng-model="datos.INF_NOMBRE" id="INF_NOMBRE" name="INF_NOMBRE" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                            <div class="controls">
+                              <input ng-model="datos.INF_PATERNO" id="INF_PATERNO" name="INF_PATERNO" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                            <div class="controls">
+                              <input ng-model="datos.INF_MATERNO" id="INF_MATERNO" name="INF_MATERNO" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Ap. Casada:</label>
+                            <div class="controls">
+                              <input ng-model="datos.INF_CASADA" id="INF_CASADA" name="INF_CASADA" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>                             
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Número de documento:</label>
+                            <div class="controls">
+                              <input ng-model="datos.INF_CI" id="INF_CI" name="INF_CI" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Expedido:</label>
+                            <div class="controls">
+                              <input ng-model="datos.INF_EXPEDIDO" id="INF_EXPEDIDO" name="INF_EXPEDIDO" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>                                                                                                            
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url">Celular:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_CELULAR" id="INF_CELULAR" name="INF_CELULAR" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url">Correo:</label>
+                            <div class="controls">
+                              <input type="email" ng-model="datos.INF_CORREO" id="INF_CORREO" name="INF_CORREO" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Zona:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_ZONA" id="INF_ZONA" name="INF_ZONA" class="form-control"   width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Tipo de Via:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_VIA" id="INF_VIA" name="INF_VIA" class="form-control"   width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Nombre de Via:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_NOMBRE_VIA" id="INF_NOMBRE_VIA" name="INF_NOMBRE_VIA" class="form-control"    width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>                        
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Nro. de Vivienda:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_NRO_V" id="INF_NRO_V" name="INF_NRO_V" class="form-control"   width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div ng-show = "tipo_persona == 'JURIDICO'">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">NIT:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_NIT" id="INF_NIT" name="INF_NIT" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Razón Social:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_RAZON_SCI" id="INF_RAZON_SCI" name="INF_RAZON_SCI" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Poder de Representante Legal(Nro):</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_PODER" id="INF_PODER" name="INF_PODER" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Nro de la Notaría:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_NRO_NOTARIA" id="INF_NRO_NOTARIA" name="INF_NRO_NOTARIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>                         
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Zona:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_ZONA_J" id="INF_ZONA_J" name="INF_ZONA_J" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Tipo de Via:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_VIA_J" id="INF_VIA_J" name="INF_VIA_J" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Nombre de Via:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_NOMBRE_VIA_J" id="INF_NOMBRE_VIA_J" name="INF_NOMBRE_VIA_J" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4" >
+                          <div class="form-group" >
+                            <label for="url">Nro de Vivienda:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_NRO_VV_J" id="INF_NRO_VV_J" name="INF_NRO_VV_J" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12"><h3>DATOS DEL REPRESENTANTE LEGAL</h3></div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_27}}:</label>   
+                            <div class="controls">
+                              <input ng-model="datos.INF_NOMBRE_J" id="INF_NOMBRE_J" name="INF_NOMBRE_J" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                            <div class="controls">
+                              <input ng-model="datos.INF_PATERNO_J" id="INF_PATERNO_J" name="INF_PATERNO_J" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                            <div class="controls">
+                              <input ng-model="datos.INF_MATERNO_J" id="INF_MATERNO_J" name="INF_MATERNO_J" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>                           
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Número de documento:</label>
+                            <div class="controls">
+                              <input ng-model="datos.INF_CI_J" id="INF_CI_J" name="INF_CI_J" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url" >Expedido:</label>
+                            <div class="controls">
+                              <input ng-model="datos.INF_EXPEDIDO_J" id="INF_EXPEDIDO_J" name="INF_EXPEDIDO_J" class="form-control"  width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>  
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="url">Celular:</label>
+                            <div class="controls">
+                              <input type="text" ng-model="datos.INF_CELULAR_J" id="INF_CELULAR_J" name="INF_CELULAR_J" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
+                            </div>
+                          </div>
+                        </div>   
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <legend>
+                      <h2>Tipo de Denuncia:</h2>
+                    </legend>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+
+                      <div class="col-md-12" >
+                        <div class="form-group" >
+                        </div>
+                      </div> 
+                      <div class="col-md-1"></div>
+                      <div class="col-md-3">
+                        <div class="form-check">
+                          <label class="tamañoLabel">
+                            <input type="radio" name="INF_TIPO_SOLICITANTE" id="INF_TIPO_SOLICITANTE" ng-model="datos.INF_TIPO_SOLICITANTE" value="Leve"> <span class="label-text" ng-disabled="desabilitado"></span>
+                          </label>leve
+                        </div> 
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-check">
+                          <label class="tamañoLabel">
+                            <input type="radio" name="INF_TIPO_SOLICITANTE" id="INF_TIPO_SOLICITANTE" ng-model="datos.INF_TIPO_SOLICITANTE" value="Grave"> <span class="label-text" ng-disabled="desabilitado"></span>
+                          </label>Grave
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-check">
+                          <label class="tamañoLabel">
+                            <input type="radio" name="INF_TIPO_SOLICITANTE" id="INF_TIPO_SOLICITANTE" ng-model="datos.INF_TIPO_SOLICITANTE" value="Muy Grave"> <span class="label-text" ng-disabled="desabilitado"></span>
+                          </label>Muy Grave
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <legend>
+                      <h2>Datos del Incidente</h2>
+                    </legend>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6" >
+                          <div class="form-group" >
+                            <label for="url">Macrodistrito</label>
+                            <div class="controls">
+                              <select id="INF_ORT_MACRO" 
+                                    name="INF_ORT_MACRO"
+                                    placeholder="Macrodistrito" 
+                                    ng-model="datos.INF_ORT_MACRO"
+                                    class="form-control"
+                                    ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
+                                    required ng-change="listaZona(datos.INF_ORT_MACRO)" ng-disabled="desabilitado">
+                              <option value="">--Seleccionar--</option>
+                            </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6" >
+                            <div class="form-group" >
+                              <label for="url">Zona</label>
+                              <div class="controls">
+                                <select id="INF_O_RT_ZONA" 
+                                name="INF_O_RT_ZONA"
+                                placeholder="Zona" 
+                                ng-model="datos.INF_O_RT_ZONA"
+                                class="form-control"
+                                ng-options="zona.dist_nombre as zona.dist_nombre for zona in aDistritoZona"
+                                required ng-disabled="desabilitado">
+                                <option value="">--Seleccionar--</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="col-md-6" >
+                          <div class="form-group" >
+                            <label for="url">Lugar</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos.INF_O_RT_LUGAR" name="INF_O_RT_LUGAR" value="memorandum" required ng-disabled="desabilitado"> 
+                            </div>
+                          </div>
+                        </div>
+                          <div class="col-md-6" >
+                            <div class="form-group" >
+                              <label for="url">Fecha</label>
+                              <div class="controls">
+                                <input type="date" class="form-control" ng-model="datos.INF_O_RT_FECHA" name="INF_O_RT_FECHA" value="memorandum" required ng-disabled="desabilitado"> 
+                              </div>
+                            </div>
+                          </div>
+                        </div>   
+                        <div class="col-md-12" >
+                          <div class="col-md-6" >
+                            <div class="form-group" >
+                                <label for="url">Nombre Operador Radio Taxi :</label>
+                                <div class="controls">
+                                  <select id="INF_O_RT_NOMBRE_O_RT" 
+                                  name="INF_O_RT_NOMBRE_O_RT"
+                                  placeholder="Macrodistrito" 
+                                  ng-model="datos.INF_O_RT_NOMBRE_O_RT"
+                                  class="form-control"
+                                  ng-options="ope.ope_denominacion as ope.ope_denominacion for ope in aListadoOperadorTaxi"
+                                  required ng-disabled="desabilitado">
+                                  <option value="">--Seleccionar--</option>
+                                  </select>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6" >
+                            <div class="form-group" >
+                              <label for="url">Hora</label>
+                              <div class="controls">
+                                <input type="time" class="form-control" ng-model="datos.INF_O_RT_HORA" name="INF_O_RT_HORA" value="memorandum" required ng-disabled="desabilitado"> 
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12" >
+                          <div class="col-md-12" >
+                            <div class="form-group" >
+                              <label for="url">BREVE DESCRIPCION DEL HECHO :   Denuncia a empresa de Radio Taxi en materia de estacionamientos o cobro excesivo de tarifas de pasajes </label>
+                              <div class="controls">
+                                <textarea class="form-control" type="text" ng-disabled="desabilitado" class="form-control" rows="5" ng-model="datos.INF_O_RT_BREVE_DESC_O_RT" name="INF_O_RT_BREVE_DESC_O_RT" required></textarea> 
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                  </div><br><br>
+                  <div class="col-md-12" align="right"><br>
+                    <button id="miFormGuardar" ng-show="desabilitado
+                    ==false" ng-click="validarTramiteGuardar(datos);"  type="button" class="btn btn-success fa fa-save" name="formEnviar">{{translateTitulos.lbl_016_29}}</button>
+                    <button ng-click="validarEnvio(datos);" id="gu" type="button" class="btn btn-success fa fa-mail-forward" ng-show="desabilitado==false">{{translateTitulos.lbl_016_30}} </button>
+                  </div>
+                </form>
+              </div><br>  
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

@@ -111,14 +111,17 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
               if (idFiles[key]==1){
                 var descDoc = "img_pr";
                 var descArchivo = "img_principal"; 
+                 $scope.imagenprincipalm = true;
               }
               if (idFiles[key]==2){
                 var descDoc = "img_aux1";
                 var descArchivo = "img_auxiliar1";
+                $scope.imagenaux1m = true;
               }
               if (idFiles[key]==3){
                 var descDoc = "img_aux2";
                 var descArchivo = "img_auxiliar2";
+                $scope.imagenaux2m = true;
               }
 
               var imagenFile = archivo.name.split('.');;
@@ -143,7 +146,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
           });
 
         }
-        //console.log("$rootScope.archivosProducto:: ", $rootScope.archivosProducto);
+
         $scope.mostrarDocumentos($rootScope.archivosProducto);
         $.unblockUI();
     };
@@ -262,8 +265,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       document.getElementById("f01_upload1").value  = '';
       document.getElementById("f01_upload2").value  = '';
       document.getElementById("f01_upload3").value  = '';
-      document.getElementById("f01_de_fecha").value  = '';
-      document.getElementById("f01_hasta_fecha").value  = '';
+      
       
       $scope.txt_f01_upload1 = '';
       $scope.txt_f01_upload2 = '';

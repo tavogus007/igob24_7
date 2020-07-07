@@ -154,6 +154,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 $rootScope.inicializaTwitter = true;
                 $rootScope.inicializaInstagram = true;
                 $rootScope.inicializaYoutube = true;
+                $rootScope.inicializaOtro = true;
               } else {
                 //alert(results[0].tv_idc);
                 sessionService.set('IDTV', results[0].tv_idc);

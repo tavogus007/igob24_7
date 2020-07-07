@@ -262,6 +262,9 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       document.getElementById("f01_upload1").value  = '';
       document.getElementById("f01_upload2").value  = '';
       document.getElementById("f01_upload3").value  = '';
+      document.getElementById("f01_de_fecha").value  = '';
+      document.getElementById("f01_hasta_fecha").value  = '';
+      
       $scope.txt_f01_upload1 = '';
       $scope.txt_f01_upload2 = '';
       $scope.txt_f01_upload3 = '';
@@ -277,6 +280,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       $scope.imagenprincipalm = false;
       $scope.imagenaux1m = false;
       $scope.imagenaux2m = false;
+
     }
 
     $scope.registrarProducto = function(data){
@@ -319,6 +323,9 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
         datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
         datosProducto.prd_ofertac = $scope.datosProd.f01_producto_oferta;
+        datosProducto.prd_descripcion_ofertac = data.f01_descripcion_oferta; 
+        datosProducto.prd_oferta_defechac = data.f01_de_fecha; 
+        datosProducto.prd_oferta_hastafechac = data.f01_hasta_fecha; 
         datosProducto.crearProducto(function(response){
           results = JSON.parse(response);
           results = results.success;
@@ -504,6 +511,10 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
 
     if(datosP.prd_ofertac == "CON OFERTA") {
       $scope.datosProd.f01_oferta_producto = true;
+      $scope.datosProd.f01_descripcion_oferta = datosP.prd_descripcion_ofertac;
+      $scope.datosProd.f01_de_fecha = datosP.prd_oferta_defechac;
+      $scope.datosProd.f01_hasta_fecha = datosP.prd_oferta_hastafechac;
+
     } else {
       $scope.datosProd.f01_oferta_producto = false;
     }
@@ -543,6 +554,9 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     datosModProducto.prd_imagen_a2c = img3;
     datosModProducto.prd_usrc = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
     datosModProducto.prd_ofertac = $scope.datosProd.f01_producto_oferta;
+    datosModProducto.prd_descripcion_ofertac = data.f01_descripcion_oferta; 
+    datosModProducto.prd_oferta_defechac = data.f01_de_fecha; 
+    datosModProducto.prd_oferta_hastafechac = data.f01_hasta_fecha; 
     datosModProducto.modificarProductoAe(function(response){
       results = JSON.parse(response);
       results = results.success;

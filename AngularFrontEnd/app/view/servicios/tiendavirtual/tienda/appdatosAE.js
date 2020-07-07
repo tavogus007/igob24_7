@@ -154,6 +154,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.datos.f01_redessocialesAE3 = "";
         $scope.datos.f01_redessocialesAE4_url = "";
         $scope.datos.f01_redessocialesAE4 = "";
+        $scope.datos.f01_redessocialesAE5_url = "";
+        $scope.datos.f01_redessocialesAE5 = "";
         $scope.inicializaFacebook = true;
         $scope.inicializaTwitter =  true;
         $scope.inicializaInstagram = true;
@@ -210,20 +212,39 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
               $scope.datos.f01_redessocialesAE4_url = '';
             }
           }
+          if (i==4){
+            $scope.datos.f01_redessocialesAE5_url = red.url;
+            $scope.datos.f01_redessocialesAE5 = red.tipo; 
+            $scope.datos.f01_redessocialesAE5= red.checked; 
+            if ($scope.datos.f01_redessocialesAE5 == 'true' || $scope.datos.f01_redessocialesAE5 == true){
+              $scope.datos.f01_redessocialesAE5 = true; 
+              $scope.inicializaOtro = false;
+            }else{
+              $scope.inicializaOtro = true;
+              $scope.datos.f01_redessocialesAE5_url = '';
+            }
+          }
         }
       }
     
       //catalogo
       $scope.catalogo1 = results[0].tvcatalogo;
-      $scope.catalogojson = JSON.parse($scope.catalogo1);
-      if($scope.catalogojson.length == 0){
-       console.log('Sin Url de catalogo');
+      if($scope.catalogo1 == '' || $scope.catalogo1 == undefined || $scope.catalogo1 == 'undefined'){
+        console.log('Sin Url de catalogo');
        $scope.datos.txt_f01_upload1 = '';
       }else{
-        $scope.catalogojson1 = JSON.parse($scope.catalogojson[0]); 
-        $scope.datos.txt_f01_upload1 = $scope.catalogojson1.campo;
-        $scope.catalogo_url = $scope.catalogojson1.url;
-      }  
+        $scope.catalogojson = JSON.parse($scope.catalogo1);
+        if($scope.catalogojson.length == 0){
+         console.log('Sin Url de catalogo');
+         $scope.datos.txt_f01_upload1 = '';
+        }else{
+          $scope.catalogojson1 = JSON.parse($scope.catalogojson[0]); 
+          $scope.datos.txt_f01_upload1 = $scope.catalogojson1.campo;
+          $scope.catalogo_url = $scope.catalogojson1.url;
+        }
+        
+      }
+  
       //logotipo
       $scope.logotipo1 = results[0].plogotipo;
       $scope.logotipojson = JSON.parse($scope.logotipo1);
@@ -258,7 +279,11 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   };
   
   $scope.registrarDatosAE = function(data){
-    var datosTiendaVirtual = new dataTiendaVirtual();
+
+    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '')||
+       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '')||
+       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '')) {
+      var datosTiendaVirtual = new dataTiendaVirtual();
     datosTiendaVirtual.ae_id = sessionService.get("IDAE");
     datosTiendaVirtual.categoria = data.f01_categoria;
     datosTiendaVirtual.nombre = data.f01_nombreTV;
@@ -291,6 +316,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       $rootScope.contactosArray.push(myJSON);
     }
+    if(data.f01_contacto1 == '' || data.f01_contacto1 == undefined || data.f01_contacto1 == 'undefined'){
+      myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+      $rootScope.contactosArray.push(myJSON);
+    }
 //////////
     if (data.f01_contacto2=='TELÉFONO'){
       if(data.f01_contacto2_nro != ''){
@@ -310,6 +339,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       $rootScope.contactosArray.push(myJSON);
     }
+    if(data.f01_contacto2 == '' || data.f01_contacto2 == undefined || data.f01_contacto2 == 'undefined'){
+      myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+      $rootScope.contactosArray.push(myJSON);
+    }
 ////////////
     if (data.f01_contacto3=='TELÉFONO'){
       if(data.f01_contacto3_nro != ''){
@@ -327,6 +360,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
         $scope.sinDato3 = true;
       }
+      $rootScope.contactosArray.push(myJSON);
+    }
+    if(data.f01_contacto3 == '' || data.f01_contacto3 == undefined || data.f01_contacto3 == 'undefined'){
+      myJSON = '{ "tipo":"", "valor":"","estado":"" }';
       $rootScope.contactosArray.push(myJSON);
     }
     ////////
@@ -379,6 +416,18 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       myJSON = '{ "tipo":"youtube", "checked":"false", "url":"" }';
       $rootScope.redesSocialesArray.push(myJSON);
     }
+    if (data.f01_redessocialesAE5=='true' || data.f01_redessocialesAE5==true){
+      if(data.f01_redessocialesAE5_url != ''){
+        myJSON = '{ "tipo":"otro", "checked":"true", "url":"' + data.f01_redessocialesAE5_url + '" }';
+         $rootScope.redesSocialesArray.push(myJSON);
+      }else{
+        myJSON = '{ "tipo":"otro", "checked":"false", "url":"" }';
+        $rootScope.redesSocialesArray.push(myJSON);
+      }
+    }else{
+      myJSON = '{ "tipo":"otro", "checked":"false", "url":"" }';
+      $rootScope.redesSocialesArray.push(myJSON);
+    }
 
     datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
     //catalogo 
@@ -392,7 +441,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     //logotipo
     datosTiendaVirtual.logotipo = $scope.logotipo1;
     datosTiendaVirtual.encabezado = $scope.encabezado1;
-
+   
     datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
     if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
         datosTiendaVirtual.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_MATERNO') + ' ' + sessionService.get('US_PATERNO');
@@ -415,171 +464,212 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           swal('', "Error al guardar los datos de la Tienda Virtual", 'error');
       }
     });
-  } 
-  $scope.actualizarDatosAE = function(data){
-    var datosTiendaVirtual = new dataTiendaVirtual();
-    datosTiendaVirtual.idtv = sessionService.get("IDTV");
-    datosTiendaVirtual.ae_id = sessionService.get("IDAE");
-    datosTiendaVirtual.categoria = data.f01_categoria;
-    datosTiendaVirtual.nombre = data.f01_nombreTV;
-    datosTiendaVirtual.correo = data.f01_correoTV;
-    datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
-    var descTV = data.f01_descripcionTV;
-    descTV = descTV.replace(/\n/g, "<br>");
-    datosTiendaVirtual.descripcion = descTV;
-    var formaE = data.f01_forma_entrega;
-    formaE = formaE.replace(/\n/g, "<br>");
-    datosTiendaVirtual.forma_entrega= formaE;
-    //actualiza json contactos
-    datosTiendaVirtual.contactos = [];
-    $rootScope.contactosArray = []; 
-    /////////
-     var myJSON = '';
-     if (data.f01_contacto1=='TELÉFONO'){
-       if(data.f01_contacto1_nro != ''){
-         myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '", "estado":"FIJO" }';
-       }else{
-         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-         $scope.sinDato1 = true;
-       }
-       $rootScope.contactosArray.push(myJSON);
-     }
-     if (data.f01_contacto1=='CELULAR'){
-       if(data.f01_contacto1_nro != ''){
-         var w1 = data.f01_celular1_whatsapp;
-         $scope.activaWhatsapp1(w1);
-         myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '", "estado":"' + $scope.datos.whatsapp1 + '" }';
-       }else{
-         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-         $scope.sinDato1 = true;
-       }
-       $rootScope.contactosArray.push(myJSON);
-     }
- //////////
-     if (data.f01_contacto2=='TELÉFONO'){
-       if(data.f01_contacto2_nro != ''){
-         myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '", "estado":"FIJO" }';
-       }else{
-         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-         $scope.sinDato2 = true;
-       }
-       $rootScope.contactosArray.push(myJSON);
-     }
-     if (data.f01_contacto2=='CELULAR'){
-       if(data.f01_contacto2_nro != ''){
-        var w2 = data.f01_celular22_whatsapp;
-        $scope.activaWhatsapp2(w2);
-         myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '", "estado":"' +  $scope.datos.whatsapp2 + '" }';
-       }else{
-         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-         $scope.sinDato2 = true;
-       }
-       $rootScope.contactosArray.push(myJSON);
-     }
- ////////////
-     if (data.f01_contacto3=='TELÉFONO'){
-       if(data.f01_contacto3_nro != ''){
-         myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '",  "estado": "FIJO" }';
-       }else{
-         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-         $scope.sinDato3 = true;
-       }
-       $rootScope.contactosArray.push(myJSON);
-     }
-     if (data.f01_contacto3=='CELULAR'){
-       if(data.f01_contacto3_nro != ''){
-        var w3 = data.f01_celular3_whatsapp;
-        $scope.activaWhatsapp3(w3);
-         myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '",  "estado":"' +  $scope.datos.whatsapp3 + '" }';
-       }else{
-         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
-         $scope.sinDato3 = true;
-       }
-       $rootScope.contactosArray.push(myJSON);
-     }
-     ////////
-     
-    $rootScope.contactosArray.push(myJSON);
-    datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
 
-    //actualiza json redes
-    datosTiendaVirtual.redes_sociales = [];
-    $rootScope.redesSocialesArray = [];  
-    myJSON = '';
-      if (data.f01_redessocialesAE1=='true' || data.f01_redessocialesAE1==true){
-        if(data.f01_redessocialesAE1_url != ''){
-          myJSON = '{ "tipo":"facebook", "checked":"true", "url":"' + data.f01_redessocialesAE1_url + '" }';
-           $rootScope.redesSocialesArray.push(myJSON);
+    }
+    else{
+      swal('', "Datos obligatorios, verifique las casillas de archivos adjuntos (Encabezado y Logotipo) y/ó los números de Contacto (Debe registrar al menos uno)", 'warning');
+    }
+
+  }
+
+  
+    
+  $scope.actualizarDatosAE = function(data){
+    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '')||
+       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '')||
+       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '')) {
+        var datosTiendaVirtual = new dataTiendaVirtual();
+      datosTiendaVirtual.idtv = sessionService.get("IDTV");
+      datosTiendaVirtual.ae_id = sessionService.get("IDAE");
+      datosTiendaVirtual.categoria = data.f01_categoria;
+      datosTiendaVirtual.nombre = data.f01_nombreTV;
+      datosTiendaVirtual.correo = data.f01_correoTV;
+      datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
+      var descTV = data.f01_descripcionTV;
+      descTV = descTV.replace(/\n/g, "<br>");
+      datosTiendaVirtual.descripcion = descTV;
+      var formaE = data.f01_forma_entrega;
+      formaE = formaE.replace(/\n/g, "<br>");
+      datosTiendaVirtual.forma_entrega= formaE;
+      //actualiza json contactos
+      datosTiendaVirtual.contactos = [];
+      $rootScope.contactosArray = []; 
+      /////////
+      var myJSON = '';
+      if (data.f01_contacto1=='TELÉFONO'){
+        if(data.f01_contacto1_nro != ''){
+          myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '", "estado":"FIJO" }';
+        }else{
+          myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+          $scope.sinDato1 = true;
+        }
+        $rootScope.contactosArray.push(myJSON);
+      }
+      if (data.f01_contacto1=='CELULAR'){
+        if(data.f01_contacto1_nro != ''){
+          var w1 = data.f01_celular1_whatsapp;
+          $scope.activaWhatsapp1(w1);
+          myJSON = '{ "tipo":"' + data.f01_contacto1 + '", "valor":"' + data.f01_contacto1_nro + '", "estado":"' + $scope.datos.whatsapp1 + '" }';
+        }else{
+          myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+          $scope.sinDato1 = true;
+        }
+        $rootScope.contactosArray.push(myJSON);
+      }
+      if(data.f01_contacto1 == '' || data.f01_contacto1 == undefined || data.f01_contacto1 == 'undefined'){
+        myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+        $rootScope.contactosArray.push(myJSON);
+      }
+  //////////
+      if (data.f01_contacto2=='TELÉFONO'){
+        if(data.f01_contacto2_nro != ''){
+          myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '", "estado":"FIJO" }';
+        }else{
+          myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+          $scope.sinDato2 = true;
+        }
+        $rootScope.contactosArray.push(myJSON);
+      }
+      if (data.f01_contacto2=='CELULAR'){
+        if(data.f01_contacto2_nro != ''){
+          var w2 = data.f01_celular22_whatsapp;
+          $scope.activaWhatsapp2(w2);
+          myJSON = '{ "tipo":"' + data.f01_contacto2 + '", "valor":"' + data.f01_contacto2_nro + '", "estado":"' +  $scope.datos.whatsapp2 + '" }';
+        }else{
+          myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+          $scope.sinDato2 = true;
+        }
+        $rootScope.contactosArray.push(myJSON);
+      }
+      if(data.f01_contacto2 == '' || data.f01_contacto2 == undefined || data.f01_contacto2 == 'undefined'){
+        myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+        $rootScope.contactosArray.push(myJSON);
+      }
+  ////////////|
+      if (data.f01_contacto3=='TELÉFONO'){
+        if(data.f01_contacto3_nro != ''){
+          myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '",  "estado": "FIJO" }';
+        }else{
+          myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+          $scope.sinDato3 = true;
+        }
+        $rootScope.contactosArray.push(myJSON);
+      }
+      if (data.f01_contacto3=='CELULAR'){
+        if(data.f01_contacto3_nro != ''){
+          var w3 = data.f01_celular3_whatsapp;
+          $scope.activaWhatsapp3(w3);
+          myJSON = '{ "tipo":"' + data.f01_contacto3 + '", "valor":"' + data.f01_contacto3_nro + '",  "estado":"' +  $scope.datos.whatsapp3 + '" }';
+        }else{
+          myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+          $scope.sinDato3 = true;
+        }
+        $rootScope.contactosArray.push(myJSON);
+      }
+      if(data.f01_contacto3 == '' || data.f01_contacto3 == undefined || data.f01_contacto3 == 'undefined'){
+        myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+        $rootScope.contactosArray.push(myJSON);
+      }
+      ////////
+      
+      datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
+
+      //actualiza json redes
+      datosTiendaVirtual.redes_sociales = [];
+      $rootScope.redesSocialesArray = [];  
+      myJSON = '';
+        if (data.f01_redessocialesAE1=='true' || data.f01_redessocialesAE1==true){
+          if(data.f01_redessocialesAE1_url != ''){
+            myJSON = '{ "tipo":"facebook", "checked":"true", "url":"' + data.f01_redessocialesAE1_url + '" }';
+            $rootScope.redesSocialesArray.push(myJSON);
+          }else{
+            myJSON = '{ "tipo":"facebook", "checked":"false", "url":"" }';
+            $rootScope.redesSocialesArray.push(myJSON);
+          }
         }else{
           myJSON = '{ "tipo":"facebook", "checked":"false", "url":"" }';
           $rootScope.redesSocialesArray.push(myJSON);
         }
-      }else{
-        myJSON = '{ "tipo":"facebook", "checked":"false", "url":"" }';
-        $rootScope.redesSocialesArray.push(myJSON);
-      }
-      if (data.f01_redessocialesAE2=='true' || data.f01_redessocialesAE2==true){
-        if(data.f01_redessocialesAE2_url != ''){
-          myJSON = '{ "tipo":"twitter", "checked":"true", "url":"' + data.f01_redessocialesAE2_url + '" }';
-           $rootScope.redesSocialesArray.push(myJSON);
+        if (data.f01_redessocialesAE2=='true' || data.f01_redessocialesAE2==true){
+          if(data.f01_redessocialesAE2_url != ''){
+            myJSON = '{ "tipo":"twitter", "checked":"true", "url":"' + data.f01_redessocialesAE2_url + '" }';
+            $rootScope.redesSocialesArray.push(myJSON);
+          }else{
+            myJSON = '{ "tipo":"twitter", "checked":"false", "url":"" }';
+            $rootScope.redesSocialesArray.push(myJSON);
+          }
         }else{
           myJSON = '{ "tipo":"twitter", "checked":"false", "url":"" }';
           $rootScope.redesSocialesArray.push(myJSON);
         }
-       }else{
-        myJSON = '{ "tipo":"twitter", "checked":"false", "url":"" }';
-        $rootScope.redesSocialesArray.push(myJSON);
-      }
-      if (data.f01_redessocialesAE3=='true' || data.f01_redessocialesAE3==true){
-        if(data.f01_redessocialesAE3_url != ''){
-          myJSON = '{ "tipo":"instagram", "checked":"true", "url":"' + data.f01_redessocialesAE3_url + '" }';
-           $rootScope.redesSocialesArray.push(myJSON);
+        if (data.f01_redessocialesAE3=='true' || data.f01_redessocialesAE3==true){
+          if(data.f01_redessocialesAE3_url != ''){
+            myJSON = '{ "tipo":"instagram", "checked":"true", "url":"' + data.f01_redessocialesAE3_url + '" }';
+            $rootScope.redesSocialesArray.push(myJSON);
+          }else{
+            myJSON = '{ "tipo":"instagram", "checked":"false", "url":"" }';
+            $rootScope.redesSocialesArray.push(myJSON);
+          }
         }else{
           myJSON = '{ "tipo":"instagram", "checked":"false", "url":"" }';
           $rootScope.redesSocialesArray.push(myJSON);
         }
-      }else{
-        myJSON = '{ "tipo":"instagram", "checked":"false", "url":"" }';
-        $rootScope.redesSocialesArray.push(myJSON);
-      }
-      if (data.f01_redessocialesAE4=='true' || data.f01_redessocialesAE4==true){
-        if(data.f01_redessocialesAE4_url != ''){
-          myJSON = '{ "tipo":"youtube", "checked":"true", "url":"' + data.f01_redessocialesAE4_url + '" }';
-           $rootScope.redesSocialesArray.push(myJSON);
+        if (data.f01_redessocialesAE4=='true' || data.f01_redessocialesAE4==true){
+          if(data.f01_redessocialesAE4_url != ''){
+            myJSON = '{ "tipo":"youtube", "checked":"true", "url":"' + data.f01_redessocialesAE4_url + '" }';
+            $rootScope.redesSocialesArray.push(myJSON);
+          }else{
+            myJSON = '{ "tipo":"youtube", "checked":"false", "url":"" }';
+            $rootScope.redesSocialesArray.push(myJSON);
+          }
         }else{
           myJSON = '{ "tipo":"youtube", "checked":"false", "url":"" }';
           $rootScope.redesSocialesArray.push(myJSON);
         }
-      }else{
-        myJSON = '{ "tipo":"youtube", "checked":"false", "url":"" }';
-        $rootScope.redesSocialesArray.push(myJSON);
-      }
-    datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
-    datosTiendaVirtual.catalogo = $scope.catalogo1;
-    datosTiendaVirtual.logotipo = $scope.logotipo1;
-    datosTiendaVirtual.encabezado = $scope.encabezado1;
+        if (data.f01_redessocialesAE5=='true' || data.f01_redessocialesAE5==true){
+          if(data.f01_redessocialesAE5_url != ''){
+            myJSON = '{ "tipo":"otro", "checked":"true", "url":"' + data.f01_redessocialesAE5_url + '" }';
+            $rootScope.redesSocialesArray.push(myJSON);
+          }else{
+            myJSON = '{ "tipo":"otro", "checked":"false", "url":"" }';
+            $rootScope.redesSocialesArray.push(myJSON);
+          }
+        }else{
+          myJSON = '{ "tipo":"otro", "checked":"false", "url":"" }';
+          $rootScope.redesSocialesArray.push(myJSON);
+        }
+        
+      datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
+      datosTiendaVirtual.catalogo = $scope.catalogo1;
+      datosTiendaVirtual.logotipo = $scope.logotipo1;
+      datosTiendaVirtual.encabezado = $scope.encabezado1;
 
-    datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
-    if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
-        datosTiendaVirtual.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_MATERNO') + ' ' + sessionService.get('US_PATERNO');
-    } else {
-        datosTiendaVirtual.usr = "juridico";
-    }
-    datosTiendaVirtual.actualizarTiendaVirtual(function(response){
-      console.log(response);
-      results = JSON.parse(response);
-      results = results.success;
-      if(results.length > 0){
-          $.unblockUI();
-          swal('', "La información de la Tienda Virtual fue actualizada ", 'success');
-          $rootScope.nuevo = null;       
+      datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
+      if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
+          datosTiendaVirtual.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_MATERNO') + ' ' + sessionService.get('US_PATERNO');
       } else {
-          $.unblockUI();
-          swal('', "Error al Actualizar información de la Tienda Virtual", 'error');
-          $location.path('dashboard');
+          datosTiendaVirtual.usr = "juridico";
       }
-    });
+      datosTiendaVirtual.actualizarTiendaVirtual(function(response){
+        console.log(response);
+        results = JSON.parse(response);
+        results = results.success;
+        if(results.length > 0){
+            $.unblockUI();
+            swal('', "La información de la Tienda Virtual fue actualizada ", 'success');
+            $rootScope.nuevo = null;       
+        } else {
+            $.unblockUI();
+            swal('', "Error al Actualizar información de la Tienda Virtual", 'error');
+            $location.path('dashboard');
+        }
+      });
+  
+    }else{
+      swal('', "Datos obligatorios, verifique las casillas de archivos adjuntos (Encabezado y Logotipo) y/ó los números de Contacto (Debe registrar al menos uno)", 'warning');
+    }
   }
+    
   $scope.limpiar = function(){
     console.log('limpiando Campos');
       $scope.swWhats1 = false;
@@ -606,6 +696,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_redessocialesAE3 = "";
       $scope.datos.f01_redessocialesAE4_url = "";
       $scope.datos.f01_redessocialesAE4 = "";
+      $scope.datos.f01_redessocialesAE5_url = "";
+      $scope.datos.f01_redessocialesAE5 = "";
       //$scope.datos.f01_ofertasAE_des1 = "";
       //$scope.datos.f01_ofertasAE_des2 = "";
       //$scope.datos.f01_ofertasAE_des3 = "";
@@ -650,6 +742,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $("#mensajeR6").hide();
       $("#mensajeR7").hide();
       $("#mensajeR8").hide();
+      $("#mensajeR9").hide();
+      $("#mensajeR10").hide();
       $("#mensajeT11").hide();
       $("#mensajeT12").hide();
       $("#mensajeT10").hide();
@@ -1013,6 +1107,17 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $("#mensajeR7").show();
     }
   }
+  $scope.activaRedes5 = function(dato){
+    $scope.redOtro = dato;
+    if(dato == false) {
+      $scope.inicializaOtro = true;
+      document.getElementById('f01_redessocialesAE5_url').value = ''; 
+      $("#mensajeR9").hide();
+    } else {
+      $scope.inicializaOtro = false;
+      $("#mensajeR9").show();
+    }
+  }
   $scope.validaRedes1 = function (datos){
     if($scope.redFacebook == true){
       $("#mensajeR1").show();
@@ -1065,6 +1170,19 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $("#mensajeR8").hide();
     }
   }
+  $scope.validaRedes5 = function (datos){
+    if($scope.redOtro == true){
+      $("#mensajeR9").show();
+      $("#mensajeR10").hide();
+      if(datos.length > 10){
+        $("#mensajeR9").hide();
+        $("#mensajeR10").show();
+      }
+    }else{
+      $("#mensajeR9").hide();
+      $("#mensajeR10").hide();
+    }
+  }
 
 
 
@@ -1112,7 +1230,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $.blockUI();
         angular.forEach(aArchivos, function(archivo, key) {
             if(typeof(archivo) != 'undefined'){
-                console.log("idfiles key:: ", idFiles[key]);
                 if (idFiles[key]==1){
                   var descDoc = "catalogo";
                   var descArchivo = "catalogo de productos";

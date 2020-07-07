@@ -12,6 +12,9 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
 
   $scope.seleccionaPago = function (tipoPago) {
     if (tipoPago == 1) {
+      $scope.mensajetpPago = "Para efectuar el cobro a través del Banco de Crédito de Bolivia (BCP), mediante el cobro por QR-BCP"+
+      " usted debe poseer credenciales (codigos de acceso) proporcionadas por Banco de Crédito de Bolivia (BCP).";
+      swal("", $scope.mensajetpPago , "warning");
       var pagoQr = new qr();
       pagoQr.id_actividadeconomica = idAE;
       pagoQr.getCredencialQr(function (resp) {
@@ -30,6 +33,9 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
       $scope.tipo = 'QR';
     }
     else if (tipoPago == 2) {
+      $scope.mensajetpPago = "Para efectuar el cobro a través del servicio de Red Enlace CyberSource, mediante tarjetas de credito o debito "+
+      "usted debe poseer credenciales (codigos de acceso) proporcionadas por Red Enlace.";
+      swal("", $scope.mensajetpPago , "warning");
       var getpagoAtc = new atc();
       getpagoAtc.id_actividadeconomica = sessionService.get("IDAE");
       getpagoAtc.getRegistroAtc(function (resp) {
@@ -55,6 +61,9 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
       });
       $scope.tipo = 'ATC';
     } else if (tipoPago == 3) {
+      $scope.mensajetpPago = "Para efectuar el cobro por este canal de pago y usted debera colocar los datos necesarios para realizar "+
+      "una transferencia bancaria convencional directamente a la cuenta bancaria del vendedor";
+      swal("", $scope.mensajetpPago , "warning");
       $scope.tipo = 'TB';
       var getCretransBanc = new tbancaria();
       getCretransBanc.id_actividadeconomica = sessionService.get("IDAE");

@@ -83,11 +83,16 @@ qr.prototype.getCredencialQr = function (functionResp) {
 };
 /*/////////////// Transferencia Bancaria //////////////////////*/
 function tbancaria() {
+  
   this.id_actividadeconomica;
   this.entidad_financiera;
   this.numero_cuenta;
   this.nombre_abono;
   this.ci_nit_abono;
+  this.id_venta;
+  this.estado;
+  this.observacion;
+  this.idContribuyente;
 };
 
 tbancaria.prototype.registroTransferencia = function (functionResp) {
@@ -116,6 +121,18 @@ tbancaria.prototype.getEntidades = function (functionResp) {
   dataParamsPago = {
   };
   ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
+};
+
+tbancaria.prototype.pagoCambioEstado = function (functionResp) { 
+  urlCompPago = "/cambio-estado-pago-ae";
+  typeCallPago = "post";
+  dataParamsPago = {
+      "id_actividadeconomica" : this.id_actividadeconomica,
+      "id_venta"              : this.id_venta,
+      "estado"                : this.estado,
+      "observacion"           : this.observacion,
+  };
+  ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);       
 };
 /*/////////////// Mis Transacciones //////////////////////*/
 function lstTransaciones() {

@@ -36,6 +36,11 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       myJSON = '{ "direccion":"' + $rootScope.direccionAe + '" }';
       myJSON2 = JSON.parse(myJSON);
       $rootScope.datosAuxiliares.push(myJSON2);
+
+      myJSON = '{ "tipo_entrega":"' + $rootScope.datosTiendaVirtual[0].pforma_entrega + '" }';
+      myJSON2 = JSON.parse(myJSON);
+      $rootScope.datosAuxiliares.push(myJSON2);
+
     }
     $scope.inicioPaginaWeb = function () {
       $scope.nombre_tienda = $rootScope.datosTiendaVirtual[0].tv_nombrec;
@@ -258,7 +263,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
                   "sae": sessionService.get('IDAE'),
                   "slogo": urllogo,
-                  "sencabezado": urlenca
+                  "sencabezado": urlenca,
+                  "sentrega" : $rootScope.datosTiendaVirtual[0].pforma_entrega
               },
               success:function(response){
                   if (response == 'error creando fichero'){
@@ -346,7 +352,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
                   "sae": sessionService.get('IDAE'),
                   "slogo": urllogo,
-                  "sencabezado": urlenca
+                  "sencabezado": urlenca,
+                  "sentrega" : $rootScope.datosTiendaVirtual[0].pforma_entrega
               },
               success:function(response){
                   if (response == 'error creando fichero'){

@@ -27,6 +27,8 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
     $scope.idAEconomicas;
     $scope.fechaIni;
     $scope.fechaFin;
+    $scope.divObsBoleta = null;
+    $scope.metPago  = "TRANSFERENCIA";
 
     $scope.lstMistransacciones = function (fechaIni, fechaFin) {
         $.blockUI();
@@ -58,8 +60,6 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                     alertify.error("Sin Transacciones...");
                     $scope.vistaInfo = "mostrar";
                 }
-                //$("#fechaIni").val("");
-                //$("#fechaFin").val("");
             });
         } else {
             $.blockUI();
@@ -76,6 +76,7 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                     if (respuesta.length > 0) {
                         respuesta.forEach(element => {
                             element.sucursal = Sucursal;
+                            element.id_AE = idAE;
                             $scope.arrayTransacciones.push(element);
                         });
                     }
@@ -97,8 +98,6 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                 $scope.vistaInfo = "mostrar";
                 $.unblockUI();
             }
-            //$("#fechaIni").val("");
-            //$("#fechaFin").val("");
         }
         $.unblockUI();
     }
@@ -271,15 +270,112 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
         $.unblockUI();
 
     }
-   
+    $scope.validar_boleta = function(estado) {
+        console.log("estado", estado, "id venta ", $scope.id_venta_pedido);
+
+        if( estado == "observar"){
+            $scope.divObsBoleta = "mostrar";
+           
+        }else{
+
+            swal({
+                title: "¿Esta seguro de validar y aceptar la boleta de transferencia?",
+                text: "Si confirma, el pedido pasara a un estado de pagado",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Confirmar",
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: false,
+                closeOnCancel: true
+              },
+              function(isConfirm) {
+                if (isConfirm) {
+                    var idAE = $scope.id_ac_economica;
+                    var datacambiaData = new tbancaria();
+                    datacambiaData.id_actividadeconomica = idAE;
+                    datacambiaData.id_venta        = $scope.id_venta_pedido;
+                    datacambiaData.estado          = "PAGADO";
+                    datacambiaData.observacion     = "";
+                    datacambiaData.pagoCambioEstado(function (resultado) {
+                        var resultadoApi = JSON.parse(JSON.parse(resultado));
+                        console.log("respuesta update ", resultadoApi);
+                        if (resultadoApi.respuesta_pago != "00") {
+                            swal("", "Se confirmo la boleta de transferencia correctamente.", "success");
+                            $("#fotpod").modal("hide");             
+
+                        } else {
+                            console.log("respuesta update ", resultadoApi);
+                        }
+                    });
+                } else {
+                  //swal("", "Cancelar :)", "error");
+                }
+              });
+        }
+    }
+    $scope.validar_boleta_obs = function(estado,descripcion) {
+        console.log("descripcion ", descripcion);
+        if (estado == "observar") {
+            if (descripcion == undefined  || descripcion == null || descripcion == "undefined") {
+                
+                alertify.error("Describa la observación por la que se esta rechazando por favor");
+            }else {
+                swal({
+                    title: "¿Esta seguro de realizar la observación?",
+                    text: "Si confirma la observación el pedido pasara a un estado de rechazo",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    cancelButtonClass: "btn-success",
+                    confirmButtonText: "Confirmar",
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                  },
+                  function(isConfirm) {
+                    if (isConfirm) {
+                        var idAE = $scope.id_ac_economica;
+                        var datacambiaData = new tbancaria();
+                        datacambiaData.id_actividadeconomica = idAE;
+                        datacambiaData.id_venta        = $scope.id_venta_pedido;
+                        datacambiaData.estado          = "RECHAZADO";
+                        datacambiaData.observacion     = descripcion;
+                        datacambiaData.pagoCambioEstado(function (resultado) {
+                            console.log("rrr ", resultado);
+                            var resultadoApi = JSON.parse(JSON.parse(resultado));
+                            //console.log("respuesta update ", JSON.parse(resultadoApi));
+                            if (resultadoApi.respuesta_pago != "00") {
+                                $("#fotpod").modal("hide");             
+                                swal("", "La observación se realizo correctamente.", "success");
+                            } else {
+                                console.log("respuesta update ", resultadoApi);
+                            }
+                        });
+                    } else {
+                        swal("", "Se presento un problema al realizar la observación :)", "error");
+                    }
+                });
+            }
+        } else {
+            $scope.divObsBoleta = null;            
+        } 
+    }
+    
     $scope.mostrarImg  =   function(dataimg){ 
+        console.log("dataimg2222 ", dataimg);
+        $scope.id_venta_pedido = dataimg.id_venta;
+        $scope.id_ac_economica = dataimg.id_AE;
+        $scope.estadopagovista = dataimg.estado_pago;
         $scope.archivoPOD     = "";
         $scope.nombreVistaadj = "RECIBO DEL DEPOSITO POR CONCEPTO DE LA COMPRA:";
         $scope.nombreVistaadj = dataimg.nombreVistaadj;
+        //$scope.urlImagenfile  = "192.168.5.141/rest/files/transaccion/102860/venta_20200623140916.png?app_name=todoangular";//dataimg.imagen_transaccion;
         $scope.urlImagenfile  = dataimg.imagen_transaccion;
         $.blockUI();
         var estado = true;
         if ($scope.urlImagenfile != '' && $scope.urlImagenfile != undefined ) {
+            $scope.divObsBoleta = null;
             try{
                 $scope.archivoPOD =  $scope.urlImagenfile;             
                 var extPod        =  $scope.urlImagenfile.split("?app_name=todoangular");
@@ -297,7 +393,7 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
               $.unblockUI();
             }   
         }else{
-          swal('Error', 'Debe ingresar el Adjunto correspondiente', 'error');
+          swal('Error', 'La transferencia no contiene documentos', 'error');
         }
         $.unblockUI();
     }

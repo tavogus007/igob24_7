@@ -423,6 +423,36 @@
                     </div>
                   </div>
                   <div class="col-md-12">
+                  <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                    <h4>FORMULARIO DE DENUNCIA</h4>
+                  </div>
+                </div>
+                <br>
+                <br>
+                  <div class="col-md-12">
+                    <legend>
+                      <h2>Tipo de Servicio:</h2>
+                    </legend>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <label class="tamañoLabel">
+                            <input type="radio" name="INF_TIPO_SERVICIO" id="INF_TIPO_SERVICIO" ng-model="datos.INF_TIPO_SERVICIO" ng-change="dinamicoTipoServicio(datos.INF_TIPO_SERVICIO);" value="Servicio de Transporte Público"> <span class="label-text" ng-disabled="desabilitado"></span>
+                          </label>Servicio de Transporte Público
+                        </div> 
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <label class="tamañoLabel">
+                            <input type="radio" name="INF_TIPO_SERVICIO" id="INF_TIPO_SERVICIO" ng-model="datos.INF_TIPO_SERVICIO" ng-change="dinamicoTipoServicio(datos.INF_TIPO_SERVICIO);" value="Servicio de Radio Taxi"> <span class="label-text" ng-disabled="desabilitado"></span>
+                          </label>Servicio de Radio Taxi
+                        </div> 
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
                     <legend>
                       <h2>Tipo de Vehiculo:</h2>
                     </legend>
@@ -579,7 +609,7 @@
                           </div>
                         </div>   
                         <div class="col-md-12" >
-                          <div class="col-md-4" >
+                          <div class="col-md-6" >
                             <div class="form-group" >
                               <label for="url">Placa de Circulación</label>
                               <div class="controls">
@@ -587,23 +617,42 @@
                               </div>
                             </div>
                           </div>
-                       
-                        <div class="col-md-4" >
-                            <div class="form-group" >
-                              <label for="url">Ruta (opcional)</label>
-                              <div class="controls">
-                                <input type="text" class="form-control" ng-model="datos.INF_RUTA_VEHICULO" name="INF_RUTA_VEHICULO" ng-disabled="desabilitado"> 
-                              </div>
-                            </div>
-                          </div>
-                        
-                          <div class="col-md-4" >
+                          <div class="col-md-6" >
                             <div class="form-group" >
                               <label for="url">Hora</label>
                               <div class="controls">
                                 <input type="time" class="form-control" ng-model="datos.INF_O_RT_HORA" name="INF_O_RT_HORA" value="memorandum" required ng-disabled="desabilitado"> 
                               </div>
                             </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12" ng-show="div_ruta == true">
+                          <div class="col-md-6" >
+                            <div class="form-group" >
+                              <label for="url">Ruta (opcional)</label>
+                              <div class="controls">
+                                <input type="text" class="form-control" ng-model="datos.INF_RUTA_VEHICULO" name="INF_RUTA_VEHICULO" required ng-disabled="desabilitado"> 
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="col-md-12" ng-show="div_nom_conductor == true">
+                          <div class="col-md-6" >
+                            <div class="form-group" >
+                              <label for="url">Nombre Operador Radio Taxi :</label>
+                              <div class="controls">
+                                <select id="INF_O_RT_NOMBRE_O_RT" 
+                                name="INF_O_RT_NOMBRE_O_RT"
+                                placeholder="Macrodistrito" 
+                                ng-model="datos.INF_O_RT_NOMBRE_O_RT"
+                                class="form-control"
+                                ng-options="ope.ope_denominacion as ope.ope_denominacion for ope in aListadoOperadorTaxi"
+                                required ng-disabled="desabilitado">
+                                <option value="">--Seleccionar--</option>
+                                </select>
+                              </div>
+                          </div>
                           </div>
                         </div>
                         </div>

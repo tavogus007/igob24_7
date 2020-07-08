@@ -1768,7 +1768,6 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.pubrd ="";
         var longpub = paramf.publicidadAE;
         if(paramf.publicidadAE){
-            console.log(" $scope.pubrd:: ",  $scope.pubrd);
             if(paramf.publicidad.length > 0 ){
                  $scope.pubrd = paramf.publicidadAE.concat(paramf.publicidad);
               }else{
@@ -1807,7 +1806,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     $scope.enviarFormProcesosLinea = function(paramForm){
         $scope.ultimoArrayAdjunto();
         $scope.capturarImagen();
-        //$scope.adjpublicidad(paramForm);
+        $scope.adjpublicidad(paramForm);
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         //$rootScope.validacionRequisitosTec();
         $scope.btnEnviarForm    =   true;

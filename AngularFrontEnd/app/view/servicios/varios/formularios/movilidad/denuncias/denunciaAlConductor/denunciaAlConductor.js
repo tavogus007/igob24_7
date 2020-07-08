@@ -8,6 +8,9 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
     $scope.desabilitado = false;
     $scope.aMacrodistritos = {};
     $scope.div_otros = false;
+    $scope.div_ruta = false;
+    $scope.div_nom_conductor = false;
+    $scope.aListadoOperadorTaxi = {};
     $scope.inicio = function(){
     }
   
@@ -17,7 +20,9 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
       $scope.dinamicoTipoVehiculo($scope.datos.INF_TIPO_VEHICULO);
       $scope.enviado = sessionService.get('ESTADO');
       $scope.macrodistritos();
+      $scope.operadorRadiotaxis();
       $scope.listaZona($scope.datos.INF_ORT_MACRO);
+      $scope.dinamicoTipoServicio($scope.datos.INF_TIPO_SERVICIO);
       if($scope.enviado == 'SI'){
         $scope.desabilitado = true;
       }else{
@@ -70,7 +75,9 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
     }
     ///////////////////////// VALIDADOR PREVIO A GUARDAR ///////////////////
     $scope.validarTramiteGuardar = function(datos){
-        if($scope.datos.INF_ORT_MACRO == undefined){
+        if($scope.datos.INF_TIPO_SERVICIO == undefined){
+        $scope.mensajeError("Porfavor seleccione el tipo de servicio a cual denunciara");
+        }else if($scope.datos.INF_ORT_MACRO == undefined){
          $scope.mensajeError("Porfavor seleccione el macro distrito");
         }else if($scope.datos.INF_TIPO_VEHICULO == undefined){
             $scope.mensajeError("Porfavor ingrese el tipo de vehiculo");
@@ -88,6 +95,10 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
             $scope.mensajeError("Porfavor especifique la descripción de otro tipo de vehículo");
         }else if($scope.datos.INF_O_RT_BREVE_DESC_O_RT == undefined){
             $scope.mensajeError("Porfavor ingrese una breve descripción");
+        }else if($scope.datos.INF_TIPO_SERVICIO == 'Servicio de Transporte Público' && $scope.datos.INF_RUTA_VEHICULO == undefined){
+            $scope.mensajeError("Porfavor ingrese la Ruta del transporte público");
+        }else if($scope.datos.INF_TIPO_SERVICIO == 'Servicio de Radio Taxi' && $scope.datos.INF_O_RT_NOMBRE_O_RT == undefined){
+            $scope.mensajeError("Porfavor ingrese Operador de Radio Taxi");
         }else{
             $scope.guardar_tramite(datos);
         }
@@ -244,5 +255,27 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
             $scope.div_otros = false;
         }
     }
+    $scope.dinamicoTipoServicio = function(data){
+      if(data == 'Servicio de Transporte Público'){
+        $scope.div_ruta = true;
+        $scope.div_nom_conductor =false;
+      }else if(data == 'Servicio de Radio Taxi'){
+        $scope.div_ruta = false;
+        $scope.div_nom_conductor =true;
+      }else{
+        $scope.div_ruta = false;
+        $scope.div_nom_conductor =false;
+      }
+    }
+    $scope.operadorRadiotaxis = function(){
+      var datosP = new buscaOperadorRadioTaxi();
+      datosP.listaOperadorRadioTaxi(function(resultado){
+        data = JSON.parse(resultado);
+        console.log("operadorRadiotaxis",data);
+        $scope.aListadoOperadorTaxi = data.success;
+        $scope.aListadoOperadorTaxi = $scope.aListadoOperadorTaxi.data;
+      });
+    }
+  
   }
   

@@ -81,3 +81,15 @@ buscaOperador.prototype.buscaOperadorRT = function (functionResp) {
   ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
 };
 
+function buscaOperadorRadioTaxi(){
+  this.uid_ciudadano;
+};
+
+buscaOperadorRadioTaxi.prototype.listaOperadorRadioTaxi = function (functionResp) {
+  urlComp = "/lstRadioTaxi";
+  typeCall = "post";
+  dataParams = {
+  };
+  ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
+};
+

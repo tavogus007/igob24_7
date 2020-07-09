@@ -43,6 +43,14 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
           $scope.datos.INF_O_RT_ZONA_ID = $scope.aDistritoZona[i].dist_id;
         }
       }
+      if($scope.datos.INF_TIPO_SERVICIO == 'Servicio de Radio Taxi'){
+        for(var i = 0 ; i < $scope.aListadoOperadorTaxi.length ; i++){
+          if(datos.INF_O_RT_NOMBRE_O_RT == $scope.aListadoOperadorTaxi[i].ope_denominacion){
+            $scope.datos.INF_O_RT_NOMBRE_O_RT_ID = $scope.aListadoOperadorTaxi[i].ope_id;
+            $scope.datos.INF_O_RT_NOMBRE_O_RT_CIU_RESPONSABLE = $scope.aListadoOperadorTaxi[i].repr_uidciudadano;
+          }
+        }
+      }
       datos.Tipo_tramite_creado = "WEB";
       try {
         var datosSerializados   =  JSON.stringify(datos);

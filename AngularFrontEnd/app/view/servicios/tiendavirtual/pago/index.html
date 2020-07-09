@@ -135,7 +135,7 @@
           <form name="signupForm"  class="" role="form" novalidate>                   
             <div class="row" >
               <div class="col-md-12">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="form-group" >
                         <label for="url" >Tipo de Pago:</label>
                         <div class="controls">
@@ -145,8 +145,18 @@
                                 <option value="2"> RED ENLACE </option>
                                 <option value="3"> TRANSFERENCIA BANCARIA </option>
                             </select>
-                        </div>
+                          </div>
+                          
                     </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group" >
+                    <br>
+                    <button type="button" class="btn btn-default"
+                            tooltip="Descripción del tipo de pago"
+                                    ng-click="mensajeAlerta()"><i
+                                    class="glyphicon glyphicon-question-sign"></i></button>
+                  </div>
                 </div>
                 <div ng-show = "tipo=='QR'">
                   <div class="col-md-6">

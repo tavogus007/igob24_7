@@ -115,6 +115,19 @@ var zonas_tributarias = new ol.layer.Tile({
           })
 });
 
+var zonas_tributarias_udit = new ol.layer.Tile({
+            title: 'Zonas Tributarias',
+            opacity: 0.3,
+            visible: false,
+            source: new ol.source.TileWMS({
+            //url: 'https://servmonitoreo.lapaz.bo/geoserver/wms',
+            url: 'http://192.168.6.46:8080/geoserver/wms',
+            params: { 'LAYERS': 'DEGEM:zonas_de_valor_3857', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+            serverType: 'geoserver',
+            crossOriginKeyword: 'anonymous'
+          })
+});
+
 var zonas = new ol.layer.Tile({
             title: 'Zonas',
             opacity: 0.3,

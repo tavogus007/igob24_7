@@ -828,6 +828,7 @@
                 console.log ("longitud: ",longitud);
                 $scope.datos.INT_AC_latitud=latitud;
                 $scope.datos.INT_AC_longitud=longitud;
+
                 setTimeout(function()
                 {
                     $.ajax({
@@ -872,6 +873,51 @@
                           }   
                         });
                 },500);
+
+                ///////////////////PARA PATTY//////////////////////////////////////////////////////////////
+                var feature = $scope.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+                  return feature;
+                });
+                if (feature){
+                  var coord = feature.getGeometry().getCoordinates();
+                  var props = feature.getProperties();
+                }
+                else
+                {
+                  //alert();
+                  var url_zonas_tributarias = zonas_tributarias_udit.getSource().getGetFeatureInfoUrl(
+                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
+                                'INFO_FORMAT': 'application/json',
+                                'propertyName': 'grupovalor'
+                              }
+                            );
+
+                  var url_zonas = zonas.getSource().getGetFeatureInfoUrl(
+                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
+                                'INFO_FORMAT': 'application/json',
+                                'propertyName': 'zonaref,macrodistrito,subalcaldia,codigozona,macro,distrito'
+                              }
+                            );
+                   var url_vias = vias.getSource().getGetFeatureInfoUrl(
+                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
+                                'INFO_FORMAT': 'application/json',
+                                'propertyName': 'nombrevia,tipovia'
+                              }
+                            );
+
+                  reqwest({
+                    url: url_zonas_tributarias,
+                    type: 'json',
+                  }).then(function(data)
+                  {
+                    var feature = data.features[0];
+                    var cod = feature.properties;
+                    var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
+                    console.log("codigo zona tributaria patty: ",codigo_zona_tributaria);
+                  });
+                 
+                }
+                ///////////////////////////////////////////////////////////////////////////////////////////////////
             
                 var feature = new ol.Feature(
                       new ol.geom.Point(ol.proj.fromLonLat(centro_1))

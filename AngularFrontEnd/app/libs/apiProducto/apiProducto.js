@@ -53,7 +53,7 @@ function dataTiendaVirtual(){
   this.catalogo,
   this.logotipo,
   this.encabezado,
-  this.cel_whatsapp
+  this.forma_entrega
 };
 dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
 {

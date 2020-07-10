@@ -1,4 +1,4 @@
-function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams, $location, $http,$q, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, registroLog, filterFilter,FileUploader,ngTableParams, $filter, fileUpload,fileUpload1,wsRgistrarPubliciadad, $window, obtFechaActual) {
+function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeParams, $location, $http,$q, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, registroLog, filterFilter,FileUploader,ngTableParams, $filter, fileUpload,fileUpload1,wsRgistrarPubliciadad, $window, obtFechaActual) {
     var fecha           = new Date();
     var fechactual      = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
     $scope.divJuridico              = false;
@@ -16,7 +16,19 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     $scope.idActividiadEconomicaActual          =   "";
     $scope.nroOrdenActividiadEconomicaActual    =   "";
     $scope.idContribuyenteAEActual              =   "";
-    $scope.multipleJuridico = {};
+    $scope.multiple = {};
+    $scope.docPubNuevo = [];
+    $scope.pos = 0;
+    $scope.sinmultiservicios = true;
+    $scope.conmultiservicios = false;
+    $scope.datos.publicidadAntiguo_grilla = [];
+    $scope.datos.docAdPublicidad = [];
+    $scope.datos.licenciamulAnterior = [];
+    $scope.docsAdjuntoAntiguo = [];
+    $scope.datos.datosdocanterior = [];
+    $scope.pubMensaje = false;
+
+
     //RADIO PARA VER SI REALIZARA UNA NUEVA ACTIVIDAD O UNA RENOVACION
     $scope.validarEmisionRenovacion = function (camb) {
         var datosgen = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
@@ -136,39 +148,48 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     }
 
     $scope.validarActividadEconomica  =   function(){
-        $scope.mostrarMsgActividadTrue  = false;
-        $scope.mostrarMsgActividadFalse = false;
-        $scope.mostrarMsgNuevaActividad = false;
-        $scope.listarAE();
+        var validarpromesas = [$scope.listarAE()];
+        $q.all(validarpromesas).then(function (resp) {
+            $scope.mostrarMsgActividadTrue  = false;
+            $scope.mostrarMsgActividadFalse = false;
+            $scope.mostrarMsgNuevaActividad = false;
+            //$scope.listarAE();
+        });
     };
 
     $scope.listarAE = function () {
+        $scope[name] = 'Running';
+        var deferred = $q.defer();
         $scope.sIdAeGrilla    = $scope.datos.INT_TRAMITE_RENOVA;
         var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
-        var sNumeroRegistros  = dataGenesis.length;
-        if(sNumeroRegistros > 0 ){
+        var sNumeroRegistros  = dataGenesis;
+        if(sNumeroRegistros){
             $scope.datos.rdTipoTramite = "RENOVACION";
             var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-            var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
+            var idContribuyente =   dataGenesis.contribuyente_id;
+            var dataJur = '{"id_contribuyente":'+idContribuyente+',"tipo":"J"}';
             if(tipoPersona == "NATURAL"){
                 tipoPersona = "N";
             }else{
                 tipoPersona = "J";
             }
-            var contribuyente   =   new gLstActividadEconomica();
-            contribuyente.idContribuyente   =   idContribuyente;
-            contribuyente.tipo  =   tipoPersona;
-            contribuyente.lstActividadEconomica(function(resultado){
-                resultadoApi = JSON.parse(resultado);
-                if (resultadoApi.success) {
-                    var response    =   resultadoApi;
-                    if(response.success.dataSql.length > 0){
+            var lstActEco = new reglasnegocioSierra();
+            lstActEco.identificador = 'VALLE_PRUEBA-SGEN-3150';
+            lstActEco.parametros = dataJur;
+            lstActEco.llamarregla_sierra(function(responseActEco){
+                if (responseActEco == '"{}"' || responseActEco == '"[{}]"' || responseActEco == '"[{ }]"') {
+                    swal('', "El contribuyente no cuenta con Actividades Económicas.", 'warning');
+                } else{
+                    var respLstActEco = JSON.parse(responseActEco);
+                    console.log('los ddddd   ',respLstActEco);
+                    if(respLstActEco.length > 0){
                         //PRETUNTAR Y LISTAR, SOLO LOS TRÃMITES EN LINEA DE INTERNET
                         $scope.formDatosAE  =   true;
                         $scope.mostrarMsgActividadTrue  = true;
                         $scope.mostrarMsgActividadFalse = false;
-                        $scope.trmUsuario = response.success.dataSql;
-                        var data = response.success.dataSql;
+                        $scope.trmUsuario = respLstActEco;
+                        var data = respLstActEco;
+                        deferred.resolve(respLstActEco);
                         $scope.tblTramites.reload();
                     } else {
                         $scope.mostrarMsgActividadTrue  = false;
@@ -184,8 +205,6 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                         $scope.botones = "mostrar";
                         $scope.desabilitado = false;
                     }
-                } else {
-                    swal('', "Datos no Encontrados !!!", 'warning');
                 }
             });
         }else{
@@ -203,6 +222,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 $scope.txtMsgDataNuevaActividad =   "Favor revisar la informacion de la nueva Actividad Economica que Creara.";
             }
         }
+        return deferred.promise;
     };
 
     $scope.tblTramites = new ngTableParams({
@@ -226,7 +246,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }
     });
 
-    $scope.datosRepresentanteLegal = function (idContribuyente) {
+    /*$scope.datosRepresentanteLegal = function (idContribuyente) {
         try{
             var paramRepLegal = new datosRepresentanteLgEmpresa();
             paramRepLegal.idEmpresa = idContribuyente;
@@ -250,9 +270,37 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }catch (error){
             console.log("error");
         }
+    };*/
+
+    $scope.datosRepresentanteLegal = function () {
+        try{
+            var dataRepLegal = '';
+            dataRepLegal = '{"ycontribuyente_nro_documento":"'+$scope.datos.f01_num_doc_rep+'","ycontribuyente_nit":""}';
+            var resAct = new reglasnegocioSierra();
+            resAct.identificador = 'VALLE_PRUEBA-SGEN-3148';
+            resAct.parametros = dataRepLegal;
+            resAct.llamarregla_sierra(function(responseN){
+                console.log('responseN    ',responseN);
+                //dataN = JSON.parse(responseN);
+                var responseLegal = JSON.parse(responseN);
+                console.log('responseLegal    ',responseLegal);
+                $.unblockUI();
+                if(responseLegal.resultado == true || responseLegal.resultado == 'true'){
+                    var datos = {};
+                    $scope.datos.f01_tipo_per = "J";
+                    $scope.datos.f01_id_representante_legal = responseLegal.data.contribuyente_id;//idRepresentanteLegal
+                }
+                else {
+                    swal('', "Representante Legal no registrado en Sierra", 'warning');
+                }
+                console.log('$scope.datos.f01_id_representante_legal    ',$scope.datos.f01_id_representante_legal);
+            });
+        }catch (error){
+            console.log("error");
+        }
     };
 
-     $scope.datosAnterioresJuridico = function(datos){
+    /*$scope.datosAnterioresJuridico = function(datos){
         $scope.datosMod = datos;
         var datosGenerales = new getDatosAEViae();
         datosGenerales.idActividadEconomica=datos;
@@ -274,6 +322,31 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 }
             });
         });
+    };*/
+
+    $scope.datosAnterioresJuridico = function(datos){
+        $scope.datosMod = datos;
+        var paramidAE = '{"id_actividad_economica":'+datos+'}';
+        var envioIdAe = new reglasnegocioSierra();
+        envioIdAe.identificador = 'VALLE_PRUEBA-SGEN-3145';
+        envioIdAe.parametros = paramidAE;
+        envioIdAe.llamarregla_sierra(function(responsedatosAE){
+            var respuestaDatos = JSON.parse(responsedatosAE);
+            var respuestaDatosPrimerNivel = respuestaDatos[0].sp_obtener_actividad_economica;
+            var datosActividadEconomica = JSON.parse(respuestaDatosPrimerNivel);
+            var datosAESdoNivel = datosActividadEconomica.datosAE;
+            $scope.datosAnt = datosAESdoNivel;
+            console.log('$scope.datosAnt    ',$scope.datosAnt);
+            $scope.datosAntPub = datosActividadEconomica.datosVIAE;  
+            var respuestaVIAE =  datosActividadEconomica.datosVIAE;
+            console.log('respuestaVIAE    ',respuestaVIAE.length);
+            if (respuestaVIAE.length > 0) {
+                $scope.datos.publicidadAntiguo = respuestaVIAE;
+                $scope.PlubliAntiguo_Grilla(respuestaVIAE);
+            } else{
+                $scope.datos.publicidadAntiguo_grilla = [];
+            };
+        });
     };
 
     $scope.PlubliAntiguo_Grilla = function(dato){
@@ -282,11 +355,11 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         var indice = 1;
         encabezado[0] = {"tipo": "GRD","campos": "nroElem|descripcionTipoLetrero|caracteristica|descripcion|cara|alto|ancho|superficie|INT_CATE|","titulos": "ID|Tipo de Letrero|Caracteristica|Descripción|Cara|Alto|Ancho|Superficie|Categoria","impresiones": "true|true|true|true|true|true|true|true|false"};
         var nroElem = 0;
-        var j=0;
-        for(j=0; j<dato.length;j++) {
+        var j = 0;
+        for(j = 0; j < dato.length;j++) {
             $scope.publia_grilla.push({
                 nroElem: j+1,
-                descripcionTipoLetrero: dato[j].descripcionTipoLetrero,
+                descripcionTipoLetrero: dato[j].descripciontipoletrero,
                 caracteristica: dato[j].caracteristica,
                 descripcion: dato[j].descripcion,
                 cara: dato[j].cara,
@@ -303,6 +376,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 indice = indice + 1;
             });
         $scope.datos.publicidadAntiguo_grilla = encabezado;
+        console.log('$scope.datos.publicidadAntiguo_grilla     ',$scope.datos.publicidadAntiguo_grilla);
     }
 
     $scope.obtenerActDes = function(idActividadDesarrollada){
@@ -329,218 +403,283 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.publicid = '';
          var codhojaruta = "";
         var datosLotus = "";
-        $scope.datosAnterioresJuridico(tramite.IdActividad);
-        var dato = tramite.FechaInicio.split('/');
+        $scope.datosAnterioresJuridico(tramite.idactividad);
+        var dato = tramite.fechainicio.split('/');
         aniotram = dato[2];
+        $scope.docPubNuevo = [];
+        $scope.datos.docAdPublicidad = [];
+        $scope.datos.licenciamulAnterior = [];
+        $scope.datos.licenciam = [];
         var anioserv = $scope.anioserver.toString();
         console.log(aniotram, "anos : ",anioserv);
         if(aniotram != anioserv){
-                if(tramite.IdActividad){
-                    $scope.idActividiadEconomicaActual  =   tramite.IdActividad;
-                    $scope.datos.f01_id_actividad_economica = tramite.IdActividad;
-                }
-                $scope.sIdAeGrilla  =   tramite.IdActividad;
+                //if(tramite.IdActividad){
+                $scope.idActividiadEconomicaActual  =   tramite.idactividad;
+                $scope.datos.f01_id_actividad_economica = tramite.idactividad;
+                //}
+                $scope.sIdAeGrilla  =   tramite.idactividad;
                 var tipoPersona     =   sessionService.get('TIPO_PERSONA');
                 if(tipoPersona == "JURIDICO"){
                     tipoPersona = "J";
                 }
-                var datosGenerales = new getDatosAEViae();
-                datosGenerales.idActividadEconomica = tramite.IdActividad;
-                datosGenerales.getDatosAE_Viae(function(resultado){
-                    resultadoApi = JSON.parse(resultado);
-                    if (resultadoApi.success) {
-                         codhojaruta = resultadoApi.success.dataSql.datosAE[0].hojaRuta;
-                        var response = resultadoApi.success.dataSql.datosAE;
-                        var lstPublicidad = resultadoApi.success.dataSql.datosVIAE;
-                        if(response.length > 0){
-                            if(response[0].numeroOrden == 0 || response[0].numeroOrden == null || response[0].numeroOrden == 'null'){
-                                response[0].numeroOrden = "0";
-                                $scope.nroOrdenActividiadEconomicaActual  =  response[0].numeroOrden;
-                                $scope.datos.f01_nro_orden = response[0].numeroOrden;
-                            }
-                            else{
-                                $scope.nroOrdenActividiadEconomicaActual  =    response[0].numeroOrden;
-                                $scope.datos.f01_nro_orden = response[0].numeroOrden;
-                            }
-                            $scope.idContribuyenteAEActual  =    response[0].idContribuyente;
-                            $scope.datos.f01_id_contribuyente = response[0].idContribuyente;
-                            $scope.datosRepresentanteLegal(response[0].idContribuyente);
-                            if(tipoPersona != "N"){
-                                tipoPersona = "J";
-                                var hinicio     =   ((typeof(response[0].horarioAtencion) == 'undefined' || response[0].horarioAtencion == null) ? ""   : response[0].horarioAtencion.toUpperCase());
-                                var hfinal      =   ((typeof(response[0].horarioAtencion) == 'undefined' || response[0].horarioAtencion == null) ? ""   : response[0].horarioAtencion.toUpperCase());
-                                var smacro      =   "MACRODISTRITO";
-                                var szona       =   "DISTRITO";
-                                //DATOS DE LA ACTIVIDAD ECONÓMICA
-                                $scope.datos.f01_denominacion   =   response[0].denominacion;
-                                $scope.datos.f01_sup  =   response[0].superficie;
-                                $scope.datos.INT_AC_CAPACIDAD   =   response[0].capacidad;
+                var paramidAE = '{"id_actividad_economica":'+tramite.idactividad+'}';
+                var envioIdAe = new reglasnegocioSierra();
+                envioIdAe.identificador = 'VALLE_PRUEBA-SGEN-3145';
+                envioIdAe.parametros = paramidAE;
+                envioIdAe.llamarregla_sierra(function(responsedatosAE){
+                    var respuestaDatos = JSON.parse(responsedatosAE);
+                    var respuestaDatosPrimerNivel = respuestaDatos[0].sp_obtener_actividad_economica;
+                    var datosActividadEconomica = JSON.parse(respuestaDatosPrimerNivel);
+                    console.log('reccccccc     ',datosActividadEconomica);
 
-                                try{
-                                    smacrodes      =   smacro  +   " " +    response[0].IdMacrodistrito + " " + response[0].Macrodistrito;
-                                    szona       =   szona  +   " " +    response[0].idDistrito_actividadEconomica + " - " + response[0].zona;
-                                    hinicio     =   hinicio.split('-')[0].trim();
-                                    hfinal      =   hfinal.split('-')[1].trim();
-                                }catch(e){}
-                                if(response[0].IdMacrodistrito == 2 || response[0].IdMacrodistrito == '2'){
-                                   smacrodes      =   smacro  +   " " +    response[0].IdMacrodistrito + " MAXIMILIANO PAREDES";
-                                }
-                                if(response[0].establecimiento =='ALQUI'){
-                                  $scope.datos.f01_estab_es = "ALQUILADO";
-                                }
-                                if(response[0].establecimiento =='PROPI'){
-                                    $scope.datos.f01_estab_es = "PROPIO";
-                                }
-                                if(response[0].establecimiento =='ANTIC'){
-                                    $scope.datos.f01_estab_es = "ANTICRÉTICO";
-                                }
-                                if(response[0].establecimiento =='OTRO'){
-                                    $scope.datos.f01_estab_es = "OTRO";
-                                }
-                                $scope.datos.f01_tip_act  = response[0].tipoActividad;
-                                if(response[0].tipoActividad =='MA' || response[0].tipoActividad =='MATRI'){
-                                    $scope.datos.f01_tip_act_dec = 'MATRIZ';
-                                    $scope.datos.f01_tip_act = 'MA';
-                                }
-                                if(response[0].tipoActividad =='SU' || response[0].tipoActividad =='SUCUR'){
-                                    $scope.datos.f01_tip_act_dec = 'SUCURSAL';
-                                    $scope.datos.f01_tip_act = 'SU';
-                                }
-                                /*DATOS DE LA ACTIVIDAD*/
-                                $scope.datos.f01_num_pmc = response[0].padron;
-                                $scope.datos.f01_raz_soc = response[0].denominacion;
-                                $scope.datos.f01_sup = response[0].superficie;
-                                $scope.datos.f01_de_hor = hinicio;
-                                $scope.datos.f01_a_hor = hfinal;
-                                $scope.datos.f01_nro_actividad = response[0].numeroActividad;
-                                $scope.datos.f01_productosElaborados = response[0].productosElaborados;
-                                $scope.datos.f01_actividadesSecundarias = response[0].actividadesSecundarias;
-                                /*TIPO LICENCIA*/
-                                $scope.datos.f01_tipo_lic_ant = response[0].descripcion;
-                                $scope.datos.f01_categoria_agrupada_ant = response[0].actividadesSecundarias;
-                                $scope.datos.f01_categoria_descrip_ant = response[0].ActividadDesarrollada;
-                                $scope.obtenerActDes(response[0].idActividadDesarrollada);
-                                //$scope.datos.f01_tipo_lic = response[0].idTipoLicencia;
-                                //$scope.datos.f01_tipo_lic_descrip = response[0].descripcion;
-                                /*Ubicación de Actividad Económica*/
-                                $scope.distritoZonas(response[0].IdMacrodistrito);
-                                $scope.datos.INT_AC_MACRO_ID = response[0].IdMacrodistrito;
-                                $scope.datos.f01_macro_act = response[0].IdMacrodistrito;
-                                $scope.datos.f01_macro_act_descrip = smacrodes;
-                                $scope.datos.INT_AC_DISTRITO = response[0].idDistrito_actividadEconomica;
-                                $scope.datos.f01_dist_act          = response[0].idDistrito_actividadEconomica;
-                                $scope.datos.INT_AC_ID_ZONA = response[0].id_zona_ActividadEconomica;
-                                $scope.datos.INT_ID_ZONA = response[0].id_zona_ActividadEconomica;
-                                $scope.datos.f01_zona_act = response[0].id_zona_ActividadEconomica;
-                                $scope.datos.f01_zona_act_descrip = response[0].zona;
-                                $scope.datos.f01_tip_via_act = response[0].tipoVia;
-                                $scope.datos.f01_num_act = response[0].via;
-                                $scope.datos.f01_num_act1 = response[0].numero;
-                                $scope.datos.f01_edificio_act = response[0].edificio;
-                                $scope.datos.f01_bloque_act = response[0].bloque;
-                                $scope.datos.f01_piso_act = response[0].piso;
-                                $scope.datos.f01_dpto_of_loc = response[0].departamento;
-                                $scope.datos.f01_tel_act1 = response[0].telefono;
-                                $scope.datos.f01_casilla = response[0].casilla;
-                                $scope.datos.f01_factor          =  response[0].tipoTrayecto;
-                                $scope.actulizarIdDistrito();
-                                $scope.actulizarIdDistrito();
-                                if(response[0].edificio == 'undefined' || response[0].bloque == 'undefined' || response[0].piso == 'undefined' || response[0].departamento == 'undefined' || response[0].telefono == 'undefined' || response[0].casilla == 'undefined'){
-                                    response[0].edificio = '';
-                                    response[0].bloque = '';
-                                    response[0].piso = '';
-                                    response[0].departamento = '';
-                                    response[0].telefono = '';
-                                    response[0].casilla = '';
-                                }
-                                $scope.datos.f01_edificio_act = response[0].edificio;
-                                $scope.datos.f01_bloque_act = response[0].bloque;
-                                $scope.datos.f01_piso_act = response[0].piso;
-                                $scope.datos.f01_dpto_of_loc = response[0].departamento;
-                                $scope.datos.f01_tel_act1 = response[0].telefono;
-                                $scope.datos.f01_casilla = response[0].casilla;
-                                $scope.cargarNombVia($scope.datos.f01_tip_via_act, $scope.datos.f01_zona_act);
-                            }
-                            //INT_TRAMITE_RENOVA
-                            $scope.datos.INT_TRAMITE_RENOVA     =   tramite.IdActividad;
-                            if (codhojaruta.substring(0,9) == 'REN-LF' || codhojaruta.substring(0,6) == 'AER-EL' || codhojaruta.substring(0,7) == 'MOD_MOD' || codhojaruta.substring(0,8) == 'LICEN-AE' || codhojaruta.substring(0,9) == 'EM-LF')
-                            {
-                                var dataLotus = $scope.getDatosLotus(resultadoApi.success.dataSql.datosAE[0].idActividadEconomica,codhojaruta);
-                                dataLotus.then(function(respuesta){
-                                    datosLotus = respuesta.success.data[0].datos;
-                                    if (datosLotus.File_Adjunto == 'undefined' || datosLotus.File_Adjunto == null) {
-                                        $scope.reqdoc = true;
-                                        $scope.docsAdjuntoAntiguo = '';
-                                        $scope.datosdocanterior = '';
-                                    } else{
-                                        $scope.reqdoc = null;
-                                        $scope.docsAdjuntoAntiguo = datosLotus.File_Adjunto;
-                                        $scope.datosdocanterior = new Object();
-                                        for (var i = 0; i < $scope.docsAdjuntoAntiguo.length; i++) {
-                                            if ($scope.docsAdjuntoAntiguo[i] == null || $scope.docsAdjuntoAntiguo[i] == 'undefined') {
-                                            } else{
-                                                var narchivo = $scope.docsAdjuntoAntiguo[i].url.split('?');
-                                                var achinom = narchivo[0].split('/');
-                                                var dimar = achinom.length;
-                                                var datosdocant = {
-                                                    "titulo": $scope.docsAdjuntoAntiguo[i].nombre,
-                                                    "nombreAcrh": achinom[dimar-1],
-                                                    "url": $scope.docsAdjuntoAntiguo[i].url
-                                                };
-                                                $scope.datosdocanterior[i] = datosdocant;
-                                            };
-                                        };
-                                    };
-                                });
-                            }else{
-                            }
-                            /*HABILITANDO CAMPOS*/
-                            $scope.botones = "mostrar";
-                            $scope.desabilitado = false;
-                            //console.log("zona:", response[0].zona_ae);
-                            if (lstPublicidad.length > 0) {
-                            $scope.datos.rdTipoTramite1 = 'NUEVO';
-                            $scope.listpub = [];
-                            for (var i = 0; i < lstPublicidad.length; i++) {
-                                var lstpublicidad = new Object();
-                                lstpublicidad.idPublicidad = lstPublicidad[i].idPublicidad;
-                                lstpublicidad.INT_NRO_CARA = lstPublicidad[i].cara;
-                                lstpublicidad.INT_SUP = lstPublicidad[i].superficie;
-                                lstpublicidad.idcarac = lstPublicidad[i].idTipoLetrero;
-                                lstpublicidad.INT_TIPO_LETRE = lstPublicidad[i].descripcionTipoLetrero;
-                                lstpublicidad.id_cara = lstPublicidad[i].idCaracteristica;
-                                lstpublicidad.INT_CARA = lstPublicidad[i].caracteristica;
-                                lstpublicidad.idcate = lstPublicidad[i].idCategoria;
-                                lstpublicidad.INT_ALTO = lstPublicidad[i].alto;
-                                lstpublicidad.INT_ANCHO = lstPublicidad[i].ancho;
-                                lstpublicidad.INT_DESC = lstPublicidad[i].descripcion;
-                                lstpublicidad.estado = lstPublicidad[i].estado;
-                                $scope.listpub[i] = lstpublicidad;
-
-                            };
-                            $scope.datos.swpublicidad = 'CP';
-                            $scope.licenciaToogle4 = true;
-                            $scope.datos.publicidadAE = $scope.listpub;
-                            $scope.Plubli_Grilla($scope.datos.publicidadAE);
-                            $scope.pubAE = true;
-                            $scope.pubMensaje = false;
-                        }
-                            else{
-                                $scope.datos.rdTipoTramite1 = 'RENOVACION';
-                                $scope.datos.swpublicidad = 'SP';
-                                $scope.licenciaToogle4 = false;
-                                //$scope.cambioToggle1('RENOVACION');
-                            };
-                            $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
-                        }
-                    } else {
-                        swal('', "Datos no Encontrados !!!", 'warning');
+                    if (JSON.stringify(datosActividadEconomica.datosAE[0]) == '{}' || JSON.stringify(datosActividadEconomica.datosAE[0]) == '[{}]') {
+                    swal('', "Datos no Encontrados !!!", 'warning');
+                } else {
+                    var datosAESdoNivel = datosActividadEconomica.datosAE;
+                    codhojaruta = datosAESdoNivel.hojaruta;
+                    var datosPublicidad = datosActividadEconomica.datosVIAE;
+                    console.log('pubbbbbbbb    ',datosPublicidad);
+                    $scope.datos.f01_nro_orden = datosAESdoNivel.numeroorden;
+                    $scope.idContribuyenteAEActual  =    datosAESdoNivel.idContribuyente;
+                    $scope.datos.f01_id_contribuyente = datosAESdoNivel.idContribuyente;
+                    $scope.datosRepresentanteLegal();
+                    tipoPersona = "J";
+                    var hinicio = ((typeof(datosAESdoNivel.horarioatencion) == 'undefined' || datosAESdoNivel.horarioatencion == null) ? ""   : datosAESdoNivel.horarioatencion.toUpperCase());
+                    var hfinal = ((typeof(datosAESdoNivel.horarioatencion) == 'undefined' || datosAESdoNivel.horarioatencion == null) ? ""   : datosAESdoNivel.horarioatencion.toUpperCase());
+                    var smacro = "MACRODISTRITO";
+                    var szona = "DISTRITO";
+                        //DATOS DE LA ACTIVIDAD ECONÓMICA
+                    $scope.datos.f01_denominacion = datosAESdoNivel.denominacion;
+                    //smacrodes = smacro + " " + datosAESdoNivel.IdMacrodistrito + " " + datosAESdoNivel.Macrodistrito;
+                        //szona       =   szona  +   " " +    response[0].idDistrito_actividadEconomica + " - " + response[0].zona;
+                    hinicio     =   hinicio.split('-')[0].trim();
+                    hfinal      =   hfinal.split('-')[1].trim();
+                    if(datosAESdoNivel.idmacrodistrito == 2 || datosAESdoNivel.idmacrodistrito == '2'){
+                        smacrodes = smacro + " " + datosAESdoNivel.idmacrodistrito + " MAXIMILIANO PAREDES";
                     }
-                });
+                    else{
+                        smacrodes = datosAESdoNivel.macrodistrito;
+                    }
+                    $scope.getEstablecimiento(datosAESdoNivel.establecimiento);
+                    if(datosAESdoNivel.tipoactividad =='MA' || datosAESdoNivel.tipoactividad =='MATRI'){
+                        $scope.datos.f01_tip_act_dec = 'MATRIZ';
+                        $scope.datos.f01_tip_act = 'MA';
+                    }
+                    if(datosAESdoNivel.tipoactividad =='SU' || datosAESdoNivel.tipoactividad =='SUCUR'){
+                        $scope.datos.f01_tip_act_dec = 'SUCURSAL';
+                        $scope.datos.f01_tip_act = 'SU';
+                    }
+                    $scope.datos.f01_tip_act = datosAESdoNivel.tipoactividad;
+                    $scope.datos.f01_tipo_sociedad = datosAESdoNivel.RepresentanteLegal_tipoSociedad;
+                    $scope.datos.f01_tipo_respaldo = datosAESdoNivel.RepresentanteLegal_docRespaldo;
+                        /*DATOS DE LA ACTIVIDAD*/
+                    $scope.datos.f01_num_pmc = datosAESdoNivel.padrone;
+                    $scope.datos.f01_raz_soc = datosAESdoNivel.denominacion;
+                    $scope.datos.f01_sup = datosAESdoNivel.superficie;
+                    $scope.datos.INT_AC_CAPACIDAD   =   datosAESdoNivel.capacidad;
+                    if($scope.datos.f01_sup != ''){
+                        $scope.calcularCapacidadAuto($scope.datos.f01_sup);
+                    }
+                    $scope.datos.f01_de_hor = hinicio;
+                    $scope.datos.f01_a_hor = hfinal;
+                    $scope.datos.f01_nro_actividad = datosAESdoNivel.numeroactividad;
+                    $scope.datos.f01_productosElaborados = datosAESdoNivel.productoselaborados;
+                    $scope.datos.f01_actividadesSecundarias = datosAESdoNivel.actividadessecundarias;
+                        /*TIPO LICENCIA*/
+                    $scope.datos.f01_tipo_lic_ant = datosAESdoNivel.licencia_descripcion;
+                    $scope.datos.f01_categoria_agrupada_ant = datosAESdoNivel.categoria_descripcion;
+                    $scope.datos.f01_categoria_descrip_ant = datosAESdoNivel.actividad_desarrollada343;
+                    //$scope.obtenerActDes(datosAESdoNivel.idactividaddesarrollada);
+                    //$scope.datos.f01_tipo_lic = response[0].idTipoLicencia;
+                    //$scope.datos.f01_tipo_lic_descrip = response[0].descripcion;
+                        /*Ubicación de Actividad Económica*/
+                    $scope.datos.INT_AC_MACRO_ID = datosAESdoNivel.idmacrodistrito;
+                    $scope.datos.f01_macro_act = datosAESdoNivel.idmacrodistrito;
+                    $scope.datos.f01_zona_act = datosAESdoNivel.id_zona_actividadeconomica;
+                    console.log('zonaaaaaa    ',$scope.datos.f01_zona_act);
+                    console.log('macrooooo    ',$scope.datos.f01_macro_act);
+                    //$scope.actulizarIdDistrito();
+                    $scope.distritoZonas(datosAESdoNivel.idmacrodistrito);
+                    $scope.datos.f01_macro_act_descrip = smacrodes;
+                    $scope.datos.f01_dist_act = datosAESdoNivel.iddistrito_actividadeconomica;
+                    $scope.datos.INT_AC_ID_ZONA = datosAESdoNivel.id_zona_actividadeconomica;
+                    $scope.datos.f01_zona_act_descrip = datosAESdoNivel.zona;
+                    $scope.datos.f01_tip_via_act = datosAESdoNivel.tipovia;
+                    var listarVias = [$scope.cargarNombVia($scope.datos.f01_tip_via_act, $scope.datos.f01_zona_act)];
+                        $q.all(listarVias).then(function (resp) {
+                        $scope.datos.f01_num_act_id = parseInt(datosAESdoNivel.idviaae);
+                        $scope.cargarNombViaTxt($scope.datos.f01_num_act);
+                        if (datosAESdoNivel.idviaae == 0 || datosAESdoNivel.idviaae == '0')
+                            $scope.datos.f01_num_act_n = datosAESdoNivel.nueva_via;
+                    });
+                    if ($scope,datos.f01_num_act_id == 0 || $scope,datos.f01_num_act_id == '0') {
+                        $scope.datos.f01_num_act_n = datosAESdoNivel.via;
+                    } else{
+                        $scope.datos.f01_num_act = datosAESdoNivel.via;
+                    };
+                    $scope.datos.f01_num_act1 = datosAESdoNivel.numero;
+                    if(datosAESdoNivel.edificio == 'undefined' || datosAESdoNivel.bloque == 'undefined' || datosAESdoNivel.piso == 'undefined' || datosAESdoNivel.departamento == 'undefined' || datosAESdoNivel.telefono == 'undefined'){
+                        datosAESdoNivel.edificio = '';
+                        datosAESdoNivel.bloque = '';
+                        datosAESdoNivel.piso = '';
+                        datosAESdoNivel.departamento = '';
+                        datosAESdoNivel.telefono = '';
+                    }
+                    $scope.datos.f01_edificio_act = datosAESdoNivel.edificio;
+                    $scope.datos.f01_bloque_act = datosAESdoNivel.bloque;
+                    $scope.datos.f01_piso_act = datosAESdoNivel.piso;
+                    $scope.datos.f01_dpto_of_loc = datosAESdoNivel.departamento;
+                    $scope.datos.f01_tel_act1 = datosAESdoNivel.telefono;
+                    $scope.datos.f01_casilla = datosAESdoNivel.direcciondetalladaae;
+                    $scope.datos.f01_factor = datosAESdoNivel.tipotrayecto;
+                    //INT_TRAMITE_RENOVA
+                    $scope.datos.INT_TRAMITE_RENOVA = tramite.idactividad;
+                    if (codhojaruta.substring(0,6) == 'EMI-AE' || codhojaruta.substring(0,6) == 'REN-LF' || codhojaruta.substring(0,6) == 'AER-EL' || codhojaruta.substring(0,7) == 'MOD_MOD' || codhojaruta.substring(0,8) == 'LICEN-AE' || codhojaruta.substring(0,5) == 'EM-LF' || codhojaruta.substring(0,5) == 'RE-LF') {  
+                        var dataLotus = $scope.getDatosLotus(datosAESdoNivel.idactividadeconomica,codhojaruta);
+                        dataLotus.then(function(respuestaLotus){
+                            datosLotus = respuestaLotus.success.data[0].datos;
+                            if ((datosLotus.INT_AC_latitud == 'undefined' && datosLotus.INT_AC_longitud == 'undefined') || (datosLotus.INT_AC_latitud == null && datosLotus.INT_AC_longitud == null)) {
+                                $scope.croquis = true;
+                                $scope.datos.INT_AC_latitud = '';
+                                $scope.datos.INT_AC_longitud = '';
+                                //$scope.open_map_ae();
+                            } else{
+                                $scope.croquis = null;
+                                $scope.datos.INT_AC_latitud = datosLotus.INT_AC_latitud;
+                                $scope.datos.INT_AC_longitud = datosLotus.INT_AC_longitud;
+                            };
+                            $scope.open_mapa_ae($scope.datos.INT_AC_latitud, $scope.datos.INT_AC_longitud);
+                            if (datosLotus.f01_tipo_lic == '18' || datosLotus.f01_tipo_lic == 18) {
+                                $scope.mostrarzonaseguraj = true;
+                                if (datosLotus.f01_zona_segura == 'SI')
+                                    $scope.datos.chkzonasegura = 'ZONASEGURA';
+                                else
+                                    $scope.datos.chkzonasegura = 'NOZONASEGURA';
+                            } else{
+                                $scope.datos.chkzonasegura = null;
+                                $scope.mostrarzonaseguraj = false;
+                            };
+                            if (datosLotus.f01_tipo_lic == '32' || datosLotus.f01_tipo_lic == 32) {
+                                $scope.sinmultiservicios = false;
+                                $scope.conmultiservicios = true;
+                                for (var i = 0; i < datosAESdoNivel.id_licencia.length; i++) {
+                                    $scope.datos.licenciamulAnterior.push({
+                                        f01_tipo_licmid: datosAESdoNivel.id_licencia[i].id,
+                                        f01_tipo_licmdescrip: datosAESdoNivel.licencias_descripcion[i].descripcion,
+                                        f01_act_desarrolladamid: datosAESdoNivel.idcategoria[i].id,
+                                        f01_categoria_agrupada: datosAESdoNivel.idactividad_desarrollada343[i].id,
+                                        f01_cat_agrupadamdescrip: datosAESdoNivel.categoria_descripcion[i].descripcion,
+                                        f01_act_desarrolladamdescrip: datosAESdoNivel.actividad_desarrollada343[i].descripcion,
+                                    });
+                                };
+                                var swma = 0;
+                                for (var k = 0; k < $scope.datos.licenciamulAnterior.length && swma == 0; k++) {
+                                    if($scope.datos.licenciamulAnterior[k].f01_tipo_licmid == '12' || $scope.datos.licenciamulAnterior[k].f01_tipo_licmid == 12)
+                                        swma = 1;
+                                    else
+                                        swma = 0;
+                                };
+                                console.log('swma   ',swma);
+                                if(swma == 1){
+                                    $scope.mostrarzonaseguraj = true;
+                                    if (datosLotus.f01_zona_segura == 'SI')
+                                        $scope.datos.chkzonasegura = 'ZONASEGURA';
+                                    else
+                                        $scope.datos.chkzonasegura = 'NOZONASEGURA';
+                                }else{
+                                    $scope.mostrarzonaseguraj = false;
+                                }
+                            } else{
+                                $scope.sinmultiservicios = true;
+                                $scope.conmultiservicios = false;
+                            };
+                            if (datosLotus.File_Adjunto == 'undefined' || datosLotus.File_Adjunto == null) {
+                                $scope.reqdoc = true;
+                                $scope.docsAdjuntoAntiguo = [];
+                                $scope.datos.datosdocanterior = [];
+                            } else{
+                                $scope.reqdoc = null;
+                                $scope.docsAdjuntoAntiguo = datosLotus.File_Adjunto;
+                                $scope.datos.datosdocanterior = new Object();
+                                for (var i = 0; i < $scope.docsAdjuntoAntiguo.length; i++) {
+                                    if ($scope.docsAdjuntoAntiguo[i] == null || $scope.docsAdjuntoAntiguo[i] == 'undefined') {
+                                    } else{
+                                        var narchivo = $scope.docsAdjuntoAntiguo[i].url.split('?');
+                                        var achinom = narchivo[0].split('/');
+                                        var dimar = achinom.length;
+                                        var datosdocant = {
+                                            "titulo": $scope.docsAdjuntoAntiguo[i].nombre,
+                                            "nombreAcrh": achinom[dimar-1],
+                                            "url": $scope.docsAdjuntoAntiguo[i].url
+                                        };
+                                        $scope.datos.datosdocanterior[i] = datosdocant;
+                                    };
+                                };
+                            };
+                        });
+                    }
+                    /*DATOS PUBLICIDAD*/
+                    $scope.botones = "mostrar";
+                    $scope.desabilitado = false;
+                    console.log("datosPublicidad.length:: ",datosPublicidad.length);
+                    if (JSON.stringify(datosPublicidad[0]) == '{}' ||JSON.stringify(datosPublicidad[0]) == '[{}]') {
+                        $scope.datos.rdTipoTramite1 = 'RENOVACION';
+                        $scope.datos.swpublicidad = 'SP';
+                        $scope.licenciaToogle4 = false;
+                        $scope.pubMensaje = true;
+                    }else{
+                        $scope.datos.rdTipoTramite1 = 'NUEVO';
+                        $scope.listpub = [];
+                        $scope.pubMensaje = false;
+                        for (var i = 0; i < datosPublicidad.length; i++) {
+                            var lstpublicidad = new Object();
+                            lstpublicidad.idPublicidad = datosPublicidad[i].idpublicidad;
+                            lstpublicidad.INT_NRO_CARA = datosPublicidad[i].cara;
+                            lstpublicidad.INT_SUP = datosPublicidad[i].superficie;
+                            lstpublicidad.idcarac = datosPublicidad[i].idtipoletrero;
+                            lstpublicidad.INT_TIPO_LETRE = datosPublicidad[i].descripciontipoletrero;
+                            lstpublicidad.id_cara = datosPublicidad[i].idcaracteristica;
+                            lstpublicidad.INT_CARA = datosPublicidad[i].caracteristica;
+                            lstpublicidad.idcate = datosPublicidad[i].idcategoria;
+                            lstpublicidad.INT_ALTO = datosPublicidad[i].alto;
+                            lstpublicidad.INT_ANCHO = datosPublicidad[i].ancho;
+                            lstpublicidad.INT_DESC = datosPublicidad[i].descripcion;
+                            lstpublicidad.estado = 'V';
+                            lstpublicidad.urlImagen = datosPublicidad[i].url_publicidad.url;
+                            $scope.listpub[i] = lstpublicidad;
+                        };
+                        $scope.datos.swpublicidad = 'CP';
+                        $scope.licenciaToogle4 = true;
+                        $scope.datos.publicidad = $scope.listpub;
+                        $scope.Plubli_Grilla($scope.datos.publicidad);
+                        $scope.publicid = $scope.listpub;
+                    };
+                    $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
+                }
+            });
         }else{
             swal('', "Actividad Economica Vigente!!!", 'warning');
         }
     };
+
+    $scope.getEstablecimiento = function(datoEstab){
+        switch(datoEstab) {
+            case 'ALQUI':
+                $scope.datos.f01_estab_es = "ALQUILADO";
+                break;
+            case 'PROPI':
+                $scope.datos.f01_estab_es = "PROPIO";
+                break;                
+            case 'ANTIC':
+                $scope.datos.f01_estab_es = "ANTICRÉTICO";
+                break;
+            case 'OTRO':
+                 $scope.datos.f01_estab_es = "OTRO";
+                break;
+            default:
+                $scope.datos.f01_estab_es = datoEstab;
+        }
+    }
 
     $scope.getDatosLotus = function(idadcteco, hojar){
         $scope[name] = 'Running';
@@ -567,7 +706,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
 
     $scope.limpiarmultiple = function(){
         $scope.licdes=[];
-        $scope.multipleJuridico=[];
+        $scope.multiple = [];
         $scope.dscripcionlic = {};
         $scope.licenciamul = '';
         $scope.datos.licenciam = '';
@@ -579,7 +718,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.datos.FILE_CI = '';
         $scope.datos.fileArchivosAd = '';
 
-    $scope.catactividadDesarrollada = function(){
+    /*$scope.catactividadDesarrollada = function(){
         $scope.datos.rdTipoTramite = 'RENOVACION';
         $scope.datos.f01_actividad_desarrollada = "";
         $scope.datosActividad = "";
@@ -605,9 +744,41 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }catch(e){
             alert("Error en la actividad desarrollada");
         }
+    }*/
+
+    $scope.catactividadDesarrollada = function(){
+        $.blockUI();
+        $scope.datos.rdTipoTramite = 'RENOVACION';
+        $scope.datos.f01_actividad_desarrollada = "";
+        $scope.datosActividad = "";
+        try{
+            var dataActDes = '{}';
+            var resLstActDes = new reglasnegocioSierra();
+            resLstActDes.identificador = 'VALLE_PRUEBA-SGEN-3149';
+            resLstActDes.parametros = dataActDes;
+            resLstActDes.llamarregla_sierra(function(responseActDes){
+                var lstActDes =  JSON.parse(responseActDes);
+                if(lstActDes.length > 0){
+                    for (var i = lstActDes.length - 1; i >= 0; i--) {
+                        if (lstActDes[i].idactividaddesarrollada343 == 907 || lstActDes[i].idactividaddesarrollada343 == '907') {
+                            lstActDes[i].descripcion343 = 'MULTISERVICIOS';
+                        }
+                    };
+                    $scope.datosActividad = lstActDes;
+                }else{
+                    $scope.msg = "Error !!";
+                }
+                if(!$scope.$$phase) {
+                    $scope.$apply();
+                }
+                $.unblockUI();
+            });
+        }catch(e){
+            alert("Error en la actividad desarrollada");
+        }
     }
 
-    $scope.LicenciaXCategoriaA = function(idDesarrollada, superficie){
+    /*$scope.LicenciaXCategoriaA = function(idDesarrollada, superficie){
         $.blockUI();
         datoObjectFile1 = new Object();
         datoObjectFile2 = new Object();
@@ -686,6 +857,93 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             console.log("Error en la actividad desarrollada");
             $.unblockUI();
         }
+    }*/
+
+    $scope.LicenciaXCategoriaA = function(idDesarrollada, superficie){
+        $.blockUI();
+        if(superficie){
+            datoObjectFile1 = new Object();
+            datoObjectFile2 = new Object();
+            datoObjectFile3 = new Object();
+            datoObjectFile4 = new Object();
+            datoObjectFile5 = new Object();
+            datoObjectFile6 = new Object();
+            datoObjectFiles_ci = [];
+            $scope.datos.FILE_CI = '';
+            $scope.datos.fileArchivosAd = '';
+            try{
+                var dataDesLic = '{"id_actividad_desarrollada":"'+idDesarrollada+'", "superficie":"'+superficie+'"}';
+                var resDatosLic = new reglasnegocioSierra();
+                resDatosLic.identificador = 'VALLE_PRUEBA-SGEN-3151';
+                resDatosLic.parametros = dataDesLic;
+                resDatosLic.llamarregla_sierra(function(responseDatosLic){
+                    var datosLic = JSON.parse(responseDatosLic);
+                    if(datosLic.length > 0){
+                        $scope.sCategoria = true;
+                        $scope.smultiservicios = false;
+                        $scope.datosActividadLicencia = datosLic;
+                        $scope.datos.f01_tipo_lic = datosLic[0].lic_ant_id;
+                        $scope.datos.f01_tipo_lic_sierra = datosLic[0].idtipolicencia;
+                        $scope.datos.f01_tipo_lic_descrip = datosLic[0].tipolicenciadescripcion;
+                        $scope.datos.f01_categoria_agrupada_sierra = datosLic[0].categoria_id;
+                        $scope.datos.f01_categoria_agrupada = datosLic[0].categoria_id_anterior;
+                        $scope.datos.f01_categoria_agrupada_dem = datosLic[0].addescripcion;
+                        $scope.datos.f01_categoria_agrupada_descrip = datosLic[0].addescripcion;
+                        $scope.GetValueZonaSegura(datosLic[0].categoria_id_anterior);
+                        var comboz = document.getElementById('f01_categoria_descrip');
+                        selected2 = comboz.options[comboz.selectedIndex].text;
+                        $scope.datos.f01_categoria_descripcion = selected2;
+                        $scope.datos.f01_categoria_descrip2 = selected2;
+                        $scope.datos.f01_categoria_agrupada_descripcion = selected2;
+                        $scope.datos.f01_actividadesSecundarias = datosLic[0].ad3436descripcion;
+                    }else{
+                        $scope.msg = "Error !!";
+                    }
+                    if (idDesarrollada == 907 || idDesarrollada == '907') {
+                        $scope.sCategoria = false;
+                        $scope.smultiservicios = true;
+                        $scope.actividadDesarrolladaM();
+                    }
+                    datoObjectFile1.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + $scope.datos.id_representante + "/" + $scope.datos.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
+                    datoObjectFile1.campo = 'Cedula de identidad (Anverso)';
+                    datoObjectFile1.nombre = 'Cedula de identidad (Reverso)';
+                    datoObjectFiles_ci[0] = datoObjectFile1;
+                    datoObjectFile2.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + $scope.datos.id_representante + "/" + $scope.datos.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";
+                    datoObjectFile2.campo = 'Cedula de identidad (Anverso)';
+                    datoObjectFile2.nombre = 'Cedula de identidad (Reverso)';
+                    datoObjectFiles_ci[1] = datoObjectFile2;
+                    datoObjectFile3.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datos.f01_poder_representante + "?app_name=todoangular";
+                    datoObjectFile3.campo = 'Poder de Representación Legal';
+                    datoObjectFile3.nombre = 'Poder de Representación Legal';
+                    datoObjectFiles_ci[2] = datoObjectFile3;
+                    datoObjectFile4.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datos.f01_test_cons_sociedad_j + "?app_name=todoangular";
+                    datoObjectFile4.campo = 'Testimonio de Constitución de Sociedad';
+                    datoObjectFile4.nombre = 'Testimonio de Constitución de Sociedad';
+                    datoObjectFiles_ci[3] = datoObjectFile4;
+                    datoObjectFile5.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datos.file_num_ident + "?app_name=todoangular";
+                    datoObjectFile5.campo = 'NIT o inscripción al Régimen Simplificado';
+                    datoObjectFile5.nombre = 'NIT o inscripción al Régimen Simplificado';
+                    datoObjectFiles_ci[4] = datoObjectFile5;
+                    datoObjectFile6.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datos.file_fund_emp + "?app_name=todoangular";
+                    datoObjectFile6.campo = 'FUNDEMPRESA o Matricula de Comercio';
+                    datoObjectFile6.nombre = 'FUNDEMPRESA o Matricula de Comercio';
+                    datoObjectFiles_ci[5] = datoObjectFile6;
+                    $scope.datos.FILE_CI = datoObjectFiles_ci;
+                    $scope.getRequisitosFormulario($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
+                    $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
+                    $scope.getRequisitosTecnicosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
+                    if(!$scope.$$phase) {
+                        $scope.$apply();
+                    }
+                    $.unblockUI();
+                });
+            }catch(e){
+                console.log("Error en la actividad desarrollada");
+            }
+        }else{
+            swal('', "Llene el campo de la superficie!!!", 'warning');
+            $.unblockUI();
+        }
     }
 
     $scope.getRequisitosActividad = function(idCategoria, persona){
@@ -713,7 +971,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }
     };
 
-    $scope.actividadDesarrolladaM = function(){
+    /*$scope.actividadDesarrolladaM = function(){
         $.blockUI();
         var datosMulti = [];
         try{
@@ -746,9 +1004,48 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }catch(e){
             console.log("Error en la actividad desarrolladaA");
         }
-    }
+    }*/
 
-    $scope.LicenciaXCategoriaM = function(idDesarrollada, superficie){
+    $scope.actividadDesarrolladaM = function(){
+        $.blockUI();
+        var datosMulti = [];
+        try{
+            var dataActDesM = '{}';
+            var resLstActDesM = new reglasnegocioSierra();
+            resLstActDesM.identificador = 'VALLE_PRUEBA-SGEN-3149';
+            resLstActDesM.parametros = dataActDesM;
+            resLstActDesM.llamarregla_sierra(function(responseActDesM){
+                var lstActividadDesM = JSON.parse(responseActDesM);
+                var dataResp = lstActividadDesM;
+                for (var i = 0; i < dataResp.length; i++) {
+                    if (dataResp[i].idactividaddesarrollada343 == '907' || dataResp[i].idactividaddesarrollada343 == 907) {
+                    } else{
+                        objMulti = new Object();
+                        objMulti.idactividaddesarrollada343 = dataResp[i].idactividaddesarrollada343;
+                        objMulti.codigo343 = dataResp[i].codigo343;
+                        objMulti.descripcion343 = dataResp[i].descripcion343;
+                        objMulti.estado343 = dataResp[i].estado343;
+                        objMulti.fecha343 = dataResp[i].fecha343;
+                        objMulti.proceso = dataResp[i].proceso;
+                        objMulti.idactividaddesarrollada = dataResp[i].idactividaddesarrollada;
+                        objMulti.descripcionad = dataResp[i].descripcionad;
+                        objMulti.idtipolicencia = dataResp[i].idtipolicencia;
+                        objMulti.descripciontipolicencia = dataResp[i].descripciontipolicencia;
+                        datosMulti[i] = objMulti;
+                    };
+                };
+                $scope.datosActividadMul = datosMulti;
+                if(!$scope.$$phase) {
+                    $scope.$apply();
+                }
+                $.unblockUI();
+            });
+        }catch(e){
+            console.log("Error en la actividad desarrollada");
+        }
+    };
+
+    /*$scope.LicenciaXCategoriaM = function(idDesarrollada, superficie){
         $.blockUI();
         $scope[name] = 'Running';
         var deferred = $q.defer();
@@ -784,11 +1081,60 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }catch(e){
             console.log("Error en la actividad desarrolladaM");
         }
+    }*/
+
+    $scope.LicenciaXCategoriaM = function(idDesarrollada, superficie){
+        $.blockUI();
+        if(superficie){
+            $.blockUI();
+            $scope[name] = 'Running';
+            var deferred = $q.defer();
+            datoObjectFile1 = new Object();
+            datoObjectFile2 = new Object();
+            datoObjectFiles_ci = [];
+            try{
+                var dataDesLicM = '{"id_actividad_desarrollada":"'+idDesarrollada+'", "superficie":"'+superficie+'"}';
+                var resDatosLicM = new reglasnegocioSierra();
+                resDatosLicM.identificador = 'VALLE_PRUEBA-SGEN-3151';
+                resDatosLicM.parametros = dataDesLicM;
+                resDatosLicM.llamarregla_sierra(function(responseDatosLicM){
+                    var obtLicM = JSON.parse(responseDatosLicM);
+                    var datosLicM = obtLicM;
+                    if(datosLicM.length > 0){
+                        $scope.multiple = datosLicM;
+                        $scope.multiple.f01_tipo_licmid = datosLicM[0].idtipolicencia;
+                        $scope.multiple.f01_tipo_licmdescrip = datosLicM[0].tipolicenciadescripcion;
+                        $scope.multiple.f01_cat_agrupadamid_sierra = datosLicM[0].categoria_id;
+                        $scope.multiple.f01_categoria_agrupada = datosLicM[0].categoria_id_anterior;
+                        $scope.multiple.f01_cat_agrupadamdescrip = datosLicM[0].addescripcion;
+                        $scope.multiple.f01_act_desarrolladamid = datosLicM[0].idactividaddesarrollada343;
+                        var combox = document.getElementById('f01_act_desarrolladamid');
+                        selected2 = combox.options[combox.selectedIndex].text;
+                        $scope.multiple.f01_act_desarrolladamdescrip = selected2;
+                        //$scope.multiple.f01_tae = datosLicM[0].tae;
+                        $scope.getRequisitosFormulario(datosLicM[0].categoria_id_anterior,$scope.datos.f01_tipo_per);
+                        deferred.resolve($scope.multiple);
+                        if(!$scope.$$phase) {
+                            $scope.$apply();
+                        }
+                        $.unblockUI();
+                    }else{
+                        $scope.msg = "Error !!";
+                        $.unblockUI();
+                    }
+                });
+            }catch(e){
+                console.log("Error en la actividad desarrollada");
+            }
+        }else{
+            swal('', "Llene el campo de la superficie!!!", 'warning');
+            $.unblockUI();
+        }
     }
 
-    $scope.guardarLicencia = function(licencia){
+    /*$scope.guardarLicencia = function(licencia){
         $scope.dscripcionlic ={};
-        if(licencia.f01_tipo_licmid =='' || licencia.f01_tipo_licmid == null || licencia.f01_cat_agrupadamid =='' || licencia.f01_cat_agrupadamid == null ) {
+        if(licencia.f01_tipo_licmid =='' || licencia.f01_tipo_licmid == null || licencia.f01_cat_agrupadamid_sierra =='' || licencia.f01_cat_agrupadamid_sierra == null ) {
             swal('', 'Llene lo campos requeridos para la Catergoria Multiple  ', 'error');
         } else {
              var id=0
@@ -821,15 +1167,63 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                     f01_act_desarrolladamdescrip: licencia.f01_act_desarrolladamdescrip,
                     f01_catagrp_principal: $scope.f01_catagrp_principal
                 });
-                $scope.licdes=[];
-                $scope.multipleJuridico=[];
+                $scope.licdes = [];
+                $scope.multiple = [];
                 $scope.dscripcionlic = {};
-                $scope.multipleJuridico.f01_act_desarrolladamid = "";
+                $scope.multiple.f01_act_desarrolladamid = "";
                 document.getElementById("f01_act_desarrolladamid").value='';
-                $scope.multipleJuridico.f01_tipo_licmid = "";
+                $scope.multiple.f01_tipo_licmid = "";
                 $scope.datos.licenciam = $scope.licenciamul;
                 $scope.Licencia_Multiple($scope.licenciamul);
-                /*LISTAR REQUISITOS DINAMICOS*/
+                
+                $scope.lstRequisitosMultiples2018($scope.licenciamul);
+                $scope.lstRequisitosTecnicosMultiples($scope.licenciamul);
+            } else {
+                swal('', 'El numero de multiples excede los estandares permitidos', 'error');
+            }
+        }
+    }*/
+
+    $scope.guardarLicencia = function(licencia){
+        $scope.dscripcionlic ={};
+        if($scope.dscripcionlic.f01_act_desarrolladamdescrip == '--Seleccione--'){
+            $scope.dscripcionlic.f01_act_desarrolladamdescrip = '';
+        }
+        if(licencia.f01_tipo_licmid == '' || licencia.f01_tipo_licmid == null || licencia.f01_cat_agrupadamid_sierra == '' || licencia.f01_cat_agrupadamid_sierra == null ) {
+            swal('', 'Llene lo campos requeridos para la Catergoria Multiple  ', 'error');
+        } else {
+             var id=0
+            if($scope.datos.licenciam == '' || $scope.datos.licenciam == null || $scope.datos.licenciam == "undefined" ){
+                if($scope.licenciamul =='' || $scope.licenciamul == null || $scope.licenciamul == "undefined" ){
+                    $scope.licenciamul = [];
+                    id = 0;
+                }
+                id = $scope.licenciamul.length + 1;
+            }else{
+                id = $scope.licenciamul.length + 1;
+            }
+            if(id<11){
+                $scope.id = id;
+                $scope.licenciamul.push({
+                    id: id,
+                    f01_tipo_licmid: licencia.f01_tipo_licmid,
+                    f01_cat_agrupadamid_sierra: licencia.f01_cat_agrupadamid_sierra,
+                    f01_categoria_agrupada: licencia.f01_categoria_agrupada,
+                    f01_act_desarrolladamid: licencia.f01_act_desarrolladamid,
+                    //f01_cat_agrupadamid_anterior: licencia.f01_categoria_agrupada,
+                    f01_tipo_licmdescrip: licencia.f01_tipo_licmdescrip,
+                    f01_cat_agrupadamdescrip: licencia.f01_cat_agrupadamdescrip,
+                    f01_act_desarrolladamdescrip: licencia.f01_act_desarrolladamdescrip,
+                    f01_catagrp_principal: $scope.f01_catagrp_principal
+                    //f01_tae: licencia.f01_tae
+                });
+                $scope.licdes = [];
+                $scope.multiple = [];
+                $scope.dscripcionlic = {};
+                $scope.datos.licenciam = $scope.licenciamul;
+                $scope.Licencia_Multiple($scope.licenciamul);
+                //$scope.licmul_Grilla($scope.licenciamul);
+                 /*LISTAR REQUISITOS DINAMICOS*/
                 $scope.lstRequisitosMultiples2018($scope.licenciamul);
                 $scope.lstRequisitosTecnicosMultiples($scope.licenciamul);
             } else {
@@ -838,7 +1232,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }
     }
 
-    $scope.Licencia_Multiple = function(dato){
+    /*$scope.Licencia_Multiple = function(dato){
         $scope.licmul_grilla = [];
         var encabezado = [];
         var indice = 1;
@@ -863,6 +1257,34 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             indice = indice + 1;
         });
         $scope.datos.Licenmul_grilla=encabezado;
+    }*/
+
+    $scope.Licencia_Multiple = function(dato){
+        console.log('fffffff    ',dato);
+        $scope.licmul_grilla = [];
+        var encabezado = [];
+        var indice = 1;
+        encabezado[0] = {"tipo": "GRD","campos": "nroElem|f01_tipo_licmid|f01_tipo_licmdescrip|f01_cat_agrupadamid|f01_cat_agrupadamdescrip|f01_act_desarrolladamid|f01_act_desarrolladamdescrip","titulos": "NRO|Id Licencia|Tipo de Licencia|Id Categoria|Tipo de Categoria|Id Actividad|Tipo de Actividad Desarrollada","impresiones": "true|true|true|true|true|true|true|"};
+        var nroElem = 0;
+        var j=0;
+        for(j=0; j<dato.length;j++) {
+            $scope.licmul_grilla.push({
+                nroElem: j+1,
+                f01_tipo_licmid: dato[j].f01_tipo_licmid,
+                f01_tipo_licmdescrip: dato[j].f01_tipo_licmdescrip,
+                f01_cat_agrupadamid: dato[j].f01_cat_agrupadamid_sierra,
+                f01_cat_agrupadamdescrip: dato[j].f01_cat_agrupadamdescrip,
+                f01_act_desarrolladamid: dato[j].f01_act_desarrolladamid,
+                f01_act_desarrolladamdescrip: dato[j].f01_act_desarrolladamdescrip
+                //f01_catagrp_principal: dato[j].f01_catagrp_principal
+            });
+        }
+        var jsonString = '['+ (encabezado) +']';
+        angular.forEach($scope.licmul_grilla, function(value, key) {
+            encabezado[indice] = value;
+            indice = indice + 1;
+        });
+        $scope.datos.Licenmul_grilla = encabezado;
     }
 
     $scope.detallem = [];
@@ -873,7 +1295,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     $scope.modificarLic = function(dato){
         $scope.onlym = true;
         $scope.botonm = "upd";
-        $scope.multipleJuridico = dato;
+        $scope.multiple = dato;
     }
 
     $scope.eliminarLic = function(dato){
@@ -885,7 +1307,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.onlym=true;
         $scope.botonm="new";
         delete $scope.editm[dato.idm];
-        $scope.multipleJuridico=[];
+        $scope.multiple = [];
     }
   ///TERMINA LICENCIA MULTIPLE
 
@@ -947,7 +1369,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     $scope.lstRequisitosTecnicosMultiples = function(licenciamul){
         var sconsulta   = '[';
         for(i=0; i<licenciamul.length; i++){
-            sconsulta   =   sconsulta + '{"id":' + licenciamul[i].f01_cat_agrupadamid + "},";
+            sconsulta   =   sconsulta + '{"id":' + licenciamul[i].f01_categoria_agrupada + "},";
         }
         sconsulta    =   sconsulta.substring(0,sconsulta.length-1);
         sconsulta   =   sconsulta + ']';
@@ -1294,7 +1716,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             }
         }
         $scope.actividadSecund = datosaux;
-        if($scope.datos.f01_categoria_agrupada != 32 || $scope.datos.f01_categoria_agrupada != '32'){
+        if($scope.datos.f01_categoria_agrupada != 26 || $scope.datos.f01_categoria_agrupada != '26'){
             var e = document.getElementById("f01_categoria_agrupada");
             $scope.datos.f01_categoria_agrupada_descrip = e.options[e.selectedIndex].text;
             $scope.actividadSecund = $scope.datos.f01_categoria_agrupada_descrip;
@@ -1317,7 +1739,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             }
         }
         $scope.actividadDes = datosaux;
-        if($scope.datos.f01_categoria_descrip!= 32 || $scope.datos.f01_categoria_descrip!= '32'){
+        if($scope.datos.f01_categoria_descrip!= 26 || $scope.datos.f01_categoria_descrip!= '26'){
             var e = document.getElementById("f01_categoria_descrip");
             $scope.datos.f01_actividad_desarrollada_descrip = e.options[e.selectedIndex].text;
             $scope.actividadDes = $scope.datos.f01_actividad_desarrollada_descrip;
@@ -1356,16 +1778,16 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             }
             var swmul = 0;
             for (var k = 0; k < datoslicm.length && swmul == 0; k++) {
-                if(datoslicm[k].f01_cat_agrupadamid == 3419 || datoslicm[k].f01_cat_agrupadamid == 3420 || datoslicm[k].f01_cat_agrupadamid == 3421 || datoslicm[k].f01_cat_agrupadamid == 3422 || datoslicm[k].f01_cat_agrupadamid == 3423 || datoslicm[k].f01_cat_agrupadamid == 3424){
+                if(datoslicm[k].f01_tipo_licmid == '12' || datoslicm[k].f01_tipo_licmid == 12){
                     swmul = 1;
                 }else{
                     swmul = 0;
                 }
             }
             if(swmul == 1){
-                $scope.mostrarzonasegura = true;
+                $scope.mostrarzonaseguraj = true;
             }else{
-                $scope.mostrarzonasegura = false;
+                $scope.mostrarzonaseguraj = false;
             }
         }
         $scope.actividadDesCat = datosaux;
@@ -1410,13 +1832,13 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     //$scope.publi.FECHAINICIO=$scope.fechactuall;
     //$scope.publi.FECHAFIN=$scope.fechadatoo;
     $scope.lssubcategoria = function(){
-        $scope.publi.INT_CATE="II Fija";
-        $scope.publi.idcate=6;
+        $scope.publi.INT_CATE = "II Fija";
+        $scope.publi.idcate = 6;
         $scope.TipoLetrero = [
-        {"p_idtipoletrero" : "51", "p_descripcion": "ADOSADA SOBRESALIENTE"},
-        {"p_idtipoletrero" : "39", "p_descripcion": "ADOSADA"},
-        {"p_idtipoletrero" : "41", "p_descripcion": "MICROPERFORADA - AUTOADHESIVA"},
-        {"p_idtipoletrero" : "40", "p_descripcion": "PINTADA"}];
+        {"p_idtipoletrero" : "17", "p_descripcion": "ADOSADA SOBRESALIENTE"},
+        {"p_idtipoletrero" : "14", "p_descripcion": "ADOSADA"},
+        {"p_idtipoletrero" : "15", "p_descripcion": "MICROPERFORADA - AUTOADHESIVA"},
+        {"p_idtipoletrero" : "16", "p_descripcion": "PINTADA"}];
     };
 
     $scope.ltCaracteristica = function(idlee){
@@ -1515,30 +1937,74 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.ltCaracteristica(dato.INT_TIPO_LETRE);
     }
 
-    $scope.eliminarPubli = function(dato){
+    /*$scope.eliminarPubli = function(dato){
         $scope.publicid.splice( $scope.publicid.indexOf(dato), 1 );
         $scope.id = $scope.id - 1;
+    }*/
+
+    $scope.eliminarPubli = function(data){
+        if (data.estado == 'N') {
+            $scope.publicid.splice($scope.publicid.indexOf(data), 1 );
+            $scope.id = $scope.id - 1;
+        } else{
+            swal({
+               title: 'Eliminar',
+               text: 'Esta seguro de dar de Baja la Publicidad?',
+               type: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#DD6B55',
+               confirmButtonText: 'SI',
+               closeOnConfirm: true
+            }, function() {
+                if(!$scope.$$phase) {
+                    $scope.$apply();
+                }
+                $scope.BajaPublicidad(data);
+            });
+        };
     }
 
-    $scope.modificarpublicidad = function(dato){
+    $scope.BajaPublicidad = function(data){
+        var datopublic = $scope.datos.publicidad;
+        for (var i = 0; i < datopublic.length; i++) {
+            if(datopublic[i].idPublicidad == data.idPublicidad){
+                datopublic[i].estado = 'B';
+           }
+        }
+        $scope.datos.publicidad = datopublic;
+        $scope.Plubli_Grilla($scope.publicid);
+        datoObjectFinalV = [];
+        var i = $scope.pos;
+        for(j = 0; j < $scope.docArrayPub.length; j++){
+            datoObjectv = new Object();
+            datoObjectv.idP = (i+1);
+            datoObjectv.resid = $scope.docArrayPub[j].resid;
+            datoObjectv.idnro = $scope.docArrayPub[j].idnro;
+            datoObjectv.resvalor = $scope.docArrayPub[j].resvalor+' Baja '+data.INT_TIPO_LETRE;
+            datoObjectv.nomcampo = $scope.docArrayPub[j].nomcampo;
+            datoObjectv.estado   = true;
+            datoObjectv.desNom = $scope.docArrayPub[j].desNom +'_' + (i+1);
+            datoObjectFinalV[i] = datoObjectv;
+            $scope.docPubNuevo.push(datoObjectFinalV[i]);
+            i++;
+        }
+        $scope.pos = i;
+        setTimeout(function(){
+            iniciarLoadFyle();
+        }, 1000);
+        if(!$scope.$$phase) {
+            $scope.$apply();
+        }
+    }
+
+    /*$scope.modificarpublicidad = function(dato){
         if(dato.INT_NRO_CARA =='' || dato.INT_NRO_CARA == null || dato.INT_CARA =='' || dato.INT_CARA == null ||
             dato.INT_TIPO_LETRE =='' || dato.INT_TIPO_LETRE == null ||
             dato.INT_DESC =='' || dato.INT_DESC == null || dato.INT_ALTO =='' || dato.INT_ALTO == null || dato.INT_ANCHO =='' || dato.INT_ANCHO == null ) {
             swal('', 'Llene lo campos requeridos para la VIAE  ', 'error');
         }
         else{
-            /*swal({
-            title: "Modificar",
-            text: "Esta seguro de Modificar el Elemento de Identificación ?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "SI",
-            cancelButtonText: "No",
-            closeOnConfirm: true,
-            closeOnCancel: true },
-            function(isConfirm){
-            if (isConfirm) {*/
+            
                 //sweet.close();
                 $scope.publi = [];
                 var datopublic = dato;
@@ -1566,19 +2032,109 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 }
                 $scope.Plubli_Grilla($scope.datos.publicidad);
                 $scope.botonn="new";
-                /*} else {
-                    $scope.publi=[];
-                    //sweet.close();
+        }
+    }*/
+
+    $scope.modificarpublicidad = function(dato){
+        if(dato.INT_CARA == '' || dato.INT_CARA == null ||
+            dato.INT_TIPO_LETRE == '' || dato.INT_TIPO_LETRE == null ||
+            dato.INT_DESC == '' || dato.INT_DESC == null || dato.INT_ALTO == '' || dato.INT_ALTO == null || dato.INT_ANCHO == '' || dato.INT_ANCHO == null ) {
+                swal('', 'Llene lo campos requeridos para la VIAE  ', 'error');
+        }
+        else{
+            if (dato.estado == 'N') {
+                $scope.publi = [];
+                $scope.lssubcategoria();
+                var superior = dato.INT_ALTO * dato.INT_ANCHO;
+                superior = (Math.round(superior * 10) / 10)+"";
+                var supe = superior.replace(",",".");
+                //superior = superior.replace(",",".");
+                var palto   =   dato.INT_ALTO;
+                var pancho  =   dato.INT_ANCHO;
+                palto   =   parseFloat(palto).toFixed(2);
+                palto   =   palto.replace(",",",");
+                pancho  =   parseFloat(pancho).toFixed(2);
+                pancho  =   pancho.replace(",",".");
+                dato.superficie = superior;
+                if(!$scope.$$phase) {
+                    $scope.$apply();
                 }
-            });*/
+            } else{
+                swal({ 
+                    title: "Modificar",
+                    text: "Esta seguro de Modificar el Elemento de Identificación ?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "SI",
+                    cancelButtonText: "No", 
+                    closeOnConfirm: false,
+                    closeOnCancel: false },
+                    function(isConfirm){ 
+                    if (isConfirm) {
+                        swal.close();   
+                        $scope.publi = [];
+                        var datopublic = dato;
+                        for (var i = 0; i < $scope.datos.publicidad.length; i++) {
+                            if ($scope.datos.publicidad[i].idPublicidad == dato.idPublicidad) {
+                                var superior = datopublic.INT_ALTO * datopublic.INT_ANCHO;
+                                superior = (Math.round(superior * 10) / 10)+"";
+                                var supe = superior.replace(",",".");
+                                //superior = superior.replace(",",".");
+                                var palto   =   datopublic.INT_ALTO;
+                                var pancho  =   datopublic.INT_ANCHO;
+                                palto   =   parseFloat(palto).toFixed(2);
+                                palto   =   palto.replace(",",",");
+                                pancho  =   parseFloat(pancho).toFixed(2);
+                                pancho  =   pancho.replace(",",".");
+                                $scope.datos.publicidad[i].estado = 'M';
+                                $scope.datos.publicidad[i].INT_SUP =  supe;
+                                $scope.datos.publicidad[i].INT_ALTO = palto;
+                                $scope.datos.publicidad[i].INT_ANCHO = pancho;
+                                $scope.datos.publicidad[i].INT_TIPO_LETRE = dato.INT_TIPO_LETRE;
+                                $scope.datos.publicidad[i].INT_CARA = dato.INT_CARA;
+                                $scope.datos.publicidad[i].INT_DESC = dato.INT_DESC;
+                                //$scope.datos.publicidad[i].INT_NRO_CARA = dato.INT_NRO_CARA;
+                            };              
+                        }
+                        datoObjectFinalV = [];
+                        var i = $scope.pos;
+                        for(j = 0; j < $scope.docArrayPub.length; j++){
+                            datoObjectv = new Object();
+                            datoObjectv.idP = (i+1);
+                            datoObjectv.resid = $scope.docArrayPub[j].resid;
+                            datoObjectv.idnro = $scope.docArrayPub[j].idnro;
+                            datoObjectv.resvalor = $scope.docArrayPub[j].resvalor+' Modificado '+dato.INT_TIPO_LETRE;
+                            datoObjectv.nomcampo = $scope.docArrayPub[j].nomcampo;
+                            datoObjectv.estado   = true;
+                            datoObjectv.desNom = $scope.docArrayPub[j].desNom +'_' + (i+1);
+                            datoObjectFinalV[i] = datoObjectv;
+                            $scope.docPubNuevo.push(datoObjectFinalV[i]);
+                            i++;
+                        }
+                        $scope.pos = i;
+                        setTimeout(function(){
+                            iniciarLoadFyle();
+                        }, 1000);
+                        $scope.lssubcategoria();
+                        $scope.Plubli_Grilla($scope.datos.publicidad);
+                        $scope.botonn="new";
+                        if(!$scope.$$phase) {
+                            $scope.$apply();
+                        }
+                    } else { 
+                        $scope.publi = [];
+                        swal.close();
+                    }
+                });
+            }
         }
     }
-
 
     $scope.guardarpublicidad = function(public){
         if (public.INT_SUPERFICIE) {
             if(public.INT_CARA =='' || public.INT_CARA == null || public.INT_CATE =='' || public.INT_CATE == null || public.INT_TIPO_LETRE =='' || public.INT_TIPO_LETRE == null || public.INT_DESC =='' || public.INT_DESC == null || public.INT_SUPERFICIE =='' || public.INT_SUPERFICIE == null ) {
-                sweet.show('', 'Llene lo campos requeridos para la VIAE  ', 'error');
+                swal('', 'Llene lo campos requeridos para la VIAE  ', 'error');
             } else {
                 var id=0
                 if($scope.datos.publicidad =='' || $scope.datos.publicidad == null || $scope.datos.publicidad =="undefined" ){
@@ -1616,17 +2172,17 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                         $scope.datos.publicidad = $scope.publicid;
                         $scope.Plubli_Grilla($scope.publicid);
                     } else {
-                        sweet.show('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
+                        swal('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
                     }
                 } else {
-                    sweet.show('', 'Llego al limite de registro de Publicidad', 'error');
+                    swal('', 'Llego al limite de registro de Publicidad', 'error');
                 }
             }
         } else {
             if(public.INT_CARA =='' || public.INT_CARA == null ||
             public.INT_CATE =='' || public.INT_CATE == null || public.INT_TIPO_LETRE =='' || public.INT_TIPO_LETRE == null ||
             public.INT_DESC =='' || public.INT_DESC == null || public.INT_ALTO =='' || public.INT_ALTO == null || public.INT_ANCHO =='' || public.INT_ANCHO == null ) {
-                sweet.show('', 'Llene lo campos requeridos para la VIAE  ', 'error');
+                swal('', 'Llene lo campos requeridos para la VIAE  ', 'error');
             } else {
                 var id=0
                 if($scope.datos.publicidad =='' || $scope.datos.publicidad == null || $scope.datos.publicidad =="undefined" ){
@@ -1664,13 +2220,32 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                         $scope.datos.publicidad = $scope.publicid;
                         $scope.Plubli_Grilla($scope.publicid);
                     } else {
-                        sweet.show('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
+                        swal('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
                     }
                 } else {
-                    sweet.show('', 'Llego al limite de registro de Publicidad', 'error');
+                    swal('', 'Llego al limite de registro de Publicidad', 'error');
                 }
             }
         }
+        datoObjectFinalV = [];
+        var i = $scope.pos;
+        for(j = 0; j < $scope.docArrayPub.length; j++){
+            datoObjectv = new Object();
+            datoObjectv.idP = (i+1);
+            datoObjectv.resid = $scope.docArrayPub[j].resid;
+            datoObjectv.idnro = $scope.docArrayPub[j].idnro;
+            datoObjectv.resvalor = $scope.docArrayPub[j].resvalor+' Nuevo '+public.INT_TIPO_LETRE;
+            datoObjectv.nomcampo = $scope.docArrayPub[j].nomcampo;
+            datoObjectv.estado   = true;
+            datoObjectv.desNom = $scope.docArrayPub[j].desNom +'_' + (i+1);
+            datoObjectFinalV[i] = datoObjectv;
+            $scope.docPubNuevo.push(datoObjectFinalV[i]);
+            i++;
+        }
+        $scope.pos = i;
+        setTimeout(function(){
+            iniciarLoadFyle();
+        }, 1000);
     }
 
     $scope.Plubli_Grilla = function(dato){
@@ -1820,18 +2395,20 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }
         $scope.divVIAE="mostrar";
         /*RENOVACION DE LICENCIAS*/
-         if(paramForm.rdTipoTramite == 'RENOVACION'){
+         //if(paramForm.rdTipoTramite == 'RENOVACION'){
             datosNeXO['f01_id_actividad_economica']   =   paramForm.f01_id_actividad_economica;
             datosNeXO['f01_nro_orden']   =   paramForm.f01_nro_orden;
             datosNeXO['f01_id_contribuyente']   =   paramForm.f01_id_contribuyente;
             datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
             datosNeXO['f01_id_representante_legal'] = paramForm.f01_id_representante_legal;
-        }
-         if(paramForm.f01_tipo_lic == 32 || paramForm.f01_tipo_lic == '32'){
+            datosNeXO['f01_id_representante_legal_antiguo'] = paramForm.f01_id_representante_legal_antiguo;
+        //}
+        datosNeXO['f01_actividadesSecundarias'] = paramForm.f01_actividadesSecundarias;
+        /*if(paramForm.f01_tipo_lic == 26 || paramForm.f01_tipo_lic == '26'){
             datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
         }else{
              datosNeXO['f01_actividadesSecundarias'] = '';
-        }
+        }*/
 
         if ($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona == 'J'){
             datosNeXO['f01_nro_frm'] = sessionService.get('IDTRAMITE') ;
@@ -1855,6 +2432,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             datosNeXO['f01_telef_rep']                  =   paramForm.f01_telef_rep;
             datosNeXO['INT_FEC_SOLICITUD']              =   paramForm.INT_FEC_SOLICITUD;
             datosNeXO['CI_BIGDATA']                     =   sessionService.get('IDCIUDADANO');
+            datosNeXO['CI_BIGDATA_RL']                  =   paramForm.id_representante;
             datosNeXO['f01_id_zona_rep']                =   paramForm.f01_id_zona_rep;
             datosNeXO['f01_zona_rep']                   =   paramForm.f01_zon_rep_valor;
             datosNeXO['f01_zon_rep_valor']              =   paramForm.f01_zon_rep_valor;
@@ -1865,6 +2443,31 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             datosNeXO['f01_ape_mat_rep']                =   paramForm.f01_ape_mat_rep;
             datosNeXO['f01_ape_cas_rep']                =   paramForm.f01_ape_cas_rep;
             datosNeXO['f01_fecha_nac']                  =   paramForm.f01_fecha_nac;
+
+            datosNeXO['f01_nit_rep'] = paramForm.f01_nit_rep;
+            datosNeXO['f01_piso_rep'] = paramForm.f01_piso_rep;
+            datosNeXO['f01_bloque_rep'] = paramForm.f01_bloque_rep;
+            datosNeXO['f01_genero_rep'] = paramForm.f01_genero_rep;
+            datosNeXO['f01_numero_rep'] = paramForm.f01_numero_rep;
+            datosNeXO['f01_celular_rep'] = paramForm.f01_celular_rep;
+            datosNeXO['f01_edificio_rep'] = paramForm.f01_edificio_rep;
+            datosNeXO['f01_telefono_rep'] = paramForm.f01_telefono_rep;
+            datosNeXO['f01_tipo_via_rep'] = paramForm.f01_tipo_via_rep;
+            datosNeXO['f01_via_rep'] = paramForm.f01_via_rep;
+            datosNeXO['f01_cuenta_luz_emp'] = '0';
+            datosNeXO['f01_dpto_of_loc_rep'] = paramForm.f01_dpto_of_loc_rep;
+            datosNeXO['f01_estado_civil_rep'] = paramForm.f01_estado_civil_rep;
+            datosNeXO['f01_nac_rep'] = paramForm.f01_nac_rep;
+            datosNeXO['f01_fecha_nac_rep'] = paramForm.f01_fecha_nac_rep;
+            datosNeXO['f01_dir_det_rep'] = paramForm.f01_dir_det_rep;
+            datosNeXO['f01_idzona_rl_rep'] = paramForm.f01_idzona_rl_rep;
+            datosNeXO['f01_edificio_emp'] = paramForm.f01_edificio_emp;
+            datosNeXO['f01_id_zona_emp'] = paramForm.f01_id_zona_emp;
+            datosNeXO['f01_bloque_emp'] = paramForm.f01_bloque_emp;
+            datosNeXO['f01_piso_emp'] = paramForm.f01_piso_emp;
+            datosNeXO['f01_dpto_of_loc_emp'] = paramForm.f01_dpto_of_loc_emp;
+            datosNeXO['f01_dir_det_emp'] = paramForm.f01_dir_det_emp;
+
             datosNeXO['INT_ACTIVIDAD']                  =   paramForm.INT_ACTIVIDAD;
             datosNeXO['f01_denominacion']               =   paramForm.f01_denominacion;
             datosNeXO['f01_sup']                        =   paramForm.f01_sup;
@@ -1882,12 +2485,14 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             datosNeXO['f01_fecha_ini_act']              =   fechactual;
             datosNeXO['f01_estab_es']                   =   paramForm.f01_estab_es;
             datosNeXO['f01_distrito_desc']              =   paramForm.f01_distrito_desc;
-            datosNeXO['f01_productosElaborados']        =   '';
+            datosNeXO['f01_productosElaborados']        =   paramForm.f01_productosElaborados;
             datosNeXO['f01_tipo_lic']                   =   paramForm.f01_tipo_lic;
+            datosNeXO['f01_tipo_lic_sierra']            =   paramForm.f01_tipo_lic_sierra;
             datosNeXO['f01_categoria_agrupada_descripcion']       =   paramForm.f01_categoria_agrupada_descripcion;
             datosNeXO['f01_categoria_descrip']                    =   paramForm.f01_categoria_descrip;
             datosNeXO['INT_ID_CAT_AGRUPADA']            =  parseInt(paramForm.f01_categoria_agrupada);
             datosNeXO['f01_categoria_agrupada']         = paramForm.f01_categoria_agrupada;
+            datosNeXO['f01_categoria_agrupada_sierra']  =   paramForm.f01_categoria_agrupada_sierra;
             datosNeXO['f01_macro_act']                  =   paramForm.f01_macro_act;
             datosNeXO['f01_macro_act_descrip']          =   paramForm.f01_macro_act_descrip;
             datosNeXO['f01_zona_act']                   =   paramForm.f01_zona_act;//paramForm.f01_zona_act_descrip;
@@ -1895,8 +2500,11 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             datosNeXO['f01_dist_act']                   =   paramForm.f01_dist_act;//"";
             datosNeXO['f01_dist_act_descrip']           =   paramForm.f01_dist_act_descrip;
             datosNeXO['f01_tip_via_act']                =   paramForm.f01_tip_via_act;
+            datosNeXO['f01_num_act_id'] = paramForm.f01_num_act_id;
             datosNeXO['f01_num_act']                    =   paramForm.f01_num_act;
-            datosNeXO['f01_num_act_n']                  =   paramForm.f01_num_act_n;
+            if(paramForm.f01_num_act_id == "0" || paramForm.f01_num_act_id == 0){
+                datosNeXO['f01_num_act_n'] = (paramForm.f01_num_act_n).toUpperCase();
+            }
             datosNeXO['f01_factor']                     =   paramForm.f01_factor;
             datosNeXO['f01_num_act1']                   =   paramForm.f01_num_act1;
             datosNeXO['f01_edificio_act']               =   paramForm.f01_edificio_act;
@@ -1965,6 +2573,8 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             /*REQUISITOSDELAACTIVIDADECONOMICA*/
             datosNeXO['f01_tip_act']                    =   paramForm.f01_tip_act;
             datosNeXO['f01_actividad_desarrollada']     =   "";
+            datosNeXO['f01_tipo_sociedad'] = paramForm.f01_tipo_sociedad;
+            datosNeXO['f01_tipo_respaldo'] = paramForm.f01_tipo_respaldo;
             /*CAMPOS GENERICOS NATURAL Y JURIDICO*/ //-->EL CAMPO NO SE ESTA GENERANDO CORRECTAMENTE
             /*REQUISITOSDELAACTIVIDADECONOMICA*/
             var datoObjectdj = [];
@@ -1978,21 +2588,10 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             decjuradaN.nombre = 'DECLARACIÓN JURADA';
             datoObjectdj[0] = decjuradaN;
             datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);
+            datosNeXO['File_Publicidad'] = $scope.datos.fileArchivosPublicidad;
             datosNeXO['Licenmul_grilla'] = paramForm.Licenmul_grilla;
             datosNeXO['f01_tip_act']                    =   paramForm.f01_tip_act;
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;
-            if(paramForm.f01_tipo_lic == 32 || paramForm.f01_tipo_lic == '32'){
-                datosNeXO['f01_idcat_multi_principal'] = paramForm.xf01_idcat_multi_principal;
-                datosNeXO['f01_descat_multi_principal'] = paramForm.xf01_descat_multi_principal;
-                datosNeXO['f01_act_principal'] = paramForm.f01_act_principal;
-                datosNeXO['f01_act_principal2'] = paramForm.f01_act_principal2;
-                datosNeXO['f01_actividad_principal_array'] = paramForm.f01_actividad_principal_array;
-            }else{
-                datosNeXO['f01_idcat_multi_principal'] = '';
-                datosNeXO['f01_descat_multi_principal'] = '';
-                datosNeXO['f01_act_principal'] = '';
-                datosNeXO['f01_act_principal2'] = '';
-            }
         }
 
             datosNeXO['f01_categoria_descrip']      =  paramForm.f01_categoria_descripcion;
@@ -2138,6 +2737,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
 
     /*REQUISITOS2018*/
     $scope.fileArRequisitos = {};
+    $scope.fileAdjuntosPublicidad = {};
     $scope.adicionarArrayDeRequisitos = function(aArch,idFile){
         var descDoc = "";
         var fechaNueva = "";
@@ -2154,6 +2754,13 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 descDoc = doc.desNom;
             }
         })
+        if ($scope.docPubNuevo.length > 0) {
+            angular.forEach($scope.docPubNuevo, function(doc, pos) {
+                if(doc.idP+''+doc.resid == idFile){
+                    descDoc = doc.desNom;
+                }
+            })
+        }
         var imagenNueva = aArch.files[0].name.split('.');
         var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[1];
         $scope.oidCiudadano = sessionService.get('IDCIUDADANO');
@@ -2172,6 +2779,23 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         var adatafile   =   {};
         var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() + '" }';
         $scope.fileArRequisitos[aArch.name] = JSON.parse(myJSON);
+        var swp = 0;
+        var idp = 0;
+        for (var i = 0; i < $scope.docArray.length && swp == 0; i++) {
+            if ($scope.docArray[i].resid == idFile) {
+                idp = $scope.docArray[i].idnro;
+                swp = 1;
+            }
+            else{
+                idp = 4;
+            };
+        };
+        if (idp == 4) {
+            var uploadUrlP = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
+            var myJSONP = '{ "url":"' + uploadUrlP + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() + '" }';
+            $scope.fileAdjuntosPublicidad[aArch.name] = JSON.parse(myJSONP);
+            $scope.clonarRequisitosPublicidad($scope.fileAdjuntosPublicidad);
+        };
         $scope.clonarRequisitosDocumentales($scope.fileArRequisitos);
         //$scope.fileArRequisitos.push(JSON.parse(myJSON));
     }
@@ -2187,6 +2811,18 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             i = i +1;
         });
         $scope.datos.fileArchivosAd = datoObjectFiles;
+    }
+
+    $scope.clonarRequisitosPublicidad = function(aRequArchivosP){
+        var i = 0;
+        $scope.File_Publicidad = {};
+        datoObjectFilesP = [];
+        var longdato = 0;
+        angular.forEach(aRequArchivosP, function(archivo, key) {
+            datoObjectFilesP[i] = archivo;
+            i = i +1;
+        });
+        $scope.datos.fileArchivosPublicidad = datoObjectFilesP;
     }
 
     $scope.ultimoArrayAdjunto = function(){
@@ -2262,6 +2898,13 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                         descDoc = doc.desNom;
                     }
                 })
+                if ($scope.docPubNuevo.length > 0) {
+                    angular.forEach($scope.docPubNuevo, function(doc, pos) {
+                        if(doc.idP+''+doc.resid == idFiles[key]){
+                            descDoc = doc.desNom;
+                        }
+                    })
+                }
                 var imagenNueva = archivo.name.split('.');
                 var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[1];
                 if (archivo.size > 500000 && archivo.size <= 15000000) {
@@ -2393,7 +3036,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 if(sviae  == 'RENOVACION'){//sin viae
                     $scope.docArray[key].estado = false;
                 }else{
-                    $scope.docArray[key].estado = true;
+                    $scope.docArray[key].estado = false;
                 }
             }
         //VALIDANDO LA SUPERFICIE DE LA ACTIVIDAD ECONOMNICA
@@ -2489,6 +3132,28 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 }
             }*/
         });
+        if ($scope.datos.rdTipoTramite1 == 'NUEVO') {
+            datoObjectFinalV = [];
+            var k = 0;
+            for(j = 0; j < $scope.docArray.length; j++){
+                if ($scope.docArray[j].idnro == 4) {
+                    datoObjectv = new Object();
+                    datoObjectv.idP = ($scope.pos+1);
+                    datoObjectv.resid = $scope.docArray[j].resid;
+                    datoObjectv.idnro = $scope.docArray[j].idnro;
+                    datoObjectv.resvalor = $scope.docArray[j].resvalor;
+                    datoObjectv.nomcampo = $scope.docArray[j].nomcampo;
+                    datoObjectv.estado   = true;
+                    datoObjectv.desNom = $scope.docArray[j].desNom;
+                    datoObjectFinalV[k] = datoObjectv;
+                    k++;
+                }
+            }
+            $scope.docArrayPub = datoObjectFinalV;
+        }
+        if(!$scope.$$phase) {
+            $scope.$apply();
+        }
     }
 
     $scope.iniciarRequsitosDoc = function(data){
@@ -2517,13 +3182,13 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     }
 
     /*REQUISITOS2018*/
-    $scope.iniciarGetRequisitosForm = function(sidcategoria, stipoper){
+    /*$scope.iniciarGetRequisitosForm = function(sidcategoria, stipoper){
         if(sidcategoria ==  32 || sidcategoria ==  '32'){//verificamos si la licencia es multiple
             $scope.lstRequisitosMultiples2018($scope.datos.licenciam);
         }else{
             $scope.getRequisitosFormulario(sidcategoria, stipoper);
         }
-    }
+    }*/
 
        /*REQUISITOS2018*/
     $scope.getRequisitosFormulario = function(sidcategoria, stipoper){
@@ -2566,7 +3231,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     $scope.lstRequisitosMultiples2018 = function(licenciamul){
         var sconsulta   = '[';
         for(i=0; i<licenciamul.length; i++){
-            sconsulta   =   sconsulta + '{"id":' + licenciamul[i].f01_cat_agrupadamid + "},";
+            sconsulta   =   sconsulta + '{"id":' + licenciamul[i].f01_categoria_agrupada + "},";
         }
         sconsulta    =   sconsulta.substring(0,sconsulta.length-1);
         sconsulta   =   sconsulta + ']';
@@ -2806,22 +3471,10 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
     $scope.verificarCamposInternet = function (data) {
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
-        var taemayor = 0;
-        if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
-            for (var i = 0; i < data.licenciam.length; i++) {
-                if (parseInt(data.licenciam[i].f01_tae) >= taemayor) {
-                    taemayor = parseInt(data.licenciam[i]);
-                    $scope.datos.idLic = data.licenciam[i].f01_tipo_licmid;
-                    $scope.datos.descriplic = data.licenciam[i].f01_tipo_licmdescrip;
-                    $scope.datos.idcat = data.licenciam[i].f01_cat_agrupadamid;
-                    $scope.datos.descripcat = data.licenciam[i].f01_cat_agrupadamdescrip;
-                    $scope.datos.iddesa = data.licenciam[i].f01_act_desarrolladamid;
-                    $scope.datos.descripdesa = data.licenciam[i].f01_act_desarrolladamdescrip;
-                }
-            };
-            sarrayobligatorio   =   true;
-        }
-        if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
+        data.docAdPublicidad = $scope.docPubNuevo;
+        data.sArrayFileArPublicidad = $scope.fileAdjuntosPublicidad;
+        sarrayobligatorio   =   true;
+        if(data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26'){
             if(data && data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
             data.FILE_CI != ""  && data.FILE_CI != null &&
             data.rdTipoTramite != "" && data.rdTipoTramite != null &&
@@ -2834,7 +3487,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             data.f01_de_hor != "" && data.f01_de_hor != null &&
             data.f01_a_hor != "" && data.f01_a_hor != null &&
             data.f01_estab_es != "" && data.f01_estab_es != null &&
-            data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
+            data.f01_tipo_lic_sierra != "" && data.f01_tipo_lic_sierra != null &&
             data.licenciam != "" && data.licenciam != null &&
             data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
             data.f01_zona_act_descrip != "" && data.f01_zona_act_descrip != null &&
@@ -2850,7 +3503,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             }
         }
 
-        if (data.f01_tipo_lic != 32 || data.f01_tipo_lic != '32'){
+        if (data.f01_tipo_lic_sierra != 26 || data.f01_tipo_lic_sierra != '26'){
             if(data &&  data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
               data.FILE_CI != ""  && data.FILE_CI != null &&
               data.rdTipoTramite != "" && data.rdTipoTramite != null &&
@@ -2862,7 +3515,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
               data.f01_de_hor != "" && data.f01_de_hor != null &&
               data.f01_a_hor != "" && data.f01_a_hor != null &&
               data.f01_estab_es != "" && data.f01_estab_es != null &&
-              data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
+              data.f01_tipo_lic_sierra != "" && data.f01_tipo_lic_sierra != null &&
               data.f01_categoria_agrupada != "" && data.f01_categoria_agrupada != null &&
               data.f01_categoria_descrip != "" && data.f01_categoria_descrip != null &&
               data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
@@ -2883,6 +3536,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
 
     $scope.formulario401 = function(datos){
         $rootScope.datosEnv = "";
+        console.log('data dj    ',datos);
         var fecha= new Date();
         var fechaActualS = "";
         fechaActualS= fecha.getDate() +" - "+ (fecha.getMonth() + 1) +" - "+ fecha.getFullYear();
@@ -2985,7 +3639,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc_per_jur#", datos.f01_raz_soc_per_jur);
                 stringFormulario40  =   stringFormulario40.replace("#f01_email_prop#", datos.f01_email_prop);
                 //DATOS DE LA ACTIVIDAD ECONOMICA
-                stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.f01_raz_soc.toUpperCase());
+                stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.f01_raz_soc);
                 stringFormulario40  =   stringFormulario40.replace("#f01_de_hor#", datos.f01_de_hor);
                 stringFormulario40  =   stringFormulario40.replace("#f01_a_hor#", datos.f01_a_hor);
                 stringFormulario40  =   stringFormulario40.replace("#f01_sup#", datos.f01_sup);
@@ -2993,7 +3647,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 stringFormulario40  =   stringFormulario40.replace("#f01_tip_act1#", datos.f01_tip_act1);
                 stringFormulario40  =   stringFormulario40.replace("#publicidad_grilla#", pubMod);
                 var multi = '';
-                if (datos.f01_tipo_lic == 32 || datos.f01_tipo_lic == '32') {
+                if (datos.f01_tipo_lic_sierra == 26 || datos.f01_tipo_lic_sierra == '26') {
                     stringFormulario40  =   stringFormulario40.replace("#f01_tipo_lic_descrip#", datos.f01_tipo_lic_descrip);
                     stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descrip#", datos.f01_categoria_agrupada_descrip);
                     stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descripcion#", datos.f01_categoria_agrupada_descrip);
@@ -3208,47 +3862,46 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 //stringFormulario40  =   stringFormulario40.replace("#descripcion#", $scope.datosAnt.descripcion.toUpperCase());
                 //stringFormulario40  =   stringFormulario40.replace("#tipocategoria#", $scope.datosA[0].tipocategoria);
                 //stringFormulario40  =   stringFormulario40.replace("#ActividadDesarrollada#", $scope.datosAnt.ActividadDesarrollada);
-                stringFormulario40  =   stringFormulario40.replace("#IdMacrodistrito#", $scope.datosAnt.IdMacrodistrito);
-                stringFormulario40  =   stringFormulario40.replace("#Macrodistrito#", $scope.datosAnt.Macrodistrito);
-                stringFormulario40  =   stringFormulario40.replace("#Distrito#", $scope.datosAnt.Distrito);
+                stringFormulario40  =   stringFormulario40.replace("#IdMacrodistrito#", '');
+                stringFormulario40  =   stringFormulario40.replace("#Macrodistrito#", $scope.datosAnt.macrodistrito);
+                stringFormulario40  =   stringFormulario40.replace("#Distrito#", $scope.datosAnt.distrito);
                 stringFormulario40  =   stringFormulario40.replace("#zona#", $scope.datosAnt.zona);
-                stringFormulario40  =   stringFormulario40.replace("#tipoVia#", $scope.datosAnt.tipoVia);
+                stringFormulario40  =   stringFormulario40.replace("#tipoVia#", $scope.datosAnt.tipovia);
                 stringFormulario40  =   stringFormulario40.replace("#via#", $scope.datosAnt.via);
                 stringFormulario40  =   stringFormulario40.replace("#numero#", $scope.datosAnt.numero);
-                stringFormulario40  =   stringFormulario40.replace("#numeroActividad#", $scope.datosAnt.numeroActividad);
-                stringFormulario40  =   stringFormulario40.replace("#idCodigoZona#", $scope.datosAnt.idCodigoZona);
+                stringFormulario40  =   stringFormulario40.replace("#numeroActividad#", $scope.datosAnt.numeroactividad);
+                stringFormulario40  =   stringFormulario40.replace("#idCodigoZona#", $scope.datosAnt.idcodigozona);
 
                 var multiAnt = '';
-                if ($scope.datosAnt.idTipoLicencia == 3375 || $scope.datosAnt.idTipoLicencia == '3375') {
+                if ($scope.datosAnt.idtipolicencia == 26 || $scope.datosAnt.idtipolicencia == '26') {
+                    console.log('$scope.licenciamulAnterior    ',$scope.datos.licenciamulAnterior);
                     stringFormulario40  =   stringFormulario40.replace("#tipocategoria#", 'MULTISERVICIOS');
-                    //stringFormulario40  =   stringFormulario40.replace("#ActividadDesarrollada#", 'MULTISERVICIOS');
                     stringFormulario40  =   stringFormulario40.replace("#descripcion#", 'MULTISERVICIOS');
-                    /*multiAnt = '<table id="tablaMulAnt" class="table table-striped table-bordered"><tr><td>NRO</td>'+
-                    '<td>TIPO DE LICENCIA</td>' +
+                    multiAnt = '<table id="tablaMulAnt" class="table table-striped table-bordered"><tr><td>NRO</td>'+
+                    '<td>TIPO DE LICENCIA</td>' + 
                     '<td>TIPO DE CATEGORÍA</td>'+
                     '<td>TIPO DE ACTIVIDAD</td></tr>';
-                    for (i = 0; i < $scope.datosAntMulti.length; i++){
-                        multiAnt = multiAnt +'<tr>' +
+                    console.log('$scope.licenciamulAnterior    ',$scope.datos.licenciamulAnterior);
+                    for (i = 0; i < $scope.datos.licenciamulAnterior.length; i++){
+                        multiAnt = multiAnt +'<tr>' + 
                         '<td>' + (i+1) + '</td>'+
-                        '<td>' + $scope.datosAntMulti[i].f01_tipo_licmdescrip + '</td>'+
-                        '<td>' + $scope.datosAntMulti[i].f01_cat_agrupadamdescrip + '</td>'+
-                        '<td>' + $scope.datosAntMulti[i].f01_act_desarrolladamdescrip + '</td></tr>';
+                        '<td>' + $scope.datos.licenciamulAnterior[i].f01_tipo_licmdescrip + '</td>'+
+                        '<td>' + $scope.datos.licenciamulAnterior[i].f01_cat_agrupadamdescrip + '</td>'+
+                        '<td>' + $scope.datos.licenciamulAnterior[i].f01_act_desarrolladamdescrip + '</td></tr>';
                     }
                     multiAnt = multiAnt + '</table>';
                     stringFormulario40  =   stringFormulario40.replace("#ActividadDesarrollada#", 'MULTISERVICIOS');
-                    stringFormulario40  =   stringFormulario40.replace("#Licenmul_grillaAnt#", multiAnt);*/
+                    stringFormulario40  =   stringFormulario40.replace("#Licenmul_grillaAnt#", multiAnt);
                 } else{
-                    stringFormulario40  =   stringFormulario40.replace("#descripcion#", $scope.datosAnt.descripcion.toUpperCase());
-                    try{
-                        stringFormulario40  =   stringFormulario40.replace("#tipocategoria#", $scope.datosA[0].tipocategoria);
-                    }catch(e){console.log("Error:", e)}
+                    stringFormulario40  =   stringFormulario40.replace("#descripcion#", $scope.datosAnt.licencia_descripcion);
+                    stringFormulario40  =   stringFormulario40.replace("#tipocategoria#", $scope.datosAnt.categoria_descripcion);
                     stringFormulario40  =   stringFormulario40.replace("#ActividadDesarrollada#", $scope.datosAnt.ActividadDesarrollada);
                     stringFormulario40  =   stringFormulario40.replace("#Licenmul_grillaAnt#", multiAnt);
                 };
                 var pubAnt = '';
                 if (datos.publicidadAntiguo_grilla.length > 1) {
                     pubAnt = '<tr><td>VIAE</td>'+
-                    '<td>TIPO</td>' +
+                    '<td>TIPO</td>' + 
                     '<td>CARACTERÍSTICA</td>'+
                     //'<td>CARAS</td>'+
                     '<td>DESCRIPCIÓN</td>'+
@@ -3256,7 +3909,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                     '<td>ANCHO</td>'+
                     '<td>SUPERFICIE</td></tr>';
                     for (i = 1; i < datos.publicidadAntiguo_grilla.length; i++){
-                        pubAnt = pubAnt +'<tr>' +
+                        pubAnt = pubAnt +'<tr>' + 
                         '<td>' + datos.publicidadAntiguo_grilla[i].nroElem + '</td>'+
                         '<td>' + datos.publicidadAntiguo_grilla[i].descripcionTipoLetrero + '</td>'+
                         '<td>' + datos.publicidadAntiguo_grilla[i].caracteristica + '</td>'+
@@ -3270,7 +3923,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 }
                 else{
                     stringFormulario40  =   stringFormulario40.replace("#publicidadAntiguo_grilla#", 'ACTIVIDAD ECONOMICA SIN ELEMENTOS DE IDENTIFICACIÓN');
-                }
+                };
                 $scope.msgformularioJ = stringFormulario40;
                 $scope.notifcondicionesuso = stringFormulario40;
                 setTimeout(function(){
@@ -3315,42 +3968,40 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         dataForm['superficie'] = $scope.datosAnt.superficie;
         dataForm['horarioAtencion'] = $scope.datosAnt.horarioAtencion;
         dataForm['establecimiento'] = $scope.datosAnt.establecimiento;
-        dataForm['tipoActividad'] = $scope.datosAnt.tipoActividad;
-        dataForm['IdMacrodistrito'] = $scope.datosAnt.IdMacrodistrito;
-        dataForm['Macrodistrito'] = $scope.datosAnt.Macrodistrito;
-        dataForm['Distrito'] = $scope.datosAnt.Distrito;
+        dataForm['tipoActividad'] = $scope.datosAnt.tipoactividad;
+        dataForm['IdMacrodistrito'] = '';
+        dataForm['Macrodistrito'] = $scope.datosAnt.macrodistrito;
+        dataForm['Distrito'] = $scope.datosAnt.distrito;
         dataForm['zona'] = $scope.datosAnt.zona;
-        dataForm['tipoVia'] = $scope.datosAnt.tipoVia;
+        dataForm['tipoVia'] = $scope.datosAnt.tipovia;
         dataForm['via'] = $scope.datosAnt.via;
         dataForm['numero'] = $scope.datosAnt.numero;
         dataForm['publicidadAntiguo_grilla'] = $scope.datosAnt.publicidadAntiguo_grilla;
         dataForm['numeroActividad'] = $scope.datosAnt.numeroActividad;
-        dataForm['idCodigoZona'] = $scope.datosAnt.idCodigoZona;
+        dataForm['idCodigoZona'] = $scope.datosAnt.idcodigozona;
         var multiAnt = '';
-        if ($scope.datosAnt.idTipoLicencia == 3375 || $scope.datosAnt.idTipoLicencia == '3375') {
+        if ($scope.datosAnt.idtipolicencia == 26 || $scope.datosAnt.idtipolicencia == '26') {
             dataForm['descripcion'] = 'MULTISERVICIOS';
             dataForm['tipocategoria'] =  'MULTISERVICIOS';
-            /*multiAnt = '<table id="tablaVAnt" border="0.5" style="width:100%"><tr><td>NRO</td>'+
+            multiAnt = '<table id="tablaVAnt" border="0.5" style="width:100%"><tr><td>NRO</td>'+
             '<td>TIPO DE LICENCIA</td>' +
             '<td>TIPO DE CATEGORÍA</td>'+
             '<td>TIPO DE ACTIVIDAD</td></tr>';
-            for (i = 0; i < $scope.datosAntMulti.length; i++){
+            for (i = 0; i < $scope.datos.licenciamulAnterior.length; i++){
                 multiAnt = multiAnt +'<tr>' +
                 '<td>' + (i+1) + '</td>'+
-                '<td>' + $scope.datosAntMulti[i].f01_tipo_licmdescrip + '</td>'+
-                '<td>' + $scope.datosAntMulti[i].f01_cat_agrupadamdescrip + '</td>'+
-                '<td>' + $scope.datosAntMulti[i].f01_act_desarrolladamdescrip + '</td></tr>';
+                '<td>' + $scope.datos.licenciamulAnterior[i].f01_tipo_licmdescrip + '</td>'+
+                '<td>' + $scope.datos.licenciamulAnterior[i].f01_cat_agrupadamdescrip + '</td>'+
+                '<td>' + $scope.datos.licenciamulAnterior[i].f01_act_desarrolladamdescrip + '</td></tr>';
             }
-            multiAnt = multiAnt + '</table>';*/
+            multiAnt = multiAnt + '</table>';
             dataForm['ActividadDesarrollada'] =  'MULTISERVICIOS';
-            //dataForm['Licenmul_grillaAnt'] =  multiAnt;
-        }else{
-            dataForm['descripcion'] = $scope.datosAnt.descripcion.toUpperCase();
-            try{
-                dataForm['tipocategoria'] =  $scope.datosA[0].tipocategoria;
-            }catch(e){console.log("Error:", e)}
+            dataForm['Licenmul_grillaAnt'] =  multiAnt;
+        } else{
+            dataForm['descripcion'] = $scope.datosAnt.licencia_descripcion;
+            dataForm['tipocategoria'] =  $scope.datosAnt.categoria_descripcion;
             dataForm['ActividadDesarrollada'] =  $scope.datosAnt.ActividadDesarrollada;
-            //dataForm['Licenmul_grillaAnt'] =  multiAnt;
+            dataForm['Licenmul_grillaAnt'] =  multiAnt;
         };
         var pubAnt = '';
         if (data.publicidadAntiguo_grilla.length > 1) {
@@ -3430,7 +4081,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             dataForm['f01_tip_act'] = 'SUCURSAL';
         }*/
         var multi = '';
-        if (data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32') {
+        if (data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26') {
             dataForm['f01_tipo_lic_descrip'] = data.f01_tipo_lic_descrip;
             dataForm['f01_categoria_agrupada_descrip'] = data.f01_tipo_lic_descrip;
             dataForm['f01_categoria_agrupada_descripcion'] = data.f01_tipo_lic_descrip;
@@ -3602,7 +4253,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $('#msgformularioJ').html($scope.msgformularioJ);
     }
 
-    $scope.cargarDatosJuridico = function(){
+    $scope.cargarDatosJuridicoSierra = function(){
         $scope.sTipoPersona = sessionService.get('TIPO_PERSONA');
         if($scope.sTipoPersona=="JURIDICO"){
             $scope.divJuridico = "mostrar";
@@ -3623,7 +4274,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         $scope.formDatosAE              = false;
         $scope.mostrarMsgActividadTrue  = false;
         $scope.mostrarMsgActividadFalse = false;
-        setTimeout(function(){
+        /*setTimeout(function(){
             if(
                 (typeof($scope.datos.INT_AC_latitud) !=  'undefined' && $scope.datos.INT_AC_latitud  != "" && $scope.datos.INT_AC_latitud != 0 && $scope.datos.INT_AC_latitud != "0") &&
                 (typeof($scope.datos.INT_AC_longitud) != 'undefined' && $scope.datos.INT_AC_longitud != "" && $scope.datos.INT_AC_longitud != 0 && $scope.datos.INT_AC_longitud != "0")
@@ -3642,7 +4293,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 map.setCenter(nuevoUbicacion);
                 $scope.setMapOnAll();
             }
-        },500);
+        },500);*/
         if(data.length > 0){
             if(data[0].venviado != 'SI'){
                 if(data[0].datos.INT_FORM_ALMACENADO != 'G'){
@@ -3660,9 +4311,16 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         }
     });
 
-
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
         $scope.catactividadDesarrollada();
+        $scope.tipoSociedad();
+        $scope.tipoDocumentoRespaldo();
+        if (data.f01_zona_act == undefined || data.f01_zona_act == 'undefined' || data.f01_zona_act == null || data.f01_zona_act == '') {
+        } else{
+            $scope.datos.f01_macro_act = data.f01_macro_act;
+            $scope.datos.f01_zona_act = data.f01_zona_act;
+            $scope.distritoZonas($scope.datos.f01_macro_act);
+        };
         if (datos.f01_id_actividad_economica) {
             $scope.datosAnterioresJuridico(datos.f01_id_actividad_economica);
         };
@@ -3672,13 +4330,13 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         };
         $scope.datos.f01_macro_act = data.f01_macro_act;
         document.getElementById("f01_macro_act").value = data.f01_macro_act;
-        $scope.GetValueZonaSegura(data.f01_categoria_agrupada);
+        $scope.GetValueZonaSegura(data.f01_categoria_agrupada_sierra);
         if (data.publicidadAE == undefined || data.publicidadAE == 'undefined') {
             $scope.pubAE = false;
-            $scope.pubMensaje = true;
+            //$scope.pubMensaje = true;
         } else{
             $scope.pubAE = true;
-            $scope.pubMensaje = false;
+            //$scope.pubMensaje = false;
         };
         //VERIFICAR CATEGORIA DESARROLLADA
         var categoriaDescrip = ((typeof(data.f01_categoria_descrip) == 'undefined' || data.f01_categoria_descrip == null) ? '' : data.f01_categoria_descrip);
@@ -3686,11 +4344,11 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             $scope.sActividadDesarrollada = false;
         }
         //REQUISITOS DOCUMENTALES
-        var categoriaAgrupadaDesc = ((typeof(data.f01_categoria_agrupada) == 'undefined' || data.f01_categoria_agrupada == null) ? '' : data.f01_categoria_agrupada);
+        var categoriaAgrupadaDesc = ((typeof(data.f01_categoria_agrupada_sierra) == 'undefined' || data.f01_categoria_agrupada_sierra == null) ? '' : data.f01_categoria_agrupada_sierra);
         if(categoriaAgrupadaDesc != ''){
             $scope.getRequisitosTecnicosCategoria(data.f01_categoria_agrupada, data.f01_tipo_per);
         }
-        if (data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32') {
+        if (data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26') {
             $scope.sCategoria = false;
             $scope.smultiservicios = true;
             $scope.datos.f01_categoria_descrip = data.f01_categoria;
@@ -3702,7 +4360,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
 
         /*REQUISITOS2018*/
         if (data.f01_categoria_agrupada == '' || data.f01_categoria_agrupada == undefined || data.f01_categoria_agrupada == 'undefined') {} else{
-            if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){//verificamos si la licencia es multiple
+            if(data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26'){//verificamos si la licencia es multiple
                 $scope.lstRequisitosMultiples2018(data.licenciam);
             }else{
                 $scope.getRequisitosFormulario(data.f01_categoria_agrupada, data.f01_tipo_per);
@@ -3839,22 +4497,22 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             }catch(error){
             }
         }*/
-        $scope.distritoZonas($scope.datos.f01_macro_act);
-        $scope.nom_via = data.INT_AC_NOMBRE_VIA;
+        //$scope.distritoZonas($scope.datos.f01_macro_act);
+        /*$scope.nom_via = data.INT_AC_NOMBRE_VIA;
         if (data.INT_AC_ZONA) {
             $scope.desabilitadoZ=false;
         }
         if (data.INT_AC_TIP_VIA) {
             $scope.desabilitadoV=false;
         }
-        /*if(data.INT_AC_TIP_VIA != ""){
+        if(data.INT_AC_TIP_VIA != ""){
             $scope.vias(data.INT_AC_ID_ZONA,data.INT_AC_TIP_VIA);
         }*/
         $scope.datos.INT_AC_NOMBRE_VIA = data.INT_AC_NOMBRE_VIA;
         $scope.obtenerHora();
         $scope.obtenerFecha();
         //$scope.abrirMapa();
-        $scope.open_mapa_ae();
+        //$scope.open_mapa_ae();
         if (data.FILE_FOTOCOPIA_CI)
             $scope.divfileci = true;
         if (data.FILE_FOTOCOPIA_CI_R)
@@ -3892,6 +4550,66 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
             console.log("error en via");
         }
     };
+
+    $scope.GetValueTipoSociedad = function(){
+         var e = document.getElementById("f01_tipo_sociedad");
+        $scope.datos.f01_tipo_sociedad_descripcion = e.options[e.selectedIndex].text;
+    }
+
+    $scope.GetValueTipoRespaldo = function(){
+         var e = document.getElementById("f01_tipo_respaldo");
+        $scope.datos.f01_tipo_respaldo_descripcion = e.options[e.selectedIndex].text;
+    }
+
+    $scope.tipoSociedad = function(){
+        $.blockUI();
+        try{
+            var tipoSoc = '{"xclasifica":"2002"}';
+            var tipoSociedad = new reglasnegocioSierra();
+            tipoSociedad.identificador = 'SERVICIO_VALLE-PAR-2521';
+            tipoSociedad.parametros = tipoSoc;
+            tipoSociedad.llamarregla_sierra(function(responseActDes){
+                var lstSoc =  JSON.parse(responseActDes);
+                if(lstSoc.length > 0){
+                    $scope.datosSociedad = lstSoc;
+                }else{
+                    $scope.msg = "Error !!";
+                }
+                if(!$scope.$$phase) {
+                    $scope.$apply();
+                }
+                $.unblockUI();
+            });
+        }catch(e){
+            alert("Error en la actividad desarrollada");
+            $.unblockUI();
+        }
+    }
+
+    $scope.tipoDocumentoRespaldo = function(){
+        $.blockUI();
+        try{
+            var tipoSoc = '{"xclasifica":"2010"}';
+            var tipoSociedad = new reglasnegocioSierra();
+            tipoSociedad.identificador = 'SERVICIO_VALLE-PAR-2521';
+            tipoSociedad.parametros = tipoSoc;
+            tipoSociedad.llamarregla_sierra(function(responseActDes){
+                var lstSoc =  JSON.parse(responseActDes);
+                if(lstSoc.length > 0){
+                    $scope.datosRespaldo = lstSoc;
+                }else{
+                    $scope.msg = "Error !!";
+                }
+                if(!$scope.$$phase) {
+                    $scope.$apply();
+                }
+                $.unblockUI();
+            });
+        }catch(e){
+            alert("Error en la actividad desarrollada");
+            $.unblockUI();
+        }
+    }
 
      //fecha del servidor
     $scope.obtenerFecha = function(){
@@ -4044,6 +4762,21 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
             $scope.mostrarMsgNuevaActividad = false;
         }
+        console.log('$scope.dataGenesisCidadano     ',$scope.dataGenesisCidadano);
+        var datosgen = ((typeof($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {} : $scope.dataGenesisCidadano);
+        console.log('datosgen   ',datosgen.contribuyente_id);
+        if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
+            $scope.mostrarMsgNuevaActividad = false;
+        }
+        if (JSON.stringify(datosgen) == '{}') {
+            console.log('esta vacio');
+        } else{
+            console.log('esta lleno');
+            $scope.datos.f01_id_contribuyente = datosgen.contribuyente_id;
+            $scope.datos.f01_id_representante_legal_antiguo = datosgen.contribuyente.representante.contribuyente_id;
+        };
+        console.log('$scope.datos.f01_id_contribuyente     ',$scope.datos.f01_id_contribuyente);
+        $scope.datosRepresentanteLegal();
         $.unblockUI();
         //$scope.initMap();
     });

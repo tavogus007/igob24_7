@@ -441,39 +441,36 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group" >
-                            <label for="url" >Tipo de Categoria:</label>
-                            <div class="controls">
-                                <input type="text" ng-model="datos.f01_categoria_agrupada_ant" id="f01_categoria_agrupada_ant" name="f01_categoria_agrupada_ant" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-disabled="true" required/>
+                    <div ng-show="sinmultiservicios">
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                                <label for="url" >Tipo de Categoria:</label>
+                                <div class="controls">
+                                    <input type="text" ng-model="datos.f01_categoria_agrupada_ant" id="f01_categoria_agrupada_ant" name="f01_categoria_agrupada_ant" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-disabled="true" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                                <label for="url" >Detalle de Actividad Desarrollada:</label>
+                                <div class="controls">
+                                    <input type="text" ng-model="datos.f01_categoria_descrip_ant" id="f01_categoria_descrip_ant" name="f01_categoria_descrip_ant" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-disabled="true" required/>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group" >
-                            <label for="url" >Detalle de Actividad Desarrollada:</label>
-                            <div class="controls">
-                                <input type="text" ng-model="datos.f01_categoria_descrip_ant" id="f01_categoria_descrip_ant" name="f01_categoria_descrip_ant" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-disabled="true" required/>
-                            </div>
-                        </div>
+                    <div class="col-md-12" ng-show="conmultiservicios">
+                        <table ng-table="tablaRoles" class="table table-striped table-bordered">
+                            <tr style="cursor: pointer;" ng-repeat="licAnt in datos.licenciamulAnterior">
+                                <td data-title="'NRO'">{{$index+1}}</td>
+                                <td data-title="'TIPO DE LICENCIA'">{{licAnt.f01_tipo_licmdescrip}}</td>
+                                <td data-title="'TIPO DE CATEGORIA'">{{licAnt.f01_cat_agrupadamdescrip}}</td>
+                                <td data-title="'TIPO DE ACTIVIDAD'">{{licAnt.f01_act_desarrolladamdescrip}}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-6" ng-show="false">
-                <div class="form-group" >
-                    <font color="#FF0000" size="4px"> * </font>
-                    <label for="url" >Tipo de Actividad:</label>
-                    <div class="controls">
-                        <select id="f01_tip_act" name="f01_tip_act" ng-disabled="true"  ng-model="datos.f01_tip_act"  class="form-control" required>
-                            <option value="">--Seleccionar--</option>
-                            <option value="MA"> MATRIZ  </option>
-                            <option value="SU"> SUCURSAL  </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
             <div class="col-md-12">
                 <div class="form-group" >
                     <div class="col-md-12">
@@ -544,7 +541,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <font color="#FF0000" size="4px"> * </font>
@@ -707,13 +703,13 @@
                             <label for="url" >V&iacute;a: <font color="#FF0000"> * </font></label>
                             <div class="controls">
                                 <select
-                                    id="f01_num_act"
-                                    name="f01_num_act"
+                                    id="f01_num_act_id"
+                                    name="f01_num_act_id"
                                     placeholder="-- Seleccione --"
-                                    ng-model="datos.f01_num_act"
+                                    ng-model="datos.f01_num_act_id"
                                     class="form-control"
-                                    ng-options="dato.nombVia as dato.nombVia for dato in datosNombVia | orderBy:['nombre','nombVia']"
-                                    ng-change="cargarNombViaTxt(datos.f01_num_act)"
+                                    ng-options="dato.xvia_ae_id as dato.xvia_ae_nombre for dato in datosNombVia | orderBy:['nombre','nombVia']"
+                                    ng-change="cargarNombViaTxt(datos.f01_num_act_id);GetValueVia();"
                                     ng-disabled="desabilitado"
                                     required>
                                     <option style="display:none" value="">--Seleccione--</option>
@@ -721,30 +717,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6" ng-show="datos.f01_num_act == 'NINGUNO'">
+                    <div class="col-md-6" ng-show="datos.f01_num_act_id == 0">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
                             <div class="controls">
                               <input type="text" ng-model="datos.f01_num_act_n" id="f01_num_act_n" name="f01_num_act_n" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
-                            </div>
-                        </div>
-                    </div>
-                    <div ng-show="datos.f01_num_act == 'OTRO'">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="url" >{{translateTitulos.lbl_12_40}} :</label>
-                                <div class="controls">
-                                  <input type="text" ng-model="datos.OTRO_VIA" id="OTRO_VIA" name="OTRO_VIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6" ng-show="false">
-                        <div class="form-group">
-                            <label for="url" >Tipo Trayecto:</label>
-                            <div class="controls">
-                          <input type="text" ng-model="datos.f01_factor" id="f01_factor" name="f01_factor" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
                             </div>
                         </div>
                     </div>
@@ -957,7 +935,7 @@
                                                         <tr ng-repeat="pup in datos.publicidad" >
                                                            <td data-title="'Opciones'" filter="{'estado':'text'}">  
                                                                 <a class="btn btn-default btn-circle" ng-click="modificarPlubli(pup)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
-                                                                <a class="btn btn-default btn-circle" ng-hide="edit[pup.id]" ng-click="eliminarPublicidad(pup)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
+                                                                <a class="btn btn-default btn-circle" ng-hide="edit[pup.id]" ng-click="eliminarPubli(pup)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
                                                             </td>
                                                             <td data-title="'VIAE'">{{$index+1}}</td>
                                                             <td data-title="'TIPO'" sortable="'INT_TIPO_LETRE'">{{pup.INT_TIPO_LETRE}}</td>
@@ -967,7 +945,12 @@
                                                             <td data-title="'ALTO'" sortable="'INT_ALTO'">{{pup.INT_ALTO}}</td>
                                                             <td data-title="'ANCHO'" sortable="'INT_ANCHO'">{{pup.INT_ANCHO}}</td>
                                                             <td data-title="'SUPERFICIE'" sortable="'INT_SUP'">{{pup.INT_SUP}}</td>
-                                                            <td data-title="'ESTADO'" sortable="'estado'">{{pup.estado}}</td>
+                                                            <td data-title="'ESTADO'" sortable="'INT_ESTADO'">
+                                                                <div ng-if="pup.estado == 'V'">VIGENTE</div>
+                                                                <div ng-if="pup.estado == 'B'">BAJA</div>
+                                                                <div ng-if="pup.estado == 'M'">MODIFICADO</div>
+                                                                <div ng-if="pup.estado == 'N'">NUEVO</div>
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                            <!-- fin de la tabla -->
@@ -981,7 +964,36 @@
                                 </div>
                             </div>
                         </div>
-                </div>                
+                        <!--REQUISITOS PUBLICIDAD-->
+                        <div class="col-md-12">
+                            <legend>Requisitos Documentales Publicidad: </legend>
+                        </div>
+                        <div  class="col-md-12">
+                            <form  name="adjuntosFormPub" id="adjuntosFormPub">
+                                <div ng-repeat="dataPub in docPubNuevo">
+                                    <div class="form-group">
+                                        <div ng-show = "dataPub.estado" class="col-md-12">
+                                            <label id="lbl_f01_upload{{dataPub.idP}}{{dataPub.resid}}" class="col-sm-6">{{dataPub.resvalor}}</label>
+                                            <div class="form-group custom-upload col-sm-6">
+                                                <input type="file" id="f01_upload{{dataPub.idP}}{{dataPub.resid}}" name="f01_upload{{dataPub.idP}}{{dataPub.resid}}" accept="image/*"  style="display: none;">
+                                                <div class="input-group col-xs-12">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                    <input id="txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}" name="txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-model="datos['txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}']" type="text" placeholder="{{dataPub.resvalor}}" class="form-control input-lg" disabled required>
+                                                    <span class="input-group-btn">
+                                                        <a id="href_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-show="fileAdjuntosPublicidad['f01_upload'+dataPub.idP+dataPub.resid].url" href="{{fileAdjuntosPublicidad['f01_upload'+dataPub.idP+dataPub.resid].url}}" target="_blank">
+                                                        {{rmostrarviae}}
+                                                        <button id="btn_f01_upload{{dataPub.idP}}{{dataPub.resid}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                        </a>
+                                                        <button id="btn_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-click="ejecutarFile('f01_upload' + dataPub.idP + dataPub.resid, dataPub.idnro)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 <!-- FIN DE VARIABLE DE IDENTIFICACION DE LA ACTIVIDAD ECONIMICA -->
                 <div ng-show = "mostrarzonasegura">
                     <div class="col-md-12">
@@ -994,6 +1006,41 @@
                                     <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura" value="ZONASEGURA" ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();" ng-disabled="desabilitado" >Es Zona Segura &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura" value="NOZONASEGURA" ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();" ng-disabled="desabilitado">No es Zona Segura
                                     <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <legend>Requisitos Documentales Anteriores: </legend>
+                </div>
+                <div class="col-md-12" ng-show="reqdoc==true">
+                    <div class="form-group">
+                        <label class="col-sm-12 control-label no-padding-right" for="url" ></font></label>
+                        <div class="col-sm-12" align="left">
+                            <div class="alert alert-warning fade in">
+                                <a href="" class="close" data-dismiss="alert">&times;</a>
+                                <strong>LA ACTIVIDAD ECONOMICA PRESENTO LOS REQUISITOS DOCUMENTALES FISICAMENTE</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div  class="col-md-12">
+                    <div ng-repeat="dataD in datos.datosdocanterior">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="col-sm-6">{{dataD.titulo}}</label>
+                                <div class="form-group custom-upload col-sm-6">
+                                    <input type="file" id="f01_upload{{dataD.url}}" name="f01_upload{{dataD.url}}" accept="image/*" style="display: none;">
+                                    <div class="input-group col-xs-12">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                        <input type="text" placeholder="{{dataD.nombreAcrh}}" class="form-control input-lg" disabled required>
+                                        <span class="input-group-btn">
+                                            <a id="href_f01_upload{{dataD.url}}" href="{{dataD.url}}" target="_blank">
+                                            <button id="btn_f01_upload{{dataD.url}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i>  Visualizar</button>
+                                            </a>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

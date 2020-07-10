@@ -370,7 +370,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                         $scope.datos.f01_categoria_agrupada_sierra = datosLic[0].categoria_id;
                         $scope.datos.f01_categoria_agrupada = datosLic[0].categoria_id_anterior;
                         $scope.datos.f01_categoria_agrupada_dem = datosLic[0].addescripcion;
-                        $scope.datos.f01_categoria_agrupada_descrip = datosLic[0].ad3436descripcion;
+                        $scope.datos.f01_categoria_agrupada_descrip = datosLic[0].addescripcion;
                         $scope.GetValueZonaSegura(datosLic[0].categoria_id_anterior);
                         var comboz = document.getElementById('f01_categoria_descrip');
                         selected2 = comboz.options[comboz.selectedIndex].text;
@@ -1070,9 +1070,8 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         }
         $scope.actividadSecund = datosaux;
         if($scope.datos.f01_categoria_agrupada != 26 || $scope.datos.f01_categoria_agrupada != '26'){
-            var e = document.getElementById("f01_categoria_agrupada");
-            $scope.datos.f01_categoria_agrupada_descrip = e.options[e.selectedIndex].text;
-
+            //var e = document.getElementById("f01_categoria_agrupada");
+            //$scope.datos.f01_categoria_agrupada_descrip = e.options[e.selectedIndex].text;
             $scope.actividadSecund = $scope.datos.f01_categoria_agrupada_descrip;
         }
         $scope.datos.f01_actividadesSecundarias = $scope.actividadSecund;
@@ -1188,10 +1187,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         $scope.publi.INT_CATE="II Fija";
         $scope.publi.idcate=6;
         $scope.TipoLetrero = [
-        {"p_idtipoletrero" : "51", "p_descripcion": "ADOSADA SOBRESALIENTE"},
-        {"p_idtipoletrero" : "39", "p_descripcion": "ADOSADA"},
-        {"p_idtipoletrero" : "41", "p_descripcion": "MICROPERFORADA - AUTOADHESIVA"},
-        {"p_idtipoletrero" : "40", "p_descripcion": "PINTADA"}];
+        {"p_idtipoletrero" : "17", "p_descripcion": "ADOSADA SOBRESALIENTE"},
+        {"p_idtipoletrero" : "14", "p_descripcion": "ADOSADA"},
+        {"p_idtipoletrero" : "15", "p_descripcion": "MICROPERFORADA - AUTOADHESIVA"},
+        {"p_idtipoletrero" : "16", "p_descripcion": "PINTADA"}];
     };
     
     $scope.ltCaracteristica = function(idlee){
@@ -1201,11 +1200,11 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         if($scope.TipoLetrero){
             angular.forEach($scope.TipoLetrero, function(value, key) {
                 if(value.p_descripcion == idlee){
-                    idcarac = value.p_idtipoletrero;                    
+                    idcarac = value.p_idtipoletrero;
                 }
             });
-        }        
-        $scope.publi.idcarac=idcarac;        
+        }
+        $scope.publi.idcarac=idcarac;
         if(idlee == "ADOSADA SOBRESALIENTE" || idlee == "ADOSADA" ){
          $scope.lCaracteristica = [
         {"p_idcaracteristica" : "1", "p_caracteristica": "Simple"},
@@ -1544,7 +1543,8 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             datosNeXO['f01_id_representante_legal'] = paramForm.f01_id_representante_legal;
             datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
             datosNeXO['f01_id_representante_legal_antiguo'] = paramForm.f01_id_representante_legal_antiguo;
-        }      
+        }
+        datosNeXO['CI_BIGDATA_RL']                  =   paramForm.id_representante;
         var sIdCiudadano = sessionService.get('IDCIUDADANO');
         datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
         datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
@@ -1886,6 +1886,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
 
     /*REQUISITOS2018*/
     $scope.fileArRequisitos = {};
+    $scope.fileAdjuntosPublicidad = {};
     $scope.adicionarArrayDeRequisitos = function(aArch,idFile){
         var descDoc = "";
         var fechaNueva = "";
@@ -2766,11 +2767,19 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             data.f01_num_act != "" && data.f01_num_act != null &&
             data.f01_num_act1 != "" && data.f01_num_act1 != null &&
             data.f01_casilla != "" && data.f01_casilla != null){
-
-                $scope.serializarInformacion(data);
-                $scope.formulario401(data);
-                $("#declaracionJ").modal("show");
-               
+                if (data.rdTipoTramite1 == 'NUEVO') {
+                    if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                        $scope.serializarInformacion(data);
+                        $scope.formulario401(data);
+                        $("#declaracionJ").modal("show");
+                    } else{
+                        swal('', "Datos obligatorios, Adjuntar publicidad y sus documentos", 'warning');
+                    };
+                } else{
+                    $scope.serializarInformacion(data);
+                    $scope.formulario401(data);
+                    $("#declaracionJ").modal("show");
+                };
             }
             else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
@@ -2798,15 +2807,24 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
               data.f01_num_act1 != "" && data.f01_num_act1 != null &&
               data.f01_casilla != "" && data.f01_casilla != null){
               //$rootScope.validacionRequisitosTec();
-                $scope.serializarInformacion(data);
-                $scope.formulario401(data);
-                $("#declaracionJ").modal("show");  
+                if (data.rdTipoTramite1 == 'NUEVO') {
+                    if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                        $scope.serializarInformacion(data);
+                        $scope.formulario401(data);
+                        $("#declaracionJ").modal("show");
+                    } else{
+                        swal('', "Datos obligatorios, Adjuntar publicidad y sus documentos", 'warning');
+                    };
+                } else{
+                    $scope.serializarInformacion(data);
+                    $scope.formulario401(data);
+                    $("#declaracionJ").modal("show");
+                };
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
         }
     }
-    
 
     $scope.formulario401 = function(datos){
         $rootScope.datosEnv = "";

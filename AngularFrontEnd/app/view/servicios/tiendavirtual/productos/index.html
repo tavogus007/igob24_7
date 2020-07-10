@@ -136,9 +136,6 @@
         </style>
 
     </head>
-
-
-
     <div class="col-md-12" ng-controller="productosController" ng-init="inicioProductos();">
       <div class="ibox float-e-margins">
         <div>
@@ -304,7 +301,7 @@
                                 <span class="slider round"></span>
                             </label>
                           </td>
-                          <td data-title="'Producto'" class="text-left">&nbsp; {{producto.prd_productoc}} <br><div ng-if="producto.prd_ofertac == 'CON OFERTA'"><h3 style="color: red;"> <strong> {{producto.prd_ofertac}}</strong> </h3></div></td>
+                          <td data-title="'Producto'" class="text-left">&nbsp; {{producto.prd_productoc}} <br><div ng-if="producto.prd_ofertac == 'CON OFERTA'"><h3 style="color: red;"> <strong> OFERTA </strong> </h3></div></td>
                           <td data-title="'Descripción'" class="text-center">&nbsp; {{producto.prd_descripcionc}}</td>
                           <td data-title="'Precio'" class="text-center">&nbsp; {{producto.prd_precioc}}</td>
                           

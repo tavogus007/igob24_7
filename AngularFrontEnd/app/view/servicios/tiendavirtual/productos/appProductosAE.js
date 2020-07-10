@@ -550,7 +550,7 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     datosModProducto.prd_tv_idc = sessionService.get("IDTV");
     datosModProducto.prd_nombrec = data.f01_producto;
     datosModProducto.prd_descripcionc = data.f01_descripcion;
-    datosModProducto.prd_precioc = data.f01_precio;
+    datosModProducto.prd_precioc = parseFloat(data.f01_precio).toFixed(2);
     datosModProducto.prd_imagen_pc = img1;
     datosModProducto.prd_imagen_a1c = img2;
     datosModProducto.prd_imagen_a2c = img3;

@@ -1023,7 +1023,7 @@ $scope.mostrarNatural = null;
     }
 
 /*******************CARGAR ZONA MACRODISTRITO ******************************/
-    $scope.MacroZona  =   function(){
+    /*$scope.MacroZona  =   function(){
         try{
             var parametros = new ZonaMacro();
             parametros.Zona_Macro(function(resultado){
@@ -1037,6 +1037,44 @@ $scope.mostrarNatural = null;
         }catch(error){
            console.log("error en zonas");
         }  
+    };*/
+
+    $scope.MacroZona = function() {
+        try{
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                url: CONFIG.SERVICE_GIS_AE_DZ+'wsCCGis/listar_todas_las_zonas',
+                dataType: 'json',
+                data: '{}',
+                success: function (data){ 
+                    var dataZonas = data.success.data;
+                    $scope.datosZonaTodo = data;
+                    datoObjectFinal = [];
+                    for(i = 0; i < dataZonas.length; i++){
+                        datoObject = new Object();
+                        $scope.zonas_aux = dataZonas[i].j;
+                        datoObject.dist_id = parseInt($scope.zonas_aux.zn_id_sit);
+                        datoObject.dist_nombre = $scope.zonas_aux.zn_des;
+                        datoObject.dist_dstt_id = $scope.zonas_aux.zn_dis;
+                        datoObject.dist_macro_id = $scope.zonas_aux.zn_macro;
+                        datoObjectFinal[i] = datoObject;
+                    }
+                    var data = datoObjectFinal
+                    $scope.aMacroZona = data;
+                    console.log('inicio   $scope.aMacroZona   ',$scope.aMacroZona);
+                    /*if(typeof $scope.datos.f01_id_zona_rep != 'undefined' && $scope.datos.f01_id_zona_rep != ""){
+                        $scope.datos.f01_id_zona_rep = parseInt($scope.datos.f01_id_zona_rep);
+                    }else if(typeof $scope.datos.f01_zon_prop  !=   'undefined' && $scope.datos.f01_zon_prop){
+                        $scope.datos.f01_zon_prop = parseInt($scope.datos.f01_zon_prop);
+                    }
+                    $scope.$apply();*/
+                }
+            });
+            $.unblockUI();
+        }catch (error){
+            $scope.errors["error_rol"] = error;
+        }
     };
 
     $scope.actulizarIdDistritoM  =   function(zonaid){
@@ -1060,24 +1098,25 @@ $scope.mostrarNatural = null;
     };
 
     $scope.macrodistritosidM = function(zonaid){
+        console.log('zonaid    ',zonaid);
         var idMacro = "";
         if(zonaid != "" && zonaid != undefined && zonaid != ' ' && zonaid != 'undefined'){
             var distNombre  = zonaid;
+            console.log('$scope.aMacroZona    ',$scope.aMacroZona);
             if($scope.aMacroZona){
                 angular.forEach($scope.aMacroZona, function(value, key) {
                     if(value.dist_id == distNombre){
                         idMacro  =   value.dist_macro_id;
+                        console.log('idMacro    ',idMacro);
                     }
                 });
             }
-
             if(idMacro == ''){
                 idMacro = 0;
             }
-
             $scope.idMacro = idMacro;
             $scope.aMacrodistritos = {};
-            $scope.registro.macrodistrito    =   idMacro;
+            $scope.registro.macrodistrito    =   parseInt(idMacro);
             var datosP = new macrodistritoLstid();
             datosP.idMacro =  idMacro;
             datosP.obtmacrodistrito(function(resultado){
@@ -1153,7 +1192,15 @@ $scope.mostrarimg  =   function(imagen){
                 $("#fot").modal("show");             
             }
         } 
-    }; 
+    };
+    if(imagen == 'condiciones'){
+        $scope.archivoCondiciones = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registro.FILE_CONDICIONES_USO + "?app_name=todoangular";
+        if(extConUso == 'pdf' || extConUso == 'docx' ||  extConUso == 'docxlm' || extConUso == 'zip'){
+            window.open($scope.archivoCondiciones, "_blank");
+        }else if(extConUso == 'jpeg' || extConUso == 'jpg' ||  extConUso == 'png' ||  extConUso == 'gif'){
+            $("#fotoC").modal("show");
+        }
+    }
     $.unblockUI();
 }
 
@@ -3669,6 +3716,26 @@ $scope.vias_v2= function(zona,tipo)
             alert("Error ");
         }
     };
+
+    $scope.cargarCU = function(){
+        var fechaNueva = "";
+        var fechaserver = new fechaHoraServer(); 
+        fechaserver.fechahora(function(resp){
+            var sfecha = JSON.parse(resp);
+            var fechaServ = (sfecha.success.fecha).split(' ');
+            var fecha_ = fechaServ[0].split('-');
+            var hora_ = fechaServ[1].split(':');
+            fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
+        });
+        var docurl = 'http://192.168.5.141/rest/files/RC_CLI/5efcafbca5d18243c0000001/2020/condiciones/condiciones_uso_20200701114605.pdf';
+        var nombreNuevoCIAnverso = 'CI_anverso_03072020.pdf';
+        var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/5efcafbca5d18243c0000001/";
+        var nombrecondicion = 'condiciones_uso_'+fechaNueva+'.pdf';
+        fileUpload1.uploadFileToUrl1(nombrecondicion, docurl, nombrecondicion);
+        var newWindow = nombreNuevoCIAnverso;
+        //newWindow = window.open(docurl, 'neuesDokument');
+        console.log('newWindow    ',newWindow);
+    }
         
     //Documentos Adjuntos
     $scope.cambiarFile = function(obj, valor){
@@ -3702,7 +3769,7 @@ $scope.vias_v2= function(zona,tipo)
                             fileUpload1.uploadFileToUrl1(respuestaci, uploadUrl, nombreNuevoCIAnverso);
                             $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
                             $scope.FILE_FOTOCOPIA_CI = respuestaci;
-                            document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;                         
+                            document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;
                             $scope.btover=true;
                         });
                     } else{
@@ -3715,7 +3782,7 @@ $scope.vias_v2= function(zona,tipo)
                                 $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
                                 $scope.FILE_FOTOCOPIA_CI = blobci; 
                                 $scope.btover=true; 
-                                document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;                         
+                                document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;
                             })
                         }
                         else{
@@ -3737,7 +3804,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
                             $scope.btover=true;
                             //console.log(nombreNuevoCIAnverso,888);
-                            document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;                         
+                            document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;
                             $.unblockUI();
                         } else{
                             swal('Advertencia', 'El archivo CEDULA DE IDENTIDAD no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');

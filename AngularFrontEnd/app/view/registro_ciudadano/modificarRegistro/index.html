@@ -533,6 +533,8 @@
                                                                             </a>
                                                                             <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FOTOCOPIA_CI');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                                         </span>
+                                                                    
+
                                                                     </div>											
                                                                 </div>
                                                             </div>
@@ -1193,6 +1195,7 @@
                                                             class="form-control ng-pristine ng-valid js-example-basic-single"
                                                             ng-change="macrodistritosidM(registro.zona);actulizarIdDistritoM(registro.zona);"
                                                             ng-options="disZona.dist_id as disZona.dist_nombre for disZona in aMacroZona | orderBy:['nombre','dist_nombre']" 
+
                                                             required>
                                                             <option value="">--Seleccione--</option>
                                                         </select>

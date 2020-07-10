@@ -19,7 +19,18 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     $scope.sCategoria = true;
     $scope.smultiservicios = false;
     $scope.bloqueobtn = "mostrar";
-    $scope.multiple = {};
+    $scope.docsAdjuntoAntiguo = [];
+    $scope.datos.datosdocanterior = [];
+    $scope.docPubNuevo = [];
+    $scope.datos.docAdPublicidad = [];
+    $scope.datos.licenciamulAnterior = [];
+    $scope.pos = 0;
+    $scope.sinmultiservicios = true;
+    $scope.conmultiservicios = false;
+    $scope.pubMensaje = false;
+    $scope.datos.publicidadAntiguo_grilla = [];
+
+
     $scope.getRequisitosCategoria = function(idCategoria, persona){
         if(persona == 'NATURAL'){
             persona = 'N';
@@ -266,7 +277,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         $scope.datos.f01_categoria_agrupada_sierra = datosLic[0].categoria_id;
                         $scope.datos.f01_categoria_agrupada = datosLic[0].categoria_id_anterior;
                         $scope.datos.f01_categoria_agrupada_dem = datosLic[0].addescripcion;
-                        $scope.datos.f01_categoria_agrupada_descrip = datosLic[0].ad3436descripcion;
+                        $scope.datos.f01_categoria_agrupada_descrip = datosLic[0].addescripcion;
                         $scope.GetValueZonaSegura(datosLic[0].categoria_id_anterior);
                         var comboz = document.getElementById('f01_categoria_descrip');
                         selected2 = comboz.options[comboz.selectedIndex].text;
@@ -508,9 +519,13 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     }
 
     $scope.guardarLicencia = function(licencia){
-        $scope.dscripcionlic ={};
-        if(licencia.f01_tipo_licmid =='' || licencia.f01_tipo_licmid == null || licencia.f01_cat_agrupadamid =='' || licencia.f01_cat_agrupadamid == null ) {
-            swal('', 'Llene lo campos requeridos para la Categoria Multiple  ', 'error');
+        console.log('licencia    ',licencia);
+        $scope.dscripcionlic = {};
+        if($scope.dscripcionlic.f01_act_desarrolladamdescrip=='--Seleccione--'){
+            $scope.dscripcionlic.f01_act_desarrolladamdescrip = '';
+        }
+        if(licencia.f01_tipo_licmid =='' || licencia.f01_tipo_licmid == null || licencia.f01_cat_agrupadamid_sierra =='' || licencia.f01_cat_agrupadamid_sierra == null ) {
+            sweet.show('', 'Llene lo campos requeridos para la Catergoria Multiple  ', 'error');
         } else {
             var id=0
             if($scope.datos.licenciam =='' || $scope.datos.licenciam == null || $scope.datos.licenciam =="undefined" ){
@@ -524,36 +539,28 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             }
             if(id<11){
                 $scope.id = id;
-                if($scope.id == 1){
-                    $scope.f01_catagrp_principal = 1;
-                    $scope.datos.mulact_principal = licencia.f01_act_principal2;
-                    $scope.datos.xf01_idcat_multi_principal = licencia.f01_cat_agrupadamid;
-                    $scope.datos.xf01_descat_multi_principal = licencia.f01_cat_agrupadamdescrip;
-                }else{
-                    $scope.f01_catagrp_principal=0;
-                }
-
                 $scope.licenciamul.push({
                     id: id,
                     f01_tipo_licmid: licencia.f01_tipo_licmid,
-                    f01_cat_agrupadamid: licencia.f01_cat_agrupadamid,
+                    f01_cat_agrupadamid_sierra: licencia.f01_cat_agrupadamid_sierra,
+                    f01_categoria_agrupada: licencia.f01_categoria_agrupada,
                     f01_act_desarrolladamid: licencia.f01_act_desarrolladamid,
+                    //f01_cat_agrupadamid_anterior: licencia.f01_categoria_agrupada,
                     f01_tipo_licmdescrip: licencia.f01_tipo_licmdescrip,
                     f01_cat_agrupadamdescrip: licencia.f01_cat_agrupadamdescrip,
                     f01_act_desarrolladamdescrip: licencia.f01_act_desarrolladamdescrip,
                     f01_catagrp_principal: $scope.f01_catagrp_principal
+                    //f01_tae: licencia.f01_tae
                 });
                 $scope.licdes=[];
                 $scope.multiple=[];
                 $scope.dscripcionlic = {};
-                $scope.multiple.f01_act_desarrolladamid = "";
-                document.getElementById("f01_act_desarrolladamid").value='';
-                $scope.multiple.f01_tipo_licmid = "";
                 $scope.datos.licenciam = $scope.licenciamul;
                 $scope.Licencia_Multiple($scope.licenciamul);
                 /*LISTAR REQUISITOS DINAMICOS*/
                 $scope.lstRequisitosMultiples2018($scope.licenciamul);
                 $scope.lstRequisitosTecnicosMultiples($scope.licenciamul);
+                $scope.multiple.f01_act_desarrolladamid = '';
             } else {
                 swal('', 'El numero de multiples excede los estandares permitidos', 'error');
             }
@@ -564,8 +571,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         $scope.licmul_grilla = [];
         var encabezado = [];
         var indice = 1;
-        encabezado[0] = {"tipo": "GRD","campos": "nroElem|f01_tipo_licmid|f01_tipo_licmdescrip|f01_cat_agrupadamid|f01_cat_agrupadamdescrip|f01_act_desarrolladamid|f01_act_desarrolladamdescrip|f01_catagrp_principal","titulos": "NRO|Id Licencia|Tipo de Licencia|Id Categoria|Tipo de Categoria|Id Actividad|Tipo de Actividad Desarrollada|Actividad Principal","impresiones": "true|false|true|false|true|false|true|false|"};
-
+        encabezado[0] = {"tipo": "GRD","campos": "nroElem|f01_tipo_licmid|f01_tipo_licmdescrip|f01_cat_agrupadamid|f01_cat_agrupadamdescrip|f01_act_desarrolladamid|f01_act_desarrolladamdescrip","titulos": "NRO|Id Licencia|Tipo de Licencia|Id Categoria|Tipo de Categoria|Id Actividad|Tipo de Actividad Desarrollada","impresiones": "true|true|true|true|true|true|true|"};
         var nroElem = 0;
         var j=0;
         for(j=0; j<dato.length;j++) {
@@ -573,12 +579,11 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 nroElem: j+1,
                 f01_tipo_licmid: dato[j].f01_tipo_licmid,
                 f01_tipo_licmdescrip: dato[j].f01_tipo_licmdescrip,
-                f01_cat_agrupadamid: dato[j].f01_cat_agrupadamid,
+                f01_cat_agrupadamid: dato[j].f01_cat_agrupadamid_sierra,
                 f01_cat_agrupadamdescrip: dato[j].f01_cat_agrupadamdescrip,
                 f01_act_desarrolladamid: dato[j].f01_act_desarrolladamid,
-                f01_act_desarrolladamdescrip: dato[j].f01_act_desarrolladamdescrip,
-                f01_catagrp_principal: dato[j].f01_catagrp_principal
-
+                f01_act_desarrolladamdescrip: dato[j].f01_act_desarrolladamdescrip
+                //f01_catagrp_principal: dato[j].f01_catagrp_principal
             });
         }
         var jsonString = '['+ (encabezado) +']';
@@ -586,7 +591,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             encabezado[indice] = value;
             indice = indice + 1;
         });
-        $scope.datos.Licenmul_grilla=encabezado;
+        $scope.datos.Licenmul_grilla = encabezado;
     }
 
     $scope.detallem = [];
@@ -681,19 +686,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         }
     };
 
-    $scope.GetValueLicencia = function () {
-        $scope.limpiarlic();
-        var e = document.getElementById("f01_tipo_lic");
-        $scope.datos.f01_tipo_lic_descrip = e.options[e.selectedIndex].text;
-    }
-
-    $scope.GetValueCategoriaAgrupada = function () {
-        $scope.limpiarcateg();
-        var e = document.getElementById('f01_categoria_agrupada');
-        $scope.datos.f01_categoria_agrupada_dem = e.options[e.selectedIndex].text;
-        $scope.datos.f01_categoria_agrupada_descrip = e.options[e.selectedIndex].text;
-    }
-
     $scope.GetValueCategoria = function () {
         $scope.limpiaractdes();
         var e = document.getElementById('f01_categoria_descrip');
@@ -728,6 +720,14 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         $scope.datos.f01_zona_rep = e.options[e.selectedIndex].text;
     }
 
+    $scope.GetValueVia = function () {
+        //setTimeout(function(){
+            var e = document.getElementById("f01_num_act_id");
+            $scope.datos.f01_num_act = e.options[e.selectedIndex].text;
+            console.log('$scope.datos.f01_num_act   ',$scope.datos.f01_num_act);
+        //},500);
+    }
+
     $scope.GetValueZonaSegura = function (idCategoria){
         if(idCategoria == 3419 || idCategoria == 3420 || idCategoria == 3421 || idCategoria == 3422 || idCategoria == 3423 || idCategoria == 3424){
             $scope.mostrarzonasegura = true;
@@ -751,7 +751,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             }
         }
         $scope.actividadSecund = datosaux;
-        if($scope.datos.f01_categoria_agrupada != 32){
+        if($scope.datos.f01_categoria_agrupada != 26 || $scope.datos.f01_categoria_agrupada != '26'){
             var e = document.getElementById("f01_categoria_agrupada");
             $scope.datos.f01_categoria_agrupada_descrip = e.options[e.selectedIndex].text;
             $scope.actividadSecund = $scope.datos.f01_categoria_agrupada_descrip;
@@ -774,7 +774,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             }
         }
         $scope.actividadDes = datosaux;
-        if($scope.datos.f01_categoria_descrip!= 32){
+        if($scope.datos.f01_categoria_descrip!= 26){
             var e = document.getElementById("f01_categoria_descrip");
             $scope.datos.f01_actividad_desarrollada_descrip = e.options[e.selectedIndex].text;
             $scope.actividadDes = $scope.datos.f01_actividad_desarrollada_descrip;
@@ -1108,21 +1108,19 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         }catch(e){}
     };
 
-    var clsIniciarHtmlForm = $rootScope.$on('inicializarHtmlForm', function(event, tramite){
+    /*var clsIniciarHtmlForm = $rootScope.$on('inicializarHtmlForm', function(event, tramite){
         if (tramite.venviado == 'SI') {
             $scope.btnGuardarForm           =   true;
             $scope.desabilitado             =   true;
             $scope.botones                  =   null;
             $scope.only                     =   true;
             $scope.datosAnterioresNatural(datos.f01_id_actividad_economica);
-
         } else {
             if(datos.f01_id_actividad_economica){
                 $scope.datosAnterioresNatural(datos.f01_id_actividad_economica);
             }
             $scope.btnGuardarForm   =   false;
             $scope.only             =   false;
-
         }
         var datosgen       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
@@ -1136,14 +1134,41 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         };
         console.log('$scope.datos.f01_id_contribuyente     ',$scope.datos.f01_id_contribuyente);
         $.unblockUI();
+    });*/
 
+    var clsIniciarHtmlForm = $rootScope.$on('inicializarHtmlForm', function(event, tramite){
+        if (tramite.venviado == 'SI') {
+            $scope.btnGuardarForm           =   true;
+            $scope.desabilitado             =   true;
+            $scope.botones                  =   null;
+            $scope.only                     =   true;
+        } else {
+            $scope.btnGuardarForm   =   false;
+            $scope.only             =   false;
+            $scope.desabilitado     =   false;
+            $scope.botones          =   "mostar";
+        }
+        var datosgen       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
+        console.log('$scope.dataGenesisCidadano      ',$scope.dataGenesisCidadano);
+        var datosgen = ((typeof($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
+        if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
+            $scope.mostrarMsgNuevaActividad = false;
+        }
+        console.log('datosgen natural    ',datosgen);
+        if (JSON.stringify($scope.dataGenesisCidadano) == '{}') {
+            console.log('esta vacio');
+        } else{
+            console.log('esta lleno');
+            $scope.datos.f01_id_contribuyente = datosgen.contribuyente_id;
+        };
+        console.log('$scope.datos.f01_id_contribuyente     ',$scope.datos.f01_id_contribuyente);
     });
 
     var clsIniciarGrillaAE = $rootScope.$on('inicializarGrillaAE', function(event, data){
         $scope.formDatosAE              = false;
         $scope.mostrarMsgActividadTrue  = false;
         $scope.mostrarMsgActividadFalse = false;
-        setTimeout(function(){
+        /*setTimeout(function(){
             if(
                 (typeof($scope.datos.INT_AC_latitud) !=  'undefined' && $scope.datos.INT_AC_latitud  != "" && $scope.datos.INT_AC_latitud != 0 && $scope.datos.INT_AC_latitud != "0") &&
                 (typeof($scope.datos.INT_AC_longitud) != 'undefined' && $scope.datos.INT_AC_longitud != "" && $scope.datos.INT_AC_longitud != 0 && $scope.datos.INT_AC_longitud != "0")
@@ -1162,12 +1187,12 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 map.setCenter(nuevoUbicacion);
                 $scope.setMapOnAll();
             }
-        },100);
+        },100);*/
         if(data.length > 0){
             if(data[0].venviado != 'SI'){
                 if(data[0].datos.INT_FORM_ALMACENADO != 'G'){
                     $scope.validarActividadEconomica();
-                    $scope.listadoActividadEconomica();
+                    //$scope.listadoActividadEconomica();
                 }else{
                     if(data[0].datos.rdTipoTramite == 'NUEVO'){
                         $scope.mostrarMsgNuevaActividad = true;
@@ -1175,42 +1200,42 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         $scope.txtMsgDataNuevaActividad =   "Favor revisar la informacion. Creara una nueva Actividad Economica.";
                     }else{
                         $scope.validarActividadEconomica();
-                        $scope.listadoActividadEconomica();
+                        //$scope.listadoActividadEconomica();
                     }
                 }
             }
         }
     });
     //INICIAR VARIABLES EN EL FORMULARIO
-     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
+    var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
+        console.log('dattttttttt     ',data);
         //TIPO DE LICENCIA
         $scope.catactividadDesarrollada();
+        if (data.f01_zona_act == undefined || data.f01_zona_act == 'undefined' || data.f01_zona_act == null || data.f01_zona_act == '') {
+        } else{
+            $scope.datos.f01_macro_act = data.f01_macro_act;
+            $scope.datos.f01_zona_act = data.f01_zona_act;
+            $scope.distritoZonas($scope.datos.f01_macro_act);
+        };
         if (datos.f01_id_actividad_economica) {
             $scope.datosAnterioresNatural(datos.f01_id_actividad_economica);
         };
         if ((data.INT_AC_latitud == 'undefined' && data.INT_AC_longitud == 'undefined') || (data.INT_AC_latitud == undefined && data.INT_AC_longitud == undefined) || (data.INT_AC_latitud == '' && data.INT_AC_longitud == '')) {
         } else{
-            $scope.open_map_ae2(data.INT_AC_latitud, data.INT_AC_longitud);
+            //$scope.open_map_ae2(data.INT_AC_latitud, data.INT_AC_longitud);
         };
-        $scope.GetValueZonaSegura(data.f01_categoria_agrupada);
-        if (data.publicidadAE == undefined || data.publicidadAE == 'undefined') {
-            $scope.pubAE = false;
-            $scope.pubMensaje = true;
-        } else{
-            $scope.pubAE = true;
-            $scope.pubMensaje = false;
-        };
+        $scope.GetValueZonaSegura(data.f01_categoria_agrupada_sierra);
         //VERIFICAR CATEGORIA DESARROLLADA
         var categoriaDescrip = ((typeof(data.f01_categoria_descrip) == 'undefined' || data.f01_categoria_descrip == null) ? '' : data.f01_categoria_descrip);
         if(categoriaDescrip == ''){
             $scope.sActividadDesarrollada = false;
         }
         //REQUISITOS DOCUMENTALES
-        var categoriaAgrupadaDesc = ((typeof(data.f01_categoria_agrupada)             == 'undefined' || data.f01_categoria_agrupada == null) ? '' : data.f01_categoria_agrupada);
+        var categoriaAgrupadaDesc = ((typeof(data.f01_categoria_agrupada_sierra)             == 'undefined' || data.f01_categoria_agrupada_sierra == null) ? '' : data.f01_categoria_agrupada_sierra);
         if(categoriaAgrupadaDesc != ''){
             $scope.getRequisitosTecnicosCategoria(data.f01_categoria_agrupada, data.f01_tipo_per);
         }
-        if (data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32') {
+        if (data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26') {
             $scope.sCategoria = false;
             $scope.smultiservicios = true;
             $scope.datos.f01_categoria_descrip = data.f01_categoria;
@@ -1219,48 +1244,69 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             $scope.sCategoria = true;
             $scope.smultiservicios = false;
         }
-
         /*REQUISITOS2018*/
         if (data.f01_categoria_agrupada == '' || data.f01_categoria_agrupada == undefined || data.f01_categoria_agrupada == 'undefined') {} else{
-            if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){//verificamos si la licencia es multiple
+            if(data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26'){//verificamos si la licencia es multiple
                 $scope.lstRequisitosMultiples2018(data.licenciam);
             }else{
                 $scope.getRequisitosFormulario(data.f01_categoria_agrupada, data.f01_tipo_per);
             }
         };
         $scope.iniciarRequisitosForm(data);
-
         if (data.f01_tip_via_act == '' || data.f01_tip_via_act == undefined || data.f01_tip_via_act == 'undefined') {} else{
             $scope.cargarNombVia(data.f01_tip_via_act, data.f01_zona_act);
         };
-
-
-        switch (data.chkzonasegura) {
-            case 'ZONASEGURA':
-                $scope.mostrarzonasegura = true;
-            break;
-            case 'NOZONASEGURA':
-                $scope.mostrarzonasegura = true;
-            break;
-            case '':
-                $scope.mostrarzonasegura = false;
-            break;
-            case 'undefined':
-                $scope.mostrarzonasegura = false;
-            break;
-            case undefined:
-                $scope.mostrarzonasegura = false;
-            break;
-            case null:
-                $scope.mostrarzonasegura = false;
-            break;
+        if (data.f01_tipo_lic_sierra == '12' || data.f01_tipo_lic_sierra == 12) {
+            switch (data.chkzonasegura) {
+                case 'ZONASEGURA':
+                    $scope.mostrarzonasegura = true;
+                break;
+                case 'NOZONASEGURA':
+                    $scope.mostrarzonasegura = true;
+                break;
+                case '':
+                    $scope.mostrarzonasegura = false;
+                break;
+                case 'undefined':
+                    $scope.mostrarzonasegura = false;
+                break;
+                case undefined:
+                    $scope.mostrarzonasegura = false;
+                break;
+                case null:
+                    $scope.mostrarzonasegura = false;
+                break;
+            };
+        } else{
+            $scope.mostrarzonasegura = false;
         };
+        if (data.licenciamulAnterior) {
+            if (data.licenciamulAnterior.length > 0) {
+                $scope.sinmultiservicios = false;
+                $scope.conmultiservicios = true;
+            } else{
+                $scope.sinmultiservicios = true;
+                $scope.conmultiservicios = false;
+            };
+        }
         //MOSTRAR VIAE
         if(data.rdTipoTramite1 == 'NUEVO'){
             $scope.licenciaToogle4 = true;
+            if (data.docAdPublicidad) {
+                if (data.docAdPublicidad.length > 0) {
+                    $scope.docPubNuevo = data.docAdPublicidad;
+                    $scope.pos = data.docAdPublicidad.length;
+                }
+            }
         }
         else{
             $scope.licenciaToogle4 = false;
+            if (data.rdTipoTramite1 == 'RENOVACION') {
+            } else{
+                $scope.docPubNuevo = [];
+                $scope.fileAdjuntosPublicidad = {};
+                $scope.pos = 0;
+            };
         }
         if (data.pago_adel == 'SI') {
             $scope.IsVisible = true;
@@ -1297,7 +1343,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 }
             });
         }
-        if(typeof(data.f01_tip_via_act) == 'undefined'){
+        /*if(typeof(data.f01_tip_via_act) == 'undefined'){
             setTimeout(function(){
                 $scope.desabilitadoZ=true;
                 $scope.desabilitadoV=true;
@@ -1310,7 +1356,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         }
         if (data.INT_AC_TIP_VIA) {
             $scope.desabilitadoV=false;
-        }
+        }*/
         /*if(data.INT_AC_TIP_VIA != ""){
             $scope.vias(data.INT_AC_ID_ZONA,data.INT_AC_TIP_VIA);
         }*/
@@ -1318,7 +1364,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         $scope.obtenerHora();
         $scope.obtenerFecha();
         //$scope.abrirMapa();
-        $scope.open_mapa_ae();
+        //$scope.open_mapa_ae();
         console.log("$s.botones1: ", $scope.botones);
         console.log("publicidad: ", $scope.datos.publicidad);
     });
@@ -1600,6 +1646,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     };
 
     $scope.PlubliAntiguo_Grilla = function(dato){
+        console.log('dddd   ',dato);
         $scope.publia_grilla = [];
         var encabezado = [];
         var indice = 1;
@@ -1609,7 +1656,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         for(j=0; j<dato.length;j++) {
             $scope.publia_grilla.push({
                 nroElem: j+1,
-                descripcionTipoLetrero: dato[j].descripcionTipoLetrero,
+                descripcionTipoLetrero: dato[j].descripciontipoletrero,
                 caracteristica: dato[j].caracteristica,
                 descripcion: dato[j].descripcion,
                 cara: dato[j].cara,
@@ -1648,8 +1695,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
          var codhojaruta = "";
         var datosLotus = "";
         $scope.datosAnterioresNatural(tramite.idactividad);
-        if(aniotram){
-
+        //if(aniotram){
             //if(tramite.idactividad){
                 $scope.idActividiadEconomicaActual  =   tramite.idactividad;
                 $scope.datos.f01_id_actividad_economica = tramite.idactividad;
@@ -1779,7 +1825,8 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                                 $scope.datos.INT_AC_latitud = datosLotus.INT_AC_latitud;
                                 $scope.datos.INT_AC_longitud = datosLotus.INT_AC_longitud;
                             };
-                            $scope.open_map_ae($scope.datos.INT_AC_latitud, $scope.datos.INT_AC_longitud);
+                            //$scope.open_map_ae($scope.datos.INT_AC_latitud, $scope.datos.INT_AC_longitud);
+                            $scope.open_mapa_ae($scope.datos.INT_AC_latitud, $scope.datos.INT_AC_longitud);
                             console.log('datosLotus.f01_tipo_lic     ',datosLotus.f01_tipo_lic);
                             if (datosLotus.f01_tipo_lic == '18' || datosLotus.f01_tipo_lic == 18) {
                                 $scope.mostrarzonasegura = true;
@@ -1856,9 +1903,11 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     $scope.datos.rdTipoTramite1 = 'RENOVACION';
                     $scope.datos.swpublicidad = 'SP';
                     $scope.licenciaToogle4 = false;
+                    $scope.pubMensaje = true;
                 }else{
                     $scope.datos.rdTipoTramite1 = 'NUEVO';
                     $scope.listpub = [];
+                    $scope.pubMensaje = false;
                     for (var i = 0; i < datosPublicidad.length; i++) {
                         var lstpublicidad = new Object();
                         console.log('url   ',datosPublicidad[i].url_publicidad.url);
@@ -1885,9 +1934,9 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 };
                 $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
             });
-        }else{
+        /*}else{
             swal('', "Actividad Economica Vigente!!!", 'warning');
-        }
+        }*/
     };
 
     $scope.getEstablecimiento = function(datoEstab){
@@ -1938,18 +1987,26 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
 
     $scope.validarActividadEconomica  =   function(){
         $.blockUI();
-        $scope.mostrarMsgActividadTrue  = false;
+        var validarpromesas = [$scope.listarAE()];
+        $q.all(validarpromesas).then(function (resp) {//AE - Validar Envio Licencia
+          // console.log("resp: ", resp);
+            $scope.mostrarMsgActividadTrue  = false;
+            $scope.mostrarMsgActividadFalse = false;
+            $scope.mostrarMsgNuevaActividad = false;
+            //$scope.listarAE();
+        });
+        /*$scope.mostrarMsgActividadTrue  = false;
         $scope.mostrarMsgActividadFalse = false;
         $scope.mostrarMsgNuevaActividad = false;
-        $scope.listarAE();
+        $scope.listarAE();*/
     };
 
-    $scope.listadoActividadEconomica = function(){
+    /*$scope.listadoActividadEconomica = function(){
         var validarpromesas = [$scope.listarAE()];
         $q.all(validarpromesas).then(function (resp) {//AE - Validar Envio Licencia
           // console.log("resp: ", resp);
         });
-    }
+    }*/
 
     $scope.listarAE = function () {
         console.log('listaraaaaaaaaaaaaaaaaaaaaaaaaa');
@@ -1981,6 +2038,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         $scope.mostrarMsgActividadFalse = false;
                         $scope.trmUsuario = respLstActEco;
                         var data = respLstActEco;   //grabamos la respuesta para el paginado
+                        deferred.resolve(respLstActEco);
                         $scope.tblTramites.reload();
                     }else{
                         $scope.mostrarMsgActividadTrue  = false;
@@ -2093,6 +2151,13 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 descDoc = doc.desNom;
             }
         })
+        if ($scope.docPubNuevo.length > 0) {
+            angular.forEach($scope.docPubNuevo, function(doc, pos) {
+                if(doc.idP+''+doc.resid == idFile){
+                    descDoc = doc.desNom;
+                }
+            })
+        }
         var imagenNueva = aArch.files[0].name.split('.');
         var tam = aArch.files[0];
         var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[1];
@@ -2112,6 +2177,23 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         var adatafile   =   {};
         var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() + '" }';
         $scope.fileArRequisitos[aArch.name] = JSON.parse(myJSON);
+        var swp = 0;
+        var idp = 0;
+        for (var i = 0; i < $scope.docArray.length && swp == 0; i++) {
+            if ($scope.docArray[i].resid == idFile) {
+                idp = $scope.docArray[i].idnro;
+                swp = 1;
+            }
+            else{
+                idp = 4;
+            };
+        };
+        if (idp == 4) {
+            var uploadUrlP = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
+            var myJSONP = '{ "url":"' + uploadUrlP + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() + '" }';
+            $scope.fileAdjuntosPublicidad[aArch.name] = JSON.parse(myJSONP);
+            $scope.clonarRequisitosPublicidad($scope.fileAdjuntosPublicidad);
+        };
         $scope.clonarRequisitosDocumentales($scope.fileArRequisitos);
         //$scope.fileArRequisitos.push(JSON.parse(myJSON));
     }
@@ -2126,6 +2208,18 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             i = i +1;
         });
         $scope.datos.fileArchivosAd = datoObjectFiles;
+    }
+
+    $scope.clonarRequisitosPublicidad = function(aRequArchivosP){
+        var i = 0;
+        $scope.File_Publicidad = {};
+        datoObjectFilesP = [];
+        var longdato = 0;
+        angular.forEach(aRequArchivosP, function(archivo, key) {
+            datoObjectFilesP[i] = archivo;
+            i = i +1;
+        });
+        $scope.datos.fileArchivosPublicidad = datoObjectFilesP;
     }
 
     $scope.ultimoArrayAdjunto = function(){
@@ -2168,6 +2262,13 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         descDoc = doc.desNom;
                     }
                 })
+                if ($scope.docPubNuevo.length > 0) {
+                    angular.forEach($scope.docPubNuevo, function(doc, pos) {
+                        if(doc.idP+''+doc.resid == idFiles[key]){
+                            descDoc = doc.desNom;
+                        }
+                    })
+                }
                 var imagenNueva = archivo.name.split('.');
                 var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[1];
                 if (archivo.size <= 15000000) {
@@ -2252,7 +2353,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 if(sviae  == 'RENOVACION'){//sin viae
                     $scope.docArray[key].estado = false;
                 }else{
-                    $scope.docArray[key].estado = true;
+                    $scope.docArray[key].estado = false;
                 }
             }
         //VALIDANDO LA SUPERFICIE DE LA ACTIVIDAD ECONOMNICA
@@ -2358,6 +2459,29 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         datoObjectFile2.nombre = 'Cedula de identidad (Reverso)';
         datoObjectFiles_ci[1] = datoObjectFile2;
         $scope.datos.FILE_CI = datoObjectFiles_ci;
+        console.log('$scope.datos.rdTipoTramite1      ',$scope.datos.rdTipoTramite1);
+        if ($scope.datos.rdTipoTramite1 == 'NUEVO') {
+            datoObjectFinalV = [];
+            var k = 0;
+            for(j = 0; j < $scope.docArray.length; j++){
+                if ($scope.docArray[j].idnro == 4) {
+                    datoObjectv = new Object();
+                    datoObjectv.idP = ($scope.pos+1);
+                    datoObjectv.resid = $scope.docArray[j].resid;
+                    datoObjectv.idnro = $scope.docArray[j].idnro;
+                    datoObjectv.resvalor = $scope.docArray[j].resvalor;
+                    datoObjectv.nomcampo = $scope.docArray[j].nomcampo;
+                    datoObjectv.estado   = true;
+                    datoObjectv.desNom = $scope.docArray[j].desNom;
+                    datoObjectFinalV[k] = datoObjectv;
+                    k++;
+                }
+            }
+            $scope.docArrayPub = datoObjectFinalV;
+        }
+        if(!$scope.$$phase) {
+            $scope.$apply();
+        }
     }
 
     $scope.iniciarRequsitosDoc = function(data){
@@ -2419,13 +2543,13 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     }
 
     /*REQUISITOS2018*/
-    $scope.iniciarGetRequisitosForm = function(sidcategoria, stipoper){
+    /*$scope.iniciarGetRequisitosForm = function(sidcategoria, stipoper){
         if(sidcategoria ==  32 || sidcategoria ==  '32'){//verificamos si la licencia es multiple
             $scope.lstRequisitosMultiples2018($scope.datos.licenciam);
         }else{
             $scope.getRequisitosFormulario(sidcategoria, stipoper);
         }
-    }
+    }*/
 
     /*REQUISITOS2018*/
   $scope.getRequisitosFormulario = function(sidcategoria, stipoper){
@@ -2642,31 +2766,14 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         $scope.ltCaracteristica(dato.INT_TIPO_LETRE);
     }
 
-    $scope.modificarpublicidad = function(dato){
-        /*$scope.onlyy=true;
-        $scope.botonn="new";
-        delete $scope.edit[dato.id];
-        $scope.publi=[];
-        $scope.lssubcategoria();*/
+    /*$scope.modificarpublicidad = function(dato){
         if(dato.INT_NRO_CARA =='' || dato.INT_NRO_CARA == null || dato.INT_CARA =='' || dato.INT_CARA == null ||
             dato.INT_TIPO_LETRE =='' || dato.INT_TIPO_LETRE == null ||
             dato.INT_DESC =='' || dato.INT_DESC == null || dato.INT_ALTO =='' || dato.INT_ALTO == null || dato.INT_ANCHO =='' || dato.INT_ANCHO == null ) {
                 swal('', 'Llene lo campos requeridos para la VIAE  ', 'error');
         }
         else{
-            /*swal({
-            title: "Modificar",
-            text: "Esta seguro de Modificar el Elemento de Identificación ?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "SI",
-            cancelButtonText: "No",
-            closeOnConfirm: true,
-            closeOnCancel: true },
-            function(isConfirm){
-            if (isConfirm) {*/
-                //sweet.close();
+
                 $scope.publi = [];
                 var datopublic = dato;
                 for (var i = 0; i < $scope.datos.publicidad.length; i++) {
@@ -2693,14 +2800,106 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 }
                 $scope.Plubli_Grilla($scope.datos.publicidad);
                 $scope.botonn="new";
-                /*} else {
-                    $scope.publi=[];
-                    //sweet.close();
+        }
+    }*/
+
+    $scope.modificarpublicidad = function(dato){
+        if(dato.INT_CARA =='' || dato.INT_CARA == null ||
+            dato.INT_TIPO_LETRE =='' || dato.INT_TIPO_LETRE == null ||
+            dato.INT_DESC =='' || dato.INT_DESC == null || dato.INT_ALTO =='' || dato.INT_ALTO == null || dato.INT_ANCHO =='' || dato.INT_ANCHO == null ) {
+                swal('', 'Llene lo campos requeridos para la VIAE  ', 'error');
+        }
+        else{
+            if (dato.estado == 'N') {
+                $scope.publi = [];
+                $scope.lssubcategoria();
+                var superior = dato.INT_ALTO * dato.INT_ANCHO;
+                superior = (Math.round(superior * 10) / 10)+"";
+                var supe = superior.replace(",",".");
+                //superior = superior.replace(",",".");
+                var palto   =   dato.INT_ALTO;
+                var pancho  =   dato.INT_ANCHO;
+                palto   =   parseFloat(palto).toFixed(2);
+                palto   =   palto.replace(",",",");
+                pancho  =   parseFloat(pancho).toFixed(2);
+                pancho  =   pancho.replace(",",".");
+                dato.superficie = superior;
+                if(!$scope.$$phase) {
+                    $scope.$apply();
                 }
-            });*/
+            } else{
+                swal({ 
+                title: "Modificar",
+                text: "Esta seguro de Modificar el Elemento de Identificación ?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "SI",
+                cancelButtonText: "No", 
+                closeOnConfirm: false,
+                closeOnCancel: false },
+                function(isConfirm){ 
+                if (isConfirm) {
+                    swal.close();   
+                    $scope.publi = [];
+                    var datopublic = dato;
+                    for (var i = 0; i < $scope.datos.publicidad.length; i++) {
+                        if ($scope.datos.publicidad[i].idPublicidad == dato.idPublicidad) {
+                            var superior = datopublic.INT_ALTO * datopublic.INT_ANCHO;
+                            superior = (Math.round(superior * 10) / 10)+"";
+                            var supe = superior.replace(",",".");
+                            //superior = superior.replace(",",".");
+                            var palto   =   datopublic.INT_ALTO;
+                            var pancho  =   datopublic.INT_ANCHO;
+                            palto   =   parseFloat(palto).toFixed(2);
+                            palto   =   palto.replace(",",",");
+                            pancho  =   parseFloat(pancho).toFixed(2);
+                            pancho  =   pancho.replace(",",".");
+                            $scope.datos.publicidad[i].estado = 'M';
+                            $scope.datos.publicidad[i].INT_SUP =  supe;
+                            $scope.datos.publicidad[i].INT_ALTO = palto;
+                            $scope.datos.publicidad[i].INT_ANCHO = pancho;
+                            $scope.datos.publicidad[i].INT_TIPO_LETRE = dato.INT_TIPO_LETRE;
+                            $scope.datos.publicidad[i].INT_CARA = dato.INT_CARA;
+                            $scope.datos.publicidad[i].INT_DESC = dato.INT_DESC;
+                            //$scope.datos.publicidad[i].INT_NRO_CARA = dato.INT_NRO_CARA;
+                        };              
+                    }
+                    datoObjectFinalV = [];
+                    var i = $scope.pos;
+                    for(j = 0; j < $scope.docArrayPub.length; j++){
+                        datoObjectv = new Object();
+                        datoObjectv.idP = (i+1);
+                        datoObjectv.resid = $scope.docArrayPub[j].resid;
+                        datoObjectv.idnro = $scope.docArrayPub[j].idnro;
+                        datoObjectv.resvalor = $scope.docArrayPub[j].resvalor+' Modificado '+dato.INT_TIPO_LETRE;
+                        datoObjectv.nomcampo = $scope.docArrayPub[j].nomcampo;
+                        datoObjectv.estado   = true;
+                        datoObjectv.desNom = $scope.docArrayPub[j].desNom +'_' + (i+1);
+                        datoObjectFinalV[i] = datoObjectv;
+                        $scope.docPubNuevo.push(datoObjectFinalV[i]);
+                        i++;
+                    }
+                    $scope.pos = i;
+                    setTimeout(function(){
+                        iniciarLoadFyle();
+                    }, 1000);
+                    $scope.lssubcategoria();
+                    $scope.Plubli_Grilla($scope.datos.publicidad);
+                    $scope.botonn = "new";
+                        if(!$scope.$$phase) {
+                            $scope.$apply();
+                        }
+                    } else { 
+                        $scope.publi = [];
+                        swal.close();           
+                    } 
+                });
+            }
         }
     }
-    $scope.eliminarPubli = function(dato){
+
+    /*$scope.eliminarPubli = function(dato){
         $scope.publicid.splice($scope.publicid.indexOf(dato), 1 );
         $scope.id = $scope.id - 1;
         $scope.datos.publicidad = $scope.publicid;
@@ -2721,9 +2920,34 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                //$scope.id = $scope.id - 1;
            $scope.eliminarPublicidadGrilla(data);
         });
+    }*/
+
+    console.log('sierrrrrrrrrrrrrrrrraaaaaaaaaa');
+
+    $scope.eliminarPubli = function(data){
+        console.log('datap   ',data);
+        if (data.estado == 'N') {
+            $scope.publicid.splice( $scope.publicid.indexOf(data), 1 );
+            $scope.id = $scope.id - 1;
+        } else{           
+            swal({
+               title: 'Eliminar',
+               text: 'Esta seguro de dar de Baja la Publicidad?',
+               type: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#DD6B55',
+               confirmButtonText: 'SI',
+               closeOnConfirm: true
+            }, function() {                                
+                if(!$scope.$$phase) {
+                    $scope.$apply();
+                }
+                $scope.BajaPublicidad(data);
+            });           
+        };       
     }
 
-    $scope.eliminarPublicidadGrilla = function(fila){
+    /*$scope.eliminarPublicidadGrilla = function(fila){
         var indexini    = 0;
         var indexfin    = -1;
         var results     = $scope.datos.publicidad_grilla;
@@ -2738,9 +2962,40 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         if(indexfin != -1){
             $scope.datos.publicidad_grilla.splice(indexfin, 1);
         }
+    }*/
+
+    $scope.BajaPublicidad = function(data){
+        var datopublic = $scope.datos.publicidad;
+        for (var i = 0; i < datopublic.length; i++) {
+            if(datopublic[i].idPublicidad == data.idPublicidad){
+                datopublic[i].estado = 'B';
+           }
+        }
+        $scope.datos.publicidad = datopublic;
+        $scope.Plubli_Grilla($scope.publicid);
+        datoObjectFinalV = [];
+        var i = $scope.pos;
+        for(j = 0; j < $scope.docArrayPub.length; j++){
+            datoObjectv = new Object();
+            datoObjectv.idP = (i+1);
+            datoObjectv.resid = $scope.docArrayPub[j].resid;
+            datoObjectv.idnro = $scope.docArrayPub[j].idnro;
+            datoObjectv.resvalor = $scope.docArrayPub[j].resvalor+' Baja '+data.INT_TIPO_LETRE;
+            datoObjectv.nomcampo = $scope.docArrayPub[j].nomcampo;
+            datoObjectv.estado   = true;
+            datoObjectv.desNom = $scope.docArrayPub[j].desNom +'_' + (i+1);
+            datoObjectFinalV[i] = datoObjectv;
+            $scope.docPubNuevo.push(datoObjectFinalV[i]);
+            i++;
+        }
+        $scope.pos = i;
+        setTimeout(function(){
+            iniciarLoadFyle();
+        }, 1000);
+        if(!$scope.$$phase) {
+            $scope.$apply();
+        }
     }
-
-
 
     $scope.lscategoria = function(){
         $scope.DataCategoria = {};
@@ -2891,19 +3146,38 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 }
             }
         }
+        datoObjectFinalV = [];
+        var i = $scope.pos;
+        for(j = 0; j < $scope.docArrayPub.length; j++){
+            datoObjectv = new Object();
+            datoObjectv.idP = (i+1);
+            datoObjectv.resid = $scope.docArrayPub[j].resid;
+            datoObjectv.idnro = $scope.docArrayPub[j].idnro;
+            datoObjectv.resvalor = $scope.docArrayPub[j].resvalor+' Nuevo '+public.INT_TIPO_LETRE;
+            datoObjectv.nomcampo = $scope.docArrayPub[j].nomcampo;
+            datoObjectv.estado   = true;
+            datoObjectv.desNom = $scope.docArrayPub[j].desNom +'_' + (i+1);
+            datoObjectFinalV[i] = datoObjectv;
+            $scope.docPubNuevo.push(datoObjectFinalV[i]);
+            i++;
+        }
+        $scope.pos = i;
+        setTimeout(function(){
+            iniciarLoadFyle();
+        }, 1000);
     }
 
     $scope.Plubli_Grilla = function(dato){
         $scope.publi_grilla = [];
         var encabezado = [];
         var indice = 1;
-        encabezado[0] = {"tipo": "GRD","campos": "nroElem|INT_TIPO_LETRE|INT_CARA|FECHAINICIO|INT_DESC|INT_ALTO|INT_ANCHO|INT_SUP|INT_CATE|","titulos": "ID|Tipo de Letrero|Caracteristica|Fecha Inicio|Descripción|Alto|Ancho|Superficie|Categoria","impresiones": "true|true|true|true|true|true|true|true|false"};
+        encabezado[0] = {"tipo": "GRD","campos": "nroElem|INT_TIPO_LETRE|INT_CARA|INT_DESC|INT_ALTO|INT_ANCHO|INT_SUP|INT_CATE|","titulos": "ID|Tipo de Letrero|Caracteristica|Descripción|Alto|Ancho|Superficie|Categoria","impresiones": "true|true|true|true|true|true|true|true"};
         var nroElem = 0;
         var j=0;
         for(j=0; j<dato.length;j++) {
             $scope.publi_grilla.push({
                 nroElem: j+1,
-                FECHAINICIO: dato[j].FECHAINICIO,
+                //FECHAINICIO: dato[j].FECHAINICIO,
                 INT_TIPO_LETRE: dato[j].INT_TIPO_LETRE,
                 INT_CARA: dato[j].INT_CARA,
                 INT_DESC: dato[j].INT_DESC,
@@ -2938,13 +3212,12 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         $scope.datos.publicidad_grilla = encabezado;
     }
 
-
     $scope.onlyy=false;
     $scope.botonn="new";
 
-    $scope.eliminarPubli = function(dato){
+    /*$scope.eliminarPubli = function(dato){
         $scope.publicid.splice( $scope.publicid.indexOf(dato), 1 );
-    }
+    }*/
 
     $scope.NumericoAlto = function(alto){
         if(alto){
@@ -2982,10 +3255,10 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         $scope.publi.INT_CATE="II Fija";
         $scope.publi.idcate=6;
         $scope.TipoLetrero = [
-        {"p_idtipoletrero" : "51", "p_descripcion": "ADOSADA SOBRESALIENTE"},
-        {"p_idtipoletrero" : "39", "p_descripcion": "ADOSADA"},
-        {"p_idtipoletrero" : "41", "p_descripcion": "MICROPERFORADA - AUTOADHESIVA"},
-        {"p_idtipoletrero" : "40", "p_descripcion": "PINTADA"}];
+        {"p_idtipoletrero" : "17", "p_descripcion": "ADOSADA SOBRESALIENTE"},
+        {"p_idtipoletrero" : "14", "p_descripcion": "ADOSADA"},
+        {"p_idtipoletrero" : "15", "p_descripcion": "MICROPERFORADA - AUTOADHESIVA"},
+        {"p_idtipoletrero" : "16", "p_descripcion": "PINTADA"}];
     };
 
     $scope.ltCaracteristica = function(idlee){
@@ -3156,22 +3429,14 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     };
 
    /*VERIFICANDO CAMPOS OBLIGATORIOS*/
-        $scope.verificarCamposInternet = function (data) {
+    $scope.verificarCamposInternet = function (data) {
+        console.log('la data   ',data);
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
+        data.docAdPublicidad = $scope.docPubNuevo;
+        data.sArrayFileArPublicidad = $scope.fileAdjuntosPublicidad;
         var taemayor = 0;
-        if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
-            for (var i = 0; i < data.licenciam.length; i++) {
-                if (parseInt(data.licenciam[i].f01_tae) >= taemayor) {
-                    taemayor = parseInt(data.licenciam[i]);
-                    $scope.datos.idLic = data.licenciam[i].f01_tipo_licmid;
-                    $scope.datos.descriplic = data.licenciam[i].f01_tipo_licmdescrip;
-                    $scope.datos.idcat = data.licenciam[i].f01_cat_agrupadamid;
-                    $scope.datos.descripcat = data.licenciam[i].f01_cat_agrupadamdescrip;
-                    $scope.datos.iddesa = data.licenciam[i].f01_act_desarrolladamid;
-                    $scope.datos.descripdesa = data.licenciam[i].f01_act_desarrolladamdescrip;
-                }
-            };
+        if(data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26'){
             sarrayobligatorio   =   true;
             if(data && data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
                 data.FILE_CI != ""  && data.FILE_CI != null &&
@@ -3185,7 +3450,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 data.f01_de_hor != "" && data.f01_de_hor != null &&
                 data.f01_a_hor != "" && data.f01_a_hor != null &&
                 data.f01_estab_es != "" && data.f01_estab_es != null &&
-                data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
+                data.f01_tipo_lic_sierra != "" && data.f01_tipo_lic_sierra != null &&
                 data.licenciam != "" && data.licenciam != null &&
                 data.f01_macro_act != "" && data.f01_macro_act != null &&
                 data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
@@ -3194,15 +3459,26 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 data.f01_num_act != "" && data.f01_num_act != null &&
                 data.f01_num_act1 != "" && data.f01_num_act1 != null &&
                 data.f01_casilla != "" && data.f01_casilla != null){
-                $scope.serializarInformacion(data);
-                $scope.formulario401(data);
-                $("#declaracionN").modal("show");
+                
+                if (data.rdTipoTramite1 == 'NUEVO') {
+                    if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                        $scope.serializarInformacion(data);
+                        $scope.formulario401(data);
+                        $("#declaracionN").modal("show");
+                    } else{
+                        swal('', "Datos obligatorios, Adjuntar publicidad y sus documentos", 'warning');
+                    };
+                } else{
+                    $scope.serializarInformacion(data);
+                    $scope.formulario401(data);
+                    $("#declaracionN").modal("show");
+                };
             }
             else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
         }
-        if (data.f01_tipo_lic != 32 || data.f01_tipo_lic != '32'){
+        if (data.f01_tipo_lic_sierra != 26 || data.f01_tipo_lic_sierra != '26'){
             if(data &&  data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
                 data.FILE_CI != ""  && data.FILE_CI != null &&
                 data.rdTipoTramite != "" && data.rdTipoTramite != null &&
@@ -3214,7 +3490,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 data.f01_de_hor != "" && data.f01_de_hor != null &&
                 data.f01_a_hor != "" && data.f01_a_hor != null &&
                 data.f01_estab_es != "" && data.f01_estab_es != null &&
-                data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
+                data.f01_tipo_lic_sierra != "" && data.f01_tipo_lic_sierra != null &&
                 data.f01_categoria_agrupada != "" && data.f01_categoria_agrupada != null &&
                 //data.f01_categoria_descrip != "" && data.f01_categoria_descrip != null &&
                 data.f01_macro_act != "" && data.f01_macro_act != null &&
@@ -3225,9 +3501,20 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 data.f01_num_act1 != "" && data.f01_num_act1 != null &&
                 data.f01_casilla != "" && data.f01_casilla != null){
                 //$rootScope.validacionRequisitosTec();
+                /*if (data.rdTipoTramite1 == 'NUEVO') {
+                    if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {*/
+                        $scope.serializarInformacion(data);
+                        $scope.formulario401(data);
+                        $("#declaracionN").modal("show");
+                    /*} else{
+                        swal('', "Datos obligatorios, Adjuntar publicidad y sus documentos", 'warning');
+                    }; */
+            //$rootScope.validacionRequisitosTec();
+                /*}else{
                     $scope.serializarInformacion(data);
                     $scope.formulario401(data);
                     $("#declaracionN").modal("show");
+                }*/
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
@@ -3289,28 +3576,33 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     datos.f01_tip_act1 = 'SUCURSAL';
                 }
                 var pubMod = '';
-                pubMod = '<tr><td>VIAE</td>'+
-                '<td>TIPO</td>' +
-                '<td>CARACTERÍSTICA</td>'+
-                //'<td>CARAS</td>'+
-                '<td>DESCRIPCIÓN</td>'+
-                '<td>ALTO</td>'+
-                '<td>ANCHO</td>'+
-                '<td>SUPERFICIE</td>'+
-                '<td>ESTADO</td></tr>';
-                for (i = 0; i < datos.publicidad.length; i++){
-                    pubMod = pubMod +'<tr>' +
-                    //'<td>' + datos.publicidad[i].id + '</td>'+
-                    '<td>' + (i+1) + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_TIPO_LETRE + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_CARA + '</td>'+
-                    //'<td>' + datos.publicidad[i].INT_NRO_CARA + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_DESC + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_ANCHO + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_ALTO + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_SUP + '</td>'+
-                    '<td>' + datos.publicidad[i].estado + '</td></tr>';
-                }
+                if (datos.rdTipoTramite1 == 'NUEVO') {
+                    pubMod = '<tr><td>VIAE</td>'+
+                    '<td>TIPO</td>' +
+                    '<td>CARACTERÍSTICA</td>'+
+                    //'<td>CARAS</td>'+
+                    '<td>DESCRIPCIÓN</td>'+
+                    '<td>ALTO</td>'+
+                    '<td>ANCHO</td>'+
+                    '<td>SUPERFICIE</td>'+
+                    '<td>ESTADO</td></tr>';
+                    for (i = 0; i < datos.publicidad.length; i++){
+                        pubMod = pubMod +'<tr>' +
+                        //'<td>' + datos.publicidad[i].id + '</td>'+
+                        '<td>' + (i+1) + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_TIPO_LETRE + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_CARA + '</td>'+
+                        //'<td>' + datos.publicidad[i].INT_NRO_CARA + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_DESC + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_ANCHO + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_ALTO + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_SUP + '</td>'+
+                        '<td>' + datos.publicidad[i].estado + '</td></tr>';
+                    }
+                    stringFormulario40  =   stringFormulario40.replace("#publicidad_grilla#", pubMod);
+                } else{
+                    stringFormulario40  =   stringFormulario40.replace("#publicidad_grilla#", 'ACTIVIDAD ECONOMICA SIN ELEMENTOS DE IDENTIFICACIÓN');
+                };
                 //CABECERA
                 stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
                 stringFormulario40  =   stringFormulario40.replace("#f01_nro_orden#", datos.f01_nro_orden);
@@ -3347,7 +3639,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 stringFormulario40  =   stringFormulario40.replace("#f01_tip_act1#", datos.f01_tip_act1);
                 stringFormulario40  =   stringFormulario40.replace("#publicidad_grilla#", pubMod);
                 var multi = '';
-                if (datos.f01_tipo_lic == 32 || datos.f01_tipo_lic == '32') {
+                if (datos.f01_tipo_lic_sierra == 26 || datos.f01_tipo_lic_sierra == '26') {
                     stringFormulario40  =   stringFormulario40.replace("#f01_tipo_lic_descrip#", datos.f01_tipo_lic_descrip);
                     stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descrip#", datos.f01_categoria_agrupada_descrip);
                     stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descripcion#", datos.f01_categoria_agrupada_descrip);
@@ -3483,7 +3775,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 stringFormulario40  =   stringFormulario40.replace("#f01_piso_act#", datos.f01_piso_act);
                 stringFormulario40  =   stringFormulario40.replace("#f01_dpto_of_loc#", datos.f01_dpto_of_loc);
                 stringFormulario40  =   stringFormulario40.replace("#f01_tel_act1#", datos.f01_tel_act1);
-                if (datos.f01_num_act == 'NINGUNO') {
+                if (datos.f01_num_act_id == '0' || datos.f01_num_act_id == 0) {
                     stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act_n);
                 } else{
                     stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act);
@@ -3557,20 +3849,20 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 stringFormulario40  =   stringFormulario40.replace("#contribuyente_bloque#", $scope.datosAnt.contribuyente_bloque);
                 stringFormulario40  =   stringFormulario40.replace("#contribuyente_piso#", $scope.datosAnt.contribuyente_piso);
                 stringFormulario40  =   stringFormulario40.replace("#contribuyente_depto#", $scope.datosAnt.contribuyente_depto);
-                stringFormulario40  =   stringFormulario40.replace("#numeroActividad#", $scope.datosAnt.numeroActividad);
+                stringFormulario40  =   stringFormulario40.replace("#numeroActividad#", $scope.datosAnt.numeroactividad);
                 stringFormulario40  =   stringFormulario40.replace("#denominacion#", $scope.datosAnt.denominacion);
                 stringFormulario40  =   stringFormulario40.replace("#superficie#", $scope.datosAnt.superficie);
-                stringFormulario40  =   stringFormulario40.replace("#horarioAtencion#", $scope.datosAnt.horarioAtencion);
+                stringFormulario40  =   stringFormulario40.replace("#horarioAtencion#", $scope.datosAnt.horarioatencion);
                 stringFormulario40  =   stringFormulario40.replace("#establecimiento#", $scope.datosAnt.establecimiento);
-                stringFormulario40  =   stringFormulario40.replace("#tipoActividad#", $scope.datosAnt.tipoActividad);
-                stringFormulario40  =   stringFormulario40.replace("#IdMacrodistrito#", $scope.datosAnt.IdMacrodistrito);
-                stringFormulario40  =   stringFormulario40.replace("#Macrodistrito#", $scope.datosAnt.Macrodistrito);
-                stringFormulario40  =   stringFormulario40.replace("#Distrito#", $scope.datosAnt.Distrito);
+                stringFormulario40  =   stringFormulario40.replace("#tipoActividad#", $scope.datosAnt.tipoactividad);
+                stringFormulario40  =   stringFormulario40.replace("#IdMacrodistrito#", '');
+                stringFormulario40  =   stringFormulario40.replace("#Macrodistrito#", $scope.datosAnt.macrodistrito);
+                stringFormulario40  =   stringFormulario40.replace("#Distrito#", $scope.datosAnt.distrito);
                 stringFormulario40  =   stringFormulario40.replace("#zona#", $scope.datosAnt.zona);
-                stringFormulario40  =   stringFormulario40.replace("#tipoVia#", $scope.datosAnt.tipoVia);
+                stringFormulario40  =   stringFormulario40.replace("#tipoVia#", $scope.datosAnt.tipovia);
                 stringFormulario40  =   stringFormulario40.replace("#via#", $scope.datosAnt.via);
                 stringFormulario40  =   stringFormulario40.replace("#numero#", $scope.datosAnt.numero);
-                stringFormulario40  =   stringFormulario40.replace("#idCodigoZona#", $scope.datosAnt.idCodigoZona);
+                stringFormulario40  =   stringFormulario40.replace("#idCodigoZona#", $scope.datosAnt.idcodigozona);
                 var pubAnt = '';
                 if (datos.publicidadAntiguo_grilla.length > 1) {
                     pubAnt = '<tr><td>VIAE</td>'+
@@ -3598,28 +3890,28 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     stringFormulario40  =   stringFormulario40.replace("#publicidadAntiguo_grilla#", 'ACTIVIDAD ECONOMICA SIN ELEMENTOS DE IDENTIFICACIÓN');
                 }
                 var multiAnt = '';
-                if ($scope.datosAnt.idTipoLicencia == 3375 || $scope.datosAnt.idTipoLicencia == '3375') {
+                if ($scope.datosAnt.idtipolicencia == 26 || $scope.datosAnt.idtipolicencia == '26') {
+                    console.log('$scope.licenciamulAnterior    ',$scope.datos.licenciamulAnterior);
                     stringFormulario40  =   stringFormulario40.replace("#tipocategoria#", 'MULTISERVICIOS');
                     stringFormulario40  =   stringFormulario40.replace("#descripcion#", 'MULTISERVICIOS');
-                    /*multiAnt = '<table id="tablaMulAnt" class="table table-striped table-bordered"><tr><td>NRO</td>'+
-                    '<td>TIPO DE LICENCIA</td>' +
+                    multiAnt = '<table id="tablaMulAnt" class="table table-striped table-bordered"><tr><td>NRO</td>'+
+                    '<td>TIPO DE LICENCIA</td>' + 
                     '<td>TIPO DE CATEGORÍA</td>'+
                     '<td>TIPO DE ACTIVIDAD</td></tr>';
-                    for (i = 0; i < $scope.datosAntMulti.length; i++){
-                        multiAnt = multiAnt +'<tr>' +
+                    console.log('$scope.licenciamulAnterior    ',$scope.datos.licenciamulAnterior);
+                    for (i = 0; i < $scope.datos.licenciamulAnterior.length; i++){
+                        multiAnt = multiAnt +'<tr>' + 
                         '<td>' + (i+1) + '</td>'+
-                        '<td>' + $scope.datosAntMulti[i].f01_tipo_licmdescrip + '</td>'+
-                        '<td>' + $scope.datosAntMulti[i].f01_cat_agrupadamdescrip + '</td>'+
-                        '<td>' + $scope.datosAntMulti[i].f01_act_desarrolladamdescrip + '</td></tr>';
+                        '<td>' + $scope.datos.licenciamulAnterior[i].f01_tipo_licmdescrip + '</td>'+
+                        '<td>' + $scope.datos.licenciamulAnterior[i].f01_cat_agrupadamdescrip + '</td>'+
+                        '<td>' + $scope.datos.licenciamulAnterior[i].f01_act_desarrolladamdescrip + '</td></tr>';
                     }
-                    multiAnt = multiAnt + '</table>';*/
+                    multiAnt = multiAnt + '</table>';
                     stringFormulario40  =   stringFormulario40.replace("#ActividadDesarrollada#", 'MULTISERVICIOS');
                     stringFormulario40  =   stringFormulario40.replace("#Licenmul_grillaAnt#", multiAnt);
                 } else{
-                    stringFormulario40  =   stringFormulario40.replace("#descripcion#", $scope.datosAnt.descripcion.toUpperCase());
-                    try{
-                        stringFormulario40  =   stringFormulario40.replace("#tipocategoria#", $scope.datosA[0].tipocategoria);
-                    }catch(e){console.log("Error:", e);}
+                    stringFormulario40  =   stringFormulario40.replace("#descripcion#", $scope.datosAnt.licencia_descripcion);
+                    stringFormulario40  =   stringFormulario40.replace("#tipocategoria#", $scope.datosAnt.categoria_descripcion);
                     stringFormulario40  =   stringFormulario40.replace("#ActividadDesarrollada#", $scope.datosAnt.ActividadDesarrollada);
                     stringFormulario40  =   stringFormulario40.replace("#Licenmul_grillaAnt#", multiAnt);
                 };
@@ -3682,44 +3974,42 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         dataForm['contribuyente_celular'] = $scope.datosAnt.contribuyente_celular;
         dataForm['denominacion'] = $scope.datosAnt.denominacion;
         dataForm['superficie'] = $scope.datosAnt.superficie;
-        dataForm['idCodigoZona'] = $scope.datosAnt.idCodigoZona;
-        dataForm['numeroActividad'] = $scope.datosAnt.numeroActividad;
-        dataForm['IdMacrodistrito'] = $scope.datosAnt.IdMacrodistrito;
-        dataForm['Macrodistrito'] = $scope.datosAnt.Macrodistrito;
-        dataForm['Distrito'] = $scope.datosAnt.Distrito;
+        dataForm['idCodigoZona'] = $scope.datosAnt.idcodigozona;
+        dataForm['numeroActividad'] = $scope.datosAnt.numeroactividad;
+        dataForm['IdMacrodistrito'] = '';
+        dataForm['Macrodistrito'] = $scope.datosAnt.macrodistrito;
+        dataForm['Distrito'] = $scope.datosAnt.distrito;
         dataForm['zona'] = $scope.datosAnt.zona;
-        dataForm['tipoVia'] = $scope.datosAnt.tipoVia;
+        dataForm['tipoVia'] = $scope.datosAnt.tipovia;
         dataForm['via'] = $scope.datosAnt.via;
         dataForm['numero'] = $scope.datosAnt.numero;
         dataForm['publicidadAntiguo_grilla'] = $scope.datosAnt.publicidadAntiguo_grilla;
         var multiAnt = '';
-        if ($scope.datosAnt.idTipoLicencia == 3375 || $scope.datosAnt.idTipoLicencia == '3375') {
+        if ($scope.datosAnt.idtipolicencia == 26 || $scope.datosAnt.idtipolicencia == '26') {
             dataForm['descripcion'] = 'MULTISERVICIOS';
             dataForm['tipocategoria'] =  'MULTISERVICIOS';
-            /*multiAnt = '<table id="tablaVAnt" border="0.5" style="width:100%"><tr><td>NRO</td>'+
+            multiAnt = '<table id="tablaVAnt" border="0.5" style="width:100%"><tr><td>NRO</td>'+
             '<td>TIPO DE LICENCIA</td>' +
             '<td>TIPO DE CATEGORÍA</td>'+
             '<td>TIPO DE ACTIVIDAD</td></tr>';
-            for (i = 0; i < $scope.datosAntMulti.length; i++){
+            for (i = 0; i < $scope.datos.licenciamulAnterior.length; i++){
                 multiAnt = multiAnt +'<tr>' +
                 '<td>' + (i+1) + '</td>'+
-                '<td>' + $scope.datosAntMulti[i].f01_tipo_licmdescrip + '</td>'+
-                '<td>' + $scope.datosAntMulti[i].f01_cat_agrupadamdescrip + '</td>'+
-                '<td>' + $scope.datosAntMulti[i].f01_act_desarrolladamdescrip + '</td></tr>';
+                '<td>' + $scope.datos.licenciamulAnterior[i].f01_tipo_licmdescrip + '</td>'+
+                '<td>' + $scope.datos.licenciamulAnterior[i].f01_cat_agrupadamdescrip + '</td>'+
+                '<td>' + $scope.datos.licenciamulAnterior[i].f01_act_desarrolladamdescrip + '</td></tr>';
             }
-            multiAnt = multiAnt + '</table>';*/
+            multiAnt = multiAnt + '</table>';
             dataForm['ActividadDesarrollada'] =  'MULTISERVICIOS';
-            //dataForm['Licenmul_grillaAnt'] =  multiAnt;
+            dataForm['Licenmul_grillaAnt'] =  multiAnt;
         } else{
-            dataForm['descripcion'] = $scope.datosAnt.descripcion.toUpperCase();
-            try{
-                dataForm['tipocategoria'] =  $scope.datosA[0].tipocategoria;
-            }catch(e){console.log("Error:", e);}
+            dataForm['descripcion'] = $scope.datosAnt.licencia_descripcion;
+            dataForm['tipocategoria'] =  $scope.datosAnt.categoria_descripcion;
             dataForm['ActividadDesarrollada'] =  $scope.datosAnt.ActividadDesarrollada;
-            //dataForm['Licenmul_grillaAnt'] =  multiAnt;
+            dataForm['Licenmul_grillaAnt'] =  multiAnt;
         };
         var pubAnt = '';
-        if (data.publicidadAntiguo_grilla) {
+        if (data.publicidadAntiguo_grilla.length > 1) {
             pubAnt = '<table border="0.5" style="width:100%"><tr><td>VIAE</td>'+
             '<td>TIPO</td>' +
             '<td>CARACTERÍSTICA</td>'+
@@ -3741,10 +4031,9 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             }
             pubAnt = pubAnt +'</table>';
             dataForm['publicidadAntiguo_grilla'] = pubAnt;
-        }
-        else{
+        } else{
             dataForm['publicidadAntiguo_grilla'] = 'ACTIVIDAD ECONOMICA SIN ELEMENTOS DE IDENTIFICACIÓN';
-        }
+        };
         //CABECERA
         dataForm['f01_tipo_per_desc'] = data.f01_tipo_per_desc;
         dataForm['f01_tipo_form'] = '402';
@@ -3786,7 +4075,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             dataForm['f01_tip_act'] = 'SUCURSAL';
         }*/
         var multi = '';
-        if (data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32') {
+        if (data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26') {
             dataForm['f01_tipo_lic_descrip'] = data.f01_tipo_lic_descrip;
             dataForm['f01_categoria_agrupada_descrip'] = data.f01_tipo_lic_descrip;
             dataForm['f01_categoria_agrupada_descripcion'] = data.f01_tipo_lic_descrip;
@@ -3940,7 +4229,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         dataForm['f01_zona_act_descrip'] = data.f01_zona_act_descrip;
         dataForm['f01_tip_via_act'] = data.f01_tip_via_act;
         dataForm['f01_dist_act'] = data.f01_dist_act;
-        if(data.f01_num_act == 'NINGUNO'){
+        if(data.f01_num_act_id == '0' || data.f01_num_act_id == 0){
             dataForm['f01_num_act'] = data.f01_num_act_n.toUpperCase();
         }else{
             dataForm['f01_num_act'] = data.f01_num_act;
@@ -4023,7 +4312,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         });
     };
 
- $scope.adjpublicidad = function (paramf){
+ /*$scope.adjpublicidad = function (paramf){
         $scope.pubrd ="";
         var longpub = paramf.publicidadAE;
         if(paramf.publicidadAE){
@@ -4060,7 +4349,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         }
         console.log("$scope.datos.pubenvio: ", $scope.datos.pubenvio);
         $scope.datos.publicidad = $scope.datos.pubenvio;
-    }
+    }*/
 
 
     $scope.enviarFormProcesosLinea = function(paramForm){
@@ -4152,6 +4441,10 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datosNeXO['f01_a_hor']                  =   paramForm.f01_a_hor;
             datosNeXO['f01_tip_via_act']            =   paramForm.f01_tip_via_act;
             datosNeXO['f01_num_act']                =   paramForm.f01_num_act;
+            datosNeXO['f01_num_act_id'] = paramForm.f01_num_act_id;
+            if(paramForm.f01_num_act_id == "0" || paramForm.f01_num_act_id == 0){
+                datosNeXO['f01_num_act_n'] = (paramForm.f01_num_act_n).toUpperCase();
+            }
             datosNeXO['f01_factor']                 =   paramForm.f01_factor;
             datosNeXO['f01_num_act1']               =   paramForm.f01_num_act1;
             datosNeXO['f01_edificio_act']           =   paramForm.f01_edificio_act;
@@ -4189,6 +4482,11 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datosNeXO['f01_telef_prop']             =paramForm.f01_tel_ciudadano;
             datosNeXO['f01_cel_prop']               =paramForm.f01_cel_prop;
             datosNeXO['f01_email_prop']             =paramForm.f01_email_prop;
+            datosNeXO['f01_genero_prop'] = paramForm.f01_genero_prop;
+            datosNeXO['f01_cuenta_luz_prop'] = paramForm.f01_cuenta_luz_prop;
+            datosNeXO['f01_medidor_prop'] = paramForm.f01_medidor_prop;
+            datosNeXO['f01_estado_civil_prop'] = paramForm.f01_estado_civil_prop;
+            datosNeXO['f01_dir_det_prop'] = paramForm.f01_dir_det_prop;
             /*DATOSDELAACTIVIDADAECONOMICA*/
             //DATOS TECNICOS
             datosNeXO['f01_raz_soc']=paramForm.f01_raz_soc;
@@ -4232,7 +4530,10 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             /*REQUISITOSDELAACTIVIDADECONOMICA - CIUDADANO*/
             datosNeXO['f01_tip_act']=paramForm.f01_tip_act;
             datosNeXO['f01_tipo_lic']=paramForm.f01_tipo_lic;
+            datosNeXO['f01_tipo_lic_sierra']=paramForm.f01_tipo_lic_sierra;
+
             datosNeXO['f01_categoria_agrupada']= parseInt(paramForm.f01_categoria_agrupada);
+            datosNeXO['f01_categoria_agrupada_sierra']  =   paramForm.f01_categoria_agrupada_sierra;
             datosNeXO['f01_categoria_agrupada_descripcion']="";
             datosNeXO['f01_actividad_desarrollada']= paramForm.f01_categoria_descrip2;
             datosNeXO['declaracion_jurada']               =   $rootScope.decJuradaNatural;
@@ -4253,7 +4554,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             else{
                 datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);;
             }
-
+            datosNeXO['File_Publicidad'] = $scope.datos.fileArchivosPublicidad;
             if(paramForm.g_origen_p){
                datosNeXO['g_origen_p'] = paramForm.g_origen_p;
             }
@@ -4270,18 +4571,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datosNeXO['FILE_FOTOCOPIA_CI_R'] = paramForm.FILE_FOTOCOPIA_CI_R;
             datosNeXO['f01_croquis_ae'] = $scope.datos.ARCHIVOS_MULTIPLES_MAPA[0].nombre_archivo;
             datosNeXO['Licenmul_grilla'] = paramForm.Licenmul_grilla;
-            if(paramForm.f01_tipo_lic == 32 || paramForm.f01_tipo_lic == '32'){
-                datosNeXO['f01_idcat_multi_principal'] = paramForm.xf01_idcat_multi_principal;
-                datosNeXO['f01_descat_multi_principal'] = paramForm.xf01_descat_multi_principal;
-                datosNeXO['f01_act_principal'] = paramForm.f01_act_principal;
-                datosNeXO['f01_act_principal2'] = paramForm.f01_act_principal2;
-                datosNeXO['f01_actividad_principal_array'] = paramForm.f01_actividad_principal_array;
-            }else{
-                datosNeXO['f01_idcat_multi_principal'] = '';
-                datosNeXO['f01_descat_multi_principal'] = '';
-                datosNeXO['f01_act_principal'] = '';
-                datosNeXO['f01_actividad_principal_array'] = '';
-            }
             //datosNeXO['f01_categoria_descrip']      =  paramForm.f01_categoria_descripcion;
         }
             datosNeXO['f01_categoria_descrip']      =  paramForm.f01_categoria_descripcion;
@@ -4298,11 +4587,11 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datosNeXO['sw_publicidad']      =  "SP" ;
             datosNeXO['swpublicidad']      =  "SP" ;
         }
-        datosNeXO['publicidadcop']=paramForm.publicidad;
-        datosNeXO['publicidad']=paramForm.pubenvio;
-        datosNeXO['publicidad_grilla']=paramForm.publicidad_grilla;
+        datosNeXO['publicidad'] = paramForm.publicidad;
+        //datosNeXO['publicidad'] = paramForm.pubenvio;
+        datosNeXO['publicidad_grilla'] = paramForm.publicidad_grilla;
 
-        datosNeXO['licencia_multiple']=paramForm.licenciam;
+        datosNeXO['licencia_multiple'] = paramForm.licenciam;
         datosNeXO['g_tipo'] = "AE-LINEA";
         datosNeXO['g_fecha'] = fechactual;
         datosNeXO['g_origen'] = "IGOB247";

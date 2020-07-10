@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
     <head>
-        <script type="text/javascript"  src="../../view/servicios/aeregular/renovacion343/appRenovacionJuridico.js"></script>
+        <script type="text/javascript"  src="../../view/servicios/aeregularSierra/renovacion343Sierra/appRenovacionJuridico.js"></script>
         <script type="text/javascript" src="../../libs/js/jic.js"></script>
         <script type="text/javascript" src="../../libs/js/jszip.js"></script>
     </head>
@@ -24,11 +24,11 @@
         scope.$apply(func);
     }
 
-    function initMap(){
+    /*function initMap(){
         accessScope('#outerMapaActividadM', function (scope) {
             scope.initMap();
         });
-    }
+    }*/
 
     function soloNumericoTelefono(sValor){
         Numer=parseInt(sValor);
@@ -78,7 +78,7 @@
     
 
     function vsuperficie(ob){
-        var invalidChars = /[a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ¡!@#/\$%\^&\*\¿?_~();:{}'"|<>´ñ?`=a-zA-Z]/;
+        var invalidChars = /[a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ¡!@#/;//\$%\^&\*\¿?_~();:{}'"|<>´ñ?`=a-zA-Z]/;
         if(invalidChars.test(ob.value)) {
             ob.value = ob.value.replace(invalidChars,"");
         };
@@ -91,7 +91,7 @@
     });
 </script>
 
-<div id="outerMapaActividadM" ng-controller="renovacionJuridicoController" data-ng-init="cargarDatosJuridico();">
+<div id="outerMapaActividadM" ng-controller="renovacionJuridicoSierraController" data-ng-init="cargarDatosJuridicoSierra();">
     <div class="ibox float-e-margins">
         <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
             <h4>Actividad Económica Regular</h4><!--cambios-->
@@ -123,12 +123,12 @@
                                 <div class="panel-heading"><b>RENOVAR {{translateTitulos.lbl_12_06}}</b></div>
                                 <div class="panel-body" ng-disabled="true">
                                     <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadEconomica">
-                                        <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'#D3D3D3','font-color':'#A2D5AE'}"><!--cambios-->
-                                            <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.Nro}}</td>
-                                            <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td>
-                                            <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.Direccion}}</td>
-                                            <td data-title="'DESCRIPCIÓN'" ng-click="selActividadEconomica(tramite)">{{tramite.Descripcion}}</td>
-                                            <td data-title="'DEUDA'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td>
+                                        <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.idactividad==sIdAeGrilla && {'background-color':'#D3D3D3','font-color':'#A2D5AE'}"><!--cambios-->
+                                            <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.nro}}</td>
+                                            <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.idactividad}}</td>
+                                            <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.direccion}}</td>
+                                            <td data-title="'DESCRIPCIÓN'" ng-click="selActividadEconomica(tramite)">{{tramite.descripcion}}</td>
+                                            <td data-title="'DEUDA'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaactividad}} </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -381,6 +381,42 @@
                         </div>
                     </div>
                     <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="true">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >Tipo de Sociedad: </label>
+                            <div class="controls">
+                                <select class="form-control"
+                                    ng-options="dato.xctl_valor as dato.xctl_descripcion for dato in datosSociedad | orderBy:['nombre','xctl_descripcion']"
+                                    ng-model="datos.f01_tipo_sociedad"
+                                    id="f01_tipo_sociedad"
+                                    name="f01_tipo_sociedad"
+                                    ng-disabled="desabilitado"
+                                    ng-change = "GetValueTipoSociedad();"
+                                    required>
+                                    <option value="">--Seleccionar--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <font color="#FF0000" size="4px"> * </font>
+                            <label for="url" >Tipo de Documento de Respaldo: </label>
+                            <div class="controls">
+                                <select class="form-control"
+                                    ng-options="dato.xctl_valor as dato.xctl_descripcion for dato in datosRespaldo | orderBy:['nombre','xctl_descripcion']"
+                                    ng-model="datos.f01_tipo_respaldo"
+                                    id="f01_tipo_respaldo"
+                                    name="f01_tipo_respaldo"
+                                    ng-disabled="desabilitado"
+                                    ng-change = "GetValueTipoRespaldo();"
+                                    required>
+                                    <option value="">--Seleccionar--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group" >
@@ -436,7 +472,7 @@
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> </font>
                                 <select class="js-example-basic-single form-control"
-                                    ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividad | orderBy:['nombre','descripcion343']"
+                                    ng-options="dato.idactividaddesarrollada343 as dato.descripcion343 for dato in datosActividad | orderBy:['nombre','descripcion343']"
                                     ng-model="datos.f01_categoria_descrip"
                                     id="f01_categoria_descrip"
                                     name="f01_categoria_descrip"
@@ -481,12 +517,12 @@
                                             <label for="url" >Detalle de la Actividad Desarrollada para Multiservicios: </label>
                                             <div class="form-group" >
                                                 <select class="js-example-basic-single form-control"
-                                                    ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividadMul | orderBy:['nombre','descripcion343']"
-                                                    ng-model="multipleJuridico.f01_act_desarrolladamid"
+                                                    ng-options="dato.idactividaddesarrollada343 as dato.descripcion343 for dato in datosActividadMul | orderBy:['nombre','descripcion343']"
+                                                    ng-model="multiple.f01_act_desarrolladamid"
                                                     id="f01_act_desarrolladamid"
                                                     name="f01_act_desarrolladamid"
                                                     ng-disabled="desabilitado"
-                                                    ng-change="LicenciaXCategoriaM(multipleJuridico.f01_act_desarrolladamid, datos.f01_sup);"
+                                                    ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid, datos.f01_sup);"
                                                     required>
                                                     <option value="">--Seleccionar--</option>
                                                 </select>
@@ -500,7 +536,7 @@
                                                     <input
                                                         id="f01_cat_agrupadamdescrip"
                                                         name="f01_cat_agrupadamdescrip"
-                                                        ng-model="multipleJuridico.f01_cat_agrupadamdescrip"
+                                                        ng-model="multiple.f01_cat_agrupadamdescrip"
                                                         class="form-control"
                                                         ng-disabled="true"
                                                         required />
@@ -518,7 +554,7 @@
                                                     <input
                                                         id="f01_tipo_licmdescrip"
                                                         name="f01_tipo_licmdescrip"
-                                                        ng-model="multipleJuridico.f01_tipo_licmdescrip"
+                                                        ng-model="multiple.f01_tipo_licmdescrip"
                                                         class="form-control"
                                                         ng-disabled="true"
                                                         required/>
@@ -530,9 +566,9 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
                                                     <div class="col-md-3">
-                                                        <a class="btn btn-primary" ng-click="guardarLicencia(multipleJuridico); GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myLicenciaMultiple.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
+                                                        <a class="btn btn-primary" ng-click="guardarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myLicenciaMultiple.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
                                                         </a>
-                                                        <a class="btn btn-primary" ng-click="modificarLicencia(multipleJuridico)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
+                                                        <a class="btn btn-primary" ng-click="modificarLicencia(multiple)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
                                                             <i class="glyphicon glyphicon-plus-sign"></i>Modificar
                                                         </a>
                                                     </div>
@@ -672,13 +708,13 @@
                             <label for="url" >V&iacute;a: <font color="#FF0000"> * </font></label>
                             <div class="controls">
                                 <select
-                                    id="f01_num_act"
-                                    name="f01_num_act"
+                                    id="f01_num_act_id"
+                                    name="f01_num_act_id"
                                     placeholder="-- Seleccione --"
-                                    ng-model="datos.f01_num_act"
+                                    ng-model="datos.f01_num_act_id"
                                     class="form-control"
-                                    ng-options="dato.nombVia as dato.nombVia for dato in datosNombVia | orderBy:['nombre','nombVia']"
-                                    ng-change="cargarNombViaTxt(datos.f01_num_act)"
+                                    ng-options="dato.xvia_ae_id as dato.xvia_ae_nombre for dato in datosNombVia | orderBy:['nombre','nombVia']"
+                                    ng-change="cargarNombViaTxt(datos.f01_num_act_id);GetValueVia();"
                                     ng-disabled="desabilitado"
                                     required>
                                     <option style="display:none" value="">--Seleccione--</option>
@@ -686,30 +722,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6" ng-show="datos.f01_num_act == 'NINGUNO'">
+                    <div class="col-md-6" ng-show="datos.f01_num_act_id == 0">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
                             <div class="controls">
                               <input type="text" ng-model="datos.f01_num_act_n" id="f01_num_act_n" name="f01_num_act_n" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
-                            </div>
-                        </div>
-                    </div>
-                    <div ng-show="datos.f01_num_act == 'OTRO'">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="url" >{{translateTitulos.lbl_12_40}} :</label>
-                                <div class="controls">
-                                  <input type="text" ng-model="datos.OTRO_VIA" id="OTRO_VIA" name="OTRO_VIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6" ng-show="false">
-                        <div class="form-group">
-                            <label for="url" >Tipo Trayecto:</label>
-                            <div class="controls">
-                          <input type="text" ng-model="datos.f01_factor" id="f01_factor" name="f01_factor" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
                             </div>
                         </div>
                     </div>
@@ -929,6 +947,12 @@
                                                         <td data-title="'ALTO'" sortable="'INT_ALTO'">{{pup.INT_ALTO}}</td>
                                                         <td data-title="'ANCHO'" sortable="'INT_ANCHO'">{{pup.INT_ANCHO}}</td>
                                                         <td data-title="'SUPERFICIE'" sortable="'INT_SUP'">{{pup.INT_SUP}}</td>
+                                                        <td data-title="'ESTADO'" sortable="'INT_ESTADO'">
+                                                            <div ng-if="pup.estado == 'V'">VIGENTE</div>
+                                                            <div ng-if="pup.estado == 'B'">BAJA</div>
+                                                            <div ng-if="pup.estado == 'M'">MODIFICADO</div>
+                                                            <div ng-if="pup.estado == 'N'">NUEVO</div>
+                                                        </td>
                                                         <!--td data-title="'SUP. EXCLUIDA'" sortable="'INT_SUP_EXCLUIDA'">{{pup.INT_SUP_EXCLUIDA}}</td-->
                                                     </tr>
                                                 </table>
@@ -942,6 +966,35 @@
                                 </form>
                             </div>
                         </div>
+                    </div>
+                    <!--REQUISITOS PUBLICIDAD-->
+                    <div class="col-md-12">
+                        <legend>Requisitos Documentales Publicidad: </legend>
+                    </div>
+                    <div  class="col-md-12">
+                        <form  name="adjuntosFormPub" id="adjuntosFormPub">
+                            <div ng-repeat="dataPub in docPubNuevo">
+                                <div class="form-group">
+                                    <div ng-show = "dataPub.estado" class="col-md-12">
+                                        <label id="lbl_f01_upload{{dataPub.idP}}{{dataPub.resid}}" class="col-sm-6">{{dataPub.resvalor}}</label>
+                                        <div class="form-group custom-upload col-sm-6">
+                                            <input type="file" id="f01_upload{{dataPub.idP}}{{dataPub.resid}}" name="f01_upload{{dataPub.idP}}{{dataPub.resid}}" accept="image/*"  style="display: none;">
+                                            <div class="input-group col-xs-12">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                <input id="txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}" name="txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-model="datos['txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}']" type="text" placeholder="{{dataPub.resvalor}}" class="form-control input-lg" disabled required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-show="fileAdjuntosPublicidad['f01_upload'+dataPub.idP+dataPub.resid].url" href="{{fileAdjuntosPublicidad['f01_upload'+dataPub.idP+dataPub.resid].url}}" target="_blank">
+                                                    {{rmostrarviae}}
+                                                    <button id="btn_f01_upload{{dataPub.idP}}{{dataPub.resid}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-click="ejecutarFile('f01_upload' + dataPub.idP + dataPub.resid, dataPub.idnro)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -961,6 +1014,41 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <legend>Requisitos Documentales Anteriores: </legend>
+                </div>
+                <div class="col-md-12" ng-show="reqdoc==true">
+                    <div class="form-group" >
+                        <label class="col-sm-12 control-label no-padding-right" for="url" ></font></label>
+                        <div class="col-sm-12" align="left">
+                            <div class="alert alert-warning fade in">
+                                <a href="" class="close" data-dismiss="alert">&times;</a>
+                                <strong>LA ACTIVIDAD ECONOMICA PRESENTO LOS REQUISITOS DOCUMENTALES FISICAMENTE</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div  class="col-md-12">
+                    <div ng-repeat="dataD in datos.datosdocanterior">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="col-sm-6">{{dataD.titulo}}</label>
+                                <div class="form-group custom-upload col-sm-6">
+                                    <input type="file" id="f01_upload{{dataD.url}}" name="f01_upload{{dataD.url}}" accept="image/*" style="display: none;">
+                                    <div class="input-group col-xs-12">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                        <input type="text" placeholder="{{dataD.nombreAcrh}}" class="form-control input-lg" disabled required>
+                                        <span class="input-group-btn">
+                                            <a id="href_f01_upload{{dataD.url}}" href="{{dataD.url}}" target="_blank">
+                                            <button id="btn_f01_upload{{dataD.url}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i>  Visualizar</button>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
                 <div class="col-md-12">
                     <legend>Requisitos Documentales:</legend>
                 </div>

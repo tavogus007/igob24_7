@@ -770,11 +770,11 @@
     }
     ///////////////////****MAPA GIS*****/////////////////////////
 
-    $scope.open_mapa_ae = function() {
+    $scope.open_mapa_ae = function(lat,lon) {
         setTimeout(function() {
-            console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICASsssssssss");
-            var latitud = $scope.datos.INT_AC_latitud;
-            var longitud = $scope.datos.INT_AC_longitud;
+            console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICASsssssssss zzzzzzzzzz    ");
+            var latitud = lat;
+            var longitud = lon;
             console.log("latitud...",latitud);
             //map.removeLayer(vectorLayer_inci_baja);
             $("#map_principal").empty();
@@ -888,6 +888,7 @@
                 var centro_1 = ol.proj.transform(coord,'EPSG:3857',epsg4326);
                 var latitud = centro_1[1];
                 var longitud = centro_1[0];
+                console.log('latitud actualizada    ',latitud);
                 wkt = "POINT("+centro[0]+" "+centro[1]+")";
 
                 datos.latitud = latitud;
@@ -951,6 +952,51 @@
                         }   
                     });
                 },500);
+                ///////////////////////////////PARA ZONAS TRIBUTARIAS////////////////////////////////
+                var feature = $scope.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+                  return feature;
+                });
+                if (feature){
+                  var coord = feature.getGeometry().getCoordinates();
+                  var props = feature.getProperties();
+                }
+                else
+                {
+                  //alert();
+                  var url_zonas_tributarias = zonas_tributarias_udit.getSource().getGetFeatureInfoUrl(
+                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
+                                'INFO_FORMAT': 'application/json',
+                                'propertyName': 'grupovalor'
+                              }
+                            );
+
+                  var url_zonas = zonas.getSource().getGetFeatureInfoUrl(
+                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
+                                'INFO_FORMAT': 'application/json',
+                                'propertyName': 'zonaref,macrodistrito,subalcaldia,codigozona,macro,distrito'
+                              }
+                            );
+                   var url_vias = vias.getSource().getGetFeatureInfoUrl(
+                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
+                                'INFO_FORMAT': 'application/json',
+                                'propertyName': 'nombrevia,tipovia'
+                              }
+                            );
+
+                  reqwest({
+                    url: url_zonas_tributarias,
+                    type: 'json',
+                  }).then(function(data)
+                  {
+                    var feature = data.features[0];
+                    var cod = feature.properties;
+                    var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
+                    console.log("codigo zona tributaria patty: ",codigo_zona_tributaria);
+                    $scope.datos.f01_idCodigoZona = codigo_zona_tributaria;
+                  });
+                 
+                }
+                ///////////////////////////////////////////////////////////////////////////////
                 var feature = new ol.Feature(
                       new ol.geom.Point(ol.proj.fromLonLat(centro_1))
                 );
@@ -1361,6 +1407,8 @@
         $scope.datos.INT_AC_DISTRITO    =   idDistrito;
         $scope.datos.INT_AC_ID_ZONA     =   idZona;
         $scope.datos.f01_zona_act       = idZona;
+        console.log('la zonaaa    ',$scope.datos.f01_zona_act );
+        
         document.getElementById('f01_zona_act').value = $scope.datos.f01_zona_act;
         setTimeout(function(){
             $scope.GetValueZona();
@@ -1549,7 +1597,7 @@
 
     $scope.serializarInformacion = function(obj){
         obj.f01_macro_act = parseInt(obj.f01_macro_act);
-        if(obj.f01_tipo_lic == '1' || obj.f01_tipo_lic == '3' || obj.f01_tipo_lic == '4'){
+        /*if(obj.f01_tipo_lic == '1' || obj.f01_tipo_lic == '3' || obj.f01_tipo_lic == '4'){
             obj.f01_actividadesSecundarias = obj.f01_categoria_agrupada_descrip;
         }else{
             if(obj.f01_tipo_lic == 3375){
@@ -1563,7 +1611,7 @@
                 };
                 //obj.f01_actividadesSecundarias = '';
             }
-        }
+        }*/
 
         //$rootScope.validacionRequisitosTec();
         var fechactual          = obtFechaActual.obtenerFechaActual();

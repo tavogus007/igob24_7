@@ -1,14 +1,23 @@
-function permisoCirculacionController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, $timeout, obtFechaCorrecta,$route, obtFechaActual,fileUpload1) {
+function permisoDeleveryController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, $timeout, obtFechaCorrecta,$route, obtFechaActual,fileUpload1) {
     var sIdCiudadano= sessionService.get('IDSOLICITANTE');
     $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
     $scope.oidCiu = sessionService.get('IDSOLICITANTE');
     $scope.datos = {};
     $scope.trmUsuario = [];
+    $scope.trmAutos = [];
     $scope.ocultaTipo = false;
     $scope.desabilitado = false;
     $scope.div_actividad_economica = false;
-    $scope.div_solicitante = false;
+    $scope.div_solicitante = true;
     $scope.div_dias_div = false;
+    $scope.div_datos_A_llenar =false;
+    $scope.div_tipo_entrega=false;
+    $scope.div_de_adunjtos =false;
+    $scope.tit_solicitud=false;
+    $scope.div_adjunto_contrato_con_empresa=false;
+    $scope.div_adjunto_global=false;
+    $scope.hardocore = '[{"tipo_vehiculo":"Motocicleta","placa":"3935NBN","CI":"9110200"}]';
+    $scope.div_escoger_servicio = false;
     $scope.adjuntos = [{id:0,requisito:'Boleta de Decomiso'},{id:1,requisito:'Comprobante de Pago'}];
     $scope.inicio = function(){
         $scope.listadoActividadesEconomicas();
@@ -16,17 +25,21 @@ function permisoCirculacionController($scope, $rootScope, $routeParams, $locatio
 
     var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
       $scope.datos = JSON.parse(data);
-      if($scope.datos.File_Adjunto == undefined){
+    /*  if($scope.datos.File_Adjunto == undefined){
         $scope.datos.File_Adjunto = [];
         $scope.datos.valPlaca = 2;
-      }
+      }*/
+      $scope.trmAutos=  JSON.parse($scope.hardocore);
+      $scope.tblAutos.reload();
+      console.log($scope.trmAutos,"$scope.trmAutos");
+
       $scope.enviado = sessionService.get('ESTADO');
       if($scope.enviado == 'SI'){
         $scope.desabilitado = true;
       }else{
         $scope.desabilitado = false;
       }
-      $scope.docdinamicos($scope.datos.PER_TRA_DESCRIP_FOR);
+     // $scope.docdinamicos($scope.datos.PER_TRA_DESCRIP_FOR);
       $("#valida").hide();
       $("#valida1").hide();
       document.getElementById('gu').disabled=true;
@@ -139,12 +152,12 @@ function permisoCirculacionController($scope, $rootScope, $routeParams, $locatio
           $.blockUI();
           var f = new Date();  
           datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-          datos.g_tipo_tramite = 'PER_TRA';
+          datos.g_tipo_tramite = 'PER_DEL';
           data_form = JSON.stringify(datos);
           var tramite = new crearTramiteMovilidad();
           tramite.usr_id = 1;    
           tramite.datos = data_form;
-          tramite.procodigo = 'PER_TRA';
+          tramite.procodigo = 'PER_DEL';
           var nroTramiteEnviado = sessionService.get('NROTRAMITE');
           tramite.tramite_linea(function(results){ 
             results = JSON.parse(results);
@@ -381,6 +394,55 @@ $scope.cambiarFile = function(obj, valor){
                         valor = '';
                         $scope.datos.FILE_FORMVH_EXCEL = "";
                         $scope.FILE_FORMVH_EXCEL = "";
+                        $.unblockUI();
+                    }
+                        
+            } else{
+                swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo Excel', 'error');
+                document.getElementById("txt_" + nombre).value  = "";
+                document.getElementById("href_" + nombre).href = "";
+                $scope.registroAdj.adjunto = '';
+                $scope.adjunto = '';
+                valor = '';
+                $.unblockUI();
+            }
+
+        }
+        if (nombre == 'FILE_CONTRATO_SER_EMP' && (typeof(obj.files[0]) != 'undefined')) 
+        {
+            var nomdocumento = obj.files[0].name;
+            var docextension = nomdocumento.split('.');
+            var ext_doc = docextension[docextension.length - 1].toLowerCase();
+            if (  arraydoc.indexOf(ext_doc) >= 0 ) {
+           // if ( ext_doc == 'xls' || ext_doc == 'xlsx' ) {
+                    if (objarchivo.size <= 500000) {
+                        var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
+                        fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                        $scope.datos.FILE_CONTRATO_SER_EMP = nombreNuevo;
+                        $scope.FILE_CONTRATO_SER_EMP = objarchivo;
+                        document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                        document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                        $scope.btover4 = "mostrar";
+                    } else if ( objarchivo.size > 500000 &&  objarchivo.size <= 15000000) {
+                        var zipcir = new JSZip();
+                        zipcir.file(nomdocumento, objarchivo);
+                        zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
+                            var nombreNuevo = nombre + fechaNueva + '.zip';
+                            fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_CONTRATO_SER_EMP = nombreNuevo;
+                            $scope.FILE_CONTRATO_SER_EMP = blobcir;
+                            $scope.btover4 = "mostrar";
+                        });
+                        $.unblockUI();
+                    }else{
+                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                        document.getElementById("txt_" + nombre).value  = "";
+                        document.getElementById("href_" + nombre).href = "";
+                        $scope.registroAdj.adjunto = '';
+                        $scope.adjunto = '';
+                        valor = '';
+                        $scope.datos.FILE_CONTRATO_SER_EMP = "";
+                        $scope.FILE_CONTRATO_SER_EMP = "";
                         $.unblockUI();
                     }
                         
@@ -672,18 +734,32 @@ $scope.ultimoArrayAdjunto = function(){
                 resultadoApi = JSON.parse(resultado);                
                 if (resultadoApi.success) {
                     var response    =   resultadoApi;
+                    console.log(response,"response");
                     if(response.success.dataSql.length > 0){
+                        $scope.div_escoger_servicio = true;
+                        $scope.div_actividad_economica = true;
+                        $scope.desabilitado = false;
                         $scope.trmUsuario = response.success.dataSql;
+                        console.log("$scope.trmUsuario",$scope.trmUsuario);
                         $scope.tblTramites.reload();
                     } else {
-                      //  swal('', "Estimado ciudadano usted no cuenta con una actividad economica", 'warning');
+                        $scope.desabilitado = true;
+                        $scope.div_escoger_servicio = false;
+                        $scope.div_actividad_economica = false;
+                        swal('', "Estimado ciudadano usted no cuenta con una actividad economica por lo cual no podrá acceder a este servicio", 'warning');
                     }
                 } else {
+                    $scope.desabilitado = true;
+                    $scope.div_escoger_servicio = false;
+                    $scope.div_actividad_economica = false;
                     swal('', "Datos no Encontrados !!!", 'warning');
                 }
             });
         }else{
-           // swal('', "Estimado ciudadano usted no cuenta con una actividad economica", 'warning');
+            $scope.desabilitado = true;
+            $scope.div_escoger_servicio = false;
+            $scope.div_actividad_economica = false;
+            swal('', "Estimado ciudadano usted no cuenta con una actividad economica por lo cual no podrá acceder a este servicio", 'warning');
         }
     };
 
@@ -708,6 +784,26 @@ $scope.ultimoArrayAdjunto = function(){
         }
     });
 
+    $scope.tblAutos = new ngTableParams({
+        page: 1,
+        count: 5,
+        filter: {},
+        sorting: {
+          //  IdActividad: 'desc'
+        }
+    }, {
+        total: $scope.trmAutos.length,
+        getData: function($defer, params) {
+            var filteredData = params.filter() ?
+            $filter('filter')($scope.trmAutos, params.filter()) :
+            $scope.trmAutos;
+            var orderedData = params.sorting() ?
+            $filter('orderBy')(filteredData, params.orderBy()) :
+            $scope.trmAutos;
+            params.total($scope.trmAutos.length);
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+        }
+    });
 
     $scope.selActividadEconomica =  function(tramite){
          $scope.idActividiadEconomicaActual  =   tramite.IdActividad;
@@ -729,73 +825,8 @@ $scope.ultimoArrayAdjunto = function(){
          });
 
      }; 
-     $scope.docdinamicos = function(data){
-        $scope.botones = "mostrar";
-        if(data == 'TRANSPORTE_DE_ENTREGA_ALIMENTOS' || data == 'TRANSPORTE_PERSONAL'  || data == 'TRANSPORTE_DE_ENTREGA_PRODUCTOS'){
-            $scope.desabilitado=false;
-            $scope.div_actividad_economica = true;
-            $scope.div_solicitante = true;
-            $scope.nombreRespaldos ='ADJUNTAR DOCUMENTACION DE RESPALDO, EJEMPLO CONTRATO DE SERVICIOS, PERMISO DE CONSTRUCCION U OTROS (Fotografías con buena resolución en un solo archivo formato PDF)';
-            $scope.div_descripcion_prestado = false;
-            switch (data) {
-                case 'TRANSPORTE_DE_ENTREGA_ALIMENTOS':
-                    swal({
-                        title: "Estimado Ciudadano.",
-                        text: 'para la prestación de entrega de alimentos preparados a domicilio:<span style="color:#FF0303"> “LOS HORARIOS DE ESTE SERVICIO SON DE 7:00 A 22:00 (LUNES A DOMINGO)”<span>',
-                        html: true,
-                        type: 'warning',
-                        confirmButtonColor: '#DD6B55'
-                      });
-                  break;
-                  case 'TRANSPORTE_PERSONAL':
-                    swal({
-                        title: "Estimado Ciudadano.",
-                        text: 'para la prestación servicio de trasporte de personal:<span style="color:#FF0303"> “LOS HORARIOS DE ESTE SERVICIO SON DE 24 HORAS (LUNES A DOMINGO)”<span>',
-                        html: true,
-                        type: 'warning',
-                        confirmButtonColor: '#DD6B55'
-                      });
-                  break;
-                  case 'TRANSPORTE_DE_ENTREGA_PRODUCTOS':
-                    swal({
-                        title: "Estimado Ciudadano.",
-                        text: 'para la prestación de entrega de productos en general a domicilio:<span style="color:#FF0303"> “LOS HORARIOS DE ESTE SERVICIO SON DE 24 HORAS (LUNES A DOMINGO)”<span>',
-                        html: true,
-                        type: 'warning',
-                        confirmButtonColor: '#DD6B55'
-                      });
-                  break;
-              }
-            }else if(data == 'TRANSPORTE_MATERIA_PRIMA'){
-                $scope.desabilitado=false;
-                $scope.div_actividad_economica = false;
-                $scope.div_solicitante = true;
-                $scope.div_descripcion_prestado = true;
-                $scope.nombreRespaldos ='RESOLUCIÓN ADMINISTRATIVA PARA OPERADORES DE TRANSPORTE DE CARGA, PERMISO DE CONSTRUCCIÓN O AUTORIZACIONES MENORES OTORGADAS POR EL SERVICIO MUNICIPAL DE ADMINISTRACIÓN TERRITORIAL SERMAT, LICENCIA DE FUNCIONAMIENTO, PATENTE ÚNICA MUNICIPAL O CERTIFICADO DE PRODUCTOR AGROPECUARIO, ENTRE OTROS. (Fotografías con buena resolución en un solo archivo formato PDF)';
-                switch (data) {
-                    case 'TRANSPORTE_MATERIA_PRIMA':
-                        swal({
-                            title: "Estimado Ciudadano.",
-                            text: 'para la prestación de entrega de carga, insumos, materias primas y productos de abastecimiento se debe indicar que:<span style="color:#FF0303"> “LOS HORARIOS DE ESTE SERVICIO SON:<br><br> A) MATERIALES DE CONSTRUCCIÓN: MOVIMIENTO DE ÁRIDOS Y TIERRAS 24 HORAS (LUNES A VIERNES), MAYORISTAS 24 HORAS (LUNES A VIERNES), MINORISTAS DE 9:00 A 17:00 (LUNES A VIERNES).<br><br> B) MATERIAS PRIMAS: 24 HORAS (LUNES A DOMINGO)<br><br> C) PRODUCTOS DE 1ERA NECESIDAD: MAYORISTAS: 24 HORAS (LUNES A DOMINGO) Y MINORISTAS: 5:00 A 17:00 (LUNES A VIERNES)”<span>',
-                            html: true,
-                            type: 'warning',
-                            confirmButtonColor: '#DD6B55'
-                          });
-                      break;
-                        }
-            }else if (data == undefined || data == 'undefined' ||  data == ''){
-                    $scope.desabilitado=false;
-                    $scope.div_actividad_economica = false;
-                    $scope.div_solicitante = false;
-            }
-    }
-    $scope.docDiasDimaico = function(data){
-        if(data == 'TODOS LOS DIAS'){
-            $scope.div_dias_div = false;
-        }else if(data == 'SELECCIONAR DIAS'){
-            $scope.div_dias_div = true;
-        }  
-    }
+
+
     ///////////////////// validador de todos los dias
     $scope.verificarCamposSeleccionarDias = function (data) {
         if(data.DIAS_VALIDADOR== 'TODOS LOS DIAS'){
@@ -816,6 +847,11 @@ $scope.ultimoArrayAdjunto = function(){
         }
     }
     ///validacion final  
+    $scope.verificacionFinalDeCamposFinal = function (data) {
+        $scope.guardar_tramite(data);
+        $scope.declaracionJurada(data);
+        $("#declaracionPERTRA").modal("show");
+    }
     $scope.verificacionFinalDeCampos = function (data) {
         var tipoPersona     =   sessionService.get('TIPO_PERSONA');
         if(data.PER_TRA_DESCRIP_FOR == 'TRANSPORTE_DE_ENTREGA_ALIMENTOS' || data.PER_TRA_DESCRIP_FOR == 'TRANSPORTE_PERSONAL'  || data.PER_TRA_DESCRIP_FOR == 'TRANSPORTE_DE_ENTREGA_PRODUCTOS'){
@@ -930,6 +966,62 @@ $scope.ultimoArrayAdjunto = function(){
     $scope.fmostrarFormulario   =   function(){
         $("#exampleModalCenter1").modal({backdrop: 'static', keyboard: false});
         $('#msgformularioN').html($scope.msgformularioN);
+    }
+    $scope.adicionarVehiculos = function(data){
+        $scope.trmAutos.push(data);
+        $scope.tblAutos.reload();
+        $scope.datosV = [];
+    }
+    $scope.eliminarVehiculo = function(datavehivulo){
+        $scope.trmAutos.splice($scope.trmAutos.indexOf(datavehivulo),1);
+        $scope.tblAutos.reload();
+    }
+    $scope.dinamicoFormulario = function(dataFormulario){
+        if(dataFormulario == 'REGISTRO_SERVICIO_PRIVADO'){
+            $scope.div_tipo_entrega=true;
+            $scope.div_datos_A_llenar=false;
+            $scope.div_de_adunjtos=true;
+            $scope.tit_solicitud=true;
+
+            $scope.div_adjunto_global=false;
+            
+        }else if(dataFormulario == 'REGISTRO_OPERADOR'){
+            $scope.div_tipo_entrega=false;
+            $scope.div_datos_A_llenar=true;
+            $scope.div_de_adunjtos=true;
+            $scope.tit_solicitud=true;
+            $scope.div_adjunto_global=true;
+        }else{
+            $scope.div_tipo_entrega=false;
+            $scope.div_datos_A_llenar=false;
+            $scope.div_de_adunjtos=false;
+            $scope.tit_solicitud=false;
+            $scope.div_adjunto_global=false;
+        }
+    }
+    $scope.docdinamicos = function(data){
+        $scope.botones = "mostrar";
+        if(data == 'PROPIO'){
+            $scope.div_datos_A_llenar=true;
+            $scope.div_adjunto_contrato_con_empresa = false;
+            $scope.div_adjunto_global=true;
+
+            }else if(data == 'TERCEROS'){
+                $scope.div_datos_A_llenar=false;
+                $scope.div_adjunto_contrato_con_empresa = true;
+            $scope.div_adjunto_global=false;
+
+            }else if(data == 'AMBOS'){
+                $scope.div_datos_A_llenar=true;
+                $scope.div_adjunto_contrato_con_empresa = true;
+            $scope.div_adjunto_global=true;
+
+            }else if (data == undefined || data == 'undefined' ||  data == ''){
+            $scope.div_datos_A_llenar=false;
+            $scope.div_adjunto_contrato_con_empresa = false;
+            $scope.div_adjunto_global=false;
+
+            }
     }
   }
   

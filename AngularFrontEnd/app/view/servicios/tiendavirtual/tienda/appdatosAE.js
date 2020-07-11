@@ -1357,6 +1357,55 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $("#mensajeR10").hide();
     }
   }
+  $scope.activaLunes = function(datos){
+    $scope.lunes = datos;
+    if($scope.lunes == false){
+      $scope.datos.f01_hora_inicio_lunes = '';
+      $scope.datos.f01_hora_fin_lunes = '';
+    }
+  }
+  $scope.activaMartes = function(datos){
+    $scope.martes = datos;
+    if($scope.martes == false){
+      $scope.datos.f01_hora_inicio_martes = '';
+      $scope.datos.f01_hora_fin_martes = '';
+    }
+  }
+  $scope.activaMiercoles = function(datos){
+    $scope.miercoles = datos;
+    if($scope.miercoles == false){
+      $scope.datos.f01_hora_inicio_miercoles = '';
+      $scope.datos.f01_hora_fin_miercoles = '';
+    }
+  }
+  $scope.activaJueves = function(datos){
+    $scope.jueves = datos;
+    if($scope.jueves == false){
+      $scope.datos.f01_hora_inicio_jueves = '';
+      $scope.datos.f01_hora_fin_jueves = '';
+    }
+  }
+  $scope.activaViernes = function(datos){
+    $scope.viernes = datos;
+    if($scope.viernes == false){
+      $scope.datos.f01_hora_inicio_viernes = '';
+      $scope.datos.f01_hora_fin_viernes = '';
+    }
+  }
+  $scope.activaSabado = function(datos){
+    $scope.sabado = datos;
+    if($scope.sabado == false){
+      $scope.datos.f01_hora_inicio_sabado = '';
+      $scope.datos.f01_hora_fin_sabado = '';
+    }
+  }
+  $scope.activaDomingo = function(datos){
+    $scope.domingo = datos;
+    if($scope.domingo == false){
+      $scope.datos.f01_hora_inicio_domingo = '';
+      $scope.datos.f01_hora_fin_domingo = '';
+    }
+  }
 
 
 

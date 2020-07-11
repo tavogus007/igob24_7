@@ -618,6 +618,7 @@
                           placeholder="Macrodistrito" 
                           ng-model="datosV.tipo_vehiculo"
                           class="form-control"
+                          ng-change="cambioCombo(datosV.tipo_vehiculo);"
                           ng-disabled="desabilitado">
                           <option value="">--Seleccionar--</option>
                           <option value="AUTOMOVIL">AUTOMOVIL</option>
@@ -627,6 +628,7 @@
                         </div>
                     </div>
                   </div>
+                  <div ng-show="div_agregar_vehiculos_placa == true">
                   <div class="col-md-3">
                       <div class="form-group">
                           <label for="url" >PLACA</label>
@@ -634,6 +636,7 @@
                               <input type="text" ng-model="datosV.placa" id="placa" name="placa" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado"/>
                           </div>
                       </div>
+                  </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
@@ -676,7 +679,7 @@
                     <div class="ibox float-e-margins">
                         <div class="col-md-12">
                             <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-                                <h4>ADJUNTOS :</h4>
+                                <h4>ADJUNTOS (Los documentos deben estar en solo archivo en formato PDF o DOC.):</h4>
                             </div>
                         </div>
                     </div>
@@ -686,17 +689,17 @@
                         <div class="form-group" >
                           <div class="col-md-12">
                               <div class="row">
-                                  <div class="col-md-4">
-                                      <label for="url">ADJUNTAR CONTRATO DE PRESTACION DE SERVICIOS CON LA EMPRESA DE ENTREGA DE ALIMENTOS A DOMICILIO (Los documentos deben estar en solo archivo en formato PDF o DOC.):</label>
+                                  <div class="col-md-6">
+                                      <label for="url">{{txtContratoServicios}}</label>
                                   </div>
-                                  <div class="col-md-8">
+                                  <div class="col-md-6">
                                       <div class="form-group custom-upload">
                                           <input type="file" id="FILE_CONTRATO_SER_EMP" name="FILE_CONTRATO_SER_EMP" uploader-model="FILE_CONTRATO_SER_EMP" accept="pdf/*" style="display: none;">
                                           <div class="input-group">
                                               <input id="txt_FILE_CONTRATO_SER_EMP" name="txt_FILE_CONTRATO_SER_EMP" ng-model="datos.FILE_CONTRATO_SER_EMP" type="text" ng-disabled="true" class="form-control input-lg" required>
                                               <span class="input-group-btn">
                                                   <a id="href_FILE_CONTRATO_SER_EMP" target="_blank"  href="">
-                                                      <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover3 != null" ng-click="mostrarimg('FILE_CONTRATO_SER_EMP');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                      <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover11 != null" ng-click="mostrarimg('FILE_CONTRATO_SER_EMP');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                   </a>
                                                   <button id="btn_FILE_CONTRATO_SER_EMP" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_CONTRATO_SER_EMP');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                               </span>
@@ -716,10 +719,10 @@
                     <div class="form-group" >
                       <div class="col-md-12">
                           <div class="row">
-                              <div class="col-md-4">
+                              <div class="col-md-6">
                                   <label for="url">ADJUNTE EN UN SOLO DOCUMENTO PDF, TODOS LOS PERMISOS DE CIRCULACION VEHICULAR OTORGADOS POR EL MINISTERIO DE GOBIERNO</label>
                               </div>
-                              <div class="col-md-8">
+                              <div class="col-md-6">
                                   <div class="form-group custom-upload">
                                       <input type="file" id="FILE_FORMVH_EXCEL" name="FILE_FORMVH_EXCEL" uploader-model="FILE_FORMVH_EXCEL" accept="pdf/*" style="display: none;">
                                       <div class="input-group">
@@ -745,10 +748,10 @@
                     <div class="form-group" >
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <label for="url">CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S) (Los documentos deben estar en solo archivo en formato PDF o DOC.):</label>
+                                <div class="col-md-6">
+                                    <label for="url">CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S) :</label>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="form-group custom-upload">
                                         <input type="file" id="FILE_RUAT_VEHICULO" name="FILE_RUAT_VEHICULO" uploader-model="FILE_RUAT_VEHICULO" accept="pdf/*" style="display: none;">
                                         <div class="input-group">
@@ -769,10 +772,10 @@
                     <div class="form-group" >
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <label for="url">ADJUNTAR LOS CARNETS DE LOS SOLICITANTES (Los documentos deben estar en solo archivo en formato PDF o DOC.):</label>
+                                <div class="col-md-6">
+                                    <label for="url">ADJUNTAR LOS CARNETS DE LOS SOLICITANTES :</label>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="form-group custom-upload">
                                         <input type="file" id="FILE_FOTO_SOLICITANTE" name="FILE_FOTO_SOLICITANTE" uploader-model="FILE_FOTO_SOLICITANTE" accept="pdf/*" style="display: none;">
                                         <div class="input-group">
@@ -793,10 +796,10 @@
                     <div class="form-group" >
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <label for="url">CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS (En un solo documento en formato PDF) *:</label>
+                                <div class="col-md-6">
+                                    <label for="url">CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS :</label>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="form-group custom-upload">
                                         <input type="file" id="FILE_FOTO_LICENCIA_CI" name="FILE_FOTO_LICENCIA_CI" uploader-model="FILE_FOTO_LICENCIA_CI" accept="pdf/*" style="display: none;">
                                         <div class="input-group">
@@ -818,10 +821,10 @@
                     <div class="form-group" >
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <label for="url"> CARGAR FOTOGRAFÍA(S) FRONTAL Y LATERAL DE LOS VEHÍCULO(S) (Fotografías con buena resolución en un solo archivo formato PDF o DOC):</label>
+                                <div class="col-md-6">
+                                    <label for="url">{{txtAdjuntoFotografia}}</label>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="form-group custom-upload">
                                         <input type="file" id="FILE_VEHICULO_FOTO" name="FILE_VEHICULO_FOTO" uploader-model="FILE_VEHICULO_FOTO" accept="pdf/*" style="display: none;">
                                         <div class="input-group">
@@ -847,11 +850,13 @@
 
                   </div>
                 </div>
+                <div ng-show="botones_visibles == true">
                     <div class="col-md-12" align="right"><br>
                         <button id="miFormGuardar" ng-show="desabilitado
                         ==false" ng-click="verificacionFinalDeCamposFinal(datos);"  type="button" class="btn btn-success fa fa-save" name="formEnviar">{{translateTitulos.lbl_016_29}}</button>
                         <button ng-click="validarEnvio(datos);" id="gu" type="button" class="btn btn-success fa fa-mail-forward" ng-show="desabilitado==false">{{translateTitulos.lbl_016_30}} </button>
                     </div>
+                  </div>
                 </form>
               </div><br>  
             </div>

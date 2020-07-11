@@ -16,6 +16,10 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.tit_solicitud=false;
     $scope.div_adjunto_contrato_con_empresa=false;
     $scope.div_adjunto_global=false;
+    $scope.txtContratoServicios = '';
+    $scope.txtAdjuntoFotografia = '';
+    $scope.botones_visibles = true;
+    $scope.div_agregar_vehiculos_placa = true;
     $scope.hardocore = '[{"tipo_vehiculo":"Motocicleta","placa":"3935NBN","CI":"9110200"}]';
     $scope.div_escoger_servicio = false;
     $scope.adjuntos = [{id:0,requisito:'Boleta de Decomiso'},{id:1,requisito:'Comprobante de Pago'}];
@@ -25,14 +29,18 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
 
     var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
       $scope.datos = JSON.parse(data);
-    /*  if($scope.datos.File_Adjunto == undefined){
-        $scope.datos.File_Adjunto = [];
-        $scope.datos.valPlaca = 2;
-      }*/
-      $scope.trmAutos=  JSON.parse($scope.hardocore);
+      if($scope.datos.INF_ARRAY_AUTOS == undefined){
+          console.log("ingreso undefined");
+        $scope.trmAutos = [];
+      }else{
+        console.log("recupero");
+        $scope.trmAutos=  JSON.parse($scope.datos.INF_ARRAY_AUTOS);
+      }
       $scope.tblAutos.reload();
-      console.log($scope.trmAutos,"$scope.trmAutos");
-
+      $scope.dinamicoFormulario($scope.datos.PER_TRA_REG_TRANS);
+      if($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO'){
+        $scope.docdinamicos($scope.datos.PER_TRA_DESCRIP_FOR);
+      }
       $scope.enviado = sessionService.get('ESTADO');
       if($scope.enviado == 'SI'){
         $scope.desabilitado = true;
@@ -81,43 +89,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
           $.unblockUI();
         }
     }
-    /////////////////////////////// GUARDAR TRAMITE INICIAL ///////////////////
-    $scope.guardar_tramite_inicial = function(datos){
-        if(datos.DIAS_VALIDADOR != undefined && datos.DIAS_VALIDADOR != 'undefined'){
-            if(datos.DIAS_VALIDADOR == "TODOS LOS DIAS"){
-                $scope.datos.PER_TRA_DIAS="TODOS LOS DIAS";
-            }else if(datos.DIAS_VALIDADOR == "SELECCIONAR DIAS"){
-                var lunes="",martes="",miercoles="",jueves="",viernes="",sabado="",domingo="";
-                if(datos.DIAS_LUNES != undefined){
-                    martes = datos.DIAS_LUNES;
-                }
-                if(datos.DIAS_MARTES != undefined){
-                    martes = datos.DIAS_MARTES;
-                }
-                if(datos.DIAS_MIERCOLES != undefined){
-                    miercoles = datos.DIAS_MIERCOLES;
-                }
-                if(datos.DIAS_JUEVES != undefined){
-                    jueves = datos.DIAS_JUEVES;
-                }
-                if(datos.DIAS_VIERNES != undefined){
-                    viernes = datos.DIAS_VIERNES;
-                }
-                if(datos.DIAS_SABADO != undefined){
-                    sabado = datos.DIAS_SABADO;
-                }
-                if(datos.DIAS_DOMINGO != undefined){
-                    domingo = datos.DIAS_DOMINGO;
-                }
-                $scope.datos.PER_TRA_DIAS=lunes+" "+martes+" "+miercoles+" "+jueves+" "+viernes+" "+sabado+" "+domingo;
-            }
-            $scope.datos.Tipo_tramite_creado="WEB";
-            $scope.datos.PER_TRA_NRO_TRAMITE = sessionService.get('IDTRAMITE');
-            $scope.verificarCamposSeleccionarDias(datos);
-        }else{
-            swal('Advertencia', 'Seleccione la modalidad de los dias a trabajar', 'warning');
-        }
-    }
+
     ///////////////////////////ENVIO//////////////////////////////
     $scope.validarEnvio = function(data){
         swal({
@@ -138,7 +110,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
       };
   
       $scope.crea_tramite_lotus = function (datos) {
-        $scope.ultimoArrayAdjunto(datos.PER_TRA_DESCRIP_FOR);
+        $scope.ultimoArrayAdjunto();
         $.blockUI({ css: { 
           border: 'none', 
           padding: '10px', 
@@ -150,6 +122,29 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         },message: "Espere un momento por favor ..." }); 
         setTimeout(function(){
           $.blockUI();
+          //////////////////////
+          console.log("datos",datos);
+          $scope.INF_GRILLA = [];
+          var encabezado = [];
+          var indice = 1;
+          var dataInf = [];
+          encabezado[0] = {"tipo": "GRD","campos": "Nro|tipo_vehiculo|c_placa|c_carnet|","titulos": "Nro|Tipo de Vehículo|Placa|Carnet de Identidad","impresiones": "true|true|true|true|true|true|true|true|true|false"};
+          for (var i = 0; i<$scope.trmAutos.length; i++) {
+              dataInf.push($scope.trmAutos[i]);
+              $scope.INF_GRILLA.push({
+                Nro:i+1,
+                tipo_vehiculo:$scope.trmAutos[i].tipo_vehiculo,
+                c_placa:$scope.trmAutos[i].placa,
+                c_carnet:$scope.trmAutos[i].CI,
+              });
+          }  
+          angular.forEach($scope.INF_GRILLA, function(value, key) {
+            encabezado[indice] = value;
+            indice = indice + 1;
+          });
+          datos.INF_GRILLA=encabezado;
+          //datos.infracciones = dataInf;
+          //////////////////////
           var f = new Date();  
           datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
           datos.g_tipo_tramite = 'PER_DEL';
@@ -422,7 +417,7 @@ $scope.cambiarFile = function(obj, valor){
                         $scope.FILE_CONTRATO_SER_EMP = objarchivo;
                         document.getElementById("txt_" + nombre).value  = nombreNuevo;
                         document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                        $scope.btover4 = "mostrar";
+                        $scope.btover11 = "mostrar";
                     } else if ( objarchivo.size > 500000 &&  objarchivo.size <= 15000000) {
                         var zipcir = new JSZip();
                         zipcir.file(nomdocumento, objarchivo);
@@ -431,7 +426,7 @@ $scope.cambiarFile = function(obj, valor){
                             fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
                             $scope.datos.FILE_CONTRATO_SER_EMP = nombreNuevo;
                             $scope.FILE_CONTRATO_SER_EMP = blobcir;
-                            $scope.btover4 = "mostrar";
+                            $scope.btover11 = "mostrar";
                         });
                         $.unblockUI();
                     }else{
@@ -636,7 +631,23 @@ $scope.cambiarFile = function(obj, valor){
     $.unblockUI();
 }
 $scope.ultimoArrayAdjunto = function(){
-   // $scope.capturarImagen();
+   if($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR'){
+        $scope.adjuntoDos();
+   }else if($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO'){
+       if($scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO'){
+        $scope.adjuntoUno();
+       }else if($scope.datos.PER_TRA_DESCRIP_FOR == 'TERCEROS'){
+        $scope.adjuntoTres();
+       }else if($scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS'){
+        $scope.adjuntoDos();
+       }else{
+        alert("Hubo un Problema");
+       }
+   }else{
+       alert("Hubo un Problema");
+   }
+} 
+$scope.adjuntoUno = function(){
     datoObjectFiles = [];
     var datoObjectFile1 = new Object();
     var datoObjectFile2 = new Object();
@@ -645,29 +656,28 @@ $scope.ultimoArrayAdjunto = function(){
     var datoObjectFile5 = new Object();
     var datoObjectFile6 = new Object();
 
-
     $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
     $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
 
-    datoObjectFile1.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_RUAT_VEHICULO + "?app_name=todoangular";
-    datoObjectFile1.campo = $scope.datos.FILE_RUAT_VEHICULO;
-    datoObjectFile1.nombre = 'CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S) (Los documentos deben estar en solo archivo en formato PDF o DOC.)';
+    datoObjectFile1.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FORMVH_EXCEL + "?app_name=todoangular";
+    datoObjectFile1.campo = $scope.datos.FILE_FORMVH_EXCEL;
+    datoObjectFile1.nombre = 'ADJUNTE EN UN SOLO DOCUMENTO PDF, TODOS LOS PERMISOS DE CIRCULACION VEHICULAR OTORGADOS POR EL MINISTERIO DE GOBIERNO';
 
-    datoObjectFile2.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOTO_SOLICITANTE + "?app_name=todoangular";
-    datoObjectFile2.campo = $scope.datos.FILE_FOTO_SOLICITANTE;
-    datoObjectFile2.nombre = 'ADJUNTAR LOS CARNETS DE LOS SOLICITANTES (Los documentos deben estar en solo archivo en formato PDF o DOC.)';
+    datoObjectFile2.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_RUAT_VEHICULO + "?app_name=todoangular";
+    datoObjectFile2.campo = $scope.datos.FILE_RUAT_VEHICULO;
+    datoObjectFile2.nombre = 'CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S)';
 
-    datoObjectFile3.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOTO_LICENCIA_CI + "?app_name=todoangular";
-    datoObjectFile3.campo = $scope.datos.FILE_FOTO_LICENCIA_CI;
-    datoObjectFile3.nombre = 'CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS (En un solo documento en formato PDF)';
+    datoObjectFile3.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOTO_SOLICITANTE + "?app_name=todoangular";
+    datoObjectFile3.campo = $scope.datos.FILE_FOTO_SOLICITANTE;
+    datoObjectFile3.nombre = 'ADJUNTAR LOS CARNETS DE LOS SOLICITANTES';
 
     datoObjectFile4.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOTO_LICENCIA_CI + "?app_name=todoangular";
-    datoObjectFile4.campo = $scope.datos.FILE_FORMVH_EXCEL;
-    datoObjectFile4.nombre = 'ADJUNTE EL RESPALDO DE LA SOLICITUD: LICENCIA DE FUNCIONAMIENTO, RESOLUCION ADMINISTRATIVA DEL OPERADOR, CONTRATO DE PRESTACIÓN DE SERVICIOS, AUTORIZACIÓN DE LA DIRECCIÓN DE MERCADOS, PARA CONSTRUCCIONES LA AUTORIZACIÓN DEL GAMLP PARA EJECUCIÓN DE OBRAS.';
+    datoObjectFile4.campo = $scope.datos.FILE_FOTO_LICENCIA_CI;
+    datoObjectFile4.nombre = 'CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS';
 
     datoObjectFile5.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_VEHICULO_FOTO + "?app_name=todoangular";
     datoObjectFile5.campo = $scope.datos.FILE_VEHICULO_FOTO;
-    datoObjectFile5.nombre = $scope.nombreRespaldos;
+    datoObjectFile5.nombre = $scope.txtAdjuntoFotografia;
 
     datoObjectFile6.url = $rootScope.decJuradaNaturalPermiso;
     datoObjectFile6.campo = "DECLARACION JURADADA";
@@ -683,7 +693,84 @@ $scope.ultimoArrayAdjunto = function(){
     $scope.datos.FileDocumentos = datoObjectFiles;
     $rootScope.FileAdjuntos = datoObjectFiles; 
     $scope.datos.File_Adjunto = datoObjectFiles; 
-} 
+}
+$scope.adjuntoDos = function(){
+    datoObjectFiles = [];
+    var datoObjectFile1 = new Object();
+    var datoObjectFile2 = new Object();
+    var datoObjectFile3 = new Object();
+    var datoObjectFile4 = new Object();
+    var datoObjectFile5 = new Object();
+    var datoObjectFile6 = new Object();
+    var datoObjectFile7 = new Object();
+
+
+    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+    $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+
+    datoObjectFile1.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_CONTRATO_SER_EMP + "?app_name=todoangular";
+    datoObjectFile1.campo = $scope.datos.FILE_CONTRATO_SER_EMP;
+    datoObjectFile1.nombre = $scope.txtContratoServicios;
+
+    datoObjectFile2.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FORMVH_EXCEL + "?app_name=todoangular";
+    datoObjectFile2.campo = $scope.datos.FILE_FORMVH_EXCEL;
+    datoObjectFile2.nombre = 'ADJUNTE EN UN SOLO DOCUMENTO PDF, TODOS LOS PERMISOS DE CIRCULACION VEHICULAR OTORGADOS POR EL MINISTERIO DE GOBIERNO';
+
+    datoObjectFile3.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_RUAT_VEHICULO + "?app_name=todoangular";
+    datoObjectFile3.campo = $scope.datos.FILE_RUAT_VEHICULO;
+    datoObjectFile3.nombre = 'CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S)';
+
+    datoObjectFile4.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOTO_SOLICITANTE + "?app_name=todoangular";
+    datoObjectFile4.campo = $scope.datos.FILE_FOTO_SOLICITANTE;
+    datoObjectFile4.nombre = 'ADJUNTAR LOS CARNETS DE LOS SOLICITANTES';
+
+    datoObjectFile5.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOTO_LICENCIA_CI + "?app_name=todoangular";
+    datoObjectFile5.campo = $scope.datos.FILE_FOTO_LICENCIA_CI;
+    datoObjectFile5.nombre = 'CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS';
+
+    datoObjectFile6.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_VEHICULO_FOTO + "?app_name=todoangular";
+    datoObjectFile6.campo = $scope.datos.FILE_VEHICULO_FOTO;
+    datoObjectFile6.nombre = $scope.txtAdjuntoFotografia;
+
+    datoObjectFile7.url = $rootScope.decJuradaNaturalPermiso;
+    datoObjectFile7.campo = "DECLARACION JURADADA";
+    datoObjectFile7.nombre = 'DECLARACION JURADA';
+
+    datoObjectFiles[0] = datoObjectFile1;
+    datoObjectFiles[1] = datoObjectFile2;
+    datoObjectFiles[2] = datoObjectFile3;
+    datoObjectFiles[3] = datoObjectFile4;
+    datoObjectFiles[4] = datoObjectFile5;
+    datoObjectFiles[5] = datoObjectFile6;
+    datoObjectFiles[6] = datoObjectFile7;
+
+    $scope.datos.FileDocumentos = datoObjectFiles;
+    $rootScope.FileAdjuntos = datoObjectFiles; 
+    $scope.datos.File_Adjunto = datoObjectFiles; 
+}
+$scope.adjuntoTres = function(){
+    datoObjectFiles = [];
+    var datoObjectFile1 = new Object();
+    var datoObjectFile2 = new Object();
+
+    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+    $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+
+    datoObjectFile1.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_CONTRATO_SER_EMP + "?app_name=todoangular";
+    datoObjectFile1.campo = $scope.datos.FILE_CONTRATO_SER_EMP;
+    datoObjectFile1.nombre = $scope.txtContratoServicios;
+
+    datoObjectFile2.url = $rootScope.decJuradaNaturalPermiso;
+    datoObjectFile2.campo = "DECLARACION JURADADA";
+    datoObjectFile2.nombre = 'DECLARACION JURADA';
+
+    datoObjectFiles[0] = datoObjectFile1;
+    datoObjectFiles[1] = datoObjectFile2;
+
+    $scope.datos.FileDocumentos = datoObjectFiles;
+    $rootScope.FileAdjuntos = datoObjectFiles; 
+    $scope.datos.File_Adjunto = datoObjectFiles; 
+}
   /////////////////////////////////////////////VALIDACION PLACA/////////////////////////////
     $scope.validaPlaca = function (campo){
       campo = campo.toUpperCase();
@@ -719,7 +806,7 @@ $scope.ultimoArrayAdjunto = function(){
         var tipoPersona     =   sessionService.get('TIPO_PERSONA');
         if(tipoPersona == "NATURAL"){
             tipoPersona = "N";
-            $scope.div_nit_jn = true;
+            $scope.div_nit_jn = false;
         }else{
             tipoPersona = "J";
             $scope.div_nit_jn = false;
@@ -739,27 +826,40 @@ $scope.ultimoArrayAdjunto = function(){
                         $scope.div_escoger_servicio = true;
                         $scope.div_actividad_economica = true;
                         $scope.desabilitado = false;
-                        $scope.trmUsuario = response.success.dataSql;
-                        console.log("$scope.trmUsuario",$scope.trmUsuario);
-                        $scope.tblTramites.reload();
+                        for(var i = 0 ; i <response.success.dataSql.length;i ++){
+                            var desconcatenar = response.success.dataSql[i].Descripcion;
+                            var fechaServ   = (desconcatenar).split(' ');
+                            if(fechaServ[4] == 'ALIMENTOS'){
+                                console.log('INGRESO');
+                                $scope.trmUsuario.push(response.success.dataSql[i]);
+                                console.log("$scope.trmUsuario",$scope.trmUsuario);
+                                $scope.tblTramites.reload();
+                            }
+                        }
                     } else {
-                        $scope.desabilitado = true;
+                        $scope.botones_visibles = false;
                         $scope.div_escoger_servicio = false;
                         $scope.div_actividad_economica = false;
+                        $scope.botones =   null;
                         swal('', "Estimado ciudadano usted no cuenta con una actividad economica por lo cual no podrá acceder a este servicio", 'warning');
+                        $scope.desabilitado = true;
                     }
                 } else {
-                    $scope.desabilitado = true;
+                    $scope.botones_visibles = false;
                     $scope.div_escoger_servicio = false;
                     $scope.div_actividad_economica = false;
+                    $scope.botones =   null;
                     swal('', "Datos no Encontrados !!!", 'warning');
+                    $scope.desabilitado = true;
                 }
             });
         }else{
-            $scope.desabilitado = true;
+            $scope.botones_visibles = false;
             $scope.div_escoger_servicio = false;
             $scope.div_actividad_economica = false;
+            $scope.botones =   null;
             swal('', "Estimado ciudadano usted no cuenta con una actividad economica por lo cual no podrá acceder a este servicio", 'warning');
+            $scope.desabilitado = true;
         }
     };
 
@@ -827,78 +927,65 @@ $scope.ultimoArrayAdjunto = function(){
      }; 
 
 
-    ///////////////////// validador de todos los dias
-    $scope.verificarCamposSeleccionarDias = function (data) {
-        if(data.DIAS_VALIDADOR== 'TODOS LOS DIAS'){
-            $scope.verificacionFinalDeCampos(data);
-        }else{
-            if(data.DIAS_LUNES == undefined &&
-            data.DIAS_MARTES == undefined && 
-            data.DIAS_MIERCOLES == undefined &&
-            data.DIAS_JUEVES == undefined && 
-            data.DIAS_VIERNES == undefined && 
-            data.DIAS_SABADO == undefined && 
-            data.DIAS_DOMINGO == undefined 
-            ){
-                swal('', "Datos obligatorios, seleccione al menos un día", 'warning');
-            }else{
-                $scope.verificacionFinalDeCampos(data);
-            }
-        }
-    }
+
     ///validacion final  
     $scope.verificacionFinalDeCamposFinal = function (data) {
+        console.log("datoooooooooooooooos",data);
+        console.log("trmAutos",$scope.trmAutos);
+        if($scope.datos.PER_TRA_REG_TRANS == undefined || $scope.datos.PER_TRA_REG_TRANS == 'undefined'){
+            swal('', "Ingrese el tipo de registro Transitorio", 'warning');
+        }else if($scope.datos.PER_TRA_AE_PMC == undefined || $scope.datos.PER_TRA_AE_PMC == 'undefined'){
+            swal('', "Seleccione una Actividad Económica de la tabla", 'warning');
+        }else if($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == undefined){
+            swal('', "Seleccione un Tipo de Entrega", 'warning');
+        }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO' && $scope.datos.PER_TRA_NUM_CONTACTO == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && $scope.datos.PER_TRA_NUM_CONTACTO == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && $scope.datos.PER_TRA_NUM_CONTACTO == undefined)){
+            swal('', "Ingrese al menos dos contactos alternativos", 'warning');
+        }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO' && JSON.stringify($scope.trmAutos) == '[]') ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && JSON.stringify($scope.trmAutos) == '[]') ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && JSON.stringify($scope.trmAutos) == '[]')){
+            swal('', "Ingrese al menos un vehículo", 'warning');
+        }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO' && $scope.datos.FILE_FORMVH_EXCEL == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && $scope.datos.FILE_FORMVH_EXCEL == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && $scope.datos.FILE_FORMVH_EXCEL == undefined)){
+            swal('', "Adjunte el documento otorgado por el Ministerio de Gobierno", 'warning');
+        }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO' && $scope.datos.FILE_RUAT_VEHICULO == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && $scope.datos.FILE_RUAT_VEHICULO == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && $scope.datos.FILE_RUAT_VEHICULO == undefined)){
+            swal('', "Adjunte el documento RUAT de los vehículos", 'warning');
+        }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO' && $scope.datos.FILE_FOTO_SOLICITANTE == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && $scope.datos.FILE_FOTO_SOLICITANTE == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && $scope.datos.FILE_FOTO_SOLICITANTE == undefined)){
+            swal('', "Adjunte el documento Carnet de Identidad", 'warning');
+        }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO' && $scope.datos.FILE_FOTO_LICENCIA_CI == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && $scope.datos.FILE_FOTO_LICENCIA_CI == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && $scope.datos.FILE_FOTO_LICENCIA_CI == undefined)){
+            swal('', "Adjunte el documento de Licencia de Conducir", 'warning');
+        }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO' && $scope.datos.FILE_VEHICULO_FOTO == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && $scope.datos.FILE_VEHICULO_FOTO == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && $scope.datos.FILE_VEHICULO_FOTO == undefined)){
+            swal('', "Adjunte el documento de las fotografias de los vehículos", 'warning');
+        }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'TERCEROS' && $scope.datos.FILE_CONTRATO_SER_EMP == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && $scope.datos.FILE_CONTRATO_SER_EMP == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && $scope.datos.FILE_CONTRATO_SER_EMP == undefined)){
+            swal('', "Adjunte el documento de contrato de Prestación de Servicios", 'warning');
+        }else{
+            $scope.armarCampos(data);
+        }
+    }
+    $scope.armarCampos = function (data) {
+        var contadorVehiculos = 0;
+        for(var i  = 0;i<$scope.trmAutos.length;i++){
+            contadorVehiculos ++;
+        }
+        data.Tipo_tramite_creado="WEB";
+        data.PER_TRA_NRO_TRAMITE = sessionService.get('IDTRAMITE');
+        data.PER_TRA_CANT_VEHI_SOL = contadorVehiculos;
+        data.INF_ARRAY_AUTOS = JSON.stringify($scope.trmAutos);
         $scope.guardar_tramite(data);
         $scope.declaracionJurada(data);
         $("#declaracionPERTRA").modal("show");
-    }
-    $scope.verificacionFinalDeCampos = function (data) {
-        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-        if(data.PER_TRA_DESCRIP_FOR == 'TRANSPORTE_DE_ENTREGA_ALIMENTOS' || data.PER_TRA_DESCRIP_FOR == 'TRANSPORTE_PERSONAL'  || data.PER_TRA_DESCRIP_FOR == 'TRANSPORTE_DE_ENTREGA_PRODUCTOS'){
-            if(data.PER_TRA_AE_PMC == undefined || data.PER_TRA_AE_PMC == "undefined" ||
-               data.PER_TRA_CANT_VEHI_SOL == undefined || data.PER_TRA_AE_PMC == "undefined" ||
-               data.PER_TRA_HORA_INICIO == undefined || data.PER_TRA_HORA_INICIO == "undefined" ||
-               data.PER_TRA_HORA_FIN == undefined || data.PER_TRA_HORA_FIN == "undefined" ||
-               data.PER_TRA_NUM_CONTACTO == undefined || data.PER_TRA_NUM_CONTACTO == "undefined" ||
-               data.FILE_RUAT_VEHICULO == undefined || data.FILE_RUAT_VEHICULO == "undefined" ||
-               data.FILE_FOTO_SOLICITANTE == undefined || data.FILE_FOTO_SOLICITANTE == "undefined" ||
-               data.FILE_FOTO_LICENCIA_CI == undefined || data.FILE_FOTO_LICENCIA_CI == "undefined" ||
-               data.FILE_FORMVH_EXCEL == undefined || data.FILE_FORMVH_EXCEL == "undefined" ||
-               data.FILE_VEHICULO_FOTO == undefined || data.FILE_VEHICULO_FOTO == "undefined"){
-                swal('Estimado Ciudadano', "Porfavor llene todos los campos solicitados", 'warning');
-            }else{
-                if(tipoPersona == "NATURAL"){
-                    if(data.f01_nit == undefined || data.f01_nit == "undefined"){
-                        swal('Estimado Ciudadano', "Porfavor llene todos los campos solicitados", 'warning');
-                    }else{
-                        $scope.guardar_tramite(data);
-                        $scope.declaracionJurada(data);
-                        $("#declaracionPERTRA").modal("show");
-                    }
-                }else if(tipoPersona == "JURIDICO"){
-                    $scope.guardar_tramite(data);
-                    $scope.declaracionJurada(data);
-                    $("#declaracionPERTRA").modal("show");
-                }
-            }
-        }else if(data.PER_TRA_DESCRIP_FOR == 'TRANSPORTE_MATERIA_PRIMA'){
-            if(data.PER_TRA_TIPO_SER_PRES == undefined || data.PER_TRA_TIPO_SER_PRES == "undefined" ||
-                data.PER_TRA_CANT_VEHI_SOL == undefined || data.PER_TRA_AE_PMC == "undefined" ||
-                data.PER_TRA_HORA_INICIO == undefined || data.PER_TRA_HORA_INICIO == "undefined" ||
-                data.PER_TRA_HORA_FIN == undefined || data.PER_TRA_HORA_FIN == "undefined" ||
-                data.PER_TRA_NUM_CONTACTO == undefined || data.PER_TRA_NUM_CONTACTO == "undefined" ||
-                data.FILE_RUAT_VEHICULO == undefined || data.FILE_RUAT_VEHICULO == "undefined" ||
-                data.FILE_FOTO_SOLICITANTE == undefined || data.FILE_FOTO_SOLICITANTE == "undefined" ||
-                data.FILE_FOTO_LICENCIA_CI == undefined || data.FILE_FOTO_LICENCIA_CI == "undefined" ||
-                data.FILE_FORMVH_EXCEL == undefined || data.FILE_FORMVH_EXCEL == "undefined" ||
-                data.FILE_VEHICULO_FOTO == undefined || data.FILE_VEHICULO_FOTO == "undefined"){
-                swal('Estimado Ciudadano', "Porfavor llene todos los campos solicitados", 'warning');
-            }else{
-                $scope.guardar_tramite(data);
-                $scope.declaracionJurada(data);
-                $("#declaracionPERTRA").modal("show");
-            }
-        }
     }
 
     //////////////////////////////////////// DECLARACION JURADA
@@ -968,9 +1055,20 @@ $scope.ultimoArrayAdjunto = function(){
         $('#msgformularioN').html($scope.msgformularioN);
     }
     $scope.adicionarVehiculos = function(data){
-        $scope.trmAutos.push(data);
-        $scope.tblAutos.reload();
-        $scope.datosV = [];
+        console.log("sataaaaaaaaa",data);
+        if(data == undefined){
+            swal('', 'Agrege la informacion para adjuntar los vehículos', 'warning');
+        }else if(data.tipo_vehiculo == '' || data.tipo_vehiculo == undefined){
+            swal('', 'Ingrese el Tipo de Vehículo', 'warning');
+        }else if(data.tipo_vehiculo != 'BICICLETA' &&  data.placa == undefined){
+            swal('', 'Ingrese la placa del vehículo', 'warning');
+        }else if(data.CI == undefined){
+            swal('', 'Ingrese el Carnet del Conductor', 'warning');
+        }else{
+            $scope.trmAutos.push(data);
+            $scope.tblAutos.reload();
+            $scope.datosV = [];
+        }
     }
     $scope.eliminarVehiculo = function(datavehivulo){
         $scope.trmAutos.splice($scope.trmAutos.indexOf(datavehivulo),1);
@@ -982,8 +1080,10 @@ $scope.ultimoArrayAdjunto = function(){
             $scope.div_datos_A_llenar=false;
             $scope.div_de_adunjtos=true;
             $scope.tit_solicitud=true;
-
+            $scope.div_adjunto_contrato_con_empresa = false;
             $scope.div_adjunto_global=false;
+            $scope.txtContratoServicios='ADJUNTAR CONTRATO DE PRESTACION DE SERVICIOS CON LA EMPRESA DE ENTREGA DE ALIMENTOS A DOMICILIO :';
+            $scope.txtAdjuntoFotografia='ADJUNTAR FOTOGRAFIAS EN UN SOLO DOCUMENTO PDF PARA VEHICULOS MOTORIZADOS, 2 FOTOGRAFIAS (1. PANORAMICA DONDE SE VEA LA PARTE FRONTAL Y LATERAL DEL VEHICULO Y 2. INTERNA DESDE LA CABINA DEL CONDUCTOR). PARA BICICLETA, 2 FOTOGRAFIAS (1. FRONTAL TOTAL Y 2. LATERAL, CON EL CONDUCTOR AL LADO PORTANDO CASCO Y  CHALECO REFLECTIVO)';
             
         }else if(dataFormulario == 'REGISTRO_OPERADOR'){
             $scope.div_tipo_entrega=false;
@@ -991,16 +1091,22 @@ $scope.ultimoArrayAdjunto = function(){
             $scope.div_de_adunjtos=true;
             $scope.tit_solicitud=true;
             $scope.div_adjunto_global=true;
+            $scope.div_adjunto_contrato_con_empresa = true;
+            $scope.txtContratoServicios='ADJUNTE CONTRATO DE PRESTACION DE SERVICIOS :';
+            $scope.txtAdjuntoFotografia='ADJUNTAR FOTOGRAFIAS EN UN SOLO DOCUMENTO PDF PARA VEHICULOS MOTOCICLETAS, 1 FOTOGRAFIA (1. PANORAMICA, DONDE SE VEA LA PARTE FRONTAL Y LATERAL DE LA MOTOCICLETA). PARA BICICLETA, 1 FOTOGRAFIA (1. PANORAMICA, DONDE SE VEA LA PARTE FRONTAL Y LATERAL DE LA BICICLETA, CON EL CONDUCTOR AL LADO PORTANDO CASCO Y  CHALECO REFLECTIVO)';
         }else{
             $scope.div_tipo_entrega=false;
             $scope.div_datos_A_llenar=false;
             $scope.div_de_adunjtos=false;
             $scope.tit_solicitud=false;
             $scope.div_adjunto_global=false;
+            $scope.div_adjunto_contrato_con_empresa = false;
+            $scope.txtAdjuntoFotografia='ADJUNTAR FOTOGRAFIAS EN UN SOLO DOCUMENTO PDF PARA VEHICULOS MOTORIZADOS, 2 FOTOGRAFIAS (1. PANORAMICA DONDE SE VEA LA PARTE FRONTAL Y LATERAL DEL VEHICULO Y 2. INTERNA DESDE LA CABINA DEL CONDUCTOR). PARA BICICLETA, 2 FOTOGRAFIAS (1. FRONTAL TOTAL Y 2. LATERAL, CON EL CONDUCTOR AL LADO PORTANDO CASCO Y  CHALECO REFLECTIVO)';
+            $scope.txtContratoServicios='ADJUNTAR CONTRATO DE PRESTACION DE SERVICIOS CON LA EMPRESA DE ENTREGA DE ALIMENTOS A DOMICILIO :';
         }
     }
     $scope.docdinamicos = function(data){
-        $scope.botones = "mostrar";
+        //$scope.botones = "mostrar";
         if(data == 'PROPIO'){
             $scope.div_datos_A_llenar=true;
             $scope.div_adjunto_contrato_con_empresa = false;
@@ -1022,6 +1128,14 @@ $scope.ultimoArrayAdjunto = function(){
             $scope.div_adjunto_global=false;
 
             }
+    }
+    $scope.cambioCombo = function(data){
+        console.log("data combo",data);
+        if(data == 'BICICLETA'){
+            $scope.div_agregar_vehiculos_placa = false;
+        }else{
+            $scope.div_agregar_vehiculos_placa = true;
+        }
     }
   }
   

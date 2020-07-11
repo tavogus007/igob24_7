@@ -7,6 +7,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   $rootScope.contactosArray = new Array();
   $rootScope.redesSocialesArray = new Array();
   $rootScope.ofertasArray = new Array();
+  $rootScope.horariosArray = new Array();
   $rootScope.archivosProducto = new Array();
   $rootScope.archivosLogotipo = new Array();
   $rootScope.archivosEncabezado = new Array();
@@ -55,6 +56,27 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.inicializaTwitter = true;
       $scope.inicializaInstagram = true;
       $scope.inicializaYoutube = true;
+      $scope.datos.f01_chk_lunes = false;
+      $scope.datos.f01_hora_inicio_lunes = '';
+      $scope.datos.f01_hora_fin_lunes = '';
+      $scope.datos.f01_chk_martes = false;
+      $scope.datos.f01_hora_inicio_martes = '';
+      $scope.datos.f01_hora_fin_martes = '';
+      $scope.datos.f01_chk_miercoles = false;
+      $scope.datos.f01_hora_inicio_miercoles = '';
+      $scope.datos.f01_hora_fin_miercoles = '';
+      $scope.datos.f01_chk_jueves = false;
+      $scope.datos.f01_hora_inicio_jueves = '';
+      $scope.datos.f01_hora_fin_jueves = '';
+      $scope.datos.f01_chk_viernes = false;
+      $scope.datos.f01_hora_inicio_viernes = '';
+      $scope.datos.f01_hora_fin_viernes = '';
+      $scope.datos.f01_chk_sabado = false;
+      $scope.datos.f01_hora_inicio_sabado = '';
+      $scope.datos.f01_hora_fin_sabado = '';
+      $scope.datos.f01_chk_domingo = false;
+      $scope.datos.f01_hora_inicio_domingo = '';
+      $scope.datos.f01_hora_fin_domingo = '';
     } else {
 
       $scope.datos.f01_nombreTV = data[0].tv_nombrec;
@@ -266,7 +288,95 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.encabezadotipojson1 = JSON.parse($scope.encabezadotipojson[0]);
         $scope.datos.txt_f01_upload3 = $scope.encabezadotipojson1.campo;
         $scope.encabezadotipo_url = $scope.encabezadotipojson1.url;
-      }  
+      }
+      
+            //RECUPERA HORARIOS
+            var horarios = data[0].phorarios_atencion;
+            var horas = JSON.parse(horarios);
+            for(j=0;j<horas.length;j++){
+              var horas1 = JSON.parse(horas[j]);
+              if(j==0){
+                if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+                  $scope.datos.f01_chk_lunes = false;
+                $scope.datos.f01_hora_inicio_lunes = '';
+                $scope.datos.f01_hora_fin_lunes = '';
+                }else{
+                  $scope.datos.f01_chk_lunes = true;
+                  $scope.datos.f01_hora_inicio_lunes = horas1.hora_inicio;
+                  $scope.datos.f01_hora_fin_lunes = horas1.hora_fin;
+                }
+              }
+              if(j==1){
+                if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+                $scope.datos.f01_chk_martes = false;
+                $scope.datos.f01_hora_inicio_martes = '';
+                $scope.datos.f01_hora_fin_martes = '';
+              }else{
+                $scope.datos.f01_chk_martes = true;
+                $scope.datos.f01_hora_inicio_martes = horas1.hora_inicio;
+                $scope.datos.f01_hora_fin_martes = horas1.hora_fin;
+              }
+            }
+            if(j==2){
+              if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+              $scope.datos.f01_chk_miercoles = false;
+              $scope.datos.f01_hora_inicio_miercoles = '';
+              $scope.datos.f01_hora_fin_miercoles = '';
+              }else{
+                $scope.datos.f01_chk_miercoles = true;
+                $scope.datos.f01_hora_inicio_miercoles = horas1.hora_inicio;
+                $scope.datos.f01_hora_fin_miercoles = horas1.hora_fin;
+              }
+            }
+            if(j==3){
+              if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+              $scope.datos.f01_chk_jueves = false;
+              $scope.datos.f01_hora_inicio_juevesf01_chk_jueves = '';
+              $scope.datos.f01_hora_fin_juevesf01_chk_jueves = '';
+              }else{
+                $scope.datos.f01_chk_jueves = true;
+                $scope.datos.f01_hora_inicio_jueves = horas1.hora_inicio;
+                $scope.datos.f01_hora_fin_jueves = horas1.hora_fin;
+              }
+            }
+            if(j==4){
+              if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+              $scope.datos.f01_chk_viernes = false;
+              $scope.datos.f01_hora_inicio_viernes = '';
+              $scope.datos.f01_hora_fin_viernes = '';
+              }else{
+                $scope.datos.f01_chk_viernes = true;
+                $scope.datos.f01_hora_inicio_viernes = horas1.hora_inicio;
+                $scope.datos.f01_hora_fin_viernes = horas1.hora_fin;
+              }
+            }
+            if(j==5){
+              if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+              $scope.datos.f01_chk_sabado = false;
+              $scope.datos.f01_hora_inicio_sabado = '';
+              $scope.datos.f01_hora_fin_sabado = '';
+              }else{
+                $scope.datos.f01_chk_sabado = true;
+                $scope.datos.f01_hora_inicio_sabado = horas1.hora_inicio;
+                $scope.datos.f01_hora_fin_sabado = horas1.hora_fin;
+              }
+            }
+            if(j==6){
+              if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+              $scope.datos.f01_chk_domingo = false;
+              $scope.datos.f01_hora_inicio_domingo = '';
+              $scope.datos.f01_hora_fin_domingo = '';
+              }else{
+                $scope.datos.f01_chk_domingo = true;
+                $scope.datos.f01_hora_inicio_domingo = horas1.hora_inicio;
+                $scope.datos.f01_hora_fin_domingo = horas1.hora_fin;
+              }
+            }
+
+
+
+             
+          }
      
     } 
     return deferred.promise;
@@ -441,6 +551,29 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     //logotipo
     datosTiendaVirtual.logotipo = $scope.logotipo1;
     datosTiendaVirtual.encabezado = $scope.encabezado1;
+
+    //HORARIO
+
+    var myJSON = '';
+
+    myJSON = '{ "dia":"LUNES", "checked":"'+data.f01_chk_lunes+'", "hora_inicio":"'+data.f01_hora_inicio_lunes+'","hora_fin":"'+data.f01_hora_fin_lunes+'" }';
+    $rootScope.horariosArray.push(myJSON);
+    myJSON = '{ "dia":"MARTES", "checked":"'+data.f01_chk_martes+'", "hora_inicio":"'+data.f01_hora_inicio_martes+'","hora_fin":"'+data.f01_hora_fin_martes+'" }';
+    $rootScope.horariosArray.push(myJSON);
+    myJSON = '{ "dia":"MIERCOLES", "checked":"'+data.f01_chk_miercoles+'", "hora_inicio":"'+data.f01_hora_inicio_miercoles+'","hora_fin":"'+data.f01_hora_fin_miercoles+'" }';
+    $rootScope.horariosArray.push(myJSON);
+    myJSON = '{ "dia":"JUEVES", "checked":"'+data.f01_chk_jueves+'", "hora_inicio":"'+data.f01_hora_inicio_jueves+'","hora_fin":"'+data.f01_hora_fin_jueves+'" }';
+    $rootScope.horariosArray.push(myJSON);
+    myJSON = '{ "dia":"VIERNES", "checked":"'+data.f01_chk_viernes+'", "hora_inicio":"'+data.f01_hora_inicio_viernes+'","hora_fin":"'+data.f01_hora_fin_viernes+'" }';
+    $rootScope.horariosArray.push(myJSON);
+    myJSON = '{ "dia":"SABADO", "checked":"'+data.f01_chk_sabado+'", "hora_inicio":"'+data.f01_hora_inicio_sabado+'","hora_fin":"'+data.f01_hora_fin_sabado+'" }';
+    $rootScope.horariosArray.push(myJSON);
+    myJSON = '{ "dia":"DOMINGO", "checked":"'+data.f01_chk_domingo+'", "hora_inicio":"'+data.f01_hora_inicio_domingo+'","hora_fin":"'+data.f01_hora_fin_domingo+'" }';
+    $rootScope.horariosArray.push(myJSON);
+    datosTiendaVirtual.horarios = JSON.stringify($rootScope.horariosArray);
+    console.log('HORARIOS:',$rootScope.horariosArray);
+
+
    
     datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
     if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
@@ -644,6 +777,29 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       datosTiendaVirtual.logotipo = $scope.logotipo1;
       datosTiendaVirtual.encabezado = $scope.encabezado1;
 
+
+
+      ///RAYOS ACT
+      datosTiendaVirtual.horarioss = [];
+      $rootScope.horariosArray = [];  
+      myJSON = '';
+      myJSON = '{ "dia":"LUNES", "checked":"'+data.f01_chk_lunes+'", "hora_inicio":"'+data.f01_hora_inicio_lunes+'","hora_fin":"'+data.f01_hora_fin_lunes+'" }';
+      $rootScope.horariosArray.push(myJSON);
+      myJSON = '{ "dia":"MARTES", "checked":"'+data.f01_chk_martes+'", "hora_inicio":"'+data.f01_hora_inicio_martes+'","hora_fin":"'+data.f01_hora_fin_martes+'" }';
+      $rootScope.horariosArray.push(myJSON);
+      myJSON = '{ "dia":"MIERCOLES", "checked":"'+data.f01_chk_miercoles+'", "hora_inicio":"'+data.f01_hora_inicio_miercoles+'","hora_fin":"'+data.f01_hora_fin_miercoles+'" }';
+      $rootScope.horariosArray.push(myJSON);
+      myJSON = '{ "dia":"JUEVES", "checked":"'+data.f01_chk_jueves+'", "hora_inicio":"'+data.f01_hora_inicio_jueves+'","hora_fin":"'+data.f01_hora_fin_jueves+'" }';
+      $rootScope.horariosArray.push(myJSON);
+      myJSON = '{ "dia":"VIERNES", "checked":"'+data.f01_chk_viernes+'", "hora_inicio":"'+data.f01_hora_inicio_viernes+'","hora_fin":"'+data.f01_hora_fin_viernes+'" }';
+      $rootScope.horariosArray.push(myJSON);
+      myJSON = '{ "dia":"SABADO", "checked":"'+data.f01_chk_sabado+'", "hora_inicio":"'+data.f01_hora_inicio_sabado+'","hora_fin":"'+data.f01_hora_fin_sabado+'" }';
+      $rootScope.horariosArray.push(myJSON);
+      myJSON = '{ "dia":"DOMINGO", "checked":"'+data.f01_chk_domingo+'", "hora_inicio":"'+data.f01_hora_inicio_domingo+'","hora_fin":"'+data.f01_hora_fin_domingo+'" }';
+      $rootScope.horariosArray.push(myJSON);
+      datosTiendaVirtual.horarios = JSON.stringify($rootScope.horariosArray);
+      console.log('HORARIOS:',$rootScope.horariosArray);
+
       datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
       if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
           datosTiendaVirtual.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_MATERNO') + ' ' + sessionService.get('US_PATERNO');
@@ -723,6 +879,27 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.sinDato3 = false;
       $scope.swTel = false;
       $scope.swCel = false;
+      $scope.datos.f01_chk_lunes = false;
+      $scope.datos.f01_hora_inicio_lunes = '';
+      $scope.datos.f01_hora_fin_lunes = '';
+      $scope.datos.f01_chk_martes = false;
+      $scope.datos.f01_hora_inicio_martes = '';
+      $scope.datos.f01_hora_fin_martes = '';
+      $scope.datos.f01_chk_miercoles = false;
+      $scope.datos.f01_hora_inicio_miercoles = '';
+      $scope.datos.f01_hora_fin_miercoles = '';
+      $scope.datos.f01_chk_jueves = false;
+      $scope.datos.f01_hora_inicio_jueves = '';
+      $scope.datos.f01_hora_fin_jueves = '';
+      $scope.datos.f01_chk_viernes = false;
+      $scope.datos.f01_hora_inicio_viernes = '';
+      $scope.datos.f01_hora_fin_viernes = '';
+      $scope.datos.f01_chk_sabado = false;
+      $scope.datos.f01_hora_inicio_sabado = '';
+      $scope.datos.f01_hora_fin_sabado = '';
+      $scope.datos.f01_chk_domingo = false;
+      $scope.datos.f01_hora_inicio_domingo = '';
+      $scope.datos.f01_hora_fin_domingo = '';
       $("#mensaje1").hide();
       $("#mensaje2").hide();
       $("#mensajeT1").hide();

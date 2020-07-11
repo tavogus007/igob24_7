@@ -53,7 +53,8 @@ function dataTiendaVirtual(){
   this.catalogo,
   this.logotipo,
   this.encabezado,
-  this.forma_entrega
+  this.forma_entrega,
+  this.horarios
 };
 dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
 {
@@ -75,7 +76,8 @@ dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
     "stv_catalogo":this.catalogo,
     "stv_logotipo":this.logotipo,
     "stv_encabezado":this.encabezado,
-    "stv_forma_entrega":this.forma_entrega       
+    "stv_forma_entrega":this.forma_entrega,
+    "stv_horarios":this.horarios       
 
   };
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
@@ -100,7 +102,9 @@ dataTiendaVirtual.prototype.actualizarTiendaVirtual = function (functionResp)
     "stv_catalogo":this.catalogo,
     "stv_logotipo":this.logotipo,
     "stv_encabezado":this.encabezado,
-    "stv_forma_entrega":this.forma_entrega               
+    "stv_forma_entrega":this.forma_entrega,
+    "stv_horarios":this.horarios       
+               
 
   };
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);

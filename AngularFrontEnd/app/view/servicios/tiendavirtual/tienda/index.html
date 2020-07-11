@@ -7,6 +7,9 @@
         <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
         <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
         <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+        <script src="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
+<link href="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/>
+
         <style type="text/css">
             .main1
             {
@@ -31,6 +34,8 @@
                 });
             }
             //$('.clockpicker').clockpicker();
+
+     
 
             
         </script>
@@ -122,7 +127,7 @@
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Descripción de la Tienda Virtual:</label>
                         <div class="controls">
-                            <textarea ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Escribir una breve descricpión acerca de la Tienda Virtual"></textarea>
+                            <textarea ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Escribir una breve descricpión acerca de la Tienda Virtual" required></textarea>
                             <span style="color:red" ng-show="signupForm.f01_descripcionTV.$invalid">
                                 <span align = "right" ng-show="signupForm.f01_descripcionTV.$error.required">Descripción de la Tienda Virtual es requerido. </span>
                             </span>
@@ -134,7 +139,7 @@
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Forma de Entrega:</label>
                         <div class="controls">
-                            <textarea ng-model="datos.f01_forma_entrega" id="f01_forma_entrega" name="f01_forma_entrega" class="form-control" ng-disabled="desabilitado"rows="4" cols="150" placeholder="Describa la forma de entrega de los Productos"></textarea>
+                            <textarea ng-model="datos.f01_forma_entrega" id="f01_forma_entrega" name="f01_forma_entrega" class="form-control" ng-disabled="desabilitado"rows="4" cols="150" placeholder="Describa la forma de entrega de los Productos" required></textarea>
                             <span style="color:red" ng-show="signupForm.f01_forma_entrega.$invalid">
                                 <span align = "right" ng-show="signupForm.f01_forma_entrega.$error.required">Descripción de la Tienda Virtual es requerido. </span>
                             </span>
@@ -233,6 +238,167 @@
                     </div>
                 </div>
             </div>
+    
+            <div class="row" >
+                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                    <h4>Ingrese los horarios de atención</h4>
+                </div><br>
+             </div>
+            <div class="row">   
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <label for="url" >Dias</label>
+                        <div class="controls">
+                            <input class="form-control" ng-model="datos.f01_lunes" id="f01_lunes" name="f01_lunes" value="LUNES" placeholder="LUNES" disabled/>                         
+                            <br>
+                            <input class="form-control" ng-model="datos.f01_martes" id="f01_martes" name="f01_martes" value="MARTES" placeholder="MARTES" disabled/>                         
+                            <br>
+                            <input class="form-control" ng-model="datos.f01_miercoles" id="f01_miercoles" name="f01_miercoles" value="MIÉRCOLES" placeholder="MIÉRCOLES" disabled/>                      
+                            <br>
+                            <input class="form-control" ng-model="datos.f01_jueves" id="f01_jueves" name="f01_jueves" value="JUEVES" placeholder="JUEVES" disabled/>                         
+                            <br>
+                            <input class="form-control" ng-model="datos.f01_viernes" id="f01_viernes" name="f01_viernes" value="VIERNES" placeholder="VIERNES" disabled/>                         
+                            <br>
+                            <input class="form-control" ng-model="datos.f01_sabado" id="f01_sabado" name="f01_sabado" value="SABADO" placeholder="SABADO" disabled/>                      
+                            <br>
+                            <input class="form-control" ng-model="datos.f01_domingo" id="f01_domingo" name="f01_domingo" value="DOMINGO" placeholder="DOMINGO" disabled/>                      
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >Seleccionar</label>
+                        <div class="controls" >
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_chk_lunes" name="f01_chk_lunes" ng-model="datos.f01_chk_lunes"  ng-change="activaWhatsapp1(datos.f01_chk_lunes)" style="width: 20px; height: 20px;">
+                                <label class="custom-control-label" for="defaultUnchecked"></label>
+                                <img src="../../../app/view/img/calendario.jpeg" alt=" Imagen" height="30" width="30">
+                            </div>
+                        </div>
+                        <label for="url" > </label>
+                        <div class="controls">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_chk_martes" name="f01_chk_martes" ng-model="datos.f01_chk_martes" ng-change="activaWhatsapp2(datos.f01_chk_martes)" style="width: 20px; height: 20px;">
+                                <label class="custom-control-label" for="defaultUnchecked"></label>
+                                <img src="../../../app/view/img/calendario.jpeg" alt=" Imagen" height="30" width="30">
+                            </div>
+                        </div>
+                        <label for="url" > </label>
+                        <div class="controls">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_chk_miercoles" name="f01_chk_miercoles" ng-model="datos.f01_chk_miercoles" ng-change="activaWhatsapp3(datos.f01_chk_miercoles)" style="width: 20px; height: 20px;">
+                                <label class="custom-control-label" for="defaultUnchecked"></label>
+                                <img src="../../../app/view/img/calendario.jpeg" alt=" Imagen" height="30" width="30">
+                            </div>
+                        </div>
+                        <label for="url" > </label>
+                        <div class="controls">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_chk_jueves" name="f01_chk_jueves" ng-model="datos.f01_chk_jueves" ng-change="activaWhatsapp3(datos.f01_chk_jueves)" style="width: 20px; height: 20px;">
+                                <label class="custom-control-label" for="defaultUnchecked"></label>
+                                <img src="../../../app/view/img/calendario.jpeg" alt=" Imagen" height="30" width="30">
+                            </div>
+                        </div>
+                        <label for="url" > </label>
+                        <div class="controls">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_chk_viernes" name="f01_chk_viernes" ng-model="datos.f01_chk_viernes" ng-change="activaWhatsapp3(datos.f01_chk_viernes)" style="width: 20px; height: 20px;">
+                                <label class="custom-control-label" for="defaultUnchecked"></label>
+                                <img src="../../../app/view/img/calendario.jpeg" alt=" Imagen" height="30" width="30">
+                            </div>
+                        </div>
+                        <label for="url" > </label>
+                        <div class="controls">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_chk_sabado" name="f01_chk_sabado" ng-model="datos.f01_chk_sabado" ng-change="activaWhatsapp3(datos.f01_chk_sabado)" style="width: 20px; height: 20px;">
+                                <label class="custom-control-label" for="defaultUnchecked"></label>
+                                <img src="../../../app/view/img/calendario.jpeg" alt=" Imagen" height="30" width="30">
+                            </div>
+                        </div>
+                        <label for="url" > </label>
+                        <div class="controls">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"  id="f01_chk_domingo" name="f01_chk_domingo" ng-model="datos.f01_chk_domingo" ng-change="activaWhatsapp3(datos.f01_chk_domingo)" style="width: 20px; height: 20px;">
+                                <label class="custom-control-label" for="defaultUnchecked"></label>
+                                <img src="../../../app/view/img/calendario.jpeg" alt=" Imagen" height="30" width="30">
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >Hora Inicio</label>
+                        <div class="controls">
+                         
+                            <!--timepicker ng-required="true" ng-model="f01_hora_inicio_lunes" hour-step="1" minute-step="15" show-meridian="true"></timepicker-->
+
+                            <input class="form-control" type="text" id="f01_hora_inicio_lunes" name="f01_hora_inicio_lunes" ng-model="datos.f01_hora_inicio_lunes" placeholder="09:00">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_inicio_martes" name="f01_hora_inicio_martes" ng-model="datos.f01_hora_inicio_martes">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_inicio_miercoles" name="f01_hora_inicio_miercoles" ng-model="datos.f01_hora_inicio_miercoles">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_inicio_jueves" name="f01_hora_inicio_jueves" ng-model="datos.f01_hora_inicio_jueves">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_inicio_viernes" name="f01_hora_inicio_viernes" ng-model="datos.f01_hora_inicio_viernes">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_inicio_sabado" name="f01_hora_inicio_sabado" ng-model="datos.f01_hora_inicio_sabado">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_inicio_domingo" name="f01_hora_inicio_domingo" ng-model="datos.f01_hora_inicio_domingo">
+                            
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >Hora Fin</label>
+                        <div class="controls">
+                            <input class="form-control" type="time" id="f01_hora_fin_lunes" name="f01_hora_fin_lunes" ng-model="datos.f01_hora_fin_lunes">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_fin_martes" name="f01_hora_fin_martes" ng-model="datos.f01_hora_fin_martes">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_fin_miercoles" name="f01_hora_fin_miercoles" ng-model="datos.f01_hora_fin_miercoles">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_fin_jueves" name="f01_hora_fin_jueves" ng-model="datos.f01_hora_fin_jueves">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_fin_viernes" name="f01_hora_fin_viernes" ng-model="datos.f01_hora_fin_viernes">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_fin_sabado" name="f01_hora_fin_sabado" ng-model="datos.f01_hora_fin_sabado">
+                            <br>
+                            <input class="form-control" type="time" id="f01_hora_fin_domingo" name="f01_hora_fin_domingo" ng-model="datos.f01_hora_fin_domingo">
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="col-md-1">
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="row" >
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
                     <h4>Ingrese los números telefónicos de contacto</h4>
@@ -302,7 +468,7 @@
                         <label for="url" > </label>
                         <div class="controls">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_celular22_whatsapp" name="f01_celular22whatsapp" ng-model="datos.f01_celular22_whatsapp" ng-disabled="!swWhats2" ng-change="activaWhatsapp2(datos.f01_celular22_whatsapp)" style="width: 20px; height: 20px;">
+                                <input type="checkbox" class="custom-control-input"  id="f01_celular22_whatsapp" name="f01_celular22_whatsapp" ng-model="datos.f01_celular22_whatsapp" ng-disabled="!swWhats2" ng-change="activaWhatsapp2(datos.f01_celular22_whatsapp)" style="width: 20px; height: 20px;">
                                 <label class="custom-control-label" for="defaultUnchecked"></label>
                                 <img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="30" width="30">
                             </div>
@@ -315,8 +481,7 @@
                                 <img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="30" width="30">
                             </div>
                         </div>
-                </div>
-                   
+                    </div>
                 </div>
                 <div class="col-md-1">
                 </div>

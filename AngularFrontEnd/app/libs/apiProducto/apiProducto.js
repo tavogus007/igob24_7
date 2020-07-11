@@ -77,8 +77,7 @@ dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
     "stv_logotipo":this.logotipo,
     "stv_encabezado":this.encabezado,
     "stv_forma_entrega":this.forma_entrega,
-    "stv_horarios":this.horarios       
-
+    "stv_horarios":this.horarios  
   };
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
@@ -103,9 +102,7 @@ dataTiendaVirtual.prototype.actualizarTiendaVirtual = function (functionResp)
     "stv_logotipo":this.logotipo,
     "stv_encabezado":this.encabezado,
     "stv_forma_entrega":this.forma_entrega,
-    "stv_horarios":this.horarios       
-               
-
+    "stv_horarios":this.horarios                    
   };
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };

@@ -597,15 +597,12 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           swal('', "Error al guardar los datos de la Tienda Virtual", 'error');
       }
     });
-
     }
     else{
       swal('', "Datos obligatorios, verifique las casillas de archivos adjuntos (Encabezado y Logotipo) y/ó los números de Contacto (Debe registrar al menos uno)", 'warning');
     }
 
   }
-
-  
     
   $scope.actualizarDatosAE = function(data){
     if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '')||

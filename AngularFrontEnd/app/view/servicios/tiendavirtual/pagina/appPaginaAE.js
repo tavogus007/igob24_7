@@ -248,17 +248,17 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           ofertas = ofertas.replace(/\n/g, "<br>");
 
           try { 
-            str = JSON.stringify($rootScope.datosTiendaVirtual[0].phorarios_atencion);
-            newstr = str.replace(re, "},{");
-            newstr = newstr.replace('["{', '[{');
-            newstr = newstr.replace('}"]', '}]');
-            re = /\\"/gi;
-            newHorarios = newstr.replace(re, '"');
+            horarios = $rootScope.datosTiendaVirtual[0].phorarios_atencion;
+            horarios = horarios.replace('["{','[{');
+            horarios = horarios.replace('}"]','}]');
+            horarios = horarios.replace('}"{','}{');
+            horarios = horarios.replace(/}","{/gi,'},{');
+            horarios = horarios.replace(/\\"/gi,'"');
+            newHorarios = horarios;
+            //newHorarios =JSON.parse(horarios);
           } catch(error){
             newHorarios = "[]";
           }
-
-
           $.ajax({
               url:CONFIG.API_URL_DMS_HTML+'generadorHTML.php',
               type:"post",
@@ -353,12 +353,14 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           ofertas = ofertas.replace(/\n/g, "<br>");
 
           try { 
-            str = JSON.stringify($rootScope.datosTiendaVirtual[0].phorarios_atencion);
-            newstr = str.replace(re, "},{");
-            newstr = newstr.replace('["{', '[{');
-            newstr = newstr.replace('}"]', '}]');
-            re = /\\"/gi;
-            newHorarios = newstr.replace(re, '"');
+            horarios = $rootScope.datosTiendaVirtual[0].phorarios_atencion;
+            horarios = horarios.replace('["{','[{');
+            horarios = horarios.replace('}"]','}]');
+            horarios = horarios.replace('}"{','}{');
+            horarios = horarios.replace(/}","{/gi,'},{');
+            horarios = horarios.replace(/\\"/gi,'"');
+            newHorarios = horarios;
+            //newHorarios =JSON.parse(horarios);
           } catch(error){
             newHorarios = "[]";
           }

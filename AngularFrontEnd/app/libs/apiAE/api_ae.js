@@ -11,10 +11,16 @@ var dataResp;
 var dataParams;
 var typeCall;
 
+var urlGENESIS  = "";
+var urlIf2      = "";
+var urlMotorSierra = "";
+
 if(jsonURLS){
-  var urlGENESIS = jsonURLS.CONEXION_API_PG_GENESIS+"wsGENESIS";
-  var urlIf2 = jsonURLS.CONEXION_API_PG_IF+"wsIf"; 
-  var urlMotorSierra = jsonURLS.SERVICE_SIERRAM+"reglaNegocio/ejecutarWeb";
+    try{
+        urlGENESIS = jsonURLS.CONEXION_API_PG_GENESIS+"wsGENESIS";
+        urlIf2 = jsonURLS.CONEXION_API_PG_IF+"wsIf"; 
+        urlMotorSierra = jsonURLS.SERVICE_SIERRAM+"reglaNegocio/ejecutarWeb";
+    }catch(e){console.log("Warning:", e);}
 }
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/

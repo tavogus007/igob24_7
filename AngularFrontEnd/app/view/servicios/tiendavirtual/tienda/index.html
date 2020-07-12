@@ -149,7 +149,7 @@
                 </div>
                 <div class="col-sm-10" align="left">
                     <div class="alert alert-danger fade in">
-                        <bold>SEÑOR CONTRIBUYENTE: </bold>Le recordamos, que debe seleccionar la CATEGORIA de acuerdo a la Actividad Económica de su Licencia de Funcionamiento VIGENTE.<br>
+                        <bold>ESTIMADO CONTRIBUYENTE: </bold>Le recordamos, que debe seleccionar la CATEGORIA de acuerdo a la Actividad Económica de su Licencia de Funcionamiento VIGENTE.<br>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -250,18 +250,95 @@
                     <h4>Ingrese los horarios de atención</h4>
                 </div><br>
              </div>
-            <div class="col-sm-10" align="left">
-                <div class="alert alert-danger fade in">
-                    <bold>ESTIMADO CONTRIBUYENTE: </bold>Para introducir el horario de antencionar, debe seleccione el Día<br>
+            <div class="row" >
+                <div class="col-md-10" align="left">
+                    <div class="alert alert-danger fade in">
+                        <bold>ESTIMADO CONTRIBUYENTE: </bold>Para introducir el horario de antención puede hacerlo de 2 formas:
+                        <br>1.  Si elige la opción DÍAS HÁBILES, registrará las horas introducidas para los días de Lunes a Viernes.
+                        <br>2.  Si elige TODOS LOS DÍAS, registrará las horas introducidas para todos los días.
+                        <br>3.  Si NO elige opción, debe realizar el registro día por día.
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+             </div>
+            <div class="row">
+                <div class="col-md-1"></div>              
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >Hora Inicio:</label>
+                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                            <input  ng-model="datos.f01_hora_inicio" id="f01_hora_inicio" name="f01_hora_inicio" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <div class="form-group" >
+                        <label for="url" >Hora Fin:</label>
+                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                            <input  ng-model="datos.f01_hora_fin" id="f01_hora_fin" name="f01_hora_fin" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <div class="form-group" >
+                    <label for="url" >TODOS LOS DÍAS:</label>
+                        <div class="controls" > 
+                            <div class="custom-control custom-checkbox">
+                            
+                                <input type="checkbox" class="custom-control-input"  id="f01_chk_todos" name="f01_chk_todos" ng-model="datos.f01_chk_todos"  ng-change="activaTodos(datos.f01_chk_todos)" style="width: 22px; height: 22px;">
+                                <label class="custom-control-label" for="defaultUnchecked"></label>
+                            </div>
+                        </div> 
+                    </div>   
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group" >
+                    <label for="url" >DÍAS HÁBILES:</label>
+                        <div class="controls" > 
+                            <div class="custom-control custom-checkbox">
+                            
+                                <input type="checkbox" class="custom-control-input"  id="f01_chk_habiles" name="f01_chk_habiles" ng-model="datos.f01_chk_habiles"  ng-change="activaHabiles(datos.f01_chk_habiles)" style="width: 22px; height: 22px;">
+                                <label class="custom-control-label" for="defaultUnchecked"></label>
+                            </div>
+                        </div> 
+                    </div>   
                 </div>
             </div>
+            <hr>
             <div class="row">   
-                <div class="col-md-1">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <label for="url" >Días:</label>
                 </div>
-                <div class="col-md-3">
-                    <label for="url" >Dias</label>
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <div class="col-md-5">
+                        <label for="url" >Hora Inicio:</label>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="url" ></label>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="url" >Hora Fin:</label>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="url" >Marcar:</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">   
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
                     <div class="form-group" >
-                       
                         <div class="controls">
                             <input class="form-control" ng-model="datos.f01_lunes" id="f01_lunes" name="f01_lunes" value="LUNES" placeholder="LUNES" disabled/><br>                        
                             <input class="form-control" ng-model="datos.f01_martes" id="f01_martes" name="f01_martes" value="MARTES" placeholder="MARTES" disabled/><br>                         
@@ -273,65 +350,8 @@
                         </div>
                     </div>
                </div>
-
-                <div class="col-md-2">
-                    <label for="url" >Marcar</label>
-                    <div class="form-group" >                        
-                        <div class="controls" >
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_chk_lunes" name="f01_chk_lunes" ng-model="datos.f01_chk_lunes"  ng-change="activaLunes(datos.f01_chk_lunes)" style="width: 22px; height: 22px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                            </div>
-                        </div>
-                        <label for="url" ></label>
-                        <div class="controls">
-                            <div class="custom-control custom-checkbox">
-                                <input  class="form-control"type="checkbox" class="custom-control-input"  id="f01_chk_martes" name="f01_chk_martes" ng-model="datos.f01_chk_martes" ng-change="activaMartes(datos.f01_chk_martes)" style="width: 22px; height: 22px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                            </div>
-                        </div>
-                        <label for="url" > </label>
-                        <div class="controls">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_chk_miercoles" name="f01_chk_miercoles" ng-model="datos.f01_chk_miercoles" ng-change="activaMiercoles(datos.f01_chk_miercoles)" style="width: 22px; height: 22px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                            </div>
-                        </div>
-                        <label for="url" > </label>
-                        <div class="controls">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_chk_jueves" name="f01_chk_jueves" ng-model="datos.f01_chk_jueves" ng-change="activaJueves(datos.f01_chk_jueves)" style="width: 22px; height: 22px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                            </div>
-                        </div>
-                        <label for="url" > </label>
-                        <div class="controls">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_chk_viernes" name="f01_chk_viernes" ng-model="datos.f01_chk_viernes" ng-change="activaViernes(datos.f01_chk_viernes)" style="width: 22px; height: 22px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                            </div>
-                        </div>
-                        <label for="url" > </label>
-                        <div class="controls">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_chk_sabado" name="f01_chk_sabado" ng-model="datos.f01_chk_sabado" ng-change="activaSabado(datos.f01_chk_sabado)" style="width: 22px; height: 22px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                            </div>
-                        </div>
-                        <label for="url" > </label>
-                        <div class="controls">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_chk_domingo" name="f01_chk_domingo" ng-model="datos.f01_chk_domingo" ng-change="activaDomingo(datos.f01_chk_domingo)" style="width: 22px; height: 22px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                            </div>
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-
+               <div class="col-md-1"></div>
                 <div class="col-md-4">
-                    <label for="url" >Horarios de atención</label>
                     <div class="form-group" >
                         <div class="controls">
                             <div class="col-md-5">
@@ -354,6 +374,13 @@
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
                                     </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_lunes" name="f01_chk_lunes" ng-model="datos.f01_chk_lunes"  ng-change="activaLunes(datos.f01_chk_lunes)" style="width: 22px; height: 22px;">
+                                    <label class="custom-control-label" for="defaultUnchecked"></label>
                                 </div>
                             </div>
                             <div class="col-md-5">
@@ -365,9 +392,8 @@
                                         </span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-1">
-                            </div>
+                            </div> 
+                            <div class="col-md-1"></div>
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
@@ -376,6 +402,12 @@
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_martes" name="f01_chk_martes" ng-model="datos.f01_chk_martes"  ng-change="activaMartes(datos.f01_chk_martes)" style="width: 22px; height: 22px;">
+                                    <label class="custom-control-label" for="defaultUnchecked"></label>
                                 </div>
                             </div>
                             <div class="col-md-5">
@@ -400,6 +432,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-1">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_miercoles" name="f01_chk_miercoles" ng-model="datos.f01_chk_miercoles"  ng-change="activaMiercoles(datos.f01_chk_miercoles)" style="width: 22px; height: 22px;">
+                                    <label class="custom-control-label" for="defaultUnchecked"></label>
+                                </div>
+                            </div>
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
@@ -420,6 +458,12 @@
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_jueves" name="f01_chk_jueves" ng-model="datos.f01_chk_jueves"  ng-change="activaJueves(datos.f01_chk_jueves)" style="width: 22px; height: 22px;">
+                                    <label class="custom-control-label" for="defaultUnchecked"></label>
                                 </div>
                             </div>
                             <div class="col-md-5">
@@ -444,6 +488,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-1">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_viernes" name="f01_chk_viernes" ng-model="datos.f01_chk_viernes"  ng-change="activaViernes(datos.f01_chk_viernes)" style="width: 22px; height: 22px;">
+                                    <label class="custom-control-label" for="defaultUnchecked"></label>
+                                </div>
+                            </div>
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
@@ -464,6 +514,12 @@
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_sabado" name="f01_chk_sabado" ng-model="datos.f01_chk_sabado"  ng-change="activaSabado(datos.f01_chk_sabado)" style="width: 22px; height: 22px;">
+                                    <label class="custom-control-label" for="defaultUnchecked"></label>
                                 </div>
                             </div>
                             <div class="col-md-5">
@@ -488,36 +544,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-1">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_domingo" name="f01_chk_domingo" ng-model="datos.f01_chk_domingo"  ng-change="activaDomingo(datos.f01_chk_domingo)" style="width: 22px; height: 22px;">
+                                    <label class="custom-control-label" for="defaultUnchecked"></label>
+                                </div>
+                            </div>
                        
                             
                         </div>
                     </div>
                     
                 </div>
-                <!--div class="col-md-2">
-                    <div class="form-group" >
-                        <label for="url" >Hora Fin</label>
-                        <div class="controls">
-                            <input class="form-control" type="time" id="f01_hora_fin_lunes" name="f01_hora_fin_lunes" ng-model="datos.f01_hora_fin_lunes">
-                            <br>
-                            <input class="form-control" type="time" id="f01_hora_fin_martes" name="f01_hora_fin_martes" ng-model="datos.f01_hora_fin_martes">
-                            <br>
-                            <input class="form-control" type="time" id="f01_hora_fin_miercoles" name="f01_hora_fin_miercoles" ng-model="datos.f01_hora_fin_miercoles">
-                            <br>
-                            <input class="form-control" type="time" id="f01_hora_fin_jueves" name="f01_hora_fin_jueves" ng-model="datos.f01_hora_fin_jueves">
-                            <br>
-                            <input class="form-control" type="time" id="f01_hora_fin_viernes" name="f01_hora_fin_viernes" ng-model="datos.f01_hora_fin_viernes">
-                            <br>
-                            <input class="form-control" type="time" id="f01_hora_fin_sabado" name="f01_hora_fin_sabado" ng-model="datos.f01_hora_fin_sabado">
-                            <br>
-                            <input class="form-control" type="time" id="f01_hora_fin_domingo" name="f01_hora_fin_domingo" ng-model="datos.f01_hora_fin_domingo">
-                        </div>
-                    </div>
-                    
-                </div-->
-
-                <div class="col-md-1">
-                </div>
+                <div class="col-md-1"></div>
             </div>
 
 

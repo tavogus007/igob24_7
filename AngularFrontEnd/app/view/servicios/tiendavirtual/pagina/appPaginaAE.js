@@ -244,6 +244,9 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           } catch(errorL){
             urlenca = "";
           }
+          ofertas = JSON.stringify($rootScope.productosPW),
+          ofertas = ofertas.replace(/\n/g, "<br>");
+
 
 
           $.ajax({
@@ -255,11 +258,11 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "sdescripcion": $rootScope.datosTiendaVirtual[0].tv_descripcionc,
                   "scontactos": newContactos,
                   //"sofertas":  newOfertas,
-                  "sofertas": JSON.stringify($rootScope.productosPW),
+                  "sofertas": ofertas,
                   "sredes": newRedes,
                   "spagina": $rootScope.datosTiendaVirtual[0].tv_pagina_webc,
                   "scorreo": $rootScope.datosTiendaVirtual[0].tv_correoc,
-                  "sproductos": JSON.stringify($rootScope.productosPW),
+                  "sproductos": ofertas,
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
                   "sae": sessionService.get('IDAE'),
                   "slogo": urllogo,
@@ -334,6 +337,22 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           } catch(errorL){
             urlenca = "";
           }
+          
+          ofertas = JSON.stringify($rootScope.productosPW),
+          ofertas = ofertas.replace(/\n/g, "<br>");
+
+          try { 
+            str = JSON.stringify($rootScope.datosTiendaVirtual[0].phorarios_atencion);
+            newstr = str.replace(re, "},{");
+            newstr = newstr.replace('["{', '[{');
+            newstr = newstr.replace('}"]', '}]');
+            re = /\\"/gi;
+            newHorarios = newstr.replace(re, '"');
+          } catch(error){
+            newHorarios = "[]";
+          }
+
+
           console.log(logo);
           $.ajax({
               url:CONFIG.API_URL_DMS_HTML+'generadorHTML.php',
@@ -344,11 +363,12 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "sdescripcion": $rootScope.datosTiendaVirtual[0].tv_descripcionc,
                   "scontactos": newContactos,
                   //"sofertas":  newOfertas,
-                  "sofertas": JSON.stringify($rootScope.productosPW),
+                  "sofertas": ofertas,
                   "sredes": newRedes,
+                  "shorarios": newHorarios,
                   "spagina": $rootScope.datosTiendaVirtual[0].tv_pagina_webc,
                   "scorreo": $rootScope.datosTiendaVirtual[0].tv_correoc,
-                  "sproductos": JSON.stringify($rootScope.productosPW),
+                  "sproductos": ofertas,
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
                   "sae": sessionService.get('IDAE'),
                   "slogo": urllogo,

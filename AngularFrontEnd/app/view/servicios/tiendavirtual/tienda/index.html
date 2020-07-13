@@ -149,7 +149,8 @@
                 </div>
                 <div class="col-sm-10" align="left">
                     <div class="alert alert-danger fade in">
-                        <bold>ESTIMADO CONTRIBUYENTE: </bold>Le recordamos, que debe seleccionar la CATEGORIA de acuerdo a la Actividad Económica de su Licencia de Funcionamiento VIGENTE.<br>
+                        <strong>IMPORTANTE: </strong><br>
+                        <br>SELECCIONE CUIDADOSAMENTE LA CATEGORÍA (RUBRO) A LA CUAL CORRESPONDE SU ACTIVIDAD ECONÓMICA.<br>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -157,7 +158,7 @@
                         <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Categoria:</label>
                         <div class="controls">
-                            <select id="f01_categoria" class="form-control" ng-model="datos.f01_categoria" name="f01_categoria" ng-disabled="desabilitado" ng-options="cat.spcat_id  as cat.spcat_descripcion  for cat in resultCategorias" required>
+                            <select id="f01_categoria" class="form-control" ng-model="datos.f01_categoria" name="f01_categoria" ng-disabled="desabilitado" ng-options="cat.spcat_id  as cat.spcat_descripcion  for cat in resultCategorias" ng-change="cambiaCategoria(datos.f01_categoria);" required>
                                 <option value="">--Seleccionar--</option>
                             </select>
                             <span style="color:red" ng-show="signupForm.f01_categoria.$invalid">
@@ -253,10 +254,10 @@
             <div class="row" >
                 <div class="col-md-10" align="left">
                     <div class="alert alert-danger fade in">
-                        <bold>ESTIMADO CONTRIBUYENTE: </bold>Para introducir el horario de antención puede hacerlo de 2 formas:
+                        <strong>ESTIMADO CONTRIBUYENTE: </strong>Para introducir el horario de antención puede hacerlo de 3 formas:
                         <br>1.  Si elige la opción DÍAS HÁBILES, registrará las horas introducidas para los días de Lunes a Viernes.
                         <br>2.  Si elige TODOS LOS DÍAS, registrará las horas introducidas para todos los días.
-                        <br>3.  Si NO elige opción, debe realizar el registro día por día.
+                        <br>3.  Si NO elige ninguna opción, debe realizar el registro manualmente para cada día.
                     </div>
                 </div>
                 <div class="col-md-2"></div>
@@ -329,10 +330,9 @@
                     <div class="col-md-5">
                         <label for="url" >Hora Fin:</label>
                     </div>
-                    <div class="col-md-1">
-                        <label for="url" >Marcar:</label>
-                    </div>
+                    
                 </div>
+                
 
             </div>
             <div class="row">   

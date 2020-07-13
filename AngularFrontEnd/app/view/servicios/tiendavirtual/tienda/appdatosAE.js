@@ -394,10 +394,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   
   $scope.registrarDatosAE = function(data){
 
-    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '')||
-       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '')||
-       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '')) {
-      var datosTiendaVirtual = new dataTiendaVirtual();
+    var datosTiendaVirtual = new dataTiendaVirtual();
     datosTiendaVirtual.ae_id = sessionService.get("IDAE");
     datosTiendaVirtual.categoria = data.f01_categoria;
     datosTiendaVirtual.nombre = data.f01_nombreTV;
@@ -583,6 +580,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         datosTiendaVirtual.usr = "juridico";
     }
     //console.log('datosTiendaVirtual',datosTiendaVirtual);
+    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '')||
+       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '')||
+       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '')) {
     datosTiendaVirtual.crearTiendaVirtual(function(response){
       console.log(response);
       results = JSON.parse(response);
@@ -606,10 +606,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   }
     
   $scope.actualizarDatosAE = function(data){
-    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '')||
-       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '')||
-       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '')) {
-        var datosTiendaVirtual = new dataTiendaVirtual();
+      $scope.obtTiendaVirtualM();
+      var datosTiendaVirtual = new dataTiendaVirtual();
       datosTiendaVirtual.idtv = sessionService.get("IDTV");
       datosTiendaVirtual.ae_id = sessionService.get("IDAE");
       datosTiendaVirtual.categoria = data.f01_categoria;
@@ -649,6 +647,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       if(data.f01_contacto1 == '' || data.f01_contacto1 == undefined || data.f01_contacto1 == 'undefined'){
         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+        data.f01_contacto1_nro = '';
         $rootScope.contactosArray.push(myJSON);
       }
   //////////
@@ -674,6 +673,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       if(data.f01_contacto2 == '' || data.f01_contacto2 == undefined || data.f01_contacto2 == 'undefined'){
         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+        data.f01_contacto2_nro = '';
         $rootScope.contactosArray.push(myJSON);
       }
   ////////////|
@@ -699,6 +699,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       if(data.f01_contacto3 == '' || data.f01_contacto3 == undefined || data.f01_contacto3 == 'undefined'){
         myJSON = '{ "tipo":"", "valor":"","estado":"" }';
+        data.f01_contacto3_nro = '';
         $rootScope.contactosArray.push(myJSON);
       }
       ////////
@@ -802,6 +803,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       } else {
           datosTiendaVirtual.usr = "juridico";
       }
+
+    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '')||
+    ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '')||
+    ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '')) {  
       datosTiendaVirtual.actualizarTiendaVirtual(function(response){
         console.log(response);
         results = JSON.parse(response);
@@ -813,7 +818,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         } else {
             $.unblockUI();
             sweetAlert('', "Error al Actualizar información de la Tienda Virtual", 'error');
-            $location.path('dashboard');
+            //$location.path('dashboard');
         }
       });
   
@@ -927,6 +932,27 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       
 
   }
+  $scope.obtTiendaVirtualM = function(){
+    idActividadEconomica = sessionService.get('IDAE');
+    try {
+      var dataTV = new dataTiendaVirtual();
+      dataTV.idAe = idActividadEconomica;
+      dataTV.obtDataTiendaVirtual(function(res){
+          r = JSON.parse(res);
+          results = r.success;
+          $rootScope.datosTiendaVirtual = results;
+          console.log('$rootScope.datosTiendaVirtual',$rootScope.datosTiendaVirtual);
+          if (results.length == 0){
+            
+          } else {
+            //alert(results[0].tv_idc);
+            sessionService.set('IDTV', results[0].tv_idc);
+          }
+      });
+    } catch(error){
+      console.log("Error Interno : ", error);
+    }
+};
   $scope.validaCorreo =function(){
     var $result = $("#result");
     var email = $("#f01_correoTV").val();
@@ -980,6 +1006,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
     }
     $scope.tipoTel1 = dato;
+    console.log('$scope.tipoTel1',$scope.tipoTel1);
     if(dato == "" || dato == undefined || dato == 'undefined'){
       document.getElementById('f01_contacto1_nro').value = '';
       document.getElementById('f01_contacto1_nro').disabled = true;
@@ -1050,6 +1077,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       }
 
+    }
+    if($scope.tipoTel1 == undefined || $scope.tipoTel1 == 'undefined'){
+      document.getElementById('f01_contacto1_nro').value = '';
     }
 
   }
@@ -1130,6 +1160,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       }
     }
+    if($scope.tipoTel2 == undefined || $scope.tipoTel2 == 'undefined'){
+      document.getElementById('f01_contacto2_nro').value = '';
+    }
 
   }
   $scope.activarCampo3 = function(dato){
@@ -1208,6 +1241,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           document.getElementById('f01_contacto3_nro').value = '';
       }
       }
+    }
+    if($scope.tipoTel3 == undefined || $scope.tipoTel3 == 'undefined'){
+      document.getElementById('f01_contacto3_nro').value = '';
     }
 
   }
@@ -1588,8 +1624,48 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_hora_fin_domingo = '';
       $scope.datos.f01_chk_domingo = false;        
     }
-  }
+  } 
+  $scope.cambiaCategoria = function(datos){
+    console.log('datos',datos);
+    $scope.categoria = datos;
+    if($scope.categoria == 1){
+      $scope.catSeleccionada = 'ALIMENTOS';
+    }
+    if($scope.categoria == 2){
+      $scope.catSeleccionada = 'ENTRETENIMIENTO';
+    }
+    if($scope.categoria == 3){
+      $scope.catSeleccionada = 'HOTELERIA Y TURISMO';
+    }
+    if($scope.categoria == 4){
+      $scope.catSeleccionada = 'SALUD';
+    }
+    if($scope.categoria == 5){
+      $scope.catSeleccionada = 'SERVICIOS';
+    }
+    if($scope.categoria == 6){
+      $scope.catSeleccionada = 'CONSTRUCCIÓN';
+    }
+    if($scope.categoria == 7){
+      $scope.catSeleccionada = 'COMERCIO';
+    }
+    if($scope.categoria == 8){
+      $scope.catSeleccionada = 'INDUSTRIA Y MANUFACTURA';
+    }
+    swal({
+      title: "Está Ud. Seguro(a)?",
+      text: "Seleccionó la categoria: " +$scope.catSeleccionada,
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonClass: "btn-danger",
+      confirmButtonText: "Aceptar",
+      closeOnConfirm: false
+    },
+    function(){
+      swal("Categoría seleccionada", "Usted seleccionó la categoría:"+$scope.catSeleccionada, "success");
+    });
 
+  }
 
 
   $scope.cambiarFile = function(obj, valor){

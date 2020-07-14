@@ -20,6 +20,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.txtAdjuntoFotografia = '';
     $scope.botones_visibles = true;
     $scope.div_agregar_vehiculos_placa = true;
+    $scope.tipovehiculo_privado = {};
     $scope.hardocore = '[{"tipo_vehiculo":"Motocicleta","placa":"3935NBN","CI":"9110200"}]';
     $scope.div_escoger_servicio = false;
     $scope.adjuntos = [{id:0,requisito:'Boleta de Decomiso'},{id:1,requisito:'Comprobante de Pago'}];
@@ -1076,6 +1077,7 @@ $scope.adjuntoTres = function(){
     }
     $scope.dinamicoFormulario = function(dataFormulario){
         if(dataFormulario == 'REGISTRO_SERVICIO_PRIVADO'){
+            $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"AUTOMOVIL"},{"nombre":"BICICLETA"},{"nombre":"MOTOCICLETA"}]');
             $scope.div_tipo_entrega=true;
             $scope.div_datos_A_llenar=false;
             $scope.div_de_adunjtos=true;
@@ -1086,6 +1088,7 @@ $scope.adjuntoTres = function(){
             $scope.txtAdjuntoFotografia='ADJUNTAR FOTOGRAFIAS EN UN SOLO DOCUMENTO PDF PARA VEHICULOS MOTORIZADOS, 2 FOTOGRAFIAS (1. PANORAMICA DONDE SE VEA LA PARTE FRONTAL Y LATERAL DEL VEHICULO Y 2. INTERNA DESDE LA CABINA DEL CONDUCTOR). PARA BICICLETA, 2 FOTOGRAFIAS (1. FRONTAL TOTAL Y 2. LATERAL, CON EL CONDUCTOR AL LADO PORTANDO CASCO Y  CHALECO REFLECTIVO)';
             
         }else if(dataFormulario == 'REGISTRO_OPERADOR'){
+            $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"BICICLETA"},{"nombre":"MOTOCICLETA"}]');
             $scope.div_tipo_entrega=false;
             $scope.div_datos_A_llenar=true;
             $scope.div_de_adunjtos=true;
@@ -1095,6 +1098,7 @@ $scope.adjuntoTres = function(){
             $scope.txtContratoServicios='ADJUNTE CONTRATO DE PRESTACION DE SERVICIOS :';
             $scope.txtAdjuntoFotografia='ADJUNTAR FOTOGRAFIAS EN UN SOLO DOCUMENTO PDF PARA VEHICULOS MOTOCICLETAS, 1 FOTOGRAFIA (1. PANORAMICA, DONDE SE VEA LA PARTE FRONTAL Y LATERAL DE LA MOTOCICLETA). PARA BICICLETA, 1 FOTOGRAFIA (1. PANORAMICA, DONDE SE VEA LA PARTE FRONTAL Y LATERAL DE LA BICICLETA, CON EL CONDUCTOR AL LADO PORTANDO CASCO Y  CHALECO REFLECTIVO)';
         }else{
+            $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"AUTOMOVIL"},{"nombre":"BICICLETA"},{"nombre":"MOTOCICLETA"}]');
             $scope.div_tipo_entrega=false;
             $scope.div_datos_A_llenar=false;
             $scope.div_de_adunjtos=false;

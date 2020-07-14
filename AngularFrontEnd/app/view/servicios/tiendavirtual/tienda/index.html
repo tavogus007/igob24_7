@@ -188,7 +188,7 @@
                     <div class="form-group" >
                         <label for="url" >Página Web:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control" placeholder="Copie aquí el enlace de su Página Wseb" ng-disabled="desabilitado"/>
+                            <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control" placeholder="Copie aquí el enlace de su Página Web" ng-disabled="desabilitado"/>
                         </div>
                     </div>
                 </div>
@@ -257,7 +257,8 @@
                         <strong>ESTIMADO CONTRIBUYENTE: </strong>Para introducir el horario de antención puede hacerlo de 3 formas:
                         <br>1.  Si elige la opción DÍAS HÁBILES, registrará las horas introducidas para los días de Lunes a Viernes.
                         <br>2.  Si elige TODOS LOS DÍAS, registrará las horas introducidas para todos los días.
-                        <br>3.  Si NO elige ninguna opción, debe realizar el registro manualmente para cada día.
+                        <br>3.  Si elige NINGUNA, debe realizar el registro manualmente para cada día.<br>
+                        <br><strong>NOTA: </strong>Para registrar horarios día por día, debe introducir hora inicio y hora final y marcar el día seleccionado. Caso contrario no será almacenado.
                     </div>
                 </div>
                 <div class="col-md-2"></div>
@@ -289,28 +290,18 @@
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
-                    <div class="form-group" >
-                    <label for="url" >TODOS LOS DÍAS:</label>
-                        <div class="controls" > 
-                            <div class="custom-control custom-checkbox">
-                            
-                                <input type="checkbox" class="custom-control-input"  id="f01_chk_todos" name="f01_chk_todos" ng-model="datos.f01_chk_todos"  ng-change="activaTodos(datos.f01_chk_todos)" style="width: 22px; height: 22px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                            </div>
-                        </div> 
-                    </div>   
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group" >
-                    <label for="url" >DÍAS HÁBILES:</label>
-                        <div class="controls" > 
-                            <div class="custom-control custom-checkbox">
-                            
-                                <input type="checkbox" class="custom-control-input"  id="f01_chk_habiles" name="f01_chk_habiles" ng-model="datos.f01_chk_habiles"  ng-change="activaHabiles(datos.f01_chk_habiles)" style="width: 22px; height: 22px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                            </div>
-                        </div> 
-                    </div>   
+
+
+                    <input type="radio"  ng-model="datos.f01_todos" id="f01_todos" name="horario" value="TODOS" ng-click="activaTodos('TODOS')">
+                    <label for="f01_todos">TODOS LOS DIAS</label><br>
+                    <input type="radio"  ng-model="datos.f01_habiles" id="f01_habiles" name="horario" value="HABILES" ng-click="activaTodos('HABILES')">
+                    <label for="f01_habiles">DÍAS HÁBILES</label><br>
+                    <input type="radio" ng-model="datos.f01_ninguna" id="f01_ninguna" name="horario" value="NINGUNA" ng-click="activaTodos('NINGUNA')">
+                    <label for="f01_ninguna">NINGUNA</label>
+
+
+
+    
                 </div>
             </div>
             <hr>
@@ -357,7 +348,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_lunes" id="f01_hora_inicio_lunes" name="f01_hora_inicio_lunes" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_inicio_lunes" id="f01_hora_inicio_lunes" name="f01_hora_inicio_lunes" ng-change="activaCheckL('L');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -369,7 +360,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_lunes" id="f01_hora_fin_lunes" name="f01_hora_fin_lunes" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_fin_lunes" id="f01_hora_fin_lunes" name="f01_hora_fin_lunes" ng-change="activaCheckL('L');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -379,14 +370,14 @@
                             </div>
                             <div class="col-md-1">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_lunes" name="f01_chk_lunes" ng-model="datos.f01_chk_lunes"  ng-change="activaLunes(datos.f01_chk_lunes)" style="width: 22px; height: 22px;">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_lunes" name="f01_chk_lunes"  ng-model="datos.f01_chk_lunes"  ng-change="activaLunes(datos.f01_chk_lunes)" style="width: 22px; height: 22px;">
                                     <label class="custom-control-label" for="defaultUnchecked"></label>
                                 </div>
                             </div>
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_martes" id="f01_hora_inicio_martes" name="f01_hora_inicio_martes" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_inicio_martes" id="f01_hora_inicio_martes" name="f01_hora_inicio_martes" ng-change="activaCheckL('M');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -397,7 +388,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_martes" id="f01_hora_fin_martes" name="f01_hora_fin_martes" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_fin_martes" id="f01_hora_fin_martes" name="f01_hora_fin_martes" ng-change="activaCheckL('M');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -413,7 +404,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_miercoles" id="f01_hora_inicio_miercoles" name="f01_hora_inicio_miercoles" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_inicio_miercoles" id="f01_hora_inicio_miercoles" name="f01_hora_inicio_miercoles" ng-change="activaCheckL('MI');"class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -425,7 +416,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_miercoles" id="f01_hora_fin_miercoles" name="f01_hora_fin_miercoles" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_fin_miercoles" id="f01_hora_fin_miercoles" name="f01_hora_fin_miercoles" ng-change="activaCheckL('MI');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -441,7 +432,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_jueves" id="f01_hora_inicio_jueves" name="f01_hora_inicio_jueves" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_inicio_jueves" id="f01_hora_inicio_jueves" name="f01_hora_inicio_jueves" ng-change="activaCheckL('J');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -453,7 +444,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_jueves" id="f01_hora_fin_jueves" name="f01_hora_fin_jueves" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_fin_jueves" id="f01_hora_fin_jueves" name="f01_hora_fin_jueves" ng-change="activaCheckL('J');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -469,7 +460,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_viernes" id="f01_hora_inicio_viernes" name="f01_hora_inicio_viernes" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_inicio_viernes" id="f01_hora_inicio_viernes" name="f01_hora_inicio_viernes" ng-change="activaCheckL('V');" ng-change="activaCheckL('V');"class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -481,7 +472,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_viernes" id="f01_hora_fin_viernes" name="f01_hora_fin_viernes" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_fin_viernes" id="f01_hora_fin_viernes" name="f01_hora_fin_viernes" ng-change="activaCheckL('V');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -497,7 +488,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_sabado" id="f01_hora_inicio_sabado" name="f01_hora_inicio_sabado" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_inicio_sabado" id="f01_hora_inicio_sabado" name="f01_hora_inicio_sabado" ng-change="activaCheckL('S');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -509,7 +500,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_sabado" id="f01_hora_fin_sabado" name="f01_hora_fin_sabado" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_fin_sabado" id="f01_hora_fin_sabado" name="f01_hora_fin_sabado" ng-change="activaCheckL('S');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -525,7 +516,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_domingo" id="f01_hora_inicio_domingo" name="f01_hora_inicio_domingo" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_inicio_domingo" id="f01_hora_inicio_domingo" name="f01_hora_inicio_domingo" ng-change="activaCheckL('D');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -537,7 +528,7 @@
                             <div class="col-md-5">
                                 <div class="form-group" >
                                     <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_domingo" id="f01_hora_fin_domingo" name="f01_hora_fin_domingo" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                        <input  ng-model="datos.f01_hora_fin_domingo" id="f01_hora_fin_domingo" name="f01_hora_fin_domingo" ng-change="activaCheckL('D');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -558,6 +549,7 @@
                 </div>
                 <div class="col-md-1"></div>
             </div>
+
 
 
 

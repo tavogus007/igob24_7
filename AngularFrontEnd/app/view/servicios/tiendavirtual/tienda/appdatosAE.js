@@ -941,7 +941,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           r = JSON.parse(res);
           results = r.success;
           $rootScope.datosTiendaVirtual = results;
-          console.log('$rootScope.datosTiendaVirtual',$rootScope.datosTiendaVirtual);
           if (results.length == 0){
             
           } else {
@@ -1006,7 +1005,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
     }
     $scope.tipoTel1 = dato;
-    console.log('$scope.tipoTel1',$scope.tipoTel1);
     if(dato == "" || dato == undefined || dato == 'undefined'){
       document.getElementById('f01_contacto1_nro').value = '';
       document.getElementById('f01_contacto1_nro').disabled = true;
@@ -1398,7 +1396,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   }
   $scope.activaTodos = function(datos){
     $scope.todos = datos;
-    if($scope.todos == true){
+    if($scope.todos == 'TODOS'){
       if($scope.datos.f01_hora_inicio!='' && $scope.datos.f01_hora_fin!=''){
         $scope.datos.f01_hora_inicio_lunes = $scope.datos.f01_hora_inicio;
         $scope.datos.f01_hora_fin_lunes = $scope.datos.f01_hora_fin;
@@ -1421,17 +1419,39 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.datos.f01_hora_inicio_domingo = $scope.datos.f01_hora_inicio;
         $scope.datos.f01_hora_fin_domingo = $scope.datos.f01_hora_fin;
         $scope.datos.f01_chk_domingo = true;
-        
-
-
-      }else{
-        $scope.datos.f01_chk_todos = false;
-        sweetAlert('', "Seleccionar la hora de inicio y fin de atención", 'warning');
-
       }
-
+      else{
+        sweetAlert('', "Para seleccionar esta opción, primero debe elegir la hora de inicio y de fin de atención", 'warning');
+      }
     }
-    if($scope.todos == false){
+    if($scope.todos == 'HABILES'){
+      if($scope.datos.f01_hora_inicio!='' && $scope.datos.f01_hora_fin!=''){
+        $scope.datos.f01_hora_inicio_lunes = $scope.datos.f01_hora_inicio;
+        $scope.datos.f01_hora_fin_lunes = $scope.datos.f01_hora_fin;
+        $scope.datos.f01_chk_lunes = true;        
+        $scope.datos.f01_hora_inicio_martes = $scope.datos.f01_hora_inicio;
+        $scope.datos.f01_hora_fin_martes = $scope.datos.f01_hora_fin;
+        $scope.datos.f01_chk_martes = true;
+        $scope.datos.f01_hora_inicio_miercoles = $scope.datos.f01_hora_inicio;
+        $scope.datos.f01_hora_fin_miercoles = $scope.datos.f01_hora_fin;
+        $scope.datos.f01_chk_miercoles = true;
+        $scope.datos.f01_hora_inicio_jueves = $scope.datos.f01_hora_inicio;
+        $scope.datos.f01_hora_fin_jueves = $scope.datos.f01_hora_fin;
+        $scope.datos.f01_chk_jueves = true;
+        $scope.datos.f01_hora_inicio_viernes = $scope.datos.f01_hora_inicio;
+        $scope.datos.f01_hora_fin_viernes = $scope.datos.f01_hora_fin;
+        $scope.datos.f01_chk_viernes = true;
+        $scope.datos.f01_hora_inicio_sabado = '';
+        $scope.datos.f01_hora_fin_sabado = '';
+        $scope.datos.f01_chk_sabado = false;
+        $scope.datos.f01_hora_inicio_domingo = '';
+        $scope.datos.f01_hora_fin_domingo = '';
+        $scope.datos.f01_chk_domingo = false;
+      } else{
+        sweetAlert('', "Para seleccionar esta opción, primero debe elegir la hora de inicio y de fin de atención", 'warning');
+      }       
+    }
+    if($scope.todos == 'NINGUNA'){
       $scope.datos.f01_hora_inicio = '';
       $scope.datos.f01_hora_fin = '';
       $scope.datos.f01_hora_inicio_lunes = '';
@@ -1456,73 +1476,22 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_hora_fin_domingo = '';
       $scope.datos.f01_chk_domingo = false;
     }
+
   }
-  $scope.activaHabiles = function(datos){
-    $scope.habiles = datos;
-    if($scope.habiles == true){
-      if($scope.datos.f01_hora_inicio!='' && $scope.datos.f01_hora_fin!=''){
-        $scope.datos.f01_hora_inicio_lunes = $scope.datos.f01_hora_inicio;
-        $scope.datos.f01_hora_fin_lunes = $scope.datos.f01_hora_fin;
-        $scope.datos.f01_chk_lunes = true;        
-        $scope.datos.f01_hora_inicio_martes = $scope.datos.f01_hora_inicio;
-        $scope.datos.f01_hora_fin_martes = $scope.datos.f01_hora_fin;
-        $scope.datos.f01_chk_martes = true;
-        $scope.datos.f01_hora_inicio_miercoles = $scope.datos.f01_hora_inicio;
-        $scope.datos.f01_hora_fin_miercoles = $scope.datos.f01_hora_fin;
-        $scope.datos.f01_chk_miercoles = true;
-        $scope.datos.f01_hora_inicio_jueves = $scope.datos.f01_hora_inicio;
-        $scope.datos.f01_hora_fin_jueves = $scope.datos.f01_hora_fin;
-        $scope.datos.f01_chk_jueves = true;
-        $scope.datos.f01_hora_inicio_viernes = $scope.datos.f01_hora_inicio;
-        $scope.datos.f01_hora_fin_viernes = $scope.datos.f01_hora_fin;
-        $scope.datos.f01_chk_viernes = true;
-        $scope.datos.f01_hora_inicio_sabado = '';
-        $scope.datos.f01_hora_fin_sabado = '';
-        $scope.datos.f01_chk_sabado = false;
-        $scope.datos.f01_hora_inicio_domingo = '';
-        $scope.datos.f01_hora_fin_domingo = '';
-        $scope.datos.f01_chk_domingo = false;
-
-
-      }else{
-        $scope.datos.f01_chk_habiles = false;
-        sweetAlert('', "Seleccionar la hora de inicio y fin de atención", 'warning');
-
-      }
-
-    }
-    if($scope.habiles == false){
-      $scope.datos.f01_hora_inicio = '';
-      $scope.datos.f01_hora_fin = '';
-      $scope.datos.f01_hora_inicio = '';
-      $scope.datos.f01_hora_fin = '';
-      $scope.datos.f01_hora_inicio_lunes = '';
-      $scope.datos.f01_hora_fin_lunes = '';
-      $scope.datos.f01_chk_lunes = false;        
-      $scope.datos.f01_hora_inicio_martes = '';
-      $scope.datos.f01_hora_fin_martes = '';
-      $scope.datos.f01_chk_martes = false;
-      $scope.datos.f01_hora_inicio_miercoles = '';
-      $scope.datos.f01_hora_fin_miercoles = '';
-      $scope.datos.f01_chk_miercoles = false;
-      $scope.datos.f01_hora_inicio_jueves = '';
-      $scope.datos.f01_hora_fin_jueves = '';
-      $scope.datos.f01_chk_jueves = false;
-      $scope.datos.f01_hora_inicio_viernes = '';
-      $scope.datos.f01_hora_fin_viernes = '';
-      $scope.datos.f01_chk_viernes = false;
-    }
-  }
+    
   $scope.activaLunes = function(datos){
     $scope.lunes = datos;
-    if($scope.lunes == true){
+   // if($scope.lunes == true){
       if($scope.datos.f01_hora_inicio_lunes!='' && $scope.datos.f01_hora_fin_lunes!=''){
         $scope.datos.f01_chk_lunes = true;        
       }else{
         $scope.datos.f01_chk_lunes = false;
+        $scope.datos.f01_hora_inicio_lunes = '';
+        $scope.datos.f01_hora_fin_lunes = '';
+
         sweetAlert('', 'Seleccionar la hora de inicio y fin de atención', 'warning');
       }
-    }
+    //}
     if($scope.lunes == false){
       $scope.datos.f01_hora_inicio_lunes = '';
       $scope.datos.f01_hora_fin_lunes = '';
@@ -1536,6 +1505,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.datos.f01_chk_martes = true;        
       }else{
         $scope.datos.f01_chk_martes = false;
+        $scope.datos.f01_hora_inicio_martes = '';
+        $scope.datos.f01_hora_fin_martes = '';
+
         sweetAlert('', "Seleccionar la hora de inicio y fin de atención", 'warning');
       }
     }
@@ -1552,6 +1524,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.datos.f01_chk_miercoles = true;        
       }else{
         $scope.datos.f01_chk_miercoles = false;
+        $scope.datos.f01_hora_inicio_miercoles = '';
+        $scope.datos.f01_hora_fin_miercoles = '';
+
         sweetAlert('', "Seleccionar la hora de inicio y fin de atención", 'warning');
       }
     }
@@ -1568,6 +1543,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.datos.f01_chk_jueves = true;        
       }else{
         $scope.datos.f01_chk_jueves = false;
+        $scope.datos.f01_hora_inicio_jueves = '';
+        $scope.datos.f01_hora_fin_jueves = '';
+
         sweetAlert('', "Seleccionar la hora de inicio y fin de atención", 'warning');
       }
     }
@@ -1584,6 +1562,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.datos.f01_chk_viernes = true;        
       }else{
         $scope.datos.f01_chk_viernes = false;
+        $scope.datos.f01_hora_inicio_viernes = '';
+        $scope.datos.f01_hora_fin_viernes = '';
+
         sweetAlert('', "Seleccionar la hora de inicio y fin de atención", 'warning');
       }
     }
@@ -1600,6 +1581,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.datos.f01_chk_sabado = true;        
       }else{
         $scope.datos.f01_chk_sabado = false;
+        $scope.datos.f01_hora_inicio_sabado = '';
+        $scope.datos.f01_hora_fin_sabado = '';
+
         sweetAlert('', "Seleccionar la hora de inicio y fin de atención", 'warning');
       }
     }
@@ -1616,6 +1600,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.datos.f01_chk_domingo = true;        
       }else{
         $scope.datos.f01_chk_domingo = false;
+        $scope.datos.f01_hora_inicio_domingo = '';
+        $scope.datos.f01_hora_fin_domingo = '';
         sweetAlert('', "Seleccionar la hora de inicio y fin de atención", 'warning');
       }
     }
@@ -1626,7 +1612,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   } 
   $scope.cambiaCategoria = function(datos){
-    console.log('datos',datos);
     $scope.categoria = datos;
     if($scope.categoria == 1){
       $scope.catSeleccionada = 'ALIMENTOS';
@@ -1664,6 +1649,73 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     function(){
       swal("Categoría seleccionada", "Usted seleccionó la categoría:"+$scope.catSeleccionada, "success");
     });
+
+  }
+  $scope.activaCheckL = function(datos){
+   //console.log('datos',datos);
+    if(datos == 'L'){
+      var lunesIni = $scope.datos.f01_hora_inicio_lunes;
+      var lunesFin= $scope.datos.f01_hora_fin_lunes;
+      if(lunesIni != '' && lunesFin != ''){
+        $scope.datos.f01_chk_lunes = true;
+      }else{
+        $scope.datos.f01_chk_lunes = false;
+      }
+    }
+    if(datos == 'M'){
+      var martesIni = $scope.datos.f01_hora_inicio_martes;
+      var martesFin= $scope.datos.f01_hora_fin_martes;
+      if(martesIni != '' && martesFin != ''){
+        $scope.datos.f01_chk_martes = true;
+      }else{
+        $scope.datos.f01_chk_martes = false;
+      }
+    }
+    if(datos == 'MI'){
+      var miercolesIni = $scope.datos.f01_hora_inicio_miercoles;
+      var miercolesFin= $scope.datos.f01_hora_fin_miercoles;
+      if(miercolesIni != '' && miercolesFin != ''){
+        $scope.datos.f01_chk_miercoles = true;
+      }else{
+        $scope.datos.f01_chk_miercoles = false;
+      }
+    }
+    if(datos == 'J'){
+      var juevesIni = $scope.datos.f01_hora_inicio_jueves;
+      var juevesFin= $scope.datos.f01_hora_fin_jueves;
+      if(juevesIni != '' && juevesFin != ''){
+        $scope.datos.f01_chk_jueves = true;
+      }else{
+        $scope.datos.f01_chk_jueves = false;
+      }
+    }
+    if(datos == 'V'){
+      var viernesIni = $scope.datos.f01_hora_inicio_viernes;
+      var viernesFin= $scope.datos.f01_hora_fin_viernes;
+      if(viernesIni != '' && viernesFin != ''){
+        $scope.datos.f01_chk_viernes = true;
+      }else{
+        $scope.datos.f01_chk_viernes = false;
+      }
+    }
+    if(datos == 'S'){
+      var sabadoIni = $scope.datos.f01_hora_inicio_sabado;
+      var sabadoFin= $scope.datos.f01_hora_fin_sabado;
+      if(sabadoIni != '' && sabadoFin != ''){
+        $scope.datos.f01_chk_sabado = true;
+      }else{
+        $scope.datos.f01_chk_sabado = false;
+      }
+    }
+    if(datos == 'D'){
+      var domingoIni = $scope.datos.f01_hora_inicio_domingo;
+      var domingoFin= $scope.datos.f01_hora_fin_domingo;
+      if(domingoIni != '' && domingoFin != ''){
+        $scope.datos.f01_chk_domingo = true;
+      }else{
+        $scope.datos.f01_chk_domingo = false;
+      }
+    }
 
   }
 

@@ -413,6 +413,7 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                 }else{
                     //$scope.archivoPOD = "http://" + $scope.archivoPOD;
                 } */
+                
                 $("#fotpod").modal("show");             
                 $.unblockUI();
             }catch(e){

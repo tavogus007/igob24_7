@@ -305,7 +305,6 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
             });
           });
         });
-
         break;
       case "3":
         tipo_cred = "TRANSFERENCIA";

@@ -82,7 +82,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_hora_inicio_domingo = '';
       $scope.datos.f01_hora_fin_domingo = '';
     } else {
-
+      $scope.obtTiendaVirtualM();
       $scope.datos.f01_nombreTV = data[0].tv_nombrec;
       //textarea
       var recDesc = data[0].tv_descripcionc;
@@ -844,7 +844,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_contacto3_nro = "";
       $scope.datos.f01_contacto3 = "";
       $scope.datos.f01_forma_entrega = "";
-      //$scope.datos.f01_ofertasAE = "";
       $scope.datos.f01_redessocialesAE1_url = "";
       $scope.datos.f01_redessocialesAE1 = "";
       $scope.datos.f01_redessocialesAE2_url = "";
@@ -855,17 +854,15 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_redessocialesAE4 = "";
       $scope.datos.f01_redessocialesAE5_url = "";
       $scope.datos.f01_redessocialesAE5 = "";
-      //$scope.datos.f01_ofertasAE_des1 = "";
-      //$scope.datos.f01_ofertasAE_des2 = "";
-      //$scope.datos.f01_ofertasAE_des3 = "";
-      //$scope.datos.f01_ofertasAE_des4 = ""; 
-      //$scope.datos.f01_ofertasAE_des5 = "";
       $scope.datos.txt_f01_upload1 = "";
       $scope.datos.txt_f01_upload2 = "";
       $scope.datos.txt_f01_upload3 = "";
       $rootScope.archivosProducto = [];
       $rootScope.archivosLogotipo = [];
       $rootScope.archivosEncabezado = [];
+      $rootScope.contactosArray = []; 
+      $rootScope.redesSocialesArray = [];
+      $rootScope.horariosArray = [];
       document.getElementById('txt_f01_upload1').value = "";
       document.getElementById('txt_f01_upload2').value = "";
       document.getElementById('txt_f01_upload3').value = "";
@@ -905,6 +902,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_chk_domingo = false;
       $scope.datos.f01_hora_inicio_domingo = '';
       $scope.datos.f01_hora_fin_domingo = '';
+      document.getElementById("f01_todos").checked = false;
+      document.getElementById("f01_habiles").checked = false;
+      document.getElementById("f01_habiles").checked = false;
       $("#mensaje1").hide();
       $("#mensaje2").hide();
       $("#mensajeT1").hide();
@@ -1422,6 +1422,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       else{
         sweetAlert('', "Para seleccionar esta opción, primero debe elegir la hora de inicio y de fin de atención", 'warning');
+        document.getElementById("f01_todos").checked = false;
       }
     }
     if($scope.todos == 'HABILES'){
@@ -1449,6 +1450,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.datos.f01_chk_domingo = false;
       } else{
         sweetAlert('', "Para seleccionar esta opción, primero debe elegir la hora de inicio y de fin de atención", 'warning');
+        document.getElementById("f01_habiles").checked = false;
       }       
     }
     if($scope.todos == 'NINGUNA'){
@@ -1638,17 +1640,18 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.catSeleccionada = 'INDUSTRIA Y MANUFACTURA';
     }
     swal({
-      title: "Está Ud. Seguro(a)?",
+      title: "¿Está usted seguro(a)?",
       text: "Seleccionó la categoria: " +$scope.catSeleccionada,
       type: "warning",
       showCancelButton: true,
-      confirmButtonClass: "btn-danger",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#DD6B55",
       confirmButtonText: "Aceptar",
-      closeOnConfirm: false
-    },
-    function(){
-      swal("Categoría seleccionada", "Usted seleccionó la categoría:"+$scope.catSeleccionada, "success");
-    });
+      closeOnConfirm: false },
+      
+      function(){
+        swal("Categoría seleccionada", "Usted seleccionó la categoría:"+$scope.catSeleccionada, "success");
+      });
 
   }
   $scope.activaCheckL = function(datos){

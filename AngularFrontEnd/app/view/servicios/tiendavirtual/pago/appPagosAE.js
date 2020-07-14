@@ -168,7 +168,8 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
       return false;
     }
     swal({
-      title: "¿Esta seguro de Inhabilitar el cobro mediante " + tipo_cred1 + "" + valortipoent + "?",
+      title: "",
+      text: "¿Está seguro de inhabilitar el cobro mediante " + tipo_cred1 + "" + valortipoent + "?",
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#dc3545",
@@ -227,12 +228,14 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
         tipo_cred = "BCP";
         valortipoent = "con código " + datos.service_code;
         swal({
-          title: "¿Esta seguro de  " + msgguardar + " mediante pago " + tipo_cred + " " + valortipoent + " ?",
+          title: "",
+          text: "¿Está seguro de  " + msgguardar + " mediante pago " + tipo_cred + " " + valortipoent + "?",
           type: "info",
           showCancelButton: true,
           confirmButtonColor: "#dc3545",
           confirmButtonText: "Si",
           cancelButtonText: "No",
+          customClass: 'swal-wide',
           closeOnConfirm: false
         }, function () {
           $scope.$apply(function () {
@@ -276,7 +279,8 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
         tipo_cred = "RED ENLACE";
         valortipoent = "con perfil id " + datos.profile_id;
         swal({
-          title: "¿Esta seguro de " + msgguardar + " mediante pago " + tipo_cred + "? ",
+          title: "",
+          text: "¿Está seguro de " + msgguardar + " mediante pago " + tipo_cred + "? ",
           type: "info",
           showCancelButton: true,
           confirmButtonColor: "#dc3545",
@@ -307,7 +311,8 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
         tipo_cred = "TRANSFERENCIA";
         valortipoent = "con Nro. de Cuenta " + datos.nro_cuenta;//140220 
         swal({
-          title: "¿Esta seguro de " + msgguardar + " mediante pago " + tipo_cred + "? ",
+          title: "",
+          text: "¿Está seguro de " + msgguardar + " mediante pago " + tipo_cred + "?",
           type: "info",
           showCancelButton: true,
           confirmButtonColor: "#dc3545",
@@ -318,8 +323,8 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           if (swalresp) {
             if ($scope.textbtnguardar != "Modificar") {
               swal({
-                title: "Esta habilitando el número de cuenta " + datos.nro_cuenta + " de la entidad financiera " + datos.ent_financiera,
-                text: "¿Esta seguro?",
+                title: "",
+                text: "Esta habilitando el número de cuenta " + datos.nro_cuenta + " de la entidad financiera " + datos.ent_financiera + ". ¿Está seguro?",
                 type: "info",
                 showCancelButton: true,
                 confirmButtonColor: "#dc3545",

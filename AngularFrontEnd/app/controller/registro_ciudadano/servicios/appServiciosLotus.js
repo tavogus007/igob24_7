@@ -945,7 +945,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             if(typeof(archivo) != 'undefined'){
                 var tipoDocci = archivo.name;
                 var nameArrayci = tipoDocci.split('.');
-                tipoDocci = nameArrayci[nameArrayci.length-1];
+                tipoDocci = nameArrayci[nameArrayci.length-1];                
                 if (archivo.size <= 15000000) {
                     if(tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm' || tipoDocci == 'PNG' || tipoDocci == 'JPG' || tipoDocci == 'JPEG' || tipoDocci == 'BMP' || tipoDocci == 'GIF' || tipoDocci == 'PDF' || tipoDocci == 'DOCX' || tipoDocci == 'DOCXLM'){
                         nombreNuevo = 'adjunto_'+fechaNueva+'.'+tipoDocci;
@@ -966,7 +966,16 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                         document.getElementById(idFile).value = '';
                     }
                 }else{
-                    swal('Advertencia', 'El tamaño del archivo es muy grande', 'error');
+                    //swal('Advertencia', 'El tama&ntilde;o del archivo es muy grande', 'error');
+                    swal({
+                        title:'Advertencia',
+                        text: "El tama&ntilde;o del archivo es muy grande",
+                        html: true,
+                        type: "error",
+                        customClass: 'swal-wide',
+                        showCancelButton: true,
+                        showConfirmButton:false
+                    });                    
                 }
             }else{
             }

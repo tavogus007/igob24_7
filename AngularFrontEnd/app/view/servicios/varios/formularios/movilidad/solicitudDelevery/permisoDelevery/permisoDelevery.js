@@ -20,6 +20,11 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.txtAdjuntoFotografia = '';
     $scope.botones_visibles = true;
     $scope.div_agregar_vehiculos_placa = true;
+    $scope.des_servicio_uno = false;
+    $scope.des_servicio_dos = false;
+    $scope.entrega_propio = false;
+    $scope.entrega_terceros = false;
+    $scope.entrega_ambos = false;
     $scope.tipovehiculo_privado = {};
     $scope.hardocore = '[{"tipo_vehiculo":"Motocicleta","placa":"3935NBN","CI":"9110200"}]';
     $scope.div_escoger_servicio = false;
@@ -31,10 +36,8 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
       $scope.datos = JSON.parse(data);
       if($scope.datos.INF_ARRAY_AUTOS == undefined){
-          console.log("ingreso undefined");
         $scope.trmAutos = [];
       }else{
-        console.log("recupero");
         $scope.trmAutos=  JSON.parse($scope.datos.INF_ARRAY_AUTOS);
       }
       $scope.tblAutos.reload();
@@ -45,10 +48,15 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
       $scope.enviado = sessionService.get('ESTADO');
       if($scope.enviado == 'SI'){
         $scope.desabilitado = true;
+        $scope.ocultadorRadios($scope.datos);
       }else{
         $scope.desabilitado = false;
+        $scope.des_servicio_uno = false;
+        $scope.des_servicio_dos = false;
+        $scope.entrega_propio = false;
+        $scope.entrega_ambos = false;
+        $scope.entrega_terceros = false;
       }
-     // $scope.docdinamicos($scope.datos.PER_TRA_DESCRIP_FOR);
       $("#valida").hide();
       $("#valida1").hide();
       document.getElementById('gu').disabled=true;
@@ -76,7 +84,6 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             results = JSON.parse(results);
             results = results.success;
             if(results.length > 0){
-              //$scope.tramitesCiudadano();
               alertify.success("Formulario almacenado");
               document.getElementById('gu').disabled=false;     
               $.unblockUI();
@@ -123,8 +130,6 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         },message: "Espere un momento por favor ..." }); 
         setTimeout(function(){
           $.blockUI();
-          //////////////////////
-          console.log("datos",datos);
           $scope.INF_GRILLA = [];
           var encabezado = [];
           var indice = 1;
@@ -144,8 +149,6 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             indice = indice + 1;
           });
           datos.INF_GRILLA=encabezado;
-          //datos.infracciones = dataInf;
-          //////////////////////
           var f = new Date();  
           datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
           datos.g_tipo_tramite = 'PER_DEL';
@@ -361,7 +364,6 @@ $scope.cambiarFile = function(obj, valor){
             var docextension = nomdocumento.split('.');
             var ext_doc = docextension[docextension.length - 1].toLowerCase();
             if (  arraydoc.indexOf(ext_doc) >= 0 ) {
-           // if ( ext_doc == 'xls' || ext_doc == 'xlsx' ) {
                     if (objarchivo.size <= 500000) {
                         var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
                         fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
@@ -509,7 +511,6 @@ $scope.cambiarFile = function(obj, valor){
             var docextension = nomdocumento.split('.');
             var ext_doc = docextension[docextension.length - 1].toLowerCase();
             if (  arraydoc.indexOf(ext_doc) >= 0 ) {
-           // if ( ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg" ) {
                     if (objarchivo.size <= 500000) {
                         var nombreNuevo = nombre + '_'+fechaNueva+'.'+ext_doc;                      
                         fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
@@ -822,7 +823,6 @@ $scope.adjuntoTres = function(){
                 resultadoApi = JSON.parse(resultado);                
                 if (resultadoApi.success) {
                     var response    =   resultadoApi;
-                    console.log(response,"response");
                     if(response.success.dataSql.length > 0){
                         $scope.div_escoger_servicio = true;
                         $scope.div_actividad_economica = true;
@@ -831,9 +831,7 @@ $scope.adjuntoTres = function(){
                             var desconcatenar = response.success.dataSql[i].Descripcion;
                             var fechaServ   = (desconcatenar).split(' ');
                             if(fechaServ[4] == 'ALIMENTOS'){
-                                console.log('INGRESO');
                                 $scope.trmUsuario.push(response.success.dataSql[i]);
-                                console.log("$scope.trmUsuario",$scope.trmUsuario);
                                 $scope.tblTramites.reload();
                             }
                         }
@@ -931,8 +929,6 @@ $scope.adjuntoTres = function(){
 
     ///validacion final  
     $scope.verificacionFinalDeCamposFinal = function (data) {
-        console.log("datoooooooooooooooos",data);
-        console.log("trmAutos",$scope.trmAutos);
         if($scope.datos.PER_TRA_REG_TRANS == undefined || $scope.datos.PER_TRA_REG_TRANS == 'undefined'){
             swal('', "Ingrese el tipo de registro Transitorio", 'warning');
         }else if($scope.datos.PER_TRA_AE_PMC == undefined || $scope.datos.PER_TRA_AE_PMC == 'undefined'){
@@ -1056,7 +1052,6 @@ $scope.adjuntoTres = function(){
         $('#msgformularioN').html($scope.msgformularioN);
     }
     $scope.adicionarVehiculos = function(data){
-        console.log("sataaaaaaaaa",data);
         if(data == undefined){
             swal('', 'Agrege la informacion para adjuntar los vehículos', 'warning');
         }else if(data.tipo_vehiculo == '' || data.tipo_vehiculo == undefined){
@@ -1110,7 +1105,6 @@ $scope.adjuntoTres = function(){
         }
     }
     $scope.docdinamicos = function(data){
-        //$scope.botones = "mostrar";
         if(data == 'PROPIO'){
             $scope.div_datos_A_llenar=true;
             $scope.div_adjunto_contrato_con_empresa = false;
@@ -1134,11 +1128,34 @@ $scope.adjuntoTres = function(){
             }
     }
     $scope.cambioCombo = function(data){
-        console.log("data combo",data);
         if(data == 'BICICLETA'){
             $scope.div_agregar_vehiculos_placa = false;
         }else{
             $scope.div_agregar_vehiculos_placa = true;
+        }
+    }
+    $scope.ocultadorRadios = function(data){
+        if(data.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO'){
+            $scope.des_servicio_uno = false;
+            $scope.des_servicio_dos = true;
+            if(data.PER_TRA_DESCRIP_FOR == 'PROPIO'){
+                $scope.entrega_propio = false;
+                $scope.entrega_ambos = true;
+                $scope.entrega_terceros = true;
+            }
+            if(data.PER_TRA_DESCRIP_FOR == 'TERCEROS'){
+                $scope.entrega_propio = true;
+                $scope.entrega_ambos = true;
+                $scope.entrega_terceros = false;
+            }
+            if(data.PER_TRA_DESCRIP_FOR == 'AMBOS'){
+                $scope.entrega_propio = true;
+                $scope.entrega_ambos = false;
+                $scope.entrega_terceros = true;
+            }
+        }else{
+            $scope.des_servicio_uno = true;
+            $scope.des_servicio_dos = false;
         }
     }
   }

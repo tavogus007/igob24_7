@@ -443,14 +443,14 @@
                       <div class="col-md-6">
                         <div class="form-check">
                           <label class="tamañoLabel">
-                            <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS" ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="REGISTRO_SERVICIO_PRIVADO"> <span class="label-text"></span>
+                            <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS" ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="REGISTRO_SERVICIO_PRIVADO" ng-disabled="des_servicio_uno"> <span class="label-text"></span>
                           </label>REGISTRO DE SERVICIO PRIVADO TRANSITORIO DELIVERY
                         </div>
                     </div>    
                         <div class="col-md-6">
                             <div class="form-check">
                               <label class="tamañoLabel">
-                                <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS" ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="REGISTRO_OPERADOR"> <span class="label-text"></span>
+                                <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS" ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="REGISTRO_OPERADOR" ng-disabled="des_servicio_dos"> <span class="label-text"></span>
                               </label>REGISTRO DE OPERADOR PARA EL SERVICIO PRIVADO TRANSITORIO DELIVERY
                             </div>
                         </div>
@@ -544,21 +544,21 @@
                             <div class="col-md-4">
                                 <div class="form-check">
                                   <label class="tamañoLabel">
-                                    <input type="radio" name="PER_TRA_DESCRIP_FOR" ng-model="datos.PER_TRA_DESCRIP_FOR" ng-change="docdinamicos(datos.PER_TRA_DESCRIP_FOR);" value="PROPIO" > <span class="label-text"></span>
+                                    <input type="radio" name="PER_TRA_DESCRIP_FOR" ng-model="datos.PER_TRA_DESCRIP_FOR" ng-change="docdinamicos(datos.PER_TRA_DESCRIP_FOR);" value="PROPIO" ng-disabled="entrega_propio"> <span class="label-text"></span>
                                   </label>PROPIO
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-check">
                                   <label class="tamañoLabel">
-                                    <input type="radio" name="PER_TRA_DESCRIP_FOR" ng-model="datos.PER_TRA_DESCRIP_FOR" ng-change="docdinamicos(datos.PER_TRA_DESCRIP_FOR);" value="TERCEROS"> <span class="label-text"></span>
+                                    <input type="radio" name="PER_TRA_DESCRIP_FOR" ng-model="datos.PER_TRA_DESCRIP_FOR" ng-change="docdinamicos(datos.PER_TRA_DESCRIP_FOR);" value="TERCEROS" ng-disabled="entrega_terceros"> <span class="label-text"></span>
                                   </label>TERCEROS
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-check">
                                   <label class="tamañoLabel">
-                                    <input type="radio" name="PER_TRA_DESCRIP_FOR" ng-model="datos.PER_TRA_DESCRIP_FOR" ng-change="docdinamicos(datos.PER_TRA_DESCRIP_FOR);" value="AMBOS"> <span class="label-text"></span>
+                                    <input type="radio" name="PER_TRA_DESCRIP_FOR" ng-model="datos.PER_TRA_DESCRIP_FOR" ng-change="docdinamicos(datos.PER_TRA_DESCRIP_FOR);" value="AMBOS" ng-disabled="entrega_ambos"> <span class="label-text"></span>
                                   </label>AMBOS
                                 </div>
                             </div>                                 

@@ -181,7 +181,7 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                     $scope.vistaInfoGenesis = "mostrar";
                     swal({
                         type: "info",
-                        title: "Nota!",
+                        title: "",
                         text: "No logramos encontrar información para ver sus transacciones",
                         confirmButtonText: "OK"
                     });
@@ -279,13 +279,13 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
         }else{
 
             swal({
-                title: "¿Esta seguro de validar y aceptar la boleta de transferencia?",
-                text: "Si confirma, el pedido pasara a un estado de pagado",
+                title: "",
+                text: "¿Está seguro de validar y aceptar la boleta de transferencia?",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonClass: "btn-danger",
-                confirmButtonText: "Confirmar",
-                cancelButtonText: "Cancelar",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
                 closeOnConfirm: false,
                 closeOnCancel: true
               },
@@ -299,8 +299,21 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                     datacambiaData.observacion     = "";
                     datacambiaData.pagoCambioEstado(function (resultado) {
                         var resultadoApi = JSON.parse(JSON.parse(resultado));
-                        console.log("respuesta update ", resultadoApi);
+                        //console.log("respuesta update ", resultadoApi);
                         if (resultadoApi.respuesta_pago != "00") {
+                            if ( $("#fechaIni").val() != "" && $("#fechaFin").val() != "") {
+                                $scope.fechaIni = $("#fechaIni").val();
+                                $scope.fechaFin = $("#fechaFin").val();
+                                $scope.fechaIni = $scope.fechaIni.split("/");
+                                $scope.fechaIni = $scope.fechaIni[2] + "-" + $scope.fechaIni[1] + "-" + $scope.fechaIni[0];
+                                $scope.fechaFin = $scope.fechaFin.split("/");
+                                $scope.fechaFin = $scope.fechaFin[2] + "-" + $scope.fechaFin[1] + "-" + $scope.fechaFin[0];
+                            }else {
+                                $scope.fechaIni = obtFechaActual.obtenerFechaActual();
+                                $scope.fechaFin = $scope.fechaIni;
+                            }
+                            $scope.lstMistransacciones($scope.fechaIni, $scope.fechaFin); 
+
                             swal("", "Se confirmo la boleta de transferencia correctamente.", "success");
                             $("#fotpod").modal("hide");             
 
@@ -322,14 +335,14 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                 alertify.error("Describa la observación por la que se esta rechazando por favor");
             }else {
                 swal({
-                    title: "¿Esta seguro de realizar la observación?",
-                    text: "Si confirma la observación el pedido pasara a un estado de rechazo",
+                    title: "",
+                    text: "¿Está seguro de realizar la observación?",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
                     cancelButtonClass: "btn-success",
-                    confirmButtonText: "Confirmar",
-                    cancelButtonText: "Cancelar",
+                    confirmButtonText: "Si",
+                    cancelButtonText: "No",
                     closeOnConfirm: false,
                     closeOnCancel: true
                   },
@@ -342,12 +355,26 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                         datacambiaData.estado          = "RECHAZADO";
                         datacambiaData.observacion     = descripcion;
                         datacambiaData.pagoCambioEstado(function (resultado) {
-                            console.log("rrr ", resultado);
+                            //console.log("rrr ", resultado);
                             var resultadoApi = JSON.parse(JSON.parse(resultado));
                             //console.log("respuesta update ", JSON.parse(resultadoApi));
                             if (resultadoApi.respuesta_pago != "00") {
-                                $("#fotpod").modal("hide");             
+                                $("#fotpod").modal("hide"); 
+                                if ( $("#fechaIni").val() != "" && $("#fechaFin").val() != "") {
+                                    $scope.fechaIni = $("#fechaIni").val();
+                                    $scope.fechaFin = $("#fechaFin").val();
+                                    $scope.fechaIni = $scope.fechaIni.split("/");
+                                    $scope.fechaIni = $scope.fechaIni[2] + "-" + $scope.fechaIni[1] + "-" + $scope.fechaIni[0];
+                                    $scope.fechaFin = $scope.fechaFin.split("/");
+                                    $scope.fechaFin = $scope.fechaFin[2] + "-" + $scope.fechaFin[1] + "-" + $scope.fechaFin[0];
+                                }else {
+                                    $scope.fechaIni = obtFechaActual.obtenerFechaActual();
+                                    $scope.fechaFin = $scope.fechaIni;
+                                }
+                                $scope.lstMistransacciones($scope.fechaIni, $scope.fechaFin);            
                                 swal("", "La observación se realizo correctamente.", "success");
+
+
                             } else {
                                 console.log("respuesta update ", resultadoApi);
                             }
@@ -381,12 +408,13 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                 var extPod        =  $scope.urlImagenfile.split("?app_name=todoangular");
                 extPod            =  extPod[0].split(".");
                 extPod            =  extPod[extPod.length-1];
-                if(extPod == 'pdf' || extPod == 'docx' ||  extPod == 'docxlm' || extPod == 'zip'){
+                /* if(extPod == 'pdf' || extPod == 'docx' ||  extPod == 'docxlm' || extPod == 'zip'){
                     window.open($scope.archivoPOD, "_blank");
                 }else{
-                    $scope.archivoPOD = "http://" + $scope.archivoPOD;
-                    $("#fotpod").modal("show");             
-                }
+                    //$scope.archivoPOD = "http://" + $scope.archivoPOD;
+                } */
+                
+                $("#fotpod").modal("show");             
                 $.unblockUI();
             }catch(e){
               console.log("error",e);

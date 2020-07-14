@@ -1330,14 +1330,14 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
       
      $scope.$on('api:ready',function(){
         $scope.recuperandoDatosInicialesCiudadano();
-        $scope.ListadoTramitesCiudadano();
+        //$scope.ListadoTramitesCiudadano();
         $scope.obtenerContribuyente();
        
     });
 
     $scope.inicioServiciosP = function () {
        $scope.recuperandoDatosInicialesCiudadano();
-       $scope.ListadoTramitesCiudadano();
+       //$scope.ListadoTramitesCiudadano();
        $scope.obtenerContribuyente();
        $scope.macrodistritos();
     };

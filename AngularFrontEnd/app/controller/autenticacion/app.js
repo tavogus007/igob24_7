@@ -198,11 +198,36 @@ app.service('fileUpload1', ['$http', function ($http) {
             headers: {'Content-Type': undefined}
         })
         .success(function(){
+            console.log("ADJUNTO REGISTRADO CORRECTAMENTE");
             $.unblockUI();
         })
         .error(function(){
+            console.log("ERROR REGISTRADO CORRECTAMENTE");
             $.unblockUI();
         });
+    }
+}]);
+
+app.factory("fileUploadcorr", ['$http', function($http){    
+    return {
+        uploadFileToUrl1: function(file, uploadUrl,nombre){
+            $.blockUI();
+            var fd = new FormData();
+            fd.append('files', file);
+            return ($http.post(uploadUrl + nombre + "?app_name=todoangular", fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).success(function(resp){
+                $.unblockUI();
+                console.log("ARCHIVO ADJUNTADO :", resp);
+                return 'resp';
+                
+            }).error(function(err){
+                $.unblockUI();
+                console.log("ERROR AL ADJUNTAR ARCHIVO :", err);
+                return 'err';                
+            }));
+        }
     }
 }]);
 

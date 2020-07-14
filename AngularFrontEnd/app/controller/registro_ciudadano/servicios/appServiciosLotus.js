@@ -1,4 +1,4 @@
-app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload,fileUpload1, obtFechaActual,wsRgistrarPubliciadad) {
+app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload,fileUpload1, obtFechaActual,wsRgistrarPubliciadad, fileUploadcorr) {
     $scope.imageCST = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     $scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     $scope.tablaTramites        =   {};
@@ -937,7 +937,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             console.log(hora_,555);
             fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1]+hora_[2];
         });
-
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         var sDirTramite = sessionService.get('IDTRAMITE');
         $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
@@ -950,11 +949,17 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 if(tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm'){
                     nombreNuevo = 'adjunto_'+fechaNueva+'.'+tipoDocci;
                     url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreNuevo + "?app_name=todoangular";
-                    console.log(url,124);
-                    document.getElementById('href_f01_upload_'+idFile).href = url;
-                    document.getElementById(idFile).value = nombreNuevo;
-                    document.getElementById(idFile+'_url').value = url;
-                    fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
+                    fileUploadcorr.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo).then(function(data){
+                        if(data.status == 200){
+                            console.log(url,124);
+                            document.getElementById('href_f01_upload_'+idFile).href = url;
+                            document.getElementById(idFile).value = nombreNuevo;
+                            document.getElementById(idFile+'_url').value = url;                        
+                            console.log("RESPUESTA DATA ADJUNTOS 23 :", data);
+                        }else{
+                            swal('Advertencia', 'Problemas al cargar el adjunto seleccionado', 'error');   
+                        } 
+                    });
                 }else{
                     swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                     document.getElementById(idFile).value = '';

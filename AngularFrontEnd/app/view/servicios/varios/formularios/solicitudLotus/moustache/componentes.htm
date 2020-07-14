@@ -157,15 +157,16 @@
 
     <script type="text/javascript">
         var sidFile =   "";
-    	$('.custom-upload input[type=file]').change(function(){            
-            $(this).next().find('input').val($(this).val());
-            cambiarFile(this, $(this).val());
+    	$('#f01_upload_{{campo}}').change(function(){
+            cambiarFile(this, $(this).val());            
         });
+        
         function cambiarFile(obj, valor){
             var datos = new Array();
             datos[obj.name] = valor;
             subirRequisitos(obj, valor);
         };   
+
         function ver(id,id2,btn){
             if(dataIgob.POC_ADJUNTOS_url != undefined){
                 document.getElementById(id).href=dataIgob.POC_ADJUNTOS_url;
@@ -196,6 +197,7 @@
                 angular.element(document.getElementById("id_serviciosLotusController")).scope().almacenarRequisitos(rMisDocs, sidFile);
             }
         };
+
         function ejecutarFile(filename, idfile){            
             var sid =   document.getElementById(filename);
             sidFile =   idfile;

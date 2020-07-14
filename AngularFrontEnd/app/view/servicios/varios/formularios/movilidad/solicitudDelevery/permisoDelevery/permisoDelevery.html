@@ -619,11 +619,9 @@
                           ng-model="datosV.tipo_vehiculo"
                           class="form-control"
                           ng-change="cambioCombo(datosV.tipo_vehiculo);"
+                          ng-options="ope.nombre as ope.nombre for ope in tipovehiculo_privado"
                           ng-disabled="desabilitado">
                           <option value="">--Seleccionar--</option>
-                          <option value="AUTOMOVIL">AUTOMOVIL</option>
-                          <option value="BICICLETA">BICICLETA</option>
-                          <option value="MOTOCICLETA">MOTOCICLETA</option>
                           </select>
                         </div>
                     </div>

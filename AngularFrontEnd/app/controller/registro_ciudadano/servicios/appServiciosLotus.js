@@ -946,23 +946,27 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 var tipoDocci = archivo.name;
                 var nameArrayci = tipoDocci.split('.');
                 tipoDocci = nameArrayci[nameArrayci.length-1];
-                if(tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm'){
-                    nombreNuevo = 'adjunto_'+fechaNueva+'.'+tipoDocci;
-                    url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreNuevo + "?app_name=todoangular";
-                    fileUploadcorr.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo).then(function(data){
-                        if(data.status == 200){
-                            console.log(url,124);
-                            document.getElementById('href_f01_upload_'+idFile).href = url;
-                            document.getElementById(idFile).value = nombreNuevo;
-                            document.getElementById(idFile+'_url').value = url;                        
-                            console.log("RESPUESTA DATA ADJUNTOS 23 :", data);
-                        }else{
-                            swal('Advertencia', 'Problemas al cargar el adjunto seleccionado', 'error');   
-                        } 
-                    });
+                if (archivo.size <= 15000000) {
+                    if(tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm' || tipoDocci == 'PNG' || tipoDocci == 'JPG' || tipoDocci == 'JPEG' || tipoDocci == 'BMP' || tipoDocci == 'GIF' || tipoDocci == 'PDF' || tipoDocci == 'DOCX' || tipoDocci == 'DOCXLM'){
+                        nombreNuevo = 'adjunto_'+fechaNueva+'.'+tipoDocci;
+                        url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreNuevo + "?app_name=todoangular";
+                        fileUploadcorr.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo).then(function(data){
+                            if(data.status == 200){
+                                console.log(url,124);
+                                document.getElementById('href_f01_upload_'+idFile).href = url;
+                                document.getElementById(idFile).value = nombreNuevo;
+                                document.getElementById(idFile+'_url').value = url;                        
+                                console.log("RESPUESTA DATA ADJUNTOS 23 :", data);
+                            }else{
+                                swal('Advertencia', 'Problemas al cargar el adjunto seleccionado', 'error');   
+                            } 
+                        });
+                    }else{
+                        swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                        document.getElementById(idFile).value = '';
+                    }
                 }else{
-                    swal('Advertencia', 'El adjunto no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
-                    document.getElementById(idFile).value = '';
+                    swal('Advertencia', 'El tamaño del archivo es muy grande', 'error');
                 }
             }else{
             }

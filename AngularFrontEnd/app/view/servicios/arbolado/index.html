@@ -1,0 +1,1835 @@
+<script type="text/javascript">
+$('.modal').on('shown.bs.modal', function() {
+  $(this).before($('.modal-backdrop'));
+  $(this).css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 1);
+});
+
+    $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+
+</script>
+<style>
+
+@media only screen and (max-width: 800px) {
+    #no-more-tables table, 
+    #no-more-tables thead, 
+    #no-more-tables tbody, 
+    #no-more-tables th, 
+    #no-more-tables td, 
+    #no-more-tables tr { 
+        display: block; 
+    }
+    #no-more-tables thead tr { 
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    #no-more-tables tr { border: 1px solid #ccc; }
+    #no-more-tables td { 
+        /* Behave  like a "row" */
+       /* border: none;*/
+        border-bottom: 1px solid #eee; 
+        position: relative;
+        padding-left: 35%; 
+        white-space: normal;
+        text-align:left;
+    }
+    #no-more-tables td:before { 
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%; 
+        padding-right: 10px; 
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
+    #no-more-tables td:before { content: attr(data-title); }
+}
+    
+</style>
+
+<!-- TIPOS OBLIGATORIO -->
+<style>
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select[value="-1"]:optional {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+    
+</style>
+
+
+
+<style>
+.custom-upload {
+    position: relative;
+    height: 40px;
+    width: 100%;
+    margin:30px;
+}
+
+.custom-upload input[type=file]
+{
+    outline:none;
+    position: relative;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width:85%;
+    height:100%;
+
+}
+
+.custom-upload .fake-file
+{
+    background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 85%;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    line-height: 100%;
+}
+
+.custom-upload .fake-file input
+{
+    font-size:16px;
+    height:40px;
+    width:85%;
+}
+.box2{
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+
+.ejemplo3 {
+        background-color:white;
+        border: 2px solid ;
+        color: #6F7072;
+        margin: 1px auto;
+        padding: 10px;
+        text-align: center;
+        width: 350px;
+
+        }
+ table.one
+ {border-collapse:collapse;
+            width:100%;
+            border-spacing:10px;
+             /*border-color:#6F7072;*/
+        }
+ tr.color {
+       background-color:#6F7072;
+        /*border: green 5px solid; */
+       }
+    td.color2 {
+       border: #FEBF00 5px solid;
+       background-color:#FEBF00;
+       border-width:5px;
+       padding:1px;
+   }
+   td.colorCA {
+       border: #FEBF00 5px solid;
+       background-color:#FFFFFF;
+        border-width:5px;
+
+        padding:1px;
+    }
+    td.color22 {
+       border: #FEBF00 5px solid;
+       background-color:#FEBF00;
+       border-width:5px;
+
+       padding:1px;
+    }
+
+
+    .custom-upload {
+        position: relative;
+        height: 40px;
+        width: 100%;
+        margin:30px;
+    }
+    .custom-upload input[type=file]
+    {
+        outline:none;
+        position: relative;
+        text-align: right;
+        -moz-opacity:0 ;
+        filter:alpha(opacity: 0);
+        opacity: 0;
+        z-index: 2;
+        width:85%;
+        height:100%;
+
+    }
+    .custom-upload .fake-file
+    {
+        background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 85%;
+        padding: 0;
+        margin: 0;
+        z-index: 1;
+        line-height: 100%;
+    }
+    .custom-upload .fake-file input
+    {
+        font-size:16px;
+        height:40px;
+        width:85%;
+    }
+
+
+</style>
+
+<style>
+.caja {
+position: relative;
+margin: 5px auto;
+height:10px;
+}
+.info {
+position: absolute; /*Info sobre la imagen*/
+top: 20%;
+left: 70%; /*Desplazamos a partir de la esquina superior izquierda*/
+zoom: 1;
+filter: alpha(opacity=0); /*Opacidad Para IE */
+opacity: 0; /*Inicialmente transparente */
+padding: 5px;
+background: black;
+border:#FFA533 2px solid;
+padding: 20px;
+font-size:16px;
+-moz-transition:all ease .8s;
+-webkit-transition:all ease .8s ;
+transition:all ease .8s;
+z-index:1;
+}
+.caja:hover .info {
+filter: alpha(opacity=80);
+opacity: .8;
+}
+
+.caja1 {
+position: relative;
+margin: 10px auto;
+}
+.info {
+position: absolute; /*Info sobre la imagen*/
+top: 20%;
+left: 70%; /*Desplazamos a partir de la esquina superior izquierda*/
+zoom: 1;
+filter: alpha(opacity=0); /*Opacidad Para IE */
+opacity: 0; /*Inicialmente transparente */
+padding: 5px;
+background: black;
+border:#FFA533 2px solid;
+padding: 20px;
+font-size:16px;
+-moz-transition:all ease .8s;
+-webkit-transition:all ease .8s;
+transition:all ease .8s;
+z-index:1;
+}
+.caja1:hover .info {
+filter: alpha(opacity=80);
+opacity: .8;
+}
+
+.caja2 {
+position: relative;
+margin: 10px auto;
+}
+.info {
+position: absolute; /*Info sobre la imagen*/
+top: 20%;
+left: 70%; /*Desplazamos a partir de la esquina superior izquierda*/
+zoom: 1;
+filter: alpha(opacity=0); /*Opacidad Para IE */
+opacity: 0; /*Inicialmente transparente */
+padding: 5px;
+background: black;
+border:#FFA533 2px solid;
+padding: 20px;
+font-size:16px;
+-moz-transition:all ease .8s;
+-webkit-transition:all ease .8s ;
+transition:all ease .8s;
+z-index:1;
+}
+.caja2:hover .info {
+filter: alpha(opacity=80);
+opacity: .8;
+}
+
+.custom-upload {
+    position: relative;
+    height: 40px;
+    width: 100%;
+    margin:30px;
+}
+.custom-upload input[type=file]
+{
+    outline:none;
+    position: relative;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width:85%;
+    height:100%;
+
+}
+.custom-upload .fake-file
+{
+    background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 85%;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    line-height: 100%;
+}
+.custom-upload .fake-file input
+{
+    font-size:16px;
+    height:40px;
+    width:85%;
+}
+</style>
+
+<style>
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    select:required:invalid {
+        border: 1px solid red;
+    }
+    select:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {        
+        padding-left: 8px;
+    }    
+
+
+</style>
+
+
+
+<style>
+.custom-upload {
+    position: relative;
+    height: 40px;
+    width: 100%;
+    margin:30px;
+}
+
+.custom-upload input[type=file]
+{
+    outline:none;
+    position: relative;
+    text-align: right;    
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width:85%;
+    height:100%;
+    
+}
+
+.custom-upload .fake-file
+{
+    background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 85%;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    line-height: 100%;
+}
+
+.custom-upload .fake-file input
+{
+    font-size:16px;
+    height:40px;
+    width:85%;
+}
+.box2{
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+
+.ejemplo3 {
+        background-color:white;
+        border: 2px solid ;
+        color: #6F7072;
+        margin: 1px auto;
+        padding: 10px;
+        text-align: center;
+        width: 350px;
+
+        }
+ table.one 
+ {border-collapse:collapse;
+            width:100%;
+            border-spacing:10px;
+             /*border-color:#6F7072;*/
+        }
+ tr.color {
+       background-color:#6F7072;
+        /*border: green 5px solid; */
+       }
+    td.color2 {
+       border: #FEBF00 5px solid;
+       background-color:#FEBF00;
+       border-width:5px;
+       padding:1px;
+   }
+   td.colorCA {
+       border: #FEBF00 5px solid;
+       background-color:#FFFFFF;
+        border-width:5px;
+        
+        padding:1px;
+    }
+    td.color22 {
+       border: #FEBF00 5px solid;
+       background-color:#FEBF00;
+       border-width:5px;
+       
+       padding:1px;
+    }
+
+</style>
+
+
+   
+
+<script type="text/javascript">
+    function soloNumericoCelular(sValor){
+        Numer=parseInt(sValor);
+        if (isNaN(Numer)){
+            return "";
+        }else{
+            var digits = ("" + Numer).split("");
+            if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6)){
+                return Numer;
+            }else{
+                return "";
+            }
+        }
+    }
+    function valNumeroCelular(Control){
+        Control.value = soloNumericoCelular(Control.value);
+    }
+    //VALORES NUMERICOS
+    function soloNumerico(variable){
+        console.log(variable);
+        Numer=parseInt(variable);
+        console.log(Numer);
+        if (isNaN(Numer)){
+                return "";
+        }
+        return Numer;
+    }
+
+    function valNumero(Control){
+        console.log("control", Control.value);
+        Control.value=soloNumerico(Control.value);
+        verificar(Control.value)
+    }
+
+
+    function verificarnronn(){
+        tipo = f_obtener_valor('NNA_CANT_FEM');
+        if(tipo == '')
+            tipo = 0;
+        tipo2 = f_obtener_valor('NNA_CANT_MAS');
+        if(tipo2=='')
+            tipo2=0;
+        resultado = parseInt(tipo)+parseInt(tipo2);
+        document.getElementById('NNA_CANT_NN').value = resultado;
+    }
+
+    function verificarnroa(){
+        tipo = f_obtener_valor('NNA_CAN_MAS');
+        if(tipo == '')
+            tipo = 0;
+        tipo2 = f_obtener_valor('NNA_CAN_FEM');
+        if(tipo2=='')
+            tipo2=0;
+        resultado = parseInt(tipo)+parseInt(tipo2);
+        document.getElementById('NNA_NRO_ADO').value = resultado;
+    }
+
+    function verificartotal(){
+        tipo = f_obtener_valor('NNA_CANT_NN');
+        if(tipo == '')
+            tipo = 0;
+        tipo2 = f_obtener_valor('NNA_NRO_ADO');
+        if(tipo2=='')
+            tipo2=0;
+        resultado = parseInt(tipo)+parseInt(tipo2);
+        document.getElementById('NNA_CANT_TOTAL').value = resultado;
+    }
+</script>
+<!-- OCULTANDO COMBO TIPO DE PERSONA -->
+<script type="text/javascript">
+    var cboTipoCon = document.getElementById("tipo_contribuyente");
+    if(cboTipoCon){
+        cboTipoCon.style.display = 'none';
+    }
+</script>
+<script>
+    $(function () {
+        $('#FECHAINICIO').fdatepicker({
+            closeButton: true
+        });
+        $('#FECHAFIN').fdatepicker({
+            closeButton: true
+        });
+    });
+    
+    $(function () {
+    $(":file").change(function () {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = imageIsLoaded;
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+});
+
+function imageIsLoaded(e) {
+    $('#myImg').attr('src', e.target.result);
+};
+
+
+</script>
+
+<div ng-controller="serviciosArboladoController">
+<!--div ng-controller="serviciosArboladoController" ng-init="inicioServicios();"-->
+  <div class="ibox float-e-margins">
+        <div class="ibox-title" style="background: #ffdd79; border-bottom: solid 0px #E2E2E2 !important;">
+            <h5>FORMULARIO DE SOLICITUD DE MANTENIMIENTO DE ARBOL</h5>
+        </div>
+        <div class="ibox-content">
+            <form name="signupForm" class="form-horizontal" role="form" novalidate >
+                <div ng-show = "formulario != null">
+                    <!--div ng-show = "FALSE" -->
+                    <div id="nombres"> 
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <input type="text" placeholder="Cédula de Identidad" class="form-control" id="ARB_CI" name="ARB_CI" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_CI"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" placeholder="Cédula de Identidad" class="form-control" id="ARB_OID" name="ARB_OID" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_OID"/>
+                            </div>
+                            
+                            <div class="col-sm-2">
+                                <input type="text" placeholder="Nombre responsable de la Solicitud" class="form-control" id="ARB_NOMBRE" name="ARB_NOMBRE" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_NOMBRE" />
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" placeholder="Apellido paterno" class="form-control" id="ARB_PATERNO" name="ARB_PATERNO" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_PATERNO" ng-disabled="opcion99"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" placeholder="Apellido materno" class="form-control" id="ARB_MATERNO" name="ARB_MATERNO" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_MATERNO" ng-disabled="opcion99"/>
+                            </div>
+
+                             <div class="col-sm-2">
+                                <input type="text" placeholder="Direccion" class="form-control" id="ARB_DIRECCION" name="ARB_DIRECCION" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_DIRECCION" ng-disabled="opcion99"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" placeholder="Domicilio" class="form-control" id="ARB_DOMICILIO" name="ARB_DOMICILIO" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_DOMICILIO" ng-disabled="opcion99"/> 
+                            </div> 
+                            <div class="col-sm-2">
+
+                                <input type="text" placeholder="celular" class="form-control" id="ARB_CELULAR" name="ARB_CELULAR" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_CELULAR" ng-disabled="opcion99" required/> 
+                                
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" placeholder="Telefono" class="form-control" id="ARB_TELEFONO" name="ARB_TELEFONO" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_TELEFONO" ng-disabled="opcion99"/> 
+                            </div>
+        
+                            <div class="hr-line-dashed"></div>
+                        </div>
+                    </div>
+
+               
+
+
+
+                    <div id="formulario">
+               
+                    <div id="ARB_MACRO" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">MACRODISTRITO</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="MACRODISTRITO" class="form-control" id="ARB_MACRO" name="ARB_MACRO" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_MACRO" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ARB_DISTRITO" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">DISTRITO</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="DISTRITO" class="form-control" id="ARB_DISTRITO" name="ARB_DISTRITO" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_DISTRITO" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ARB_ZONA" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">ZONA</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="ZONA" class="form-control" id="ARB_ZONA" name="ARB_ZONA" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_ZONA" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ARB_ESPECIE" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">ESPECIE</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="ESPECIE" class="form-control" id="ARB_ESPECIE" name="ARB_ESPECIE" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_ESPECIE" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ARB_RNG_ALTURA" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">RANGO DE ALTURA(m)</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="RANGO DE ALTURA(m)" class="form-control" id="ARB_RNG_ALTURA" name="ARB_RNG_ALTURA" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_RNG_ALTURA" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ARB_FUSTE" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">FUSTE(cm)</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="FUSTE(cm)" class="form-control" id="ARB_FUSTE" name="ARB_FUSTE" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_FUSTE" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_ARB_UBICACION" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">UBICACION</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="UBICACION" class="form-control" id="ARB_UBICACION" name="ARB_UBICACION" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_UBICACION" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_ARB_ANCHO_ACERA" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">ANCHO DE ACERA</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="ANCHO DE ACERA" class="form-control" id="ARB_ANCHO_ACERA" name="ARB_ANCHO_ACERA" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_ANCHO_ACERA" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div id="div_ARB_MEDIDA_TAZON" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">MEDIDA DE TAZON</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="MEDIDA DE TAZON" class="form-control" id="ARB_MEDIDA_TAZON" name="ARB_MEDIDA_TAZON" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_MEDIDA_TAZON" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_ARB_FECHA_DATOS" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">FECHA DE DATOS</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="FECHA DE DATOS" class="form-control" id="ARB_FECHA_DATOS" name="ARB_FECHA_DATOS" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_FECHA_DATOS" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ARB_STADO_FISICO" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">ESTADO FISICO</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="ESTADO FISICO" class="form-control" id="ARB_STADO_FISICO" name="ARB_STADO_FISICO" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_STADO_FISICO" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ARB_FITOSANIDAD" name="componentes" class="form-group" style="display: block;">
+                        <label class="col-sm-2">FITOSANIDAD</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="FITOSANIDAD" class="form-control" id="ARB_FITOSANIDAD" name="ARB_FITOSANIDAD" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_FITOSANIDAD" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    <div id="ARB_PRESENCIA_PLAGA" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">PRESENCIA DE PLAGA </label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="PRESENCIA DE PLAGA" class="form-control" id="ARB_PRESENCIA_PLAGA" name="ARB_PRESENCIA_PLAGA" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_PRESENCIA_PLAGA" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div  id="ARB_ARB_INTERVENIDO_DE_PODA" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">ARBOL INTERVENIDO DE PODA</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="ARBOL INTERVENIDO DE PODA" class="form-control" id="ARB_ARB_INTERVENIDO_DE_PODA" name="ARB_ARB_INTERVENIDO_DE_PODA" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_ARB_INTERVENIDO_DE_PODA" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ARB_LEVNT_DE_RAIZ_DE_ACERA" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">LEVANTAMIENTO DE RAIZ DE ACERA</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="LEVANTAMIENTO DE RAIZ DE ACERA " class="form-control" id="ARB_LEVNT_DE_RAIZ_DE_ACERA" name="ARB_LEVNT_DE_RAIZ_DE_ACERA" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_LEVNT_DE_RAIZ_DE_ACERA" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_ARB_LINEA_DE_SERV_ATRAVIESA_COPA" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">LINEA DE SERVICIO ATRAVIESA LA COPA</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="LINEA DE SERVICIO ATRAVIESA LA COPA " class="form-control" id="ARB_LINEA_DE_SERV_ATRAVIESA_COPA" name="ARB_LINEA_DE_SERV_ATRAVIESA_COPA" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_LINEA_DE_SERV_ATRAVIESA_COPA" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_ARB_COPA_AFECT_ALGUNA_INFRAESTRUCTURA" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">COPA AFECTA ALGUNA INFRAESTRUCTURA</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="COPA AFECTA ALGUNA INFRAESTRUCTURA " class="form-control" id="ARB_COPA_AFECT_ALGUNA_INFRAESTRUCTURA" name="ARB_COPA_AFECT_ALGUNA_INFRAESTRUCTURA" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_COPA_AFECT_ALGUNA_INFRAESTRUCTURA" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+           
+
+        
+               
+                    <!--ARBOL MUERTO-->
+                
+                    <div id="ARB_LINEA_DE_SERV_ATRAVIESA_COPA_O_RAMA_DE_ARBOL_MUERT" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">LINEA DE SERV ATRAVIESA COPA/RAMA DE ARBOL MUERTO</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="LINEA DE SERV ATRAVIESA COPA/RAMA DE ARBOL MUERTO" class="form-control" id="ARB_LINEA_DE_SERV_ATRAVIESA_COPA_O_RAMA_DE_ARBOL_MUERT" name="ARB_LINEA_DE_SERV_ATRAVIESA_COPA_O_RAMA_DE_ARBOL_MUERT" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_LINEA_DE_SERV_ATRAVIESA_COPA_O_RAMA_DE_ARBOL_MUERT" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+        
+
+      
+                    <!--ARBOL TAZON-->
+                     <div id="ARB_CONDICION_DEL_TAZON" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">CONDICION DEL TAZON</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="CONDICION DEL TAZON " class="form-control" id="ARB_CONDICION_DEL_TAZON" name="ARB_CONDICION_DEL_TAZON" onkeyup="return conMayusculas(this)" value="" ng-model="datos.ARB_CONDICION_DEL_TAZON" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                 <!--latitudes-->
+                    <div id="div_latitud" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">Latitud(X)</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="Latitud(X)" class="form-control latitud" id="latitud" name="latitud" onkeyup="return conMayusculas(this)"  value=""ng-model="datos.latitud" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="div_longitud" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">longitud(Y)</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="longitud(Y) " class="form-control longitud" id="longitud" name="longitud" onkeyup="return conMayusculas(this)" value="" ng-model="datos.longitud" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_Imagen" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">Imagen</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="Imagen " class="form-control Imagen" id="Imagen" name="Imagen" onkeyup="return conMayusculas(this)" value="" ng-model="datos.Imagen" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                     <div id="div_foto" name="componentes" style="display: block;">
+                        <div class="form-group">
+                            <label class="col-sm-2">Foto</label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="foto " class="form-control foto" id="div_foto" name="foto" onkeyup="return conMayusculas(this)" value="" ng-model="datos.foto" ng-disabled="opcion99" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_observaciones" name="componentes" style="display: block;">
+                            <div class="form-group">
+                                <label class="col-sm-2">observaciones</label>
+                                <div class="col-sm-4">
+                                    <input type="text" placeholder="observaciones " class="form-control observaciones" id="observaciones" name="observaciones" onkeyup="return conMayusculas(this)" value="" ng-model="datos.observaciones" ng-disabled="opcion99" required/>
+                                </div>
+                            </div>
+                        </div>
+                    
+                 </div>
+
+              <table  width="100%">
+                <td><h3 align="center">  MAPA ARBOLADO</h3></td>
+              </table>
+              <br/>
+              <!--------------------------->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div id="mapa_arbolado"></div>
+                      <div id="popup" class="ol-popup" >
+                          <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                          <div id="popup-content"></div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              
+               
+        </div>
+    </form>
+  </div>  
+</div>
+
+
+      
+      <div class="form-group">
+        <table width="100%" border="0">
+          <tr>
+            
+            <td width="45%" border="0">
+              <input  name="busqueda_p" id="busqueda_p" class="form-control" type="text" placeholder=" INTRODUZCA NOMBRE DE ZONA">
+            </td>
+            
+            <td width="10%" border="0">
+              <button class="btn btn-info"  ng-click="buscarUbicacionP1()" ><i class="fa fa-search">Buscar 1</i></button>
+  
+            </td>
+            
+            <td  width="45%" border="0">
+              <div id="global_1">
+                <table class="table table-bordered table-striped">
+                  <tr ng-repeat="lstGrillaCalles in lstCalles" style="height: 5px; background-color:mintcream">
+                      <td height="5%"align="center">
+                          <a href ng-click="enviar_nombre_zona(lstGrillaCalles)">
+                              <p><small>{{lstGrillaCalles.nombre}}</small></p>
+                          </a>
+                      </td>
+                  </tr>
+                  <tr ng-repeat="lstGrillaVacio in lstVacio" style="height: 5px;background-color:mintcream">
+                      <td height="5%" align="center">
+                          <p><small>{{lstGrillaVacio.nombre}}</small></p>
+                          
+                      </td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div> 
+
+</div>
+
+
+<!--nuevo codigo freddy-->
+<script type="text/javascript">
+////imagen//
+
+
+$("#formulario").hide();
+$("#nombres").hide();
+//$("#formulario2").hide();
+    var geojson_empiezo = '{"type":"FeatureCollection","name":"puntos_geo_3857","crs":{"type":"name","properties":{"name": "urn:ogc:def:crs:EPSG::3857"}},"features": [';
+    var geojson_fin = ']}';
+    var geojson_cuerpo_vivo = '';
+    var geojson_cuerpo_muerto = '';
+    var geojson_cuerpo_tazon = '';
+    var geojson_cuerpo_boscosa = '';
+    var geo_cuerpo = '';
+    
+    
+    var osm_udit = new ol.layer.Tile({
+        title: 'OSM',
+        visible: true,
+        //render: 'canvas',
+        source: new ol.source.TileWMS({
+          url: 'http://192.168.6.46:8080/geoserver/DEGEM/wms',
+          params: { 'LAYERS': 'DEGEM:osm_udit', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+          serverType: 'geoserver'
+        })
+    });
+    
+    //http://sitservicios.lapaz.bo/geoserver/gwc/service/wms?LAYERS=g_municipio&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A32719&BBOX=592517.44309608,8172377.4440476,593234.24309608,8173094.2440476&WIDTH=256&HEIGHT=256
+    
+    var municipios = new ol.layer.Tile({
+      title: 'Municipios',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        //url: 'http://sitservicios.lapaz.bo/geoserver/gwc/service/wms',
+        params: { 'LAYERS': 'g_municipio', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    
+    var medidores = new ol.layer.Tile({
+      title: 'Medidores',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: { 'LAYERS': 'lapaz:dm_medidores', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    var grilla_sigap = new ol.layer.Tile({
+      title: 'Grilla Sigap',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: { 'LAYERS': 'lapaz:grillasigap', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    var luminarias = new ol.layer.Tile({
+      title: 'Luminarias',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: ' http://192.168.5.84:8080/geoserver/wms',
+        params: { 'LAYERS': 'lapaz:luminarias', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    var luminarias_codigo = new ol.layer.Tile({
+      title: 'Luminarias (Codigo)',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: ' http://192.168.5.84:8080/geoserver/wms',
+        params: { 'LAYERS': 'lapaz:luminarias','STYLES': 'use_luminariascodigo', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    var luminarias_vias = new ol.layer.Tile({
+      title: 'Luminarias (Clase Vias)',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: ' http://192.168.5.84:8080/geoserver/wms',
+        params: { 'LAYERS': 'lapaz:luminarias','STYLES': 'use_luminariaclasvia', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    var semaforos = new ol.layer.Tile({
+      title: 'Sistema Semaforico',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: ' http://192.168.5.84:8080/geoserver/wms',
+        params: { 'LAYERS': 'lapaz:sistemasemaforico','STYLES': 'dm_semaforos', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    var sumideros = new ol.layer.Tile({
+      title: 'Sumideros',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: ' http://192.168.5.84:8080/geoserver/wms',
+        params: { 'LAYERS': 'sumideros', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    
+    var lotes_cat = new ol.layer.Tile({
+      title: 'Lotes Catastro',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: { 'LAYERS': 'catastro:lotes', 'STYLES': 'ct_lote4', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    
+    var lotes_cat_1 = new ol.layer.Tile({
+      title: 'Lotes Catastro',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: { 'LAYERS': 'catastro:lotes', 'STYLES': 'ct_lote4', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    
+    var img_sat_2018 = new ol.layer.Tile({
+      title: 'Kompsat 2018',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: { 'LAYERS': 'raster:kompsat_2018', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    
+    var macrodistritos = new ol.layer.Tile({
+      title: 'Macrodistritos',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: { 'LAYERS': 'lapaz:macrodistritos_2017', 'VERSION': '1.1.0', 'FORMAT': 'image/png', 'STYLES': 'lp_macrodistritos2017', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    var riesgos_2011 = new ol.layer.Tile({
+      title: 'Mapa Riesgos 2011',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: { 'LAYERS': 'lapaz:riesgos2011', 'VERSION': '1.1.0', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    var distritos_m_2017 = new ol.layer.Tile({
+      title: 'Distritos Municipales 2017',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: { 'LAYERS': 'lapaz:distritos_2017', 'VERSION': '1.1.0', 'FORMAT': 'image/png', 'STYLES': 'lp_distritos2017', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    var restitucion_2006 = new ol.layer.Tile({
+      title: 'Restitucion 2006',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: { 'LAYERS': 'g_restitucion_2006', 'VERSION': '1.1.0', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    var planimetria = new ol.layer.Tile({
+      title: 'Planimetria',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: { 'LAYERS': 'archivo:planimetrias', 'VERSION': '1.1.0', 'FORMAT': 'image/png', 'STYLES': 'planimetrias_desc', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    var ortofotos_2006 = new ol.layer.Tile({
+      title: 'Ortofotos 2006',
+      visible: false,
+      //render: 'canvas',
+      source: new ol.source.TileWMS({
+        url: 'http://192.168.5.94:8080/geoserver/wms',
+        params: { 'LAYERS': 'lapaz:ortofotos2006', 'VERSION': '1.1.0', 'FORMAT': 'image/jpeg', 'TILED': true },
+        serverType: 'geoserver',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    
+    var osm = new ol.layer.Tile({
+      title: 'Open Street Map 2019',
+      visible: true,
+      source: new ol.source.OSM()
+    });
+    
+    
+    var arbolado = new ol.layer.Tile({
+        title: 'Arbolado',
+        visible: true,
+        //render: 'canvas',
+        source: new ol.source.TileWMS({
+          url: 'http://192.168.6.46:8080/geoserver/wms',
+          params: { 'LAYERS': 'DEGEM:arbolado', 'VERSION': '1.1.0', 'FORMAT': 'image/png', 'TILED': true },
+          serverType: 'geoserver',
+          crossOrigin: 'Anonymous'
+          //crossOriginKeyword: 'anonymous'
+        })
+    });
+    
+    var map = new ol.Map();
+    var view = new ol.View({center: ol.proj.fromLonLat([-68.133605,-16.495745]), zoom: 15});
+    
+    var vectorSourcePoint = new ol.source.Vector();
+    var vectorLayerPoint = new ol.layer.Vector({source: vectorSourcePoint});
+    
+    var iconStyle = new ol.style.Style({
+            image: new ol.style.Circle({
+              radius: 12,
+              fill: new ol.style.Fill({ color: 'red' })
+            })
+    });
+    
+    var iconStyle_p = new ol.style.Style({
+      image: new ol.style.Icon({
+          anchor: [0.5, 46],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          opacity: 0.85,
+          src: 'http://192.168.6.137/vendor/arbolado_oficial/public/img/people.png'
+          //src:img_tazon
+      })
+    });
+    
+  
+    var latitud = '';
+    var longitud = '';
+    
+    var vectorSourceZonas = new ol.source.Vector();
+    var vectorLayerZonas = new ol.layer.Vector({source: vectorSourceZonas});
+    var vectorSourceArbol_ocupado = new ol.source.Vector();
+    var vectorLayerArbol_ocupado = new ol.layer.Vector({source: vectorSourceArbol_ocupado});
+
+    var vectorSourceArbol_centreado = new ol.source.Vector();
+    var vectorLayerArbol_centreado = new ol.layer.Vector({source: vectorSourceArbol_centreado});
+
+    
+    var myStyleZonas = new ol.style.Style({
+             stroke : new ol.style.Stroke({color : '#FF8000',width : 5}),
+             fill : new ol.style.Fill({color: 'transparent'})
+
+    });   
+    var popup = document.getElementById('popup');
+    var popup_closer = document.getElementById('popup-closer');
+    var popup_content = document.getElementById('popup-content');
+    
+    $( document ).ready(function()
+    {
+        /////////////////////////
+        $("#popup").show();
+        /////////////////////////
+          $("#mapa_arbolado").empty();
+          $("#popup-closer").empty();
+          //////////////////////////////////////////////////////////////////
+          var epsg32719 = 'EPSG:32719';
+          var epsg4326 = 'EPSG:4326';
+          proj4.defs(epsg32719, '+proj=utm +zone=19 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs');
+          proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');
+        
+          map = new ol.Map({
+                              layers: [
+                                        new ol.layer.Group({
+                                                              title: 'Mapas Base',
+                                                              layers: [
+                                                                        osm_udit,
+                                                                        ortofotos_2006,
+                                                                        img_sat_2018,
+                                                                        municipios,
+                                                                        riesgos_2011,
+                                                                        restitucion_2006,
+                                                                        macrodistritos,
+                                                                        vectorLayerArbol_ocupado,
+                                                                        vectorLayerArbol_centreado
+                                                                      ]
+                                                          }),
+        
+                                        new ol.layer.Group({
+                                                              title: 'Capas',
+                                                              layers: [
+                                                                        arbolado,
+                                                                        semaforos,
+                                                                        luminarias_vias,
+                                                                        luminarias_codigo,
+                                                                        luminarias,
+                                                                        sumideros,
+                                                                        grilla_sigap,
+                                                                        medidores,
+                                                                        vectorLayerPoint
+                                                                      ]
+                                                          })
+                                      ],
+                                      //overlays: [featureOverlay],
+                                      target: 'mapa_arbolado',
+                                      //controls: controls,
+                                      //interactions: mover,
+                                      view: view
+          });
+        
+          var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: 'Leyenda'});
+          map.addControl(layerSwitcher);
+        
+          console.log("mmmmmmmmmmmmmmmmmmm");
+          
+          olpopup = new ol.Overlay({element: popup,autoPan: false});
+          console.log("gggg",popup_closer);
+          
+         popup_closer.onclick = function()
+          {
+             
+            olpopup.setPosition(undefined);
+            
+            
+            return false;
+          };
+         
+          map.addOverlay(olpopup);
+    
+            var OpenPopup = function (evt)
+            {
+                vectorSourceArbol_ocupado.clear();
+            
+                var url_arbolado = arbolado.getSource().getGetFeatureInfoUrl(
+                  evt.coordinate,map.getView().getResolution(),map.getView().getProjection(),{
+                  'INFO_FORMAT': 'application/json',
+                  'propertyName': 'casos_tipo,casos_data,casos_codigo,casos_registrado,x,y'
+              });
+            
+                reqwest({
+                          url: url_arbolado,
+                          type: 'json',
+                }).then(function(data) 
+                {
+                  var feature = data.features[0];
+                  //console.log("dataaaa...",feature);
+                  ///////////////////////////////////////////////////////////
+                  if(feature === undefined)
+                  {
+                    console.log("No existe datosssss");
+                    olpopup.setPosition(undefined);
+                  }
+                  else
+                  {
+                      //////////////////////////////////////////////////
+                      console.log("Existen datosssss");
+                      var coord = map.getCoordinateFromPixel(evt.pixel);
+                      var x = feature.properties.x;
+                      var y = feature.properties.y;
+
+                      var tipo = feature.properties.casos_tipo;
+                      var d = feature.properties.casos_registrado;
+                      var fecha = new Date(d);
+            
+                      var json = feature.properties.casos_data;
+                      var codigo_z_arbolado = feature.properties.casos_codigo;
+                      console.log ("CODIGOS...",codigo_z_arbolado);
+                      var cod_z_arbolado = codigo_z_arbolado.split("-");
+                      var id_macro_a = cod_z_arbolado[0];
+                      var distrito = cod_z_arbolado[1];
+                      var id_zona_a = cod_z_arbolado[2];
+            
+                      distrito = parseInt(distrito);
+                      id_macro_a = parseInt(id_macro_a);
+                      id_zona_a = parseInt(id_zona_a);
+                      
+                      for (var i=1;i<macrodistritos_arbolado.length;i++)
+                      {
+                        if(id_macro_a == i)
+                        {
+                          var macrodistrito = macrodistritos_arbolado[i];
+                        }
+                      }
+            
+                      for (var j=0;j<zonas_arbolado.length;j++)
+                      {
+                        if(id_zona_a == cod_zonas_arbolado[j])
+                        {
+                          var zona_a = zonas_arbolado[j];
+                          //console.log("ddddddddddd",zona_a);
+                        }
+                      }
+            
+                      console.log("Macro...", macrodistrito);
+                      console.log("Distri...",distrito);
+                      console.log("Zona...",zona_a);
+            
+                      //console.log("tipo... ",tipo);
+                      json = JSON.parse(json);
+                      console.log("INFO... ",json);
+
+
+
+                    ////se pone hide para que no muestre el formulario
+                      $("#formulario").hide();
+                      $("#nombres").hide();
+                      //$("#formulario2").show();
+
+                        if(tipo == 1)
+                        {
+                         ////////////////////////////////////////////////////////////
+                            $("#ARB_ARB_INTERVENIDO_DE_PODA").hide();
+                            $("#ARB_FUSTE").hide();
+                            $("#ARB_LINEA_DE_SERV_ATRAVIESA_COPA_O_RAMA_DE_ARBOL_MUERT").hide();
+                            $("#ARB_MACRO").show();
+                            $("#ARB_DISTRITO").show();
+                            $("#ARB_ZONA").show();
+                            $("#ARB_ESPECIE").show();
+                            $("#ARB_RNG_ALTURA").show();
+                            $("#ARB_UBICACION").show();
+                            $("#ARB_ANCHO_ACERA").show();
+                            $("#ARB_MEDIDA_TAZON").show();
+                            $("#ARB_FECHA_DATOS").show();
+                            $("#ARB_STADO_FISICO").show();
+                            $("#ARB_FITOSANIDAD").show();
+                            $("#ARB_PRESENCIA_PLAGA").show();
+                            $("#ARB_LEVNT_DE_RAIZ_DE_ACERA").show();
+                            $("#ARB_LINEA_DE_SERV_ATRAVIESA_COPA").show();
+                            $("#ARB_COPA_AFECT_ALGUNA_INFRAESTRUCTURA").show();
+                            $("#ARB_CONDICION_DEL_TAZON").show();
+                            $(".latitud").show();
+                            $(".longitud").show();
+                            ////////////////////////////////////////////////////////////
+                            var cadena_geo='';
+                            var foto = json[0].value;
+                            document.getElementById('div_foto').value = foto;
+                            var especie = json[14].value;
+                            var ubicacion = json[11].value;
+                            var ancho_acera = json[10].value;
+                            var tazon_a = json[9].value;
+                            var tazon_b = json[8].value;
+                            var fitosanidad = json[6].value;
+                            var poda = json[4].value;
+                            var levantaron_acera = json[3].value;
+                            var lineas_servicio = json[2].value;
+                            var copa_infraestructura = json[1].value;
+                
+                            console.log("levantaron_acera...",levantaron_acera);
+                
+                            var coordenada = json[15].value;
+                            coordenada = coordenada.split(",");
+                            var latitud = coordenada[0];
+                            var longitud = coordenada[1];
+                            var tipo_ = tipo.toString();
+                            
+                            /////////////////longitu//latutu/////////////////////////
+                            console.log("lat",latitud);
+                            console.log("lon",longitud);
+
+                            //$(".latitud").val(latitud);
+                            //$(".longitud").val(longitud);
+                          
+                
+                            var j = JSON.parse(json[5].value);
+                            console.log("5555",j);
+                
+                            var k = JSON.parse(json[7].value);
+                            console.log("7777",k);
+                
+                            var l = JSON.parse(json[13].value);
+                            console.log("131313",l);
+                
+                            for (var a=0;a<l.length;a++)
+                            {
+                              if(l[a].value_selected == true)
+                              {
+                                var altura = l[a].question;
+                                console.log("Altura...",altura);
+                              }
+                            }
+                
+                            for (var b=0;b<k.length;b++)
+                            {
+                              if(k[b].value_selected == true)
+                              {
+                                var estado = k[b].question;
+                                console.log("estado...",estado);
+                              }
+                            }
+                
+                            for (var c=0;c<j.length;c++)
+                            {
+                              if(j[c].value_selected == true)
+                              {
+                                var plagas = j[c].question;
+                                console.log("plagas...",plagas);
+                              }
+                            }
+                
+                            cadena_geo='<div>';
+                            
+                            cadena_geo+='<p style="float: left; margin: 3px; padding: 3px; border: black 2px solid;">';
+                            cadena_geo+='<img src='+foto+' height="285" width="270">';
+                            cadena_geo+='</p>';
+                            
+                            cadena_geo+='<p style="float: left;" width="270">';
+                            cadena_geo+='<b>MACRODISTRITO :</b> '+macrodistrito+'<br>';
+                            cadena_geo+="<b>DISTRITO :</b> "+distrito+"   <br>";
+                            cadena_geo+="<b>ZONA :</b> "+zona_a+"   <br>";
+                            cadena_geo+="<b>ESPECIE :</b> "+especie+"   <br>";
+                            cadena_geo+="<b>RANGO DE ALTURA :</b> "+altura+"   <br>";
+                            cadena_geo+="<b>UBICACION :</b> "+ubicacion+"   <br>";
+                            cadena_geo+="<b>ANCHO DE ACERA (M) :</b> "+ancho_acera+"   <br>";
+                            cadena_geo+="<b>MEDIDAS DE TAZON A (cm) :</b> "+tazon_a+"   <br>";
+                            cadena_geo+="<b>MEDIDAS DE TAZON B (cm) :</b> "+tazon_b+"   <br>";
+                            cadena_geo+="<b>ESTADO FISICO :</b> "+estado+"   <br>";
+                            cadena_geo+="<b>FITOSANIDAD :</b> "+fitosanidad+"   <br>";
+                            cadena_geo+="<b>PRESENCIA DE PLAGAS :</b> "+plagas+"   <br>";
+                            cadena_geo+="<b>INTERVENIDO CON PODA :</b> "+poda+"   <br>";
+                            cadena_geo+="<b>RAICES LEVANTARON ACERA? :</b> "+levantaron_acera+"   <br>";
+                            cadena_geo+="<b>LINEAS DE SERVICIOS ATRAVIESAN COPA? :</b> "+lineas_servicio+"   <br>";
+                            cadena_geo+="<b>AFECTA ALGUNA INFRAESTRUCTURA? :</b> "+copa_infraestructura+"   <br>";
+                            cadena_geo+="<b>FECHA REGISTRO :</b> "+fecha.getDate() + "-"+ fecha.getMonth()+ "-" +fecha.getFullYear();+"   <br>";
+                            cadena_geo+='</p>';
+                            
+                            cadena_geo+='</div>';
+                            popup_content.innerHTML = cadena_geo;
+
+                            //////////////////////////////////////
+                            $("#ARB_MACRO").val(macrodistrito);
+                            $("#ARB_DISTRITO").val(distrito);
+                            $("#ARB_ZONA").val(zona_a);
+                            $("#ARB_ESPECIE").val(especie);
+                            $("#ARB_RNG_ALTURA").val(altura);
+                            $("#ARB_UBICACION").val(ubicacion);
+                            $("#ARB_ANCHO_ACERA").val(ancho_acera);
+                            $("#ARB_MEDIDA_TAZON").val(tazon_a,tazon_b);
+                            $("#ARB_STADO_FISICO").val(estado);
+                            $("#ARB_FECHA_DATOS").val(fecha);
+                            $("#ARB_FITOSANIDAD").val(fitosanidad);
+                            $("#ARB_PRESENCIA_PLAGA").val(plagas);
+                            $("#ARB_INTERVENIDO_DE_PODA").val(poda);
+                            $("#ARB_LEVNT_DE_RAIZ_DE_ACERA").val(levantaron_acera);
+                            $("#ARB_LINEA_DE_SERV_ATRAVIESA_COPA").val(lineas_servicio);
+                            $("#ARB_COPA_AFECT_ALGUNA_INFRAESTRUCTURA").val(copa_infraestructura);
+                            $(".latitud").val(latitud);
+                            $(".longitud").val(longitud);
+                            
+                        }
+                        else
+                        {
+                            if(tipo == 2)
+                            {
+
+                            //////////////////////////////////////////////////////////////////////////////
+                            
+                            $("#ARB_MACRO").show();
+                            $("#ARB_DISTRITO").show();
+                            $("#ARB_ZONA").show();
+                            $("#ARB_ESPECIE").show();
+                            $("#ARB_RNG_ALTURA").show();
+                            $("#ARB_UBICACION").show();
+                            $("#ARB_ANCHO_ACERA").show();
+                            $("#ARB_MEDIDA_TAZON").show();
+                            $("#ARB_FECHA_DATOS").show();
+                            $("#ARB_LINEA_DE_SERV_ATRAVIESA_COPA").show();
+                            $("#ARB_LINEA_DE_SERV_ATRAVIESA_COPA_O_RAMA_DE_ARBOL_MUERT").hide();
+                            
+
+                            $("#ARB_STADO_FISICO").hide();
+                            $("#ARB_FITOSANIDAD").hide();
+                            $("#ARB_PRESENCIA_PLAGA").hide();
+                            $("#ARB_LEVNT_DE_RAIZ_DE_ACERA").hide();
+                            $("#ARB_LINEA_DE_SERV_ATRAVIESA_COPA").hide();
+                            $("#ARB_COPA_AFECT_ALGUNA_INFRAESTRUCTURA").hide();
+                            $("#ARB_CONDICION_DEL_TAZON").hide();
+                            $("#ARB_ARB_INTERVENIDO_DE_PODA").hide();
+                            $("#ARB_FUSTE").hide();
+                            //////////////////////////////////////////////////////////////////////////////
+                                  var cadena_geo='';
+                                  var foto = json[0].value;
+                                  document.getElementById('div_foto').value = foto;
+                                  var especie = json[8].value;
+                                  var perimetro_pecho = json[6].value;
+                                  var ubicacion = json[5].value;
+                                  var ancho_acera = json[4].value;
+                                  var tazon_a = json[3].value;
+                                  var tazon_b = json[2].value;
+                                  var lineas_servicio = json[1].value;
+                    
+                                  var l = JSON.parse(json[7].value);
+                                  console.log("7777",l);
+                    
+                                  for (var a=0;a<l.length;a++)
+                                  {
+                                    if(l[a].value_selected == true)
+                                    {
+                                      var altura = l[a].question;
+                                      console.log("Altura777...",altura);
+                                    }
+                                  }
+                                  
+                    
+                    
+                                    cadena_geo='<div>';
+                                    cadena_geo+='<p style="float: left; margin: 3px; padding: 3px; border: black 2px solid;">';
+                                    cadena_geo+='<img src='+foto+' height="285" width="270">';
+                                    cadena_geo+='</p>';
+                                    
+                                    cadena_geo+='<p style="float: left;" width="270">';
+                                    cadena_geo+="<b>MACRODISTRITO :</b> "+macrodistrito+"   <br>";
+                                    cadena_geo+="<b>DISTRITO :</b> "+distrito+"   <br>";
+                                    cadena_geo+="<b>ZONA :</b> "+zona_a+"   <br>";
+                                    cadena_geo+="<b>ESPECIE :</b> "+especie+"   <br>";
+                                    cadena_geo+="<b>RANGO DE ALTURA :</b> "+altura+"   <br>";
+                                    cadena_geo+="<b>PERIMETRO ALTURA PECHO (cm):</b> "+perimetro_pecho+"   <br>";
+                                    cadena_geo+="<b>UBICACION :</b> "+ubicacion+"   <br>";
+                                    cadena_geo+="<b>ANCHO DE ACERA (M) :</b> "+ancho_acera+"   <br>";
+                                    cadena_geo+="<b>MEDIDAS DE TAZON A (cm) :</b> "+tazon_a+"   <br>";
+                                    cadena_geo+="<b>MEDIDAS DE TAZON B (cm) :</b> "+tazon_b+"   <br>";
+                                    cadena_geo+="<b>LINEAS DE SERVICIOS ATRAVIESAN COPA? :</b> "+lineas_servicio+"   <br>";
+                                    cadena_geo+="<b>FECHA REGISTRO :</b> "+fecha.getDate() + "-"+ fecha.getMonth()+ "-" +fecha.getFullYear();+"   <br>";
+
+                                    cadena_geo+='</p>';
+                                    cadena_geo+='</div>';
+                                    popup_content.innerHTML = cadena_geo;
+                                    //////////////////////////////////////////////////
+                                    $("#ARB_MACRO").val(macrodistrito);
+                                    $("#ARB_DISTRITO").val(distrito);
+                                    $("#ARB_ZONA").val(zona_a);
+                                    $("#ARB_ESPECIE").val(especie);
+                                    $("#ARB_RNG_ALTURA").val(altura);
+                                    $("#ARB_UBICACION").val(ubicacion);
+                                    $("#ARB_ANCHO_ACERA").val(ancho_acera);
+                                    $("#ARB_MEDIDA_TAZON").val(tazon_a,tazon_b);
+                                    $("#ARB_LINEA _DE_SERV_ATRAVIESA_COPA").val(lineas_servicio);
+                                    $("#ARB_FECHA_DATOS").val(fecha);
+                                    $(".latitud").val(latitud);
+                                    $(".longitud").val(longitud);
+                            }
+                            else
+                            {
+                                if(tipo==3)
+                                {
+                                    //////////////////////////////////////////////////
+                                    $("#ARB_MACRO").show();
+                                    $("#ARB_DISTRITO").show();
+                                    $("#ARB_ZONA").show();
+                                    $("#ARB_CONDICION_DEL_TAZON").show();
+                                    $("#ARB_FECHA_DATOS").show();
+                                    $("#ARB_LINEA_DE_SERV_ATRAVIESA_COPA_O_RAMA_DE_ARBOL_MUERT").hide();
+                                    
+                                    $("#ARB_UBICACION").show();
+
+                                    $("#ARB_STADO_FISICO").hide();
+                                    $("#ARB_FITOSANIDAD").hide();
+                                    $("#ARB_PRESENCIA_PLAGA").hide();
+                                    $("#ARB_LEVNT_DE_RAIZ_DE_ACERA").hide();
+                                    $("#ARB_LINEA_DE_SERV_ATRAVIESA_COPA").show();
+                                    $("#ARB_COPA_AFECT_ALGUNA_INFRAESTRUCTURA").hide();
+                                    $("#ARB_ARB_INTERVENIDO_DE_PODA").hide();
+                                    $("#ARB_FUSTE").hide();
+                                    $("#ARB_ESPECIE").hide();
+                                    $("#ARB_RNG_ALTURA").hide();
+                                    $("#ARB_ANCHO_ACERA").hide();
+                                    $("#ARB_MEDIDA_TAZON").hide();
+                                    /////////////////////////////////////////////////
+
+                                    var cadena_geo='';
+                                    var foto = json[0].value;
+                                    document.getElementById('div_foto').value = foto;
+                                    var condicion_tazon = json[1].value;
+                                    var ancho_acera = json[3].value;
+                                    var tazon_a = json[2].value;
+                                    var tazon_b = json[1].value;
+                
+                                    cadena_geo='<div>';
+                                    cadena_geo+='<p style="float: left; margin: 3px; padding: 3px; border: black 2px solid;">';
+                                    cadena_geo+='<img src='+foto+' height="285" width="270">';
+                                    cadena_geo+='</p>';
+                                    //cadena_geo+="<b>TIPO :</b> "+tipo+"   <br>";
+                                    cadena_geo+='<p style="float: left;" width="270">';
+                                    cadena_geo+="<b>MACRODISTRITO :</b> "+macrodistrito+"   <br>";
+                                    cadena_geo+="<b>DISTRITO :</b> "+distrito+"   <br>";
+                                    cadena_geo+="<b>ZONA :</b> "+zona_a+"   <br>";
+                                    cadena_geo+="<b>CONDICION DEL TAZON :</b> "+condicion_tazon+"   <br>";
+                                    cadena_geo+="<b>ANCHO DE ACERA (M) :</b> "+ancho_acera+"   <br>";
+                                    cadena_geo+="<b>MEDIDAS DE TAZON A (cm) :</b> "+tazon_a+"   <br>";
+                                    cadena_geo+="<b>MEDIDAS DE TAZON B (cm) :</b> "+tazon_b+"   <br>";
+                                    cadena_geo+="<b>LINEAS DE SERVICIOS ATRAVIESAN COPA :</b> "+lineas_servicio+"   <br>";
+                                    cadena_geo+="<b>FECHA REGISTRO :</b> "+fecha.getDate() + "-"+ fecha.getMonth()+ "-" +fecha.getFullYear();+"   <br>";
+                                    
+                                    cadena_geo+='</p>';
+                                    cadena_geo+='</div>';
+                                    popup_content.innerHTML = cadena_geo;
+                                    ///////////////////////////////////////
+                                    $("#ARB_MACRO").val(macrodistrito);
+                                    $("#ARB_DISTRITO").val(distrito);
+                                    $("#ARB_UBICACION").val(ubicacion);
+                                    $("#ARB_ZONA").val(zona_a);
+                                    $("#ARB_CONDICION_DEL_TAZON").val(condicion_tazon);
+                                    $("#ARB_ANCHO_ACERA").val(ancho_acera);
+                                    $("#ARB_MEDIDA_TAZON").val(tazon_a,tazon_b);
+                                    $("#ARB_FECHA_DATOS").val(fecha);
+                                    $("#ARB_LINEA_DE_SERV_ATRAVIESA_COPA").val(lineas_servicio);
+                                    $(".latitud").val(latitud);
+                                    $(".longitud").val(longitud);
+
+                                }
+                            }
+                        }
+
+                      /////////////////////////////////////////////////
+                      var feature_a = new ol.Feature(
+                        new ol.geom.Point(ol.proj.fromLonLat([x,y]))
+                      );
+                      feature_a.setStyle(iconStyle);
+                      vectorSourceArbol_ocupado.addFeature(feature_a);
+                      ////////////////////////////////////////////////
+                      olpopup.setPosition(coord);
+                      //////////////////////////////////////////////////
+                  }
+                  ///////////////////////////////////////////////////////////
+                });
+            };
+            map.on('click', OpenPopup); 
+    });
+
+    function enviar_nombre_zona (nom)
+    {
+        var n = nom.nombre;
+        console.log("ZONA A BUSCAR",n);
+        var c = 0;
+      
+        map.removeLayer(vectorLayerZonas);
+        for (var i=0;i<geo_zonas.features.length;i++)
+        {
+            var nombre_zona =  geo_zonas.features[i].properties.zonaref;
+            var x_c = geo_zonas_centroides.features[i].geometry.coordinates[0];
+            var y_c = geo_zonas_centroides.features[i].geometry.coordinates[1];
+            
+            if(n === nombre_zona)
+            {
+                c=c+1;
+                var geo_zona =  geo_zonas.features[i];
+                var xx = x_c;
+                var yy = y_c;
+            }
+           
+        }
+        if(c>0)
+        {
+            geo_zona = JSON.stringify(geo_zona);
+            vectorLayerZonas.setSource(new ol.source.Vector({
+                features: (new ol.format.GeoJSON({defaultDataProjection:'EPSG:3857'})).readFeatures(geo_zona)
+            }));
+            
+            vectorLayerZonas.setStyle(myStyleZonas);
+            map.addLayer(vectorLayerZonas);
+            map.getView().setCenter([xx,yy]);
+            map.getView().setZoom(15);
+            setTimeout(function(){
+                vectorLayerZonas.getSource().clear();
+            },1600);
+        } 
+    };
+
+
+    function buscarUbicacionP()
+    {
+    
+        console.log("11111111111111111");
+
+        console.log("geo_zonas_centroides ", geo_zonas_centroides);
+
+
+         var nombre_1 = new Array();
+         var f = '';
+         var nombre = document.getElementById('busqueda_p').value;
+         nombre = nombre.toUpperCase();
+         console.log("NOMBRE A BUSCAR...",nombre);
+         var ca = "CALLE ";
+         ca = ca.concat(nombre);
+         var c = 0;
+         /////////////////////////////
+         var tipo = "lugares";
+         var data = '';
+        ///  $scope.lstCalles = [];
+     
+
+
+
+        var geo_zonas =geo_zonas_centroides;
+         ///////////////////////////////
+         if(nombre=='')
+         {
+           var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
+           console.log("Vacio :",obj);
+           //map.removeLayer(vectorLayerZonas);
+        //  vectorLayerZonas.getSource().clear();
+         }
+         else 
+         {  
+           if(tipo == 'lugares')
+           {
+            // map.removeLayer(vectorLayerZonas);
+             for (var i=0;i<geo_zonas.features.length;i++)
+             {
+                 var nombre_zona =  geo_zonas.features[i].properties.zonaref;
+                 var x_c = geo_zonas_centroides.features[i].geometry.coordinates[0];
+                 var y_c = geo_zonas_centroides.features[i].geometry.coordinates[1];
+                 if(nombre_zona.includes(nombre))
+                 {
+                     console.log("eeeeeeeeeeee",nombre_zona);
+                     nombre_1.push(nombre_zona);
+                 }
+     
+                 if(nombre === nombre_zona)
+                 {
+                     c=c+1;
+                     var geo_zona =  geo_zonas.features[i];
+                     var xx = x_c;
+                     var yy = y_c;
+                 }
+             }
+             for (var j=0; j<= nombre_1.length-1; j++)
+             {
+                f="'"+nombre_1[j]+"'";
+                /////////////////////////////////////// 
+                var obj = {'nombre': nombre_1[j]};
+                console.log("obj ", obj);
+                //$scope.lstCalles.push(obj);
+                 data = obj;
+                console.log("data ", data);
+                //////////////////////////////////////    
+             }  
+           }
+           if(c==0) 
+           {
+             var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
+             console.log("Vacio :",obj);
+           }
+         }   
+    }; 
+</script>
+<!--subir imagenes MODIFICADO-->
+<div class="form-group">
+    <table width="100%"> 
+        <tr>
+                <td width="30%">
+                        <div class="form-group"><label class="col-sm-10 control-label">FOTO ACTUALIZADA:</label>
+                            
+                            <div class="col-sm-10"><input name="file-input" id="file-input" type="file" value="Subir" input="files[0]" nv-file-select="" uploader="uploader" file-model="myFile1" accept="image/*"/></div>
+                        
+                        </div>
+                        <div class="form-group"><label class="col-sm-0 control-label"> </label>
+                            <div class="col-sm-5"><img id="imgSalida" ng-src="{{imagenPortada}}" width="150px" height="150px"></div>
+                        </div>
+                            <div class="hr-line-dashed"></div>
+                </td>
+                <td width="70%">
+                     <!--CAJA DE TEXTO--->  
+                       
+
+                    <div id="div_observaciones" name="componentes" style="display: block;"> <label class="col-sm-10 control-label">   </label>
+                      <div class="col-sm-20" >
+                         <textarea id="observaciones" name="observaciones" type="text" class="form-control" placeholder="observaciones" ng-model="datos.observaciones"  required> </textarea>
+                      </div>
+                    </div>
+
+<!--COMBO-->
+           <div class="form-group" ><label class="col-sm-5 control-label">Tipo de Solicitud: </label>
+               <div class="col-sm-5">
+        
+    <select id="div_Solicitud" name="solicitud" placeholder="Expedido" ng-model="registro.solicitud"  width="30%" class="form-control" ng-change="recuperar(registro.Solicitud)" required>
+            <option value="" selected>--Seleccione--</option>
+            <option value="MANTENIMIENTO DEL ARBOL">MANTENIMIENTO DEL ARBOL</option>
+            <option value="TALA Y TRASPLANTE DE ARBOLES">TALA Y TRASPLANTE DE ARBOLES</option>
+        </div>
+    </div>
+  </div>
+</td>
+</tr>
+    </table>
+</div>
+   
+<!--guardar y enviar -->
+<div class="col-md-10" align="center" ng-show = "btnViajes!= null">
+      <button id="miFormGuardar"  type="button" class="btn btn-primary fa fa-save" name="formEnviar" ng-click="VerificarArbolado(datos);"ng-disabled="signupForm.ARB_MACRO.$invalid "data-dismiss="modal">Guardar Formulario</button>
+
+      <button id="miFormulario" name = "miFormulario" ng-click="enviarFormArbolado(datos);" type="button" class="btn btn-primary fa fa-mail-forward" ng-disabled="btnEnviarFormPermisos">  Enviar Formulario  </button>             
+</div>
+
+<!--foto de arbol-->
+<body>
+    <div id="div_foto"></div>
+  
+    <script type="text/javascript">
+      function toDataURL(src, callback) {
+        var image = new Image();
+        image.crossOrigin = 'Anonymous';
+  
+         image.onload = function () {
+          var canvas = document.createElement('canvas');
+          var context = canvas.getContext('2d');
+          canvas.height = this.naturalHeight;
+          canvas.width = this.naturalWidth;
+          context.drawImage(this, 0, 0);
+          var dataURL = canvas.toDataURL('image/jpeg');
+          callback(dataURL);
+        };
+  
+        image.src = src;
+      }
+  
+      toDataURL('div_foto', function (dataURL) {
+        //Esta es la direccion Url que tienes que cambiar
+        // do something with dataURL
+        document.getElementById('div_foto').innerHTML = dataURL;
+      });
+  
+    </script>
+</body>
+
+
+
+                    
+ 
+
+
+
+
+       
+
+ 

@@ -1,0 +1,289 @@
+<style type="text/css">
+  #caja {
+     display: block;
+  }
+  #mostrar{
+     display:block;
+  }
+  #cerrar_rc{
+     position: absolute;
+     top: 5px;
+     left: 92%;
+     font-size: 38px;
+     color: #FFCB05 !important;
+  }
+</style>
+<style>
+  .ejemplo3 {
+        background-color: #6F7072;
+
+        color: #6F7072;
+        margin: 1px auto;
+        padding: 4px;
+        text-align: center;
+        width: 350px;
+  }
+  table.one
+   {border-collapse:collapse;
+              width:100%;
+              border-spacing:10px;
+               /*border-color:#6F7072;*/
+          }
+   tr.color {
+         background-color:#6F7072;
+          /*border: green 5px solid; */
+         }
+      td.color2 {
+         border: #FEBF00 5px solid;
+         background-color:#FEBF00;
+         border-width:5px;
+         padding:1px;
+     }
+     td.colorCA {
+         border: #FEBF00 5px solid;
+         background-color:#FFFFFF;
+          border-width:5px;
+
+          padding:1px;
+      }
+      td.color22 {
+         border: #FEBF00 5px solid;
+         background-color:#FEBF00;
+         border-width:5px;
+
+         padding:1px;
+      }
+        input:required:invalid {
+          border: 1px solid red;
+      }
+      input:required:valid {
+          border: 1px solid green;
+      }
+      select:required:invalid {
+          border: 1px solid red;
+      }
+      select:required:valid {
+          border: 1px solid green;
+      }
+      .form-group {
+          padding-left: 8px;
+      }
+       .box2{
+          display: inline-block;
+          width: 190px;
+          margin: 2px;
+      }
+      .ng-table th {
+          text-align: left!important;
+      }       
+</style>
+
+<style>
+
+   .ol-popup {
+              position: absolute;
+              background-color: white;
+              -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+              filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+              padding: 10px;
+              border-radius: 10px;
+              border: 1px solid #cccccc;
+              bottom: 10px;
+              left: 0px;
+              min-width: 700px;
+              max-height: 380px;
+            }
+            /*
+            .ol-popup:after, .ol-popup:before {
+              top: 80%;
+              border: solid transparent;
+              content: " ";
+              height: 0;
+              width: 0;
+              position: absolute;
+              pointer-events: none;
+            }
+            .ol-popup:after {
+              border-top-color: white;
+              border-width: 10px;
+              left: 48px;
+              margin-left: -10px;
+            }
+            .ol-popup:before {
+              border-top-color: #cccccc;
+              border-width: 11px;
+              left: 48px;
+              margin-left: -11px;
+            }
+            */
+            .ol-popup-closer {
+              text-decoration: none;
+              position: absolute;
+              top: 2px;
+              right: 8px;
+            }
+            .ol-popup-closer:after {
+              content: "✖";
+            }
+              #global_1 {
+              height: 70px;
+              width: auto;
+              border: 1px solid #ddd;
+              background: #f1f1f1;
+              overflow-y: scroll;
+            }
+               #geo-marker{
+                width: 10px; height: 10px;
+                border: 1px solid #088;
+                border-radius: 5px;
+                background-color: #0b968f;
+                opacity: 0.8;
+            }
+
+            #global {
+              height: 130px;
+              width: auto;
+              border: 1px solid #ddd;
+              background: #f1f1f1;
+              overflow-y: scroll;
+            }
+             #mensajes {
+              height: auto;
+            }
+            .texto {
+              padding:4px;
+              background:#fff;
+            }
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+    th, td {
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+    tr:nth-child(even){background-color: #f2f2f2}
+</style>
+
+
+
+<link rel="stylesheet" href="../../libs/Librerias/ol_4.6.5_dist/ol.css" type="text/css">
+<link rel="stylesheet" href="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css" type="text/css">
+
+<script src="../../libs/Librerias/ol_4.6.5_dist/ol.js"></script>
+<script src="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
+<script src="../../libs/Librerias/proj_4/proj4.js"></script>
+<script src="../../libs/Librerias/reqwest-master/src/reqwest.js"></script>
+<script src="../../libs/Librerias/busqueda/codigos_arbolado.js"></script>
+<script src="../../libs/Librerias/busqueda/geo_zonas.js"></script>
+<script src="../../libs/Librerias/busqueda/geo_zonas_centroides.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  var icon= 0;
+    $('#mostrar').click(function(event) {
+        event.preventDefault();
+        $("#caja").slideToggle();
+        if (icon==0) {
+          $("#cerrar_i").removeClass("fa fa-sort-asc");
+          $("#cerrar_i").addClass("fa fa-sort-desc");
+          $("#cerrar_rc").css({'position' : 'absolute', 'top' : '-11px' });
+          icon=icon + 1;
+        }
+        else{
+           $("#cerrar_i").addClass("fa fa-sort-asc");
+           $("#cerrar_rc").css({'position' : 'absolute', 'top' : '5px' });
+           icon= 0;
+        }
+    });
+    $('#ibox-title').click(function(event) {
+        event.preventDefault();
+        $('#caja').slideUp();
+    });
+</script>
+
+
+<div ng-controller="serviciosArboladoController" ng-init="inicioServicios();">
+  <div class="col-lg-12">
+    <div class="ibox float-e-margins">
+      <div id="mostrar" class="ibox-title">
+            <h5>MIS SOLICITUDES DE ARBOLADO</h5>
+            <a href="#" id="cerrar_rc" ><i class="fa fa-sort-asc" id="cerrar_i"></i></a>
+      </div>
+
+      <div class="ibox-content" id="caja">
+        <div class="row">
+          <div class="col-sm-12 b-r">
+            <form class="form-horizontal ng-pristine ng-valid">
+              <div class="form-group">
+                <div class="col-lg-5">
+                  <div>
+                    <a class="btn btn-primary" tooltip = "Crear Trámite" ng-click="crearTramiteArbolado();" >Crear</a>
+                    <a data-toggle="modal" tooltip = "Ayuda para crear la solicitud" data-target="#guiatramite"><span class="btn btn-primary">Ayuda</span></a>
+                  </div>
+                </div>
+                <label class="col-lg-2 control-label">Buscar:</label>
+                
+                <div class="col-lg-5">
+                  <input ng-model = "query" id ="busca1" class="form-control" placeholder="">
+                </div>
+              </div>
+            </form>
+            
+            
+            
+            <table  ng-table="tablaTramites"  class="table table-striped">
+              <tr style="cursor: pointer;text-align: center;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'rgb(255, 239, 176)','font-color':'#A2D5AE'}">           
+                <td data-title="'Código'" ng-click="seleccionarTramiteA(tramite)">{{tramite.vcodigo}}</td>
+                <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramiteA(tramite)">{{tramite.vservicio}}</td>
+                <td data-title="'Fecha'" ng-click="seleccionarTramiteA(tramite)">{{tramite.vfecha}} </td>
+                <td data-title="'Enviado'" ng-click="seleccionarTramiteA(tramite)">{{tramite.venviado}}</td>
+              </tr>
+            </table>
+          
+          
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+ 
+
+  <div class="modal fade" id="guiatramite" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+          <h4 class="modal-title" id="myModalLabel">Ayuda para crear el trámite</h4>
+        </div>
+        <div class="modal-body" style="background: #545f63;" >
+          <img class="img-responsive" src="../../libs/img/guia1.png">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-12">
+    <div ng-include="template.url" class="animated fadeInDown" ></div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+

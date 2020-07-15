@@ -8,6 +8,11 @@ if(jsonURLS){
   var urlIf = jsonURLS.CONEXION_API_PG_IF+"wsIf";
   var urlSitram = jsonURLS.CONEXION_API_PG_IF+"wsSitram";
   var urlSigetuTramite = jsonURLS.CONEXION_API_PG_IF_OFICIAL+"wsSTTF";
+  ////////////////////////ARBOLADO//////////////////////
+  var urlIf_A = jsonURLS.CONEXION_API_PG_IF_A+"wsIf";
+  //var urlIf_A = "http://localhost:91/wsIf";
+  console.log("FREDDDDDDDDDDDDDDDY2222222222222...",urlIf_A);
+  ///////////////////////////////////////////////////////////
 }
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
@@ -33,6 +38,31 @@ function ejecutarAjaxIF(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
 
     return dataResp;
 };
+/////////////////////////////////////ARBOLADO//////////////////////////////////////////////////
+function ejecutarAjaxIF_A(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+    $.ajax({
+      type: vTypeCall,
+      url: urlIf_A + vUrlComp,
+      data: vDataCall,
+      //dataType: "json",
+      async: false,
+      //processData: true,
+      success: function(response) {
+        //console.log(response);
+        dataResp = JSON.stringify(response);
+        vFunctionResp(dataResp);
+      },
+      error: function (response, status, error) {
+        //dataResp = response.responseText;
+        dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+        vFunctionResp(dataResp);
+      }
+    });
+
+    return dataResp;
+};
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 /*//////////////////////////////////PERSONA EXTRAVIADA //////////////////////////////////////////*/
 
 function visitas() {
@@ -108,6 +138,19 @@ gCrearCasoLinea.prototype.crearCasoLinea = function (functionResp) {
     };
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };
+////////////////////////////ARBOLADO/////////////////////////////////////
+gCrearCaso.prototype.crearCasoEnLinea_A = function (functionResp) {
+    var dirurl = '';
+    urlCompif = "/crearCasoEnLinea";
+    typeCallif = "post";
+    dataParamsif = {
+      "usr_id" : this.usr_id,
+      "datos" : this.datos,
+      "procodigo" : this.procodigo
+    };
+    ejecutarAjaxIF_A(urlCompif, typeCallif, dataParamsif, functionResp);      
+};
+//////////////////////////////////////////////////////////////////////////
 
 function gCrearCasoSitram() {
     this.proid;

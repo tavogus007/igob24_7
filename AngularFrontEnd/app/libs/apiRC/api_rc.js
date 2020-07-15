@@ -15,6 +15,11 @@ var typeCall;
 if(jsonURLS){
     urlRC = jsonURLS.CONEXION_API_PG_RC + "wsRCIgob";
     urlRCPG = jsonURLS.CONEXION_API_PG_RC + "wsRCPG";
+    ///////////////////////ARBOLADO////////////////////////////
+    urlRCPG_A = jsonURLS.CONEXION_API_PG_RC_A + "wsRCPG";
+    console.log("FREDDDDDDDDDDDDDDDYyyyyyyyyyy ARBOLADO...",urlRCPG_A);
+    console.log("FREDDDDDDDDDDDDDDDYyyyyyyyyyy...",urlRCPG);
+    ///////////////////////////////////////////////////////////
     urlMservicio    =   jsonURLS.CONEXION_MOTOR_SERVICIO + "api/reglaNegocio/ejecutarWeb";
     key = jsonURLS.KEY;
 }
@@ -88,7 +93,29 @@ function ejecutarAjax1(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
     });
     return dataResp;
 };
-
+//////////////////////////////ARBOLADO///////////////////////////////////////////////////
+function ejecutarAjax_A(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+    $.ajax({
+      type: vTypeCall,
+      url: urlRCPG_A + vUrlComp,
+      data: vDataCall,
+      //dataType: "json",
+      async: false,
+      //processData: true,
+      success: function(response) {
+        dataResp = JSON.stringify(response);
+        console.log("AAAAAAAAAAAAAAAAAAAAA...",dataResp);
+        vFunctionResp(dataResp);
+      },
+      error: function (response, status, error) {
+        //dataResp = response.responseText;
+        dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+        vFunctionResp(dataResp);
+      }
+    });
+    return dataResp;
+};
+////////////////////////////////////////////////////////////////////////////////////////
 
 function ejecutarAjaxMServicio(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
     var headers = {};
@@ -354,6 +381,31 @@ rcNatural.prototype.buscarPersona = function (functionResp)
     ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
 };
 
+//////////////////////////////ARBOLADO///////////////////////////////////////////////
+datosFormularios.prototype.spbusquedaformularioArbolado=function(functionResp){
+    urlComp = "/spbusquedaformularioArbolado";
+    typeCall = "post";
+    dataParams= {
+        "idCiudadano" : this.frm_tra_id_ciudadano
+    };
+    ejecutarAjax_A(urlComp, typeCall, dataParams, functionResp);
+};
+
+datosFormularios.prototype.crearTramiteIgob=function(functionResp){
+    urlComp = "/crearTramiteIgob";
+    typeCall = "post";
+    dataParams= {
+        "idServicio" : this.frm_tra_dvser_id,
+        "idCiudadano" : this.frm_tra_id_ciudadano,
+        "fechaTramite" : this.frm_tra_fecha,
+        "enviado" : this.frm_tra_enviado,
+        "registro" : this.frm_tra_registrado,
+        "modificado" : this.frm_tra_modificado,
+        "idusuario" : this.frm_tra_id_usuario
+    };
+    ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+};
+////////////////////////////////////////////////////////////////////////////////////
 
 datosFormularios.prototype.sp_crear_datos_formulario=function(functionResp){
    urlComp = "/sp_crear_datos_formulario";

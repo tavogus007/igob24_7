@@ -57,7 +57,7 @@
         document.getElementById("savedata").disabled = false;
         deshabilitado = "";
     }
-    $.Mustache.load(urlHtmlComponentes).done(function () {
+    $.Mustache.load(urlHtmlComponentes).done(function () {                
         $.each(JSON.parse(jsonForms).formularios[0].campo_descripcion, function(idx,data) {
             if(Object.keys(datos).length == 0){
                 data.valor_campo = svalorJosn[data.campo];
@@ -219,6 +219,7 @@
                         posicion++;
                     }
                     data.deshabilitado = deshabilitado;
+                    data.valor_campo_url = svalorJosn[data.campo + '_url'];
                     $('#principal').mustache('adjuntos', data);
                     break;                             
                 case 'HID':

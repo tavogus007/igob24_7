@@ -50,11 +50,6 @@ var jsonURLS    =   {
     //REVISAR FIN
     //CONEXION_API_PG_RC: "http://40.117.46.159:9093/",//login, apirc, lotus
     CONEXION_API_PG_RC: "http://192.168.5.141:8003/",//login, apirc, lotusoficial
-    /////////////////////////////// PARA ARBOLADO//////////////////////////////////
-    CONEXION_API_PG_RC_A: "http://192.168.5.141:9097/",
-    CONEXION_API_PG_IF_A: "http://192.168.5.141:9091/",
-    CONEXION_GIS: "http://192.168.6.46:8080/",
-    ////////////////////////////////////////////////////////////////////////////////
     CONEXION_MOTOR_SERVICIO: "http://192.168.5.69/motorservicio_pruebas/public/",//apirc
     //http://192.168.5.69/motorservicio_pruebas/public/reglaNegocio/ejecutarWeb
     CONEXION_API_PG_IF_OFICIAL: "http://192.168.6.107:91/",//apirc

@@ -533,8 +533,8 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "sistema_creado":"IGOB247",
           "tipo_persona": "NATURAL",
           "usr_id": this.usr_id,
-          "activacionf": "NO",
-          "activaciond": "NO",
+          "activacionf": "SI",
+          "activaciond": "SI",
           "tipo_documento": this.tipo_documento 
         };
 

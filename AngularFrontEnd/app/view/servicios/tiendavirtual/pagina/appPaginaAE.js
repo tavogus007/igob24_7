@@ -71,7 +71,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       logo = JSON.parse(logotipo);
       urllogo = logo[0].url;
       toDataURL(urllogo, function(dataUrl) {
-        console.log('RESULT LOGO:', dataUrl);
         $rootScope.urlLogotipo64 = dataUrl;
       });
       encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
@@ -82,9 +81,16 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       enca = JSON.parse(encabezado);
       urlenca = enca[0].url;
       toDataURL(urlenca, function(dataUrl) {
-        console.log('RESULT ENCABEZADO:', dataUrl);
         $rootScope.urlEncabezado64 = dataUrl;
       });
+      catalogo = $rootScope.datosTiendaVirtual[0].tvcatalogo;
+      catalogo = catalogo.replace('["{','[{');
+      catalogo = catalogo.replace('}"]','}]');
+      catalogo = catalogo.replace('}"{','}{');
+      catalogo = catalogo.replace(/\\"/gi,'"');
+      cata = JSON.parse(catalogo);
+      urlcatalogo = cata[0].url;
+      $rootScope.urlcatalogo = urlcatalogo;
       $scope.desabilitado = "disabled";
       $scope.getPagina();
       $scope.dataAdicional();
@@ -240,33 +246,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           newstr = newstr.replace('}"]', '}]');
           re = /\\"/gi;
           newRedes = newstr.replace(re, '"');
-          /*
-          try{
-            logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
-            logotipo = logotipo.replace('["{','[{');
-            logotipo = logotipo.replace('}"]','}]');
-            logotipo = logotipo.replace('}"{','}{');
-            logotipo = logotipo.replace(/\\"/gi,'"');
-            logo = JSON.parse(logotipo);
-            urllogo = logo[0].url;
-          } catch(errorL){
-            urllogo = "";
-          }
-          try{
-            encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
-            encabezado = encabezado.replace('["{','[{');
-            encabezado = encabezado.replace('}"]','}]');
-            encabezado = encabezado.replace('}"{','}{');
-            encabezado = encabezado.replace(/\\"/gi,'"');
-            enca = JSON.parse(encabezado);
-            urlenca = enca[0].url;
-          } catch(errorL){
-            urlenca = "";
-          }*/
-          
           ofertas = JSON.stringify($rootScope.productosPW),
           ofertas = ofertas.replace(/\n/g, "<br>");
-
           try { 
             horarios = $rootScope.datosTiendaVirtual[0].phorarios_atencion;
             horarios = horarios.replace('["{','[{');
@@ -275,7 +256,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
             horarios = horarios.replace(/}","{/gi,'},{');
             horarios = horarios.replace(/\\"/gi,'"');
             newHorarios = horarios;
-            //newHorarios =JSON.parse(horarios);
           } catch(error){
             newHorarios = "[]";
           }
@@ -287,7 +267,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "stitulo": $rootScope.datosTiendaVirtual[0].tv_nombrec,
                   "sdescripcion": $rootScope.datosTiendaVirtual[0].tv_descripcionc,
                   "scontactos": newContactos,
-                  //"sofertas":  newOfertas,
                   "sofertas": ofertas,
                   "sredes": newRedes,
                   "shorarios": newHorarios,
@@ -296,10 +275,9 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "sproductos": ofertas,
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
                   "sae": sessionService.get('IDAE'),
-                  //"slogo": urllogo,
-                  //"sencabezado": urlenca,
                   "slogo": $rootScope.urlLogotipo64,
                   "sencabezado": $rootScope.urlEncabezado64,
+                  "smenu": $rootScope.urlcatalogo,
                   "sentrega" : $rootScope.datosTiendaVirtual[0].pforma_entrega
               },
               success:function(response){
@@ -341,34 +319,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           newstr = newstr.replace('}"]', '}]');
           re = /\\"/gi;
           newRedes = newstr.replace(re, '"');
-          /*
-          try{
-            logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
-            logotipo = logotipo.replace('["{','[{');
-            logotipo = logotipo.replace('}"]','}]');
-            logotipo = logotipo.replace('}"{','}{');
-            logotipo = logotipo.replace(/\\"/gi,'"');
-            logo = JSON.parse(logotipo);
-            urllogo = logo[0].url;
-          } catch(errorL){
-            urllogo = "";
-          }
-          try{
-            encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
-            encabezado = encabezado.replace('["{','[{');
-            encabezado = encabezado.replace('}"]','}]');
-            encabezado = encabezado.replace('}"{','}{');
-            encabezado = encabezado.replace(/\\"/gi,'"');
-            enca = JSON.parse(encabezado);
-            urlenca = enca[0].url;
-          } catch(errorL){
-            urlenca = "";
-          }
-          */
-          
           ofertas = JSON.stringify($rootScope.productosPW),
           ofertas = ofertas.replace(/\n/g, "<br>");
-
           try { 
             horarios = $rootScope.datosTiendaVirtual[0].phorarios_atencion;
             horarios = horarios.replace('["{','[{');
@@ -377,13 +329,9 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
             horarios = horarios.replace(/}","{/gi,'},{');
             horarios = horarios.replace(/\\"/gi,'"');
             newHorarios = horarios;
-            //newHorarios =JSON.parse(horarios);
           } catch(error){
             newHorarios = "[]";
           }
-
-
-          console.log(logo);
           $.ajax({
               url:CONFIG.API_URL_DMS_HTML+'generadorHTML.php',
               type:"post",
@@ -392,7 +340,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "stitulo": $rootScope.datosTiendaVirtual[0].tv_nombrec,
                   "sdescripcion": $rootScope.datosTiendaVirtual[0].tv_descripcionc,
                   "scontactos": newContactos,
-                  //"sofertas":  newOfertas,
                   "sofertas": ofertas,
                   "sredes": newRedes,
                   "shorarios": newHorarios,
@@ -401,10 +348,9 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "sproductos": ofertas,
                   "stv": $rootScope.datosTiendaVirtual[0].tv_idc,
                   "sae": sessionService.get('IDAE'),
-                  //"slogo": urllogo,
-                  //"sencabezado": urlenca,
                   "slogo": $rootScope.urlLogotipo64,
                   "sencabezado": $rootScope.urlEncabezado64,
+                  "smenu": $rootScope.urlcatalogo,
                   "sentrega" : $rootScope.datosTiendaVirtual[0].pforma_entrega
               },
               success:function(response){

@@ -1,4 +1,4 @@
-function productosController($scope, $timeout, CONFIG,$window,$rootScope,sessionService,ngTableParams,$filter,$route, sweet, $http,FileUploader,$sce,fileUpload, fileUpload1 ) {
+function productosController($scope, $timeout, CONFIG,$window,$rootScope,sessionService,ngTableParams,$filter,$route, sweet, $http,FileUploader,$sce,fileUpload, fileUploadcorr) {
   $scope.tblDocumentos        =   {};
   $scope.frmProducto = null;
   $scope.datosProd = {};
@@ -89,14 +89,14 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
               var tipoFile = imagenFile[1];
               var nombreNuevo = descArchivo +"_"+ fechaNueva +'.'+ imagenFile[1];
               $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') +'/'+ nombreNuevo + "?app_name=todoangular";
-              fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
+              fileUploadcorr.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
               document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
               /*var filecompress = compressImage(archivo).then(function(respuestaFile){
                   var imagenFile = respuestaFile.name.split('.');
                   var tipoFile = imagenFile[1];
                   var nombreNuevo = descDoc + '_'+fechaNueva+'.'+tipoFile;
                   $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
-                  fileUpload1.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
+                  fileUploadcorr.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
                   document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
               });*/
               var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/"  + sessionService.get('IDTV') +'/' + nombreNuevo + "?app_name=todoangular";
@@ -128,14 +128,14 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
               //var tipoFile = imagenFile[1];
               var nombreNuevo = descArchivo +"_"+ fechaNueva +'.'+ imagenFile[1];
               $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') +'/'+ nombreNuevo + "?app_name=todoangular";
-              fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
+              fileUploadcorr.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
               document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
               /*var filecompress = compressImage(archivo).then(function(respuestaFile){
                   var imagenFile = respuestaFile.name.split('.');
                   var tipoFile = imagenFile[1];
                   var nombreNuevo = descDoc + '_'+fechaNueva+'.'+tipoFile;
                   $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
-                  fileUpload1.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
+                  fileUploadcorr.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
                   document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
               });*/
               var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/"  + sessionService.get('IDTV') +'/' + nombreNuevo + "?app_name=todoangular";

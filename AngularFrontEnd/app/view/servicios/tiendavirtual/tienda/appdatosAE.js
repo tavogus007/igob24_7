@@ -1,4 +1,4 @@
-function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,sessionService,ngTableParams,$filter,$route, sweet, $http,FileUploader,$sce,fileUpload, fileUpload1,$q) {
+function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,sessionService,ngTableParams,$filter,$route, sweet, $http,FileUploader,$sce,fileUpload, fileUploadcorr,$q) {
   $scope.desabilitado=""
   $scope.tablaContactos = {};
   $scope.tablaRedesSociales = {};
@@ -1774,7 +1774,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
                   var tipoFile = imagenFile[1];
                   var nombreNuevo = descDoc + '_' + $scope.id_ae + '.'+imagenFile[1];
                   $scope.catalogo_url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
-                  fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
+                  fileUploadcorr.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
                   document.getElementById('txt_f01_upload1').value = nombreNuevo;
                   var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
                   var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevo + '", "nombre":"' + descArchivo + '" }';
@@ -1794,7 +1794,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
                     var tipoFile = imagenFile[1];
                     var nombreNuevoL = descDoc + '_' + $scope.id_ae +'.'+imagenFile[1];
                     $scope.logotipo_url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoL + "?app_name=todoangular";
-                    fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevoL);
+                    fileUploadcorr.uploadFileToUrl1(archivo, uploadUrl, nombreNuevoL);
                     document.getElementById('txt_f01_upload2').value = nombreNuevoL;
                     var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoL + "?app_name=todoangular";
                     var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevoL + '", "nombre":"' + descArchivo + '" }';
@@ -1819,7 +1819,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
                     var tipoFile = imagenFile[1];
                     var nombreNuevoE = descDoc + '_' + $scope.id_ae +'.'+imagenFile[1];
                     $scope.encabezadotipo_url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoE + "?app_name=todoangular";
-                    fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreNuevoE);
+                    fileUploadcorr.uploadFileToUrl1(archivo, uploadUrl, nombreNuevoE);
                     document.getElementById('txt_f01_upload3').value = nombreNuevoE;
                     var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevoE + "?app_name=todoangular";
                     var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevoE + '", "nombre":"' + descArchivo + '" }';

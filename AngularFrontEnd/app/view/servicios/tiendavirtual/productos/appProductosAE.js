@@ -283,12 +283,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       $scope.imagenaux1m = false;
       $scope.imagenaux2m = false;
 
-      $scope.datosProd.f01_descripcion = "";
-      tinyMCE.get('f01_descripcion').setContent($scope.datosProd.f01_descripcion);   
-
-      $scope.datosProd.f01_descripcion_oferta = "";
-      tinyMCE.get('f01_descripcion_oferta').setContent($scope.datosProd.f01_descripcion_oferta );
-
     }
 
     $scope.registrarProducto = function(data){
@@ -315,51 +309,42 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
         $scope.datosProd.f01_producto_oferta = "SIN OFERTA";
       }
 
-        //var descripcionsrt = document.getElementById('f01_descripcion').value.replace(/↵/g, "<br />");
+      if(f0 != "" && f0 != null && 
+        data.f01_producto != "" && data.f01_producto != null && 
+        data.f01_descripcion != "" && data.f01_descripcion != null && 
+        data.f01_precio!= "" && data.f01_precio != null){
+        var descripcionsrt = document.getElementById('f01_descripcion').value.replace(/↵/g, "<br />");
         var datosProducto = new dataProducto();
         datosProducto.idtv = sessionService.get("IDTV");
         datosProducto.nombre = data.f01_producto;
-
-        $scope.descripProducto = tinyMCE.get('f01_descripcion').getContent(); //editor
-        datosProducto.descripcion = $scope.descripProducto;
-        if($scope.descripProducto == ''){
-          $scope.swDes = true;
-        }
-        else{
-          $scope.swDes = false;
-        }
-        
+        datosProducto.descripcion = descripcionsrt;
         datosProducto.precio = parseFloat(data.f01_precio).toFixed(2);
         datosProducto.imagen_p = f0;
         datosProducto.imagen_a1 = f1;
         datosProducto.imagen_a2 = f2;
         datosProducto.oid_ciu = sessionService.get('IDCIUDADANO');
         datosProducto.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
-        
-        datosProducto.prd_ofertac = $scope.datosProd.f01_producto_oferta; //editor
-        $scope.descripOferta = tinyMCE.get('f01_descripcion_oferta').getContent(); //editor
-        datosProducto.prd_descripcion_ofertac = $scope.descripOferta; 
+        datosProducto.prd_ofertac = $scope.datosProd.f01_producto_oferta;
+        datosProducto.prd_descripcion_ofertac = data.f01_descripcion_oferta; 
         datosProducto.prd_oferta_defechac = data.f01_de_fecha; 
         datosProducto.prd_oferta_hastafechac = data.f01_hasta_fecha; 
-        if(f0 != "" && f0 != null && data.f01_producto != "" && data.f01_producto != null && 
-        $scope.swDes == false && data.f01_precio!= "" && data.f01_precio != null){
-          datosProducto.crearProducto(function(response){
-            results = JSON.parse(response);
-            results = results.success;
-            if(results.length > 0){
-                $.unblockUI();
-                $scope.refrescar();
-                swal('', "Producto Registrado", 'success');
-                $scope.limpiar();
-                $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
-                $scope.nuevo = false;
-            } else {
-                $.unblockUI();
-                swal('', "Producto no registrado", 'error');
-            }
-          });
+        datosProducto.crearProducto(function(response){
+          results = JSON.parse(response);
+          results = results.success;
+          if(results.length > 0){
+              $.unblockUI();
+              $scope.refrescar();
+              swal('', "Producto Registrado", 'success');
+              $scope.limpiar();
+              $scope.getProductos(sessionService.get('IDCIUDADANO'), sessionService.get('IDTV'));
+              $scope.nuevo = false;
+          } else {
+              $.unblockUI();
+              swal('', "Producto no registrado", 'error');
+          }
+        });
 
-        }else{
+       }else{
             swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
         }
     }
@@ -375,26 +360,6 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
             resultado = JSON.parse(response);
             var resultadoProd = resultado.success;
             $scope.listadoProductos = resultadoProd;
-            console.log('$scope.listadoProductos',$scope.listadoProductos.length);
-            for(i=0;i<$scope.listadoProductos.length;i++){
-              var nuevaDesc = $scope.listadoProductos[i].prd_descripcionc;
-              $scope.stripedHtml = nuevaDesc.replace(/<[^>]+>/g, '');
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&ntilde;/g,'ñ');
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&Ntilde;/g, 'Ñ');
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&Aacute;/g, 'Á'); 
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&Eacute;/g, 'É');
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&Iacute;/g, 'Í');
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&Oacute;/g, 'Ó');
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&Uacute;/g, 'Ú');
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&aacute;/g, 'á');
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&eacute;/g, 'é');
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&iacute;/g, 'í');
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&oacute;/g, 'ó');
-              $scope.stripedHtml = $scope.stripedHtml.replace(/&uacute;/g, 'ú');
-              $scope.listadoProductos[i].prd_descripcionc = $scope.stripedHtml;
-
-            }
-            //console.log('$scope.listadoProductos',$scope.listadoProductos);            
             var data = resultadoProd;
             
             if ($scope.listadoProductos == '[]' || $scope.listadoProductos == '[{}]' || $scope.listadoProductos == '[{ }]' || $scope.listadoProductos == ' ' || $scope.listadoProductos == '') {
@@ -503,15 +468,9 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     //$scope.datosProd = datosP;
     $scope.datosProd.prd_idc = datosP.prd_idc;
     $scope.datosProd.f01_producto = datosP.prd_productoc;
-    //$scope.datosProd.f01_descripcion = datosP.prd_descripcionc; //editor
+    $scope.datosProd.f01_descripcion = datosP.prd_descripcionc;
     $scope.datosProd.f01_precio = datosP.prd_precioc;
 
-     //editor
-    // setTimeout(function(){
-      $scope.productoDesc = datosP.prd_descripcionc;
-      $scope.descripProducto = tinyMCE.get('f01_descripcion').setContent($scope.productoDesc);  
-      $scope.datosProd.f01_descripcion = $scope.descripProducto;    
-    //},1000); 
 
     //document.getElementById("f01_cantidad").value = datosP.prd_cantidadc;
     archivo1 = datosP.prd_imagen_pc.split('/');
@@ -552,19 +511,11 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
       $scope.imagenaux2m = true;
     }
 
-   
-
     if(datosP.prd_ofertac == "CON OFERTA") {
       $scope.datosProd.f01_oferta_producto = true;
-      //$scope.datosProd.f01_descripcion_oferta = datosP.prd_descripcion_ofertac;
+      $scope.datosProd.f01_descripcion_oferta = datosP.prd_descripcion_ofertac;
       $scope.datosProd.f01_de_fecha = datosP.prd_oferta_defechac;
       $scope.datosProd.f01_hasta_fecha = datosP.prd_oferta_hastafechac;
-      setTimeout(function(){
-        $scope.productoOferta = datosP.prd_descripcion_ofertac;
-        console.log('$scope.productoOferta',$scope.productoOferta);
-        $scope.descripOferta = tinyMCE.get('f01_descripcion_oferta').setContent($scope.productoOferta);  
-        $scope.datosProd.f01_descripcion_oferta = $scope.descripOferta;  
-      },500);  
 
     } else {
       $scope.datosProd.f01_oferta_producto = false;
@@ -598,21 +549,14 @@ function productosController($scope, $timeout, CONFIG,$window,$rootScope,session
     datosModProducto.prd_idc = data.prd_idc;
     datosModProducto.prd_tv_idc = sessionService.get("IDTV");
     datosModProducto.prd_nombrec = data.f01_producto;
-    //datosModProducto.prd_descripcionc = data.f01_descripcion;
-    $scope.descripProducto = tinyMCE.get('f01_descripcion').getContent(); //editor
-    datosModProducto.prd_descripcionc = $scope.descripProducto;
+    datosModProducto.prd_descripcionc = data.f01_descripcion;
     datosModProducto.prd_precioc = parseFloat(data.f01_precio).toFixed(2);
     datosModProducto.prd_imagen_pc = img1;
     datosModProducto.prd_imagen_a1c = img2;
     datosModProducto.prd_imagen_a2c = img3;
     datosModProducto.prd_usrc = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
     datosModProducto.prd_ofertac = $scope.datosProd.f01_producto_oferta;
-    
-    $scope.descripOferta = tinyMCE.get('f01_descripcion_oferta').getContent(); //editor
-    datosModProducto.prd_descripcion_ofertac = $scope.descripOferta; 
-
-    //datosModProducto.prd_descripcion_ofertac = data.f01_descripcion_oferta; editor
-
+    datosModProducto.prd_descripcion_ofertac = data.f01_descripcion_oferta; 
     datosModProducto.prd_oferta_defechac = data.f01_de_fecha; 
     datosModProducto.prd_oferta_hastafechac = data.f01_hasta_fecha; 
     datosModProducto.modificarProductoAe(function(response){

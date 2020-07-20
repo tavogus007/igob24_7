@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
         <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css">
         <script type="text/javascript" src="../../libs/js/bootstrap-clockpicker.min.js"></script>
+        <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/tinymce/tinymce.min.js"></script>
 
         <style type="text/css">
             .main1
@@ -39,6 +40,17 @@
      
 
             
+        </script>
+        <script>
+            setTimeout(function(){
+                tinymce.init({
+                selector: 'textarea',
+                setup: function (editor) {
+                    editor.on('init', function (e) {
+                    editor.setContent('');
+                    });}
+            });
+            },100);
         </script>
         <style>
             .switch {
@@ -129,9 +141,6 @@
                         <label for="url" >Descripción de la Tienda Virtual:</label>
                         <div class="controls">
                             <textarea ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Escribir una breve descricpión acerca de la Tienda Virtual" required></textarea>
-                            <span style="color:red" ng-show="signupForm.f01_descripcionTV.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_descripcionTV.$error.required">Descripción de la Tienda Virtual es requerido. </span>
-                            </span>
                         </div>
                     </div>
                 </div>
@@ -141,9 +150,6 @@
                         <label for="url" >Forma de Entrega:</label>
                         <div class="controls">
                             <textarea ng-model="datos.f01_forma_entrega" id="f01_forma_entrega" name="f01_forma_entrega" class="form-control" ng-disabled="desabilitado"rows="4" cols="150" placeholder="Describa la forma de entrega de los Productos" required></textarea>
-                            <span style="color:red" ng-show="signupForm.f01_forma_entrega.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_forma_entrega.$error.required">Descripción de la Tienda Virtual es requerido. </span>
-                            </span>
                         </div>
                     </div>
                 </div>
@@ -722,61 +728,7 @@
                 </div><br>
                 <div class="col-md-1">
                 </div>
-                <!--div class="col-md-5">
-                    <div class="form-group" >
-                        <label for="url" >Tipo de Oferta:</label>
-                        <div class="controls">
-                            <select id="f01_ofertasAE1" class="form-control" ng-model="datos.f01_ofertasAE1" name="f01_ofertasAE1" ng-disabled="desabilitado" required>
-                                <option value="">--Seleccionar--</option>
-                                <option value="DESCUENTO"> DESCUENTO </option>
-                                <option value="OFERTA"> OFERTA </option>
-                            </select>
-                            <br>
-                            <select id="f01_ofertasAE2" class="form-control" ng-model="datos.f01_ofertasAE2" name="f01_ofertasAE2" ng-disabled="desabilitado" required>
-                                <option value="">--Seleccionar--</option>
-                                <option value="DESCUENTO"> DESCUENTO </option>
-                                <option value="OFERTA"> OFERTA </option>
-                            </select>
-                            <br>
-                            <select id="f01_ofertasAE3" class="form-control" ng-model="datos.f01_ofertasAE3" name="f01_ofertasAE3" ng-disabled="desabilitado" required>
-                                <option value="">--Seleccionar--</option>
-                                <option value="DESCUENTO"> DESCUENTO </option>
-                                <option value="OFERTA"> OFERTA </option>
-                            </select>
-                            <br>
-                            <select id="f01_ofertasAE4" class="form-control" ng-model="datos.f01_ofertasAE4" name="f01_ofertasAE4" ng-disabled="desabilitado" required>
-                                <option value="">--Seleccionar--</option>
-                                <option value="DESCUENTO"> DESCUENTO </option>
-                                <option value="OFERTA"> OFERTA </option>
-                            </select>
-                            <br>
-                            <select id="f01_ofertasAE5" class="form-control" ng-model="datos.f01_ofertasAE5" name="f01_ofertasAE5" ng-disabled="desabilitado" required>
-                                <option value="">--Seleccionar--</option>
-                                <option value="DESCUENTO"> DESCUENTO </option>
-                                <option value="OFERTA"> OFERTA </option>
-                            </select>
-                            <br>
 
-                        </div>
-                    </div>
-                </div
-                <div class="col-md-10">
-                    <div class="form-group" >
-                        <label for="url" >Describa la oferta:</label>
-                        <div class="controls">
-                            <textarea ng-model="datos.f01_ofertasAE_des1" id="f01_ofertasAE_des1" name="f01_ofertasAE_des1" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Información de la Oferta 1"></textarea>
-                            <br>
-                            <textarea ng-model="datos.f01_ofertasAE_des2" id="f01_ofertasAE_des2" name="f01_ofertasAE_des2" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Información de la Oferta 2"></textarea>
-                            <br>
-                            <textarea ng-model="datos.f01_ofertasAE_des3" id="f01_ofertasAE_des3" name="f01_ofertasAE_des3" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Información de la Oferta 3"></textarea>
-                            <br>
-                            <textarea ng-model="datos.f01_ofertasAE_des4" id="f01_ofertasAE_des4" name="f01_ofertasAE_des4" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Información de la Oferta 4"></textarea>
-                            <br>
-                            <textarea ng-model="datos.f01_ofertasAE_des5" id="f01_ofertasAE_des5" name="f01_ofertasAE_des5" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Información de la Oferta 5"></textarea>
-                            <br>
-                        </div>
-                    </div>
-                </div-->
                 <div class="col-md-1">
                 </div>
                 <div class="col-md-11">
@@ -801,8 +753,8 @@
                 </div>
             </div>
             <div class="col-md-12" align="right">
-                <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid || signupForm.f01_correoTV.$invalid || signupForm.f01_forma_entrega.$invalid" ng-click="registrarDatosAE(datos)">Registrar</button>
-                <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_descripcionTV.$invalid || signupForm.f01_categoria.$invalid || signupForm.f01_correoTV.$invalid || signupForm.f01_forma_entrega.$invalid" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                
+                <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_categoria.$invalid || signupForm.f01_correoTV.$invalid" ng-click="registrarDatosAE(datos)">Registrar</button>
+                <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_categoria.$invalid || signupForm.f01_correoTV.$invalid" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                
             </div>
           </form>
         </div>

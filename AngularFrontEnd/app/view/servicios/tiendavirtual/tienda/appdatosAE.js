@@ -27,6 +27,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     if (data.length == 0){
       $scope.datos.f01_nombreTV = "";
       $scope.datos.f01_descripcionTV = "";
+      tinyMCE.get('f01_descripcionTV').setContent($scope.datos.f01_descripcionTV);
+      $scope.datos.f01_forma_entrega = "";
+      tinyMCE.get('f01_forma_entrega').setContent($scope.datos.f01_forma_entrega);
       $scope.datos.f01_categoria = "";
       $scope.datos.f01_correoTV = "";
       $scope.datos.f01_pagwebAE = "";
@@ -35,9 +38,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_contacto2_nro = "";
       $scope.datos.f01_contacto2 = "";
       $scope.datos.f01_contacto3_nro = "";
-      $scope.datos.f01_contacto3 = "";
-      $scope.datos.f01_forma_entrega = "";
-      //$scope.datos.f01_ofertasAE = "";
+      $scope.datos.f01_contacto3 = "";  
       $scope.datos.f01_redessocialesAE1_url = "";
       $scope.datos.f01_redessocialesAE1 = "";
       $scope.datos.f01_redessocialesAE2_url = "";
@@ -84,18 +85,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     } else {
       $scope.obtTiendaVirtualM();
       $scope.datos.f01_nombreTV = data[0].tv_nombrec;
-      //textarea
-      var recDesc = data[0].tv_descripcionc;
-      recDesc = recDesc.replace(/<br ?\/?>/g, "\n");
-      $scope.datos.f01_descripcionTV = recDesc;  
-      var rec_formaP = data[0].pforma_entrega;
-      if(rec_formaP == null || rec_formaP == 'null' || rec_formaP == 'undefined' || rec_formaP == undefined){
-        $scope.datos.f01_forma_entrega = data[0].pforma_entrega;
-      }else{
-        rec_formaP = rec_formaP.replace(/<br ?\/?>/g, "\n");
-        $scope.datos.f01_forma_entrega = rec_formaP;
-      }
-
       $scope.datos.f01_categoria = data[0].tv_categoria_idc;
       $scope.datos.f01_correoTV = data[0].tv_correoc;
       $scope.datos.f01_pagwebAE =   data[0].tv_pagina_webc;
@@ -255,133 +244,154 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     
       //catalogo
       $scope.catalogo1 = results[0].tvcatalogo;
-      if($scope.catalogo1 == '' || $scope.catalogo1 == undefined || $scope.catalogo1 == 'undefined'){
-        console.log('Sin Url de catalogo');
-       $scope.datos.txt_f01_upload1 = '';
+      if($scope.catalogo1 == '' || $scope.catalogo1 == null || $scope.catalogo1 == undefined || $scope.catalogo1 == 'null' || $scope.catalogo1 == 'undefined'){
+        console.log('Sin catalogo');
       }else{
-        $scope.catalogojson = JSON.parse($scope.catalogo1);
-        if($scope.catalogojson.length == 0){
-         console.log('Sin Url de catalogo');
-         $scope.datos.txt_f01_upload1 = '';
+        if($scope.catalogo1 == '' || $scope.catalogo1 == undefined || $scope.catalogo1 == 'undefined'){
+          console.log('Sin Url de catalogo');
+        $scope.datos.txt_f01_upload1 = '';
         }else{
-          $scope.catalogojson1 = JSON.parse($scope.catalogojson[0]); 
-          $scope.datos.txt_f01_upload1 = $scope.catalogojson1.campo;
-          $scope.catalogo_url = $scope.catalogojson1.url;
+          $scope.catalogojson = JSON.parse($scope.catalogo1);
+          if($scope.catalogojson.length == 0){
+          console.log('Sin Url de catalogo');
+          $scope.datos.txt_f01_upload1 = '';
+          }else{
+            $scope.catalogojson1 = JSON.parse($scope.catalogojson[0]); 
+            $scope.datos.txt_f01_upload1 = $scope.catalogojson1.campo;
+            $scope.catalogo_url = $scope.catalogojson1.url;
+          }
+          
         }
-        
       }
-  
       //logotipo
       $scope.logotipo1 = results[0].plogotipo;
-      $scope.logotipojson = JSON.parse($scope.logotipo1);
-      if($scope.logotipojson.length == 0){
-        console.log('Sin Url de logotipo');
-        $scope.datos.txt_f01_upload2 = '';
+      if($scope.logotipo1 == '' || $scope.logotipo1 == null || $scope.logotipo1 == undefined || $scope.logotipo1 == 'null' || $scope.logotipo1 == 'undefined'){
+        console.log('Sin logotipo');
       }else{
-        $scope.logotipojson1 = JSON.parse($scope.logotipojson[0]);
-        $scope.datos.txt_f01_upload2 = $scope.logotipojson1.campo;
-        $scope.logotipo_url = $scope.logotipojson1.url;
+        $scope.logotipojson = JSON.parse($scope.logotipo1);
+        if($scope.logotipojson.length == 0){
+          console.log('Sin Url de logotipo');
+          $scope.datos.txt_f01_upload2 = '';
+        }else{
+          $scope.logotipojson1 = JSON.parse($scope.logotipojson[0]);
+          $scope.datos.txt_f01_upload2 = $scope.logotipojson1.campo;
+          $scope.logotipo_url = $scope.logotipojson1.url;
+        }
       }
 
       $scope.encabezado1 = results[0].pencabezado;
-      $scope.encabezadotipojson = JSON.parse($scope.encabezado1);
-      if($scope.encabezadotipojson.length == 0){
-        console.log('Sin Url de encabezado');
-        $scope.datos.txt_f01_upload3 = '';
+      if($scope.encabezado1 == '' || $scope.encabezado1 == null || $scope.encabezado1 == undefined || $scope.encabezado1 == 'null' || $scope.encabezado1 == 'undefined'){
+        console.log('Sin encabezado');
       }else{
-        $scope.encabezadotipojson1 = JSON.parse($scope.encabezadotipojson[0]);
-        $scope.datos.txt_f01_upload3 = $scope.encabezadotipojson1.campo;
-        $scope.encabezadotipo_url = $scope.encabezadotipojson1.url;
+        $scope.encabezadotipojson = JSON.parse($scope.encabezado1);
+        if($scope.encabezadotipojson.length == 0){
+          console.log('Sin Url de encabezado');
+          $scope.datos.txt_f01_upload3 = '';
+        }else{
+          $scope.encabezadotipojson1 = JSON.parse($scope.encabezadotipojson[0]);
+          $scope.datos.txt_f01_upload3 = $scope.encabezadotipojson1.campo;
+          $scope.encabezadotipo_url = $scope.encabezadotipojson1.url;
+        }
       }
-      
-            //RECUPERA HORARIOS
-            var horarios = data[0].phorarios_atencion;
-            var horas = JSON.parse(horarios);
-            for(j=0;j<horas.length;j++){
-              var horas1 = JSON.parse(horas[j]);
-              if(j==0){
-                if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
-                  $scope.datos.f01_chk_lunes = false;
-                $scope.datos.f01_hora_inicio_lunes = '';
-                $scope.datos.f01_hora_fin_lunes = '';
-                }else{
-                  $scope.datos.f01_chk_lunes = true;
-                  $scope.datos.f01_hora_inicio_lunes = horas1.hora_inicio;
-                  $scope.datos.f01_hora_fin_lunes = horas1.hora_fin;
-                }
-              }
-              if(j==1){
-                if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
-                $scope.datos.f01_chk_martes = false;
-                $scope.datos.f01_hora_inicio_martes = '';
-                $scope.datos.f01_hora_fin_martes = '';
-              }else{
-                $scope.datos.f01_chk_martes = true;
-                $scope.datos.f01_hora_inicio_martes = horas1.hora_inicio;
-                $scope.datos.f01_hora_fin_martes = horas1.hora_fin;
-              }
+      //RECUPERA HORARIOS
+      var horarios = data[0].phorarios_atencion;
+      if(horarios == '' || horarios == null || horarios == undefined || horarios == 'null' || horarios == 'undefined'){
+        console.log('Sin horarios');
+      }else{
+        var horas = JSON.parse(horarios);
+        for(j=0;j<horas.length;j++){
+          var horas1 = JSON.parse(horas[j]);
+          if(j==0){
+            if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+              $scope.datos.f01_chk_lunes = false;
+            $scope.datos.f01_hora_inicio_lunes = '';
+            $scope.datos.f01_hora_fin_lunes = '';
+            }else{
+              $scope.datos.f01_chk_lunes = true;
+              $scope.datos.f01_hora_inicio_lunes = horas1.hora_inicio;
+              $scope.datos.f01_hora_fin_lunes = horas1.hora_fin;
             }
-            if(j==2){
-              if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
-              $scope.datos.f01_chk_miercoles = false;
-              $scope.datos.f01_hora_inicio_miercoles = '';
-              $scope.datos.f01_hora_fin_miercoles = '';
-              }else{
-                $scope.datos.f01_chk_miercoles = true;
-                $scope.datos.f01_hora_inicio_miercoles = horas1.hora_inicio;
-                $scope.datos.f01_hora_fin_miercoles = horas1.hora_fin;
-              }
-            }
-            if(j==3){
-              if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
-              $scope.datos.f01_chk_jueves = false;
-              $scope.datos.f01_hora_inicio_juevesf01_chk_jueves = '';
-              $scope.datos.f01_hora_fin_juevesf01_chk_jueves = '';
-              }else{
-                $scope.datos.f01_chk_jueves = true;
-                $scope.datos.f01_hora_inicio_jueves = horas1.hora_inicio;
-                $scope.datos.f01_hora_fin_jueves = horas1.hora_fin;
-              }
-            }
-            if(j==4){
-              if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
-              $scope.datos.f01_chk_viernes = false;
-              $scope.datos.f01_hora_inicio_viernes = '';
-              $scope.datos.f01_hora_fin_viernes = '';
-              }else{
-                $scope.datos.f01_chk_viernes = true;
-                $scope.datos.f01_hora_inicio_viernes = horas1.hora_inicio;
-                $scope.datos.f01_hora_fin_viernes = horas1.hora_fin;
-              }
-            }
-            if(j==5){
-              if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
-              $scope.datos.f01_chk_sabado = false;
-              $scope.datos.f01_hora_inicio_sabado = '';
-              $scope.datos.f01_hora_fin_sabado = '';
-              }else{
-                $scope.datos.f01_chk_sabado = true;
-                $scope.datos.f01_hora_inicio_sabado = horas1.hora_inicio;
-                $scope.datos.f01_hora_fin_sabado = horas1.hora_fin;
-              }
-            }
-            if(j==6){
-              if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
-              $scope.datos.f01_chk_domingo = false;
-              $scope.datos.f01_hora_inicio_domingo = '';
-              $scope.datos.f01_hora_fin_domingo = '';
-              }else{
-                $scope.datos.f01_chk_domingo = true;
-                $scope.datos.f01_hora_inicio_domingo = horas1.hora_inicio;
-                $scope.datos.f01_hora_fin_domingo = horas1.hora_fin;
-              }
-            }
-
-
-
-             
           }
+          if(j==1){
+            if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+            $scope.datos.f01_chk_martes = false;
+            $scope.datos.f01_hora_inicio_martes = '';
+            $scope.datos.f01_hora_fin_martes = '';
+          }else{
+            $scope.datos.f01_chk_martes = true;
+            $scope.datos.f01_hora_inicio_martes = horas1.hora_inicio;
+            $scope.datos.f01_hora_fin_martes = horas1.hora_fin;
+          }
+        }
+        if(j==2){
+          if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+          $scope.datos.f01_chk_miercoles = false;
+          $scope.datos.f01_hora_inicio_miercoles = '';
+          $scope.datos.f01_hora_fin_miercoles = '';
+          }else{
+            $scope.datos.f01_chk_miercoles = true;
+            $scope.datos.f01_hora_inicio_miercoles = horas1.hora_inicio;
+            $scope.datos.f01_hora_fin_miercoles = horas1.hora_fin;
+          }
+        }
+        if(j==3){
+          if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+          $scope.datos.f01_chk_jueves = false;
+          $scope.datos.f01_hora_inicio_juevesf01_chk_jueves = '';
+          $scope.datos.f01_hora_fin_juevesf01_chk_jueves = '';
+          }else{
+            $scope.datos.f01_chk_jueves = true;
+            $scope.datos.f01_hora_inicio_jueves = horas1.hora_inicio;
+            $scope.datos.f01_hora_fin_jueves = horas1.hora_fin;
+          }
+        }
+        if(j==4){
+          if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+          $scope.datos.f01_chk_viernes = false;
+          $scope.datos.f01_hora_inicio_viernes = '';
+          $scope.datos.f01_hora_fin_viernes = '';
+          }else{
+            $scope.datos.f01_chk_viernes = true;
+            $scope.datos.f01_hora_inicio_viernes = horas1.hora_inicio;
+            $scope.datos.f01_hora_fin_viernes = horas1.hora_fin;
+          }
+        }
+        if(j==5){
+          if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+          $scope.datos.f01_chk_sabado = false;
+          $scope.datos.f01_hora_inicio_sabado = '';
+          $scope.datos.f01_hora_fin_sabado = '';
+          }else{
+            $scope.datos.f01_chk_sabado = true;
+            $scope.datos.f01_hora_inicio_sabado = horas1.hora_inicio;
+            $scope.datos.f01_hora_fin_sabado = horas1.hora_fin;
+          }
+        }
+        if(j==6){
+          if(horas1.checked == 'false' || horas1.checked == undefined || horas1.checked == 'undefined' || horas1.checked == false){
+          $scope.datos.f01_chk_domingo = false;
+          $scope.datos.f01_hora_inicio_domingo = '';
+          $scope.datos.f01_hora_fin_domingo = '';
+          }else{
+            $scope.datos.f01_chk_domingo = true;
+            $scope.datos.f01_hora_inicio_domingo = horas1.hora_inicio;
+            $scope.datos.f01_hora_fin_domingo = horas1.hora_fin;
+          }
+        }
+      }
      
+      }
+       //editor
+       setTimeout(function(){
+        $scope.recDesc = data[0].tv_descripcionc;
+        $scope.descripTienda = tinyMCE.get('f01_descripcionTV').setContent($scope.recDesc);  
+        $scope.datos.f01_descripcionTV = $scope.descripTienda; 
+
+        $scope.rec_formaP = data[0].pforma_entrega;
+        $scope.descripEntrega = tinyMCE.get('f01_forma_entrega').setContent( $scope.rec_formaP);
+        $scope.datos.f01_forma_entrega = $scope.descripEntrega; 
+      },500);  
+
     } 
     return deferred.promise;
 }
@@ -401,12 +411,18 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     datosTiendaVirtual.correo = data.f01_correoTV;
     datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
     var descTV = data.f01_descripcionTV;
-    descTV = descTV.replace(/\n/g, "<br>");
-    datosTiendaVirtual.descripcion = descTV;
+    $scope.descripTienda = tinyMCE.get('f01_descripcionTV').getContent();
+    datosTiendaVirtual.descripcion = $scope.descripTienda;
     var formaE = data.f01_forma_entrega;
-    formaE = formaE.replace(/\n/g, "<br>");
-    datosTiendaVirtual.forma_entrega = formaE;
- 
+    $scope.formaEntrega = tinyMCE.get('f01_forma_entrega').getContent();
+    datosTiendaVirtual.forma_entrega = $scope.formaEntrega;
+    if($scope.descripTienda == '' || $scope.formaEntrega == '' ){
+      $scope.swDes = true;
+    }
+    else{
+      $scope.swDes = false;
+    }
+
   /////////
     var myJSON = '';
     if (data.f01_contacto1=='TELÉFONO'){
@@ -580,9 +596,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         datosTiendaVirtual.usr = "juridico";
     }
     //console.log('datosTiendaVirtual',datosTiendaVirtual);
-    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '')||
-       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '')||
-       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '')) {
+    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '' && $scope.swDes == false)||
+       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '' && $scope.swDes == false)||
+       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '' && $scope.swDes == false)) {
     datosTiendaVirtual.crearTiendaVirtual(function(response){
       console.log(response);
       results = JSON.parse(response);
@@ -600,7 +616,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     });
     }
     else{
-      sweetAlert('', "Datos obligatorios, verifique las casillas de archivos adjuntos (Encabezado y Logotipo) y/ó los números de Contacto (Debe registrar al menos uno)", 'warning');
+
+      sweetAlert('', "Datos obligatorios, verifique las casillas de archivos adjuntos (Encabezado y Logotipo), descripción, forma de entrega y/ó los números de Contacto (Debe registrar al menos uno)", 'warning');
     }
 
   }
@@ -615,11 +632,16 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       datosTiendaVirtual.correo = data.f01_correoTV;
       datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
       var descTV = data.f01_descripcionTV;
-      descTV = descTV.replace(/\n/g, "<br>");
-      datosTiendaVirtual.descripcion = descTV;
-      var formaE = data.f01_forma_entrega;
-      formaE = formaE.replace(/\n/g, "<br>");
-      datosTiendaVirtual.forma_entrega= formaE;
+      $scope.descripTienda = tinyMCE.get('f01_descripcionTV').getContent();
+      datosTiendaVirtual.descripcion = $scope.descripTienda;
+      $scope.formaEntrega = tinyMCE.get('f01_forma_entrega').getContent();
+      if($scope.descripTienda == '' || $scope.formaEntrega == '' ){
+        $scope.swDes = true;
+      }
+      else{
+        $scope.swDes = false;
+      }
+      datosTiendaVirtual.forma_entrega = $scope.formaEntrega;
       //actualiza json contactos
       datosTiendaVirtual.contactos = [];
       $rootScope.contactosArray = []; 
@@ -804,9 +826,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           datosTiendaVirtual.usr = "juridico";
       }
 
-    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '')||
-    ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '')||
-    ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '')) {  
+    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '' && $scope.swDes == false)||
+    ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '' && $scope.swDes == false)||
+    ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '' && $scope.swDes == false)) {  
       datosTiendaVirtual.actualizarTiendaVirtual(function(response){
         console.log(response);
         results = JSON.parse(response);
@@ -823,7 +845,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       });
   
     }else{
-      sweetAlert('', "Datos obligatorios, verifique las casillas de archivos adjuntos (Encabezado y Logotipo) y/ó los números de Contacto (Debe registrar al menos uno)", 'warning');
+      sweetAlert('', "Datos obligatorios, verifique las casillas de archivos adjuntos (Encabezado y Logotipo), descripción, forma de entrega y/ó los números de Contacto (Debe registrar al menos uno)", 'warning');
     }
   }
     

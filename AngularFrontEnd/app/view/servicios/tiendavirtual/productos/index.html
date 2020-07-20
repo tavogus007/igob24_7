@@ -5,6 +5,7 @@
         
         <script type="text/javascript" src="../../view/servicios/tiendavirtual/productos/appProductosAE.js"></script>
         <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+        <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/tinymce/tinymce.min.js"></script>
         <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
         <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
         <style type="text/css">
@@ -35,7 +36,7 @@
             .form-group {
               padding-left: 8px;
             }
-          </style>
+        </style>
         <script type="text/javascript">
             $('.custom-upload input[type=file]').change(function(){
                 $(this).next().find('input').val($(this).val());
@@ -73,6 +74,17 @@
           }
         };
         </script>
+        <script>
+          setTimeout(function(){
+              tinymce.init({
+              selector: 'textarea',
+              setup: function (editor) {
+                  editor.on('init', function (e) {
+                  editor.setContent('');
+                  });}
+          });
+          },100);
+      </script>
         <style>
             .switch {
               position: relative;
@@ -147,7 +159,7 @@
               <div class="col-md-12">
                   <legend>Datos del producto:</legend>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-12">
                   <div class="form-group" >
                       <label for="url" > Nombre del Producto:</label>
                       <div class="controls">
@@ -155,12 +167,12 @@
                       </div>
                   </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-12">
                   <div class="form-group" >
                       <label for="url" >Descripción del Producto:</label>
                       <div class="controls">
-                          <textarea ng-model="datosProd.f01_descripcion" id="f01_descripcion" name="f01_descripcion" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required></textarea>
-                      </div>
+                          <textarea id="f01_descripcion" ng-model="datosProd.f01_descripcion"  name="f01_descripcion" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required></textarea>
+                      </div> 
                   </div>
               </div>
               <div class="col-md-6">
@@ -184,12 +196,12 @@
                   </div>
               </div>
 
-              <div ng-if="datosProd.f01_oferta_producto == true">
+              <div ng-show="datosProd.f01_oferta_producto == true">
                   <div class="col-md-12">
                       <div class="form-group" >
                         <label for="url" >Descripcion de la Oferta:</label>
                         <div class="controls">
-                            <textarea ng-model="datosProd.f01_descripcion_oferta" id="f01_descripcion_oferta" name="f01_descripcion_oferta" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required></textarea>
+                            <textarea id="f01_descripcion_oferta" ng-model="datosProd.f01_descripcion_oferta"  name="f01_descripcion_oferta" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado"></textarea>
                         </div>
                       </div>
                   </div>    

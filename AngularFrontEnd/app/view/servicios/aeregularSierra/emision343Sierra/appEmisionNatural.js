@@ -3222,6 +3222,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
                 var deudasAE = JSON.parse(resDeuda);
                 var pagoAE = deudasAE.datos;
                 console.log('calculooooo    ',deudasAE);
+                
                 $scope.datos.montoDeuda = pagoAE;
                 datoObjectPago = [];
                 $scope.btnCalcular = false;

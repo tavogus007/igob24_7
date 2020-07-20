@@ -2458,6 +2458,7 @@
         }
     };
 
+
     $scope.InsertarDocumentoDJ = function(urlData){
         var sDocSistema     =   "IGOB247";
         var sDocProceso     =   "DECLARACIÓN JURADA";

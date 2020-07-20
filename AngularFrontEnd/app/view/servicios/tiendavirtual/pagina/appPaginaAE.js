@@ -57,40 +57,66 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
 
     }
     $scope.inicioPaginaWeb = function () {
-      $scope.nombre_tienda = $rootScope.datosTiendaVirtual[0].tv_nombrec;
-      recDesc = $rootScope.datosTiendaVirtual[0].tv_descripcionc;
-      recDesc = recDesc.replace(/<br ?\/?>/g, "\n");
-      $scope.descrip_pagina = recDesc;
-      $scope.correo_tienda = $rootScope.datosTiendaVirtual[0].tv_correoc;
-      $scope.pag_web_privada = $rootScope.datosTiendaVirtual[0].tv_pagina_webc;
-      logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
-      logotipo = logotipo.replace('["{','[{');
-      logotipo = logotipo.replace('}"]','}]');
-      logotipo = logotipo.replace('}"{','}{');
-      logotipo = logotipo.replace(/\\"/gi,'"');
-      logo = JSON.parse(logotipo);
-      urllogo = logo[0].url;
-      toDataURL(urllogo, function(dataUrl) {
-        $rootScope.urlLogotipo64 = dataUrl;
-      });
-      encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
-      encabezado = encabezado.replace('["{','[{');
-      encabezado = encabezado.replace('}"]','}]');
-      encabezado = encabezado.replace('}"{','}{');
-      encabezado = encabezado.replace(/\\"/gi,'"');
-      enca = JSON.parse(encabezado);
-      urlenca = enca[0].url;
-      toDataURL(urlenca, function(dataUrl) {
-        $rootScope.urlEncabezado64 = dataUrl;
-      });
-      catalogo = $rootScope.datosTiendaVirtual[0].tvcatalogo;
-      catalogo = catalogo.replace('["{','[{');
-      catalogo = catalogo.replace('}"]','}]');
-      catalogo = catalogo.replace('}"{','}{');
-      catalogo = catalogo.replace(/\\"/gi,'"');
-      cata = JSON.parse(catalogo);
-      urlcatalogo = cata[0].url;
-      $rootScope.urlcatalogo = urlcatalogo;
+      try{
+        $scope.nombre_tienda = $rootScope.datosTiendaVirtual[0].tv_nombrec;
+        recDesc = $rootScope.datosTiendaVirtual[0].tv_descripcionc;
+        recDesc = recDesc.replace(/<br ?\/?>/g, "\n");
+        $scope.descrip_pagina = recDesc;
+        $scope.correo_tienda = $rootScope.datosTiendaVirtual[0].tv_correoc;
+        $scope.pag_web_privada = $rootScope.datosTiendaVirtual[0].tv_pagina_webc;
+
+      } catch(error){
+        console.log(error);
+        $scope.nombre_tienda = "";
+        $scope.descrip_pagina = "";
+        $scope.correo_tienda = "";
+        $scope.pag_web_privada = "";
+      }
+
+      
+      try{
+        logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
+        logotipo = logotipo.replace('["{','[{');
+        logotipo = logotipo.replace('}"]','}]');
+        logotipo = logotipo.replace('}"{','}{');
+        logotipo = logotipo.replace(/\\"/gi,'"');
+        logo = JSON.parse(logotipo);
+        urllogo = logo[0].url;
+        toDataURL(urllogo, function(dataUrl) {
+          $rootScope.urlLogotipo64 = dataUrl;
+        });
+      } catch (error){
+        console.log(error);
+        $rootScope.urlLogotipo64 = "";
+      }
+      try {
+        encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
+        encabezado = encabezado.replace('["{','[{');
+        encabezado = encabezado.replace('}"]','}]');
+        encabezado = encabezado.replace('}"{','}{');
+        encabezado = encabezado.replace(/\\"/gi,'"');
+        enca = JSON.parse(encabezado);
+        urlenca = enca[0].url;
+        toDataURL(urlenca, function(dataUrl) {
+          $rootScope.urlEncabezado64 = dataUrl;
+        });
+      } catch(error){
+        console.log(error);
+        $rootScope.urlEncabezado64 = "";
+      }
+      try{
+        catalogo = $rootScope.datosTiendaVirtual[0].tvcatalogo;
+        catalogo = catalogo.replace('["{','[{');
+        catalogo = catalogo.replace('}"]','}]');
+        catalogo = catalogo.replace('}"{','}{');
+        catalogo = catalogo.replace(/\\"/gi,'"');
+        cata = JSON.parse(catalogo);
+        urlcatalogo = cata[0].url;
+        $rootScope.urlcatalogo = urlcatalogo;
+      } catch(error){
+        console.log(error);
+        $rootScope.urlcatalogo = "";
+      }
       $scope.desabilitado = "disabled";
       $scope.getPagina();
       $scope.dataAdicional();

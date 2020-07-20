@@ -1302,6 +1302,7 @@
                         datoObject.dist_id = parseInt($scope.zonas_aux.zn_id_sit);
                         datoObject.dist_nombre = $scope.zonas_aux.zn_des;
                         datoObject.dist_dstt_id = $scope.zonas_aux.zn_dis;
+                        datoObject.dist_tipo_z = $scope.zonas_aux.tipo_z;
                         datoObjectFinal[i] = datoObject;
                     }
                     $scope.zonArray = datoObjectFinal;
@@ -1399,6 +1400,7 @@
                 if(value.dist_id == $scope.zonaAct_id){
                     idDistrito  =   value.dist_dstt_id;
                     idZona      =   value.dist_id;
+                    tipo_z = value.dist_tipo_z;
                 }
             });
         }
@@ -1407,8 +1409,9 @@
         $scope.datos.INT_AC_DISTRITO    =   idDistrito;
         $scope.datos.INT_AC_ID_ZONA     =   idZona;
         $scope.datos.f01_zona_act       = idZona;
-        console.log('la zonaaa    ',$scope.datos.f01_zona_act );
-        
+        console.log('la zonaaa    ',$scope.datos.f01_zona_act);
+        $scope.datos.f01_tipoZona_act = tipo_z;
+        console.log('tipo de zona z  ',$scope.datos.f01_tipoZona_act);
         document.getElementById('f01_zona_act').value = $scope.datos.f01_zona_act;
         setTimeout(function(){
             $scope.GetValueZona();
@@ -2454,6 +2457,7 @@
             }
         }
     };
+
 
     $scope.InsertarDocumentoDJ = function(urlData){
         var sDocSistema     =   "IGOB247";

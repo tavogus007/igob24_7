@@ -20,6 +20,10 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
     $scope.docPubNuevo = [];
     $scope.pos = 0;
     $scope.btnCalcular = true;
+    $scope.IsVisible = false;
+    $scope.tblDeudas = {};
+    $scope.listDeudas = [];
+
     $scope.getRequisitosCategoria = function(idCategoria, persona){
         if(persona == 'NATURAL'){
             persona = 'N';
@@ -1853,7 +1857,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-       $scope.guardarpublicidad = function(public){
+    $scope.guardarpublicidad = function(public){
         if (public.INT_SUPERFICIE) {
             if(public.INT_CARA =='' || public.INT_CARA == null ||
             public.INT_CATE =='' || public.INT_CATE == null || public.INT_TIPO_LETRE =='' || public.INT_TIPO_LETRE == null ||
@@ -2380,7 +2384,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
                     stringFormulario40  =   stringFormulario40.replace("#nro_ges#", datos.nro_ges);
                     if (datos.montoDeuda) {
                         console.log('datos.montoDeuda     ',datos.montoDeuda);
-                        var lstDeuda = datos.montoDeuda.datos;
+                        var lstDeuda = datos.montoDeuda;
                         tablapago = '<table id="tablaDe" class="table table-striped table-bordered"><tr>'+
                             '<th>Nº</th>'+
                             '<th>GESTIÓN</th>'+
@@ -2656,8 +2660,8 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
             dataForm['nro_ges'] = data.nro_ges;
             if (data.montoDeuda) {
                 console.log('datos.montoDeuda     ',data.montoDeuda);
-                var lstDeuda = data.montoDeuda.datos;
-                tablapago = '<table id="tablaDe" class="table table-striped table-bordered"><tr>'+
+                var lstDeuda = data.montoDeuda;
+                tablapago = '<table border="0.5" class="table table-striped table-bordered"><tr>'+
                     '<th>Nº</th>'+
                     '<th>GESTIÓN</th>'+
                     '<th>MONTO ACT. ECO.</th>'+
@@ -2977,6 +2981,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
             //UBICACION DE LA ACTIVIDAD ECONOMICA
             datosNeXO['f01_dist_act']=paramForm.f01_dist_act;//"";
             datosNeXO['f01_zona_act']=paramForm.f01_zona_act;//paramForm.f01_zona_act_descrip;
+            datosNeXO['f01_tipoZona_act'] = paramForm.f01_tipoZona_act;
             datosNeXO['f01_tip_via_act']=paramForm.f01_tip_via_act;
             datosNeXO['f01_num_act_id'] = paramForm.f01_num_act_id;
             if(paramForm.f01_num_act_id == "0" || paramForm.f01_num_act_id == 0){
@@ -2999,6 +3004,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
             datosNeXO['f08_observaciones_i']="0";
             datosNeXO['rdTipoTramite'] = paramForm.rdTipoTramite;
             /*REQUISITOSDELAACTIVIDADECONOMICA - CIUDADANO*/
+            datosNeXO['f01_proceso'] = paramForm.f01_proceso;
             datosNeXO['f01_tipo_lic'] = paramForm.f01_tipo_lic;
             datosNeXO['f01_tipo_lic_sierra'] = $scope.datos.f01_tipo_lic_sierra;
             datosNeXO['f01_categoria'] = paramForm.f01_categoria_descrip;
@@ -3143,7 +3149,6 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         }
     };
 
-    $scope.IsVisible = false;
     $scope.ShowPa = function(valor) {
         $scope.datos.pago_adelantado = valor;
         if (valor == 'SI') {
@@ -3153,11 +3158,9 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         };
     }
 
-    $scope.tblDeudas = {};
-    $scope.listDeudas = [];
-
     $scope.calcularDeudas = function(nroges){
         console.log('para pagoooo     ',$scope.datos);
+        $scope.datos.montoDeuda = [];
         var fechaP = new Date();
         var gestionP = fechaP.getFullYear();
         $scope.mensajeCiudadano = '';
@@ -3194,7 +3197,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
                         console.log('dataPub[k]    ',dataPub[k]);
                         datoObjectPublicidad = new Object();
                         datoObjectPublicidad.id_viae = dataPub[k].idPublicidad_temp;
-                        datoObjectPublicidad.tipo_zona = 'Z1';
+                        datoObjectPublicidad.tipo_zona = $scope.datos.f01_tipoZona_act;//'Z1';
                         datoObjectPublicidad.pub_superficie = dataPub[k].INT_SUP;
                         datoObjectPublicidad.tipo_letrero_id = dataPub[k].idcarac;
                         datoObjectPublicidad.caracteristica_id = dataPub[k].id_cara;
@@ -3219,7 +3222,8 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
                 var deudasAE = JSON.parse(resDeuda);
                 var pagoAE = deudasAE.datos;
                 console.log('calculooooo    ',deudasAE);
-                $scope.datos.montoDeuda = deudasAE;
+                
+                $scope.datos.montoDeuda = pagoAE;
                 datoObjectPago = [];
                 $scope.btnCalcular = false;
                 for (j = 0; j < pagoAE.length; j++) {

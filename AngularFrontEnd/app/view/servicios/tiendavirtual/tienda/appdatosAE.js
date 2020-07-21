@@ -242,57 +242,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         }
       }
     
-      //catalogo
-      $scope.catalogo1 = results[0].tvcatalogo;
-      if($scope.catalogo1 == '' || $scope.catalogo1 == null || $scope.catalogo1 == undefined || $scope.catalogo1 == 'null' || $scope.catalogo1 == 'undefined'){
-        console.log('Sin catalogo');
-      }else{
-        if($scope.catalogo1 == '' || $scope.catalogo1 == undefined || $scope.catalogo1 == 'undefined'){
-          console.log('Sin Url de catalogo');
-        $scope.datos.txt_f01_upload1 = '';
-        }else{
-          $scope.catalogojson = JSON.parse($scope.catalogo1);
-          if($scope.catalogojson.length == 0){
-          console.log('Sin Url de catalogo');
-          $scope.datos.txt_f01_upload1 = '';
-          }else{
-            $scope.catalogojson1 = JSON.parse($scope.catalogojson[0]); 
-            $scope.datos.txt_f01_upload1 = $scope.catalogojson1.campo;
-            $scope.catalogo_url = $scope.catalogojson1.url;
-          }
-          
-        }
-      }
-      //logotipo
-      $scope.logotipo1 = results[0].plogotipo;
-      if($scope.logotipo1 == '' || $scope.logotipo1 == null || $scope.logotipo1 == undefined || $scope.logotipo1 == 'null' || $scope.logotipo1 == 'undefined'){
-        console.log('Sin logotipo');
-      }else{
-        $scope.logotipojson = JSON.parse($scope.logotipo1);
-        if($scope.logotipojson.length == 0){
-          console.log('Sin Url de logotipo');
-          $scope.datos.txt_f01_upload2 = '';
-        }else{
-          $scope.logotipojson1 = JSON.parse($scope.logotipojson[0]);
-          $scope.datos.txt_f01_upload2 = $scope.logotipojson1.campo;
-          $scope.logotipo_url = $scope.logotipojson1.url;
-        }
-      }
 
-      $scope.encabezado1 = results[0].pencabezado;
-      if($scope.encabezado1 == '' || $scope.encabezado1 == null || $scope.encabezado1 == undefined || $scope.encabezado1 == 'null' || $scope.encabezado1 == 'undefined'){
-        console.log('Sin encabezado');
-      }else{
-        $scope.encabezadotipojson = JSON.parse($scope.encabezado1);
-        if($scope.encabezadotipojson.length == 0){
-          console.log('Sin Url de encabezado');
-          $scope.datos.txt_f01_upload3 = '';
-        }else{
-          $scope.encabezadotipojson1 = JSON.parse($scope.encabezadotipojson[0]);
-          $scope.datos.txt_f01_upload3 = $scope.encabezadotipojson1.campo;
-          $scope.encabezadotipo_url = $scope.encabezadotipojson1.url;
-        }
-      }
       //RECUPERA HORARIOS
       var horarios = data[0].phorarios_atencion;
       if(horarios == '' || horarios == null || horarios == undefined || horarios == 'null' || horarios == 'undefined'){
@@ -390,6 +340,58 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.rec_formaP = data[0].pforma_entrega;
         $scope.descripEntrega = tinyMCE.get('f01_forma_entrega').setContent( $scope.rec_formaP);
         $scope.datos.f01_forma_entrega = $scope.descripEntrega; 
+
+        //catalogo
+        $scope.catalogo1 = results[0].tvcatalogo;
+        if($scope.catalogo1 == '' || $scope.catalogo1 == null || $scope.catalogo1 == undefined || $scope.catalogo1 == 'null' || $scope.catalogo1 == 'undefined'){
+          console.log('Sin catalogo');
+        }else{
+          if($scope.catalogo1 == '' || $scope.catalogo1 == undefined || $scope.catalogo1 == 'undefined'){
+            console.log('Sin Url de catalogo');
+          $scope.datos.txt_f01_upload1 = '';
+          }else{
+            $scope.catalogojson = JSON.parse($scope.catalogo1);
+            if($scope.catalogojson.length == 0){
+            console.log('Sin Url de catalogo');
+            $scope.datos.txt_f01_upload1 = '';
+            }else{
+              $scope.catalogojson1 = JSON.parse($scope.catalogojson[0]); 
+              $scope.datos.txt_f01_upload1 = $scope.catalogojson1.campo;
+              $scope.catalogo_url = $scope.catalogojson1.url;
+            }
+            
+          }
+        }
+        //logotipo
+        $scope.logotipo1 = results[0].plogotipo;
+        if($scope.logotipo1 == '' || $scope.logotipo1 == null || $scope.logotipo1 == undefined || $scope.logotipo1 == 'null' || $scope.logotipo1 == 'undefined'){
+          console.log('Sin logotipo');
+        }else{
+          $scope.logotipojson = JSON.parse($scope.logotipo1);
+          if($scope.logotipojson.length == 0){
+            console.log('Sin Url de logotipo');
+            $scope.datos.txt_f01_upload2 = '';
+          }else{
+            $scope.logotipojson1 = JSON.parse($scope.logotipojson[0]);
+            $scope.datos.txt_f01_upload2 = $scope.logotipojson1.campo;
+            $scope.logotipo_url = $scope.logotipojson1.url;
+          }
+        }
+        //encabezado
+        $scope.encabezado1 = results[0].pencabezado;
+        if($scope.encabezado1 == '' || $scope.encabezado1 == null || $scope.encabezado1 == undefined || $scope.encabezado1 == 'null' || $scope.encabezado1 == 'undefined'){
+          console.log('Sin encabezado');
+        }else{
+          $scope.encabezadotipojson = JSON.parse($scope.encabezado1);
+          if($scope.encabezadotipojson.length == 0){
+            console.log('Sin Url de encabezado');
+            $scope.datos.txt_f01_upload3 = '';
+          }else{
+            $scope.encabezadotipojson1 = JSON.parse($scope.encabezadotipojson[0]);
+            $scope.datos.txt_f01_upload3 = $scope.encabezadotipojson1.campo;
+            $scope.encabezadotipo_url = $scope.encabezadotipojson1.url;
+          }
+        }
       },500);  
 
     } 

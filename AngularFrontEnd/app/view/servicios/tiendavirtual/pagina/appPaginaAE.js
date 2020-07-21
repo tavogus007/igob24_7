@@ -26,35 +26,39 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
 
 
     $scope.dataAdicional = function () {
-      $rootScope.datosAuxiliares = [];
-      angular.forEach($rootScope.datosTiendaVirtual[0].tv_contactosc, function(contacto, key) {
-        contactc = JSON.parse(contacto);
-          if(contactc.tipo=="CELULAR"){
-            if(contactc.estado=="CON WHATSAPP"){
-              var myJSON = '{ "celular":"' + contactc.valor + '", "whatsapp":"SI" }';
-              myJSON2 = JSON.parse(myJSON);
-              $rootScope.datosAuxiliares.push(myJSON2);
+      try{
+        $rootScope.datosAuxiliares = [];
+        angular.forEach($rootScope.datosTiendaVirtual[0].tv_contactosc, function(contacto, key) {
+            contactc = JSON.parse(contacto);
+            if(contactc.tipo=="CELULAR"){
+              if(contactc.estado=="CON WHATSAPP"){
+                var myJSON = '{ "celular":"' + contactc.valor + '", "whatsapp":"SI" }';
+                myJSON2 = JSON.parse(myJSON);
+                $rootScope.datosAuxiliares.push(myJSON2);
+              } else {
+                var myJSON = '{ "celular":"' + contactc.valor + '", "whatsapp":"NO" }';
+                myJSON2 = JSON.parse(myJSON);
+                $rootScope.datosAuxiliares.push(myJSON2);
+              }
             } else {
-              var myJSON = '{ "celular":"' + contactc.valor + '", "whatsapp":"NO" }';
-              myJSON2 = JSON.parse(myJSON);
-              $rootScope.datosAuxiliares.push(myJSON2);
+              if(contactc.estado=="FIJO"){
+                var myJSON = '{ "telefono":"' + contactc.valor + '" }';
+                myJSON2 = JSON.parse(myJSON);
+                $rootScope.datosAuxiliares.push(myJSON2);
+              } 
             }
-          } else {
-            if(contactc.estado=="FIJO"){
-              var myJSON = '{ "telefono":"' + contactc.valor + '" }';
-              myJSON2 = JSON.parse(myJSON);
-              $rootScope.datosAuxiliares.push(myJSON2);
-            } 
-          }
-      });
-      myJSON = '{ "direccion":"' + $rootScope.direccionAe + '" }';
-      myJSON2 = JSON.parse(myJSON);
-      $rootScope.datosAuxiliares.push(myJSON2);
-
-      myJSON = '{ "tipo_entrega":"' + $rootScope.datosTiendaVirtual[0].pforma_entrega + '" }';
-      myJSON2 = JSON.parse(myJSON);
-      $rootScope.datosAuxiliares.push(myJSON2);
-
+        });
+        myJSON = '{ "direccion":"' + $rootScope.direccionAe + '" }';
+        myJSON2 = JSON.parse(myJSON);
+        $rootScope.datosAuxiliares.push(myJSON2);
+        entregaDesc = $rootScope.datosTiendaVirtual[0].pforma_entrega.replace(/\n/g, "<br>");
+        myJSON = '{ "tipo_entrega":"' + entregaDesc + '" }';
+        myJSON2 = JSON.parse(myJSON);
+        $rootScope.datosAuxiliares.push(myJSON2);
+      } catch(error){
+        console.log("dataAdicional");
+        console.log(error);
+      }
     }
     $scope.inicioPaginaWeb = function () {
       try{
@@ -64,16 +68,9 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         $scope.descrip_pagina = recDesc;
         $scope.correo_tienda = $rootScope.datosTiendaVirtual[0].tv_correoc;
         $scope.pag_web_privada = $rootScope.datosTiendaVirtual[0].tv_pagina_webc;
-
       } catch(error){
         console.log(error);
-        $scope.nombre_tienda = "";
-        $scope.descrip_pagina = "";
-        $scope.correo_tienda = "";
-        $scope.pag_web_privada = "";
       }
-
-      
       try{
         logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
         logotipo = logotipo.replace('["{','[{');
@@ -258,22 +255,38 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       if ($rootScope.conWeb == true) {
         if ($scope.chkPublicado == false) {
           $scope.ws_publicado = true;
-          var re = /}","{/gi;
-          var str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_contactosc);
-          var newstr = str.replace(re, "},{");
-          newstr = newstr.replace('["{', '[{');
-          newstr = newstr.replace('}"]', '}]');
-          re = /\\"/gi;
-          newContactos = newstr.replace(re, '"');
-          re = /}","{/gi;
-          str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_redesc);
-          newstr = str.replace(re, "},{");
-          newstr = newstr.replace('["{', '[{');
-          newstr = newstr.replace('}"]', '}]');
-          re = /\\"/gi;
-          newRedes = newstr.replace(re, '"');
-          ofertas = JSON.stringify($rootScope.productosPW),
-          ofertas = ofertas.replace(/\n/g, "<br>");
+          try{
+            var re = /}","{/gi;
+            var str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_contactosc);
+            var newstr = str.replace(re, "},{");
+            newstr = newstr.replace('["{', '[{');
+            newstr = newstr.replace('}"]', '}]');
+            re = /\\"/gi;
+            newContactos = newstr.replace(re, '"');
+          } catch(error){
+            console.log(1111);
+            console.log(error);
+          }
+          try{
+            re = /}","{/gi;
+            str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_redesc);
+            newstr = str.replace(re, "},{");
+            newstr = newstr.replace('["{', '[{');
+            newstr = newstr.replace('}"]', '}]');
+            re = /\\"/gi;
+            newRedes = newstr.replace(re, '"');
+          } catch(error){
+            console.log(2222);
+            console.log(error);
+          }
+          try{
+            ofertas = JSON.stringify($rootScope.productosPW);
+            ofertas = ofertas.replace(/\n/g, "<br>");
+          } catch(error){
+            ofertas = JSON.stringify($rootScope.productosPW);
+            console.log(333);
+            console.log(error);
+          }
           try { 
             horarios = $rootScope.datosTiendaVirtual[0].phorarios_atencion;
             horarios = horarios.replace('["{','[{');
@@ -283,6 +296,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
             horarios = horarios.replace(/\\"/gi,'"');
             newHorarios = horarios;
           } catch(error){
+            console.log(444);
+            console.log(error);
             newHorarios = "[]";
           }
           $.ajax({
@@ -330,23 +345,38 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       } else {
         if ($scope.chkPublicado == false) {
           $scope.ws_publicado = true;
-          var re = /}","{/gi;
-          var str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_contactosc);
-          var newstr = str.replace(re, "},{");
-          newstr = newstr.replace('["{', '[{');
-          newstr = newstr.replace('}"]', '}]');
-          re = /\\"/gi;
-          newContactos = newstr.replace(re, '"');
-          re = /}","{/gi;
-          
-          str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_redesc);
-          newstr = str.replace(re, "},{");
-          newstr = newstr.replace('["{', '[{');
-          newstr = newstr.replace('}"]', '}]');
-          re = /\\"/gi;
-          newRedes = newstr.replace(re, '"');
-          ofertas = JSON.stringify($rootScope.productosPW),
-          ofertas = ofertas.replace(/\n/g, "<br>");
+          try{
+            var re = /}","{/gi;
+            var str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_contactosc);
+            var newstr = str.replace(re, "},{");
+            newstr = newstr.replace('["{', '[{');
+            newstr = newstr.replace('}"]', '}]');
+            re = /\\"/gi;
+            newContactos = newstr.replace(re, '"');
+            re = /}","{/gi;
+          } catch(error){
+            console.log(111);
+            console.log(error);
+          }
+          try{ 
+            str = JSON.stringify($rootScope.datosTiendaVirtual[0].tv_redesc);
+            newstr = str.replace(re, "},{");
+            newstr = newstr.replace('["{', '[{');
+            newstr = newstr.replace('}"]', '}]');
+            re = /\\"/gi;
+            newRedes = newstr.replace(re, '"');
+          } catch(error){
+            console.log(222);
+            console.log(error);
+          }
+          try{
+            ofertas = JSON.stringify($rootScope.productosPW);
+            ofertas = ofertas.replace(/\n/g, "<br>");
+          } catch(error){
+            ofertas = JSON.stringify($rootScope.productosPW);
+            console.log(333);
+            console.log(error);
+          }
           try { 
             horarios = $rootScope.datosTiendaVirtual[0].phorarios_atencion;
             horarios = horarios.replace('["{','[{');
@@ -356,6 +386,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
             horarios = horarios.replace(/\\"/gi,'"');
             newHorarios = horarios;
           } catch(error){
+            console.log(444);
+            console.log(error);
             newHorarios = "[]";
           }
           $.ajax({

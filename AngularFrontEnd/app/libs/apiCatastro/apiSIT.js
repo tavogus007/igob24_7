@@ -184,6 +184,14 @@ dataSIT.prototype.pcPrediosConsolidado = function (codCat, functionResp)
     dataParams = {"codCat":  codCat};
     ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
 };
+
+dataSIT.prototype.pcPrediosConsolidadoAct = function (codCat, functionResp)
+{
+    wsMethodSIT = "/pcPrediosConsolidadoAct";
+    typeCall = "post";
+    dataParams = {"codCat":  codCat};
+    ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
+};
 // ------------------------
 //  AUTORIZACIONES MENORES
 // ------------------------

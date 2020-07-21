@@ -796,7 +796,7 @@ function FracAsBuiltController($scope, $rootScope, $routeParams, $location, $htt
         $.blockUI();
         $scope.predioSeleccionadoPropietarios = [];
         var predio = new dataSIT();
-        predio.pcPrediosConsolidado( codCat,function(resultado){
+        predio.pcPrediosConsolidadoAct( codCat,function(resultado){
             var resApi = JSON.parse(resultado);
             if(resApi.success)
             {
@@ -808,6 +808,7 @@ function FracAsBuiltController($scope, $rootScope, $routeParams, $location, $htt
                     swal('', 'No se encontró el predio con Código Catastral' + codCat+ " en la tabla consolidada", 'error');
                 }
                 else{
+                    $scope.setSolicitudDatosPredio(resApi.success.dataSql[0]);
                     console.log("Se encontro mas de un registro con el CC:" + codCat);
                     swal('', 'Se encontró más de un registro con el mismo Código Catastral '+ codCat +' en la tabla consolidada', 'error');
                 }

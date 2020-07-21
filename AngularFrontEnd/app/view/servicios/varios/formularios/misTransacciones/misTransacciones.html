@@ -84,6 +84,12 @@
     .swal-wide{
        width:850px !important;
     }
+    .bandejaUserv1 {
+        padding: 1px;
+        background: #0ACC9E;
+        font-size: 15px;
+        border-radius: 9px;
+    }
 </style>
 
 <div class="page-content" ng-controller="misTransaccioneController" data-ng-init="inicioComponente();">
@@ -263,6 +269,11 @@
                                             <td data-title="'TOTAL'" sortable="'monto_total'"  class="text-right">
                                                 {{obtTransaccion.monto_total | number: 2 }}
                                             </td>
+                                            <td data-title="'ESTADO PRODUCTO'" class="text-center">
+                                                <a class="btn btn-info btn-circle"
+                                                    style="background-color:rgb(47, 228, 152);border: 0px !important;color:black;"
+                                                    ng-click="estadoProdPedido(obtTransaccion)" ><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+                                            </td>
                                             <td data-title="'DETALLE'" class="text-center">
                                                 <a class="btn btn-info btn-circle"
                                                     style="background-color:rgb(47, 228, 152);border: 0px !important;color:black;"
@@ -281,6 +292,104 @@
                         </div>
                     </div>
                 </form>
+                <div class="modal fade" id="modaldetPedido" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <!-- <div class="modal-dialog"> -->
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">&times;</span><span
+                                        class="sr-only">{{translateTitulos.lbl_05_05_05}}</span></button>
+                                <h4 class="modal-title" id="myModalLabel">ESTADO ACTUAL DEL PRODUCTO</h4>
+                                
+                            </div> 
+                            <div class="modal-body">
+                                <div ng-show = "estadoProd == 'EN PROCESO'">
+                                    <div class="col-md-12 text-center">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <div class="bandejaUserv1"><p class="blanco"><strong><i class="fa fa-cutlery" aria-hidden="true"> EN PROCESO</i></strong></p></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-center" >
+                                        <h4>CAMBIAR A:</h4>
+                                    </div>
+                                    <div ng-show = "estadoObsProd == false">
+
+                                        <div class="col-md-6 text-center">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <button class="btn btn_aprob" ng-click="validar_pedido('cambiar','EN CAMINO',estadoProd)" ><!-- <i class="fa fa-motorcycle" aria-hidden="true"> --> EN CAMINO<!-- </i> --></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <button class="btn btn_obs" ng-click="validar_pedido('observar',estadoProd,'')" > <!-- <i class="fa fa-exclamation-triangle" aria-hidden="true"> --> OBSERVAR<!-- </i> --></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show = "estadoProd == 'EN CAMINO'">
+                                    <div class="col-md-12 text-center">
+                                        <div class="form-group">
+                                            <div class="bandejaUserv1"><p class="blanco"><strong><i class="fa fa-motorcycle" aria-hidden="true"> EN CAMINO</i></strong></p></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-center" >
+                                        <h4>CAMBIAR A:</h4>
+                                    </div>
+                                    <div ng-show = "estadoObsProd == false">
+                                        <div class="col-md-6 text-center">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <button class="btn btn_aprob" ng-click="validar_pedido('cambiar','ENTREGADO',estadoProd)"> <!-- <i class="fa fa-check-square" aria-hidden="true"> --> ENTREGADO<!-- </i> --></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="controls">
+                                                    <button class="btn btn_obs" ng-click="validar_pedido('observar',estadoProd,'')"> OBSERVAR</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-12" ng-show = "estadoObsProd == true">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="url">Descripción:</label>
+                                            <div class="controls">
+                                                <input ng-model="dataObs.observacion_prod" id="observacion_prod"
+                                                    name="observacion_prod" class="form-control"
+                                                    type="text" placeholder="Obsevación"
+                                                    ng-disabled="false" min="1" required>
+                                                <span style="color:red" ng-show="signupForm.observacion.$invalid">
+                                                    <span ng-show="signupForm.observacion_nombre.$error.required">Ingrese la observacion
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="button_cont" align="center"><a class="btn_aprob" target="_blank" rel="nofollow noopener"  ng-click="validar_pedido('cancelar',estadoProd,'')">Cancelar</a></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="button_cont" align="center"><a class="btn_obs" target="_blank" rel="nofollow noopener"  ng-click="validar_pedido('conObservacion',estadoProd, dataObs.observacion_prod)">Observar</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="modal fade" id="modaldetTransaccion" tabindex="-1" role="dialog"
                     aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -398,7 +507,7 @@
                                                     type="text" placeholder="Descripción de la Obsevación"
                                                     ng-disabled="false" min="1" required>
                                                 <span style="color:red" ng-show="signupForm.observacion.$invalid">
-                                                    <span ng-show="signupForm.mascota_nombre.$error.required">Ingrese nombre de su mascota
+                                                    <span ng-show="signupForm.observacion_nombre.$error.required">Ingrese la observacion
                                                     </span>
                                                 </span>
                                             </div>

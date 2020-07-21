@@ -397,5 +397,35 @@ dataProductoAc.prototype.desactivarProductoAe = function (functionResp)
     "prd_idc" : this.prd_idc    
   };
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+
+function dataEstadoProducto(){
+  this.vt_id,
+  this.vt_estado,
+  this.vt_observacion
+};
+
+
+dataEstadoProducto.prototype.getEstadoProducto = function (functionResp)
+{
+urlCompProducto = "/getEstadoProducto";
+typeCall = "post";
+dataParams = {
+  "idVenta" : this.vt_id    
+};
+ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+
+};
+
+dataEstadoProducto.prototype.actEstadoVenta = function (functionResp)
+{
+urlCompProducto = "/actEstadoVenta";
+typeCall = "post";
+dataParams = {
+  "ven_idc"    : this.vt_id,
+  "ven_estado" : this.vt_estado,
+  "ven_obs"    : this.vt_observacion
+};
+ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 
 };

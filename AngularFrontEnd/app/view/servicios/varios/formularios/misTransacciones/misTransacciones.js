@@ -458,6 +458,107 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
     $scope.$on('$destroy', function () {
         $scope.stop();
     });
+    $scope.estadoObsProd = false;
+    $scope.estadoProdPedido = function(dataTramite){
+        $scope.idVentaProd  = dataTramite.id_venta
+        var dataEstProd     = new dataEstadoProducto();
+            dataEstProd.vt_id = $scope.idVentaProd;
+            dataEstProd.getEstadoProducto(function (resp) {
+                var resultado = JSON.parse(resp).success;
+                if(resultado.success != []){
+                    $scope.estadoProd = resultado[0].vnt_estado_pago;
+                    $scope.estadoObsProd = false;
+                }
+                
+
+            });
+        if ($scope.estadoProd == "ENTREGADO"){
+            swal("", "El producto ya se encuentra Entregado.", "info");
+            $("#modaldetPedido").modal("hide");             
+        }else {
+            $("#modaldetPedido").modal("show");             
+        }
+
+    }
+    $scope.validar_pedido = function(tipo, estado,dataObs){
+        switch (tipo) {
+            case 'cambiar':
+                swal({
+                    title: "",
+                    text: "¿Está seguro de actualizar el estado del producto?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Si",
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                  },
+                  function(isConfirm) {
+                    if (isConfirm) {
+                        var dataEstProd = new dataEstadoProducto();
+                        dataEstProd.vt_id          = $scope.idVentaProd;
+                        dataEstProd.vt_estado      = estado;
+                        dataEstProd.vt_observacion = "";
+                        dataEstProd.actEstadoVenta(function (resultado) {
+                            var resultadoApi = JSON.parse(resultado);
+                             if (resultadoApi.success[0].estado_pago == estado) {
+                                swal("", "Se procedio a cambiar el estado correctamente.", "success");
+                                $("#modaldetPedido").modal("hide");             
+                            } else {
+                                console.log("respuesta update ", resultadoApi);
+                            } 
+                        }); 
+                    }
+                });
+                
+                break;
+            case 'observar':
+                $scope.estadoObsProd = true;
+                break;
+            case 'conObservacion':
+                swal({
+                    title: "",
+                    text: "¿Está seguro de observar el estado del producto?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Si",
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                  },
+                  function(isConfirm) {
+                    if (isConfirm) {
+                        var dataEstProd = new dataEstadoProducto();
+                        dataEstProd.vt_id          = $scope.idVentaProd;
+                        dataEstProd.vt_estado      = estado;
+                        dataEstProd.vt_observacion = dataObs;
+                        dataEstProd.actEstadoVenta(function (resultado) {
+                            var resultadoApi = JSON.parse(resultado);
+                             if (resultadoApi.success[0].estado_pago == estado) {
+                                swal("", "Se procedio a realizar la observacion del estado del producto correctamente.", "success");
+                                $("#modaldetPedido").modal("hide");
+                                $('#observacion_prod').val("");             
+                            } else {
+                                console.log("respuesta update ", resultadoApi);
+                            } 
+                        }); 
+                    } 
+                });
+                break;
+            case 'cancelar':
+                $scope.estadoObsProd = false;
+                break;
+            default:
+                break;
+        }
+        /* if ( tipo == 'observar'){
+            
+        }else {
+        } */
+    }
+    
     $scope.inicioComponente = function () {
         $scope.obtenerContribuyente();
     }

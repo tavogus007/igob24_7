@@ -377,21 +377,21 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
             $scope.logotipo_url = $scope.logotipojson1.url;
           }
         }
-        //encabezado
-        $scope.encabezado1 = results[0].pencabezado;
-        if($scope.encabezado1 == '' || $scope.encabezado1 == null || $scope.encabezado1 == undefined || $scope.encabezado1 == 'null' || $scope.encabezado1 == 'undefined'){
-          console.log('Sin encabezado');
+      //encabezado
+      $scope.encabezado1 = results[0].pencabezado;
+      if($scope.encabezado1 == '' || $scope.encabezado1 == null || $scope.encabezado1 == undefined || $scope.encabezado1 == 'null' || $scope.encabezado1 == 'undefined'){
+        console.log('Sin encabezado');
+      }else{
+        $scope.encabezadotipojson = JSON.parse($scope.encabezado1);
+        if($scope.encabezadotipojson.length == 0){
+          console.log('Sin Url de encabezado');
+          $scope.datos.txt_f01_upload3 = '';
         }else{
-          $scope.encabezadotipojson = JSON.parse($scope.encabezado1);
-          if($scope.encabezadotipojson.length == 0){
-            console.log('Sin Url de encabezado');
-            $scope.datos.txt_f01_upload3 = '';
-          }else{
-            $scope.encabezadotipojson1 = JSON.parse($scope.encabezadotipojson[0]);
-            $scope.datos.txt_f01_upload3 = $scope.encabezadotipojson1.campo;
-            $scope.encabezadotipo_url = $scope.encabezadotipojson1.url;
-          }
+          $scope.encabezadotipojson1 = JSON.parse($scope.encabezadotipojson[0]);
+          $scope.datos.txt_f01_upload3 = $scope.encabezadotipojson1.campo;
+          $scope.encabezadotipo_url = $scope.encabezadotipojson1.url;
         }
+      }
       },500);  
 
     } 
@@ -1046,64 +1046,66 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.valNumTelefono1 = function(datoTel){
-    if($scope.tipoTel1== 'TELÉFONO'){
-     Numer=parseInt(datoTel);
-      if (isNaN(Numer)){
-      document.getElementById('f01_contacto1_nro').value = '';
-      }else{
-      var digits = ("" + Numer).split("");
-      if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
-          if((digits.length>0) && (digits.length<7)){
-            $("#mensajeT3").show();
-            $("#mensajeT1").hide();
-            $("#mensajeT2").hide();
-          }else{
-            $("#mensajeT2").show();
-            $("#mensajeT1").hide();
-            $("#mensajeT3").hide();
-          }
-          if(digits.length == 8 ){
-            $("#mensajeT3").show();
-            $("#mensajeT1").hide();
-            $("#mensajeT2").hide();
-          }
-      }else{
-          $("#mensajeT1").show();
-          $("#mensajeT2").hide();
-          $("#mensajeT3").hide();
-          document.getElementById('f01_contacto1_nro').value = '';
-      }
-      }
-    }
-    if($scope.tipoTel1 == 'CELULAR'){
+    var tipotel1 = document.getElementById('f01_contacto1').value;
+      if(tipotel1 == 'TELÉFONO'){    
       Numer=parseInt(datoTel);
-      if (isNaN(Numer)){
-      document.getElementById('f01_contacto1_nro').value = '';
-      }else{
-      var digits = ("" + Numer).split("");
-      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 )){
-          if((digits.length>0) && (digits.length<8)){
-            $("#mensajeT3").show();
-            $("#mensajeT1").hide();
+        if (isNaN(Numer)){
+        document.getElementById('f01_contacto1_nro').value = '';
+        }else{
+        var digits = ("" + Numer).split("");
+        if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4 || event.keyCode == 9)){
+          console.log('e.keyCode',e.keyCode);
+          if((digits.length>0) && (digits.length<7)){
+              $("#mensajeT3").show();
+              $("#mensajeT1").hide();
+              $("#mensajeT2").hide();
+            }else{
+              $("#mensajeT2").show();
+              $("#mensajeT1").hide();
+              $("#mensajeT3").hide();
+            }
+            if(digits.length == 8 ){
+              $("#mensajeT3").show();
+              $("#mensajeT1").hide();
+              $("#mensajeT2").hide();
+            }
+        }else{
+            $("#mensajeT1").show();
             $("#mensajeT2").hide();
-          }else{
-            $("#mensajeT2").show();
-            $("#mensajeT1").hide();
             $("#mensajeT3").hide();
-          }
-      }else{
-          $("#mensajeT1").show();
-          $("#mensajeT2").hide();
-          $("#mensajeT3").hide();
-          document.getElementById('f01_contacto1_nro').value = '';
+            document.getElementById('f01_contacto1_nro').value = '';
+        }
+        }
       }
+      if(tipotel1 == 'CELULAR'){
+        Numer=parseInt(datoTel);
+        if (isNaN(Numer)){
+        document.getElementById('f01_contacto1_nro').value = '';
+        }else{
+        var digits = ("" + Numer).split("");
+        if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 || event.keyCode == 9)){
+            if((digits.length>0) && (digits.length<8)){
+              $("#mensajeT3").show();
+              $("#mensajeT1").hide();
+              $("#mensajeT2").hide();
+            }else{
+              $("#mensajeT2").show();
+              $("#mensajeT1").hide();
+              $("#mensajeT3").hide();
+            }
+        }else{
+            $("#mensajeT1").show();
+            $("#mensajeT2").hide();
+            $("#mensajeT3").hide();
+            document.getElementById('f01_contacto1_nro').value = '';
+        }
+        }
+
       }
-
-    }
-    if($scope.tipoTel1 == undefined || $scope.tipoTel1 == 'undefined'){
-      document.getElementById('f01_contacto1_nro').value = '';
-    }
-
+      if(tipotel1 == undefined || tipotel1 == 'undefined'){
+        document.getElementById('f01_contacto1_nro').value = '';
+      }
+    
   }
   $scope.activarCampo2 = function(dato){
     $scope.tipoTel2 = dato;
@@ -1129,13 +1131,14 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.valNumTelefono2 = function(datoTel){
-    if($scope.tipoTel2 == 'TELÉFONO'){
+    var tipotel2 = document.getElementById('f01_contacto2').value;
+    if(tipotel2 == 'TELÉFONO'){
      Numer=parseInt(datoTel);
       if (isNaN(Numer)){
       document.getElementById('f01_contacto2_nro').value = '';
       }else{
       var digits = ("" + Numer).split("");
-      if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+      if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4 || event.keyCode == 9)){
           if((digits.length>0) && (digits.length<7)){
             $("#mensajeT6").show();
             $("#mensajeT5").hide();
@@ -1158,13 +1161,13 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       }
     }
-    if($scope.tipoTel2 == 'CELULAR'){
+    if(tipotel2 == 'CELULAR'){
       Numer=parseInt(datoTel);
       if (isNaN(Numer)){
       document.getElementById('f01_contacto2_nro').value = '';
       }else{
       var digits = ("" + Numer).split("");
-      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 )){
+      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 || event.keyCode == 9)){
           if((digits.length>0) && (digits.length<8)){
             $("#mensajeT6").show();
             $("#mensajeT5").hide();
@@ -1182,7 +1185,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       }
     }
-    if($scope.tipoTel2 == undefined || $scope.tipoTel2 == 'undefined'){
+    if(tipotel2 == undefined || tipotel2 == 'undefined'){
       document.getElementById('f01_contacto2_nro').value = '';
     }
 
@@ -1211,13 +1214,14 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.valNumTelefono3 = function(datoTel){
-    if($scope.tipoTel3 == 'TELÉFONO'){
+    var tipotel3 = document.getElementById('f01_contacto3').value;
+    if(tipotel3 == 'TELÉFONO'){
      Numer=parseInt(datoTel);
       if (isNaN(Numer)){
       document.getElementById('f01_contacto3_nro').value = '';
       }else{
       var digits = ("" + Numer).split("");
-      if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)){
+      if(digits.length > 0 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4 || event.keyCode == 9)){
           if((digits.length>0) && (digits.length<7)){
             $("#mensajeT9").show();
             $("#mensajeT8").hide();
@@ -1240,13 +1244,13 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       }
     }
-    if($scope.tipoTel3 == 'CELULAR'){
+    if(tipotel3 == 'CELULAR'){
       Numer=parseInt(datoTel);
       if (isNaN(Numer)){
       document.getElementById('f01_contacto3_nro').value = '';
       }else{
       var digits = ("" + Numer).split("");
-      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 )){
+      if(digits.length > 0 && (digits[0] == 6 || digits[0] == 7 || event.keyCode == 9)){
           if((digits.length>0) && (digits.length<8)){
             $("#mensajeT9").show();
             $("#mensajeT8").hide();
@@ -1264,7 +1268,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       }
     }
-    if($scope.tipoTel3 == undefined || $scope.tipoTel3 == 'undefined'){
+    if(tipotel3 == undefined || $scope.tipoTel3 == 'undefined'){
       document.getElementById('f01_contacto3_nro').value = '';
     }
 

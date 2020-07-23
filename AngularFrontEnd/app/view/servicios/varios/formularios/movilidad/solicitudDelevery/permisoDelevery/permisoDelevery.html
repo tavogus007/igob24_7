@@ -576,25 +576,9 @@
                 </div>
               </div>
 
-
-
-                    <br>
-                    <br>
                     <br>
                 <div ng-show="div_datos_A_llenar == true">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="url" >INTRODUZCA AL MENOS DOS NUMEROS TELEFONICOS DE CONTACTOS ALTERNATIVOS:</label>
-                        <div class="controls">
-                            <input type="text" ng-model="datos.PER_TRA_NUM_CONTACTO" id="PER_TRA_NUM_CONTACTO" name="PER_TRA_NUM_CONTACTO" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required ng-disabled="desabilitado"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                  <legend>
-                    <h2></h2>
-                  </legend>
-                </div>
+
 
                 <div class="col-md-12">
 
@@ -604,6 +588,14 @@
                 <br>
                 <br>
                 <br>
+                <div class="col-md-12">
+                  <div class="form-group">
+                      <label for="url" >INTRODUZCA EL NÚMERO DE VEHÍCULOS A SOLICITAR</label>
+                      <div class="controls">
+                          <input type="number" ng-model="datos.PER_TRA_CANT_VEHI_SOL" id="PER_TRA_CANT_VEHI_SOL" name="PER_TRA_CANT_VEHI_SOL" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required ng-disabled="desabilitado"/>
+                      </div>
+                  </div>
+              </div> 
                 <br>
                 <br>
                 <br>
@@ -669,14 +661,24 @@
                           </div>
                       </div>
                   </div> 
-
+                  <br>
+                  <br>
+                  <br>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="url" >INTRODUZCA AL MENOS DOS NUMEROS TELEFONICOS DE CONTACTOS ALTERNATIVOS:</label>
+                        <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NUM_CONTACTO" id="PER_TRA_NUM_CONTACTO" name="PER_TRA_NUM_CONTACTO" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" required ng-disabled="desabilitado"/>
+                        </div>
+                    </div>
+                </div>
                 </div>
 
                 <div ng-show="div_de_adunjtos == true">
                     <div class="ibox float-e-margins">
                         <div class="col-md-12">
                             <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-                                <h4>ADJUNTOS (Los documentos deben estar en solo archivo en formato PDF o DOC.):</h4>
+                                <h4>ADJUNTOS (Los documentos deben estar en solo archivo en formato PDF o DOC.) , Los campos obligatorios se encuentra con un " * ":</h4>
                             </div>
                         </div>
                     </div>
@@ -687,7 +689,7 @@
                           <div class="col-md-12">
                               <div class="row">
                                   <div class="col-md-6">
-                                      <label for="url">{{txtContratoServicios}}</label>
+                                      <label for="url">* {{txtContratoServicios}}</label>
                                   </div>
                                   <div class="col-md-6">
                                       <div class="form-group custom-upload">
@@ -717,7 +719,7 @@
                       <div class="col-md-12">
                           <div class="row">
                               <div class="col-md-6">
-                                  <label for="url">ADJUNTE EN UN SOLO DOCUMENTO PDF, TODOS LOS PERMISOS DE CIRCULACION VEHICULAR OTORGADOS POR EL MINISTERIO DE GOBIERNO</label>
+                                  <label for="url">* ADJUNTE EN UN SOLO DOCUMENTO PDF, TODOS LOS PERMISOS DE CIRCULACION VEHICULAR OTORGADOS POR EL MINISTERIO DE GOBIERNO</label>
                               </div>
                               <div class="col-md-6">
                                   <div class="form-group custom-upload">
@@ -746,7 +748,7 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="url">CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S) :</label>
+                                    <label for="url">* CARGAR DOCUMENTO(S) RUAT DE LOS VEHÍCULO(S) :</label>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group custom-upload">
@@ -770,7 +772,7 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="url">ADJUNTAR LOS CARNETS DE LOS SOLICITANTES :</label>
+                                    <label for="url">* ADJUNTAR LOS CARNETS DE LOS SOLICITANTES :</label>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group custom-upload">
@@ -794,7 +796,7 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="url">CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS :</label>
+                                    <label for="url">* CARGAR FOTOGRAFÍAS DE LA LICENCIA DE CONDUCIR DEL (DE LOS) CONDUCTORES DE LOS VEHÍCULOS :</label>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group custom-upload">
@@ -819,7 +821,7 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="url">{{txtAdjuntoFotografia}}</label>
+                                    <label for="url">* {{txtAdjuntoFotografia}}</label>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group custom-upload">

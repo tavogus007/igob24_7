@@ -215,7 +215,7 @@
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
                                         <input id="txt_f01_upload3" name="txt_f01_upload3"  ng-model="datos['txt_f01_upload3']"  type="text" placeholder="" class="form-control input-lg" disabled required>
-                                        <span class="input-group-btn">
+                                         <span class="input-group-btn">
                                             <a id="href_f01_upload3"  ng-show="encabezadotipo_url" href="{{encabezadotipo_url}}" target="_blank">
                                                 <button id="btn_f01_upload3" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                             </a>
@@ -264,7 +264,6 @@
                         <br>1.  Si elige la opción DÍAS HÁBILES, registrará las horas introducidas para los días de Lunes a Viernes.
                         <br>2.  Si elige TODOS LOS DÍAS, registrará las horas introducidas para todos los días.
                         <br>3.  Si elige NINGUNA, debe realizar el registro manualmente para cada día.<br>
-                        <br><strong>NOTA: </strong>Para registrar horarios día por día, debe introducir hora inicio y hora final y marcar el día seleccionado. Caso contrario no será almacenado.
                     </div>
                 </div>
                 <div class="col-md-2"></div>
@@ -306,7 +305,17 @@
                 </div>
             </div>
             <hr>
+            <div class="row>">
+                <div class="col-md-1"></div>
+                <div class="col-md-11">
+                    <font color="#FF0000" size="4px" align="center"> * </font>
+                    <label for="url" >HORARIOS DE ATENCIÓN:</label>
+                </div>
+            </div><br>
+            
+            
             <div class="row">   
+               
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <label for="url" >Días:</label>
@@ -541,37 +550,25 @@
                                     <input type="checkbox" class="custom-control-input"  id="f01_chk_domingo" name="f01_chk_domingo" ng-model="datos.f01_chk_domingo"  ng-change="activaDomingo(datos.f01_chk_domingo)" style="width: 22px; height: 22px;">
                                     <label class="custom-control-label" for="defaultUnchecked"></label>
                                 </div>
-                            </div>
-                       
-                            
+                            </div>                         
                         </div>
                     </div>
                     
                 </div>
                 <div class="col-md-1"></div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <div class="row" >
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
                     <h4>Ingrese los números telefónicos de contacto</h4>
                 </div><br>
+             </div>
+             <div class="row" >
+                <div class="col-md-10" align="left">
+                    <div class="alert alert-danger fade in">
+                        <br><strong>CONTACTOS: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Debe registrar por lo menos un (1) número de teléfono.
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
              </div>
             <div class="row">   
                 <div class="col-md-1">
@@ -602,6 +599,7 @@
                 </div>
                 <div class="col-md-5">
                     <div class="form-group" >
+                        
                         <label for="url" >Número de contacto:</label>
                         <div class="controls">
                             <!--input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" maxlength="8" onkeyUp="return valNumeroTelefono1(this);" /-->                         
@@ -667,7 +665,7 @@
                         <label for="url" >Red Social:</label>
                         <div class="controls">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE1" name="f01_redessocialesAE1" ng-model="datos.f01_redessocialesAE1" ng-change="activaRedes1(datos.f01_redessocialesAE1)">
+                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE1" name="f01_redessocialesAE1" ng-model="datos.f01_redessocialesAE1"  ng-change="activaRedes1(datos.f01_redessocialesAE1)">
                                 <label class="custom-control-label" for="defaultUnchecked">Facebook</label>
                             </div>
                             <br>
@@ -696,23 +694,23 @@
                     <div class="form-group" >
                         <label for="url" >URL de la Red Social:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-keyUp="validaRedes1(datos.f01_redessocialesAE1_url);" ng-disabled="inicializaFacebook"/>
+                            <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-keyUp="validaRedes1(datos.f01_redessocialesAE1_url);" placeholder="Por Ej. https://www.facebook.com/ejemplo" ng-disabled="inicializaFacebook"/>
                             <span id ="mensajeR1" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
                             <span id ="mensajeR2" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
                             <br>
-                            <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-keyUp="validaRedes2(datos.f01_redessocialesAE2_url);" ng-disabled="inicializaTwitter"/>
+                            <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-keyUp="validaRedes2(datos.f01_redessocialesAE2_url);" placeholder="Por Ej. https://twitter.com/ejemplo" ng-disabled="inicializaTwitter"/>
                             <span id ="mensajeR3" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
                             <span id ="mensajeR4" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
                             <br>
-                            <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-keyUp="validaRedes3(datos.f01_redessocialesAE3_url);" ng-disabled="inicializaInstagram"/>
+                            <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-keyUp="validaRedes3(datos.f01_redessocialesAE3_url);" placeholder="Por Ej.https://www.instagram.com/ejemplo/" ng-disabled="inicializaInstagram"/>
                             <span id ="mensajeR5" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
                             <span id ="mensajeR6" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
                             <br>
-                            <input ng-model="datos.f01_redessocialesAE4_url" id="f01_redessocialesAE4_url" name="f01_redessocialesA4_url" class="form-control" ng-keyUp="validaRedes4(datos.f01_redessocialesAE4_url);" ng-disabled="inicializaYoutube"/>
+                            <input ng-model="datos.f01_redessocialesAE4_url" id="f01_redessocialesAE4_url" name="f01_redessocialesA4_url" class="form-control" ng-keyUp="validaRedes4(datos.f01_redessocialesAE4_url);" placeholder="Por Ej. https://www.youtube.com/watch?v=0TN2UiRyogc" ng-disabled="inicializaYoutube"/>
                             <span id ="mensajeR7" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
                             <span id ="mensajeR8" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
                             <br>
-                            <input ng-model="datos.f01_redessocialesAE5_url" id="f01_redessocialesAE5_url" name="f01_redessocialesAE5_url" class="form-control" ng-keyUp="validaRedes5(datos.f01_redessocialesAE5_url);" ng-disabled="inicializaOtro"/>
+                            <input ng-model="datos.f01_redessocialesAE5_url" id="f01_redessocialesAE5_url" name="f01_redessocialesAE5_url" class="form-control" ng-keyUp="validaRedes5(datos.f01_redessocialesAE5_url);" placeholder="Por Ej. https://www.otro.com/ejemplo" ng-disabled="inicializaOtro"/>
                             <span id ="mensajeR9" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
                             <span id ="mensajeR10" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>  
 
@@ -753,8 +751,8 @@
                 </div>
             </div>
             <div class="col-md-12" align="right">
-                <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_categoria.$invalid || signupForm.f01_correoTV.$invalid" ng-click="registrarDatosAE(datos)">Registrar</button>
-                <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-disabled=" signupForm.f01_nombreTV.$invalid || signupForm.f01_categoria.$invalid || signupForm.f01_correoTV.$invalid" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                
+                <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-click="registrarDatosAE(datos)">Registrar</button>
+                <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                
             </div>
           </form>
         </div>

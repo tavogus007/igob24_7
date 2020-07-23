@@ -184,7 +184,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
           tramiteIgob.validarFormProcesos(function(resultado){
             swal({
               title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
-              text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2><br>“SU SOLICITUD SERA ATENDIDA EN UN PLAZO DE 48 HORAS”',
+              text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2><br>“SU SOLICITUD SERA ATENDIDA EN UN PLAZO DE 2 DÍAS HÁBILES”',
               html: true,
               type: 'success',
             });
@@ -939,10 +939,18 @@ $scope.adjuntoTres = function(){
         ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && $scope.datos.PER_TRA_NUM_CONTACTO == undefined) ||
         ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && $scope.datos.PER_TRA_NUM_CONTACTO == undefined)){
             swal('', "Ingrese al menos dos contactos alternativos", 'warning');
+        }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO' && $scope.datos.PER_TRA_CANT_VEHI_SOL == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && $scope.datos.PER_TRA_CANT_VEHI_SOL == undefined) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && $scope.datos.PER_TRA_CANT_VEHI_SOL == undefined)){
+            swal('', "Ingrese la cantidad de vehiculos a solicitar", 'warning');
         }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO' && JSON.stringify($scope.trmAutos) == '[]') ||
         ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && JSON.stringify($scope.trmAutos) == '[]') ||
         ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && JSON.stringify($scope.trmAutos) == '[]')){
-            swal('', "Ingrese al menos un vehículo", 'warning');
+            swal('', "Ingrese la información de los vehículos", 'warning');
+        }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO' && $scope.datos.PER_TRA_CANT_VEHI_SOL != $scope.trmAutos.length) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && $scope.datos.PER_TRA_CANT_VEHI_SOL != $scope.trmAutos.length) ||
+        ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && $scope.datos.PER_TRA_CANT_VEHI_SOL != $scope.trmAutos.length)){
+            swal('', "La cantidad de vehículos solicitantes no concuerdan con la cantidad de vehículos adicionados", 'warning');
         }else if(($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'PROPIO' && $scope.datos.FILE_FORMVH_EXCEL == undefined) ||
         ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_SERVICIO_PRIVADO' && $scope.datos.PER_TRA_DESCRIP_FOR == 'AMBOS' && $scope.datos.FILE_FORMVH_EXCEL == undefined) ||
         ($scope.datos.PER_TRA_REG_TRANS == 'REGISTRO_OPERADOR' && $scope.datos.FILE_FORMVH_EXCEL == undefined)){
@@ -978,7 +986,7 @@ $scope.adjuntoTres = function(){
         }
         data.Tipo_tramite_creado="WEB";
         data.PER_TRA_NRO_TRAMITE = sessionService.get('IDTRAMITE');
-        data.PER_TRA_CANT_VEHI_SOL = contadorVehiculos;
+        //data.PER_TRA_CANT_VEHI_SOL = contadorVehiculos;
         data.INF_ARRAY_AUTOS = JSON.stringify($scope.trmAutos);
         $scope.guardar_tramite(data);
         $scope.declaracionJurada(data);
@@ -1052,7 +1060,11 @@ $scope.adjuntoTres = function(){
         $('#msgformularioN').html($scope.msgformularioN);
     }
     $scope.adicionarVehiculos = function(data){
-        if(data == undefined){
+        if($scope.datos.PER_TRA_CANT_VEHI_SOL == undefined){
+            swal('', 'Ingrese la cantidad de vehículos a solicitar', 'warning');
+        }else if($scope.trmAutos.length >= $scope.datos.PER_TRA_CANT_VEHI_SOL){
+            swal('', 'Ya esta en limite de vehículos solicitantes', 'warning');
+        }else if(data == undefined){
             swal('', 'Agrege la informacion para adjuntar los vehículos', 'warning');
         }else if(data.tipo_vehiculo == '' || data.tipo_vehiculo == undefined){
             swal('', 'Ingrese el Tipo de Vehículo', 'warning');

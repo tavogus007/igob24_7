@@ -68,6 +68,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         $scope.descrip_pagina = recDesc;
         $scope.correo_tienda = $rootScope.datosTiendaVirtual[0].tv_correoc;
         $scope.pag_web_privada = $rootScope.datosTiendaVirtual[0].tv_pagina_webc;
+        document.getElementById("descrip_pagina").innerHTML = recDesc;
       } catch(error){
         console.log(error);
       }

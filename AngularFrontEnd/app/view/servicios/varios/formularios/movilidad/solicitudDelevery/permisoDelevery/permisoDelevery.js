@@ -1024,7 +1024,11 @@ $scope.adjuntoTres = function(){
                 stringFormulario40  =   stringFormulario40.replace("#f01_expedido_prop#", datos.f01_expedido_prop);
                 stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.PT_DESCRIP_AE);
                 stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.PT_DESCRIP_AE);
-                stringFormulario40  =   stringFormulario40.replace("#f01_domiciliado#", datos.PER_TRA_ZONA+" "+datos.PER_TRA_NOMBRE_VIA+" Nº "+datos.PER_TRA_NRO_V);
+                if(datos.INF_TIPO_PERSONA == 'JURIDICO'){
+                    stringFormulario40  =   stringFormulario40.replace("#f01_domiciliado#", datos.PER_TRA_ZONA_J+" "+datos.PER_TRA_NOMBRE_VIA_J+" Nº "+datos.PER_TRA_NRO_VV_J);
+                }else{
+                    stringFormulario40  =   stringFormulario40.replace("#f01_domiciliado#", datos.PER_TRA_ZONA+" "+datos.PER_TRA_NOMBRE_VIA+" Nº "+datos.PER_TRA_NRO_V);
+                }
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
                 stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);

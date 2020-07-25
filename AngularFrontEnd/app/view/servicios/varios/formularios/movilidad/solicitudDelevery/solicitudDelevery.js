@@ -3,7 +3,7 @@ function solicitudDeleveryController($scope, $rootScope, $routeParams, $location
     $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
     $scope.oidCiu = sessionService.get('IDSOLICITANTE');
     $scope.tiposTramite = [
-        { detalle: 'Solicitud de registro transitorio delivery', id:'57',tipo:$scope.tipo_persona}
+        { detalle: 'Solicitud de registro transitorio delivery', id:'25',tipo:$scope.tipo_persona}
     ];
     $scope.datos = {};
     $scope.tablaTramites        =   {};
@@ -13,8 +13,8 @@ function solicitudDeleveryController($scope, $rootScope, $routeParams, $location
       { name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/movilidad/solicitudDelevery/permisoDelevery/permisoDelevery.html'}
     ];
   
-    $scope.deleveryID = 57;
-
+    $scope.deleveryID = 25;
+    //$scope.deleveryID = 57;
     $scope.inicio = function(){
       $scope.tramitesCiudadano();
       $scope.cargarDatosCiudadano();

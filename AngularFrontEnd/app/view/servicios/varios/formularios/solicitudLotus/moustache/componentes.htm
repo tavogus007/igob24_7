@@ -1,3 +1,4 @@
+
 <script id="titulo" type="text/html">
     <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
         <h1 style="width: auto; padding: 10px; height: auto; background-color: #f9edd6; float: left; 
@@ -128,7 +129,25 @@
             <div class="controls">
                 <div class="col-sm-10" tabindex="{{orden}}">
                     <textarea cols="45" rows="5"  class="mceEditorT{{titulo}}" placeholder="{{titulo}}" class="form-control" id="{{campo}}" name="registro[]" tabindex="{{orden}}" {{{read}}}>{{valor_campo}}</textarea>                
-                    <script type="text/javascript">tinymce.remove("textarea");tinymce.init({  mode : "specific_textareas", language : "es", editor_selector : /(mceEditorT)/,  height: 120,  theme: "modern",plugins: ["advlist autolink lists link image charmap print preview hr anchor pagebreak","searchreplace wordcount visualblocks visualchars code fullscreen","insertdatetime media nonbreaking save table contextmenu directionality","emoticons template paste textcolor colorpicker textpattern imagetools"  ]}); </script>
+                    <!--script type="text/javascript">tinymce.remove("textarea");tinymce.init({  mode : "specific_textareas", language : "es", editor_selector : /(mceEditorT)/,  height: 120,  theme: "modern",plugins: ["advlist autolink lists link image charmap print preview hr anchor pagebreak","searchreplace wordcount visualblocks visualchars code fullscreen","insertdatetime media nonbreaking save table contextmenu directionality","emoticons template paste textcolor colorpicker textpattern imagetools"  ]}); </script-->
+                    <script>
+                        tinymce.init({
+                    
+                        selector: 'textarea',
+                        language: 'es',
+                        height: 300,
+                        menubar: true,
+                        plugins: [
+                            'advlist autolink lists link image charmap print preview anchor',
+                            'searchreplace visualblocks code fullscreen',
+                            'insertdatetime media table paste code help wordcount'
+                        ],
+                        toolbar: 'undo redo | formatselect | ' +
+                        'bold italic backcolor | alignleft aligncenter ' +
+                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                        'removeformat | help' + 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'       
+                        });
+                    </script>
                 </div>
             </div>
         </div>

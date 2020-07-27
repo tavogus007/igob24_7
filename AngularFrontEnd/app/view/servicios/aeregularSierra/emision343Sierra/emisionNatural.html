@@ -1029,6 +1029,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <!--REQUISITOS PUBLICIDAD-->
                     <div class="col-md-12">
                         <legend>Requisitos Documentales Publicidad:</legend>
@@ -1046,7 +1047,6 @@
                                                 <input id="txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}" name="txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-model="datos['txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}']" type="text" placeholder="{{dataPub.resvalor}}" class="form-control input-lg" disabled required>
                                                 <span class="input-group-btn">
                                                     <a id="href_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-show="fileAdjuntosPublicidad['f01_upload'+dataPub.idP+dataPub.resid].url" href="{{fileAdjuntosPublicidad['f01_upload'+dataPub.idP+dataPub.resid].url}}" target="_blank">
-                                                    {{rmostrarviae}}
                                                     <button id="btn_f01_upload{{dataPub.idP}}{{dataPub.resid}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                     </a>
                                                     <button id="btn_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-click="ejecutarFile('f01_upload' + dataPub.idP + dataPub.resid, dataPub.idnro)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>

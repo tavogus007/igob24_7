@@ -804,12 +804,11 @@ rcJuridico.prototype.crearJuridico = function (functionResp)
           "tipo_persona": "JURIDICO",
           "tipo_empresa": this.tipo_empresa,
 
-          
           "sistema":"IGOB247",
           "sistema_creado":"IGOB247",
           "usr_id": this.usr_id,
-          "activacionf": "NO",
-          "activaciond": "NO"
+          "activacionf": "SI",
+          "activaciond": "SI"
         };
 
         ejecutarAjax(urlComp, typeCall, dataParams, functionResp);

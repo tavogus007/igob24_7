@@ -2,6 +2,26 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     var fecha= new Date();
     var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
 
+    function cargando(){
+        var texto   = $("<div>", {
+         text    : "CARGANDO....",
+            id      : "myEstilo",
+            css     : {
+            "font-size" : "30px",
+                "position": "relative",
+                "width": "500px",
+                "height": "300px",
+                "left": "180px",
+                "top":"50px"
+            },
+            fontawesome : "fa fa-spinner fa-pulse"
+        });
+        $.LoadingOverlay("show",{
+                custom  : texto,
+                color:"rgba(255, 255, 255, 0.8)",
+        });
+    }
+
     $scope.tablaTramites        =   {};
     $scope.tramitesUsuario      =   [];
     $scope.datosinic = {};
@@ -297,6 +317,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
 
 
     $scope.addDatosAE = function (tramite) {
+        cargando();
         $scope.template =   "";
         //$scope.seleccionarDatosRender(tramite);  
         $scope.template         =   $scope.templates[0];
@@ -305,17 +326,20 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $scope.obtTiendaVirtual();
         $rootScope.$broadcast('inicializarCampos', $scope.datos);
         $scope.sIdAeGrilla  =   tramite.IdActividad;
+        $.LoadingOverlay("hide");
 
     }
     $scope.addPagosAE = function (tramite) {
+        cargando();
         $scope.template =   "";
         $scope.seleccionarPagoRender(tramite);
         sessionService.set('IDAE', tramite.IdActividad);
         $scope.sIdAeGrilla  =   tramite.IdActividad;
-
         console.log(tramite);  
+        $.LoadingOverlay("hide");
     }
     $scope.addProductoAE = function (tramite) {
+        cargando();
         $scope.template =   "";
         sessionService.set('IDAE', tramite.IdActividad);
         $scope.obtTiendaVirtual();
@@ -325,13 +349,16 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         try{
             tvid = $rootScope.datosTiendaVirtual[0].idtv;
             $scope.template         =   $scope.templates[2];
+            $.LoadingOverlay("hide");
         } catch(error){
             swal('', "Debe habilitar la tienda virtual, antes de cargar sus productos.", 'warning');
             sessionService.destroy('IDTV');
             $scope.template =   "";
+            $.LoadingOverlay("hide");
         }
     }
     $scope.confPublicar = function (tramite) {
+        cargando();
         $scope.template =   "";
         console.log(tramite);
         sessionService.set('IDAE', tramite.IdActividad);
@@ -342,14 +369,16 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         //$scope.obtPagina();
         $rootScope.$broadcast('inicializarPagina', $scope.datos);
         $scope.sIdAeGrilla  =   tramite.IdActividad;
-
+        $.LoadingOverlay("hide");
         try{
             tvid = $rootScope.datosTiendaVirtual[0].idtv;
             $scope.template         =   $scope.templates[3];
+            $.LoadingOverlay("hide");
         } catch(error){
             swal('', "Debe habilitar la tienda virtual, antes de habilitar su página Web.", 'warning');
             sessionService.destroy('IDTV');
             $scope.template =   "";
+            $.LoadingOverlay("hide");
         }
     }
     

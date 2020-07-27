@@ -11,18 +11,44 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   $rootScope.archivosProducto = new Array();
   $rootScope.archivosLogotipo = new Array();
   $rootScope.archivosEncabezado = new Array();
+
+  function cargando(){
+    var texto   = $("<div>", {
+     text    : "CARGANDO....",
+        id      : "myEstilo",
+        css     : {
+        "font-size" : "30px",
+            "position": "relative",
+            "width": "500px",
+            "height": "300px",
+            "left": "180px",
+            "top":"50px"
+        },
+        fontawesome : "fa fa-spinner fa-pulse"
+    });
+    $.LoadingOverlay("show",{
+            custom  : texto,
+            color:"rgba(255, 255, 255, 0.8)",
+    });
+}
   
 
   var clsIniciarCamposInternet = $rootScope.$on('inicializarCampos', function(event, data){
+    
     $scope.limpiar(); 
     $scope[name] = 'Running'; 
     var deferred = $q.defer(); 
     $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
+    
     return deferred.promise;
+    
   });
 
   $scope.recuperarSerializarInfo = function(data){
+    cargando();
+   
     $scope[name] = 'Running';
+  
     var deferred = $q.defer();
     if (data.length == 0){
       document.getElementById("f01_todos").checked = false;
@@ -86,6 +112,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_chk_domingo = false;
       $scope.datos.f01_hora_inicio_domingo = '';
       $scope.datos.f01_hora_fin_domingo = '';
+      $.LoadingOverlay("hide");
+      
     } else {
       $scope.obtTiendaVirtualM();
       document.getElementById("f01_todos").checked = false;
@@ -341,7 +369,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
      
       }
       //editor
-       setTimeout(function(){
+       //setTimeout(function(){
         $scope.recDesc = data[0].tv_descripcionc;
         $scope.descripTienda = tinyMCE.get('f01_descripcionTV').setContent($scope.recDesc);  
         $scope.datos.f01_descripcionTV = $scope.descripTienda; 
@@ -401,10 +429,12 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           $scope.encabezadotipo_url = $scope.encabezadotipojson1.url;
         }
       }
-      },500);  
+     // },500);  
 
     } 
+    $.LoadingOverlay("hide");
     return deferred.promise;
+   
 }
 
   $scope.inicioTiendaVirtual = function () {
@@ -427,12 +457,15 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.principal = false;
     }
     datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
-    var descTV = data.f01_descripcionTV;
+
     $scope.descripTienda = tinyMCE.get('f01_descripcionTV').getContent();
-    datosTiendaVirtual.descripcion = $scope.descripTienda;
-    var formaE = data.f01_forma_entrega;
+    var resultado = $scope.descripTienda.replace(/'/g, ''); 
+    datosTiendaVirtual.descripcion = resultado;  
     $scope.formaEntrega = tinyMCE.get('f01_forma_entrega').getContent();
-    datosTiendaVirtual.forma_entrega = $scope.formaEntrega;
+    var resultadoFe = $scope.formaEntrega.replace(/'/g, ''); 
+    datosTiendaVirtual.forma_entrega = resultadoFe; 
+
+
     if($scope.descripTienda == '' || $scope.formaEntrega == '' ){
       $scope.swDes = true;
     }
@@ -715,10 +748,15 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.principal = false;
       }
       datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
-      var descTV = data.f01_descripcionTV;
+
+      
       $scope.descripTienda = tinyMCE.get('f01_descripcionTV').getContent();
-      datosTiendaVirtual.descripcion = $scope.descripTienda;
+      var resultado = $scope.descripTienda.replace(/'/g, ''); 
+      datosTiendaVirtual.descripcion = resultado;  
       $scope.formaEntrega = tinyMCE.get('f01_forma_entrega').getContent();
+      var resultadoFe = $scope.formaEntrega.replace(/'/g, ''); 
+      datosTiendaVirtual.forma_entrega = resultadoFe; 
+
       if($scope.descripTienda == '' || $scope.formaEntrega == '' ){
         $scope.swDes = true;
       }

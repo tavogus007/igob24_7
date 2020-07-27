@@ -4,12 +4,13 @@
     <head>
         
         <script type="text/javascript" src="../../view/servicios/tiendavirtual/tienda/appdatosAE.js"></script>
+        <script src="../../libs/loading/loadingoverlay.js"></script>
         <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
         <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
         <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
         <link rel="stylesheet" type="text/css" href="../../libs/css/bootstrap-clockpicker.min.css">
         <script type="text/javascript" src="../../libs/js/bootstrap-clockpicker.min.js"></script>
-        <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/tinymce/tinymce.min.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/tinymce5.4.1/tinymce.min.js"></script>
 
         <style type="text/css">
             .main1
@@ -42,15 +43,22 @@
             
         </script>
         <script>
-            setTimeout(function(){
-                tinymce.init({
-                selector: 'textarea',
-                setup: function (editor) {
-                    editor.on('init', function (e) {
-                    editor.setContent('');
-                    });}
-            });
-            },100);
+        tinymce.init({
+
+            selector: 'textarea',
+            language: 'es',
+            height: 300,
+            menubar: true,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar: 'undo redo | formatselect | ' +
+            'bold italic backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help' + 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'       
+        });
         </script>
         <style>
             .switch {
@@ -163,7 +171,8 @@
                             </span>
                         </div>
                     </div>
-                </div>
+                </div>                  
+
                 <div class="col-md-12">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px" align="center"> * </font>

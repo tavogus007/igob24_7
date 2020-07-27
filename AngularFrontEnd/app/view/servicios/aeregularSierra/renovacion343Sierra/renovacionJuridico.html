@@ -578,10 +578,10 @@
                                                                 <a class="btn btn-default btn-circle" ng-click="modificarLic(lic)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
                                                                 <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
                                                             </td>
-                                                            <td data-title="'NRO'" ng-click="SeleccionaPrioridad(lic)">{{$index+1}}</td>
-                                                            <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_tipo_licmdescrip}}</td>
-                                                            <td data-title="'TIPO DE CATEGORIA'" sortable="'INT_TIPO_CAT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_cat_agrupadamdescrip}}</td>
-                                                            <td data-title="'TIPO DE ACTIVIDAD'" sortable="'INT_TIPO_ACT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_act_desarrolladamdescrip}}</td>
+                                                            <td data-title="'NRO'">{{$index+1}}</td>
+                                                            <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'">{{lic.f01_tipo_licmdescrip}}</td>
+                                                            <td data-title="'TIPO DE CATEGORIA'" sortable="'INT_TIPO_CAT'">{{lic.f01_cat_agrupadamdescrip}}</td>
+                                                            <td data-title="'TIPO DE ACTIVIDAD'" sortable="'INT_TIPO_ACT'">{{lic.f01_act_desarrolladamdescrip}}</td>
                                                         </tr>
                                                     </table>
                                                     <!-- fin de la tabla -->
@@ -1085,24 +1085,24 @@
                     </div>
                 </div>
                     <!--   PAGO ADELANTADO   -->
-                <!--div class="col-md-12">
+                <div class="col-md-12">
                     <legend>Datos Pago Anticipado:</legend>
                 </div>
                 <div class = "col-md-12" class="form-control">
                     <div class = "col-md-6" class="form-control">
                         <label for="Pago_Anticipado">
                         Desea realizar el Pago por Adelantado?
-                        Si <input type="radio" name="pago_adel" value = "SI" ng-model="datos.pago_adel" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        No <input type="radio" name="pago_adel" value = "NO" ng-model="datos.pago_adel" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
+                        Si <input type="radio" name="pago_adelantado" value = "SI" ng-model="datos.pago_adelantado" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        No <input type="radio" name="pago_adelantado" value = "NO" ng-model="datos.pago_adelantado" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
                         </label>
                     </div>
-                </div-->
-                <!--div ng-show="IsVisible==true">
+                </div>
+                <div ng-show="IsVisible">
                     <div class = "col-md-6" class="form-control">
                         <div class="form-group">
                         <legend>Gestiones a Pagar:</legend>
                             <div class="controls">
-                                <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" ng-change="calcularDeudas(datos.f01_id_actividad_economica, datos.nro_ges);" name="nro_ges" ng-disabled="desabilitado">
+                                <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" name="nro_ges" ng-disabled="desabilitado" ng-change = "calcularDeudas(datos.nro_ges)" required>
                                     <option value="">--Seleccionar--</option>
                                     <option value="2"> 2 </option>
                                     <option value="4"> 4 </option>
@@ -1110,38 +1110,44 @@
                             </div>
                         </div>
                     </div>
+                    <br><br>
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <div class="panel-heading"><B>GESTIONES A PAGAR</B></div>
                             <div class="panel-body">
                                 <table  ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
                                     <tr ng-repeat="duedasCiu in $data">
-                                        <td data-title="'Nº'">{{duedasCiu.numero}}</td>
+                                        <td data-title="'Nº'">{{duedasCiu.nro}}</td>
                                         <td data-title="'GESTIÓN'">{{duedasCiu.gestion}}</td>
-                                        <td data-title="'MONTO'">{{duedasCiu.total}}</td>
+                                        <td data-title="'MONTO ACT. ECO.'">{{duedasCiu.monto_ae}}</td>
+                                        <td data-title="'MONTO ELEM. PUB.'">{{duedasCiu.monto_viae}}</td>
+                                        <td data-title="'DESCUENTO EN %'">{{duedasCiu.descuento}}</td>
+                                        <td data-title="'MONTO SIN DESC.'">{{duedasCiu.monto_total}}</td>
+                                        <td data-title="'DESCUENTO'">{{duedasCiu.monto_total_con_descuento}}</td>
+                                        <td data-title="'MONTO TOTAL'">{{duedasCiu.monto_pagar}}</td>
                                     </tr>
-                                    <tr>
-                                        <td bgcolor = "black"><font color = "white"> TOTAL A PAGAR</font></td>
-                                        <td bgcolor = "black"></td>
-                                        <td bgcolor = "black"><font color = "white">{{getTotal() | currency}}</font></td>
-                                    </tr>
+                                    <!--tr ng-repeat="duedasCiu in $data" ng-if="duedasCiu.montoLiteral!=''">
+                                        <td bgcolor = "black" colspan="7"><font color = "white">TOTAL A PAGAR</font></td>
+                                        <td bgcolor = "black"><font color = "white">{{duedasCiu.montoTotal}} Bs.</font></td>
+                                    </tr-->
                                 </table>
                             </div>
                         </div>
                     </div>
-                        <div class="col-md-12" class="form-control" ng-show="IsVisible">
-                            <div class="form-group" >
-                                <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                                <div class="col-sm-12" align="left">
-                                    <div class="alert alert-danger fade in">
-                                        <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
-                                        Ud. puede verificar en su cuenta iGob dentro de 48 hrs. la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
-                                        <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (48 hrs), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
-                                    </div>
+                    <div class="col-md-12" class="form-control">
+                        <div class="form-group" >
+                            <label class="col-sm-12 control-label no-padding-right" for="url"></label>
+                            <div class="col-sm-12" align="left">
+                                <div class="alert alert-danger fade in">
+                                    <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br> Ud. deberá realizar el pago en {{mensajeCiudadano}}el pago lo podrá realizar en las entidades financieras autorizadas.<br> <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado, se emitirá su LICENCIA DE FUNCIONAMIENTO por el lapso de vigencia de 2 años.
                                 </div>
                             </div>
                         </div>
-                    </div-->
+                    </div>
+                        <!--div class="col-md-12" style="text-align:right">
+                           <button class="btn btn-default" ng-click="registrarDeuda();" ng-disabled="btnCalcular" data-dismiss="modal">Realizar Pago Adelantado</button>
+                        </div-->
+                    </div>
                     </br>
                     </br>
                     <div class="col-md-12">

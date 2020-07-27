@@ -557,10 +557,10 @@
                                                               <a class="btn btn-default btn-circle" ng-click="modificarLic(lic)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
                                                               <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
                                                             </td>
-                                                            <td data-title="'NRO'" ng-click="SeleccionaPrioridad(lic)">{{$index+1}}</td>
-                                                            <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_tipo_licmdescrip}}</td>
-                                                            <td data-title="'TIPO DE CATEGORIA'" sortable="'INT_TIPO_CAT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_cat_agrupadamdescrip}}</td>
-                                                            <td data-title="'TIPO DE ACTIVIDAD'" sortable="'INT_TIPO_ACT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_act_desarrolladamdescrip}}</td>
+                                                            <td data-title="'NRO'">{{$index+1}}</td>
+                                                            <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'">{{lic.f01_tipo_licmdescrip}}</td>
+                                                            <td data-title="'TIPO DE CATEGORIA'" sortable="'INT_TIPO_CAT'">{{lic.f01_cat_agrupadamdescrip}}</td>
+                                                            <td data-title="'TIPO DE ACTIVIDAD'" sortable="'INT_TIPO_ACT'">{{lic.f01_act_desarrolladamdescrip}}</td>
                                                         </tr>
                                                     </table>
                                             <!-- fin de la tabla -->
@@ -1045,7 +1045,6 @@
                                                 <input id="txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}" name="txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-model="datos['txt_f01_upload{{dataPub.idP}}{{dataPub.resid}}']" type="text" placeholder="{{dataPub.resvalor}}" class="form-control input-lg" disabled required>
                                                 <span class="input-group-btn">
                                                     <a id="href_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-show="fileAdjuntosPublicidad['f01_upload'+dataPub.idP+dataPub.resid].url" href="{{fileAdjuntosPublicidad['f01_upload'+dataPub.idP+dataPub.resid].url}}" target="_blank">
-                                                    {{rmostrarviae}}
                                                     <button id="btn_f01_upload{{dataPub.idP}}{{dataPub.resid}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                     </a>
                                                     <button id="btn_f01_upload{{dataPub.idP}}{{dataPub.resid}}" ng-click="ejecutarFile('f01_upload' + dataPub.idP + dataPub.resid, dataPub.idnro)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>

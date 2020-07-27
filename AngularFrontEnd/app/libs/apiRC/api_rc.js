@@ -808,8 +808,8 @@ rcJuridico.prototype.crearJuridico = function (functionResp)
           "sistema":"IGOB247",
           "sistema_creado":"IGOB247",
           "usr_id": this.usr_id,
-          "activacionf": "NO",
-          "activaciond": "NO"
+          "activacionf": "SI",
+          "activaciond": "SI"
         };
 
         ejecutarAjax(urlComp, typeCall, dataParams, functionResp);

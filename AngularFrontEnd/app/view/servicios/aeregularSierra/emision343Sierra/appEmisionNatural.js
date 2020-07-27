@@ -303,6 +303,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         })
     }
 
+
     $scope.LicenciaXCategoriaM = function(idDesarrollada, superficie){
         if(superficie){
            $.blockUI();

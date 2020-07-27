@@ -4675,7 +4675,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
 
     $scope.ShowPa = function(valor) {
         //if (true) {} else{};
-        
         console.log('$scope.datos    ',$scope.datos);
         console.log('fechavvvvv    ',$scope.datos.f01_vencimientoLicencia.toUTCString());
         console.log('actuallll    ',$scope.fechafinalserver);

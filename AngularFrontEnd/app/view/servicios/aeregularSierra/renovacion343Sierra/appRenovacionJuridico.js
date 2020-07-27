@@ -1238,6 +1238,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         }
     }
 
+
     /*$scope.Licencia_Multiple = function(dato){
         $scope.licmul_grilla = [];
         var encabezado = [];

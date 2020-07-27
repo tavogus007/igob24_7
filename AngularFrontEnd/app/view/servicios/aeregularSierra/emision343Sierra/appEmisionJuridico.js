@@ -3651,6 +3651,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         $.unblockUI();
         //$scope.initMap();
     });
+
     
     $scope.ShowPa = function(valor) {
         $scope.pago_adelantado = valor;

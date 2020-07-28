@@ -1,4 +1,4 @@
-function productosController($scope, $timeout, CONFIG, $window, $rootScope, sessionService, ngTableParams, $filter, $route, sweet, $http, FileUploader, $sce, fileUpload, fileUploadcorr) {
+function productosController($scope, $timeout, CONFIG, $window, $rootScope, sessionService, ngTableParams, $filter, $q, $route, sweet, $http, FileUploader, $sce, fileUpload, fileUploadcorr) {
     $scope.tblDocumentos = {};
     $scope.frmProducto = null;
     $scope.datosProd = {};
@@ -24,7 +24,6 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
         $scope.mostrarTxt = false;
         $scope.swP = false;
     };
-
 
     $scope.cambiarFile = function(obj, valor) {
 
@@ -54,6 +53,7 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
         var descDoc = "";
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer();
+        $scope.nombreNuevocom = "";
         fechaserver.fechahora(function(resp) {
             var sfecha = JSON.parse(resp);
             var fechaServ = (sfecha.success.fecha).split(' ');
@@ -86,21 +86,14 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
                         $scope.imagenaux2m = true;
                     }
                     var imagenFile = archivo.name.split('.');;
-                    var tipoFile = imagenFile[1];
                     var nombreNuevo = descArchivo + "_" + fechaNueva + '.' + imagenFile[1];
                     var ext_doc = imagenFile[imagenFile.length - 1].toLowerCase();
                     if (ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
-                        $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') + '/' + nombreNuevo + "?app_name=todoangular";
-                        fileUploadcorr.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
-                        document.getElementById('txt_f01_upload' + idFiles[key]).value = nombreNuevo;
-                        /*var filecompress = compressImage(archivo).then(function(respuestaFile){
-                            var imagenFile = respuestaFile.name.split('.');
-                            var tipoFile = imagenFile[1];
-                            var nombreNuevo = descDoc + '_'+fechaNueva+'.'+tipoFile;
-                            $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
+                        var filecompress = compressImage(archivo).then(function(respuestaFile) {
+                            $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') + '/' + nombreNuevo + "?app_name=todoangular";
                             fileUploadcorr.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
-                            document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
-                        });*/
+                            document.getElementById('txt_f01_upload' + idFiles[key]).value = nombreNuevo;
+                        });
                         var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') + '/' + nombreNuevo + "?app_name=todoangular";
                         var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevo + '", "nombre":"' + descArchivo + '" }';
                         $rootScope.archivosProducto.push(myJSON);
@@ -154,7 +147,7 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
             });
 
         }
-
+        console.log(" $rootScope.archivosProducto:: ", $rootScope.archivosProducto);
         $scope.mostrarDocumentos($rootScope.archivosProducto);
         $.unblockUI();
     };

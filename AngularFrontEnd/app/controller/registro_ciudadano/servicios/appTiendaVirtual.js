@@ -332,11 +332,21 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     $scope.addPagosAE = function (tramite) {
         cargando();
         $scope.template =   "";
+        sessionService.set('IDAE', tramite.IdActividad);
+        $scope.obtTiendaVirtual();
         $scope.seleccionarPagoRender(tramite);
         sessionService.set('IDAE', tramite.IdActividad);
         $scope.sIdAeGrilla  =   tramite.IdActividad;
-        console.log(tramite);  
-        $.LoadingOverlay("hide");
+        try{
+            tvid = $rootScope.datosTiendaVirtual[0].idtv;
+            console.log(tramite);  
+            $.LoadingOverlay("hide");
+        } catch(error){
+            swal('', "Debe habilitar la tienda virtual, antes de cargar las Formas de Pago.", 'warning');
+            sessionService.destroy('IDTV');
+            $scope.template =   "";
+            $.LoadingOverlay("hide");
+        }
     }
     $scope.addProductoAE = function (tramite) {
         cargando();
@@ -369,7 +379,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         //$scope.obtPagina();
         $rootScope.$broadcast('inicializarPagina', $scope.datos);
         $scope.sIdAeGrilla  =   tramite.IdActividad;
-        $.LoadingOverlay("hide");
+      
         try{
             tvid = $rootScope.datosTiendaVirtual[0].idtv;
             $scope.template         =   $scope.templates[3];
@@ -383,9 +393,11 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     }
     
     $scope.seleccionarPagoRender = function (tramite) {
+        cargando();
         console.log(tramite);
         sessionService.set('IDTV', 1);
         $scope.template         =   $scope.templates[1];
+        $.LoadingOverlay("hide");
     };
 
 

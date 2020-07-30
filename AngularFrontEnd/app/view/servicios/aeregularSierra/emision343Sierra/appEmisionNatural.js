@@ -770,16 +770,15 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
             $scope.botones          =   "mostar";
         }
         var datosgen       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
+        console.log('datosgen    ',datosgen);
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
             $scope.mostrarMsgNuevaActividad = false;
         }
         if (JSON.stringify($scope.dataGenesisCidadano) == '{}') {
-            console.log('esta vacio');
         } else{
-            console.log('esta lleno');
             $scope.datos.f01_id_contribuyente = datosgen.contribuyente_id;
+            $scope.datos.f01_id_contribuyente_temp = datosgen.contribuyente_ant_id;
         };
-        console.log('$scope.datos.f01_id_contribuyente     ',$scope.datos.f01_id_contribuyente);
         $.unblockUI();
         //$scope.initMap();
     });
@@ -2863,6 +2862,10 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         $scope.divVIAE="mostrar";
         datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
         datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
+        if (typeof paramForm.f01_id_contribuyente != 'undefined' && paramForm.f01_id_contribuyente != null) {
+            datosNeXO['f01_id_contribuyente'] = paramForm.f01_id_contribuyente;
+            datosNeXO['f01_id_contribuyente_temp'] = paramForm.f01_id_contribuyente_temp;
+        }
         if ($scope.tipoPersona == 'NATURAL'){
             //PAGO ADELANTADO
             datosNeXO['f01_tipo_per']       =   'N';

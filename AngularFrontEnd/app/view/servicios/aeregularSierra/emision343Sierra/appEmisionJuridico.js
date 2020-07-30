@@ -164,11 +164,12 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                     var datos = {};
                     $scope.datos.f01_tipo_per = "J";
                     $scope.datos.f01_id_representante_legal = responseLegal.data.contribuyente_id;//idRepresentanteLegal
+                    $scope.datos.f01_id_representante_legal_temp = responseLegal.data.contribuyente_ant_id;
                 }
                 else {
                     swal('', "Representante Legal no registrado en Sierra", 'warning');
                 }
-                console.log('$scope.datos.f01_id_representante_legal    ',$scope.datos.f01_id_representante_legal);
+                console.log('id RL  ',$scope.datos.f01_id_representante_legal,'  id temp RL   ',$scope.datos.f01_id_representante_legal_temp);
             });
         }catch (error){
             console.log("error");
@@ -1525,11 +1526,14 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
             datosNeXO['f01_id_representante_legal'] = paramForm.f01_id_representante_legal;
         }*/
-        if (paramForm.f01_id_contribuyente != undefined || paramForm.f01_id_contribuyente != 'undefined' || paramForm.f01_id_contribuyente != null || paramForm.f01_id_contribuyente != '') {
+        if (typeof paramForm.f01_id_contribuyente != 'undefined' || paramForm.f01_id_contribuyente != null || paramForm.f01_id_contribuyente != '') {
             datosNeXO['f01_id_contribuyente'] = paramForm.f01_id_contribuyente;
-            datosNeXO['f01_id_representante_legal'] = paramForm.f01_id_representante_legal;
-            datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
+            datosNeXO['f01_id_contribuyente_temp'] = paramForm.f01_id_contribuyente_temp;
             datosNeXO['f01_id_representante_legal_antiguo'] = paramForm.f01_id_representante_legal_antiguo;
+            datosNeXO['f01_id_representante_legal_antiguo_temp'] = paramForm.f01_id_representante_legal_antiguo_temp;
+            datosNeXO['f01_id_representante_legal'] = paramForm.f01_id_representante_legal;
+            datosNeXO['f01_id_representante_legal_temp'] = paramForm.f01_id_representante_legal_temp;
+            datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
         }
         datosNeXO['CI_BIGDATA_RL']                  =   paramForm.id_representante;
         var sIdCiudadano = sessionService.get('IDCIUDADANO');
@@ -3635,18 +3639,16 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         }
         console.log('$scope.dataGenesisCidadano     ',$scope.dataGenesisCidadano);
         var datosgen = ((typeof($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {} : $scope.dataGenesisCidadano);
-        console.log('datosgen   ',datosgen.contribuyente_id);
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
             $scope.mostrarMsgNuevaActividad = false;
         }
         if (JSON.stringify(datosgen) == '{}') {
-            console.log('esta vacio');
         } else{
-            console.log('esta lleno');
             $scope.datos.f01_id_contribuyente = datosgen.contribuyente_id;
+            $scope.datos.f01_id_contribuyente_temp = datosgen.contribuyente_ant_id;
             $scope.datos.f01_id_representante_legal_antiguo = datosgen.contribuyente.representante.contribuyente_id;
+            $scope.datos.f01_id_representante_legal_antiguo_temp = datosgen.contribuyente.representante.contribuyente_ant_id;
         };
-        console.log('$scope.datos.f01_id_contribuyente     ',$scope.datos.f01_id_contribuyente);
         $scope.datosRepresentanteLegal();
         $.unblockUI();
         //$scope.initMap();

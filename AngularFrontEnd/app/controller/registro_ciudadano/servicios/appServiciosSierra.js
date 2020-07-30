@@ -509,6 +509,7 @@
                         var response = dataN;
                         $scope.txtMsgConexionGen = "";
                         $scope.dataGenesisCidadano = dataN.data;
+                        console.log('$scope.dataGenesisCidadano     ',$scope.dataGenesisCidadano);
                         var tipoper = '';
                         if (sessionService.get('TIPO_PERSONA') == 'NATURAL')
                             tipoper = 'N';

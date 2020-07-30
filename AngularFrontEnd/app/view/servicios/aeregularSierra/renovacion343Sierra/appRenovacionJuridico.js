@@ -292,11 +292,12 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                     var datos = {};
                     $scope.datos.f01_tipo_per = "J";
                     $scope.datos.f01_id_representante_legal = responseLegal.data.contribuyente_id;//idRepresentanteLegal
+                    $scope.datos.f01_id_representante_legal_temp = responseLegal.data.contribuyente_ant_id;
                 }
                 else {
                     swal('', "Representante Legal no registrado en Sierra", 'warning');
                 }
-                console.log('$scope.datos.f01_id_representante_legal    ',$scope.datos.f01_id_representante_legal);
+                console.log('id RL  ',$scope.datos.f01_id_representante_legal,'  id temp RL   ',$scope.datos.f01_id_representante_legal_temp);
             });
         }catch (error){
             console.log("error");
@@ -415,7 +416,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         $scope.datos.licenciam = [];
         var anioserv = $scope.anioserver.toString();
         console.log(aniotram, "anos : ",anioserv);
-        if(aniotram != anioserv){
+        //if(aniotram != anioserv){
                 //if(tramite.IdActividad){
                 $scope.idActividiadEconomicaActual  =   tramite.idactividad;
                 $scope.datos.f01_id_actividad_economica = tramite.idactividad;
@@ -445,6 +446,9 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                     $scope.datos.f01_nro_orden = datosAESdoNivel.numeroorden;
                     $scope.idContribuyenteAEActual  =    datosAESdoNivel.idContribuyente;
                     $scope.datos.f01_id_contribuyente = datosAESdoNivel.idContribuyente;
+                    $scope.datos.f01_id_contribuyente_temp = datosAESdoNivel.idContribuyente_ant;
+                    $scope.datos.f01_id_representante_legal_temp = datosAESdoNivel.idRepresentanteLegal_ant;
+                    $scope.datos.f01_id_actividad_economica_temp = datosAESdoNivel.idactividadeconomica_ant;
                     $scope.datosRepresentanteLegal();
                     tipoPersona = "J";
                     var hinicio = ((typeof(datosAESdoNivel.horarioatencion) == 'undefined' || datosAESdoNivel.horarioatencion == null) ? ""   : datosAESdoNivel.horarioatencion.toUpperCase());
@@ -536,6 +540,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                     $scope.datos.f01_tel_act1 = datosAESdoNivel.telefono;
                     $scope.datos.f01_casilla = datosAESdoNivel.direcciondetalladaae;
                     $scope.datos.f01_factor = datosAESdoNivel.tipotrayecto;
+                    $scope.datos.f01_vencimientoLicencia = datosAESdoNivel.fechavencimientolicencia;
                     //INT_TRAMITE_RENOVA
                     $scope.datos.INT_TRAMITE_RENOVA = tramite.idactividad;
                     if (codhojaruta.substring(0,6) == 'EMI-AE' || codhojaruta.substring(0,6) == 'REN-LF' || codhojaruta.substring(0,6) == 'AER-EL' || codhojaruta.substring(0,7) == 'MOD_MOD' || codhojaruta.substring(0,8) == 'LICEN-AE' || codhojaruta.substring(0,5) == 'EM-LF' || codhojaruta.substring(0,5) == 'RE-LF') {  
@@ -638,6 +643,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                         for (var i = 0; i < datosPublicidad.length; i++) {
                             var lstpublicidad = new Object();
                             lstpublicidad.idPublicidad = datosPublicidad[i].idpublicidad;
+                            lstpublicidad.idPublicidad_temp = datosPublicidad[i].idpublicidad_ant;
                             lstpublicidad.INT_NRO_CARA = datosPublicidad[i].cara;
                             lstpublicidad.INT_SUP = datosPublicidad[i].superficie;
                             lstpublicidad.idcarac = datosPublicidad[i].idtipoletrero;
@@ -661,9 +667,9 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                     $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
                 }
             });
-        }else{
+        /*}else{
             swal('', "Actividad Economica Vigente!!!", 'warning');
-        }
+        }*/
     };
 
     $scope.getEstablecimiento = function(datoEstab){
@@ -2382,12 +2388,16 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         $scope.divVIAE="mostrar";
         /*RENOVACION DE LICENCIAS*/
          //if(paramForm.rdTipoTramite == 'RENOVACION'){
-            datosNeXO['f01_id_actividad_economica']   =   paramForm.f01_id_actividad_economica;
-            datosNeXO['f01_nro_orden']   =   paramForm.f01_nro_orden;
-            datosNeXO['f01_id_contribuyente']   =   paramForm.f01_id_contribuyente;
-            datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
-            datosNeXO['f01_id_representante_legal'] = paramForm.f01_id_representante_legal;
-            datosNeXO['f01_id_representante_legal_antiguo'] = paramForm.f01_id_representante_legal_antiguo;
+        datosNeXO['f01_id_actividad_economica']   =   paramForm.f01_id_actividad_economica;
+        datosNeXO['f01_id_actividad_economica_temp'] = paramForm.f01_id_actividad_economica_temp;
+        datosNeXO['f01_id_contribuyente']   =   paramForm.f01_id_contribuyente;
+        datosNeXO['f01_id_contribuyente_temp'] = paramForm.f01_id_contribuyente_temp;
+        datosNeXO['f01_id_representante_legal'] = paramForm.f01_id_representante_legal;
+        datosNeXO['f01_id_representante_legal_temp'] = paramForm.f01_id_representante_legal_temp;
+        datosNeXO['f01_id_representante_legal_antiguo'] = paramForm.f01_id_representante_legal_antiguo;
+        datosNeXO['f01_id_representante_legal_antiguo_temp'] = paramForm.f01_id_representante_legal_antiguo_temp;
+        datosNeXO['f01_nro_orden']   =   paramForm.f01_nro_orden;
+        datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
         //}
         datosNeXO['f01_actividadesSecundarias'] = paramForm.f01_actividadesSecundarias;
         /*if(paramForm.f01_tipo_lic == 26 || paramForm.f01_tipo_lic == '26'){
@@ -2603,6 +2613,8 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         datosNeXO['g_tipo']                     =   "AE-LINEA";
         datosNeXO['g_fecha']                    =   fechactual;
         datosNeXO['g_origen']                   =   "IGOB247";
+        datosNeXO['f01_vencimientoLicencia'] = paramForm.f01_vencimientoLicencia;
+
         //DATOS DE LA ACTIVIDAD ECONOMICA - NO ESTAN REGISTRADAS DE MANERA LOCAL
         if($scope.dataGenesisCidadano && $scope.formDatosAE){
             if($scope.dataGenesisCidadano.length > 0){
@@ -4674,12 +4686,29 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
     };
 
     $scope.ShowPa = function(valor) {
-        $scope.datos.pago_adelantado = valor;
+        var fechaVen = $scope.datos.f01_vencimientoLicencia.split('/');
+        var resFechaVen = fechaVen[2] + "-" + fechaVen[1] + "-" + fechaVen[0];
+        var fechaAct = $scope.fechafinalserver.split('/');
+        var resFechaAct = fechaAct[2] + "-" + fechaAct[1] + "-" + fechaAct[0];
+        var fecha1 = moment(resFechaVen);
+        var fecha2 = moment(resFechaAct);
+        var diasAnticipacion = fecha1.diff(fecha2, 'days');
+        console.log(diasAnticipacion, ' dias de diferencia');
         if (valor == 'SI') {
-            $scope.IsVisible = true;
+            if (diasAnticipacion >= 30) {
+                $scope.datos.pago_adelantado = valor;
+                $scope.IsVisible = true;
+            } else{
+                swal('', 'Estimado ciudadano esta opción debe solicitarla con 30 días de anticipación a la fecha de vencimiento de su Licencia de Funcionamiento.\n Su licencia de Funcionamiento vence el '+ $scope.datos.f01_vencimientoLicencia, 'warning');
+                $scope.IsVisible = false;
+                $scope.datos.pago_adelantado = 'NO';
+                $scope.datos.nro_ges = '';
+                $scope.pago_adelantado = 'NO';
+            };
         } else{
+            $scope.datos.pago_adelantado = valor;
             $scope.IsVisible = false;
-        };
+        };        
     }
 
     $scope.calcularDeudas = function(nroges){
@@ -4857,18 +4886,16 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         }
         console.log('$scope.dataGenesisCidadano     ',$scope.dataGenesisCidadano);
         var datosgen = ((typeof($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {} : $scope.dataGenesisCidadano);
-        console.log('datosgen   ',datosgen.contribuyente_id);
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
             $scope.mostrarMsgNuevaActividad = false;
         }
         if (JSON.stringify(datosgen) == '{}') {
-            console.log('esta vacio');
         } else{
-            console.log('esta lleno');
             $scope.datos.f01_id_contribuyente = datosgen.contribuyente_id;
+            $scope.datos.f01_id_contribuyente_temp = datosgen.contribuyente_ant_id;
             $scope.datos.f01_id_representante_legal_antiguo = datosgen.contribuyente.representante.contribuyente_id;
+            $scope.datos.f01_id_representante_legal_antiguo_temp = datosgen.contribuyente.representante.contribuyente_ant_id;
         };
-        console.log('$scope.datos.f01_id_contribuyente     ',$scope.datos.f01_id_contribuyente);
         $scope.datosRepresentanteLegal();
         $.unblockUI();
         //$scope.initMap();

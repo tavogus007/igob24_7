@@ -763,7 +763,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       else{
         $scope.swDes = false;
       }
-      datosTiendaVirtual.forma_entrega = $scope.formaEntrega;
       //actualiza json contactos
       
        $rootScope.contactosArray = new Array();

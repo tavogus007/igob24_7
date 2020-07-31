@@ -884,37 +884,93 @@
                 }
                 else
                 {
-                  //alert();
-                  var url_zonas_tributarias = zonas_tributarias_udit.getSource().getGetFeatureInfoUrl(
+                    //alert();
+                    var url_zonas_tributarias = zonas_tributarias_udit.getSource().getGetFeatureInfoUrl(
                               evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
                                 'INFO_FORMAT': 'application/json',
                                 'propertyName': 'grupovalor'
                               }
                             );
 
-                  var url_zonas = zonas.getSource().getGetFeatureInfoUrl(
+                    var url_zonas = zonas_udit.getSource().getGetFeatureInfoUrl(
                               evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
                                 'INFO_FORMAT': 'application/json',
-                                'propertyName': 'zonaref,macrodistrito,subalcaldia,codigozona,macro,distrito'
+                                'propertyName': 'zonaref,macrodistr,subalcaldi,codigozona,macro,distrito'
                               }
                             );
-                   var url_vias = vias.getSource().getGetFeatureInfoUrl(
+
+
+
+                    var url_zonas_seguras = zonas_seguras_udit.getSource().getGetFeatureInfoUrl(
+                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
+                                'INFO_FORMAT': 'application/json',
+                                'propertyName': 'id'
+                              }
+                            );
+
+                    var url_vias = vias_udit.getSource().getGetFeatureInfoUrl(
                               evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
                                 'INFO_FORMAT': 'application/json',
                                 'propertyName': 'nombrevia,tipovia'
                               }
                             );
 
-                  reqwest({
-                    url: url_zonas_tributarias,
-                    type: 'json',
-                  }).then(function(data)
-                  {
-                    var feature = data.features[0];
-                    var cod = feature.properties;
-                    var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                    console.log("codigo zona tributaria patty: ",codigo_zona_tributaria);
-                  });
+                    reqwest({
+                        url: url_zonas_tributarias,
+                        type: 'json',
+                    }).then(function(data)
+                    {
+                        var feature = data.features[0];
+                        var cod = feature.properties;
+                        var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
+                        console.log("Patty zona tributaria: ",codigo_zona_tributaria);
+                    });
+
+                    reqwest({
+                        url: url_zonas,
+                        type: 'json',
+                    }).then(function(data)
+                    {
+                        var feature = data.features[0];
+                        var cod = feature.properties;
+                        console.log("Patty datos zonas: ",cod);
+                    });
+
+                    reqwest({
+                        url: url_zonas_seguras,
+                        type: 'json',
+                    }).then(function(data)
+                    {
+                        var feature = data.features[0];  
+                        if(feature == undefined)
+                        {
+                            console.log("Patty...No es Zona Segura...");
+                        }
+                        else
+                        {
+                            var cod = feature.properties;
+                            console.log("Patty datos zona seguras: ",cod);   
+                        }
+                        
+                    });
+
+                    reqwest({
+                        url: url_vias,
+                        type: 'json',
+                    }).then(function(data)
+                    {
+                        var feature = data.features[0];  
+                        if(feature == undefined)
+                        {
+                            console.log("Patty No hay vias...");
+                        }
+                        else
+                        {
+                            var cod = feature.properties;
+                            console.log("Patty datos de vias: ",cod);   
+                        }
+                        
+                    });
                  
                 }
                 ///////////////////////////////////////////////////////////////////////////////////////////////////

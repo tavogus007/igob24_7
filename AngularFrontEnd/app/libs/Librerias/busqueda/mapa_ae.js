@@ -87,7 +87,7 @@ var osm = new ol.layer.Tile({
 var vias = new ol.layer.Tile({
   title: 'Vias',
   //opacity: 0.3,
-  visible: false,
+  visible: true,
   source: new ol.source.TileWMS({
     url: 'http://sitservicios.lapaz.bo/geoserver/wms',
     params: { 'LAYERS': 'catastro:vias2', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
@@ -115,14 +115,53 @@ var zonas_tributarias = new ol.layer.Tile({
           })
 });
 
+var vias_udit = new ol.layer.Tile({
+  title: 'Vias',
+  //opacity: 0.3,
+  visible: false,
+  source: new ol.source.TileWMS({
+    url: ' https://servgeo.lapaz.bo/geoserver/wms',
+    params: { 'LAYERS': 'DEGEM:vias_sit', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+    serverType: 'geoserver',
+    //crossOrigin: '*'
+    crossOriginKeyword: 'anonymous'
+  })
+});
+
 var zonas_tributarias_udit = new ol.layer.Tile({
             title: 'Zonas Tributarias',
             opacity: 0.3,
             visible: false,
             source: new ol.source.TileWMS({
-            //url: 'https://servmonitoreo.lapaz.bo/geoserver/wms',
-            url: 'http://192.168.6.46:8080/geoserver/wms',
+            url: ' https://servgeo.lapaz.bo/geoserver/wms',
+            //url: 'http://192.168.6.46:8080/geoserver/wms',
             params: { 'LAYERS': 'DEGEM:zonas_de_valor_3857', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+            serverType: 'geoserver',
+            crossOriginKeyword: 'anonymous'
+          })
+});
+
+var zonas_udit = new ol.layer.Tile({
+            title: 'Zonas',
+            opacity: 0.3,
+            visible: false,
+            source: new ol.source.TileWMS({
+            url: ' https://servgeo.lapaz.bo/geoserver/wms',
+            //url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+            params: { 'LAYERS': 'DEGEM:zonas_gamlp', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+            serverType: 'geoserver',
+            crossOriginKeyword: 'anonymous'
+          })
+});
+
+var zonas_seguras_udit = new ol.layer.Tile({
+            title: 'Zonas Seguras',
+            //opacity: 0.3,
+            visible: false,
+            source: new ol.source.TileWMS({
+            url: ' https://servgeo.lapaz.bo/geoserver/wms',
+            //url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+            params: { 'LAYERS': 'DEGEM:zonas_seguras', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
             serverType: 'geoserver',
             crossOriginKeyword: 'anonymous'
           })

@@ -54,8 +54,10 @@ function dataTiendaVirtual(){
   this.logotipo,
   this.encabezado,
   this.forma_entrega,
-  this.horarios
+  this.horarios,
+  this.dominio
 };
+
 dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
 {
   urlCompProducto = "/addtiendavirtual";
@@ -77,10 +79,12 @@ dataTiendaVirtual.prototype.crearTiendaVirtual = function (functionResp)
     "stv_logotipo":this.logotipo,
     "stv_encabezado":this.encabezado,
     "stv_forma_entrega":this.forma_entrega,
-    "stv_horarios":this.horarios  
+    "stv_horarios":this.horarios,
+    "stv_dominio":this.dominio  
   };
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
+
 dataTiendaVirtual.prototype.actualizarTiendaVirtual = function (functionResp)
 {
   urlCompProducto = "/updatetiendavirtual";
@@ -102,7 +106,8 @@ dataTiendaVirtual.prototype.actualizarTiendaVirtual = function (functionResp)
     "stv_logotipo":this.logotipo,
     "stv_encabezado":this.encabezado,
     "stv_forma_entrega":this.forma_entrega,
-    "stv_horarios":this.horarios                    
+    "stv_horarios":this.horarios,
+    "stv_dominio":this.dominio                    
   };
   ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };
@@ -122,6 +127,15 @@ dataTiendaVirtual.prototype.obtCategorias = function (functionResp)
     urlCompProducto = "/listarCategoriasProductos";
     typeCall = "post";
     dataParams = {
+    };
+    ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
+};
+dataTiendaVirtual.prototype.verificarDominio = function (functionResp)
+{
+    urlCompProducto = "/verificaDominio";
+    typeCall = "post";
+    dataParams = {
+      "dominio":this.dominio 
     };
     ejecutarAjaxProducto(urlCompProducto, typeCall, dataParams, functionResp);
 };

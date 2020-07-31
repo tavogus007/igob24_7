@@ -45,6 +45,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   });
 
   $scope.recuperarSerializarInfo = function(data){
+    console.log('dataaaaaaa',data);
     cargando();
    
     $scope[name] = 'Running';
@@ -60,6 +61,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       tinyMCE.get('f01_descripcionTV').setContent('');
       $scope.datos.f01_forma_entrega = "";
       tinyMCE.get('f01_forma_entrega').setContent($scope.datos.f01_forma_entrega);
+      $scope.datos.f01_dominio = "";
+      document.getElementById('f01_dominio').readOnly = false;
       $scope.datos.f01_categoria = "";
       $scope.datos.f01_correoTV = "";
       $scope.datos.f01_pagwebAE = "";
@@ -123,7 +126,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_categoria = data[0].tv_categoria_idc;
       $scope.datos.f01_correoTV = data[0].tv_correoc;
       $scope.datos.f01_pagwebAE =   data[0].tv_pagina_webc;
-    
+      $scope.datos.f01_dominio = data[0].pdominio;
+      //document.getElementById('f01_dominio').value = data[0].pdominio;
+      document.getElementById('f01_dominio').readOnly = true;
+      
       //contactos
       var contactos = data[0].tv_contactosc;
         //for(i=0;i<contactos.length;i++){
@@ -445,7 +451,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   
 
   $scope.registrarDatosAE = function(data){
-
+    
     var datosTiendaVirtual = new dataTiendaVirtual();
     datosTiendaVirtual.ae_id = sessionService.get("IDAE");
     datosTiendaVirtual.categoria = data.f01_categoria;
@@ -456,7 +462,18 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }else{
       $scope.principal = false;
     }
-    datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
+    
+    
+    if(data.f01_dominio == undefined || data.f01_dominio == 'undefined' || data.f01_dominio == '' || data.f01_dominio == null || data.f01_dominio =='null'){
+      $scope.sinDominio = true;
+    }else{
+      $scope.sinDominio = false;
+      var dom = data.f01_dominio;
+      dom = dom.toLowerCase();
+      datosTiendaVirtual.dominio = dom;
+    }
+
+    datosTiendaVirtual.pagina_web = data.f01_pagwebAE;    
 
     $scope.descripTienda = tinyMCE.get('f01_descripcionTV').getContent();
     var resultado = $scope.descripTienda.replace(/'/g, ''); 
@@ -705,10 +722,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         datosTiendaVirtual.usr = "juridico";
     }
     //console.log('datosTiendaVirtual',datosTiendaVirtual);
-    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '' && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
-       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '' && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
-       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '' && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)) {
-    datosTiendaVirtual.crearTiendaVirtual(function(response){
+    if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
+       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
+       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)) {
+      datosTiendaVirtual.crearTiendaVirtual(function(response){
       console.log(response);
       results = JSON.parse(response);
       results = results.success;
@@ -732,6 +749,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   }
     
   $scope.actualizarDatosAE = function(data){
+    console.log('ataaaaa mod data',data.f01_dominio);
       $scope.obtTiendaVirtualM();
       document.getElementById("f01_todos").checked = false;
       document.getElementById("f01_habiles").checked = false;
@@ -748,11 +766,23 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.principal = false;
       }
       datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
-
+     
+      if(data.f01_dominio == undefined || data.f01_dominio == 'undefined' || data.f01_dominio == '' || data.f01_dominio == null || data.f01_dominio =='null'){
+        $scope.sinDominio = true;
+      }else{
+        $scope.sinDominio = false;
+        var dom = data.f01_dominio;
+        dom = dom.toLowerCase();
+        datosTiendaVirtual.dominio = dom;
+       
+      }
       
       $scope.descripTienda = tinyMCE.get('f01_descripcionTV').getContent();
       var resultado = $scope.descripTienda.replace(/'/g, ''); 
       datosTiendaVirtual.descripcion = resultado;  
+
+
+
       $scope.formaEntrega = tinyMCE.get('f01_forma_entrega').getContent();
       var resultadoFe = $scope.formaEntrega.replace(/'/g, ''); 
       datosTiendaVirtual.forma_entrega = resultadoFe; 
@@ -992,9 +1022,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
 
        //console.log('datosTiendaVirtual',datosTiendaVirtual);
-       if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '' && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
-       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '' && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
-       ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '' && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)) {
+       if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
+          ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
+          ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)) {
         datosTiendaVirtual.actualizarTiendaVirtual(function(response){
         console.log(response);
         results = JSON.parse(response);
@@ -1016,9 +1046,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     
   $scope.limpiar = function(){
     console.log('limpiando Campos');
-      document.getElementById("f01_todos").checked = false;
-      document.getElementById("f01_habiles").checked = false;
-      document.getElementById("f01_habiles").checked = false;
       $scope.datos.f01_celular1_whatsapp = false;
       $scope.datos.f01_celular2_whatsapp = false;
       $scope.datos.f01_celular3_whatsapp = false;
@@ -1030,6 +1057,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_categoria = "";//falta
       $scope.datos.f01_correoTV = "";
       $scope.datos.f01_pagwebAE = "";
+      $scope.datos.f01_dominio= '';
       $scope.datos.f01_contacto1_nro = "";
       $scope.datos.f01_contacto1 = "";
       $scope.datos.f01_contacto2_nro = "";
@@ -1097,9 +1125,11 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_hora_fin_domingo = '';
       document.getElementById("f01_todos").checked = false;
       document.getElementById("f01_habiles").checked = false;
-      document.getElementById("f01_habiles").checked = false;
+      document.getElementById("f01_ninguna").checked = false;
       $("#mensaje1").hide();
       $("#mensaje2").hide();
+      $("#mensaje3").hide();
+      $("#mensaje4").hide();
       $("#mensajeT1").hide();
       $("#mensajeT2").hide();
       $("#mensajeT3").hide();
@@ -1917,6 +1947,40 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
 
   }
+  $scope.validaDominio = function(datos){
+    console.log('datos',datos);
+    if(datos == undefined || datos == 'undefined' || datos == null || datos == 'null'){
+    }else{
+      var lonDom = datos.length;
+      if(lonDom >=4){
+        var datosVerificacion = new dataTiendaVirtual();
+          datosVerificacion.dominio = datos;
+          datosVerificacion.verificarDominio(function(response){
+          console.log('oooooo',response);
+          results = JSON.parse(response);
+          console.log('result',results.success[0].tv_verificar_dominio);
+   
+          if(results.success[0].tv_verificar_dominio == false){
+            $("#mensaje4").hide();
+            $("#mensaje3").show(); 
+            $scope.sinDominio = false;
+          }else{
+            $("#mensaje3").hide();
+            $("#mensaje4").show(); 
+            $scope.sinDominio = true;
+          }
+          
+
+
+        });
+      }else{
+          $("#mensaje4").hide();
+          $("#mensaje3").hide(); 
+        
+      }
+    }
+  }
+  
   $scope.verificarDatosRegistro =  function(){
     if($scope.encabExiste == '' && $scope.logoExiste === ''){
       $scope.swDatos = true;

@@ -1141,14 +1141,11 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
             $scope.mostrarMsgNuevaActividad = false;
         }
-        console.log('datosgen natural    ',datosgen);
         if (JSON.stringify($scope.dataGenesisCidadano) == '{}') {
-            console.log('esta vacio');
         } else{
-            console.log('esta lleno');
             $scope.datos.f01_id_contribuyente = datosgen.contribuyente_id;
+            $scope.datos.f01_id_contribuyente_temp = datosgen.contribuyente_ant_id;
         };
-        console.log('$scope.datos.f01_id_contribuyente     ',$scope.datos.f01_id_contribuyente);
     });
 
     var clsIniciarGrillaAE = $rootScope.$on('inicializarGrillaAE', function(event, data){
@@ -1710,7 +1707,9 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     console.log('datosAESdoNivel    ',datosAESdoNivel);
                     $scope.datos.f01_nro_orden = datosAESdoNivel.numeroorden;
                     $scope.idContribuyenteAEActual = datosAESdoNivel.idactividadeconomica;
+                    $scope.datos.f01_id_actividad_economica_temp = datosAESdoNivel.idactividadeconomica_ant;
                     $scope.datos.f01_id_contribuyente = datosAESdoNivel.idContribuyente;
+                    $scope.datos.f01_id_contribuyente_temp = datosAESdoNivel.idContribuyente_ant;
                     console.log('datosAESdoNivel.horarioatencion    ',datosAESdoNivel.horarioatencion);
                     var hinicio     =   ((typeof(datosAESdoNivel.horarioatencion) == 'undefined' || datosAESdoNivel.horarioatencion == null) ? ""   : datosAESdoNivel.horarioatencion.toUpperCase());
                     var hfinal      =   ((typeof(datosAESdoNivel.horarioatencion) == 'undefined' || datosAESdoNivel.horarioatencion == null) ? ""   : datosAESdoNivel.horarioatencion.toUpperCase());
@@ -1901,6 +1900,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         var lstpublicidad = new Object();
                         console.log('url   ',datosPublicidad[i].url_publicidad.url);
                         lstpublicidad.idPublicidad = datosPublicidad[i].idpublicidad;
+                        lstpublicidad.idPublicidad_temp = datosPublicidad[i].idpublicidad_ant;
                         lstpublicidad.INT_NRO_CARA = datosPublicidad[i].cara;
                         lstpublicidad.INT_SUP = datosPublicidad[i].superficie;
                         lstpublicidad.idcarac = datosPublicidad[i].idtipoletrero;
@@ -4375,12 +4375,14 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         $scope.divVIAE="mostrar";
         datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
         /*RENOVACION DE LICENCIAS*/
-        if(paramForm.rdTipoTramite == "RENOVACION" || paramForm.rdTipoTramite == 'RENOVACION'){
-            datosNeXO['f01_id_actividad_economica']   =   paramForm.f01_id_actividad_economica;
-            datosNeXO['f01_nro_orden']   =   paramForm.f01_nro_orden;
-            datosNeXO['f01_id_contribuyente']   =   paramForm.f01_id_contribuyente;
-            datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
-        }
+        //if(paramForm.rdTipoTramite == "RENOVACION" || paramForm.rdTipoTramite == 'RENOVACION'){
+        datosNeXO['f01_id_actividad_economica']   =   paramForm.f01_id_actividad_economica;
+        datosNeXO['f01_id_actividad_economica_temp'] = paramForm.f01_id_actividad_economica_temp;
+        datosNeXO['f01_id_contribuyente']   =   paramForm.f01_id_contribuyente;
+        datosNeXO['f01_id_contribuyente_temp'] = paramForm.f01_id_contribuyente_temp;
+        datosNeXO['f01_nro_orden']   =   paramForm.f01_nro_orden;
+        datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
+        //}
         datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
         if ($scope.tipoPersona == 'NATURAL'){
             datosNeXO['f01_tipo_per']       =   'N';
@@ -4554,7 +4556,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datosNeXO['f01_actividad_desarrollada']= paramForm.f01_categoria_descrip2;
             datosNeXO['declaracion_jurada']               =   $rootScope.decJuradaNatural;
             datosNeXO['montoDeuda'] = paramForm.montoDeuda;
-
+            datosNeXO['f01_vencimientoLicencia'] = paramForm.f01_vencimientoLicencia;
             var datoObjectdj = [];
             var decjuradaN = new Object();
             if ($rootScope.decJuradaNatural) {
@@ -4674,21 +4676,35 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     };
 
     $scope.ShowPa = function(valor) {
-        //if (true) {} else{};
-        console.log('$scope.datos    ',$scope.datos);
-        console.log('fechavvvvv    ',$scope.datos.f01_vencimientoLicencia.toUTCString());
-        console.log('actuallll    ',$scope.fechafinalserver);
-        var today = $filter('date')($scope.datos.f01_vencimientoLicencia,'yyyy-MM-dd');
-        var today2 = $filter('date')($scope.fechafinalservera,'yyyy-MM-dd');
-        console.log('mooooooooo     ' ,moment('04/23/2015'));
-        var f = new Date("2018/10/30").getTime();
-        console.log('fff    ',f);
-        $scope.datos.pago_adelantado = valor;
+        var fechaVen = $scope.datos.f01_vencimientoLicencia.split('/');
+        var resFechaVen = fechaVen[2] + "-" + fechaVen[1] + "-" + fechaVen[0];
+        var fechaAct = $scope.fechafinalserver.split('/');
+        var resFechaAct = fechaAct[2] + "-" + fechaAct[1] + "-" + fechaAct[0];
+        var fecha1 = moment(resFechaVen);
+        var fecha2 = moment(resFechaAct);
+        var diasAnticipacion = fecha1.diff(fecha2, 'days');
+        console.log(diasAnticipacion, ' dias de diferencia');
+
+        var e = new Date();
+        console.log('acccc    ',e);
+        e.setMonth(e.getMonth() + 23);
+        console.log("fecha: "+e.getDate()+"/"+(e.getMonth()+1) +"/"+e.getFullYear());
+
         if (valor == 'SI') {
-            $scope.IsVisible = true;
+            if (diasAnticipacion >= 30) {
+                $scope.datos.pago_adelantado = valor;
+                $scope.IsVisible = true;
+            } else{
+                swal('', 'Estimado ciudadano esta opción debe solicitarla con 30 días de anticipación a la fecha de vencimiento de su Licencia de Funcionamiento.\n Su licencia de Funcionamiento vence el '+ $scope.datos.f01_vencimientoLicencia, 'warning');
+                $scope.IsVisible = false;
+                $scope.datos.pago_adelantado = 'NO';
+                $scope.datos.nro_ges = '';
+                $scope.pago_adelantado = 'NO';
+            };
         } else{
+            $scope.datos.pago_adelantado = valor;
             $scope.IsVisible = false;
-        };
+        };        
     }
 
     $scope.calcularDeudas = function(nroges){
@@ -4703,6 +4719,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         } else{
             $scope.mensajeCiudadano = ' los proximos 5 días, ';
         };
+
         $scope.listDeudas = [];
         if ($scope.datos.f01_idCodigoZona == undefined || $scope.datos.f01_idCodigoZona == 'undefined' || $scope.datos.f01_idCodigoZona == null) {
             swal('', 'Seleccione nuevamente el croquis por favor  ', 'warning');
@@ -4759,7 +4776,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 var dataDeuda = '';
                 var dataActEco = '';
                 dataActEco = '{"tm_va":"'+$scope.datos.f01_factor+'","superficie":"'+$scope.datos.f01_sup+'","codigo_zona":"'+$scope.datos.f01_idCodigoZona+'","categorias_id":'+datoObject_cat+',"id_zona":"'+$scope.datos.f01_zona_act+'","viae":'+idPubS+'}';
-                dataDeuda = '{"actividad_economica":'+JSON.stringify(dataActEco)+',"yfecha_inicio_cobro":"2020-07-07","yanios":"'+nroges+'"}';
+                dataDeuda = '{"actividad_economica":'+JSON.stringify(dataActEco)+',"yfecha_inicio_cobro":"'+$scope.fechafinalserver+'","yanios":"'+nroges+'"}';
                 console.log('dataDeuda     ',dataDeuda);
                 var calcularD = new reglasnegocioSierra();
                 calcularD.identificador = 'VALLE_PRUEBA-SGEN-3330';

@@ -162,13 +162,9 @@
             <div class="row" >
                 <div class="col-md-12">
                     <div class="form-group" >
-                        <font color="#FF0000" size="4px" align="center"> * </font>
                         <label for="url" >Nombre de la Tienda Virtual:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" ng-disabled="desabilitado" placeholder="Escriba el nombre de la Tienda Virtual" required/>
-                            <span style="color:red" ng-show="signupForm.f01_nombreTV.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_nombreTV.$error.required">Nombre de la Tienda Virtual es requerido.</span>
-                            </span>
+                            <textarea ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" ng-disabled="desabilitado" placeholder="Escriba el nombre de la Tienda Virtual"></textarea>
                         </div>
                     </div>
                 </div>                  
@@ -176,7 +172,7 @@
                 <div class="col-md-12">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px" align="center"> * </font>
-                        <label for="url" >Descripción de la Tienda Virtual:</label>
+                        <label for="url" >Introducir una breve descripción sobre la actividad desarrollada de la Tienda Virtual.</label>
                         <div class="controls">
                             <textarea ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Escribir una breve descricpión acerca de la Tienda Virtual" required></textarea>
                         </div>
@@ -185,7 +181,7 @@
                 <div class="col-md-12">
                     <div class="form-group" >
                         <font color="#FF0000" size="4px" align="center"> * </font>
-                        <label for="url" >Forma de Entrega:</label>
+                        <label for="url" >Describir la formas de realizar la entrega del producto al cliente. Por Ej. Vía delivery.</label>
                         <div class="controls">
                             <textarea ng-model="datos.f01_forma_entrega" id="f01_forma_entrega" name="f01_forma_entrega" class="form-control" ng-disabled="desabilitado"rows="4" cols="150" placeholder="Describa la forma de entrega de los Productos" required></textarea>
                         </div>
@@ -193,8 +189,8 @@
                 </div>
                 <div class="col-md-12" align="left">
                     <div class="alert alert-danger fade in">
-                        <strong>IMPORTANTE: </strong><br>
-                        <br>1. SELECCIONE CUIDADOSAMENTE LA CATEGORÍA (RUBRO) A LA CUAL CORRESPONDE SU ACTIVIDAD ECONÓMICA.
+                        <strong>Importante: </strong>
+                        <br>1. Seleccione cuidadosamente la <strong>Categoría (Rubro)</strong>  a la cual corresponde  su <strong>Actividad Económica.</strong>
                         <br>2. En la casilla, <strong>Dominio de la página Web</strong> introduzca el nombre que desea que se muestre como parte del dominio de la Página Web que se generará. Por Ej. <strong>https://casevirtual.lapaz.bo/dominio.</strong>
                         <br>3. Si posee más de una Actividad Económica, cada tienda registrada, deberá tener su propia Página Web.
                         <br>4. El nombre de dominio, NO es modificable y se introduce por única vez al momento del registro.<br>
@@ -233,7 +229,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" >
-                        <label for="url" >Dominio de la Página Web</label>
+                        <label for="url" >Introducir el nombre que se mostrará en la dirección de la Página Web de la tienda virtual.</label>
                         <div class="controls">
                             <input ng-model="datos.f01_dominio" id="f01_dominio" name="f01_dominio" class="form-control" style="text-transform:lowercase;" placeholder="Introduzca el nombre q ue irá como parte del dominio de la Dirección. Por Ej. https://casevirtual.lapaz.bo/dominio/" ng-change="validaDominio(datos.f01_dominio);" ng-disabled="desabilitado" required/>
                             <span style="color:red" ng-show="signupForm.f01_dominio.$invalid">
@@ -246,7 +242,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" >
-                        <label for="url" >Página Web:</label>
+                        <label for="url" >Introducir la dirección de su propia Página Web:</label>
                         <div class="controls">
                             <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control" placeholder="Copie aquí el enlace de su Página Web. Por ej. https://www.ejemplo.com" ng-disabled="desabilitado"/>
                         </div>
@@ -256,7 +252,7 @@
             </div>
             <div class="row"> 
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>Adjuntar Imágenes de la Tienda Virtual</h4>
+                    <h4>Adjuntar Imágenes de la Tienda Virtual.</h4>
 
                     <input type="checkbox" id="toggle2">
                     <label class="label__modal2" for="toggle2"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
@@ -291,7 +287,7 @@
                 <div class="col-md-10">
                         <div class="form-group">
                             <font color="#FF0000" size="4px" align="center"> * </font>
-                            <label for="url" >Imagen para la parte superior de la Pagina Web - Encabezado (Introducir archivos .jpg ó .jpeg ó .png) :</label>
+                            <label for="url" >Seleccionar la imagen para la parte superior(Encabezado) de la Pagina Web, que será generada para la tienda virtual. (Archivos .jpg ó .jpeg ó .png).</label>
                             <div class="controls">
                                 <div class="form-group custom-upload">
                                     <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*"  style="display: none;">
@@ -315,7 +311,7 @@
                 <div class="col-md-10">
                     <div class="form-group">
                         <font color="#FF0000" size="4px" align="center"> * </font>
-                        <label for="url" >Logotipo de la Actividad Económica (Introducir archivos .jpg ó .jpeg ó .png) :</label>
+                        <label for="url" >Seleccionar la imagen para el Logotipo para la Página Web de la tienda virtual. (Archivos .jpg ó .jpeg ó .png).</label>
                         <div class="controls">
                             <div class="form-group custom-upload">
                                 <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*"  style="display: none;">
@@ -337,7 +333,7 @@
     
             <div class="row" >
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>Ingrese los horarios de atención</h4>
+                    <h4>Ingrese los horarios de atención de la tienda virtual.</h4>
 
                     <input type="checkbox" id="toggle3">
                     <label class="label__modal3" for="toggle3"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
@@ -347,14 +343,12 @@
                             <div class="header_post">
                                 <img src="/assets/img/compra_ayuda/sec3.jpg" alt="">
                             </div>
-                    
-                            <div class="body_post">
+                                                <div class="body_post">
                                 <div class="post_content">
-                    
                                     <h1>Horarios de atención</h1>
-                                    <p>1.- Si elige la opción DÍAS HÁBILES, registrará las horas introducidas para los días de Lunes a Viernes.<br>
-                                       2.- Si elige TODOS LOS DÍAS, registrará las horas introducidas para todos los días.<br>
-                                       3.- Si elige NINGUNA, debe realizar el registro manualmente para cada día.      
+                                    <p>1.- Si elige la opción <strong>Días hábiles</strong>, registrará las horas introducidas para los días de Lunes a Viernes.<br>
+                                       2.- Si elige <strong>Todos los días</strong>, registrará las horas introducidas para todos los días.<br>
+                                       3.- Si elige <strong>Ninguna</strong>, debe realizar el registro manualmente para cada día.      
                                     </p>
                                 </div>
                             </div>
@@ -371,10 +365,10 @@
             <div class="row" >
                 <div class="col-md-10" align="left">
                     <div class="alert alert-danger fade in">
-                        <strong>ESTIMADO CONTRIBUYENTE: </strong>Para introducir el horario de antención puede hacerlo de 3 formas:
-                        <br>1.  Si elige la opción DÍAS HÁBILES, registrará las horas introducidas para los días de Lunes a Viernes.
-                        <br>2.  Si elige TODOS LOS DÍAS, registrará las horas introducidas para todos los días.
-                        <br>3.  Si elige NINGUNA, debe realizar el registro manualmente para cada día.<br>
+                        <strong>Estimado contribuyente: </strong>Para introducir el horario de antención puede hacerlo de 3 formas:
+                        <br>1.  Si elige la opción <strong>Días hábiles</strong>, registrará las horas introducidas para los días de Lunes a Viernes.
+                        <br>2.  Si elige <strong>Todos los días</strong>, registrará las horas introducidas para todos los días.
+                        <br>3.  Si elige <strong>Ninguna</strong>, debe realizar el registro manualmente para cada día.<br>
                     </div>
                 </div>
                 <div class="col-md-2"></div>
@@ -407,11 +401,11 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <input type="radio"  ng-model="datos.f01_todos" id="f01_todos" name="horario" value="TODOS" ng-click="activaTodos('TODOS')">
-                    <label for="f01_todos">TODOS LOS DIAS</label><br>
+                    <label for="f01_todos">Todos los días</label><br>
                     <input type="radio"  ng-model="datos.f01_habiles" id="f01_habiles" name="horario" value="HABILES" ng-click="activaTodos('HABILES')">
-                    <label for="f01_habiles">DÍAS HÁBILES</label><br>
+                    <label for="f01_habiles">Días hábiles</label><br>
                     <input type="radio" ng-model="datos.f01_ninguna" id="f01_ninguna" name="horario" value="NINGUNA" ng-click="activaTodos('NINGUNA')">
-                    <label for="f01_ninguna">NINGUNA</label>
+                    <label for="f01_ninguna">Ninguna</label>
 
                 </div>
             </div>
@@ -420,7 +414,7 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-11">
                     <font color="#FF0000" size="4px" align="center"> * </font>
-                    <label for="url" >HORARIOS DE ATENCIÓN:</label>
+                    <label for="url" ><strong>Horarios de atención:</strong></label>
                 </div>
             </div><br>
             
@@ -670,7 +664,7 @@
             </div>
             <div class="row" >
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>Ingrese los números telefónicos de contacto</h4>
+                    <h4>Ingrese los números telefónicos de contacto de la tienda virtual.</h4>
 
                     <input type="checkbox" id="toggle4">
                     <label class="label__modal4" for="toggle4"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
@@ -684,7 +678,7 @@
                             <div class="body_post">
                                 <div class="post_content">
                     
-                                    <h1>números telefónicos de contacto</h1>
+                                    <h1>Números telefónicos de contacto</h1>
                                     <p>1.- Ingrese sus datos actualizados de contacto.
                                        2.- Considere colocar contactos referentes a su tienda o empresa.
                                        3.- Se recomienda colocar los contactos establecidos en el formulario.<br>      
@@ -705,8 +699,8 @@
              <div class="row" >
                 <div class="col-md-10" align="left">
                     <div class="alert alert-danger fade in">
-                         <strong>CONTACTOS: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Debe registrar por lo menos un (1) número de teléfono.
-                         <br><strong>IMPORTANTE: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Si cuenta con números de celular, que cuentan con Whastapp, no olvide marca la casilla.<br>
+                         <strong>Contactos: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Debe registrar por lo menos un (1) número de teléfono.
+                         <br><strong>Importante: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Si cuenta con números de celular, que cuentan con Whastapp, no olvide marcar la casilla cera al ícono.<br>
                     </div>
                 </div>
                 <div class="col-md-2"></div>
@@ -797,7 +791,7 @@
 
             <div class="row" >
                 <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>Ingrese sus redes sociales</h4>
+                    <h4>Introducir las cuentas de sus redes sociales, que tiene habilitadas para la tienda virtual</h4>
 
                     <input type="checkbox" id="toggle5">
                     <label class="label__modal5" for="toggle5"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
@@ -930,7 +924,7 @@
                 </div>
                 <div class="col-md-11">
                   <div class="form-group">
-                    <label id="lbl_f01_upload" class="col-md-2 control-label">Catálogo de productos (Introducir Archivos tipo .jpg, .png ó .pdf)</label>
+                    <label id="lbl_f01_upload" class="col-md-2 control-label">Seleccione el archivo que contenga el Catálogo de productos, de la tienda virtual. (sArchivos tipo .jpg, .png ó .pdf)</label>
                     <div class="controls">
                         <div class="form-group custom-upload">
                             <input type="file" id="f01_upload1" name="f01_upload1" accept="image/*"  style="display: none;">

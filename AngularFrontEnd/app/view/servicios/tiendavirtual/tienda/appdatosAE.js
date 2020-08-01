@@ -56,6 +56,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       document.getElementById("f01_habiles").checked = false;
       document.getElementById("f01_habiles").checked = false;
       $scope.datos.f01_nombreTV = "";
+      tinyMCE.get('f01_nombreTV').setContent($scope.datos.f01_nombreTV);
       $scope.datos.f01_descripcionTV = '';
       console.log('$scope.datos.f01_descripcionTV',$scope.datos.f01_descripcionTV);
       tinyMCE.get('f01_descripcionTV').setContent('');
@@ -122,7 +123,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       document.getElementById("f01_todos").checked = false;
       document.getElementById("f01_habiles").checked = false;
       document.getElementById("f01_habiles").checked = false;
-      $scope.datos.f01_nombreTV = data[0].tv_nombrec;
+      //$scope.datos.f01_nombreTV = data[0].tv_nombrec;
       $scope.datos.f01_categoria = data[0].tv_categoria_idc;
       $scope.datos.f01_correoTV = data[0].tv_correoc;
       $scope.datos.f01_pagwebAE =   data[0].tv_pagina_webc;
@@ -376,6 +377,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }
       //editor
        //setTimeout(function(){
+        $scope.recNom = data[0].tv_nombrec;
+        $scope.descripNombre = tinyMCE.get('f01_nombreTV').setContent($scope.recNom);  
+        $scope.datos.f01_nombreTV = $scope.descripNombre; 
+
         $scope.recDesc = data[0].tv_descripcionc;
         $scope.descripTienda = tinyMCE.get('f01_descripcionTV').setContent($scope.recDesc);  
         $scope.datos.f01_descripcionTV = $scope.descripTienda; 
@@ -455,9 +460,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     var datosTiendaVirtual = new dataTiendaVirtual();
     datosTiendaVirtual.ae_id = sessionService.get("IDAE");
     datosTiendaVirtual.categoria = data.f01_categoria;
-    datosTiendaVirtual.nombre = data.f01_nombreTV;
+    //datosTiendaVirtual.nombre = data.f01_nombreTV;
     datosTiendaVirtual.correo = data.f01_correoTV;
-    if(data.f01_categoria == '' || data.f01_nombreTV == '' || data.f01_correoTV == ''){
+    if(data.f01_categoria == '' || data.f01_correoTV == ''){
       $scope.principal = true;
     }else{
       $scope.principal = false;
@@ -474,7 +479,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
 
     datosTiendaVirtual.pagina_web = data.f01_pagwebAE;    
-
+    $scope.descripNombreT = tinyMCE.get('f01_nombreTV').getContent();
+    var resultadoN = $scope.descripNombreT.replace(/'/g, ''); 
+    datosTiendaVirtual.nombre = resultadoN; 
     $scope.descripTienda = tinyMCE.get('f01_descripcionTV').getContent();
     var resultado = $scope.descripTienda.replace(/'/g, ''); 
     datosTiendaVirtual.descripcion = resultado;  
@@ -758,9 +765,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       datosTiendaVirtual.idtv = sessionService.get("IDTV");
       datosTiendaVirtual.ae_id = sessionService.get("IDAE");
       datosTiendaVirtual.categoria = data.f01_categoria;
-      datosTiendaVirtual.nombre = data.f01_nombreTV;
+      //datosTiendaVirtual.nombre = data.f01_nombreTV;
       datosTiendaVirtual.correo = data.f01_correoTV;
-      if(data.f01_categoria == '' || data.f01_nombreTV == '' || data.f01_correoTV == ''){
+      if(data.f01_categoria == '' || data.f01_correoTV == ''){
         $scope.principal = true;
       }else{
         $scope.principal = false;
@@ -777,11 +784,13 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
        
       }
       
+      $scope.descripNombreT = tinyMCE.get('f01_nombreTV').getContent();
+      var resultadoN = $scope.descripNombreT.replace(/'/g, ''); 
+      datosTiendaVirtual.nombre = resultadoN; 
+
       $scope.descripTienda = tinyMCE.get('f01_descripcionTV').getContent();
       var resultado = $scope.descripTienda.replace(/'/g, ''); 
       datosTiendaVirtual.descripcion = resultado;  
-
-
 
       $scope.formaEntrega = tinyMCE.get('f01_forma_entrega').getContent();
       var resultadoFe = $scope.formaEntrega.replace(/'/g, ''); 

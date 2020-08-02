@@ -24,6 +24,26 @@
                 border-radius: 10px;
             }
         </style>
+        <script>
+            function soloLetras(e){
+            key = e.keyCode || e.which;
+            tecla = String.fromCharCode(key).toLowerCase();
+            letras = " áéíóúabcdefghijklmnñopqrstuvwxyz-_1234567890";
+            especiales = "8-37-39-46";
+
+            tecla_especial = false
+            for(var i in especiales){
+                    if(key == especiales[i]){
+                        tecla_especial = true;
+                        break;
+                    }
+                }
+
+                if(letras.indexOf(tecla)==-1 && !tecla_especial){
+                    return false;
+                }
+            }
+        </script>
         <script type="text/javascript">
             $('.custom-upload input[type=file]').change(function(){
                 $(this).next().find('input').val($(this).val());
@@ -191,9 +211,9 @@
                     <div class="alert alert-danger fade in">
                         <strong>Importante: </strong>
                         <br>1. Seleccione cuidadosamente la <strong>Categoría (Rubro)</strong>  a la cual corresponde  su <strong>Actividad Económica.</strong>
-                        <br>2. En la casilla, <strong>Dominio de la página Web</strong> introduzca el nombre que desea que se muestre como parte del dominio de la Página Web que se generará. Por Ej. <strong>https://casevirtual.lapaz.bo/dominio.</strong>
+                        <br>2. En la casilla, <strong>Nombre de ruta de acceso</strong> introduzca el nombre para su página Web, la cual se mostrará en la dirección URL que será generada, para la tienda virtual. Por Ej. <strong>https://casevirtual.lapaz.bo/rutadeacceso.</strong>
                         <br>3. Si posee más de una Actividad Económica, cada tienda registrada, deberá tener su propia Página Web.
-                        <br>4. El nombre de dominio, NO es modificable y se introduce por única vez al momento del registro.<br>
+                        <br>4. El <strong>nombre de ruta de acceso</strong>, NO es modificable y se introduce por única vez al momento del registro.<br>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -229,11 +249,11 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" >
-                        <label for="url" >Introducir el nombre que se mostrará en la dirección de la Página Web de la tienda virtual.</label>
+                        <label for="url" >Nombre para ruta de acceso</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_dominio" id="f01_dominio" name="f01_dominio" class="form-control" style="text-transform:lowercase;" placeholder="Introduzca el nombre q ue irá como parte del dominio de la Dirección. Por Ej. https://casevirtual.lapaz.bo/dominio/" ng-change="validaDominio(datos.f01_dominio);" ng-disabled="desabilitado" required/>
+                            <input ng-model="datos.f01_dominio" id="f01_dominio" name="f01_dominio" class="form-control"  onkeypress="return soloLetras(event)" ng-change="validaDominio(datos.f01_dominio);"  placeholder=" Nombre para dirección URL de la página Web. Por Ej. https://casevirtual.lapaz.bo/rutadeacceso" ng-disabled="desabilitado" required/>
                             <span style="color:red" ng-show="signupForm.f01_dominio.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_dominio.$error.required">Nombre de Dominio es requerido.</span>
+                                <span align = "right" ng-show="signupForm.f01_dominio.$error.required">Nombre de la ruta de acceso es requerido.</span>
                             </span>
                             <br><span id ="mensaje3" style = "color:green;font-weight:bold; font-size:12px">El nombre es válido.</span>
                             <span id ="mensaje4" style = "color:red;font-weight:bold; font-size:12px">El nombre introducido ya existe, debe elegir otro nombre.</span>
@@ -700,7 +720,7 @@
                 <div class="col-md-10" align="left">
                     <div class="alert alert-danger fade in">
                          <strong>Contactos: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Debe registrar por lo menos un (1) número de teléfono.
-                         <br><strong>Importante: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Si cuenta con números de celular, que cuentan con Whastapp, no olvide marcar la casilla cera al ícono.<br>
+                         <br><strong>Importante: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Si tiene números de celular, que cuentan con Whastapp, no olvide marcar la casilla cera al ícono.<br>
                     </div>
                 </div>
                 <div class="col-md-2"></div>

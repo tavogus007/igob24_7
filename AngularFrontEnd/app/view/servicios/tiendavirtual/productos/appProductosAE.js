@@ -49,7 +49,7 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
         }
     };
 
-    $scope.almacenarRequisitos = function(aArchivos, idFiles)
+    $scope.almacenarRequisitos = function(aArchivos, idFiles) {
         var descDoc = "";
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer();

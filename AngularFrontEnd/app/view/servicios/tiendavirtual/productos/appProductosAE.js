@@ -49,7 +49,7 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
         }
     };
 
-    $scope.almacenarRequisitos = function(aArchivos, idFiles) {
+    $scope.almacenarRequisitos = function(aArchivos, idFiles)
         var descDoc = "";
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer();
@@ -86,6 +86,7 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
                         $scope.imagenaux2m = true;
                     }
                     var imagenFile = archivo.name.split('.');;
+                    console.log("archivo: ", archivo);
                     var nombreNuevo = descArchivo + "_" + fechaNueva + '.' + imagenFile[1];
                     var ext_doc = imagenFile[imagenFile.length - 1].toLowerCase();
                     if (ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {

@@ -68,6 +68,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         $scope.descrip_pagina = recDesc;
         $scope.correo_tienda = $rootScope.datosTiendaVirtual[0].tv_correoc;
         $scope.pag_web_privada = $rootScope.datosTiendaVirtual[0].tv_pagina_webc;
+        document.getElementById("nombre_pagina").innerHTML = $scope.nombre_tienda;
         document.getElementById("descrip_pagina").innerHTML = recDesc;
       } catch(error){
         console.log(error);
@@ -320,9 +321,11 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "slogo": $rootScope.urlLogotipo64,
                   "sencabezado": $rootScope.urlEncabezado64,
                   "smenu": $rootScope.urlcatalogo,
-                  "sentrega" : $rootScope.datosTiendaVirtual[0].pforma_entrega
+                  "sentrega" : $rootScope.datosTiendaVirtual[0].pforma_entrega,
+                  "sdominio" : $rootScope.datosTiendaVirtual[0].pdominio
               },
               success:function(response){
+                try {
                   if (response == 'error creando fichero'){
                     swal('', "Página NO publicada," + response, 'error');
                     $scope.ws_publicado = false;
@@ -334,6 +337,11 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                     document.getElementById('urlIndex').value = resultado.url;
                     $scope.modificarPagina(resultado.url,resultado.html,'SI');
                   }
+                } catch(error){
+                  console.log(error);
+                  swal('', "Error al crear la página", 'error');
+                  $.unblockUI();  
+                }
               }
           });
         } else {
@@ -410,11 +418,13 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   "slogo": $rootScope.urlLogotipo64,
                   "sencabezado": $rootScope.urlEncabezado64,
                   "smenu": $rootScope.urlcatalogo,
-                  "sentrega" : $rootScope.datosTiendaVirtual[0].pforma_entrega
+                  "sentrega" : $rootScope.datosTiendaVirtual[0].pforma_entrega,
+                  "sdominio" : $rootScope.datosTiendaVirtual[0].pdominio
               },
               success:function(response){
+                try {
                   if (response == 'error creando fichero'){
-                    swal('', "Página NO publicada," + response, 'error');
+                    swal('', "Página NO publicada, " + response, 'error');
                     $scope.ws_publicado = false;
                     $scope.chkPublicado == false;
                     document.getElementById('chkPublicado').checked = false;
@@ -424,6 +434,11 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                     document.getElementById('urlIndex').value = resultado.url;
                     $scope.registrarPagina(resultado.url, resultado.html);
                   }
+                } catch(error){
+                  console.log(error);
+                  swal('', "Error al crear la página", 'error');
+                  $.unblockUI();  
+                }
               }
           });
         } else {

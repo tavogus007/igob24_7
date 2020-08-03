@@ -45,7 +45,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   });
 
   $scope.recuperarSerializarInfo = function(data){
-    console.log('dataaaaaaa',data);
     cargando();
    
     $scope[name] = 'Running';
@@ -756,7 +755,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   }
     
   $scope.actualizarDatosAE = function(data){
-    console.log('ataaaaa mod data',data.f01_dominio);
+
       $scope.obtTiendaVirtualM();
       document.getElementById("f01_todos").checked = false;
       document.getElementById("f01_habiles").checked = false;
@@ -1161,8 +1160,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $("#mensajeT11").hide();
       $("#mensajeT12").hide();
       $("#mensajeT10").hide();
-      
-
+    
   }
   $scope.obtTiendaVirtualM = function(){
     idActividadEconomica = sessionService.get('IDAE');
@@ -1957,7 +1955,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   }
   $scope.validaDominio = function(datos){
-    console.log('datos',datos);
     if(datos == undefined || datos == 'undefined' || datos == null || datos == 'null'){
     }else{
       var lonDom = datos.length;
@@ -1965,9 +1962,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         var datosVerificacion = new dataTiendaVirtual();
           datosVerificacion.dominio = datos;
           datosVerificacion.verificarDominio(function(response){
-          console.log('oooooo',response);
           results = JSON.parse(response);
-          console.log('result',results.success[0].tv_verificar_dominio);
    
           if(results.success[0].tv_verificar_dominio == false){
             $("#mensaje4").hide();

@@ -49,6 +49,24 @@
     color: #dc3545;
   }
 
+  .btn__close {
+    position: relative;
+    float: right;
+    font-size: 30px;
+    transition: transform 500ms ease;
+    z-index: 11;
+    cursor: pointer;
+  }
+  .btn__close:hover {
+    transform: rotate(540deg);
+  }
+  .color_i {
+    color: #dc3545 !important;
+  }
+  .color_i:hover {
+    color: #0ACC9E !important;
+  }
+
 
 /*======================modal_help_II=====================================*/
 #toggle2 {
@@ -93,6 +111,24 @@
     -webkit-animation: appear 350ms ease-in 1;
             animation: appear 350ms ease-in 1;
     max-width: 800px;
+  }
+
+  .btn__close2 {
+    position: relative;
+    float: right;
+    font-size: 30px;
+    transition: transform 500ms ease;
+    z-index: 11;
+    cursor: pointer;
+  }
+  .btn__close2:hover {
+    transform: rotate(540deg);
+  }
+  .color_i2 {
+    color: #dc3545 !important;
+  }
+  .color_i2:hover {
+    color: #0ACC9E !important;
   }
 
 /*======================modal_help_III=====================================*/
@@ -140,6 +176,24 @@
     max-width: 800px;
   }
 
+  .btn__close3 {
+    position: relative;
+    float: right;
+    font-size: 30px;
+    transition: transform 500ms ease;
+    z-index: 11;
+    cursor: pointer;
+  }
+  .btn__close3:hover {
+    transform: rotate(540deg);
+  }
+  .color_i3 {
+    color: #dc3545 !important;
+  }
+  .color_i3:hover {
+    color: #0ACC9E !important;
+  }
+
 /*======================modal_help_IV=====================================*/
 #toggle4 {
     visibility: hidden;
@@ -183,6 +237,24 @@
     -webkit-animation: appear 350ms ease-in 1;
             animation: appear 350ms ease-in 1;
     max-width: 800px;
+  }
+
+  .btn__close4 {
+    position: relative;
+    float: right;
+    font-size: 30px;
+    transition: transform 500ms ease;
+    z-index: 11;
+    cursor: pointer;
+  }
+  .btn__close4:hover {
+    transform: rotate(540deg);
+  }
+  .color_i4 {
+    color: #dc3545 !important;
+  }
+  .color_i4:hover {
+    color: #0ACC9E !important;
   }
 
 /*======================modal_help_V=====================================*/
@@ -230,6 +302,24 @@
     max-width: 800px;
   }
 
+  .btn__close5 {
+    position: relative;
+    float: right;
+    font-size: 30px;
+    transition: transform 500ms ease;
+    z-index: 11;
+    cursor: pointer;
+  }
+  .btn__close5:hover {
+    transform: rotate(540deg);
+  }
+  .color_i5 {
+    color: #dc3545 !important;
+  }
+  .color_i5:hover {
+    color: #0ACC9E !important;
+  }
+
 /*======================modal_help_VI=====================================*/
 #toggle6 {
     visibility: hidden;
@@ -273,6 +363,23 @@
     -webkit-animation: appear 350ms ease-in 1;
             animation: appear 350ms ease-in 1;
     max-width: 800px;
+  }
+  .btn__close6 {
+    position: relative;
+    float: right;
+    font-size: 30px;
+    transition: transform 500ms ease;
+    z-index: 11;
+    cursor: pointer;
+  }
+  .btn__close6:hover {
+    transform: rotate(540deg);
+  }
+  .color_i6 {
+    color: #dc3545 !important;
+  }
+  .color_i6:hover {
+    color: #0ACC9E !important;
   }
 /*=================content modal==========================*/
 
@@ -413,3 +520,5 @@
 .post .body_post .post_content .container_infos .container_tags .tags ul li:hover:before {
     height: 18px;
 }
+
+/*========================================================================================*/

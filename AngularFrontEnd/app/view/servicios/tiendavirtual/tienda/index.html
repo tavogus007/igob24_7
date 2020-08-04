@@ -13,6 +13,11 @@
         <script type="text/javascript" src="../../libs/Librerias/tinymce5.4.1/tinymce.min.js"></script>
 
         <style type="text/css">
+            html, body
+            {
+                height: 100%;
+            }
+ 
             .main1
             {
                 padding-bottom: 20px;
@@ -143,832 +148,864 @@
         </style>
 
     </head>
-    <div class="col-md-12" ng-controller="tiendaVirtualController" ng-init="inicioTiendaVirtual();">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-            <h4>Datos complementarios de la Tienda Virtual</h4>
-            <input type="checkbox" id="toggle">
-            <label class="label__modal" for="toggle"><i class="fa fa-question-circle fa-2" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
+    <body>
+        <div class="col-md-12" ng-controller="tiendaVirtualController" ng-init="inicioTiendaVirtual();">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                <h4>Datos complementarios de la Tienda Virtual</h4>
 
-            <dialog class="dialog__modal" >
+                <input type="checkbox" id="toggle">
+                <label class="label__modal" for="toggle"><i class="fa fa-question-circle fa-2" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
 
-                <div class="post">
-                    <div class="header_post">
-                        <img src="/assets/img/compra_ayuda/sec1.jpg" alt="">
-                    </div>
-            
-                    <div class="body_post">
-                        <div class="post_content">
-            
-                            <h1>Datos de Tienda</h1>
-                            <p>1.- Introduzca el nombre de la tienda de forma concreta; usando mayusculas, minusculas asi como el ejemplo.<br>
-                               2.- En la DESCRIPCIÓN añada información clara y concisa acerca de la tienda y los productos que ofrece la misma.<br>
-                               3.- En la sección Forma de Entrega, ingrese las formas y/o métodos de entrega y pago de los productos a publicitar.      
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <dialog class="dialog__modal" >
 
-                <p class="p__modal">
-                ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
-                </p>
-                                  
-                <label class="label__modal" for="toggle">Cerrar Ayuda</label>
-            </dialog>
+                    <label for="toggle" class="btn__close">
+                        <i class="fa fa-times color_i" aria-hidden="true"></i>
+                    </label>
 
-        </div>
-        <div class="ibox-content">
-          <form name="signupForm"  class="form-horizontal" role="form" novalidate>                   
-            <div class="row" >
-                <div class="col-md-12">
-                    <div class="form-group" >
-                        <label for="url" >Nombre de la Tienda Virtual:</label>
-                        <div class="controls">
-                            <textarea ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" ng-disabled="desabilitado" placeholder="Escriba el nombre de la Tienda Virtual"></textarea>
+                    <div class="post">
+                        <div class="header_post">
+                            <img src="/assets/img/compra_ayuda/sec1.jpg" alt="">
                         </div>
-                    </div>
-                </div>                  
-
-                <div class="col-md-12">
-                    <div class="form-group" >
-                        <font color="#FF0000" size="4px" align="center"> * </font>
-                        <label for="url" >Introducir una breve descripción sobre la actividad desarrollada de la Tienda Virtual.</label>
-                        <div class="controls">
-                            <textarea ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Escribir una breve descricpión acerca de la Tienda Virtual" required></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group" >
-                        <font color="#FF0000" size="4px" align="center"> * </font>
-                        <label for="url" >Describir la formas de realizar la entrega del producto al cliente. Por Ej. Vía delivery.</label>
-                        <div class="controls">
-                            <textarea ng-model="datos.f01_forma_entrega" id="f01_forma_entrega" name="f01_forma_entrega" class="form-control" ng-disabled="desabilitado"rows="4" cols="150" placeholder="Describa la forma de entrega de los Productos" required></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12" align="left">
-                    <div class="alert alert-danger fade in">
-                        <strong>Importante: </strong>
-                        <br>1. Seleccione cuidadosamente la <strong>Categoría (Rubro)</strong>  a la cual corresponde  su <strong>Actividad Económica.</strong>
-                        <br>2. En la casilla, <strong>Nombre de ruta de acceso</strong> introduzca el nombre para su página Web, la cual se mostrará en la dirección URL que será generada, para la tienda virtual. Por Ej. <strong>https://casevirtual.lapaz.bo/rutadeacceso.</strong>
-                        <br>3. Si posee más de una Actividad Económica, cada tienda registrada, deberá tener su propia Página Web.
-                        <br>4. El <strong>nombre de ruta de acceso</strong>, NO es modificable y se introduce por única vez al momento del registro.<br>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group" >
-                        <font color="#FF0000" size="4px" align="center"> * </font>
-                        <label for="url" >Categoria:</label>
-                        <div class="controls">
-                            <select id="f01_categoria" class="form-control" ng-model="datos.f01_categoria" name="f01_categoria" ng-disabled="desabilitado" ng-options="cat.spcat_id  as cat.spcat_descripcion  for cat in resultCategorias" ng-change="cambiaCategoria(datos.f01_categoria);" required>
-                                <option value="">--Seleccionar--</option>
-                            </select>
-                            <span style="color:red" ng-show="signupForm.f01_categoria.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_categoria.$error.required">Categoría es requerido</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group" >
-                        <font color="#FF0000" size="4px" align="center"> * </font>
-                        <label for="url" >Correo Electrónico:</label>
-                        <div class="controls">
-                            <input ng-model="datos.f01_correoTV" id="f01_correoTV" name="f01_correoTV" class="form-control" ng-keyup="validaCorreo();" ng-disabled="desabilitado" placeholder="Correo: ejemplo@gmail.com" required focus/>
-                            <span style="color:red" ng-show="signupForm.f01_correoTV.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_correoTV.$error.required">Correo Electrónico es requerido</span>
-                            </span>
-                            <br><span id ="mensaje1" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
-                            <span id ="mensaje2" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span>
-                           <input id="idcorreo" name="idcorreo" type="hidden" value="false">
-                           <span style="color:red" ng-show="signupForm.idcorreo.$invalid">
-                           <span align = "right" ng-show="signupForm.idcorreo.$error.required">{{translateIdioma.lbl_20_32}}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group" >
-                        <label for="url" >Nombre para ruta de acceso</label>
-                        <div class="controls">
-                            <input ng-model="datos.f01_dominio" id="f01_dominio" name="f01_dominio" class="form-control"  onkeypress="return soloLetras(event)" ng-change="validaDominio(datos.f01_dominio);"  placeholder=" Nombre para dirección URL de la página Web. Por Ej. https://casevirtual.lapaz.bo/rutadeacceso" ng-disabled="desabilitado" required/>
-                            <span style="color:red" ng-show="signupForm.f01_dominio.$invalid">
-                                <span align = "right" ng-show="signupForm.f01_dominio.$error.required">Nombre de la ruta de acceso es requerido.</span>
-                            </span>
-                            <br><span id ="mensaje3" style = "color:green;font-weight:bold; font-size:12px">El nombre es válido.</span>
-                            <span id ="mensaje4" style = "color:red;font-weight:bold; font-size:12px">El nombre introducido ya existe, debe elegir otro nombre.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group" >
-                        <label for="url" >Introducir la dirección de su propia Página Web:</label>
-                        <div class="controls">
-                            <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control" placeholder="Copie aquí el enlace de su Página Web. Por ej. https://www.ejemplo.com" ng-disabled="desabilitado"/>
-                        </div>
-                    </div>
-                </div>
                 
-            </div>
-            <div class="row"> 
-                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>Adjuntar Imágenes de la Tienda Virtual.</h4>
-
-                    <input type="checkbox" id="toggle2">
-                    <label class="label__modal2" for="toggle2"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
-        
-                    <dialog class="dialog__modal2" >
-                        <div class="post">
-                            <div class="header_post">
-                                <img src="/assets/img/compra_ayuda/sec2.jpg" alt="">
+                        <div class="body_post">
+                            <div class="post_content">
+                
+                                <h1>Datos de Tienda</h1>
+                                <p>1.- Introduzca el nombre de la tienda de forma concreta; usando mayusculas, minusculas asi como el ejemplo.<br>
+                                2.- En la DESCRIPCIÓN añada información clara y concisa acerca de la tienda y los productos que ofrece la misma.<br>
+                                3.- En la sección Forma de Entrega, ingrese las formas y/o métodos de entrega y pago de los productos a publicitar.      
+                                </p>
                             </div>
+                        </div>
+                    </div>
+
+                    <p class="p__modal">
+                    ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
+                    </p>
+                                    
+                    <label class="label__modal" for="toggle">Cerrar Ayuda</label>
+                </dialog>
+
+            </div>
+            <div class="ibox-content">
+            <form name="signupForm"  class="form-horizontal" role="form" novalidate>                   
+                <div class="row" >
+                    <div class="col-md-12">
+                        <div class="form-group" >
+                            <label for="url" >Nombre de la Tienda Virtual:</label>
+                            <div class="controls">
+                                <textarea ng-model="datos.f01_nombreTV" id="f01_nombreTV" name="f01_nombreTV" class="form-control" ng-disabled="desabilitado" placeholder="Escriba el nombre de la Tienda Virtual"></textarea>
+                            </div>
+                        </div>
+                    </div>                  
+
+                    <div class="col-md-12">
+                        <div class="form-group" >
+                            <font color="#FF0000" size="4px" align="center"> * </font>
+                            <label for="url" >Introducir una breve descripción sobre la actividad desarrollada de la Tienda Virtual.</label>
+                            <div class="controls">
+                                <textarea ng-model="datos.f01_descripcionTV" id="f01_descripcionTV" name="f01_descripcionTV" class="form-control" ng-disabled="desabilitado" rows="4" cols="150" placeholder="Escribir una breve descricpión acerca de la Tienda Virtual" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group" >
+                            <font color="#FF0000" size="4px" align="center"> * </font>
+                            <label for="url" >Describir la formas de realizar la entrega del producto al cliente. Por Ej. Vía delivery.</label>
+                            <div class="controls">
+                                <textarea ng-model="datos.f01_forma_entrega" id="f01_forma_entrega" name="f01_forma_entrega" class="form-control" ng-disabled="desabilitado"rows="4" cols="150" placeholder="Describa la forma de entrega de los Productos" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" align="left">
+                        <div class="alert alert-danger fade in">
+                            <strong>Importante: </strong>
+                            <br>1. Seleccione cuidadosamente la <strong>Categoría (Rubro)</strong>  a la cual corresponde  su <strong>Actividad Económica.</strong>
+                            <br>2. En la casilla, <strong>Nombre de ruta de acceso</strong> introduzca el nombre para su página Web, la cual se mostrará en la dirección URL que será generada, para la tienda virtual. Por Ej. <strong>https://casevirtual.lapaz.bo/rutadeacceso.</strong>
+                            <br>3. Si posee más de una Actividad Económica, cada tienda registrada, deberá tener su propia Página Web.
+                            <br>4. El <strong>nombre de ruta de acceso</strong>, NO es modificable y se introduce por única vez al momento del registro.<br>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <font color="#FF0000" size="4px" align="center"> * </font>
+                            <label for="url" >Categoria:</label>
+                            <div class="controls">
+                                <select id="f01_categoria" class="form-control" ng-model="datos.f01_categoria" name="f01_categoria" ng-disabled="desabilitado" ng-options="cat.spcat_id  as cat.spcat_descripcion  for cat in resultCategorias" ng-change="cambiaCategoria(datos.f01_categoria);" required>
+                                    <option value="">--Seleccionar--</option>
+                                </select>
+                                <span style="color:red" ng-show="signupForm.f01_categoria.$invalid">
+                                    <span align = "right" ng-show="signupForm.f01_categoria.$error.required">Categoría es requerido</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <font color="#FF0000" size="4px" align="center"> * </font>
+                            <label for="url" >Correo Electrónico:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_correoTV" id="f01_correoTV" name="f01_correoTV" class="form-control" ng-keyup="validaCorreo();" ng-disabled="desabilitado" placeholder="Correo: ejemplo@gmail.com" required focus/>
+                                <span style="color:red" ng-show="signupForm.f01_correoTV.$invalid">
+                                    <span align = "right" ng-show="signupForm.f01_correoTV.$error.required">Correo Electrónico es requerido</span>
+                                </span>
+                                <br><span id ="mensaje1" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
+                                <span id ="mensaje2" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span>
+                            <input id="idcorreo" name="idcorreo" type="hidden" value="false">
+                            <span style="color:red" ng-show="signupForm.idcorreo.$invalid">
+                            <span align = "right" ng-show="signupForm.idcorreo.$error.required">{{translateIdioma.lbl_20_32}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >Nombre para ruta de acceso</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_dominio" id="f01_dominio" name="f01_dominio" class="form-control"  onkeypress="return soloLetras(event)" ng-change="validaDominio(datos.f01_dominio);"  placeholder=" Nombre para dirección URL de la página Web. Por Ej. https://casevirtual.lapaz.bo/rutadeacceso" ng-disabled="desabilitado" required/>
+                                <span style="color:red" ng-show="signupForm.f01_dominio.$invalid">
+                                    <span align = "right" ng-show="signupForm.f01_dominio.$error.required">Nombre de la ruta de acceso es requerido.</span>
+                                </span>
+                                <br><span id ="mensaje3" style = "color:green;font-weight:bold; font-size:12px">El nombre es válido.</span>
+                                <span id ="mensaje4" style = "color:red;font-weight:bold; font-size:12px">El nombre introducido ya existe, debe elegir otro nombre.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="url" >Introducir la dirección de su propia Página Web:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control" placeholder="Copie aquí el enlace de su Página Web. Por ej. https://www.ejemplo.com" ng-disabled="desabilitado"/>
+                            </div>
+                        </div>
+                    </div>
                     
-                            <div class="body_post">
-                                <div class="post_content">
-                    
-                                    <h1>Adjuntar Imágenes de la Tienda Virtual</h1>
-                                    <p>1.- Coloque una imágen o banner de fondo (de su tienda), en formato jpg en un tamaño de 1024x512 píxeles.<br>
-                                       2.- Suba el logo de su tienda o empresa a un tamaño no mayor a 512x512 píxeles.<br>
-                                       3.- Se recomienda encarecidamente subir imágenes en el tamaño estipulado, considerando el peso de las mismas.      
-                                    </p>
+                </div>
+                <div class="row"> 
+                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                        <h4>Adjuntar Imágenes de la Tienda Virtual.</h4>
+
+                        <input type="checkbox" id="toggle2">
+                        <label class="label__modal2" for="toggle2"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
+            
+                        <dialog class="dialog__modal2" >
+
+                            <label for="toggle2" class="btn__close2">
+                                <i class="fa fa-times color_i2" aria-hidden="true"></i>
+                            </label>
+
+                            <div class="post">
+                                <div class="header_post">
+                                    <img src="/assets/img/compra_ayuda/sec2.jpg" alt="">
+                                </div>
+                        
+                                <div class="body_post">
+                                    <div class="post_content">
+                        
+                                        <h1>Adjuntar Imágenes de la Tienda Virtual</h1>
+                                        <p>1.- Coloque una imágen o banner de fondo (de su tienda), en formato jpg en un tamaño de 1024x512 píxeles.<br>
+                                        2.- Suba el logo de su tienda o empresa a un tamaño no mayor a 512x512 píxeles.<br>
+                                        3.- Se recomienda encarecidamente subir imágenes en el tamaño estipulado, considerando el peso de las mismas.      
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-        
-                        <p class="p__modal">
-                        ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
-                        </p>
-                                          
-                        <label class="label__modal2" for="toggle2">Cerrar Ayuda</label>
-                    </dialog>
+            
+                            <p class="p__modal">
+                            ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
+                            </p>
+                                            
+                            <label class="label__modal2" for="toggle2">Cerrar Ayuda</label>
+                        </dialog>
 
-                </div><br>
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
+                    </div><br>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                            <div class="form-group">
+                                <font color="#FF0000" size="4px" align="center"> * </font>
+                                <label for="url" >Seleccionar la imagen para la parte superior(Encabezado) de la Pagina Web, que será generada para la tienda virtual. (Archivos .jpg ó .jpeg ó .png).</label>
+                                <div class="controls">
+                                    <div class="form-group custom-upload">
+                                        <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*"  style="display: none;">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                            <input id="txt_f01_upload3" name="txt_f01_upload3"  ng-model="datos['txt_f01_upload3']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                                            <span class="input-group-btn">
+                                                <a id="href_f01_upload3"  ng-show="encabezadotipo_url" href="{{encabezadotipo_url}}" target="_blank">
+                                                    <button id="btn_f01_upload3" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                </a>
+                                                <button id="btn_f01_upload3" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload3', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
                         <div class="form-group">
                             <font color="#FF0000" size="4px" align="center"> * </font>
-                            <label for="url" >Seleccionar la imagen para la parte superior(Encabezado) de la Pagina Web, que será generada para la tienda virtual. (Archivos .jpg ó .jpeg ó .png).</label>
+                            <label for="url" >Seleccionar la imagen para el Logotipo para la Página Web de la tienda virtual. (Archivos .jpg ó .jpeg ó .png).</label>
                             <div class="controls">
                                 <div class="form-group custom-upload">
-                                    <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*"  style="display: none;">
+                                    <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*"  style="display: none;">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                                        <input id="txt_f01_upload3" name="txt_f01_upload3"  ng-model="datos['txt_f01_upload3']"  type="text" placeholder="" class="form-control input-lg" disabled required>
-                                         <span class="input-group-btn">
-                                            <a id="href_f01_upload3"  ng-show="encabezadotipo_url" href="{{encabezadotipo_url}}" target="_blank">
-                                                <button id="btn_f01_upload3" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                        <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datos['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                                        <span class="input-group-btn">
+                                            <a id="href_f01_upload2"  ng-show="logotipo_url" href="{{logotipo_url}}" target="_blank">
+                                                <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                             </a>
-                                            <button id="btn_f01_upload3" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload3', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                            <button id="btn_f01_upload2" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload2', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                                         </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <div class="form-group">
+        
+                <div class="row" >
+                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                        <h4>Ingrese los horarios de atención de la tienda virtual.</h4>
+
+                        <input type="checkbox" id="toggle3">
+                        <label class="label__modal3" for="toggle3"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
+            
+                        <dialog class="dialog__modal3" >
+
+                            <label for="toggle3" class="btn__close3">
+                                <i class="fa fa-times color_i3" aria-hidden="true"></i>
+                            </label>
+
+                            <div class="post">
+                                <div class="header_post">
+                                    <img src="/assets/img/compra_ayuda/sec3.jpg" alt="">
+                                </div>
+                                                    <div class="body_post">
+                                    <div class="post_content">
+                                        <h1>Horarios de atención</h1>
+                                        <p>1.- Si elige la opción <strong>Días hábiles</strong>, registrará las horas introducidas para los días de Lunes a Viernes.<br>
+                                        2.- Si elige <strong>Todos los días</strong>, registrará las horas introducidas para todos los días.<br>
+                                        3.- Si elige <strong>Ninguna</strong>, debe realizar el registro manualmente para cada día.      
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <p class="p__modal">
+                            ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
+                            </p>          
+                            <label class="label__modal3" for="toggle3">Cerrar Ayuda</label>
+                        </dialog>
+
+                    </div><br>
+                </div>
+                <div class="row" >
+                    <div class="col-md-10" align="left">
+                        <div class="alert alert-danger fade in">
+                            <strong>Estimado contribuyente: </strong>Para introducir el horario de antención puede hacerlo de 3 formas:
+                            <br>1.  Si elige la opción <strong>Días hábiles</strong>, registrará las horas introducidas para los días de Lunes a Viernes.
+                            <br>2.  Si elige <strong>Todos los días</strong>, registrará las horas introducidas para todos los días.
+                            <br>3.  Si elige <strong>Ninguna</strong>, debe realizar el registro manualmente para cada día.<br>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1"></div>              
+                    <div class="col-md-2">
+                        <div class="form-group" >
+                            <label for="url" >Hora Inicio:</label>
+                            <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                <input  ng-model="datos.f01_hora_inicio" id="f01_hora_inicio" name="f01_hora_inicio" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <div class="form-group" >
+                            <label for="url" >Hora Fin:</label>
+                            <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                <input  ng-model="datos.f01_hora_fin" id="f01_hora_fin" name="f01_hora_fin" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <input type="radio"  ng-model="datos.f01_todos" id="f01_todos" name="horario" value="TODOS" ng-click="activaTodos('TODOS')">
+                        <label for="f01_todos">Todos los días</label><br>
+                        <input type="radio"  ng-model="datos.f01_habiles" id="f01_habiles" name="horario" value="HABILES" ng-click="activaTodos('HABILES')">
+                        <label for="f01_habiles">Días hábiles</label><br>
+                        <input type="radio" ng-model="datos.f01_ninguna" id="f01_ninguna" name="horario" value="NINGUNA" ng-click="activaTodos('NINGUNA')">
+                        <label for="f01_ninguna">Ninguna</label>
+
+                    </div>
+                </div>
+                <hr>
+                <div class="row>">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-11">
                         <font color="#FF0000" size="4px" align="center"> * </font>
-                        <label for="url" >Seleccionar la imagen para el Logotipo para la Página Web de la tienda virtual. (Archivos .jpg ó .jpeg ó .png).</label>
+                        <label for="url" ><strong>Horarios de atención:</strong></label>
+                    </div>
+                </div><br>
+                
+                
+                <div class="row">   
+                
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <label for="url" >Días:</label>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4">
+                        <div class="col-md-5">
+                            <label for="url" >Hora Inicio:</label>
+                        </div>
+                        <div class="col-md-1">
+                            <label for="url" ></label>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="url" >Hora Fin:</label>
+                        </div>
+                        
+                    </div>
+                    
+
+                </div>
+                <div class="row">   
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <div class="form-group" >
+                            <div class="controls">
+                                <input class="form-control" ng-model="datos.f01_lunes" id="f01_lunes" name="f01_lunes" value="LUNES" placeholder="LUNES" disabled/><br>                        
+                                <input class="form-control" ng-model="datos.f01_martes" id="f01_martes" name="f01_martes" value="MARTES" placeholder="MARTES" disabled/><br>                         
+                                <input class="form-control" ng-model="datos.f01_miercoles" id="f01_miercoles" name="f01_miercoles" value="MIÉRCOLES" placeholder="MIÉRCOLES" disabled/><br>                      
+                                <input class="form-control" ng-model="datos.f01_jueves" id="f01_jueves" name="f01_jueves" value="JUEVES" placeholder="JUEVES" disabled/><br>                         
+                                <input class="form-control" ng-model="datos.f01_viernes" id="f01_viernes" name="f01_viernes" value="VIERNES" placeholder="VIERNES" disabled/><br>                         
+                                <input class="form-control" ng-model="datos.f01_sabado" id="f01_sabado" name="f01_sabado" value="SABADO" placeholder="SABADO" disabled/><br>                      
+                                <input class="form-control" ng-model="datos.f01_domingo" id="f01_domingo" name="f01_domingo" value="DOMINGO" placeholder="DOMINGO" disabled/>                        
+                            </div>
+                        </div>
+                </div>
+                <div class="col-md-1"></div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <div class="controls">
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_inicio_lunes" id="f01_hora_inicio_lunes" name="f01_hora_inicio_lunes" ng-change="activaCheckL('L');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_fin_lunes" id="f01_hora_fin_lunes" name="f01_hora_fin_lunes" ng-change="activaCheckL('L');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"  id="f01_chk_lunes" name="f01_chk_lunes"  ng-model="datos.f01_chk_lunes"  ng-change="activaLunes(datos.f01_chk_lunes)" style="width: 22px; height: 22px;">
+                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_inicio_martes" id="f01_hora_inicio_martes" name="f01_hora_inicio_martes" ng-change="activaCheckL('M');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_fin_martes" id="f01_hora_fin_martes" name="f01_hora_fin_martes" ng-change="activaCheckL('M');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"  id="f01_chk_martes" name="f01_chk_martes" ng-model="datos.f01_chk_martes"  ng-change="activaMartes(datos.f01_chk_martes)" style="width: 22px; height: 22px;">
+                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_inicio_miercoles" id="f01_hora_inicio_miercoles" name="f01_hora_inicio_miercoles" ng-change="activaCheckL('MI');"class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_fin_miercoles" id="f01_hora_fin_miercoles" name="f01_hora_fin_miercoles" ng-change="activaCheckL('MI');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"  id="f01_chk_miercoles" name="f01_chk_miercoles" ng-model="datos.f01_chk_miercoles"  ng-change="activaMiercoles(datos.f01_chk_miercoles)" style="width: 22px; height: 22px;">
+                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_inicio_jueves" id="f01_hora_inicio_jueves" name="f01_hora_inicio_jueves" ng-change="activaCheckL('J');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_fin_jueves" id="f01_hora_fin_jueves" name="f01_hora_fin_jueves" ng-change="activaCheckL('J');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"  id="f01_chk_jueves" name="f01_chk_jueves" ng-model="datos.f01_chk_jueves"  ng-change="activaJueves(datos.f01_chk_jueves)" style="width: 22px; height: 22px;">
+                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_inicio_viernes" id="f01_hora_inicio_viernes" name="f01_hora_inicio_viernes" ng-change="activaCheckL('V');" ng-change="activaCheckL('V');"class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_fin_viernes" id="f01_hora_fin_viernes" name="f01_hora_fin_viernes" ng-change="activaCheckL('V');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"  id="f01_chk_viernes" name="f01_chk_viernes" ng-model="datos.f01_chk_viernes"  ng-change="activaViernes(datos.f01_chk_viernes)" style="width: 22px; height: 22px;">
+                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_inicio_sabado" id="f01_hora_inicio_sabado" name="f01_hora_inicio_sabado" ng-change="activaCheckL('S');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_fin_sabado" id="f01_hora_fin_sabado" name="f01_hora_fin_sabado" ng-change="activaCheckL('S');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"  id="f01_chk_sabado" name="f01_chk_sabado" ng-model="datos.f01_chk_sabado"  ng-change="activaSabado(datos.f01_chk_sabado)" style="width: 22px; height: 22px;">
+                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_inicio_domingo" id="f01_hora_inicio_domingo" name="f01_hora_inicio_domingo" ng-change="activaCheckL('D');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" >
+                                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                            <input  ng-model="datos.f01_hora_fin_domingo" id="f01_hora_fin_domingo" name="f01_hora_fin_domingo" ng-change="activaCheckL('D');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"  id="f01_chk_domingo" name="f01_chk_domingo" ng-model="datos.f01_chk_domingo"  ng-change="activaDomingo(datos.f01_chk_domingo)" style="width: 22px; height: 22px;">
+                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    </div>
+                                </div>                         
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="row" >
+                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                        <h4>Ingrese los números telefónicos de contacto de la tienda virtual.</h4>
+
+                        <input type="checkbox" id="toggle4">
+                        <label class="label__modal4" for="toggle4"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
+            
+                        <dialog class="dialog__modal4" >
+
+                            <label for="toggle4" class="btn__close4">
+                                <i class="fa fa-times color_i4" aria-hidden="true"></i>
+                            </label>
+
+                            <div class="post">
+                                <div class="header_post">
+                                    <img src="/assets/img/compra_ayuda/sec4.jpg" alt="">
+                                </div>
+                        
+                                <div class="body_post">
+                                    <div class="post_content">
+                        
+                                        <h1>Números telefónicos de contacto</h1>
+                                        <p>1.- Ingrese sus datos actualizados de contacto.
+                                        2.- Considere colocar contactos referentes a su tienda o empresa.
+                                        3.- Se recomienda colocar los contactos establecidos en el formulario.<br>      
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <p class="p__modal">
+                            ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
+                            </p>
+                                            
+                            <label class="label__modal4" for="toggle4">Cerrar Ayuda</label>
+                        </dialog>
+
+                    </div><br>
+                </div>
+                <div class="row" >
+                    <div class="col-md-10" align="left">
+                        <div class="alert alert-danger fade in">
+                            <strong>Contactos: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Debe registrar por lo menos un (1) número de teléfono.
+                            <br><strong>Importante: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Si tiene números de celular, que cuentan con Whastapp, no olvide marcar la casilla cera al ícono.<br>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row">   
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >Tipo de Contacto:</label>
+                            <div class="controls">
+                                <select id="f01_contacto1" class="form-control" ng-model="datos.f01_contacto1" name="f01_contacto1" ng-disabled="desabilitado" ng-change="activarCampo1(datos.f01_contacto1)" required>
+                                    <option value="">--Seleccionar--</option>
+                                    <option value="CELULAR"> CELULAR </option>
+                                    <option value="TELÉFONO"> TELÉFONO </option>
+                                </select>
+                                <br>
+                                <select id="f01_contacto2" class="form-control" ng-model="datos.f01_contacto2" name="f01_contacto2" ng-disabled="desabilitado" ng-change="activarCampo2(datos.f01_contacto2)"required>
+                                    <option value="">--Seleccionar--</option>
+                                    <option value="CELULAR"> CELULAR </option>
+                                    <option value="TELÉFONO"> TELÉFONO </option>
+                                </select>
+                                <br>
+                                <select id="f01_contacto3" class="form-control" ng-model="datos.f01_contacto3" name="f01_contacto3" ng-disabled="desabilitado" ng-change="activarCampo3(datos.f01_contacto3)" required>
+                                    <option value="">--Seleccionar--</option>
+                                    <option value="CELULAR"> CELULAR </option>
+                                    <option value="TELÉFONO"> TELÉFONO </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group" >
+                            
+                            <label for="url" >Número de contacto:</label>
+                            <div class="controls">
+                                <!--input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" maxlength="8" onkeyUp="return valNumeroTelefono1(this);" /-->                         
+
+                                <input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" maxlength="8" ng-keyUp="valNumTelefono1(datos.f01_contacto1_nro);" />                         
+                                <span id ="mensajeT1" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
+                                <span id ="mensajeT2" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido.</span>
+                                <span id ="mensajeT3" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
+                                <label for="url" > </label>
+                                            <br>
+                                <input ng-model="datos.f01_contacto2_nro" id="f01_contacto2_nro" name="f01_contacto2_nro" class="form-control" ng-disabled="inicializaC2" maxlength="8" ng-keyUp="valNumTelefono2(datos.f01_contacto2_nro);" />
+                                <span id ="mensajeT4" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
+                                <span id ="mensajeT5" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido</span>
+                                <span id ="mensajeT6" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
+                                <br>
+                                <input ng-model="datos.f01_contacto3_nro" id="f01_contacto3_nro" name="f01_contacto3_nro" class="form-control" ng-disabled="inicializaC3" maxlength="8" ng-keyUp="valNumTelefono3(datos.f01_contacto3_nro);" />
+                                <span id ="mensajeT7" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
+                                <span id ="mensajeT8" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido</span>
+                                <span id ="mensajeT9" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
+                                
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="col-md-2">
+                        <div class="form-group" >
+                            <div class="controls" >
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_celular1_whatsapp" name="f01_celular1_whatsapp" ng-model="datos.f01_celular1_whatsapp"  ng-disabled="!swWhats1" ng-change="activaWhatsapp1(datos.f01_celular1_whatsapp)" style="width: 20px; height: 20px;">
+                                    <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    <img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="30" width="30">
+                                </div>
+                            </div>
+                            <label for="url" > </label>
+                            <div class="controls">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_celular22_whatsapp" name="f01_celular22_whatsapp" ng-model="datos.f01_celular22_whatsapp" ng-disabled="!swWhats2" ng-change="activaWhatsapp2(datos.f01_celular22_whatsapp)" style="width: 20px; height: 20px;">
+                                    <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    <img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="30" width="30">
+                                </div>
+                            </div>
+                            <label for="url" > </label>
+                            <div class="controls">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_celular3_whatsapp" name="f01_celular3_whatsapp" ng-model="datos.f01_celular3_whatsapp" ng-disabled="!swWhats3" ng-change="activaWhatsapp3(datos.f01_celular3_whatsapp)" style="width: 20px; height: 20px;">
+                                    <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    <img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="30" width="30">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+
+                <div class="row" >
+                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                        <h4>Introducir las cuentas de sus redes sociales, que tiene habilitadas para la tienda virtual</h4>
+
+                        <input type="checkbox" id="toggle5">
+                        <label class="label__modal5" for="toggle5"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
+            
+                        <dialog class="dialog__modal5" >
+
+                            <label for="toggle5" class="btn__close5">
+                                <i class="fa fa-times color_i5" aria-hidden="true"></i>
+                            </label>
+
+                            <div class="post">
+                                <div class="header_post">
+                                    <img src="/assets/img/compra_ayuda/sec5.jpg" alt="">
+                                </div>
+                        
+                                <div class="body_post">
+                                    <div class="post_content">
+                        
+                                        <h1>redes sociales</h1>
+                                        <p>1.- Coloque redes sociales que usted frecuente o tenga mayor afluencia.<br>
+                                        2.- Si no encuentra en el formulario su red social, coloque el link en el campo OTRO.<br>
+                                        3.- Se recomienda colocar redes sociales respecto a su tienda y/o empresa.      
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <p class="p__modal">
+                            ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
+                            </p>
+                                            
+                            <label class="label__modal5" for="toggle5">Cerrar Ayuda</label>
+                        </dialog>
+
+                    </div><br>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group" >
+                            <label for="url" >Red Social:</label>
+                            <div class="controls">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE1" name="f01_redessocialesAE1" ng-model="datos.f01_redessocialesAE1"  ng-change="activaRedes1(datos.f01_redessocialesAE1)">
+                                    <label class="custom-control-label" for="defaultUnchecked">Facebook</label>
+                                </div>
+                                <br>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE2" name="f01_redessocialesAE2" ng-model="datos.f01_redessocialesAE2" ng-change="activaRedes2(datos.f01_redessocialesAE2)">
+                                    <label class="custom-control-label" for="defaultUnchecked">Twitter</label>
+                                </div>
+                                <br>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE3" name="f01_redessocialesAE3" ng-model="datos.f01_redessocialesAE3" ng-change="activaRedes3(datos.f01_redessocialesAE3)">
+                                    <label class="custom-control-label" for="defaultUnchecked">Instagram</label>
+                                </div><br>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE4" name="f01_redessocialesAE4" ng-model="datos.f01_redessocialesAE4" ng-change="activaRedes4(datos.f01_redessocialesAE4)">
+                                <label class="custom-control-label" for="defaultUnchecked">Youtube</label>
+                                </div><br>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE5" name="f01_redessocialesAE5" ng-model="datos.f01_redessocialesAE5" ng-change="activaRedes5(datos.f01_redessocialesAE5)">
+                                <label class="custom-control-label" for="defaultUnchecked">Otro</label>
+                                </div><br>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group" >
+                            <label for="url" >URL de la Red Social:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-keyUp="validaRedes1(datos.f01_redessocialesAE1_url);" placeholder="Por Ej. https://www.facebook.com/ejemplo" ng-disabled="inicializaFacebook"/>
+                                <span id ="mensajeR1" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
+                                <span id ="mensajeR2" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
+                                <br>
+                                <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-keyUp="validaRedes2(datos.f01_redessocialesAE2_url);" placeholder="Por Ej. https://twitter.com/ejemplo" ng-disabled="inicializaTwitter"/>
+                                <span id ="mensajeR3" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
+                                <span id ="mensajeR4" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
+                                <br>
+                                <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-keyUp="validaRedes3(datos.f01_redessocialesAE3_url);" placeholder="Por Ej.https://www.instagram.com/ejemplo/" ng-disabled="inicializaInstagram"/>
+                                <span id ="mensajeR5" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
+                                <span id ="mensajeR6" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
+                                <br>
+                                <input ng-model="datos.f01_redessocialesAE4_url" id="f01_redessocialesAE4_url" name="f01_redessocialesA4_url" class="form-control" ng-keyUp="validaRedes4(datos.f01_redessocialesAE4_url);" placeholder="Por Ej. https://www.youtube.com/watch?v=0TN2UiRyogc" ng-disabled="inicializaYoutube"/>
+                                <span id ="mensajeR7" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
+                                <span id ="mensajeR8" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
+                                <br>
+                                <input ng-model="datos.f01_redessocialesAE5_url" id="f01_redessocialesAE5_url" name="f01_redessocialesAE5_url" class="form-control" ng-keyUp="validaRedes5(datos.f01_redessocialesAE5_url);" placeholder="Por Ej. https://www.otro.com/ejemplo" ng-disabled="inicializaOtro"/>
+                                <span id ="mensajeR9" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
+                                <span id ="mensajeR10" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>  
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+                <div class="row" >
+                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                        <h4>Catálogo de Productos</h4>
+
+                        <input type="checkbox" id="toggle6">
+                        <label class="label__modal6" for="toggle6"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
+            
+                        <dialog class="dialog__modal6" >
+
+                            <label for="toggle6" class="btn__close6">
+                                <i class="fa fa-times color_i6" aria-hidden="true"></i>
+                            </label>
+
+                            <div class="post">
+                                <div class="header_post">
+                                    <img src="/assets/img/compra_ayuda/sec6.jpg" alt="">
+                                </div>
+                        
+                                <div class="body_post">
+                                    <div class="post_content">
+                        
+                                        <h1>Catálogo de Productos</h1>
+                                        <p>1.- Coloque imágenes nítidas y reales de sus productos.<br>
+                                        2.- Recuerde subir sus imagenes en formato JPG en un tamaño NO MAYOR a 512x512 píxeles.<br>
+                                        3.- Se recomienda encarecidamente subir imágenes en el tamaño estipulado.      
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <p class="p__modal">
+                            ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
+                            </p>
+                                            
+                            <label class="label__modal6" for="toggle6">Cerrar Ayuda</label>
+                        </dialog>
+
+                    </div><br>
+                    <div class="col-md-1">
+                    </div>
+
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-11">
+                    <div class="form-group">
+                        <label id="lbl_f01_upload" class="col-md-2 control-label">Seleccione el archivo que contenga el Catálogo de productos, de la tienda virtual. (sArchivos tipo .jpg, .png ó .pdf)</label>
                         <div class="controls">
                             <div class="form-group custom-upload">
-                                <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*"  style="display: none;">
+                                <input type="file" id="f01_upload1" name="f01_upload1" accept="image/*"  style="display: none;">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                                    <input id="txt_f01_upload2" name="txt_f01_upload2"  ng-model="datos['txt_f01_upload2']"  type="text" placeholder="" class="form-control input-lg" disabled required>
+                                    <input id="txt_f01_upload1" name="txt_f01_upload1"  ng-model="datos['txt_f01_upload1']"  type="text" placeholder="" class="form-control input-lg" disabled required>
                                     <span class="input-group-btn">
-                                        <a id="href_f01_upload2"  ng-show="logotipo_url" href="{{logotipo_url}}" target="_blank">
-                                            <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                        <a id="href_f01_upload1"  ng-show="catalogo_url" href="{{catalogo_url}}" target="_blank">
+                                            <button id="btn_f01_upload1" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                         </a>
-                                        <button id="btn_f01_upload2" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload2', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                        <button id="btn_f01_upload1" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload1', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    </div>
                 </div>
+                <div class="col-md-12" align="right">
+                    <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-click="registrarDatosAE(datos)">Registrar</button>
+                    <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                
+                </div>
+            </form>
             </div>
-    
-            <div class="row" >
-                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>Ingrese los horarios de atención de la tienda virtual.</h4>
-
-                    <input type="checkbox" id="toggle3">
-                    <label class="label__modal3" for="toggle3"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
-        
-                    <dialog class="dialog__modal3" >
-                        <div class="post">
-                            <div class="header_post">
-                                <img src="/assets/img/compra_ayuda/sec3.jpg" alt="">
-                            </div>
-                                                <div class="body_post">
-                                <div class="post_content">
-                                    <h1>Horarios de atención</h1>
-                                    <p>1.- Si elige la opción <strong>Días hábiles</strong>, registrará las horas introducidas para los días de Lunes a Viernes.<br>
-                                       2.- Si elige <strong>Todos los días</strong>, registrará las horas introducidas para todos los días.<br>
-                                       3.- Si elige <strong>Ninguna</strong>, debe realizar el registro manualmente para cada día.      
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <p class="p__modal">
-                        ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
-                        </p>          
-                        <label class="label__modal3" for="toggle3">Cerrar Ayuda</label>
-                    </dialog>
-
-                </div><br>
-             </div>
-            <div class="row" >
-                <div class="col-md-10" align="left">
-                    <div class="alert alert-danger fade in">
-                        <strong>Estimado contribuyente: </strong>Para introducir el horario de antención puede hacerlo de 3 formas:
-                        <br>1.  Si elige la opción <strong>Días hábiles</strong>, registrará las horas introducidas para los días de Lunes a Viernes.
-                        <br>2.  Si elige <strong>Todos los días</strong>, registrará las horas introducidas para todos los días.
-                        <br>3.  Si elige <strong>Ninguna</strong>, debe realizar el registro manualmente para cada día.<br>
-                    </div>
-                </div>
-                <div class="col-md-2"></div>
-             </div>
-            <div class="row">
-                <div class="col-md-1"></div>              
-                <div class="col-md-2">
-                    <div class="form-group" >
-                        <label for="url" >Hora Inicio:</label>
-                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                            <input  ng-model="datos.f01_hora_inicio" id="f01_hora_inicio" name="f01_hora_inicio" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-time"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <div class="form-group" >
-                        <label for="url" >Hora Fin:</label>
-                        <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                            <input  ng-model="datos.f01_hora_fin" id="f01_hora_fin" name="f01_hora_fin" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-time"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <input type="radio"  ng-model="datos.f01_todos" id="f01_todos" name="horario" value="TODOS" ng-click="activaTodos('TODOS')">
-                    <label for="f01_todos">Todos los días</label><br>
-                    <input type="radio"  ng-model="datos.f01_habiles" id="f01_habiles" name="horario" value="HABILES" ng-click="activaTodos('HABILES')">
-                    <label for="f01_habiles">Días hábiles</label><br>
-                    <input type="radio" ng-model="datos.f01_ninguna" id="f01_ninguna" name="horario" value="NINGUNA" ng-click="activaTodos('NINGUNA')">
-                    <label for="f01_ninguna">Ninguna</label>
-
-                </div>
-            </div>
-            <hr>
-            <div class="row>">
-                <div class="col-md-1"></div>
-                <div class="col-md-11">
-                    <font color="#FF0000" size="4px" align="center"> * </font>
-                    <label for="url" ><strong>Horarios de atención:</strong></label>
-                </div>
-            </div><br>
-            
-            
-            <div class="row">   
-               
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <label for="url" >Días:</label>
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-4">
-                    <div class="col-md-5">
-                        <label for="url" >Hora Inicio:</label>
-                    </div>
-                    <div class="col-md-1">
-                        <label for="url" ></label>
-                    </div>
-                    <div class="col-md-5">
-                        <label for="url" >Hora Fin:</label>
-                    </div>
-                    
-                </div>
-                
-
-            </div>
-            <div class="row">   
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <div class="form-group" >
-                        <div class="controls">
-                            <input class="form-control" ng-model="datos.f01_lunes" id="f01_lunes" name="f01_lunes" value="LUNES" placeholder="LUNES" disabled/><br>                        
-                            <input class="form-control" ng-model="datos.f01_martes" id="f01_martes" name="f01_martes" value="MARTES" placeholder="MARTES" disabled/><br>                         
-                            <input class="form-control" ng-model="datos.f01_miercoles" id="f01_miercoles" name="f01_miercoles" value="MIÉRCOLES" placeholder="MIÉRCOLES" disabled/><br>                      
-                            <input class="form-control" ng-model="datos.f01_jueves" id="f01_jueves" name="f01_jueves" value="JUEVES" placeholder="JUEVES" disabled/><br>                         
-                            <input class="form-control" ng-model="datos.f01_viernes" id="f01_viernes" name="f01_viernes" value="VIERNES" placeholder="VIERNES" disabled/><br>                         
-                            <input class="form-control" ng-model="datos.f01_sabado" id="f01_sabado" name="f01_sabado" value="SABADO" placeholder="SABADO" disabled/><br>                      
-                            <input class="form-control" ng-model="datos.f01_domingo" id="f01_domingo" name="f01_domingo" value="DOMINGO" placeholder="DOMINGO" disabled/>                        
-                        </div>
-                    </div>
-               </div>
-               <div class="col-md-1"></div>
-                <div class="col-md-4">
-                    <div class="form-group" >
-                        <div class="controls">
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_lunes" id="f01_hora_inicio_lunes" name="f01_hora_inicio_lunes" ng-change="activaCheckL('L');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_lunes" id="f01_hora_fin_lunes" name="f01_hora_fin_lunes" ng-change="activaCheckL('L');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_lunes" name="f01_chk_lunes"  ng-model="datos.f01_chk_lunes"  ng-change="activaLunes(datos.f01_chk_lunes)" style="width: 22px; height: 22px;">
-                                    <label class="custom-control-label" for="defaultUnchecked"></label>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_martes" id="f01_hora_inicio_martes" name="f01_hora_inicio_martes" ng-change="activaCheckL('M');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div> 
-                            <div class="col-md-1"></div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_martes" id="f01_hora_fin_martes" name="f01_hora_fin_martes" ng-change="activaCheckL('M');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_martes" name="f01_chk_martes" ng-model="datos.f01_chk_martes"  ng-change="activaMartes(datos.f01_chk_martes)" style="width: 22px; height: 22px;">
-                                    <label class="custom-control-label" for="defaultUnchecked"></label>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_miercoles" id="f01_hora_inicio_miercoles" name="f01_hora_inicio_miercoles" ng-change="activaCheckL('MI');"class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_miercoles" id="f01_hora_fin_miercoles" name="f01_hora_fin_miercoles" ng-change="activaCheckL('MI');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_miercoles" name="f01_chk_miercoles" ng-model="datos.f01_chk_miercoles"  ng-change="activaMiercoles(datos.f01_chk_miercoles)" style="width: 22px; height: 22px;">
-                                    <label class="custom-control-label" for="defaultUnchecked"></label>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_jueves" id="f01_hora_inicio_jueves" name="f01_hora_inicio_jueves" ng-change="activaCheckL('J');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_jueves" id="f01_hora_fin_jueves" name="f01_hora_fin_jueves" ng-change="activaCheckL('J');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_jueves" name="f01_chk_jueves" ng-model="datos.f01_chk_jueves"  ng-change="activaJueves(datos.f01_chk_jueves)" style="width: 22px; height: 22px;">
-                                    <label class="custom-control-label" for="defaultUnchecked"></label>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_viernes" id="f01_hora_inicio_viernes" name="f01_hora_inicio_viernes" ng-change="activaCheckL('V');" ng-change="activaCheckL('V');"class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_viernes" id="f01_hora_fin_viernes" name="f01_hora_fin_viernes" ng-change="activaCheckL('V');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_viernes" name="f01_chk_viernes" ng-model="datos.f01_chk_viernes"  ng-change="activaViernes(datos.f01_chk_viernes)" style="width: 22px; height: 22px;">
-                                    <label class="custom-control-label" for="defaultUnchecked"></label>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_sabado" id="f01_hora_inicio_sabado" name="f01_hora_inicio_sabado" ng-change="activaCheckL('S');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_sabado" id="f01_hora_fin_sabado" name="f01_hora_fin_sabado" ng-change="activaCheckL('S');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_sabado" name="f01_chk_sabado" ng-model="datos.f01_chk_sabado"  ng-change="activaSabado(datos.f01_chk_sabado)" style="width: 22px; height: 22px;">
-                                    <label class="custom-control-label" for="defaultUnchecked"></label>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_inicio_domingo" id="f01_hora_inicio_domingo" name="f01_hora_inicio_domingo" ng-change="activaCheckL('D');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group" >
-                                    <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                        <input  ng-model="datos.f01_hora_fin_domingo" id="f01_hora_fin_domingo" name="f01_hora_fin_domingo" ng-change="activaCheckL('D');" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"  id="f01_chk_domingo" name="f01_chk_domingo" ng-model="datos.f01_chk_domingo"  ng-change="activaDomingo(datos.f01_chk_domingo)" style="width: 22px; height: 22px;">
-                                    <label class="custom-control-label" for="defaultUnchecked"></label>
-                                </div>
-                            </div>                         
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div class="row" >
-                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>Ingrese los números telefónicos de contacto de la tienda virtual.</h4>
-
-                    <input type="checkbox" id="toggle4">
-                    <label class="label__modal4" for="toggle4"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
-        
-                    <dialog class="dialog__modal4" >
-                        <div class="post">
-                            <div class="header_post">
-                                <img src="/assets/img/compra_ayuda/sec4.jpg" alt="">
-                            </div>
-                    
-                            <div class="body_post">
-                                <div class="post_content">
-                    
-                                    <h1>Números telefónicos de contacto</h1>
-                                    <p>1.- Ingrese sus datos actualizados de contacto.
-                                       2.- Considere colocar contactos referentes a su tienda o empresa.
-                                       3.- Se recomienda colocar los contactos establecidos en el formulario.<br>      
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <p class="p__modal">
-                        ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
-                        </p>
-                                          
-                        <label class="label__modal4" for="toggle4">Cerrar Ayuda</label>
-                    </dialog>
-
-                </div><br>
-             </div>
-             <div class="row" >
-                <div class="col-md-10" align="left">
-                    <div class="alert alert-danger fade in">
-                         <strong>Contactos: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Debe registrar por lo menos un (1) número de teléfono.
-                         <br><strong>Importante: </strong> <font color="#FF0000" size="4px" align="center"> * </font>  Si tiene números de celular, que cuentan con Whastapp, no olvide marcar la casilla cera al ícono.<br>
-                    </div>
-                </div>
-                <div class="col-md-2"></div>
-             </div>
-            <div class="row">   
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group" >
-                        <label for="url" >Tipo de Contacto:</label>
-                        <div class="controls">
-                            <select id="f01_contacto1" class="form-control" ng-model="datos.f01_contacto1" name="f01_contacto1" ng-disabled="desabilitado" ng-change="activarCampo1(datos.f01_contacto1)" required>
-                                <option value="">--Seleccionar--</option>
-                                <option value="CELULAR"> CELULAR </option>
-                                <option value="TELÉFONO"> TELÉFONO </option>
-                            </select>
-                            <br>
-                            <select id="f01_contacto2" class="form-control" ng-model="datos.f01_contacto2" name="f01_contacto2" ng-disabled="desabilitado" ng-change="activarCampo2(datos.f01_contacto2)"required>
-                                <option value="">--Seleccionar--</option>
-                                <option value="CELULAR"> CELULAR </option>
-                                <option value="TELÉFONO"> TELÉFONO </option>
-                            </select>
-                            <br>
-                            <select id="f01_contacto3" class="form-control" ng-model="datos.f01_contacto3" name="f01_contacto3" ng-disabled="desabilitado" ng-change="activarCampo3(datos.f01_contacto3)" required>
-                                <option value="">--Seleccionar--</option>
-                                <option value="CELULAR"> CELULAR </option>
-                                <option value="TELÉFONO"> TELÉFONO </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="form-group" >
-                        
-                        <label for="url" >Número de contacto:</label>
-                        <div class="controls">
-                            <!--input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" maxlength="8" onkeyUp="return valNumeroTelefono1(this);" /-->                         
-
-                            <input ng-model="datos.f01_contacto1_nro" id="f01_contacto1_nro" name="f01_contacto1_nro" class="form-control" ng-disabled="inicializaC1" maxlength="8" ng-keyUp="valNumTelefono1(datos.f01_contacto1_nro);" />                         
-                            <span id ="mensajeT1" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
-                            <span id ="mensajeT2" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido.</span>
-                            <span id ="mensajeT3" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
-                            <label for="url" > </label>
-                                        <br>
-                            <input ng-model="datos.f01_contacto2_nro" id="f01_contacto2_nro" name="f01_contacto2_nro" class="form-control" ng-disabled="inicializaC2" maxlength="8" ng-keyUp="valNumTelefono2(datos.f01_contacto2_nro);" />
-                            <span id ="mensajeT4" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
-                            <span id ="mensajeT5" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido</span>
-                            <span id ="mensajeT6" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
-                            <br>
-                            <input ng-model="datos.f01_contacto3_nro" id="f01_contacto3_nro" name="f01_contacto3_nro" class="form-control" ng-disabled="inicializaC3" maxlength="8" ng-keyUp="valNumTelefono3(datos.f01_contacto3_nro);" />
-                            <span id ="mensajeT7" style = "color:red;font-weight:bold; font-size:12px">El número de contacto es requerido.</span>
-                            <span id ="mensajeT8" style = "color:blue;font-weight:bold; font-size:12px">El número de contacto es válido</span>
-                            <span id ="mensajeT9" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos es incorrectos</span>
-                            
-                        </div>
-                    </div>
-                </div><br>
-                <div class="col-md-2">
-                    <div class="form-group" >
-                        <div class="controls" >
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_celular1_whatsapp" name="f01_celular1_whatsapp" ng-model="datos.f01_celular1_whatsapp"  ng-disabled="!swWhats1" ng-change="activaWhatsapp1(datos.f01_celular1_whatsapp)" style="width: 20px; height: 20px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                                <img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="30" width="30">
-                            </div>
-                        </div>
-                        <label for="url" > </label>
-                        <div class="controls">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_celular22_whatsapp" name="f01_celular22_whatsapp" ng-model="datos.f01_celular22_whatsapp" ng-disabled="!swWhats2" ng-change="activaWhatsapp2(datos.f01_celular22_whatsapp)" style="width: 20px; height: 20px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                                <img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="30" width="30">
-                            </div>
-                        </div>
-                        <label for="url" > </label>
-                        <div class="controls">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_celular3_whatsapp" name="f01_celular3_whatsapp" ng-model="datos.f01_celular3_whatsapp" ng-disabled="!swWhats3" ng-change="activaWhatsapp3(datos.f01_celular3_whatsapp)" style="width: 20px; height: 20px;">
-                                <label class="custom-control-label" for="defaultUnchecked"></label>
-                                <img src="../../../app/view/img/Whatsapp.png" alt=" Imagen" height="30" width="30">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                </div>
-            </div>
-
-            <div class="row" >
-                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>Introducir las cuentas de sus redes sociales, que tiene habilitadas para la tienda virtual</h4>
-
-                    <input type="checkbox" id="toggle5">
-                    <label class="label__modal5" for="toggle5"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
-        
-                    <dialog class="dialog__modal5" >
-                        <div class="post">
-                            <div class="header_post">
-                                <img src="/assets/img/compra_ayuda/sec5.jpg" alt="">
-                            </div>
-                    
-                            <div class="body_post">
-                                <div class="post_content">
-                    
-                                    <h1>redes sociales</h1>
-                                    <p>1.- Coloque redes sociales que usted frecuente o tenga mayor afluencia.<br>
-                                       2.- Si no encuentra en el formulario su red social, coloque el link en el campo OTRO.<br>
-                                       3.- Se recomienda colocar redes sociales respecto a su tienda y/o empresa.      
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <p class="p__modal">
-                        ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
-                        </p>
-                                          
-                        <label class="label__modal5" for="toggle5">Cerrar Ayuda</label>
-                    </dialog>
-
-                </div><br>
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-5">
-                    <div class="form-group" >
-                        <label for="url" >Red Social:</label>
-                        <div class="controls">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE1" name="f01_redessocialesAE1" ng-model="datos.f01_redessocialesAE1"  ng-change="activaRedes1(datos.f01_redessocialesAE1)">
-                                <label class="custom-control-label" for="defaultUnchecked">Facebook</label>
-                            </div>
-                            <br>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE2" name="f01_redessocialesAE2" ng-model="datos.f01_redessocialesAE2" ng-change="activaRedes2(datos.f01_redessocialesAE2)">
-                                <label class="custom-control-label" for="defaultUnchecked">Twitter</label>
-                            </div>
-                            <br>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE3" name="f01_redessocialesAE3" ng-model="datos.f01_redessocialesAE3" ng-change="activaRedes3(datos.f01_redessocialesAE3)">
-                                <label class="custom-control-label" for="defaultUnchecked">Instagram</label>
-                            </div><br>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE4" name="f01_redessocialesAE4" ng-model="datos.f01_redessocialesAE4" ng-change="activaRedes4(datos.f01_redessocialesAE4)">
-                            <label class="custom-control-label" for="defaultUnchecked">Youtube</label>
-                            </div><br>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE5" name="f01_redessocialesAE5" ng-model="datos.f01_redessocialesAE5" ng-change="activaRedes5(datos.f01_redessocialesAE5)">
-                            <label class="custom-control-label" for="defaultUnchecked">Otro</label>
-                            </div><br>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="form-group" >
-                        <label for="url" >URL de la Red Social:</label>
-                        <div class="controls">
-                            <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-keyUp="validaRedes1(datos.f01_redessocialesAE1_url);" placeholder="Por Ej. https://www.facebook.com/ejemplo" ng-disabled="inicializaFacebook"/>
-                            <span id ="mensajeR1" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
-                            <span id ="mensajeR2" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
-                            <br>
-                            <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-keyUp="validaRedes2(datos.f01_redessocialesAE2_url);" placeholder="Por Ej. https://twitter.com/ejemplo" ng-disabled="inicializaTwitter"/>
-                            <span id ="mensajeR3" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
-                            <span id ="mensajeR4" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
-                            <br>
-                            <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-keyUp="validaRedes3(datos.f01_redessocialesAE3_url);" placeholder="Por Ej.https://www.instagram.com/ejemplo/" ng-disabled="inicializaInstagram"/>
-                            <span id ="mensajeR5" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
-                            <span id ="mensajeR6" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
-                            <br>
-                            <input ng-model="datos.f01_redessocialesAE4_url" id="f01_redessocialesAE4_url" name="f01_redessocialesA4_url" class="form-control" ng-keyUp="validaRedes4(datos.f01_redessocialesAE4_url);" placeholder="Por Ej. https://www.youtube.com/watch?v=0TN2UiRyogc" ng-disabled="inicializaYoutube"/>
-                            <span id ="mensajeR7" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
-                            <span id ="mensajeR8" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
-                            <br>
-                            <input ng-model="datos.f01_redessocialesAE5_url" id="f01_redessocialesAE5_url" name="f01_redessocialesAE5_url" class="form-control" ng-keyUp="validaRedes5(datos.f01_redessocialesAE5_url);" placeholder="Por Ej. https://www.otro.com/ejemplo" ng-disabled="inicializaOtro"/>
-                            <span id ="mensajeR9" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
-                            <span id ="mensajeR10" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>  
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                </div>
-            </div>
-            <div class="row" >
-                <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                    <h4>Catálogo de Productos</h4>
-
-                    <input type="checkbox" id="toggle6">
-                    <label class="label__modal6" for="toggle6"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda de Sección</label>
-        
-                    <dialog class="dialog__modal6" >
-                        <div class="post">
-                            <div class="header_post">
-                                <img src="/assets/img/compra_ayuda/sec6.jpg" alt="">
-                            </div>
-                    
-                            <div class="body_post">
-                                <div class="post_content">
-                    
-                                    <h1>Catálogo de Productos</h1>
-                                    <p>1.- Coloque imágenes nítidas y reales de sus productos.<br>
-                                       2.- Recuerde subir sus imagenes en formato JPG en un tamaño NO MAYOR a 512x512 píxeles.<br>
-                                       3.- Se recomienda encarecidamente subir imágenes en el tamaño estipulado.      
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <p class="p__modal">
-                        ATENCIÓN: La imágen de ejemplo muestra como se verá la estructura de su página y la posición de las secciones.
-                        </p>
-                                          
-                        <label class="label__modal6" for="toggle6">Cerrar Ayuda</label>
-                    </dialog>
-
-                </div><br>
-                <div class="col-md-1">
-                </div>
-
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-11">
-                  <div class="form-group">
-                    <label id="lbl_f01_upload" class="col-md-2 control-label">Seleccione el archivo que contenga el Catálogo de productos, de la tienda virtual. (sArchivos tipo .jpg, .png ó .pdf)</label>
-                    <div class="controls">
-                        <div class="form-group custom-upload">
-                            <input type="file" id="f01_upload1" name="f01_upload1" accept="image/*"  style="display: none;">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                                <input id="txt_f01_upload1" name="txt_f01_upload1"  ng-model="datos['txt_f01_upload1']"  type="text" placeholder="" class="form-control input-lg" disabled required>
-                                <span class="input-group-btn">
-                                    <a id="href_f01_upload1"  ng-show="catalogo_url" href="{{catalogo_url}}" target="_blank">
-                                        <button id="btn_f01_upload1" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                    </a>
-                                    <button id="btn_f01_upload1" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload1', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
-                                </span>
-                            </div>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-            </div>
-            <div class="col-md-12" align="right">
-                <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-click="registrarDatosAE(datos)">Registrar</button>
-                <button ng-show="update!=null" type="button" class="btn btn-default ng-binding" ng-click="verificarContactos();actualizarDatosAE(datos)">Modificar</button>                
-            </div>
-          </form>
         </div>
-      </div>
-    </div>
+        </div>
+    </body>
 </html>

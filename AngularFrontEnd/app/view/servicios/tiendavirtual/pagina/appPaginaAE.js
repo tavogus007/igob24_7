@@ -70,6 +70,36 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         $scope.pag_web_privada = $rootScope.datosTiendaVirtual[0].tv_pagina_webc;
         document.getElementById("nombre_pagina").innerHTML = $scope.nombre_tienda;
         document.getElementById("descrip_pagina").innerHTML = recDesc;
+        var texto = $scope.nombre_tienda.replace(/<[^>]*>?/g, '');
+        var textoHtml = texto.replace("&aacute;", 'á');
+        textoHtml = textoHtml.replace("&Aacute;", 'Á');
+        textoHtml = textoHtml.replace("&eacute;", 'é');
+        textoHtml = textoHtml.replace("&Eacute;", 'É');
+        textoHtml = textoHtml.replace("&iacute;", 'í');
+        textoHtml = textoHtml.replace("&Iacute;", 'Í');
+        textoHtml = textoHtml.replace("&oacute;", 'ó');
+        textoHtml = textoHtml.replace("&Oacute;", 'Ó');
+        textoHtml = textoHtml.replace("&uacute;", 'ú');
+        textoHtml = textoHtml.replace("&Uacute;", 'Ú');
+        textoHtml = textoHtml.replace("&ntilde;", 'ñ');
+        textoHtml = textoHtml.replace("&Ntilde;", 'Ñ');
+        $rootScope.textoHtml = textoHtml;
+
+        var descripcion = recDesc.replace(/<[^>]*>?/g, '');
+        var descripcionHtml = descripcion.replace("&aacute;", 'á');
+        descripcionHtml = descripcionHtml.replace("&Aacute;", 'Á');
+        descripcionHtml = descripcionHtml.replace("&eacute;", 'é');
+        descripcionHtml = descripcionHtml.replace("&Eacute;", 'É');
+        descripcionHtml = descripcionHtml.replace("&iacute;", 'í');
+        descripcionHtml = descripcionHtml.replace("&Iacute;", 'Í');
+        descripcionHtml = descripcionHtml.replace("&oacute;", 'ó');
+        descripcionHtml = descripcionHtml.replace("&Oacute;", 'Ó');
+        descripcionHtml = descripcionHtml.replace("&uacute;", 'ú');
+        descripcionHtml = descripcionHtml.replace("&Uacute;", 'Ú');
+        descripcionHtml = descripcionHtml.replace("&ntilde;", 'ñ');
+        descripcionHtml = descripcionHtml.replace("&Ntilde;", 'Ñ');
+        $rootScope.descripcionHtml = descripcionHtml;
+
       } catch(error){
         console.log(error);
       }
@@ -202,7 +232,11 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         logo =JSON.parse(logotipo);
         uptTVCP.imagen = logo[0].url;
         uptTVCP.datosAuxiliares = JSON.stringify($rootScope.datosAuxiliares);
-        uptTVCP.nombre = $rootScope.datosTiendaVirtual[0].tv_nombrec;
+        //uptTVCP.nombre = $rootScope.datosTiendaVirtual[0].tv_nombrec;
+        uptTVCP.nombre = $rootScope.textoHtml;
+        uptTVCP.descripcion = $rootScope.descripcionHtml;
+        uptTVCP.pagina = $rootScope.datosTiendaVirtual[0].pdominio;
+
         uptTVCP.modificarTiendaVirtual(function(response){
           resultado = JSON.parse(response);
           if (resultado.success.data[0].regp_estado == 'SI') {
@@ -233,6 +267,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       }
       $.unblockUI();  
     }
+    //$rootScope.descripcionHtml = descripcionHtml;
+        //$rootScope.textoHtml = textoHtml;
     $scope.modificarPagina = function(url, html, estado){
       $.blockUI();
       try{

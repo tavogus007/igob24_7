@@ -477,7 +477,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       datosTiendaVirtual.dominio = dom;
     }
 
-    datosTiendaVirtual.pagina_web = data.f01_pagwebAE;    
+    datosTiendaVirtual.pagina_web = data.f01_pagwebAE; 
+    datosTiendaVirtual.pagina_web = datosTiendaVirtual.pagina_web.toLowerCase();
+
     $scope.descripNombreT = tinyMCE.get('f01_nombreTV').getContent();
     var resultadoN = $scope.descripNombreT.replace(/'/g, ''); 
     datosTiendaVirtual.nombre = resultadoN; 
@@ -595,6 +597,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       if(i == 0){
         if (data.f01_redessocialesAE1=='true' || data.f01_redessocialesAE1==true){
           if(data.f01_redessocialesAE1_url != ''){
+            data.f01_redessocialesAE1_url = data.f01_redessocialesAE1_url.toLowerCase();  
             myJSON = '{ "tipo":"facebook", "checked":"true", "url":"' + data.f01_redessocialesAE1_url + '" }';
             $rootScope.redesSocialesArray.push(myJSON);
           }else{
@@ -609,6 +612,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       if(i == 1){
         if (data.f01_redessocialesAE2=='true' || data.f01_redessocialesAE2==true){
           if(data.f01_redessocialesAE2_url != ''){
+            data.f01_redessocialesAE2_url = data.f01_redessocialesAE2_url.toLowerCase();  
+
             myJSON = '{ "tipo":"twitter", "checked":"true", "url":"' + data.f01_redessocialesAE2_url + '" }';
             $rootScope.redesSocialesArray.push(myJSON);
           }else{
@@ -623,6 +628,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       if(i == 2){
         if (data.f01_redessocialesAE3=='true' || data.f01_redessocialesAE3==true){
           if(data.f01_redessocialesAE3_url != ''){
+            data.f01_redessocialesAE3_url = data.f01_redessocialesAE3_url.toLowerCase();  
             myJSON = '{ "tipo":"instagram", "checked":"true", "url":"' + data.f01_redessocialesAE3_url + '" }';
             $rootScope.redesSocialesArray.push(myJSON);
           }else{
@@ -637,6 +643,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       if(i == 3){
         if (data.f01_redessocialesAE4=='true' || data.f01_redessocialesAE4==true){
           if(data.f01_redessocialesAE4_url != ''){
+            data.f01_redessocialesAE4_url = data.f01_redessocialesAE4_url.toLowerCase();  
+
             myJSON = '{ "tipo":"youtube", "checked":"true", "url":"' + data.f01_redessocialesAE4_url + '" }';
             $rootScope.redesSocialesArray.push(myJSON);
           }else{
@@ -651,6 +659,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       if(i == 4){
         if (data.f01_redessocialesAE5=='true' || data.f01_redessocialesAE5==true){
           if(data.f01_redessocialesAE5_url != ''){
+            data.f01_redessocialesAE5_url = data.f01_redessocialesAE5_url.toLowerCase();  
+
             myJSON = '{ "tipo":"otro", "checked":"true", "url":"' + data.f01_redessocialesAE5_url + '" }';
             $rootScope.redesSocialesArray.push(myJSON);
           }else{
@@ -772,6 +782,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         $scope.principal = false;
       }
       datosTiendaVirtual.pagina_web = data.f01_pagwebAE;
+      datosTiendaVirtual.pagina_web = datosTiendaVirtual.pagina_web.toLowerCase();
      
       if(data.f01_dominio == undefined || data.f01_dominio == 'undefined' || data.f01_dominio == '' || data.f01_dominio == null || data.f01_dominio =='null'){
         $scope.sinDominio = true;
@@ -904,6 +915,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         if(i == 0){
           if (data.f01_redessocialesAE1=='true' || data.f01_redessocialesAE1==true){
             if(data.f01_redessocialesAE1_url != ''){
+              data.f01_redessocialesAE1_url = data.f01_redessocialesAE1_url.toLowerCase();  
               myJSON = '{ "tipo":"facebook", "checked":"true", "url":"' + data.f01_redessocialesAE1_url + '" }';
               $rootScope.redesSocialesArray.push(myJSON);
             }else{
@@ -918,6 +930,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         if(i == 1){
           if (data.f01_redessocialesAE2=='true' || data.f01_redessocialesAE2==true){
             if(data.f01_redessocialesAE2_url != ''){
+              data.f01_redessocialesAE2_url = data.f01_redessocialesAE2_url.toLowerCase();  
               myJSON = '{ "tipo":"twitter", "checked":"true", "url":"' + data.f01_redessocialesAE2_url + '" }';
               $rootScope.redesSocialesArray.push(myJSON);
             }else{
@@ -932,6 +945,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         if(i == 2){
           if (data.f01_redessocialesAE3=='true' || data.f01_redessocialesAE3==true){
             if(data.f01_redessocialesAE3_url != ''){
+              data.f01_redessocialesAE3_url = data.f01_redessocialesAE3_url.toLowerCase();  
+
               myJSON = '{ "tipo":"instagram", "checked":"true", "url":"' + data.f01_redessocialesAE3_url + '" }';
               $rootScope.redesSocialesArray.push(myJSON);
             }else{
@@ -946,6 +961,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         if(i == 3){
           if (data.f01_redessocialesAE4=='true' || data.f01_redessocialesAE4==true){
             if(data.f01_redessocialesAE4_url != ''){
+              data.f01_redessocialesAE4_url = data.f01_redessocialesAE4_url.toLowerCase();  
               myJSON = '{ "tipo":"youtube", "checked":"true", "url":"' + data.f01_redessocialesAE4_url + '" }';
               $rootScope.redesSocialesArray.push(myJSON);
             }else{
@@ -960,6 +976,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
         if(i == 4){
           if (data.f01_redessocialesAE5=='true' || data.f01_redessocialesAE5==true){
             if(data.f01_redessocialesAE5_url != ''){
+              data.f01_redessocialesAE5_url = data.f01_redessocialesAE5_url.toLowerCase();  
               myJSON = '{ "tipo":"otro", "checked":"true", "url":"' + data.f01_redessocialesAE5_url + '" }';
               $rootScope.redesSocialesArray.push(myJSON);
             }else{
@@ -1138,6 +1155,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $("#mensaje2").hide();
       $("#mensaje3").hide();
       $("#mensaje4").hide();
+      $("#mensaje5").hide();
+      $("#mensaje6").hide();
       $("#mensajeT1").hide();
       $("#mensajeT2").hide();
       $("#mensajeT3").hide();
@@ -1507,6 +1526,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   
 
  $scope.activaRedes1 = function(dato){
+    $("#mensajeR1").hide();
+    $("#mensajeR2").hide();
     $scope.redFacebook = dato;
     if(dato == false) {
       $scope.inicializaFacebook = true;
@@ -1518,6 +1539,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.activaRedes2 = function(dato){
+    $("#mensajeR3").hide();
+    $("#mensajeR4").hide();
     $scope.redTwitter = dato
     if(dato == false) {
       $scope.inicializaTwitter = true;
@@ -1530,6 +1553,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.activaRedes3 = function(dato){
+    $("#mensajeR5").hide();
+    $("#mensajeR6").hide();
     $scope.redInstagram = dato;
     if(dato == false) {
       $scope.inicializaInstagram = true;
@@ -1541,6 +1566,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.activaRedes4 = function(dato){
+    $("#mensajeR7").hide();
+    $("#mensajeR8").hide();
     $scope.redYoutube = dato;
     if(dato == false) {
       $scope.inicializaYoutube = true;
@@ -1552,6 +1579,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.activaRedes5 = function(dato){
+    $("#mensajeR9").hide();
+    $("#mensajeR10").hide();
     $scope.redOtro = dato;
     if(dato == false) {
       $scope.inicializaOtro = true;
@@ -1562,7 +1591,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $("#mensajeR9").show();
     }
   }
-  $scope.validaRedes1 = function (datos){
+  /*$scope.validaRedes1 = function (datos){
     if($scope.redFacebook == true){
       $("#mensajeR1").show();
       $("#mensajeR2").hide();
@@ -1576,6 +1605,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.validaRedes2 = function (datos){
+
     if($scope.redTwitter == true){
       $("#mensajeR3").show();
       $("#mensajeR4").hide();
@@ -1626,7 +1656,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $("#mensajeR9").hide();
       $("#mensajeR10").hide();
     }
-  }
+  }*/
   $scope.activaTodos = function(datos){
     $scope.todos = datos;
     if($scope.todos == 'TODOS'){
@@ -1873,18 +1903,10 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.catSeleccionada = 'INDUSTRIA Y MANUFACTURA';
     }
     swal({
-      title: "¿Está usted seguro(a)?",
+      title: "¿Está usted seguro(a)?", 
       text: "Seleccionó la categoria: " +$scope.catSeleccionada,
-      type: "warning",
-      showCancelButton: true,
-      cancelButtonText: "Cancelar",
-      confirmButtonColor: "#DD6B55",
-      confirmButtonText: "Aceptar",
-      closeOnConfirm: false },
-      
-      function(){
-        swal("Categoría seleccionada", "Usted seleccionó la categoría:"+$scope.catSeleccionada, "success");
-      });
+      confirmButtonText: "Aceptar", 
+    });
 
   }
   $scope.activaCheckL = function(datos){
@@ -1991,6 +2013,81 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
     }
   }
+  $scope.is_url = function(str,tipo){
+    var str = str.toLowerCase();
+    console.log('tipo',tipo);
+    regexp =  /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+    if(tipo == 'PW'){
+      if (regexp.test(str)){
+        $("#mensaje5").show();
+        $("#mensaje6").hide();
+        return true;
+      }else{      
+        $("#mensaje5").hide();
+        $("#mensaje6").show();
+        return false;  
+      }
+    }
+    if(tipo == 'F'){
+      if (regexp.test(str)){
+        $("#mensajeR2").show();
+        $("#mensajeR1").hide();
+        return true;
+      }else{      
+        $("#mensajeR2").hide();
+        $("#mensajeR1").show();
+        return false;  
+      }
+    }
+    if(tipo == 'T'){
+      if (regexp.test(str)){
+        $("#mensajeR4").show();
+        $("#mensajeR3").hide();
+        return true;
+      }else{      
+        $("#mensajeR4").hide();
+        $("#mensajeR3").show();
+        return false;  
+      }
+    }
+    if(tipo == 'I'){
+      if (regexp.test(str)){
+        $("#mensajeR6").show();
+        $("#mensajeR5").hide();
+        return true;
+      }else{      
+        $("#mensajeR6").hide();
+        $("#mensajeR5").show();
+        return false;  
+      }
+    }
+    if(tipo == 'Y'){
+      if (regexp.test(str)){
+        $("#mensajeR8").show();
+        $("#mensajeR7").hide();
+        return true;
+      }else{      
+        $("#mensajeR8").hide();
+        $("#mensajeR7").show();
+        return false;  
+      }
+    }
+    if(tipo == 'O'){
+      if (regexp.test(str)){
+        $("#mensajeR10").show();
+        $("#mensajeR9").hide();
+        return true;
+      }else{      
+        $("#mensajeR10").hide();
+        $("#mensajeR9").show();
+        return false;  
+      }
+    }
+
+
+    }
+         
+  
 
 
   $scope.cambiarFile = function(obj, valor){

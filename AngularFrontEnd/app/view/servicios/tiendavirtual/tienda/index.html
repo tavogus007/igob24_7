@@ -81,8 +81,7 @@
             ],
             toolbar: 'undo redo | formatselect | ' +
             'bold italic backcolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help' + 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'       
+            'alignright alignjustify | bullist numlist outdent indent | ' 
         });
         </script>
         <style>
@@ -273,9 +272,11 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group" >
-                            <label for="url" >Introducir la dirección de su propia Página Web:</label>
+                            <label for="url" >Introducir la dirección de su propia Página Web (Ej. https://ejemplo.com):</label>
                             <div class="controls">
-                                <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control" placeholder="Copie aquí el enlace de su Página Web. Por ej. https://www.ejemplo.com" ng-disabled="desabilitado"/>
+                                <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control"  ng-keyup="is_url(datos.f01_pagwebAE,'PW');" placeholder="Copie aquí el enlace de su Página Web. Por ej. https://www.ejemplo.com" ng-disabled="desabilitado"/>
+                                <span id ="mensaje5" style = "color:green;font-weight:bold; font-size:12px">La dirección URL es válida.</span>
+                                <span id ="mensaje6" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>    
                             </div>
                         </div>
                     </div>
@@ -323,7 +324,7 @@
                     <div class="col-md-10">
                             <div class="form-group">
                                 <font color="#FF0000" size="4px" align="center"> * </font>
-                                <label for="url" >Seleccionar la imagen para la parte superior(Encabezado) de la Pagina Web, que será generada para la tienda virtual. (Archivos .jpg ó .jpeg ó .png).</label>
+                                <label for="url" >Seleccionar la imagen para la parte superior(Encabezado) de la Página Web, que será generada para la tienda virtual. (Archivos .jpg ó .jpeg ó .png).</label>
                                 <div class="controls">
                                     <div class="form-group custom-upload">
                                         <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*"  style="display: none;">
@@ -881,27 +882,27 @@
                             <div class="controls">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE1" name="f01_redessocialesAE1" ng-model="datos.f01_redessocialesAE1"  ng-change="activaRedes1(datos.f01_redessocialesAE1)">
-                                    <label class="custom-control-label" for="defaultUnchecked">Facebook</label>
+                                    <label class="custom-control-label" for="defaultUnchecked">Facebook (Por Ej. https://www.facebook.com/cuenta)</label>
                                 </div>
                                 <br>
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE2" name="f01_redessocialesAE2" ng-model="datos.f01_redessocialesAE2" ng-change="activaRedes2(datos.f01_redessocialesAE2)">
-                                    <label class="custom-control-label" for="defaultUnchecked">Twitter</label>
+                                    <label class="custom-control-label" for="defaultUnchecked">Twitter (Por Ej. https://twitter.com/cuenta)</label>
                                 </div>
                                 <br>
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE3" name="f01_redessocialesAE3" ng-model="datos.f01_redessocialesAE3" ng-change="activaRedes3(datos.f01_redessocialesAE3)">
-                                    <label class="custom-control-label" for="defaultUnchecked">Instagram</label>
+                                    <label class="custom-control-label" for="defaultUnchecked">Instagram (Por Ej.https://www.instagram.com/cuenta)</label>
                                 </div><br>
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE4" name="f01_redessocialesAE4" ng-model="datos.f01_redessocialesAE4" ng-change="activaRedes4(datos.f01_redessocialesAE4)">
-                                <label class="custom-control-label" for="defaultUnchecked">Youtube</label>
+                                <label class="custom-control-label" for="defaultUnchecked">Youtube (Por Ej. https://www.youtube.com/cuenta)</label>
                                 </div><br>
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input"  id="f01_redessocialesAE5" name="f01_redessocialesAE5" ng-model="datos.f01_redessocialesAE5" ng-change="activaRedes5(datos.f01_redessocialesAE5)">
-                                <label class="custom-control-label" for="defaultUnchecked">Otro</label>
+                                <label class="custom-control-label" for="defaultUnchecked">Otro (Por Ej. https://otro.com/cuenta)</label>
                                 </div><br>
-
+    
                             </div>
                         </div>
                     </div>
@@ -909,25 +910,25 @@
                         <div class="form-group" >
                             <label for="url" >URL de la Red Social:</label>
                             <div class="controls">
-                                <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-keyUp="validaRedes1(datos.f01_redessocialesAE1_url);" placeholder="Por Ej. https://www.facebook.com/ejemplo" ng-disabled="inicializaFacebook"/>
-                                <span id ="mensajeR1" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
-                                <span id ="mensajeR2" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
+                                <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-keyUp="is_url(datos.f01_redessocialesAE1_url,'F');"  placeholder="Por Ej. https://www.facebook.com/ejemplo" ng-disabled="inicializaFacebook"/>
+                                <span id ="mensajeR1" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>
+                                <span id ="mensajeR2" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL es válida.</span>                            
                                 <br>
-                                <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-keyUp="validaRedes2(datos.f01_redessocialesAE2_url);" placeholder="Por Ej. https://twitter.com/ejemplo" ng-disabled="inicializaTwitter"/>
-                                <span id ="mensajeR3" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
-                                <span id ="mensajeR4" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
+                                <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-keyUp="is_url(datos.f01_redessocialesAE2_url,'T');"  placeholder="Por Ej. https://twitter.com/ejemplo" ng-disabled="inicializaTwitter"/>
+                                <span id ="mensajeR3" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>
+                                <span id ="mensajeR4" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL es válida.</span>                            
                                 <br>
-                                <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-keyUp="validaRedes3(datos.f01_redessocialesAE3_url);" placeholder="Por Ej.https://www.instagram.com/ejemplo/" ng-disabled="inicializaInstagram"/>
-                                <span id ="mensajeR5" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
-                                <span id ="mensajeR6" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
+                                <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-keyUp="is_url(datos.f01_redessocialesAE3_url,'I');"  placeholder="Por Ej.https://www.instagram.com/ejemplo/" ng-disabled="inicializaInstagram"/>
+                                <span id ="mensajeR5" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>
+                                <span id ="mensajeR6" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL es válida.</span>                            
                                 <br>
-                                <input ng-model="datos.f01_redessocialesAE4_url" id="f01_redessocialesAE4_url" name="f01_redessocialesA4_url" class="form-control" ng-keyUp="validaRedes4(datos.f01_redessocialesAE4_url);" placeholder="Por Ej. https://www.youtube.com/watch?v=0TN2UiRyogc" ng-disabled="inicializaYoutube"/>
-                                <span id ="mensajeR7" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
-                                <span id ="mensajeR8" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>                            
+                                <input ng-model="datos.f01_redessocialesAE4_url" id="f01_redessocialesAE4_url" name="f01_redessocialesA4_url" class="form-control" ng-keyUp="is_url(datos.f01_redessocialesAE4_url,'Y');"   placeholder="Por Ej. https://www.youtube.com/watch?v=0TN2UiRyogc" ng-disabled="inicializaYoutube"/>
+                                <span id ="mensajeR7" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>
+                                <span id ="mensajeR8" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL es válida.</span>                            
                                 <br>
-                                <input ng-model="datos.f01_redessocialesAE5_url" id="f01_redessocialesAE5_url" name="f01_redessocialesAE5_url" class="form-control" ng-keyUp="validaRedes5(datos.f01_redessocialesAE5_url);" placeholder="Por Ej. https://www.otro.com/ejemplo" ng-disabled="inicializaOtro"/>
-                                <span id ="mensajeR9" style = "color:red;font-weight:bold; font-size:12px">La dirección URL es requerido</span>
-                                <span id ="mensajeR10" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL fue introducida correctamente</span>  
+                                <input ng-model="datos.f01_redessocialesAE5_url" id="f01_redessocialesAE5_url" name="f01_redessocialesAE5_url" class="form-control" ng-keyUp="is_url(datos.f01_redessocialesAE5_url,'O');"   placeholder="Por Ej. https://www.otro.com/ejemplo" ng-disabled="inicializaOtro"/>
+                                <span id ="mensajeR9" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>
+                                <span id ="mensajeR10" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL es válida.</span>  
 
                             </div>
                         </div>

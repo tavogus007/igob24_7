@@ -1046,9 +1046,9 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
 
     $scope.GetValueZonaSegura = function (idCategoria){
         if(idCategoria == 3419 || idCategoria == 3420 || idCategoria == 3421 || idCategoria == 3422 || idCategoria == 3423 || idCategoria == 3424){
-            $scope.mostrarzonasegura = true;
+            $rootScope.mostrarzonasegura = true;
         }else{
-            $scope.mostrarzonasegura = false;
+            $rootScope.mostrarzonasegura = false;
         }
     }
 
@@ -1138,9 +1138,9 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                 }
             }
             if(swmul == 1){
-                $scope.mostrarzonasegura = true;
+                $rootScope.mostrarzonasegura = true;
             }else{
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             }
             for (var i = 0; i < datoslicm.length && swproceso == 0; i++) {
                 if(datoslicm[i].f01_procesomul == 'GEN'){
@@ -1696,6 +1696,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             datosNeXO['f01_requisitos_actividad_economica'] =  paramForm.f01_requisitos_actividad_economica;
             datosNeXO['rdTipoTramite'] = paramForm.rdTipoTramite;
             datosNeXO['montoDeuda'] = paramForm.montoDeuda;
+            datosNeXO['id_zona_segura'] = paramForm.id_zona_segura;
             var datoObjectdj = [];
             var decjuradaN = new Object();
             if ($rootScope.decJuradaJuridico) {
@@ -3423,29 +3424,29 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         if (data.f01_tipo_lic_sierra == '12' || data.f01_tipo_lic_sierra == 12) {
             switch (data.chkzonasegura) {
                 case 'ZONASEGURA':
-                    $scope.mostrarzonasegura = true;
+                    $rootScope.mostrarzonasegura = true;
                 break;
                 case 'NOZONASEGURA':
-                    $scope.mostrarzonasegura = true;
+                    $rootScope.mostrarzonasegura = true;
                 break;
                 case '':
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
                 case 'undefined':
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
                 case undefined:
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
                 case null:
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
             };
         } else{
             if (data.chkzonasegura == undefined || data.chkzonasegura == 'undefined' || data.chkzonasegura == '') {
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             } else{
-                $scope.mostrarzonasegura = true;
+                $rootScope.mostrarzonasegura = true;
             };
         };
         //MOSTRAR VIAE

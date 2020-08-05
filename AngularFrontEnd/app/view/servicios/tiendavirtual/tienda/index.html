@@ -33,12 +33,28 @@
             function soloLetras(e){
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
-            letras = " áéíóúabcdefghijklmnñopqrstuvwxyz-_1234567890";
+            letras = "áéíóúabcdefghijklmnñopqrstuvwxyz-_1234567890";
             especiales = "8-37-39-46";
-
             tecla_especial = false
             for(var i in especiales){
-                    if(key == especiales[i]){
+                if(key == especiales[i]){
+                        tecla_especial = true;
+                        break;
+                    }
+                }
+
+                if(letras.indexOf(tecla)==-1 && !tecla_especial){
+                    return false;
+                }
+            }
+            function soloLetrasUrl(e){
+            key = e.keyCode || e.which;
+            tecla = String.fromCharCode(key).toLowerCase();
+            letras = "áéíóúabcdefghijklmnñopqrstuvwxyz-_1234567890:/.";
+            especiales = "8-37-39-46";
+            tecla_especial = false
+            for(var i in especiales){
+                if(key == especiales[i]){
                         tecla_especial = true;
                         break;
                     }
@@ -274,7 +290,7 @@
                         <div class="form-group" >
                             <label for="url" >Introducir la dirección de su propia Página Web (Ej. https://ejemplo.com):</label>
                             <div class="controls">
-                                <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control"  ng-keyup="is_url(datos.f01_pagwebAE,'PW');" placeholder="Copie aquí el enlace de su Página Web. Por ej. https://www.ejemplo.com" ng-disabled="desabilitado"/>
+                                <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control"  onkeypress="return soloLetrasUrl(event)" ng-keyup="is_url(datos.f01_pagwebAE,'PW');" placeholder="Copie aquí el enlace de su Página Web. Por ej. https://www.ejemplo.com" ng-disabled="desabilitado"/>
                                 <span id ="mensaje5" style = "color:green;font-weight:bold; font-size:12px">La dirección URL es válida.</span>
                                 <span id ="mensaje6" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>    
                             </div>
@@ -910,23 +926,23 @@
                         <div class="form-group" >
                             <label for="url" >URL de la Red Social:</label>
                             <div class="controls">
-                                <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" ng-keyUp="is_url(datos.f01_redessocialesAE1_url,'F');"  placeholder="Por Ej. https://www.facebook.com/ejemplo" ng-disabled="inicializaFacebook"/>
+                                <input ng-model="datos.f01_redessocialesAE1_url" id="f01_redessocialesAE1_url" name="f01_redessocialesAE1_url" class="form-control" onkeypress="return soloLetrasUrl(event)" ng-keyUp="is_url(datos.f01_redessocialesAE1_url,'F');"  placeholder="Por Ej. https://www.facebook.com/ejemplo" ng-disabled="inicializaFacebook"/>
                                 <span id ="mensajeR1" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>
                                 <span id ="mensajeR2" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL es válida.</span>                            
                                 <br>
-                                <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" ng-keyUp="is_url(datos.f01_redessocialesAE2_url,'T');"  placeholder="Por Ej. https://twitter.com/ejemplo" ng-disabled="inicializaTwitter"/>
+                                <input ng-model="datos.f01_redessocialesAE2_url" id="f01_redessocialesAE2_url" name="f01_redessocialesAE2_url" class="form-control" onkeypress="return soloLetrasUrl(event)" ng-keyUp="is_url(datos.f01_redessocialesAE2_url,'T');"  placeholder="Por Ej. https://twitter.com/ejemplo" ng-disabled="inicializaTwitter"/>
                                 <span id ="mensajeR3" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>
                                 <span id ="mensajeR4" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL es válida.</span>                            
                                 <br>
-                                <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" ng-keyUp="is_url(datos.f01_redessocialesAE3_url,'I');"  placeholder="Por Ej.https://www.instagram.com/ejemplo/" ng-disabled="inicializaInstagram"/>
+                                <input ng-model="datos.f01_redessocialesAE3_url" id="f01_redessocialesAE3_url" name="f01_redessocialesAE3_url" class="form-control" onkeypress="return soloLetrasUrl(event)" ng-keyUp="is_url(datos.f01_redessocialesAE3_url,'I');"  placeholder="Por Ej.https://www.instagram.com/ejemplo/" ng-disabled="inicializaInstagram"/>
                                 <span id ="mensajeR5" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>
                                 <span id ="mensajeR6" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL es válida.</span>                            
                                 <br>
-                                <input ng-model="datos.f01_redessocialesAE4_url" id="f01_redessocialesAE4_url" name="f01_redessocialesA4_url" class="form-control" ng-keyUp="is_url(datos.f01_redessocialesAE4_url,'Y');"   placeholder="Por Ej. https://www.youtube.com/watch?v=0TN2UiRyogc" ng-disabled="inicializaYoutube"/>
+                                <input ng-model="datos.f01_redessocialesAE4_url" id="f01_redessocialesAE4_url" name="f01_redessocialesA4_url" class="form-control" onkeypress="return soloLetrasUrl(event)" ng-keyUp="is_url(datos.f01_redessocialesAE4_url,'Y');"   placeholder="Por Ej. https://www.youtube.com/watch?v=0TN2UiRyogc" ng-disabled="inicializaYoutube"/>
                                 <span id ="mensajeR7" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>
                                 <span id ="mensajeR8" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL es válida.</span>                            
                                 <br>
-                                <input ng-model="datos.f01_redessocialesAE5_url" id="f01_redessocialesAE5_url" name="f01_redessocialesAE5_url" class="form-control" ng-keyUp="is_url(datos.f01_redessocialesAE5_url,'O');"   placeholder="Por Ej. https://www.otro.com/ejemplo" ng-disabled="inicializaOtro"/>
+                                <input ng-model="datos.f01_redessocialesAE5_url" id="f01_redessocialesAE5_url" name="f01_redessocialesAE5_url" class="form-control" onkeypress="return soloLetrasUrl(event)" ng-keyUp="is_url(datos.f01_redessocialesAE5_url,'O');"   placeholder="Por Ej. https://www.otro.com/ejemplo" ng-disabled="inicializaOtro"/>
                                 <span id ="mensajeR9" style = "color:red;font-weight:bold; font-size:12px">La dirección URL no es válida.</span>
                                 <span id ="mensajeR10" style = "color:blue;font-weight:bold; font-size:12px">La dirección URL es válida.</span>  
 

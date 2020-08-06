@@ -31,38 +31,38 @@
         </style>
         <script>
             function soloLetras(e){
-            key = e.keyCode || e.which;
-            tecla = String.fromCharCode(key).toLowerCase();
-            letras = "áéíóúabcdefghijklmnñopqrstuvwxyz-_1234567890";
-            especiales = "8-37-39-46";
-            tecla_especial = false
-            for(var i in especiales){
-                if(key == especiales[i]){
-                        tecla_especial = true;
-                        break;
+                key = e.keyCode || e.which;
+                tecla = String.fromCharCode(key).toLowerCase();
+                letras = "áéíóúabcdefghijklmnñopqrstuvwxyz-_1234567890";
+                especiales = "8-37-39-46";
+                tecla_especial = false
+                for(var i in especiales){
+                    if(key == especiales[i]){
+                            tecla_especial = true;
+                            break;
+                        }
                     }
-                }
 
-                if(letras.indexOf(tecla)==-1 && !tecla_especial){
-                    return false;
-                }
+                    if(letras.indexOf(tecla)==-1 && !tecla_especial){
+                        return false;
+                    }
             }
             function soloLetrasUrl(e){
-            key = e.keyCode || e.which;
-            tecla = String.fromCharCode(key).toLowerCase();
-            letras = "áéíóúabcdefghijklmnñopqrstuvwxyz-_1234567890:/.";
-            especiales = "8-37-39-46";
-            tecla_especial = false
-            for(var i in especiales){
-                if(key == especiales[i]){
-                        tecla_especial = true;
-                        break;
+                key = e.keyCode || e.which;
+                tecla = String.fromCharCode(key).toLowerCase();
+                letras = "áéíóúabcdefghijklmnñopqrstuvwxyz-_1234567890:/.";
+                especiales = "8-37-39-46";
+                tecla_especial = false
+                for(var i in especiales){
+                    if(key == especiales[i]){
+                            tecla_especial = true;
+                            break;
+                        }
                     }
-                }
 
-                if(letras.indexOf(tecla)==-1 && !tecla_especial){
-                    return false;
-                }
+                    if(letras.indexOf(tecla)==-1 && !tecla_especial){
+                        return false;
+                    }
             }
         </script>
         <script type="text/javascript">
@@ -76,29 +76,38 @@
                 angular.element(this).scope().cambiarFile(this, $(this).val());
                 });
             }
-            $('.clockpicker').clockpicker();   
-
-
-     
-
-            
+            $('.clockpicker').clockpicker();           
         </script>
         <script>
         tinymce.init({
-
+            selector: '#f01_nombreTV',
+            language: 'es',
+            height: 300,
+            menubar: false,
+            plugins: [
+                'lists link',
+                'visualblocks ',
+                'paste wordcount'
+            ],
+            toolbar: 'undo redo | formatselect | ' +
+            'bold italic backcolor forecolor fontselect | alignleft aligncenter ' +
+            'alignright alignjustify | outdent indent | ' 
+        });
+        tinymce.init({
             selector: 'textarea',
             language: 'es',
             height: 300,
             menubar: true,
             plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount'
+                'advlist autolink lists link',
+                'visualblocks',
+                'table paste'
             ],
             toolbar: 'undo redo | formatselect | ' +
             'bold italic backcolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | ' 
-        });
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat' + 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'       
+            });
         </script>
         <style>
             .switch {

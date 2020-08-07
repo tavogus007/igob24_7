@@ -137,10 +137,13 @@
         .slider.round:before {
             border-radius: 50%;
         }
+        
+        textarea:required:invalid {
+            border: 1px solid red;
+        }
     </style>
 
     <style>
-
         #toggle {
             visibility: hidden;
             opacity: 0;
@@ -148,7 +151,7 @@
             z-index: -1;
         }
         
-        #toggle:checked ~ .dialog__modal {
+        #toggle:checked~.dialog__modal {
             display: block;
         }
         
@@ -163,33 +166,35 @@
         
         @-webkit-keyframes appear {
             0% {
-            opacity: 0;
-            -webkit-transform: translateY(-10px);
-                    transform: translateY(-10px);
+                opacity: 0;
+                -webkit-transform: translateY(-10px);
+                transform: translateY(-10px);
             }
         }
         
         @keyframes appear {
             0% {
-            opacity: 0;
-            -webkit-transform: translateY(-10px);
-                    transform: translateY(-10px);
+                opacity: 0;
+                -webkit-transform: translateY(-10px);
+                transform: translateY(-10px);
             }
         }
+        
         .dialog__modal {
             z-index: 3;
             border-color: #0ACC9E;
             background: #f5f5f5;
             -webkit-animation: appear 350ms ease-in 1;
-                    animation: appear 350ms ease-in 1;
+            animation: appear 350ms ease-in 1;
             max-width: 800px;
         }
-        .p__modal{
+        
+        .p__modal {
             font-size: 14px;
             font-weight: 700;
             color: #dc3545;
         }
-
+        
         .btn__close {
             position: relative;
             float: right;
@@ -198,16 +203,19 @@
             z-index: 11;
             cursor: pointer;
         }
+        
         .btn__close:hover {
             transform: rotate(540deg);
         }
+        
         .color_i {
             color: #dc3545 !important;
         }
+        
         .color_i:hover {
             color: #0ACC9E !important;
         }
-
+        
         .post {
             width: 100%;
             height: 370px;
@@ -216,15 +224,19 @@
             flex-direction: column;
             position: relative;
         }
+        
         .post:hover .header_post {
             margin-top: -20px;
         }
+        
         .post:hover .body_post {
             height: 28%;
         }
+        
         .post:hover img {
             transform: translatey(-10px) translatex(-5px) scale(1.05);
         }
+        
         .post .header_post {
             width: 100%;
             height: 70%;
@@ -237,11 +249,13 @@
             -o-transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) 320ms;
             transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) 320ms;
         }
+        
         .post .header_post img {
             max-width: 100%;
             height: auto;
             transition: ease-in-out 600ms;
         }
+        
         .post .body_post {
             width: 100%;
             height: 30%;
@@ -257,22 +271,26 @@
             -o-transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) 320ms;
             transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) 320ms;
         }
+        
         .post .body_post .post_content {
             width: 100%;
             height: 80%;
             background: #fff;
             position: relative;
         }
+        
         .post .body_post .post_content h1 {
             font-size: 20px;
             font-weight: bold;
             color: #505050;
             text-transform: uppercase;
         }
+        
         .post .body_post .post_content p {
             font-size: 14px;
             font-weight: normal;
         }
+        
         .post .body_post .post_content .container_infos {
             width: 100%;
             display: flex;
@@ -282,6 +300,7 @@
             border-top: 1px solid rgba(0, 0, 0, 0.2);
             padding-top: 25px;
         }
+        
         .post .body_post .post_content .container_infos .postedBy {
             display: flex;
             flex-direction: column;
@@ -289,6 +308,7 @@
             letter-spacing: 1px;
             font-size: 12px;
         }
+        
         .post .body_post .post_content .container_infos .postedBy span {
             font-size: 12px;
             text-transform: uppercase;
@@ -296,10 +316,12 @@
             letter-spacing: 1px;
             font-weight: bold;
         }
+        
         .post .body_post .post_content .container_infos .container_tags {
             display: flex;
             flex-direction: column;
         }
+        
         .post .body_post .post_content .container_infos .container_tags span {
             font-size: 12px;
             text-transform: uppercase;
@@ -307,9 +329,11 @@
             letter-spacing: 1px;
             font-weight: bold;
         }
+        
         .post .body_post .post_content .container_infos .container_tags .tags ul {
             display: flex;
         }
+        
         .post .body_post .post_content .container_infos .container_tags .tags ul li {
             font-size: 12px;
             letter-spacing: 2px;
@@ -322,9 +346,11 @@
             justify-content: center;
             cursor: pointer;
         }
+        
         .post .body_post .post_content .container_infos .container_tags .tags ul li:first-child {
             margin-left: 0px;
         }
+        
         .post .body_post .post_content .container_infos .container_tags .tags ul li:before {
             content: '';
             text-align: center;
@@ -342,248 +368,249 @@
             -o-transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) 320ms;
             transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) 320ms;
         }
+        
         .post .body_post .post_content .container_infos .container_tags .tags ul li:hover:before {
             height: 18px;
         }
-
     </style>
 
 
 
 </head>
-<body>
-<div class="col-md-12" ng-controller="productosController" ng-init="inicioProductos();">
-    <div class="ibox float-e-margins">
-        <div>
-            <a class="btn btn-success ng-binding" tooltip="Adicionar producto" ng-click="newProducto(producto);"><i class="fa fa-plus blanco shake-slow"></i> Crear Producto</a>
-        </div>
-        <div class="ibox-content">
-            <form name="signupForm" class="form-horizontal" role="form" novalidate>
-                <div class="row" ng-show="frmProducto!=null">
-                    <div class="col-md-12">
-                        <legend>Datos del producto:</legend>
 
-                        <input type="checkbox" id="toggle">
-                        <label class="label__modal" for="toggle"><i class="fa fa-question-circle fa-2" aria-hidden="true"></i> &nbsp; Ayuda</label>
-        
-                        <dialog class="dialog__modal" >
-        
-                            <label for="toggle" class="btn__close">
+<body>
+    <div class="col-md-12" ng-controller="productosController" ng-init="inicioProductos();">
+        <div class="ibox float-e-margins">
+            <div>
+                <a class="btn btn-success ng-binding" tooltip="Adicionar producto" ng-click="newProducto(producto);"><i class="fa fa-plus blanco shake-slow"></i> Crear Producto</a>
+            </div>
+            <div class="ibox-content">
+                <form name="signupForm" class="form-horizontal" role="form" novalidate>
+                    <div class="row" ng-show="frmProducto!=null">
+                        <div class="col-md-12">
+                            <legend>Datos del producto:</legend>
+
+                            <input type="checkbox" id="toggle">
+                            <label class="label__modal" for="toggle"><i class="fa fa-question-circle fa-2" aria-hidden="true"></i> &nbsp; Ayuda</label>
+
+                            <dialog class="dialog__modal">
+
+                                <label for="toggle" class="btn__close">
                                 <i class="fa fa-times color_i" aria-hidden="true"></i>
                             </label>
-        
-                            <div class="post">
-                                <div class="header_post">
-                                    <img src="/assets/img/producto_ayuda/sec_1.jpg" alt="">
+
+                                <div class="post">
+                                    <div class="header_post">
+                                        <img src="/assets/img/producto_ayuda/sec_1.jpg" alt="">
+                                    </div>
+
+                                    <div class="body_post">
+                                        <div class="post_content">
+
+                                            <h1>Recomendaciones para subir imágenes</h1>
+                                            <p>1.- Para la óptima visualización de imágenes de sus productos, suba imágenes simétricamente cuadradas.<br> 2.- Se recomienda que mantenga los tamaños establecidos para las imágenes.<br> 3.- El tamaño de las
+                                                imágenes es de un tamaño máximo de 1024x1024 y un mínimo de 512x512 PÍXELES.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                        
-                                <div class="body_post">
-                                    <div class="post_content">
-                        
-                                        <h1>Recomendaciones para subir imágenes</h1>
-                                        <p>1.- Para la óptima visualización de imágenes de sus productos, suba imágenes simétricamente cuadradas.<br>
-                                        2.- Se recomienda que mantenga los tamaños establecidos para las imágenes.<br>
-                                        3.- El tamaño de las imágenes es de un tamaño máximo de 1024x1024 y un mínimo de 512x512 PÍXELES.      
-                                        </p>
+
+                                <p class="p__modal">
+                                    ATENCIÓN: Las dimensiones de las imágenes deben estar en píxeles y considerando el peso de las mismas.
+                                </p>
+
+                                <label class="label__modal" for="toggle">Cerrar Ayuda</label>
+                            </dialog>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url">  <font color="#FF0000" size="4px"> * </font> Nombre del Producto:</label>
+                                <div class="controls">
+                                    <input ng-model="datosProd.f01_producto" id="f01_producto" name="f01_producto" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url"> <font color="#FF0000" size="4px"> * </font> Descripción del Producto:</label>
+                                <div class="controls">
+                                    <textarea ng-model="datosProd.f01_descripcion" id="f01_descripcion" name="f01_descripcion" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url"> <font color="#FF0000" size="4px"> * </font> Precio: </label>
+                                <font color="#FF0000" size="2px"> (Ej. 1.99 - 2.50 - 3 - 5.85)</font>
+                                <div class="controls">
+                                    <input ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado" onkeyUp="return checkInput(this);" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url"> </label>
+                                <div class="controls">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="f01_oferta_producto" name="f01_oferta_producto" ng-model="datosProd.f01_oferta_producto" ng-change="activaOferta(datosProd.f01_oferta_producto)" style="width: 20px; height: 20px;">
+                                        <label class="custom-control-label" for="defaultUnchecked">Producto en Oferta</label>
+
                                     </div>
                                 </div>
                             </div>
-        
-                            <p class="p__modal">
-                            ATENCIÓN: Las dimensiones de las imágenes deben estar en píxeles y considerando el peso de las mismas.
-                            </p>
-                                            
-                            <label class="label__modal" for="toggle">Cerrar Ayuda</label>
-                        </dialog>
+                        </div>
 
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="url"> Nombre del Producto:</label>
-                            <div class="controls">
-                                <input ng-model="datosProd.f01_producto" id="f01_producto" name="f01_producto" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required />
+                        <div ng-if="datosProd.f01_oferta_producto == true">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="url"> <font color="#FF0000" size="4px"> * </font>Descripcion de la Oferta:</label>
+                                    <div class="controls">
+                                        <textarea ng-model="datosProd.f01_descripcion_oferta" id="f01_descripcion_oferta" name="f01_descripcion_oferta" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required></textarea>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="url">Descripción del Producto:</label>
-                            <div class="controls">
-                                <textarea ng-model="datosProd.f01_descripcion" id="f01_descripcion" name="f01_descripcion" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required></textarea>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="url">  <font color="#FF0000" size="4px"> * </font>Oferta Valida desde:</label>
+                                    <div class="controls">
+                                        <input ng-model="datosProd.f01_de_fecha" id="f01_de_fecha" name="f01_de_fecha" class="form-control" type="date" class="form-control" ng-disabled="desabilitado" placeholder="DD/MM/AAAA" required/>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="url">Precio: </label>
-                            <font color="#FF0000" size="2px"> (Ej. 1.99 - 2.50 - 3 - 5.85)</font>
-                            <div class="controls">
-                                <input ng-model="datosProd.f01_precio" id="f01_precio" name="f01_precio" class="form-control" ng-disabled="desabilitado" onkeyUp="return checkInput(this);" required />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="url"> </label>
-                            <div class="controls">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="f01_oferta_producto" name="f01_oferta_producto" ng-model="datosProd.f01_oferta_producto" ng-change="activaOferta(datosProd.f01_oferta_producto)" style="width: 20px; height: 20px;">
-                                    <label class="custom-control-label" for="defaultUnchecked">Producto en Oferta</label>
-                                    
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="url">  <font color="#FF0000" size="4px"> * </font>Oferta Valida hasta:</label>
+                                    <div class="controls">
+                                        <input ng-model="datosProd.f01_hasta_fecha" id="f01_hasta_fecha" name="f01_hasta_fecha" class="form-control" type="date" class="form-control" ng-disabled="desabilitado" placeholder="DD/MM/AAAA" required/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div ng-if="datosProd.f01_oferta_producto == true">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="url">Descripcion de la Oferta:</label>
+                                <label id="lbl_f01_upload" class="col-md-2 control-label"> <font color="#FF0000" size="4px"> * </font>Imagen Principal</label>
                                 <div class="controls">
-                                    <textarea ng-model="datosProd.f01_descripcion_oferta" id="f01_descripcion_oferta" name="f01_descripcion_oferta" class="form-control" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="url">Oferta Valida desde:</label>
-                                <div class="controls">
-                                    <input ng-model="datosProd.f01_de_fecha" id="f01_de_fecha" name="f01_de_fecha" class="form-control" type="date" class="form-control" ng-disabled="desabilitado" placeholder="DD/MM/AAAA" required/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="url">Oferta Valida hasta:</label>
-                                <div class="controls">
-                                    <input ng-model="datosProd.f01_hasta_fecha" id="f01_hasta_fecha" name="f01_hasta_fecha" class="form-control" type="date" class="form-control" ng-disabled="desabilitado" placeholder="DD/MM/AAAA" required/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label id="lbl_f01_upload" class="col-md-2 control-label">Imagen Principal</label>
-                            <div class="controls">
-                                <div class="form-group custom-upload">
-                                    <input type="file" id="f01_upload1" name="f01_upload1" accept="image/*" style="display: none;max-height: 520px; max-width: 520px;">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                                        <input id="txt_f01_upload1" name="txt_f01_upload1" ng-model="datosProd['txt_f01_upload1']" type="text" placeholder="" class="form-control input-lg" disabled required>
-                                        <span class="input-group-btn">
+                                    <div class="form-group custom-upload">
+                                        <input type="file" id="f01_upload1" name="f01_upload1" accept="image/*" style="display: none;max-height: 520px; max-width: 520px;">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                            <input id="txt_f01_upload1" name="txt_f01_upload1" ng-model="datosProd['txt_f01_upload1']" type="text" placeholder="" class="form-control input-lg" disabled required>
+                                            <span class="input-group-btn">
                                   <a id="href_f01_upload1" ng-show="imagenprincipalm" href="{{imagenprincipal}}"target="_blank">
                                   {{rmostrarviae}}
                                       <button id="btn_f01_upload1" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
                                   <button id="btn_f01_upload1" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload1', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                               </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label id="lbl_f01_upload2" class="col-md-2 control-label">Imagen Complementaria</label>
-                            <div class="controls">
-                                <div class="form-group custom-upload">
-                                    <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*" style="display: none;max-height: 520px; max-width: 520px;">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                                        <input id="txt_f01_upload2" name="txt_f01_upload2" ng-model="datosProd['txt_f01_upload2']" type="text" placeholder="" class="form-control input-lg" disabled required>
-                                        <span class="input-group-btn">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label id="lbl_f01_upload2" class="col-md-2 control-label">Imagen Complementaria</label>
+                                <div class="controls">
+                                    <div class="form-group custom-upload">
+                                        <input type="file" id="f01_upload2" name="f01_upload2" accept="image/*" style="display: none;max-height: 520px; max-width: 520px;">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                            <input id="txt_f01_upload2" name="txt_f01_upload2" ng-model="datosProd['txt_f01_upload2']" type="text" placeholder="" class="form-control input-lg" disabled required>
+                                            <span class="input-group-btn">
                                   <a id="href_f01_upload2" ng-show="imagenaux1m" href="{{imagenaux1}}" target="_blank">
                                   <button id="btn_f01_upload2" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
                                   <button id="btn_f01_upload2" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload2', 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                               </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label id="lbl_f01_upload" class="col-md-2 control-label">Imagen Complementaria</label>
-                            <div class="controls">
-                                <div class="form-group custom-upload">
-                                    <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*" style="display: none;max-height: 520px; max-width: 520px;">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                                        <input id="txt_f01_upload3" name="txt_f01_upload3" ng-model="datosProd['txt_f01_upload3']" type="text" placeholder="" class="form-control input-lg" disabled required>
-                                        <span class="input-group-btn">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label id="lbl_f01_upload" class="col-md-2 control-label">Imagen Complementaria</label>
+                                <div class="controls">
+                                    <div class="form-group custom-upload">
+                                        <input type="file" id="f01_upload3" name="f01_upload3" accept="image/*" style="display: none;max-height: 520px; max-width: 520px;">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                            <input id="txt_f01_upload3" name="txt_f01_upload3" ng-model="datosProd['txt_f01_upload3']" type="text" placeholder="" class="form-control input-lg" disabled required>
+                                            <span class="input-group-btn">
                                   <a id="href_f01_upload3" ng-show="imagenaux2m" href="{{imagenaux2}}" target="_blank">
                                   {{rmostrarviae}}
                                       <button id="btn_f01_upload3" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
                                   <button id="btn_f01_upload3" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload3' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                               </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12" align="right">
-                    <button ng-show="nuevo" type="button" class="btn btn-success ng-binding" ng-click="registrarProducto(datosProd)">Registrar</button>
-                    <button ng-show="update" type="button" class="btn btn-success ng-binding" ng-click="actualizarProducto(datosProd)">Modificar</button>
-                    <br>
-                </div>
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <B>LISTADO DE PRODUCTOS</B>
-                        </div>
-                        <div class="panel-body" ng-disabled="true">
-                            <div class="table-responsive">
-                                <table ng-table="tblDocumentos" class="table table-striped responsive">
-                                    <thead>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="column" ng-repeat="producto in $data | filter:query1 ">
-                                            <td data-title="'#'" class="text-center">&nbsp; {{$index+1}}</td>
-                                            <td data-title="'Opciones'" class="text-left">
-                                                <a class="btn btn-success ng-binding" tooltip="Modificar producto" ng-click="modificarProducto(producto);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                                <a class="btn btn-success ng-binding" tooltip="Eliminar producto" ng-click="eliminarProducto(producto);"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                                                <label class="switch">
+                    <div class="col-md-12" align="right">
+                        <button ng-show="nuevo" type="button" class="btn btn-success ng-binding" ng-click="registrarProducto(datosProd)">Registrar</button>
+                        <button ng-show="update" type="button" class="btn btn-success ng-binding" ng-click="actualizarProducto(datosProd)">Modificar</button>
+                        <br>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <B>LISTADO DE PRODUCTOS</B>
+                            </div>
+                            <div class="panel-body" ng-disabled="true">
+                                <div class="table-responsive">
+                                    <table ng-table="tblDocumentos" class="table table-striped responsive">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="column" ng-repeat="producto in $data | filter:query1 ">
+                                                <td data-title="'#'" class="text-center">&nbsp; {{$index+1}}</td>
+                                                <td data-title="'Opciones'" class="text-left">
+                                                    <a class="btn btn-success ng-binding" tooltip="Modificar producto" ng-click="modificarProducto(producto);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                                    <a class="btn btn-success ng-binding" tooltip="Eliminar producto" ng-click="eliminarProducto(producto);"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                                    <label class="switch">
                                 <input tooltip="Habilitar producto"  type="checkbox" ng-checked="producto.prd_estadoc=='A'"  ng-click="cambioEstadoProducto(producto)">
                                 <span class="slider round"></span>
                             </label>
-                                            </td>
-                                            <td data-title="'Producto'" class="text-left">&nbsp; {{producto.prd_productoc}} <br>
-                                                <div ng-if="producto.prd_ofertac == 'CON OFERTA'">
-                                                    <h3 style="color: red;"> <strong> OFERTA </strong> </h3>
-                                                </div>
-                                            </td>
-                                            <td data-title="'Descripción'" class="text-center">&nbsp; {{producto.prd_descripcionc}}</td>
-                                            <td data-title="'Precio'" class="text-center">&nbsp; {{producto.prd_precioc}}</td>
+                                                </td>
+                                                <td data-title="'Producto'" class="text-left">&nbsp; {{producto.prd_productoc}} <br>
+                                                    <div ng-if="producto.prd_ofertac == 'CON OFERTA'">
+                                                        <h3 style="color: red;"> <strong> OFERTA </strong> </h3>
+                                                    </div>
+                                                </td>
+                                                <td data-title="'Descripción'" class="text-center">&nbsp; {{producto.prd_descripcionc}}</td>
+                                                <td data-title="'Precio'" class="text-center">&nbsp; {{producto.prd_precioc}}</td>
 
-                                            <td data-title="'Imagenes del producto'" class="text-center" align="center">
-                                                <img src="{{producto.prd_imagen_pc}}" style="width:64px;">
-                                                <img src="{{producto.prd_imagen_a1c}}" style="width:64px;">
-                                                <img src="{{producto.prd_imagen_a2c}}" style="width:64px;">
-                                                <!--div>
+                                                <td data-title="'Imagenes del producto'" class="text-center" align="center">
+                                                    <img src="{{producto.prd_imagen_pc}}" style="width:64px;">
+                                                    <img src="{{producto.prd_imagen_a1c}}" style="width:64px;">
+                                                    <img src="{{producto.prd_imagen_a2c}}" style="width:64px;">
+                                                    <!--div>
                                   <a ng-click="ImprimirProforma(documento.prd_imagen_pc)" data-toggle="modal" data-target="#divPopup4" style="color: #ffbf01">
                                       <i class="fa fa-eye fa-2x flechaOscura"></i>
                                   </a>
                               </div-->
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
 </body>
+
 </html>

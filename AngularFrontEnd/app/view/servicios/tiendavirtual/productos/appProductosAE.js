@@ -148,7 +148,6 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
             });
 
         }
-        console.log(" $rootScope.archivosProducto:: ", $rootScope.archivosProducto);
         $scope.mostrarDocumentos($rootScope.archivosProducto);
         $.unblockUI();
     };
@@ -353,7 +352,6 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
     $scope.getProductos = function(usuario, id_ae) {
         $.blockUI();
         try {
-
             var datosProducto = new dataProducto();
             /*datosProducto.oid = usuario;*/
             datosProducto.idtv = id_ae;
@@ -368,12 +366,10 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
                         $scope.swP = true;
                         alertify.warning('No existen datos');
                     }
-
                     $rootScope.$apply();
                 } else {
                     $rootScope.$apply();
                 }
-
                 $scope.tblDocumentos.reload();
             });
         } catch (error) {

@@ -772,7 +772,6 @@
     ///////////////////****MAPA GIS*****/////////////////////////
     $scope.open_mapa_ae = function(lat, lon) {
         setTimeout(function() {
-            console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICASsssssssss");
             var latitud = lat;
             var longitud = lon;
             console.log("latitud...",latitud);
@@ -827,13 +826,10 @@
             {
                 datos = {};
                 vectorSource.clear();
-                if(jsonURLS)
-                {
+                if(jsonURLS) {
                     var url_sit    =   jsonURLS.SIT_GEO;
-                    //console.log('INTERMEDIO EN MAPA-----',url_sit);
                 }
                 var url_r = url_sit+'/geoserver/wms';
-                //console.log("URL PARA RIESGOS",url_r);
                 var viewResolution = view.getResolution();
                 var coord = $scope.map.getCoordinateFromPixel(evt.pixel);
                 var centro = ol.proj.transform(coord,'EPSG:3857',epsg32719);
@@ -842,17 +838,13 @@
                 var latitud = centro_1[1];
                 var longitud = centro_1[0];
                 wkt = "POINT("+centro[0]+" "+centro[1]+")";
-
                 datos.latitud = latitud;
                 datos.longitud = longitud;
-              
-                var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';   
-                
+                var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';
                 console.log ("latitud: ",latitud);
                 console.log ("longitud: ",longitud);
                 $scope.datos.INT_AC_latitud=latitud;
                 $scope.datos.INT_AC_longitud=longitud;
-
                 /*setTimeout(function() {
                     $.ajax({
                           url: url,
@@ -976,10 +968,9 @@
                         document.getElementById('f01_macro_act').value = $scope.datos.f01_macro_act;
                         $scope.datos.INT_AC_MACRO_ID = parseInt(idMacrodistrito);
                         document.getElementById('INT_AC_MACRO_ID').value = $scope.datos.f01_macro_act;
-                        console.log('macrooooo    ',$scope.datos.f01_macro_act);
                         $scope.GetValueMacrodistrito(idMacrodistrito);
-                        //$scope.zonaAct_id = cod_zona_sit;
-                        //console.log('$scope.zonaAct_id    ',$scope.zonaAct_id);
+                        $scope.zonaAct_id = cod_zona_sit;
+                        console.log('$scope.zonaAct_id    ',$scope.zonaAct_id);
                         var listarZonas = [$scope.distritoZonas($scope.datos.f01_macro_act)];
                         $q.all(listarZonas).then(function (resp) {
                             $scope.datos.f01_zona_act = cod_zona_sit;
@@ -1108,174 +1099,8 @@
         },550);
     };
 
-    $scope.open_map_ae2 = function(latitud, longitud)
-    {
-        console.log("Entrando open_map_ae2222222");
-       
-        setTimeout(function(){            
-            var style = new ol.style.Style({
-              image: new ol.style.Circle({
-                                          radius: 7,
-                                          fill: new ol.style.Fill({color: 'red'})
-                                          })
-            });
-            $("#mapaUbi").empty();
-            //////////////////////////////////////////////////////////////////
-            var epsg32719 = 'EPSG:32719';
-            var epsg4326 = 'EPSG:4326';
-            proj4.defs(epsg32719, '+proj=utm +zone=19 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs');
-            proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');
-            ////////////////////////////////////////////////////////////////////////
-            $scope.mapa = new ol.Map({
-                          layers: [
-                                    new ol.layer.Group({
-                                                          title: 'Mapas Base',
-                                                          layers: [
-                                                                    osm,
-                                                                    vias,
-                                                                    //osm_udit,
-                                                                    //municipios,
-                                                                    zonas_tributarias,
-                                                                    vectorLayer
-                                                                  ]
-                                                      })
-                                  ],
-                                  target: 'mapaUbi',
-                                  view: view
-            });
-            
-            var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: 'Leyenda'});
-            $scope.mapa.addControl(layerSwitcher);
-            vectorLayer.getSource().clear();
-            ////////////////////////////////////////////////////////////////////////
-            var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
-            feature.setStyle(style);
-            vectorSource.addFeature(feature);
-            $scope.mapa.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
-            $scope.mapa.getView().setZoom(15);
-            /////////////////////////
 
-            var n_genesis = geo_id_genesis.length;
-            console.log("n_id_gene...",n_genesis);
-            console.log("n_id_sit...",geo_id_sit.length);
-            console.log("n_id_serv...",geo_id_sit_servicio.length);
-
-            $scope.mapa.on('click', function (evt)
-            {
-                vectorSource.clear();
-                var coord = $scope.mapa.getCoordinateFromPixel(evt.pixel);
-                var centro = ol.proj.transform(coord, 'EPSG:3857', epsg32719);
-                var wkt = '';
-                var centro_1 = ol.proj.transform(coord, 'EPSG:3857', epsg4326);
-                var latitud = centro_1[1];
-                var longitud = centro_1[0];
-                wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
-                console.log("PUNTO",centro_1);
-                $("#INT_AC_latitud").val(latitud);
-                $("#INT_AC_longitud").val(longitud);
-                $scope.datos.INT_AC_longitud = longitud;
-                $scope.datos.INT_AC_latitud = latitud;
-                /////////////////////////////////////////////////////////////////////
-                var feature = $scope.mapa.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
-                  return feature;
-                });
-                if (feature){
-                  var coord = feature.getGeometry().getCoordinates();
-                  var props = feature.getProperties();
-                }
-                else
-                {
-                  //alert();
-                  var url_zonas_tributarias = zonas_tributarias.getSource().getGetFeatureInfoUrl(
-                              evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
-                                'INFO_FORMAT': 'application/json',
-                                'propertyName': 'grupovalor'
-                              }
-                            );
-
-                  var url_zonas = zonas.getSource().getGetFeatureInfoUrl(
-                              evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
-                                'INFO_FORMAT': 'application/json',
-                                'propertyName': 'zonaref,macrodistrito,subalcaldia,codigozona,macro,distrito'
-                              }
-                            );
-                   var url_vias = vias.getSource().getGetFeatureInfoUrl(
-                              evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
-                                'INFO_FORMAT': 'application/json',
-                                'propertyName': 'nombrevia,tipovia'
-                              }
-                            );
-
-                  reqwest({
-                    url: url_zonas_tributarias,
-                    type: 'json',
-                  }).then(function(data)
-                  {
-                    var feature = data.features[0];
-                    ///////////////////////////////////////////////////////////
-                    var cod = feature.properties;
-                    var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                    console.log("codigo zona tributaria: ",codigo_zona_tributaria);
-                    $scope.datos.f01_idCodigoZona = codigo_zona_tributaria;
-                    ///////////////////////////////////////////////////////////
-                  });
-                  reqwest({
-                    url: url_zonas,
-                    type: 'json',
-                  }).then(function(data)
-                  {
-                    var feature = data.features[0];
-                    ///////////////////////////////////////////////////////////
-                    var cod = feature.properties;
-                    var zona = cod.zonaref;
-                    var macrodistrito = cod.macrodistrito;
-                    var cod_zona= cod.codigozona;
-                    var distrito= cod.distrito;
-                    console.log("zona: ",zona);
-                    console.log("macrodistrito: ",macrodistrito);
-                    console.log("distrito: ",distrito);
-                    console.log("cod zona: ",cod_zona);
-                    /////////////////////////////////////////////
-                    //console.log("hhhhh",n_genesis);
-                    for (var i=0;i<n_genesis;i++)
-                    {
-                      if(geo_id_sit_servicio[i]=== cod_zona )
-                      {
-                        cod_zona_genesis = geo_id_genesis[i];
-                        console.log("cod zona genesis: ",cod_zona_genesis);
-                      }
-                    }
-                    /////////////////////////////////////////////
-                    
-                  });
-                  reqwest({
-                    url: url_vias,
-                    type: 'json',
-                  }).then(function(data)
-                  {
-                    var feature = data.features[0];
-                    ///////////////////////////////////////////////////////////
-                    var cod = feature.properties;
-                    var nombre_via = cod.nombrevia;
-                    var tipo_via = cod.tipovia;
-                    console.log("nombre via: ",nombre_via);
-                    console.log("tipo via: ",tipo_via);
-                    ///////////////////////////////////////////////////////////
-                  });
-                }
-               
-                var feature = new ol.Feature(
-                  new ol.geom.Point(ol.proj.fromLonLat(centro_1))
-                );
-                feature.setStyle(style);
-                vectorSource.addFeature(feature);
-            });
-            /////////////////////////
-        },1000);
-    };
-
-    $scope.buscar_ubicacion_p = function()
-    {
+    $scope.buscar_ubicacion_p = function() {
       var nombre_1 = new Array();
       var f = '';
       //var nombre = document.getElementById('busqueda_p').value;
@@ -1378,10 +1203,8 @@
     };*/
 
     $scope.distritoZonas = function(idMacroJ){
-        console.log('idMacroJ   ',idMacroJ);
         $scope.aDistritoZona = {};
         try{
-            console.log('tryyy');
             $scope[name] = 'Running';
             var deferred = $q.defer();
             $.ajax({
@@ -1392,7 +1215,6 @@
                 dataType: 'json',
                 data: '{"macro":"'+idMacroJ+'"}',
                 success: function (data){
-                    console.log('zonassssss     ',data);
                     respuesta = data.success.data;
                     datoObjectFinal = [];
                     for(i = 0; i < respuesta.length; i++){
@@ -1443,7 +1265,6 @@
     };*/
 
     $scope.cargarNombVia = function(tipoVia, idZona) {
-        console.log('tipoVia    ',tipoVia,'    idZona    ',idZona);
         try{
             $scope[name] = 'Running';
             var deferred = $q.defer();
@@ -1496,7 +1317,6 @@
         var idDistrito  = "";
         var idZona      = "";
         var dimZon = $scope.aDistritoZona.length;
-        var cont = 0;
         var distNombre  = $scope.datos.f01_zona_act;
         if($scope.aDistritoZona){
             angular.forEach($scope.aDistritoZona, function(value, key) {
@@ -1507,24 +1327,16 @@
                     //tipo_z = value.dist_tipo_z;
                 }
             });
-            console.log('con    ',cont);
         }
         $scope.datos.f01_dist_act    =   idDistrito;
         document.getElementById('f01_dist_act').value = $scope.datos.f01_dist_act;
         $scope.datos.INT_AC_DISTRITO    =   idDistrito;
         $scope.datos.INT_AC_ID_ZONA     =   idZona;
         console.log('distrito   ',$scope.datos.f01_dist_act);
-        /*var e = document.getElementById("f01_zona_act");
-        $scope.datos.f01_zona_act_descrip = e.options[e.selectedIndex].text;*/
-        
         deferred.resolve($scope.datos.f01_zona_act);
-
-
-
         $scope.datos.INT_ID_ZONA        =   idZona;
         $scope.desabilitadoNo = true;
         return deferred.promise;
-
     };
 
     $scope.cargarNombViaTxt = function(valor) {
@@ -1552,26 +1364,25 @@
                 $scope.datos.chkzonasegura = 'ZONASEGURA';
                 $scope.datos.id_zona_segura= idzonasegura;
                 console.log('$scope.datos.id_zona_segura    ',$scope.datos.id_zona_segura);
-                $scope.datos.f01_zon_seg='SI';
+                $scope.datos.f01_zon_seg = 'SI';
             }
             else{
                 if($rootScope.mostrarzonasegura == false || $rootScope.mostrarzonasegura == 'false'){
                     $scope.datos.chkzonasegura='NOZONASEGURA';
                     $scope.datos.id_zona_segura= id_zona_segura;
-                    $scope.datos.f01_zon_seg='NO';
+                    $scope.datos.f01_zon_seg = 'NO';
                 }else{
-                    $scope.datos.chkzonasegura='NOZONASEGURA';
-                    $scope.datos.id_zona_segura= id_zona_segura;
+                    $scope.datos.chkzonasegura = 'NOZONASEGURA';
+                    $scope.datos.id_zona_segura = id_zona_segura;
                 }
             } 
         }else{
-             $scope.datos.chkzonasegura='NOZONASEGURA';
-             $scope.datos.id_zona_segura= 0;
+             $scope.datos.chkzonasegura = 'NOZONASEGURA';
+             $scope.datos.id_zona_segura = 0;
         }
     } 
     
     $scope.seleccionarTramiteRender = function (tramite) {
-        console.log('tramiteeeee   111111  ',tramite);
         //openMapGis();
         //$scope.getCaptchasXX();
         $scope.procesoSeleccionado   =   tramite.vdvser_id;
@@ -2188,8 +1999,6 @@
     $scope.GetValueZona = function (zona) {
         setTimeout(function(){
             var e = document.getElementById("f01_zona_act");
-            console.log('zoooooooo    ',e);
-
             $scope.datos.f01_zona_act_descrip = e.options[e.selectedIndex].text;
             console.log('f01_zona_act_descrip:::    ',$scope.datos.f01_zona_act_descrip);
         },500);
@@ -2411,7 +2220,6 @@
             data = JSON.parse(resultado);
             if(data.success.length > 0){
                 $rootScope.aMacrodistritos = data.success;
-                console.log('$scope.aMacrodistritos     ',$rootScope.aMacrodistritos);
             }else{
                 $scope.msg = "Error !!";
             }
@@ -2648,7 +2456,6 @@
 
     $scope.sesionTokenSierra = function(){
         var urlToken = CONFIG.SERVICE_SIERRAM+"apiLogin";
-        console.log('sssssssssssssssssssssssssssss    ',urlToken);
         $scope[name] = 'Running';
         var deferred = $q.defer();
         $.ajax({
@@ -2660,7 +2467,6 @@
             success: function(response) {
                 dataResp = JSON.stringify(response);
                 deferred.resolve(dataResp);
-                console.log('token sierraaa    ',dataResp);
                 sessionStorage.setItem('TOKEN_MOTORS', response.token);
             },
             error: function (response, status, error) {

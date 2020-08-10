@@ -491,7 +491,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     datosTiendaVirtual.forma_entrega = resultadoFe; 
 
 
-    if($scope.descripTienda == '' || $scope.formaEntrega == '' ){
+    if($scope.descripNombreT == '' || $scope.descripTienda == '' || $scope.formaEntrega == '' ){
       $scope.swDes = true;
     }
     else{
@@ -806,7 +806,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       var resultadoFe = $scope.formaEntrega.replace(/'/g, ''); 
       datosTiendaVirtual.forma_entrega = resultadoFe; 
 
-      if($scope.descripTienda == '' || $scope.formaEntrega == '' ){
+      if($scope.descripNombreT == '' || $scope.descripTienda == '' || $scope.formaEntrega == '' ){
         $scope.swDes = true;
       }
       else{

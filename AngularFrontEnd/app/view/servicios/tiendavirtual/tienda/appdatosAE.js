@@ -127,8 +127,12 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_correoTV = data[0].tv_correoc;
       $scope.datos.f01_pagwebAE =   data[0].tv_pagina_webc;
       $scope.datos.f01_dominio = data[0].pdominio;
-      //document.getElementById('f01_dominio').value = data[0].pdominio;
-      document.getElementById('f01_dominio').readOnly = true;
+      if($scope.datos.f01_dominio == null || $scope.datos.f01_dominio == 'null' || $scope.datos.f01_dominio == undefined || $scope.datos.f01_dominio == 'undefined'){
+        document.getElementById('f01_dominio').readOnly = false;
+      }else{
+        document.getElementById('f01_dominio').readOnly = true;
+      }
+    
       
       //contactos
       var contactos = data[0].tv_contactosc;

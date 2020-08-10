@@ -759,6 +759,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             }
         });
     }
+    
 
     $scope.InsertarDocumento = function(urlData){
         var sDocSistema     =   "IGOB247";

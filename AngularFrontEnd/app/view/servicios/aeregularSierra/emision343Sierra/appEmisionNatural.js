@@ -851,7 +851,6 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
                 $scope.getRequisitosFormulario(data.f01_categoria_agrupada, data.f01_tipo_per);
             }
         };
-        
         $scope.iniciarRequsitosDoc(data);
         if (data.f01_tipo_lic_sierra == '12' || data.f01_tipo_lic_sierra == 12) {
             switch (data.chkzonasegura) {

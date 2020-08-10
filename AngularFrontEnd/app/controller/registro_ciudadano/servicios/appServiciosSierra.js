@@ -1356,7 +1356,7 @@
         $scope.datos.f01_macro_act_descrip = e.options[e.selectedIndex].text;
         console.log("f01_macro_act_descrip:: ", $scope.datos.f01_macro_act_descrip);
     }
-     
+    
     $scope.GetZonaSeguraV = function (idzonasegura){
         if(idzonasegura != 0 || idzonasegura != '0'){
             //$rootScope.mostrarzonasegura = true;
@@ -1383,7 +1383,6 @@
     } 
     
     $scope.seleccionarTramiteRender = function (tramite) {
-        //openMapGis();
         //$scope.getCaptchasXX();
         $scope.procesoSeleccionado   =   tramite.vdvser_id;
         $rootScope.tramiteId = tramite.vtra_id;

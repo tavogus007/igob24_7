@@ -1137,7 +1137,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                     swmul = 0;
                 }
             }
-            
             if(swmul == 1){
                 $rootScope.mostrarzonasegura = true;
             }else{

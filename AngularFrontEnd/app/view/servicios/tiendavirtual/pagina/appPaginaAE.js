@@ -378,6 +378,11 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   swal('', "Error al crear la página", 'error');
                   $.unblockUI();  
                 }
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                console.log("Status: " + textStatus); 
+                console.log("Error: " + errorThrown); 
+                $.unblockUI();  
               }
           });
         } else {
@@ -475,6 +480,11 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   swal('', "Error al crear la página", 'error');
                   $.unblockUI();  
                 }
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                console.log("Status: " + textStatus); 
+                console.log("Error: " + errorThrown); 
+                $.unblockUI();  
               }
           });
         } else {

@@ -61,95 +61,107 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       }
     }
     $scope.inicioPaginaWeb = function () {
-      try{
-        $scope.nombre_tienda = $rootScope.datosTiendaVirtual[0].tv_nombrec;
-        recDesc = $rootScope.datosTiendaVirtual[0].tv_descripcionc;
-        recDesc = recDesc.replace(/<br ?\/?>/g, "\n");
-        $scope.descrip_pagina = recDesc;
-        $scope.correo_tienda = $rootScope.datosTiendaVirtual[0].tv_correoc;
-        $scope.pag_web_privada = $rootScope.datosTiendaVirtual[0].tv_pagina_webc;
-        document.getElementById("nombre_pagina").innerHTML = $scope.nombre_tienda;
-        document.getElementById("descrip_pagina").innerHTML = recDesc;
-        var texto = $scope.nombre_tienda.replace(/<[^>]*>?/g, '');
-        var textoHtml = texto.replace("&aacute;", 'á');
-        textoHtml = textoHtml.replace("&Aacute;", 'Á');
-        textoHtml = textoHtml.replace("&eacute;", 'é');
-        textoHtml = textoHtml.replace("&Eacute;", 'É');
-        textoHtml = textoHtml.replace("&iacute;", 'í');
-        textoHtml = textoHtml.replace("&Iacute;", 'Í');
-        textoHtml = textoHtml.replace("&oacute;", 'ó');
-        textoHtml = textoHtml.replace("&Oacute;", 'Ó');
-        textoHtml = textoHtml.replace("&uacute;", 'ú');
-        textoHtml = textoHtml.replace("&Uacute;", 'Ú');
-        textoHtml = textoHtml.replace("&ntilde;", 'ñ');
-        textoHtml = textoHtml.replace("&Ntilde;", 'Ñ');
-        $rootScope.textoHtml = textoHtml;
-
-        var descripcion = recDesc.replace(/<[^>]*>?/g, '');
-        var descripcionHtml = descripcion.replace("&aacute;", 'á');
-        descripcionHtml = descripcionHtml.replace("&Aacute;", 'Á');
-        descripcionHtml = descripcionHtml.replace("&eacute;", 'é');
-        descripcionHtml = descripcionHtml.replace("&Eacute;", 'É');
-        descripcionHtml = descripcionHtml.replace("&iacute;", 'í');
-        descripcionHtml = descripcionHtml.replace("&Iacute;", 'Í');
-        descripcionHtml = descripcionHtml.replace("&oacute;", 'ó');
-        descripcionHtml = descripcionHtml.replace("&Oacute;", 'Ó');
-        descripcionHtml = descripcionHtml.replace("&uacute;", 'ú');
-        descripcionHtml = descripcionHtml.replace("&Uacute;", 'Ú');
-        descripcionHtml = descripcionHtml.replace("&ntilde;", 'ñ');
-        descripcionHtml = descripcionHtml.replace("&Ntilde;", 'Ñ');
-        $rootScope.descripcionHtml = descripcionHtml;
-
-      } catch(error){
-        console.log(error);
-      }
-      try{
-        logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
-        logotipo = logotipo.replace('["{','[{');
-        logotipo = logotipo.replace('}"]','}]');
-        logotipo = logotipo.replace('}"{','}{');
-        logotipo = logotipo.replace(/\\"/gi,'"');
-        logo = JSON.parse(logotipo);
-        urllogo = logo[0].url;
-        toDataURL(urllogo, function(dataUrl) {
-          $rootScope.urlLogotipo64 = dataUrl;
-        });
-      } catch (error){
-        console.log(error);
-        $rootScope.urlLogotipo64 = "";
-      }
+        try{
+          $scope.nombre_tienda = $rootScope.datosTiendaVirtual[0].tv_nombrec;
+          recDesc = $rootScope.datosTiendaVirtual[0].tv_descripcionc;
+          recDesc = recDesc.replace(/<br ?\/?>/g, "\n");
+          $scope.descrip_pagina = recDesc;
+          $scope.correo_tienda = $rootScope.datosTiendaVirtual[0].tv_correoc;
+          $scope.pag_web_privada = $rootScope.datosTiendaVirtual[0].tv_pagina_webc;
+          document.getElementById("nombre_pagina").innerHTML = $scope.nombre_tienda;
+          document.getElementById("descrip_pagina").innerHTML = recDesc;
+          var texto = $scope.nombre_tienda.replace(/<[^>]*>?/g, '');
+          var textoHtml = texto.replace("&aacute;", 'á');
+          textoHtml = textoHtml.replace("&Aacute;", 'Á');
+          textoHtml = textoHtml.replace("&eacute;", 'é');
+          textoHtml = textoHtml.replace("&Eacute;", 'É');
+          textoHtml = textoHtml.replace("&iacute;", 'í');
+          textoHtml = textoHtml.replace("&Iacute;", 'Í');
+          textoHtml = textoHtml.replace("&oacute;", 'ó');
+          textoHtml = textoHtml.replace("&Oacute;", 'Ó');
+          textoHtml = textoHtml.replace("&uacute;", 'ú');
+          textoHtml = textoHtml.replace("&Uacute;", 'Ú');
+          textoHtml = textoHtml.replace("&ntilde;", 'ñ');
+          textoHtml = textoHtml.replace("&Ntilde;", 'Ñ');
+          $rootScope.textoHtml = textoHtml;
+  
+          var descripcion = recDesc.replace(/<[^>]*>?/g, '');
+          var descripcionHtml = descripcion.replace("&aacute;", 'á');
+          descripcionHtml = descripcionHtml.replace("&Aacute;", 'Á');
+          descripcionHtml = descripcionHtml.replace("&eacute;", 'é');
+          descripcionHtml = descripcionHtml.replace("&Eacute;", 'É');
+          descripcionHtml = descripcionHtml.replace("&iacute;", 'í');
+          descripcionHtml = descripcionHtml.replace("&Iacute;", 'Í');
+          descripcionHtml = descripcionHtml.replace("&oacute;", 'ó');
+          descripcionHtml = descripcionHtml.replace("&Oacute;", 'Ó');
+          descripcionHtml = descripcionHtml.replace("&uacute;", 'ú');
+          descripcionHtml = descripcionHtml.replace("&Uacute;", 'Ú');
+          descripcionHtml = descripcionHtml.replace("&ntilde;", 'ñ');
+          descripcionHtml = descripcionHtml.replace("&Ntilde;", 'Ñ');
+          $rootScope.descripcionHtml = descripcionHtml;
+  
+        } catch(error){
+          console.log(error);
+        }
+        try{
+          logotipo = $rootScope.datosTiendaVirtual[0].plogotipo;
+          logotipo = logotipo.replace('["{','[{');
+          logotipo = logotipo.replace('}"]','}]');
+          logotipo = logotipo.replace('}"{','}{');
+          logotipo = logotipo.replace(/\\"/gi,'"');
+          logo = JSON.parse(logotipo);
+          urllogo = logo[0].url;
+          toDataURL(urllogo, function(dataUrl) {
+            $rootScope.urlLogotipo64 = dataUrl;
+          });
+        } catch (error){
+          console.log(error);
+          $rootScope.urlLogotipo64 = "";
+        }
+        try {
+          encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
+          encabezado = encabezado.replace('["{','[{');
+          encabezado = encabezado.replace('}"]','}]');
+          encabezado = encabezado.replace('}"{','}{');
+          encabezado = encabezado.replace(/\\"/gi,'"');
+          enca = JSON.parse(encabezado);
+          urlenca = enca[0].url;
+          toDataURL(urlenca, function(dataUrl) {
+            $rootScope.urlEncabezado64 = dataUrl;
+          });
+        } catch(error){
+          console.log(error);
+          $rootScope.urlEncabezado64 = "";
+        }
+        try{
+          catalogo = $rootScope.datosTiendaVirtual[0].tvcatalogo;
+          catalogo = catalogo.replace('["{','[{');
+          catalogo = catalogo.replace('}"]','}]');
+          catalogo = catalogo.replace('}"{','}{');
+          catalogo = catalogo.replace(/\\"/gi,'"');
+          cata = JSON.parse(catalogo);
+          urlcatalogo = cata[0].url;
+          $rootScope.urlcatalogo = urlcatalogo;
+        } catch(error){
+          console.log(error);
+          $rootScope.urlcatalogo = "";
+        }
+        $scope.desabilitado = "disabled";
+        $scope.getPagina();
+        $scope.dataAdicional();
+        $scope.getProductos();
+        $scope.mostrar = true;
       try {
-        encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
-        encabezado = encabezado.replace('["{','[{');
-        encabezado = encabezado.replace('}"]','}]');
-        encabezado = encabezado.replace('}"{','}{');
-        encabezado = encabezado.replace(/\\"/gi,'"');
-        enca = JSON.parse(encabezado);
-        urlenca = enca[0].url;
-        toDataURL(urlenca, function(dataUrl) {
-          $rootScope.urlEncabezado64 = dataUrl;
-        });
+        dominio = $rootScope.datosTiendaVirtual[0].pdominio;
+        if (dominio.length == 0){
+          swal('', "No tiene nombre para la creación de su pagina web", 'error');
+          $scope.mostrar = false;
+        }
       } catch(error){
-        console.log(error);
-        $rootScope.urlEncabezado64 = "";
+        swal('', "Debe actualizar datos en información de la tienda virtual", 'error');
+        $scope.mostrar = false;
       }
-      try{
-        catalogo = $rootScope.datosTiendaVirtual[0].tvcatalogo;
-        catalogo = catalogo.replace('["{','[{');
-        catalogo = catalogo.replace('}"]','}]');
-        catalogo = catalogo.replace('}"{','}{');
-        catalogo = catalogo.replace(/\\"/gi,'"');
-        cata = JSON.parse(catalogo);
-        urlcatalogo = cata[0].url;
-        $rootScope.urlcatalogo = urlcatalogo;
-      } catch(error){
-        console.log(error);
-        $rootScope.urlcatalogo = "";
-      }
-      $scope.desabilitado = "disabled";
-      $scope.getPagina();
-      $scope.dataAdicional();
-      $scope.getProductos();
+      
     };
     $scope.frmProducto = null;
     $scope.obtDatos      =   [];

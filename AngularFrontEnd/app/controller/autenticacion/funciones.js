@@ -1,6 +1,6 @@
 var numero = "";
   var captchaerror=""; 
-  var tiemporespuesta = null;
+  var tiemporespuesta = null; 
   var ErrorCapchasXX  = "";
   var SuccesCapchasxx = "";
   var habGuardar1 = ""; 

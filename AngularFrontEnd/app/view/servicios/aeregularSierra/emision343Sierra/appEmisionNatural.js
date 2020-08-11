@@ -565,9 +565,9 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
     }
     $scope.GetValueZonaSegura = function (idCategoria){
         if(idCategoria == 3419 || idCategoria == 3420 || idCategoria == 3421 || idCategoria == 3422 || idCategoria == 3423 || idCategoria == 3424){
-            $scope.mostrarzonasegura = true;
+            $rootScope.mostrarzonasegura = true;
         }else{
-            $scope.mostrarzonasegura = false;
+            $rootScope.mostrarzonasegura = false;
         }
     }
 
@@ -633,9 +633,9 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
                 }
             }
             if(swmul == 1){
-                $scope.mostrarzonasegura = true;
+                $rootScope.mostrarzonasegura = true;
             }else{
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             }
             for (var i = 0; i < datoslicm.length && swproceso == 0; i++) {
                 if(datoslicm[i].f01_procesomul == 'GEN'){
@@ -855,29 +855,29 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         if (data.f01_tipo_lic_sierra == '12' || data.f01_tipo_lic_sierra == 12) {
             switch (data.chkzonasegura) {
                 case 'ZONASEGURA':
-                    $scope.mostrarzonasegura = true;
+                    $rootScope.mostrarzonasegura = true;
                 break;
                 case 'NOZONASEGURA':
-                    $scope.mostrarzonasegura = true;
+                    $rootScope.mostrarzonasegura = true;
                 break;
                 case '':
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
                 case 'undefined':
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
                 case undefined:
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
                 case null:
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
             };
         } else{
             if (data.chkzonasegura == undefined || data.chkzonasegura == 'undefined' || data.chkzonasegura == '') {
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             } else{
-                $scope.mostrarzonasegura = true;
+                $rootScope.mostrarzonasegura = true;
             };
         };
         //MOSTRAR VIAE
@@ -3032,6 +3032,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
             datosNeXO['f01_categoria_agrupada_descripcion'] = paramForm.f01_categoria_agrupada_descripcion.toUpperCase();
             datosNeXO['f01_categoria_agrupada_descrip'] = paramForm.f01_categoria_agrupada_descrip;
             datosNeXO['f01_actividad_desarrollada']= paramForm.f01_categoria_descrip2;
+            datosNeXO['id_zona_segura'] = paramForm.id_zona_segura;
             var datoObjectdj = [];
             var decjuradaN = new Object();
             if ($rootScope.decJuradaNatural) {

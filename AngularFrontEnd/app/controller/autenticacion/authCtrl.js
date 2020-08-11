@@ -130,7 +130,6 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             },
             error: function (response, status, error) {
                 dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-                console.log(dataResp);
             }
         });
     }
@@ -168,9 +167,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             },
             error: function (response, status, error) {
                 dataRespM = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-                console.log(dataRespM);
             }
-            
         });
     }
 
@@ -627,7 +624,6 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
 
 
     $scope.generarDocumentoPhp = function (){
-        console.log($scope.horafinal,$scope.fechafinalserver);
         $.blockUI();
         var tipoPersona = '';
         var oidCiudadano = '';
@@ -656,16 +652,14 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                     "nit": '',
                     "fecha": $scope.fechafinalserver,
                     "hora": $scope.horafinal
-
                 },
                 success:function(response){
                     var urlData = response;
-                    $scope.InsertarDocumento(response);
+                    $scope.InsertarDocumentoCondicionUso(response);
                     $.unblockUI();
                 }
             }); 
         }else{
-            console.log("ingresa:::");
             oidCiudadano    = sessionService.get('IDSOLICITANTE');
             datosCiudadano  = sessionService.get('REPRESENTANTE');
             datosci         = sessionService.get('REPRESENTANTECI');
@@ -688,15 +682,14 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                 },
                 success:function(response){
                     var urlData = response;
-                    console.log("response: ", response);
-                    $scope.InsertarDocumento(response);
+                    $scope.InsertarDocumentoCondicionUso(response);
                     $.unblockUI();
                 }
             });
         }
     };
 
-    $scope.InsertarDocumento = function(urlData){
+    $scope.InsertarDocumentoCondicionUso = function(urlData){
         var sDocSistema     =   "IGOB247";
         var sDocProceso     =   "CONDICIONES DE USO";
         var sDocId          =   1;
@@ -716,56 +709,110 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
         var sDocTipoExt     =   "";
         var sDocNroTramNexo =   "";
         var sCasoCodigo     =   "0";
-         var documento  =   new gDocumentosIgob();
-            documento.doc_sistema = sDocSistema;
-            documento.doc_proceso = sDocProceso;
-            documento.doc_id = sDocId;
-            documento.doc_ci_nodo = sDocCiNodo;
-            documento.doc_datos = sDocDatos;
-            documento.doc_url = sDocUrl;
-            documento.doc_version = sDocVersion;
-            documento.doc_tiempo = sDocTiempo;
-            documento.doc_firma_digital = sDocFirmaDigital;
-            documento.doc_usuario = sDocUsuario;
-            documento.doc_tipo_documento = sDocTipoDoc;
-            documento.doc_tamanio_documento = sDocTamDoc;
-            documento.doc_nombre = sDocNombre;
-            documento.doc_tps_doc_id = sDocTpsId;
-            documento.doc_url_logica = sDocUrlLogica;
-            documento.doc_acceso = sDocAcceso;
-            documento.doc_tipo_documento_ext = sDocTipoExt;
-            documento.doc_nrotramite_nexo = sDocNroTramNexo;
-            documento.doc_id_codigo = sCasoCodigo;
-            documento.insertarDocIgob(function(resultado){
-                resultadoApi = JSON.parse(resultado);                           
-                if (resultadoApi.success) {
-                    srespuesta  =   "TRUE";
-                    var nomArchivo = urlData.split("?")[0];
-                    var nomArchivo2 = nomArchivo.split("/");
-                    var nombreArchivo = nomArchivo2[nomArchivo2.length-1];
-                    var datosCondicionUso = new guardarCondicionUso();
-                    datosCondicionUso.nombreCU = nombreArchivo;
-                    datosCondicionUso.oid = sDocUsuario;
-                    datosCondicionUso.guardarCondicion_deUso(function(resultado){
-                        var resultadoApi = JSON.parse(resultado);
-                        if( typeof(resultadoApi.success) != 'undefined') {
-                            var mensajeExito = "Condición de Uso almacenada correctamente.";
-                            alertify.success(mensajeExito);
-                        }
-                        else {
-                            var mensajeExito = resultadoApi.error.message;
-                            swal('', mensajeExito, 'error');
-                        }
-                    })
-                    return srespuesta;
-                } else {
-                    $.unblockUI();
-                    sweet.show(resultadoApi.error.message);
-                    srespuesta  =   "FALSE";                          
-                    return srespuesta;
-                }
-            });
+        var documento  =   new gDocumentosIgob();
+        documento.doc_sistema = sDocSistema;
+        documento.doc_proceso = sDocProceso;
+        documento.doc_id = sDocId;
+        documento.doc_ci_nodo = sDocCiNodo;
+        documento.doc_datos = sDocDatos;
+        documento.doc_url = sDocUrl;
+        documento.doc_version = sDocVersion;
+        documento.doc_tiempo = sDocTiempo;
+        documento.doc_firma_digital = sDocFirmaDigital;
+        documento.doc_usuario = sDocUsuario;
+        documento.doc_tipo_documento = sDocTipoDoc;
+        documento.doc_tamanio_documento = sDocTamDoc;
+        documento.doc_nombre = sDocNombre;
+        documento.doc_tps_doc_id = sDocTpsId;
+        documento.doc_url_logica = sDocUrlLogica;
+        documento.doc_acceso = sDocAcceso;
+        documento.doc_tipo_documento_ext = sDocTipoExt;
+        documento.doc_nrotramite_nexo = sDocNroTramNexo;
+        documento.doc_id_codigo = sCasoCodigo;
+        documento.insertarDocIgob(function(resultado){
+            resultadoApi = JSON.parse(resultado);
+            if (resultadoApi.success) {
+                srespuesta  =   "TRUE";
+                var nomArchivo = urlData.split("?")[0];
+                var nomArchivo2 = nomArchivo.split("/");
+                var nombreArchivo = nomArchivo2[nomArchivo2.length-1];
+                var datosCondicionUso = new guardarCondicionUso();
+                datosCondicionUso.nombreCU = nombreArchivo;
+                datosCondicionUso.oid = sDocUsuario;
+                datosCondicionUso.guardarCondicion_deUso(function(resultado){
+                    var resultadoApi = JSON.parse(resultado);
+                    if( typeof(resultadoApi.success) != 'undefined') {
+                        var mensajeExito = "Condición de Uso almacenada correctamente.";
+                        alertify.success(mensajeExito);
+                    }
+                    else {
+                        var mensajeExito = resultadoApi.error.message;
+                        alertify.warning('', mensajeExito, 'error');
+                    }
+                })
+                return srespuesta;
+            } else {
+                $.unblockUI();
+                sweet.show(resultadoApi.error.message);
+                srespuesta  =   "FALSE";                          
+                return srespuesta;
+            }
+        });
+    }
+    
 
+    $scope.InsertarDocumento = function(urlData){
+        var sDocSistema     =   "IGOB247";
+        var sDocProceso     =   "DECLARACION JURADA";
+        var sDocId          =   1;
+        var sDocCiNodo      =   "CU";
+        var sDocDatos       =   "";
+        var sDocUrl         =   urlData;
+        var sDocVersion     =   1;
+        var sDocTiempo      =   400;
+        var sDocFirmaDigital=   0;
+        var sDocUsuario     =   sessionService.get('IDSOLICITANTE');
+        var sDocTipoDoc     =   "pdf";
+        var sDocTamDoc      =   "";
+        var sDocNombre      =   "DECLARACION JURADA";
+        var sDocTpsId       =   0;
+        var sDocUrlLogica   =   urlData;
+        var sDocAcceso      =   "";
+        var sDocTipoExt     =   "";
+        var sDocNroTramNexo =   "";
+        var sCasoCodigo     =   "0";
+        var documento  =   new gDocumentosIgob();
+        documento.doc_sistema = sDocSistema;
+        documento.doc_proceso = sDocProceso;
+        documento.doc_id = sDocId;
+        documento.doc_ci_nodo = sDocCiNodo;
+        documento.doc_datos = sDocDatos;
+        documento.doc_url = sDocUrl;
+        documento.doc_version = sDocVersion;
+        documento.doc_tiempo = sDocTiempo;
+        documento.doc_firma_digital = sDocFirmaDigital;
+        documento.doc_usuario = sDocUsuario;
+        documento.doc_tipo_documento = sDocTipoDoc;
+        documento.doc_tamanio_documento = sDocTamDoc;
+        documento.doc_nombre = sDocNombre;
+        documento.doc_tps_doc_id = sDocTpsId;
+        documento.doc_url_logica = sDocUrlLogica;
+        documento.doc_acceso = sDocAcceso;
+        documento.doc_tipo_documento_ext = sDocTipoExt;
+        documento.doc_nrotramite_nexo = sDocNroTramNexo;
+        documento.doc_id_codigo = sCasoCodigo;
+        documento.insertarDocIgob(function(resultado){
+            resultadoApi = JSON.parse(resultado);                           
+            if (resultadoApi.success) {
+                srespuesta  =   "TRUE";
+                return srespuesta;
+            } else {
+                $.unblockUI();
+                sweet.show(resultadoApi.error.message);
+                srespuesta  =   "FALSE";                          
+                return srespuesta;
+            }
+        });
     }
 
     $scope.cancelarCondicionesUso = function (btn) {
@@ -824,7 +871,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                 $('#btncondicionesuso_a').hide();
                 $("#btncerrarmodal").show();
                 $('#msgcondicionesuso').html(msgcondiciones);
-                $('#htmlcondicionesuso').hide();
+                $('#htmlcondicionesuso').hide();                
                 $scope.generarDocumentoPhp();
                 $rootScope.sservicios = 'SI';
                 sessionService.set('SERVICIOS','SI');
@@ -873,7 +920,6 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                 $rootScope.aceptarcondiciones   =   true;
                 var tienecondicionesuso     =   '';
                 var aceptacondicionesuso    =   '';
-                
                 //alert(valcondiciones);
                 if(valcondiciones == 'SI'){
                     tienecondicionesuso     =   'SI';

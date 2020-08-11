@@ -9,6 +9,29 @@
 		overflow-y: scroll;
 		overflow-x: scroll;
 		}
+	</style> 
+	<style>
+	.social {
+		position: fixed; /* Hacemos que la posición en pantalla sea fija para que siempre se muestre en pantalla*/
+		left: 93%; /* Establecemos la barra en la izquierda */
+		top: 200px; /* Bajamos la barra 200px de arriba a abajo */
+		z-index: 2000; /* Utilizamos la propiedad z-index para que no se superponga algún otro elemento como sliders, galerías, etc */
+	}
+	
+		.social ul {
+			list-style: none;
+		}
+	
+		.social ul li a {
+			display: inline-block;
+			color:#fff;
+			background: #FEBF00;
+			padding: 10px 15px;
+			text-decoration: none;
+			-webkit-transition:all 500ms ease;
+			-o-transition:all 500ms ease;
+			transition:all 500ms ease; /* Establecemos una transición a todas las propiedades */
+		}
 	</style>
 	<!-- Cambio de formulario -->
 	<meta content="width=device-width, initial-scale=1.0" name=viewport>
@@ -100,267 +123,299 @@
 				<span class=sr-only>Next</span>
 			</a>
 		</div>
-		<div class="theme-config_icon_3">
-			<div class="theme-config-box_icon_3">
-				<div class="spin-icon_env_3"  title="Recepción de Denuncias">
-					<i class="fa fa-edit"></i>
-				</div>
-				<div class="skin-setttings_icon_3">
-					<div class="title" style="text-align: left;">
-						Recepción de Denuncias
+		<div class="sticky-container">
+			<div class="social">
+				<ul>
+					<li>
+						<a class="btn btn-success" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal"><i class="fa fa-edit"></i><!--cambios--></a>
+					</li>
+					<li>
+						<a class="btn btn-success" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal"><i class="fa fa-gears"></i><!--cambios--></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="modal fade" id="denunciaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+			<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Recepción de Denuncias</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
-					<div class="setings-depurador scrollable" style="background: #f3f3f4 !important;">
-						<div style="max-width:960px; min-width:320px; margin:auto;" id="contento" class="border border-warning rounded"> 
-							<!--div id="htmlDenuncias"></div-->
-							<br><label  class="col-sm-12 control-label">
-								<center>
-									<h5 style="margin: 0 0 10px 0">Formulario de Recepción de Denuncias </h5>
-								</center>
-							</label>
-							<center> 
-								<div class="col-sm-11">
-									<label class="col-sm-12 control-label text-justify" >
-										Este formulario permite realizar denuncias relacionadas al Gobierno Autónomo Municipal de La Paz. Si requiere una respuesta formal es necesario que ingrese su Nombre Completo y C.I.
-									</label>
-								</div>
-							</center><br>    
-							<div>    	
-								<select class="form-control" id="fromIn" hidden>
-									<option value="FORMULARIO" selected="selected" > FORMULARIO</option>
+					<div class="modal-body">
+						<label  class="col-sm-12 control-label">
+							<center>
+								<h5 style="margin: 0 0 10px 0">Formulario de Recepción de Denuncias </h5>
+							</center>
+						</label>
+						<center> 
+							<div class="col-sm-11">
+								<label class="col-sm-12 control-label text-justify" >
+									Este formulario permite realizar denuncias relacionadas al Gobierno Autónomo Municipal de La Paz. Si requiere una respuesta formal es necesario que ingrese su Nombre Completo y C.I.
+								</label>
+							</div>
+						</center><br>    
+						<div>    	
+							<select class="form-control" id="fromIn" hidden>
+								<option value="FORMULARIO" selected="selected" > FORMULARIO</option>
+							</select>
+							<select class="form-control" id="procedencia" hidden>
+								<option value="EXT" selected="selected" > EXTERNA</option>                                                                
+							</select>
+							<select class="form-control" id="tipoForm" hidden>
+								<option value="DENUNCIA" selected="selected" > DENUNCIA</option>                                           
+							</select>         
+						</div>   
+						<div class="form-group row">
+							<label  class="col-sm-1 col-form-label"></label>
+							<label  class="col-sm-3 control-label">Denuncia Anónima:</label>
+							<div class="col-sm-7">
+								<select class="form-control" id="identidad" onclick="tipoOpcion(this);">
+									<option value="1" selected="selected" >SI</option>
+									<option value="2">NO</option>   
 								</select>
-								<select class="form-control" id="procedencia" hidden>
-									<option value="EXT" selected="selected" > EXTERNA</option>                                                                
+							</div>
+						</div>
+						<div class="form-group row">
+							<label  class="col-sm-1 col-form-label"></label>
+							<label  class="col-sm-3 control-label">Asunto:</label>
+							<div class="col-sm-7">
+								<select class="form-control" id="asunto" >
+									<option value="1" text="Uso de influencias" selected="selected" >Uso de influencias</option>
+									<option value="2" text="mal uso de bienes del municipio">Mal uso de bienes del municipio</option>  
+									<option value="3" text="Obtencion de beneficios a cambio de agilizar tramites">Obtención de beneficios a cambio de agilizar trámites</option> 
+									<option value="4" text="Maltrato">Maltrato</option> 
+									<option value="5" text="Imcumplimiento de deberes">Incumplimiento de deberes</option> 
+									<option value="6" text="Iregularidades en contratacion">Irregularidades en contratación</option>         
+									<option value="7" text="Retardacion de tramites">Retardación de trámites</option> 
+									<option value="9" text="Negacion de informacion">Negación de información</option>  
+									<option value="10" text="incumplimiento de procesos en tramites">Incumplimiento de procesos en trámites</option>                              
 								</select>
-								<select class="form-control" id="tipoForm" hidden>
-									<option value="DENUNCIA" selected="selected" > DENUNCIA</option>                                           
-								</select>         
-							</div>   
-							<div class="form-group row">
-								<label  class="col-sm-1 col-form-label"></label>
-								<label  class="col-sm-3 control-label">Denuncia Anónima:</label>
-								<div class="col-sm-6">
-									<select class="form-control" id="identidad" onclick="tipoOpcion(this);">
-										<option value="1" selected="selected" >SI</option>
-										<option value="2">NO</option>   
-									</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-1 col-form-label"></label>
+							<label class="col-sm-3 control-label red">Detalle de la denuncia: *</label>
+							<div class="col-sm-7">
+								<textarea type="text" class="form-control" id="detalleDenuncia" name="detalleDenuncia" placeholder="Detalle Denuncia" onkeyup="noVacio()"></textarea> 
+								<div id="spamDetalle" style="display: block;">
+									<span style="color:red;">Este campo es requerido</span>
 								</div>
 							</div>
-							<div class="form-group row">
-								<label  class="col-sm-1 col-form-label"></label>
-								<label  class="col-sm-3 control-label">Asunto:</label>
-								<div class="col-sm-6">
-									<select class="form-control" id="asunto" >
-										<option value="1" text="Uso de influencias" selected="selected" >Uso de influencias</option>
-										<option value="2" text="mal uso de bienes del municipio">Mal uso de bienes del municipio</option>  
-										<option value="3" text="Obtencion de beneficios a cambio de agilizar tramites">Obtención de beneficios a cambio de agilizar trámites</option> 
-										<option value="4" text="Maltrato">Maltrato</option> 
-										<option value="5" text="Imcumplimiento de deberes">Incumplimiento de deberes</option> 
-										<option value="6" text="Iregularidades en contratacion">Irregularidades en contratación</option>         
-										<option value="7" text="Retardacion de tramites">Retardación de trámites</option> 
-										<option value="9" text="Negacion de informacion">Negación de información</option>  
-										<option value="10" text="incumplimiento de procesos en tramites">Incumplimiento de procesos en trámites</option>                              
-									</select>
-								</div>
-							</div>
+						</div>
+						<div id="datosPersonales" style="display: none;"> 
 							<div class="form-group row">
 								<label class="col-sm-1 col-form-label"></label>
-								<label class="col-sm-3 control-label red">Detalle de la denuncia: *</label>
-								<div class="col-sm-6">
-									<textarea type="text" class="form-control" id="detalleDenuncia" name="detalleDenuncia" placeholder="Detalle Denuncia" onkeyup="noVacio()"></textarea> 
-									<div id="spamDetalle" style="display: block;">
+								<label class="col-sm-3 control-label">Nombre Completo:</label>
+								<div class="col-sm-7">
+									<input type="text" class="form-control" id="nombreCompleto" placeholder="Nombre Completo" onkeyup="noVacioNoAnonimo()">
+									<div id="spamNombre" style="display: block;">
 										<span style="color:red;">Este campo es requerido</span>
 									</div>
 								</div>
 							</div>
-							<div id="datosPersonales" style="display: none;"> 
-								<div class="form-group row">
-									<label class="col-sm-1 col-form-label"></label>
-									<label class="col-sm-3 control-label">Nombre Completo:</label>
-									<div class="col-sm-6">
-										<input type="text" class="form-control" id="nombreCompleto" placeholder="Nombre Completo" onkeyup="noVacioNoAnonimo()">
-										<div id="spamNombre" style="display: block;">
-											<span style="color:red;">Este campo es requerido</span>
-										</div>
-									</div>
+							<div class="form-group row">
+								<label  class="col-sm-1 col-form-label"></label>
+								<label  class="col-sm-3 control-label">C.I.:</label>
+								<div class="col-sm-7">
+									<input type="number" class="form-control" id="documento" placeholder="numero Carnet" onkeyup="noVacioNoAnonimo()" onkeypress="solonumeros(event);">
+									<div id="spamCI" style="display: block;"><span style="color:red;">Este campo es requerido
+									</span></div>
 								</div>
-								<div class="form-group row">
-									<label  class="col-sm-1 col-form-label"></label>
-									<label  class="col-sm-3 control-label">C.I.:</label>
-									<div class="col-sm-6">
-										<input type="number" class="form-control" id="documento" placeholder="numero Carnet" onkeyup="noVacioNoAnonimo()" onkeypress="solonumeros(event);">
-										<div id="spamCI" style="display: block;"><span style="color:red;">Este campo es requerido
-										</span></div>
-									</div>
+							</div>
+							<div class="form-group row">
+								<label  class="col-sm-1 col-form-label"></label>
+								<label  class="col-sm-3 control-label">Expedido:</label>
+								<div class="col-sm-7">
+									<select class="form-control" id="expedido" >
+										<option value="LPZ" selected="selected" > LA PAZ</option>
+										<option value="CBB">COCHABAMBA</option>    
+										<option value="ACZ">SANTA CRUZ</option> 
+										<option value="TJA">TARIJA</option> 
+										<option value="PTS">POTOSI</option> 
+										<option value="BNI">BENI</option> 
+										<option value="PND">PANDO</option> 
+										<option value="ORU">ORURO</option> 
+										<option value="CHQ">CHUQUISACA</option> 
+										<option value="EXT">OTRO</option>                                       
+									</select>
 								</div>
-								<div class="form-group row">
-									<label  class="col-sm-1 col-form-label"></label>
-									<label  class="col-sm-3 control-label">Expedido:</label>
-									<div class="col-sm-6">
-										<select class="form-control" id="expedido" >
-											<option value="LPZ" selected="selected" > LA PAZ</option>
-											<option value="CBB">COCHABAMBA</option>    
-											<option value="ACZ">SANTA CRUZ</option> 
-											<option value="TJA">TARIJA</option> 
-											<option value="PTS">POTOSI</option> 
-											<option value="BNI">BENI</option> 
-											<option value="PND">PANDO</option> 
-											<option value="ORU">ORURO</option> 
-											<option value="CHQ">CHUQUISACA</option> 
-											<option value="EXT">OTRO</option>                                       
-										</select>
-									</div>
+							</div>
+							<div class="form-group row">
+								<label  class="col-sm-1 col-form-label"></label>
+								<label  class="col-sm-3 control-label"> Dirección:</label>
+								<div class="col-sm-7">
+									<input type="text" class="form-control" id="direccion" placeholder="Calle / Zona">
 								</div>
-								<div class="form-group row">
-									<label  class="col-sm-1 col-form-label"></label>
-									<label  class="col-sm-3 control-label"> Dirección:</label>
-									<div class="col-sm-6">
-										<input type="text" class="form-control" id="direccion" placeholder="Calle / Zona">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-sm-1 col-form-label"></label>
-									<label class="col-sm-3 control-label">Teléfono/Celular:</label>
-									<div class="col-sm-6">
-										<input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" onkeypress="solonumeros(event);">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-sm-1 col-form-label"></label>
-									<label class="col-sm-3 control-label">Correo Electrónico:</label>
-									<div class="col-sm-6">
-										<input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com">
-									</div>  
-								</div> 
-							</div> 
-							<div class="form-group row" >
+							</div>
+							<div class="form-group row">
 								<label class="col-sm-1 col-form-label"></label>
-								<label class="col-sm-3 control-label">Adjuntar Archivo:</label>
-								<div class="col-sm-6"> 
-									<!--input type="file" name="upload" id="prueba2" onchange="handleFiles(this.files)"-->
-									<input type="file" id="prueba2" multiple accept="image/*" onchange="getBase64()">
-									<br/><br/>           
-								</div>   
+								<label class="col-sm-3 control-label">Teléfono/Celular:</label>
+								<div class="col-sm-7">
+									<input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" onkeypress="solonumeros(event);">
+								</div>
 							</div>
-							<center><div class="container" >
-								<div  class="center-block">
+							<div class="form-group row">
+								<label class="col-sm-1 col-form-label"></label>
+								<label class="col-sm-3 control-label">Correo Electrónico:</label>
+								<div class="col-sm-7">
+									<input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com">
+								</div>  
+							</div> 
+						</div> 
+						<div class="form-group row" >
+							<label class="col-sm-1 col-form-label"></label>
+							<label class="col-sm-3 control-label">Adjuntar Archivo:</label>
+							<div class="col-sm-7"> 
+								<!--input type="file" name="upload" id="prueba2" onchange="handleFiles(this.files)"-->
+								<input type="file" id="prueba2" multiple accept="image/*" onchange="getBase64()">
+							</div>   
+						</div>
+						<center><div class="container">
+							<div class="center-block">
+								<div class="row">
 									<div class="col-md-12">
-										<div class="table-responsive">
-											<table class="table users table-hover border border-warning " > 
-												<tr> 
-													<th class="border border-warning"><img id="img1" class="img-responsive" src="" title="" width="200" height="35"></th>   
-													<th class="border border-warning"> <img id="img2" class="img-responsive" src=""  title="" width="200" height="35"></th>  
-												</tr>        
-											</table>  
-											<input size="50" id="resultadoC" name="resultadoC" type="text" placeholder="" ng-model="resultadoC" onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> 
-											<button  id="btnObtenerCapcha" type="button" class="btn btn-warning fa fa-refresh"  onClick="obtCaptha()"> </button>
-											<p style="color:black" id="msg_capcha"></p>             
-										</div>
+										<table class="table users table-hover border border-success">
+											<tr>
+												<th>
+													<div class="row">
+														<div class="col-md-6 border-success">
+															<img id="img1" class="img-responsive" src="" title="" width="100%" height="35">
+														</div>
+														<div class="col-md-6 border-success">
+															<img id="img2" class="img-responsive" src="" title="" width="100%" height="35">
+														</div>
+													</div>
+												</th>
+											</tr>
+										</table>
+									</div>
+									<div class="col-md-10">
+										<input size="40" id="resultadoC" name="resultadoC" type="text" placeholder="" ng-model="resultadoC" onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> 
+									</div>
+									<div class="col-md-2">
+										<button id="btnObtenerCapcha" type="button" class="btn btn-success fa fa-refresh"  onClick="obtCaptha()"> </button>
+										<p style="color:black" id="msg_capcha"></p>
 									</div>
 								</div>
-							</div></center>
-							<div class="modal-footer">  
-								<input id="EnvRes" onClick="resetPassword();crearCasoLotus();" disabled="true" class="btn btn-warning text-white" type="button" value="Enviar">
 							</div>
-							<center>
-								<img src="nuevoIgob/img/logo.webp" width="250" height="100"/>
-							</center>
+						</div></center>
+						<div class="modal-footer">  
+							<input id="EnvRes" onClick="resetPassword();crearCasoLotus();" disabled="true" class="btn btn-success text-white" type="button" value="Enviar">
 						</div>
+						<center>
+							<img src="nuevoIgob/img/logo.webp" width="250" height="100"/>
+						</center>
 					</div>
-				</div>		
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="theme-config_icon_5">
-			<div class="theme-config-box_icon_5">
-				<div class="spin-icon_env_5" title="Soporte iGob 24/7">
-					<i class="fa fa-gears"></i>
-				</div>
-				<div class="skin-setttings_icon_5">
-					<div class="title" style="text-align: left;">
-						Soporte iGob 24/7
+		<div class="modal fade" id="soporteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Soporte iGob 24/7</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
-					<div class="setings-depurador scrollable" style="background: #f3f3f4 !important;">
-					<!-- Cambio de formulario -->
-						<div style="max-width:960px; min-width:320px; margin:auto" id="contentY" class="border border-warning rounded"> 
-							<br><label  class="col-sm-12 control-label">
-								<center>
-									<h4 style="margin: 0 0 10px 0">Soporte iGob 24/7</h4>
-								</center>
-							</label>
-							<input id="esLibresC" hidden>
-							<div>       
-								<select class="form-control" id="fromInC" hidden>
-									<option value="FORMULARIO" selected="selected" > FORMULARIO</option>
-								</select>
-								<select class="form-control" id="procedenciaC" hidden>
-									<option value="EXTERNA" selected="selected" > EXTERNA</option>
-								</select>
-								<select class="form-control" id="tipoFormC" hidden>
-									<option value="SOPORTE" selected="selected" > SOPORTE</option>
-								</select>
-							</div>
-							<div class="form-group row">
-								<label  class="col-sm-1 col-form-label"></label>
-								<label  class="col-sm-3 control-label">Nombre completo:</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control"  id="nombreCompletoC" onKeyUp="noVacioC()" placeholder="Nombre Completo">
-								</div>
-							</div>   
-							<div class="form-group row">
-								<label  class="col-sm-1 col-form-label"></label>
-								<label  class="col-sm-3 control-label">Número CI:</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control" id="documentoC" placeholder="número Carnet" onKeyUp="noVacioC()" onKeyUp="solonumeros(event);" >
-								</div>
-							</div>
-							<div class="form-group row">
-								<label  class="col-sm-1 col-form-label"></label>
-								<label  class="col-sm-3 control-label">Teléfono:</label>
-								<div class="col-sm-6">
-									<input type="number" class="form-control" id="telefonoC"  placeholder="Número de contacto" onKeyUp="noVacioC()" onKeyUp="solonumeros(event);">
-								</div>
-							</div> 
-							<div class="form-group row">
-								<label  class="col-sm-1 col-form-label"></label>
-								<label  class="col-sm-3 control-label">Correo:  * </label>
-								<div class="col-sm-6">
-									<input type="email" class="form-control" id="correoC" placeholder="Correo electrónico" onKeyUp="noVacioC()" required/>
-									<span id="emailOK"></span><div id="spamemail2" style="display: block;"><span style="color:red;">Este campo es requerido
-									</span></div>
-								</div>
-							</div> 
-							<div class="form-group row">
-								<label  class="col-sm-1 col-form-label"></label>
-								<label  class="col-sm-3 control-label">Detalle de la solicitud :  <Span class = "red"> * </ span></label>
-								<div class="col-sm-6">
-									<textarea type="text" class="form-control" id="detalleSoporteC" placeholder="Detalle Solicitud" onKeyUp="noVacioC()"></textarea>
-									<div id="spamDetalle2" style="display: block;"><span style="color:red;">Este campo es requerido
-									</span></div>
-								</div>
-							</div>  
+					<div class="modal-body">
+						<br><label  class="col-sm-12 control-label">
 							<center>
-							<div class="container" >
-								<div  class="center-block">
+								<h4 style="margin: 0 0 10px 0">Soporte iGob 24/7</h4>
+							</center>
+						</label>
+						<input id="esLibresC" hidden>
+						<div>
+							<select class="form-control" id="fromInC" hidden>
+								<option value="FORMULARIO" selected="selected" > FORMULARIO</option>
+							</select>
+							<select class="form-control" id="procedenciaC" hidden>
+								<option value="EXTERNA" selected="selected" > EXTERNA</option>
+							</select>
+							<select class="form-control" id="tipoFormC" hidden>
+								<option value="SOPORTE" selected="selected" > SOPORTE</option>
+							</select>
+						</div>
+						<div class="form-group row">
+							<label  class="col-sm-1 col-form-label"></label>
+							<label  class="col-sm-3 control-label">Nombre completo:</label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control"  id="nombreCompletoC" onKeyUp="noVacioC()" placeholder="Nombre Completo">
+							</div>
+						</div>   
+						<div class="form-group row">
+							<label  class="col-sm-1 col-form-label"></label>
+							<label  class="col-sm-3 control-label">Número CI:</label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" id="documentoC" placeholder="número Carnet" onKeyUp="noVacioC()" onKeyUp="solonumeros(event);" >
+							</div>
+						</div>
+						<div class="form-group row">
+							<label  class="col-sm-1 col-form-label"></label>
+							<label  class="col-sm-3 control-label">Teléfono:</label>
+							<div class="col-sm-6">
+								<input type="number" class="form-control" id="telefonoC"  placeholder="Número de contacto" onKeyUp="noVacioC()" onKeyUp="solonumeros(event);">
+							</div>
+						</div> 
+						<div class="form-group row">
+							<label  class="col-sm-1 col-form-label"></label>
+							<label  class="col-sm-3 control-label">Correo:  * </label>
+							<div class="col-sm-6">
+								<input type="email" class="form-control" id="correoC" placeholder="Correo electrónico" onKeyUp="noVacioC()" required/>
+								<span id="emailOK"></span><div id="spamemail2" style="display: block;"><span style="color:red;">Este campo es requerido
+								</span></div>
+							</div>
+						</div> 
+						<div class="form-group row">
+							<label  class="col-sm-1 col-form-label"></label>
+							<label  class="col-sm-3 control-label">Detalle de la solicitud :  <Span class = "red"> * </ span></label>
+							<div class="col-sm-6">
+								<textarea type="text" class="form-control" id="detalleSoporteC" placeholder="Detalle Solicitud" onKeyUp="noVacioC()"></textarea>
+								<div id="spamDetalle2" style="display: block;"><span style="color:red;">Este campo es requerido
+								</span></div>
+							</div>
+						</div>  
+						<center>
+						<div class="container" >
+							<div  class="center-block">
+								<div class="row">
+									<div class="col-md-12">
+										<table class="table users table-hover border border-success " >  
+											<tr>
+												<th>
+													<div class="row">
+														<div class="col-md-6 border-success">
+															<img id="img_3" class="img-responsive" src="" title="" width="100%" height="35">
+														</div>
+														<div class="col-md-6 border-success">
+															<img id="img_4" class="img-responsive" src="" title="" width="100%" height="35">
+														</div>
+													</div>
+												</th>
+											</tr>
+										</table>  
+									</div>
 									<div class="col-md-10">
-										<div class="table-responsive">
-											<table class="table users table-hover border border-warning " >  
-												<tr> 
-													<th class="border border-warning"><img id="img_3" class="img-responsive" src="" title="" width="200" height="35"></th>   
-													<th class="border border-warning"><img id="img_4" class="img-responsive" src="" title="" width="200" height="35"></th>  
-												</tr>
-											</table>  
-											<input size="50" id="resultadoD" name="resultadoD" type="text" placeholder="" ng-model="resultadoD" onkeyup="VerificarCapchab(this)" onKeyPress="getlimpiareRRORC()" required/> 
-											<button  id="btnObtenerCapchaC" type="button" class="btn btn-warning  fa fa-refresh" onClick="obtCapthaC()"> </button>
-											<h6><div id="msg_capcha_" style="color:#000000"></div></h6>
-										</div>
+										<input size="40" id="resultadoD" name="resultadoD" type="text" placeholder="" ng-model="resultadoD" onkeyup="VerificarCapchab(this)" onKeyPress="getlimpiareRRORC()" required/> 
+									</div>
+									<div class="col-md-2">
+										<button  id="btnObtenerCapchaC" type="button" class="btn btn-success  fa fa-refresh" onClick="obtCapthaC()"> </button>
+										<h6><div id="msg_capcha_" style="color:#000000"></div></h6>
 									</div>
 								</div>
-							</div></center>
-							<div class="modal-footer">
-								<button id= "EnvResC"  onClick="resetPasswordC();" disabled="true" type="submit"  class="btn btn-warning text-white"  >Enviar</button>        
-							</div>  
-							<center><img src="nuevoIgob/img/logoPeque.webp" width="200" height="80"/></center>
-						</div>
-						<!-- Cambio de formulario -->
+							</div>
+						</div></center>
+						<div class="modal-footer">
+							<button id= "EnvResC"  onClick="resetPasswordC();" disabled="true" type="submit"  class="btn btn-success text-white"  >Enviar</button>        
+						</div>  
+						<center><img src="nuevoIgob/img/logoPeque.webp" width="200" height="80"/></center>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 					</div>
 				</div>
 			</div>

@@ -464,17 +464,13 @@ function controlaCheck(v){
       <div class="col-md-12">
           <div class="table-responsive">
             <table class="table users table-hover border border-warning " >           
-              <tbody>       
-                <tr> 
-                  <th class="border border-warning"><img id="img1" class="img-responsive" src="" title="" width="200" height="35"></th>   
-                  <th class="border border-warning"> <img id="img2" class="img-responsive" src=""  title="" width="200" height="35"></th>  
-                </tr>
-                <tr> 
-                  <th class=""><input   size="34"  id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> </th>
-                  <th class=""> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="img/recarga.png"  width="20" height="20" title=""> </button> </th> 
-                </tr>
-              </tbody>
+              <tr> 
+                <th class="border border-warning"><img id="img1" class="img-responsive" src="" title="" width="200" height="35"></th>   
+                <th class="border border-warning"> <img id="img2" class="img-responsive" src=""  title="" width="200" height="35"></th>  
+              </tr>
             </table>  
+            <input size="34" id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> </th>
+            <button id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="img/recarga.png"  width="20" height="20" title=""> </button> </th> 
             <p id="msg_capcha"></p>
           </div>
       </div>

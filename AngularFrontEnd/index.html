@@ -127,10 +127,10 @@
 			<div class="social">
 				<ul>
 					<li>
-						<a class="btn btn-success" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal"><i class="fa fa-edit"></i><!--cambios--></a>
+						<a class="btn btn-success" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal" onclick="cerrarModales(1)"><i class="fa fa-edit"></i><!--cambios--></a>
 					</li>
 					<li>
-						<a class="btn btn-success" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal"><i class="fa fa-gears"></i><!--cambios--></a>
+						<a class="btn btn-success" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal" onclick="cerrarModales(2)"><i class="fa fa-gears"></i><!--cambios--></a>
 					</li>
 				</ul>
 			</div>
@@ -1198,6 +1198,13 @@ Plataforma de Atención Ciudadana Catastro.
 <script type="text/javascript" src="nuevoIgob/libs/proj4.min.js"></script>
 
 <script>
+	function cerrarModales(a){
+		if (a == 1)  
+			$('#soporteModal').modal('hide');
+		if (a == 2)
+			$('#denunciaModal').modal('hide');
+	};
+		
 	function tipoOpcion(dato){
 		var a = dato.value;
 		console.log(dato.value);

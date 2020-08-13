@@ -474,6 +474,11 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     
     if(data.f01_dominio == undefined || data.f01_dominio == 'undefined' || data.f01_dominio == '' || data.f01_dominio == null || data.f01_dominio =='null'){
       $scope.sinDominio = true;
+      var myInput = document.getElementById('f01_dominio');
+        myInput.onpaste = function(e) {
+        e.preventDefault();
+        alert("esta acción está prohibida");
+      }
     }else{
       $scope.sinDominio = false;
       var dom = data.f01_dominio;
@@ -1208,15 +1213,20 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
   $scope.validaCorreo =function(){
     var $result = $("#result");
     var email = $("#f01_correoTV").val();
-    $result.text("");
-    if ($scope.validarEmail(email)) {
-        $("#mensaje1").show();
-        $("#mensaje2").hide();
-        $scope.correoValido=false;
-    } else {
-    $("#mensaje1").hide();
-    $("#mensaje2").show();
-    $scope.correoValido=true;
+    if(email == undefined || email == 'undefined' || email == null || email == 'null' || email == ''){
+      $("#mensaje2").hide();
+      $("#mensaje1").hide();
+    }else{
+      $result.text("");
+      if ($scope.validarEmail(email)) {
+          $("#mensaje1").show();
+          $("#mensaje2").hide();
+          $scope.correoValido=false;
+      } else {
+      $("#mensaje1").hide();
+      $("#mensaje2").show();
+      $scope.correoValido=true;
+      }
     }
     return false;
   }
@@ -1981,7 +1991,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   }
   $scope.validaDominio = function(datos){
-    if(datos == undefined || datos == 'undefined' || datos == null || datos == 'null'){
+    if(datos == undefined || datos == 'undefined' || datos == null || datos == 'null' || datos == ''){
+      $("#mensaje3").hide();
     }else{
     var datos = datos.toLowerCase();   
       var lonDom = datos.length;
@@ -2015,75 +2026,82 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }
   }
   $scope.is_url = function(str,tipo){
-    var str = str.toLowerCase();
-    console.log('tipo',tipo);
-    regexp = /^(http|https)\:\/\/[a-z0-9\.-]+\.[a-z]{2,4}/gi;   
-    if(tipo == 'PW'){
-      if (regexp.test(str)){
-        $("#mensaje5").show();
-        $("#mensaje6").hide();
-        return true;
-      }else{      
-        $("#mensaje5").hide();
-        $("#mensaje6").show();
-        return false;  
+    if(str == 'undefined' || str == undefined || str == 'null' || str == null || str == ''){
+      $("#mensaje5").hide();
+      $("#mensaje6").hide(); 
+
+    }else{
+      var str = str.toLowerCase();
+      console.log('tipo',tipo);
+      regexp = /^(http|https)\:\/\/[a-z0-9\.-]+\.[a-z]{2,4}/gi;   
+      if(tipo == 'PW'){
+        if (regexp.test(str)){
+          $("#mensaje5").show();
+          $("#mensaje6").hide();
+          return true;
+        }else{      
+          $("#mensaje5").hide();
+          $("#mensaje6").show();
+          return false;  
+        }
+      }
+      if(tipo == 'F'){
+        if (regexp.test(str)){
+          $("#mensajeR2").show();
+          $("#mensajeR1").hide();
+          return true;
+        }else{      
+          $("#mensajeR2").hide();
+          $("#mensajeR1").show();
+          return false;  
+        }
+      }
+      if(tipo == 'T'){
+        if (regexp.test(str)){
+          $("#mensajeR4").show();
+          $("#mensajeR3").hide();
+          return true;
+        }else{      
+          $("#mensajeR4").hide();
+          $("#mensajeR3").show();
+          return false;  
+        }
+      }
+      if(tipo == 'I'){
+        if (regexp.test(str)){
+          $("#mensajeR6").show();
+          $("#mensajeR5").hide();
+          return true;
+        }else{      
+          $("#mensajeR6").hide();
+          $("#mensajeR5").show();
+          return false;  
+        }
+      }
+      if(tipo == 'Y'){
+        if (regexp.test(str)){
+          $("#mensajeR8").show();
+          $("#mensajeR7").hide();
+          return true;
+        }else{      
+          $("#mensajeR8").hide();
+          $("#mensajeR7").show();
+          return false;  
+        }
+      }
+      if(tipo == 'O'){
+        if (regexp.test(str)){
+          $("#mensajeR10").show();
+          $("#mensajeR9").hide();
+          return true;
+        }else{      
+          $("#mensajeR10").hide();
+          $("#mensajeR9").show();
+          return false;  
+        }
       }
     }
-    if(tipo == 'F'){
-      if (regexp.test(str)){
-        $("#mensajeR2").show();
-        $("#mensajeR1").hide();
-        return true;
-      }else{      
-        $("#mensajeR2").hide();
-        $("#mensajeR1").show();
-        return false;  
-      }
-    }
-    if(tipo == 'T'){
-      if (regexp.test(str)){
-        $("#mensajeR4").show();
-        $("#mensajeR3").hide();
-        return true;
-      }else{      
-        $("#mensajeR4").hide();
-        $("#mensajeR3").show();
-        return false;  
-      }
-    }
-    if(tipo == 'I'){
-      if (regexp.test(str)){
-        $("#mensajeR6").show();
-        $("#mensajeR5").hide();
-        return true;
-      }else{      
-        $("#mensajeR6").hide();
-        $("#mensajeR5").show();
-        return false;  
-      }
-    }
-    if(tipo == 'Y'){
-      if (regexp.test(str)){
-        $("#mensajeR8").show();
-        $("#mensajeR7").hide();
-        return true;
-      }else{      
-        $("#mensajeR8").hide();
-        $("#mensajeR7").show();
-        return false;  
-      }
-    }
-    if(tipo == 'O'){
-      if (regexp.test(str)){
-        $("#mensajeR10").show();
-        $("#mensajeR9").hide();
-        return true;
-      }else{      
-        $("#mensajeR10").hide();
-        $("#mensajeR9").show();
-        return false;  
-      }
-    }
+    
 
 
   }

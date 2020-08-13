@@ -58,12 +58,17 @@
                             tecla_especial = true;
                             break;
                         }
-                    }
+                }
 
-                    if(letras.indexOf(tecla)==-1 && !tecla_especial){
-                        return false;
-                    }
+                if(letras.indexOf(tecla)==-1 && !tecla_especial){
+                    return false;
+                }
             }
+            $(document).ready(function () {
+                $('input.disablecopypaste').bind('copy paste', function (e) {
+                e.preventDefault();
+                });
+            });
         </script>
         <script type="text/javascript">
             $('.custom-upload input[type=file]').change(function(){
@@ -247,9 +252,10 @@
                         <div class="alert alert-danger fade in">
                             <strong>Importante: </strong>
                             <br>1. Seleccione cuidadosamente la <strong>Categoría (Rubro)</strong>  a la cual corresponde  su <strong>Actividad Económica.</strong>
-                            <br>2. En la casilla, <strong>Nombre de ruta de acceso</strong> introduzca el nombre para su página Web, la cual se mostrará en la dirección URL que será generada, para la tienda virtual. Por Ej. <strong>https://casevirtual.lapaz.bo/rutadeacceso.</strong>
-                            <br>3. Si posee más de una Actividad Económica, cada tienda registrada, deberá tener su propia Página Web.
-                            <br>4. El <strong>nombre de ruta de acceso</strong>, NO es modificable y se introduce por única vez al momento del registro.<br>
+                            <br>2. En la casilla, <strong>Nombre para su página Web</strong> introduzca el nombre con el que desea que se genere la página para su sitio Web; se sugiere un nombre relacionado al nombre de la tienda virtual. Por Ej. <strong>kollita &nbsp;</strong>para que su página sea:<strong>https://casevirtual.lapaz.bo/kollita.</strong>
+                            <br>3. El <strong>Nombre para su página Web</strong>, NO es modificable y se introduce por única vez al momento del registro.
+                            <br>4. Si posee más de una Actividad Económica, cada tienda registrada, deberá tener su propia Página Web.<br>
+                            
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -283,22 +289,31 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <div class="form-group" >
-                            <label for="url" >Nombre para ruta de acceso:</label>
+                            <label for="url" >Dominio:</label>
                             <div class="controls">
-                                <input ng-model="datos.f01_dominio" id="f01_dominio" name="f01_dominio" class="form-control"  onkeypress="return soloLetras(event)" ng-change="validaDominio(datos.f01_dominio);"  placeholder=" Nombre para dirección URL de la página Web. Por Ej. https://casevirtual.lapaz.bo/rutadeacceso" ng-disabled="desabilitado" required/>
-                                <span style="color:red" ng-show="signupForm.f01_dominio.$invalid">
-                                    <span align = "right" ng-show="signupForm.f01_dominio.$error.required">Nombre de la ruta de acceso es requerido.</span>
-                                </span>
-                                <br><span id ="mensaje3" style = "color:green;font-weight:bold; font-size:12px">El nombre es válido.</span>
-                                <span id ="mensaje4" style = "color:red;font-weight:bold; font-size:12px">El nombre introducido ya existe, debe elegir otro nombre.</span>
+                                <input id="prefijo" class="form-control" style="text-align:right" value="https://casevirtual.lapaz.bo/" readonly/>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            <label for="url" >Nombre para su página Web:</label>
+                            <div class="controls">
+                                <input ng-model="datos.f01_dominio" id="f01_dominio" name="f01_dominio" class="form-control" minlength="4" maxlength="15" onpaste="return false;"  onkeypress="return soloLetras(event)" ng-change="validaDominio(datos.f01_dominio);"  placeholder="Nombre para la Página Web" ng-disabled="desabilitado" required/>
+                                <span style="color:red" ng-show="signupForm.f01_dominio.$invalid">
+                                    <span align = "right" ng-show="signupForm.f01_dominio.$error.required">Nombre de su página Web es requerido.</span>
+                                </span>
+                                <br><span id ="mensaje3" style = "color:green;font-weight:bold; font-size:12px">El nombre es válido.</span>
+                                <span id ="mensaje4" style = "color:red;font-weight:bold; font-size:12px">El nombre ya existe, debe introducir otro nombre.</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-md-6">
                         <div class="form-group" >
-                            <label for="url" >Introducir la dirección de su propia Página Web (Ej. https://ejemplo.com):</label>
+                            <label for="url" >Dirección de su propia Página Web (Ej. https://ejemplo.com):</label>
                             <div class="controls">
                                 <input ng-model="datos.f01_pagwebAE" id="f01_pagwebAE" name="f01_pagwebAE" class="form-control"  onkeypress="return soloLetrasUrl(event)" ng-keyup="is_url(datos.f01_pagwebAE,'PW');" placeholder="Copie aquí el enlace de su Página Web. Por ej. https://www.ejemplo.com" ng-disabled="desabilitado"/>
                                 <span id ="mensaje5" style = "color:green;font-weight:bold; font-size:12px">La dirección URL es válida.</span>

@@ -13,8 +13,8 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         {name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/moustache.html'}
     ];
     var p = $scope.serviciosLotus = [
-        { name: 'Correspondencia ciudadana', id:'22', idprc:'73', idcampo:'788', scodigo:'CORC'},
-        { name: 'Corrrespondencia al Concejo Municipal', id:'53', idprc:'73', idcampo:'819', scodigo:'CCCMD'},        { name: 'Ejecución de procesos de fiscalización', id:'23', idprc:'73', idcampo:'812', scodigo:'EPFZ'},
+        { name: 'Correspondencia ciudadana', id:'17', idprc:'73', idcampo:'788', scodigo:'CORC'},
+        { name: 'Corrrespondencia al Concejo Municipal', id:'26', idprc:'73', idcampo:'819', scodigo:'CCCMD'},        { name: 'Ejecución de procesos de fiscalización', id:'23', idprc:'73', idcampo:'812', scodigo:'EPFZ'},
         { name: 'Denuncias y reclamos', id:'24', idprc:'73', idcampo:'790', scodigo:'DRTR'},
         { name: 'Calificación de años de servicio', id:'25', idprc:'73', idcampo:'821', scodigo:'CAS'},
         { name: 'Fotocopias', id:'26', idprc:'73', idcampo:'815', scodigo:'FOT'},
@@ -36,9 +36,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     $scope.habGuardar1 = true;
     $scope.template     =   "";
     var aDocAdjuntos    =   new Array();
-
-
-
     $scope.hoverOut = function(){
         //$("#btnAyuda1").css("color", "red");
     };
@@ -738,7 +735,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 $.unblockUI();
             }
         }
-        if(tramite.vdvser_id == 53){
+        if(tramite.vdvser_id == 26){
             try{
                 jDataFormsLotus     =   [];
                 var sidproceso      =   73;
@@ -776,7 +773,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     };    
 
     $scope.seleccionarTramiteRender = function (tramite) {
-        console.log('TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',tramite);
         $rootScope.tramiteId = tramite.vtra_id;
         sessionService.set('IDTRAMITE', tramite.vtra_id);
         sessionService.set('IDSERVICIO', tramite.vdvser_id);

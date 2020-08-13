@@ -663,8 +663,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         $rootScope.laaa = 0;
         $scope.datos = datosForm_inicio;
 
-        //console.log("DATA FORM INICIO :", datosForm_inicio);
-
         if(datosIniciales.f01_tipo_per == 'N' || datosIniciales.f01_tipo_per == 'NATURAL'){
             if (datosIniciales.f01_macro && datosIniciales.f01_distrito && datosIniciales.f01_distrito_desc && datosIniciales.f01_zona && datosIniciales.f01_zon_prop_valor && datosIniciales.f01_tip_via_prop && datosIniciales.f01_nom_via_prop && datosIniciales.f01_num_prop) {
                 $scope.validacionDireccion = false;
@@ -687,12 +685,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         setTimeout(function(){
             $scope.recuperarFormsxProceso(tramite);
         },500);        
-        /*setTimeout(function(){
-            console.log("CARGA DEL FORMULARIO ");
-            $scope.seleccionarTramiteRender(tramite);
-            $scope.$apply();
-            $.unblockUI();
-        },100);*/
     }
 
     $scope.recuperarFormsxProceso = function (tramite) {
@@ -704,14 +696,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 var getFormJson     =   new getFormulario();
                 getFormJson.idprc   =   sidproceso;
                 getFormJson.idcampo =   sidcampo;
-                /*getFormJson.obtForms(function(respuesta){
-                    //console.log("RESPUESTA FORMULARIO LOTUS 1:", respuesta);
-                    var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
-                    //console.log("RESPUESTA FORMULARIO LOTUS 2:", JSON.parse(forms));            
-                    jDataFormsLotus =   forms;
-                    $scope.tramiteSeleccionadoP  =   tramite.idcampo;
-                    $scope.formtramite  =   tramite;
-                });*/
                 $.getJSON( "../../controller/registro_ciudadano/servicios/correspondencia.json", function( respuesta ) {
                    
                     //var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
@@ -737,14 +721,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 var getFormJson     =   new getFormulario();
                 getFormJson.idprc   =   sidproceso;
                 getFormJson.idcampo =   sidcampo;
-                /*getFormJson.obtForms(function(respuesta){
-                    //console.log("RESPUESTA FORMULARIO LOTUS 1:", respuesta);
-                    var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
-                    //console.log("RESPUESTA FORMULARIO LOTUS 2:", JSON.parse(forms));            
-                    jDataFormsLotus =   forms;
-                    $scope.tramiteSeleccionadoP  =   tramite.idcampo;
-                    $scope.formtramite  =   tramite;
-                });*/
                 $.getJSON( "../../controller/registro_ciudadano/servicios/correspondencia.json", function( respuesta ) {
                     //var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
                     var forms   =   respuesta.success.data[0].exportar_formulario;       
@@ -880,7 +856,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             crea.id_usuario = 3;
             $.blockUI();
             crea.adiciona_Tramites_Formulario(function(res){
-                //console.log("RESULTADO AUMATICA :", res);
                 x = JSON.parse(res);
                 response = x.success;
                 if(response.length  > 0){                    
@@ -920,7 +895,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             var fechaServ = (sfecha.success.fecha).split(' ');
             var fecha_ = fechaServ[0].split('-');
             var hora_ = fechaServ[1].split(':');
-            console.log(hora_,555);
             fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1]+hora_[2];
         });
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
@@ -938,11 +912,9 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                         url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreNuevo + "?app_name=todoangular";
                         fileUploadcorr.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo).then(function(data){
                             if(data.status == 200){
-                                console.log(url,124);
                                 document.getElementById('href_f01_upload_'+idFile).href = url;
                                 document.getElementById(idFile).value = nombreNuevo;
                                 document.getElementById(idFile+'_url').value = url;                        
-                                console.log("RESPUESTA DATA ADJUNTOS 23 :", data);
                             }else{
                                 swal('Advertencia', 'Problemas al cargar el adjunto seleccionado', 'error');   
                             } 
@@ -1032,7 +1004,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             dataType: 'json',
             data: '{"uid":"'+ tramite.datos.POC_UIDHISTO +'", "nrocopia":"0"}',
             success: function (response){ 
-                console.log(response);
                 $scope.tablaHistoricoMovimientos = response.success.data;
                 $scope.$apply();
 

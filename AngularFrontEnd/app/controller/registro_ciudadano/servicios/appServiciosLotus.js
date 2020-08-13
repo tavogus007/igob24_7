@@ -702,7 +702,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     $scope.recuperarFormsxProceso = function (tramite) {
         console.log('selecciona proceso ======',tramite);
          console.log('tttt',tramite.vdvser_id);
-        if (tramite.vdvser_id == 22){
+        if (tramite.vdvser_id == 17){
             try{
                 jDataFormsLotus     =   [];
                 var sidproceso      =   73;
@@ -719,7 +719,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                     $scope.formtramite  =   tramite;
                 });*/
                 $.getJSON( "../../controller/registro_ciudadano/servicios/correspondencia.json", function( respuesta ) {
-                    console.log('RESPUESTA 22',respuesta);
+                    console.log('RESPUESTA 17',respuesta);
                     //var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
                     var forms   =   respuesta.success.data[0].exportar_formulario;         
                     jDataFormsLotus =   forms;

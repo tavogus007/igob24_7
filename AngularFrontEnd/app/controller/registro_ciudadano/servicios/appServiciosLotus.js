@@ -31,7 +31,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         { name: 'Transferencia de área residual', id:'37', idprc:'73', idcampo:'791', scodigo:'TAR'},
         { name: 'Uso de espacios públicos temporales', id:'38', idprc:'73', idcampo:'861', scodigo:'UEPP'}
     ];
-    console.log('SERVICIOS ======>',p);
     $scope.btnEnviarForm = true;
     $scope.habGuardar1 = true;
     $scope.template     =   "";
@@ -429,7 +428,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                         },300);
                 } else {
                     //validacion de fecha
-                    console.log(contdias);
                     if (contdias<0){
                         setTimeout(function(){
                             swal({
@@ -449,7 +447,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 }
             } else {
                 if($scope.datosIniciales.dtspsl_tipo_persona=="JURIDICO"){
-                    console.log($scope.datosIniciales);
                     $scope.validacionDatosJuridico($scope.datosIniciales);
                     if ((datos.dtspsl_razon_social == '' || datos.dtspsl_nit == '' || datos.dtspsl_ci_representante == '' || datos.dtspsl_correo == '') || (datos.dtspsl_ci_representante == ' ' || datos.dtspsl_razon_social == ' ' || datos.dtspsl_correo == ' ' )) {
                         setTimeout(function(){
@@ -685,7 +682,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
 
     /*SELECCCIONAR TRAMITE CIUDADANO*/
     $scope.seleccionarTramite = function (tramite) {
-        console.log('TRAMITE: ====>',tramite);
         $scope.template =   "";
         $.blockUI();
         setTimeout(function(){
@@ -700,8 +696,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     }
 
     $scope.recuperarFormsxProceso = function (tramite) {
-        console.log('selecciona proceso ======',tramite);
-         console.log('tttt',tramite.vdvser_id);
         if (tramite.vdvser_id == 17){
             try{
                 jDataFormsLotus     =   [];
@@ -719,7 +713,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                     $scope.formtramite  =   tramite;
                 });*/
                 $.getJSON( "../../controller/registro_ciudadano/servicios/correspondencia.json", function( respuesta ) {
-                    console.log('RESPUESTA 17',respuesta);
+                   
                     //var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
                     var forms   =   respuesta.success.data[0].exportar_formulario;         
                     jDataFormsLotus =   forms;
@@ -753,11 +747,9 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 });*/
                 $.getJSON( "../../controller/registro_ciudadano/servicios/correspondencia.json", function( respuesta ) {
                     //var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
-                    var forms   =   respuesta.success.data[0].exportar_formulario; 
-                    console.log('FORMS ====>',forms);        
+                    var forms   =   respuesta.success.data[0].exportar_formulario;       
                     jDataFormsLotus =   forms;
                     $scope.tramiteSeleccionadoP  =   tramite.idcampo;
-                    console.log('TRAMITE SELECCIONADO',$scope.tramiteSeleccionadoP);
                     $scope.formtramite  =   tramite;
                     //CARGAR FORMULARIO
                     $scope.seleccionarTramiteRender(tramite);
@@ -839,7 +831,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
 
 
     $scope.adicionarServicioGamlpV = function(tramite){
-        console.log("tramite: ", tramite);
         swal({
             title: 'CONFIRMAR',
             text: 'Está a punto de crear un trámite de ' + tramite.name + ' .\n¿Se encuentra seguro de realizar dicha creación?',
@@ -859,7 +850,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
 
 
     $scope.adicionarServicioGamlp = function(tramite){
-        console.log("tramite XXXXXXXXXX: ", tramite);
         $scope.template = "";
         var dataInicio  =   { };
         var dataInicioForm  =   { };

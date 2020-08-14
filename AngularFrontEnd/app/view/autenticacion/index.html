@@ -77,30 +77,178 @@
     });
 </script>
 <style>
-    .social {
-	position: fixed; /* Hacemos que la posición en pantalla sea fija para que siempre se muestre en pantalla*/
-	left: 93%; /* Establecemos la barra en la izquierda */
-	top: 200px; /* Bajamos la barra 200px de arriba a abajo */
-	z-index: 2000; /* Utilizamos la propiedad z-index para que no se superponga algún otro elemento como sliders, galerías, etc */
-}
+		.div_btn {
+		position:fixed;
+		/* width:60px;
+		height:60px; */
+		top: 55%;
+		right:15px;
+		z-index: 1500;
+		}
+		.i_status{
+			margin: 5px;
+			font-size: 18px !important;
+			color: #f5f5f5;
+		}
+		.icon-btn {
+		width: 50px;
+		height: 50px;
+		border: 1px solid #cdcdcd;
+		background: #e41b25;
+		border-radius: 5px;
+		overflow: hidden;
+		position: relative;
+		transition: width 0.2s ease-in-out;
+		cursor: pointer;
+		}
+		.add-btn:hover {
+		width: 120px;
+		}
+		.add-btn::before,
+		.add-btn::after {
+		transition: width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+		content: "";
+		position: absolute;
+		height: 4px;
+		width: 10px;
+		top: calc(60% - 2px);
+		background: #f5f5f5;
+		}
+		.add-btn::after {
+		right: 14px;
+		overflow: hidden;
+		border-top-right-radius: 2px;
+		border-bottom-right-radius: 2px;
+		}
+		.add-btn::before {
+		left: 14px;
+		border-top-left-radius: 2px;
+		border-bottom-left-radius: 2px;
+		}
 
-	.social ul {
-		list-style: none;
-	}
+		.icon-btn:focus {
+		outline: none;
+		}
+		.btn-txt {
+		opacity: 0;
+		color: #f5f5f5;
+		font-size: 15px;
+		font-weight: 700;
+		transition: opacity 0.2s;
+		}
+		.add-btn:hover::before,
+		.add-btn:hover::after {
+		width: 4px;
+		border-radius: 2px;
+		}
+		.add-btn:hover .btn-txt {
+		opacity: 1;
+		}
+		.add-icon::after,
+		.add-icon::before {
+		transition: all 0.2s ease-in-out;
+		content: "";
+		position: absolute;
+		height: 20px;
+		width: 2px;
+		top: calc(50% - 10px);
+		background: red;
+		overflow: hidden;
+		}
+		.add-icon::before {
+		left: 22px;
+		border-top-left-radius: 2px;
+		border-bottom-left-radius: 2px;
+		}
+		.add-icon::after {
+		right: 22px;
+		border-top-right-radius: 2px;
+		border-bottom-right-radius: 2px;
+		}
+		.add-btn:hover .add-icon::before {
+		left: 15px;
+		height: 4px;
+		top: calc(50% - 2px);
+		}
+		.add-btn:hover .add-icon::after {
+		right: 15px;
+		height: 4px;
+		top: calc(50% - 2px);
+		}
 
-	.social ul li a {
-		display: inline-block;
-		color:#fff;
-		background: #FEBF00;
-		padding: 10px 15px;
-		text-decoration: none;
-		-webkit-transition:all 500ms ease;
-		-o-transition:all 500ms ease;
-		transition:all 500ms ease; /* Establecemos una transición a todas las propiedades */
-	}
+		.part {
+		float: left;
+		height: 100%;
+		}
+		.part.card-details {
+		padding: 0px 0px 0;
+    	width: 60%;
+		}
+		.part.card-details h1 {
+		background-color: #e41b25;
+		color: white;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 26px;
+		font-weight: 700;
+		text-transform: uppercase;
+		padding: 14px 0 10px 49px;
+		letter-spacing: 1px;
+		margin-left: -52px;
+		width: 150%;
+		box-shadow: 10px 10px 5px #00000040;
+		}
+		.modal-header{
+			padding: 0.5rem !important;
+		}
+		.modal-header .close{
+			margin: 0rem 0rem 0rem auto !important;
+		}
 
+		.modal-body .content_mod {
+			max-height: 70%;
+			overflow-y: auto;
+			overflow-x: hidden;
+			padding: 5px;
+		}
+		.modal-body h5 {
+			color: #2e2e2e !important;
+			font-weight: 700;
+			text-transform: uppercase;
+		}
+		.modal-body label {
+			color: #2e2e2e !important;
+			font-weight: 550;
+		}
 
-	
+		.form-control {
+			box-shadow: 0 8px 6px -6px #555 !important;
+		}
+
+		.button_send {
+		background: #e41b25;
+        margin: 0px 0 0px 0;
+		padding: 8px 16px;
+		color: #fff;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		box-shadow: 0 8px 6px -6px #555;
+		}
+		.button_send:hover {
+		letter-spacing: 2px;
+		transition: all 0.5s ease;
+		box-shadow: none;
+		}
+
+		.modal-body {
+			background: #FBCC00 !important;
+		}
+		.modal-dialog {
+			max-width: 800px !important;
+        }
+        .modal-header {
+        min-height: 100px !important;
+        }
 </style>
 <body onload="finalizarMascara();">
     <div id="dvContenidoVacio">
@@ -463,40 +611,68 @@
 
         <!-- ICONOS FLOTANTES -->
         <div>
-            <div class="sticky-container">
+            <div class="div_btn">
+                <button class="icon-btn add-btn" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal" onclick="cerrarModales(1)">
+                  <!-- <div class="add-icon"></div> -->
+                  <i class="fa fa-edit i_status"></i>
+                  <div class="btn-txt">Denuncias</div>
+                </button>
+            </div>
+              <div class="div_btn" style="margin-top: 50px;">
+                <button class="icon-btn add-btn" tooltip = "Solicitud de Información" data-toggle="modal" data-target="#informacionModal" onclick="cerrarModales(2)">
+                    <i class="fa fa-pencil-square i_status"></i>
+                  <div class="btn-txt">Solicitud de Información</div>
+                </button>
+              </div>
+
+              <div class="div_btn" style="margin-top: 100px;">
+                <button class="icon-btn add-btn" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal" onclick="cerrarModales(3)">
+                    <i class="fa fa-gears i_status"></i>
+                  <div class="btn-txt">Soporte</div>
+                </button>
+              </div>
+
+            <!-- <div class="sticky-container">
                 <div class="social">
                     <ul>
                         <li>
-                            <a class="btn btn-success" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal" onclick="cerrarModales(1)"><i class="fa fa-edit"></i><!--cambios--></a>
+                            <a class="btn btn-success" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal" onclick="cerrarModales(1)"><i class="fa fa-edit"></i></a>
                         </li>
                         <li>
-                            <a class="btn btn-success" tooltip = "Solicitud de Información" data-toggle="modal" data-target="#informacionModal" onclick="cerrarModales(2)"><i class="fa fa-pencil-square"></i><!--cambios--></a>
+                            <a class="btn btn-success" tooltip = "Solicitud de Información" data-toggle="modal" data-target="#informacionModal" onclick="cerrarModales(2)"><i class="fa fa-pencil-square"></i></a>
                         </li>
                         <li>
-                            <a class="btn btn-success" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal" onclick="cerrarModales(3)"><i class="fa fa-gears"></i><!--cambios--></a>
+                            <a class="btn btn-success" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal" onclick="cerrarModales(3)"><i class="fa fa-gears"></i></a>
                         </li>
              
                     </ul>
                 </div>
-            </div>
+            </div> -->
             <div class="modal fade" id="denunciaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
+                        <article class="part card-details">
+							<h1>
+								Recepción de Denuncias
+							</h1>
+						</article>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Recepción de Denuncias</h4>
+                        <!-- <h4 class="modal-title">Recepción de Denuncias</h4> -->
                     </div>
                     <div class="modal-body">
+
                         <form name="formularioHistorico" readOnly="true" novalidate>
                             <div>
                                 <iframe width="100%" height="450px" id="denuncias"
                                     src="../../../app/view/servicios/transparencia/denuncias/index2.html"></iframe>
                             </div>
                         </form>
+
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="button_send" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
                 </div>
@@ -506,8 +682,13 @@
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
+                        <article class="part card-details">
+							<h1>
+								Solicitud de Información
+							</h1>
+						</article>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Solicitud de Información</h4>
+                        <!-- <h4 class="modal-title">Solicitud de Información</h4> -->
                     </div>
                     <div class="modal-body">
                         <form name="formularioHistorico" readOnly="true" novalidate>
@@ -518,7 +699,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="button_send" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
                 </div>
@@ -528,8 +709,13 @@
                 <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
+                            <article class="part card-details">
+                                <h1>
+                                    Soporte iGob 24/7
+                                </h1>
+                            </article>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Soporte iGob 24/7</h4>
+                            <!-- <h4 class="modal-title">Soporte iGob 24/7</h4> -->
                         </div>
                         <div class="modal-body">
                             <form name="formularioHistorico" readOnly="true" novalidate>
@@ -540,7 +726,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="button_send" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
                 </div>

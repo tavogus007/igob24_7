@@ -30,7 +30,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.div_escoger_servicio = false;
     $scope.adjuntos = [{id:0,requisito:'Boleta de Decomiso'},{id:1,requisito:'Comprobante de Pago'}];
     $scope.inicio = function(){
-        $scope.listadoActividadesEconomicas();
+       // $scope.listadoActividadesEconomicas();
     }
 
     var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
@@ -802,7 +802,8 @@ $scope.adjuntoTres = function(){
         $scope.datos.muestraTipo = 1;
       }
     }
-    $scope.listadoActividadesEconomicas = function () {
+    $scope.listadoActividadesEconomicas = function (tipoReg) {
+        console.log("tipo",tipoReg);
         var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
         var sNumeroRegistros  = dataGenesis.length;
         var tipoPersona     =   sessionService.get('TIPO_PERSONA');
@@ -830,7 +831,12 @@ $scope.adjuntoTres = function(){
                         for(var i = 0 ; i <response.success.dataSql.length;i ++){
                             var desconcatenar = response.success.dataSql[i].Descripcion;
                             var fechaServ   = (desconcatenar).split(' ');
-                            if(fechaServ[4] == 'ALIMENTOS'){
+                            if(tipoReg=='REGISTRO_SERVICIO_PRIVADO'){
+                                if(fechaServ[4] == 'ALIMENTOS'){
+                                    $scope.trmUsuario.push(response.success.dataSql[i]);
+                                    $scope.tblTramites.reload();
+                                }
+                            }else{
                                 $scope.trmUsuario.push(response.success.dataSql[i]);
                                 $scope.tblTramites.reload();
                             }
@@ -1087,6 +1093,10 @@ $scope.adjuntoTres = function(){
         $scope.tblAutos.reload();
     }
     $scope.dinamicoFormulario = function(dataFormulario){
+        if(dataFormulario != undefined){
+            $scope.trmUsuario = [];
+            $scope.listadoActividadesEconomicas(dataFormulario);
+        }
         if(dataFormulario == 'REGISTRO_SERVICIO_PRIVADO'){
             $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"AUTOMOVIL"},{"nombre":"BICICLETA"},{"nombre":"MOTOCICLETA"}]');
             $scope.div_tipo_entrega=true;

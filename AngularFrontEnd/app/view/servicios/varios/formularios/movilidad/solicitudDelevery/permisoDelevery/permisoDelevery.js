@@ -100,6 +100,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
 
     ///////////////////////////ENVIO//////////////////////////////
     $scope.validarEnvio = function(data){
+        console.log(data,"12345");
         swal({
           title: 'CONFIRMAR',
           text: 'El envío de la presente solicitud  generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',
@@ -1070,6 +1071,7 @@ $scope.adjuntoTres = function(){
         $('#msgformularioN').html($scope.msgformularioN);
     }
     $scope.adicionarVehiculos = function(data){
+        console.log("flavia",data);
         if($scope.datos.PER_TRA_CANT_VEHI_SOL == undefined){
             swal('', 'Ingrese la cantidad de vehículos a solicitar', 'warning');
         }else if($scope.trmAutos.length >= $scope.datos.PER_TRA_CANT_VEHI_SOL){
@@ -1084,8 +1086,9 @@ $scope.adjuntoTres = function(){
             swal('', 'Ingrese el Carnet del Conductor', 'warning');
         }else{
             $scope.trmAutos.push(data);
+            console.log($scope.trmAutos,"miooooooo");
             $scope.tblAutos.reload();
-            $scope.datosV = [];
+            $scope.datosV = {};
         }
     }
     $scope.eliminarVehiculo = function(datavehivulo){

@@ -86,11 +86,10 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
                         $scope.imagenaux2m = true;
                     }
                     var imagenFile = archivo.name.split('.');;
-                    console.log("archivo: ", archivo);
                     var nombreNuevo = descArchivo + "_" + fechaNueva + '.' + imagenFile[1];
                     var ext_doc = imagenFile[imagenFile.length - 1].toLowerCase();
                     if (ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
-                        var filecompress = compressImage(archivo).then(function(respuestaFile) {
+                        var filecompress = compressImage(archivo, "producto").then(function(respuestaFile) {
                             $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') + '/' + nombreNuevo + "?app_name=todoangular";
                             fileUploadcorr.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
                             document.getElementById('txt_f01_upload' + idFiles[key]).value = nombreNuevo;

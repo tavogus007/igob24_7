@@ -57,7 +57,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_nombreTV = "";
       tinyMCE.get('f01_nombreTV').setContent($scope.datos.f01_nombreTV);
       $scope.datos.f01_descripcionTV = '';
-      console.log('$scope.datos.f01_descripcionTV',$scope.datos.f01_descripcionTV);
       tinyMCE.get('f01_descripcionTV').setContent('');
       $scope.datos.f01_forma_entrega = "";
       tinyMCE.get('f01_forma_entrega').setContent($scope.datos.f01_forma_entrega);
@@ -127,11 +126,8 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       $scope.datos.f01_correoTV = data[0].tv_correoc;
       $scope.datos.f01_pagwebAE =   data[0].tv_pagina_webc;
       $scope.datos.f01_dominio = data[0].pdominio;
-      if($scope.datos.f01_dominio == null || $scope.datos.f01_dominio == 'null' || $scope.datos.f01_dominio == undefined || $scope.datos.f01_dominio == 'undefined'){
-        document.getElementById('f01_dominio').readOnly = false;
-      }else{
-        document.getElementById('f01_dominio').readOnly = true;
-      }
+      $scope.dominioOriginal = data[0].pdominio;
+      
     
       
       //contactos
@@ -452,7 +448,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 }
 
   $scope.inicioTiendaVirtual = function () {
-    console.log(sessionService.get('IDAE'));
     $scope.limpiar();    
     $scope.recuperarSerializarInfo($rootScope.datosTiendaVirtual);
   };
@@ -595,7 +590,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
       }
     }  
-    console.log('$rootScope.contactosArray',$rootScope.contactosArray);
     datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
  
     ////////
@@ -736,22 +730,19 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     }else{
       $scope.sinHorario =  false;
     }
-    console.log('$rootScope.horariosArray',$rootScope.horariosArray);
     datosTiendaVirtual.horarios = JSON.stringify($rootScope.horariosArray);
 
- 
     datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
     if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
         datosTiendaVirtual.usr = sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_MATERNO') + ' ' + sessionService.get('US_PATERNO');
     } else {
         datosTiendaVirtual.usr = "juridico";
     }
-    //console.log('datosTiendaVirtual',datosTiendaVirtual);
     if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
        ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
        ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)) {
       datosTiendaVirtual.crearTiendaVirtual(function(response){
-      console.log(response);
+      //console.log(response);
       results = JSON.parse(response);
       results = results.success;
       if(results.length > 0){
@@ -912,7 +903,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
         }
       }  
-      //console.log('$rootScope.contactosArray',$rootScope.contactosArray);  
+ 
       datosTiendaVirtual.contactos = JSON.stringify($rootScope.contactosArray);
 
       //actualiza json redes
@@ -998,8 +989,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           }
         }
       }  
-      //console.log('$rootScope.redesSocialesArray',$rootScope.redesSocialesArray);
-        
+             
       datosTiendaVirtual.redes_sociales = JSON.stringify($rootScope.redesSocialesArray);
       datosTiendaVirtual.catalogo = $scope.catalogo1;
       datosTiendaVirtual.logotipo = $scope.logotipo1;
@@ -1046,7 +1036,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
       }else{
         $scope.sinHorario =  false;
       } 
-      console.log('$rootScope.horariosArray',$rootScope.horariosArray);
       datosTiendaVirtual.horarios = JSON.stringify($rootScope.horariosArray);
       datosTiendaVirtual.oid = sessionService.get('IDCIUDADANO');
       if (sessionService.get('TIPO_PERSONA')=='NATURAL'){
@@ -1055,12 +1044,11 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           datosTiendaVirtual.usr = "juridico";
       }
 
-       //console.log('datosTiendaVirtual',datosTiendaVirtual);
-       if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
+      if(($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto1_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
           ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto2_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)||
           ($scope.logotipo1 != '' && $scope.encabezado1 != '' && data.f01_contacto3_nro != '' && $scope.sinDominio == false && $scope.swDes == false && $scope.principal == false && $scope.sinHorario == false)) {
         datosTiendaVirtual.actualizarTiendaVirtual(function(response){
-        console.log(response);
+        //console.log(response);
         results = JSON.parse(response);
         results = results.success;
         if(results.length > 0){
@@ -1924,7 +1912,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
   }
   $scope.activaCheckL = function(datos){
-   //console.log('datos',datos);
     if(datos == 'L'){
       var lunesIni = $scope.datos.f01_hora_inicio_lunes;
       var lunesFin= $scope.datos.f01_hora_fin_lunes;
@@ -1994,9 +1981,11 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
     if(datos == undefined || datos == 'undefined' || datos == null || datos == 'null' || datos == ''){
       $("#mensaje3").hide();
     }else{
-    var datos = datos.toLowerCase();   
-      var lonDom = datos.length;
-      if(lonDom >=4){
+      if(datos == $scope.dominioOriginal){
+      }else{
+        var datos = datos.toLowerCase();   
+        var lonDom = datos.length;
+        if(lonDom >=4){
         var datosVerificacion = new dataTiendaVirtual();
           datosVerificacion.dominio = datos;
           datosVerificacion.verificarDominio(function(response){
@@ -2017,6 +2006,9 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
           $("#mensaje3").hide(); 
         
       }
+
+      }
+      
     }
   }
   
@@ -2032,7 +2024,6 @@ function tiendaVirtualController($scope, $timeout, CONFIG,$window,$rootScope,ses
 
     }else{
       var str = str.toLowerCase();
-      console.log('tipo',tipo);
       regexp = /^(http|https)\:\/\/[a-z0-9\.-]+\.[a-z]{2,4}/gi;   
       if(tipo == 'PW'){
         if (regexp.test(str)){

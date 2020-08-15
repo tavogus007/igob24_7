@@ -459,6 +459,7 @@
 							<div class="col-sm-7"> 
 								<!--input type="file" name="upload" id="prueba2" onchange="handleFiles(this.files)"-->
 								<input type="file" id="prueba2" multiple accept="image/*" onchange="getBase64()">
+								<span id="msjImg" style="display: none;color:red;font-weight:bold; font-size:12px">La imagen debe ser menor a 7mb</span>
 							</div>   
 						</div>
 						<center><div class="container">
@@ -482,10 +483,10 @@
 									</div>
 									<div class="col-md-10">
 										<input size="40" id="resultadoC" name="resultadoC" type="text" placeholder="" ng-model="resultadoC" onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> 
+										<p style="color:black" id="msg_capcha"></p>
 									</div>
 									<div class="col-md-2">
 										<button id="btnObtenerCapcha" type="button" class="btn btn-success fa fa-refresh"  onClick="obtCaptha()"> </button>
-										<p style="color:black" id="msg_capcha"></p>
 									</div>
 								</div>
 							</div>
@@ -598,10 +599,11 @@
 									</div>
 									<div class="col-md-10">
 										<input size="40" id="resultadoD" name="resultadoD" type="text" placeholder="" ng-model="resultadoD" onkeyup="VerificarCapchab(this)" onKeyPress="getlimpiareRRORC()" required/> 
+										<h6><div id="msg_capcha_" style="color:#000000"></div></h6>
 									</div>
 									<div class="col-md-2">
 										<button  id="btnObtenerCapchaC" type="button" class="btn btn-success  fa fa-refresh" onClick="obtCapthaC()"> </button>
-										<h6><div id="msg_capcha_" style="color:#000000"></div></h6>
+										
 									</div>
 								</div>
 							</div>

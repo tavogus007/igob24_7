@@ -64,10 +64,8 @@
    
 function getBase64() {
     var files = document.getElementById('file').files;
-    console.log("files: ", files);
     if (files.length > 0) {
         file = files[0];
-        console.log("tamaño: ", file.size);
     $("#file-name").val(file.name);
         if(file.size <= 7168)
         {
@@ -75,8 +73,6 @@ function getBase64() {
             var reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function () {
-                console.log("reader.result; ", reader.result);
-                console.log("reader.result.split(',')[1]: ", reader.result.split(',')[1]);
                 urlImagen = reader.result.split(',')[1];
             }
             reader.onerror = function (error) {
@@ -254,7 +250,6 @@ function subirimagen()
             url:jsonURLS.API_URL_GUARDAR_IMG+"igob247imagenes.php",
             data:formData,
             success:function(e){
-                console.log("eeeeee: ", e)
                 guardarDatos2(e)
             }
         });

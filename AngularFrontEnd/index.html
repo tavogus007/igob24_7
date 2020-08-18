@@ -9,6 +9,37 @@
 		overflow-y: scroll;
 		overflow-x: scroll;
 		}
+		.inputfile-box {
+		position: relative;
+		}
+
+		.inputfile {
+		display: none;
+		}
+
+		.container {
+		display: inline-block;
+		width: 100%;
+		}
+
+		.file-box {
+		display: inline-block;
+		width: 100%;
+		border: 1px solid;
+		padding: 5px 0px 5px 5px;
+		box-sizing: border-box;
+		height: calc(2rem - 2px);
+		}
+
+		.file-button {
+		background: #E41B25;
+				color: white;
+		padding: 5px;
+		position: absolute;
+		border: 1px solid;
+		top: 0px;
+		right: 0px;
+		}
 	</style> 
 	<style>
 	/* .social {
@@ -58,6 +89,7 @@
 		.add-btn:hover {
 		width: 120px;
 		}
+		
 		.add-btn::before,
 		.add-btn::after {
 		transition: width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
@@ -209,6 +241,7 @@
 	<meta http-equiv="Cache-Control" content="max-age=7200">
 	<link href="nuevoIgob/img/favicon.png" rel=icon>
 	<link href="nuevoIgob/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	
 	<link href="nuevoIgob/css/style.min.css" rel="stylesheet">
 </head>
 <body>
@@ -457,8 +490,17 @@
 							<label class="col-sm-1 col-form-label"></label>
 							<label class="col-sm-3 control-label">Adjuntar Archivo:</label>
 							<div class="col-sm-7"> 
-								<!--input type="file" name="upload" id="prueba2" onchange="handleFiles(this.files)"-->
-								<input type="file" id="prueba2" multiple accept="image/*" onchange="getBase64()">
+								<div class="inputfile-box">
+									<input type="file" id="file" class="inputfile" multiple accept="image/*" onchange="getBase64()">
+									<label for="file">
+									  <input id="file-name" class="form-control file-box" disabled readonly>
+									  <span class="file-button">
+										<i class="fa fa-upload" aria-hidden="true"></i>
+										Seleccione Archivo
+									  </span>
+									</label>
+								  </div>
+								<!--input type="file" id="prueba2" multiple accept="image/*" onchange="getBase64()"-->
 								<span id="msjImg" style="display: none;color:red;font-weight:bold; font-size:12px">La imagen debe ser menor a 7mb</span>
 							</div>   
 						</div>

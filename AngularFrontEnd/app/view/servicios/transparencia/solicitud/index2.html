@@ -186,6 +186,8 @@ function tipoOpcion(v){
   }
 }
 function guardarDatos2(){
+  $.blockUI.defaults.baseZ = 4000;
+    $.blockUI({ message: '<h1><img src="img/cargando.gif" width="45" height="45" /></h1>' });
   var tipoForm = $("#tipoForm").val(); 
   var fromIn = $("#fromIn").val();
   var procedencia = $("#procedencia").val();
@@ -236,7 +238,8 @@ function guardarDatos2(){
           llenarlogin();
           document.getElementById("escrito").checked = false;
           document.getElementById("correo1").checked = false;
-          document.getElementById("digital").checked = false;
+          document.getElementById("digital").checked = false;  
+          $.unblockUI();    
           //swal("Enviado!", "Su solicitud fue enviada correctamente", "success");                         
         },
         error: function(result) {

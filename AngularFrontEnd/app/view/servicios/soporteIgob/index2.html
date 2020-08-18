@@ -176,6 +176,8 @@
   <link href="img/bootstrap.min.css" rel="stylesheet"> 
 <script >       
 function guardarDatos2(){ 
+  
+  $.blockUI.defaults.baseZ = 4000;
   setTimeout(function(){  
     $.blockUI({ message: '<h1><img src="img/cargando.gif" width="45" height="45" /></h1>' });
   }, 200);

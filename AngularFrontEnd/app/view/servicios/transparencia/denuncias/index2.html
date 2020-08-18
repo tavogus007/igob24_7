@@ -20,6 +20,38 @@
     #asunto { 
       width: 100%;
     }
+    
+		.inputfile-box {
+    position: relative;
+		}
+
+		.inputfile {
+		display: none;
+		}
+
+		.container {
+		display: inline-block;
+		width: 100%;
+		}
+
+		.file-box {
+		display: inline-block;
+		width: 100%;
+		border: 1px solid;
+		padding: 5px 0px 5px 5px;
+		box-sizing: border-box;
+		height: calc(2rem - 2px);
+		}
+
+		.file-button {
+		background: #E41B25;
+				color: white;
+		padding: 5px;
+		position: absolute;
+		border: 1px solid;
+		top: 0px;
+		right: 0px;
+		}
   </style>
 <script>  
   var numero = "";
@@ -29,6 +61,33 @@
   var SuccesCapchasxx = "";
   var habGuardar1 = ""; 
   var urlImagen = "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";
+   
+function getBase64() {
+    var files = document.getElementById('file').files;
+    console.log("files: ", files);
+    if (files.length > 0) {
+        file = files[0];
+        console.log("tamaño: ", file.size);
+    $("#file-name").val(file.name);
+        if(file.size <= 7168)
+        {
+			document.getElementById('msjImg').style.display="none";
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                console.log("reader.result; ", reader.result);
+                console.log("reader.result.split(',')[1]: ", reader.result.split(',')[1]);
+                urlImagen = reader.result.split(',')[1];
+            }
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            }
+        } else {
+            document.getElementById('msjImg').style.display="block";
+            $("#file").val("");
+        }
+    }
+}
   function resetPassword()
   {    
     var captch  = $("#resultadoC").val();
@@ -163,12 +222,12 @@
       getlimpiareRROR(); 
       noVacio();    
 
-    $(document).on('change', 'input[type=file]', function(e) {   
+    /*$(document).on('change', 'input[type=file]', function(e) {   
       var TmpPath = URL.createObjectURL(e.target.files[0]);  
       $( "#esLibres" ).val(TmpPath);    
       $('span').html(TmpPath);
       $("#prueba").attr('src', TmpPath);
-    });
+    });*/
   });  
 function tipoOpcion(v){
   if (v.value==1) {
@@ -180,29 +239,31 @@ function tipoOpcion(v){
 }     
 function subirimagen()
 {  
-  if($("#prueba2").val() != "")
-  {
-    formData = '{ "oid": "57798c372f59181eb279fe5f",       "imagen": "'+urlImagen+'",     "ci": "10000000",         "nombre": "denuncia"   }';
-    $.ajax({
-      type        : 'POST',
-      url         : 'http://192.168.5.141/dreamfactory/igob/igob247imagenes.php', 
-      data        : formData,
-      headers: {
-            'Content-type': 'application/json'
-          },
-      success: function(data) {
-        var urlDenuncias = data;
-        guardarDatos2(urlDenuncias);
-      },
-    });
-  }
-  else
-  { 
-    var urlDenuncias = " "; 
-    guardarDatos2(urlDenuncias);   
-  } 
+  if(""!=$("#file").val()){
+        var formData = new FormData();
+        formData.append("oid", "57798c372f59181eb279fe5f");
+        formData.append("imagen", urlImagen);
+        formData.append("ci", "10000000");
+        formData.append("nombre", "denuncia");
+        $.ajax({
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+            type:"POST",
+            url:jsonURLS.API_URL_GUARDAR_IMG+"igob247imagenes.php",
+            data:formData,
+            success:function(e){
+                console.log("eeeeee: ", e)
+                guardarDatos2(e)
+            }
+        });
+    } else{
+        guardarDatos2(" ");
+    }
 }
 function guardarDatos2(url){
+    $.blockUI.defaults.baseZ = 4000;
   setTimeout(function(){  
   $.blockUI({ message: '<h1><img src="img/cargando.gif" width="45" height="45" /></h1>' });
   }, 200);  
@@ -324,7 +385,7 @@ function limpiar()
   $("#direccion").val(''); 
   $("#telefono").val('');
   $("#correo").val('');  
-  $("#prueba2").val('');  
+  $("#file").val('');  
   //$("#esLibres").val('');
   $("#detalleDenuncia").val('');
 }
@@ -396,7 +457,19 @@ function llenarlogin()
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Adjuntar Archivo:</label>
     <div class="col-sm-6"> 
-      <input type="file" name="upload" id="prueba2" ><br /><br />           
+      
+      <div class="inputfile-box">
+        <input type="file" id="file" class="inputfile" multiple accept="image/*" onchange="getBase64()">
+        <label for="file">
+          <input id="file-name" class="form-control file-box" disabled readonly>
+          <span class="file-button">
+          <i class="fa fa-upload" aria-hidden="true"></i>
+          Seleccione...
+          </span>
+        </label>
+        </div>
+        <span id="msjImg" style="display: none;color:red;font-weight:bold; font-size:12px">La imagen debe ser menor a 7mb</span>
+      <!--input type="file" name="upload" id="prueba2" ><br /><br /--> 
     </div>   
   </div>  
   <div id="datosPersonales" style="display: block;"> 
@@ -447,7 +520,7 @@ function llenarlogin()
     </div>
   </div></center>
   <div class="modal-footer">  
-    <button id= "EnvRes"  onClick="resetPassword();crearCasoLotus();" disabled="true" type="submit"  onclick="subirimagen();" class="btn btn-warning text-white"  >Enviar</button>        
+    <button id= "EnvRes"  onClick="resetPassword();crearCasoLotus();" disabled="true" type="submit" class="btn btn-warning text-white"  >Enviar</button>        
   </div>
   <center><img src="img/logo.png" width="250" height="100"/></center>
 </div>

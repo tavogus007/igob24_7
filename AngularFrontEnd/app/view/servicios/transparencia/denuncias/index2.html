@@ -66,10 +66,11 @@ function getBase64() {
     var files = document.getElementById('file').files;
     if (files.length > 0) {
         file = files[0];
-    $("#file-name").val(file.name);
-        if(file.size <= 7168)
+        console.log("tamaño: ", file.size);
+        $("#file-name").val(file.name);
+        if(file.size <= 7340032)
         {
-			document.getElementById('msjImg').style.display="none";
+			      document.getElementById('msjImg').style.display="none";
             var reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function () {
@@ -81,11 +82,15 @@ function getBase64() {
         } else {
             document.getElementById('msjImg').style.display="block";
             $("#file").val("");
+            $("#file-name").val("");
         }
     }
 }
   function resetPassword()
-  {    
+  {     
+    $.blockUI.defaults.baseZ = 4000; 
+    $.blockUI({ message: '<h1><img src="img/cargando.gif" width="45" height="45" /></h1>' });
+  
     var captch  = $("#resultadoC").val();
     var id = numero;
     var verCaptcha = new captcha();
@@ -96,11 +101,10 @@ function getBase64() {
       json = JSON.parse(resultado);
       if(json.success[0] == undefined)
       {
+        $.unblockUI();
           sweetAlert("", "Error en el captcha intentar de nuevo por favor", "warning");
           obtCaptha();
-      }
-      else
-      {
+      } else {
           subirimagen();
       }
     });
@@ -251,6 +255,8 @@ function subirimagen()
             data:formData,
             success:function(e){
                 guardarDatos2(e)
+            }, error:function(){
+              $.unblockUI();
             }
         });
     } else{
@@ -258,10 +264,6 @@ function subirimagen()
     }
 }
 function guardarDatos2(url){
-    $.blockUI.defaults.baseZ = 4000;
-  setTimeout(function(){  
-  $.blockUI({ message: '<h1><img src="img/cargando.gif" width="45" height="45" /></h1>' });
-  }, 200);  
   var tipoForm = $("#tipoForm").val(); 
   var fromIn = $("#fromIn").val();
   var procedencia = $("#procedencia").val();
@@ -318,12 +320,12 @@ function guardarDatos2(url){
           document.getElementById("EnvRes").disabled = true;
           noVacio();
           llenarlogin();
-          setTimeout(function(){
-           $.unblockUI();
-           swal("Enviado!", "Su denuncia fue enviada correctamente", "success"); 
-          }, 500);                         
+          $.unblockUI();
+          swal("Enviado!", "Su denuncia fue enviada correctamente, su código de trámite es "+ codTramite, "success");                      
         },
-        error: function(result) {}
+        error: function(result) {
+          $.unblockUI();
+        }
       });
     }
   });
@@ -370,9 +372,13 @@ function crearCasoLotus(){
   crearCasoL.datos = JSON.stringify(dataForm);
   crearCasoL.procodigo = 'TRA_REG';
   crearCasoL.crearCasoAeLinea( function(resultado){
+    var aa = JSON.parse(resultado).success.data[0].sp_pmfunction_crearcaso_linea;
+    codTramite = (aa.split(',')[0]).split('(')[1];
+    console.log('result: ', codTramite);
       //$.unblockUI();
   });
 }
+var codTramite;
 function limpiar()
 { 
   $("#nombreCompleto").val('');
@@ -383,6 +389,7 @@ function limpiar()
   $("#file").val('');  
   //$("#esLibres").val('');
   $("#detalleDenuncia").val('');
+  $("#file-name").val('');
 }
 var idUsusario = "";
 function llenarlogin()

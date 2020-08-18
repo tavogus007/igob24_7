@@ -28,7 +28,9 @@
   var habGuardar1 = ""; 
 
   function resetPassword()
-  {    
+  {
+    $.blockUI.defaults.baseZ = 4000;
+    $.blockUI({ message: '<h1><img src="img/cargando.gif" width="45" height="45" /></h1>' });
     var captch  = $("#resultadoC").val();
     var id = numero;
     var verCaptcha = new captcha();
@@ -39,6 +41,7 @@
       json = JSON.parse(resultado);
       if(json.success[0] == undefined)
       {
+          $.unblockUI();
           sweetAlert("", "Error en el captcha intentar de nuevo por favor", "warning");
           obtCaptha();
       }
@@ -186,8 +189,6 @@ function tipoOpcion(v){
   }
 }
 function guardarDatos2(){
-  $.blockUI.defaults.baseZ = 4000;
-    $.blockUI({ message: '<h1><img src="img/cargando.gif" width="45" height="45" /></h1>' });
   var tipoForm = $("#tipoForm").val(); 
   var fromIn = $("#fromIn").val();
   var procedencia = $("#procedencia").val();
@@ -243,6 +244,7 @@ function guardarDatos2(){
           //swal("Enviado!", "Su solicitud fue enviada correctamente", "success");                         
         },
         error: function(result) {
+          $.unblockUI();
         }
       });
     },

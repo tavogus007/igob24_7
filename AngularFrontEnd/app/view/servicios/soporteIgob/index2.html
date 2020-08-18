@@ -27,6 +27,8 @@
   var habGuardar1 = ""; 
   function resetPassword()
   {    
+    $.blockUI.defaults.baseZ = 4000;
+    $.blockUI({ message: '<h1><img src="img/cargando.gif" width="45" height="45" /></h1>' });
     var captch  = $("#resultadoC").val();
     var id = numero;
     var verCaptcha = new captcha();
@@ -39,6 +41,7 @@
       {
         sweetAlert("", "Error en el captcha intentar de nuevo por favor", "warning");
         obtCaptha();
+        $.unblockUI();
       }
       else
       {
@@ -176,11 +179,6 @@
   <link href="img/bootstrap.min.css" rel="stylesheet"> 
 <script >       
 function guardarDatos2(){ 
-  
-  $.blockUI.defaults.baseZ = 4000;
-  setTimeout(function(){  
-    $.blockUI({ message: '<h1><img src="img/cargando.gif" width="45" height="45" /></h1>' });
-  }, 200);
   var tipoForm = $("#tipoForm").val(); 
   var fromIn = $("#fromIn").val();
   var procedencia = $("#procedencia").val();  
@@ -223,13 +221,13 @@ function guardarDatos2(){
           obtCaptha();           
           document.getElementById("EnvRes").disabled = true;
           noVacio();      
-          llenarlogin();             
-          setTimeout(function(){
+          llenarlogin();
           $.unblockUI();
-          swal("Enviado!", "Su solicitud fue enviada correctamente", "success"); 
-          }, 500);                          
+          swal("Enviado!", "Su solicitud fue enviada correctamente", "success");                   
         },
-        error: function(result) {}
+        error: function(result) {
+          $.unblockUI();
+        }
       });
     },   
   });   

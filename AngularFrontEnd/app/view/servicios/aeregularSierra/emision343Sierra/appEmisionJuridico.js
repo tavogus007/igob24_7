@@ -1697,6 +1697,15 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             datosNeXO['rdTipoTramite'] = paramForm.rdTipoTramite;
             datosNeXO['montoDeuda'] = paramForm.montoDeuda;
             datosNeXO['id_zona_segura'] = paramForm.id_zona_segura;
+            if(paramForm.chkzonasegura == 'ZONASEGURA'){
+                datosNeXO['f01_zona_segura'] = 'SI';
+            }else{
+                if(paramForm.chkzonasegura == 'NOZONASEGURA'){
+                    datosNeXO['f01_zona_segura'] = 'NO';
+                }else{
+                    datosNeXO['f01_zona_segura'] = '';
+                }
+            }
             var datoObjectdj = [];
             var decjuradaN = new Object();
             if ($rootScope.decJuradaJuridico) {
@@ -3266,6 +3275,69 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             }
             pubMod = pubMod +'</table>';
             dataForm['publicidad_grilla'] = pubMod;
+            var divfoodTruck = '';
+            if (data.f01_categoria == 211 || data.f01_categoria == '211') {
+                divfoodTruck = divfoodTruck + '<table border="0" style="width:100%">'+
+                                            '<tr><td colspan="4" style="width: 100%">DATOS DEL VEHÍCULO O REMOLQUE</td></tr>'+
+                                        '<tr>'+
+                                            '<td style="width: 25%">TIPO DE VEHÍCULO:</td>'+
+                                            '<td style="width: 25%">'+ data.f01_vehiculo_ft + '</td>';
+                                        if (data.f01_vehiculo_ft == "REMOLQUE") {
+                                            divfoodTruck = divfoodTruck + 
+                                            '<td style="width: 25%">OTORGADO: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_otorgado_ft + '</td>'+
+                                        '</tr>';
+                                        }
+                                        else{
+                                            divfoodTruck = divfoodTruck +
+                                            '<td style="width: 25%"></td>'+
+                                            '<td style="width: 25%"></td>'+
+                                        '</tr>';
+                                        }
+                                        divfoodTruck = divfoodTruck + '<tr>'+
+                                            '<td style="width: 25%">CLASE: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_clase_ft + '</td>'+
+                                            '<td style="width: 25%">MARCA: </td>'+
+                                            '<td style="width: 250%">'+ data.f01_marca_ft + '</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td style="width: 25%">TIPO: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_tipo_ft + '</td>'+
+                                            '<td style="width: 25%">SUBTIPO: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_subtipo_ft + '</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td style="width: 25%">MODELO: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_modelo_ft + '</td>'+
+                                            '<td style="width: 25%">MOTOR: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_motor_ft + '</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td style="width: 25%">Nº CHASIS: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_chasis_ft + '</td>'+
+                                            '<td style="width: 25%">SERVICIO: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_servicio_ft + '</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td style="width: 25%">COLOR: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_color_ft + '</td>'+
+                                            '<td style="width: 25%">RADICATORIA: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_radicatoria_ft + '</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td style="width: 25%">DOCUMENTO LEGAL: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_doclegal_ft + '</td>'+
+                                            '<td style="width: 25%">Nº DOCUMENTO LEGAL: </td>'+
+                                            '<td style="width: 25%">'+ data.f01_numdoclegal_ft + '</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td style="width: 50%" colspan="2">UBICACIÓN DEL LUGAR DONDE SE EFECTUARÁ LA INSPECCIÓN DEL VEHÍCULO O REMOLQUE: </td>'+
+                                            '<td style="width: 50%" colspan="2">'+ data.f01_lugar_ft + '</td>'+
+                                        '</tr></table>';
+                dataForm['divft'] = divfoodTruck;
+            } else{
+                dataForm['divft'] = divfoodTruck;
+            };
             dataForm['fecha_sist'] = sfecha;
             dataForm['fecha_sist2'] = sfecha;
             dataForm['usuario'] = 'IGOB247 CIUDADANO';

@@ -30,6 +30,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
     $scope.IsVisible = false;
     $scope.tblDeudas = {};
     $scope.listDeudas = [];
+    $scope.divDeudasPendientes = false;
 
 
     //RADIO PARA VER SI REALIZARA UNA NUEVA ACTIVIDAD O UNA RENOVACION
@@ -2614,7 +2615,34 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         datosNeXO['g_fecha']                    =   fechactual;
         datosNeXO['g_origen']                   =   "IGOB247";
         datosNeXO['f01_vencimientoLicencia'] = paramForm.f01_vencimientoLicencia;
-
+        datosNeXO['licencia_multiple'] = paramForm.licenciam;
+        if(paramForm.chkzonasegura == 'ZONASEGURA'){
+            datosNeXO['f01_zona_segura'] = 'SI';
+        }else{
+            if(paramForm.chkzonasegura == 'NOZONASEGURA'){
+                datosNeXO['f01_zona_segura'] = 'NO';
+            }else{
+                datosNeXO['f01_zona_segura'] = '';
+            }
+        }
+        datosNeXO['id_zona_segura'] = paramForm.id_zona_segura;
+        if (paramForm.f01_categoria_descrip == 211 || paramForm.f01_categoria_descrip == '211') {
+            datosNeXO['f01_vehiculo_ft'] = paramForm.f01_vehiculo_ft;
+            datosNeXO['f01_otorgado_ft'] = paramForm.f01_otorgado_ft;
+            datosNeXO['f01_clase_ft'] = paramForm.f01_clase_ft;
+            datosNeXO['f01_marca_ft'] = paramForm.f01_marca_ft;
+            datosNeXO['f01_tipo_ft'] = paramForm.f01_tipo_ft;
+            datosNeXO['f01_subtipo_ft'] = paramForm.f01_subtipo_ft;
+            datosNeXO['f01_modelo_ft'] = paramForm.f01_modelo_ft;
+            datosNeXO['f01_motor_ft'] = paramForm.f01_motor_ft;
+            datosNeXO['f01_chasis_ft'] = paramForm.f01_chasis_ft;
+            datosNeXO['f01_servicio_ft'] = paramForm.f01_servicio_ft;
+            datosNeXO['f01_color_ft'] = paramForm.f01_color_ft;
+            datosNeXO['f01_radicatoria_ft'] = paramForm.f01_radicatoria_ft;
+            datosNeXO['f01_doclegal_ft'] = paramForm.f01_doclegal_ft;
+            datosNeXO['f01_numdoclegal_ft'] = paramForm.f01_numdoclegal_ft;
+            datosNeXO['f01_lugar_ft'] = paramForm.f01_lugar_ft;
+        }
         //DATOS DE LA ACTIVIDAD ECONOMICA - NO ESTAN REGISTRADAS DE MANERA LOCAL
         if($scope.dataGenesisCidadano && $scope.formDatosAE){
             if($scope.dataGenesisCidadano.length > 0){
@@ -3130,6 +3158,71 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                     $scope.docArray[key].estado = true;
                 }
             }*/
+            ////////////////////////FOOD TRUCK//////////////////////////////////
+            if ($scope.datos.f01_categoria_descrip == 211 || $scope.datos.f01_categoria_descrip == '211') {
+                if(value.idnro == 5 || value.idnro == 10 || value.idnro == 11 || value.idnro == 16 || value.idnro == 23 || value.idnro == 24 || value.idnro == 30){
+                    $scope.docArray[key].estado = false;
+                }
+                var vehiculoft = $scope.datos.f01_vehiculo_ft;
+                if(vehiculoft){
+                    if(value.idnro == 25){
+                        switch (vehiculoft) {
+                            case 'VEHICULO':
+                                $scope.docArray[key].estado = true;
+                            break;
+                            case 'REMOLQUE':
+                                $scope.docArray[key].estado = false;
+                            break;
+                        }
+                    }
+                    if(value.idnro == 26){
+                        switch (vehiculoft) {
+                            case 'VEHICULO':
+                                $scope.docArray[key].estado = false;
+                            break;
+                            case 'REMOLQUE':
+                                $scope.docArray[key].estado = true;
+                            break;
+                        }
+                    }
+                    if(value.idnro == 27){
+                        switch (vehiculoft) {
+                            case 'VEHICULO':
+                                $scope.docArray[key].estado = false;
+                            break;
+                            case 'REMOLQUE':
+                                $scope.docArray[key].estado = true;
+                            break;
+                        }
+                    }
+                    if(value.idnro == 28){
+                        switch (vehiculoft) {
+                            case 'VEHICULO':
+                                $scope.docArray[key].estado = false;
+                            break;
+                            case 'REMOLQUE':
+                                $scope.docArray[key].estado = true;
+                            break;
+                        }
+                    }
+                    if(value.idnro == 29){
+                        switch (vehiculoft) {
+                            case 'VEHICULO':
+                                $scope.docArray[key].estado = false;
+                            break;
+                            case 'REMOLQUE':
+                                $scope.docArray[key].estado = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if ($scope.datos.f01_categoria_descrip == 212 || $scope.datos.f01_categoria_descrip == '212') {
+                if(value.idnro == 25 || value.idnro == 26 || value.idnro == 27 || value.idnro == 28 || value.idnro == 29 || value.idnro == 30){
+                    $scope.docArray[key].estado = false;
+                }
+            }
+            //////////////////////////////////////////////////////////
         });
         if ($scope.datos.rdTipoTramite1 == 'NUEVO') {
             datoObjectFinalV = [];
@@ -4701,6 +4794,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             } else{
                 swal('', 'Estimado ciudadano esta opción debe solicitarla con 30 días de anticipación a la fecha de vencimiento de su Licencia de Funcionamiento.\n Su licencia de Funcionamiento vence el '+ $scope.datos.f01_vencimientoLicencia, 'warning');
                 $scope.IsVisible = false;
+                $scope.divDeudasPendientes = true;
                 $scope.datos.pago_adelantado = 'NO';
                 $scope.datos.nro_ges = '';
                 $scope.pago_adelantado = 'NO';

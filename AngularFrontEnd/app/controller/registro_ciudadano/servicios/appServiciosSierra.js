@@ -2219,6 +2219,7 @@
             data = JSON.parse(resultado);
             if(data.success.length > 0){
                 $rootScope.aMacrodistritos = data.success;
+                console.log('$rootScope.aMacrodistritos      ',$rootScope.aMacrodistritos);
             }else{
                 $scope.msg = "Error !!";
             }

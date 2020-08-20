@@ -328,7 +328,7 @@
                     }, 500);
                 })
                 $scope.armarDatosForm(datos, fechaActualS, sHora);
-                $scope.generarDocumentoPhpV();
+               // $scope.generarDocumentoPhpV();
             }
         }
     }

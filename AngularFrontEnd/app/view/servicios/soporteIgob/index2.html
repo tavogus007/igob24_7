@@ -197,25 +197,22 @@ function guardarDatos2(){
   }
   var xdts_datos = '{"tipoForm":"'+tipoForm+'", "idUsusario":"'+idUsusario+'", "procedencia": "'+procedencia+'",  "nombreCompleto": "'+nombreCompleto+'", "documento":"'+documento+'", "telefono": "'+telefono+'", "correo":"'+correo+'",  "detalleCaso":"'+detalleSoporte+'" }'; 
   var xdts_datos = JSON.stringify(xdts_datos);
-  $.ajax({
-    type        : 'POST',
-    url         : jsonURLS.CONEXION_MOTOR_SERVICIO + 'api/apiLogin', 
-    data        : '{"usr_usuario":"administrador", "usr_clave":123456}',
-    headers: {
-      'Content-type': 'application/json'
-    },
-    success: function(token) { 
-      token = token.token; 
-      var formData = {"identificador": 'RCCIUDADANO_INSERTA_CASOS',"parametros": '{"xdts_tipo":"'+tipoForm+'", "xdts_nombre_completo":"'+nombreCompleto+'", "xdts_fono":'+telefono+', "xdts_referencia":"Solicitud Soporte", "xdts_contenido":"Solicitud Soporte", "xdts_url_evidencia":" ", "xdts_usr_id":1, "xdts_tipo_detalle":"'+detalleSoporte+'", "xdts_datos":'+xdts_datos+'}'};    
+  
       $.ajax({   
         type        : 'POST',            
-        url         : jsonURLS.CONEXION_MOTOR_SERVICIO + 'api/reglaNegocio/ejecutarWeb',  
-        data        : formData,
+        url         : jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/guardar_denuncia',  
+        data: { 
+                "xdts_tipo": tipoForm,
+                "xdts_nombre_completo": nombreCompleto,
+                "xdts_fono": telefono,
+                "xdts_referencia": "Solicitud Soporte",
+                "xdts_contenido": "Solicitud Soporte",
+                "xdts_url_evidencia": " ",
+                "xdts_usr_id": 1,
+                "xdts_tipo_detalle": detalleSoporte,
+                "xdts_datos": xdts_datos
+            },
         dataType    : 'json',
-        crossDomain : true,
-        headers: {
-         'authorization': 'Bearer '+token,         
-        },
         success: function(dataIN) {  
           limpiar(); 
           obtCaptha();           
@@ -229,8 +226,6 @@ function guardarDatos2(){
           $.unblockUI();
         }
       });
-    },   
-  });   
 } 
 function limpiar()
 { 

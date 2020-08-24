@@ -231,7 +231,7 @@ function inmueblesControllerJuridico($scope, $q, $rootScope, $routeParams, $loca
                     }, 500);
                 })
                 $scope.armarDatosForm(datos, fechaActualS, sHora);
-                $scope.generarDocumentoPhpI();
+                //$scope.generarDocumentoPhpI();
             }
         }
     }

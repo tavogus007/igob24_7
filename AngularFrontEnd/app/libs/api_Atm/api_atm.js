@@ -2,7 +2,7 @@ var urlComp;
 var dataResp;
 var dataParams;
 var typeCall;
-var urlAservicio    =    "";//"http://192.168.5.69/api/reglaNegocio/ejecutarWeb";
+var urlAservicio    =    "";
 
 
 if(jsonURLS){
@@ -16,16 +16,12 @@ function ejecutarAjaxATM(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
       type: vTypeCall,
       url: urlATM + vUrlComp,
       data: vDataCall,
-      //dataType: "json",
       async: false,
-      //processData: true,
       success: function(response) {
         dataResp = JSON.stringify(response);
-        console.log("dfato lista", dataResp)
         vFunctionResp(dataResp);
       },
       error: function (response, status, error) {
-        //dataResp = response.responseText;
         dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
         vFunctionResp(dataResp);
       }

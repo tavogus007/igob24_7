@@ -736,17 +736,20 @@
     <script type="text/javascript">
         function cerrarModales(a){
             if (a == 1)
-            {
+            {  
+                document.getElementById('denuncias').contentDocument.location.reload(true);
                 $('#informacionModal').modal('hide');   
                 $('#soporteModal').modal('hide');   
             }
             if (a == 2)
             {
+                document.getElementById('solicitud').contentDocument.location.reload(true);
                 $('#denunciaModal').modal('hide');   
                 $('#soporteModal').modal('hide');   
             }
             if (a == 3)
             {
+                document.getElementById('soporte').contentDocument.location.reload(true);
                 $('#informacionModal').modal('hide');   
                 $('#denunciaModal').modal('hide');   
             }

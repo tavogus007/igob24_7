@@ -51,19 +51,35 @@
       }
     });
   }
+var gc = true;
+function noVacioC(){
+    var e=$("#correo").val();
+    var valido=document.getElementById("emailOK");
+    document.getElementById("correo").addEventListener("input",function(){campo=event.target,emailRegex=/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i,emailRegex.test(campo.value)?(valido.innerText="válido",gc = true):(valido.innerText="incorrecto", gc = false)});$("#correo").val();""!=$("#detalleDenuncia").val()&&"válido"==valido.innerText?document.getElementById("resultadoC").disabled=!1:document.getElementById("resultadoC").disabled=!0
+}
   function noVacio()
   {
       var correo2  = $("#correo").val();    
       var estadoDenuncia  = $("#detalleDenuncia").val(); 
-    if( estadoDenuncia != "" && correo2 != "" )
+    if( estadoDenuncia != "" && correo2 != "" && gc)
     {
       document.getElementById("resultadoC").disabled = false;
+      document.getElementById('msjCap').style.display="none";
     }
     else
     {
       document.getElementById("resultadoC").disabled = true;
+      document.getElementById('msjCap').style.display="block";
     }
   }
+function verificarLlenado(){
+  var a = $("#detalleDenuncia").val();
+  var b = $("#correo").val();
+  if(a == '' || a == null || b == '' || b == null || SuccesCapchasxx =="" || !gc)
+    document.getElementById("EnvRes").disabled = true;
+  else
+    document.getElementById("EnvRes").disabled = false;
+} 
   function getlimpiareRROR()
   {   
     //var correo = $("#prsCorreo").val();
@@ -148,6 +164,7 @@
   function limpiarCamposRecuperacion()
   {    
     document.getElementById("resultadoC").disabled = true;
+      document.getElementById('msjCap').style.display="block";
     document.getElementById("EnvRes").disabled = true;  
     document.getElementById("resultadoC").value = '';
     document.getElementById("resultadoC").value = '';
@@ -303,7 +320,7 @@ function crearCasoLtSInformacion(){
     scodigo = scodigo.split(",");
     scodigo = scodigo[0];
     scodigo = scodigo.substring(1, scodigo.length);
-    swal("Enviado!", "Su solicitud " + scodigo + ", fue enviada correctamente, su numero de", "success");
+    swal("Enviado!", "Su solicitud fue enviada correctamente, su numero de solicitud es: " + scodigo, "success");
   });
 }
 function solonumeros(e)
@@ -379,14 +396,15 @@ function controlaCheck(v){
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Teléfono/Celular:</label>
     <div class="col-sm-6">
-      <input type="number" class="form-control" id="telefono" maxlength="8" placeholder="Numero de contacto " onkeypress="solonumeros(event);" >
+      <input type="number" class="form-control" id="telefono" maxlength="8" placeholder="Numero de contacto " onKeyUp="solonumeros(event);" >
     </div>
   </div>
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Correo Electrónico: *</label>
     <div class="col-sm-6">
-      <input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" onKeyPress="noVacio()">
+      <input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" onKeyUp="noVacioC();noVacio();verificarLlenado()">
+      <span id="emailOK" style="color:red;"></span>
     </div>  
   </div> 
   <div class="form-group row">
@@ -443,7 +461,7 @@ function controlaCheck(v){
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Detalle de la solicitud :   *</label>
     <div class="col-sm-6">
-      <textarea type="text" class="form-control" id="detalleDenuncia" placeholder="Detalle Solicitud" onKeyPress="noVacio()"></textarea>
+      <textarea type="text" class="form-control" id="detalleDenuncia" placeholder="Detalle Solicitud" onKeyUp="noVacio();verificarLlenado()"></textarea>
     </div>
   </div> 
   <div class="form-group row">
@@ -468,8 +486,9 @@ function controlaCheck(v){
                 <th class="border border-warning"> <img id="img2" class="img-responsive" src=""  title="" width="200" height="35"></th>  
               </tr>
             </table>  
-            <input size="34" id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> </th>
+            <input size="34" id="resultadoC" name="resultadoC" type="text" placeholder="" onkeyup="VerificarCapchaa(this)" onKeyUp="getlimpiareRROR()" required/> </th>
             <button id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="img/recarga.png"  width="20" height="20" title=""> </button> </th> 
+            <span id="msjCap" style="display: block;color:red;font-weight:bold; font-size:12px">Llene primero los datos obligatorios (*)</span>
             <p id="msg_capcha"></p>
           </div>
       </div>

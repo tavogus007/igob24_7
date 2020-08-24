@@ -7,6 +7,7 @@
   <script type="text/javascript" src="../../../../libs/login/login.js"></script>
   <script type="text/javascript" src="../../../../libs/apiIF/api_if.js"></script>
   <link rel="stylesheet" href="../../../../libs/css/sweetalert.min.css"/>
+  <link rel="stylesheet" href="../../../../libs/css_one/font-awesome.min.css" />
   <link href="img/bootstrap.min.css" rel="stylesheet"> 
 </head>
 <body>  
@@ -20,38 +21,42 @@
     #asunto { 
       width: 100%;
     }
-    
-		.inputfile-box {
+    .custom-upload {
     position: relative;
-		}
-
-		.inputfile {
-		display: none;
-		}
-
-		.container {
-		display: inline-block;
-		width: 100%;
-		}
-
-		.file-box {
-		display: inline-block;
-		width: 100%;
-		border: 1px solid;
-		padding: 5px 0px 5px 5px;
-		box-sizing: border-box;
-		height: calc(2rem - 2px);
-		}
-
-		.file-button {
-		background: #E41B25;
-				color: white;
-		padding: 5px;
-		position: absolute;
-		border: 1px solid;
-		top: 0px;
-		right: 0px;
-		}
+    height: 40px;
+    width: 100%;
+    margin:0px;
+}
+.custom-upload input[type=file]
+{
+    outline:none;
+    position: relative;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width:85%;
+    height:100%;
+}
+.custom-upload .fake-file
+{
+    background:url(http://www.fold3.com/i/upload-icon.png) center right no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 85%;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    line-height: 100%;
+}
+.custom-upload .fake-file input
+{
+    font-size:16px;
+    height:40px;
+    width:85%;
+}
   </style>
 <script>  
   var numero = "";
@@ -118,7 +123,13 @@ function getBase64() {
           sweetAlert("", "Error en el captcha intentar de nuevo por favor", "warning");
           obtCaptha();
       } else {
+        if( $("#file-name").val() == ''|| $("#file-name").val()==null)
+        {
+          guardarDatos2(' ');
+          crearCasoLotus(' ');
+        } else {
           subirimagen();
+        }
       }
     });
   }
@@ -126,13 +137,15 @@ function getBase64() {
   {
     var estadoDenuncia  = $("#detalleDenuncia").val(); 
 
-    if( estadoDenuncia != "" )
+    if( estadoDenuncia != "" && gc)
     {
       document.getElementById("resultadoC").disabled = false;
+      document.getElementById('msjCap').style.display="none";
     }
     else
     {
       document.getElementById("resultadoC").disabled = true;
+      document.getElementById('msjCap').style.display="block";
     }
   }
   function getlimpiareRROR()
@@ -219,6 +232,7 @@ function getBase64() {
   function limpiarCamposRecuperacion()
   {
     document.getElementById("resultadoC").disabled = true;
+      document.getElementById('msjCap').style.display="block";
     document.getElementById("EnvRes").disabled = true;  
     document.getElementById("resultadoC").value = '';
     document.getElementById("resultadoC").value = '';
@@ -401,6 +415,14 @@ function limpiar()
   $("#detalleDenuncia").val('');
   $("#file-name").val('');
 }
+function verificarLlenado(){
+  var a = $("#detalleDenuncia").val();
+  var b = $("#correo").val();
+  if(a == '' || a == null || b == '' || b == null || SuccesCapchasxx =="" || !gc)
+    document.getElementById("EnvRes").disabled = true;
+  else
+    document.getElementById("EnvRes").disabled = false;
+} 
 var idUsusario = "";
 function llenarlogin()
 {
@@ -418,6 +440,22 @@ function llenarlogin()
     $("#correo").val(sessionStorage.getItem("US_EMAIL")); 
     idUsusario = sessionStorage.getItem("IDUSUSARIO");
   }
+}
+/*REQUISITOS2018*/
+function ejecutarFile(idfile){
+  document.getElementById('file').click();
+};
+var gc = true;
+function noVacioC(){
+    var e=$("#correo").val();
+    var valido;
+    valido=document.getElementById("emailOK");
+    document.getElementById("correo").addEventListener("input",function(){
+      campo=event.target,
+      
+      emailRegex=/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i,
+      emailRegex.test(campo.value)?(valido.innerText="válido",gc = true):(valido.innerText="incorrecto", gc = false)});
+      $("#correo").val();"válido"==valido.innerText?document.getElementById("resultadoC").disabled=!1:document.getElementById("resultadoC").disabled=!0
 }
 </script>
 <div style="max-width:960px; min-width:320px; margin:auto" id="content" class="border border-warning rounded">
@@ -444,7 +482,7 @@ function llenarlogin()
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Asunto:</label>
-    <div class="col-sm-6">
+    <div class="col-sm-7">
       <select class="form-control" id="asunto" >
         <option value="1" text="Uso de influencias" selected="selected" >Uso de influencias</option>
         <option value="2" text="mal uso de bienes del municipio">Mal uso de bienes del municipio</option>
@@ -461,27 +499,34 @@ function llenarlogin()
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label red">Detalle de la denuncia: *</label>
-    <div class="col-sm-6">
-      <textarea type="text" class="form-control" id="detalleDenuncia" placeholder="Detalle Denuncia" onKeyPress="noVacio()"></textarea> 
+    <div class="col-sm-7">
+      <textarea type="text" class="form-control" id="detalleDenuncia" placeholder="Detalle Denuncia" onkeyup="verificarLlenado();noVacio()"></textarea> 
     </div>
   </div>
   <div class="form-group row" >
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Adjuntar Archivo:</label>
-    <div class="col-sm-6"> 
-      
-      <div class="inputfile-box">
+    <div class="col-sm-7"> 
+      <div class="custom-upload">
+        <div class="input-group">
+            <input id="file-name" class="form-control input-lg" type="text" disabled readonly>
+            <span class="input-group-btn">
+              <button class="btnupload browse btn btn-primary input-lg" type="button" onclick="ejecutarFile();"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+            </span>
+        </div>   
+        <input type="file" id="file" class="inputfile" multiple accept="image/*" onchange="getBase64()" style="display: none">                   
+    </div>
+      <!--div class="form-group custom-upload inputfile-box">
         <input type="file" id="file" class="inputfile" multiple accept="image/*" onchange="getBase64()">
         <label for="file">
-          <input id="file-name" class="form-control file-box" disabled readonly>
+          <input id="file-name" class="form-control file-box input-lg" disabled readonly>
           <span class="file-button">
           <i class="fa fa-upload" aria-hidden="true"></i>
-          Seleccione...
           </span>
         </label>
-        </div>
-        <span id="msjImg" style="display: none;color:red;font-weight:bold; font-size:12px">El archivo debe ser menor a 7mb</span>
-        <span id="msjImgTipo" style="display: none;color:red;font-weight:bold; font-size:12px">El archivo debe ser de formato Word, PDF o imagen</span>
+      </div-->
+      <span id="msjImg" style="display: none;color:red;font-weight:bold; font-size:12px">El archivo debe ser menor a 7mb</span>
+      <span id="msjImgTipo" style="display: none;color:red;font-weight:bold; font-size:12px">El archivo debe ser de formato Word, PDF o imagen</span>
       <!--input type="file" name="upload" id="prueba2" ><br /><br /--> 
     </div>   
   </div>  
@@ -493,7 +538,7 @@ function llenarlogin()
     </div>
     <div class="form-group row">
       <div class="col-sm-6">
-        <input type="number" class="form-control" id="documento" placeholder="numero Carnet" onkeypress="solonumeros(event);" hidden>
+        <input type="number" class="form-control" id="documento" placeholder="numero Carnet" onKeyUp="solonumeros(event);" hidden>
       </div>
     </div>
     <div class="form-group row">
@@ -505,14 +550,15 @@ function llenarlogin()
       <label class="col-sm-1 col-form-label"></label>
       <label class="col-sm-3 control-label">Teléfono/Celular:</label>
       <div class="col-sm-6">
-        <input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" maxlength="8" onkeypress="solonumeros(event);">
+        <input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" maxlength="8" onKeyUp="solonumeros(event);">
       </div>
     </div>
     <div class="form-group row">
       <label class="col-sm-1 col-form-label"></label>
-      <label class="col-sm-3 control-label">Correo Electrónico:</label>
+      <label class="col-sm-3 control-label">Correo Electrónico: *</label>
       <div class="col-sm-6">
-        <input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com">
+        <input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" onKeyUp="noVacioC();verificarLlenado();noVacio()">
+        <span id="emailOK" style="color:red;"></span>
       </div>
     </div>
   </div>  
@@ -526,7 +572,8 @@ function llenarlogin()
                   <th class="border border-warning"> <img id="img2" class="img-responsive" src=""  title="" width="200" height="35"></th>  
                 </tr>
             </table>
-            <input size="50"  id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="img/recarga.png"  width="20" height="20" title=""> </button>
+            <input size="50"  id="resultadoC" name="resultadoC" type="text" placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyUp="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="img/recarga.png"  width="20" height="20" title=""> </button>
+            <span id="msjCap" style="display: block;color:red;font-weight:bold; font-size:12px">Llene primero los datos obligatorios (*)</span>
             <p id="msg_capcha"></p>             
           </div>
       </div>

@@ -71,13 +71,15 @@
   {
     var correo2  = $("#correo").val();    
     var estadoDenuncia  = $("#detalleSoporte").val(); 
-    if( estadoDenuncia != "" && correo2 != "" )
+    if( estadoDenuncia != "" && correo2 != "" && gc )
     {
-       document.getElementById("resultadoC").disabled = false;
+      document.getElementById("resultadoC").disabled = false;
+      document.getElementById('msjCap').style.display="none";
     }
     else
     {
       document.getElementById("resultadoC").disabled = true;
+      document.getElementById('msjCap').style.display="block";
     }
   }
   function getlimpiareRROR()
@@ -164,6 +166,7 @@
   function limpiarCamposRecuperacion()
   {    
     document.getElementById("resultadoC").disabled = true;
+      document.getElementById('msjCap').style.display="block";
     document.getElementById("EnvRes").disabled = true;  
     document.getElementById("resultadoC").value = '';
     document.getElementById("resultadoC").value = '';
@@ -241,7 +244,20 @@ function solonumeros(e){
   if(key < 48 || key > 57)
     e.preventDefault();
 }
-
+var gc = true;
+function noVacioC(){
+    var e=$("#correo").val();
+    var valido=document.getElementById("emailOK");
+    document.getElementById("correo").addEventListener("input",function(){campo=event.target,emailRegex=/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i,emailRegex.test(campo.value)?(valido.innerText="válido",gc = true):(valido.innerText="incorrecto", gc = false)});$("#correo").val();""!=$("#detalleSoporte").val()&&"válido"==valido.innerText?document.getElementById("resultadoC").disabled=!1:document.getElementById("resultadoC").disabled=!0
+}
+function verificarLlenado(){
+  var a = $("#detalleSoporte").val();
+  var b = $("#correo").val();
+  if(a == '' || a == null || b == '' || b == null || SuccesCapchasxx =="" || !gc)
+    document.getElementById("EnvRes").disabled = true;
+  else
+    document.getElementById("EnvRes").disabled = false;
+} 
 </script>
 <div style="max-width:960px; min-width:320px; margin:auto" id="content" class="border border-warning rounded"> 
   <br>
@@ -263,21 +279,22 @@ function solonumeros(e){
       <option value="SOPORTE" selected="selected" > SOPORTE</option>
     </select>
     <input type="text" class="form-control"  id="nombreCompleto" placeholder="Nombre Completo" hidden>     
-    <input type="text" class="form-control" id="documento" placeholder="numero Carnet" onkeypress="solonumeros(event);" hidden> 
-    <input type="text" class="form-control" id="telefono" maxlength="8"  placeholder="Numero de contacto"  onkeypress="solonumeros(event);" hidden>
+    <input type="text" class="form-control" id="documento" placeholder="numero Carnet" onKeyUp="solonumeros(event);" hidden> 
+    <input type="text" class="form-control" id="telefono" maxlength="8"  placeholder="Numero de contacto"  onKeyUp="solonumeros(event);" hidden>
   </div>   
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Correo: *</label>
     <div class="col-sm-6">
-      <input type="correo" class="form-control" id="correo" placeholder="Correo electronico" onKeyPress="noVacio()">
+      <input type="correo" class="form-control" id="correo" placeholder="Correo electronico" onKeyUp="noVacioC();noVacio();verificarLlenado()" >
+      <span id="emailOK" style="color:red;"></span>
     </div>
   </div> 
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Detalle de la solicitud :   *</label>
     <div class="col-sm-6">
-      <textarea type="text" class="form-control" id="detalleSoporte" placeholder="Detalle Solicitud" onKeyPress="noVacio()"></textarea>
+      <textarea type="text" class="form-control" id="detalleSoporte" placeholder="Detalle Solicitud"  onKeyUp="noVacioC();noVacio();verificarLlenado()"></textarea>
     </div>
   </div>    
   <center><div class="container" >
@@ -290,7 +307,8 @@ function solonumeros(e){
               <th class="border border-warning"> <img id="img2" class="img-responsive" src=""  title="" width="200" height="35"></th>  
             </tr>
           </table>  
-          <input   size="50"  id="resultadoC" name="resultadoC" type="text"    placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyPress="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="img/recarga.png"  width="20" height="20" title=""> </button> 
+          <input size="50" id="resultadoC" name="resultadoC" type="text" placeholder="" ng-model="resultadoC"  onkeyup="VerificarCapchaa(this)" onKeyUp="getlimpiareRROR()" required/> <button  id="btnObtenerCapcha" type="button" class="btn btn-warning"  onClick="obtCaptha()"> <img id="img3" src="img/recarga.png"  width="20" height="20" title=""> </button> 
+          <span id="msjCap" style="display: block;color:red;font-weight:bold; font-size:12px">Llene primero los datos obligatorios (*)</span>
           <p id="msg_capcha"></p>             
         </div>
       </div>

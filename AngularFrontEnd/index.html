@@ -337,18 +337,6 @@
 			  <div class="btn-txt">Soporte</div>
 			</button>
 		</div>
-		<!-- <div class="sticky-container">
-			<div class="social">
-				<ul>
-					<li>
-						<a class="btn btn-success" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal" onclick="cerrarModales(1)"><i class="fa fa-edit"></i></a>
-					</li>
-					<li>
-						<a class="btn btn-success" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal" onclick="cerrarModales(2)"><i class="fa fa-gears"></i></a>
-					</li>
-				</ul>
-			</div>
-		</div> -->
 		<div class="modal fade" id="denunciaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 			<!-- Modal content-->
@@ -604,7 +592,7 @@
 							<label  class="col-sm-1 col-form-label"></label>
 							<label  class="col-sm-3 control-label">Correo:  * </label>
 							<div class="col-sm-6">
-								<input type="email" class="form-control" id="correoC" placeholder="Correo electrónico" onKeyUp="noVacioC()" required/>
+								<input type="email" class="form-control" id="correoC" placeholder="Correo electrónico" onKeyUp="noVacioC(); verificarLlenado()" required/>
 								<span id="emailOK"></span><div id="spamemail2" style="display: block;"><span style="color:red;">Este campo es requerido
 								</span></div>
 							</div>
@@ -613,7 +601,7 @@
 							<label  class="col-sm-1 col-form-label"></label>
 							<label  class="col-sm-3 control-label">Detalle de la solicitud :  <Span class = "red"> * </ span></label>
 							<div class="col-sm-6">
-								<textarea type="text" class="form-control" id="detalleSoporteC" placeholder="Detalle Solicitud" onKeyUp="noVacioC()"></textarea>
+								<textarea type="text" class="form-control" id="detalleSoporteC" placeholder="Detalle Solicitud" onKeyUp="noVacioC(); verificarLlenado()"></textarea>
 								<div id="spamDetalle2" style="display: block;"><span style="color:red;">Este campo es requerido
 								</span></div>
 							</div>
@@ -640,6 +628,7 @@
 									</div>
 									<div class="col-md-10">
 										<input size="40" id="resultadoD" name="resultadoD" type="text" placeholder="" ng-model="resultadoD" onkeyup="VerificarCapchab(this)" onKeyPress="getlimpiareRRORC()" required/> 
+										<span id="msjCap" style="display: block;color:red;font-weight:bold; font-size:12px">Llene primero los datos obligatorios (*)</span>
 										<h6><div id="msg_capcha_" style="color:#000000"></div></h6>
 									</div>
 									<div class="col-md-2">

@@ -155,6 +155,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     //nuevo de paquete 
   
     $scope.obtTiendaVirtual = function(){
+        cargando();
         idActividadEconomica = sessionService.get('IDAE');
         try {
           var dataTV = new dataTiendaVirtual();
@@ -188,9 +189,11 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 $rootScope.inicializaInstagram = false;*/
               }
           });
+          $.LoadingOverlay("hide");
         } catch(error){
           console.log("Error Interno : ", error);
         }
+        $.LoadingOverlay("hide");
     };
     $scope.listarCategorias = function(){
         var categorias = new dataTiendaVirtual();

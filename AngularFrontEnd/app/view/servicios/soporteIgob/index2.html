@@ -248,7 +248,7 @@ var gc = true;
 function noVacioC(){
     var e=$("#correo").val();
     var valido=document.getElementById("emailOK");
-    document.getElementById("correo").addEventListener("input",function(){campo=event.target,emailRegex=/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i,emailRegex.test(campo.value)?(valido.innerText="válido",gc = true):(valido.innerText="incorrecto", gc = false)});$("#correo").val();""!=$("#detalleSoporte").val()&&"válido"==valido.innerText?document.getElementById("resultadoC").disabled=!1:document.getElementById("resultadoC").disabled=!0
+    document.getElementById("correo").addEventListener("input",function(){campo=event.target,emailRegex=/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i,emailRegex.test(campo.value)?(valido.innerText="Corréo electrónico válido",gc = true):(valido.innerText="Corréo electrónico inválido", gc = false)});$("#correo").val();""!=$("#detalleSoporte").val()&&"válido"==valido.innerText?document.getElementById("resultadoC").disabled=!1:document.getElementById("resultadoC").disabled=!0
 }
 function verificarLlenado(){
   var a = $("#detalleSoporte").val();
@@ -262,8 +262,8 @@ function verificarLlenado(){
 <div style="max-width:960px; min-width:320px; margin:auto" id="content" class="border border-warning rounded"> 
   <br>
   <div class="form-group">
-    <label  class="col-sm-12 control-label"><center><H2>Soporte iGob 24/7</H2></center></label>
-    <input   id="esLibres"  hidden>
+    <label class="col-sm-12 control-label"><center><H2>Soporte iGob 24/7</H2></center></label>
+    <input id="esLibres" hidden>
   </div> 
   <center> <div class="col-sm-11">  
   </div></center>
@@ -284,7 +284,7 @@ function verificarLlenado(){
   </div>   
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
-    <label  class="col-sm-3 control-label">Correo: *</label>
+    <label  class="col-sm-3 control-label">Correo electrónico: <span style="color:red;">*</span></label>
     <div class="col-sm-6">
       <input type="correo" class="form-control" id="correo" placeholder="Correo electronico" onKeyUp="noVacioC();noVacio();verificarLlenado()" >
       <span id="emailOK" style="color:red;"></span>
@@ -292,9 +292,9 @@ function verificarLlenado(){
   </div> 
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
-    <label  class="col-sm-3 control-label">Detalle de la solicitud :   *</label>
+    <label  class="col-sm-3 control-label">Detalle de la solicitud :  <span style="color:red;">*</span></label>
     <div class="col-sm-6">
-      <textarea type="text" class="form-control" id="detalleSoporte" placeholder="Detalle Solicitud"  onKeyUp="noVacioC();noVacio();verificarLlenado()"></textarea>
+      <textarea type="text" required class="form-control" id="detalleSoporte" placeholder="Detalle Solicitud"  onKeyUp="noVacioC();noVacio();verificarLlenado()"></textarea>
     </div>
   </div>    
   <center><div class="container" >

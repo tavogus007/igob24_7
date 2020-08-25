@@ -77,7 +77,8 @@ function getBase64() {
         ext = nombre.split('.')[1];
 
         $("#file-name").val(nombre);
-        
+        noVacio();
+        verificarLlenado();
           if(tamaño <= 7340032)
           {
             document.getElementById('msjImg').style.display="none";
@@ -132,21 +133,6 @@ function getBase64() {
         }
       }
     });
-  }
-  function noVacio()
-  {
-    var estadoDenuncia  = $("#detalleDenuncia").val(); 
-
-    if( estadoDenuncia != "" && gc)
-    {
-      document.getElementById("resultadoC").disabled = false;
-      document.getElementById('msjCap').style.display="none";
-    }
-    else
-    {
-      document.getElementById("resultadoC").disabled = true;
-      document.getElementById('msjCap').style.display="block";
-    }
   }
   function getlimpiareRROR()
   {   
@@ -247,8 +233,7 @@ function getBase64() {
     setTimeout(llenarlogin(), 500);     
       obtCaptha();     
       getlimpiareRROR(); 
-      noVacio();    
-
+      noVacio();
     /*$(document).on('change', 'input[type=file]', function(e) {   
       var TmpPath = URL.createObjectURL(e.target.files[0]);  
       $( "#esLibres" ).val(TmpPath);    
@@ -415,14 +400,6 @@ function limpiar()
   $("#detalleDenuncia").val('');
   $("#file-name").val('');
 }
-function verificarLlenado(){
-  var a = $("#detalleDenuncia").val();
-  var b = $("#correo").val();
-  if(a == '' || a == null || b == '' || b == null || SuccesCapchasxx =="" || !gc)
-    document.getElementById("EnvRes").disabled = true;
-  else
-    document.getElementById("EnvRes").disabled = false;
-} 
 var idUsusario = "";
 function llenarlogin()
 {
@@ -446,17 +423,43 @@ function ejecutarFile(idfile){
   document.getElementById('file').click();
 };
 var gc = true;
+function verificarLlenado(){
+  var a = $("#detalleDenuncia").val();
+  var b = $("#correo").val();
+  var c = $("#file-name").val();
+  var t = $("telefono").val();
+  if(a == '' || a == null || b == '' || b == null || SuccesCapchasxx =="" || !gc || c == '' || c == null || t == '' || t == null )
+    document.getElementById("EnvRes").disabled = true;
+  else
+    document.getElementById("EnvRes").disabled = false;
+} 
 function noVacioC(){
     var e=$("#correo").val();
-    var valido;
-    valido=document.getElementById("emailOK");
+    var valido=document.getElementById("emailOK");
     document.getElementById("correo").addEventListener("input",function(){
       campo=event.target,
-      
       emailRegex=/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i,
-      emailRegex.test(campo.value)?(valido.innerText="válido",gc = true):(valido.innerText="incorrecto", gc = false)});
+      emailRegex.test(campo.value)?(valido.innerText="Corréo electrónico válido",gc = true):(valido.innerText="Corréo electrónico inválido", gc = false)});
       $("#correo").val();"válido"==valido.innerText?document.getElementById("resultadoC").disabled=!1:document.getElementById("resultadoC").disabled=!0
 }
+
+function noVacio()
+  {
+    var correo2  = $("#correo").val();  
+    var estadoDenuncia  = $("#detalleDenuncia").val(); 
+    var c = $("#file-name").val();
+    var d = $("telefono").val();
+    if( estadoDenuncia != "" && correo2 != "" && gc && c != "" && d != "" )
+    {
+      document.getElementById("resultadoC").disabled = false;
+      document.getElementById('msjCap').style.display="none";
+    }
+    else
+    {
+      document.getElementById("resultadoC").disabled = true;
+      document.getElementById('msjCap').style.display="block";
+    }
+  }
 </script>
 <div style="max-width:960px; min-width:320px; margin:auto" id="content" class="border border-warning rounded">
   <br>
@@ -481,7 +484,7 @@ function noVacioC(){
   </div>   
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
-    <label  class="col-sm-3 control-label">Asunto:</label>
+    <label  class="col-sm-3 control-label">Asunto:<span style="color:red;">*</span></label>
     <div class="col-sm-7">
       <select class="form-control" id="asunto" >
         <option value="1" text="Uso de influencias" selected="selected" >Uso de influencias</option>
@@ -498,14 +501,14 @@ function noVacioC(){
   </div>
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
-    <label  class="col-sm-3 control-label red">Detalle de la denuncia: *</label>
+    <label  class="col-sm-3 control-label red">Detalle de la denuncia:<span style="color:red;">*</span></label>
     <div class="col-sm-7">
-      <textarea type="text" class="form-control" id="detalleDenuncia" placeholder="Detalle Denuncia" onkeyup="verificarLlenado();noVacio()"></textarea> 
+      <textarea type="text" class="form-control" id="detalleDenuncia" placeholder="Detalle Denuncia" onkeyup="noVacio();verificarLlenado()"></textarea> 
     </div>
   </div>
   <div class="form-group row" >
     <label  class="col-sm-1 col-form-label"></label>
-    <label  class="col-sm-3 control-label">Adjuntar Archivo:</label>
+    <label  class="col-sm-3 control-label">Adjuntar Archivo:<span style="color:red;">*</span></label>
     <div class="col-sm-7"> 
       <div class="custom-upload">
         <div class="input-group">
@@ -515,16 +518,7 @@ function noVacioC(){
             </span>
         </div>   
         <input type="file" id="file" class="inputfile" multiple accept="image/*" onchange="getBase64()" style="display: none">                   
-    </div>
-      <!--div class="form-group custom-upload inputfile-box">
-        <input type="file" id="file" class="inputfile" multiple accept="image/*" onchange="getBase64()">
-        <label for="file">
-          <input id="file-name" class="form-control file-box input-lg" disabled readonly>
-          <span class="file-button">
-          <i class="fa fa-upload" aria-hidden="true"></i>
-          </span>
-        </label>
-      </div-->
+      </div>
       <span id="msjImg" style="display: none;color:red;font-weight:bold; font-size:12px">El archivo debe ser menor a 7mb</span>
       <span id="msjImgTipo" style="display: none;color:red;font-weight:bold; font-size:12px">El archivo debe ser de formato Word, PDF o imagen</span>
       <!--input type="file" name="upload" id="prueba2" ><br /><br /--> 
@@ -548,16 +542,16 @@ function noVacioC(){
     </div>
     <div class="form-group row">
       <label class="col-sm-1 col-form-label"></label>
-      <label class="col-sm-3 control-label">Teléfono/Celular:</label>
+      <label class="col-sm-3 control-label">Teléfono/Celular:<span style="color:red;">*</span></label>
       <div class="col-sm-6">
-        <input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" maxlength="8" onKeyUp="solonumeros(event);">
+        <input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" maxlength="8" onKeyUp="solonumeros(event);noVacio();verificarLlenado()">
       </div>
     </div>
     <div class="form-group row">
       <label class="col-sm-1 col-form-label"></label>
-      <label class="col-sm-3 control-label">Correo Electrónico: *</label>
+      <label class="col-sm-3 control-label">Correo Electrónico:<span style="color:red;">*</span></label>
       <div class="col-sm-6">
-        <input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" onKeyUp="noVacioC();verificarLlenado();noVacio()">
+        <input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" onKeyUp="noVacioC();noVacio();verificarLlenado()">
         <span id="emailOK" style="color:red;"></span>
       </div>
     </div>

@@ -569,28 +569,28 @@
 						</div>
 						<div class="form-group row">
 							<label  class="col-sm-1 col-form-label"></label>
-							<label  class="col-sm-3 control-label">Nombre completo:</label>
+							<label  class="col-sm-3 control-label">Nombre completo: <span style="color:red;">*</span></label>
 							<div class="col-sm-6">
-								<input type="text" class="form-control"  id="nombreCompletoC" onKeyUp="noVacioC()" placeholder="Nombre Completo">
+								<input type="text" class="form-control"  id="nombreCompletoC" onKeyUp="noVacioC();verificarLlenado()" placeholder="Nombre Completo">
 							</div>
 						</div>   
 						<div class="form-group row">
 							<label  class="col-sm-1 col-form-label"></label>
-							<label  class="col-sm-3 control-label">Número CI:</label>
+							<label  class="col-sm-3 control-label">Número CI:<span style="color:red;">*</span></label>
 							<div class="col-sm-6">
-								<input type="text" class="form-control" id="documentoC" placeholder="número Carnet" onKeyUp="noVacioC()" onKeyUp="solonumeros(event);" >
+								<input type="text" class="form-control" id="documentoC" placeholder="número Carnet" onKeyUp="noVacioC();verificarLlenado()" onKeyUp="solonumeros(event);" >
 							</div>
 						</div>
 						<div class="form-group row">
 							<label  class="col-sm-1 col-form-label"></label>
-							<label  class="col-sm-3 control-label">Teléfono:</label>
+							<label  class="col-sm-3 control-label">Teléfono:<span style="color:red;">*</span></label>
 							<div class="col-sm-6">
-								<input type="number" class="form-control" id="telefonoC"  placeholder="Número de contacto" onKeyUp="noVacioC()" onKeyUp="solonumeros(event);">
+								<input type="number" class="form-control" id="telefonoC"  placeholder="Número de contacto" onKeyUp="noVacioC();verificarLlenado()" onKeyUp="solonumeros(event);">
 							</div>
 						</div> 
 						<div class="form-group row">
 							<label  class="col-sm-1 col-form-label"></label>
-							<label  class="col-sm-3 control-label">Correo:  * </label>
+							<label  class="col-sm-3 control-label">Correo Electrónico:<span style="color:red;">*</span> </label>
 							<div class="col-sm-6">
 								<input type="email" class="form-control" id="correoC" placeholder="Correo electrónico" onKeyUp="noVacioC(); verificarLlenado()" required/>
 								<span id="emailOK"></span><div id="spamemail2" style="display: block;"><span style="color:red;">Este campo es requerido
@@ -599,7 +599,7 @@
 						</div> 
 						<div class="form-group row">
 							<label  class="col-sm-1 col-form-label"></label>
-							<label  class="col-sm-3 control-label">Detalle de la solicitud :  <Span class = "red"> * </ span></label>
+							<label  class="col-sm-3 control-label">Detalle de la solicitud:<span style="color:red;">*</span></label>
 							<div class="col-sm-6">
 								<textarea type="text" class="form-control" id="detalleSoporteC" placeholder="Detalle Solicitud" onKeyUp="noVacioC(); verificarLlenado()"></textarea>
 								<div id="spamDetalle2" style="display: block;"><span style="color:red;">Este campo es requerido

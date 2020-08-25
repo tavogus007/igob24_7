@@ -52,16 +52,17 @@
     });
   }
 var gc = true;
-function noVacioC(){
-    var e=$("#correo").val();
-    var valido=document.getElementById("emailOK");
-    document.getElementById("correo").addEventListener("input",function(){campo=event.target,emailRegex=/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i,emailRegex.test(campo.value)?(valido.innerText="válido",gc = true):(valido.innerText="incorrecto", gc = false)});$("#correo").val();""!=$("#detalleDenuncia").val()&&"válido"==valido.innerText?document.getElementById("resultadoC").disabled=!1:document.getElementById("resultadoC").disabled=!0
-}
+  function noVacioC(){
+      var e=$("#correo").val();
+      var valido=document.getElementById("emailOK");
+      document.getElementById("correo").addEventListener("input",function(){campo=event.target,emailRegex=/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i,emailRegex.test(campo.value)?(valido.innerText="Corréo electrónico válido",gc = true):(valido.innerText="Corréo electrónico inválido", gc = false)});$("#correo").val();""!=$("#detalleDenuncia").val()&&"válido"==valido.innerText?document.getElementById("resultadoC").disabled=!1:document.getElementById("resultadoC").disabled=!0
+  }
   function noVacio()
   {
       var correo2  = $("#correo").val();    
       var estadoDenuncia  = $("#detalleDenuncia").val(); 
-    if( estadoDenuncia != "" && correo2 != "" && gc)
+      var t = $("#telefono").val();
+    if( estadoDenuncia != "" && correo2 != "" && gc && t != "" )
     {
       document.getElementById("resultadoC").disabled = false;
       document.getElementById('msjCap').style.display="none";
@@ -72,14 +73,15 @@ function noVacioC(){
       document.getElementById('msjCap').style.display="block";
     }
   }
-function verificarLlenado(){
-  var a = $("#detalleDenuncia").val();
-  var b = $("#correo").val();
-  if(a == '' || a == null || b == '' || b == null || SuccesCapchasxx =="" || !gc)
-    document.getElementById("EnvRes").disabled = true;
-  else
-    document.getElementById("EnvRes").disabled = false;
-} 
+  function verificarLlenado(){
+    var a = $("#detalleDenuncia").val();
+    var b = $("#correo").val();
+    var c = $("#telefono").val();
+    if(a == '' || a == null || b == '' || b == null || SuccesCapchasxx =="" || !gc || c == '' || c == null)
+      document.getElementById("EnvRes").disabled = true;
+    else
+      document.getElementById("EnvRes").disabled = false;
+  } 
   function getlimpiareRROR()
   {   
     //var correo = $("#prsCorreo").val();
@@ -192,6 +194,7 @@ function verificarLlenado(){
       getlimpiareRROR();
       noVacio();
       llenarlogin();
+      $("#escrito").trigger("click");
   }); 
 </script>
 <link rel="stylesheet" href="../../../../libs/css/sweetalert.min.css"/>
@@ -333,7 +336,6 @@ function solonumeros(e)
 var chkescrito  =  false;
 var chkcorreo1  =  false;
 var chkdigital  =  false;
-
 function controlaCheck(v){
   if(v.id == 'escrito')
   {    
@@ -394,14 +396,14 @@ function controlaCheck(v){
   </div> 
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
-    <label  class="col-sm-3 control-label">Teléfono/Celular:</label>
+    <label  class="col-sm-3 control-label">Teléfono/Celular:<span style="color:red;">*</span></label>
     <div class="col-sm-6">
-      <input type="number" class="form-control" id="telefono" maxlength="8" placeholder="Numero de contacto " onKeyUp="solonumeros(event);" >
+      <input type="number" required class="form-control" id="telefono" maxlength="8" placeholder="Numero de contacto " onKeyUp="solonumeros(event);noVacio();verificarLlenado()" >
     </div>
   </div>
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
-    <label  class="col-sm-3 control-label">Correo Electrónico: *</label>
+    <label  class="col-sm-3 control-label">Correo Electrónico:<span style="color:red;">*</span></label>
     <div class="col-sm-6">
       <input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" onKeyUp="noVacioC();noVacio();verificarLlenado()">
       <span id="emailOK" style="color:red;"></span>
@@ -409,7 +411,7 @@ function controlaCheck(v){
   </div> 
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
-    <label  class="col-sm-3 control-label">Unidad Organizacional:</label>
+    <label  class="col-sm-3 control-label">Unidad Organizacional:<span style="color:red;">*</span></label>
     <div class="col-sm-6" id="select3" >
       <select class="form-control" id="asunto" >
         <option value="DIRECCIÓN GENERAL DEL SISTEMA INTEGRADO DE TRANSPORTE" SELECTED="SELECTED">DIRECCIÓN GENERAL DEL SISTEMA INTEGRADO DE TRANSPORTE</option>
@@ -459,14 +461,14 @@ function controlaCheck(v){
   </div>
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
-    <label  class="col-sm-3 control-label">Detalle de la solicitud :   *</label>
+    <label  class="col-sm-3 control-label">Detalle de la solicitud:<span style="color:red;">*</span></label>
     <div class="col-sm-6">
       <textarea type="text" class="form-control" id="detalleDenuncia" placeholder="Detalle Solicitud" onKeyUp="noVacio();verificarLlenado()"></textarea>
     </div>
   </div> 
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
-    <label  class="col-sm-3 control-label">Medio de Entrega de la Respuesta:</label>
+    <label  class="col-sm-3 control-label">Medio de Entrega de la Respuesta:<span style="color:red;">*</span></label>
     <div class="col-sm-6">    
       <div id="product1">
         <input type="checkbox" value="" id="escrito" name="check" onClick="controlaCheck(this)"/> Escrito<br/>

@@ -72,7 +72,6 @@ var jsonURLS    =   {
     SIT_GEO: "http://sitservicios.lapaz.bo",//Pruebas
     URL_SITRAM: "http://192.168.5.141",
     CONEXION_SITRAM: "http://192.168.5.141",
-    API_URL_GUARDAR_IMG: "http://192.168.5.141/dreamfactory/igob/", 
     CONEXION_API_PG_PRODUCTO: "http://192.168.5.141:8010/",//apirc
     CONEXION_PAGOS: "http://52.226.130.135:5433/",//apirc   
     SERVICE_SIERRAM : "http://172.19.160.133/api/",///conexion sierra

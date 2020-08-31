@@ -10,8 +10,6 @@ if(jsonURLS){
   var urlSigetuTramite = jsonURLS.CONEXION_API_PG_IF_OFICIAL+"wsSTTF";
   ////////////////////////ARBOLADO//////////////////////
   var urlIf_A = jsonURLS.CONEXION_API_PG_IF_A+"wsIf";
-  //var urlIf_A = "http://localhost:91/wsIf";
-  console.log("FREDDDDDDDDDDDDDDDY2222222222222...",urlIf_A);
   ///////////////////////////////////////////////////////////
 }
 

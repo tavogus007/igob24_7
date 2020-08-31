@@ -1,7 +1,7 @@
 app.controller('serviciosArboladoController', function ($scope, $timeout, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG,  $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,$window) {
     
-    console.log("datos del solicitante nombres",$scope.datos);
-    console.log('ARBOLADO');
+    //console.log("datos del solicitante nombres",$scope.datos);
+    //console.log('ARBOLADO');
     var fecha= new Date();
     var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
     var fechactual123=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
@@ -37,7 +37,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
             sIdCiudadano = sessionService.get('IDSOLICITANTE');
             var Parametros = new datosFormularios();
             Parametros.frm_tra_id_ciudadano = sIdCiudadano;
-            console.log("111111111111111111111111111");
+            //console.log("111111111111111111111111111");
             Parametros.spbusquedaformularioArbolado(function(results){
                 results = JSON.parse(results);
                 $scope.tramitesUsuario = results.success;
@@ -45,7 +45,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
                 $.unblockUI();
             });
          }catch(e){
-            console.log("Error...!",e);
+            //console.log("Error...!",e);
             $.unblockUI();
         }
     };
@@ -97,7 +97,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
                 });
             $.unblockUI();
         } catch(e) {
-            console.log(e);
+            //console.log(e);
             $.unblockUI();
         }
     };
@@ -122,7 +122,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
     };
            
     $scope.recuperarSerializarInfo = function(tramite) {
-        console.log("vida3");
+        //console.log("vida3");
         var sIdTramite = tramite.vtra_id;
         var sIdCiudadano = sessionService.get('IDSOLICITANTE');
         var sIdServicio = sessionService.get('IDSERVICIO');
@@ -172,7 +172,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
                     $.unblockUI();
                 });
             }catch(e){
-                console.log("Error...!",e);
+                //console.log("Error...!",e);
                 $.unblockUI();
             }
         }else{
@@ -181,7 +181,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
     };
 
     $scope.recuperarInfomacionArbolado = function(tramite){
-        console.log("vida2");
+        //console.log("vida2");
         
         setTimeout(function()
         {    
@@ -213,10 +213,10 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
                     Parametros.splistafrmdatos(function(results){
                         results = JSON.parse(results);
                         results = results.success;
-                        console.log(results);
+                        //console.log(results);
                         if(results.length > 0){
                             var datos = JSON.parse(results[0].form_contenido);
-                            console.log("HOLAAAAAAAAFFFFFFF",datos);
+                            //console.log("HOLAAAAAAAAFFFFFFF",datos);
                             if(datos.longitud == "")
                             {
                                
@@ -226,8 +226,8 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
 
                             if(datos.longitud != "")
                             {
-                                console.log("longitud",datos.longitud);
-                                console.log("latitud",datos.latitud);
+                                //console.log("longitud",datos.longitud);
+                                //console.log("latitud",datos.latitud);
                                 /////////////////////////////////
                                 $scope.longitud=parseFloat(datos.longitud);
                                 $scope.latitud=parseFloat(datos.latitud);
@@ -279,7 +279,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
                         $.unblockUI();
                     });
                 }catch(e){
-                    console.log("Error...!",e);
+                    //console.log("Error...!",e);
                     $.unblockUI();
                 }
             }else{
@@ -289,7 +289,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
     };
 
     $scope.seleccionarTramiteA = function (tramite) {
-        console.log("TRAMITE...",tramite);
+        //console.log("TRAMITE...",tramite);
         $scope.tramiteSelect = tramite;
         $rootScope.tramiteId = tramite.vtra_id;
         sessionService.set('IDTRAMITE', tramite.vtra_id);
@@ -339,7 +339,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
         recuperarDatos.oid = idCiudadano;
         recuperarDatos.datosCiudadanoNatural(function(resultado)
         {
-            console.log("RESULTADO...",resultado);
+            //console.log("RESULTADO...",resultado);
             resultadoApi = JSON.parse(resultado);
             datos           =   resultadoApi;
             sTipoPersona    =   resultadoApi[0].dtspsl_tipo_persona;
@@ -358,7 +358,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
                 datosForm['ARB_CELULAR'] =datos[0].dtspsl_movil;
                 datosForm['ARB_TELEFONO'] =datos[0].dtspsl_telefono;
             }else{
-               console.log('Preguntar si empresas podran pedir el servicio');
+               //console.log('Preguntar si empresas podran pedir el servicio');
             }
             
             $rootScope.datosIniciales = datosForm;
@@ -367,7 +367,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
     
     $scope.iniciandoDatos = function() {
         var datosIniciales = $rootScope.datosIniciales;
-        console.log($rootScope.datosIniciales);
+        //console.log($rootScope.datosIniciales);
         var fechactual  =   obtFechaActual.obtenerFechaActual();
         $scope.datos = {};
         var datosForm_inicio = {};
@@ -420,9 +420,9 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
         var longitud = document.getElementById('longitud').value;
         var latitud = document.getElementById('latitud').value;
         var Imagen = document.getElementById("imgSalida").src;
-        console.log("QQQQQQQQQQQQQQQQQ",Imagen);
+        //console.log("QQQQQQQQQQQQQQQQQ",Imagen);
         var foto = document.getElementById("div_foto").value;
-        console.log("RRRRRRRRRRRRRRRRR",foto);
+        //console.log("RRRRRRRRRRRRRRRRR",foto);
 
         var Solicitud = document.getElementById('div_Solicitud').value;
 
@@ -502,7 +502,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
             });
         }
         catch(e){
-            console.log("Error******..",e);
+            //console.log("Error******..",e);
             $.unblockUI();
         }
     };
@@ -532,7 +532,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
     //////////////////////////////////////////////////////
     
     $scope.habilitarEnvioTramite = function(datos){
-        console.log(datos);
+        //console.log(datos);
         try{
             if(datos.ARB_TIPO_DE_ARBOL.length==0 ) {
                 $rootScope.btnEnviarFormPermisos = false;
@@ -561,13 +561,13 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
                 fileUpload.uploadFileToUrl(archivo, uploadUrl);
                 $scope.almacenarGDocumental(archivo, urlIdcos);
             }else{
-                console.log("error en el archivo");
+                //console.log("error en el archivo");
             }
         });
     };
 
     $scope.validarFormProcesos = function(datosForm){
-        console.log("ddddd",datosForm);
+        //console.log("ddddd",datosForm);
         try {
             var idTramite = sessionService.get('IDTRAMITE');
             nroTramiteEnviado = sessionService.get('NROTRAMITE');
@@ -581,19 +581,19 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
                 nroTramiteEnviado = sessionService.get('NROTRAMITE');
                 swal('Señor Ciudadano su Nro de trámite  es : ' + nroTramiteEnviado, " NOTA: Tiene 7 días para aproximarse a la plataforma DNA terminal con su respectiva documentación, caso contrario su registro será dado de baja.", 'success');
                 //sweet.show('Señor Ciudadano su Nro de trámite  es : ' + nroTramiteEnviado, " NOTA: Tiene 7 días para aproximarse a la plataforma DNA terminal con su respectiva documentación, caso contrario su registro será dado de baja.");
-                console.log(datosForm);
+                //console.log(datosForm);
                 $rootScope.btnViajes = null;
                 $scope.desabilitado = true;
             });
         } catch(e) {
-            console.log("Error ", e);
+            //console.log("Error ", e);
             swal('', 'Registro no modificado', 'error');
             //sweet.show('', 'Registro no modificado', 'error');
         }
     };
 
     $scope.enviarFormArbolado = function(paramForm){
-            console.log("esto se enviaaa paramForm",paramForm);
+            //console.log("esto se enviaaa paramForm",paramForm);
             $rootScope.btnGuardarForm = true;
             var idProcodigo = 'ARB_';
             var datosNeXO = {};
@@ -619,7 +619,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
             /////modificacion nuevo//////
             datosNeXO['ARB_DISTRITO'] = paramForm.ARB_DISTRITO;
             datosNeXO['ARB_ZONA'] = paramForm.ARB_ZONA;
-            console.log("ZZZZZZZZZZZZZ",paramForm.ARB_ZONA);
+            //console.log("ZZZZZZZZZZZZZ",paramForm.ARB_ZONA);
             datosNeXO['ARB_ESPECIE'] = paramForm.ARB_ESPECIE;
             datosNeXO['ARB_RNG_ALTURA'] = paramForm.ARB_RNG_ALTURA;
             datosNeXO['ARB_ANCHO_DE_ACERA'] = paramForm.ARB_ANCHO_DE_ACERA;
@@ -649,7 +649,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
 
             var creartramite = new gCrearCaso();
             var id_persona= 3;
-            console.log("ffffffffffffffffffffffff...",id_persona);
+            //console.log("ffffffffffffffffffffffff...",id_persona);
             //creartramite.usr_id = sessionService.get('IDPERSONA');
             creartramite.usr_id = id_persona;
             creartramite.datos = datosSerializados;
@@ -660,8 +660,8 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
             {
                 
                 resultadoApi = JSON.parse(resultado);
-                console.log(creartramite);
-                console.log(resultadoApi);
+                //console.log(creartramite);
+                //console.log(resultadoApi);
                 
                 var results = resultadoApi.success.data;
                 //console.log("0000000000000000...",results);
@@ -670,7 +670,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
                 {
                     
                     datosIF = results[0].sp_pmfunction_crearcaso_en_linea.split(",");
-                    console.log(datosIF);
+                    //console.log(datosIF);
                     
                     datosIF2 = datosIF[2];
                     datosIF3 = datosIF[3];
@@ -711,7 +711,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
             document.getElementById("imgSalida").src=reader.result;
         };
         //reader.onload = () => resolve(reader.result);
-        console.log("toBase64",(file));
+        //console.log("toBase64",(file));
     };
 
 
@@ -733,12 +733,12 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
     ////////busqueda de zona ///////////////////
     $scope.buscarUbicacionP1=function(){
     
-       console.log("p1 11111111111111111");
+       //console.log("p1 11111111111111111");
         var nombre_1 = new Array();
         var f = '';
         var nombre = document.getElementById('busqueda_p').value;
         nombre = nombre.toUpperCase();
-        console.log("NOMBRE A BUSCAR...",nombre);
+        //console.log("NOMBRE A BUSCAR...",nombre);
         var ca = "CALLE ";
         ca = ca.concat(nombre);
         var c = 0;
@@ -751,7 +751,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
         if(nombre==='')
         {
           var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
-          console.log("Vacio :",obj);
+          //console.log("Vacio :",obj);
           //map.removeLayer(vectorLayerZonas);
           vectorLayerZonas.getSource().clear();
         }
@@ -767,7 +767,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
                 var y_c = geo_zonas_centroides.features[i].geometry.coordinates[1];
                 if(nombre_zona.includes(nombre))
                 {
-                    console.log("eeeeeeeeeeee",nombre_zona);
+                    //console.log("eeeeeeeeeeee",nombre_zona);
                     nombre_1.push(nombre_zona);
                 }
     
@@ -792,7 +792,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
           if(c==0) 
           {
             var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
-            console.log("Vacio :",obj);
+            //console.log("Vacio :",obj);
           }
         }   
     };
@@ -801,7 +801,7 @@ app.controller('serviciosArboladoController', function ($scope, $timeout, $rootS
     {
         
         var n = nom.nombre;
-        console.log("ZONA A BUSCAR",n);
+        //console.log("ZONA A BUSCAR",n);
         var c = 0;
       
         map.removeLayer(vectorLayerZonas);

@@ -271,6 +271,7 @@ function subirimagen()
                 crearCasoLotus(e);
             }, error:function(){
               $.unblockUI();
+              swal("Alerta!", "El archivo adjunto no se subio correctamente, vuelva a intentarlo por favor. De persistir el problema, comuniquese con el administrador", "warning"); 
             }
         });
     } else{
@@ -449,7 +450,7 @@ function noVacio()
     var estadoDenuncia  = $("#detalleDenuncia").val(); 
     var c = $("#file-name").val();
     var d = $("telefono").val();
-    if( estadoDenuncia != "" && correo2 != "" && gc && c != "" && d != "" )
+    if( estadoDenuncia != "" && correo2 != "" && gc && d != "" )
     {
       document.getElementById("resultadoC").disabled = false;
       document.getElementById('msjCap').style.display="none";
@@ -487,15 +488,15 @@ function noVacio()
     <label  class="col-sm-3 control-label">Asunto:<span style="color:red;">*</span></label>
     <div class="col-sm-7">
       <select class="form-control" id="asunto" >
-        <option value="1" text="Uso de influencias" selected="selected" >Uso de influencias</option>
-        <option value="2" text="mal uso de bienes del municipio">Mal uso de bienes del municipio</option>
-        <option value="3" text="Obtencion de beneficios a cambio de agilizar tramites">Obtencion de beneficios a cambio de agilizar tramites</option>
-        <option value="4" text="Maltrato">Maltrato</option>
-        <option value="5" text="Imcumplimiento de deberes">Imcumplimiento de deberes</option>
-        <option value="6" text="Iregularidades en contratacion">Iregularidades en contratacion</option>
-        <option value="7" text="Retardacion de tramites">Retardacion de tramites</option>
-        <option value="9" text="Negacion de informacion">Negacion de informacion</option>
-        <option value="10" text="incumplimiento de procesos en tramites">Incumplimiento de procesos en tramites</option>
+        <option value="Uso de influencias" text="Uso de influencias" selected="selected" >Uso de influencias</option>
+        <option value="Mal uso de bienes del municipio" text="Mal uso de bienes del municipio">Mal uso de bienes del municipio</option>
+        <option value="Obtencion de beneficios a cambio de agilizar tramites" text="Obtencion de beneficios a cambio de agilizar tramites">Obtencion de beneficios a cambio de agilizar tramites</option>
+        <option value="Maltrato" text="Maltrato">Maltrato</option>
+        <option value="Imcumplimiento de deberes" text="Imcumplimiento de deberes">Imcumplimiento de deberes</option>
+        <option value="Iregularidades en contratacion" text="Iregularidades en contratacion">Iregularidades en contratacion</option>
+        <option value="Retardacion de tramites" text="Retardacion de tramites">Retardacion de tramites</option>
+        <option value="Negacion de informacion" text="Negacion de informacion">Negacion de informacion</option>
+        <option value="incumplimiento de procesos en tramites" text="incumplimiento de procesos en tramites">Incumplimiento de procesos en tramites</option>
       </select>
     </div>
   </div>

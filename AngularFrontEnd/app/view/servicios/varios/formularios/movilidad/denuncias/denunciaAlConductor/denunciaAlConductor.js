@@ -161,7 +161,7 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
         var tramite = new crearTramiteMovilidad();
         tramite.usr_id = 1;    
         tramite.datos = data_form;
-        tramite.procodigo = 'MOV_DEN_CON';
+        tramite.procodigo = 'DEN_CON';
         tramite.tramite_linea(function(results){ 
           results = JSON.parse(results);
           if (results !=null) {

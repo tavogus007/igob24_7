@@ -17,8 +17,6 @@ if(jsonURLS){
     urlRCPG = jsonURLS.CONEXION_API_PG_RC + "wsRCPG";
     ///////////////////////ARBOLADO////////////////////////////
     urlRCPG_A = jsonURLS.CONEXION_API_PG_RC_A + "wsRCPG";
-    console.log("FREDDDDDDDDDDDDDDDYyyyyyyyyyy ARBOLADO...",urlRCPG_A);
-    console.log("FREDDDDDDDDDDDDDDDYyyyyyyyyyy...",urlRCPG);
     ///////////////////////////////////////////////////////////
     urlMservicio    =   jsonURLS.CONEXION_MOTOR_SERVICIO + "api/reglaNegocio/ejecutarWeb";
     key = jsonURLS.KEY;

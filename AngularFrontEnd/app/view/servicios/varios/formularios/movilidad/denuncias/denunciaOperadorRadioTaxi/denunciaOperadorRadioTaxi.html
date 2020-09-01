@@ -8,7 +8,6 @@
     <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/denuncias/denunciaOperadorRadioTaxi/denunciaOperadorRadioTaxi.js"></script>
     <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script> 
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" /> 
-    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
     <link href="../../libs/css/select2.min.css" rel="stylesheet" async/>
     <script src="../../libs/js/select2.min.js" async></script>
   </head>
@@ -519,6 +518,14 @@
                         <div class="col-md-12" >
                           <div class="col-md-6" >
                             <div class="form-group" >
+                              <label for="url">Hora</label>
+                              <div class="controls">
+                                <input type="time" class="form-control" ng-model="datos.INF_O_RT_HORA" name="INF_O_RT_HORA" value="memorandum" required ng-disabled="desabilitado"> 
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6" >
+                            <div class="form-group" >
                                 <label for="url">Nombre Operador Radio Taxi :</label>
                                 <div class="controls">
                                   <select id="INF_O_RT_NOMBRE_O_RT" 
@@ -531,14 +538,6 @@
                                   <option value="">--Seleccionar--</option>
                                   </select>
                                 </div>
-                            </div>
-                          </div>
-                          <div class="col-md-6" >
-                            <div class="form-group" >
-                              <label for="url">Hora</label>
-                              <div class="controls">
-                                <input type="time" class="form-control" ng-model="datos.INF_O_RT_HORA" name="INF_O_RT_HORA" value="memorandum" required ng-disabled="desabilitado"> 
-                              </div>
                             </div>
                           </div>
                         </div>

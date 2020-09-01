@@ -146,7 +146,7 @@ function denunciaOperadorRadioTaxiFuncion($scope, $rootScope, $routeParams, $loc
       var tramite = new crearTramiteMovilidad();
       tramite.usr_id = 1;    
       tramite.datos = data_form;
-      tramite.procodigo = 'INF_O_RT';
+      tramite.procodigo = 'DEN_OPE';
       tramite.tramite_linea(function(results){ 
         results = JSON.parse(results);
         if (results !=null) {

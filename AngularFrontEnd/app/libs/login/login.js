@@ -30,11 +30,15 @@ function ejecutarAjaxLoginRc(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
     return dataRespLogin;
 };
 function ejecutarAjaxCaptcha(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+    token = sessionStorage.getItem('TOKEN_API');
     $.ajax({
       type: vTypeCall,
       url: urlCaptcha + vUrlComp,
       data: vDataCall,
       async: false,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
       success: function(response) {
         dataRespLogin = JSON.stringify(response);
         vFunctionResp(dataRespLogin);

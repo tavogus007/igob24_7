@@ -72,12 +72,16 @@ function ejecutarAjax(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
 };
 
 function ejecutarAjax1(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+    token = sessionStorage.getItem('TOKEN_API');
     $.ajax({
       type: vTypeCall,
       url: urlRCPG + vUrlComp,
       data: vDataCall,
       //dataType: "json",
       async: false,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
       //processData: true,
       success: function(response) {
         dataResp = JSON.stringify(response);
@@ -91,6 +95,7 @@ function ejecutarAjax1(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
     });
     return dataResp;
 };
+
 //////////////////////////////ARBOLADO///////////////////////////////////////////////////
 function ejecutarAjax_A(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
     $.ajax({

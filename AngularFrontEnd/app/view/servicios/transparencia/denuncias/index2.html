@@ -254,7 +254,7 @@ function subirimagen()
         var formData = new FormData();
         formData.append("oid", "57798c372f59181eb279fe5f");
         formData.append("imagen", urlImagen);
-        formData.append("ci", "10000000");
+        formData.append("ci", $("#documento").val());
         formData.append("nombre", "denuncia");
         formData.append("ext", ext);
         $.ajax({
@@ -405,7 +405,10 @@ function llenarlogin()
 {
   if(sessionStorage.getItem("TIPO_PERSONA") == "NATURAL")
   {
-    $("#nombreCompleto").val(sessionStorage.getItem("US_NOMBRE"));
+    var nom = sessionStorage.getItem("US_NOMBRE");
+    var pat = sessionStorage.getItem("US_PATERNO");
+    var mat = sessionStorage.getItem("US_MATERNO");
+    $("#nombreCompleto").val(pat  + " " + mat  + " " + nom);
     $("#documento").val(sessionStorage.getItem("CICIUDADANO"));
     $("#correo").val(sessionStorage.getItem("US_EMAIL")); 
     idUsusario = sessionStorage.getItem("IDUSUSARIO");
@@ -513,12 +516,12 @@ function noVacio()
     <div class="col-sm-7"> 
       <div class="custom-upload">
         <div class="input-group">
-            <input id="file-name" class="form-control input-lg" type="text" disabled readonly>
+            <input id="file-name" class="form-control input-lg" placeholder="Formato Word, PDF o imagen" type="text" disabled readonly>
             <span class="input-group-btn">
               <button class="btnupload browse btn btn-primary input-lg" type="button" onclick="ejecutarFile();"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
             </span>
         </div>   
-        <input type="file" id="file" class="inputfile" multiple accept="image/*" onchange="getBase64()" style="display: none">                   
+        <input type="file" id="file" class="inputfile" multiple onchange="getBase64()" style="display: none">                   
       </div>
       <span id="msjImg" style="display: none;color:red;font-weight:bold; font-size:12px">El archivo debe ser menor a 7mb</span>
       <span id="msjImgTipo" style="display: none;color:red;font-weight:bold; font-size:12px">El archivo debe ser de formato Word, PDF o imagen</span>

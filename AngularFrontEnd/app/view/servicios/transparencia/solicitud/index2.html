@@ -176,7 +176,10 @@ var gc = true;
   { 
     if(sessionStorage.getItem("TIPO_PERSONA") == 'NATURAL')
     {
-      $("#nombreCompleto").val(sessionStorage.getItem("US_NOMBRE"));
+      var nom = sessionStorage.getItem("US_NOMBRE");
+      var pat = sessionStorage.getItem("US_PATERNO");
+      var mat = sessionStorage.getItem("US_MATERNO");
+      $("#nombreCompleto").val(pat  + " " + mat  + " " + nom);
       $("#documento").val(sessionStorage.getItem("CICIUDADANO"));
       $("#correo").val(sessionStorage.getItem("US_EMAIL")); 
       idUsusario = sessionStorage.getItem("IDUSUSARIO");

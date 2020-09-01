@@ -264,13 +264,15 @@ function subirimagen()
                 processData: false,
                 method: 'POST',
             type:"POST",
-            url:jsonURLS.API_URL_GUARDAR_IMG+"igob247imagenes.php",
+            url:jsonURLS.URL_FILES+"/dreamfactory/igob247imagenes.php",
             data:formData,
             success:function(e){
                 guardarDatos2(e);
                 crearCasoLotus(e);
             }, error:function(){
               $.unblockUI();
+              $("#file-name").val('');
+              swal("Error!", "Ocurrió un problema al subir el documento. Favor de intentarlo mas tarde", "warning"); 
             }
         });
     } else{
@@ -423,15 +425,16 @@ function ejecutarFile(idfile){
   document.getElementById('file').click();
 };
 var gc = true;
+
 function verificarLlenado(){
   var a = $("#detalleDenuncia").val();
   var b = $("#correo").val();
   var c = $("#file-name").val();
-  var t = $("telefono").val();
-  if(a == '' || a == null || b == '' || b == null || SuccesCapchasxx =="" || !gc || c == '' || c == null || t == '' || t == null )
-    document.getElementById("EnvRes").disabled = true;
-  else
+  var t = $("#telefono").val();
+  if(a != '' &&  b != '' && SuccesCapchasxx !="" && gc && t != '' && t != null )
     document.getElementById("EnvRes").disabled = false;
+  else
+    document.getElementById("EnvRes").disabled = true;
 } 
 function noVacioC(){
     var e=$("#correo").val();
@@ -448,8 +451,8 @@ function noVacio()
     var correo2  = $("#correo").val();  
     var estadoDenuncia  = $("#detalleDenuncia").val(); 
     var c = $("#file-name").val();
-    var d = $("telefono").val();
-    if( estadoDenuncia != "" && correo2 != "" && gc && c != "" && d != "" )
+    var d = $("#telefono").val();
+    if( estadoDenuncia != "" && correo2 != "" && gc && (d != "" && d != null ) )
     {
       document.getElementById("resultadoC").disabled = false;
       document.getElementById('msjCap').style.display="none";
@@ -487,15 +490,15 @@ function noVacio()
     <label  class="col-sm-3 control-label">Asunto:<span style="color:red;">*</span></label>
     <div class="col-sm-7">
       <select class="form-control" id="asunto" >
-        <option value="1" text="Uso de influencias" selected="selected" >Uso de influencias</option>
-        <option value="2" text="mal uso de bienes del municipio">Mal uso de bienes del municipio</option>
-        <option value="3" text="Obtencion de beneficios a cambio de agilizar tramites">Obtencion de beneficios a cambio de agilizar tramites</option>
-        <option value="4" text="Maltrato">Maltrato</option>
-        <option value="5" text="Imcumplimiento de deberes">Imcumplimiento de deberes</option>
-        <option value="6" text="Iregularidades en contratacion">Iregularidades en contratacion</option>
-        <option value="7" text="Retardacion de tramites">Retardacion de tramites</option>
-        <option value="9" text="Negacion de informacion">Negacion de informacion</option>
-        <option value="10" text="incumplimiento de procesos en tramites">Incumplimiento de procesos en tramites</option>
+        <option value="Uso de influencias" text="Uso de influencias" selected="selected" >Uso de influencias</option>
+        <option value="Mal uso de bienes del municipio" text="Mal uso de bienes del municipio">Mal uso de bienes del municipio</option>
+        <option value="Obtencion de beneficios a cambio de agilizar tramites" text="Obtencion de beneficios a cambio de agilizar tramites">Obtencion de beneficios a cambio de agilizar tramites</option>
+        <option value="Maltrato" text="Maltrato">Maltrato</option>
+        <option value="Imcumplimiento de deberes" text="Imcumplimiento de deberes">Imcumplimiento de deberes</option>
+        <option value="Iregularidades en contratacion" text="Iregularidades en contratacion">Iregularidades en contratacion</option>
+        <option value="Retardacion de tramites" text="Retardacion de tramites">Retardacion de tramites</option>
+        <option value="Negacion de informacion" text="Negacion de informacion">Negacion de informacion</option>
+        <option value="incumplimiento de procesos en tramites" text="incumplimiento de procesos en tramites">Incumplimiento de procesos en tramites</option>
       </select>
     </div>
   </div>
@@ -544,7 +547,7 @@ function noVacio()
       <label class="col-sm-1 col-form-label"></label>
       <label class="col-sm-3 control-label">Teléfono/Celular:<span style="color:red;">*</span></label>
       <div class="col-sm-6">
-        <input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" maxlength="8" onKeyUp="solonumeros(event);noVacio();verificarLlenado()">
+        <input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" maxlength="8" onKeyUp="noVacio();verificarLlenado()">
       </div>
     </div>
     <div class="form-group row">

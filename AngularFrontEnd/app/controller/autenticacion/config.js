@@ -64,15 +64,14 @@ var jsonURLS    =   {
     CONEXION_SERVICIOATM: "http://172.19.161.3/",//apiATM, CORREGIR SEGUN  EL AUTCONTROLLER
     CONEXION_SERVICIOMASCOTAS: "http://131.0.0.11:90/", //externo MASCOTAS
     SERVICIO_URL_MASCOTAS:"http://40.117.46.159/dreamfactory/crearImagenBase64.php", //externo MASCOTAS
-    URL_FILES:"http://40.117.46.159:80", //SERVICIO QUE GENERA URL
+    URL_FILES:"http://192.168.5.141", //SERVICIO QUE GENERA URL
     //CONEXION_MOVILIDAD: "http://serigobvprueba.lapaz.bo/"
     CONEXION_MOVILIDAD: "http://192.168.5.141:2020/",
     CONEXION_SITV3: "http://192.168.6.111/SITv3Desarrollo/",
     //CONEXION_SITV3_Antena: "http://sitservicios.lapaz.bo/",
     SIT_GEO: "http://sitservicios.lapaz.bo",//Pruebas
     URL_SITRAM: "http://192.168.5.141",
-    CONEXION_SITRAM: "http://192.168.5.141",
-    API_URL_GUARDAR_IMG: "http://192.168.5.141/dreamfactory/igob/", 
+    CONEXION_SITRAM: "http://192.168.5.141", 
     CONEXION_API_PG_PRODUCTO: "http://192.168.5.141:8010/",//apirc
     CONEXION_PAGOS: "http://52.226.130.135:5433/",//apirc   
     SERVICE_SIERRAM : "http://172.19.160.133/api/",///conexion sierra

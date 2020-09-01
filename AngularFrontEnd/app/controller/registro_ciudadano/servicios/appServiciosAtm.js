@@ -1265,8 +1265,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
             (obj.VH_VL_DOC_DETALLE_OBJ_TRIB == 'undefined' ||
                 obj.VH_VL_DOC_DETALLE_OBJ_TRIB == undefined) ||
             (obj.VH_VL_CUADRO_EXCEL == 'undefined' ||
-                obj.VH_VL_CUADRO_EXCEL == undefined) ||
-            (obj.VH_VL_FORMULARIO409 == 'undefined' || obj.VH_VL_FORMULARIO409 == undefined)) {
+                obj.VH_VL_CUADRO_EXCEL == undefined)) {
             swal('Estimado ciudadano', "Debe completar los datos del formulario y/o adjuntar todos los requisitos...", 'warning');
         } else {
 
@@ -1351,8 +1350,6 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                 obj.VH_CC_REQ_BALANCE == undefined) ||
             (obj.VH_CC_CUADRO_EXCEL_INM == 'undefined' ||
                 obj.VH_CC_CUADRO_EXCEL_INM == undefined) ||
-            (obj.DOC_CI_FORMULARIO_406 == 'undefined' ||
-                obj.DOC_CI_FORMULARIO_406 == undefined) ||
             (obj.VH_CC_REQ_DETALLE == 'undefined' || obj.VH_CC_REQ_DETALLE == undefined)) {
             swal('Estimado ciudadano', "Debe completar los datos del formulario y/o adjuntar todos los requisitos...", 'warning');
         } else {

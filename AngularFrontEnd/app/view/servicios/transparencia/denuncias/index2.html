@@ -71,7 +71,6 @@ function getBase64() {
     var files = document.getElementById('file').files;
     if (files.length > 0) {
         file = files[0];
-        console.log("tamaño: ", file.size);
         var nombre = file.name;
         var tamaño = file.size;
         ext = nombre.split('.')[1];
@@ -385,7 +384,6 @@ function crearCasoLotus(eurl){
   crearCasoL.crearCasoAeLinea( function(resultado){
     var aa = JSON.parse(resultado).success.data[0].sp_pmfunction_crearcaso_linea;
     codTramite = (aa.split(',')[0]).split('(')[1];
-    console.log('result: ', codTramite);
       //$.unblockUI();
   });
 }

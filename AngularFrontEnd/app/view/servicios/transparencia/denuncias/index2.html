@@ -264,14 +264,15 @@ function subirimagen()
                 processData: false,
                 method: 'POST',
             type:"POST",
-            url:jsonURLS.URL_FILES+"igob247imagenes.php",
+            url:jsonURLS.URL_FILES+"/dreamfactory/igob247imagenes.php",
             data:formData,
             success:function(e){
                 guardarDatos2(e);
                 crearCasoLotus(e);
             }, error:function(){
               $.unblockUI();
-              swal("Alerta!", "El archivo adjunto no se subio correctamente, vuelva a intentarlo por favor. De persistir el problema, comuniquese con el administrador", "warning"); 
+              $("#file-name").val('');
+              swal("Error!", "Ocurrió un problema al subir el documento. Favor de intentarlo mas tarde", "warning"); 
             }
         });
     } else{
@@ -424,15 +425,16 @@ function ejecutarFile(idfile){
   document.getElementById('file').click();
 };
 var gc = true;
+
 function verificarLlenado(){
   var a = $("#detalleDenuncia").val();
   var b = $("#correo").val();
   var c = $("#file-name").val();
-  var t = $("telefono").val();
-  if(a == '' || a == null || b == '' || b == null || SuccesCapchasxx =="" || !gc || t == '' || t == null )
-    document.getElementById("EnvRes").disabled = true;
-  else
+  var t = $("#telefono").val();
+  if(a != '' &&  b != '' && SuccesCapchasxx !="" && gc && t != '' && t != null )
     document.getElementById("EnvRes").disabled = false;
+  else
+    document.getElementById("EnvRes").disabled = true;
 } 
 function noVacioC(){
     var e=$("#correo").val();
@@ -449,8 +451,8 @@ function noVacio()
     var correo2  = $("#correo").val();  
     var estadoDenuncia  = $("#detalleDenuncia").val(); 
     var c = $("#file-name").val();
-    var d = $("telefono").val();
-    if( estadoDenuncia != "" && correo2 != "" && gc && d != "" )
+    var d = $("#telefono").val();
+    if( estadoDenuncia != "" && correo2 != "" && gc && (d != "" && d != null ) )
     {
       document.getElementById("resultadoC").disabled = false;
       document.getElementById('msjCap').style.display="none";
@@ -545,7 +547,7 @@ function noVacio()
       <label class="col-sm-1 col-form-label"></label>
       <label class="col-sm-3 control-label">Teléfono/Celular:<span style="color:red;">*</span></label>
       <div class="col-sm-6">
-        <input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" maxlength="8" onKeyUp="solonumeros(event);noVacio();verificarLlenado()">
+        <input type="number" class="form-control" id="telefono" placeholder="Numero de contacto" maxlength="8" onKeyUp="noVacio();verificarLlenado()">
       </div>
     </div>
     <div class="form-group row">

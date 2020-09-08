@@ -1116,7 +1116,7 @@ body.mobile-nav-active #mobile-nav-toggle{
     content: '';
 }
 .modal-body{
-    background-color:#ffd200
+    background-color:#fff
 }
 .flex-inner,.flex-outer{
     list-style-type:none;

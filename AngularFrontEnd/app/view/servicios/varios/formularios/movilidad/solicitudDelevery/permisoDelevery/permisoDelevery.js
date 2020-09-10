@@ -833,7 +833,7 @@ $scope.adjuntoTres = function(){
                             var desconcatenar = response.success.dataSql[i].Descripcion;
                             var fechaServ   = (desconcatenar).split(' ');
                             if(tipoReg=='REGISTRO_SERVICIO_PRIVADO'){
-                                if(fechaServ[4] == 'ALIMENTOS'){
+                                if(fechaServ[4] == 'ALIMENTOS' || desconcatenar=='VENTA AL POR MAYOR Y MENOR DE PRODUCTOS EN GENERAL'){
                                     $scope.trmUsuario.push(response.success.dataSql[i]);
                                     $scope.tblTramites.reload();
                                 }

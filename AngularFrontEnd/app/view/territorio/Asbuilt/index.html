@@ -411,10 +411,11 @@
                 <br />
 
                 <div class="col-xs-12 text-right">
-                    <button class="btn btn-info pull-left"  data-toggle="modal" data-target="#divPopup2" ><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Guía"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                    <!--<button class="btn btn-info pull-left"  data-toggle="modal" data-target="#divPopup2" ><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Guía"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>-->
                     <button class="btn btn-default" ng-click="cambiarPaso(flujo.pasos.paso0)" ><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Retroceder"></span>&nbsp;Atr&aacute;s</button>
                     <!--<button class="btn btn-primary" ng-click="cambiarPaso(flujo.pasos.paso2)" ng-disabled="predioSeleccionado == null || solicitud.restricciones == 1" >Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span></button>-->
-                    <button class="btn btn-primary" ng-click="cambiarPaso(flujo.pasos.paso2)" ng-disabled="predioSeleccionado == null" >Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span></button>
+                    <!--Autor JFC, Fecha: 07 09 2020, Desc.: se controla que existe el ID cartilla-->
+                    <button class="btn btn-primary" ng-click="cambiarPaso(flujo.pasos.paso2)" ng-disabled="predioSeleccionado == null || solicitud.idPCCartilla == null" >Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span></button>
                 </div>
 
             </div>

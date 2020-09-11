@@ -801,6 +801,11 @@ function FracAsBuiltController($scope, $rootScope, $routeParams, $location, $htt
             if(resApi.success)
             {
                 if(resApi.success.dataSql.length == 1) {
+                    //Autor JFC, Fecha: 07 09 2020, Desc.: se muestra el mensaje para predios consolidados sin Id cartilla
+                    if(resApi.success.dataSql[0].idPCCartilla == null)
+                    {
+                        swal('', 'El predio no cuenta con ID Cartilla.\n Por favor apersónese a cualquier plataforma SERMAT \no PIAC para más información.', 'error');
+                    }
                     $scope.setSolicitudDatosPredio(resApi.success.dataSql[0]);
                 }
                 else if(resApi.success.dataSql.length == 0){
@@ -870,7 +875,7 @@ function FracAsBuiltController($scope, $rootScope, $routeParams, $location, $htt
         $scope.configCartilla.url = $scope.configCartilla.urlTemplate.replace('{distrito}',$scope.solicitud.distritoMunicipal).replace('{patron}',data.patronLusu);
         $scope.getAlturasMaximas($scope.solicitud.idPCCartilla,$scope.solicitud.anchoVia);
 
-        //console.log("predio",  $scope.solicitud, data);
+        console.log("predio consolidado",  $scope.solicitud, data);
     }
 
     $scope.getPredioPropietarios = function (codCat) {

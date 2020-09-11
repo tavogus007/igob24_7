@@ -803,6 +803,11 @@ function AsBuiltController($scope, $rootScope, $routeParams, $location, $http, D
             if(resApi.success)
             {
                 if(resApi.success.dataSql.length == 1) {
+                    //Autor JFC, Fecha: 07 09 2020, Desc.: se muestra el mensaje para predios consolidados sin Id cartilla
+                    if(resApi.success.dataSql[0].idPCCartilla == null)
+                    {
+                        swal('', 'El predio no cuenta con ID Cartilla.\n Por favor apersónese a cualquier plataforma SERMAT \no PIAC para más información.', 'error');
+                    }
                     $scope.setSolicitudDatosPredio(resApi.success.dataSql[0]);
                 }
                 else if(resApi.success.dataSql.length == 0){

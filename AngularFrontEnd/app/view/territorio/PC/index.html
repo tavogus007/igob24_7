@@ -372,14 +372,15 @@
                                                 <li ng-if="solicitud.restriccionCH == 1">Es parte de un Conjunto Histórico.</li>
 
                                                 <li ng-if="solicitud.instLegalPat != null">Predio patrimonial aprobado por instrumento legal GAMLP: {{solicitud.instLegalPat}}</li>
-                                                <li ng-if="solicitud.restriccionSinCartilla == 1">El predio pertenece al patrón: {{solicitud.patronLusu}}</li>
+                                                <!--Autor JFC, Fecha: 07 09 2020, Desc.: se muestra el mensaje para predios consolidados sin ID cartilla-->
+                                                <li ng-if="solicitud.restriccionSinCartilla == 1">El predio pertenece al patrón: {{solicitud.patronLusu}}, pero no cuenta con  ID cartilla</li>
                                                 <li ng-if="solicitud.restriccionPUC == 1">El predio pertenece al patrón: {{solicitud.patronLusu}}</li>
-                                            </ul>
+                                            </ul>Usted no puede realizar la solicitud por este medio, requiere de un informe técnico DATC, por favor apersónese a cualquier plataforma SERMAT o PIAC para más información.
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h5>Usted no puede realizar la solicitud por este medio, requiere de un informe técnico DATC, por favor apersónese a cualquier plataforma SERMAT o PIAC para mas información.</h5>
+                                            <h5></h5>
                                         </td>
                                     </tr>
                                 </table>

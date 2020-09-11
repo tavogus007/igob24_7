@@ -308,6 +308,7 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
       var f = new Date();  
       datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
       datos.g_tipo_tramite = 'INF_IMPUG';
+      datos.vtra_id = sessionService.get('IDTRAMITE');
       console.log("datos enviados",datos);
       data_form = JSON.stringify(datos);
       var tramite = new crearTramiteMovilidad();

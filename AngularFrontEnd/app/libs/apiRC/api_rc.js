@@ -51,12 +51,16 @@ function ejecutarAjaxP(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
 };
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
 function ejecutarAjax(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+    token = sessionStorage.getItem('TOKEN_API');
     $.ajax({
       type: vTypeCall,
       url: urlRC + vUrlComp,
       data: vDataCall,
       //dataType: "json",
       async: false,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
       //processData: true,
       success: function(response) {
         dataResp = JSON.stringify(response);

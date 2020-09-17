@@ -283,431 +283,251 @@ function validateDecimal(valor) {
         
     }
 </script>
-<div class="page-content" ng-controller="registroVoluntariosIndependientesController" data-ng-init="inicioServicios();">
-    <p align="center">
-        <font face="Comic Sans" size="6px" color="#2f4050"> REGISTRO DE ANIMALISTAS INDEPENDIENTES</font>
-    </p>
-    <div class="col-sm-12">
-        <div style="display: table-cell;  " class="col-sm-4">            
-              <label class=" control-label">Tipo de Organización Protectora:</label>                 
-                    <select onchange="" id="tipo_organizacion" name="" class="form-control" ng-model="tipo_organizacion" required="">
-                      <option selected value="" > -- Seleccione -- </option>
-                      <option value="SIN_ALBERGUE_DE_ANIMALES">SIN ALBERGUE DE ANIMALES</option>
-                      <option value="CON_ALBERGUE_DE_ANIMALES">CON ALBERGUE DE ANIMALES</option>
-                    </select>                                    
+  <div class="page-content" ng-controller="registroVoluntariosIndependientesController" data-ng-init="inicioServicios();">
+          <p align="center">
+              <font face="Comic Sans" size="10px" color="#2f4050"> REGISTRO DE ANIMALISTAS INDEPENDIENTES</font>
+          </p>
+          <br><br>
+          <div>
+            <h3 class="ng-binding" style="color: #4baeb4 !important;">DATOS PERSONALES:</h3>
         </div>
-        <div style="display: table-cell; " class="col-sm-4">            
-                <label class="control-label">Área de Apoyo:</label>                    
-                      <select onchange="" id="area_apoyo" name="area_apoyo" class="form-control" ng-model="area_apoyo" required="">
-                        <option selected value=""> -- Seleccione -- </option>
-                        <option value="RESCATE">RESCATE</option>
-                        <option value="SENSIBILIZACIÓN">SENSIBILIZACIÓN</option>
-                        <option value="PATROCINIO">PATROCINIO</option>
-                        <option value="ALIMENTACIÓN">ALIMENTACIÓN</option>
-                      </select>                               
-        </div>
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            
-              <label class="control-label">Fecha de Registro:</label> 
+        <br>
 
-              <input type="text" placeholder="Fecha de Registro" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="g_fecha" name="g_fecha" value="2019-03-19 11:37:18" ng-model="datos.g_fecha" readonly="readonly"> <br>               
-            
-        </div>
-    </div>
-
-  
-    <div class="ibox-title_2" id="div_OPR_T1">
-         <h5 class="ng-binding" style="color: #4baeb4 !important;">DATOS GENERALES:</h5>
-    </div>
-    <div class="col-sm-12">
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label control-label">Nro. Licencia:</label>       
-            <input type="text" placeholder="Nro. Licencia" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="nro_licencia" name="nro_licencia" onkeyup="return conMayusculas(this)" value="" ng-model="datos.nro_licencia">
-            
-        </div>
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Fecha Expiración:</label>
-            <p class="input-group ">
-                <input id="fecha_expiracion" name="fecha_expiracion" type="text" class="form-control" ng-model="datos.fecha_expiracion" datepicker-popup="" is-open="startDateOpened4" close-text="Close" ng-disabled="true" required="" min-date="modelFecha0.startDate" ng-change="">
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" ng-click="startDateOpen4($event);"><i class="glyphicon glyphicon-calendar"></i></button>
-                </span>
-            </p>
-
-        </div>
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Nombre de la Organización:</label>            
-            <input type="text" placeholder="Nombre de la Organización" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="nombre_organizacion" name="registro[]" onkeyup="return conMayusculas(this)" value="" ng-model="datos.nombre_organizacion">
-                
-        </div>
-
-
-    </div>
-
-    <div class="col-sm-12">
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-          <label class="control-label">Nro. Pers. Jurídica:</label>            
-              <input type="text" placeholder="Nro. Pers. Jurídica" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="nro_personeria_juridica" name="nro_personeria_juridica" onkeyup="return conMayusculas(this)" value="" ng-model="datos.nro_personeria_juridica">            
-        </div>
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Dirección:</label>       
-            <input type="text" placeholder="Dirección" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="direccion" name="direccion" onkeyup="return conMayusculas(this)" value="" ng-model="datos.direccion"><br>      
-        </div>
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-        </div>
-    </div> 
-
-    <div class="ibox-title_2" id="div_OPR_T2">
-        <br><br><h5 class="ng-binding" style="color: #4baeb4 !important;">DATOS PERSONALES DEL ANIMALISTA INDEPENDIENTE:</h5>
-    </div>
-
-    <div class="col-sm-12">
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Nro. CI:</label>       
-            <input type="text" placeholder="Nro. CI" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.ci" name="datos_responsable.ci" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.ci">        
-        </div>
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Expedido:</label>       
-            <input type="text" id="datos_responsable.expedido" name="datos_responsable.expedido" class="form-control" ng-model="datos_responsable.expedido" placeholder="Nro. CI" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" value="">        
-        </div>
-        
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Paterno:</label>            
-                <input type="text" placeholder="Paterno" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-model="datos_responsable.paterno" id="datos_responsable.paterno" name="datos_responsable.paterno" onkeyup="return conMayusculas(this)" value="" ng-disabled="true">
-        </div>
-    </div> <br>
-    <div class="col-sm-12">
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class=" control-label">Materno:</label>           
-                <input type="text" placeholder="Materno" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.materno" name="datos_responsable.materno" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.materno">    
-        </div>
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Nombres:</label>
-                <input type="text" placeholder="Nombres" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.nombre" name="datos_responsable.nombre" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.nombre">
-        </div>
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            
-        </div>
-    </div> <br>
-    <div class="col-sm-12">
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">       
-            <label class="control-label">Profesional Veterinario Titulado:</label>
-            <select onchange="" id="datos_responsable_titulado" name="datos_responsable.titulado" class="form-control" ng-model="datos_responsable.titulado">
-                        <option selected value=""> -- Seleccione -- </option>
-                        <option value="1">NO</option>
-                        <option value="2">SI</option>
-            </select>
-        </div>
-
-        <div id="div_g_fecha" ng-if="datos_responsable.titulado=='2'" name="componentes" class="col-sm-4">
-            <label class="control-label">Nro. Matrícula:</label>
-            <input type="text" placeholder="Nro. Matrícula" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="datos_responsable_matricula" name="datos_responsable.matricula" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.matricula">
-        </div>
-        <div id="div_g_fecha" ng-if="datos_responsable.titulado=='1'" name="componentes" class="col-sm-4">
-            <label class="control-label">Establecimiento Veterinario que da Asistencia:</label>
-            <input type="text" placeholder="Establecimiento Veterinario que da Asistencia" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="datos_responsable_establecimiento_asistencia" name="datos_responsable.establecimiento_asistencia" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.establecimiento_asistencia">
-        </div>
-        
-    </div> <br>
-
-    <div ng-if="tipo_organizacion=='CON_ALBERGUE_DE_ANIMALES'">
-        <div class="col-sm-12 ibox-title_2" id="div_OPR_T4">
-            <h5 class="ng-binding" style="color: #4baeb4 !important;">CONDICIONES TÉCNICAS DE INFRAESTRUCTURA:</h5> 
-        </div>
-        <div id="div_OPR_SPN1" name="componentes">
-            <div class="col-sm-12" align="center">
-              <div class="alert alert-danger fade in">
-                          <bold>Requiere un mínimo de:</bold> Tres (3) Caniles;  Cuatro (4) Gatiles. Dos (2) Caniles móviles. Dos (2) Gatiles móviles. Bebederos y comederos. La utilización de los caniles y gatiles del albergue, no deberá exceder su capacidad o contención.<br>
-                       </div> 
-              
-              <!--span> Requiere un mínimo de;Tres (3) Caniles;  Cuatro (4) Gatiles. Dos (2) Caniles móviles. Dos (2) Gatiles móviles. Bebederos y comederos. La utilización de los caniles y gatiles del albergue, no deberá exceder su capacidad o contención.  
-              </span-->
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <label class="control-label">Nombres:</label>
+                    <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.nombre" name="datos_responsable.nombre" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.nombre">
             </div>
-        </div>
-        <div class="col-sm-12 table-responsive"><br>
-            <div id="div_g_fecha" name="componentes" class="col-sm-4">
-                <label class="control-label">Caniles Móviles:</label>
-                <input onchange="" type="number" placeholder="Caniles Móviles" class="form-control" id="datos_infraestructura_caniles_moviles" name="datos_infraestructura.caniles_moviles" onkeyup="return conMayusculas(this)" value="" ng-model="datos_infraestructura.caniles_moviles" >
+            <div class="col-md-4">
+                <label class="control-label">Paterno:</label>            
+                    <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-model="datos_responsable.paterno" id="datos_responsable.paterno" name="datos_responsable.paterno" onkeyup="return conMayusculas(this)" value="" ng-disabled="true">
+            </div>
+            <div class="col-md-4">
+                <label class=" control-label">Materno:</label>           
+                    <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.materno" name="datos_responsable.materno" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.materno">    
+            </div>
 
-            </div>
-            <div id="div_g_fecha" name="componentes" class="col-sm-4">
-                <label class="control-label">Gatiles Móviles:</label>
-                <input onchange="" type="number" placeholder="Gatiles Móviles" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="datos_infraestructura_gatiles_moviles" name="datos_infraestructura.gatiles_moviles" onkeyup="return conMayusculas(this)" value="" ng-model="datos_infraestructura.gatiles_moviles" ng-blur="sumarcaniles(datos_infraestructura.caniles_moviles,datos_infraestructura.gatiles_moviles);">
-            </div>
-            <div id="div_g_fecha" name="componentes" class="col-sm-4">
-                <label class="control-label">Capacidad Total (móviles):</label>
-                <input onchange="" type="number" placeholder="Capacidad Total (móviles)" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="datos_infraestructura_capacidad_moviles" name="datos_infraestructura.capacidad_moviles" onkeyup="return conMayusculas(this)" value="" ng-model="datos_infraestructura.capacidad_moviles" readonly="readonly"  >
-            </div>
-        </div> <br>
-        <div class="col-sm-12 table-responsive">
-            <div id="div_g_fecha" name="componentes" class="col-sm-4">
-                <label class="control-label">Capacidad. Caniles:</label>
-                <input onchange="" type="number" placeholder="Capacidad. Caniles" class="form-control" id="datos_infraestructura.capacidad_caniles" name="datos_infraestructura.capacidad_caniles" onkeyup="return conMayusculas(this)" value="" ng-model="datos_infraestructura.capacidad_caniles">
-            </div>
-            <div id="div_g_fecha" name="componentes" class="col-sm-4">
-                <label class="control-label">Capacidad Gatiles:</label>
-                <input onchange="" type="number" placeholder="Capacidad Gatiles" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="datos_infraestructura.capacidad_gatiles" name="datos_infraestructura.capacidad_gatiles" onkeyup="return conMayusculas(this)" value="" ng-model="datos_infraestructura.capacidad_gatiles" ng-blur="sumcantcaniles(datos_infraestructura.capacidad_caniles,datos_infraestructura.capacidad_gatiles);">
-            </div>
-            <div id="div_g_fecha" name="componentes" class="col-sm-4">
-                <label class="control-label">Capacidad Total:</label>
-                <input type="text" placeholder="Capacidad Total" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="datos_infraestructura.capacidad_total" name="datos_infraestructura.capacidad_total" onkeyup="return conMayusculas(this)" value="" ng-model="datos_infraestructura.capacidad_total" readonly="readonly" >
-            </div>
-        </div> <br>
-        <div class="col-sm-12 table-responsive">
-            <div id="div_g_fecha" name="componentes" class="col-sm-4">
-                <label class="control-label">Nro. Bebederos:</label>
-                <input onchange="" type="number" placeholder="Nro. Bebederos" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="datos_infraestructura.nro_bebederos" name="datos_infraestructura.nro_bebederos" onkeyup="return conMayusculas(this)" value="" ng-model="datos_infraestructura.nro_bebederos">
-            </div>
-            <div id="div_g_fecha" name="componentes" class="col-sm-4">
-                <label class="col-sm-2 control-label">Nro.Comederos:</label>
-                <input onchange="" type="number" placeholder="Nro.Comederos" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="only" id="datos_infraestructura.nro_comederos" name="datos_infraestructura.nro_comederos" onkeyup="return conMayusculas(this)" value="" ng-model="datos_infraestructura.nro_comederos"><br>
-            </div>
-            <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            </div>
-        </div> <br>
-    </div>
+          
+
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div class="col-md-12">
+          <div class="col-md-4">
+              <label class="control-label">Tercer Apellido:</label>       
+              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.apcasada" name="datos_responsable.apcasada" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.apcasada">        
+          </div>
+          <div class="col-md-4">
+              <label class="control-label">Nro. CI:</label>       
+              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.ci" name="datos_responsable.ci" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.ci">        
+          </div>
+          <div class="col-md-4">
+              <label class="control-label">Expedido:</label>       
+              <input type="text" id="datos_responsable.expedido" name="datos_responsable.expedido" class="form-control" ng-model="datos_responsable.expedido" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" value="">        
+          </div>
 
 
-    <br>
-    <div class="ibox-title_2" id="div_OPR_T3">
-        <h5 class="ng-binding" style="color: #4baeb4 !important;">DOCUMENTOS PRESENTADOS:</h5>
-    </div>
-    <div class="col-sm-12 table-responsive">
-        <!--div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Adjuntar CI del Representante:</label> 
-            <input type="file" class="form-control ng-dirty ng-invalid ng-invalid-required" name="undefined" id="OPR_ADJ_LICENCIA" ><img id="adjunto_ci_representante" ng-model="datos.adjunto_ci_representante" src="">
-        </div-->
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Adjuntar Croquis:</label> 
-            <input type="file" class="form-control ng-dirty ng-invalid ng-invalid-required" name="href_adjunto_croquis_img" id="adjunto_croquis_img" uploader-model="adjunto_croquis_img" accept="image/*">
-            <img id="btn_href_adjunto_croquis_img" ng-model="datos.adjunto_croquis" src="" ng-click="ejecutarFile('adjunto_croquis_img', 'data' + $data.resvalor);"><i class="glyphicon glyphicon-upload" ></i>
-        </div>
-        <div class="form-group" class="col-md-8" id="div_adjunto_croquis">
-            <label for="url" >Imagen :</label>
+      </div> 
+
+      <br>
+      <br>
+      <br>
+      <br>
+      <div class="col-md-12">
+          <div class="col-md-4">
+              <label class="control-label">Celular:</label>       
+              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.movil" name="datos_responsable.movil" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.movil">        
+          </div>
+          <div class="col-md-4">
+              <label class="control-label">Correo:</label>       
+              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.correo" name="datos_responsable.correo" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.correo">        
+          </div>
+          <div class="col-md-4">
+              <label class="control-label">Zona:</label>       
+              <input type="text" id="datos_responsable.zona" name="datos_responsable.zona" class="form-control" ng-model="datos_responsable.zona" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" value="">        
+          </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div class="col-md-12">
+          <div class="col-md-4">
+              <label class="control-label">Via:</label>       
+              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.nomVia" name="datos_responsable.nomVia" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.nomVia">        
+          </div>
+          <div class="col-md-4">
+              <label class="control-label">Tipo Via:</label>       
+              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.tipoVia" name="datos_responsable.tipoVia" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.tipoVia">        
+          </div>
+          <div class="col-md-4">
+              <label class="control-label">Numero de vivienda:</label>       
+              <input type="text" id="datos_responsable.numCasa" name="datos_responsable.numCasa" class="form-control" ng-model="datos_responsable.numCasa" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" value="">        
+          </div>
+      </div> 
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div>
+          <h3 class="ng-binding" style="color: #4baeb4 !important;">INDICAR EXACTAMENTE EN EL MAPA SU DOMICILIO:</h3>
+      </div>
+      <br>
+      <br>
+
+      <div>
+        <h1>FREDDDDDDDDDDDDDDDDDDDDYYYYYYYYYYY</h1>
+      </div>
+
+      <br>
+      <br>
+      <div>
+          <h3 class="ng-binding" style="color: #4baeb4 !important;">DATOS DEL VOLUNTARIADO:</h3>
+      </div>
+      <br>
+<div class="col-md-12">
+      <div class="col-md-6" >
+          <div class="form-group">
+            <label for="url">Tipo de Voluntariado que realiza</label>
             <div class="controls">
-                <td data-title="'Imagen'" data-title-text="Imagen"><img src={{datos.adjunto_croquis}} alt=" Imagen" height="90" width="90"></td>
+              <select id="tipo_voluntario" 
+              name="tipo_voluntario"
+              placeholder="Zona" 
+              ng-model="datos.tipo_voluntario"
+              class="form-control"
+              required ng-disabled="desabilitado">
+              <option value="">--Seleccionar--</option>
+              <option value="Si">Alimentador</option>
+              <option value="No">Educador</option>
+              <option value="No">Rescatista</option>
+              <option value="No">Otro</option>
+              </select>
             </div>
-        </div>
-        <!--div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Adjuntar CI personal:</label> 
-            <input type="file" class="form-control ng-dirty ng-invalid ng-invalid-required" name="undefined" id="img_OPR_ADJ_EST_VET" ><img id="adjunto_ci_personal" ng-model="datos.adjunto_ci_personal" src="">
-        </div-->
-    </div> <br>
-
-    <!--div class="col-sm-12 table-responsive">
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Adjuntar Foto del Responsable:</label> 
-            <input type="file" class="form-control ng-dirty ng-invalid ng-invalid-required" name="undefined" id="OPR_ADJ_LICENCIA" onchange="hola(this)"><img id="img_OPR_ADJ_FOT_RESP" ng-model="datos.OPR_ADJ_FOT_RESP" src="">
-        </div>
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            <label class="control-label">Adjuntar Título Profesional del Veterinario Responsable:</label> 
-            <input type="file" class=" form-control ng-dirty ng-invalid ng-invalid-required" name="undefined" id="OPR_ADJ_TIT_VET" onchange="hola(this)"><img id="img_OPR_ADJ_FOT_VOLUNT" ng-model="datos.OPR_ADJ_FOT_VOLUNT" src="">
-        </div>
-        <div id="div_g_fecha" name="componentes" class="col-sm-4">
-            
-        </div>              
-    </div> <br-->
-
-    <div class="col-sm-12 table-responsive">
-        <div id="div_g_fecha" name="componentes" class="col-sm-8">
-            <button type="button" class="btn btn-primary"  ng-click="limpiar_data()"> 
-                <i class="glyphicon fa fa-times"></i> Cancelar/Limpiar 
-            </button>
-            <button ng-if="form_but_g == true" type="button" class="btn btn-primary" ng-click="validarFormularioEditar();">
-                <i class="glyphicon fa fa-save"></i> Modificar
-            </button>
-            <button ng-if="form_but_e == true" type="button" class="btn btn-primary" ng-click="validarFormularioGuardar();">
-                <i class="glyphicon fa fa-save"></i> Guardar
-            </button>
-        </div>              
-    </div>
-
-    
-
-
-
-        <!-- ///////////////////////////////// Modal grilla niños /////////////////////////////////////
-            ///////////////////////////////////////////////////////////////////////////////////////////
-            /////////////////////////////////////////////////////////////////////////////////////////// -->
-        <div id="myModal" class="modal fade" id="registro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header modal-header-success">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                      <h5><i class="glyphicon glyphicon-thumbs-up"></i> Registro de voluntario</h5>
-                  </div>
-                  <form name="form"  readOnly="true" novalidate >
-                  <div class="modal-body">
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Vacuna Antirrabica</label>
-                        <div class="col-md-9">
-                          <select id="vacuna_ant" name="vacuna_ant" ng-model="mod.vacuna_ant" class="form-control" onchange="bloquear_modal(this);" required="">
-                            <option selected value="">--Seleccione--</option>
-                            <option value="SI">SI</option>
-                            <option value="NO">NO</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <label class="ng-binding col-md-3">Fecha de Vacuna<font color="#FF0000" size="4px"> * </font></label>
-                      <p class="input-group col-md-9">
-                        <input id="fecha_vacuna" name="fecha_vacuna" type="text" class="form-control" ng-model="mod.fecha_vacuna" datepicker-popup="" is-open="startDateOpened5" close-text="Close" ng-disabled="true" required="" max-date="modelFecha5.endDate" ng-change="cal_edad_grilla(mod.fecha_nacimiento);">
-                        <span class="input-group-btn">
-                          <button type="button" class="btn btn-default" ng-click="startDateOpen5($event);"><i class="glyphicon glyphicon-calendar"></i></button>
-                        </span>
-                      </p>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Nro. de Documento</label>
-                        <div class="col-md-9 col-sm-4">
-                          <input id="ci" name="ci" ng-model="mod.ci" class="form-control" type="text" required="">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Expedido</label>
-                        <div class="col-md-9">
-                          <select id="expedido" name="expedido" ng-model="mod.expedido" class="form-control" required="">
-                            <option value="">--Seleccione--</option>
-                            <option value="LPZ">LA PAZ</option>
-                            <option value="ORU">ORURO</option>
-                            <option value="PTS">POTOSI</option>
-                            <option value="CBB">COCHABAMBA</option>
-                            <option value="CHQ">CHUQUISACA</option>
-                            <option value="TJA">TARIJA</option>
-                            <option value="BNI">BENI</option>
-                            <option value="PND">PANDO</option>
-                            <option value="SCZ">SANTA CRUZ</option>
-                            <option value="EXT">EXTERIOR</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Nombres</label>
-                        <div class="col-md-9">
-                          <input id="nombre" name="nombre" ng-model="mod.nombre" class="form-control" type="text" required="" style="text-transform: uppercase;">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Paterno</label>
-                        <div class="col-md-9">
-                          <input id="paterno" name="paterno" ng-model="mod.paterno" class="form-control" type="text" style="text-transform: uppercase;">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Materno</label>
-                        <div class="col-md-9">
-                          <input id="materno" name="materno" ng-model="mod.materno" class="form-control" type="text" style="text-transform: uppercase;">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Tercer Ap.</label>
-                        <div class="col-md-9">
-                          <input id="apellido_casado" name="apellido_casado" ng-model="mod.apellido_casado" class="form-control" type="text" style="text-transform: uppercase;">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <label class="ng-binding col-md-3">Fecha Nacimiento<font color="#FF0000" size="4px"> * </font></label>
-                      <p class="input-group col-md-9">
-                        <input id="fecha_nacimiento" name="fecha_nacimiento" type="text" class="form-control" ng-model="mod.fecha_nacimiento" datepicker-popup="" is-open="startDateOpened3" close-text="Close" ng-disabled="true" required="" max-date="modelFecha0.endDate" ng-change="calcular_edad_grilla(mod.fecha_nacimiento);">
-                        <span class="input-group-btn">
-                          <button type="button" class="btn btn-default" ng-click="startDateOpen3($event);"><i class="glyphicon glyphicon-calendar"></i></button>
-                        </span>
-                      </p>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Edad</label>
-                        <div class="col-md-9">
-                          <input id="edad" name="edad" ng-model="mod.edad" class="form-control" type="text" style="text-transform: uppercase;" ng-disabled="true">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Genero</label>
-                        <div class="col-md-9">
-                          <select id="genero" name="genero" ng-model="mod.genero" class="form-control" required="">
-                            <option value="">--Seleccione--</option>
-                            <option value="femenino">FEMENINO</option>
-                            <option value="masculino">MASCULINO</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Estado Civil</label>
-                        <div class="col-md-9">
-                          <select id="estado_civil" name="estado_civil" ng-model="mod.estado_civil" class="form-control">
-                            <option value="">--Seleccione--</option>
-                            <option value="casado">CASADO</option>
-                            <option value="soltero">SOLTERO</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Funciones Desempeña</label>
-                        <div class="col-md-9">
-                          <input id="funciones" name="funciones" ng-model="mod.funciones" class="form-control" type="text" >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Correo</label>
-                        <div class="col-md-9">
-                          <input id="correo" name="correo" ng-model="mod.correo" class="form-control" type="text" >
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Nr Celular</label>
-                        <div class="col-md-9">
-                          <input id="celular" name="celular" ng-model="mod.celular" class="form-control" type="text" maxlength="8" onkeyUp="valNumeroCelular(this);" required="">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row" style="padding-top:2%">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label">Nr Telefono</label>
-                        <div class="col-md-9">
-                          <input id="telefono" name="telefono" ng-model="mod.telefono" class="form-control" type="text" maxlength="7" onkeyUp="valNumeroTelefono(this);">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                        <button ng-if="gri_but_modal_g == true" type="button" class="btn btn-primary" ng-click="guardarmod(mod)">Guardar</button>
-                        <button ng-if="gri_but_modal_e == true" type="button" class="btn btn-primary" ng-click="modificar_grid_n(mod)" data-dismiss="modal">Modificar</button>
-                    </div>
-                  </form>
-              </div>
           </div>
         </div>
-        <!--////////////////////////////////-->
-    
-</div>
-      
+        <div class="col-md-6" >
+            <div class="form-group" >
+              <label for="url">Fecha en la que se realizó la vacuna antirrabica:</label>
+              <div class="controls">
+                <input type="date" class="form-control" ng-model="datos.fecha_antirrabica" name="fecha_antirrabica" value="memorandum" required ng-disabled="desabilitado">
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="col-md-12">
+          <div class="col-md-6" >
+              <div class="form-group" >
+                <label for="url">Gestion en que inicio a ser Voluntariado</label>
+                <div class="controls">
+                  <input type="number" class="form-control" ng-model="datos.gestion_inicio" name="gestion_inicio" value="memorandum" required ng-disabled="desabilitado">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" >
+                <div class="form-group" >
+                  <label for="url">Lugar donde realiza el Voluntariado</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" ng-model="datos.lugar_voluntariado" name="lugar_voluntariado" value="memorandum" required ng-disabled="desabilitado">
+                  </div>
+                </div>
+            </div>
+      </div>
+      <div class="col-md-12">
+          <div class="col-md-12" >
+              <div class="form-group" >
+                <label for="url">Otros:</label>
+                <div class="controls">
+                  <input type="text" class="form-control" ng-model="datos.otros_tipos_voluntariado" name="otros_tipos_voluntariado" value="memorandum" required ng-disabled="desabilitado">
+                </div>
+              </div>
+          </div>
+      </div>
+      <br>
+      <br>
+      <div>
+      <div>
+          <h3 class="ng-binding" style="color: #4baeb4 !important;">CONDICIONES TÉCNICAS DE INFRAESTRUCTURA:</h3>
+      </div>
+      <br>
+      <div class="col-md-12">
+          <div class="col-md-4" >
+              <div class="form-group" >
+                <label for="url">Caniles Móviles(Nro.)</label>
+                <div class="controls">
+                  <input type="number" class="form-control" ng-model="datos.caniles_moviles" name="caniles_moviles" value="memorandum" required ng-disabled="desabilitado" ng-change ="sumar_moviles()">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" >
+                <div class="form-group" >
+                  <label for="url">Gatiles Móviles(Nro.)</label>
+                  <div class="controls">
+                    <input type="number" class="form-control" ng-model="datos.gatiles_moviles" name="gatiles_moviles" value="memorandum" required ng-disabled="desabilitado" ng-change ="sumar_moviles()">
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-4" >
+                <div class="form-group" >
+                  <label for="url">Total Móviles</label>
+                  <div class="controls">
+                    <input type="number" class="form-control" ng-model="datos.total_moviles" name="total_moviles" value="memorandum" ng-disabled="true">
+                  </div>
+                </div>
+            </div>
+      </div>
+      <div class="col-md-12">
+          <div class="col-md-4" >
+              <div class="form-group" >
+                <label for="url">Capacidades de Caniles(Nro.)</label>
+                <div class="controls">
+                  <input type="number" class="form-control" ng-model="datos.capacidad_caniles" name="capacidad_caniles" value="memorandum" required ng-disabled="desabilitado" ng-change ="sumar_capacidades()">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" >
+                <div class="form-group" >
+                  <label for="url">Capacidades de Gatiles(Nro.)</label>
+                  <div class="controls">
+                    <input type="number" class="form-control" ng-model="datos.capacidad_gatiles" name="capacidad_gatiles" value="memorandum" required ng-disabled="desabilitado" ng-change ="sumar_capacidades()">
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-4" >
+                <div class="form-group" >
+                  <label for="url">Total de Capacidad</label>
+                  <div class="controls">
+                    <input type="number" class="form-control" ng-model="datos.total_capacidad" name="total_capacidad" value="memorandum" ng-disabled="true">
+                  </div>
+                </div>
+            </div>
+      </div>
+      <div class="col-md-12">
+          <div class="col-md-4" >
+              <div class="form-group" >
+                <label for="url">Total Comedores</label>
+                <div class="controls">
+                  <input type="number" class="form-control" ng-model="datos.total_comedores" name="total_comedores" value="memorandum" required ng-disabled="desabilitado">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" >
+                <div class="form-group" >
+                  <label for="url">Total Bebederos</label>
+                  <div class="controls">
+                    <input type="number" class="form-control" ng-model="datos.total_bebederos" name="total_bebederos" value="memorandum" required ng-disabled="desabilitado">
+                  </div>
+                </div>
+            </div>
+      </div>
+      </div>
+      <div class="col-md-12" align="right"><br>
+        <button id="miFormGuardar" ng-click="validar(datos);"  type="button" class="btn btn-success fa fa-save" name="formEnviar">GUARDAR</button>
+      </div>
+  </div>
+        
 </html>
 

@@ -6,7 +6,8 @@ var typeCall;
 
 
 if(jsonURLS){
-    urlMaservicio    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "api/reglaNegocio/ejecutarWeb";
+    urlMaservicio    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "/motorservicio_pruebas/public/api/apiLogin";
+    urlMaservicioReglas    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "motorservicio_pruebas/public/api/reglaNegocio/ejecutarWeb";
     console.log('INTERMEDIO-----',urlMaservicio);
     key = jsonURLS.KEY;
 
@@ -38,7 +39,7 @@ if(jsonURLS){
 function ejecutarAjaxMASCOTAS(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
   var headers = {};
   $.ajax({
-    url: urlMaservicio + vUrlComp,
+    url: urlMaservicioReglas,
     data: vDataCall,
     type:"POST",
     dataType: "json",
@@ -59,6 +60,10 @@ function ejecutarAjaxMASCOTAS(vUrlComp, vTypeCall, vDataCall, vFunctionResp,toke
   return dataResp;
 };
 
+
+
+
+
 /*API REGLAS DE NEGOCIO*/
 function reglasnegocioM(){
     this.identificador;
@@ -68,7 +73,7 @@ function reglasnegocioM(){
 reglasnegocioM.prototype.llamarregla=function(functionResp){
   var idtoken =   sessionStorage.getItem('TOKEN_MOTORM');
   var stoquenM =  'Bearer ' + idtoken ;
-    urlComp = "";
+    urlComp = urlMaservicioReglas;
     typeCall = "post";
     dataParams= {
         "identificador" : this.identificador,
@@ -76,7 +81,7 @@ reglasnegocioM.prototype.llamarregla=function(functionResp){
     };
     ejecutarAjaxMASCOTAS(urlComp, typeCall, dataParams, functionResp,stoquenM);
 };
-
+//"parametros": this.parametros
 // ATM
 /*function rcTramitesAtm(){
     this.sidciudadano;

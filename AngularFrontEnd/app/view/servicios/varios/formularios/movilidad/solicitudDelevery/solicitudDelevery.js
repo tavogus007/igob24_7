@@ -252,7 +252,7 @@ function solicitudDeleveryController($scope, $rootScope, $routeParams, $location
     
       var tramites  = new tramitesMovilidad();
       tramites.idCiudadano = sIdCiudadano;
-      tramites.descripcion="MOVILIDAD_DELEVERY";
+      tramites.descripcion="MOVILIDAD DELIVERY";
       tramites.listaTramitesMovilidad(function(results){
         results = JSON.parse(results).success;
         $scope.tramites = results;

@@ -252,7 +252,7 @@ function solicitudCirculacionController($scope, $rootScope, $routeParams, $locat
     
       var tramites  = new tramitesMovilidad();
       tramites.idCiudadano = sIdCiudadano;
-      tramites.descripcion="MOVILIDAD_PER_TRA";
+      tramites.descripcion="MOVILIDAD PERMISOS TRANSITORIOS";
       tramites.listaTramitesMovilidad(function(results){
         results = JSON.parse(results).success;
         $scope.tramites = results;

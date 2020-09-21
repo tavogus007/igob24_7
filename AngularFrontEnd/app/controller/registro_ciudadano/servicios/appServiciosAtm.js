@@ -32,9 +32,9 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
     ];
 
     $scope.serivicosInternetVehiculos = [
-        { name: 'INSCRIPCION CASA COMERCIAL VEHICULOS ', id: '19' },
-        { name: 'INSCRIPCION CASA COMERCIAL MOTOS', id: '18' },
-        { name: 'BASE IMPONIBLE VEHICULOS', id: '17' },
+        { name: 'INSCRIPCION CASA COMERCIAL VEHICULOS ', id: '21' },
+        { name: 'INSCRIPCION CASA COMERCIAL MOTOS', id: '22' },
+        { name: 'BASE IMPONIBLE VEHICULOS', id: '23' },
     ];
     $scope.btnEnviarForm = true;
     $scope.datosGuardados = false;
@@ -109,19 +109,19 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         if (tipoPersona == 'NATURAL' && sidservicio == 20) {
             sidservicio = 0;
         }
-        if (tipoPersona == 'NATURAL' && sidservicio == 19) {
+        if (tipoPersona == 'NATURAL' && sidservicio == 21) {
             sidservicio = 1;
         }
         if (tipoPersona == 'JURIDICO' && sidservicio == 20) {
             sidservicio = 4;
         }
-        if (tipoPersona == 'JURIDICO' && sidservicio == 19) {
+        if (tipoPersona == 'JURIDICO' && sidservicio == 21) {
             sidservicio = 3;
         }
-        if (tipoPersona == 'JURIDICO' && sidservicio == 18) {
+        if (tipoPersona == 'JURIDICO' && sidservicio == 22) {
             sidservicio = 5;
         }
-        if (tipoPersona == 'JURIDICO' && sidservicio == 17) {
+        if (tipoPersona == 'JURIDICO' && sidservicio == 23) {
             sidservicio = 6;
         }
 
@@ -358,14 +358,14 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         if ($scope.procesoSeleccionado == 20) {
             sidservicio = 20;
         }
-        if ($scope.procesoSeleccionado == 19) {
-            sidservicio = 19;
+        if ($scope.procesoSeleccionado == 21) {
+            sidservicio = 21;
         }
-        if ($scope.procesoSeleccionado == 18) {
-            sidservicio = 18;
+        if ($scope.procesoSeleccionado == 22) {
+            sidservicio = 22;
         }
-        if ($scope.procesoSeleccionado == 17) {
-            sidservicio = 17;
+        if ($scope.procesoSeleccionado == 23) {
+            sidservicio = 23;
         }
         $scope.procesoSeleccionado = proceso.id;
         $scope.btnNuevoTramtite = false;
@@ -378,14 +378,14 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
             if ($scope.procesoSeleccionado == 20) {
                 sidservicio = 20;
             }
-            if ($scope.procesoSeleccionado == 19) {
-                sidservicio = 19;
+            if ($scope.procesoSeleccionado == 21) {
+                sidservicio = 21;
             }
-            if ($scope.procesoSeleccionado == 18) {
-                sidservicio = 18;
+            if ($scope.procesoSeleccionado == 22) {
+                sidservicio = 22;
             }
-            if ($scope.procesoSeleccionado == 17) {
-                sidservicio = 17;
+            if ($scope.procesoSeleccionado == 23) {
+                sidservicio = 23;
             }
             $scope.adicionarServicioGamlp(sidservicio);
         }
@@ -453,11 +453,11 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                     } catch (e) {
                     }
                 }
-                if (datos == 19) {
+                if (datos == 21) {
                     var dataInicio = {};
                     var fecha = new Date();
                     var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio = 19;
+                    var sIdServicio = 21;
                     var sIdCiudadano = sessionService.get('IDSOLICITANTE');
                     var sFechaTramite = fechactual;
                     dataInicio.INT_FORM_ALMACENADO = 'C';
@@ -504,11 +504,11 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                         $.unblockUI();
                     }
                 }
-                if (datos == 18) {
+                if (datos == 22) {
                     var dataInicio = {};
                     var fecha = new Date();
                     var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio = 18;
+                    var sIdServicio = 22;
                     var sIdCiudadano = sessionService.get('IDSOLICITANTE');
                     var sFechaTramite = fechactual;
                     dataInicio.INT_FORM_ALMACENADO = 'C';
@@ -555,11 +555,11 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                         $.unblockUI();
                     }
                 }
-                if (datos == 17) {
+                if (datos == 23) {
                     var dataInicio = {};
                     var fecha = new Date();
                     var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio = 17;
+                    var sIdServicio = 23;
                     var sIdCiudadano = sessionService.get('IDSOLICITANTE');
                     var sFechaTramite = fechactual;
                     dataInicio.INT_FORM_ALMACENADO = 'C';

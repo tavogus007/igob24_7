@@ -2881,7 +2881,15 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       closeOnConfirm:     false
     }, function () {
       swal('Ok!', 'El registro se elimino correctamente', 'success');
-      $scope.grilla_rbmultiple.splice(posicion, 1);
+      var cont  =  0;
+      var pos_envio = 0;
+      $scope.grilla_rbmultiple.forEach(element => {
+        if(element.f01_DENOMINACION == datos.f01_DENOMINACION && element.f01_UBI_RB == datos.f01_UBI_RB){
+          pos_envio = cont;
+        }
+        cont = cont + 1;
+      });
+      $scope.grilla_rbmultiple.splice(pos_envio, 1);
       $scope.lst_grilla_multiple();
     });
   }
@@ -2928,7 +2936,15 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       $scope.lstSoporteprevio = [];
       $scope.lstSoporteprevio = data.f01_GRILLA_SOPORTE;
       $scope.lstSoportes();
-      $scope.posicion = pos_grilla;
+      var cont  =  0;
+      var pos_envio = 0;
+      $scope.grilla_rbmultiple.forEach(element => {
+        if(element.f01_DENOMINACION == data.f01_DENOMINACION && element.f01_UBI_RB == data.f01_UBI_RB){
+          pos_envio = cont;
+        }
+        cont = cont + 1;
+      });
+      $scope.posicion = pos_envio;
       if ($scope.tipoReg == "R_MULTIPLE") {
         $scope.radiobase_simple = "mostrar";
         $scope.actualizarbtn_multiple = true;
@@ -4543,11 +4559,8 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     });
 
   $scope.enviarData = function () {
-
     var fecha = new Date();
     $scope.fechaDj = fecha.getFullYear() + '' + (fecha.getMonth() + 1) + '' + fecha.getDate() + '' + fecha.getHours() + '' + fecha.getMinutes() + '' + fecha.getSeconds();
-
-
     $.blockUI();
     $scope.ConsumoServCatastro();
     $rootScope.datosIniciales.itemENVIOSITv3 = $scope.data_Sitv3;
@@ -4556,6 +4569,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     setTimeout(function () {
       $scope.$apply(function () {
         var crearCaso = new gCrearCasoLinea();
+        
         crearCaso.usr_id = 1,
           crearCaso.datos = datosSerializados,
           crearCaso.procodigo = $scope.tipoProceso,
@@ -4590,7 +4604,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
             } catch (e) {
               alert("conexion fallida ");
             }
-          });
+          }); 
         $.unblockUI();
       });
     }, 1000);
@@ -5148,7 +5162,11 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       $("#tp_prop").val(data.f01_TIPO_UBIC);
       $("#lt_ubicacion").val(data.f01_LATITUD);
       $("#den_ngabinete").val(data.f01_NRO_GABINETE);
-      $("#observacion").val(data.ANT_OBSERVACION);
+      if(data.ANT_OBSERVACION){
+        $("#observacion").val(data.ANT_OBSERVACION);
+      }else if(data.observacion) {
+        $("#observacion").val(data.observacion);
+      }
       $("#latitud_reg").val(data.ANT_LATITUD);
       $("#longitud_reg").val(data.ANT_LOGITUD);
       $scope.ubicacion = data.f01_Ubicacion;
@@ -5733,7 +5751,6 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     }
   }
   $scope.enviarData_multiple = function () {
-
     $scope.data_tramite_final1 = JSON.parse($scope.data_tramite_final);
     $scope.data_registro_i = $scope.data_tramite_final1.GRD_ANTENAS;
     for (var i = 0; i < $scope.data_registro_i.length; i++) {
@@ -5749,10 +5766,10 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     datosSerializados.GRD_ANTENAS = $rootScope.Antenas_multiple;
     datosSerializados.File_Adjunto = $scope.rutaArchEnvioLotus;
     datosSerializados.ANT_NRO_AUTORIZACION = $scope.ANTT_NROAUTORIZACION;
-    if ($scope.codigoenvioLotus == "RBM") {
+    if ($scope.codigoenvioLotus === "RBM") {
       $scope.codigoenvioLotus = "ANTT";
       datosSerializados.g_tipo = "ANTT";
-    } else {
+    } else if( $scope.codigoenvioLotus === "GM" ) {
       $scope.codigoenvioLotus = "RG";
       datosSerializados.g_tipo = "RG";
     }
@@ -5763,51 +5780,60 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     $rootScope.datosIniciales_rcp.fechaDj = $scope.fechaDjM;
     $rootScope.datosIniciales_rcp.itemENVIOSITv3 = $scope.data_Sitv3_v01;
     datosSerializados = JSON.stringify($rootScope.datosIniciales_rcp);
-    var crearCaso = new gCrearCasoLinea();
-    crearCaso.usr_id = 1,
-      crearCaso.datos = datosSerializados,
-      crearCaso.procodigo = $scope.codigoenvioLotus,
-      crearCaso.crearCasoLinea(function (response) {
-        try {
-          response = JSON.parse(response);
-          var results = response.success.data;
-          datosIF = results[0].sp_pmfunction_crearcaso_en_linea.split(",");
-          datosIF2 = datosIF[1];
-          datosIF[0] = datosIF[0].substring(1, datosIF[0].length);
-          $scope.nrotramitec = datosIF[0];
-          $scope.envio_despliegue = "proceder";
-          $rootScope.requisitosrbase = null;
-          try {
-            //$scope.ConsumoServCatastro_desp($scope.nrotramitec,$scope.tipoReg_desp);
-            swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + $scope.nrotramitec + "\n Nos contactaremos con usted a la brevedad posible para programar la inspección y/o verificación documental. Caso contrario puede apersonarse a la Plataforma de la Dirección de Administración Territorial y Catastral para recabar mayor información.");
-            $rootScope.botones = true;
-            $scope.desabilitado = true;
-            $scope.enviarTRamiteRBM = false;
-            $scope.radiobase_simple = null;
-            $scope.mostrarRUGU = null;//false;
-            $scope.mostrarbtn_multiple = false;
-            $scope.mostrarRMGM = false;
-            $rootScope.mostrarRU = false;
-            $scope.actualizarbtn_multiple = true;
-            $scope.btnGuardarRegistro = false;
-            $scope.observarData = true;
-            $rootScope.tabAdj = true;
-            $scope.limpearRequisitos();
-            $rootScope.datosFormDJ_Antenas_multiple['ANT_NRO_CASO'] = $scope.nrotramitec;
-            $rootScope.datosFormDJ_Antenas = $rootScope.datosFormDJ_Antenas_multiple;
-            $scope.generarDocumentoPhpAntena($scope.nrotramitec, $scope.fechaDjM);
-            setTimeout(function () {
-              $scope.$apply(function () {
-                location.reload();
-              });
-            }, 5000);
-          } catch (e) { }
+      if($scope.codigoenvioLotus == "RG" || $scope.codigoenvioLotus == "ANTT"){
 
-          $.unblockUI();
-        } catch (e) {
-          alert("conexion fallida ");
-        }
-      });
+        var crearCaso = new gCrearCasoLinea();
+        crearCaso.usr_id = 1,
+        crearCaso.datos = datosSerializados,
+        crearCaso.procodigo = $scope.codigoenvioLotus, 
+        crearCaso.crearCasoLinea(function (response) {
+          try {
+            response    = JSON.parse(response);
+            var results = response.success.data;
+            datosIF     = results[0].sp_pmfunction_crearcaso_en_linea.split(",");
+            datosIF2    = datosIF[1];
+            datosIF[0]  = datosIF[0].substring(1, datosIF[0].length);
+            $scope.nrotramitec         = datosIF[0];
+            $scope.envio_despliegue    = "proceder";
+            $rootScope.requisitosrbase = null;
+            try {
+              swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + $scope.nrotramitec + "\n Nos contactaremos con usted a la brevedad posible para programar la inspección y/o verificación documental. Caso contrario puede apersonarse a la Plataforma de la Dirección de Administración Territorial y Catastral para recabar mayor información.");
+              $rootScope.botones = true;
+              $scope.desabilitado = true;
+              $scope.enviarTRamiteRBM = false;
+              $scope.radiobase_simple = null;
+              $scope.mostrarRUGU = null;//false;
+              $scope.mostrarbtn_multiple = false;
+              $scope.mostrarRMGM = false;
+              $rootScope.mostrarRU = false;
+              $scope.actualizarbtn_multiple = true;
+              $scope.btnGuardarRegistro = false;
+              $scope.observarData = true;
+              $rootScope.tabAdj = true;
+              $scope.limpearRequisitos();
+              $rootScope.datosFormDJ_Antenas_multiple['ANT_NRO_CASO'] = $scope.nrotramitec;
+              $rootScope.datosFormDJ_Antenas = $rootScope.datosFormDJ_Antenas_multiple;
+              $scope.generarDocumentoPhpAntena($scope.nrotramitec, $scope.fechaDjM);
+              setTimeout(function () {
+                $scope.$apply(function () {
+                  location.reload();
+                });
+              }, 5000);
+            } catch (e) { alert("conexion fallida "); }
+  
+            $.unblockUI();
+          } catch (e) {
+            alert("conexion fallida ");
+          } 
+        });
+      } else{
+        alertify.warning('Error en recuperar el tipo de tramite');
+        setTimeout(function () {
+          $scope.$apply(function () {
+            location.reload();
+          });
+        }, 5000);
+      }
   };
 
   var rItems = new Array();

@@ -4565,7 +4565,6 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
     $scope.ConsumoServCatastro();
     $rootScope.datosIniciales.itemENVIOSITv3 = $scope.data_Sitv3;
     $rootScope.datosIniciales.fechaDj = $scope.fechaDj;
-    console.log("datosss Envio",$rootScope.datosIniciales);
     var datosSerializados = JSON.stringify($rootScope.datosIniciales);
     setTimeout(function () {
       $scope.$apply(function () {

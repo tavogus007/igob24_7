@@ -864,7 +864,11 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         });
                     } else{
                         if (ext_doc == 'pdf' ||  ext_doc == 'docx' ||  ext_doc == 'docxlm' || ext_doc == 'xls' || ext_doc == 'xlsx') {
-                            var zipci = new JSZip();
+                            nombreNuevoCIAnverso = 'doc_'+fechaNueva+'.'+tipoDocci;
+                            fileUpload1.uploadFileToUrl1($scope.adjunto, uploadUrl,nombreNuevoCIAnverso);
+                            $scope.registroAdj.adjunto = nombreNuevoCIAnverso;
+                            $scope.btover = true;
+                            /*var zipci = new JSZip();
                             zipci.file($scope.adjunto.name, $scope.adjunto);
                             zipci.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobci) {
                                 nombreNuevoCIAnverso = 'doc_'+$scope.datosSitram.frm_tra_if_codigo+'_'+fechaNueva+'.zip';
@@ -873,7 +877,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                                 $scope.adjunto = blobci; 
                                 $scope.btover=true; 
                                 document.getElementById('txt_adjunto').value = nombreNuevoCIAnverso;
-                            })
+                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');

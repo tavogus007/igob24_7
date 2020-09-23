@@ -190,10 +190,19 @@ app.service('fileUpload', ['$http', function ($http) {
 app.service('fileUpload1', ['$http', function ($http) {
     this.uploadFileToUrl1 = function(file, uploadUrl,nombre){
         var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
-        var sidusuario = sessionStorage.getItem('IDUSUARIO');
+        //var sidusuario = sessionStorage.getItem('IDUSUARIO');
+        var srutaf = '';
+        try{
+            var suploadurl = uploadUrl;
+            if(suploadurl){
+                var auploadurl = suploadurl.split('files');
+                srutaf = auploadurl[1];
+            } 
+        }catch(err){
+        }
         var fd = new FormData();
-        fd.append('archivo', file);
-        fd.append('oid', sidusuario);
+        fd.append('archivo', file);        
+        fd.append('ruta', srutaf);
         fd.append('nombrea', nombre);
         $.blockUI();
         $http.post(surl, fd, {

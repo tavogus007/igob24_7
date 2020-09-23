@@ -1023,7 +1023,7 @@ $scope.mostrarNatural = null;
     }
 
 /*******************CARGAR ZONA MACRODISTRITO ******************************/
-    /*$scope.MacroZona  =   function(){
+    $scope.MacroZona  =   function(){
         try{
             var parametros = new ZonaMacro();
             parametros.Zona_Macro(function(resultado){
@@ -1037,44 +1037,6 @@ $scope.mostrarNatural = null;
         }catch(error){
            console.log("error en zonas");
         }  
-    };*/
-
-    $scope.MacroZona = function() {
-        try{
-            $.ajax({
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                url: CONFIG.SERVICE_GIS_AE_DZ+'wsCCGis/listar_todas_las_zonas',
-                dataType: 'json',
-                data: '{}',
-                success: function (data){ 
-                    var dataZonas = data.success.data;
-                    $scope.datosZonaTodo = data;
-                    datoObjectFinal = [];
-                    for(i = 0; i < dataZonas.length; i++){
-                        datoObject = new Object();
-                        $scope.zonas_aux = dataZonas[i].j;
-                        datoObject.dist_id = parseInt($scope.zonas_aux.zn_id_sit);
-                        datoObject.dist_nombre = $scope.zonas_aux.zn_des;
-                        datoObject.dist_dstt_id = $scope.zonas_aux.zn_dis;
-                        datoObject.dist_macro_id = $scope.zonas_aux.zn_macro;
-                        datoObjectFinal[i] = datoObject;
-                    }
-                    var data = datoObjectFinal
-                    $scope.aMacroZona = data;
-                    console.log('inicio   $scope.aMacroZona   ',$scope.aMacroZona);
-                    /*if(typeof $scope.datos.f01_id_zona_rep != 'undefined' && $scope.datos.f01_id_zona_rep != ""){
-                        $scope.datos.f01_id_zona_rep = parseInt($scope.datos.f01_id_zona_rep);
-                    }else if(typeof $scope.datos.f01_zon_prop  !=   'undefined' && $scope.datos.f01_zon_prop){
-                        $scope.datos.f01_zon_prop = parseInt($scope.datos.f01_zon_prop);
-                    }
-                    $scope.$apply();*/
-                }
-            });
-            $.unblockUI();
-        }catch (error){
-            $scope.errors["error_rol"] = error;
-        }
     };
 
     $scope.actulizarIdDistritoM  =   function(zonaid){
@@ -1098,25 +1060,24 @@ $scope.mostrarNatural = null;
     };
 
     $scope.macrodistritosidM = function(zonaid){
-        console.log('zonaid    ',zonaid);
         var idMacro = "";
         if(zonaid != "" && zonaid != undefined && zonaid != ' ' && zonaid != 'undefined'){
             var distNombre  = zonaid;
-            console.log('$scope.aMacroZona    ',$scope.aMacroZona);
             if($scope.aMacroZona){
                 angular.forEach($scope.aMacroZona, function(value, key) {
                     if(value.dist_id == distNombre){
                         idMacro  =   value.dist_macro_id;
-                        console.log('idMacro    ',idMacro);
                     }
                 });
             }
+
             if(idMacro == ''){
                 idMacro = 0;
             }
+
             $scope.idMacro = idMacro;
             $scope.aMacrodistritos = {};
-            $scope.registro.macrodistrito    =   parseInt(idMacro);
+            $scope.registro.macrodistrito    =   idMacro;
             var datosP = new macrodistritoLstid();
             datosP.idMacro =  idMacro;
             datosP.obtmacrodistrito(function(resultado){
@@ -1192,15 +1153,7 @@ $scope.mostrarimg  =   function(imagen){
                 $("#fot").modal("show");             
             }
         } 
-    };
-    if(imagen == 'condiciones'){
-        $scope.archivoCondiciones = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registro.FILE_CONDICIONES_USO + "?app_name=todoangular";
-        if(extConUso == 'pdf' || extConUso == 'docx' ||  extConUso == 'docxlm' || extConUso == 'zip'){
-            window.open($scope.archivoCondiciones, "_blank");
-        }else if(extConUso == 'jpeg' || extConUso == 'jpg' ||  extConUso == 'png' ||  extConUso == 'gif'){
-            $("#fotoC").modal("show");
-        }
-    }
+    }; 
     $.unblockUI();
 }
 
@@ -3716,26 +3669,6 @@ $scope.vias_v2= function(zona,tipo)
             alert("Error ");
         }
     };
-
-    $scope.cargarCU = function(){
-        var fechaNueva = "";
-        var fechaserver = new fechaHoraServer(); 
-        fechaserver.fechahora(function(resp){
-            var sfecha = JSON.parse(resp);
-            var fechaServ = (sfecha.success.fecha).split(' ');
-            var fecha_ = fechaServ[0].split('-');
-            var hora_ = fechaServ[1].split(':');
-            fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
-        });
-        var docurl = 'http://192.168.5.141/rest/files/RC_CLI/5efcafbca5d18243c0000001/2020/condiciones/condiciones_uso_20200701114605.pdf';
-        var nombreNuevoCIAnverso = 'CI_anverso_03072020.pdf';
-        var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/5efcafbca5d18243c0000001/";
-        var nombrecondicion = 'condiciones_uso_'+fechaNueva+'.pdf';
-        fileUpload1.uploadFileToUrl1(nombrecondicion, docurl, nombrecondicion);
-        var newWindow = nombreNuevoCIAnverso;
-        //newWindow = window.open(docurl, 'neuesDokument');
-        console.log('newWindow    ',newWindow);
-    }
         
     //Documentos Adjuntos
     $scope.cambiarFile = function(obj, valor){
@@ -3769,12 +3702,16 @@ $scope.vias_v2= function(zona,tipo)
                             fileUpload1.uploadFileToUrl1(respuestaci, uploadUrl, nombreNuevoCIAnverso);
                             $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
                             $scope.FILE_FOTOCOPIA_CI = respuestaci;
-                            document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;
+                            document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;                         
                             $scope.btover=true;
                         });
                     } else{
                         if (tipoDocci == 'pdf' ||  tipoDocci == 'docx' ||  tipoDocci == 'docxlm') {
-                            var zipci = new JSZip();
+                            nombreNuevoCIAnverso = 'CI_anverso_'+fechaNueva+'.'+tipoDocci;
+                            fileUpload1.uploadFileToUrl1($scope.FILE_FOTOCOPIA_CI, uploadUrl,nombreNuevoCIAnverso);
+                            $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
+                            $scope.btover = true;
+                            /*var zipci = new JSZip();
                             zipci.file($scope.FILE_FOTOCOPIA_CI.name, $scope.FILE_FOTOCOPIA_CI);
                             zipci.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobci) {
                                 nombreNuevoCIAnverso = 'CI_anverso_'+fechaNueva+'.zip';
@@ -3782,8 +3719,8 @@ $scope.vias_v2= function(zona,tipo)
                                 $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
                                 $scope.FILE_FOTOCOPIA_CI = blobci; 
                                 $scope.btover=true; 
-                                document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;
-                            })
+                                document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;                         
+                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo CEDULA DE IDENTIDAD no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -3804,7 +3741,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
                             $scope.btover=true;
                             //console.log(nombreNuevoCIAnverso,888);
-                            document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;
+                            document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;                         
                             $.unblockUI();
                         } else{
                             swal('Advertencia', 'El archivo CEDULA DE IDENTIDAD no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -3850,7 +3787,12 @@ $scope.vias_v2= function(zona,tipo)
                         });
                     } else{
                         if (tipoDoccir == 'pdf' ||  tipoDoccir == 'docx' ||  tipoDoccir == 'docxlm') {
-                            var zipcir = new JSZip();
+                            nombreNuevoCIReverso = 'CI_reverso_'+fechaNueva+'.'+tipoDoccir;
+                            fileUpload1.uploadFileToUrl1($scope.FILE_FOTOCOPIA_CI_R, uploadUrl, nombreNuevoCIReverso);
+                            $scope.registro.FILE_FOTOCOPIA_CI_R = nombreNuevoCIReverso;
+                            $scope.btover1 = true;
+                            $.unblockUI();
+                            /*var zipcir = new JSZip();
                             zipcir.file($scope.FILE_FOTOCOPIA_CI_R.name, $scope.FILE_FOTOCOPIA_CI_R);
                             zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobcir) {
                                 nombreNuevoCIReverso = 'CI_reverso_'+fechaNueva+'.zip';
@@ -3858,7 +3800,7 @@ $scope.vias_v2= function(zona,tipo)
                                 $scope.registro.FILE_FOTOCOPIA_CI_R = nombreNuevoCIReverso;
                                 $scope.FILE_FOTOCOPIA_CI_R = blobcir; 
                                 $scope.btover1=true;
-                            })
+                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo CEDULA DE IDENTIDAD no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -3985,14 +3927,17 @@ $scope.vias_v2= function(zona,tipo)
                         });
                     } else{
                         if (tipoDoctc == 'pdf' ||  tipoDoctc == 'docx' ||  tipoDoctc == 'docxlm') {
-                            var ziptc = new JSZip();
+                            nombreNuevoTestimonio = 'testimonio_'+fechaNueva+'.'+tipoDoctc;
+                            fileUpload1.uploadFileToUrl1($scope.FILE_TEST_CONST, uploadUrl, nombreNuevoTestimonio);
+                            $scope.registro.FILE_TEST_CONST = nombreNuevoTestimonio;
+                            /*var ziptc = new JSZip();
                             ziptc.file($scope.FILE_TEST_CONST.name, $scope.FILE_TEST_CONST);
                             ziptc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobtc) {
                                 nombreNuevoTestimonio = 'testimonio_'+fechaNueva+'.zip';
                                 fileUpload1.uploadFileToUrl1(blobtc, uploadUrl,nombreNuevoTestimonio);
                                 $scope.registro.FILE_TEST_CONST = nombreNuevoTestimonio;
                                 $scope.FILE_TEST_CONST = blobtc;                            
-                            })
+                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo TESTIMONIO DE CONSTITUCION no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -4119,14 +4064,17 @@ $scope.vias_v2= function(zona,tipo)
                         });
                     } else{
                         if (tipoDocfe == 'pdf' ||  tipoDocfe == 'docx' ||  tipoDocfe == 'docxlm') {
-                            var zipfe = new JSZip();
+                            nombreNuevoFundaempresa = 'fundempresa_'+fechaNueva+'.'+tipoDocfe;
+                            fileUpload1.uploadFileToUrl1($scope.FILE_FUND_EMP, uploadUrl, nombreNuevoFundaempresa);
+                            $scope.registro.FILE_FUND_EMP = nombreNuevoFundaempresa;
+                            /*var zipfe = new JSZip();
                             zipfe.file($scope.FILE_FUND_EMP.name, $scope.FILE_FUND_EMP);
                             zipfe.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobfe) {
                                 nombreNuevoFundaempresa = 'fundempresa_'+fechaNueva+'.zip';
                                 fileUpload1.uploadFileToUrl1(blobfe, uploadUrl ,nombreNuevoFundaempresa);
                                 $scope.registro.FILE_FUND_EMP = nombreNuevoFundaempresa;
                                 $scope.FILE_FUND_EMP = blobfe;                            
-                            })
+                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo FUNDEMPRESA no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -4181,14 +4129,17 @@ $scope.vias_v2= function(zona,tipo)
                         });
                     } else{
                         if (tipoDocrc == 'pdf' ||  tipoDocrc == 'docx' ||  tipoDocrc == 'docxlm') {
-                            var ziprc = new JSZip();
+                            nombreNuevoRgComer = 'regcomer_'+fechaNueva+'.'+tipoDocrc;
+                            fileUpload1.uploadFileToUrl1($scope.FILE_REG_COMER, uploadUrl, nombreNuevoRgComer);
+                            $scope.registro.FILE_REG_COMER = nombreNuevoRgComer;
+                            /*var ziprc = new JSZip();
                             ziprc.file($scope.FILE_REG_COMER.name, $scope.FILE_REG_COMER);
                             ziprc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobrc) {
                                 blobrc.name = nombrerc;
                                 fileUpload.uploadFileToUrl(blobrc, uploadUrl);
                                 $scope.registro.FILE_REG_COMER = blobrc.name;
                                 $scope.FILE_REG_COMER = blobrc;                            
-                            })
+                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo REGISTRO COMERCIAL no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');

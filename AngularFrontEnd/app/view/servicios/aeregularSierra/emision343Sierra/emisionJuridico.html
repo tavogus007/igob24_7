@@ -712,10 +712,10 @@
                     <div class="col-md-1" >
                         <font color="#FF0000" size="4px" align="center"> * </font>
                     </div>
-                    <!--div class="col-md-10">                                    
-                        <div id="map_principal" ng-disabled="desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
-                    </div-->
-                    <div  id="map_principal" class="col-md-12"></div><br><br>
+                    <div class="col-md-10">                                    
+                        <div id="map_principal" ng-disabled="desabilitado" style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
+                    </div>
+                    <!--div  id="map_principal" class="col-md-12"></div--><br><br>
                     <div class="form-group">
                         <div class="col-sm-6">
                             <input  name="busqueda_p" id="busqueda_p" class="form-control" type="text" placeholder=" INTRODUZCA NOMBRE DE ZONA">
@@ -908,7 +908,7 @@
                                                 <label for="url" >Tipo</label>
                                                 <div class="controls">
                                                     <select id="INT_TIPO_LETRE" name="INT_TIPO_LETRE"  placeholder="Tipo de Letrero" ng-model="publi.INT_TIPO_LETRE"  class="form-control"
-                                                    ng-options="tletre.p_descripcion as tletre.p_descripcion for tletre in TipoLetrero"  ng-change="actulizarTipoLetrero();ltCaracteristica(publi.INT_TIPO_LETRE);" ng-disabled="desabilitadoO || desabilitado"required>
+                                                    ng-options="tletre.descripcion as tletre.descripcion for tletre in TipoLetrero"  ng-change="ltCaracteristica(publi.INT_TIPO_LETRE);" ng-disabled="desabilitadoO || desabilitado"required>
                                                         <option value=""></option>
                                                     </select>
                                                 </div>
@@ -918,7 +918,7 @@
                                             <div class="form-group" >
                                                 <label for="url" >Caracteristica:</label>
                                                 <div class="controls">
-                                                    <select id="INT_CARA" name="INT_CARA"  placeholder="Distrito - Zona" ng-model="publi.INT_CARA"  class="form-control" ng-options="tletr.p_caracteristica as tletr.p_caracteristica for tletr in lCaracteristica" ng-change="actulizarCaracteristica();" ng-disabled="desabilitadoO || desabilitado" required>
+                                                    <select id="INT_CARA" name="INT_CARA"  placeholder="Distrito - Zona" ng-model="publi.INT_CARA"  class="form-control" ng-options="tletr.descripcion as tletr.descripcion for tletr in lCaracteristica" ng-change="actulizarCaracteristica();" ng-disabled="desabilitadoO || desabilitado" required>
                                                         <option value=""></option>
                                                     </select>
                                                 </div>
@@ -1092,9 +1092,11 @@
                 <div class = "col-md-12" class="form-control">
                     <div class = "col-md-6" class="form-control">
                         <label for="Pago_Anticipado">
-                        Desea realizar el Pago por Adelantado?
-                        Si <input type="radio" name="pago_adelantado" value = "SI" ng-model="datos.pago_adelantado" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        No <input type="radio" name="pago_adelantado" value = "NO" ng-model="datos.pago_adelantado" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
+                        <font color="#FF0000" size="4px">*  </font>
+                        Desea realizar el Pago por Adelantado?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" ng-model="datos.pago_adelantado" name="pago_adelantado" ng-change="ShowPa(datos.pago_adelantado);" id = "pago_adelantado" ng-disabled="desabilitado" required>
+                        <!--input type="radio" name="pago_adelantado" value = "SI" ng-model="datos.pago_adelantado" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        No <input type="radio" name="pago_adelantado" value = "NO" ng-model="datos.pago_adelantado" ng-change="ShowPa('NO')" ng-disabled="desabilitado" -->
                         </label>
                     </div>
                 </div>
@@ -1103,7 +1105,7 @@
                         <div class="form-group">
                         <legend>Gestiones a Pagar:</legend>
                             <div class="controls">
-                                <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" name="nro_ges" ng-disabled="desabilitado" ng-change = "calcularDeudas(datos.nro_ges)" required>
+                                <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" name="nro_ges" ng-disabled="desabilitado" ng-change = "calcularDeudas(datos.f01_sup, datos.nro_ges)" required>
                                     <option value="">--Seleccionar--</option>
                                     <option value="2"> 2 </option>
                                     <option value="4"> 4 </option>
@@ -1117,15 +1119,15 @@
                             <div class="panel-heading"><B>GESTIONES A PAGAR</B></div>
                             <div class="panel-body">
                                 <table  ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
-                                    <tr ng-repeat="duedasCiu in $data">
+                                    <tr ng-repeat="duedasCiu in datos.listDeudas">
                                         <td data-title="'Nº'">{{duedasCiu.nro}}</td>
                                         <td data-title="'GESTIÓN'">{{duedasCiu.gestion}}</td>
-                                        <td data-title="'MONTO ACT. ECO.'">{{duedasCiu.monto_ae}}</td>
-                                        <td data-title="'MONTO ELEM. PUB.'">{{duedasCiu.monto_viae}}</td>
+                                        <td data-title="'MONTO ACT. ECO. Bs.'">{{duedasCiu.monto_ae}}</td>
+                                        <td data-title="'MONTO ELEM. PUB. Bs.'">{{duedasCiu.monto_viae}}</td>
                                         <td data-title="'DESCUENTO EN %'">{{duedasCiu.descuento}}</td>
-                                        <td data-title="'MONTO SIN DESC.'">{{duedasCiu.monto_total}}</td>
-                                        <td data-title="'DESCUENTO'">{{duedasCiu.monto_total_con_descuento}}</td>
-                                        <td data-title="'MONTO TOTAL'">{{duedasCiu.monto_pagar}}</td>
+                                        <td data-title="'MONTO SIN DESC. Bs.'">{{duedasCiu.monto_total}}</td>
+                                        <td data-title="'DESCUENTO Bs.'">{{duedasCiu.monto_descuento}}</td>
+                                        <td data-title="'MONTO TOTAL Bs.'">{{duedasCiu.monto_total_con_descuento}}</td>
                                     </tr>
                                     <!--tr ng-repeat="duedasCiu in $data" ng-if="duedasCiu.montoLiteral!=''">
                                         <td bgcolor = "black" colspan="7"><font color = "white">TOTAL A PAGAR</font></td>

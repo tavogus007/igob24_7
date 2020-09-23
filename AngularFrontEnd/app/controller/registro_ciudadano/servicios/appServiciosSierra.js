@@ -277,6 +277,7 @@
                         datosForm['f01_nom_completo']   = datos.dtspsl_nombres + " " + datos.dtspsl_paterno + " " + datos.dtspsl_materno;
                         datosForm['f01_tip_doc_prop']   = "CI";
                         datosForm['f01_num_dos_prop']   = datos.dtspsl_ci;
+                        datosForm['f01_complemento_ci'] = datos.dtspsl_complemento;
                         datosForm['f01_expedido_prop']  = datos.dtspsl_expedido;
                         datosForm['f01_email_prop']     = datos.dtspsl_correo;
                         datosForm['f01_cel_prop']       = datos.dtspsl_movil;
@@ -484,14 +485,19 @@
         var tipoContribuyente   =   sessionService.get('TIPO_PERSONA');
         var ciDocumento          =   '';//sessionService.get('CICIUDADANO'));
         var nitDocumento          =   '';//sessionService.get('CICIUDADANO'));
-        var sAccion          =   '';//sessionService.get('CICIUDADANO'));
-
+        var complemento_ci = '';
+        console.log('complemento     ',$scope.datosRecuperados.dtspsl_complemento);
+        if ($scope.datosRecuperados.dtspsl_complemento == undefined || $scope.datosRecuperados.dtspsl_complemento == 'undefined' || $scope.datosRecuperados.dtspsl_complemento == null) 
+            complemento_ci = '';
+        else
+            complemento_ci = $scope.datosRecuperados.dtspsl_complemento.trim();
         if(tipoContribuyente == 'NATURAL'){
-            ciDocumento          =   sessionService.get('CICIUDADANO');
-            sAccion              =  'C01';
+            if (complemento_ci == undefined || complemento_ci == 'undefined' || complemento_ci == null || complemento_ci == '')
+                ciDocumento = sessionService.get('CICIUDADANO');  
+            else
+                ciDocumento = complemento_ci+'-'+sessionService.get('CICIUDADANO');
         }else if(tipoContribuyente == 'JURIDICO'){
             nitDocumento         =   sessionService.get('NITCIUDADANO');
-            sAccion              =  'C02';
         }
         var dataNatural = '';
         dataNatural = '{"ycontribuyente_nro_documento":"'+ciDocumento+'","ycontribuyente_nit":"'+nitDocumento+'"}';
@@ -600,6 +606,7 @@
             datosForm_inicio['f01_ape_pat_prop']    = datosIniciales.f01_ape_pat_prop;
             datosForm_inicio['f01_ape_mat_prop']    = datosIniciales.f01_ape_mat_prop;
             datosForm_inicio['f01_ape_cas_prop']    = datosIniciales.f01_ape_cas_prop;
+            datosForm_inicio['f01_complemento_ci']  = datosIniciales.f01_complemento_ci;
             datosForm_inicio['f01_fecha_nac']       = datosIniciales.f01_fecha_nac;
             datosForm_inicio['f01_nom_completo']    = datosIniciales.f01_nom_completo;
             datosForm_inicio['f01_tip_doc_prop']    = datosIniciales.f01_tip_doc_prop;
@@ -757,6 +764,7 @@
         $rootScope.looo = 0;
         $rootScope.laaa = 0;
         $scope.datos = datosForm_inicio;
+        console.log('$scope.datos     ',$scope.datos);
     };
     
     /*SELECCCIONAR TRAMITE CIUDADANO*/
@@ -974,6 +982,7 @@
                         var listarZonas = [$scope.distritoZonas($scope.datos.f01_macro_act)];
                         $q.all(listarZonas).then(function (resp) {
                             $scope.datos.f01_zona_act = cod_zona_sit;
+                            console.log('zonnnnnnnn     ',$scope.datos.f01_zona_act);
                             document.getElementById('f01_zona_act').value = cod_zona_sit;
                             $scope.GetValueZona(cod_zona_sit);
                             $scope.actulizarIdDistrito();
@@ -2170,7 +2179,7 @@
         $scope.recuperandoDatosGenesis();
         //$scope.getCaptchasX();
         $scope.getCaptchasXX();
-        $scope.sesionTokenSierra();
+        //$scope.sesionTokenSierra();
 
     });
 
@@ -2181,7 +2190,7 @@
         //$scope.getCaptchasX();
         $scope.getCaptchasXX();
         $scope.cargarMacrodistrito();
-        $scope.sesionTokenSierra();
+        //$scope.sesionTokenSierra();
     };
 
 
@@ -2454,7 +2463,7 @@
         });
     }
 
-    $scope.sesionTokenSierra = function(){
+    /*$scope.sesionTokenSierra = function(){
         var urlToken = CONFIG.SERVICE_SIERRAM+"apiLogin";
         $scope[name] = 'Running';
         var deferred = $q.defer();
@@ -2475,7 +2484,7 @@
             }
         });
         return deferred.promise;
-    }
+    }*/
 
     $scope.combo = "<select id='servicio' class='seleccionaServicio'>  <option value='1'>Internet</option> <option value='3'>Salud</option> <option value='4'>Publicidad</option> </select> <br>";
 

@@ -189,13 +189,19 @@ app.service('fileUpload', ['$http', function ($http) {
 
 app.service('fileUpload1', ['$http', function ($http) {
     this.uploadFileToUrl1 = function(file, uploadUrl,nombre){
+        var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
+        var sidusuario = sessionStorage.getItem('IDUSUARIO');
         var fd = new FormData();
-        fd.append('files', file);
-        //console.log(nombre,89);
+        fd.append('archivo', file);
+        fd.append('oid', sidusuario);
+        fd.append('nombrea', nombre);
         $.blockUI();
-        $http.post(uploadUrl + nombre + "?app_name=todoangular", fd, {
+        $http.post(surl, fd, {
             transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
+            headers: {
+                'Content-Type': undefined,
+                'Authorization': 'Bearer ' + sessionStorage.getItem('TOKEN_API')
+            }
         })
         .success(function(){
             console.log("ADJUNTO REGISTRADO CORRECTAMENTE");

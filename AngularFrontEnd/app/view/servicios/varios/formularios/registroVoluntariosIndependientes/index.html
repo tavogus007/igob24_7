@@ -284,190 +284,266 @@ function validateDecimal(valor) {
         }
         
     }
+
+    function iniciarLoadFyle(){
+    $('.custom-upload input[type=file]').change(function(){
+    $(this).next().find('input').val($(this).val());
+    angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+  }
 </script>
   <div class="page-content" ng-controller="registroVoluntariosIndependientesController" data-ng-init="inicioServicios();">
-          <p align="center">
-              <font face="Comic Sans" size="10px" color="#2f4050"> REGISTRO DE ANIMALISTAS INDEPENDIENTES</font>
-          </p>
-          <br><br>
-          <div>
-            <h3 class="ng-binding" style="color: #4baeb4 !important;">DATOS PERSONALES:</h3>
+    <p align="center">
+        <font face="Comic Sans" size="10px" color="#2f4050"> REGISTRO DE ANIMALISTAS INDEPENDIENTES</font>
+    </p>
+    <br>
+    <br>
+    <div>
+      <h3 class="ng-binding" style="color: #4baeb4 !important;">DATOS PERSONALES:</h3>
+    </div>
+    <br>
+    <div class="col-md-12">
+      <div class="col-md-4">
+          <label class="control-label">Nombres:</label>
+          <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.nombre" name="datos_responsable.nombre" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.nombre">
+      </div>
+      <div class="col-md-4">
+          <label class="control-label">Paterno:</label>            
+          <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-model="datos_responsable.paterno" id="datos_responsable.paterno" name="datos_responsable.paterno" onkeyup="return conMayusculas(this)" value="" ng-disabled="true">
+      </div>
+      <div class="col-md-4">
+          <label class=" control-label">Materno:</label>           
+          <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.materno" name="datos_responsable.materno" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.materno">    
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="col-md-12">
+      <div class="col-md-4">
+          <label class="control-label">Tercer Apellido:</label>       
+          <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.apcasada" name="datos_responsable.apcasada" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.apcasada">        
+      </div>
+      <div class="col-md-4">
+          <label class="control-label">Nro. CI:</label>       
+          <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.ci" name="datos_responsable.ci" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.ci">        
+      </div>
+      <div class="col-md-4">
+          <label class="control-label">Expedido:</label>       
+          <input type="text" id="datos_responsable.expedido" name="datos_responsable.expedido" class="form-control" ng-model="datos_responsable.expedido" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" value="">        
+      </div>
+    </div> 
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="col-md-12">
+        <div class="col-md-4">
+            <label class="control-label">Celular:</label>       
+            <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.movil" name="datos_responsable.movil" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.movil">        
         </div>
-        <br>
-
-        <div class="col-md-12">
-            <div class="col-md-4">
-                <label class="control-label">Nombres:</label>
-                    <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.nombre" name="datos_responsable.nombre" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.nombre">
+        <div class="col-md-4">
+            <label class="control-label">Correo:</label>       
+            <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.correo" name="datos_responsable.correo" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.correo">        
+        </div>
+        <div class="col-md-4">
+            <label class="control-label">Zona:</label>       
+            <input type="text" id="datos_responsable.zona" name="datos_responsable.zona" class="form-control" ng-model="datos_responsable.zona" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" value="">        
+        </div>
+     </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="col-md-12">
+        <div class="col-md-4">
+            <label class="control-label">Via:</label>       
+            <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.nomVia" name="datos_responsable.nomVia" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.nomVia">        
+        </div>
+        <div class="col-md-4">
+            <label class="control-label">Tipo Via:</label>       
+            <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.tipoVia" name="datos_responsable.tipoVia" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.tipoVia">        
+        </div>
+        <div class="col-md-4">
+            <label class="control-label">Numero de vivienda:</label>       
+            <input type="text" id="datos_responsable.numCasa" name="datos_responsable.numCasa" class="form-control" ng-model="datos_responsable.numCasa" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" value="">        
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="col-md-12">
+        <div class="col-md-4">
+            <label class="control-label">Profesión:</label>       
+            <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.profesion" name="datos_responsable.profesion" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.profesion">        
+        </div>
+        <div class="col-md-4">
+            <label class="control-label">Ocupación:</label>       
+            <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.ocupacion" name="datos_responsable.ocupacion" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.ocupacion">        
+        </div>
+        <div class="col-md-4">
+            <label class="control-label">Genero:</label>       
+            <input type="text" id="datos_responsable.sexo" name="datos_responsable.sexo" class="form-control" ng-model="datos_responsable.sexo" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" value="">        
+        </div>
+    </div>  
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div>
+        <h3 class="ng-binding" style="color: #4baeb4 !important;">INDICAR EXACTAMENTE EN EL MAPA SU DOMICILIO:</h3>
+    </div>
+    <br>
+    <br>
+    <div style="width: 70%;height: 60%;border: #000000;align-self: center;border-style: solid;margin-left: 100px;" id="mapa_mascotas">
+    </div>
+    <br>
+    <br>
+    <div>
+        <h3 class="ng-binding" style="color: #4baeb4 !important;">DATOS DEL VOLUNTARIADO:</h3>
+    </div>
+    <br>
+    <div class="col-md-12">
+        <div class="col-md-6" >
+            <div class="form-group">
+              <label for="url">Tipo de Voluntariado que realiza</label>
+              <div class="controls">
+                <select id="tipo_voluntario" 
+                name="tipo_voluntario"
+                placeholder="Zona" 
+                ng-model="datos.tipo_voluntario"
+                class="form-control"
+                ng-change="cambioCombo(datos.tipo_voluntario);"
+                required ng-disabled="xdeshabilitado">
+                <option value="">--Seleccionar--</option>
+                <option value="Alimentador">Alimentador</option>
+                <option value="Educador">Educador</option>
+                <option value="Rescatista">Rescatista</option>
+                <option value="Otro">Otro</option>
+                </select>
+              </div>
             </div>
-            <div class="col-md-4">
-                <label class="control-label">Paterno:</label>            
-                    <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-model="datos_responsable.paterno" id="datos_responsable.paterno" name="datos_responsable.paterno" onkeyup="return conMayusculas(this)" value="" ng-disabled="true">
+        </div>
+        <div class="col-md-6" >
+              <div class="form-group" >
+                <label for="url">Fecha en la que se realizó la vacuna antirrabica:</label>
+                <div class="controls">
+                  <input type="date" class="form-control" ng-model="datos.fecha_antirrabica" name="fecha_antirrabica" value="memorandum" required ng-disabled="xdeshabilitado">
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-6" >
+            <div class="form-group" >
+              <label for="url">Gestion en que inicio a ser Voluntariado</label>
+              <div class="controls">
+                <input type="number" class="form-control" ng-model="datos.gestion_inicio" name="gestion_inicio" value="memorandum" required ng-disabled="xdeshabilitado">
+              </div>
             </div>
-            <div class="col-md-4">
-                <label class=" control-label">Materno:</label>           
-                    <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.materno" name="datos_responsable.materno" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.materno">    
-            </div>
-
-          
-
-      </div>
-      <br>
-      <br>
-      <br>
-      <br>
-      <div class="col-md-12">
-          <div class="col-md-4">
-              <label class="control-label">Tercer Apellido:</label>       
-              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.apcasada" name="datos_responsable.apcasada" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.apcasada">        
-          </div>
-          <div class="col-md-4">
-              <label class="control-label">Nro. CI:</label>       
-              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.ci" name="datos_responsable.ci" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.ci">        
-          </div>
-          <div class="col-md-4">
-              <label class="control-label">Expedido:</label>       
-              <input type="text" id="datos_responsable.expedido" name="datos_responsable.expedido" class="form-control" ng-model="datos_responsable.expedido" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" value="">        
-          </div>
-
-
-      </div> 
-
-      <br>
-      <br>
-      <br>
-      <br>
-      <div class="col-md-12">
-          <div class="col-md-4">
-              <label class="control-label">Celular:</label>       
-              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.movil" name="datos_responsable.movil" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.movil">        
-          </div>
-          <div class="col-md-4">
-              <label class="control-label">Correo:</label>       
-              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.correo" name="datos_responsable.correo" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.correo">        
-          </div>
-          <div class="col-md-4">
-              <label class="control-label">Zona:</label>       
-              <input type="text" id="datos_responsable.zona" name="datos_responsable.zona" class="form-control" ng-model="datos_responsable.zona" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" value="">        
-          </div>
-      </div>
-      <br>
-      <br>
-      <br>
-      <br>
-      <div class="col-md-12">
-          <div class="col-md-4">
-              <label class="control-label">Via:</label>       
-              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.nomVia" name="datos_responsable.nomVia" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.nomVia">        
-          </div>
-          <div class="col-md-4">
-              <label class="control-label">Tipo Via:</label>       
-              <input type="text" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" id="datos_responsable.tipoVia" name="datos_responsable.tipoVia" onkeyup="return conMayusculas(this)" value="" ng-model="datos_responsable.tipoVia">        
-          </div>
-          <div class="col-md-4">
-              <label class="control-label">Numero de vivienda:</label>       
-              <input type="text" id="datos_responsable.numCasa" name="datos_responsable.numCasa" class="form-control" ng-model="datos_responsable.numCasa" class="form-control ng-dirty ng-invalid ng-invalid-required" ng-disabled="true" value="">        
-          </div>
-      </div> 
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <div>
-          <h3 class="ng-binding" style="color: #4baeb4 !important;">INDICAR EXACTAMENTE EN EL MAPA SU DOMICILIO:</h3>
-      </div>
-      <br>
-      <br>
-
-      <div id="mapa_mascotas">
-      </div>
-
-      <br>
-      <br>
-      <div>
-          <h3 class="ng-binding" style="color: #4baeb4 !important;">DATOS DEL VOLUNTARIADO:</h3>
-      </div>
-      <br>
-<div class="col-md-12">
-      <div class="col-md-6" >
-          <div class="form-group">
-            <label for="url">Tipo de Voluntariado que realiza</label>
-            <div class="controls">
-              <select id="tipo_voluntario" 
-              name="tipo_voluntario"
-              placeholder="Zona" 
-              ng-model="datos.tipo_voluntario"
-              class="form-control"
-              required ng-disabled="desabilitado">
-              <option value="">--Seleccionar--</option>
-              <option value="Si">Alimentador</option>
-              <option value="No">Educador</option>
-              <option value="No">Rescatista</option>
-              <option value="No">Otro</option>
-              </select>
-            </div>
-          </div>
         </div>
         <div class="col-md-6" >
             <div class="form-group" >
-              <label for="url">Fecha en la que se realizó la vacuna antirrabica:</label>
+              <label for="url">Lugar donde realiza el Voluntariado</label>
               <div class="controls">
-                <input type="date" class="form-control" ng-model="datos.fecha_antirrabica" name="fecha_antirrabica" value="memorandum" required ng-disabled="desabilitado">
+                <input type="text" class="form-control" ng-model="datos.lugar_voluntariado" name="lugar_voluntariado" value="memorandum" required ng-disabled="xdeshabilitado">
               </div>
             </div>
-          </div>
-      </div>
-      <div class="col-md-12">
-          <div class="col-md-6" >
-              <div class="form-group" >
-                <label for="url">Gestion en que inicio a ser Voluntariado</label>
-                <div class="controls">
-                  <input type="number" class="form-control" ng-model="datos.gestion_inicio" name="gestion_inicio" value="memorandum" required ng-disabled="desabilitado">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6" >
+        </div>
+    </div>
+    <div ng-show="div_otros == true">
+        <div class="col-md-12">
+            <div class="col-md-12" >
                 <div class="form-group" >
-                  <label for="url">Lugar donde realiza el Voluntariado</label>
+                  <label for="url">Otros:</label>
                   <div class="controls">
-                    <input type="text" class="form-control" ng-model="datos.lugar_voluntariado" name="lugar_voluntariado" value="memorandum" required ng-disabled="desabilitado">
+                      <input type="text" class="form-control" ng-model="datos.otros_tipos_voluntariado" name="otros_tipos_voluntariado" value="memorandum" required ng-disabled="xdeshabilitado">
                   </div>
                 </div>
             </div>
-      </div>
-      <div class="col-md-12">
-          <div class="col-md-12" >
-              <div class="form-group" >
-                <label for="url">Otros:</label>
-                <div class="controls">
-                  <input type="text" class="form-control" ng-model="datos.otros_tipos_voluntariado" name="otros_tipos_voluntariado" value="memorandum" required ng-disabled="desabilitado">
+        </div>
+    </div>
+    <div>
+        <h3 class="ng-binding" style="color: #4baeb4 !important;">EXPERIENCIA COMO VOLUNTARIO:</h3>
+    </div>
+    <div ng-show="div_agregar_experiencia">
+        <div class="col-md-12">
+            <div class="col-md-5">
+              <div class="form-group">
+                  <label for="url" >Descripcion del Respaldo</label>
+                  <div class="controls">
+                      <input type="text" ng-model="datosV.descripcion_exp" id="descripcion_exp" name="descripcion_exp" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="xdeshabilitado"/>
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                      <label for="url">Adjunto</label>
+                      <div class="controls">
+                          <div class="form-group custom-upload">
+                              <input type="file" id="FILE_ADJUNTO_EXPERIENCIA" name="FILE_ADJUNTO_EXPERIENCIA" ng-model="FILE_ADJUNTO_EXPERIENCIA" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                  <input id="txt_FILE_ADJUNTO_EXPERIENCIA" name="txt_FILE_ADJUNTO_EXPERIENCIA" ng-model="datosV.FILE_ADJUNTO_EXPERIENCIA" type="text" ng-disabled="true" class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                      <a id="href_FILE_ADJUNTO_EXPERIENCIA" target="_blank" href={{datosV.FILE_ADJUNTO_EXPERIENCIA}}>
+                                          <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover7 != null" ng-click="mostrarimg('FILE_ADJUNTO_EXPERIENCIA');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                      </a>
+                                      <button id="btn_FILE_ADJUNTO_EXPERIENCIA" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_ADJUNTO_EXPERIENCIA');" ng-disabled="xdeshabilitado" ><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                  </span>
+                              </div>
+                          </div>
+                      </div>
                 </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                  <label for="url" >AGREGAR</label>
+                  <div class="controls">
+                    <button ng-click="adicionarExperiencia(datosV);" type="button" class="btn btn-success fa fa-plus-square" ng-disabled="xdeshabilitado"></button>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div  class="col-md-12">
+          <div class="panel panel-default" >
+              <div class="panel-heading"><B></B></div>
+              <div class="panel-body" ng-disabled="true">
+                  <table  ng-table="tblExperiencia" class="table  table-hover" id="lsVehiculos">
+                      <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}"><!--cambios-->
+                          <td data-title="'DESCRIPCION'" align="center">{{tramite.descripcion_exp}}</td>
+                          <td data-title="'ADJUNTO'" align="center">   <a target="_blank" href={{tramite.FILE_ADJUNTO_EXPERIENCIA}}><button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-upload" ></i> </button></a></td>
+                          <td data-title="'ELIMINAR'" align="center"><button ng-click="eliminarExperiencia(tramite)" type="button" class="btn btn-danger fa fa-times" ng-disabled="xdeshabilitado"></button></td>
+                      </tr>
+                  </table>
               </div>
           </div>
-      </div>
-      <br>
-      <br>
-      <div>
-      <div>
-          <h3 class="ng-binding" style="color: #4baeb4 !important;">CONDICIONES TÉCNICAS DE INFRAESTRUCTURA:</h3>
-      </div>
-      <br>
-      <div class="col-md-12">
-          <div class="col-md-4" >
-              <div class="form-group" >
-                <label for="url">Caniles Móviles(Nro.)</label>
-                <div class="controls">
-                  <input type="number" class="form-control" ng-model="datos.caniles_moviles" name="caniles_moviles" value="memorandum" required ng-disabled="desabilitado" ng-change ="sumar_moviles()">
+    </div>
+    <br>
+    <br>
+    <div ng-show="div_rescatistas == true">
+        <div>
+            <h3 class="ng-binding" style="color: #4baeb4 !important;">CONDICIONES TÉCNICAS DE INFRAESTRUCTURA:</h3>
+        </div>
+        <br>
+        <div class="col-md-12">
+            <div class="col-md-4" >
+                <div class="form-group" >
+                  <label for="url">Caniles Móviles(Nro.)</label>
+                  <div class="controls">
+                    <input type="number" class="form-control" ng-model="datos.caniles_moviles" name="caniles_moviles" value="memorandum" required ng-disabled="xdeshabilitado" ng-change ="sumar_moviles()">
+                  </div>
                 </div>
-              </div>
             </div>
             <div class="col-md-4" >
                 <div class="form-group" >
                   <label for="url">Gatiles Móviles(Nro.)</label>
                   <div class="controls">
-                    <input type="number" class="form-control" ng-model="datos.gatiles_moviles" name="gatiles_moviles" value="memorandum" required ng-disabled="desabilitado" ng-change ="sumar_moviles()">
+                    <input type="number" class="form-control" ng-model="datos.gatiles_moviles" name="gatiles_moviles" value="memorandum" required ng-disabled="xdeshabilitado" ng-change ="sumar_moviles()">
                   </div>
                 </div>
             </div>
@@ -479,21 +555,21 @@ function validateDecimal(valor) {
                   </div>
                 </div>
             </div>
-      </div>
-      <div class="col-md-12">
-          <div class="col-md-4" >
-              <div class="form-group" >
-                <label for="url">Capacidades de Caniles(Nro.)</label>
-                <div class="controls">
-                  <input type="number" class="form-control" ng-model="datos.capacidad_caniles" name="capacidad_caniles" value="memorandum" required ng-disabled="desabilitado" ng-change ="sumar_capacidades()">
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4" >
+                <div class="form-group" >
+                  <label for="url">Capacidades de Caniles(Nro.)</label>
+                  <div class="controls">
+                    <input type="number" class="form-control" ng-model="datos.capacidad_caniles" name="capacidad_caniles" value="memorandum" required ng-disabled="xdeshabilitado" ng-change ="sumar_capacidades()">
+                  </div>
                 </div>
-              </div>
             </div>
             <div class="col-md-4" >
                 <div class="form-group" >
                   <label for="url">Capacidades de Gatiles(Nro.)</label>
                   <div class="controls">
-                    <input type="number" class="form-control" ng-model="datos.capacidad_gatiles" name="capacidad_gatiles" value="memorandum" required ng-disabled="desabilitado" ng-change ="sumar_capacidades()">
+                    <input type="number" class="form-control" ng-model="datos.capacidad_gatiles" name="capacidad_gatiles" value="memorandum" required ng-disabled="xdeshabilitado" ng-change ="sumar_capacidades()">
                   </div>
                 </div>
             </div>
@@ -505,30 +581,31 @@ function validateDecimal(valor) {
                   </div>
                 </div>
             </div>
-      </div>
-      <div class="col-md-12">
-          <div class="col-md-4" >
-              <div class="form-group" >
-                <label for="url">Total Comedores</label>
-                <div class="controls">
-                  <input type="number" class="form-control" ng-model="datos.total_comedores" name="total_comedores" value="memorandum" required ng-disabled="desabilitado">
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4" >
+                <div class="form-group" >
+                  <label for="url">Total Comedores</label>
+                  <div class="controls">
+                    <input type="number" class="form-control" ng-model="datos.total_comedores" name="total_comedores" value="memorandum" required ng-disabled="xdeshabilitado">
+                  </div>
                 </div>
-              </div>
             </div>
             <div class="col-md-4" >
                 <div class="form-group" >
                   <label for="url">Total Bebederos</label>
                   <div class="controls">
-                    <input type="number" class="form-control" ng-model="datos.total_bebederos" name="total_bebederos" value="memorandum" required ng-disabled="desabilitado">
+                    <input type="number" class="form-control" ng-model="datos.total_bebederos" name="total_bebederos" value="memorandum" required ng-disabled="xdeshabilitado">
                   </div>
                 </div>
             </div>
-      </div>
-      </div>
+        </div>
+    </div>
+    <div ng-show="div_boton_guardar == true">
       <div class="col-md-12" align="right"><br>
-        <button id="miFormGuardar" ng-click="validar(datos);"  type="button" class="btn btn-success fa fa-save" name="formEnviar">GUARDAR</button>
+        <button id="miFormGuardar" ng-click="validar(datos);"  type="button" class="btn btn-success fa fa-save" name="formEnviar">{{titulo_boton}}</button>
       </div>
+    </div>
   </div>
-        
 </html>
 

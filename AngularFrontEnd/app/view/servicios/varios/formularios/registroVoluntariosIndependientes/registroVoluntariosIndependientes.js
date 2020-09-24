@@ -1,10 +1,19 @@
-function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$window,$rootScope,sessionService,ngTableParams,$filter,$route,sweet,$http,FileUploader,$sce,fileUpload,filterFilter,$routeParams, $location, Data,$q){
+function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$window,$rootScope,sessionService,ngTableParams,$filter,$route,sweet,$http,FileUploader,$sce,fileUpload,filterFilter,$routeParams, $location, Data,$q,fileUpload1){
         var ciresp = sessionService.get('CICIUDADANO');
         $scope.datos = {};
-        $scope.unido = [];
+        $scope.unido = {};
+        $scope.datosV = {};
         $scope.datos_responsable = {};
-
-        /////////////////////////////////
+        $scope.trmExperiencia = [];
+        $scope.div_rescatistas = false
+        $scope.div_otros = false
+        $scope.xdeshabilitado = false;
+        $scope.div_boton_guardar = true;
+        $scope.titulo_boton ="";
+        var contadorAdjunto = 0 ;
+        var validador_envio = 0 ;
+        var id_tramite = 0 ;
+        $scope.div_agregar_experiencia = true;
         $scope.buscarRep = function(){
             try{
                 var buscarRepresentante = new rcNatural();
@@ -24,15 +33,24 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                     $scope.datos_responsable.tipoVia = x[0].dtspsl_tipo_via;
                     $scope.datos_responsable.numCasa = x[0].dtspsl_numero_casa;
                     $scope.datos_responsable.nomVia = x[0].dtspsl_nombre_via;
-        
+                    $scope.datos_responsable.profesion = x[0].dtspsl_profesion;
+                    $scope.datos_responsable.ocupacion = x[0].dtspsl_ocupacion;
+                    $scope.datos_responsable.foto_carnet = x[0].dtspsl_file_fotocopia_ci;
+                    $scope.datos_responsable.foto_carnet_reverso = x[0].dtspsl_file_fotocopia_ci_r;
+                    $scope.datos_responsable.sexo = x[0].dtspsl_sexo;
+                    $scope.datos_responsable.id_ciudadano = x[0]._id;
+                    $scope.datos_responsable.latitud = x[0].dtspsl_latitud;
+                    $scope.datos_responsable.longitud = x[0].dtspsl_longitud;
+                    if($scope.datos_responsable.sexo == 'M'){
+                        $scope.datos_responsable.sexo = 'MASCULINO'
+                    }else{
+                        $scope.datos_responsable.sexo = 'FEMENINO'
+                    }
                 });
             }catch(e){
             };
-        
+            $scope.recuperarInformacion();
         };
-        $scope.docdinamicos = function(data){
-
-        }
         $scope.sumar_moviles = function(){
             if($scope.datos.caniles_moviles == "" || $scope.datos.caniles_moviles == undefined){
                 $scope.datos.caniles_moviles = 0;
@@ -50,23 +68,287 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             $scope.datos.total_capacidad = $scope.datos.capacidad_caniles +  $scope.datos.capacidad_gatiles;
         }
         $scope.validar = function(){
-            $scope.registrar();
+            if($scope.datos.latitud_vol_dom == "" || $scope.datos.latitud_vol_dom == undefined || $scope.datos.latitud_vol_dom == "undefined" ){
+                $scope.mensaje("Alerta","Confirme la ubicación de su domicilio haciendo click en el mapa.","error");
+            }else if($scope.datos.longitud_vol_dom == "" || $scope.datos.longitud_vol_dom == undefined || $scope.datos.longitud_vol_dom == "undefined" ){
+                $scope.mensaje("Alerta","Confirme la ubicación de su domicilio haciendo click en el mapa.","error");
+            } else  if($scope.datos.tipo_voluntario == "" || $scope.datos.tipo_voluntario == undefined ){
+                $scope.mensaje("Alerta","Ingrese el tipo de voluntariado","error");
+            }else if($scope.datos.fecha_antirrabica == "" || $scope.datos.fecha_antirrabica == undefined || $scope.datos.fecha_antirrabica == "undefined" ){
+                $scope.mensaje("Alerta","Ingrese la fecha en la cual se realizó la vacuna antirrabica","error");
+            }else if($scope.datos.gestion_inicio == "" || $scope.datos.gestion_inicio == undefined || $scope.datos.gestion_inicio == "undefined" ){
+                $scope.mensaje("Alerta","Ingrese la gestión en la cual empezo a ser voluntariado","error");
+            }else if($scope.datos.lugar_voluntariado == "" || $scope.datos.lugar_voluntariado == undefined || $scope.datos.lugar_voluntariado == "undefined" ){
+                $scope.mensaje("Alerta","Ingrese el lugar del voluntariado","error");
+            }else if(($scope.datos.tipo_voluntario == "Otro" && $scope.datos.otros_tipos_voluntariado == "") || ($scope.datos.tipo_voluntario == "Otro" && $scope.datos.otros_tipos_voluntariado == undefined)  || ($scope.datos.tipo_voluntario == "Otro" && $scope.datos.otros_tipos_voluntariado == "undefined") ){
+                $scope.mensaje("Alerta","Especifique otro tipo de voluntariado","error");
+            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.caniles_moviles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.caniles_moviles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.caniles_moviles == "undefined") ){
+                $scope.mensaje("Alerta","Especifique cantidad de caniles móviles","error");
+            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.gatiles_moviles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.gatiles_moviles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.gatiles_moviles == "undefined") ){
+                $scope.mensaje("Alerta","Especifique cantidad de gatiles móviles","error");
+            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_caniles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_caniles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_caniles == "undefined") ){
+                $scope.mensaje("Alerta","Especifique capacidad de caniles.","error");
+            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_gatiles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_gatiles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_gatiles == "undefined") ){
+                $scope.mensaje("Alerta","Especifique capacidad de gatiles.","error");
+            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_comedores == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_comedores == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_comedores == "undefined") ){
+                $scope.mensaje("Alerta","Especifique la cantidad de comedores.","error");
+            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_bebederos == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_bebederos == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_bebederos == "undefined") ){
+                $scope.mensaje("Alerta","Especifique la cantidad de bebederos.","error");
+            }else if($scope.trmExperiencia.length == 0){
+                $scope.mensaje("Alerta","Ingrese al menos una experiencia.","error");
+            }else{
+                if(validador_envio == 1){
+                    $scope.f_registrar();
+                }else if(validador_envio == 2){
+                    $scope.f_actualizar();
+                }
+            }
         }
-        $scope.registrar = function(){
+        $scope.f_registrar = function(){
+            $scope.xdeshabilitado = true;
+            $scope.div_boton_guardar = false;
             var datosMascota = new reglasnegocioM();
-            $scope.unido.push("datos_voluntario",$scope.datos);
-            $scope.unido.push("datos_personales",$scope.datos_responsable);
+            $scope.unido.datos_voluntario = $scope.datos;
+            $scope.unido.datos_personales = $scope.datos_responsable;
+            $scope.unido.datos_experiencia = $scope.trmExperiencia;
             datosMascota.identificador = 'CASA_MASCOTA-1';
             var x_parametro = '{"data":'+JSON.stringify(JSON.stringify($scope.unido))+'}';
             datosMascota.parametros = x_parametro;
             datosMascota.llamarregla(function (results) {
-                console.log('RESULTADO',results);
+                var res = JSON.parse(results);
+                var res2 = res[0].sp_insertar_voluntario_sierra_igob;
+                if(res2 == true){
+                    $scope.mensaje("En hora buena !!!","Su registro fue exitoso , ahora debe de aguardar la aprobación de su registro por la Casa de la Mascota","success");
+                }else{
+                    $scope.mensaje("Ups !!!","Su registro no fue exitoso","error");
+                }
+              $.unblockUI();
+
+            });
+        }
+        $scope.f_actualizar = function(){
+            $scope.xdeshabilitado = true;
+            $scope.div_boton_guardar = false;
+            var datosMascota = new reglasnegocioM();
+            $scope.unido.datos_voluntario = $scope.datos;
+            $scope.unido.datos_personales = $scope.datos_responsable;
+            $scope.unido.datos_experiencia = $scope.trmExperiencia;
+            datosMascota.identificador = 'CASA_MASCOTA-6';
+            var x_parametro = '{"xanimalista_id":'+id_tramite+',"xvoluntario_indep_data":'+JSON.stringify(JSON.stringify($scope.unido))+'}';
+            datosMascota.parametros = x_parametro;
+            datosMascota.llamarregla(function (results) {
+                var res = JSON.parse(results);
+                var res2 = res[0].sp_actualizar_animalista_igob;
+                if(res2 == true){
+                    $scope.mensaje("En hora buena !!!","Su actualización fue exitoso","success");
+                }else{
+                    $scope.mensaje("Ups !!!","Su actualización no fue exitoso","error");
+                }
+              $.unblockUI();
+
+            });
+        }
+        $scope.adicionarExperiencia = function(data){
+            if($scope.datosV.descripcion_exp == 'undefined' || $scope.datosV.descripcion_exp == undefined){
+                $scope.mensaje("Alerta","Ingrese la descripción antes de agregar","error");
+            }else if($scope.datosV.FILE_ADJUNTO_EXPERIENCIA == 'undefined' || $scope.datosV.FILE_ADJUNTO_EXPERIENCIA == undefined){
+                $scope.mensaje("Alerta","Ingrese el adjunto antes de agregar","error");
+            }else{
+                $scope.trmExperiencia.push(data);
+                $scope.tblExperiencia.reload();
+                $scope.datosV = {};
+            }                
+        }
+        $scope.eliminarExperiencia = function(dataExp){
+            $scope.trmExperiencia.splice($scope.trmExperiencia.indexOf(dataExp),1);
+            $scope.tblExperiencia.reload();
+        }
+        $scope.tblExperiencia = new ngTableParams({
+            page: 1,
+            count: 5,
+            filter: {},
+            sorting: {
+              //  IdActividad: 'desc'
+            }
+        }, {
+            total: $scope.trmExperiencia.length,
+            getData: function($defer, params) {
+                var filteredData = params.filter() ?
+                $filter('filter')($scope.trmExperiencia, params.filter()) :
+                $scope.trmExperiencia;
+                var orderedData = params.sorting() ?
+                $filter('orderBy')(filteredData, params.orderBy()) :
+                $scope.trmExperiencia;
+                params.total($scope.trmExperiencia.length);
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            }
+        });
+
+        $scope.ejecutarFile = function(idfile){
+            var sid =   document.getElementById(idfile);
+            if(sid){
+                document.getElementById(idfile).click();
+            }else{
+                alert("Error ");
+            } 
+        };
+        $scope.cambiarFile = function(obj, valor){
+            var arraydoc = ["pdf", "doc", "docx", ".docx",".docxlm"];
+            $scope.registroAdj  = [];
+            var fechaNueva      = "";
+            var fechaserver = new fechaHoraServer(); 
+            fechaserver.fechahora(function(resp){
+                var sfecha      = JSON.parse(resp);
+                var fechaServ   = (sfecha.success.fecha).split(' ');
+                var fecha_      = fechaServ[0].split('-');
+                var hora_       = fechaServ[1].split(':');
+                fechaNueva      = fecha_[0] + fecha_[1] +   fecha_[2]   +   '_' +   hora_[0]    +   hora_[1];
+            }); 
+            $.blockUI();
+            setTimeout(function(){         
+                contadorAdjunto ++;
+                var nombre = obj.getAttribute("name");
+                var objarchivo = obj.files[0];
+                $scope.FILE_ADJUNTO_EXPERIENCIA = obj.files[0];
+                var oidCiudadano = sessionService.get('IDSOLICITANTE');
+                $scope.direccionvirtual = "RC_CLI";
+                var sDirTramite = $scope.datos_responsable.ci;
+                var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/" + oidCiudadano + "/" + sDirTramite + "/";
+                if (nombre == 'FILE_ADJUNTO_EXPERIENCIA' && (typeof(obj.files[0]) != 'undefined')) 
+                {   
+                    var nomdocumento = obj.files[0].name;
+                    var docextension = nomdocumento.split('.');
+                    var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                    if ( ext_doc == "pdf") {
+                            if (objarchivo.size <= 15000000) {
+                                var nombreNuevo = nombre+'_'+contadorAdjunto + '_'+fechaNueva+'.'+ext_doc;                      
+                                fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                                $scope.datosV.FILE_ADJUNTO_EXPERIENCIA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                                $scope.FILE_ADJUNTO_EXPERIENCIA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                                document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                                document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                                $scope.btover7 = "mostrar";
+                            }else{
+                                swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                                document.getElementById("txt_" + nombre).value  = "";
+                                document.getElementById("href_" + nombre).href = "";
+                                $scope.registroAdj.adjunto = '';
+                                $scope.adjunto = '';
+                                valor = '';
+                                $scope.datos.FILE_ADJUNTO_EXPERIENCIA = "";
+                                $scope.FILE_ADJUNTO_EXPERIENCIA = "";
+                                $.unblockUI();
+                            }
+                    } else{
+                        swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+                        document.getElementById("txt_" + nombre).value  = "";
+                        document.getElementById("href_" + nombre).href = "";
+                        $scope.registroAdj.adjunto = '';
+                        $scope.adjunto = '';
+                        valor = '';
+                        $.unblockUI();
+                    }
+        
+                }
+            },1000);
+            $.unblockUI();
+        }
+
+        $scope.cambioCombo = function(data){
+            if(data == 'Rescatista'){
+                $scope.div_rescatistas = true;
+                $scope.div_otros = false
+            }else if(data == 'Otro'){
+                $scope.div_rescatistas = false;
+                $scope.div_otros = true
+            }else{
+                $scope.div_rescatistas = false;
+                $scope.div_otros = false 
+            }
+        }
+        $scope.recuperarInformacion = function(){
+            var datosMascota = new reglasnegocioM();
+            datosMascota.identificador = 'CASA_MASCOTA-2';
+            var x_parametro = '{"xcarnet":"'+$scope.datos_responsable.ci+'"}';
+            datosMascota.parametros = x_parametro;
+            datosMascota.llamarregla(function (results) {
+                var x = JSON.parse(results);
+                var x_estado = x[0].xestado;
+                var x_datos_voluntario = x[0].xdatos_voluntario;
+                var x_datos_experiencia = x[0].xdatos_experiencia;
+                if(x_estado == 'activo'){
+                    validador_envio = 0;
+                    $scope.mensaje("Estimado Ciudadano","Usted ya realizo su registro se esta procesando para la aprobación de su solicitud a continuacion podra observar la informacion enviada.","warning");
+                    $scope.xdeshabilitado = true;
+                    $scope.div_boton_guardar = false;
+                    $scope.div_agregar_experiencia = false;
+                    $scope.titulo_boton = "";
+                    $scope.datos = JSON.parse(x_datos_voluntario);
+                    $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
+                    var envio_tipo = $scope.datos.tipo_voluntario;
+                    $scope.cambioCombo(envio_tipo);
+                    var lat_recuperado = $scope.datos.latitud_vol_dom;
+                    var lon_recuperado = $scope.datos.longitud_vol_dom;
+                    $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
+                    $scope.tblExperiencia.reload();
+                }else if(x_estado == 'no existe'){
+                    $scope.titulo_boton = "GUARDAR";
+                    validador_envio = 1;
+                    $scope.xdeshabilitado = false;
+                    $scope.div_boton_guardar = true;
+                    $scope.div_agregar_experiencia = true;
+                    $scope.mensaje("Estimado Ciudadano","Para poder proseguir con el registro de Animalista Independiente tiene que tener en cuenta que debe contar con la Vacuna Antirrabica y aguardar la aprobación de su registro","warning");
+                }else if(x_estado == 'habilitado'){
+                    validador_envio = 0;
+                    $scope.titulo_boton = "";
+                    $scope.mensaje("Estimado Ciudadano","Su registro ya fue validado por la Casa de la Mascota","warning");
+                    $scope.xdeshabilitado = true;
+                    $scope.div_boton_guardar = false;
+                    $scope.div_agregar_experiencia = false;
+                    $scope.datos = JSON.parse(x_datos_voluntario);
+                    $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
+                    var envio_tipo = $scope.datos.tipo_voluntario;
+                    $scope.cambioCombo(envio_tipo);
+                    var lat_recuperado = $scope.datos.latitud_vol_dom;
+                    var lon_recuperado = $scope.datos.longitud_vol_dom;
+                    $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
+                    $scope.tblExperiencia.reload(); 
+                }else if(x_estado == 'rechazado'){
+                    $scope.div_agregar_experiencia = true;
+                    validador_envio = 2;
+                    id_tramite = x[0].xvoluntario_idm;
+                    var x_observacion = x[0].xobservacion;
+                    $scope.mensaje("Estimado Ciudadano","Su registro fue rechazado con la siguiente observacion : "+x_observacion,"warning");
+                    $scope.titulo_boton = "ACTUALIZAR";
+                    $scope.xdeshabilitado = false;
+                    $scope.div_boton_guardar = true;
+                    $scope.datos = JSON.parse(x_datos_voluntario);
+                    $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
+                    var envio_tipo = $scope.datos.tipo_voluntario;
+                    $scope.cambioCombo(envio_tipo);
+                    var lat_recuperado = $scope.datos.latitud_vol_dom;
+                    var lon_recuperado = $scope.datos.longitud_vol_dom;
+                    $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
+                    $scope.tblExperiencia.reload();
+                }
               $.unblockUI();
 
             });
         }
 
-        /////////////////////////////////
+        $scope.mensaje = function(x_title,x_texto,x_type){
+            swal({
+                title: x_title,
+                text: x_texto,
+                type: x_type,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: 'Aceptar',
+                closeOnConfirm: false
+              }, function() {
+                swal.close();
+              });
+        }
+       
         $scope.inicioServicios = function () {
             $scope.buscarRep();
             $scope.datos.total_capacidad = 0;
@@ -74,29 +356,23 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             $scope.open_mapa_mascotas();
         }
 
-
-    var iconStylep = new ol.style.Style({
-         image: new ol.style.Icon({
-             anchor: [0.5, 40],
-             //anchor: [0.9, 37],
-             anchorXUnits: 'fraction',
-             anchorYUnits: 'pixels',
-             //opacity: 0.75,
-             src: '../../../libs/img/point_icon.png',
-             //src: '../img/dot_2.png',
-             crossOrigin: 'anonymous'
-         })
-    });
+        var iconStylep = new ol.style.Style({
+            image: new ol.style.Icon({
+                anchor: [0.5, 40],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'pixels',
+                src: '../../../libs/img/point_icon.png',
+                crossOrigin: 'anonymous'
+            })
+        });
 
     $scope.open_mapa_mascotas = function(lat,lon)
     {
         setTimeout(function()
         {
-            //console.log("ENTRANDO AL MAPA DE MASCOTAS");
             var latitud = lat;
             var longitud = lon;
-            //console.log("latitud...",latitud);
-            
+
             $("#mapa_mascotas").empty();
 
             $scope.map = new ol.Map
@@ -148,19 +424,20 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             
             $scope.map.on('click', function (evt)
             {
+                $scope.datos.latitud_vol_dom = "";
+                $scope.datos.longitud_vol_dom = "";
                 vectorSource.clear();
                 var viewResolution = view.getResolution();
-              
                 var coord = $scope.map.getCoordinateFromPixel(evt.pixel);
                 var centro = ol.proj.transform(coord,'EPSG:3857',epsg32719);
                 var wkt = '';
                 var centro_1 = ol.proj.transform(coord,'EPSG:3857',epsg4326);
                 var latitud = centro_1[1];
                 var longitud = centro_1[0];
-
                 console.log("Lucho latitud",latitud);
                 console.log("Lucho longitud",longitud);
-                
+                $scope.datos.latitud_vol_dom = latitud;
+                $scope.datos.longitud_vol_dom = longitud;
                 var feature = $scope.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
                   return feature;
                 });
@@ -211,8 +488,6 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                     });
                  
                 }
-                ///////////////////////////////////////////////////////////////////////////////////////////////////
-            
                 var feature = new ol.Feature(
                       new ol.geom.Point(ol.proj.fromLonLat(centro_1))
                 );
@@ -428,14 +703,9 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                 }
             });
             $scope.map.addControl (search);
-
-            
             search.on('select', function(e)
             { 
-                ////////////////////////
-               
                 var n = e.search.name;
-                //console.log("ZONA A BUSCAR",n);
                 var c = 0;
                 var geo_zona;
                 var myStyleZonas = new ol.style.Style({
@@ -472,17 +742,12 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                     vectorLayerZonas.getSource().clear();
                   },2000);
                 } 
-                
-                //////////////////////////
                 $scope.map.getView().animate({
                   center: e.search.pos,
                   zoom: 15,
                   easing: ol.easing.easeOut
                 })
             });
-            
-            
-            //////////////////////////////////////
         },200);
     };
 

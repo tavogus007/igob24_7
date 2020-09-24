@@ -225,13 +225,29 @@ app.service('fileUpload1', ['$http', function ($http) {
 
 app.factory("fileUploadcorr", ['$http', function($http){    
     return {
-        uploadFileToUrl1: function(file, uploadUrl,nombre){
+        uploadFileToUrl1: function(file, uploadUrl,nombre){            
             $.blockUI();
+            var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
+            //var sidusuario = sessionStorage.getItem('IDUSUARIO');
+            var srutaf = '';
+            try{
+                var suploadurl = uploadUrl;
+                if(suploadurl){
+                    var auploadurl = suploadurl.split('files');
+                    srutaf = auploadurl[1];
+                } 
+            }catch(err){
+            }
             var fd = new FormData();
-            fd.append('files', file);
-            return ($http.post(uploadUrl + nombre + "?app_name=todoangular", fd, {
+            fd.append('archivo', file);        
+            fd.append('ruta', srutaf);
+            fd.append('nombrea', nombre);
+            return ($http.post(surl, fd, {
                 transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
+                headers: {
+                    'Content-Type': undefined,
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('TOKEN_API')
+                }
             }).success(function(resp){
                 $.unblockUI();
                 console.log("ARCHIVO ADJUNTADO :", resp);

@@ -188,7 +188,6 @@ app.service('fileUpload', ['$http', function ($http) {
         fd.append('archivo', file);        
         fd.append('ruta', srutaf);
         fd.append('nombrea', file.name);
-        $.blockUI();
         $http.post(surl, fd, {
             transformRequest: angular.identity,
             headers: {

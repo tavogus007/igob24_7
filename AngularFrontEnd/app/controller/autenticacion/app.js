@@ -174,11 +174,27 @@ app.directive('uploaderModel', ["$parse", function ($parse) {
 ///servicio para q funcione el upload
 app.service('fileUpload', ['$http', function ($http) {
     this.uploadFileToUrl = function(file, uploadUrl){
+        var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
+        var srutaf = '';
+        try{
+            var suploadurl = uploadUrl;
+            if(suploadurl){
+                var auploadurl = suploadurl.split('files');
+                srutaf = auploadurl[1];
+            } 
+        }catch(err){
+        }
         var fd = new FormData();
-        fd.append('files', file);
-        $http.post(uploadUrl + file.name + "?app_name=todoangular", fd, {
+        fd.append('archivo', file);        
+        fd.append('ruta', srutaf);
+        fd.append('nombrea', file.name);
+        $.blockUI();
+        $http.post(surl, fd, {
             transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
+            headers: {
+                'Content-Type': undefined,
+                'Authorization': 'Bearer ' + sessionStorage.getItem('TOKEN_API')
+            }
         })
         .success(function(){
         })

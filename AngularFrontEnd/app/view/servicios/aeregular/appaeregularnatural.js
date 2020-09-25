@@ -2370,10 +2370,10 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
     {
         setTimeout(function()
         {
-            console.log("ENTRANDO AL MAPA AE REGULAR...");
+            //console.log("ENTRANDO AL MAPA AE REGULAR...");
             var latitud = $scope.datos.INT_AC_latitud;
             var longitud = $scope.datos.INT_AC_longitud;
-            console.log("latitud...",latitud);
+            //console.log("latitud...",latitud);
             //map.removeLayer(vectorLayer_inci_baja);
             $("#mapActividadAERegular").empty();
 
@@ -2385,9 +2385,9 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
                                             title: 'Mapas Base',
                                             layers: [
                                                       osm,
-                                                      municipios,
-                                                      zonas_tributarias,
-                                                      vias  
+                                                      //municipios,
+                                                      zonas_tributarias_udit,
+                                                      vias_udit  
                                                     ]
                                           }),
                         new ol.layer.Group({
@@ -2450,14 +2450,15 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
               
                 var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';   
                 
-                console.log ("latitud: ",latitud);
-                console.log ("longitud: ",longitud);
+                //console.log ("latitud: ",latitud);
+                //console.log ("longitud: ",longitud);
 
                 $rootScope.laaa = latitud;
                 $rootScope.looo = longitud;
                 $scope.datos.INT_AC_latitud = $rootScope.laaa;
                 $scope.datos.INT_AC_longitud = $rootScope.looo;
 
+                /*
                 setTimeout(function()
                 {
                     $.ajax({
@@ -2502,7 +2503,121 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
                           }   
                         });
                 },500);
-            
+                */
+                var feature = $scope.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+                  return feature;
+                });
+                if (feature){
+                  var coord = feature.getGeometry().getCoordinates();
+                  var props = feature.getProperties();
+                }
+                else
+                {
+                    //alert();
+                    var url_zonas_tributarias = zonas_tributarias_udit.getSource().getGetFeatureInfoUrl(
+                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
+                                'INFO_FORMAT': 'application/json',
+                                'propertyName': 'grupovalor'
+                              }
+                            );
+
+                    var url_zonas = zonas_udit.getSource().getGetFeatureInfoUrl(
+                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
+                                'INFO_FORMAT': 'application/json',
+                                'propertyName': 'zonaref,macrodistr,subalcaldi,codigozona,macro,distrito'
+                              }
+                            );
+
+
+
+                    var url_zonas_seguras = zonas_seguras_udit.getSource().getGetFeatureInfoUrl(
+                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
+                                'INFO_FORMAT': 'application/json',
+                                'propertyName': 'id'
+                              }
+                            );
+
+                    var url_vias = vias_udit.getSource().getGetFeatureInfoUrl(
+                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
+                                'INFO_FORMAT': 'application/json',
+                                'propertyName': 'nombrevia,tipovia'
+                              }
+                            );
+
+                    reqwest({
+                        url: url_zonas_tributarias,
+                        type: 'json',
+                    }).then(function(data)
+                    {
+                        var feature = data.features[0];
+                        var cod = feature.properties;
+                        var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
+                        //console.log("Patty zona tributaria: ",codigo_zona_tributaria);
+                    });
+
+                    reqwest({
+                        url: url_zonas,
+                        type: 'json',
+                    }).then(function(data)
+                    {
+                        var feature = data.features[0];
+                        var cod = feature.properties;
+                        //console.log("Patty datos zonas: ",cod);
+                        /////////////////////////////////////////
+                        datos.zona = cod.zonaref;
+                        datos.cod_zona_sit = cod.codigozona;
+                        datos.distrito = cod.distrito;
+                        datos.macrodistrito = cod.macrodistr;
+                        var n_genesis = geo_id_genesis.length;
+                        for (var i=0;i<n_genesis;i++)
+                        {
+                            if(geo_id_sit_servicio[i ]===cod.codigozona)
+                            {
+                                cod_zona_genesis = geo_id_genesis[i];
+                                datos.cod_zona_genesis = cod_zona_genesis;
+                            }
+                        } 
+                        /////////////////////////////////////////////
+                    });
+
+                    reqwest({
+                        url: url_zonas_seguras,
+                        type: 'json',
+                    }).then(function(data)
+                    {
+                        var feature = data.features[0];  
+                        if(feature == undefined)
+                        {
+                            //console.log("Patty...No es Zona Segura...");
+                        }
+                        else
+                        {
+                            var cod = feature.properties;
+                            //console.log("Patty datos zona seguras: ",cod);   
+                        }
+                        
+                    });
+
+                    reqwest({
+                        url: url_vias,
+                        type: 'json',
+                    }).then(function(data)
+                    {
+                        var feature = data.features[0];  
+                        if(feature == undefined)
+                        {
+                            //console.log("Patty No hay vias...");
+                        }
+                        else
+                        {
+                            var cod = feature.properties;
+                            //console.log("Patty datos de vias: ",cod);   
+                        }
+                        
+                    });
+                 
+                }
+                ///////////////////////////////////////////
                 var feature = new ol.Feature(
                       new ol.geom.Point(ol.proj.fromLonLat(centro_1))
                 );

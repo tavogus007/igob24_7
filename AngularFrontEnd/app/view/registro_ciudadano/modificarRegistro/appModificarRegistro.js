@@ -2457,15 +2457,16 @@ $scope.vias_v2= function(zona,tipo)
     });
 
     var osm_udit = new ol.layer.Tile({
-      title: 'OSM',
-      visible: true,
-      render: 'canvas',
-      source: new ol.source.TileWMS({
-                                      url: 'http://192.168.6.46:8080/geoserver/DEGEM/wms',
-                                      params: {'LAYERS': 'DEGEM:osm_udit', 'VERSION': '1.1.1','FORMAT': 'image/png','TILED': true},
-                                      serverType: 'geoserver',
-                                      crossOriginKeyword: 'anonymous'
-                                    })
+                              title: 'OSM',
+                              visible: true,
+                              //render: 'canvas',
+                              source: new ol.source.TileWMS({
+                                                              url: 'https://servgeo.lapaz.bo/geoserver/wms',
+                                                              //url: 'http://localhost:8090/geoserver/DEGEM/wms',
+                                                              params: {'LAYERS': 'DEGEM:osm_udit', 'VERSION': '1.1.1','FORMAT': 'image/png','TILED': true},
+                                                              serverType: 'geoserver'
+                                                              ,crossOrigin: 'Anonymous'
+                                                            })
     });
             
     var municipios = new ol.layer.Tile({
@@ -2515,6 +2516,58 @@ $scope.vias_v2= function(zona,tipo)
                                       crossOrigin: 'Anonymous'
                                     })
     });
+
+    var vias_udit = new ol.layer.Tile({
+      title: 'Vias',
+      //opacity: 0.3,
+      visible: false,
+      source: new ol.source.TileWMS({
+        url: ' https://servgeo.lapaz.bo/geoserver/wms',
+        params: { 'LAYERS': 'DEGEM:vias_sit', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+        serverType: 'geoserver',
+        //crossOrigin: '*'
+        crossOriginKeyword: 'anonymous'
+      })
+    });
+
+    var zonas_tributarias_udit = new ol.layer.Tile({
+                title: 'Zonas Tributarias',
+                opacity: 0.3,
+                visible: false,
+                source: new ol.source.TileWMS({
+                url: ' https://servgeo.lapaz.bo/geoserver/wms',
+                //url: 'http://192.168.6.46:8080/geoserver/wms',
+                params: { 'LAYERS': 'DEGEM:zonas_de_valor_3857', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+                serverType: 'geoserver',
+                crossOriginKeyword: 'anonymous'
+              })
+    });
+
+    var zonas_udit = new ol.layer.Tile({
+                title: 'Zonas',
+                opacity: 0.3,
+                visible: false,
+                source: new ol.source.TileWMS({
+                url: 'https://servgeo.lapaz.bo/geoserver/wms',
+                //url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+                params: { 'LAYERS': 'DEGEM:zonas_gamlp', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+                serverType: 'geoserver',
+                crossOriginKeyword: 'anonymous'
+              })
+    });
+    var zonas_udit = new ol.layer.Tile({
+                title: 'Zonas',
+                opacity: 0.3,
+                visible: false,
+                source: new ol.source.TileWMS({
+                url: 'https://servgeo.lapaz.bo/geoserver/wms',
+                //url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+                params: { 'LAYERS': 'DEGEM:zonas_gamlp', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
+                serverType: 'geoserver',
+                crossOriginKeyword: 'anonymous'
+              })
+    });
+
 
     var macrodistritos = new ol.layer.Tile({
       title: 'Macrodistritos',
@@ -2656,10 +2709,10 @@ $scope.vias_v2= function(zona,tipo)
                       title: 'Mapas Base',
                       layers: [
                           osm,
-                          municipios,
-                          zonas_tributarias,
+                          //municipios,
+                          //zonas_tributarias,
                           //zonas,
-                          vias,
+                          vias_udit,
                           //lotes_1,
                           vectorLayer
                         ]
@@ -2740,21 +2793,21 @@ $scope.vias_v2= function(zona,tipo)
             else
             {
               //alert();
-              var url_zonas_tributarias = zonas_tributarias.getSource().getGetFeatureInfoUrl(
+              var url_zonas_tributarias = zonas_tributarias_udit.getSource().getGetFeatureInfoUrl(
                 evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
                   'INFO_FORMAT': 'application/json',
                   'propertyName': 'grupovalor'
                 }
               );
 
-              var url_zonas = zonas.getSource().getGetFeatureInfoUrl(
+              var url_zonas = zonas_udit.getSource().getGetFeatureInfoUrl(
                   evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
                       'INFO_FORMAT': 'application/json',
-                      'propertyName': 'zona,macrodistrito,subalcaldia,codigozona,macro,distrito'
+                      'propertyName': 'zonaref,macrodistr,subalcaldi,codigozona,macro,distrito'
                   }
               );
               
-              var url_vias = vias.getSource().getGetFeatureInfoUrl(
+              var url_vias = vias_udit.getSource().getGetFeatureInfoUrl(
                   evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
                       'INFO_FORMAT': 'application/json',
                       'propertyName': 'nombrevia,tipovia'
@@ -2806,8 +2859,8 @@ $scope.vias_v2= function(zona,tipo)
 
                 ///////////////////////////////////////////////////////////
                 var cod = feature.properties;
-                var zona = cod.zona;
-                var macrodistrito = cod.macrodistrito;
+                var zona = cod.zonaref;
+                var macrodistrito = cod.macrodistr;
                 var cod_zona= cod.codigozona;
                 var distrito= cod.distrito;
                 console.log("cod zona serv sit: ",cod_zona);
@@ -3044,21 +3097,21 @@ $scope.vias_v2= function(zona,tipo)
             else
             {
               //alert();
-              var url_zonas_tributarias = zonas_tributarias.getSource().getGetFeatureInfoUrl(
+              var url_zonas_tributarias = zonas_tributarias_udit.getSource().getGetFeatureInfoUrl(
                 evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
                   'INFO_FORMAT': 'application/json',
                   'propertyName': 'grupovalor'
                 }
               );
 
-              var url_zonas = zonas.getSource().getGetFeatureInfoUrl(
+              var url_zonas = zonas_udit.getSource().getGetFeatureInfoUrl(
                   evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
                       'INFO_FORMAT': 'application/json',
-                      'propertyName': 'zona,macrodistrito,subalcaldia,codigozona,macro,distrito'
+                      'propertyName': 'zonaref,macrodistr,subalcaldi,codigozona,macro,distrito'
                   }
               );
               
-              var url_vias = vias.getSource().getGetFeatureInfoUrl(
+              var url_vias = vias_udit.getSource().getGetFeatureInfoUrl(
                   evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
                       'INFO_FORMAT': 'application/json',
                       'propertyName': 'nombrevia,tipovia'
@@ -3110,8 +3163,8 @@ $scope.vias_v2= function(zona,tipo)
 
                 ///////////////////////////////////////////////////////////
                 var cod = feature.properties;
-                var zona = cod.zona;
-                var macrodistrito = cod.macrodistrito;
+                var zona = cod.zonaref;
+                var macrodistrito = cod.macrodistr;
                 var cod_zona= cod.codigozona;
                 var distrito= cod.distrito;
                 console.log("cod zona serv sit: ",cod_zona);

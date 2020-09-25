@@ -715,16 +715,14 @@
                         new ol.layer.Group({
                                             title: 'Mapas Base',
                                             layers: [
-                                                      osm,
-                                                      municipios,
-                                                      zonas_tributarias,
-                                                      vias  
+                                                      osm
                                                     ]
                                           }),
                         new ol.layer.Group({
                                             title: 'Capas',
                                             layers: [
-                                                      //macrodistritos,
+                                                      zonas_tributarias_udit,
+                                                      vias_udit,
                                                       vectorLayerZonas,
                                                       vectorLayer
                                                     ]
@@ -756,61 +754,17 @@
             {
                 datos = {};
                 vectorSource.clear();
+                /*
                 if(jsonURLS)
                 {
                     var url_sit    =   jsonURLS.SIT_GEO;
-                    //console.log('INTERMEDIO EN MAPA-----',url_sit);
+                    console.log("URL SIT...",url_sit);
                 }
                 var url_r = url_sit+'/geoserver/wms';
-                //console.log("URL PARA RIESGOS",url_r);
+                */
 
                 var viewResolution = view.getResolution();
-                /*
-                var WMSsource_z = new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: url_r,
-                    params: {
-                              'FORMAT': 'image/png',
-                              'VERSION': '1.1.1',
-                              'LAYERS': 'sit:zonasgu2016',
-                              'TILED': true 
-                            }
-                });
-                var url_z = WMSsource_z.getGetFeatureInfoUrl(
-                                                          evt.coordinate, viewResolution, view.getProjection(),
-                                                          { 'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50  ,format_options: 'callback: getJson'}
-                );
-
-                var WMSsource_zt = new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: url_r,
-                    params: {
-                              'FORMAT': 'image/png',
-                              'VERSION': '1.1.1',
-                              'LAYERS': 'catastro:zonasvalor2015',
-                              'TILED': true 
-                            }
-                });
-                var url_zt = WMSsource_zt.getGetFeatureInfoUrl(
-                                                          evt.coordinate, viewResolution, view.getProjection(),
-                                                          { 'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50  ,format_options: 'callback: getJson'}
-                );
-
-                var WMSsource_v = new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: url_r,
-                    params: {
-                              'FORMAT': 'image/png',
-                              'VERSION': '1.1.1',
-                              'LAYERS': 'catastro:vias2',
-                              'TILED': true 
-                            }
-                });
-                var url_v = WMSsource_v.getGetFeatureInfoUrl(
-                                                          evt.coordinate, viewResolution, view.getProjection(),
-                                                          { 'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50  ,format_options: 'callback: getJson'}
-                );
-                */
+               
                 var coord = $scope.map.getCoordinateFromPixel(evt.pixel);
                 var centro = ol.proj.transform(coord,'EPSG:3857',epsg32719);
                 var wkt = '';
@@ -821,14 +775,16 @@
 
                 datos.latitud = latitud;
                 datos.longitud = longitud;
+
+
               
-                var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';   
+                //var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';   
                 
-                console.log ("latitud: ",latitud);
-                console.log ("longitud: ",longitud);
+                //console.log ("latitud: ",latitud);
+                //console.log ("longitud: ",longitud);
                 $scope.datos.INT_AC_latitud=latitud;
                 $scope.datos.INT_AC_longitud=longitud;
-
+                /*
                 setTimeout(function()
                 {
                     $.ajax({
@@ -873,8 +829,10 @@
                           }   
                         });
                 },500);
+                */
 
                 ///////////////////PARA PATTY//////////////////////////////////////////////////////////////
+                
                 var feature = $scope.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
                   return feature;
                 });
@@ -923,7 +881,7 @@
                         var feature = data.features[0];
                         var cod = feature.properties;
                         var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                        console.log("Patty zona tributaria: ",codigo_zona_tributaria);
+                        //console.log("Patty zona tributaria: ",codigo_zona_tributaria);
                     });
 
                     reqwest({
@@ -933,7 +891,22 @@
                     {
                         var feature = data.features[0];
                         var cod = feature.properties;
-                        console.log("Patty datos zonas: ",cod);
+                        //console.log("Patty datos zonas: ",cod);
+                        /////////////////////////////////////////
+                        datos.zona = cod.zonaref;
+                        datos.cod_zona_sit = cod.codigozona;
+                        datos.distrito = cod.distrito;
+                        datos.macrodistrito = cod.macrodistr;
+                        var n_genesis = geo_id_genesis.length;
+                        for (var i=0;i<n_genesis;i++)
+                        {
+                            if(geo_id_sit_servicio[i ]===cod.codigozona)
+                            {
+                                cod_zona_genesis = geo_id_genesis[i];
+                                datos.cod_zona_genesis = cod_zona_genesis;
+                            }
+                        } 
+                        /////////////////////////////////////////////
                     });
 
                     reqwest({
@@ -944,12 +917,12 @@
                         var feature = data.features[0];  
                         if(feature == undefined)
                         {
-                            console.log("Patty...No es Zona Segura...");
+                            //console.log("Patty...No es Zona Segura...");
                         }
                         else
                         {
                             var cod = feature.properties;
-                            console.log("Patty datos zona seguras: ",cod);   
+                            //console.log("Patty datos zona seguras: ",cod);   
                         }
                         
                     });
@@ -962,17 +935,18 @@
                         var feature = data.features[0];  
                         if(feature == undefined)
                         {
-                            console.log("Patty No hay vias...");
+                            //console.log("Patty No hay vias...");
                         }
                         else
                         {
                             var cod = feature.properties;
-                            console.log("Patty datos de vias: ",cod);   
+                            //console.log("Patty datos de vias: ",cod);   
                         }
                         
                     });
                  
                 }
+                
                 ///////////////////////////////////////////////////////////////////////////////////////////////////
             
                 var feature = new ol.Feature(

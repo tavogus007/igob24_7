@@ -79,7 +79,7 @@ var iconStyle_orange = new ol.style.Style({
 var osm = new ol.layer.Tile({
   title: 'Open Street Map',
   //opacity: 0.3,
-  visible: false,
+  visible: true,
   source: new ol.source.OSM()
 });
 
@@ -146,7 +146,7 @@ var zonas_udit = new ol.layer.Tile({
             opacity: 0.3,
             visible: false,
             source: new ol.source.TileWMS({
-            url: ' https://servgeo.lapaz.bo/geoserver/wms',
+            url: 'https://servgeo.lapaz.bo/geoserver/wms',
             //url: 'http://sitservicios.lapaz.bo/geoserver/wms',
             params: { 'LAYERS': 'DEGEM:zonas_gamlp', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
             serverType: 'geoserver',
@@ -197,7 +197,7 @@ var osm_udit = new ol.layer.Tile({
                               visible: true,
                               //render: 'canvas',
                               source: new ol.source.TileWMS({
-                                                              url: 'http://192.168.6.46:8080/geoserver/DEGEM/wms',
+                                                              url: 'https://servgeo.lapaz.bo/geoserver/wms',
                                                               //url: 'http://localhost:8090/geoserver/DEGEM/wms',
                                                               params: {'LAYERS': 'DEGEM:osm_udit', 'VERSION': '1.1.1','FORMAT': 'image/png','TILED': true},
                                                               serverType: 'geoserver'

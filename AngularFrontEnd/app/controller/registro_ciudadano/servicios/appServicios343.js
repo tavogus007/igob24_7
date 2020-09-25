@@ -701,10 +701,10 @@
     {
         setTimeout(function()
         {
-            console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICASsssssssss");
+            //console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICASsssssssss");
             var latitud = $scope.datos.INT_AC_latitud;
             var longitud = $scope.datos.INT_AC_longitud;
-            console.log("latitud...",latitud);
+            //console.log("latitud...",latitud);
             //map.removeLayer(vectorLayer_inci_baja);
             $("#map_principal").empty();
 
@@ -1290,7 +1290,7 @@
       
     
     $scope.seleccionarTramiteRender = function (tramite) {
-        console.log('tramiteeeee   111111  ',tramite);
+        //console.log('tramiteeeee   111111  ',tramite);
         //openMapGis();
         $scope.open_mapa_ae();
         //$scope.getCaptchasXX();

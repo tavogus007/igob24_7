@@ -244,6 +244,7 @@
         recuperarDatos.datosCiudadanoNatural(function(resultado){
             resultadoApi = JSON.parse(resultado);
             datos           =   resultadoApi[0];
+            console.log('los daaaaa     ',datos);
             $scope.datosRecuperados = datos;
             sTipoPersona    =   resultadoApi[0].dtspsl_tipo_persona;
             $scope.sTipoPersona    =   resultadoApi[0].dtspsl_tipo_persona;
@@ -314,7 +315,8 @@
                         datosForm['INT_DIR_DET']        = datos.dtspsl_direccion;
                         datosForm['f01_dir_det_prop']   = datos.dtspsl_direccion;
                         datosForm['f01_estado_civil_prop'] = datos.dtspsl_id_estado_civil;
-
+                        datosForm['f01_latitud_prop'] = datos.dtspsl_latitud;
+                        datosForm['f01_longitud_prop'] = datos.dtspsl_longitud;
                         if(datos.dtspsl_expedido){
                             if(datos.dtspsl_expedido == 'LPZ' || datos.dtspsl_expedido == 'CBB' || datos.dtspsl_expedido == 'SCZ' || datos.dtspsl_expedido == 'CHQ' || datos.dtspsl_expedido == 'TJA' || datos.dtspsl_expedido == 'PTS' || datos.dtspsl_expedido == 'ORU' || datos.dtspsl_expedido == 'BNI' || datos.dtspsl_expedido == 'PND'){
                                 datosForm['f01_nac_prop'] = 'BOLIVIANA';
@@ -403,6 +405,8 @@
                         datosForm['f01_piso_emp'] = datos.dtspsl_piso;
                         datosForm['f01_dpto_of_loc_emp'] = datos.dtspsl_oficina;
                         datosForm['f01_dir_det_emp'] = datos.dtspsl_direccion;
+                        datosForm['f01_latitud_emp'] = datos.dtspsl_latitud;
+                        datosForm['f01_longitud_emp'] = datos.dtspsl_longitud;
                     if(datos.dtspsl_ci_representante || datos.dtspsl_ci_representante != null && datos.dtspsl_ci_representante != "")
                     {
                         try {
@@ -412,6 +416,7 @@
                             buscarRepresentante.buscarPersona(function(resultado){
                                 resultadoApiRepre = JSON.parse(resultado);
                                 var repLegalmongo   =   resultadoApiRepre;
+                                console.log('repLegalmongo   ',repLegalmongo);
                                 var dtsNombres      =   ((typeof(repLegalmongo[0].dtspsl_nombres) == 'undefined') ? "" : repLegalmongo[0].dtspsl_nombres);
                                 var dtsPaterno      =   ((typeof(repLegalmongo[0].dtspsl_paterno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_paterno);
                                 var dtsMaterno      =   ((typeof(repLegalmongo[0].dtspsl_materno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_materno);
@@ -467,12 +472,15 @@
                                 }
                                 datosForm['f01_dir_det_rep'] = repLegalmongo[0].dtspsl_direccion;
                                 datosForm['f01_idzona_rl_rep'] = repLegalmongo[0].dtspsl_zona;
+                                datosForm['f01_latitud_rl_rep'] = repLegalmongo[0].dtspsl_latitud;
+                                datosForm['f01_longitud_rl_rep'] = repLegalmongo[0].dtspsl_longitud;
                             }); 
                         } catch(e) {
                             console.log('*Error*', e);
                         }
                     }
                     $scope.datosIniciales = datosForm;
+                    console.log('$scope.datosIniciales    ',$scope.datosIniciales);
                 }
             }
         });
@@ -654,6 +662,8 @@
             datosForm_inicio['f01_cuenta_luz_prop'] = datosIniciales.f01_cuenta_luz_prop;
             datosForm_inicio['f01_medidor_prop'] = datosIniciales.f01_medidor_prop;
             datosForm_inicio['f01_estado_civil_prop'] = datosIniciales.f01_estado_civil_prop;
+            datosForm_inicio['f01_latitud_prop'] = datosIniciales.f01_latitud_prop;
+            datosForm_inicio['f01_longitud_prop'] = datosIniciales.f01_longitud_prop;
         }else{
             if(sTipoPersona == 'JURIDICO')
             {
@@ -751,12 +761,16 @@
                 datosForm_inicio['f01_fecha_nac_rep'] = datosIniciales.f01_fecha_nac_rep;
                 datosForm_inicio['f01_dir_det_rep'] = datosIniciales.f01_dir_det_rep;
                 datosForm_inicio['f01_idzona_rl_rep'] = datosIniciales.f01_idzona_rl_rep;
+                datosForm_inicio['f01_latitud_rl_rep'] = datosIniciales.f01_latitud_rl_rep;
+                datosForm_inicio['f01_longitud_rl_rep'] = datosIniciales.f01_longitud_rl_rep;
                 datosForm_inicio['f01_edificio_emp'] = datosIniciales.f01_edificio_emp;
                 datosForm_inicio['f01_id_zona_emp'] = datosIniciales.f01_id_zona_emp;
                 datosForm_inicio['f01_bloque_emp'] = datosIniciales.f01_bloque_emp;
                 datosForm_inicio['f01_piso_emp'] = datosIniciales.f01_piso_emp;
                 datosForm_inicio['f01_dpto_of_loc_emp'] = datosIniciales.f01_dpto_of_loc_emp;
                 datosForm_inicio['f01_dir_det_emp'] = datosIniciales.f01_dir_det_emp;
+                datosForm_inicio['f01_latitud_emp'] = datosIniciales.f01_latitud_emp;
+                datosForm_inicio['f01_longitud_emp'] = datosIniciales.f01_longitud_emp;
             }
         }
         
@@ -2180,7 +2194,8 @@
         //$scope.getCaptchasX();
         $scope.getCaptchasXX();
         //$scope.sesionTokenSierra();
-
+        $scope.cargarMacrodistrito();
+        $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
     });
 
     $scope.inicioServicios343Sierra = function () {
@@ -2190,6 +2205,7 @@
         //$scope.getCaptchasX();
         $scope.getCaptchasXX();
         $scope.cargarMacrodistrito();
+        $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
         //$scope.sesionTokenSierra();
     };
 
@@ -2462,6 +2478,53 @@
             }
         });
     }
+
+    $scope.getDocumento = function(usuario,sistema,proceso,ci_nodo) {
+        $.blockUI();
+        var resRoles = new reglasnegocio();
+        resRoles.identificador = 'RCCIUDADANO_72';
+        resRoles.parametros = '{"sdoc_usuario":"'+ usuario +'","sdoc_sistema":"","sdoc_proceso":"'+ proceso +'","sdoc_ci_nodo":"'+ ci_nodo +'"}';
+        resRoles.llamarregla(function(response) {
+            $scope.obtDatos = JSON.parse(response);
+            console.log('$scope.obtDatos    ',$scope.obtDatos);
+            if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
+                $scope.tablaDocumentos = null;
+                $("#divMsj").css({'display' : 'block' });
+                $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
+                $.unblockUI();
+                alertify.warning('No existen datos');  
+            }
+            else {
+                var data = JSON.parse(response);
+                var u;
+                angular.forEach(data, function(dataValue, dataKey) {
+                    var n = $scope.vdoc_nombre = dataValue['vdoc_nombre'];            
+                    var s = $scope.vdoc_sistema= dataValue['vdoc_sistema'];
+                    u = $scope.vdoc_url    = dataValue['vdoc_url'];
+                    if(n == "CONDICIONES DE USO" || s == "vdoc_sistema") {
+                        var y = $scope.vdoc_url = dataValue['vdoc_url'];
+                        var condicion_uso = y.toString();
+                        if(condicion_uso.indexOf("http://40.117.46.159:80/rest") != -1){
+                            condicion_uso = condicion_uso.replace("http://40.117.46.159:80/rest", CONFIG.APIURL);
+                        }
+                        console.log('iiiiiiiiii     ',condicion_uso);
+                        //$scope.condicion_uso = condicion_uso;
+                        $rootScope.condicion_uso = condicion_uso;
+                        console.log('$scope.condicion_uso   ',$rootScope.condicion_uso);
+                        //$scope.vdoc_url = dataValue['vdoc_url'];
+                        if(!$scope.$$phase) {
+                            $scope.$apply();
+                        }
+                        //$scope.descripcion_corta=value['descripcion_corta'];
+                    }
+                });
+                //$scope.valida = 1;
+                $scope.msj1 = '';
+                //$scope.tablaDocumentos.reload();
+                $.unblockUI();
+            };
+        });      
+    };
 
     /*$scope.sesionTokenSierra = function(){
         var urlToken = CONFIG.SERVICE_SIERRAM+"apiLogin";

@@ -1001,7 +1001,7 @@
                                             <label for="url" >Tipo: </label>
                                                 <div class="controls">
                                                     <select id="INT_TIPO_LETRE" name="INT_TIPO_LETRE"  placeholder="Tipo de Letrero" ng-model="publi.INT_TIPO_LETRE"  class="form-control"
-                                                    ng-options="tletre.p_descripcion as tletre.p_descripcion for tletre in TipoLetrero"  ng-change="ltCaracteristica(publi.INT_TIPO_LETRE)" ng-disabled="desabilitadoO || desabilitado" required>
+                                                    ng-options="tletre.descripcion as tletre.descripcion for tletre in TipoLetrero"  ng-change="ltCaracteristica(publi.INT_TIPO_LETRE)" ng-disabled="desabilitadoO || desabilitado" required>
                                                     <option value=""></option>
                                                 </select>
                                             </div>
@@ -1011,7 +1011,7 @@
                                         <div class="form-group" >
                                             <label for="url" >Caracteristica: </label>
                                             <div class="controls">
-                                                <select id="INT_CARA" name="INT_CARA"  placeholder="Distrito - Zona" ng-model="publi.INT_CARA" class="form-control" ng-options="tletr.p_caracteristica as tletr.p_caracteristica for tletr in lCaracteristica" ng-change="actulizarCaracteristica();" ng-disabled="desabilitadoO || desabilitado" required>
+                                                <select id="INT_CARA" name="INT_CARA"  placeholder="Distrito - Zona" ng-model="publi.INT_CARA" class="form-control" ng-options="tletr.descripcion as tletr.descripcion for tletr in lCaracteristica" ng-change="actulizarCaracteristica();" ng-disabled="desabilitadoO || desabilitado" required>
                                                     <option value=""></option>
                                                 </select>
                                             </div>
@@ -1280,9 +1280,10 @@
                 <div class = "col-md-12" class="form-control">
                     <div class = "col-md-6" class="form-control">
                         <label for="Pago_Anticipado">
-                        Desea realizar el Pago por Adelantado?
-                        Si <input type="radio" name="pago_adelantado" value = "SI" ng-model="datos.pago_adelantado" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        No <input type="radio" name="pago_adelantado" value = "NO" ng-model="datos.pago_adelantado" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
+                        Desea realizar el Pago por Adelantado?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" ng-model="datos.pago_adelantado" name="pago_adelantado" ng-change="ShowPa(datos.pago_adelantado);" id = "pago_adelantado" ng-disabled="desabilitado" required>
+                        <!--input type="radio" name="pago_adelantado" value = "SI" ng-model="datos.pago_adelantado" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        No <input type="radio" name="pago_adelantado" value = "NO" ng-model="datos.pago_adelantado" ng-change="ShowPa('NO')" ng-disabled="desabilitado" -->
                         </label>
                     </div>
                 </div>

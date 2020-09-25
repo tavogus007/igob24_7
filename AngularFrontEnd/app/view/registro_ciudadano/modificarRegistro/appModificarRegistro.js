@@ -1023,7 +1023,7 @@ $scope.mostrarNatural = null;
     }
 
 /*******************CARGAR ZONA MACRODISTRITO ******************************/
-    $scope.MacroZona  =   function(){
+    /*$scope.MacroZona  =   function(){
         try{
             var parametros = new ZonaMacro();
             parametros.Zona_Macro(function(resultado){
@@ -1037,6 +1037,43 @@ $scope.mostrarNatural = null;
         }catch(error){
            console.log("error en zonas");
         }  
+    };*/
+    $scope.MacroZona = function() {
+        try{
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                url: CONFIG.SERVICE_GIS_AE_DZ+'wsCCGis/listar_todas_las_zonas',
+                dataType: 'json',
+                data: '{}',
+                success: function (data){ 
+                    var dataZonas = data.success.data;
+                    $scope.datosZonaTodo = data;
+                    datoObjectFinal = [];
+                    for(i = 0; i < dataZonas.length; i++){
+                        datoObject = new Object();
+                        $scope.zonas_aux = dataZonas[i].j;
+                        datoObject.dist_id = parseInt($scope.zonas_aux.zn_id_sit);
+                        datoObject.dist_nombre = $scope.zonas_aux.zn_des;
+                        datoObject.dist_dstt_id = $scope.zonas_aux.zn_dis;
+                        datoObject.dist_macro_id = $scope.zonas_aux.zn_macro;
+                        datoObjectFinal[i] = datoObject;
+                    }
+                    var data = datoObjectFinal
+                    $scope.aMacroZona = data;
+                    console.log('inicio   $scope.aMacroZona   ',$scope.aMacroZona);
+                    /*if(typeof $scope.datos.f01_id_zona_rep != 'undefined' && $scope.datos.f01_id_zona_rep != ""){
+                        $scope.datos.f01_id_zona_rep = parseInt($scope.datos.f01_id_zona_rep);
+                    }else if(typeof $scope.datos.f01_zon_prop  !=   'undefined' && $scope.datos.f01_zon_prop){
+                        $scope.datos.f01_zon_prop = parseInt($scope.datos.f01_zon_prop);
+                    }
+                    $scope.$apply();*/
+                }
+            });
+            $.unblockUI();
+        }catch (error){
+            $scope.errors["error_rol"] = error;
+        }
     };
 
     $scope.actulizarIdDistritoM  =   function(zonaid){
@@ -1067,6 +1104,8 @@ $scope.mostrarNatural = null;
                 angular.forEach($scope.aMacroZona, function(value, key) {
                     if(value.dist_id == distNombre){
                         idMacro  =   value.dist_macro_id;
+                        console.log('idMacro    ',idMacro);
+                        
                     }
                 });
             }
@@ -1077,7 +1116,7 @@ $scope.mostrarNatural = null;
 
             $scope.idMacro = idMacro;
             $scope.aMacrodistritos = {};
-            $scope.registro.macrodistrito    =   idMacro;
+            $scope.registro.macrodistrito    =   parseInt(idMacro);
             var datosP = new macrodistritoLstid();
             datosP.idMacro =  idMacro;
             datosP.obtmacrodistrito(function(resultado){

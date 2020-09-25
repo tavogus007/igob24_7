@@ -3882,7 +3882,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         if(data.pago_adelantado == true){
             dataForm['pago_adel'] = 'SI';//data.pago_adelantado;
             dataForm['nro_ges'] = data.nro_ges;
-            if (data.listDeudas) {
+            /*if (data.listDeudas) {
                 console.log('datos.montoDeuda     ',data.montoDeuda);
                 var lstDeuda = data.listDeudas;
                 tablapago = '<table border="0.5" class="table table-striped table-bordered"><tr>'+
@@ -3908,7 +3908,8 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     }
                 tablapago = tablapago + '</table>';
                 dataForm['tablaP'] = tablapago;
-            }
+            }*/
+            dataForm['tablaP'] = '';
         }else{
             dataForm['pago_adel'] = 'SIN PAGO ADELANTADO';
             dataForm['nro_ges'] = 'NINGUNA';
@@ -4201,6 +4202,8 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datosNeXO['f01_cuenta_luz_prop'] = paramForm.f01_cuenta_luz_prop;
             datosNeXO['f01_medidor_prop'] = paramForm.f01_medidor_prop;
             datosNeXO['f01_estado_civil_prop'] = paramForm.f01_estado_civil_prop;
+            datosNeXO['f01_latitud_prop'] = paramForm.f01_latitud_prop;
+            datosNeXO['f01_longitud_prop'] = paramForm.f01_longitud_prop;
             datosNeXO['f01_dir_det_prop'] = paramForm.f01_dir_det_prop;
             /*DATOSDELAACTIVIDADAECONOMICA*/
             //DATOS TECNICOS
@@ -4334,6 +4337,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         datosNeXO['g_origen'] = "IGOB247";
         datosNeXO['pago_duodecimas'] = paramForm.pago_duodecimas; 
         datosNeXO['fecha_duodecima'] = paramForm.fecha_duodecima;
+        datosNeXO['condicion_uso'] = $rootScope.condicion_uso;
         if(paramForm.chkzonasegura == 'ZONASEGURA'){
             datosNeXO['f01_zona_segura'] = 'SI';
         }else{

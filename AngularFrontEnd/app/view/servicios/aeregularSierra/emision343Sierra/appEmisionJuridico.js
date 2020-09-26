@@ -1623,6 +1623,8 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             datosNeXO['f01_id_representante_legal_temp'] = paramForm.f01_id_representante_legal_temp;
             datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
         }
+        datosNeXO['f01_nro_orden'] = paramForm.f01_nro_orden;
+        datosNeXO['f01_correlativo_form401'] = $rootScope.f01_correlativo_form401;
         datosNeXO['CI_BIGDATA_RL']                  =   paramForm.id_representante;
         var sIdCiudadano = sessionService.get('IDCIUDADANO');
         datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
@@ -1791,6 +1793,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             datosNeXO['montoDeuda'] = paramForm.montoDeuda;
             datosNeXO['id_zona_segura'] = paramForm.id_zona_segura;
             datosNeXO['listDeudas'] = paramForm.listDeudas;
+            datosNeXO['f01_latitud_emp'] = paramForm.f01_latitud_emp;
+            datosNeXO['f01_longitud_emp'] = paramForm.f01_longitud_emp;
+            datosNeXO['f01_latitud_rl_rep'] = paramForm.f01_latitud_rl_rep;
+            datosNeXO['f01_longitud_rl_rep'] = paramForm.f01_longitud_rl_rep;
             if(paramForm.chkzonasegura == 'ZONASEGURA'){
                 datosNeXO['f01_zona_segura'] = 'SI';
             }else{
@@ -1804,8 +1810,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             var decjuradaN = new Object();
             if ($rootScope.decJuradaJuridico) {
                 decjuradaN.url = $rootScope.decJuradaJuridico;
+                datosNeXO['declaracion_jurada'] = $rootScope.decJuradaJuridico;
             } else{
                 decjuradaN.url = $scope.datos.declaracion_jurada;
+                datosNeXO['declaracion_jurada'] = $scope.datos.declaracion_jurada;
             };
             decjuradaN.campo = 'Declaración Jurada Juridico';
             decjuradaN.nombre = 'DECLARACIÓN JURADA';
@@ -1836,11 +1844,11 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             datosNeXO['f01_requisitos_tecnicos'] =[];
         } 
         if(paramForm.rdTipoTramite1 == "NUEVO" || paramForm.rdTipoTramite1 == 'NUEVO'){
-            datosNeXO['sw_publicidad']      =  "CP" ;
-            datosNeXO['swpublicidad']      =  "CP" ;
+            datosNeXO['sw_publicidad']      =  "CP";
+            datosNeXO['swpublicidad']      =  "CP";
         }if(paramForm.rdTipoTramite1 == "RENOVACION" || paramForm.rdTipoTramite1 == 'RENOVACION'){
-            datosNeXO['sw_publicidad']      =  "SP" ;
-            datosNeXO['swpublicidad']      =  "SP" ;
+            datosNeXO['sw_publicidad']      =  "SP";
+            datosNeXO['swpublicidad']      =  "SP";
         }        
         datosNeXO['publicidad']                 =   paramForm.publicidad;
         datosNeXO['publicidad_grilla']          =   paramForm.publicidad_grilla;
@@ -1848,6 +1856,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         datosNeXO['g_fecha']                    =   fechactual;
         datosNeXO['g_origen']                   =   "IGOB247";
         datosNeXO['licencia_multiple'] = paramForm.licenciam;
+        datosNeXO['condicion_uso'] = $rootScope.condicion_uso;
         if (paramForm.f01_categoria_descrip == 211 || paramForm.f01_categoria_descrip == '211') {
             datosNeXO['f01_vehiculo_ft'] = paramForm.f01_vehiculo_ft;
             datosNeXO['f01_otorgado_ft'] = paramForm.f01_otorgado_ft;
@@ -1873,7 +1882,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                 datosNeXO['INT_AE_IDCODIGO_ZONA']       = "21";
                 datosNeXO['INT_ID_ACTIVIDAD_ECONOMICA'] = paramForm.INT_TRAMITE_RENOVA;
             }
-        }        
+        }
         var sMacroR         =   datosNeXO['f01_macro_des'];
         //var sDistritoR      =   datosNeXO['INT_DISTRITO'];
         var sZonaR          =   datosNeXO['INT_ZONA'];
@@ -1887,6 +1896,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             //if(sMacroR != "" && sZonaR  != "" && sMacroRDesc  != "" && sZonaRDesc  != ""){
                 var sIdTramite = $rootScope.tramiteId;
                 var datosSerializados = JSON.stringify(datosNeXO);
+                console.log('datosSerializados    ',datosSerializados);
                 archivo1 = "";
                 //CREAR CASO AE LINEA
                 //REQUISITOS PARA CREAR LA ACTIVIDAD ECONOMICA INT_AC_MACRO_ID, INT_ID_CAT_AGRUPADA
@@ -2955,269 +2965,280 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         var scirep = "";
         var sempresa = "";
         var snit = "";
-        $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
-        if($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona == 'J'){
-            datos.f01_tipo_per_desc = 'JURIDICO';
-            urlFormularioN  =   "../../docs/AE_Formulario_401_343J.html";
-            $( "#msgformularioJ" ).load(urlFormularioN, function(data) {
-                stringFormulario40  =   data;
-                datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
-                datos.f01_seg_nom_prop = ((typeof(datos.f01_seg_nom_prop) == 'undefined' || datos.f01_seg_nom_prop == null) ? "" : datos.f01_seg_nom_prop);
-                datos.f01_ape_pat_rep = ((typeof(datos.f01_ape_pat_rep) == 'undefined' || datos.f01_ape_pat_rep == null) ? "" : datos.f01_ape_pat_rep);
-                datos.f01_ape_mat_rep = ((typeof(datos.f01_ape_mat_rep) == 'undefined' || datos.f01_ape_mat_rep == null) ? "" : datos.f01_ape_mat_rep);
-                datos.f01_ape_cas_rep = ((typeof(datos.f01_ape_cas_rep) == 'undefined' || datos.f01_ape_cas_rep == null) ? "" : datos.f01_ape_cas_rep);
-                datos.f01_tip_doc_prop = ((typeof(datos.f01_tip_doc_prop) == 'undefined' || datos.f01_tip_doc_prop == null) ? "" : datos.f01_tip_doc_prop);
-                datos.f01_expedido_prop = ((typeof(datos.f01_expedido_prop) == 'undefined' || datos.f01_expedido_prop == null) ? "" : datos.f01_expedido_prop);
-                datos.f01_nit_prop = ((typeof(datos.f01_nit_prop) == 'undefined' || datos.f01_nit_prop == null) ? "" : datos.f01_nit_prop);
-                datos.f01_zon_prop_valor = ((typeof(datos.f01_zon_prop_valor) == 'undefined' || datos.f01_zon_prop_valor == null) ? "" : datos.f01_zon_prop_valor);
-                datos.f01_tip_via_prop = ((typeof(datos.f01_tip_via_prop) == 'undefined' || datos.f01_tip_via_prop == null) ? "" : datos.f01_tip_via_prop);
-                datos.f01_num_prop = ((typeof(datos.f01_num_prop) == 'undefined' || datos.f01_num_prop == null) ? "" : datos.f01_num_prop);
-                datos.f01_nom_edi_prop = ((typeof(datos.f01_nom_edi_prop) == 'undefined' || datos.f01_nom_edi_prop == null) ? "" : datos.f01_nom_edi_prop);
-                datos.f01_bloq_prop = ((typeof(datos.f01_bloq_prop) == 'undefined' || datos.f01_bloq_prop == null) ? "" : datos.f01_bloq_prop);
-                datos.f01_piso_prop = ((typeof(datos.f01_piso_prop) == 'undefined' || datos.f01_piso_prop == null) ? "" : datos.f01_piso_prop);
-                datos.f01_depa_prop = ((typeof(datos.f01_depa_prop) == 'undefined' || datos.f01_depa_prop == null) ? "" : datos.f01_depa_prop);
-                datos.f01_telef_prop = ((typeof(datos.f01_telef_prop) == 'undefined' || datos.f01_telef_prop == null) ? "" : datos.f01_telef_prop);
-                datos.f01_cel_prop = ((typeof(datos.f01_cel_prop) == 'undefined' || datos.f01_cel_prop == null) ? "" : datos.f01_cel_prop);
-                datos.f01_tipo_lic_descrip = ((typeof(datos.f01_tipo_lic_descrip) == 'undefined' || datos.f01_tipo_lic_descrip == null) ? "" : datos.f01_tipo_lic_descrip);
-                datos.f01_categoria_agrupada_descrip = ((typeof(datos.f01_categoria_agrupada_descrip) == 'undefined' || datos.f01_categoria_agrupada_descrip == null) ? "" : datos.f01_categoria_agrupada_descrip);
-                datos.f01_categoria_agrupada_descripcion = ((typeof(datos.f01_categoria_agrupada_descripcion) == 'undefined' || datos.f01_categoria_agrupada_descripcion == null) ? "" : datos.f01_categoria_agrupada_descripcion);
-                if(datos.f01_tipo_lic != '26' || datos.f01_tipo_lic != 26){
-                    //$scope.GetValueLicencia();
-                    //$scope.GetValueCategoriaAgrupada();
-                    //$scope.GetValueCategoria();
-                }
-                if(datos.f01_tip_act =='MA' || datos.f01_tip_act =='MATRI'){
-                    datos.f01_tip_act1 = 'MATRIZ';
-                }
-                if(datos.f01_tip_act =='SU' || datos.f01_tip_act =='SUCUR'){
-                    datos.f01_tip_act1 = 'SUCURSAL';
-                }
-                var pubMod = '';
-                pubMod = '<tr><td>VIAE</td>'+
-                '<td>TIPO</td>' +
-                '<td>CARACTERÍSTICA</td>'+
-                //'<td>CARAS</td>'+
-                '<td>DESCRIPCIÓN</td>'+
-                '<td>ALTO</td>'+
-                '<td>ANCHO</td>'+
-                '<td>SUPERFICIE</td>';
-                for (i = 0; i < datos.publicidad.length; i++){
-                    pubMod = pubMod +'<tr>' +
-                    '<td>' + datos.publicidad[i].id + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_TIPO_LETRE + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_CARA + '</td>'+
-                    //'<td>' + datos.publicidad[i].INT_NRO_CARA + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_DESC + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_ANCHO + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_ALTO + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_SUP + '</td></tr>';
-                }
-                //CABECERA
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
-                stringFormulario40  =   stringFormulario40.replace("#f01_nro_orden#", datos.f01_nro_orden);
-                stringFormulario40  =   stringFormulario40.replace("#f01_tipo_form#", '401');
-                stringFormulario40  =   stringFormulario40.replace("#f01_tipo_per_desc#", datos.f01_tipo_per_desc);
-                //DATOS DEL REPRESENTANTE LEGAL
-                stringFormulario40  =   stringFormulario40.replace("#f01_pri_nom_rep#", datos.f01_pri_nom_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_seg_nom_rep#", datos.f01_seg_nom_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_ter_nom_rep#", datos.f01_ter_nom_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_ape_pat_rep#", datos.f01_ape_pat_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_ape_mat_rep#", datos.f01_ape_mat_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_ape_cas_rep#", datos.f01_ape_cas_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_tip_doc_rep#", datos.f01_tip_doc_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_doc_rep#", datos.f01_num_doc_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_expedido_rep#", datos.f01_expedido_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_tipo_viarep#", datos.f01_tipo_viarep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_zon_rep_valor#", datos.f01_zon_rep_valor);
-                stringFormulario40  =   stringFormulario40.replace("#f01_nom_via_rep#", datos.f01_nom_via_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_rep#", datos.f01_num_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_telef_rep#", datos.f01_telef_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_cel_rep#", datos.f01_cel_rep);
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_pod_leg#", datos.f01_num_pod_leg);
-                stringFormulario40  =   stringFormulario40.replace("#f01_ges_vig_pod#", datos.f01_ges_vig_pod);
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_notaria#", datos.f01_num_notaria);
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_doc_per_jur#", datos.f01_num_doc_per_jur);
-                stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc_per_jur#", datos.f01_raz_soc_per_jur);
-                stringFormulario40  =   stringFormulario40.replace("#f01_email_prop#", datos.f01_email_prop);
-                //DATOS DE LA ACTIVIDAD ECONOMICA
-                stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.f01_raz_soc.toUpperCase());
-                stringFormulario40  =   stringFormulario40.replace("#f01_de_hor#", datos.f01_de_hor);
-                stringFormulario40  =   stringFormulario40.replace("#f01_a_hor#", datos.f01_a_hor);
-                stringFormulario40  =   stringFormulario40.replace("#f01_sup#", datos.f01_sup);
-                stringFormulario40  =   stringFormulario40.replace("#f01_estab_es#", datos.f01_estab_es);
-                stringFormulario40  =   stringFormulario40.replace("#f01_tip_act1#", datos.f01_tip_act1);
-                stringFormulario40  =   stringFormulario40.replace("#publicidad_grilla#", pubMod);
-                stringFormulario40  =   stringFormulario40.replace("#f01_idCodigoZona#", datos.f01_idCodigoZona);
-                 //pago adelantado
-                var tablapago = '';
-                if(datos.pago_adelantado == true){
-                    stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SI');//datos.pago_adelantado);
-                    stringFormulario40  =   stringFormulario40.replace("#nro_ges#", datos.nro_ges);
-                    /*if (datos.listDeudas) {
-                        console.log('datos.montoDeuda     ',datos.montoDeuda);
-                        var lstDeuda = datos.listDeudas;
-                        tablapago = '<table id="tablaDe" class="table table-striped table-bordered"><tr>'+
-                            '<th>Nº</th>'+
-                            '<th>GESTIÓN</th>'+
-                            '<th>MONTO ACT. ECO.</th>'+
-                            '<th>MONTO ELEM. PUB.</th>'+
-                            '<th>DESCUENTO EN %</th>'+
-                            '<th>MONTO SIN DESC.</th>'+
-                            '<th>DESCUENTO</th>'+
-                            '<th>MONTO TOTAL</th>'+
-                            '</tr>';
-                            for (i = 0; i < lstDeuda.length; i++){
-                                tablapago = tablapago +'<tr>' +
-                                '<td>' + (i+1) + '</td>'+
-                                '<td>' + lstDeuda[i].gestion + '</td>'+
-                                '<td>' + lstDeuda[i].monto_ae + '</td>'+
-                                '<td>' + lstDeuda[i].monto_viae + '</td>'+
-                                '<td>' + lstDeuda[i].descuento + '</td>'+
-                                '<td>' + lstDeuda[i].monto_total + '</td>'+
-                                '<td>' + lstDeuda[i].monto_descuento + '</td>'+
-                                '<td>' + lstDeuda[i].monto_total_con_descuento + '</td>'+'</tr>';
-                            }
-                        tablapago = tablapago + '</table>';
-                        stringFormulario40  =   stringFormulario40.replace("#tablaP#", tablapago);
-                    }*/
-                    stringFormulario40  =   stringFormulario40.replace("#tablaP#", '');
-                }else{
-                    stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
-                    stringFormulario40  =   stringFormulario40.replace("#nro_ges#", 'NINGUNA');
-                    stringFormulario40  =   stringFormulario40.replace("#tablaP#", '');
-                }
-                var divfoodTruck = '';
-                if (datos.f01_categoria == 211 || datos.f01_categoria == '211') {
-                    divfoodTruck = divfoodTruck + '<div class="row"><div class="col-md-12" style="margin: 10px">'+
-                                                '<h3>DATOS DEL VEHÍCULO O REMOLQUE</h3></div></div>'+
-                                        '<div class="row" style="border-style: solid; border-width: 1px; border-radius: 10px 10px 10px 10px; margin: 10px; padding-top: 8px">'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Tipo de Vehículo: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_vehiculo_ft + '</div>'+
-                                            '</div>';
-                                            if (datos.f01_vehiculo_ft == "REMOLQUE") {
-                                                divfoodTruck = divfoodTruck + '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Otorgado: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_otorgado_ft + '</div>'+
-                                            '</div>';
-                                            }                                            
-                                            divfoodTruck = divfoodTruck + '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Clase: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_clase_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Marca: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_marca_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Tipo: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_tipo_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Subtipo: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_subtipo_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Modelo: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_modelo_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Motor: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_motor_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Nº Chasis: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_chasis_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Servicio: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_servicio_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Color: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_color_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Radicatoria: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_radicatoria_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Documento Legal: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_doclegal_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Nº Documento Legal: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_numdoclegal_ft + '</div>'+
-                                            '</div>'+
-                                            '<div class="col-md-6">'+
-                                                '<div class="col-md-6"><label>Ubicación del lugar donde se Efectuara la Inspección del Vehículo o Remolque: </label></div>'+
-                                                '<div class="col-md-6">'+ datos.f01_lugar_ft + '</div>'+
-                                            '</div></div>';
-                    stringFormulario40  =   stringFormulario40.replace("#divft#", divfoodTruck);
-                } else{
-                    stringFormulario40  =   stringFormulario40.replace("#divft#", divfoodTruck);
-                };
-                var multi = '';
-                if (datos.f01_tipo_lic_sierra == 26 || datos.f01_tipo_lic_sierra == '26') {
-                    stringFormulario40  =   stringFormulario40.replace("#f01_tipo_lic_descrip#", datos.f01_tipo_lic_descrip);
-                    stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descrip#", datos.f01_categoria_agrupada_descrip);
-                    stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descripcion#", datos.f01_categoria_agrupada_descrip);
-                    multi = '<tr><td>NRO</td>'+
-                    '<td>TIPO DE LICENCIA</td>' +
-                    '<td>TIPO DE CATEGORÍA</td>'+
-                    '<td>TIPO DE ACTIVIDAD</td>';
-                    for (i = 1; i < datos.Licenmul_grilla.length; i++){
-                        multi = multi +'<tr>' +
-                        '<td>' + datos.Licenmul_grilla[i].nroElem + '</td>'+
-                        '<td>' + datos.Licenmul_grilla[i].f01_tipo_licmdescrip + '</td>'+
-                        '<td>' + datos.Licenmul_grilla[i].f01_cat_agrupadamdescrip + '</td>'+
-                        '<td>' + datos.Licenmul_grilla[i].f01_act_desarrolladamdescrip + '</td></tr>';
+
+        var validarCorrelativoPub = [$scope.generarCorrelativo('FORM_401')];
+        $q.all(validarCorrelativoPub).then(function (resp) {
+            $rootScope.f01_correlativo_form401 = resp[0];
+            $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
+            if($scope.tipoPersona == 'JURIDICO' || $scope.tipoPersona == 'J'){
+                datos.f01_tipo_per_desc = 'JURIDICO';
+                urlFormularioN  =   "../../docs/AE_Formulario_401_343J.html";
+                $( "#msgformularioJ" ).load(urlFormularioN, function(data) {
+                    stringFormulario40  =   data;
+                    datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
+                    datos.f01_seg_nom_prop = ((typeof(datos.f01_seg_nom_prop) == 'undefined' || datos.f01_seg_nom_prop == null) ? "" : datos.f01_seg_nom_prop);
+                    datos.f01_ape_pat_rep = ((typeof(datos.f01_ape_pat_rep) == 'undefined' || datos.f01_ape_pat_rep == null) ? "" : datos.f01_ape_pat_rep);
+                    datos.f01_ape_mat_rep = ((typeof(datos.f01_ape_mat_rep) == 'undefined' || datos.f01_ape_mat_rep == null) ? "" : datos.f01_ape_mat_rep);
+                    datos.f01_ape_cas_rep = ((typeof(datos.f01_ape_cas_rep) == 'undefined' || datos.f01_ape_cas_rep == null) ? "" : datos.f01_ape_cas_rep);
+                    datos.f01_tip_doc_prop = ((typeof(datos.f01_tip_doc_prop) == 'undefined' || datos.f01_tip_doc_prop == null) ? "" : datos.f01_tip_doc_prop);
+                    datos.f01_expedido_prop = ((typeof(datos.f01_expedido_prop) == 'undefined' || datos.f01_expedido_prop == null) ? "" : datos.f01_expedido_prop);
+                    datos.f01_nit_prop = ((typeof(datos.f01_nit_prop) == 'undefined' || datos.f01_nit_prop == null) ? "" : datos.f01_nit_prop);
+                    datos.f01_zon_prop_valor = ((typeof(datos.f01_zon_prop_valor) == 'undefined' || datos.f01_zon_prop_valor == null) ? "" : datos.f01_zon_prop_valor);
+                    datos.f01_tip_via_prop = ((typeof(datos.f01_tip_via_prop) == 'undefined' || datos.f01_tip_via_prop == null) ? "" : datos.f01_tip_via_prop);
+                    datos.f01_num_prop = ((typeof(datos.f01_num_prop) == 'undefined' || datos.f01_num_prop == null) ? "" : datos.f01_num_prop);
+                    datos.f01_nom_edi_prop = ((typeof(datos.f01_nom_edi_prop) == 'undefined' || datos.f01_nom_edi_prop == null) ? "" : datos.f01_nom_edi_prop);
+                    datos.f01_bloq_prop = ((typeof(datos.f01_bloq_prop) == 'undefined' || datos.f01_bloq_prop == null) ? "" : datos.f01_bloq_prop);
+                    datos.f01_piso_prop = ((typeof(datos.f01_piso_prop) == 'undefined' || datos.f01_piso_prop == null) ? "" : datos.f01_piso_prop);
+                    datos.f01_depa_prop = ((typeof(datos.f01_depa_prop) == 'undefined' || datos.f01_depa_prop == null) ? "" : datos.f01_depa_prop);
+                    datos.f01_telef_prop = ((typeof(datos.f01_telef_prop) == 'undefined' || datos.f01_telef_prop == null) ? "" : datos.f01_telef_prop);
+                    datos.f01_cel_prop = ((typeof(datos.f01_cel_prop) == 'undefined' || datos.f01_cel_prop == null) ? "" : datos.f01_cel_prop);
+                    datos.f01_tipo_lic_descrip = ((typeof(datos.f01_tipo_lic_descrip) == 'undefined' || datos.f01_tipo_lic_descrip == null) ? "" : datos.f01_tipo_lic_descrip);
+                    datos.f01_categoria_agrupada_descrip = ((typeof(datos.f01_categoria_agrupada_descrip) == 'undefined' || datos.f01_categoria_agrupada_descrip == null) ? "" : datos.f01_categoria_agrupada_descrip);
+                    datos.f01_categoria_agrupada_descripcion = ((typeof(datos.f01_categoria_agrupada_descripcion) == 'undefined' || datos.f01_categoria_agrupada_descripcion == null) ? "" : datos.f01_categoria_agrupada_descripcion);
+                    if(datos.f01_tipo_lic != '26' || datos.f01_tipo_lic != 26){
+                        //$scope.GetValueLicencia();
+                        //$scope.GetValueCategoriaAgrupada();
+                        //$scope.GetValueCategoria();
                     }
-                    stringFormulario40  =   stringFormulario40.replace("#Licenmul_grilla#", multi);
-                } else{
-                    stringFormulario40  =   stringFormulario40.replace("#f01_tipo_lic_descrip#", datos.f01_tipo_lic_descrip);
-                    stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descrip#", datos.f01_categoria_agrupada_descrip);
-                    stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descripcion#", datos.f01_categoria_agrupada_descripcion);
-                    stringFormulario40  =   stringFormulario40.replace("#Licenmul_grilla#", multi);
-                };
-                //UBICACION DE LA ACTIVIDAD ECONOMICA
-                stringFormulario40  =   stringFormulario40.replace("#f01_macro_act_descrip#", datos.f01_macro_act_descrip);
-                stringFormulario40  =   stringFormulario40.replace("#f01_dist_act#", datos.f01_dist_act);
-                stringFormulario40  =   stringFormulario40.replace("#f01_tip_via_act#", datos.f01_tip_via_act);
-                stringFormulario40  =   stringFormulario40.replace("#f01_categoria_descrip#", datos.f01_categoria_descrip);
-                stringFormulario40  =   stringFormulario40.replace("#f01_zona_act_descrip#", datos.f01_zona_act_descrip);
-                stringFormulario40  =   stringFormulario40.replace("#f01_tip_via_act#", datos.f01_tip_via_act);
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_act1#", datos.f01_num_act1);
-                stringFormulario40  =   stringFormulario40.replace("#f01_edificio_act#", datos.f01_edificio_act);
-                stringFormulario40  =   stringFormulario40.replace("#f01_bloque_act#", datos.f01_bloque_act);
-                stringFormulario40  =   stringFormulario40.replace("#f01_piso_act#", datos.f01_piso_act);
-                stringFormulario40  =   stringFormulario40.replace("#f01_dpto_of_loc#", datos.f01_dpto_of_loc);
-                stringFormulario40  =   stringFormulario40.replace("#f01_tel_act1#", datos.f01_tel_act1);
-                if (datos.f01_num_act_id == '0' || datos.f01_num_act_id == 0) {
-                    stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act_n);
-                } else{
-                    stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act);
-                };
-                if (datos.chkzonasegura == '' || datos.chkzonasegura == 'undefined' || datos.chkzonasegura == undefined) {
-                    stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '');
-                } else{
-                    if (datos.chkzonasegura == 'ZONASEGURA') {
-                        stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> SI');
+                    if(datos.f01_tip_act =='MA' || datos.f01_tip_act =='MATRI'){
+                        datos.f01_tip_act1 = 'MATRIZ';
+                    }
+                    if(datos.f01_tip_act =='SU' || datos.f01_tip_act =='SUCUR'){
+                        datos.f01_tip_act1 = 'SUCURSAL';
+                    }
+                    var pubMod = '';
+                    pubMod = '<tr><td>VIAE</td>'+
+                    '<td>TIPO</td>' +
+                    '<td>CARACTERÍSTICA</td>'+
+                    //'<td>CARAS</td>'+
+                    '<td>DESCRIPCIÓN</td>'+
+                    '<td>ALTO</td>'+
+                    '<td>ANCHO</td>'+
+                    '<td>SUPERFICIE</td>';
+                    for (i = 0; i < datos.publicidad.length; i++){
+                        pubMod = pubMod +'<tr>' +
+                        '<td>' + datos.publicidad[i].id + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_TIPO_LETRE + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_CARA + '</td>'+
+                        //'<td>' + datos.publicidad[i].INT_NRO_CARA + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_DESC + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_ANCHO + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_ALTO + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_SUP + '</td></tr>';
+                    }
+                    //CABECERA
+                    //stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
+                    if (datos.f01_num_pmc == undefined || datos.f01_num_pmc == 'undefined' || datos.f01_num_pmc == null || datos.f01_num_pmc == '') {
+                        stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", 'CONTRIBUYENTE NUEVO');
                     } else{
-                        stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> NO');
+                        stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
                     };
-                };
-                stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
-                stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
-                stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
-                $scope.msgformularioJ = stringFormulario40;
-                $scope.notifcondicionesuso = stringFormulario40;
-                setTimeout(function(){
-                    $scope.fmostrarFormulario();
-                },500);
-            })
-            $scope.armarDatosForm(datos,fechaActualS, sHora);
-        }
+                    stringFormulario40  =   stringFormulario40.replace("#f01_nro_orden#", $rootScope.f01_correlativo_form401);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_tipo_form#", '401');
+                    stringFormulario40  =   stringFormulario40.replace("#f01_tipo_per_desc#", datos.f01_tipo_per_desc);
+                    //DATOS DEL REPRESENTANTE LEGAL
+                    stringFormulario40  =   stringFormulario40.replace("#f01_pri_nom_rep#", datos.f01_pri_nom_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_seg_nom_rep#", datos.f01_seg_nom_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_ter_nom_rep#", datos.f01_ter_nom_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_ape_pat_rep#", datos.f01_ape_pat_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_ape_mat_rep#", datos.f01_ape_mat_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_ape_cas_rep#", datos.f01_ape_cas_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_tip_doc_rep#", datos.f01_tip_doc_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_num_doc_rep#", datos.f01_num_doc_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_expedido_rep#", datos.f01_expedido_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_tipo_viarep#", datos.f01_tipo_viarep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_zon_rep_valor#", datos.f01_zon_rep_valor);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_nom_via_rep#", datos.f01_nom_via_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_num_rep#", datos.f01_num_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_telef_rep#", datos.f01_telef_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_cel_rep#", datos.f01_cel_rep);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_num_pod_leg#", datos.f01_num_pod_leg);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_ges_vig_pod#", datos.f01_ges_vig_pod);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_num_notaria#", datos.f01_num_notaria);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_num_doc_per_jur#", datos.f01_num_doc_per_jur);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc_per_jur#", datos.f01_raz_soc_per_jur);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_email_prop#", datos.f01_email_prop);
+                    //DATOS DE LA ACTIVIDAD ECONOMICA
+                    stringFormulario40  =   stringFormulario40.replace("#f01_raz_soc#", datos.f01_raz_soc.toUpperCase());
+                    stringFormulario40  =   stringFormulario40.replace("#f01_de_hor#", datos.f01_de_hor);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_a_hor#", datos.f01_a_hor);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_sup#", datos.f01_sup);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_estab_es#", datos.f01_estab_es);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_tip_act1#", datos.f01_tip_act1);
+                    stringFormulario40  =   stringFormulario40.replace("#publicidad_grilla#", pubMod);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_idCodigoZona#", datos.f01_idCodigoZona);
+                     //pago adelantado
+                    var tablapago = '';
+                    if(datos.pago_adelantado == true){
+                        stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SI');//datos.pago_adelantado);
+                        stringFormulario40  =   stringFormulario40.replace("#nro_ges#", datos.nro_ges);
+                        /*if (datos.listDeudas) {
+                            console.log('datos.montoDeuda     ',datos.montoDeuda);
+                            var lstDeuda = datos.listDeudas;
+                            tablapago = '<table id="tablaDe" class="table table-striped table-bordered"><tr>'+
+                                '<th>Nº</th>'+
+                                '<th>GESTIÓN</th>'+
+                                '<th>MONTO ACT. ECO.</th>'+
+                                '<th>MONTO ELEM. PUB.</th>'+
+                                '<th>DESCUENTO EN %</th>'+
+                                '<th>MONTO SIN DESC.</th>'+
+                                '<th>DESCUENTO</th>'+
+                                '<th>MONTO TOTAL</th>'+
+                                '</tr>';
+                                for (i = 0; i < lstDeuda.length; i++){
+                                    tablapago = tablapago +'<tr>' +
+                                    '<td>' + (i+1) + '</td>'+
+                                    '<td>' + lstDeuda[i].gestion + '</td>'+
+                                    '<td>' + lstDeuda[i].monto_ae + '</td>'+
+                                    '<td>' + lstDeuda[i].monto_viae + '</td>'+
+                                    '<td>' + lstDeuda[i].descuento + '</td>'+
+                                    '<td>' + lstDeuda[i].monto_total + '</td>'+
+                                    '<td>' + lstDeuda[i].monto_descuento + '</td>'+
+                                    '<td>' + lstDeuda[i].monto_total_con_descuento + '</td>'+'</tr>';
+                                }
+                            tablapago = tablapago + '</table>';
+                            stringFormulario40  =   stringFormulario40.replace("#tablaP#", tablapago);
+                        }*/
+                        stringFormulario40  =   stringFormulario40.replace("#tablaP#", '');
+                    }else{
+                        stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
+                        stringFormulario40  =   stringFormulario40.replace("#nro_ges#", 'NINGUNA');
+                        stringFormulario40  =   stringFormulario40.replace("#tablaP#", '');
+                    }
+                    var divfoodTruck = '';
+                    if (datos.f01_categoria == 211 || datos.f01_categoria == '211') {
+                        divfoodTruck = divfoodTruck + '<div class="row"><div class="col-md-12" style="margin: 10px">'+
+                                                    '<h3>DATOS DEL VEHÍCULO O REMOLQUE</h3></div></div>'+
+                                            '<div class="row" style="border-style: solid; border-width: 1px; border-radius: 10px 10px 10px 10px; margin: 10px; padding-top: 8px">'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Tipo de Vehículo: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_vehiculo_ft + '</div>'+
+                                                '</div>';
+                                                if (datos.f01_vehiculo_ft == "REMOLQUE") {
+                                                    divfoodTruck = divfoodTruck + '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Otorgado: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_otorgado_ft + '</div>'+
+                                                '</div>';
+                                                }                                            
+                                                divfoodTruck = divfoodTruck + '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Clase: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_clase_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Marca: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_marca_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Tipo: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_tipo_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Subtipo: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_subtipo_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Modelo: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_modelo_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Motor: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_motor_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Nº Chasis: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_chasis_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Servicio: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_servicio_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Color: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_color_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Radicatoria: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_radicatoria_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Documento Legal: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_doclegal_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Nº Documento Legal: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_numdoclegal_ft + '</div>'+
+                                                '</div>'+
+                                                '<div class="col-md-6">'+
+                                                    '<div class="col-md-6"><label>Ubicación del lugar donde se Efectuara la Inspección del Vehículo o Remolque: </label></div>'+
+                                                    '<div class="col-md-6">'+ datos.f01_lugar_ft + '</div>'+
+                                                '</div></div>';
+                        stringFormulario40  =   stringFormulario40.replace("#divft#", divfoodTruck);
+                    } else{
+                        stringFormulario40  =   stringFormulario40.replace("#divft#", divfoodTruck);
+                    };
+                    var multi = '';
+                    if (datos.f01_tipo_lic_sierra == 26 || datos.f01_tipo_lic_sierra == '26') {
+                        stringFormulario40  =   stringFormulario40.replace("#f01_tipo_lic_descrip#", datos.f01_tipo_lic_descrip);
+                        stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descrip#", datos.f01_categoria_agrupada_descrip);
+                        stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descripcion#", datos.f01_categoria_agrupada_descrip);
+                        multi = '<tr><td>NRO</td>'+
+                        '<td>TIPO DE LICENCIA</td>' +
+                        '<td>TIPO DE CATEGORÍA</td>'+
+                        '<td>TIPO DE ACTIVIDAD</td>';
+                        for (i = 1; i < datos.Licenmul_grilla.length; i++){
+                            multi = multi +'<tr>' +
+                            '<td>' + datos.Licenmul_grilla[i].nroElem + '</td>'+
+                            '<td>' + datos.Licenmul_grilla[i].f01_tipo_licmdescrip + '</td>'+
+                            '<td>' + datos.Licenmul_grilla[i].f01_cat_agrupadamdescrip + '</td>'+
+                            '<td>' + datos.Licenmul_grilla[i].f01_act_desarrolladamdescrip + '</td></tr>';
+                        }
+                        stringFormulario40  =   stringFormulario40.replace("#Licenmul_grilla#", multi);
+                    } else{
+                        stringFormulario40  =   stringFormulario40.replace("#f01_tipo_lic_descrip#", datos.f01_tipo_lic_descrip);
+                        stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descrip#", datos.f01_categoria_agrupada_descrip);
+                        stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descripcion#", datos.f01_categoria_agrupada_descripcion);
+                        stringFormulario40  =   stringFormulario40.replace("#Licenmul_grilla#", multi);
+                    };
+                    //UBICACION DE LA ACTIVIDAD ECONOMICA
+                    stringFormulario40  =   stringFormulario40.replace("#f01_macro_act_descrip#", datos.f01_macro_act_descrip);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_dist_act#", datos.f01_dist_act);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_tip_via_act#", datos.f01_tip_via_act);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_categoria_descrip#", datos.f01_categoria_descrip);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_zona_act_descrip#", datos.f01_zona_act_descrip);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_tip_via_act#", datos.f01_tip_via_act);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_num_act1#", datos.f01_num_act1);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_edificio_act#", datos.f01_edificio_act);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_bloque_act#", datos.f01_bloque_act);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_piso_act#", datos.f01_piso_act);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_dpto_of_loc#", datos.f01_dpto_of_loc);
+                    stringFormulario40  =   stringFormulario40.replace("#f01_tel_act1#", datos.f01_tel_act1);
+                    if (datos.f01_num_act_id == '0' || datos.f01_num_act_id == 0) {
+                        stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act_n);
+                    } else{
+                        stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act);
+                    };
+                    if (datos.chkzonasegura == '' || datos.chkzonasegura == 'undefined' || datos.chkzonasegura == undefined) {
+                        stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '');
+                    } else{
+                        if (datos.chkzonasegura == 'ZONASEGURA') {
+                            stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> SI');
+                        } else{
+                            stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> NO');
+                        };
+                    };
+                    stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
+                    stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
+                    stringFormulario40  =   stringFormulario40.replace("#fecha_sist2#", fechaActualS);
+                    $scope.msgformularioJ = stringFormulario40;
+                    $scope.notifcondicionesuso = stringFormulario40;
+                    setTimeout(function(){
+                        $scope.fmostrarFormulario();
+                    },500);
+                })
+                $scope.armarDatosForm(datos,fechaActualS, sHora);
+            }
+        })
+
     }
 
     $scope.armarDatosForm = function(data,sfecha,sHora){
@@ -3281,8 +3302,13 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             dataForm['f01_dist_act'] = data.f01_dist_act;
             dataForm['f01_estab_es'] = data.f01_estab_es;
             dataForm['f01_sup'] = data.f01_sup;
-            dataForm['f01_num_pmc'] = data.f01_num_pmc;
-            dataForm['f01_nro_orden'] = data.f01_nro_orden;
+            //dataForm['f01_num_pmc'] = data.f01_num_pmc;
+            if (data.f01_num_pmc == undefined || data.f01_num_pmc == 'undefined' || data.f01_num_pmc == null || data.f01_num_pmc == '') {
+                dataForm['f01_num_pmc'] = 'CONTRIBUYENTE NUEVO';
+            } else{
+                dataForm['f01_num_pmc'] = data.f01_num_pmc;
+            };
+            dataForm['f01_nro_orden'] = $rootScope.f01_correlativo_form401;
             //pago adelantado
             var tablapago = '';
             if(data.pago_adelantado == true){
@@ -3782,6 +3808,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             $scope.datos.f01_id_contribuyente_temp = datosgen.contribuyente_ant_id;
             $scope.datos.f01_id_representante_legal_antiguo = datosgen.contribuyente.representante.contribuyente_id;
             $scope.datos.f01_id_representante_legal_antiguo_temp = datosgen.contribuyente.representante.contribuyente_ant_id;
+            $scope.datos.f01_num_pmc = datosgen.contribuyente.padron;
         };
         $scope.datosRepresentanteLegal();
         $.unblockUI();

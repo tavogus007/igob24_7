@@ -1833,7 +1833,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
     $scope.publi=[];
     //$scope.publi.FECHAINICIO=$scope.fechactuall;
     //$scope.publi.FECHAFIN=$scope.fechadatoo;
-    $scope.lssubcategoria = function(){
+    /*$scope.lssubcategoria = function(){
         $scope.publi.INT_CATE="II Fija";
         $scope.publi.idcate=6;
         $scope.TipoLetrero = [
@@ -1841,9 +1841,35 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         {"p_idtipoletrero" : "4", "p_descripcion": "ADOSADA"},
         {"p_idtipoletrero" : "1", "p_descripcion": "MICROPERFORADA - AUTOADHESIVA"},
         {"p_idtipoletrero" : "3", "p_descripcion": "PINTADA"}];
-    };
+    };*/
+    $scope.lssubcategoria = function() {
+        try{
+            $scope.publi.INT_CATE = "II Fija";
+            $scope.publi.idcate = 6;
+            var resTipoLetrero = new reglasnegocioSierra();
+            resTipoLetrero.identificador = 'VALLE_PRUEBA-SGEN-3361';
+            resTipoLetrero.parametros = '{}';
+            resTipoLetrero.llamarregla_sierra(function(responseTipLet){
+                var lstTipoLetrero =  JSON.parse(responseTipLet);
+                var listLetreros = JSON.parse(lstTipoLetrero[0].pub_tipo_letrero);
+                console.log('listLetreros     ',listLetreros);
+                if(lstTipoLetrero.length > 0){
+                    $scope.TipoLetrero = listLetreros;
+                }else{
+                    $scope.msg = "Error !!";
+                }
+                if(!$scope.$$phase) {
+                    $scope.$apply();
+                }
+                $.unblockUI();
+            });
+        }catch(e){
+            //alert("Error en la actividad desarrollada");
+            $.unblockUI();
+        }
+    }
 
-    $scope.ltCaracteristica = function(idlee){
+    /*$scope.ltCaracteristica = function(idlee){
         $scope.lCaracteristica = {};
         var idcarac = "";
         //ID CARACTERISITICA
@@ -1870,19 +1896,55 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
          $scope.lCaracteristica = [
         {"p_idcaracteristica" : "1", "p_caracteristica": "Simple"}
         ];}
-    };
+    };*/
+    $scope.ltCaracteristica = function(idlee){
+        $scope.lCaracteristica = {};
+        var idcarac = "";
+        try{
+            var resTipoLetrero = new reglasnegocioSierra();
+            resTipoLetrero.identificador = 'VALLE_PRUEBA-SGEN-3362';
+            resTipoLetrero.parametros = '{"caracteristica":"'+idlee+'"}';
+            resTipoLetrero.llamarregla_sierra(function(responseCaracteristica){
+                var lstCaracteristica = JSON.parse(responseCaracteristica);
+                console.log('lstCaracteristica    ',lstCaracteristica);
+                if(lstCaracteristica.length > 0){
+                    $scope.lCaracteristica = lstCaracteristica;
+                    if($scope.TipoLetrero){
+                        angular.forEach($scope.TipoLetrero, function(value, key) {
+                            if(value.descripcion == idlee){
+                                idcarac = value.tipo_letrero_id;
+                            }
+                        });
+                    }
+                    $scope.publi.idcarac = idcarac;
+                }else{
+                    $scope.msg = "Error !!";
+                }
+                if(!$scope.$$phase) {
+                    $scope.$apply();
+                }
+                $.unblockUI();
+            });
+        }catch(e){
+            //alert("Error en la actividad desarrollada");
+            $.unblockUI();
+        }
+    }
 
     $scope.actulizarCaracteristica = function(){
-        var id_cara="";
+        var id_cara = "";
         var distNombre  = $scope.publi.INT_CARA;
+        console.log('distNombre     ',distNombre);
         if($scope.lCaracteristica){
+            console.log('$scope.lCaracteristica      ',$scope.lCaracteristica);
             angular.forEach($scope.lCaracteristica, function(value, key) {
-                if(value.p_caracteristica == distNombre){
-                    id_cara  =   value.p_idcaracteristica;
+                if(value.descripcion == distNombre){
+                    id_cara  =   value.id_pub_caracteristica;
                 }
             });
         }
-        $scope.publi.id_cara  =  id_cara;
+        $scope.publi.id_cara = id_cara;
+        console.log('$scope.publi.id_cara    ',$scope.publi.id_cara);
     };
 
     $scope.lsCaracteristica = function(){
@@ -2596,6 +2658,10 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             datosNeXO['file_num_ident'] = paramForm.file_num_ident;
             datosNeXO['file_fund_emp'] = paramForm.file_fund_emp;
             datosNeXO['file_reg_comer'] = paramForm.file_reg_comer;
+            datosNeXO['f01_latitud_emp'] = paramForm.f01_latitud_emp;
+            datosNeXO['f01_longitud_emp'] = paramForm.f01_longitud_emp;
+            datosNeXO['f01_latitud_rl_rep'] = paramForm.f01_latitud_rl_rep;
+            datosNeXO['f01_longitud_rl_rep'] = paramForm.f01_longitud_rl_rep;
              //PAGO ADELANTADO
             //datosNeXO['pago_adelantado'] =  paramForm.pago_adelantado;
             if (paramForm.pago_adelantado == true) {
@@ -2653,8 +2719,9 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         datosNeXO['g_origen']                   =   "IGOB247";
         datosNeXO['f01_vencimientoLicencia'] = paramForm.f01_vencimientoLicencia;
         datosNeXO['licencia_multiple'] = paramForm.licenciam;
-        datosNeXO['pago_duodecimas'] = paramForm.pago_duodecimas; 
+        datosNeXO['pago_duodecimas'] = paramForm.pago_duodecimas;
         datosNeXO['feha_duodecima'] = paramForm.feha_duodecima;
+        datosNeXO['condicion_uso'] = $rootScope.condicion_uso;
         if(paramForm.chkzonasegura == 'ZONASEGURA'){
             datosNeXO['f01_zona_segura'] = 'SI';
         }else{
@@ -4406,9 +4473,9 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         //$scope.lssubcategoria();
         //$scope.lsCaracteristica();
         //$scope.listadoDatosLicencia();
-        $scope.lscategoria();
+        //$scope.lscategoria();
         $scope.lssubcategoria();
-        $scope.lsCaracteristica();
+        //$scope.lsCaracteristica();
         $scope.catactividadDesarrollada();
     };
 

@@ -136,7 +136,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     }
     $scope.datosfalt = datosfaltantes;
   }
-  //mag
   $("#mensaje1").hide();
   $("#mensaje2").hide();
 
@@ -145,9 +144,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   $scope.datos = {};
   $scope.tramiteSeleccionado = "";
   $scope.dsaraza = true;
-
-  //$scope.swImg = '';
-  //$scope.swImgok = '';
 
   $scope.cargandoMascotas = function () {
     $scope.cargandoMascotas = [
@@ -206,9 +202,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
       }
     });
-
-  //DATOS PERSONALES DEL CIUDADANNO
-
 
   //INSERTAR DATOS MASCOTA
   $scope.serializarInformacion = function (data) {
@@ -318,16 +311,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
       }else{
          if ($scope.datos.mascota_esterilizacion == "si") {
-
-          /*$.blockUI();
-          var datosMascotaCod = new reglasnegocioM();
-          datosMascotaCod.identificador = 'SISTEMA_VALLE-CM-1430';
-          datosMascotaCod.parametros = '{}';
-          datosMascotaCod.llamarregla(function (results) {
-            $scope.cod_id = JSON.parse(results);
-             $scope.dataMascota.cod_chip = 'CM-'+$scope.cod_id[0].sp_obtener_correlativo; 
-            console.log("codigo",$scope.cod_id[0].sp_obtener_correlativo);
-          });*/
           $scope.dataMascota.cod_chip = 'NO';
         }else{
           $scope.dataMascota.cod_chip = 'NO';
@@ -448,7 +431,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
   $scope.dataMascota = {};
   $scope.insertarDataMascota = function (data) {
-
     if ($scope.botonMod == true) {
       $scope.dataMascota.xmascota_id = data.xmascota_id;
       $scope.dataMascota.xmascota_imagen_url = data.mascota_imagen_url;//data.xmascota_imagen_url;
@@ -463,19 +445,15 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     } else {
       $scope.dataMascota.xmascota_raza_id = data.mascota_raza;//raza_id
     }
-    //$scope.dataMascota.titular_correo = tit_correo;
-    //$scope.dataMascota.titular_nombre = tit_nombre;
-    //$scope.dataMascota.titular_numero = tit_numero;
     $scope.dataMascota.xmascota_usr_id = sessionService.get('CICIUDADANO');//data.xmascota_usr_id;//ci_igob
-    //$scope.dataMascota.cod_chip =  $scope.cod_chip;//url de la foto
     $scope.dataMascota.xmascota_titular_ci = sessionService.get('CICIUDADANO');//data.xmascota_titular_ci;//ci_igob
     $scope.dataMascota.xmascota_data = "{}";
-    //reg_desparacitacion
-    $scope.reg_desparacitacion = {};
-    $scope.reg_desparacitacion.fecha_aplicacion = data.mascota_feca_desparasitacion;
-    $scope.reg_desparacitacion.institucion = data.mascota_institucion_desparasitacion;
-    $scope.reg_desparacitacion.nombre_veterinario_realizacion = data.mascota_veterinario_desparasitacion;
-    $scope.reg_desparacitacion.nombre_marca = 'Certificación';
+    //reg_desparasitacion
+    $scope.reg_desparasitacion = {};
+    $scope.reg_desparasitacion.fecha_aplicacion = data.mascota_feca_desparasitacion;
+    $scope.reg_desparasitacion.institucion = data.mascota_institucion_desparasitacion;
+    $scope.reg_desparasitacion.nombre_veterinario_realizacion = data.mascota_veterinario_desparasitacion;
+    $scope.reg_desparasitacion.nombre_marca = 'Certificación';
     //reg_esterilizacion
     $scope.reg_marca = {};
     $scope.reg_marca.codigo_esterilizacion = data.mascota_certificado;
@@ -517,13 +495,11 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.dataMascota_data.comp_peli = $scope.raza_peligrosa; //RAZA PELIGROSA
     $scope.dataMascota_data.vete_actual = data.mascota_veterinario;
     $scope.dataMascota_data.compromiso = "En mi calidad de titular de la mascota, registrada como potencialmente peligrosa, me hago responsable de ella y me comprometo a cumplir con las normas legales en actual vigencia. En aplicación a la ley 553, Ley Autonómica Municipal 239-316 y su reglamentación.";
-    $scope.dataMascota_data.desparacitacion = $scope.desparasitacion1; //DESPARASITACION
-    $scope.dataMascota_data.esterilizacion = $scope.esterilizacion; //ESTERILIZACION
+    $scope.dataMascota_data.desparasitacion = $scope.datos.mascota_desparasitacion; //$scope.desparasitacion1; //DESPARASITACION
+    $scope.dataMascota_data.esterilizacion = $scope.datos.mascota_esterilizacion; //$scope.esterilizacion; //ESTERILIZACION
     $scope.dataMascota_data.marca = $scope.marca;  //MARCA
-    $scope.dataMascota_data.reg_desparacitacion = $scope.reg_desparacitacion;
-    //$scope.dataMascota_data.reg_desparacitacion = JSON.stringify($scope.reg_desparacitacion);
+    $scope.dataMascota_data.reg_desparasitacion = $scope.reg_desparasitacion;
     $scope.dataMascota_data.reg_marca = $scope.reg_marca;
-    //$scope.dataMascota_data.reg_marca = JSON.stringify($scope.reg_marca);
     $scope.dataMascota_data.reg_vacunas = $scope.data1; ///recupera en la grilla
     $scope.dataMascota_data.vacunas = $scope.vacunas; //VACUNAS
     if ($scope.vacunas.length > 0) {
@@ -532,7 +508,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       $scope.dataMascota_data.vacunas = 'no';
     }
     $scope.dataMascota.xmascota_data = JSON.stringify($scope.dataMascota_data);
-    //$scope.dataMascotaMod.xmascota_data = JSON.stringify($scope.dataMascotaMod_data);
     $scope.nombre_mas = data.mascota_nombre;
     $scope.especie = $scope.dataMascota_data.especie;
     $scope.edad_desc = data.reg_edad_des;
@@ -566,10 +541,10 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
 
   $scope.mostrarInformacionMascota = function (data) {
-    //$.blockUI();
     cargando();
-    console.log('DATAAAAAA',data);
-    //$scope.cargarNuevaDataMascota();
+    $datos_mascota1 = {};
+    $scope.estrilizacion = false;
+    $scope.desparasitacion = false;
     datosMascota = new reglasnegocioM();
     datosMascota.identificador = 'SISTEMA_VALLE-CM-2031';
     datosMascota.parametros = '{"id_mascota":"' + data + '"}';
@@ -603,7 +578,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.xmascota_titular_id = $scope.respuesta[0].xmascota_titular_id;
         $scope.xmascota_titular_ci = $scope.respuesta[0].xmascota_titular_ci;
         $scope.xcodigo_chip = $scope.respuesta[0].xcodigo_chip;
-        console.log('$scope.xcodigo_chip',$scope.xcodigo_chip);
         $scope.xmascota_id = $scope.respuesta[0].xmascota_id;
         $scope.comp_peli = $datos_mascota1.comp_peli;
         $scope.compromiso = $datos_mascota1.compromiso;
@@ -639,18 +613,15 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
           }
 
         } else {
-
           for (var i2 = 0; i2 < $datos_mascota1.edad.length; i2++) {
             if ($datos_mascota1.edad[i2].toLowerCase() == "o") {
               indices.push(i2);
             }
-
             if ($datos_mascota1.edad[i2].toLowerCase() == "e") {
               indices2.push(i2);
             }
 
           }
-
         }
         if (indices.length > 0) {
           $scope.datos.reg_edad_des = "Años";
@@ -689,8 +660,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
           }
 
-        } else {
-
+        }else{
           for (var i3 = 0; i3 < $datos_mascota1.peso.length; i3++) {
             if ($datos_mascota1.peso[i3].toLowerCase() == "o") {
               indices3.push(i3);
@@ -701,7 +671,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
             }
 
           }
-
         }
         if (indices3.length > 0) {
           $scope.datos.reg_peso_des = "Kilos";
@@ -715,22 +684,20 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.datos.mascota_color = $datos_mascota1.color;
         $scope.datos.mascota_tamanio = $datos_mascota1.tamanio;
         if ($datos_mascota1.reg_vacunas) {
+
           if ($datos_mascota1.reg_vacunas.length > 0) {
             //alert('MODIFICACION CON VACUNAS');
             $scope.infogrilla = $datos_mascota1.reg_vacunas;
             $scope.data1 = $scope.infogrilla;
+          }else {
+            //alert('MODIFICACION SIN VACUNAS');
+            $scope.infogrilla = [];
+            $scope.data1 = $scope.infogrilla;
           }
-        } else {
-          //alert('MODIFICACION SIN VACUNAS');
-          $scope.infogrilla = [];
-          $scope.data1 = $scope.infogrilla;
         }
 
-        $scope.datos.mascota_esterilizacion = $scope.esterilizacion;
-        $scope.datos.mascota_desparasitacion = $scope.desparasitacion1;
-
-
         if ($datos_mascota1.esterilizacion == 'si') {
+          $scope.estrilizacion = true;
           //alert('ESTERILIZACION SI');
           $scope.datos.mascota_esterilizacion = $datos_mascota1.esterilizacion;
           $scope.datos.reg_feca = $datos_mascota1.reg_marca.fecha_aplicacion;
@@ -741,23 +708,26 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
         } else {
           //alert('ESTERILIZACION NO');
-          $scope.datos.mascota_esterilizacion = -1;
+          $scope.estrilizacion = false;
+          $scope.datos.mascota_esterilizacion = $datos_mascota1.esterilizacion;
           $scope.datos.reg_feca = '';
           $scope.datos.mascota_marca = '';
           $scope.datos.mascota_certificado = '';
           $scope.datos.mascota_veterinario = '';
           $scope.datos.mascota_institucion = '';
         }
-        if ($datos_mascota1.desparacitacion == 'si') {
-          //alert('desparacitacion SI');
-          $scope.datos.mascota_desparasitacion = $datos_mascota1.desparacitacion;
-          $scope.datos.mascota_feca_desparasitacion = $datos_mascota1.reg_desparacitacion.fecha_aplicacion;
-          $scope.datos.mascota_veterinario_desparasitacion = $datos_mascota1.reg_desparacitacion.nombre_veterinario_realizacion;
-          $scope.datos.mascota_institucion_desparasitacion = $datos_mascota1.reg_desparacitacion.institucion;
+        if ($datos_mascota1.desparasitacion == 'si'){
+          $scope.desparasitacion = true;
+          //alert('desparasitacion SI'); 
+          $scope.datos.mascota_desparasitacion = $datos_mascota1.desparasitacion;
+          $scope.datos.mascota_feca_desparasitacion = $datos_mascota1.reg_desparasitacion.fecha_aplicacion;
+          $scope.datos.mascota_veterinario_desparasitacion = $datos_mascota1.reg_desparasitacion.nombre_veterinario_realizacion;
+          $scope.datos.mascota_institucion_desparasitacion = $datos_mascota1.reg_desparasitacion.institucion;
 
         } else {
           //alert('DESPARASITACION NO');
-          $scope.datos.mascota_desparasitacion = -1;
+          $scope.desparasitacion = false;
+          $scope.datos.mascota_desparasitacion = $datos_mascota1.desparasitacion;
           $scope.datos.mascota_feca_desparasitacion = '';
           $scope.datos.mascota_veterinario_desparasitacion = '';
           $scope.datos.mascota_institucion_desparasitacion = '';
@@ -769,7 +739,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   }
   $scope.dataMascotaMod = {};
   $scope.ModDataMascota = function (data) {
-
     if ($scope.botonMod == true) {
       $scope.dataMascotaMod.xmascota_id = $scope.xmascota_id;
       if ($scope.url_imagen) {
@@ -783,26 +752,13 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     } else {
       $scope.dataMascotaMod.xmascota_raza_id = data.mascota_raza;//raza_id
     }
+    $scope.dataMascotaMod.cod_chip = $scope.xcodigo_chip;
     $scope.dataMascotaMod.xmascota_raza = $scope.raza;
     $scope.dataMascotaMod.xmascota_usr_id = sessionService.get('CICIUDADANO');//data.xmascota_usr_id;//ci_igob
-   // $scope.dataMascotaMod.cod_chip = "FOTO";//url de la foto
     $scope.dataMascotaMod.xmascota_titular_ci = sessionService.get('CICIUDADANO');//data.xmascota_titular_ci;//ci_igob
-
     $scope.dataMascotaMod.xmascota_data = "{}";
-    //reg_desparacitacion
-    $scope.reg_desparacitacion = {};
-    $scope.reg_desparacitacion.fecha_aplicacion = data.mascota_feca_desparasitacion;
-    $scope.reg_desparacitacion.institucion = data.mascota_institucion_desparasitacion;
-    $scope.reg_desparacitacion.nombre_veterinario_realizacion = data.mascota_veterinario_desparasitacion;
-    $scope.reg_desparacitacion.nombre_marca = 'Certificación';
-    //reg_esterilizacion
-    $scope.reg_marca = {};
-    $scope.reg_marca.codigo_esterilizacion = data.mascota_certificado;
-    $scope.reg_marca.fecha_aplicacion = data.reg_feca;
-    $scope.reg_marca.institucion = data.mascota_institucion;
-    $scope.reg_marca.nombre_marca = data.mascota_marca;
-    $scope.reg_marca.nombre_veterinario_realizacion = data.mascota_veterinario;
-
+    
+    
     //reg_vacunas
     $scope.reg_vacunas = {};
     $scope.reg_vacunas.nomb_vete = data.nomb_vete;
@@ -832,18 +788,47 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
     }
     $scope.dataMascotaMod_data.tamanio = data.mascota_tamanio;
-
     $scope.dataMascotaMod_data.comp_peli = $scope.raza_peligrosa; //RAZA PELIGROSA
     $scope.dataMascotaMod_data.vete_actual = data.mascota_veterinario;
     $scope.dataMascotaMod_data.compromiso = "En mi calidad de titular de la mascota registrada ,  me comprometo a no maltratar ni abandonar , brindar el cuidado y atención a la mascota bajo mi custodia , así como el cumplimiento de las normas legales en actual vigencia. En aplicación al Texto Ordenado de las Leyes Municipales Autonómicas 239/316, Reglamento de la Ley Municipal Autonómica para Animales de Compañía Artículos del 5 al 17, 86 y 89.";
-    $scope.dataMascotaMod_data.desparacitacion = $scope.desparasitacion1; //DESPARASITACION
-    $scope.dataMascotaMod_data.esterilizacion = $scope.esterilizacion; //ESTERILIZACION
-
+    
+    $scope.dataMascotaMod_data.desparasitacion = $scope.datos.mascota_desparasitacion; //DESPARASITACION
+    if($scope.dataMascotaMod_data.desparasitacion == 'no'){
+      $scope.reg_desparasitacion = {};
+      $scope.reg_desparasitacion.fecha_aplicacion = '';
+      $scope.reg_desparasitacion.institucion = '';
+      $scope.reg_desparasitacion.nombre_veterinario_realizacion = '';
+      $scope.reg_desparasitacion.nombre_marca = '';
+    }else{
+      //reg_desparasitacion
+      $scope.reg_desparasitacion = {};
+      $scope.reg_desparasitacion.fecha_aplicacion = data.mascota_feca_desparasitacion;
+      $scope.reg_desparasitacion.institucion = data.mascota_institucion_desparasitacion;
+      $scope.reg_desparasitacion.nombre_veterinario_realizacion = data.mascota_veterinario_desparasitacion;
+      $scope.reg_desparasitacion.nombre_marca = 'Certificación';
+    }
+    $scope.dataMascotaMod_data.esterilizacion = $scope.datos.mascota_esterilizacion; //ESTERILIZACION
+    if($scope.dataMascotaMod_data.esterilizacion == "no"){
+      $scope.reg_marca = {};
+      $scope.reg_marca.codigo_esterilizacion = '';
+      $scope.reg_marca.fecha_aplicacion = '';
+      $scope.reg_marca.institucion = '';
+      $scope.reg_marca.nombre_marca = '';
+      $scope.reg_marca.nombre_veterinario_realizacion = '';
+    }else{
+      //reg_esterilizacion
+      $scope.reg_marca = {};
+      $scope.reg_marca.codigo_esterilizacion = data.mascota_certificado;
+      $scope.reg_marca.fecha_aplicacion = data.reg_feca;
+      $scope.reg_marca.institucion = data.mascota_institucion;
+      $scope.reg_marca.nombre_marca = data.mascota_marca;
+      $scope.reg_marca.nombre_veterinario_realizacion = data.mascota_veterinario;
+    }
+   
+    
     $scope.dataMascotaMod_data.marca = $scope.marca;  //MARCA
-    $scope.dataMascotaMod_data.reg_desparacitacion = $scope.reg_desparacitacion;
-    //$scope.dataMascotaMod_data.reg_desparacitacion = JSON.stringify($scope.reg_desparacitacion);
+    $scope.dataMascotaMod_data.reg_desparasitacion = $scope.reg_desparasitacion;
     $scope.dataMascotaMod_data.reg_marca = $scope.reg_marca;
-    //$scope.dataMascotaMod_data.reg_marca = JSON.stringify($scope.reg_marca);
     $scope.dataMascotaMod_data.reg_vacunas = $scope.data1; ///recupera en la grilla
     $scope.dataMascotaMod_data.vacunas = $scope.vacunas; //VACUNAS
     if ($scope.data1) {
@@ -939,6 +924,8 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.botonCrea = true;
 
     $scope.mostrar_form_mascotas = true;
+    $scope.reg_vacunas = {};
+    $scope.infogrilla = [];
     $scope.datos.mascota_nombre = "";
     $scope.datos.mascota_raza = "";
     $scope.datos.mascota_edad = "";
@@ -957,7 +944,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.datos.mascota_institucion = "";
     $scope.datos.mascota_documento = "";
     $scope.datos.href_ANTT_CON_ARR = "";
-    $scope.vacunas = [];
     $scope.datos.mascota_esterilizacion = -1;
     $scope.datos.reg_feca = "";
     $scope.datos.mascota_marca = "";
@@ -968,8 +954,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.datos.mascota_feca_desparasitacion = "";
     $scope.datos.mascota_veterinario_desparasitacion = "";
     $scope.datos.mascota_institucion_desparasitacion = "";
-
-
   }
 
   $scope.listarRaza = function (data) {
@@ -983,10 +967,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       $scope.$apply();
     });
   }
-  //listarRaza
-
-
-  ///maga
   $scope.validarEmail = function (email_ca) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email_ca);
@@ -1251,6 +1231,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
       }
     });
+    $scope.listarMascotasXci(usr_id);
   }
   //BAJA DE MASCOTA
 

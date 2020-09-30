@@ -4,17 +4,35 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
         $scope.datos = {};
         $scope.unido = {};
         $scope.datosV = {};
+        $scope.mod = {};
         $scope.datos_responsable = {};
+        $scope.datos_asociados_agru = {};
         $scope.trmExperiencia = [];
+        $scope.trmAsociados = [];
         $scope.div_rescatistas = false
         $scope.div_otros = false
         $scope.xdeshabilitado = false;
-        $scope.div_boton_guardar = true;
+        $scope.div_boton_guardar = false;
+        $scope.div_personaria = false;
+        div_voluntario_inde = false;
+        $scope.div_animalistas_aso = false;
+        $scope.titulo_datos_valuntariado="";
         $scope.titulo_boton ="";
+        $scope.titulo_observacion_pj ="";
+        $scope.titulo_mapa ="";
         var contadorAdjunto = 0 ;
         var validador_envio = 0 ;
         var id_tramite = 0 ;
+        $scope.xdato_registro = "";
         $scope.div_agregar_experiencia = true;
+        $scope.div_esp_num_pj = false;
+        $scope.div_aprobado = false;
+        $scope.div_rescatistas_dos = false;
+        $scope.div_mts_observacion = false;
+        $scope.div_mts_area_cuarentena = false;
+        $scope.div_mts_area_maternidad = false;
+        $scope.div_mts_area_comunes = false;
+        document.getElementById("mapa_mascotas").style.display = "none"; 
         $scope.buscarRep = function(){
             try{
                 var buscarRepresentante = new rcNatural();
@@ -53,6 +71,76 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             };
             $scope.recuperarInformacion();
         };
+        //
+        $scope.modelFecha5 = { endDate: new Date() };
+        $scope.modelFecha0 = { endDate: new Date() };
+        $scope.startDateOpen5 = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.startDateOpened5 = true;
+        };
+        $scope.startDateOpen3 = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.startDateOpened3 = true;
+        };
+        $scope.cambioObservacion = function(data){
+            if(data == 'SI'){
+                $scope.div_mts_observacion = true;
+            }else{
+                $scope.div_mts_observacion = false;
+            }
+        }
+        $scope.cambioCuarentena = function(data){
+            if(data == 'SI'){
+                $scope.div_mts_area_cuarentena = true;
+            }else{
+                $scope.div_mts_area_cuarentena = false;
+            }
+        }
+        $scope.cambioMaternidad = function(data){
+            if(data == 'SI'){
+                $scope.div_mts_area_maternidad = true;
+            }else{
+                $scope.div_mts_area_maternidad = false;
+            }
+        }
+        $scope.cambioAComunes = function(data){
+            if(data == 'SI'){
+                $scope.div_mts_area_comunes = true;
+            }else{
+                $scope.div_mts_area_comunes = false;
+            }
+        }
+        $scope.calcular_edad_grilla = function(edad){
+            var fecha= new Date(); //"2016-07-13"
+            var curday = fecha.getDate();
+            var curmon = (fecha.getMonth()+1);
+            var curyear = fecha.getFullYear();
+            var fecnac = new Date(edad);             
+            var calday = (fecnac.getDate());
+            var calmon = (fecnac.getMonth())+1;
+            var calyear = fecnac.getFullYear();
+            var curd = new Date(curyear,curmon-1,curday);
+            var cald = new Date(calyear,calmon-1,calday);
+            var y1 = curd.getFullYear(), m1 = curd.getMonth(), d1 = curd.getDate(), y2 = cald.getFullYear(), m2 = cald.getMonth(), d2 = cald.getDate();
+      
+            if (d1 < d2) {
+              m1--;
+              with (new Date(y2, m2, 1, 12)) {
+                setDate(0);
+                d1 +=  getDate();
+              } 
+            }
+            if (m1 < m2) {
+              y1--;
+              m1 += 12;
+            }
+            if ((fecnac.getMonth()+1) < 10) { mes ='0'+(fecnac.getMonth()+1);}else{ mes = (fecnac.getMonth()+1);}
+            if ((fecnac.getDate()) < 10) { dia ='0'+(fecnac.getDate());}else{ dia = (fecnac.getDate());}
+            $scope.mod.fecha_nacimiento =  fecnac.getFullYear() + '-' + mes  + '-' + dia;
+            $scope.mod.edad = (y1 - y2)+" años "+ (m1 - m2) +" meses y "+(d1 - d2)+" dias";
+        };
         $scope.sumar_moviles = function(){
             if($scope.datos.caniles_moviles == "" || $scope.datos.caniles_moviles == undefined){
                 $scope.datos.caniles_moviles = 0;
@@ -69,42 +157,122 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             }
             $scope.datos.total_capacidad = $scope.datos.capacidad_caniles +  $scope.datos.capacidad_gatiles;
         }
+        $scope.f_mostrar_Modal = function(){
+            $("#myModal").modal("show");
+        }
+
+
+        $scope.f_dinamico_Registro = function(data_ingreso){
+            $scope.xdato_registro = "";
+            document.getElementById("mapa_mascotas").style.display = "block"; 
+            $scope.open_mapa_mascotas();
+            if(data_ingreso == 'AGRUPADOS'){
+                $scope.xdato_registro = "AGRUPADOS";
+                $scope.titulo_mapa = "INDICAR EXACTAMENTE EN EL MAPA LA INFRAESTRUCTURA A SER UTILIZADO"
+                $scope.div_personaria = true;
+                $scope.div_voluntario_inde = false;
+                $scope.div_rescatistas = true;
+                $scope.div_rescatistas_dos = true;
+                $scope.div_animalistas_aso = true;
+                $scope.titulo_datos_valuntariado = "DATOS DE PERSONERÍA JURÍDICA:";
+            }else if(data_ingreso == 'INDEPENDIENTE'){
+                $scope.xdato_registro = "INDEPENDIENTE";
+                $scope.titulo_mapa = "INDICAR EXACTAMENTE EN EL MAPA SU DOMICILIO:"
+                $scope.div_personaria = false;
+                $scope.div_voluntario_inde = true;
+                $scope.div_rescatistas = false;
+                $scope.div_animalistas_aso = false;
+                $scope.div_rescatistas_dos = false;
+                $scope.titulo_datos_valuntariado = "DATOS DEL VOLUNTARIADO:";
+            }
+        }
         $scope.validar = function(datos){
-            if($scope.datos.latitud_vol_dom == "" || $scope.datos.latitud_vol_dom == undefined || $scope.datos.latitud_vol_dom == "undefined" ){
-                $scope.mensaje("Alerta","Confirme la ubicación de su domicilio haciendo click en el mapa.","error");
-            }else if($scope.datos.longitud_vol_dom == "" || $scope.datos.longitud_vol_dom == undefined || $scope.datos.longitud_vol_dom == "undefined" ){
-                $scope.mensaje("Alerta","Confirme la ubicación de su domicilio haciendo click en el mapa.","error");
-            } else  if($scope.datos.tipo_voluntario == "" || $scope.datos.tipo_voluntario == undefined ){
-                $scope.mensaje("Alerta","Ingrese el tipo de voluntariado","error");
-            }else if($scope.datos.fecha_antirrabica == "" || $scope.datos.fecha_antirrabica == undefined || $scope.datos.fecha_antirrabica == "undefined" ){
-                $scope.mensaje("Alerta","Ingrese la fecha en la cual se realizó la vacuna antirrabica","error");
-            }else if($scope.datos.gestion_inicio == "" || $scope.datos.gestion_inicio == undefined || $scope.datos.gestion_inicio == "undefined" ){
-                $scope.mensaje("Alerta","Ingrese la gestión en la cual empezo a ser voluntariado","error");
-            }else if($scope.datos.lugar_voluntariado == "" || $scope.datos.lugar_voluntariado == undefined || $scope.datos.lugar_voluntariado == "undefined" ){
-                $scope.mensaje("Alerta","Ingrese el lugar del voluntariado","error");
-            }else if(($scope.datos.tipo_voluntario == "Otro" && $scope.datos.otros_tipos_voluntariado == "") || ($scope.datos.tipo_voluntario == "Otro" && $scope.datos.otros_tipos_voluntariado == undefined)  || ($scope.datos.tipo_voluntario == "Otro" && $scope.datos.otros_tipos_voluntariado == "undefined") ){
-                $scope.mensaje("Alerta","Especifique otro tipo de voluntariado","error");
-            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.caniles_moviles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.caniles_moviles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.caniles_moviles == "undefined") ){
-                $scope.mensaje("Alerta","Especifique cantidad de caniles móviles","error");
-            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.gatiles_moviles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.gatiles_moviles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.gatiles_moviles == "undefined") ){
-                $scope.mensaje("Alerta","Especifique cantidad de gatiles móviles","error");
-            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_caniles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_caniles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_caniles == "undefined") ){
-                $scope.mensaje("Alerta","Especifique capacidad de caniles.","error");
-            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_gatiles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_gatiles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_gatiles == "undefined") ){
-                $scope.mensaje("Alerta","Especifique capacidad de gatiles.","error");
-            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_comedores == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_comedores == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_comedores == "undefined") ){
-                $scope.mensaje("Alerta","Especifique la cantidad de comedores.","error");
-            }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_bebederos == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_bebederos == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_bebederos == "undefined") ){
-                $scope.mensaje("Alerta","Especifique la cantidad de bebederos.","error");
-            }else if($scope.trmExperiencia.length == 0){
-                $scope.mensaje("Alerta","Ingrese al menos una experiencia.","error");
-            }else{
-                if(validador_envio == 1){
-                    $scope.crear_tramite(datos)
-                    $scope.f_registrar();
-                }else if(validador_envio == 2){
-                    $scope.f_actualizar();
-                }
+            if($scope.datos.tipo_registro == undefined || $scope.datos.tipo_registro == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese el tipo de registro que realizara.","error");
+            }else if($scope.datos.tipo_registro == 'INDEPENDIENTE'){
+                    if($scope.datos.latitud_vol_dom == "" || $scope.datos.latitud_vol_dom == undefined || $scope.datos.latitud_vol_dom == "undefined" ){
+                        $scope.mensaje("Alerta","Confirme la ubicación de su domicilio haciendo click en el mapa.","error");
+                    }else if($scope.datos.longitud_vol_dom == "" || $scope.datos.longitud_vol_dom == undefined || $scope.datos.longitud_vol_dom == "undefined" ){
+                        $scope.mensaje("Alerta","Confirme la ubicación de su domicilio haciendo click en el mapa.","error");
+                    } else  if($scope.datos.tipo_voluntario == "" || $scope.datos.tipo_voluntario == undefined ){
+                        $scope.mensaje("Alerta","Ingrese el tipo de voluntariado","error");
+                    }else if($scope.datos.fecha_antirrabica == "" || $scope.datos.fecha_antirrabica == undefined || $scope.datos.fecha_antirrabica == "undefined" ){
+                        $scope.mensaje("Alerta","Ingrese la fecha en la cual se realizó la vacuna antirrabica","error");
+                    }else if($scope.datos.gestion_inicio == "" || $scope.datos.gestion_inicio == undefined || $scope.datos.gestion_inicio == "undefined" ){
+                        $scope.mensaje("Alerta","Ingrese la gestión en la cual empezo a ser voluntariado","error");
+                    }else if($scope.datos.lugar_voluntariado == "" || $scope.datos.lugar_voluntariado == undefined || $scope.datos.lugar_voluntariado == "undefined" ){
+                        $scope.mensaje("Alerta","Ingrese el lugar del voluntariado","error");
+                    }else if(($scope.datos.tipo_voluntario == "Otro" && $scope.datos.otros_tipos_voluntariado == "") || ($scope.datos.tipo_voluntario == "Otro" && $scope.datos.otros_tipos_voluntariado == undefined)  || ($scope.datos.tipo_voluntario == "Otro" && $scope.datos.otros_tipos_voluntariado == "undefined") ){
+                        $scope.mensaje("Alerta","Especifique otro tipo de voluntariado","error");
+                    }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.caniles_moviles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.caniles_moviles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.caniles_moviles == "undefined") ){
+                        $scope.mensaje("Alerta","Especifique cantidad de caniles móviles","error");
+                    }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.gatiles_moviles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.gatiles_moviles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.gatiles_moviles == "undefined") ){
+                        $scope.mensaje("Alerta","Especifique cantidad de gatiles móviles","error");
+                    }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_caniles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_caniles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_caniles == "undefined") ){
+                        $scope.mensaje("Alerta","Especifique capacidad de caniles.","error");
+                    }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_gatiles == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_gatiles == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.capacidad_gatiles == "undefined") ){
+                        $scope.mensaje("Alerta","Especifique capacidad de gatiles.","error");
+                    }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_comedores == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_comedores == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_comedores == "undefined") ){
+                        $scope.mensaje("Alerta","Especifique la cantidad de comedores.","error");
+                    }else if(($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_bebederos == "") || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_bebederos == undefined)  || ($scope.datos.tipo_voluntario == "Rescatista" && $scope.datos.total_bebederos == "undefined") ){
+                        $scope.mensaje("Alerta","Especifique la cantidad de bebederos.","error");
+                    }else if($scope.trmExperiencia.length == 0){
+                        $scope.mensaje("Alerta","Ingrese al menos una experiencia.","error");
+                    }else{
+                        if(validador_envio == 1){
+                            $scope.crear_tramite(datos)
+                            $scope.f_registrar();
+                        }else if(validador_envio == 2){
+                            $scope.f_actualizar();
+                        }
+                    }
+            }else if($scope.datos.tipo_registro == 'AGRUPADOS'){
+                    if($scope.datos.latitud_vol_dom == "" || $scope.datos.latitud_vol_dom == undefined || $scope.datos.latitud_vol_dom == "undefined" ){
+                        $scope.mensaje("Alerta","Confirme la ubicación de su domicilio haciendo click en el mapa.","error");
+                    }else if($scope.datos.longitud_vol_dom == "" || $scope.datos.longitud_vol_dom == undefined || $scope.datos.longitud_vol_dom == "undefined" ){
+                        $scope.mensaje("Alerta","Confirme la ubicación de su domicilio haciendo click en el mapa.","error");
+                    }else if($scope.datos.cuenta_personairia_juridica == "" || $scope.datos.cuenta_personairia_juridica == undefined || $scope.datos.cuenta_personairia_juridica == "undefined" ){
+                        $scope.mensaje("Alerta","Seleccione si cuenta con personería jurídica.","error");
+                    }else if(($scope.datos.cuenta_personairia_juridica == "SI" && $scope.datos.numero_personeria_juridica == undefined)||($scope.datos.cuenta_personairia_juridica == "SI" && $scope.datos.numero_personeria_juridica == 'undefined')){
+                        $scope.mensaje("Alerta","Ingrese el número de la personería jurídica","error");
+                    }else if($scope.datos.caniles_moviles == "" || $scope.datos.caniles_moviles == undefined || $scope.datos.caniles_moviles == "undefined" ){
+                        $scope.mensaje("Alerta","Especifique cantidad de caniles móviles","error");
+                    }else if($scope.datos.gatiles_moviles == "" || $scope.datos.gatiles_moviles == undefined || $scope.datos.gatiles_moviles == "undefined" ){
+                        $scope.mensaje("Alerta","Especifique cantidad de gatiles móviles","error");
+                    }else if($scope.datos.capacidad_caniles == "" || $scope.datos.capacidad_caniles == undefined || $scope.datos.capacidad_caniles == "undefined" ){
+                        $scope.mensaje("Alerta","Especifique capacidad de caniles.","error");
+                    }else if($scope.datos.capacidad_gatiles == "" || $scope.datos.capacidad_gatiles == undefined || $scope.datos.capacidad_gatiles == "undefined" ){
+                        $scope.mensaje("Alerta","Especifique capacidad de gatiles.","error");
+                    }else if($scope.datos.total_comedores == "" || $scope.datos.total_comedores == undefined || $scope.datos.total_comedores == "undefined" ){
+                        $scope.mensaje("Alerta","Especifique la cantidad de comedores.","error");
+                    }else if($scope.datos.total_bebederos == "" || $scope.datos.total_bebederos == undefined || $scope.datos.total_bebederos == "undefined" ){
+                        $scope.mensaje("Alerta","Especifique la cantidad de bebederos.","error");
+                    }else if($scope.datos.caniles_observacion == "" || $scope.datos.caniles_observacion == undefined || $scope.datos.caniles_observacion == "undefined" ){
+                        $scope.mensaje("Alerta","Especifique si cuenta con caniles de observación.","error");
+                    }else if($scope.datos.area_cuarentena == "" || $scope.datos.area_cuarentena == undefined || $scope.datos.area_cuarentena == "undefined" ){
+                        $scope.mensaje("Alerta","Especifique si cuenta con área para cuarentena.","error");
+                    }else if($scope.datos.area_maternidad == "" || $scope.datos.area_maternidad == undefined || $scope.datos.area_maternidad == "undefined" ){
+                        $scope.mensaje("Alerta","Especifique si cuenta con área de maternidad.","error");
+                    }else if($scope.datos.area_comunes == "" || $scope.datos.area_comunes == undefined || $scope.datos.area_comunes == "undefined" ){
+                        $scope.mensaje("Alerta","Especifique si cuenta con área comunes.","error");
+                    }else if(($scope.datos.caniles_observacion == "SI" && $scope.datos.mts_observacion == undefined) || ($scope.datos.caniles_observacion == "SI" && $scope.datos.mts_observacion == 'undefined')){
+                        $scope.mensaje("Alerta","Idique caniles de observacion en mts2.","error");
+                    }else if(($scope.datos.area_cuarentena == "SI" && $scope.datos.mts_area_cuarentena == undefined) || ($scope.datos.area_cuarentena == "SI" && $scope.datos.mts_area_cuarentena == 'undefined')){
+                        $scope.mensaje("Alerta","Idique el espacio del área de cuarentena en mts2.","error");
+                    }else if(($scope.datos.area_maternidad == "SI" && $scope.datos.mts_area_maternidad == undefined) || ($scope.datos.area_maternidad == "SI" && $scope.datos.mts_area_maternidad == 'undefined')){
+                        $scope.mensaje("Alerta","Idique el espacio del área de maternidad en mts2.","error");
+                    }else if(($scope.datos.area_comunes == "SI" && $scope.datos.mts_area_comunes == undefined) || ($scope.datos.area_comunes == "SI" && $scope.datos.mts_area_comunes == 'undefined')){
+                        $scope.mensaje("Alerta","Idique el espacio del área de comunes en mts2.","error");
+                    }else if($scope.trmAsociados.length == 0){
+                        $scope.mensaje("Alerta","Ingrese al menos un asociado.","error");
+                    }else{
+                        if(validador_envio == 1){
+                            $scope.crear_tramite(datos)
+                            $scope.f_registrar();
+                        }else if(validador_envio == 2){
+                            $scope.f_actualizar();
+                        }
+                    }
             }
         }
         $scope.crear_tramite = function(datos){
@@ -182,8 +350,9 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             $scope.unido.datos_voluntario = $scope.datos;
             $scope.unido.datos_personales = $scope.datos_responsable;
             $scope.unido.datos_experiencia = $scope.trmExperiencia;
+            $scope.unido.datos_asociados = $scope.trmAsociados;
             $scope.unido.dato_tramiteIgob = $scope.idTramiteG;
-
+            $scope.unido.dato_registro = $scope.xdato_registro;
             datosMascota.identificador = 'CASA_MASCOTA-1';
             var x_parametro = '{"data":'+JSON.stringify(JSON.stringify($scope.unido))+'}';
             datosMascota.parametros = x_parametro;
@@ -207,6 +376,9 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             $scope.unido.datos_voluntario = $scope.datos;
             $scope.unido.datos_personales = $scope.datos_responsable;
             $scope.unido.datos_experiencia = $scope.trmExperiencia;
+            $scope.unido.datos_asociados = $scope.trmAsociados;
+            $scope.unido.dato_tramiteIgob = $scope.idTramiteG;
+            $scope.unido.dato_registro = $scope.xdato_registro;
             datosMascota.identificador = 'CASA_MASCOTA-6';
             var x_parametro = '{"xanimalista_id":'+id_tramite+',"xvoluntario_indep_data":'+JSON.stringify(JSON.stringify($scope.unido))+'}';
             datosMascota.parametros = x_parametro;
@@ -222,6 +394,47 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
 
             });
         }
+        $scope.f_guardar_asociados = function(data_ingreso){
+            var separado = ""
+            if($scope.mod.edad == 'undefined' || $scope.mod.edad == undefined){
+                separado = "0";
+            }else{
+                var poseparar = ($scope.mod.edad).split(' ');
+                separado = poseparar[0];
+            }
+            if($scope.mod.fecha_vacuna == "" || $scope.mod.fecha_vacuna == undefined ||$scope.mod.fecha_vacuna == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese la fecha de la vacuna","error");
+            }else if($scope.mod.ci == "" || $scope.mod.ci == undefined ||$scope.mod.ci == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese el carnet","error");
+            }else if($scope.mod.expedido == "" || $scope.mod.expedido == undefined ||$scope.mod.expedido == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese el expedido de su carnet","error");
+            }else if($scope.mod.nombre == "" || $scope.mod.nombre == undefined ||$scope.mod.nombre == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese el nombre del animalista","error");
+            }else if($scope.mod.paterno == "" || $scope.mod.paterno == undefined ||$scope.mod.paterno == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese el apellido paterno del animalista","error");
+            }else if($scope.mod.materno == "" || $scope.mod.materno == undefined ||$scope.mod.materno == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese el apellido materno del animalista","error");
+            }else if($scope.mod.fecha_nacimiento == "" || $scope.mod.fecha_nacimiento == undefined ||$scope.mod.fecha_nacimiento == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese la fecha de nacimiento del animalista","error");
+            }else if($scope.mod.genero == "" || $scope.mod.genero == undefined ||$scope.mod.genero == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese el género del animalista","error");
+            }else if($scope.mod.estado_civil == "" || $scope.mod.estado_civil == undefined ||$scope.mod.estado_civil == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese el estado cívil del animalista","error");
+            }else if($scope.mod.funciones == "" || $scope.mod.funciones == undefined ||$scope.mod.funciones == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese la función que desempeña el animalista","error");
+            }else if($scope.mod.correo == "" || $scope.mod.correo == undefined ||$scope.mod.correo == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese el correo del animalista","error");
+            }else if($scope.mod.celular == "" || $scope.mod.celular == undefined ||$scope.mod.celular == 'undefined'){
+                $scope.mensaje("Alerta","Ingrese el celular del animalista","error");
+            }else if(separado < 18){
+                $scope.mensaje("Alerta","Para ser registrado debe ser mayor de edad","error");
+            }else{
+                $scope.trmAsociados.push(data_ingreso);
+                $scope.tblAsociados.reload();
+                $scope.mod = {};
+                $("#myModal").modal("hide");
+            }
+        }
         $scope.adicionarExperiencia = function(data){
             if($scope.datosV.descripcion_exp == 'undefined' || $scope.datosV.descripcion_exp == undefined){
                 $scope.mensaje("Alerta","Ingrese la descripción antes de agregar","error");
@@ -236,6 +449,10 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
         $scope.eliminarExperiencia = function(dataExp){
             $scope.trmExperiencia.splice($scope.trmExperiencia.indexOf(dataExp),1);
             $scope.tblExperiencia.reload();
+        }
+        $scope.eliminarAsociados = function(dataExp){
+            $scope.trmAsociados.splice($scope.trmAsociados.indexOf(dataExp),1);
+            $scope.tblAsociados.reload();
         }
         $scope.tblExperiencia = new ngTableParams({
             page: 1,
@@ -254,6 +471,26 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                 $filter('orderBy')(filteredData, params.orderBy()) :
                 $scope.trmExperiencia;
                 params.total($scope.trmExperiencia.length);
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            }
+        });
+        $scope.tblAsociados = new ngTableParams({
+            page: 1,
+            count: 5,
+            filter: {},
+            sorting: {
+              //  IdActividad: 'desc'
+            }
+        }, {
+            total: $scope.trmAsociados.length,
+            getData: function($defer, params) {
+                var filteredData = params.filter() ?
+                $filter('filter')($scope.trmAsociados, params.filter()) :
+                $scope.trmAsociados;
+                var orderedData = params.sorting() ?
+                $filter('orderBy')(filteredData, params.orderBy()) :
+                $scope.trmAsociados;
+                params.total($scope.trmAsociados.length);
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             }
         });
@@ -329,7 +566,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
         }
 
         $scope.cambioCombo = function(data){
-            if(data == 'Rescatista'){
+            if(data == 'Rescatista' || $scope.datos.tipo_registro == "AGRUPADOS"){
                 $scope.div_rescatistas = true;
                 $scope.div_otros = false
             }else if(data == 'Otro'){
@@ -338,6 +575,15 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             }else{
                 $scope.div_rescatistas = false;
                 $scope.div_otros = false 
+            }
+        }
+        $scope.cambioComboPersoneria = function(data){
+            if(data == 'SI'){
+                $scope.div_esp_num_pj = true;
+                $scope.titulo_observacion_pj = "Número de personería Jurídica:"
+            }else{
+                $scope.div_esp_num_pj = true;
+                $scope.titulo_observacion_pj = "En que instancia se encuentra el tramite:"
             }
         }
         $scope.recuperarInformacion = function(){
@@ -350,60 +596,105 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                 var x_estado = x[0].xestado;
                 var x_datos_voluntario = x[0].xdatos_voluntario;
                 var x_datos_experiencia = x[0].xdatos_experiencia;
+                var x_datos_asociados = x[0].xdatos_asociados;
+                var ytipo_registro = x[0].xdato_registro;
                 if(x_estado == 'activo'){
                     validador_envio = 0;
                     $scope.mensaje("Estimado Ciudadano","Usted ya realizo su registro se esta procesando para la aprobación de su solicitud a continuacion podra observar la informacion enviada.","warning");
+                    $scope.f_dinamico_Registro(ytipo_registro);
                     $scope.xdeshabilitado = true;
                     $scope.div_boton_guardar = false;
                     $scope.div_agregar_experiencia = false;
+                    $scope.div_aprobado = false;
                     $scope.titulo_boton = "";
                     $scope.datos = JSON.parse(x_datos_voluntario);
                     $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
+                    $scope.trmAsociados = JSON.parse(x_datos_asociados);
                     var envio_tipo = $scope.datos.tipo_voluntario;
                     $scope.cambioCombo(envio_tipo);
                     var lat_recuperado = $scope.datos.latitud_vol_dom;
                     var lon_recuperado = $scope.datos.longitud_vol_dom;
                     $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
+                    var per_so_ju = $scope.datos.cuenta_personairia_juridica;
+                    $scope.cambioComboPersoneria(per_so_ju);
+                    var y_caniles_observacion = $scope.datos.caniles_observacion;
+                    var y_area_cuarentena = $scope.datos.area_cuarentena;
+                    var y_area_maternidad = $scope.datos.area_maternidad;
+                    var y_area_comunes = $scope.datos.area_comunes;
+                    $scope.cambioObservacion(y_caniles_observacion);
+                    $scope.cambioCuarentena(y_area_cuarentena);
+                    $scope.cambioMaternidad(y_area_maternidad);
+                    $scope.cambioAComunes(y_area_comunes);
                     $scope.tblExperiencia.reload();
+                    $scope.tblAsociados.reload();
                 }else if(x_estado == 'no existe'){
                     $scope.titulo_boton = "GUARDAR";
                     validador_envio = 1;
                     $scope.xdeshabilitado = false;
                     $scope.div_boton_guardar = true;
                     $scope.div_agregar_experiencia = true;
+                    $scope.div_aprobado = false;
                     $scope.mensaje("Estimado Ciudadano","Para poder proseguir con el registro de Animalista Independiente tiene que tener en cuenta que debe contar con la Vacuna Antirrabica y aguardar la aprobación de su registro","warning");
                 }else if(x_estado == 'habilitado'){
                     validador_envio = 0;
+                    $scope.f_dinamico_Registro(ytipo_registro);
                     $scope.titulo_boton = "";
-                    $scope.mensaje("Estimado Ciudadano","Su registro ya fue validado por la Casa de la Mascota","warning");
+                    $scope.mensaje("Estimado Ciudadano","Su registro ya fue validado por la Casa de la Mascota","success");
                     $scope.xdeshabilitado = true;
                     $scope.div_boton_guardar = false;
                     $scope.div_agregar_experiencia = false;
+                    $scope.div_aprobado = true;
                     $scope.datos = JSON.parse(x_datos_voluntario);
                     $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
+                    $scope.trmAsociados = JSON.parse(x_datos_asociados);
                     var envio_tipo = $scope.datos.tipo_voluntario;
                     $scope.cambioCombo(envio_tipo);
                     var lat_recuperado = $scope.datos.latitud_vol_dom;
                     var lon_recuperado = $scope.datos.longitud_vol_dom;
                     $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
+                    var per_so_ju = $scope.datos.cuenta_personairia_juridica;
+                    $scope.cambioComboPersoneria(per_so_ju);
+                    var y_caniles_observacion = $scope.datos.caniles_observacion;
+                    var y_area_cuarentena = $scope.datos.area_cuarentena;
+                    var y_area_maternidad = $scope.datos.area_maternidad;
+                    var y_area_comunes = $scope.datos.area_comunes;
+                    $scope.cambioObservacion(y_caniles_observacion);
+                    $scope.cambioCuarentena(y_area_cuarentena);
+                    $scope.cambioMaternidad(y_area_maternidad);
+                    $scope.cambioAComunes(y_area_comunes);
                     $scope.tblExperiencia.reload(); 
+                    $scope.tblAsociados.reload();
                 }else if(x_estado == 'rechazado'){
-                    $scope.div_agregar_experiencia = true;
+                    $scope.f_dinamico_Registro(ytipo_registro);
                     validador_envio = 2;
                     id_tramite = x[0].xvoluntario_idm;
                     var x_observacion = x[0].xobservacion;
                     $scope.mensaje("Estimado Ciudadano","Su registro fue rechazado con la siguiente observacion : "+x_observacion,"warning");
+                    $scope.div_agregar_experiencia = true;
+                    $scope.div_aprobado = false;
                     $scope.titulo_boton = "ACTUALIZAR";
                     $scope.xdeshabilitado = false;
                     $scope.div_boton_guardar = true;
                     $scope.datos = JSON.parse(x_datos_voluntario);
                     $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
+                    $scope.trmAsociados = JSON.parse(x_datos_asociados);
                     var envio_tipo = $scope.datos.tipo_voluntario;
                     $scope.cambioCombo(envio_tipo);
                     var lat_recuperado = $scope.datos.latitud_vol_dom;
                     var lon_recuperado = $scope.datos.longitud_vol_dom;
                     $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
-                   $scope.tblExperiencia.reload();
+                    var per_so_ju = $scope.datos.cuenta_personairia_juridica;
+                    $scope.cambioComboPersoneria(per_so_ju);
+                    var y_caniles_observacion = $scope.datos.caniles_observacion;
+                    var y_area_cuarentena = $scope.datos.area_cuarentena;
+                    var y_area_maternidad = $scope.datos.area_maternidad;
+                    var y_area_comunes = $scope.datos.area_comunes;
+                    $scope.cambioObservacion(y_caniles_observacion);
+                    $scope.cambioCuarentena(y_area_cuarentena);
+                    $scope.cambioMaternidad(y_area_maternidad);
+                    $scope.cambioAComunes(y_area_comunes);
+                    $scope.tblExperiencia.reload();
+                    $scope.tblAsociados.reload();
                 }
               $.unblockUI();
 

@@ -267,12 +267,10 @@ function validateDecimal(valor) {
                                 <td data-title="'Sexo'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.sexo}}</td>                             
                                 <td data-title="'Edad'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad}}</td>   
                                 <td data-title="'Meses/Años'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad_desc}}</td>   
-
                                 <td data-title="'Estado'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_estado}}</td> 
                                 <td data-title="'Opciones'"><a class="btn btn-default btn-circle" data-target="#formModalElim" ng-click="llamModEli(tramite.xmascota_id)" data-toggle="modal"><i class="fa fa-trash-o" style="color:rgb(15, 15, 15)"></i></a></td>
-
                                 <!-- Modal ELIMINAR-->   
-                                      <div class="modal fade" id="formModalElim"  role="dialog" aria-labelledby="exampleModalCenterTitle">
+                                    <div class="modal fade" id="formModalElim"  role="dialog" aria-labelledby="exampleModalCenterTitle">
                                          <div class="modal-dialog modal-dialog-centered" role="document" id = "mdialTamanio">
                                          <div class="modal-content">
                                              <div class="modal-header">
@@ -299,9 +297,7 @@ function validateDecimal(valor) {
                                              </div>
                                          </div>
                                          </div>
-                                     </div>
-
-
+                                    </div>
                              </tr>
                            </table>
                          </form>

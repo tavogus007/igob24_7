@@ -433,7 +433,8 @@
                         <div class="form-group" >
                           <label for="url">Tipo de Devolución:</label>
                           <div class="controls">
-                            <select class="form-control" name="INF_TIPO_DEVOLUCION" ng-model="datos.INF_TIPO_DEVOLUCION" ng-change="validaDevolucion(datos.INF_TIPO_DEVOLUCION)">
+                            <select class="form-control" name="INF_TIPO_DEVOLUCION" ng-model="datos.INF_TIPO_DEVOLUCION" ng-change="validaDevolucion(datos.INF_TIPO_DEVOLUCION)" ng-disabled="desabilitado"
+                            >
                               <option value="Placa">Placa</option>
                               <option value="Luminaria">Luminaria</option>
                             </select>

@@ -93,3 +93,37 @@ buscaOperadorRadioTaxi.prototype.listaOperadorRadioTaxi = function (functionResp
   ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
 };
 
+function buscaInfraccionesTipo(){
+  this.placa;  
+  this.tipo;
+};
+
+buscaInfraccionesTipo.prototype.buscaInfraccionesPlacaTipo = function (functionResp) {
+  urlComp = "/buscaInfraccionesPlacaTipo";
+  typeCall = "post";
+  dataParams = {
+    "placa" : this.placa,
+    "tipo" : this.tipo
+
+  };
+  ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
+};
+
+
+function insertConmutacion(){
+  this.placa;  
+  this.oid;
+  this.datos;
+};
+
+insertConmutacion.prototype.registraConmutacion = function (functionResp) {
+  urlComp = "/registraConmutacion";
+  typeCall = "post";
+  dataParams = {
+    "placa" : this.placa,
+    "oid" : this.oid,
+    "datos" : this.datos,
+  };
+  ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
+};
+

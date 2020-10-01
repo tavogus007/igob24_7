@@ -6,6 +6,9 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
   $scope.ocultaTipo = false;
   $scope.desabilitado = false;
   $scope.adjuntos = [{id:0,requisito:'Carnet de Identidad (Anverso)'},{id:1,requisito:'Carnet de ntidad (Reverso)'}];
+  $("#valida").hide();
+  $("#valida1").hide();
+  $scope.tipoVehiculos = [];
 
   $scope.inicio = function(){
   }
@@ -13,6 +16,7 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
   var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
     $scope.datos = JSON.parse(data);
     $scope.enviado = sessionService.get('ESTADO');
+    $scope.mostrarTipo($scope.datos.INF_TIPO_SERVICIO);
     if($scope.datos.File_Adjunto == undefined){
       $scope.datos.File_Adjunto = [];
       var myJSON = '{ "url":"' + $scope.datos.INF_CI_ANVERSO + '", "campo":"Carnet de Identidad (Anverso)", "idRequisito":0,"nombre":"Carnet de Identidad (Anverso)"}';
@@ -86,7 +90,7 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
           busca.buscaCantidadConmutaciones(function(resultado){
             var respuesta = JSON.parse(resultado).success.data;
             if(respuesta[0].sp_busca_conmutaciones == 0){
-              if($scope.datos.INF_TIPO_SERVICIO =='TRANSPORTE URBANO'){
+              if($scope.datos.INF_TIPO_SERVICIO =='SERVICIOS DE TRANSPORTE URBANO'){
                 var buscaRoseta = new buscaInfraccion();
                 buscaRoseta.placa = $scope.datos.INF_PLACA;
                 buscaRoseta.buscaCantidadRosetas(function(resultado){
@@ -140,29 +144,69 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
     },message: "Espere un momento por favor ..." }); 
     setTimeout(function(){
       $.blockUI();
-      var f = new Date();  
-      datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-      datos.g_tipo_tramite = 'INF_CONM';
-      datos.vtra_id = sessionService.get('IDTRAMITE');
-      console.log($scope.datos,'datossss');
       data_form = JSON.stringify(datos);
-      var tramite = new crearTramiteMovilidad();
-      tramite.usr_id = 1;    
-      tramite.datos = data_form;
-      tramite.procodigo = 'INF_CONM';
-      tramite.tramite_linea(function(results){ 
-        results = JSON.parse(results);
-        if (results !=null) {
-          results = results.success.data[0].crea_tramite_linea;
-          $scope.mostrar_form_ope = false;
-          $scope.datosMostrar = 1;
-          $scope.validarFormProcesos(results);
-          $.unblockUI();
-        }else{
+      var registrar = new insertConmutacion();
+      registrar.placa=$scope.datos.INF_PLACA;  
+      registrar.oid=sessionService.get('IDUSUARIO');;
+      registrar.datos=data_form;
+      registrar.registraConmutacion(function(resultado){
+        resultado = JSON.parse(resultado);
+        if(resultado.success.code == "200"){
+          console.log("flavia",resultado);
+          $scope.INF_GRILLA = [];
+          var encabezado = [];
+          var indice = 1;
+          var dataInf = [];
+          var respuestaConm = resultado.success.data;
+          encabezado[0] = {"tipo": "GRD","campos": "Nro|inf_placa|inf_modulo|fecha_curso|hora_curso|aprobado_reprobado|","titulos": "Nro|Placa|Módulo del Curso|Fecha del Curso|Hora del Curso|Aprobado/Reprobado","impresiones": "true|true|true|true|true|true|true|true|true|false"};
+          for (var i = 0; i<respuestaConm.length; i++) {
+            if(respuestaConm.xconmutacion_fecha_conmutacion!= null && respuestaConm[i].id_registro!=respuestaConm[i].xconmutacion_id){
+              $scope.INF_GRILLA.push({
+                Nro:i+1,
+                inf_placa:respuestaConm[i].xconmutacion_placa,
+                inf_modulo:datos.infracciones[i].xconmutacion_detalle_curso.INF_MODULO_CURSO,
+                fecha_curso:respuestaConm[i].xconmutacion_detalle_curso.INF_FECHA_CURSO,
+                hora_curso:respuestaConm[i].xconmutacion_detalle_curso.INF_HORA_CURSO,
+                aprobado_reprobado:respuestaConm[i].xconmutacion_respuesta
+              });
+            }
+          }  
+          var jsonString = '['+ (encabezado) +']';
+          angular.forEach($scope.INF_GRILLA, function(value, key) {
+            encabezado[indice] = value;
+            indice = indice + 1;
+          });
+          datos.id_conmutacion = respuestaConm[0].id_registro;
+          datos.INF_GRILLA=encabezado;
+          var f = new Date();  
+          datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
+          datos.g_tipo_tramite = 'INF_CONM';
+          datos.vtra_id = sessionService.get('IDTRAMITE');
+          console.log($scope.datos,'datossss');
+          data_form = JSON.stringify(datos);
+          var tramite = new crearTramiteMovilidad();
+          tramite.usr_id = 1;    
+          tramite.datos = data_form;
+          tramite.procodigo = 'INF_CONM';
+          tramite.tramite_linea(function(results){ 
+            results = JSON.parse(results);
+            if (results !=null) {
+              results = results.success.data[0].crea_tramite_linea;
+              $scope.mostrar_form_ope = false;
+              $scope.datosMostrar = 1;
+              $scope.validarFormProcesos(results);
+              $.unblockUI();
+            }else{
+              alertify.error("Señor(a) Ciudadano(a) ocurrio un error al enviar su Tramité.", );
+              $.unblockUI();
+            }
+          }); 
+        }
+        else{
           alertify.error("Señor(a) Ciudadano(a) ocurrio un error al enviar su Tramité.", );
           $.unblockUI();
         }
-      }); 
+      })
     },300);         
   };
 
@@ -192,16 +236,27 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
     }
   };
 
-  $scope.listaInfracciones = function(placa){
+  $scope.listaInfracciones = function(placa,tipo){
     if(placa.length>5){
-      var busca = new buscaInfraccion();
+      var busca = new buscaInfraccionesTipo();
       busca.placa = placa;
-      busca.buscaInfraccionesPlaca(function(resultado){
+      busca.tipo = tipo;
+      busca.buscaInfraccionesPlacaTipo(function(resultado){
         $scope.datos.infracciones = JSON.parse(resultado).success.data;
         console.log("tamaño",$scope.datos.infracciones);
         if($scope.datos.infracciones.length==0){
           swal('Advertencia', 'La placa no cuenta no infracciones', 'warning');
           $swCantidad = 0;
+        }else{
+          for(var i=0;i<$scope.datos.infracciones.length;i++)
+          {
+            var codigoInf = ""
+            for(var j=0;j<$scope.datos.infracciones[i].infraccion_detalle_inf.length;j++){
+              codigoInf = codigoInf+$scope.datos.infracciones[i].infraccion_detalle_inf[j].codigo+",";
+            }
+            codigoInf = codigoInf.substring(0, codigoInf.length - 1);
+            $scope.datos.infracciones[i].codigoInfr = codigoInf;
+          }
         }
       })
     }
@@ -212,6 +267,32 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
       $scope.ocultaTipo = true;
     }else{
       $scope.ocultaTipo = false;
+    }
+  }
+
+  ///////////////////////////////validacion//////////////////////////////////
+  $scope.validaPlaca = function (campo){
+    $scope.datos.INF_PLACA = campo.toUpperCase();
+    console.log("flavia",campo);
+    emailRegex = /^[0-9]{3,4}[A-Z]{3}$/;
+    if (emailRegex.test($scope.datos.INF_PLACA)) {
+      $scope.datos.valPlaca = 0;
+      $("#valida1").show();
+      $("#valida").hide();
+    } else {
+      $("#valida1").hide();
+      $("#valida").show();
+      $scope.datos.valPlaca = 1;
+      $scope.desabilitaVeh = true;
+    };
+  }
+
+  $scope.mostrarTipo = function(tipo){
+    if(tipo == "SERVICIOS DE TRANSPORTE URBANO"){
+      $scope.tipoVehiculos = [{"tipo":"BUS"},{"tipo":"MICROBUS"},{"tipo":"MINIBUS"},{"tipo":"MICROFURGONETA (CARRY)"}];
+    }
+    if(tipo == "CONDUCTORES PARTICULARES"){
+      $scope.tipoVehiculos = [{"tipo":"AUTOMÓVIL"},{"tipo":"MOTOCICLETA"},{"tipo":"CAMIONETA"},{"tipo":"OTROS"}];
     }
   }
 

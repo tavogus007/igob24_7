@@ -5,7 +5,7 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
     $scope.datos = {};
     $scope.ocultaTipo = false;
     $scope.desabilitado = false;
-    $scope.adjuntos = [{id:0,requisito:'Boleta de Decomiso'},{id:1,requisito:'Comprobante de Pago'}];
+    $scope.adjuntos = [{id:0,requisito:'Boleta de Decomiso'},{id:1,requisito:'Comprobante de Pago'},{id:2,requisito:'Ruat o documento privado o poder y/o autorización (opcional)'}];
     $scope.inicio = function(){
     }
 
@@ -122,14 +122,14 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
         $.blockUI();
         var f = new Date();  
         datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-        datos.g_tipo_tramite = 'DEV_PLA';
+        datos.g_tipo_tramite = 'DEV_PLA_';
         datos.vtra_id = sessionService.get('IDTRAMITE');
         console.log($scope.datos,'datossss');
         data_form = JSON.stringify(datos);
         var tramite = new crearTramiteMovilidad();
         tramite.usr_id = 1;    
         tramite.datos = data_form;
-        tramite.procodigo = 'DEV_PLA';
+        tramite.procodigo = 'DEV_PLA_';
         tramite.tramite_linea(function(results){ 
           results = JSON.parse(results);
           if (results !=null) {

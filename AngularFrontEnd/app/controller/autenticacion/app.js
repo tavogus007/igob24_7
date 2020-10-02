@@ -172,7 +172,7 @@ app.directive('uploaderModel', ["$parse", function ($parse) {
 }]);
 
 ///servicio para q funcione el upload
-app.service('fileUpload', ['$http', function ($http) {
+app.service('fileUpload', ['$http', '$location', function ($http,$location) {
     this.uploadFileToUrl = function(file, uploadUrl){
         var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
         var srutaf = '';
@@ -195,14 +195,21 @@ app.service('fileUpload', ['$http', function ($http) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('TOKEN_API')
             }
         })
-        .success(function(){
+        .success(function(resp){
+            $.unblockUI();    
+            if(resp.code == 500){
+                alert("Error al adjuntar el archivo.  ");
+                $location.path('dashboard');
+            }else{
+                console.log("ADJUNTO REGISTRADO CORRECTAMENTE");
+            }                    
         })
         .error(function(){
         });
     }
 }]);
 
-app.service('fileUpload1', ['$http', function ($http) {
+app.service('fileUpload1', ['$http', '$location', function ($http,$location) {
     this.uploadFileToUrl1 = function(file, uploadUrl,nombre){
         var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
         //var sidusuario = sessionStorage.getItem('IDUSUARIO');
@@ -227,9 +234,14 @@ app.service('fileUpload1', ['$http', function ($http) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('TOKEN_API')
             }
         })
-        .success(function(){
-            console.log("ADJUNTO REGISTRADO CORRECTAMENTE");
+        .success(function(resp){
             $.unblockUI();
+            if(resp.code == 500){
+                alert("Error al adjuntar el archivo.  ");
+                $location.path('dashboard');
+            }else{
+                console.log("ADJUNTO REGISTRADO CORRECTAMENTE");
+            }            
         })
         .error(function(){
             console.log("ERROR REGISTRADO CORRECTAMENTE");
@@ -238,7 +250,7 @@ app.service('fileUpload1', ['$http', function ($http) {
     }
 }]);
 
-app.factory("fileUploadcorr", ['$http', function($http){    
+app.factory("fileUploadcorr", ['$http','$location', function($http,$location){    
     return {
         uploadFileToUrl1: function(file, uploadUrl,nombre){            
             $.blockUI();
@@ -265,7 +277,12 @@ app.factory("fileUploadcorr", ['$http', function($http){
                 }
             }).success(function(resp){
                 $.unblockUI();
-                console.log("ARCHIVO ADJUNTADO :", resp);
+                if(resp.code == 500){
+                    alert("Error al adjuntar el archivo.  ");
+                    $location.path('dashboard');
+                }else{
+                    console.log("ARCHIVO ADJUNTADO :", resp);
+                }                
                 return 'resp';
                 
             }).error(function(err){

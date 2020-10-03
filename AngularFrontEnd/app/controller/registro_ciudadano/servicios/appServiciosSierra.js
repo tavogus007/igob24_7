@@ -171,7 +171,10 @@
         if(datos.dtspsl_file_fotocopia_ci_r == '' || datos.dtspsl_file_fotocopia_ci_r == ' '){
             datosfaltantes.push(' DOCUMENTO DE IDENTIDAD REVERSO');
         }
-        $scope.datosfalt = datosfaltantes; 
+        if(datos.dtspsl_latitud == '' || datos.dtspsl_latitud == ' ' || datos.dtspsl_longitud == '' || datos.dtspsl_longitud == ' '){
+            datosfaltantes.push(' CROQUIS DE DOMICILIO');
+        }
+        $scope.datosfalt = datosfaltantes;
     }
 
     $scope.validacionDatosJuridico = function(datos){
@@ -228,7 +231,9 @@
         if(datos.dtspsl_file_reg_comer == '' || datos.dtspsl_file_reg_comer == ' '){
             datosfaltantes.push(' DOCUMENTO REGISTRO COMERCIAL');
         }
-
+        if(datos.dtspsl_latitud == '' || datos.dtspsl_latitud == ' ' || datos.dtspsl_longitud == '' || datos.dtspsl_longitud == ' '){
+            datosfaltantes.push(' CROQUIS DE LA EMPRESA');
+        }
         $scope.datosfalt = datosfaltantes; 
     }
 
@@ -244,7 +249,6 @@
         recuperarDatos.datosCiudadanoNatural(function(resultado){
             resultadoApi = JSON.parse(resultado);
             datos           =   resultadoApi[0];
-            console.log('los daaaaa     ',datos);
             $scope.datosRecuperados = datos;
             sTipoPersona    =   resultadoApi[0].dtspsl_tipo_persona;
             $scope.sTipoPersona    =   resultadoApi[0].dtspsl_tipo_persona;
@@ -252,7 +256,7 @@
             if(sTipoPersona == 'NATURAL')
             {
                 $scope.validacionDatosNatural(datos);
-                if ((datos.dtspsl_nombres == '' || datos.dtspsl_materno == '' || datos.dtspsl_expedido == '' || datos.dtspsl_zona_desc == '' || datos.dtspsl_numero_casa == '' || datos.dtspsl_tipo_via == '' || datos.dtspsl_nombre_via == '' || datos.dtspsl_correo == '' || datos.dtspsl_file_fotocopia_ci == '') || (datos.dtspsl_nombres == ' ' || datos.dtspsl_materno == ' ' || datos.dtspsl_expedido == ' ' || datos.dtspsl_zona_desc == ' ' || datos.dtspsl_numero_casa == ' ' || datos.dtspsl_correo == ' ' || datos.dtspsl_file_fotocopia_ci == ' '))
+                if ((datos.dtspsl_nombres == '' || datos.dtspsl_materno == '' || datos.dtspsl_expedido == '' || datos.dtspsl_zona_desc == '' || datos.dtspsl_numero_casa == '' || datos.dtspsl_tipo_via == '' || datos.dtspsl_nombre_via == '' || datos.dtspsl_correo == '' || datos.dtspsl_file_fotocopia_ci == '') || (datos.dtspsl_nombres == ' ' || datos.dtspsl_materno == ' ' || datos.dtspsl_expedido == ' ' || datos.dtspsl_zona_desc == ' ' || datos.dtspsl_numero_casa == ' ' || datos.dtspsl_correo == ' ' || datos.dtspsl_file_fotocopia_ci == ' ' || datos.dtspsl_latitud == '' || datos.dtspsl_latitud == ' ' || datos.dtspsl_longitud == '' || datos.dtspsl_longitud == ' '))
                 {   
                     setTimeout(function(){
                         swal({
@@ -332,7 +336,7 @@
                 $scope.datosIniciales = datosForm;
             }else{
                  $scope.validacionDatosJuridico(datos);
-                if ((datos.dtspsl_razon_social == '' || datos.dtspsl_nit == '' || datos.dtspsl_ci_representante == '' || datos.dtspsl_zona_desc == '' || datos.dtspsl_numero_casa == '' || datos.dtspsl_tipo_via == '' || datos.dtspsl_nombre_via == '' || datos.dtspsl_correo == '' || datos.dtspsl_file_poder_legal == '') || (datos.dtspsl_ci_representante == ' ' || datos.dtspsl_razon_social == ' ' || datos.dtspsl_zona_desc == ' ' || datos.dtspsl_numero_casa == ' ' || datos.dtspsl_tipo_via == ' ' || datos.dtspsl_nombre_via == ' ' || datos.dtspsl_correo == ' ' || datos.dtspsl_file_poder_legal == ' ' || datos.dtspsl_telefono == ' '))
+                if ((datos.dtspsl_razon_social == '' || datos.dtspsl_nit == '' || datos.dtspsl_ci_representante == '' || datos.dtspsl_zona_desc == '' || datos.dtspsl_numero_casa == '' || datos.dtspsl_tipo_via == '' || datos.dtspsl_nombre_via == '' || datos.dtspsl_correo == '' || datos.dtspsl_file_poder_legal == '') || (datos.dtspsl_ci_representante == ' ' || datos.dtspsl_razon_social == ' ' || datos.dtspsl_zona_desc == ' ' || datos.dtspsl_numero_casa == ' ' || datos.dtspsl_tipo_via == ' ' || datos.dtspsl_nombre_via == ' ' || datos.dtspsl_correo == ' ' || datos.dtspsl_file_poder_legal == ' ' || datos.dtspsl_telefono == ' ' || datos.dtspsl_latitud == '' || datos.dtspsl_latitud == ' ' || datos.dtspsl_longitud == '' || datos.dtspsl_longitud == ' '))
                 {
                     setTimeout(function(){
                         swal({
@@ -416,7 +420,6 @@
                             buscarRepresentante.buscarPersona(function(resultado){
                                 resultadoApiRepre = JSON.parse(resultado);
                                 var repLegalmongo   =   resultadoApiRepre;
-                                console.log('repLegalmongo   ',repLegalmongo);
                                 var dtsNombres      =   ((typeof(repLegalmongo[0].dtspsl_nombres) == 'undefined') ? "" : repLegalmongo[0].dtspsl_nombres);
                                 var dtsPaterno      =   ((typeof(repLegalmongo[0].dtspsl_paterno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_paterno);
                                 var dtsMaterno      =   ((typeof(repLegalmongo[0].dtspsl_materno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_materno);
@@ -480,7 +483,6 @@
                         }
                     }
                     $scope.datosIniciales = datosForm;
-                    console.log('$scope.datosIniciales    ',$scope.datosIniciales);
                 }
             }
         });
@@ -494,7 +496,6 @@
         var ciDocumento          =   '';//sessionService.get('CICIUDADANO'));
         var nitDocumento          =   '';//sessionService.get('CICIUDADANO'));
         var complemento_ci = '';
-        console.log('complemento     ',$scope.datosRecuperados.dtspsl_complemento);
         if ($scope.datosRecuperados.dtspsl_complemento == undefined || $scope.datosRecuperados.dtspsl_complemento == 'undefined' || $scope.datosRecuperados.dtspsl_complemento == null) 
             complemento_ci = '';
         else
@@ -523,7 +524,6 @@
                         var response = dataN;
                         $scope.txtMsgConexionGen = "";
                         $scope.dataGenesisCidadano = dataN.data;
-                        console.log('$scope.dataGenesisCidadano     ',$scope.dataGenesisCidadano);
                         var tipoper = '';
                         if (sessionService.get('TIPO_PERSONA') == 'NATURAL')
                             tipoper = 'N';
@@ -538,7 +538,6 @@
                             } else{
                                 var respLstActEco = JSON.parse(responseActEco);
                                 $scope.dataGenesisCidadano.activiades_economicas = respLstActEco.length;
-                                console.log('respLstActEco   ',respLstActEco);
                             };
                         });
                     }
@@ -778,7 +777,6 @@
         $rootScope.looo = 0;
         $rootScope.laaa = 0;
         $scope.datos = datosForm_inicio;
-        console.log('$scope.datos     ',$scope.datos);
     };
     
     /*SELECCCIONAR TRAMITE CIUDADANO*/
@@ -992,11 +990,9 @@
                         document.getElementById('INT_AC_MACRO_ID').value = $scope.datos.f01_macro_act;
                         $scope.GetValueMacrodistrito(idMacrodistrito);
                         $scope.zonaAct_id = cod_zona_sit;
-                        console.log('$scope.zonaAct_id    ',$scope.zonaAct_id);
                         var listarZonas = [$scope.distritoZonas($scope.datos.f01_macro_act)];
                         $q.all(listarZonas).then(function (resp) {
                             $scope.datos.f01_zona_act = cod_zona_sit;
-                            console.log('zonnnnnnnn     ',$scope.datos.f01_zona_act);
                             document.getElementById('f01_zona_act').value = cod_zona_sit;
                             $scope.GetValueZona(cod_zona_sit);
                             $scope.actulizarIdDistrito();
@@ -1056,7 +1052,6 @@
                     }).then(function(data)
                     {
                         var feature = data.features[0];
-                        console.log('zossss    ',data);
                         if(feature == undefined) {
                             console.log("Patty...No es Zona Segura...");
                             id_zona_segura = 0;
@@ -1251,7 +1246,6 @@
                     }
                     $scope.zonArray = datoObjectFinal;
                     $scope.aDistritoZona = $scope.zonArray;
-                    console.log('$scope.aDistritoZona    ',$scope.aDistritoZona);
                     deferred.resolve($scope.aDistritoZona);
                     //$scope.datos.f01_zona_act = $scope.zonaAct_id;
                     //console.log('$scope.datos.f01_zona_act    ',$scope.datos.f01_zona_act);
@@ -1355,7 +1349,6 @@
         document.getElementById('f01_dist_act').value = $scope.datos.f01_dist_act;
         $scope.datos.INT_AC_DISTRITO    =   idDistrito;
         $scope.datos.INT_AC_ID_ZONA     =   idZona;
-        console.log('distrito   ',$scope.datos.f01_dist_act);
         deferred.resolve($scope.datos.f01_zona_act);
         $scope.datos.INT_ID_ZONA        =   idZona;
         $scope.desabilitadoNo = true;
@@ -1377,7 +1370,6 @@
     $scope.GetValueMacrodistrito = function (macro) {
         var e = document.getElementById("f01_macro_act");
         $scope.datos.f01_macro_act_descrip = e.options[e.selectedIndex].text;
-        console.log("f01_macro_act_descrip:: ", $scope.datos.f01_macro_act_descrip);
     }
     
     $scope.GetZonaSeguraV = function (idzonasegura){
@@ -1386,7 +1378,6 @@
             if($rootScope.mostrarzonasegura == true || $rootScope.mostrarzonasegura == 'true'){
                 $scope.datos.chkzonasegura = 'ZONASEGURA';
                 $scope.datos.id_zona_segura= idzonasegura;
-                console.log('$scope.datos.id_zona_segura    ',$scope.datos.id_zona_segura);
                 $scope.datos.f01_zon_seg = 'SI';
             }
             else{
@@ -2022,7 +2013,6 @@
         setTimeout(function(){
             var e = document.getElementById("f01_zona_act");
             $scope.datos.f01_zona_act_descrip = e.options[e.selectedIndex].text;
-            console.log('f01_zona_act_descrip:::    ',$scope.datos.f01_zona_act_descrip);
         },500);
     }
 
@@ -2244,7 +2234,6 @@
             data = JSON.parse(resultado);
             if(data.success.length > 0){
                 $rootScope.aMacrodistritos = data.success;
-                console.log('$rootScope.aMacrodistritos      ',$rootScope.aMacrodistritos);
             }else{
                 $scope.msg = "Error !!";
             }
@@ -2486,7 +2475,6 @@
         resRoles.parametros = '{"sdoc_usuario":"'+ usuario +'","sdoc_sistema":"","sdoc_proceso":"'+ proceso +'","sdoc_ci_nodo":"'+ ci_nodo +'"}';
         resRoles.llamarregla(function(response) {
             $scope.obtDatos = JSON.parse(response);
-            console.log('$scope.obtDatos    ',$scope.obtDatos);
             if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
                 $scope.tablaDocumentos = null;
                 $("#divMsj").css({'display' : 'block' });
@@ -2498,7 +2486,7 @@
                 var data = JSON.parse(response);
                 var u;
                 angular.forEach(data, function(dataValue, dataKey) {
-                    var n = $scope.vdoc_nombre = dataValue['vdoc_nombre'];            
+                    var n = $scope.vdoc_nombre = dataValue['vdoc_nombre'];
                     var s = $scope.vdoc_sistema= dataValue['vdoc_sistema'];
                     u = $scope.vdoc_url    = dataValue['vdoc_url'];
                     if(n == "CONDICIONES DE USO" || s == "vdoc_sistema") {
@@ -2507,10 +2495,8 @@
                         if(condicion_uso.indexOf("http://40.117.46.159:80/rest") != -1){
                             condicion_uso = condicion_uso.replace("http://40.117.46.159:80/rest", CONFIG.APIURL);
                         }
-                        console.log('iiiiiiiiii     ',condicion_uso);
                         //$scope.condicion_uso = condicion_uso;
                         $rootScope.condicion_uso = condicion_uso;
-                        console.log('$scope.condicion_uso   ',$rootScope.condicion_uso);
                         //$scope.vdoc_url = dataValue['vdoc_url'];
                         if(!$scope.$$phase) {
                             $scope.$apply();

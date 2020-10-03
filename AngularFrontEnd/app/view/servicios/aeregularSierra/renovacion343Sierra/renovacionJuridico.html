@@ -82,6 +82,10 @@
             ob.value = ob.value.replace(invalidChars,"");
         };
     }
+
+    function sincomilla(ob) {
+        ob.value = ob.value.replace(/"/,"");
+    }
 </script>
 <script type="text/javascript">
 // In your Javascript (external .js resource or <script> tag)
@@ -302,7 +306,7 @@
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_33}}:</label>
                             <div class="controls">
-                                <input type="text" ng-model="datos.f01_raz_soc" id="f01_raz_soc" name="f01_raz_soc" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado" required>
+                                <input type="text" ng-model="datos.f01_raz_soc" id="f01_raz_soc" name="f01_raz_soc" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado" onkeyUp="sincomilla(this);" required>
                             </div>
                         </div>
                     </div>
@@ -359,7 +363,7 @@
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >Descripción del Servicio Prestado:</label>
                             <div class="controls">
-                                <input type="text" ng-model="datos.f01_productosElaborados" id="f01_productosElaborados" name="f01_productosElaborados" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-change="verificarEstablecimiento(datos.f01_productosElaborados)" ng-disabled="desabilitado" required/>
+                                <input type="text" ng-model="datos.f01_productosElaborados" id="f01_productosElaborados" name="f01_productosElaborados" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-change="verificarEstablecimiento(datos.f01_productosElaborados)" ng-disabled="desabilitado" onkeyUp="sincomilla(this);" required/>
                             </div>
                         </div>
                     </div>
@@ -867,7 +871,7 @@
                         <font color="#FF0000" size="4px"> * </font>
                         <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
                         <div class="controls">
-                          <input type="text" ng-model="datos.f01_num_act_n" id="f01_num_act_n" name="f01_num_act_n" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
+                          <input type="text" ng-model="datos.f01_num_act_n" id="f01_num_act_n" name="f01_num_act_n" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado" onkeyUp="sincomilla(this);" required/>
                         </div>
                     </div>
                 </div>
@@ -876,7 +880,7 @@
                         <font color="#FF0000" size="4px"> * </font>
                         <label for="url" >{{translateTitulos.lbl_12_41}}:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_num_act1" id="f01_num_act1" name="f01_num_act1" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado" required/>
+                            <input ng-model="datos.f01_num_act1" id="f01_num_act1" name="f01_num_act1" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado" onkeyUp="sincomilla(this);" required/>
                         </div>
                     </div>
                 </div>
@@ -926,7 +930,7 @@
                         <font color="#FF0000" size="4px"> * </font>
                         <label for="url" >Referencia de la Dirección de la Actividad Económica para mayor presición:</label>
                         <div class="controls">
-                            <input ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" ng-disabled="desabilitadoO || desabilitado" required/>
+                            <input ng-model="datos.f01_casilla" id="f01_casilla" name="f01_casilla"  class="form-control"  width="30%" height="30" ng-disabled="desabilitadoO || desabilitado" onkeyUp="sincomilla(this);" required/>
                         </div>
                     </div>
                 </div>
@@ -1038,7 +1042,7 @@
                                                 <table class="table table-responsive">
                                                     <tr>
                                                         <th>
-                                                            <input class="form-control" type="text"  id="INT_DESC" name="INT_DESC" placeholder="Descripción del Elemento" ng-model="publi.INT_DESC" ng-disabled="desabilitadoO || desabilitado" required onkeyUp="return conMayusculas(this);">
+                                                            <input class="form-control" type="text"  id="INT_DESC" name="INT_DESC" placeholder="Descripción del Elemento" ng-model="publi.INT_DESC" ng-disabled="desabilitadoO || desabilitado" required onkeyUp="return conMayusculas(this);sincomilla(this)">
                                                         </th>
                                                         <th ng-show="especial==null">
                                                             <input class="form-control" type="number" min="0" max="1500" id="INT_ALTO" name="INT_ALTO" placeholder="Alto" ng-model="publi.INT_ALTO" ng-disabled="desabilitadoO || desabilitado" required>
@@ -1228,15 +1232,15 @@
                             <div class="panel-heading"><B>DEUDA DE GESTIONES PENDIENTES</B></div>
                             <div class="panel-body">
                                 <table  ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
-                                    <tr ng-repeat="duedasCiu in datos.listDeudasPendientes">
+                                    <tr ng-repeat="duedasCiu in datos.listDeudasPendientes" align="right">
                                         <td data-title="'Nº'">{{duedasCiu.nro}}</td>
                                         <td data-title="'GESTIÓN'">{{duedasCiu.gestion}}</td>
-                                        <td data-title="'MONTO ACT. ECO.'">{{duedasCiu.monto_ae}}</td>
-                                        <td data-title="'MONTO ELEM. PUB.'">{{duedasCiu.monto_viae}}</td>
+                                        <td data-title="'MONTO ACT. ECO. Bs.'">{{duedasCiu.monto_ae}}</td>
+                                        <td data-title="'MONTO ELEM. PUB. Bs.'">{{duedasCiu.monto_viae}}</td>
                                         <td data-title="'DESCUENTO EN %'">{{duedasCiu.descuento}}</td>
-                                        <td data-title="'MONTO SIN DESC.'">{{duedasCiu.monto_total}}</td>
-                                        <td data-title="'DESCUENTO'">{{duedasCiu.monto_total_con_descuento}}</td>
-                                        <td data-title="'MONTO TOTAL'">{{duedasCiu.monto_pagar}}</td>
+                                        <td data-title="'PATENTE Bs.'">{{duedasCiu.monto_total}}</td>
+                                        <td data-title="'DESCUENTO'">{{duedasCiu.monto_descuento_bs_padelantado}}</td>
+                                        <td data-title="'MONTO TOTAL Bs.'">{{duedasCiu.monto_total_bs_padelantado}}</td>
                                     </tr>
                                     <!--tr ng-repeat="duedasCiu in $data" ng-if="duedasCiu.montoLiteral!=''">
                                         <td bgcolor = "black" colspan="7"><font color = "white">TOTAL A PAGAR</font></td>
@@ -1306,7 +1310,7 @@
                             <div class="panel-heading"><B>GESTIONES A PAGAR</B></div>
                             <div class="panel-body">
                                 <table  ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
-                                    <tr ng-repeat="duedasCiu in datos.listDeudas">
+                                    <tr ng-repeat="duedasCiu in datos.listDeudas" align="right">
                                         <td data-title="'Nº'">{{duedasCiu.nro}}</td>
                                         <td data-title="'GESTIÓN'">{{duedasCiu.gestion}}</td>
                                         <td data-title="'MONTO ACT. ECO. Bs.'">{{duedasCiu.monto_ae}}</td>
@@ -1314,12 +1318,12 @@
                                         <td data-title="'DESCUENTO EN %'">{{duedasCiu.descuento}}</td>
                                         <td data-title="'MONTO SIN DESC. Bs.'">{{duedasCiu.monto_total}}</td>
                                         <td data-title="'DESCUENTO Bs.'">{{duedasCiu.monto_descuento}}</td>
-                                        <td data-title="'MONTO TOTAL Bs.'">{{duedasCiu.monto_total_con_descuento}}</td>
+                                        <td data-title="'MONTO TOTAL Bs.'">{{duedasCiu.monto_pagar}}</td>
                                     </tr>
-                                    <!--tr ng-repeat="duedasCiu in $data" ng-if="duedasCiu.montoLiteral!=''">
+                                    <tr>
                                         <td bgcolor = "black" colspan="7"><font color = "white">TOTAL A PAGAR</font></td>
-                                        <td bgcolor = "black"><font color = "white">{{duedasCiu.montoTotal}} Bs.</font></td>
-                                    </tr-->
+                                        <td bgcolor = "black"><font color = "white">{{calculo_total}} Bs.</font></td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
@@ -1329,7 +1333,9 @@
                             <label class="col-sm-12 control-label no-padding-right" for="url"></label>
                             <div class="col-sm-12" align="left">
                                 <div class="alert alert-danger fade in">
-                                    <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br> Ud. deberá realizar el pago en {{mensajeCiudadano}}el pago lo podrá realizar en las entidades financieras autorizadas.<br> <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado, se emitirá su LICENCIA DE FUNCIONAMIENTO por el lapso de vigencia de 2 años.
+                                    <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
+                                    Ud. puede verificar en su cuenta iGob dentro de {{mensajeCiudadano}}. de la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
+                                    <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado ({{mensajeCiudadano}}), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
                                 </div>
                             </div>
                         </div>

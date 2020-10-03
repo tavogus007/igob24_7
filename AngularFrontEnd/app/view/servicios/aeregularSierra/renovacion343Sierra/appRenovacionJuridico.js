@@ -5093,7 +5093,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
             $scope.mostrarMsgNuevaActividad = false;
         }
-        console.log('$scope.dataGenesisCidadano     ',$scope.dataGenesisCidadano);
         var datosgen = ((typeof($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {} : $scope.dataGenesisCidadano);
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
             $scope.mostrarMsgNuevaActividad = false;

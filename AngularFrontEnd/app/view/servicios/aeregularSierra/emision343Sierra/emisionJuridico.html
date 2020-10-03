@@ -29,13 +29,13 @@
     }
     $('.clockpicker').clockpicker();
 </script>
+
 <script type="text/javascript">
 
     function accessScope(node, func) {
         var scope = angular.element(document.querySelector(node)).scope();
         scope.$apply(func);
     }
-
     /*function initMap() {
         accessScope('#outerMapaActividadM', function (scope) {
             scope.initMap();

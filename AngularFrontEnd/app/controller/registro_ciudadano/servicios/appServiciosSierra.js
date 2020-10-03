@@ -491,6 +491,7 @@
     $scope.re=false;
     $scope.rej=false;
 
+
     $scope.recuperandoDatosGenesis = function(){
         var tipoContribuyente   =   sessionService.get('TIPO_PERSONA');
         var ciDocumento          =   '';//sessionService.get('CICIUDADANO'));
@@ -861,8 +862,6 @@
                 datos.latitud = latitud;
                 datos.longitud = longitud;
                 var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';
-                console.log ("latitud: ",latitud);
-                console.log ("longitud: ",longitud);
                 $scope.datos.INT_AC_latitud=latitud;
                 $scope.datos.INT_AC_longitud=longitud;
                 /*setTimeout(function() {

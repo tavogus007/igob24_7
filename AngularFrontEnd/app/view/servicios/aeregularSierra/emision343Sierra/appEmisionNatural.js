@@ -248,6 +248,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
             alert("requisitos actividad");
         }
     };
+    
 
     $scope.actividadDesarrolladaM = function(){
         $.blockUI();

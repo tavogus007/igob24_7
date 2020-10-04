@@ -104,7 +104,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
     };
 
     $scope.cambioToggle1 = function(dato){
-        console.log('dddddd     ',dato);
         //$scope.lscategoria();
         $scope.lssubcategoria();
         if ( dato == "NUEVO") {
@@ -150,17 +149,13 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
 
     $scope.datosRepresentanteLegal = function () {
         try{
-            console.log('$scope.datos.f01_id_contribuyente  RL   ',$scope.dataGenesisCidadano);
-            console.log('representante antiguooooo     ',$scope.datos.f01_id_representante_legal_antiguo);
             var dataRepLegal = '';
             dataRepLegal = '{"ycontribuyente_nro_documento":"'+$scope.datos.f01_num_doc_rep+'","ycontribuyente_nit":""}';
             var resAct = new reglasnegocioSierra();
             resAct.identificador = 'VALLE_PRUEBA-SGEN-3148';
             resAct.parametros = dataRepLegal;
             resAct.llamarregla_sierra(function(responseN){
-                console.log('responseN    ',responseN);
                 var responseLegal = JSON.parse(responseN);
-                console.log('responseLegal    ',responseLegal);
                 $.unblockUI();
                 if(responseLegal.resultado == true || responseLegal.resultado == 'true'){
                     var datos = {};
@@ -171,7 +166,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                 else {
                     swal('', "Representante Legal no registrado en Sierra", 'warning');
                 }
-                console.log('id RL  ',$scope.datos.f01_id_representante_legal,'  id temp RL   ',$scope.datos.f01_id_representante_legal_temp);
             });
         }catch (error){
             console.log("error");
@@ -410,6 +404,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                     datoObjectFile6.nombre = 'FUNDEMPRESA o Matricula de Comercio';
                     datoObjectFiles_ci[5] = datoObjectFile6;
                     $scope.datos.FILE_CI = datoObjectFiles_ci;
+                    $scope.datos.File_contribuyente = datoObjectFiles_ci;
                     $scope.getRequisitosFormulario($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
                     $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
                     $scope.getRequisitosTecnicosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
@@ -541,7 +536,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
 
     $scope.LicenciaXCategoriaM = function(idDesarrollada, superficie){
         $.blockUI();
-        console.log('idDesarrollada     ',idDesarrollada,'    superficie   ',superficie);
         if(superficie){
             $.blockUI();
             $scope[name] = 'Running';
@@ -592,7 +586,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
     }
 
     $scope.guardarLicencia = function(licencia){
-        console.log('licencia    ',licencia);
         $scope.dscripcionlic ={};
         if($scope.dscripcionlic.f01_act_desarrolladamdescrip=='--Seleccione--'){
             $scope.dscripcionlic.f01_act_desarrolladamdescrip = '';
@@ -1175,7 +1168,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             resTipoLetrero.llamarregla_sierra(function(responseTipLet){
                 var lstTipoLetrero =  JSON.parse(responseTipLet);
                 var listLetreros = JSON.parse(lstTipoLetrero[0].pub_tipo_letrero);
-                console.log('listLetreros     ',listLetreros);
                 if(lstTipoLetrero.length > 0){
                     $scope.TipoLetrero = listLetreros;
                 }else{
@@ -1239,7 +1231,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             resTipoLetrero.parametros = '{"caracteristica":"'+idlee+'"}';
             resTipoLetrero.llamarregla_sierra(function(responseCaracteristica){
                 var lstCaracteristica = JSON.parse(responseCaracteristica);
-                console.log('lstCaracteristica    ',lstCaracteristica);
                 if(lstCaracteristica.length > 0){
                     $scope.lCaracteristica = lstCaracteristica;
                     if($scope.TipoLetrero){
@@ -1267,9 +1258,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
     $scope.actulizarCaracteristica = function(){
         var id_cara = "";
         var distNombre  = $scope.publi.INT_CARA;
-        console.log('distNombre     ',distNombre);
         if($scope.lCaracteristica){
-            console.log('$scope.lCaracteristica      ',$scope.lCaracteristica);
             angular.forEach($scope.lCaracteristica, function(value, key) {
                 if(value.descripcion == distNombre){
                     id_cara  =   value.id_pub_caracteristica;
@@ -1277,7 +1266,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             });
         }
         $scope.publi.id_cara = id_cara;
-        console.log('$scope.publi.id_cara    ',$scope.publi.id_cara);
     };
 
     $scope.lsCaracteristica = function(){
@@ -1622,6 +1610,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             datosNeXO['f01_id_representante_legal'] = paramForm.f01_id_representante_legal;
             datosNeXO['f01_id_representante_legal_temp'] = paramForm.f01_id_representante_legal_temp;
             datosNeXO['f01_num_pmc'] = paramForm.f01_num_pmc;
+            datosNeXO['INT_PMC']                    = paramForm.f01_num_pmc;//$scope.dataGenesisCidadano[0].padron;
+            datosNeXO['INT_ID_CONTRIBUYENTE']       = paramForm.f01_id_contribuyente;//$scope.dataGenesisCidadano[0].idContribuyente;
+            datosNeXO['INT_AE_IDCODIGO_ZONA']       = paramForm.f01_idCodigoZona;
+            datosNeXO['INT_ID_ACTIVIDAD_ECONOMICA'] = paramForm.INT_TRAMITE_RENOVA;
         }
         datosNeXO['f01_nro_orden'] = paramForm.f01_nro_orden;
         datosNeXO['f01_correlativo_form401'] = $rootScope.f01_correlativo_form401;
@@ -1818,7 +1810,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             decjuradaN.campo = 'Declaración Jurada Juridico';
             decjuradaN.nombre = 'DECLARACIÓN JURADA';
             datoObjectdj[0] = decjuradaN;
-            datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);
+            //datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);
             datosNeXO['File_Publicidad'] = $scope.datos.fileArchivosPublicidad;
             //datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos;
             datosNeXO['FILE_FOTOCOPIA_CI'] = paramForm.FILE_FOTOCOPIA_CI;
@@ -1856,6 +1848,17 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         datosNeXO['g_fecha']                    =   fechactual;
         datosNeXO['g_origen']                   =   "IGOB247";
         datosNeXO['licencia_multiple'] = paramForm.licenciam;
+
+        var datoObjectdjCU = [];
+        var decjuradaCU = new Object();
+        decjuradaCU.url = $rootScope.condicion_uso;
+        decjuradaCU.campo = 'Condición de uso';
+        decjuradaCU.nombre = 'CONDICIÓN DE USO';
+        datoObjectdjCU[0] = decjuradaCU;
+        datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN, datoObjectdjCU);
+        datosNeXO['File_ae'] = $rootScope.File_ae.concat(decjuradaN);
+        datosNeXO['File_contribuyente'] = $scope.datos.File_contribuyente.concat(datoObjectdjCU);
+
         datosNeXO['condicion_uso'] = $rootScope.condicion_uso;
         if (paramForm.f01_categoria_descrip == 211 || paramForm.f01_categoria_descrip == '211') {
             datosNeXO['f01_vehiculo_ft'] = paramForm.f01_vehiculo_ft;
@@ -1875,14 +1878,14 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             datosNeXO['f01_lugar_ft'] = paramForm.f01_lugar_ft;
         }
         //DATOS DE LA ACTIVIDAD ECONOMICA - NO ESTAN REGISTRADAS DE MANERA LOCAL
-        if($scope.dataGenesisCidadano && $scope.formDatosAE){
+        /*if($scope.dataGenesisCidadano && $scope.formDatosAE){
             if($scope.dataGenesisCidadano.length > 0){
                 datosNeXO['INT_PMC']                    = $scope.dataGenesisCidadano[0].padron;
                 datosNeXO['INT_ID_CONTRIBUYENTE']       = $scope.dataGenesisCidadano[0].idContribuyente;
                 datosNeXO['INT_AE_IDCODIGO_ZONA']       = "21";
                 datosNeXO['INT_ID_ACTIVIDAD_ECONOMICA'] = paramForm.INT_TRAMITE_RENOVA;
             }
-        }
+        }*/
         var sMacroR         =   datosNeXO['f01_macro_des'];
         //var sDistritoR      =   datosNeXO['INT_DISTRITO'];
         var sZonaR          =   datosNeXO['INT_ZONA'];
@@ -1896,7 +1899,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             //if(sMacroR != "" && sZonaR  != "" && sMacroRDesc  != "" && sZonaRDesc  != ""){
                 var sIdTramite = $rootScope.tramiteId;
                 var datosSerializados = JSON.stringify(datosNeXO);
-                console.log('datosSerializados    ',datosSerializados);
                 archivo1 = "";
                 //CREAR CASO AE LINEA
                 //REQUISITOS PARA CREAR LA ACTIVIDAD ECONOMICA INT_AC_MACRO_ID, INT_ID_CAT_AGRUPADA
@@ -1997,9 +1999,11 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
     /*REQUISITOS2018*/
     $scope.fileArRequisitos = {};
     $scope.fileAdjuntosPublicidad = {};
+    $scope.fileAdjuntosAE = {};
     $scope.adicionarArrayDeRequisitos = function(aArch,idFile){
         var descDoc = "";
         var fechaNueva = "";
+        var idp = 4;
         var fechaserver = new fechaHoraServer(); 
         fechaserver.fechahora(function(resp){
             var sfecha = JSON.parse(resp);
@@ -2011,9 +2015,10 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         angular.forEach($scope.docArray, function(doc, pos) {
             if(doc.resid == idFile){
                 descDoc = doc.desNom;
+                idp = doc.idnro;
             }
         })
-        if ($scope.docPubNuevo.length > 0) {
+        if ($scope.docPubNuevo.length > 0 && idp == 4) {
             angular.forEach($scope.docPubNuevo, function(doc, pos) {
                 if(doc.idP+''+doc.resid == idFile){
                     descDoc = doc.desNom;
@@ -2030,33 +2035,25 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                     var imagenFile = respuestaFile.name.split('.');
                     var tipoFile = imagenFile[1];
                     nombreFileN = descDoc + '_'+fechaNueva+'.'+tipoFile;
-                    console.log('nombreFileN    ',nombreFileN);
                 });
             } 
-        } 
+        }
         $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
         var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
         var adatafile   =   {};
         var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() + '" }';
         $scope.fileArRequisitos[aArch.name] = JSON.parse(myJSON);
-        var swp = 0;
-        var idp = 0;
-        for (var i = 0; i < $scope.docArray.length && swp == 0; i++) {
-            if ($scope.docArray[i].resid == idFile) {
-                idp = $scope.docArray[i].idnro;
-                swp = 1;
-            }
-            else{
-                idp = 4;
-            };
-        };
+        $scope.clonarRequisitosDocumentales($scope.fileArRequisitos);
         if (idp == 4) {
             var uploadUrlP = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
             var myJSONP = '{ "url":"' + uploadUrlP + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() + '" }';
             $scope.fileAdjuntosPublicidad[aArch.name] = JSON.parse(myJSONP);
             $scope.clonarRequisitosPublicidad($scope.fileAdjuntosPublicidad);
+        }else{
+            var myJSONAE = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() +'"}';
+            $scope.fileAdjuntosAE[aArch.name] = JSON.parse(myJSONAE);
+            $scope.clonarRequisitosDocumentalesAE($scope.fileAdjuntosAE);
         };
-        $scope.clonarRequisitosDocumentales($scope.fileArRequisitos);
         //$scope.fileArRequisitos.push(JSON.parse(myJSON));
     }
 
@@ -2083,6 +2080,16 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             i = i +1;
         });
         $scope.datos.fileArchivosPublicidad = datoObjectFilesP;
+    }
+
+    $scope.clonarRequisitosDocumentalesAE = function(aRequArchivosAE){
+        var k = 0;
+        datoObjectFilesAE = [];
+        angular.forEach(aRequArchivosAE, function(archivo, key) {
+            datoObjectFilesAE[k] = archivo;
+            k = k +1;
+        });
+        $scope.datos.fileArchivosAE = datoObjectFilesAE;
     }
 
     /*$scope.ultimoArrayAdjunto = function(){
@@ -2147,6 +2154,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
         datoObjectFiles[0] = datoObjectFile4;
         $scope.datos.FILE_MAPA = datoObjectFiles;
         $rootScope.FileAdjuntos =  $scope.datos.FILE_CI.concat($scope.datos.FILE_MAPA,$scope.datos.fileArchivosAd);
+        $rootScope.File_ae = $scope.datos.fileArchivosAE.concat($scope.datos.FILE_MAPA);
     }
 
     /*REQUISITOS2018*/
@@ -2829,13 +2837,13 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
     };
 
     $scope.capturarImagen = function(){
-        $scope.oidCiudadano = sessionService.get('IDCIUDADANO');
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         //var latitud = $rootScope.laaa;
         //var longitud = $rootScope.looo;
 
         var latitud =  $scope.datos.INT_AC_latitud;
         var longitud = $scope.datos.INT_AC_longitud;
-        $scope.oidCiudadano = sessionService.get('IDCIUDADANO');
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         var sDirTramite = sessionService.get('IDTRAMITE');
         $scope.url = "RC_CLI/" + $scope.oidCiudadano + "/" + sDirTramite;
         $scope.archivo1 = sDirTramite+"croquisActividad.jpg";
@@ -3797,7 +3805,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             $scope.desabilitado     =   false;
             $scope.botones          =   "mostrar";
         }
-        console.log('$scope.dataGenesisCidadano     ',$scope.dataGenesisCidadano);
         var datosgen = ((typeof($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {} : $scope.dataGenesisCidadano);
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
             $scope.mostrarMsgNuevaActividad = false;
@@ -3817,7 +3824,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
 
     
     $scope.ShowPa = function(valor) {
-        console.log('vaaaaaa      ',valor);
         if (valor == 'true' || valor == true) {
             $scope.IsVisible = true;
             $scope.datos.listDeudas = [];
@@ -3837,7 +3843,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
     }
 
     $scope.calcularDeudas = function(sup, nroges){
-        console.log('con superficie     ',$scope.datos);
         $scope.datos.montoDeuda = [];
         var fechaP = new Date();
         var gestionP = fechaP.getFullYear();
@@ -3862,7 +3867,6 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                 for(i = 0; i < multiservicios.length; i++){
                     datoObject_cat = datoObject_cat + multiservicios[i].f01_cat_agrupadamid+',';
                 }
-                console.log('datoObject_cat    ',datoObject_cat);
                 datoObject_cat = datoObject_cat.substring(0,datoObject_cat.length-1);
             }else{
                 datoObject_cat = datoObject_cat + $scope.datos.f01_categoria_agrupada_sierra;
@@ -3871,10 +3875,8 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             if ($scope.datos.rdTipoTramite1 == "NUEVO") {
                 if ($scope.datos.publicidad.length > 0) {
                     var dataPub = $scope.datos.publicidad;
-                    console.log('la publicidaddddd    ',dataPub);
                     datoObject_pub = [];
                     for (k = 0; k < dataPub.length; k++) {
-                        console.log('dataPub[k]    ',dataPub[k]);
                         datoObjectPublicidad = new Object();
                         datoObjectPublicidad.id_viae = dataPub[k].idPublicidad_temp;
                         datoObjectPublicidad.caras = 1;//'Z1';
@@ -3905,7 +3907,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                 };
             };
             if (swss == 0) {
-                console.log('dataDeuda     ',dataDeuda);
+                $scope.calculo_total = 0;
                 var calcularD = new reglasnegocioSierra();
                 //calcularD.identificador = 'VALLE_PRUEBA-SGEN-3330';
                 calcularD.identificador = 'SERVICIO_VALLE_AE-3277';
@@ -3930,17 +3932,17 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                         datoObjectPP.monto_descuento = pagoAE[j].monto_descuento;
                         datoObjectPP.monto_total_con_descuento = pagoAE[j].monto_total_con_descuento;
                         datoObjectPago[j] = datoObjectPP;
+                        $scope.calculo_total = $scope.calculo_total + parseInt(pagoAE[j].monto_total_con_descuento);
                     };
                     $scope.datos.listDeudas = datoObjectPago;
+                    $scope.datos.calculo_total = $scope.calculo_total;
                     $scope.listDeudas = datoObjectPago;
                     if(!$scope.$$phase) {
                         $scope.$apply();
                     }
-                    console.log('$scope.listDeudas    ',$scope.datos.listDeudas);
                     $scope.tblDeudas.reload();
                     $.unblockUI();
                 })
-                console.log('$scope.listDeudasssssssssss    ',$scope.datos.montoDeuda);
             } else{
                 $.unblockUI();
             };

@@ -269,7 +269,7 @@ lstActividadEconomicaVentas.prototype.lstActividadEconomicaVentas = function (fu
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
 };
 
-function reglasnegocioSierra() {
+/*function reglasnegocioSierra() {
     this.identificador;
     this.parametros;
 };
@@ -284,4 +284,4 @@ reglasnegocioSierra.prototype.llamarregla_sierra = function(functionResp){
         "parametros": this.parametros
     };
     ejecutarAjaxMotorSierra(urlComp, typeCall, dataParams, functionResp,stoquen);
-};
+};*/

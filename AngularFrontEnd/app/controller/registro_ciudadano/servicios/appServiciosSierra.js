@@ -51,6 +51,25 @@
         { name: 'Renovación de Licencias de Funcionamiento', id:'44'}
     ];
 
+    $scope.sesionTokenSierra = function() {
+        var urlToken = CONFIG.SERVICE_SIERRAM + "apiLogin";
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: urlToken,
+            data: CONFIG.CREDENCIAL_MOTORESSIERRA,
+            async: false,
+            success: function(response) {
+                dataResp = JSON.stringify(response);
+                sessionStorage.setItem('TOKEN_MOTOR', response.token);
+            },
+            error: function(response, status, error) {
+                dataResp = "{\"error\":{\"message\":\"" + response.responseText + "\",\"code\":700}}";
+                console.log(dataResp);
+            }
+        });
+    }
+
     $scope.btnEnviarForm = true;
     $scope.datosGuardados = false;
     $scope.habGuardar1 = true;
@@ -2182,9 +2201,9 @@
         $scope.recuperandoDatosGenesis();
         //$scope.getCaptchasX();
         $scope.getCaptchasXX();
-        //$scope.sesionTokenSierra();
         $scope.cargarMacrodistrito();
         $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
+        $scope.sesionTokenSierra();
     });
 
     $scope.inicioServicios343Sierra = function () {
@@ -2195,7 +2214,7 @@
         $scope.getCaptchasXX();
         $scope.cargarMacrodistrito();
         $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
-        //$scope.sesionTokenSierra();
+        $scope.sesionTokenSierra();
     };
 
 
@@ -2510,29 +2529,6 @@
             };
         });      
     };
-
-    /*$scope.sesionTokenSierra = function(){
-        var urlToken = CONFIG.SERVICE_SIERRAM+"apiLogin";
-        $scope[name] = 'Running';
-        var deferred = $q.defer();
-        $.ajax({
-            dataType: "json",
-            type: "POST",
-            url : urlToken,
-            data: CONFIG.CREDENCIAL_MOTORESSIERRA,
-            async: false,
-            success: function(response) {
-                dataResp = JSON.stringify(response);
-                deferred.resolve(dataResp);
-                sessionStorage.setItem('TOKEN_MOTORS', response.token);
-            },
-            error: function (response, status, error) {
-                dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-                console.log(dataResp);
-            }
-        });
-        return deferred.promise;
-    }*/
 
     $scope.combo = "<select id='servicio' class='seleccionaServicio'>  <option value='1'>Internet</option> <option value='3'>Salud</option> <option value='4'>Publicidad</option> </select> <br>";
 

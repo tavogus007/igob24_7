@@ -258,8 +258,35 @@ function validateDecimal(valor) {
                             </div>
 
                          <form class="form-horizontal ng-pristine ng-valid" action="index.html" method="post"> 
-                           <table  ng-table="tablaTramites"  class="table table-striped table-hover">
+                            <div class="col-md-12">
+                                <div class="form-group">   
+                                    <div class="controls">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                              <label class="tamañoLabel">
+                                                <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="CIUDADANO" ng-disabled="valCiu"> <span class="label-text"></span>
+                                              </label> COMO CIUDADANO
+                                            </div>
+                                        </div>        
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                              <label class="tamañoLabel">
+                                                <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="INDEPENDIENTE" ng-disabled="valInd"> <span class="label-text"></span>
+                                              </label> COMO ANIMALISTA INDEPENDIENTE
+                                            </div>
+                                        </div>  
+                                        <div class="col-md-4">
+                                          <div class="form-check">
+                                            <label class="tamañoLabel">
+                                              <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="AGRUPADOS" ng-disabled="valAgr"> <span class="label-text"></span>
+                                            </label> COMO ANIMALISTA AGRUPADO
+                                          </div>
+                                      </div>                         
+                                    </div>
+                                </div>
+                              </div> 
 
+                           <table  ng-table="tablaTramites"  class="table table-striped table-hover">
                              <tr style="cursor: pointer;text-align: center;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.xmascota_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
                                 <td data-title="'Imagen'" ng-click="seleccionarMascota(tramite);"><img src={{tramite.xmascota_imagen_url}} alt=" Imagen" height="42" width="42"></td>
                                 <td data-title="'Mascota'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.nombre_mas}}</td>

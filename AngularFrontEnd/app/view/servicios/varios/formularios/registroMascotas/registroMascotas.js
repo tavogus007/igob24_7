@@ -172,6 +172,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
           });
           $scope.$apply();
           $scope.tablaTramites.reload();
+          $.LoadingOverlay("hide");
         }
        
       } catch (e) {
@@ -180,7 +181,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
      
     });
-    $.LoadingOverlay("hide");
+   
     
   }
 
@@ -438,6 +439,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     if ($scope.botonCrea == true) {
       $scope.dataMascota.titular_id = "0";//data.xmascota_titular_id;//2
       $scope.dataMascota.xmascota_imagen_url = $scope.url_imagen;
+      $scope.dataMascota.xpertenece = 'INDEPENDIENTE';
     }
 
     if (data.xmascota_raza_id) {
@@ -1204,6 +1206,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   }
 
   $scope.eliminarMascota = function (dato, eut, fal) {
+    cargando();
     $scope.datos.eutanasia = '';
     $scope.datos.fallecido = '';
     if ((eut == undefined && fal == undefined) || (eut == 'undefined' && fal == 'undefined') || (eut == '' && fal == '')) {
@@ -1215,6 +1218,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       if ((eut == undefined && fal == 'fallecido') || (eut == 'undefined' && fal == 'fallecido') || (eut == '' && fal == 'fallecido')) {
         luzz = 'fallecido';
       };
+      $.LoadingOverlay("hide");
     }
     var usr_id = sessionService.get('CICIUDADANO');
     var eliMascota = new reglasnegocioM();
@@ -1226,12 +1230,13 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.eliMascota = results1;
         $scope.tablaTramites.reload();
         $scope.$apply();
+        $scope.listarMascotasXci(usr_id);
         alertify.success('Datos de la Mascota fue dada de baja');
       } else {
 
       }
     });
-    $scope.listarMascotasXci(usr_id);
+   
   }
   //BAJA DE MASCOTA
 

@@ -762,27 +762,59 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             }
                             datoObjectNotiFinal[i] = datoObjectNoti;
                             $scope.myObj = datoObjectNotiFinal; //aNotif.success;
-                    }else{                                                              //CASO CONTRARIO....
-                            $scope.myObj = aNotif.success;
-                            datoObjectNoti = new Object();
-                            datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
-                            datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
-                            datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
-                            datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
-                            datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
-                            datoObjectNoti.obs_tra_observaciones = aNotif.success[i].obs_tra_observaciones;
-                            datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
-                            datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
-                            datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
-                            datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
-                            datoObjectNoti.obs_tra_tipo_resp = aNotif.success[i].obs_tra_tipo_resp; 
-                            datoObjectNoti.obs_tra_id_tramite = aNotif.success[i].obs_tra_id_tramite;   
-                            datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus; 
-                            datoObjectNoti.obj_url_ra = "noRA";
+                        }else if((aNotif.success[i].obs_tra_sistema == 'REGISTRO_ANIMALISTAS' && aNotif.success[i].serdv_descripcion == 'REGISTRO ANIMALISTAS INDEPENDIENTES')){
+                        datoObjectNoti = new Object();
+                        $scope.notMascotas = aNotif.success[i];
+                        var mensaje = aNotif.success[i].obs_tra_observaciones;
+                        console.log('mensaje',mensaje);
+                        var resS = mensaje.split("&#34");
+                        $scope.actDetalle = resS[0];
+                        var mensajeIgob = resS[0];
+                        $scope.resS1 = resS[1];
+                        $scope.resS2 = JSON.parse($scope.resS1);
+                        console.log($scope.resS2,3333);
+                        datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
+                        datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
+                        datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
+                        datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
+                        datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
+                        datoObjectNoti.obs_tra_observaciones = mensajeIgob;
+                        datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                        datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
+                        datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
+                        datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
+                        datoObjectNoti.obj_url_ra = 'noRA';
+                        if ($scope.resS2 == undefined){
                             datoObjectNoti.obj_url = "noSitram";
-                            datoObjectNotiFinal[i] = datoObjectNoti;
-                            $scope.myObj = datoObjectNotiFinal;
-                    }
+                        }else{
+                            if($scope.resS2.length > 0){
+                                datoObjectNoti.obj_url = $scope.resS2[0].url_archivoC;
+                                console.log(' datoObjectNoti.obj_url', datoObjectNoti.obj_url);
+                            }
+                        }
+                        datoObjectNotiFinal[i] = datoObjectNoti;
+                        $scope.myObj = datoObjectNotiFinal; //aNotif.success;
+                            }else{                                                              //CASO CONTRARIO....
+                                $scope.myObj = aNotif.success;
+                                datoObjectNoti = new Object();
+                                datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
+                                datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
+                                datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
+                                datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
+                                datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
+                                datoObjectNoti.obs_tra_observaciones = aNotif.success[i].obs_tra_observaciones;
+                                datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                                datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
+                                datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
+                                datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
+                                datoObjectNoti.obs_tra_tipo_resp = aNotif.success[i].obs_tra_tipo_resp; 
+                                datoObjectNoti.obs_tra_id_tramite = aNotif.success[i].obs_tra_id_tramite;   
+                                datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus; 
+                                datoObjectNoti.obj_url_ra = "noRA";
+                                datoObjectNoti.obj_url = "noSitram";
+                                datoObjectNotiFinal[i] = datoObjectNoti;
+                                $scope.myObj = datoObjectNotiFinal;
+                                 }
             }
 
         });

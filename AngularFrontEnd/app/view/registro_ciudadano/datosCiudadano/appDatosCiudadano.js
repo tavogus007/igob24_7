@@ -766,13 +766,18 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         datoObjectNoti = new Object();
                         $scope.notMascotas = aNotif.success[i];
                         var mensaje = aNotif.success[i].obs_tra_observaciones;
-                        console.log('mensaje',mensaje);
+                        valor = mensaje.indexOf("&#34")
                         var resS = mensaje.split("&#34");
-                        $scope.actDetalle = resS[0];
-                        var mensajeIgob = resS[0];
-                        $scope.resS1 = resS[1];
-                        $scope.resS2 = JSON.parse($scope.resS1);
-                        console.log($scope.resS2,3333);
+                        if(valor != -1){
+                            $scope.actDetalle = resS[0];
+                            var mensajeIgob = resS[0];
+                            $scope.resS1 = resS[1];
+                            $scope.resS2 = JSON.parse($scope.resS1);
+                            datoObjectNoti.obj_url = $scope.resS2[0].url_archivoC;
+                        }else{
+                            var mensajeIgob = mensaje;
+                            datoObjectNoti.obj_url = "noSitram";
+                        }
                         datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
                         datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
                         datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
@@ -784,14 +789,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                         datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
                         datoObjectNoti.obj_url_ra = 'noRA';
-                        if ($scope.resS2 == undefined){
-                            datoObjectNoti.obj_url = "noSitram";
-                        }else{
-                            if($scope.resS2.length > 0){
-                                datoObjectNoti.obj_url = $scope.resS2[0].url_archivoC;
-                                console.log(' datoObjectNoti.obj_url', datoObjectNoti.obj_url);
-                            }
-                        }
                         datoObjectNotiFinal[i] = datoObjectNoti;
                         $scope.myObj = datoObjectNotiFinal; //aNotif.success;
                             }else{                                                              //CASO CONTRARIO....

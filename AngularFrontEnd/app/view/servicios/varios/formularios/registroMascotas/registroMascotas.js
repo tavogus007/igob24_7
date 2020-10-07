@@ -154,35 +154,41 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.tramitesMascota = $scope.cargandoMascotas;
   };
 
-  $scope.listarMascotasXci = function (ci) {
+  $scope.listarMascotasXci = function (ci,tipo) {
     cargando();
+    $scope.tramitesMascota = [];
     ci = sessionService.get('CICIUDADANO');
+    $scope.tipoR = tipo;
     var datosMascota = new reglasnegocioM();
-    datosMascota.identificador = 'SISTEMA_VALLE-CM-2043';
-    datosMascota.parametros = '{"xcarnet":' + ci + '}';
+    //datosMascota.identificador = 'SISTEMA_VALLE-CM-2043';
+    datosMascota.identificador = 'CASA_MASCOTA-8';
+    datosMascota.parametros = '{"xcarnet":' + ci + ',"xpertenece":"' + $scope.tipoR + '"}';
     datosMascota.llamarregla(function (results) {
-      var longResult = JSON.parse(results).length;
       try {
-        if (longResult == 0) {
-          alertify.error("No tiene Mascotas registradas...");
+        cargando();
+        if (results !== '"[{ }]"' && results !== '"[{}]"') {
+          setTimeout(function(){
+            $scope.tramitesMascota = JSON.parse(results);
+            angular.forEach($scope.tramitesMascota, function (value, key) {
+              value.xmascota_data = JSON.parse(value.xmascota_data);
+            });
+            $scope.$apply();
+            $scope.tablaTramites.reload();
+            $.LoadingOverlay("hide");
+         }, 1000);
         } else {
-          $scope.tramitesMascota = JSON.parse(results);
-          angular.forEach($scope.tramitesMascota, function (value, key) {
-            value.xmascota_data = JSON.parse(value.xmascota_data);
-          });
           $scope.$apply();
           $scope.tablaTramites.reload();
+          swal('Estimado Ciudadano', 'No tiene Mascotas registradas...','warning');
           $.LoadingOverlay("hide");
         }
-       
+        $.LoadingOverlay("hide");
       } catch (e) {
         console.log(e.toString());
+        
+        $.LoadingOverlay("hide");
       }
-
-     
     });
-   
-    
   }
 
 
@@ -205,14 +211,15 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     });
 
   //INSERTAR DATOS MASCOTA
-  $scope.serializarInformacion = function (data) {
+     $scope.serializarInformacion = function (data) {
       if ($scope.datos.mascota_esterilizacion == "si" && $scope.datos.mascota_marca == "tatuaje") {
         if ($scope.datos.mascota_certificado != "" ) {
-             $scope.dataMascota.cod_chip = $scope.datos.mascota_certificado;
+            $scope.dataMascota.cod_chip = $scope.datos.mascota_certificado;
             $.blockUI();
             $scope.insertarDataMascota(data);
             if ($scope.swimagen == true) {
-              $("#formModal").modal("show");
+              //$("#formModal").modal("show");
+              //console.log('$scope.vacunas',$scope.vacunas);
               if ($scope.vacunas.length == 0) {
                 //alert('sin vacunas');
                 swal({
@@ -230,22 +237,20 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
                   var datosMascota = new reglasnegocioM();
                   datosMascota.identificador = 'SISTEMA_VALLE-CM-2053';
                   datosMascota.parametros = JSON.stringify($scope.dataMascota);
-
                   datosMascota.llamarregla(function (results) {
                     if (results.length == 0) {
                       alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
                     } else {
-                      var res_corr = JSON.parse(results);
+                      /*var res_corr = JSON.parse(results);
                       res_corr = res_corr[0].sp_insertar_mascota_ultimo3
                       var urlpdf = res_corr.split("-")[1];
-                      var corr_asig = res_corr.split("-")[0];
+                      var corr_asig = res_corr.split("-")[0];*/
                       //$("#formModal").modal("show");
-                      var sci = sessionService.get('CICIUDADANO');
-                      $scope.listarMascotasXci(sci);
+                      
                       $scope.tablaTramites.reload();
                       $scope.$apply();
-                      alertify.success('Su Mascota fue registrada exitosamente con el codigo: '+$scope.dataMascota.cod_chip);
-                      swal({
+                      swal('Estimado Ciudadano','Su Mascota fue registrada exitosamente con el codigo: '+$scope.dataMascota.cod_chip,'success');
+                      /*swal({
                         title: 'Certiicación',
                         text: 'Estimado Ciudadano, desea imprimir su certificado?',
                         type: 'warning',
@@ -258,10 +263,11 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
                         swal.close();
                         //$.blockUI();
                         window.open(urlpdf) ;
-
-                    
-                      });
+                      });*/
                       $scope.cargarNuevaDataMascota();
+                      $scope.valCiu = false;
+                      $scope.valInd = false;
+                      $scope.valAgr = false;
                     }
                     $.unblockUI();
                   });
@@ -278,7 +284,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
                     alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
                   } else {
                     var sci = sessionService.get('CICIUDADANO');
-                    $scope.listarMascotasXci(sci);
+                    $scope.listarMascotasXci(sci,$scope.tipoR);
                     $scope.tablaTramites.reload();
                     $scope.$apply();
                     //alertify.success('Su Mascota fue registrada exitosamente...');
@@ -307,11 +313,11 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
             }
 
         }else{
-          swal('Estimado Ciudadano', 'Lleno los campos de esterilizacion y marca, por favor llene el campo Nº Certificado :.');
+          swal('Estimado Ciudadano', 'Por favor llene el campo Nº Certificado.');
         }
 
       }else{
-         if ($scope.datos.mascota_esterilizacion == "si") {
+        if ($scope.datos.mascota_esterilizacion == "si") {
           $scope.dataMascota.cod_chip = 'NO';
         }else{
           $scope.dataMascota.cod_chip = 'NO';
@@ -319,9 +325,9 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $.blockUI();
             $scope.insertarDataMascota(data);
             if ($scope.swimagen == true) {
-              $("#formModal").modal("show");
+              //$("#formModal").modal("show");
               if ($scope.vacunas.length == 0) {
-                //alert('sin vacunas');
+                //alert('sin vacunas sin desparasitacion, sin esterilizacion');
                 swal({
                   title: 'Mensaje de Verificación',
                   text: 'Estimado Ciudadano, ¡No registró Vacunas!, ¿Se encuentra seguro/a de realizar el registro?',
@@ -334,27 +340,43 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
                 }, function () {
                   swal.close();
                   $.blockUI();
+                  try {
                   var datosMascota = new reglasnegocioM();
                   datosMascota.identificador = 'SISTEMA_VALLE-CM-2053';
                   datosMascota.parametros = JSON.stringify($scope.dataMascota);
-
                   datosMascota.llamarregla(function (results) {
                     if (results.length == 0) {
                       alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
                     } else {
-                      var res_corr = JSON.parse(results);
-                      res_corr = res_corr[0].sp_insertar_mascota_ultimo3
+                      /*var res_corr = JSON.parse(results);
+                      res_corr = res_corr[0].sp_insertar_mascota_ultimo3;
                       var urlpdf = res_corr.split("-")[1];
-                      var corr_asig = res_corr.split("-")[0];
+                      var corr_asig = res_corr.split("-")[0];*/
                      // $("#formModal").modal("show");
+                      $scope.valCiu = false;
+                      $scope.valInd = false;
+                      $scope.valAgr = false;
+
+                      alertify.success('Su Mascota fue registrada exitosamente con el codigo: '+$scope.dataMascota.cod_chip);      
                       var sci = sessionService.get('CICIUDADANO');
-                      $scope.listarMascotasXci(sci);
+                      $scope.listarMascotasXci(sci,$scope.tipoR);
                       $scope.tablaTramites.reload();
-                      $scope.$apply();
+                      $scope.$apply();               
+                    }
+                    
+                     
+                  
+                });
+                }
+                catch (error){
+                  console.log("Error : ", error);
+                  swal('', 'Registro no modificado', 'error');
+                  $.unblockUI(); 
+                }
+                  
+                     
 
-                      alertify.success('Su Mascota fue registrada exitosamente con el codigo: '+corr_asig);
-
-                        swal({
+                      /*swal({
                         title: 'Certificación',
                         text: 'Estimado Ciudadano, desea imprimir su certificado?',
                         type: 'warning',
@@ -367,13 +389,14 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
                         swal.close();
                        // $.blockUI();
                         window.open(urlpdf) ;
-                      });                     
+                      }); */                    
                       $scope.cargarNuevaDataMascota();
-                    }
+
+                    
                     $.unblockUI();
 
                   });
-                });
+              
               } else {
                 $.blockUI();
                 swal('Estimado Ciudadano', 'Ud. registró:' + $scope.vacunas.length + ' Vacuna(s)', 'success');
@@ -391,7 +414,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
                     
 
                     var sci = sessionService.get('CICIUDADANO');
-                    $scope.listarMascotasXci(sci);
+                    $scope.listarMascotasXci(sci,$scope.tipoR);
                     $scope.tablaTramites.reload();
                     $scope.$apply();
                     //alertify.success('Su Mascota fue registrada exitosamente...');
@@ -427,19 +450,17 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
   };
 
-
-
-
   $scope.dataMascota = {};
   $scope.insertarDataMascota = function (data) {
     if ($scope.botonMod == true) {
       $scope.dataMascota.xmascota_id = data.xmascota_id;
       $scope.dataMascota.xmascota_imagen_url = data.mascota_imagen_url;//data.xmascota_imagen_url;
+      $scope.dataMascota.xpertenece = $scope.tipoR;
     }
     if ($scope.botonCrea == true) {
       $scope.dataMascota.titular_id = "0";//data.xmascota_titular_id;//2
       $scope.dataMascota.xmascota_imagen_url = $scope.url_imagen;
-      $scope.dataMascota.xpertenece = 'INDEPENDIENTE';
+      $scope.dataMascota.xpertenece = $scope.tipoR;
     }
 
     if (data.xmascota_raza_id) {
@@ -521,6 +542,22 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   $scope.seleccionarMascota = function (data_tramite) {
     $scope.botonMod = true;
     $scope.botonCrea = false;
+
+    if($scope.tipoR == 'CIUDADANO'){
+      $scope.valCiu = false;
+      $scope.valInd = true;
+      $scope.valAgr = true;
+    }
+    if($scope.tipoR == 'INDEPENDIENTE'){
+      $scope.valCiu = true;
+      $scope.valInd = false;
+      $scope.valAgr = true;
+    }
+    if($scope.tipoR == 'AGRUPADOS'){
+      $scope.valCiu = true;
+      $scope.valInd = true;
+      $scope.valAgr = false;
+    }
     $scope.tramiteSeleccionado = data_tramite.xmascota_id;
     $scope.tram = data_tramite.xmascota_data.nombre_mas;
     $scope.estado = data_tramite.xmascota_estado;
@@ -860,7 +897,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     datosMascotaMod.llamarregla(function (results) {
       var resp = JSON.parse(results);
       var sci = sessionService.get('CICIUDADANO');
-      $scope.listarMascotasXci(sci);
+     $scope.listarMascotasXci(sci,$scope.tipoR);
       $scope.tablaTramites.reload();
       $scope.$apply();
       alertify.success('Datos de la Mascota fue Modificada');
@@ -922,40 +959,65 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   }
 
   $scope.cargarNuevaDataMascota = function () {
-    $scope.botonMod = false;
-    $scope.botonCrea = true;
+    $scope.valCiu = false;
+    $scope.valInd = false;
+    $scope.valAgr = false;
+    $scope.tipoR = '';
 
-    $scope.mostrar_form_mascotas = true;
-    $scope.reg_vacunas = {};
-    $scope.infogrilla = [];
-    $scope.datos.mascota_nombre = "";
-    $scope.datos.mascota_raza = "";
-    $scope.datos.mascota_edad = "";
-    $scope.datos.mascota_especie = "";
-    $scope.datos.mascota_especie_id = "";
+   /* if($scope.tipoR == 'CIUDADANO'){
+      $scope.valCiu = false;
+      $scope.valInd = true;
+      $scope.valAgr = true;
+    }
+    if($scope.tipoR == 'INDEPENDIENTE'){
+      $scope.valCiu = true;
+      $scope.valInd = false;
+      $scope.valAgr = true;
+    }
+    if($scope.tipoR == 'AGRUPADOS'){
+      $scope.valCiu = true;
+      $scope.valInd = true;
+      $scope.valAgr = false;
+    }*/
+    if ($scope.tipoR == undefined || $scope.tipoR == 'undefined' || $scope.tipoR == 'null' || $scope.tipoR == null){
+      swal('Estimado ciudadano','Debe seleccionar el tipo de animalista','warning');
+    }else{
+      $scope.botonMod = false;
+      $scope.botonCrea = true;
 
-    $scope.datos.reg_sexo = -1;
-    $scope.datos.mascota_peso = "";
-    $scope.datos.mascota_tamanio = "";
-    $scope.datos.mascota_esterilizacion = "";
-    $scope.datos.mascota_feca = "";
-    $scope.datos.mascota_color = "";
-    $scope.datos.mascota_marca = "";
-    $scope.datos.mascota_certificado = "";
-    $scope.datos.mascota_veterinario = "";
-    $scope.datos.mascota_institucion = "";
-    $scope.datos.mascota_documento = "";
-    $scope.datos.href_ANTT_CON_ARR = "";
-    $scope.datos.mascota_esterilizacion = -1;
-    $scope.datos.reg_feca = "";
-    $scope.datos.mascota_marca = "";
-    $scope.datos.mascota_certificado = "";
-    $scope.datos.mascota_institucion = "";
-    $scope.datos.mascota_veterinario = "";
-    $scope.datos.mascota_desparasitacion = -1;
-    $scope.datos.mascota_feca_desparasitacion = "";
-    $scope.datos.mascota_veterinario_desparasitacion = "";
-    $scope.datos.mascota_institucion_desparasitacion = "";
+      $scope.mostrar_form_mascotas = true;
+      $scope.reg_vacunas = {};
+      $scope.infogrilla = [];
+      $scope.datos.mascota_nombre = "";
+      $scope.datos.mascota_raza = "";
+      $scope.datos.xmascota_raza_id = -1;
+      $scope.datos.mascota_edad = "";
+      $scope.datos.mascota_especie = "";
+      $scope.datos.mascota_especie_id = "";
+
+      $scope.datos.reg_sexo = -1;
+      $scope.datos.mascota_peso = "";
+      $scope.datos.mascota_tamanio = "";
+      $scope.datos.mascota_esterilizacion = "";
+      $scope.datos.mascota_feca = "";
+      $scope.datos.mascota_color = "";
+      $scope.datos.mascota_marca = "";
+      $scope.datos.mascota_certificado = "";
+      $scope.datos.mascota_veterinario = "";
+      $scope.datos.mascota_institucion = "";
+      $scope.datos.mascota_documento = "";
+      $scope.datos.href_ANTT_CON_ARR = "";
+      $scope.datos.mascota_esterilizacion = -1;
+      $scope.datos.reg_feca = "";
+      $scope.datos.mascota_marca = "";
+      $scope.datos.mascota_certificado = "";
+      $scope.datos.mascota_institucion = "";
+      $scope.datos.mascota_veterinario = "";
+      $scope.datos.mascota_desparasitacion = -1;
+      $scope.datos.mascota_feca_desparasitacion = "";
+      $scope.datos.mascota_veterinario_desparasitacion = "";
+      $scope.datos.mascota_institucion_desparasitacion = "";
+    }
   }
 
   $scope.listarRaza = function (data) {
@@ -973,8 +1035,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email_ca);
   }
-
-
 
   //CONTACTOS
   $scope.registrarContacto = function (data) {
@@ -1283,6 +1343,14 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     });
   };
 
+    //SELECCIONA TIPO DE VOLUNTARIO
+
+    $scope.f_dinamico_Registro = function(data_ingreso){
+      var sci = sessionService.get('CICIUDADANO');
+      $scope.tipoR = data_ingreso;
+      $scope.listarMascotasXci(sci,$scope.tipoR);
+    }
+
   $scope.validaCorreo = function () {
     var $result = $("#result");
     var email_ca = $("#email_ca").val();
@@ -1545,7 +1613,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     id = 1;
     $scope.datosMascota('1');
     var sci = sessionService.get('CICIUDADANO');
-    $scope.listarMascotasXci(sci);
+   $scope.listarMascotasXci(sci,$scope.tipoR);
     $scope.perNatural = sessionService.get('TIPO_PERSONA');
     $scope.ci = sessionService.get('CICIUDADANO');
     $scope.nombre = sessionService.get('US_NOMBRE');
@@ -1558,13 +1626,16 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     id = 1;
     $scope.datosMascota('1');
     var sci = sessionService.get('CICIUDADANO');
-    $scope.listarMascotasXci(sci);
+   // $scope.listarMascotasXci(sci,$scope.tipoR);
     $scope.perNatural = sessionService.get('TIPO_PERSONA');
     $scope.ci = sessionService.get('CICIUDADANO');
     $scope.nombre = sessionService.get('US_NOMBRE');
     $scope.paterno = sessionService.get('US_PATERNO');
     $scope.materno = sessionService.get('US_MATERNO');
     $scope.exp = sessionService.get('CIEXPEDIDO');
+    $scope.valCiu = false;
+    $scope.valInd = false;
+    $scope.valAgr = false;
   };
 
 

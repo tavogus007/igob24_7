@@ -9,6 +9,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
         $scope.datos_asociados_agru = {};
         $scope.trmExperiencia = [];
         $scope.trmAsociados = [];
+        $scope.trmTramites = [];
         $scope.div_rescatistas = false
         $scope.div_otros = false
         $scope.xdeshabilitado = false;
@@ -16,6 +17,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
         $scope.div_personaria = false;
         div_voluntario_inde = false;
         $scope.div_animalistas_aso = false;
+        $scope.div_formulario = false;
         $scope.titulo_datos_valuntariado="";
         $scope.titulo_boton ="";
         $scope.titulo_observacion_pj ="";
@@ -32,6 +34,12 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
         $scope.div_mts_area_cuarentena = false;
         $scope.div_mts_area_maternidad = false;
         $scope.div_mts_area_comunes = false;
+        var validarDiasACaducar = 0;
+        $scope.y_tramite ="";
+        $scope.tiposTramite = [
+            { detalle: 'Solicitud de registro Animalista Independiente',descripcion:"INDEPENDIENTE",id:1},
+            { detalle: 'Solicitud de registro Animalistas Agrupados',descripcion:"AGRUPADOS",id:2}
+        ];
         document.getElementById("mapa_mascotas").style.display = "none"; 
         $scope.buscarRep = function(){
             try{
@@ -69,9 +77,9 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                 });
             }catch(e){
             };
-            $scope.recuperarInformacion();
+            $scope.recuperarTramites();
         };
-        //
+        
         $scope.modelFecha5 = { endDate: new Date() };
         $scope.modelFecha0 = { endDate: new Date() };
         $scope.startDateOpen5 = function($event) {
@@ -79,11 +87,55 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             $event.stopPropagation();
             $scope.startDateOpened5 = true;
         };
+        $scope.f_crear_guardar = function(){
+            id_tramite = 0;
+            if($scope.tramiteId != undefined || $scope.tramiteId != null){
+
+                var validarElTramite = "";
+                if($scope.tramiteId == "1" || $scope.tramiteId == 1){
+                    validarElTramite = "INDEPENDIENTE";
+                    $scope.xdato_registro = "INDEPENDIENTE";
+                }else if($scope.tramiteId == "2" || $scope.tramiteId == 2){
+                    validarElTramite = "AGRUPADOS";
+                    $scope.xdato_registro = "AGRUPADOS";
+                }else{
+                    swal('',"Hubo un inconveniente vuelva a iniciar sesion",'error');
+                }
+                var datosMascota = new reglasnegocioM();
+                $scope.unido.datos_voluntario = {};
+                $scope.unido.datos_personales = $scope.datos_responsable;
+                $scope.unido.datos_experiencia = {};
+                $scope.unido.datos_asociados = {};
+                $scope.unido.dato_tramiteIgob = "";
+                $scope.unido.dato_registro = validarElTramite;
+                datosMascota.identificador = 'CASA_MASCOTA-1';
+                var x_parametro = '{"data":'+JSON.stringify(JSON.stringify($scope.unido))+',"estado":"guardado"}';
+                datosMascota.parametros = x_parametro;
+                datosMascota.llamarregla(function (results) {
+                    var res = JSON.parse(results);
+                        id_tramite = res[0].sp_insertar_voluntario_sierra_igob;
+                        $scope.datos = {};
+                        $scope.trmExperiencia = [];
+                        $scope.trmAsociados = [];
+                        validador_envio = 1;
+                        $scope.recuperarTramites();
+                        $scope.div_formulario = true;
+                        $scope.div_boton_guardar = true;
+                        $scope.titulo_boton = "ENVIAR";
+                        $scope.xdeshabilitado = false;
+                        $scope.div_agregar_experiencia = true;
+                        $scope.div_aprobado = false;
+                        $scope.f_dinamico_Registro(validarElTramite);
+                });
+            }else{
+                swal('',"Dede seleccionar uno de los servicios",'warning');
+              }
+        }
         $scope.startDateOpen3 = function($event) {
             $event.preventDefault();
             $event.stopPropagation();
             $scope.startDateOpened3 = true;
-        };
+        }
         $scope.cambioObservacion = function(data){
             if(data == 'SI'){
                 $scope.div_mts_observacion = true;
@@ -91,6 +143,9 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                 $scope.div_mts_observacion = false;
             }
         }
+        $scope.seleccionaServicio = function(idTramite){
+            $scope.tramiteId = idTramite;
+          }
         $scope.cambioCuarentena = function(data){
             if(data == 'SI'){
                 $scope.div_mts_area_cuarentena = true;
@@ -187,9 +242,9 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             }
         }
         $scope.validar = function(datos){
-            if($scope.datos.tipo_registro == undefined || $scope.datos.tipo_registro == 'undefined'){
+            if($scope.xdato_registro == undefined || $scope.xdato_registro == 'undefined'){
                 $scope.mensaje("Alerta","Ingrese el tipo de registro que realizara.","error");
-            }else if($scope.datos.tipo_registro == 'INDEPENDIENTE'){
+            }else if($scope.xdato_registro == 'INDEPENDIENTE'){
                     if($scope.datos.latitud_vol_dom == "" || $scope.datos.latitud_vol_dom == undefined || $scope.datos.latitud_vol_dom == "undefined" ){
                         $scope.mensaje("Alerta","Confirme la ubicación de su domicilio haciendo click en el mapa.","error");
                     }else if($scope.datos.longitud_vol_dom == "" || $scope.datos.longitud_vol_dom == undefined || $scope.datos.longitud_vol_dom == "undefined" ){
@@ -221,12 +276,17 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                     }else{
                         if(validador_envio == 1){
                             $scope.crear_tramite(datos)
-                            $scope.f_registrar();
+                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
                         }else if(validador_envio == 2){
-                            $scope.f_actualizar();
+                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
+                        }else if(validador_envio == 3){
+                            $scope.crear_tramite(datos)
+                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
+                        }else if(validador_envio == 4){
+                            $scope.f_actualizar('Su solicitud fue guardada','guardado');
                         }
                     }
-            }else if($scope.datos.tipo_registro == 'AGRUPADOS'){
+            }else if($scope.xdato_registro == 'AGRUPADOS'){
                     if($scope.datos.latitud_vol_dom == "" || $scope.datos.latitud_vol_dom == undefined || $scope.datos.latitud_vol_dom == "undefined" ){
                         $scope.mensaje("Alerta","Confirme la ubicación de su domicilio haciendo click en el mapa.","error");
                     }else if($scope.datos.longitud_vol_dom == "" || $scope.datos.longitud_vol_dom == undefined || $scope.datos.longitud_vol_dom == "undefined" ){
@@ -268,13 +328,23 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                     }else{
                         if(validador_envio == 1){
                             $scope.crear_tramite(datos)
-                            $scope.f_registrar();
+                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
                         }else if(validador_envio == 2){
-                            $scope.f_actualizar();
+                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
+                        }else if(validador_envio == 3){
+                            $scope.crear_tramite(datos)
+                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
+                        }else if(validador_envio == 4){
+                            $scope.f_actualizar('Su solicitud fue guardada','guardado');
                         }
                     }
             }
         }
+        $scope.f_guardarSinValidar = function(data){
+            validador_envio = 4;
+            $scope.validar(data);
+        }
+
         $scope.crear_tramite = function(datos){
                 $.blockUI();
                 var fecha= new Date();
@@ -300,6 +370,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                         $scope.datoTramite = response[0].sp_insertar_formulario_tramites_datos;
                         sessionService.set('IDTRAMITE', $scope.datoTramite);
                         $scope.idTramiteG = sessionService.get('IDTRAMITE');
+                        $scope.y_tramite = sessionService.get('IDTRAMITE');
                         $scope.guardar_tramite(datos);
                         $.unblockUI();
                         alertify.success('Datos de voluntario, creado correctamente');
@@ -309,12 +380,11 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                     }
                     });
                 }catch(e){
-                    console.log('*Error*', e);
                     $.unblockUI();
                 }           
         }
         $scope.guardar_tramite = function(datos){ 
-            datos.Tipo_tramite_creado = "WEB";
+            $scope.datos.Tipo_tramite_creado = "WEB";
             try {
               var datosSerializados   =  JSON.stringify(datos);
               var idCiudadano         = sessionService.get('IDSOLICITANTE');
@@ -339,10 +409,10 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                 }
               });
             }catch(e){
-              console.log("Error..",e);
               $.unblockUI();
             }
         }
+
         $scope.f_registrar = function(){
             $scope.xdeshabilitado = true;
             $scope.div_boton_guardar = false;
@@ -359,17 +429,12 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             datosMascota.llamarregla(function (results) {
                 var res = JSON.parse(results);
                 var res2 = res[0].sp_insertar_voluntario_sierra_igob;
-                if(res2 == true){
-
-                    $scope.mensaje("Estimado ciudadano","Sus datos fueron guardaron correctamente. Ahora debe aguardar la aprobación de su registro por la Casa de la Mascota","success");
-                }else{
-                    $scope.mensaje("Error","Hubo un erro al guardar los datos","error");
-                }
+                $scope.mensaje("Estimado ciudadano","Sus datos fueron guardaron correctamente. Ahora debe aguardar la aprobación de su registro por la Casa de la Mascota","success");
               $.unblockUI();
 
             });
         }
-        $scope.f_actualizar = function(){
+        $scope.f_actualizar = function(ytitulo,yestado){
             $scope.xdeshabilitado = true;
             $scope.div_boton_guardar = false;
             var datosMascota = new reglasnegocioM();
@@ -377,18 +442,19 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             $scope.unido.datos_personales = $scope.datos_responsable;
             $scope.unido.datos_experiencia = $scope.trmExperiencia;
             $scope.unido.datos_asociados = $scope.trmAsociados;
-            $scope.unido.dato_tramiteIgob = $scope.idTramiteG;
+            $scope.unido.dato_tramiteIgob = $scope.y_tramite;
             $scope.unido.dato_registro = $scope.xdato_registro;
             datosMascota.identificador = 'CASA_MASCOTA-6';
-            var x_parametro = '{"xanimalista_id":'+id_tramite+',"xvoluntario_indep_data":'+JSON.stringify(JSON.stringify($scope.unido))+'}';
+            var x_parametro = '{"xanimalista_id":'+id_tramite+',"xvoluntario_indep_data":'+JSON.stringify(JSON.stringify($scope.unido))+',"estado":"'+yestado+'"}';
             datosMascota.parametros = x_parametro;
             datosMascota.llamarregla(function (results) {
                 var res = JSON.parse(results);
                 var res2 = res[0].sp_actualizar_animalista_igob;
                 if(res2 == true){
-                    $scope.mensaje("Estimado ciudadano","Su actualización fue exitosa","success");
+                    $scope.mensaje("Estimado ciudadano",ytitulo,"success");
+                    $scope.recuperarTramites();
                 }else{
-                    $scope.mensaje("Error","Su actualización no fue exitosa","error");
+                    $scope.mensaje("Error","Su solicitud no fue exitosa","error");
                 }
               $.unblockUI();
 
@@ -471,6 +537,26 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                 $filter('orderBy')(filteredData, params.orderBy()) :
                 $scope.trmExperiencia;
                 params.total($scope.trmExperiencia.length);
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            }
+        });
+        $scope.tblTramites = new ngTableParams({
+            page: 1,
+            count: 5,
+            filter: {},
+            sorting: {
+              //  IdActividad: 'desc'
+            }
+        }, {
+            total: $scope.trmTramites.length,
+            getData: function($defer, params) {
+                var filteredData = params.filter() ?
+                $filter('filter')($scope.trmTramites, params.filter()) :
+                $scope.trmTramites;
+                var orderedData = params.sorting() ?
+                $filter('orderBy')(filteredData, params.orderBy()) :
+                $scope.trmTramites;
+                params.total($scope.trmTramites.length);
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             }
         });
@@ -566,7 +652,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
         }
 
         $scope.cambioCombo = function(data){
-            if(data == 'Rescatista' || $scope.datos.tipo_registro == "AGRUPADOS"){
+            if(data == 'Rescatista' || $scope.xdato_registro == "AGRUPADOS"){
                 $scope.div_rescatistas = true;
                 $scope.div_otros = false
             }else if(data == 'Otro'){
@@ -586,120 +672,210 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                 $scope.titulo_observacion_pj = "En que instancia se encuentra el tramite:"
             }
         }
-        $scope.recuperarInformacion = function(){
+        $scope.recuperarTramites = function(){
+            $scope.trmTramites = [];
+            $scope.tblTramites.reload();
+            $.blockUI({ css: { 
+                      border: 'none', 
+                      padding: '10px', 
+                    backgroundColor: '#000', 
+                      '-webkit-border-radius': '10px', 
+                      '-moz-border-radius': '10px', 
+                      opacity: .5, 
+                      color: '#fff' 
+                    },message: "cargando" }); 
             var datosMascota = new reglasnegocioM();
             datosMascota.identificador = 'CASA_MASCOTA-2';
             var x_parametro = '{"xcarnet":"'+$scope.datos_responsable.ci+'"}';
             datosMascota.parametros = x_parametro;
             datosMascota.llamarregla(function (results) {
                 var x = JSON.parse(results);
-                var x_estado = x[0].xestado;
-                var x_datos_voluntario = x[0].xdatos_voluntario;
-                var x_datos_experiencia = x[0].xdatos_experiencia;
-                var x_datos_asociados = x[0].xdatos_asociados;
-                var ytipo_registro = x[0].xdato_registro;
-                if(x_estado == 'activo'){
-                    validador_envio = 0;
-                    $scope.mensaje("Estimado Ciudadano","Usted ya realizo su registro se esta procesando para la aprobación de su solicitud a continuacion podra observar la informacion enviada.","warning");
-                    $scope.f_dinamico_Registro(ytipo_registro);
-                    $scope.xdeshabilitado = true;
-                    $scope.div_boton_guardar = false;
-                    $scope.div_agregar_experiencia = false;
-                    $scope.div_aprobado = false;
-                    $scope.titulo_boton = "";
-                    $scope.datos = JSON.parse(x_datos_voluntario);
-                    $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
-                    $scope.trmAsociados = JSON.parse(x_datos_asociados);
-                    var envio_tipo = $scope.datos.tipo_voluntario;
-                    $scope.cambioCombo(envio_tipo);
-                    var lat_recuperado = $scope.datos.latitud_vol_dom;
-                    var lon_recuperado = $scope.datos.longitud_vol_dom;
-                    $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
-                    var per_so_ju = $scope.datos.cuenta_personairia_juridica;
-                    $scope.cambioComboPersoneria(per_so_ju);
-                    var y_caniles_observacion = $scope.datos.caniles_observacion;
-                    var y_area_cuarentena = $scope.datos.area_cuarentena;
-                    var y_area_maternidad = $scope.datos.area_maternidad;
-                    var y_area_comunes = $scope.datos.area_comunes;
-                    $scope.cambioObservacion(y_caniles_observacion);
-                    $scope.cambioCuarentena(y_area_cuarentena);
-                    $scope.cambioMaternidad(y_area_maternidad);
-                    $scope.cambioAComunes(y_area_comunes);
-                    $scope.tblExperiencia.reload();
-                    $scope.tblAsociados.reload();
-                }else if(x_estado == 'no existe'){
-                    $scope.titulo_boton = "GUARDAR";
-                    validador_envio = 1;
-                    $scope.xdeshabilitado = false;
-                    $scope.div_boton_guardar = true;
-                    $scope.div_agregar_experiencia = true;
-                    $scope.div_aprobado = false;
-                    $scope.mensaje("Estimado Ciudadano","Para poder proseguir con el registro de Animalista Independiente tiene que tener en cuenta que debe contar con la Vacuna Antirrabica y aguardar la aprobación de su registro","warning");
-                }else if(x_estado == 'habilitado'){
-                    validador_envio = 0;
-                    $scope.f_dinamico_Registro(ytipo_registro);
-                    $scope.titulo_boton = "";
-                    $scope.mensaje("Estimado Ciudadano","Su registro ya fue validado por la Casa de la Mascota","success");
-                    $scope.xdeshabilitado = true;
-                    $scope.div_boton_guardar = false;
-                    $scope.div_agregar_experiencia = false;
-                    $scope.div_aprobado = true;
-                    $scope.datos = JSON.parse(x_datos_voluntario);
-                    $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
-                    $scope.trmAsociados = JSON.parse(x_datos_asociados);
-                    var envio_tipo = $scope.datos.tipo_voluntario;
-                    $scope.cambioCombo(envio_tipo);
-                    var lat_recuperado = $scope.datos.latitud_vol_dom;
-                    var lon_recuperado = $scope.datos.longitud_vol_dom;
-                    $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
-                    var per_so_ju = $scope.datos.cuenta_personairia_juridica;
-                    $scope.cambioComboPersoneria(per_so_ju);
-                    var y_caniles_observacion = $scope.datos.caniles_observacion;
-                    var y_area_cuarentena = $scope.datos.area_cuarentena;
-                    var y_area_maternidad = $scope.datos.area_maternidad;
-                    var y_area_comunes = $scope.datos.area_comunes;
-                    $scope.cambioObservacion(y_caniles_observacion);
-                    $scope.cambioCuarentena(y_area_cuarentena);
-                    $scope.cambioMaternidad(y_area_maternidad);
-                    $scope.cambioAComunes(y_area_comunes);
-                    $scope.tblExperiencia.reload(); 
-                    $scope.tblAsociados.reload();
-                }else if(x_estado == 'rechazado'){
-                    $scope.f_dinamico_Registro(ytipo_registro);
-                    validador_envio = 2;
-                    id_tramite = x[0].xvoluntario_idm;
-                    var x_observacion = x[0].xobservacion;
-                    $scope.mensaje("Estimado Ciudadano","Su registro fue rechazado con la siguiente observacion : "+x_observacion,"warning");
-                    $scope.div_agregar_experiencia = true;
-                    $scope.div_aprobado = false;
-                    $scope.titulo_boton = "ACTUALIZAR";
-                    $scope.xdeshabilitado = false;
-                    $scope.div_boton_guardar = true;
-                    $scope.datos = JSON.parse(x_datos_voluntario);
-                    $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
-                    $scope.trmAsociados = JSON.parse(x_datos_asociados);
-                    var envio_tipo = $scope.datos.tipo_voluntario;
-                    $scope.cambioCombo(envio_tipo);
-                    var lat_recuperado = $scope.datos.latitud_vol_dom;
-                    var lon_recuperado = $scope.datos.longitud_vol_dom;
-                    $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
-                    var per_so_ju = $scope.datos.cuenta_personairia_juridica;
-                    $scope.cambioComboPersoneria(per_so_ju);
-                    var y_caniles_observacion = $scope.datos.caniles_observacion;
-                    var y_area_cuarentena = $scope.datos.area_cuarentena;
-                    var y_area_maternidad = $scope.datos.area_maternidad;
-                    var y_area_comunes = $scope.datos.area_comunes;
-                    $scope.cambioObservacion(y_caniles_observacion);
-                    $scope.cambioCuarentena(y_area_cuarentena);
-                    $scope.cambioMaternidad(y_area_maternidad);
-                    $scope.cambioAComunes(y_area_comunes);
-                    $scope.tblExperiencia.reload();
-                    $scope.tblAsociados.reload();
+                $.unblockUI();
+                for (let i = 0; i < x.length; i ++) {
+                    var estado_obt = x[i].xestado;
+                    var dias_cadu =x[i].xdias_caduco;
+                    var color_certificado = "danger";
+                    var disa_certificado = "true";
+                    var color_registro = "danger";
+                    var disa_registro = "true"
+                    if(estado_obt == 'activo'){
+                        estado_obt = 'ENVIADO';
+                    }else if(estado_obt == 'habilitado' && dias_cadu > validarDiasACaducar){
+                        color_certificado = "primary";
+                        disa_certificado = "false";
+                        color_registro = "primary";
+                        disa_registro = "false"
+                    }else if(estado_obt == 'habilitado' && dias_cadu <= validarDiasACaducar){
+                        estado_obt = 'CADUCADO'
+                        color_certificado = "primary";
+                        disa_certificado = "false";
+                        color_registro = "danger";
+                        disa_registro = "true"
+                    }
+                    let var_aux1 = {
+                        xdato_registro:x[i].xdato_registro,
+                        xdato_tramiteigob:x[i].xdato_tramiteigob,
+                        xdatos_asociados:x[i].xdatos_asociados,
+                        xdatos_experiencia:x[i].xdatos_experiencia,
+                        xdatos_personales:x[i].xdatos_personales,
+                        xdatos_voluntario:x[i].xdatos_voluntario,
+                        xobservacion:x[i].xobservacion,
+                        xdias_caduco:x[i].xdias_caduco,
+                        xestado:x[i].xestado,
+                        xvoluntario_idm:x[i].xvoluntario_idm,
+                        xvoluntario_modificado:x[i].xvoluntario_modificado,
+                        xvoluntario_url:x[i].xvoluntario_url,
+                        yestado:estado_obt.toUpperCase(),
+                        ycolor_certificado:color_certificado,
+                        ydisa_certificado:disa_certificado,      
+                        ycolor_registro:color_registro,      
+                        ydisa_registro:disa_registro
+                  }
+                    $scope.trmTramites.push (var_aux1);
+                    $scope.tblTramites.reload();
+                
                 }
-              $.unblockUI();
-
             });
         }
+        $scope.recuperarInformacion = function(datax){
+            $scope.div_formulario = true;
+            var x = datax;
+            var x_estado = x.xestado;
+            var x_datos_voluntario = x.xdatos_voluntario;
+            var x_datos_experiencia = x.xdatos_experiencia;
+            var x_datos_asociados = x.xdatos_asociados;
+            var ytipo_registro = x.xdato_registro;
+            $scope.y_tramite = x.xdato_tramiteigob;
+            if(x_estado == 'activo'){
+                validador_envio = 0;
+                $scope.mensaje("Estimado Ciudadano","Usted ya realizo su registro se esta procesando para la aprobación de su solicitud a continuacion podra observar la informacion enviada.","warning");
+                $scope.f_dinamico_Registro(ytipo_registro);
+                $scope.xdeshabilitado = true;
+                $scope.div_boton_guardar = false;
+                $scope.div_agregar_experiencia = false;
+                $scope.div_aprobado = false;
+                $scope.titulo_boton = "";
+                $scope.datos = JSON.parse(x_datos_voluntario);
+                $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
+                $scope.trmAsociados = JSON.parse(x_datos_asociados);
+                var envio_tipo = $scope.datos.tipo_voluntario;
+                $scope.cambioCombo(envio_tipo);
+                var lat_recuperado = $scope.datos.latitud_vol_dom;
+                var lon_recuperado = $scope.datos.longitud_vol_dom;
+                $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
+                var per_so_ju = $scope.datos.cuenta_personairia_juridica;
+                $scope.cambioComboPersoneria(per_so_ju);
+                var y_caniles_observacion = $scope.datos.caniles_observacion;
+                var y_area_cuarentena = $scope.datos.area_cuarentena;
+                var y_area_maternidad = $scope.datos.area_maternidad;
+                var y_area_comunes = $scope.datos.area_comunes;
+                $scope.cambioObservacion(y_caniles_observacion);
+                $scope.cambioCuarentena(y_area_cuarentena);
+                $scope.cambioMaternidad(y_area_maternidad);
+                $scope.cambioAComunes(y_area_comunes);
+                $scope.tblExperiencia.reload();
+                $scope.tblAsociados.reload();
+            }else if(x_estado == 'no existe'){
+                $scope.titulo_boton = "ENVIAR";
+                validador_envio = 1;
+                $scope.xdeshabilitado = false;
+                $scope.div_boton_guardar = true;
+                $scope.div_agregar_experiencia = true;
+                $scope.div_aprobado = false;
+                $scope.mensaje("Estimado Ciudadano","Para poder proseguir con el registro de Animalista tiene que tener en cuenta que debe contar con la Vacuna Antirrabica y aguardar la aprobación de su registro","warning");
+            }else if(x_estado == 'habilitado'){
+                validador_envio = 0;
+                $scope.f_dinamico_Registro(ytipo_registro);
+                $scope.titulo_boton = "";
+                $scope.mensaje("Estimado Ciudadano","Su registro ya fue validado por la Casa de la Mascota","success");
+                $scope.xdeshabilitado = true;
+                $scope.div_boton_guardar = false;
+                $scope.div_agregar_experiencia = false;
+                $scope.div_aprobado = true;
+                $scope.datos = JSON.parse(x_datos_voluntario);
+                $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
+                $scope.trmAsociados = JSON.parse(x_datos_asociados);
+                var envio_tipo = $scope.datos.tipo_voluntario;
+                $scope.cambioCombo(envio_tipo);
+                var lat_recuperado = $scope.datos.latitud_vol_dom;
+                var lon_recuperado = $scope.datos.longitud_vol_dom;
+                $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
+                var per_so_ju = $scope.datos.cuenta_personairia_juridica;
+                $scope.cambioComboPersoneria(per_so_ju);
+                var y_caniles_observacion = $scope.datos.caniles_observacion;
+                var y_area_cuarentena = $scope.datos.area_cuarentena;
+                var y_area_maternidad = $scope.datos.area_maternidad;
+                var y_area_comunes = $scope.datos.area_comunes;
+                $scope.cambioObservacion(y_caniles_observacion);
+                $scope.cambioCuarentena(y_area_cuarentena);
+                $scope.cambioMaternidad(y_area_maternidad);
+                $scope.cambioAComunes(y_area_comunes);
+                $scope.tblExperiencia.reload(); 
+                $scope.tblAsociados.reload();
+            }else if(x_estado == 'rechazado'){
+                $scope.f_dinamico_Registro(ytipo_registro);
+                validador_envio = 2;
+                id_tramite = x.xvoluntario_idm;
+                var x_observacion = x.xobservacion;
+                $scope.mensaje("Estimado Ciudadano","Su registro fue rechazado con la siguiente observacion : "+x_observacion,"warning");
+                $scope.div_agregar_experiencia = true;
+                $scope.div_aprobado = false;
+                $scope.titulo_boton = "ACTUALIZAR";
+                $scope.xdeshabilitado = false;
+                $scope.div_boton_guardar = true;
+                $scope.datos = JSON.parse(x_datos_voluntario);
+                $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
+                $scope.trmAsociados = JSON.parse(x_datos_asociados);
+                var envio_tipo = $scope.datos.tipo_voluntario;
+                $scope.cambioCombo(envio_tipo);
+                var lat_recuperado = $scope.datos.latitud_vol_dom;
+                var lon_recuperado = $scope.datos.longitud_vol_dom;
+                $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
+                var per_so_ju = $scope.datos.cuenta_personairia_juridica;
+                $scope.cambioComboPersoneria(per_so_ju);
+                var y_caniles_observacion = $scope.datos.caniles_observacion;
+                var y_area_cuarentena = $scope.datos.area_cuarentena;
+                var y_area_maternidad = $scope.datos.area_maternidad;
+                var y_area_comunes = $scope.datos.area_comunes;
+                $scope.cambioObservacion(y_caniles_observacion);
+                $scope.cambioCuarentena(y_area_cuarentena);
+                $scope.cambioMaternidad(y_area_maternidad);
+                $scope.cambioAComunes(y_area_comunes);
+                $scope.tblExperiencia.reload();
+                $scope.tblAsociados.reload();
+            }else if(x_estado == 'guardado'){
+                $scope.f_dinamico_Registro(ytipo_registro);
+                validador_envio = 3;
+                id_tramite = x.xvoluntario_idm;
+                var x_observacion = x.xobservacion;
+                $scope.mensaje("Estimado Ciudadano","Esta accediendo a una información que guardo","warning");
+                $scope.div_agregar_experiencia = true;
+                $scope.div_aprobado = false;
+                $scope.titulo_boton = "ENVIAR";
+                $scope.xdeshabilitado = false;
+                $scope.div_boton_guardar = true;
+                $scope.datos = JSON.parse(x_datos_voluntario);
+                $scope.trmExperiencia = JSON.parse(x_datos_experiencia);
+                $scope.trmAsociados = JSON.parse(x_datos_asociados);
+                var envio_tipo = $scope.datos.tipo_voluntario;
+                $scope.cambioCombo(envio_tipo);
+                var lat_recuperado = $scope.datos.latitud_vol_dom;
+                var lon_recuperado = $scope.datos.longitud_vol_dom;
+                $scope.open_mapa_mascotas(lat_recuperado,lon_recuperado);
+                var per_so_ju = $scope.datos.cuenta_personairia_juridica;
+                $scope.cambioComboPersoneria(per_so_ju);
+                var y_caniles_observacion = $scope.datos.caniles_observacion;
+                var y_area_cuarentena = $scope.datos.area_cuarentena;
+                var y_area_maternidad = $scope.datos.area_maternidad;
+                var y_area_comunes = $scope.datos.area_comunes;
+                $scope.cambioObservacion(y_caniles_observacion);
+                $scope.cambioCuarentena(y_area_cuarentena);
+                $scope.cambioMaternidad(y_area_maternidad);
+                $scope.cambioAComunes(y_area_comunes);
+                $scope.tblExperiencia.reload();
+                $scope.tblAsociados.reload();
+            }
+    }
 
         $scope.mensaje = function(x_title,x_texto,x_type){
             swal({

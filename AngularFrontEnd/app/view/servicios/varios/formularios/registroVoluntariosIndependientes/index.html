@@ -68,13 +68,6 @@
 <script type="text/javascript">
 //////////////////////////////2
 function bloquear_modal(){
-  /*setTimeout(function(){
-    type = 'xls';
-    $('#listarHabilBanco_xls').tableExport({
-    filename: 'table_%DD%-%MM%-%YY%-month(%MM%)',
-               format: type
-            });
-  }, 500); */
   var valor = $( "#vacuna" ).val(); 
   if (valor == "NO") {
     expedido.disabled = true;
@@ -293,9 +286,85 @@ function validateDecimal(valor) {
   }
 </script>
   <div class="page-content" ng-controller="registroVoluntariosIndependientesController" data-ng-init="inicioServicios();">
-    <p align="center">
-        <font face="Comic Sans" size="8px" color="#2f4050"> REGISTRO DE ANIMALISTAS</font>
-    </p>
+      <div class="col-lg-12">
+          <div class="ibox float-e-margins">
+            <div id="mostrar" class="ibox-title">
+              <h5 class="ng-binding">ANIMALISTAS</h5>
+              <a id="cerrar_rc" style="position: absolute; top: 5px;"><i class="fa-sort-desc fa fa-sort-asc" style="color: #00adb5" id="cerrar_i"></i></a>
+            </div>
+            <div class="ibox-content" id="caja">
+              <div class="row">
+                <div class="col-md-12 b-r">
+                  <form class="form-horizontal ng-pristine ng-valid">
+                    <div class="form-group">
+                      <div class="col-lg-5">
+                        <div>
+                          <a class="btn btn-redondo" tooltip="Crear Trámite"  data-toggle="modal" data-target="#crearTramite">
+                            <div class="shake-slow"><i class="fa fa-file blanco"></i></div>
+                          </a>
+                        </div>
+                      </div>
+                      <label class="col-lg-2 control-label ng-binding">Buscar:</label>
+                      <div class="col-lg-5">
+                        <input ng-model="query" id="busca1" class="form-control ng-pristine ng-valid" placeholder="">
+                      </div>
+                    </div>
+                    <div class="modal fade" id="crearTramite" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                            <h3 class="modal-title" id="myModalLabel"><strong>Tipos de Servicios</strong></h3>
+                          </div>
+                          <div class="modal-body" >
+                            <form novalidate>
+                              <div class="row">
+                                <div class="table-responsive">
+                                  <table class="table">
+                                    <thead class="thead-dark">
+                                      <tr>
+                                        <th scope="col" width="15%"><center>#</center></th>
+                                        <th scope="col" width="35%"><center>Opciones</center></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr ng-repeat="tramite in tiposTramite"  height="50%" ng-style="tramite.id==tramiteId && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}" ng-click="seleccionaServicio(tramite.id);">
+                                        <td scope="row" width="15%" ><center>{{$index+1}}</center></td>
+                                        <td width="50%">{{tramite.detalle}}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>                 
+                              </div>
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-default" ng-click="f_crear_guardar();" data-dismiss="modal">Crear</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <form class="form-horizontal ng-pristine ng-valid" action="index.html" method="post">
+                      <table  ng-table="tblTramites"  class="table table-striped table-hover">
+                        <tr style="cursor: pointer;text-align: center;" ng-repeat="tramite in $data  | filter:query ">
+                          <td data-title="'Código'" ng-click="recuperarInformacion(tramite)">{{tramite.xdato_tramiteigob}}</td>
+                          <td data-title="'Tipo de Trámite'" ng-click="recuperarInformacion(tramite)">{{tramite.xdato_registro}}</td>
+                          <td data-title="'Fecha'" ng-click="recuperarInformacion(tramite)">{{tramite.xvoluntario_modificado}} </td>
+                          <td data-title="'Estado'" ng-click="recuperarInformacion(tramite)">{{tramite.yestado}}</td>
+                          <td data-title="'Vigencia'" ng-click="recuperarInformacion(tramite)">{{tramite.xdias_caduco}} dias</td>
+                          <td data-title="'Certificado'" align="center">   <a target="_blank" href={{tramite.xvoluntario_url}}><button type="button" class="btn btn-{{tramite.ycolor_certificado}}" ng-disabled="{{tramite.ydisa_certificado}}"><i class="glyphicon glyphicon-eye-open"></i> </button></a></td>
+                          <td data-title="'Registra tu mascota'" align="center">   <a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotas/index.html'"><button type="button" class="btn btn-{{tramite.ycolor_registro}}" ng-disabled="{{tramite.ydisa_registro}}"><i class="glyphicon glyphicon-log-out"></i> </button></a></td>
+                        </tr>
+                      </table>
+                    </form>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    <div ng-show="div_formulario == true">
     <br>
     <br>
     <div>
@@ -391,6 +460,7 @@ function validateDecimal(valor) {
     <br>
     <br>
     <br>
+    <div ng-show="div_borrar == true">
     <br>
     <br>
     <br>
@@ -418,6 +488,7 @@ function validateDecimal(valor) {
           </div>
       </div>
     </div>
+  </div>
     <br>
     <br>
     <br>
@@ -817,13 +888,14 @@ function validateDecimal(valor) {
     </div>
     <div ng-show="div_aprobado == true">
         <div>
-            <h4 class="ng-binding" style="color: #ceeb12 !important;">ESTIMADO CIUDADANO USTED YA SE ENCUENTRA HABILITADO POR LA CASA DE LAS MASCOTA YA PUEDE REGISTRAR A LAS MASCOTAS:</h4>
+            <h4 class="ng-binding" style="color: #eb5012 !important;">ESTIMADO CIUDADANO USTED YA SE ENCUENTRA HABILITADO POR LA CASA DE LAS MASCOTA YA PUEDE REGISTRAR A LAS MASCOTAS:</h4>
         </div>
         <a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotas/index.html'"><button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-upload" ></i> Registro de Mascotas</button></a>
     </div>
     <div ng-show="div_boton_guardar == true">
       <div class="col-md-12" align="right"><br>
-        <button id="miFormGuardar" ng-click="validar(datos);"  type="button" class="btn btn-success fa fa-save" name="formEnviar">{{titulo_boton}}</button>
+        <button ng-click="f_guardarSinValidar(datos);"  type="button" class="btn btn-success fa fa-save" name="formEnviar">&nbsp;GUARDAR</button>
+        <button ng-click="validar(datos);"  type="button" class="btn btn-success fa fa-mail-forward" name="formEnviar">&nbsp;ENVIAR</button>
       </div>
     </div>
 
@@ -986,6 +1058,7 @@ function validateDecimal(valor) {
           </div>
       </div>
     </div>
+  </div>
   </div>
 </html>
 

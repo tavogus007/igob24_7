@@ -23,11 +23,13 @@
         var scope = angular.element(document.querySelector(node)).scope();
         scope.$apply(func);
     }
+
     /*function initMap(){
         accessScope('#outerMapaActividadM', function (scope) {
             scope.initMap();
         });
     }*/
+
     function soloNumericoTelefono(sValor){
         Numer=parseInt(sValor);
         if (isNaN(Numer)){
@@ -1227,7 +1229,7 @@
                     <div class="col-md-12">
                         <legend>Deudas Pendientes:</legend>
                         <div class="panel panel-default">
-                            <div class="panel-heading"><B>DEUDA DE GESTIONES PENDIENTES</B></div>
+                            <div class="panel-heading"><B>DEUDA PENDIENTE DE LA PRESENTE GESTIÓN</B></div>
                             <div class="panel-body">
                                 <table  ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
                                     <tr ng-repeat="duedasCiu in datos.listDeudasPendientes" align="right">
@@ -1316,7 +1318,7 @@
                                         <td data-title="'DESCUENTO EN %'">{{duedasCiu.descuento}}</td>
                                         <td data-title="'MONTO SIN DESC. Bs.'">{{duedasCiu.monto_total}}</td>
                                         <td data-title="'DESCUENTO Bs.'">{{duedasCiu.monto_descuento}}</td>
-                                        <td data-title="'MONTO TOTAL Bs.'">{{duedasCiu.monto_pagar}}</td>
+                                        <td data-title="'MONTO TOTAL Bs.'">{{duedasCiu.monto_total_con_descuento}}</td>
                                     </tr>
                                     <tr>
                                         <td bgcolor = "black" colspan="7"><font color = "white">TOTAL A PAGAR</font></td>

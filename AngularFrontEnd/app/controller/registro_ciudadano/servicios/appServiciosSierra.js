@@ -44,31 +44,9 @@
       { name: 'template19.html', url: '../../../app/view/servicios/aeregularSierra/renovacion343Sierra/renovacionJuridico.html'}
     ];
     $scope.serivicosInternet = [
-        //{ name: 'Actividades Economicas Regulares', id:'10'},
-        //{ name: 'Renovación de Licencias de Funcionamiento', id:'14'},
-        //{ name: 'Emisión de Licencias de Funcionamiento', id:'13'}
         { name: 'Emisión de Licencias de Funcionamiento', id:'16'},
         { name: 'Renovación de Licencias de Funcionamiento', id:'44'}
     ];
-
-    $scope.sesionTokenSierra = function() {
-        var urlToken = CONFIG.SERVICE_SIERRAM + "apiLogin";
-        $.ajax({
-            dataType: "json",
-            type: "POST",
-            url: urlToken,
-            data: CONFIG.CREDENCIAL_MOTORESSIERRA,
-            async: false,
-            success: function(response) {
-                dataResp = JSON.stringify(response);
-                sessionStorage.setItem('TOKEN_MOTOR', response.token);
-            },
-            error: function(response, status, error) {
-                dataResp = "{\"error\":{\"message\":\"" + response.responseText + "\",\"code\":700}}";
-                console.log(dataResp);
-            }
-        });
-    }
 
     $scope.btnEnviarForm = true;
     $scope.datosGuardados = false;
@@ -80,7 +58,6 @@
      $rootScope.decJuradaNatural = "";
     $rootScope.decJuradaJuridico = "";
     $scope.emision = 16;
-    //$scope.renovacion = 17;
     $scope.renovacion = 44;
 
     $scope.seleccionarProceso = function(proceso){
@@ -95,7 +72,6 @@
         $scope.btnNuevoTramtite     =   false;
         $scope.datos.f01_actividad_desarrollada = "";
         $scope.datosActividad = ""; 
-       
     }; 
 
     $scope.recuperarDatosRegistro = function(){
@@ -108,13 +84,10 @@
            if (results[0].dtspsl_file_fotocopia_ci) {
                 $scope.btover=true;
             }
-
             if (results[0].dtspsl_file_fotocopia_ci_r) {
                 $scope.btover1=true;
             }else{
             }
-            
-                
             if(results[0].dtspsl_tipo_persona == "NATURAL") 
             {                   
                 var cidate = results[0].dtspsl_file_fotocopia_ci;
@@ -368,7 +341,6 @@
                             closeOnConfirm: true
                         }, function() {                                
                             window.location.href = "#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html'";                   
-                            //$.unblockUI();
                         });                          
                     },300);
                 }else{
@@ -520,14 +492,17 @@
             complemento_ci = '';
         else
             complemento_ci = $scope.datosRecuperados.dtspsl_complemento.trim();
+        console.log('cccccccccc    ',$scope.datosRecuperados.dtspsl_complemento);
         if(tipoContribuyente == 'NATURAL'){
             if (complemento_ci == undefined || complemento_ci == 'undefined' || complemento_ci == null || complemento_ci == '')
-                ciDocumento = sessionService.get('CICIUDADANO');  
+                ciDocumento = sessionService.get('CICIUDADANO');
+            
             else
                 ciDocumento = complemento_ci+'-'+sessionService.get('CICIUDADANO');
         }else if(tipoContribuyente == 'JURIDICO'){
             nitDocumento         =   sessionService.get('NITCIUDADANO');
         }
+        console.log('ciDocumento      ',ciDocumento);
         var dataNatural = '';
         dataNatural = '{"ycontribuyente_nro_documento":"'+ciDocumento+'","ycontribuyente_nit":"'+nitDocumento+'"}';
         try{
@@ -536,6 +511,7 @@
             resAct.parametros = dataNatural;
             resAct.llamarregla_sierra(function(responseN){
                 dataN = JSON.parse(responseN);
+                console.log('dataN   ',dataN);
                 if(JSON.stringify(dataN) == '[{}]' || JSON.stringify(dataN) == "[{ }]" || JSON.stringify(dataN) == '{}'){
                     $scope.txtMsgConexionGen = "Se ha producido un problema de conexion al cargar los datos";
                     $.unblockUI();
@@ -544,6 +520,7 @@
                         var response = dataN;
                         $scope.txtMsgConexionGen = "";
                         $scope.dataGenesisCidadano = dataN.data;
+                        console.log('$scope.dataGenesisCidadano    ',$scope.dataGenesisCidadano);
                         var tipoper = '';
                         if (sessionService.get('TIPO_PERSONA') == 'NATURAL')
                             tipoper = 'N';
@@ -1558,6 +1535,9 @@
                     $rootScope.$broadcast('inicializarGrillaAE', [{'datos':$scope.datos, 'venviado':tramite.venviado}]);
                     $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
                     $rootScope.$broadcast('inicializarHtmlForm', tramite);
+                    if(!$scope.$$phase) {
+                        $scope.$apply();
+                    }
                 }, 4000)
                 $.unblockUI();
             });
@@ -2195,7 +2175,15 @@
 
     });
 
+    $scope.loginSierra   =   function(){
+        var loginTokenSierra = new gLoginSierra();
+        loginTokenSierra.login_sierra(function(resultadoS){
+            console.log('resultadoS    ',resultadoS);
+        });
+    };
+
     $scope.$on('api:ready',function(){
+        $scope.loginSierra();
         $scope.tramitesCiudadano();
         $scope.recuperandoDatosInicialesCiudadano();
         $scope.recuperandoDatosGenesis();
@@ -2203,10 +2191,11 @@
         $scope.getCaptchasXX();
         $scope.cargarMacrodistrito();
         $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
-        $scope.sesionTokenSierra();
+        //$scope.sesionTokenSierra();
     });
 
     $scope.inicioServicios343Sierra = function () {
+        $scope.loginSierra();
         $scope.tramitesCiudadano();
         $scope.recuperandoDatosInicialesCiudadano();
         $scope.recuperandoDatosGenesis();
@@ -2214,7 +2203,7 @@
         $scope.getCaptchasXX();
         $scope.cargarMacrodistrito();
         $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
-        $scope.sesionTokenSierra();
+        //$scope.sesionTokenSierra();
     };
 
 

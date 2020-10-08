@@ -1,85 +1,28 @@
-//var urlMservicio = CONFIG.SERVICE_SIERRAM+"reglaNegocio/ejecutarWeb";
-var urlMservicio = "http://172.19.160.133/api/reglaNegocio/ejecutarWeb";
+if(jsonURLS){
+  var urlLoginSierra =  jsonURLS.SERVICE_SIERRAM+"apiLogin"; //crearTramiteDigital
+  var urlCredenciales = jsonURLS.CREDENCIAL_MOTORESSIERRA;
+}
 
-var urlMservicioODM = "http://192.168.5.69/motorservicio_pruebas/public/api/reglaNegocio/ejecutarWeb";
-
-function ejecutarAjaxMotorS(vUrlComp, vTypeCall, vDataCall, vFunctionResp, token) {
-    var headers = {};
+function ejecutarAjaxTokenSierra() {
     $.ajax({
-        url: urlMservicioODM,
-        data: vDataCall,
+        dataType: "json",
         type: "POST",
-        dataType: "json",
-        headers: {
-            'authorization': token
-        },
-        success: function (response) {
-            dataResp = JSON.stringify(response);
-            vFunctionResp(dataResp);
-        },
-        error: function (response, status, error) {
-            dataResp = "{\"errorParametros\":{\"message\":\"" + response + "\",\"code\":700}}";
-            console.log("error", dataResp);
-            vFunctionResp(dataResp);
-        }
-    });
-    return dataResp;
-};
-
-function ejecutarAjaxMServicio(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
-    var headers = {};
-    $.ajax({
-        url: urlMservicio,
-        data: vDataCall,
-        type:"POST",
-        dataType: "json",
-        //crossDomain : true,
-        headers: {
-            'authorization': token
-        },
+        url: urlLoginSierra,
+        data: urlCredenciales,
+        async: false,
         success: function(response) {
+            console.log('siiierrrrrr    ',response);
             dataResp = JSON.stringify(response);
-            vFunctionResp(dataResp);
+            sessionStorage.setItem('TOKEN_SIERRA', response.token);
         },
-        error: function (response, status, error) {
-            dataResp = "{\"error\":{\"message\":\""+response+"\",\"code\":700}}";
-            console.log("error",dataResp);
-            vFunctionResp(dataResp);
+        error: function(response, status, error) {
+            dataResp = "{\"error\":{\"message\":\"" + response.responseText + "\",\"code\":700}}";
+            console.log(dataResp);
         }
     });
-    return dataResp;
-};
+}
 
-function reglasnegocioSierra(){
-    this.identificador;
-    this.parametros;
+function gLoginSierra() {};
+gLoginSierra.prototype.login_sierra = function (functionResp) {
+    ejecutarAjaxTokenSierra(functionResp);
 };
-
-reglasnegocioSierra.prototype.llamarregla_sierra=function(functionResp){
-    var idtoken =   sessionStorage.getItem('TOKEN_MOTOR');
-    var stoquen =  'Bearer ' + idtoken ;
-    urlComp = "";
-    typeCall = "post";
-    dataParams= {
-        "identificador" : this.identificador,
-        "parametros": this.parametros
-    };
-    ejecutarAjaxMServicio(urlComp, typeCall, dataParams, functionResp,stoquen);
-};
-
-/*function reglasnegocioODM(){
-    this.identificador;
-    this.parametros;
-};
-
-reglasnegocioODM.prototype.llamarreglaODM=function(functionResp){
-  var idtoken =   sessionStorage.getItem('TOKEN_MOTORODM');
-  var stoquen =  'Bearer ' + idtoken ;
-    urlComp = "";
-    typeCall = "post";
-    dataParams= {
-        "identificador" : this.identificador,
-        "parametros": this.parametros
-    };
-    ejecutarAjaxMotorS(urlComp, typeCall, dataParams, functionResp,stoquen);
-};*/

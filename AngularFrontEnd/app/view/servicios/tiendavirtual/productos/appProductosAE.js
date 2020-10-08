@@ -466,8 +466,6 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
         $scope.datosProd.f01_producto = datosP.prd_productoc;
         $scope.datosProd.f01_descripcion = datosP.prd_descripcionc;
         $scope.datosProd.f01_precio = datosP.prd_precioc;
-
-
         //document.getElementById("f01_cantidad").value = datosP.prd_cantidadc;
         archivo1 = datosP.prd_imagen_pc.split('/');
         archi1 = archivo1[9].split('?');
@@ -480,6 +478,7 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
             $scope.datosProd.txt_f01_upload2 = $rootScope._f01_upload2;
         } else {
             $scope.datosProd.txt_f01_upload2 = "";
+            $scope.imagenaux1m = false;
         }
         if (datosP.prd_imagen_a2c != "" && datosP.prd_imagen_a2c != null && datosP.prd_imagen_a2c != undefined && datosP.prd_imagen_a2c != 'undefined') {
             archivo3 = datosP.prd_imagen_a2c.split('/');
@@ -488,8 +487,8 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
             $scope.datosProd.txt_f01_upload3 = $rootScope._f01_upload3;
         } else {
             $scope.datosProd.txt_f01_upload3 = "";
+            $scope.imagenaux2m = false;
         }
-
 
         $rootScope.swArchivo = "M";
         $scope.file1 = datosP.prd_imagen_pc;

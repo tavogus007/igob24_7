@@ -160,11 +160,11 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
           var respuestaConm = resultado.success.data;
           encabezado[0] = {"tipo": "GRD","campos": "Nro|inf_placa|inf_modulo|fecha_curso|hora_curso|aprobado_reprobado|","titulos": "Nro|Placa|Módulo del Curso|Fecha del Curso|Hora del Curso|Aprobado/Reprobado","impresiones": "true|true|true|true|true|true|true|true|true|false"};
           for (var i = 0; i<respuestaConm.length; i++) {
-            if(respuestaConm.xconmutacion_fecha_conmutacion!= null && respuestaConm[i].id_registro!=respuestaConm[i].xconmutacion_id){
+            if(respuestaConm[i].xconmutacion_fecha_conmutacion!= null && respuestaConm[i].id_registro!=respuestaConm[i].xconmutacion_id){
               $scope.INF_GRILLA.push({
                 Nro:i+1,
                 inf_placa:respuestaConm[i].xconmutacion_placa,
-                inf_modulo:datos.infracciones[i].xconmutacion_detalle_curso.INF_MODULO_CURSO,
+                inf_modulo:respuestaConm[i].xconmutacion_detalle_curso.INF_MODULO_CURSO,
                 fecha_curso:respuestaConm[i].xconmutacion_detalle_curso.INF_FECHA_CURSO,
                 hora_curso:respuestaConm[i].xconmutacion_detalle_curso.INF_HORA_CURSO,
                 aprobado_reprobado:respuestaConm[i].xconmutacion_respuesta

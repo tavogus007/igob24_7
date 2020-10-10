@@ -608,7 +608,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       }
     }
     else{
-      alert(222);
       if(tipo == 'Prop'){
         $scope.mostrarZonaProp = true;
       }else{

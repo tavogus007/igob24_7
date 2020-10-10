@@ -608,6 +608,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       }
     }
     else{
+      alert(222);
       if(tipo == 'Prop'){
         $scope.mostrarZonaProp = true;
       }else{
@@ -981,20 +982,15 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       var f = new Date();  
       datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
       data_form = JSON.stringify(datos);
-      var tramite = new crear_Tramite_lotus();
-      tramite.proid = 66;
-      tramite.actid = 478;
-      tramite.usr_id = 0;        
+      var tramite = new crearTramiteMovilidad();
+      tramite.usr_id = 1;    
       tramite.datos = data_form;
       tramite.procodigo = 'AO';
-      tramite.macro_id = 0;
-      tramite.nodo_id = 3517;
-      tramite.ws_id = 24;
       var nroTramiteEnviado = sessionService.get('NROTRAMITE');
-      tramite.tram_lotus(function(results){ 
+      tramite.tramite_linea(function(results){ 
         results = JSON.parse(results);
         if (results !=null) {
-          var nrot = results.success.data[0].casonro;
+          var nrot = results.success.data[0].crea_tramite_linea;
           swal({
             title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
             text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
@@ -1038,27 +1034,27 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
         detalle.push({"fecha_d":veh.veh_ope_vigencia_d,"fecha_a":veh.veh_ope_vigencia_a});
       }
       detalle = JSON.stringify(detalle);
-      var renov = new renovacionVehTmov();
-      renov.id_veh = veh.veh_ope_id;
-      renov.detalle_ren = detalle;
-      renov.renovacionTmov(function(results){
-        results = JSON.parse(results).success.data;
-        if(results.length >0){
-          $scope.listaVeh();
-          $scope.datos.REN_ID_VEH = veh.veh_id;
-          $scope.datos.REN_TIPO = "VEH";
-          $scope.datos.REN_VEH_PLACA = veh.veh_placa;
-          var f = new Date();  
-          $scope.datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-          data_form = JSON.stringify($scope.datos);
-          var tramite = new crearTramiteMovilidad();
-          tramite.usr_id = 1;    
-          tramite.datos = data_form;
-          tramite.procodigo = 'REN';
-          tramite.tramite_linea(function(results){
-            results = JSON.parse(results);
-            if (results !=null) {
-              var nrot = results.success.data[0].crea_tramite_linea;
+      $scope.datos.REN_ID_VEH = veh.veh_id;
+      $scope.datos.REN_TIPO = "VEH";
+      $scope.datos.REN_VEH_PLACA = veh.veh_placa;
+      var f = new Date();  
+      $scope.datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
+      data_form = JSON.stringify($scope.datos);
+      var tramite = new crearTramiteMovilidad();
+      tramite.usr_id = 1;    
+      tramite.datos = data_form;
+      tramite.procodigo = 'REN';
+      tramite.tramite_linea(function(results){
+        results = JSON.parse(results);
+        if (results !=null) {
+          var nrot = results.success.data[0].crea_tramite_linea;
+          var renov = new renovacionVehTmov();
+          renov.id_veh = veh.veh_ope_id;
+          renov.detalle_ren = detalle;
+          renov.renovacionTmov(function(results){
+            results = JSON.parse(results).success.data;
+            if(results.length >0){
+              $scope.listaVeh();
               swal({
                 title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
                 text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
@@ -1066,15 +1062,14 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
                 type: 'success',
                 //timer: 5000,
               });
-            }else{
-              console.log('Se envio el tramite');
             }
-            $.unblockUI();
-          }) 
-          $.unblockUI();
+          })
+        }else{
+          console.log('Se envio el tramite');
         }
-      })
-
+        $.unblockUI();
+      }) 
+      $.unblockUI();
     },300); 
   }
 
@@ -1097,27 +1092,27 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
         detalle.push({"fecha_d":cond.cond_ofi_vigencia_d,"fecha_a":cond.cond_ofi_vigencia_a});
       }
       detalle = JSON.stringify(detalle);
-      var renov = new renovacionCondTic();
-      renov.id_cond = cond.cond_ofi_id;
-      renov.detalle_ren = detalle;
-      renov.renovacionTic(function(results){
-        results = JSON.parse(results).success.data;
-        if(results.length > 0){
-          $scope.listaCond ();
-          $scope.datos.REN_ID_COND = cond.cond_ofi_id;
-          $scope.datos.REN_TIPO = "COND";
-          $scope.datos.REN_COND_CI = cond.cond_ci;
-          var f = new Date();  
-          $scope.datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-          data_form = JSON.stringify($scope.datos);
-          var tramite = new crearTramiteMovilidad();
-          tramite.usr_id = 1;    
-          tramite.datos = data_form;
-          tramite.procodigo = 'REN';
-          tramite.tramite_linea(function(results){
-            results = JSON.parse(results);
-            if (results !=null) {
-              var nrot = results.success.data[0].crea_tramite_linea;
+      $scope.datos.REN_ID_COND = cond.cond_ofi_id;
+      $scope.datos.REN_TIPO = "COND";
+      $scope.datos.REN_COND_CI = cond.cond_ci;
+      var f = new Date();  
+      $scope.datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
+      data_form = JSON.stringify($scope.datos);
+      var tramite = new crearTramiteMovilidad();
+      tramite.usr_id = 1;    
+      tramite.datos = data_form;
+      tramite.procodigo = 'REN';
+      tramite.tramite_linea(function(results){
+        results = JSON.parse(results);
+        if (results !=null) {
+          var nrot = results.success.data[0].crea_tramite_linea;
+          var renov = new renovacionCondTic();
+          renov.id_cond = cond.cond_ofi_id;
+          renov.detalle_ren = detalle;
+          renov.renovacionTic(function(results){
+            results = JSON.parse(results).success.data;
+            if(results.length > 0){
+              $scope.listaCond ();
               swal({
                 title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
                 text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
@@ -1125,14 +1120,14 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
                 type: 'success',
                 //timer: 5000,
               });
-            }else{
-              console.log('No se envio el tramite');
             }
-            $.unblockUI();
-          }) 
-          $.unblockUI();
+          })
+        }else{
+          console.log('No se envio el tramite');
         }
-      })
+        $.unblockUI();
+      }) 
+      $.unblockUI();
     },500);
   }
 }

@@ -3373,25 +3373,19 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
         datos.g_tipo = 'RO';
         data_form = JSON.stringify(datos);
-        var tramite = new crear_Tramite_lotus();
         //tramite.proid = 55;
         //tramite.actid = 357;
-        tramite.proid = 367;
-        tramite.actid = 1632;
-        tramite.usr_id = 0;        
+        var tramite = new crearTramiteMovilidad();
+        tramite.usr_id = 1;    
         tramite.datos = data_form;
         tramite.procodigo = 'RO';
-        tramite.macro_id = 0;
-        tramite.nodo_id = 672;
-        tramite.ws_id = 24;
-        var nroTramiteEnviado = sessionService.get('NROTRAMITE');
-        tramite.tram_lotus(function(results){ 
+        tramite.tramite_linea(function(results){
           results = JSON.parse(results);
           if (results !=null) {
-            results = results.success.data[0].casonro;
+            var nrot = results.success.data[0].crea_tramite_linea;
             $scope.mostrar_form_ope = false;
             $scope.datosMostrar = 1;
-            $scope.validarFormProcesos(results);
+            $scope.validarFormProcesos(nrot);
             $.unblockUI();
           }else{
             alertify.error("Señor(a) Ciudadano(a) ocurrio un error al enviar su Tramité.", );

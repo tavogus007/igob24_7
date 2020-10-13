@@ -89,6 +89,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
         };
         $scope.f_crear_guardar = function(){
             id_tramite = 0;
+            f_crear_guardar = "";
             if($scope.tramiteId != undefined || $scope.tramiteId != null){
 
                 var validarElTramite = "";
@@ -283,7 +284,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                             $scope.crear_tramite(datos)
                             $scope.f_actualizar("Su solicitud fue enviada",'activo');
                         }else if(validador_envio == 4){
-                            $scope.f_actualizar('Su solicitud fue guardada','guardado');
+                            $scope.f_actualizar_guardado('Su solicitud fue guardada','guardado');
                         }
                     }
             }else if($scope.xdato_registro == 'AGRUPADOS'){
@@ -335,7 +336,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                             $scope.crear_tramite(datos)
                             $scope.f_actualizar("Su solicitud fue enviada",'activo');
                         }else if(validador_envio == 4){
-                            $scope.f_actualizar('Su solicitud fue guardada','guardado');
+                            $scope.f_actualizar_guardado('Su solicitud fue guardada','guardado');
                         }
                     }
             }
@@ -344,6 +345,11 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             validador_envio = 4;
             $scope.validar(data);
         }
+        $scope.f_envio = function(data){
+            validador_envio = 1;
+            $scope.validar(data);
+        }
+
 
         $scope.crear_tramite = function(datos){
                 $.blockUI();
@@ -460,6 +466,32 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
 
             });
         }
+        $scope.f_actualizar_guardado = function(ytitulo,yestado){
+            $scope.xdeshabilitado = false;
+            $scope.div_boton_guardar = true;
+            var datosMascota = new reglasnegocioM();
+            $scope.unido.datos_voluntario = $scope.datos;
+            $scope.unido.datos_personales = $scope.datos_responsable;
+            $scope.unido.datos_experiencia = $scope.trmExperiencia;
+            $scope.unido.datos_asociados = $scope.trmAsociados;
+            $scope.unido.dato_tramiteIgob = $scope.y_tramite;
+            $scope.unido.dato_registro = $scope.xdato_registro;
+            datosMascota.identificador = 'CASA_MASCOTA-6';
+            var x_parametro = '{"xanimalista_id":'+id_tramite+',"xvoluntario_indep_data":'+JSON.stringify(JSON.stringify($scope.unido))+',"estado":"'+yestado+'"}';
+            datosMascota.parametros = x_parametro;
+            datosMascota.llamarregla(function (results) {
+                var res = JSON.parse(results);
+                var res2 = res[0].sp_actualizar_animalista_igob;
+                if(res2 == true){
+                    $scope.mensaje("Estimado ciudadano",ytitulo,"success");
+                    $scope.recuperarTramites();
+                }else{
+                    $scope.mensaje("Error","Su solicitud no fue exitosa","error");
+                }
+              $.unblockUI();
+
+            });
+        }
         $scope.f_guardar_asociados = function(data_ingreso){
             var separado = ""
             if($scope.mod.edad == 'undefined' || $scope.mod.edad == undefined){
@@ -504,11 +536,12 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
         $scope.adicionarExperiencia = function(data){
             if($scope.datosV.descripcion_exp == 'undefined' || $scope.datosV.descripcion_exp == undefined){
                 $scope.mensaje("Alerta","Ingrese la descripción antes de agregar","error");
-            }else if($scope.datosV.FILE_ADJUNTO_EXPERIENCIA == 'undefined' || $scope.datosV.FILE_ADJUNTO_EXPERIENCIA == undefined){
+            }else if($scope.datosV.FILE_ADJUNTO_EXPERIENCIA == 'undefined' || $scope.datosV.FILE_ADJUNTO_EXPERIENCIA == undefined || $scope.FILE_ADJUNTO_EXPERIENCIA == ""){
                 $scope.mensaje("Alerta","Ingrese el adjunto antes de agregar","error");
             }else{
                 $scope.trmExperiencia.push(data);
                 $scope.tblExperiencia.reload();
+                $scope.FILE_ADJUNTO_EXPERIENCIA = "";
                 $scope.datosV = {};
             }                
         }
@@ -738,6 +771,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
             });
         }
         $scope.recuperarInformacion = function(datax){
+            $scope.y_tramite = "";
             $scope.div_formulario = true;
             var x = datax;
             var x_estado = x.xestado;

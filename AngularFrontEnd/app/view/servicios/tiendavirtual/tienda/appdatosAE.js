@@ -1188,6 +1188,7 @@ function tiendaVirtualController($scope, $timeout, CONFIG, $window, $rootScope, 
 
                 } else {
                     //alert(results[0].tv_idc);
+                    $rootScope.$apply();
                     sessionService.set('IDTV', results[0].tv_idc);
                 }
             });

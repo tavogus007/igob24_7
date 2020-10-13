@@ -39,11 +39,12 @@ atc.prototype.registroAtc = function (functionResp) {
     urlCompPago = "/registroREDENLACE";
     typeCallPago = "post";
     dataParamsPago = {
-        "id_actividadeconomica" : this.id_actividadeconomica,
-        "id_organizacion"       : this.id_organizacion,
+      "id_actividadeconomica" : this.id_actividadeconomica,
+      "id_agregador"          : this.cod_agregador,
+        /*"id_organizacion"       : this.id_organizacion,
         "access_key"            : this.access_key,
         "profile_id"            : this.profile_id,
-        "secret_key"            : this.secret_key,
+        "secret_key"            : this.secret_key, */
     };
     ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
 };

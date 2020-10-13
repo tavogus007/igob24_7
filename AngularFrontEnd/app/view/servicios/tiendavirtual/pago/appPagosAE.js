@@ -53,15 +53,12 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
       $scope.tipo = 'QR';
     }
     else if (tipoPago == 2) {
-     /*  $scope.mensajetpPago = "Para efectuar el cobro a través del servicio de Red Enlace CyberSource, mediante tarjetas de credito o debito "+
-      "usted debe poseer credenciales (codigos de acceso) proporcionadas por Red Enlace.";
-      swal("", $scope.mensajetpPago , "warning"); */
       var getpagoAtc = new atc();
       getpagoAtc.id_actividadeconomica = sessionService.get("IDAE");
       getpagoAtc.getRegistroAtc(function (resp) {
         var respuesta = JSON.parse(resp);
         respuesta = JSON.parse(respuesta);
-        if (respuesta.access_key == "00") {
+        if (respuesta.id_agregador == "00") {
           $scope.datos.access_key = "";
           $scope.datos.profile_id = "";
           $scope.datos.secret_key = "";
@@ -79,9 +76,6 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
       });
       $scope.tipo = 'ATC';
     } else if (tipoPago == 3) {
-      /* $scope.mensajetpPago = "Para efectuar el cobro por este canal de pago y usted debera colocar los datos necesarios para realizar "+
-      "una transferencia bancaria convencional directamente a la cuenta bancaria del vendedor";
-      swal("", $scope.mensajetpPago , "warning"); */
       $scope.tipo = 'TB';
       var getCretransBanc = new tbancaria();
       getCretransBanc.id_actividadeconomica = sessionService.get("IDAE");
@@ -93,7 +87,6 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           $scope.datos.nro_cuenta = "";
           $scope.datos.nom_abono = "";
           $scope.datos.ci_nit_abono = "";
-          //$scope.datos.f01_tipoPago = "";
           $scope.textbtnguardar = 'Registrar';
           $scope.btndelete = false;
         } else {
@@ -139,6 +132,13 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
         } else {
           $scope.smal_sec_key = true;
         }
+        break;
+      case 'cod_agregador':
+          if (valor.length > 0) {
+            $scope.smal_cod_agreg = false;
+          } else {
+            $scope.smal_cod_agreg = true;
+          }
         break;
       default:
         break;
@@ -193,6 +193,7 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
               $scope.datos.access_key = "";
               $scope.datos.profile_id = "";
               $scope.datos.secret_key = "";
+              $scope.datos.cod_agregador = "";
               $scope.datos.ent_financiera = "";
               $scope.datos.nro_cuenta = "";
               $scope.datos.nom_abono = "";
@@ -256,7 +257,7 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
         break;
       case "2":
         
-        if (datos.profile_id == "" ) {
+        /* if (datos.profile_id == "" ) {
           $scope.smal_perfil = true;
           alertify.error($scope.msError);
           return false;
@@ -275,6 +276,11 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           $scope.smal_idOrg = true;
           alertify.error($scope.msError);
           return false;
+        } */
+        if (datos.cod_agregador == "") {
+          $scope.smal_cod_agreg = true;
+          alertify.error($scope.msError);
+          return false;
         }
         tipo_cred = "RED ENLACE";
         valortipoent = "con perfil id " + datos.profile_id;
@@ -291,10 +297,11 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           $scope.$apply(function () {
             var pagoAtc = new atc();
             pagoAtc.id_actividadeconomica = idAE;
-            pagoAtc.id_organizacion = datos.id_organizacion;
+            pagoAtc.cod_agregador = datos.cod_agregador;
+            /*pagoAtc.id_organizacion = datos.id_organizacion;
             pagoAtc.access_key = datos.access_key;
             pagoAtc.profile_id = datos.profile_id;
-            pagoAtc.secret_key = datos.secret_key;
+            pagoAtc.secret_key = datos.secret_key; */
             pagoAtc.registroAtc(function (resp) {
               var respuesta = JSON.parse(resp);
               respuesta = JSON.parse(respuesta);

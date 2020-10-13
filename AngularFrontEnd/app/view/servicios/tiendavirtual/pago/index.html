@@ -141,7 +141,7 @@
                         <div class="controls">
                             <select id="f01_tipoPago" class="form-control" ng-model="datos.f01_tipoPago" name="f01_tipoPago" ng-change="seleccionaPago(datos.f01_tipoPago);" required>
                                 <option value="">--Seleccionar--</option>
-                                <option value="1"> BCP </option>
+                                <option value="1"> QR SIMPLE </option>
                                 <option value="2"> RED ENLACE </option>
                                 <option value="3"> TRANSFERENCIA BANCARIA </option>
                             </select>
@@ -161,7 +161,7 @@
                 <div ng-show = "tipo=='QR'">
                   <div class="col-md-6">
                     <div class="form-group" >
-                        <label for="url" >Código de Servicio:</label>
+                        <label for="url" >Número de Cuenta:</label>
                         <div class="controls">
                             <input type="text" ng-model="datos.service_code" id="service_code" name="service_code" class="form-control" ng-disabled="desabilitado"/>
                         </div>
@@ -169,7 +169,7 @@
                   </div>
                 </div>
                 <div ng-show = "tipo=='ATC'">
-                  <div class="col-md-6">
+                  <!-- <div class="col-md-6">
                     <div class="form-group" >
                         <label for="url" >Llave de Acceso:</label>
                         <div class="controls">
@@ -206,6 +206,17 @@
                           <input type="text" ng-model="datos.id_organizacion" ng-keyup="validaCampo('id_organizacion' ,datos.id_organizacion)"  id="id_organizacion" name="id_organizacion" class="form-control" ng-disabled="desabilitado"/>
                           <br><span ng-if ="smal_idOrg"
                               style="color:red;font-weight:bold; font-size:14px">El Campo Organización Id debe ser Llenado</span>
+                        </div>
+                    </div>
+                  </div> -->
+
+                  <div class="col-md-6">
+                    <div class="form-group" >
+                        <label for="url" >Código Agregador:</label>
+                        <div class="controls">
+                          <input type="text" ng-model="datos.cod_agregador" ng-keyup="validaCampo('cod_agregador' ,datos.cod_agregador)"  id="cod_agregador" name="cod_agregador" class="form-control" ng-disabled="desabilitado"/>
+                          <br><span ng-if ="smal_cod_agreg"
+                              style="color:red;font-weight:bold; font-size:14px">El Campo Código Agregador debe ser Llenado</span>
                         </div>
                     </div>
                   </div>

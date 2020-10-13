@@ -175,6 +175,7 @@ app.directive('uploaderModel', ["$parse", function ($parse) {
 app.service('fileUpload', ['$http', '$location', function ($http,$location) {
     this.uploadFileToUrl = function(file, uploadUrl){
         var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
+        var sidusuario = sessionStorage.getItem('IDUSUARIO');
         var srutaf = '';
         try{
             var suploadurl = uploadUrl;
@@ -188,6 +189,7 @@ app.service('fileUpload', ['$http', '$location', function ($http,$location) {
         fd.append('archivo', file);        
         fd.append('ruta', srutaf);
         fd.append('nombrea', file.name);
+        fd.append('oid', sidusuario);
         $http.post(surl, fd, {
             transformRequest: angular.identity,
             headers: {
@@ -212,6 +214,7 @@ app.service('fileUpload', ['$http', '$location', function ($http,$location) {
 app.service('fileUpload1', ['$http', '$location', function ($http,$location) {
     this.uploadFileToUrl1 = function(file, uploadUrl,nombre){
         var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
+        var sidusuario = sessionStorage.getItem('IDUSUARIO');
         //var sidusuario = sessionStorage.getItem('IDUSUARIO');
         var srutaf = '';
         try{
@@ -226,6 +229,7 @@ app.service('fileUpload1', ['$http', '$location', function ($http,$location) {
         fd.append('archivo', file);        
         fd.append('ruta', srutaf);
         fd.append('nombrea', nombre);
+        fd.append('oid', sidusuario);
         $.blockUI();
         $http.post(surl, fd, {
             transformRequest: angular.identity,
@@ -255,7 +259,7 @@ app.factory("fileUploadcorr", ['$http','$location', function($http,$location){
         uploadFileToUrl1: function(file, uploadUrl,nombre){            
             $.blockUI();
             var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
-            //var sidusuario = sessionStorage.getItem('IDUSUARIO');
+            var sidusuario = sessionStorage.getItem('IDUSUARIO');
             var srutaf = '';
             try{
                 var suploadurl = uploadUrl;
@@ -269,6 +273,7 @@ app.factory("fileUploadcorr", ['$http','$location', function($http,$location){
             fd.append('archivo', file);        
             fd.append('ruta', srutaf);
             fd.append('nombrea', nombre);
+            fd.append('oid', sidusuario);
             return ($http.post(surl, fd, {
                 transformRequest: angular.identity,
                 headers: {

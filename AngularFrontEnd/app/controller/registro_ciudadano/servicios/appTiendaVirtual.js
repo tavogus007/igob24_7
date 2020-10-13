@@ -1,7 +1,6 @@
 app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual, $q) {
     var fecha= new Date();
     var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-
     function cargando(){
         var texto   = $("<div>", {
          text    : "CARGANDO....",
@@ -21,7 +20,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 color:"rgba(255, 255, 255, 0.8)",
         });
     }
-
     $scope.tablaTramites        =   {};
     $scope.tramitesUsuario      =   [];
     $scope.datosinic = {};
@@ -35,28 +33,23 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
       { name: 'template2.html', url: '../../../app/view/servicios/tiendavirtual/productos/index.html'}, 
       { name: 'template3.html', url: '../../../app/view/servicios/tiendavirtual/pagina/index.html'} 
     ];
-
     $scope.serviciosTipoTramite = [
         { name: 'Registro de Productos', id:'51'}
     ];
-
     $scope.seleccionarProceso = function(proceso){
         $scope.btnCrearBlk = "mostrar"; 
         $scope.procesoSeleccionado  =   proceso.id;
         if($scope.procesoSeleccionado == 10){
             sidservicio =   10; 
         }
-        
         $scope.procesoSeleccionado  =   proceso.id;
         $scope.btnNuevoTramtite     =   false;      
     }; 
-
     $scope.crearTramiteP = function(idproceso) {
         if($scope.procesoSeleccionado != ''){
             $scope.adicionarServicioGamlp(idproceso); 
         }
     }
-
     $scope.adicionarServicioGamlp = function(idproceso){ 
         var tipoPersona     =   sessionService.get('TIPO_PERSONA');
         var condiciones = '';
@@ -103,7 +96,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 $.unblockUI();
             }
     }
-
     $scope.ListadoTramitesCiudadano = function(){
         sIdCiudadano = sessionService.get('IDSOLICITANTE');
         try {
@@ -129,7 +121,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             console.log("Error Interno : ", error);
         }
     };
-
     $scope.tablaTramites = new ngTableParams({
         page: 1,
         count: 4,
@@ -150,10 +141,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
     });
-
-   
-    //nuevo de paquete 
-  
     $scope.obtTiendaVirtual = function(){
         cargando();
         idActividadEconomica = sessionService.get('IDAE');
@@ -196,7 +183,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
           $rootScope.resultCategorias = $scope.resultCategorias.success;
         });
     }
-   
     $scope.activaPublicacion = function(id_web,id_ae){
         var cestado = new dataPaginaWeb();
         cestado.idWeb = id_web;
@@ -244,8 +230,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         }
 
     }
-
-
     $scope.addDatosAE = function (tramite) {
         cargando();
         $scope.template =   "";
@@ -256,7 +240,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $rootScope.$broadcast('inicializarCampos', $scope.datos);
         $scope.sIdAeGrilla  =   tramite.IdActividad;
         $.LoadingOverlay("hide");
-
     }
     $scope.addPagosAE = function (tramite) {
         cargando();
@@ -283,7 +266,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $scope.obtTiendaVirtual();
         $rootScope.$broadcast('inicializarProdutos', $scope.datos);
         $scope.sIdAeGrilla  =   tramite.IdActividad;
-
         try{
             tvid = $rootScope.datosTiendaVirtual[0].idtv;
             $scope.template         =   $scope.templates[2];
@@ -306,7 +288,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         //$scope.obtPagina();
         $rootScope.$broadcast('inicializarPagina', $scope.datos);
         $scope.sIdAeGrilla  =   tramite.IdActividad;
-      
         try{
             tvid = $rootScope.datosTiendaVirtual[0].idtv;
             $scope.template         =   $scope.templates[3];
@@ -318,15 +299,11 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             $.LoadingOverlay("hide");
         }
     }
-    
     $scope.seleccionarPagoRender = function (tramite) {
         cargando();
         $scope.template         =   $scope.templates[1];
         $.LoadingOverlay("hide");
     };
-
-
-    
     $scope.recuperarDatosRegistro = function(){
         var datosini = {};
         var datosCiudadano = new rcNatural();
@@ -364,8 +341,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $rootScope.archivoLuz = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datosinic.FILE_FACTURA_LUZ + "?app_name=todoangular";
         $.unblockUI();
     };
-
-
     $scope.recuperandoDatosInicialesCiudadano = function(){
         var idCiudadano = sessionService.get('IDUSUARIO');
         $scope.datosIniciales = "";
@@ -483,9 +458,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                         datosForm['f01_form_id']                = datos._id;
                         datosForm['f01_num_doc_per_jur']        = datos.dtspsl_nit;
                         datosForm['f01_raz_soc_per_jur']        = datos.dtspsl_razon_social;
-                        //datosForm['f01_ges_vig_pod']            = datos.dtspsl_poder_replegal;
                         datosForm['f01_num_doc_rep']            = datos.dtspsl_ci_representante;
-                        //datosForm['f01_num_pod_leg']            = datos.dtspsl_nro_notaria;
                         datosForm['f01_tip_doc_rep']            = 'CI';
                         datosForm['f01_expedido_rep']           = datos.dtspsl_expedido;
                         datosForm['f01_email_rep']              = datos.dtspsl_correo;
@@ -531,7 +504,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                                 var dtsNombres      =   ((typeof(repLegalmongo[0].dtspsl_nombres) == 'undefined') ? "" : repLegalmongo[0].dtspsl_nombres);
                                 var dtsPaterno      =   ((typeof(repLegalmongo[0].dtspsl_paterno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_paterno);
                                 var dtsMaterno      =   ((typeof(repLegalmongo[0].dtspsl_materno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_materno);
-                                //datosForm['INT_SOLICITANTE']        =   dtsNombres + ' ' + dtsPaterno + ' ' + dtsMaterno;
                                 datosForm['id_representante']       =   repLegalmongo[0]._id;
                                 datosForm['f01_pri_nom_prop']       =   ((typeof(repLegalmongo[0].dtspsl_nombres) == 'undefined') ? "" :repLegalmongo[0].dtspsl_nombres);
                                 datosForm['f01_ape_pat_prop']       =   ((typeof(repLegalmongo[0].dtspsl_paterno) == 'undefined') ? "" :repLegalmongo[0].dtspsl_paterno);
@@ -541,8 +513,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                                 datosForm['oid_representante_legal'] = repLegalmongo[0]._id;
                                 var sepNombre = repLegalmongo[0].dtspsl_nombres.split(" ");
                                 datosForm['f01_pri_nom_rep'] = ((repLegalmongo[0].dtspsl_nombres == 'undefined') ? "" :repLegalmongo[0].dtspsl_nombres);
-                                // datosForm['f01_seg_nom_rep'] = ((typeof(sepNombre[1]) == 'undefined') ? "" :sepNombre[1]);
-                                //datosForm['f01_ter_nom_rep'] = ((typeof(sepNombre[2]) == 'undefined') ? "" :sepNombre[2]);
                                 datosForm['f01_ape_cas_rep']    = ((typeof(repLegalmongo[0].dtspsl_tercer_apellido) == 'undefined') ? "" :repLegalmongo[0].dtspsl_tercer_apellido);
                                 datosForm['f01_ape_pat_rep']    = ((typeof(repLegalmongo[0].dtspsl_paterno) == 'undefined') ? "" :repLegalmongo[0].dtspsl_paterno);
                                 datosForm['f01_ape_mat_rep']    = ((typeof(repLegalmongo[0].dtspsl_materno) == 'undefined') ? "" :repLegalmongo[0].dtspsl_materno);
@@ -573,8 +543,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             }
         });
     };
-
-        /*CIUDADANO-INICIAR DATOS CONTRI*/
     $scope.iniciandoDatos = function(){
         var datosIniciales = $scope.datosIniciales;
         var fechactual  =   obtFechaActual.obtenerFechaActual();
@@ -716,8 +684,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         datosForm_inicio['IDTRAMITE']           =   $scope.sIdTramiteSeleccionado;     
         $scope.datos = datosForm_inicio;
     };
- 
-    $scope.obtenerContribuyente = function(){
+     $scope.obtenerContribuyente = function(){
         var tipoContribuyente = sessionService.get('TIPO_PERSONA');
         if(tipoContribuyente == 'NATURAL'){
             ciDocumento          =   sessionService.get('CICIUDADANO');
@@ -758,7 +725,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             }
         });
     };
-
     $scope.listadoActividadesEconomicas = function () {
         var tipoPersona     =   sessionService.get('TIPO_PERSONA');
         var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
@@ -806,14 +772,11 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         });
         
     };
-
     $scope.templateProducto = function(){
         var tipoPersona     =   sessionService.get('TIPO_PERSONA');
         var vsidservicio = 0;
         $scope.template         =   $scope.templates[vsidservicio];
-        
     }
-
     $scope.selActividadEconomica =  function(tramite){  
     $scope.templateProducto();
     $scope.idActividiadEconomicaActual  =   tramite.IdActividad;
@@ -955,7 +918,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             }
         });
     };  
-
     $scope.getDatosLotus = function(idadcteco, hojar){
         $scope[name] = 'Running';
         var deferred = $q.defer();
@@ -986,9 +948,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         }
         return deferred.promise;   
     } 
-
     $scope.LicenciaXCategoriaA = function(idDesarrollada){
-        //$scope.$apply();
         try{
                 var tipo = new categoriaagrupadalicenciades();
                 tipo.dependencia = idDesarrollada;
@@ -1009,8 +969,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 console.log("Error en la actividad desarrollada");
         }
     }
-
-  $scope.tblTramites = new ngTableParams({
+    $scope.tblTramites = new ngTableParams({
         page: 1,
         count: 5,
         filter: {},
@@ -1075,7 +1034,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             $scope.txtMsgConexionGen    =   "Se ha producido un problema de conexion al cargar los datos";
         };
     };
-
     $scope.guardarDatos = function(obj){
         var fechactual          = obtFechaActual.obtenerFechaActual();
         obj.INT_FORM_ALMACENADO = 'G';
@@ -1111,7 +1069,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             $.unblockUI();
         }
     };
-
     $scope.macrodistritos = function(){
         $scope.aMacrodistritos = {};
         var datosP = new macrodistritoLst();
@@ -1124,8 +1081,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             }
         });
     };
-
-     $scope.distritoZonas = function(idMacroJ){        
+    $scope.distritoZonas = function(idMacroJ){        
         var idMacro = "";
         if($scope.aMacrodistritos){
             angular.forEach($scope.aMacrodistritos, function(value, key) {
@@ -1157,7 +1113,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             $scope.desabilitadoNo=true;
         }
     };
-
     $scope.cargarNombVia = function(tipoVia, idZona) {
         try{
             var nomvia = new aelstNombreVia();
@@ -1174,7 +1129,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             console.log('datos error via');
         }
     };
-
     $scope.actulizarIdDistrito  =   function(zonadescrip){
         $scope.desabilitadoV=false;
         var idDistrito  = "";
@@ -1196,7 +1150,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $scope.datos.INT_ID_ZONA        =   idZona;
         $scope.desabilitadoNo=true;
     };
-
     $scope.cargarNombViaTxt = function(valor) {
         if (valor == "NINGUNO"){
             $scope.datos.f01_factor = "VA";
@@ -1204,22 +1157,17 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             $scope.datos.f01_factor = "TM";
         }
     };
-
     $scope.GetValueMacrodistrito = function (macro) {
         var e = document.getElementById("f01_macro_act");
         $scope.datos.f01_macro_act_descrip = e.options[e.selectedIndex].text;
     }
-      
-     $scope.$on('api:ready',function(){
+    $scope.$on('api:ready',function(){
         $scope.recuperandoDatosInicialesCiudadano();
         $scope.obtenerContribuyente();
-       
     });
-
     $scope.inicioServiciosP = function () {
        $scope.recuperandoDatosInicialesCiudadano();
        $scope.obtenerContribuyente();
        $scope.macrodistritos();
     };
-    ///********************* panchito fin ********************/
 });

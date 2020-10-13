@@ -164,7 +164,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
               r = JSON.parse(res);
               results = r.success;
               $rootScope.datosTiendaVirtual = results;
-              console.log('$rootScope.datosTiendaVirtual',$rootScope.datosTiendaVirtual);
               if (results.length == 0){
                 $rootScope.nuevo = 'mostrar';
                 $rootScope.update = null;
@@ -176,17 +175,12 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 $rootScope.inicializaInstagram = true;
                 $rootScope.inicializaYoutube = true;
                 $rootScope.inicializaOtro = true;
+                $rootScope.$apply();
               } else {
-                //alert(results[0].tv_idc);
                 sessionService.set('IDTV', results[0].tv_idc);
                 $rootScope.nuevo = null;
                 $rootScope.update = 'mostrar';
-                /*$rootScope.inicializaC1 = false;
-                $rootScope.inicializaC2 = false;
-                $rootScope.inicializaC3 = false;
-                $rootScope.inicializaFacebook =  false;
-                $rootScope.inicializaTwitter = false;
-                $rootScope.inicializaInstagram = false;*/
+                $rootScope.$apply();
               }
           });
           $.LoadingOverlay("hide");
@@ -198,83 +192,23 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     $scope.listarCategorias = function(){
         var categorias = new dataTiendaVirtual();
         categorias.obtCategorias(function(response){
-          //console.log(response);
           $rootScope.resultCategorias = JSON.parse(response);
           $rootScope.resultCategorias = $scope.resultCategorias.success;
         });
     }
-    
-    
-
-    /*
-    $scope.obtPagina = function(){ 
-        $rootScope.id_web = '';
-        $rootScope.ws_publicado = false;
-        idActividadEconomica = sessionService.get('IDAE');
-        try {
-            var datosPagina = new dataPaginaWeb();
-            datosPagina.idAe =  idActividadEconomica;
-            datosPagina.obtDataPaginaWeb(function(response){
-              results = JSON.parse(response);
-              results = results.success;
-              console.log(results);
-              if (results == '[]' || results == '[{}]' || results == '[{ }]' || results == ' ' || results == '') {
-                $rootScope.pagUrl = '';
-                $rootScope.update = false;   
-                $rootScope.nuevo = true;  
-              }else{
-                if(results.length > 0){
-                    $.unblockUI();
-                    $rootScope.pagUrl = results[0].web_urlc;
-                    $rootScope.estado_publicar = results[0].web_estado_publicarc;
-                    $rootScope.id_web = results[0].web_idc;
-                      if($rootScope.estado_publicar == 'SI'){
-                          $rootScope.ws_publicado = true;
-                          $rootScope.update = true;   
-                          $rootScope.nuevo = false;  
-                          //swal('', "La Actividad económica cuenta con su Página Web publicada", 'success');   
-                      }else{
-                          $rootScope.ws_publicado = false;
-                          $rootScope.update = false;   
-                          $rootScope.nuevo = true;  
-                          //swal('', "La Actividad económica cuenta con su Página Web, pero NO se encuentra publicada", 'warning');  
-                      }
-                   
-                   
-                } else {
-                    $.unblockUI();
-                    $rootScope.update = false;   
-                    $rootScope.nuevo = false;  
-                    $rootScope.pagUrl = 'No cuenta con Página WEb';
-                    $rootScope.descripcionAe = $scope.datosAe.Descripcion; 
-                    $rootScope.estado_publicar = 'No se creó la Tienda Virtual para la AE';
-                    swal('Advertencia', "La Actividad Económica NO cuenta con su Tienda Virtual. Debe hacer el registro de la misma.", 'warning');
-                }
-        
-              }
-              
-            });
-            
-        }catch(error){
-            console.log("Error Interno : ", error);
-        }    
-    }
-    */
+   
     $scope.activaPublicacion = function(id_web,id_ae){
         var cestado = new dataPaginaWeb();
         cestado.idWeb = id_web;
         cestado.idAe =  id_ae;
         cestado.activaEstadoPublicacion(function(response){
-        console.log(response);
         results = JSON.parse(response);
         results = results.success;
-        console.log('estado',results);
         if(results.length > 0){
             $.unblockUI();
             
         } else {
             $.unblockUI();
-            //swal('', "yyyyy", 'error');
         }
         });
     }
@@ -283,24 +217,17 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         cestado.idWeb = id_web;
         cestado.idAe =  id_ae;
         cestado.desactivaEstadoPublicacion(function(response){
-        console.log(response);
         results = JSON.parse(response);
         results = results.success;
-        console.log('estado des',results);
         if(results.length > 0){
             $.unblockUI();
-            
         } else {
             $.unblockUI();
-            //swal('', "yyyyy", 'error');
         }
         });
     }
     $scope.cambioEstado = function(dato){
-        console.log('SW:',dato);
         idActividadEconomica = sessionService.get('IDAE');
-        console.log('ID AE: ',idActividadEconomica);
-        console.log('ID PAGINAWEB: ',$rootScope.id_web);
         if($rootScope.id_web ){
             alert('tiene pagina web');
             if(dato == true){
@@ -322,7 +249,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     $scope.addDatosAE = function (tramite) {
         cargando();
         $scope.template =   "";
-        //$scope.seleccionarDatosRender(tramite);  
         $scope.template         =   $scope.templates[0];
         sessionService.set('IDAE', tramite.IdActividad);
         $scope.listarCategorias();
@@ -342,7 +268,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $scope.sIdAeGrilla  =   tramite.IdActividad;
         try{
             tvid = $rootScope.datosTiendaVirtual[0].idtv;
-            console.log(tramite);  
             $.LoadingOverlay("hide");
         } catch(error){
             swal('', "Debe habilitar la tienda virtual, antes de cargar las Formas de Pago.", 'warning');
@@ -373,7 +298,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     $scope.confPublicar = function (tramite) {
         cargando();
         $scope.template =   "";
-        console.log(tramite);
         sessionService.set('IDAE', tramite.IdActividad);
         idActividadEconomica = sessionService.get('IDAE');
         $rootScope.descripcionAe = tramite.Descripcion;
@@ -397,8 +321,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
     
     $scope.seleccionarPagoRender = function (tramite) {
         cargando();
-        console.log(tramite);
-        sessionService.set('IDTV', 1);
         $scope.template         =   $scope.templates[1];
         $.LoadingOverlay("hide");
     };
@@ -794,9 +716,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         datosForm_inicio['IDTRAMITE']           =   $scope.sIdTramiteSeleccionado;     
         $scope.datos = datosForm_inicio;
     };
-
-   
-
+ 
     $scope.obtenerContribuyente = function(){
         var tipoContribuyente = sessionService.get('TIPO_PERSONA');
         if(tipoContribuyente == 'NATURAL'){
@@ -837,64 +757,64 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 //swal(resultadoApi.error.message);
             }
         });
-  };
+    };
 
-  $scope.listadoActividadesEconomicas = function () {
-    var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-    var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
-    var sNumeroRegistros  = dataGenesis.length;
-    var tipoP = "";
-    if(tipoPersona == 'NATURAL'){
-        tipoP = 'N';
-    }else{
-        tipoP = 'J';
-    }
-    var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
-    var contribuyente   =   new lstActividadEconomicaVentas();
-    contribuyente.idContribuyente   =   idContribuyente;
-    contribuyente.tipo  =   tipoP;
-    contribuyente.lstActividadEconomicaVentas(function(resultado){ 
-        $.unblockUI(); 
-        var resultadoApi = JSON.parse(resultado);
-        if (resultadoApi.success) {
-            $scope.formDatosAE  =   true;
-            $scope.mostrarMsgActividadTrue  = true;
-            $scope.mostrarMsgActividadFalse = false;
-            var response    =   resultadoApi;
-            $scope.trmUsuario = response.success.dataSql;
-            var data = response.success.dataSql;
-            $scope.tblTramites.reload(); 
-            $scope.desabilitado = true;  
-        } else {
-            $scope.mostrarMsgActividadTrue  = false;
-            $scope.mostrarMsgActividadFalse = true;                        
-            $scope.formDatosAE  =   false;
-            $scope.desabilitado = true;
-            swal('', "Datos no Encontrados !!!", 'warning');
-        }
-
-        var sformguardado   =   $scope.datos.INT_FORM_ALMACENADO;
-        if(typeof sformguardado == 'undefined' || sformguardado != 'G'){
-            $scope.botones = null;
-            $scope.desabilitado = true;                   
-            swal('', "Actividades Económicas de : " + sessionService.get('US_NOMBRE'), 'warning');                    
+    $scope.listadoActividadesEconomicas = function () {
+        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
+        var dataGenesis       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
+        var sNumeroRegistros  = dataGenesis.length;
+        var tipoP = "";
+        if(tipoPersona == 'NATURAL'){
+            tipoP = 'N';
         }else{
-
-            //$scope.botones = "mostrar";
-            //$scope.desabilitado = false;
+            tipoP = 'J';
         }
-    });
-      
-  };
+        var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
+        var contribuyente   =   new lstActividadEconomicaVentas();
+        contribuyente.idContribuyente   =   idContribuyente;
+        contribuyente.tipo  =   tipoP;
+        contribuyente.lstActividadEconomicaVentas(function(resultado){ 
+            $.unblockUI(); 
+            var resultadoApi = JSON.parse(resultado);
+            if (resultadoApi.success) {
+                $scope.formDatosAE  =   true;
+                $scope.mostrarMsgActividadTrue  = true;
+                $scope.mostrarMsgActividadFalse = false;
+                var response    =   resultadoApi;
+                $scope.trmUsuario = response.success.dataSql;
+                var data = response.success.dataSql;
+                $scope.tblTramites.reload(); 
+                $scope.desabilitado = true;  
+            } else {
+                $scope.mostrarMsgActividadTrue  = false;
+                $scope.mostrarMsgActividadFalse = true;                        
+                $scope.formDatosAE  =   false;
+                $scope.desabilitado = true;
+                swal('', "Datos no Encontrados !!!", 'warning');
+            }
 
-  $scope.templateProducto = function(){
-    var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-    var vsidservicio = 0;
-    $scope.template         =   $scope.templates[vsidservicio];
-    
-  }
+            var sformguardado   =   $scope.datos.INT_FORM_ALMACENADO;
+            if(typeof sformguardado == 'undefined' || sformguardado != 'G'){
+                $scope.botones = null;
+                $scope.desabilitado = true;                   
+                swal('', "Actividades Económicas de : " + sessionService.get('US_NOMBRE'), 'warning');                    
+            }else{
 
-  $scope.selActividadEconomica =  function(tramite){  
+                //$scope.botones = "mostrar";
+                //$scope.desabilitado = false;
+            }
+        });
+        
+    };
+
+    $scope.templateProducto = function(){
+        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
+        var vsidservicio = 0;
+        $scope.template         =   $scope.templates[vsidservicio];
+        
+    }
+
+    $scope.selActividadEconomica =  function(tramite){  
     $scope.templateProducto();
     $scope.idActividiadEconomicaActual  =   tramite.IdActividad;
     $scope.datos.f01_id_actividad_economica = tramite.IdActividad;
@@ -1077,13 +997,10 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                     x = JSON.parse(res);
                     response = x.success.data;
                     if(response.length > 0){
-                        console.log("response Licencia:: ",response);
                         $scope.datosActividadLicencia = response;
                         $scope.datos.f01_categoria_agrupada = response[0].catagrpuid; 
                         $scope.datos.f01_categoria_agrupada_dem = response[0].idcategoriaagrupada;
                         $scope.datos.f01_categoria_agrupada_descrip = response[0].idcategoriaagrupada;
-                        
-                        
                     }else{
                         $scope.msg = "Error !!";
                     }
@@ -1091,10 +1008,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         }catch(e){
                 console.log("Error en la actividad desarrollada");
         }
-                       
-        //$scope.GetValueZonaSegura($scope.datos.f01_categoria_agrupada);
     }
-
 
   $scope.tblTramites = new ngTableParams({
         page: 1,
@@ -1116,82 +1030,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
     });
-  /*
-    $scope.recuperarSerializarInfo = function(tramite){
-        $scope.btover_c = true;  
-        $scope.recuperarDatosRegistro();    
-        var sIdTramite = tramite.vtra_id;
-        $scope.sIdTramiteSeleccionado = tramite.vtra_id;
-        var sIdCiudadano = sessionService.get('IDSOLICITANTE');//IDCIUDADANO
-        var sIdServicio = sessionService.get('IDSERVICIO');
-        var parametros  = {
-                "container":"RC_CLI",
-                "folder_path": sIdTramite
-        };
-        try {
-            var rData = new datosFormularios();
-            rData.frm_tra_id_ciudadano = sIdCiudadano;
-            rData.frm_tra_dvser_id = sIdServicio;
-            rData.frm_idTramite = sIdTramite;
-            rData.splistafrmdatos(function(res){
-                r = JSON.parse(res);
-                results = r.success;
-                var formalmacenado    = "";
-                if(results){
-                    datoform = JSON.parse(results[0].form_contenido); 
-                    formalmacenado =   ((typeof(datoform.INT_FORM_ALMACENADO)    == 'undefined' || datoform.INT_FORM_ALMACENADO    == null) ? '' : datoform.INT_FORM_ALMACENADO);
-                    if(formalmacenado == 'G'){
-                        $rootScope.campoidform= results[0].form_id;
-                        datos = JSON.parse(results[0].form_contenido);
-                        $scope.datos = datos;
-                        if($scope.datos.f01_tipo_per == 'NATURAL' || $scope.datos.f01_tipo_per == 'N'){
-                            $scope.datos.FILE_FOTOCOPIA_CI = $scope.datosinic.FILE_FOTOCOPIA_CI;
-                            $scope.datos.FILE_FOTOCOPIA_CI_R = $scope.datosinic.FILE_FOTOCOPIA_CI_R;
-                            $scope.datos.FILE_FACTURA_LUZ = $scope.datosinic.FILE_FACTURA_LUZ;
-                        }else{
-                             if($scope.datos.f01_tipo_per == 'JURIDICO' || $scope.datos.f01_tipo_per == 'J'){
-                                $scope.datos.FILE_FOTOCOPIA_CI = $scope.datosIniciales.FILE_FOTOCOPIA_CI_RA;
-                                $scope.datos.FILE_FOTOCOPIA_CI_R = $scope.datosIniciales.FILE_FOTOCOPIA_CI_RR;
-                            }    
-                        }
-                        if($scope.datos.g_origen == 'POS/EMPR2017'){
-                           if($scope.datos.swpublicidad == 'CP' && $scope.datos.sw_publicidad == 'CP'){
-                           }
-                        }
-                        $scope.datos.IDTRAMITE = sIdTramite;
-                        $scope.publicid = [];
-                        $scope.publicid = $scope.datos.publicidad;
-                        $rootScope.looo = $scope.datos.INT_AC_longitud;
-                        $rootScope.laaa = $scope.datos.INT_AC_latitud;
-                        $scope.nroRegistros = datos.length;
-                        }else 
-                            if(formalmacenado == 'C'){
-                                $scope.datos.IDTRAMITE = sIdTramite;
-                                $rootScope.campoidform= results[0].form_id;
-                                $scope.formRegularRegistrado = JSON.parse(results[0].form_contenido);  
-                                $scope.datos.INT_FORM_ALMACENADO = 'C';
-                                $scope.iniciandoDatos();
-                            }
-                            else{
-                                $scope.nroRegistros = 0;
-                                $scope.datos = "";
-                                $scope.adjuntosArray = "";
-                                $scope.iniciandoDatos();                        
-                            }
-                }       
-                setTimeout(function(){
-                    $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
-                    $rootScope.$broadcast('inicializarGrillaAE', [{'datos':$scope.datos, 'venviado':tramite.venviado}]);
-                    $rootScope.$broadcast('inicializarHtmlForm', tramite);
-
-                 }, 4000);
-                $.unblockUI();
-            });
-        } catch(error){
-            console.log("Error Interno : ", error);
-        }
-    };
-*/
     $scope.recuperandoDatosGenesis = function(){
         var tipoContribuyente   =   sessionService.get('TIPO_PERSONA');
         var ciDocumento =   '';
@@ -1374,14 +1212,12 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
       
      $scope.$on('api:ready',function(){
         $scope.recuperandoDatosInicialesCiudadano();
-        //$scope.ListadoTramitesCiudadano();
         $scope.obtenerContribuyente();
        
     });
 
     $scope.inicioServiciosP = function () {
        $scope.recuperandoDatosInicialesCiudadano();
-       //$scope.ListadoTramitesCiudadano();
        $scope.obtenerContribuyente();
        $scope.macrodistritos();
     };

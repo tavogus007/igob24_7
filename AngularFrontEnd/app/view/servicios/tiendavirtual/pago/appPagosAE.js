@@ -379,12 +379,12 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
         break;
     }
   }
-  $scope.inicioTiendaVirtual = function () {
-
+  $scope.inicioTiendaVirtualPagos = function () {
     var getEntidades = new tbancaria();
     getEntidades.getEntidades(function (resp) {
       var respuesta = JSON.parse(resp);
       $scope.entidades = JSON.parse(respuesta);
+      $rootScope.$apply();
     });
     $scope.tipo = '';
   }

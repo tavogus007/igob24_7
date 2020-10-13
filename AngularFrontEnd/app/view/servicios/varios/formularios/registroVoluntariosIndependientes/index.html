@@ -137,11 +137,6 @@ function soloNumericoTelefono(sValo){
   function valNumeroTelefono(Control){
       Control.value = soloNumericoTelefono(Control.value);
   }
-//////////////////////////////2
-
-
-
-
 
 var icon= 0;
    $('#mostrar').click(function(event) {
@@ -244,7 +239,6 @@ function validateDecimal(valor) {
 </script>
 <script type="text/javascript">
     function filterFloat(evt,input){
-        // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
         var key = window.Event ? evt.which : evt.keyCode;    
         var chark = String.fromCharCode(key);
         var tempValue = input.value+chark;
@@ -619,7 +613,7 @@ function validateDecimal(valor) {
                                   <div class="input-group">
                                       <input id="txt_FILE_ADJUNTO_EXPERIENCIA" name="txt_FILE_ADJUNTO_EXPERIENCIA" ng-model="datosV.FILE_ADJUNTO_EXPERIENCIA" type="text" ng-disabled="true" class="form-control input-lg" required>
                                       <span class="input-group-btn">
-                                          <a id="href_FILE_ADJUNTO_EXPERIENCIA" target="_blank" href={{datosV.FILE_ADJUNTO_EXPERIENCIA}}>
+                                          <a id="href_FILE_ADJUNTO_EXPERIENCIA" target="_blank" href={{FILE_ADJUNTO_EXPERIENCIA}}>
                                               <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover7 != null" ng-click="mostrarimg('FILE_ADJUNTO_EXPERIENCIA');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                           </a>
                                           <button id="btn_FILE_ADJUNTO_EXPERIENCIA" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_ADJUNTO_EXPERIENCIA');" ng-disabled="xdeshabilitado" ><i class="glyphicon glyphicon-upload" ></i> Subir</button>
@@ -894,12 +888,10 @@ function validateDecimal(valor) {
     </div>
     <div ng-show="div_boton_guardar == true">
       <div class="col-md-12" align="right"><br>
-        <button ng-click="f_guardarSinValidar(datos);"  type="button" class="btn btn-success fa fa-save" name="formEnviar">&nbsp;GUARDAR</button>
-        <button ng-click="validar(datos);"  type="button" class="btn btn-success fa fa-mail-forward" name="formEnviar">&nbsp;ENVIAR</button>
+        <button ng-click="f_guardarSinValidar(datos);"  type="button" class="btn btn-success fa fa-save" >&nbsp;GUARDAR</button>
+        <button ng-click="f_envio(datos);"  type="button" class="btn btn-success fa fa-mail-forward" >&nbsp;ENVIAR</button>
       </div>
     </div>
-
-
     <div id="myModal" class="modal fade" id="registro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
           <div class="modal-content">

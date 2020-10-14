@@ -1737,35 +1737,15 @@ function tiendaVirtualController($scope, $timeout, CONFIG, $window, $rootScope, 
     }
     $scope.cambiaCategoria = function(datos) {
         $scope.categoria = datos;
-        if ($scope.categoria == 1) {
-            $scope.catSeleccionada = 'ALIMENTOS';
-        }
-        if ($scope.categoria == 2) {
-            $scope.catSeleccionada = 'ENTRETENIMIENTO';
-        }
-        if ($scope.categoria == 3) {
-            $scope.catSeleccionada = 'HOTELERIA Y TURISMO';
-        }
-        if ($scope.categoria == 4) {
-            $scope.catSeleccionada = 'SALUD';
-        }
-        if ($scope.categoria == 5) {
-            $scope.catSeleccionada = 'SERVICIOS';
-        }
-        if ($scope.categoria == 6) {
-            $scope.catSeleccionada = 'CONSTRUCCIÓN';
-        }
-        if ($scope.categoria == 7) {
-            $scope.catSeleccionada = 'COMERCIO';
-        }
-        if ($scope.categoria == 8) {
-            $scope.catSeleccionada = 'INDUSTRIA Y MANUFACTURA';
-        }
-        swal({
-            title: "¿Está usted seguro(a)?",
-            text: "Seleccionó la categoria: " + $scope.catSeleccionada,
-            confirmButtonText: "Aceptar",
-        });
+        $scope.catSeleccionada = '';
+        $(document).on('change', '#f01_categoria', function(event) {
+            $scope.catSeleccionada = ($("#f01_categoria option:selected").text());
+            swal({
+                title: "¿Está usted seguro(a)?",
+                text: "Seleccionó la categoria: " + $scope.catSeleccionada,
+                confirmButtonText: "Aceptar",
+            });
+        });       
     }
     $scope.activaCheckL = function(datos) {
         if (datos == 'L') {

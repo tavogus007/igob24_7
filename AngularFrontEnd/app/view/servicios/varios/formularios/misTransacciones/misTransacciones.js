@@ -271,8 +271,6 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
 
     }
     $scope.validar_boleta = function(estado) {
-        console.log("estado", estado, "id venta ", $scope.id_venta_pedido);
-
         if( estado == "observar"){
             $scope.divObsBoleta = "mostrar";
            
@@ -299,7 +297,6 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                     datacambiaData.observacion     = "";
                     datacambiaData.pagoCambioEstado(function (resultado) {
                         var resultadoApi = JSON.parse(JSON.parse(resultado));
-                        //console.log("respuesta update ", resultadoApi);
                         if (resultadoApi.respuesta_pago != "00") {
                             if ( $("#fechaIni").val() != "" && $("#fechaFin").val() != "") {
                                 $scope.fechaIni = $("#fechaIni").val();
@@ -328,7 +325,6 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
         }
     }
     $scope.validar_boleta_obs = function(estado,descripcion) {
-        console.log("descripcion ", descripcion);
         if (estado == "observar") {
             if (descripcion == undefined  || descripcion == null || descripcion == "undefined") {
                 
@@ -355,9 +351,7 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                         datacambiaData.estado          = "RECHAZADO";
                         datacambiaData.observacion     = descripcion;
                         datacambiaData.pagoCambioEstado(function (resultado) {
-                            //console.log("rrr ", resultado);
                             var resultadoApi = JSON.parse(JSON.parse(resultado));
-                            //console.log("respuesta update ", JSON.parse(resultadoApi));
                             if (resultadoApi.respuesta_pago != "00") {
                                 $("#fotpod").modal("hide"); 
                                 if ( $("#fechaIni").val() != "" && $("#fechaFin").val() != "") {
@@ -390,7 +384,6 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
     }
     
     $scope.mostrarImg  =   function(dataimg){ 
-        console.log("dataimg2222 ", dataimg);
         $scope.id_venta_pedido = dataimg.id_venta;
         $scope.id_ac_economica = dataimg.id_AE;
         $scope.estadopagovista = dataimg.estado_pago;
@@ -505,9 +498,13 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                              if (resultadoApi.success[0].estado_pago == estado) {
                                 swal("", "Se procedio a cambiar el estado correctamente.", "success");
                                 $("#modaldetPedido").modal("hide");             
-                            } else {
-                                console.log("respuesta update ", resultadoApi);
-                            } 
+                            } else if(resultadoApi.success[0].estado_pago == "BORRADO"){
+                                swal("", "La transacción esta en un estado inactivo.", "error");
+                                $("#modaldetPedido").modal("hide");
+                            } else{
+                                swal("", "Se presento un problema al actualizar el estado del pedido.", "error");
+                                $("#modaldetPedido").modal("hide");
+                            }
                         }); 
                     }
                 });

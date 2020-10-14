@@ -31,10 +31,8 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
 
   $scope.seleccionaPago = function (tipoPago) {
     $scope.tipodePagoMsj = tipoPago;
+    $scope.btnregistrodata = true;
     if (tipoPago == 1) {
-      /* $scope.mensajetpPago = "Para efectuar el cobro a través del Banco de Crédito de Bolivia (BCP), mediante el cobro por QR-BCP"+
-      " usted debe poseer credenciales (codigos de acceso) proporcionadas por Banco de Crédito de Bolivia (BCP).";
-      swal("", $scope.mensajetpPago , "warning"); */
       var pagoQr = new qr();
       pagoQr.id_actividadeconomica = idAE;
       pagoQr.getCredencialQr(function (resp) {
@@ -62,6 +60,7 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           $scope.datos.access_key = "";
           $scope.datos.profile_id = "";
           $scope.datos.secret_key = "";
+          $scope.datos.cod_agregador = "";
           $scope.textbtnguardar = 'Registrar';
           $scope.btndelete = false;
         } else {
@@ -69,6 +68,7 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           $scope.datos.profile_id = respuesta.profile_id;
           $scope.datos.secret_key = respuesta.secret_key;
           $scope.datos.id_organizacion = respuesta.id_organizacion;
+          $scope.datos.cod_agregador = respuesta.id_agregador;
           $scope.textbtnguardar = 'Modificar';
           $scope.btndelete = true;
         }
@@ -101,6 +101,7 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
 
     } else {
       $scope.tipo = '';
+      $scope.btnregistrodata = false;
     }
   }
   $scope.validaCampo = function (campo, valor) {
@@ -388,6 +389,7 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
   }
   $scope.inicioTiendaVirtualPagos = function () {
     var getEntidades = new tbancaria();
+    $scope.btnregistrodata = false;
     getEntidades.getEntidades(function (resp) {
       var respuesta = JSON.parse(resp);
       $scope.entidades = JSON.parse(respuesta);

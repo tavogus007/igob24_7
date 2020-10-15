@@ -133,7 +133,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
     };
 
     $scope.cambioToggle1 = function(dato){
-        //$scope.lscategoria();
         $scope.lssubcategoria();
         if ( dato == "NUEVO") {
             $scope.licenciaToogle4 = true;
@@ -247,7 +246,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             resAct.identificador = 'VALLE_PRUEBA-SGEN-3148';
             resAct.parametros = dataRepLegal;
             resAct.llamarregla_sierra(function(responseN){
-                //dataN = JSON.parse(responseN);
                 var responseLegal = JSON.parse(responseN);
                 console.log('responseLegal    ',responseLegal);
                 $.unblockUI();
@@ -331,8 +329,16 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
 
     $scope.selActividadEconomica =  function(tramite){
         //RENOVA ID ACTIVIDAD
-        var fechatram = "";
         var aniotram = "";
+        var fechaAct = tramite.fecha_vencimiento_licencia.split('/');
+        if (fechaAct.length > 1) {
+            var fechaVenLic = fechaAct[2] + "-" + fechaAct[1] + "-" + fechaAct[0];
+            var fechaCastR = new Date(fechaVenLic);
+            aniotram = fechaCastR.getFullYear();
+        } else{
+            var fechaVenLic = new Date(tramite.fecha_vencimiento_licencia);
+            aniotram = fechaVenLic.getFullYear();
+        };
         var  smacrodes = "";
         $scope.datos.publicidad = '';
         $scope.publicid = '';
@@ -340,33 +346,30 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         var datosLotus = "";
         $scope.datosAnterioresJuridico(tramite.idactividad);
         $scope.divDeudasPendientes = false;
-        var dato = tramite.fechainicio.split('/');
-        aniotram = dato[2];
         $scope.docPubNuevo = [];
         $scope.datos.docAdPublicidad = [];
         $scope.datos.licenciamulAnterior = [];
         $scope.datos.licenciam = [];
-        var anioserv = $scope.anioserver.toString();
-        //if(aniotram != anioserv){
-                //if(tramite.IdActividad){
-                $scope.idActividiadEconomicaActual  =   tramite.idactividad;
-                $scope.datos.f01_id_actividad_economica = tramite.idactividad;
-                //}
-                $scope.sIdAeGrilla  =   tramite.idactividad;
-                var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-                if(tipoPersona == "JURIDICO"){
-                    tipoPersona = "J";
-                }
-                var paramidAE = '{"id_actividad_economica":'+tramite.idactividad+'}';
-                var envioIdAe = new reglasnegocioSierra();
-                envioIdAe.identificador = 'VALLE_PRUEBA-SGEN-3145';
-                envioIdAe.parametros = paramidAE;
-                envioIdAe.llamarregla_sierra(function(responsedatosAE){
-                    var respuestaDatos = JSON.parse(responsedatosAE);
-                    var respuestaDatosPrimerNivel = respuestaDatos[0].sp_obtener_actividad_economica;
-                    var datosActividadEconomica = JSON.parse(respuestaDatosPrimerNivel);
-                    console.log('reccccccc     ',datosActividadEconomica);
-                //if (JSON.stringify(datosActividadEconomica.datosAE[0]) == '{}' || JSON.stringify(datosActividadEconomica.datosAE[0]) == '[{}]') {
+        if(aniotram <= $scope.anioserver){
+            //if(tramite.IdActividad){
+            $scope.idActividiadEconomicaActual  =   tramite.idactividad;
+            $scope.datos.f01_id_actividad_economica = tramite.idactividad;
+            //}
+            $scope.sIdAeGrilla  =   tramite.idactividad;
+            var tipoPersona     =   sessionService.get('TIPO_PERSONA');
+            if(tipoPersona == "JURIDICO"){
+                tipoPersona = "J";
+            }
+            var paramidAE = '{"id_actividad_economica":'+tramite.idactividad+'}';
+            var envioIdAe = new reglasnegocioSierra();
+            envioIdAe.identificador = 'VALLE_PRUEBA-SGEN-3145';
+            envioIdAe.parametros = paramidAE;
+            envioIdAe.llamarregla_sierra(function(responsedatosAE){
+                var respuestaDatos = JSON.parse(responsedatosAE);
+                var respuestaDatosPrimerNivel = respuestaDatos[0].sp_obtener_actividad_economica;
+                var datosActividadEconomica = JSON.parse(respuestaDatosPrimerNivel);
+                console.log('reccccccc     ',datosActividadEconomica);
+            //if (JSON.stringify(datosActividadEconomica.datosAE[0]) == '{}' || JSON.stringify(datosActividadEconomica.datosAE[0]) == '[{}]') {
                 if (datosActividadEconomica.datosAE == null) {
                     swal('', "Datos no Encontrados !!!", 'warning');
                 } else {
@@ -598,13 +601,57 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                         $scope.Plubli_Grilla($scope.datos.publicidad);
                         $scope.publicid = $scope.listpub;
                     };
-                    $scope.generarDeudasPendientes();
+                    //$scope.generarDeudasPendientes();
+                    var verificarDuodecima = [$scope.verificarDeudaDuodecima(tramite.idactividad)];
+                    $q.all(verificarDuodecima).then(function (respDou) {
+                        if (respDou[0] == '[{}]' || respDou[0] == '"[{}]"') {
+                            $scope.generarDeudasPendientes();
+                        } else{
+                            var lstDeudas = JSON.parse(respDou);
+                            datoObjectDeudasPen = [];
+                            var lstDeudasP = JSON.parse(lstDeudas[0].resultado);
+                            if (lstDeudasP.deuda_estado == 'pagado' && lstDeudasP.deuda_tipo_inspag == 'DUODECIMA') {
+                                $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO, UD. NO CUENTA CON DEUDAS. PUEDE SOLICITAR LA OPCIÓN DE PAGO ADELANTADO.';
+                                $scope.mostrarMsgPagoTrue  = false;
+                                $scope.mostrarMsgPagoFalse = true;
+                                $scope.divDeudasPendientes = false;
+                                $scope.datos.pago_duodecimas = 'SI';
+                                if(!$scope.$$phase) {
+                                    $scope.$apply();
+                                }
+                            } else{
+                                $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO SU(S) DEUDA(S) AÚN NO FUERON PAGADAS.';
+                                $scope.datos.deudasPendiente = lstDeudas;
+                                $scope.mostrarMsgPagoTrue = true;
+                                $scope.mostrarMsgPagoFalse = false;
+                                $scope.divDeudasPendientes = true;
+                                $scope.datos.pago_duodecimas = 'NO';
+                                for (var i = 0; i < lstDeudas.length; i++) {
+                                    var dataDeudas = JSON.parse(lstDeudas[i].resultado);
+                                    datoObjectDP = new Object();
+                                    datoObjectDP.nro = (i+1);
+                                    datoObjectDP.deuda_id = dataDeudas.deuda_actividad_id;
+                                    datoObjectDP.gestion = dataDeudas.deuda_data.gestion;
+                                    datoObjectDP.monto_ae = dataDeudas.deuda_data.montoDeterminado_ae_bs;
+                                    datoObjectDP.monto_viae = dataDeudas.deuda_data.viaeBs;
+                                    datoObjectDP.descuento = dataDeudas.deuda_data.porcentaje_desc_pago_adelantado;
+                                    datoObjectDP.monto_total = dataDeudas.deuda_data.deuda_tributaria_bs;
+                                    datoObjectDP.monto_descuento_bs_padelantado = dataDeudas.deuda_data.monto_descuento_bs_padelantado;
+                                    datoObjectDP.monto_total_bs_padelantado = dataDeudas.deuda_data.monto_total_bs_padelantado; 
+                                    datoObjectDeudasPen[i] = datoObjectDP;
+                                    $scope.datos.fecha_duodecima = dataDeudas.deuda_data.fecha_calculo_deuda;
+                                };
+                                $scope.divDeudasPendientes = true;
+                                $scope.datos.listDeudasPendientes = datoObjectDeudasPen;
+                            };
+                        };
+                    });
                     $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
                 }
             });
-        /*}else{
+        }else{
             swal('', "Actividad Economica Vigente!!!", 'warning');
-        }*/
+        }
     };
 
     $scope.getEstablecimiento = function(datoEstab){
@@ -4368,43 +4415,37 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                         var generarITEM2 = JSON.parse(generarITEM[19].xtodo);
                         $scope.FUM = generarITEM2.ir_codigo;
                         $scope.descripFUM = generarITEM2.ir_descripcion;
-                        datoObject_fum = [];
-                        datoObject_odm = [];
                         $scope.iddeudas = '';
                         $scope.montos = '';
                         $scope.odms = '';
                         $scope.myJSONFUM = '';
                         $scope.myJSONtrans = '';
-                        $scope.datos.idDeudasAE = [];
-                        angular.forEach($scope.datos.deudasPendiente, function(doc, pos) {
-                            var dataDeudas = JSON.parse(doc.data);
-                            //var montoufv = parseFloat(dataDeudas.deuda_data.monto_total_bs_padelantado/dataDeudas.deuda_data.ufv_actual).toFixed(5);
-                            $scope.iddeudas = $scope.iddeudas+''+dataDeudas.deuda_id+',';
-                            $scope.montos = $scope.montos+''+parseFloat(dataDeudas.deuda_data.monto_total_bs_padelantado/dataDeudas.deuda_data.ufv_actual).toFixed(5)+',';
-                            var dataFum = '';
-                            var dataF = '{"gestion_pago":'+dataDeudas.deuda_data.gestion+',"id_actividad":'+dataDeudas.deuda_actividad_id+',"tipo_actividad":"actividadEconomica"}';
-                            var detalle = '[{"odm_item_recaudador":"'+generarITEM2.ir_codigo+'","odm_pre_unitario":"'+parseFloat(dataDeudas.deuda_data.monto_total_bs_padelantado)+'","odm_cantidad":"1","odm_sub_total":"'+parseFloat(dataDeudas.deuda_data.monto_total_bs_padelantado)+'"}]';
-                            dataFum = '{"Tipo":"generarOdm","razon_social":"'+nombreCompleto+'","ci_nit":"'+$scope.datos.f01_num_dos_prop+'","unidad_recaudadora":"139","sucursal":"0","monto_total":"'+parseFloat(dataDeudas.deuda_data.monto_total_bs_padelantado)+'","detalles":'+detalle+',"data":'+dataF+'}';
-                            console.log('dataFum    ',dataFum);
-                            $.ajax({
-                                url: 'http://172.19.160.38:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php',
-                                data: dataFum,
-                                type: "POST",
-                                dataType: "json",
-                                async: false,
-                                success: function (responseODM) {
-                                    console.log('odmm   ',responseODM);
-                                    $scope.codigoODM = responseODM.data[0].nroodm;
-                                    $scope.odms = $scope.odms+''+$scope.codigoODM+',';
-                                    $scope.myJSONFUM = $scope.myJSONFUM +'{"observaciones":"","gestion":"'+dataDeudas.deuda_data.gestion+'","urlfum":"","fum_tipo":"duodecima","usuario":"'+sessionService.get('USUARIO')+'"}-';
-                                    $scope.myJSONtrans = $scope.myJSONtrans+'[{"idItemR":"'+$scope.FUM+'","descripcionItem":"'+$scope.descripFUM+'","Monto":"'+dataDeudas.deuda_data.monto_total_bs_padelantado+'","patente_act_bs":"","viae_bs":"","descuento_bs":"","patente_con_descuento_bs":"","ufv":"'+dataDeudas.deuda_data.ufv_actual+'"}]-';
-                                },
-                                error: function (responseODM, status, error) {
-                                    dataResp = "{\"errorParametros\":{\"message\":\"" + responseODM + "\",\"code\":700}}";
-                                    console.log("error", dataResp);
-                                }
-                            });
-                        })
+                        var deudasDuodecimas = JSON.parse($scope.datos.deudasPendiente[0].resultado);
+                        $scope.iddeudas = $scope.iddeudas+''+deudasDuodecimas.deuda_id+',';
+                        $scope.montos = $scope.montos+''+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado/deudasDuodecimas.deuda_data.ufv_actual).toFixed(5)+',';
+                        var dataFum = '';
+                        var dataF = '{"gestion_pago":'+deudasDuodecimas.deuda_data.gestion+',"id_actividad":'+deudasDuodecimas.deuda_actividad_id+',"tipo_actividad":"actividadEconomica"}';
+                        var detalle = '[{"odm_item_recaudador":"'+generarITEM2.ir_codigo+'","odm_pre_unitario":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'","odm_cantidad":"1","odm_sub_total":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'"}]';
+                        dataFum = '{"Tipo":"generarOdm","razon_social":"'+nombreCompleto+'","ci_nit":"'+$scope.datos.f01_num_dos_prop+'","unidad_recaudadora":"139","sucursal":"0","monto_total":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'","detalles":'+detalle+',"data":'+dataF+'}';
+                        console.log('dataFum    ',dataFum);
+                        $.ajax({
+                            url: 'http://172.19.160.38:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php',
+                            data: dataFum,
+                            type: "POST",
+                            dataType: "json",
+                            async: false,
+                            success: function (responseODM) {
+                                console.log('odmm   ',responseODM);
+                                $scope.codigoODM = responseODM.data[0].nroodm;
+                                $scope.odms = $scope.odms+''+$scope.codigoODM+',';
+                                $scope.myJSONFUM = $scope.myJSONFUM +'{"observaciones":"","gestion":"'+deudasDuodecimas.deuda_data.gestion+'","urlfum":"","fum_tipo":"duodecima","usuario":"'+sessionService.get('USUARIO')+'"}-';
+                                $scope.myJSONtrans = $scope.myJSONtrans+'[{"idItemR":"'+$scope.FUM+'","descripcionItem":"'+$scope.descripFUM+'","Monto":"'+deudasDuodecimas.deuda_data.monto_total_bs_padelantado+'","patente_act_bs":"","viae_bs":"","descuento_bs":"","patente_con_descuento_bs":"","ufv":"'+deudasDuodecimas.deuda_data.ufv_actual+'"}]-';
+                            },
+                            error: function (responseODM, status, error) {
+                                dataResp = "{\"errorParametros\":{\"message\":\"" + responseODM + "\",\"code\":700}}";
+                                console.log("error", dataResp);
+                            }
+                        });
                         $scope.registrarFUM($scope.iddeudas, $scope.montos, $scope.odms, $scope.myJSONFUM, $scope.myJSONtrans);
                     })
                     if(!$scope.$$phase) {
@@ -4446,7 +4487,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             } else{
                 nomViaAct = $scope.datos.f01_num_act;
             };
-            var glosa = '{"detalleA":"'+$scope.datos.f01_raz_soc+'","nombre_zona":"'+$scope.datos.f01_zona_act_descrip+'","tipo_via":"'+$scope.datos.f01_tip_via_act+'","nombre_via":"'+nomViaAct+'","superficie":"'+$scope.datos.f01_sup+'","numero":"'+$scope.datos.f01_num_act1+'","tipo_licencia_descripcion":"'+$scope.datos.f01_tipo_lic_descrip+'","descripcion":"","fecha_inicio":"","actividad_desarrollada":"'+$scope.datos.f01_categoria_agrupada_descrip+'","nit":"'+$scope.datos.f01_nit+'","nro_sucursal":"0","actividad_economica_ant_id":"'+$scope.datos.f01_id_actividad_economica+'"}';
+            var glosa = '{"detalleA":"'+$scope.datos.f01_raz_soc+'","nombre_zona":"'+$scope.datos.f01_zona_act_descrip+'","tipo_via":"'+$scope.datos.f01_tip_via_act+'","nombre_via":"'+nomViaAct+'","superficie":"'+$scope.datos.f01_sup+'","numero":"'+$scope.datos.f01_num_act1+'","tipo_licencia_descripcion":"'+$scope.datos.f01_tipo_lic_ant+'","descripcion":"","fecha_inicio":"","actividad_desarrollada":"'+$scope.datos.f01_categoria_agrupada_ant+'","nit":"'+$scope.datos.f01_nit+'","nro_sucursal":"0","actividad_economica_ant_id":"'+$scope.datos.f01_id_actividad_economica+'"}';
             data_glosa = '{"cabecera":"ACTIVIDAD ECONÓMICA","detalles":'+glosa+',"pie":"","observaciones":""}';
             var jsonFUM = '';
             jsonFUM = '{"xfum_ur_id":"1","xfum_usr_id":"7777","xfum_grupo":'+idfum[0].sp_obtener_grupo+',"xfum_tipo_origen":"actividadEconomica","xcorrelativo_tipo":"FUM","xfum_deudas":"'+iddeudas.substring(0,iddeudas.length-1)+'","xfum_montos_pagar":"'+montos.substring(0,montos.length-1)+'","xfum_data":'+datos_FUM+',"xfum_data_contribuyente":'+JSON.stringify(data_contri)+',"xfum_data_transaccion":'+datos_transaccion+',"xfum_data_glosa":'+JSON.stringify(data_glosa) +',"xfum_num_odm":"'+odms.substring(0,odms.length-1)+'","xtipo_proforma":"detallada","xtipo_fum":"duodecima"}';
@@ -4464,7 +4505,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                     generarProforma.llamarregla_sierra(function(respuestaProforma){
                         var dataProforma = JSON.parse(respuestaProforma);
                         console.log('dappppp     ',dataProforma);
-                        //var dataProforma2 = JSON.parse(dataProforma[0]);
                         if(dataProforma[0].sp_obtener_url_proforma == 'undefined' || dataProforma[0].sp_obtener_url_proforma == undefined){
                             $.unblockUI();
                             swal('', response.descripcion, 'warning');
@@ -4554,13 +4594,9 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
 
     $scope.getlstDeudas = function(){
         if ($scope.datos.f01_id_actividad_economica) {
-            getDeudas = new reglasnegocioSierra();
-            getDeudas.identificador = 'VALLE_PRUEBA-SGEN-3335';
-            getDeudas.parametros = '{"aeconomica_id":"'+$scope.datos.f01_id_actividad_economica+'","tipo_deuda":"actividadEconomica"}';
-            getDeudas.llamarregla_sierra(function(reslstDeudas){
-                var lstDeudas = JSON.parse(reslstDeudas);
-                datoObjectDeudasPen = [];
-                if (lstDeudas == '[{}]' || lstDeudas == '[{ }]' || lstDeudas == '{}') {
+            var verificarDuodecima = [$scope.verificarDeudaDuodecima($scope.datos.f01_id_actividad_economica)];
+            $q.all(verificarDuodecima).then(function (respDou) {
+                if (respDou[0] == '[{}]') {
                     $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO, UD. NO CUENTA CON DEUDAS. PUEDE SOLICITAR LA OPCIÓN DE PAGO ADELANTADO.';
                     $scope.mostrarMsgPagoTrue  = false;
                     $scope.mostrarMsgPagoFalse = true;
@@ -4570,40 +4606,71 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                         $scope.$apply();
                     }
                 } else{
-                    $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO SU(S) DEUDA(S) AÚN NO FUERON PAGADAS.';
-                    $scope.datos.deudasPendiente = lstDeudas;
-                    $scope.mostrarMsgPagoTrue  = true;
-                    $scope.mostrarMsgPagoFalse = false;
-                    $scope.datos.pago_duodecimas = 'NO';
-                    for (var i = 0; i < lstDeudas.length; i++) {
-                        var dataDeudas = JSON.parse(lstDeudas[i].data);
-                        datoObjectDP = new Object();
-                        datoObjectDP.nro = (i+1);
-                        datoObjectDP.deuda_id = dataDeudas.deuda_id;
-                        datoObjectDP.gestion = dataDeudas.deuda_data.gestion;
-                        datoObjectDP.monto_ae = dataDeudas.deuda_data.montoDeterminado_ae_bs;
-                        datoObjectDP.monto_viae = dataDeudas.deuda_data.viaeBs;
-                        datoObjectDP.descuento = dataDeudas.deuda_data.porcentaje_desc_pago_adelantado;
-                        datoObjectDP.monto_total = dataDeudas.deuda_data.deuda_tributaria_bs;
-                        datoObjectDP.monto_descuento_bs_padelantado = dataDeudas.deuda_data.monto_descuento_bs_padelantado;
-                        datoObjectDP.monto_total_bs_padelantado = dataDeudas.deuda_data.monto_total_bs_padelantado;//parseFloat(dataDeudas.deuda_data.deuda_tributaria_bs - dataDeudas.deuda_data.monto_descuento_bs_padelantado);
-                        datoObjectDeudasPen[i] = datoObjectDP;
-                    };
-                    $scope.datos.listDeudasPendientes = datoObjectDeudasPen;
-                    var data = $scope.listDeudasPendientes;
-                    console.log('deeuuuuuuuuuuu     ',$scope.datos.listDeudasPendientes);
+                    var lstDeudas = JSON.parse(respDou);
+                    datoObjectDeudasPen = [];
+                    var lstDeudasP = JSON.parse(lstDeudas[0].resultado);
+                    if (lstDeudasP.deuda_estado == 'pagado' && lstDeudasP.deuda_tipo_inspag == 'DUODECIMA') {
+                        $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO, UD. NO CUENTA CON DEUDAS. PUEDE SOLICITAR LA OPCIÓN DE PAGO ADELANTADO.';
+                        $scope.mostrarMsgPagoTrue  = false;
+                        $scope.mostrarMsgPagoFalse = true;
+                        $scope.divDeudasPendientes = false;
+                        $scope.datos.pago_duodecimas = 'SI';
+                        if(!$scope.$$phase) {
+                            $scope.$apply();
+                        }
+                    }
+                    else{
+                        $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO SU(S) DEUDA(S) AÚN NO FUERON PAGADAS.';
+                        $scope.datos.deudasPendiente = lstDeudas;
+                        $scope.mostrarMsgPagoTrue = true;
+                        $scope.mostrarMsgPagoFalse = false;
+                        $scope.divDeudasPendientes = true;
+                        $scope.datos.pago_duodecimas = 'NO';
+                        var lstDeudas = JSON.parse(respDou);
+                        datoObjectDeudasPen = [];
+                        var lstDeudasP = JSON.parse(lstDeudas[0].resultado);
+                        for (var i = 0; i < lstDeudas.length; i++) {
+                            var dataDeudas = JSON.parse(lstDeudas[i].resultado);
+                            datoObjectDP = new Object();
+                            datoObjectDP.nro = (i+1);
+                            datoObjectDP.deuda_id = dataDeudas.deuda_actividad_id;
+                            datoObjectDP.gestion = dataDeudas.deuda_data.gestion;
+                            datoObjectDP.monto_ae = dataDeudas.deuda_data.montoDeterminado_ae_bs;
+                            datoObjectDP.monto_viae = dataDeudas.deuda_data.viaeBs;
+                            datoObjectDP.descuento = dataDeudas.deuda_data.porcentaje_desc_pago_adelantado;
+                            datoObjectDP.monto_total = dataDeudas.deuda_data.deuda_tributaria_bs;
+                            datoObjectDP.monto_descuento_bs_padelantado = dataDeudas.deuda_data.monto_descuento_bs_padelantado;
+                            datoObjectDP.monto_total_bs_padelantado = dataDeudas.deuda_data.monto_total_bs_padelantado; 
+                            datoObjectDeudasPen[i] = datoObjectDP;
+                        };
+                        $scope.divDeudasPendientes = true;
+                        $scope.datos.listDeudasPendientes = datoObjectDeudasPen;
+                    }
                     if(!$scope.$$phase) {
                         $scope.$apply();
                     }
                 };
                 $timeout.cancel($scope.recargarDeudas);
                 $scope.callAtTimeout();
-                //$.unblockUI();
-            })
+            });
         } else{
             $timeout.cancel($scope.recargarDeudas);
             $scope.callAtTimeout();
         };
+    }
+
+    $scope.verificarDeudaDuodecima = function(idActEco){
+        $scope[name] = 'Running';
+        var deferred = $q.defer();
+        if (idActEco){
+            getDeudasDou = new reglasnegocioSierra();
+            getDeudasDou.identificador = 'SERVICIO_SIERRA-PROC-3398';
+            getDeudasDou.parametros = '{"xid_ae":"'+idActEco+'"}';
+            getDeudasDou.llamarregla_sierra(function(reslstDeudasDou){
+                deferred.resolve(reslstDeudasDou);
+            })
+        }
+        return deferred.promise;
     }
 
     $scope.callAtTimeout = function() {

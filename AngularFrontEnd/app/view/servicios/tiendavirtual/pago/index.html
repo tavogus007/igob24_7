@@ -161,9 +161,21 @@
                 <div ng-show = "tipo=='QR'">
                   <div class="col-md-6">
                     <div class="form-group" >
-                        <label for="url" >Número de Cuenta:</label>
+                        <label for="url" >Código de Servicio:</label>
                         <div class="controls">
-                            <input type="text" ng-model="datos.service_code" id="service_code" name="service_code" class="form-control" ng-disabled="desabilitado"/>
+                          <input type="text" ng-keyup="validaCampo('service_code' ,datos.service_code)" ng-model="datos.service_code" id="service_code" name="service_code" class="form-control" ng-disabled="desabilitado"/>
+                          <br><span ng-if ="smal_cod_serv"
+                            style="color:red;font-weight:bold; font-size:14px">El Campo Código de Servicio debe ser Llenado</span>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="url" >Número de Cuenta Bancaria:</label>
+                        <div class="controls">
+                          <input type="text" ng-keyup="validaCampo('cuenta_bancaria_qr' ,datos.cuenta_bancaria_qr)" ng-model="datos.cuenta_bancaria_qr" id="cuenta_bancaria_qr" name="nro_cuenta" class="form-control" ng-disabled="desabilitado"/>
+                          <br><span ng-if ="smal_cuenta_bancaria_qr"
+                            style="color:red;font-weight:bold; font-size:14px">El Campo Número de Cuenta debe ser Llenado</span>
                         </div>
                     </div>
                   </div>

@@ -33,6 +33,7 @@ function atc() {
     this.access_key;
     this.profile_id;
     this.secret_key;
+    this.cod_agregador;
 };
 
 atc.prototype.registroAtc = function (functionResp) {
@@ -62,6 +63,7 @@ atc.prototype.getRegistroAtc = function (functionResp) {
 function qr() {
     this.id_actividadeconomica;
     this.service_code;
+    this.cuenta_bancaria;
 };
 
 qr.prototype.registroQr = function (functionResp) {
@@ -69,7 +71,8 @@ qr.prototype.registroQr = function (functionResp) {
     typeCallPago = "post";
     dataParamsPago = {
         "id_actividadeconomica" : this.id_actividadeconomica,
-        "service_code" : this.service_code
+        "service_code" : this.service_code,
+        "cuenta_bancaria" : this.cuenta_bancaria
     };
     ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
 };

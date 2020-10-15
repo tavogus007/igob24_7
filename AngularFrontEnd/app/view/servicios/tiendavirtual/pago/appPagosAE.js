@@ -38,12 +38,14 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
       pagoQr.getCredencialQr(function (resp) {
         var respuesta = JSON.parse(resp);
         respuesta = JSON.parse(respuesta);
-        if (respuesta.sp_get_credenciales_bcp == "00") {
+        if (respuesta.service_code == "00") {
           $scope.textbtnguardar = 'Registrar';
           $scope.datos.service_code = "";
+          $scope.datos.cuenta_bancaria_qr = "";
           $scope.btndelete = false;
         } else {
-          $scope.datos.service_code = respuesta.sp_get_credenciales_bcp;
+          $scope.datos.service_code = respuesta.service_code;
+          $scope.datos.cuenta_bancaria_qr = respuesta.cuenta_bancaria;
           $scope.textbtnguardar = 'Modificar';
           $scope.btndelete = true;
         }
@@ -139,6 +141,20 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
             $scope.smal_cod_agreg = false;
           } else {
             $scope.smal_cod_agreg = true;
+          }
+        break;
+      case 'service_code':
+          if (valor.length > 0) {
+            $scope.smal_cod_serv = false;
+          } else {
+            $scope.smal_cod_serv = true;
+          }
+        break;
+        case 'cuenta_bancaria_qr':
+          if (valor.length > 0) {
+            $scope.smal_cuenta_bancaria_qr = false;
+          } else {
+            $scope.smal_cuenta_bancaria_qr = true;
           }
         break;
       default:
@@ -244,7 +260,8 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
             $.unblockUI();
             var pagoQr = new qr();
             pagoQr.id_actividadeconomica = idAE;
-            pagoQr.service_code = datos.service_code;
+            pagoQr.service_code    = datos.service_code;
+            pagoQr.cuenta_bancaria = datos.cuenta_bancaria_qr;
             pagoQr.registroQr(function (resp) {
               var respuesta = JSON.parse(resp);
               respuesta = JSON.parse(respuesta);

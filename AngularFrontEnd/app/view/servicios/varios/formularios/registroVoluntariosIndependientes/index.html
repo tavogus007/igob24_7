@@ -103,7 +103,6 @@ function bloquear_modal(){
     expedido.disabled = false;
     expedido.disabled = false;
   }
-  console.log("putos22",valor);  
 };
 function soloNumericoCelular(sValor){
       Numer=parseInt(sValor);
@@ -342,7 +341,7 @@ function validateDecimal(valor) {
                     <form class="form-horizontal ng-pristine ng-valid" action="index.html" method="post">
                       <table  ng-table="tblTramites"  class="table table-striped table-hover">
                         <tr style="cursor: pointer;text-align: center;" ng-repeat="tramite in $data  | filter:query ">
-                          <td data-title="'Código'" ng-click="recuperarInformacion(tramite)">{{tramite.xdato_tramiteigob}}</td>
+                          <td data-title="'Código'" ng-click="recuperarInformacion(tramite)">{{tramite.xvoluntario_idm}}</td>
                           <td data-title="'Tipo de Trámite'" ng-click="recuperarInformacion(tramite)">{{tramite.xdato_registro}}</td>
                           <td data-title="'Fecha'" ng-click="recuperarInformacion(tramite)">{{tramite.xvoluntario_modificado}} </td>
                           <td data-title="'Estado'" ng-click="recuperarInformacion(tramite)">{{tramite.yestado}}</td>

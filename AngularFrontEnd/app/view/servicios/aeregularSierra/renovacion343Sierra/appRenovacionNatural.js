@@ -2971,10 +2971,9 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         data.docAdPublicidad = $scope.docPubNuevo;
         data.sArrayFileArPublicidad = $scope.fileAdjuntosPublicidad;
-        var taemayor = 0;
         if(data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26'){
             sarrayobligatorio   =   true;
-            if(data && data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
+            if(data && (JSON.stringify(data.sArrayFileArRequisitos) != '{}') && data.rdTipoTramite1 != null &&
                 data.FILE_CI != ""  && data.FILE_CI != null &&
                 data.rdTipoTramite != "" && data.rdTipoTramite != null &&
                 data.fileArchivosAd != ""  && data.fileArchivosAd != null &&
@@ -2995,29 +2994,57 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 data.f01_num_act != "" && data.f01_num_act != null &&
                 data.f01_num_act1 != "" && data.f01_num_act1 != null &&
                 data.f01_casilla != "" && data.f01_casilla != null){
-                /*if (data.rdTipoTramite1 == 'NUEVO') {
-                    if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                if (data.rdTipoTramite1 == 'NUEVO' && data.publicidad != "") {
+                    if (JSON.stringify(data.docAdPublicidad) != '[]') {
+                        if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                            if (data.pago_adelantado == true && data.nro_ges != "") {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionN").modal("show");
+                            } else{
+                                if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                    $scope.serializarInformacion(data);
+                                    $scope.formulario401(data);
+                                    $("#declaracionN").modal("show");
+                                }
+                                else{
+                                    swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                                }
+                            };
+                        } else{
+                            swal('', "Datos obligatorios, Por favor adjuntar requisitos documentales de la publicidad", 'warning');
+                        };
+                    } else{
                         $scope.serializarInformacion(data);
                         $scope.formulario401(data);
                         $("#declaracionN").modal("show");
-                    } else{
-                        swal('', "Datos obligatorios, Adjuntar publicidad y sus documentos", 'warning');
                     };
                 } else{
-                    $scope.serializarInformacion(data);
-                    $scope.formulario401(data);
-                    $("#declaracionN").modal("show");
-                };*/
-                $scope.serializarInformacion(data);
-                $scope.formulario401(data);
-                $("#declaracionN").modal("show");
+                    if (data.rdTipoTramite1 == 'RENOVACION') {
+                        if (data.pago_adelantado == true && data.nro_ges != "") {
+                            $scope.formulario401(data);
+                            $("#declaracionJ").modal("show");
+                        } else{
+                            if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionN").modal("show");
+                            }
+                            else{
+                                swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                            }
+                        };
+                    } else{
+                        swal('', "Datos obligatorios, Por favor verificar los datos del elemento publicitario y/o adjuntar las fotografías", 'warning');
+                    };
+                };
             }
             else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
         }
         if (data.f01_tipo_lic_sierra != 26 || data.f01_tipo_lic_sierra != '26'){
-            if(data &&  data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
+            if(data && (JSON.stringify(data.sArrayFileArRequisitos) != '{}') && data.rdTipoTramite1 != null &&
                 data.FILE_CI != ""  && data.FILE_CI != null &&
                 data.rdTipoTramite != "" && data.rdTipoTramite != null &&
                 data.rdTipoTramite1 != "" && data.rdTipoTramite1 != null &&
@@ -3038,21 +3065,50 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 data.f01_num_act != "" && data.f01_num_act != null &&
                 data.f01_num_act1 != "" && data.f01_num_act1 != null &&
                 data.f01_casilla != "" && data.f01_casilla != null){
-                //$rootScope.validacionRequisitosTec();
-                /*if (data.rdTipoTramite1 == 'NUEVO') {
-                    if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {*/
+                if (data.rdTipoTramite1 == 'NUEVO' && data.publicidad != "") {
+                    if (JSON.stringify(data.docAdPublicidad) != '[]') {
+                        if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                            if (data.pago_adelantado == true && data.nro_ges != "") {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionN").modal("show");
+                            } else{
+                                if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                    $scope.serializarInformacion(data);
+                                    $scope.formulario401(data);
+                                    $("#declaracionN").modal("show");
+                                }
+                                else{
+                                    swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                                }
+                            };
+                        } else{
+                            swal('', "Datos obligatorios, Por favor adjuntar requisitos documentales de la publicidad", 'warning');
+                        };
+                    } else{
                         $scope.serializarInformacion(data);
                         $scope.formulario401(data);
                         $("#declaracionN").modal("show");
-                    /*} else{
-                        swal('', "Datos obligatorios, Adjuntar publicidad y sus documentos", 'warning');
-                    }; */
-            //$rootScope.validacionRequisitosTec();
-                /*}else{
-                    $scope.serializarInformacion(data);
-                    $scope.formulario401(data);
-                    $("#declaracionN").modal("show");
-                }*/
+                    };
+                } else{
+                    if (data.rdTipoTramite1 == 'RENOVACION') {
+                        if (data.pago_adelantado == true && data.nro_ges != "") {
+                            $scope.formulario401(data);
+                            $("#declaracionJ").modal("show");
+                        } else{
+                            if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionN").modal("show");
+                            }
+                            else{
+                                swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                            }
+                        };
+                    } else{
+                        swal('', "Datos obligatorios, Por favor verificar los datos del elemento publicitario y/o adjuntar las fotografías", 'warning');
+                    };
+                };
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
@@ -4418,15 +4474,12 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         $scope.myJSONFUM = '';
                         $scope.myJSONtrans = '';
                         var deudasDuodecimas = JSON.parse($scope.datos.deudasPendiente[0].resultado);
-                        console.log('deudasDuodecimas    ',deudasDuodecimas);
-                        console.log('doc.deuda_data   ',deudasDuodecimas.deuda_data);
                         $scope.iddeudas = $scope.iddeudas+''+deudasDuodecimas.deuda_id+',';
                         $scope.montos = $scope.montos+''+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado/deudasDuodecimas.deuda_data.ufv_actual).toFixed(5)+',';
                         var dataFum = '';
                         var dataF = '{"gestion_pago":'+deudasDuodecimas.deuda_data.gestion+',"id_actividad":'+deudasDuodecimas.deuda_actividad_id+',"tipo_actividad":"actividadEconomica"}';
                         var detalle = '[{"odm_item_recaudador":"'+generarITEM2.ir_codigo+'","odm_pre_unitario":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'","odm_cantidad":"1","odm_sub_total":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'"}]';
                         dataFum = '{"Tipo":"generarOdm","razon_social":"'+nombreCompleto+'","ci_nit":"'+$scope.datos.f01_num_dos_prop+'","unidad_recaudadora":"139","sucursal":"0","monto_total":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'","detalles":'+detalle+',"data":'+dataF+'}';
-                        console.log('dataFum    ',dataFum);
                         $.ajax({
                             url: 'http://172.19.160.38:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php',
                             data: dataFum,
@@ -4506,7 +4559,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     generarProforma.parametros = '{"xfum_grupo":'+idfum[0].sp_obtener_grupo+'}';
                     generarProforma.llamarregla_sierra(function(respuestaProforma){
                         var dataProforma = JSON.parse(respuestaProforma);
-                        console.log('dappppp     ',dataProforma);
                         if(dataProforma[0].sp_obtener_url_proforma == 'undefined' || dataProforma[0].sp_obtener_url_proforma == undefined){
                             $.unblockUI();
                             swal('', response.descripcion, 'warning');
@@ -4594,56 +4646,8 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
 
     $scope.getlstDeudas = function(){
         if ($scope.datos.f01_id_actividad_economica) {
-            /*getDeudas = new reglasnegocioSierra();
-            getDeudas.identificador = 'VALLE_PRUEBA-SGEN-3335';
-            getDeudas.parametros = '{"aeconomica_id":"'+$scope.datos.f01_id_actividad_economica+'","tipo_deuda":"actividadEconomica"}';
-            getDeudas.llamarregla_sierra(function(reslstDeudas){
-                var lstDeudas = JSON.parse(reslstDeudas);
-                datoObjectDeudasPen = [];
-                if (lstDeudas == '[{}]' || lstDeudas == '[{ }]' || lstDeudas == '{}') {
-                    $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO, UD. NO CUENTA CON DEUDAS. PUEDE SOLICITAR LA OPCIÓN DE PAGO ADELANTADO.';
-                    $scope.mostrarMsgPagoTrue  = false;
-                    $scope.mostrarMsgPagoFalse = true;
-                    $scope.divDeudasPendientes = false;
-                    $scope.datos.pago_duodecimas = 'SI';
-                    if(!$scope.$$phase) {
-                        $scope.$apply();
-                    }
-                } else{
-                    $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO SU(S) DEUDA(S) AÚN NO FUERON PAGADAS.';
-                    $scope.datos.deudasPendiente = lstDeudas;
-                    $scope.mostrarMsgPagoTrue = true;
-                    $scope.mostrarMsgPagoFalse = false;
-                    $scope.divDeudasPendientes = true;
-                    $scope.datos.pago_duodecimas = 'NO';
-                    for (var i = 0; i < lstDeudas.length; i++) {
-                        var dataDeudas = JSON.parse(lstDeudas[i].data);
-                        datoObjectDP = new Object();
-                        datoObjectDP.nro = (i+1);
-                        datoObjectDP.deuda_id = dataDeudas.deuda_id;
-                        datoObjectDP.gestion = dataDeudas.deuda_data.gestion;
-                        datoObjectDP.monto_ae = dataDeudas.deuda_data.montoDeterminado_ae_bs;
-                        datoObjectDP.monto_viae = dataDeudas.deuda_data.viaeBs;
-                        datoObjectDP.descuento = dataDeudas.deuda_data.porcentaje_desc_pago_adelantado;
-                        datoObjectDP.monto_total = dataDeudas.deuda_data.deuda_tributaria_bs;
-                        datoObjectDP.monto_descuento_bs_padelantado = dataDeudas.deuda_data.monto_descuento_bs_padelantado;
-                        datoObjectDP.monto_total_bs_padelantado = dataDeudas.deuda_data.monto_total_bs_padelantado;//parseFloat(dataDeudas.deuda_data.deuda_tributaria_bs - dataDeudas.deuda_data.monto_descuento_bs_padelantado);
-                        datoObjectDeudasPen[i] = datoObjectDP;
-                    };
-                    $scope.datos.listDeudasPendientes = datoObjectDeudasPen;
-                    var data = $scope.listDeudasPendientes;
-                    console.log('deeuuuuuuuuuuu     ',$scope.datos.listDeudasPendientes);
-                    if(!$scope.$$phase) {
-                        $scope.$apply();
-                    }
-                };
-                $timeout.cancel($scope.recargarDeudas);
-                $scope.callAtTimeout();
-                //$.unblockUI();
-            })*/
                 var verificarDuodecima = [$scope.verificarDeudaDuodecima($scope.datos.f01_id_actividad_economica)];
                 $q.all(verificarDuodecima).then(function (respDou) {
-                    console.log('respDou    ',respDou);
                     if (respDou[0] == '[{}]') {
                         //$scope.generarDeudasPendientes();
                         console.log('genera duodecimas ');
@@ -4657,7 +4661,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         }
                     } else{
                         var lstDeudas = JSON.parse(respDou);
-                        console.log('deudas duodecima      ',lstDeudas);
                         datoObjectDeudasPen = [];
                         var lstDeudasP = JSON.parse(lstDeudas[0].resultado);
                         if (lstDeudasP.deuda_estado == 'pagado' && lstDeudasP.deuda_tipo_inspag == 'DUODECIMA') {
@@ -4680,7 +4683,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                             var lstDeudas = JSON.parse(respDou);
                             datoObjectDeudasPen = [];
                             var lstDeudasP = JSON.parse(lstDeudas[0].resultado);
-                            console.log('lstDeudasP    ',lstDeudasP);
                             for (var i = 0; i < lstDeudas.length; i++) {
                                 var dataDeudas = JSON.parse(lstDeudas[i].resultado);
                                 datoObjectDP = new Object();
@@ -4697,7 +4699,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                             };
                             $scope.divDeudasPendientes = true;
                             $scope.datos.listDeudasPendientes = datoObjectDeudasPen;
-                            console.log('no genera duodecima');
                         }
                         if(!$scope.$$phase) {
                             $scope.$apply();

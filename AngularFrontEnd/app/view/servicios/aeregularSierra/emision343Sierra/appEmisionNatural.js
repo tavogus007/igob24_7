@@ -791,6 +791,7 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
     });
     //INICIAR VARIABLES EN EL FORMULARIO
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
+        console.log('ssssss     ',data);
         $scope.catactividadDesarrollada();
         $scope.multiple = [];
         if (data.f01_zona_act == undefined || data.f01_zona_act == 'undefined' || data.f01_zona_act == null || data.f01_zona_act == '') {
@@ -2751,7 +2752,8 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
         data.sArrayFileArPublicidad = $scope.fileAdjuntosPublicidad;
         if(data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26'){
             sarrayobligatorio   =   true;
-            if(data && data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
+            if(data && (JSON.stringify(data.sArrayFileArRequisitos) != '{}') && 
+                data.rdTipoTramite1 != null &&
                 data.FILE_CI != ""  && data.FILE_CI != null &&
                 data.rdTipoTramite != "" && data.rdTipoTramite != null &&
                 data.fileArchivosAd != ""  && data.fileArchivosAd != null &&
@@ -2773,26 +2775,48 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
                 data.f01_num_act1 != "" && data.f01_num_act1 != null &&
                 data.f01_casilla != "" && data.f01_casilla != null &&
                 data.pago_adelantado != "" && data.pago_adelantado != null){
-                if (data.rdTipoTramite1 == 'NUEVO') {
-                    if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                if (data.rdTipoTramite1 == 'NUEVO' && data.publicidad != "" && JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                    if (data.pago_adelantado == true && data.nro_ges != "") {
                         $scope.serializarInformacion(data);
                         $scope.formulario401(data);
                         $("#declaracionN").modal("show");
                     } else{
-                        swal('', "Datos obligatorios, Adjuntar publicidad y sus documentos", 'warning');
+                        if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                            $scope.serializarInformacion(data);
+                            $scope.formulario401(data);
+                            $("#declaracionN").modal("show");
+                        }
+                        else{
+                            swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                        }
                     };
                 } else{
-                    $scope.serializarInformacion(data);
-                    $scope.formulario401(data);
-                    $("#declaracionN").modal("show");
+                    if (data.rdTipoTramite1 == 'RENOVACION') {
+                        if (data.pago_adelantado == true && data.nro_ges != "") {
+                            $scope.serializarInformacion(data);
+                            $scope.formulario401(data);
+                            $("#declaracionN").modal("show");
+                        } else{
+                            if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionN").modal("show");
+                            }
+                            else{
+                                swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                            }
+                        };
+                    } else{
+                        swal('', "Datos obligatorios, Por favor verificar los datos del elemento publicitario y/o adjuntar las fotografías", 'warning');
+                    };
                 };
-            }
-            else{
+            } else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
         }
         if (data.f01_tipo_lic_sierra != 26 || data.f01_tipo_lic_sierra != '26'){
-            if(data &&  data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
+            if(data &&  (JSON.stringify(data.sArrayFileArRequisitos) != '{}') && 
+                data.rdTipoTramite1 != null &&
                 data.FILE_CI != ""  && data.FILE_CI != null &&
                 data.rdTipoTramite != "" && data.rdTipoTramite != null &&
                 data.rdTipoTramite1 != "" && data.rdTipoTramite1 != null &&
@@ -2813,20 +2837,41 @@ function regularSierraController($scope,$timeout, $q, $rootScope, $routeParams, 
                 data.f01_num_act != "" && data.f01_num_act != null &&
                 data.f01_num_act1 != "" && data.f01_num_act1 != null &&
                 data.f01_casilla != "" && data.f01_casilla != null){
-                if (data.rdTipoTramite1 == 'NUEVO') {
-                    if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                if (data.rdTipoTramite1 == 'NUEVO' && data.publicidad != "") {
+                    if (data.pago_adelantado == true && data.nro_ges != "") {
                         $scope.serializarInformacion(data);
                         $scope.formulario401(data);
                         $("#declaracionN").modal("show");
                     } else{
-                        swal('', "Datos obligatorios, Adjuntar publicidad y sus documentos", 'warning');
-                    }; 
-            //$rootScope.validacionRequisitosTec();
-                }else{
-                    $scope.serializarInformacion(data);
-                    $scope.formulario401(data);
-                    $("#declaracionN").modal("show");
-                }
+                        if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                            $scope.serializarInformacion(data);
+                            $scope.formulario401(data);
+                            $("#declaracionN").modal("show");
+                        }
+                        else{
+                            swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                        }
+                    };
+                } else{
+                    if (data.rdTipoTramite1 == 'RENOVACION') {
+                        if (data.pago_adelantado == true && data.nro_ges != "") {
+                            $scope.serializarInformacion(data);
+                            $scope.formulario401(data);
+                            $("#declaracionN").modal("show");
+                        } else{
+                            if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionN").modal("show");
+                            }
+                            else{
+                                swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                            }
+                        };
+                    } else{
+                        swal('', "Datos obligatorios, Por favor verificar los datos del elemento publicitario y/o adjuntar las fotografías", 'warning');
+                    };
+                };
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }

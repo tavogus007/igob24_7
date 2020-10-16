@@ -2305,7 +2305,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             data.f01_num_act1 != "" && data.f01_num_act1 != null &&
             data.f01_casilla != "" && data.f01_casilla != null &&
             data.pago_adelantado != "" && data.pago_adelantado != null){
-                if (data.rdTipoTramite1 == 'NUEVO') {
+                /*if (data.rdTipoTramite1 == 'NUEVO') {
                     if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
                         $scope.serializarInformacion(data);
                         $scope.formulario401(data);
@@ -2317,6 +2317,41 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
                     $scope.serializarInformacion(data);
                     $scope.formulario401(data);
                     $("#declaracionJ").modal("show");
+                };*/
+                if (data.rdTipoTramite1 == 'NUEVO' && data.publicidad != "" && JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                    if (data.pago_adelantado == true && data.nro_ges != "") {
+                        $scope.serializarInformacion(data);
+                        $scope.formulario401(data);
+                        $("#declaracionJ").modal("show");
+                    } else{
+                        if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                            $scope.serializarInformacion(data);
+                            $scope.formulario401(data);
+                            $("#declaracionJ").modal("show");
+                        }
+                        else{
+                            swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                        }
+                    };
+                } else{
+                    if (data.rdTipoTramite1 == 'RENOVACION') {
+                        if (data.pago_adelantado == true && data.nro_ges != "") {
+                            $scope.serializarInformacion(data);
+                            $scope.formulario401(data);
+                            $("#declaracionJ").modal("show");
+                        } else{
+                            if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionJ").modal("show");
+                            }
+                            else{
+                                swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                            }
+                        };
+                    } else{
+                        swal('', "Datos obligatorios, Por favor verificar los datos del elemento publicitario y/o adjuntar las fotografías", 'warning');
+                    };
                 };
             }
             else{
@@ -2327,36 +2362,58 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             if(data &&  data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
               //data.FILE_CI != ""  && data.FILE_CI != null &&
               //data.rdTipoTramite != "" && data.rdTipoTramite != null &&
-              data.rdTipoTramite1 != "" && data.rdTipoTramite1 != null &&
-              data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
-              data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
-              data.f01_raz_soc != "" && data.f01_raz_soc != null &&
-              data.f01_sup != "" && data.f01_sup != null &&
-              data.f01_de_hor != "" && data.f01_de_hor != null &&
-              data.f01_a_hor != "" && data.f01_a_hor != null &&
-              data.f01_estab_es != "" && data.f01_estab_es != null &&
-              data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
-              data.f01_categoria_agrupada != "" && data.f01_categoria_agrupada != null &&
-              data.f01_categoria_descrip != "" && data.f01_categoria_descrip != null &&
-              data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
-              data.f01_zona_act_descrip != "" && data.f01_zona_act_descrip != null &&
-              data.f01_tip_via_act != "" && data.f01_tip_via_act != null &&
-              data.f01_num_act != "" && data.f01_num_act != null &&
-              data.f01_num_act1 != "" && data.f01_num_act1 != null &&
-              data.f01_casilla != "" && data.f01_casilla != null){
+                data.rdTipoTramite1 != "" && data.rdTipoTramite1 != null &&
+                data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
+                data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
+                data.f01_raz_soc != "" && data.f01_raz_soc != null &&
+                data.f01_sup != "" && data.f01_sup != null &&
+                data.f01_de_hor != "" && data.f01_de_hor != null &&
+                data.f01_a_hor != "" && data.f01_a_hor != null &&
+                data.f01_estab_es != "" && data.f01_estab_es != null &&
+                data.f01_tipo_lic != "" && data.f01_tipo_lic != null &&
+                data.f01_categoria_agrupada != "" && data.f01_categoria_agrupada != null &&
+                data.f01_categoria_descrip != "" && data.f01_categoria_descrip != null &&
+                data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
+                data.f01_zona_act_descrip != "" && data.f01_zona_act_descrip != null &&
+                data.f01_tip_via_act != "" && data.f01_tip_via_act != null &&
+                data.f01_num_act != "" && data.f01_num_act != null &&
+                data.f01_num_act1 != "" && data.f01_num_act1 != null &&
+                data.f01_casilla != "" && data.f01_casilla != null){
               //$rootScope.validacionRequisitosTec();
-                if (data.rdTipoTramite1 == 'NUEVO') {
-                    if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                if (data.rdTipoTramite1 == 'NUEVO' && data.publicidad != "" && JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                    if (data.pago_adelantado == true && data.nro_ges != "") {
                         $scope.serializarInformacion(data);
                         $scope.formulario401(data);
                         $("#declaracionJ").modal("show");
                     } else{
-                        swal('', "Datos obligatorios, Adjuntar publicidad y sus documentos", 'warning');
+                        if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                            $scope.serializarInformacion(data);
+                            $scope.formulario401(data);
+                            $("#declaracionJ").modal("show");
+                        }
+                        else{
+                            swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                        }
                     };
                 } else{
-                    $scope.serializarInformacion(data);
-                    $scope.formulario401(data);
-                    $("#declaracionJ").modal("show");
+                    if (data.rdTipoTramite1 == 'RENOVACION') {
+                        if (data.pago_adelantado == true && data.nro_ges != "") {
+                            $scope.serializarInformacion(data);
+                            $scope.formulario401(data);
+                            $("#declaracionJ").modal("show");
+                        } else{
+                            if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionJ").modal("show");
+                            }
+                            else{
+                                swal('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                            }
+                        };
+                    } else{
+                        swal('', "Datos obligatorios, Por favor verificar los datos del elemento publicitario y/o adjuntar las fotografías", 'warning');
+                    };
                 };
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');

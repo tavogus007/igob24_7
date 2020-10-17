@@ -3012,9 +3012,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
 
     $scope.capturarImagen = function(){
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
-        //var latitud = $rootScope.laaa;
-        //var longitud = $rootScope.looo;
-
         var latitud =  $scope.datos.INT_AC_latitud;
         var longitud = $scope.datos.INT_AC_longitud;
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
@@ -3050,9 +3047,9 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         data.docAdPublicidad = $scope.docPubNuevo;
         data.sArrayFileArPublicidad = $scope.fileAdjuntosPublicidad;
-        sarrayobligatorio   =   true;
         if(data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26'){
-            if(data && data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
+            if(data && (JSON.stringify(data.sArrayFileArRequisitos) != '{}') && 
+            data.rdTipoTramite1 != null &&
             data.FILE_CI != ""  && data.FILE_CI != null &&
             data.rdTipoTramite != "" && data.rdTipoTramite != null &&
             data.fileArchivosAd != ""  && data.fileArchivosAd != null &&
@@ -3072,39 +3069,122 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             data.f01_num_act != "" && data.f01_num_act != null &&
             data.f01_num_act1 != "" && data.f01_num_act1 != null &&
             data.f01_casilla != "" && data.f01_casilla != null){
-                $scope.serializarInformacion(data);
-                $scope.formulario401(data);
-                $("#declaracionJ").modal("show");
+                if (data.rdTipoTramite1 == 'NUEVO' && data.publicidad != "") {
+                    if (JSON.stringify(data.docAdPublicidad) != '[]') {
+                        if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                            if (data.pago_adelantado == true && data.nro_ges != "") {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionJ").modal("show");
+                            } else{
+                                if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                    $scope.serializarInformacion(data);
+                                    $scope.formulario401(data);
+                                    $("#declaracionJ").modal("show");
+                                }
+                                else{
+                                    sweet.show('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                                }
+                            };
+                        } else{
+                            sweet.show('', "Datos obligatorios, Por favor adjuntar requisitos documentales de la publicidad", 'warning');
+                        };
+                    } else{
+                        $scope.serializarInformacion(data);
+                        $scope.formulario401(data);
+                        $("#declaracionJ").modal("show");
+                    };
+                } else{
+                    if (data.rdTipoTramite1 == 'RENOVACION') {
+                        if (data.pago_adelantado == true && data.nro_ges != "") {
+                            $scope.serializarInformacion(data);
+                            $scope.formulario401(data);
+                            $("#declaracionJ").modal("show");
+                        } else{
+                            if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionJ").modal("show");
+                            }
+                            else{
+                                sweet.show('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                            }
+                        };
+                    } else{
+                        sweet.show('', "Datos obligatorios, Por favor verificar los datos del elemento publicitario y/o adjuntar las fotografías", 'warning');
+                    };
+                };
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
         }
-
         if (data.f01_tipo_lic_sierra != 26 || data.f01_tipo_lic_sierra != '26'){
-            if(data &&  data.sArrayFileArRequisitos != ""  && data.rdTipoTramite1 != null &&
-              data.FILE_CI != ""  && data.FILE_CI != null &&
-              data.rdTipoTramite != "" && data.rdTipoTramite != null &&
-              data.rdTipoTramite1 != "" && data.rdTipoTramite1 != null &&
-              data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
-              data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
-              data.f01_raz_soc != "" && data.f01_raz_soc != null &&
-              data.f01_sup != "" && data.f01_sup != null &&
-              data.f01_de_hor != "" && data.f01_de_hor != null &&
-              data.f01_a_hor != "" && data.f01_a_hor != null &&
-              data.f01_estab_es != "" && data.f01_estab_es != null &&
-              data.f01_tipo_lic_sierra != "" && data.f01_tipo_lic_sierra != null &&
-              data.f01_categoria_agrupada != "" && data.f01_categoria_agrupada != null &&
-              data.f01_categoria_descrip != "" && data.f01_categoria_descrip != null &&
-              data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
-              data.f01_zona_act_descrip != "" && data.f01_zona_act_descrip != null &&
-              data.f01_tip_via_act != "" && data.f01_tip_via_act != null &&
-              data.f01_num_act != "" && data.f01_num_act != null &&
-              data.f01_num_act1 != "" && data.f01_num_act1 != null &&
-              data.f01_casilla != "" && data.f01_casilla != null){
-              //$rootScope.validacionRequisitosTec();
-                $scope.serializarInformacion(data);
-                $scope.formulario401(data);
-                $("#declaracionJ").modal("show");
+            if(data && (JSON.stringify(data.sArrayFileArRequisitos) != '{}') && 
+                data.rdTipoTramite1 != null &&
+                data.FILE_CI != ""  && data.FILE_CI != null &&
+                data.rdTipoTramite != "" && data.rdTipoTramite != null &&
+                data.rdTipoTramite1 != "" && data.rdTipoTramite1 != null &&
+                data.INT_AC_latitud != "" && data.INT_AC_latitud != null &&
+                data.INT_AC_longitud != "" && data.INT_AC_longitud != null &&
+                data.f01_raz_soc != "" && data.f01_raz_soc != null &&
+                data.f01_sup != "" && data.f01_sup != null &&
+                data.f01_de_hor != "" && data.f01_de_hor != null &&
+                data.f01_a_hor != "" && data.f01_a_hor != null &&
+                data.f01_estab_es != "" && data.f01_estab_es != null &&
+                data.f01_tipo_lic_sierra != "" && data.f01_tipo_lic_sierra != null &&
+                data.f01_categoria_agrupada != "" && data.f01_categoria_agrupada != null &&
+                data.f01_categoria_descrip != "" && data.f01_categoria_descrip != null &&
+                data.f01_macro_act_descrip != "" && data.f01_macro_act_descrip != null &&
+                data.f01_zona_act_descrip != "" && data.f01_zona_act_descrip != null &&
+                data.f01_tip_via_act != "" && data.f01_tip_via_act != null &&
+                data.f01_num_act != "" && data.f01_num_act != null &&
+                data.f01_num_act1 != "" && data.f01_num_act1 != null &&
+                data.f01_casilla != "" && data.f01_casilla != null){
+                if (data.rdTipoTramite1 == 'NUEVO' && data.publicidad != "") {
+                    if (JSON.stringify(data.docAdPublicidad) != '[]') {
+                        if (JSON.stringify(data.sArrayFileArPublicidad) != '{}') {
+                            if (data.pago_adelantado == true && data.nro_ges != "") {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionJ").modal("show");
+                            } else{
+                                if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                    $scope.serializarInformacion(data);
+                                    $scope.formulario401(data);
+                                    $("#declaracionJ").modal("show");
+                                }
+                                else{
+                                    sweet.show('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                                }
+                            };
+                        } else{
+                            sweet.show('', "Datos obligatorios, Por favor adjuntar requisitos documentales de la publicidad", 'warning');
+                        };
+                    } else{
+                        $scope.serializarInformacion(data);
+                        $scope.formulario401(data);
+                        $("#declaracionJ").modal("show");
+                    };
+                } else{
+                    if (data.rdTipoTramite1 == 'RENOVACION') {
+                        if (data.pago_adelantado == true && data.nro_ges != "") {
+                            $scope.serializarInformacion(data);
+                            $scope.formulario401(data);
+                            $("#declaracionJ").modal("show");
+                        } else{
+                            if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
+                                $scope.serializarInformacion(data);
+                                $scope.formulario401(data);
+                                $("#declaracionJ").modal("show");
+                            }
+                            else{
+                                sweet.show('', "Datos obligatorios, Por favor seleccione las gestiones a pagar", 'warning');
+                            }
+                        };
+                    } else{
+                        sweet.show('', "Datos obligatorios, Por favor verificar los datos del elemento publicitario y/o adjuntar las fotografías", 'warning');
+                    };
+                };
             }else{
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
@@ -3814,7 +3894,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
     });
 
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
-        console.log('daaaaaaaaaaaaaaaa     ',data);
         $scope.catactividadDesarrollada();
         $scope.tipoSociedad();
         $scope.tipoDocumentoRespaldo();
@@ -4287,8 +4366,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             resAct.llamarregla_sierra(function(responseCorrelativo){
                 var dataCorrelativo = JSON.parse(responseCorrelativo);
                 correlativo = dataCorrelativo[0].sp_obtener_correlativo_ae;
-                //$scope.datos.f01_id_actividad_economica_temp = correlativoAE;
-                //console.log('f01_id_actividad_economica_tempppppppp    ',$scope.datos.f01_id_actividad_economica_temp);
                 deferred.resolve(correlativo);
             })
         }
@@ -4321,7 +4398,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
             $scope.mostrarMsgNuevaActividad = false;
         }
-        console.log('$scope.dataGenesisCidadano     ',$scope.dataGenesisCidadano);
         var datosgen = ((typeof($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {} : $scope.dataGenesisCidadano);
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
             $scope.mostrarMsgNuevaActividad = false;
@@ -4353,13 +4429,11 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             resDeudaPendiente.identificador = 'SERVICIO_VALLE_AE-3348';
             resDeudaPendiente.parametros = '{"ytaeGestion":"'+fecha.getFullYear()+'","yactividad_economica_id":"'+$scope.datos.f01_id_actividad_economica+'","yfechaActual":"'+$scope.fechafinalserver+'","yusrId":"7777"}';
             resDeudaPendiente.llamarregla_sierra(function(responseDeudasPend){
-                console.log('lista dddd     ',responseDeudasPend);
                 getDeudas = new reglasnegocioSierra();
                 getDeudas.identificador = 'VALLE_PRUEBA-SGEN-3335';
                 getDeudas.parametros = '{"aeconomica_id":"'+$scope.datos.f01_id_actividad_economica+'","tipo_deuda":"actividadEconomica"}';
                 getDeudas.llamarregla_sierra(function(reslstDeudas){
                     var lstDeudas = JSON.parse(reslstDeudas);
-                    console.log('deudasssssssssssss      ',lstDeudas);
                     datoObjectDeudasPen = [];
                     if (lstDeudas == '[{}]' || lstDeudas == '[{ }]' || lstDeudas == '{}') {
                     } else{
@@ -4381,7 +4455,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                         $scope.divDeudasPendientes = true;
                         $scope.datos.listDeudasPendientes = datoObjectDeudasPen;
                         var data = $scope.listDeudasPendientes;
-                        console.log('deeuuuuuuuuuuu     ',$scope.datos.listDeudasPendientes);
                     };
                     if(!$scope.$$phase) {
                         $scope.$apply();
@@ -4427,7 +4500,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                         var dataF = '{"gestion_pago":'+deudasDuodecimas.deuda_data.gestion+',"id_actividad":'+deudasDuodecimas.deuda_actividad_id+',"tipo_actividad":"actividadEconomica"}';
                         var detalle = '[{"odm_item_recaudador":"'+generarITEM2.ir_codigo+'","odm_pre_unitario":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'","odm_cantidad":"1","odm_sub_total":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'"}]';
                         dataFum = '{"Tipo":"generarOdm","razon_social":"'+nombreCompleto+'","ci_nit":"'+$scope.datos.f01_num_dos_prop+'","unidad_recaudadora":"139","sucursal":"0","monto_total":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'","detalles":'+detalle+',"data":'+dataF+'}';
-                        console.log('dataFum    ',dataFum);
                         $.ajax({
                             url: 'http://172.19.160.38:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php',
                             data: dataFum,
@@ -4491,20 +4563,17 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             data_glosa = '{"cabecera":"ACTIVIDAD ECONÓMICA","detalles":'+glosa+',"pie":"","observaciones":""}';
             var jsonFUM = '';
             jsonFUM = '{"xfum_ur_id":"1","xfum_usr_id":"7777","xfum_grupo":'+idfum[0].sp_obtener_grupo+',"xfum_tipo_origen":"actividadEconomica","xcorrelativo_tipo":"FUM","xfum_deudas":"'+iddeudas.substring(0,iddeudas.length-1)+'","xfum_montos_pagar":"'+montos.substring(0,montos.length-1)+'","xfum_data":'+datos_FUM+',"xfum_data_contribuyente":'+JSON.stringify(data_contri)+',"xfum_data_transaccion":'+datos_transaccion+',"xfum_data_glosa":'+JSON.stringify(data_glosa) +',"xfum_num_odm":"'+odms.substring(0,odms.length-1)+'","xtipo_proforma":"detallada","xtipo_fum":"duodecima"}';
-            console.log('fuuuuuuuuuuuu    ',jsonFUM);
             registrarFUM = new reglasnegocioSierra();
             registrarFUM.identificador = 'SERVICIO_SIERRA-MAES-3325';
             registrarFUM.parametros = jsonFUM;
             registrarFUM.llamarregla_sierra(function(respuestaFUM){
                 var responseF = JSON.parse(respuestaFUM);
-                console.log('respuestaFUM    ',responseF[0].sp_insertar_fum_bloque);
                 if (responseF[0].sp_insertar_fum_bloque != '[]' || responseF[0].sp_insertar_fum_bloque != '[ ]') {
                     generarProforma = new reglasnegocioSierra();
                     generarProforma.identificador = 'SERVICIO_SIERRA-MAE-3342';
                     generarProforma.parametros = '{"xfum_grupo":'+idfum[0].sp_obtener_grupo+'}';
                     generarProforma.llamarregla_sierra(function(respuestaProforma){
                         var dataProforma = JSON.parse(respuestaProforma);
-                        console.log('dappppp     ',dataProforma);
                         if(dataProforma[0].sp_obtener_url_proforma == 'undefined' || dataProforma[0].sp_obtener_url_proforma == undefined){
                             $.unblockUI();
                             swal('', response.descripcion, 'warning');

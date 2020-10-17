@@ -47,7 +47,7 @@
       }
       else
       {
-          guardarDatos2();
+        
       }
     });
   }
@@ -163,19 +163,9 @@ var gc = true;
           tiemporespuesta = setTimeout(verificarKeyPress.bind(undefined, captch), 1500);
       }
   };
-  function limpiarCamposRecuperacion()
-  {    
-    document.getElementById("resultadoC").disabled = true;
-      document.getElementById('msjCap').style.display="block";
-    document.getElementById("EnvRes").disabled = true;  
-    document.getElementById("resultadoC").value = '';
-    document.getElementById("resultadoC").value = '';
-  }
   var idUsusario = "1";
-  function llenarlogin()
-  { 
-    if(sessionStorage.getItem("TIPO_PERSONA") == 'NATURAL')
-    {
+  function llenarlogin(){ 
+    if(sessionStorage.getItem("TIPO_PERSONA") == 'NATURAL'){
       var nom = sessionStorage.getItem("US_NOMBRE");
       var pat = sessionStorage.getItem("US_PATERNO");
       var mat = sessionStorage.getItem("US_MATERNO");
@@ -184,8 +174,7 @@ var gc = true;
       $("#correo").val(sessionStorage.getItem("US_EMAIL")); 
       idUsusario = sessionStorage.getItem("IDUSUSARIO");
     }
-    else
-    {
+    else {
       $("#nombreCompleto").val(sessionStorage.getItem("US_NOMBRE"));
       $("#documento").val(sessionStorage.getItem("NITCIUDADANO"));
       $("#correo").val(sessionStorage.getItem("US_EMAIL")); 
@@ -211,64 +200,7 @@ function tipoOpcion(v){
     document.getElementById("datosPersonales").style="display:block;";
   }
 }
-function guardarDatos2(){
-  var tipoForm = $("#tipoForm").val(); 
-  var fromIn = $("#fromIn").val();
-  var procedencia = $("#procedencia").val();
-  var asunto = $("#asunto").val();
-  var nombreCompleto = $("#nombreCompleto").val();
-  var documento = $("#documento").val();
-  var expedido= $("#expedido").val(); 
-  var direccion = $("#direccion").val(); 
-  var telefono = $("#telefono").val();
-  var correo = $("#correo").val();
-  var tipoIdentidad = $("#tipoIdentidad").val();
-  var prueba = $("#esLibres").val();
-  var detalleDenuncia = $("#detalleDenuncia").val();
-  if(documento ==  '')
-  {    
-    documento = 0;    
-  }
-   if(telefono ==  '')
-  {    
-    telefono = 0;    
-  }
-  var xdts_datos = '{ "tipoForm":"'+tipoForm+'", "idUsusario":"'+idUsusario+'", "procedencia": "'+procedencia+'", "nombreCompleto": "'+nombreCompleto+'", "documento":"'+documento+'",   "direccion":"'+direccion+'", "telefono": "'+telefono+'", "correo":"'+correo+'", "tipoIdentidad":"'+tipoIdentidad+'", "prueba": "'+prueba+'", "detalleDenuncia":"'+detalleDenuncia+'" }'; 
-  var xdts_datos = JSON.stringify(xdts_datos);    
-      $.ajax({   
-        type        : 'POST',            
-        url         : jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/guardar_denuncia',  
-        data: { 
-                "xdts_tipo": tipoForm,
-                "xdts_nombre_completo": nombreCompleto,
-                "xdts_fono": telefono,
-                "xdts_referencia": asunto,
-                "xdts_contenido": procedencia,
-                "xdts_url_evidencia": prueba,
-                "xdts_usr_id": 1,
-                "xdts_tipo_detalle": detalleDenuncia,
-                "xdts_datos": xdts_datos
-            },
-        dataType    : 'json',
-        success: function(dataIN) {
-          limpiar();
-          obtCaptha();
-          document.getElementById("EnvRes").disabled = true;
-          noVacio();
-          llenarlogin();
-          document.getElementById("escrito").checked = false;
-          document.getElementById("correo1").checked = false;
-          document.getElementById("digital").checked = false;  
-          $.unblockUI();    
-          //swal("Enviado!", "Su solicitud fue enviada correctamente", "success");                         
-        },
-        error: function(result) {
-          $.unblockUI();
-        }
-      });
-} 
-function limpiar()
-{ 
+function limpiar(){ 
   $("#nombreCompleto").val('');
   $("#documento").val(''); 
   $("#direccion").val(''); 
@@ -277,59 +209,143 @@ function limpiar()
   //$("#esLibres").val('');
   $("#detalleDenuncia").val('');
 }
-function crearCasoLtSInformacion(){
+function tramitesFormulario(){
+  $.blockUI();
+  var fecha= new Date();
+  var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+  var sIdServicio = 64;
+  var sIdCiudadano = sIdCiudadano;
+  var sFechaTramite = fechactual;
+  var sdataCiudadano = {};
+    var stipopersona = sessionStorage.getItem("TIPO_PERSONA");
+    var sidciudadano = sessionStorage.getItem("IDCIUDADANO");        
+    sdataCiudadano.stipopersona = stipopersona;
+    sdataCiudadano.sidciudadano = sidciudadano; 
+    if(stipopersona == 'NATURAL'){
+      var sciciudadano = sessionStorage.getItem("CICIUDADANO");           
+      var sapeparterno = sessionStorage.getItem("US_PATERNO");
+      var sap_ematerno = sessionStorage.getItem("US_MATERNO");
+      var s_correoelec = sessionStorage.getItem("US_EMAIL");
+      var s_nombre = sessionStorage.getItem("US_NOMBRE");
+      sdataCiudadano.sciciudadano = sciciudadano;
+      sdataCiudadano.sapeparterno = sapeparterno; 
+      sdataCiudadano.sap_ematerno = sap_ematerno;
+      sdataCiudadano.s_correoelec = s_correoelec; 
+      sdataCiudadano.s_nombre = s_nombre; 
+    }else if(stipopersona == 'JURIDICO'){
+      var snitciudaano = sessionStorage.getItem("NITCIUDADANO");
+      var cirepresentante = sessionStorage.getItem("REPRESENTANTECI");
+      var srepresentante = sessionStorage.getItem("REPRESENTANTE");
+      var srazonsocial = sessionStorage.getItem("US_NOMBRE");
+      sdataCiudadano.snitciudaano = snitciudaano;
+      sdataCiudadano.cirepresentante = cirepresentante; 
+      sdataCiudadano.srepresentante = srepresentante;
+      sdataCiudadano.srazonsocial = srazonsocial; 
+    } 
+    var sjonDataCiudano = JSON.stringify(sdataCiudadano);   
+    var formularioTramites = {
+    frm_tra_fecha: sFechaTramite,
+    frm_tra_enviado: 'NO',
+    frm_tra_registrado: fechactual,
+    frm_tra_modificado: fechactual,
+    id_servicio: 64,
+    oid_ciudadano: sessionStorage.getItem('IDSOLICITANTE'),
+    id_usuario: 3,
+    frm_data_ciudadano: sjonDataCiudano
+  };
+    $.ajax({
+        data: formularioTramites,
+        url: "http://192.168.5.141:8003/wsRCPG/adicionaTramitesFormulario",   
+        type: 'POST',
+        success: function (response) {
+            var nroTramite = response.success[0].sp_insertar_formulario_tramites_datos;
+            crearCasoLtSInformacion(nroTramite);            
+        }
+    })
+    $.unblockUI();      
+}
+function datosTramite(datos,nroTram,codTram){
+  var sjonDataCiudadano = JSON.stringify(datos);  
+  var formularioDatos = {
+    idServicio: 64,
+    data_json: sjonDataCiudadano,
+    idCiudadano: sessionStorage.getItem('IDSOLICITANTE'),
+    idusuario: 1,
+    idTramite: nroTram
+  };
+  $.ajax({
+    data: formularioDatos,
+    url: "http://192.168.5.141:8003/wsRCPG/sp_crear_datos_formulario",   
+    type: 'POST',
+    success: function (response) {
+        validaDatos(nroTram,codTram);
+      }
+  })       
+}
+function validaDatos(nroTram,codTram){
+  try {
+    var validaDatos = {  
+    idTramite: nroTram,
+    enviado: 'SI',
+    codigo: codTram,
+    idusuario: 1
+  };
+  $.blockUI();
+  $.ajax({
+    data: validaDatos,
+    url: "http://192.168.5.141:8003/wsRCPG/validarFormProcesos",   
+    type: 'POST',
+    success: function (response) {
+      limpiar();
+      $.unblockUI();
+    }
+    
+  })
+  }catch(e){
+    console.log("Error al validar datos", e);
+    $.unblockUI();
+  }
+}
+function crearCasoLtSInformacion(nroTram){
   var dataForm = {};
-  //dataForm['tit']               =   "";
-  //dataForm['html_01']           =   "";
   dataForm['prsNombre']         =   sessionStorage.getItem("US_NOMBRE");
-  //dataForm['html_02']           =   "";
   dataForm['prsPaterno']        =   sessionStorage.getItem("US_PATERNO");
-  //dataForm['html_03']           =   "";
   dataForm['prsMaterno']        =   sessionStorage.getItem("US_MATERNO");
-  //dataForm['html_04']           =   "";
   dataForm['tercer']            =   "";
-  //dataForm['html_05']           =   "";
   dataForm['prsCi']             =   sessionStorage.getItem("CICIUDADANO");//CICIUDADANO
-  //dataForm['html_06']           =   "";
   dataForm['prsExpedido']       =   sessionStorage.getItem("CIEXPEDIDO");//
-  //dataForm['html_07']           =   "";
   dataForm['telefono']          =   $("#telefono").val();
-  //dataForm['html_08']           =   "";
   dataForm['correo']            =   $("#correo").val();
-  //dataForm['html_09']           =   "";
   dataForm['detalleDenuncia']   =   $("#detalleDenuncia").val();
-  //dataForm['html_10']           =   "";
   dataForm['asunto']            =   $("#asunto").val();//asunto
+  dataForm['id_tramite']        =  nroTram;
   var vdatajson = [{"tipo": "CHKM"},{"resid": "1","estado": false,"resvalor": "Escrito"},{"resid": "2","estado": true,"resvalor": "Correo electrónico"},{"resid": "3","estado": false,"resvalor": "Digital/CD/DVD/Flash"}];
   vdatajson[1].estado = chkescrito;
   vdatajson[2].estado = chkcorreo1;
   vdatajson[3].estado = chkdigital;
   dataForm['product1']          =   vdatajson;
-  //dataForm['asuntoDeriva']      =   "";
-  //dataForm['denunciaObs']       =   "";
-  //dataForm['descripcionObs']    =   "";
-  //dataForm['tipoAtencion']      =   "";
-  //dataForm['plazoAmpliar']      =   "";
-  //dataForm['fecResp']           =   "";
-  //dataForm['obsResp']           =   "";
-  //dataForm['adjArc']            =   "";
-  //dataForm['derivar']           =   "";
-  //dataForm['derivarObs']        =   "";
   var crearCasoL = new gCrearCaso();  
   crearCasoL.usr_id = '1';
   crearCasoL.datos = JSON.stringify(dataForm);
   crearCasoL.procodigo = 'TRA_SOIN';
   crearCasoL.crearCasoAeLinea( function(resultado){
     var resp = JSON.parse(resultado);
-    var scodigo = resp.success.data[0].sp_pmfunction_crearcaso_linea;
-    scodigo = scodigo.split(",");
-    scodigo = scodigo[0];
-    scodigo = scodigo.substring(1, scodigo.length);
-    swal("Enviado!", "Su solicitud fue enviada correctamente, su numero de solicitud es: " + scodigo, "success");
+    if(resp.success.data.length > 0){
+      var scodigo = resp.success.data[0].sp_pmfunction_crearcaso_linea;
+      scodigo = scodigo.split(",");
+      scodigo = scodigo[0];
+      scodigo = scodigo.substring(1, scodigo.length);
+      datosTramite(dataForm,nroTram,scodigo);
+      swal("Enviado!", "Su solicitud fue enviada correctamente, su numero de solicitud es: " + scodigo, "success");   
+      document.getElementById("resultadoC").value = '';
+      document.getElementById("EnvRes").disabled = true;
+      document.getElementById("resultadoC").disabled = true;
+    }else{
+      swal("Error!", "Hubo un error al enviar su solicitud", "error");
+    } 
   });
 }
-function solonumeros(e)
-{
+function solonumeros(e){
   var key = window.event ? e.which : e.keyCode;
   if(key < 48 || key > 57)
     e.preventDefault();
@@ -339,24 +355,21 @@ var chkescrito  =  false;
 var chkcorreo1  =  false;
 var chkdigital  =  false;
 function controlaCheck(v){
-  if(v.id == 'escrito')
-  {    
-      document.getElementById("correo1").checked = false;
-      document.getElementById("digital").checked = false;          
-      chkescrito  =  true;
-      chkcorreo1  =  false;
-      chkdigital  =  false;      
+  if(v.id == 'escrito'){    
+    document.getElementById("correo1").checked = false;
+    document.getElementById("digital").checked = false;          
+    chkescrito  =  true;
+    chkcorreo1  =  false;
+    chkdigital  =  false;      
   }
-  if(v.id == 'correo1')
-  {
+  if(v.id == 'correo1'){
       document.getElementById("escrito").checked = false;
       document.getElementById("digital").checked = false; 
       chkescrito  =  false;
       chkcorreo1  =  true;
       chkdigital  =  false;  
   }
-  if(v.id == 'digital')
-  {
+  if(v.id == 'digital'){
       document.getElementById("escrito").checked = false;
       document.getElementById("correo1").checked = false;   
       chkescrito  =  false;
@@ -368,7 +381,7 @@ function controlaCheck(v){
 <div style="max-width:960px; min-width:320px; margin:auto" id="content" class="border border-warning rounded"> 
   <br>
   <div class="form-group">
-    <label class="col-sm-12 control-label"><center><H2>Formulario de Solicitud de Información (F.S.I.) </H2></center></label>
+    <label class="col-sm-12 control-label"><center><H2>Formulario de Solicitud de Información (F.S.I.)</H2></center></label>
     <input id="esLibres" hidden>
   </div> 
   <center> <div class="col-sm-11">
@@ -400,14 +413,14 @@ function controlaCheck(v){
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Teléfono/Celular:<span style="color:red;">*</span></label>
     <div class="col-sm-6">
-      <input type="number" required class="form-control" id="telefono" maxlength="8" placeholder="Numero de contacto " onKeyUp="solonumeros(event);noVacio();verificarLlenado()" >
+      <input type="number" required class="form-control" id="telefono" maxlength="8" placeholder="Numero de contacto " onKeyUp="solonumeros(event);noVacio();verificarLlenado()" required>
     </div>
   </div>
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Correo Electrónico:<span style="color:red;">*</span></label>
     <div class="col-sm-6">
-      <input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" onKeyUp="noVacioC();noVacio();verificarLlenado()">
+      <input type="mail" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" onKeyUp="noVacioC();noVacio();verificarLlenado()" required>
       <span id="emailOK" style="color:red;"></span>
     </div>  
   </div> 
@@ -415,7 +428,7 @@ function controlaCheck(v){
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Unidad Organizacional:<span style="color:red;">*</span></label>
     <div class="col-sm-6" id="select3" >
-      <select class="form-control" id="asunto" >
+      <select class="form-control" id="asunto" required>
         <option value="DIRECCIÓN GENERAL DEL SISTEMA INTEGRADO DE TRANSPORTE" SELECTED="SELECTED">DIRECCIÓN GENERAL DEL SISTEMA INTEGRADO DE TRANSPORTE</option>
         <option value="DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS">DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS</option>
         <option value="DIRECCIÓN DE TRANSPARENCIA Y LUCHA CONTRA LA CORRUPCIÓN">DIRECCIÓN DE TRANSPARENCIA Y LUCHA CONTRA LA CORRUPCIÓN</option>
@@ -465,7 +478,7 @@ function controlaCheck(v){
     <label  class="col-sm-1 col-form-label"></label>
     <label  class="col-sm-3 control-label">Detalle de la solicitud:<span style="color:red;">*</span></label>
     <div class="col-sm-6">
-      <textarea type="text" class="form-control" id="detalleDenuncia" placeholder="Detalle Solicitud" onKeyUp="noVacio();verificarLlenado()"></textarea>
+      <textarea type="text" class="form-control" id="detalleDenuncia" placeholder="Detalle Solicitud" onKeyUp="noVacio();verificarLlenado()" rows="5" cols="80" required></textarea>
     </div>
   </div> 
   <div class="form-group row">
@@ -499,7 +512,7 @@ function controlaCheck(v){
     </div>
   </div></center>
   <div class="modal-footer">
-    <button id= "EnvRes" onClick="resetPassword();crearCasoLtSInformacion();" disabled="true" type="submit"  onclick="guardarDatos2()" class="btn btn-warning text-white"  >Enviar</button>
+  <button id= "EnvRes" onClick="tramitesFormulario();" disabled="true" type="submit" class="btn btn-warning text-white"  >Enviar</button>
   </div>
   <center><img src="img/logo.png" width="250" height="100"/></center>
 </div>

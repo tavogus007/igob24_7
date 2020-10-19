@@ -50,6 +50,8 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
     };
 
     $scope.almacenarRequisitos = function(aArchivos, idFiles) {
+        console.log("skdjfhskjadhfkjashdfk");
+        console.log("$rootScope.swArchivo:: ", $rootScope.swArchivo);
         var descDoc = "";
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer();
@@ -94,6 +96,7 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
                             fileUploadcorr.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
                             document.getElementById('txt_f01_upload' + idFiles[key]).value = nombreNuevo;
                         });
+
                         var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') + '/' + nombreNuevo + "?app_name=todoangular";
                         var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevo + '", "nombre":"' + descArchivo + '" }';
                         $rootScope.archivosProducto.push(myJSON);
@@ -120,23 +123,15 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
                         var descArchivo = "img_auxiliar2";
                         $scope.imagenaux2m = true;
                     }
-
                     var imagenFile = archivo.name.split('.');;
-                    //var tipoFile = imagenFile[1];
                     var nombreNuevo = descArchivo + "_" + fechaNueva + '.' + imagenFile[1];
                     var ext_doc = imagenFile[imagenFile.length - 1].toLowerCase();
                     if (ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
-                        $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') + '/' + nombreNuevo + "?app_name=todoangular";
-                        fileUploadcorr.uploadFileToUrl1(archivo, uploadUrl, nombreNuevo);
-                        document.getElementById('txt_f01_upload' + idFiles[key]).value = nombreNuevo;
-                        /*var filecompress = compressImage(archivo).then(function(respuestaFile){
-                            var imagenFile = respuestaFile.name.split('.');
-                            var tipoFile = imagenFile[1];
-                            var nombreNuevo = descDoc + '_'+fechaNueva+'.'+tipoFile;
-                            $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + nombreNuevo + "?app_name=todoangular";
+                        var filecompress = compressImage(archivo, "producto").then(function(respuestaFile) {
+                            $scope.documentosarc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') + '/' + nombreNuevo + "?app_name=todoangular";
                             fileUploadcorr.uploadFileToUrl1(respuestaFile, uploadUrl, nombreNuevo);
-                            document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreNuevo;
-                        });*/
+                            document.getElementById('txt_f01_upload' + idFiles[key]).value = nombreNuevo;
+                        });
                         var uploadUrlA = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/mis_productos/" + sessionService.get('IDTV') + '/' + nombreNuevo + "?app_name=todoangular";
                         var myJSON = '{ "url":"' + uploadUrlA + '", "campo":"' + nombreNuevo + '", "nombre":"' + descArchivo + '" }';
                         $rootScope.archivosProducto.push(myJSON);

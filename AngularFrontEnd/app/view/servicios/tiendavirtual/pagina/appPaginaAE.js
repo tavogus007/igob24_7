@@ -113,6 +113,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           urllogo = logo[0].url;
           toDataURL(urllogo, function(dataUrl) {
             $rootScope.urlLogotipo64 = dataUrl;
+            console.log(urllogo);
+            console.log(dataUrl);
           });
         } catch (error){
           console.log(error);
@@ -128,6 +130,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           urlenca = enca[0].url;
           toDataURL(urlenca, function(dataUrl) {
             $rootScope.urlEncabezado64 = dataUrl;
+            console.log(urlenca);
+            console.log(dataUrl);
           });
         } catch(error){
           console.log(error);

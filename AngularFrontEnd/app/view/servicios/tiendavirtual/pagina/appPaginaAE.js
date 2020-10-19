@@ -237,7 +237,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         datosPaginaWeb.web_id = $rootScope.idPW;
         datosPaginaWeb.web_contenido = "";
         datosPaginaWeb.web_url = "";
-        datosPaginaWeb.web_estado_publicar = NO;
+        datosPaginaWeb.web_estado_publicar = "NO";
         datosPaginaWeb.web_usr =  sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
         datosPaginaWeb.web_id_ae = sessionService.get('IDAE');
         datosPaginaWeb.updPaginaWeb(function(response){

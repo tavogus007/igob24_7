@@ -230,8 +230,28 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         }
         $.unblockUI();
     };
-
+    $scope.errorPagina = function(){
+      $.blockUI();
+      try{
+        var datosPaginaWeb = new dataPaginaWeb();
+        datosPaginaWeb.web_id = $rootScope.idPW;
+        datosPaginaWeb.web_contenido = "";
+        datosPaginaWeb.web_url = "";
+        datosPaginaWeb.web_estado_publicar = NO;
+        datosPaginaWeb.web_usr =  sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO');
+        datosPaginaWeb.web_id_ae = sessionService.get('IDAE');
+        datosPaginaWeb.updPaginaWeb(function(response){
+          resultado = JSON.parse(response);
+          document.getElementById('urlIndex').value = "";
+          document.getElementById('chkPublicado').checked = false;  
+        });
+      } catch(error){
+        console.log(error);
+      }
+      $.unblockUI();  
+    }
     $scope.actualizarTVCeroPapel = function(estado){
+      try {
         var uptTVCP = new tiendaVirtual();
         uptTVCP.id_ae = sessionService.get('IDAE');
         uptTVCP.estado = estado;
@@ -244,20 +264,24 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         logo =JSON.parse(logotipo);
         uptTVCP.imagen = logo[0].url;
         uptTVCP.datosAuxiliares = JSON.stringify($rootScope.datosAuxiliares);
-        //uptTVCP.nombre = $rootScope.datosTiendaVirtual[0].tv_nombrec;
         uptTVCP.nombre = $rootScope.textoHtml;
         uptTVCP.descripcion = $rootScope.descripcionHtml;
         uptTVCP.pagina = $rootScope.datosTiendaVirtual[0].pdominio;
-
         uptTVCP.modificarTiendaVirtual(function(response){
           resultado = JSON.parse(response);
           if (resultado.success.data[0].regp_estado == 'SI') {
             swal('', "Página publicada en Sistema de Comercio GAMLP", 'success');
           } else {
             swal('', "Página NO publicada en Sistema de Comercio GAMLP", 'error');
+            $scope.errorPagina();
           }
         });
         $.unblockUI();
+      } catch (error) {
+        swal('', "Error de conexión a Caserit@ Virtual", 'error');
+        console.log(error);
+        $scope.errorPagina();
+      }        
     }
 
     $scope.registrarPagina = function(url, html){
@@ -279,8 +303,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
       }
       $.unblockUI();  
     }
-    //$rootScope.descripcionHtml = descripcionHtml;
-        //$rootScope.textoHtml = textoHtml;
     $scope.modificarPagina = function(url, html, estado){
       $.blockUI();
       try{
@@ -314,7 +336,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
             re = /\\"/gi;
             newContactos = newstr.replace(re, '"');
           } catch(error){
-            console.log(1111);
             console.log(error);
           }
           try{
@@ -326,7 +347,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
             re = /\\"/gi;
             newRedes = newstr.replace(re, '"');
           } catch(error){
-            console.log(2222);
             console.log(error);
           }
           try{
@@ -334,7 +354,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
             ofertas = ofertas.replace(/\n/g, "<br>");
           } catch(error){
             ofertas = JSON.stringify($rootScope.productosPW);
-            console.log(333);
             console.log(error);
           }
           try { 
@@ -346,7 +365,6 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
             horarios = horarios.replace(/\\"/gi,'"');
             newHorarios = horarios;
           } catch(error){
-            console.log(444);
             console.log(error);
             newHorarios = "[]";
           }
@@ -382,12 +400,21 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
                   } else {
                     resultado = JSON.parse(response);
                     $rootScope.urlIndex = resultado.url;
-                    document.getElementById('urlIndex').value = resultado.url;
-                    $scope.modificarPagina(resultado.url,resultado.html,'SI');
+                    if (resultado.url.length > 42){
+                      document.getElementById('urlIndex').value = resultado.url;
+                      $scope.modificarPagina(resultado.url,resultado.html,'SI');
+                    } else {
+                      document.getElementById('urlIndex').value = "";
+                      $scope.modificarPagina("","",'NO');
+                      document.getElementById('chkPublicado').checked = false;
+                    }
                   }
                 } catch(error){
                   console.log(error);
                   swal('', "Error al crear la página", 'error');
+                  document.getElementById('urlIndex').value = "";
+                  $scope.modificarPagina("","",'NO');
+                  document.getElementById('chkPublicado').checked = false;
                   $.unblockUI();  
                 }
               },

@@ -117,9 +117,13 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
             console.log(dataUrl);
           });
         } catch (error){
-          console.log(error);
           //$rootScope.urlLogotipo64 = "";
-          $rootScope.urlLogotipo64 = logo[0].url;
+          try{
+            $rootScope.urlLogotipo64 = logo[0].url;
+          } catch(error1){
+            console.log(error1);
+            $rootScope.urlLogotipo64 = "";
+          } 
         }
         try {
           encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
@@ -131,13 +135,15 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           urlenca = enca[0].url;
           toDataURL(urlenca, function(dataUrl) {
             $rootScope.urlEncabezado64 = dataUrl;
-            console.log(urlenca);
-            console.log(dataUrl);
           });
         } catch(error){
-          console.log(error);
           //$rootScope.urlEncabezado64 = "";
-          $rootScope.urlEncabezado64 = enca[0].url;
+          try{
+            $rootScope.urlEncabezado64 = enca[0].url;
+          } catch(error1){
+            console.log(error1);
+            $rootScope.urlEncabezado64 = "";
+          }        
         }
         try{
           catalogo = $rootScope.datosTiendaVirtual[0].tvcatalogo;
@@ -149,10 +155,13 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           urlcatalogo = cata[0].url;
           $rootScope.urlcatalogo = urlcatalogo;
         } catch(error){
-          console.log(error);
           //$rootScope.urlcatalogo = "";
-          $rootScope.urlcatalogo = cata[0].url;
-
+          try{
+            $rootScope.urlcatalogo = enca[0].url;
+          } catch(error1){
+            console.log(error1);
+            $rootScope.urlcatalogo = "";
+          }
         }
         $scope.desabilitado = "disabled";
         $scope.getPagina();
@@ -376,6 +385,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
             console.log(error);
             newHorarios = "[]";
           }
+          console.log($rootScope.urlLogotipo64);
+          console.log($rootScope.urlEncabezado64);
           $.ajax({
               url:CONFIG.API_URL_DMS_HTML+'generadorHTML.php',
               type:"post",
@@ -487,6 +498,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
             console.log(error);
             newHorarios = "[]";
           }
+          console.log($rootScope.urlLogotipo64);
+          console.log($rootScope.urlEncabezado64);
           $.ajax({
               url:CONFIG.API_URL_DMS_HTML+'generadorHTML.php',
               type:"post",

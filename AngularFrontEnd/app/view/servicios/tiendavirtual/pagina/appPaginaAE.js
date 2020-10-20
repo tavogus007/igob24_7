@@ -118,7 +118,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           });
         } catch (error){
           console.log(error);
-          $rootScope.urlLogotipo64 = "";
+          //$rootScope.urlLogotipo64 = "";
+          $rootScope.urlLogotipo64 = logo[0].url;
         }
         try {
           encabezado = $rootScope.datosTiendaVirtual[0].pencabezado;
@@ -135,7 +136,8 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           });
         } catch(error){
           console.log(error);
-          $rootScope.urlEncabezado64 = "";
+          //$rootScope.urlEncabezado64 = "";
+          $rootScope.urlEncabezado64 = enca[0].url;
         }
         try{
           catalogo = $rootScope.datosTiendaVirtual[0].tvcatalogo;
@@ -148,7 +150,9 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           $rootScope.urlcatalogo = urlcatalogo;
         } catch(error){
           console.log(error);
-          $rootScope.urlcatalogo = "";
+          //$rootScope.urlcatalogo = "";
+          $rootScope.urlcatalogo = cata[0].url;
+
         }
         $scope.desabilitado = "disabled";
         $scope.getPagina();
@@ -397,7 +401,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
               success:function(response){
                 try {
                   if (response == 'error creando fichero'){
-                    swal('', "Página NO publicada," + response, 'error');
+                    swal('', "Página NO publicada, " + response, 'error');
                     $scope.ws_publicado = false;
                     $scope.chkPublicado == false;
                     document.getElementById('chkPublicado').checked = false;

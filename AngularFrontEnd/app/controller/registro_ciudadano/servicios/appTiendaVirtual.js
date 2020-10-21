@@ -231,72 +231,89 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
 
     }
     $scope.addDatosAE = function (tramite) {
-        cargando();
-        $scope.template =   "";
-        $scope.template         =   $scope.templates[0];
-        sessionService.set('IDAE', tramite.IdActividad);
-        $scope.listarCategorias();
-        $scope.obtTiendaVirtual();
-        $rootScope.$broadcast('inicializarCampos', $scope.datos);
-        $scope.sIdAeGrilla  =   tramite.IdActividad;
-        $.LoadingOverlay("hide");
+        if(tramite.Estado == 'V'){
+            cargando();
+            $scope.template =   "";
+            $scope.template         =   $scope.templates[0];
+            sessionService.set('IDAE', tramite.IdActividad);
+            $scope.listarCategorias();
+            $scope.obtTiendaVirtual();
+            $rootScope.$broadcast('inicializarCampos', $scope.datos);
+            $scope.sIdAeGrilla  =   tramite.IdActividad;
+            $.LoadingOverlay("hide");
+        }else{
+            swal('Sr. Ciudadano', "La Actividad Economica se encuentra con Baja.", 'warning');
+        }
+        
     }
     $scope.addPagosAE = function (tramite) {
-        cargando();
-        $scope.template =   "";
-        sessionService.set('IDAE', tramite.IdActividad);
-        $scope.obtTiendaVirtual();
-        $scope.seleccionarPagoRender(tramite);
-        sessionService.set('IDAE', tramite.IdActividad);
-        $scope.sIdAeGrilla  =   tramite.IdActividad;
-        try{
-            tvid = $rootScope.datosTiendaVirtual[0].idtv;
-            $.LoadingOverlay("hide");
-        } catch(error){
-            swal('', "Debe habilitar la tienda virtual, antes de cargar las Formas de Pago.", 'warning');
-            sessionService.destroy('IDTV');
+        if(tramite.Estado == 'V'){
+            cargando();
             $scope.template =   "";
-            $.LoadingOverlay("hide");
+            sessionService.set('IDAE', tramite.IdActividad);
+            $scope.obtTiendaVirtual();
+            $scope.seleccionarPagoRender(tramite);
+            sessionService.set('IDAE', tramite.IdActividad);
+            $scope.sIdAeGrilla  =   tramite.IdActividad;
+            try{
+                tvid = $rootScope.datosTiendaVirtual[0].idtv;
+                $.LoadingOverlay("hide");
+            } catch(error){
+                swal('', "Debe habilitar la tienda virtual, antes de cargar las Formas de Pago.", 'warning');
+                sessionService.destroy('IDTV');
+                $scope.template =   "";
+                $.LoadingOverlay("hide");
+            }
+        }else{
+            swal('', "Actividad Economica con Baja.", 'warning');
         }
     }
     $scope.addProductoAE = function (tramite) {
-        cargando();
-        $scope.template =   "";
-        sessionService.set('IDAE', tramite.IdActividad);
-        $scope.obtTiendaVirtual();
-        $rootScope.$broadcast('inicializarProdutos', $scope.datos);
-        $scope.sIdAeGrilla  =   tramite.IdActividad;
-        try{
-            tvid = $rootScope.datosTiendaVirtual[0].idtv;
-            $scope.template         =   $scope.templates[2];
-            $.LoadingOverlay("hide");
-        } catch(error){
-            swal('', "Debe habilitar la tienda virtual, antes de cargar sus productos.", 'warning');
-            sessionService.destroy('IDTV');
+        if(tramite.Estado == 'V'){
+            cargando();
             $scope.template =   "";
-            $.LoadingOverlay("hide");
+            sessionService.set('IDAE', tramite.IdActividad);
+            $scope.obtTiendaVirtual();
+            $rootScope.$broadcast('inicializarProdutos', $scope.datos);
+            $scope.sIdAeGrilla  =   tramite.IdActividad;
+            try{
+                tvid = $rootScope.datosTiendaVirtual[0].idtv;
+                $scope.template         =   $scope.templates[2];
+                $.LoadingOverlay("hide");
+            } catch(error){
+                swal('', "Debe habilitar la tienda virtual, antes de cargar sus productos.", 'warning');
+                sessionService.destroy('IDTV');
+                $scope.template =   "";
+                $.LoadingOverlay("hide");
+            }
+        }else{
+            swal('', "Actividad Economica con Baja.", 'warning');
         }
     }
     $scope.confPublicar = function (tramite) {
-        cargando();
-        $scope.template =   "";
-        sessionService.set('IDAE', tramite.IdActividad);
-        idActividadEconomica = sessionService.get('IDAE');
-        $rootScope.descripcionAe = tramite.Descripcion;
-        $rootScope.direccionAe = tramite.Direccion;
-        $scope.obtTiendaVirtual();
-        //$scope.obtPagina();
-        $rootScope.$broadcast('inicializarPagina', $scope.datos);
-        $scope.sIdAeGrilla  =   tramite.IdActividad;
-        try{
-            tvid = $rootScope.datosTiendaVirtual[0].idtv;
-            $scope.template         =   $scope.templates[3];
-            $.LoadingOverlay("hide");
-        } catch(error){
-            swal('', "Debe habilitar la tienda virtual, antes de habilitar su página Web.", 'warning');
-            sessionService.destroy('IDTV');
+        if(tramite.Estado == 'V'){
+            cargando();
             $scope.template =   "";
-            $.LoadingOverlay("hide");
+            sessionService.set('IDAE', tramite.IdActividad);
+            idActividadEconomica = sessionService.get('IDAE');
+            $rootScope.descripcionAe = tramite.Descripcion;
+            $rootScope.direccionAe = tramite.Direccion;
+            $scope.obtTiendaVirtual();
+            //$scope.obtPagina();
+            $rootScope.$broadcast('inicializarPagina', $scope.datos);
+            $scope.sIdAeGrilla  =   tramite.IdActividad;
+            try{
+                tvid = $rootScope.datosTiendaVirtual[0].idtv;
+                $scope.template         =   $scope.templates[3];
+                $.LoadingOverlay("hide");
+            } catch(error){
+                swal('', "Debe habilitar la tienda virtual, antes de habilitar su página Web.", 'warning');
+                sessionService.destroy('IDTV');
+                $scope.template =   "";
+                $.LoadingOverlay("hide");
+            }
+        }else{
+            swal('', "Actividad Economica con Baja.", 'warning');
         }
     }
     $scope.seleccionarPagoRender = function (tramite) {
@@ -743,14 +760,14 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             $.unblockUI(); 
             var resultadoApi = JSON.parse(resultado);
             if (resultadoApi.success) {
-                $scope.formDatosAE  =   true;
+               $scope.formDatosAE  =   true;
                 $scope.mostrarMsgActividadTrue  = true;
                 $scope.mostrarMsgActividadFalse = false;
                 var response    =   resultadoApi;
                 $scope.trmUsuario = response.success.dataSql;
                 var data = response.success.dataSql;
                 $scope.tblTramites.reload(); 
-                $scope.desabilitado = true;  
+                $scope.desabilitado = true; 
             } else {
                 $scope.mostrarMsgActividadTrue  = false;
                 $scope.mostrarMsgActividadFalse = true;                        

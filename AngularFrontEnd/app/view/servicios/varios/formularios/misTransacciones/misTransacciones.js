@@ -46,6 +46,7 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                         element.sucursal = $scope.sucursal;
                         $scope.arraytransaccion.push(element);
                     });
+
                     $scope.obtmisTransacciones = $scope.arraytransaccion;
                     var data = $scope.arraytransaccion;
                     $scope.tablaTransaciones.reload();
@@ -64,24 +65,31 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
         } else {
             $.blockUI();
             $scope.arrayTransacciones = [];
+            var idAEconoMicas = "";
+            var Sucursal;
             $scope.misAcEconomicas.forEach(element => {
-                var Sucursal = element.sucursal;
-                var idAE = element.IdActividad;
-                var lstTransferencias = new lstTransaciones();
-                lstTransferencias.id_actividadeconomica = idAE;
+                Sucursal = element.sucursal;
+                idAEconoMicas = idAEconoMicas + ","+element.IdActividad;
+            });
+            idAEconoMicas = idAEconoMicas.substr(1);
+            $scope.idAEconomicas = idAEconoMicas;
+            var lstTransferencias = new lstTransaciones();
+                lstTransferencias.id_actividadeconomica = idAEconoMicas;
                 lstTransferencias.fecha_inicio = fechaIni;
                 lstTransferencias.fecha_fin = fechaFin;
                 lstTransferencias.listaTransaciones(function (resp) {
                     var respuesta = JSON.parse(resp);
                     if (respuesta.length > 0) {
                         respuesta.forEach(element => {
+                            /* if($scope.tipoPago){
+
+                            } */
                             element.sucursal = Sucursal;
                             element.id_AE = idAE;
                             $scope.arrayTransacciones.push(element);
                         });
                     }
                 });
-            });
             $.unblockUI();
             if ($scope.arrayTransacciones.length > 0) {
                 $scope.obtmisTransacciones = $scope.arrayTransacciones;
@@ -194,6 +202,7 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
     };
 
     $scope.listadoActividadesEconomicas = function () {
+        //alert(222);
         $.blockUI();
         var dataGenesis = ((typeof ($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {} : $scope.dataGenesisCidadano);
         var idContribuyente = $scope.dataGenesisCidadano[0].idContribuyente;
@@ -242,6 +251,7 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
         });
         $.unblockUI();
     };
+    
     $scope.asignarAcEconomica = function (dato) {
         $.blockUI();
         if (dato === undefined) {
@@ -315,7 +325,7 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                             $("#fotpod").modal("hide");             
 
                         } else {
-                            console.log("respuesta update ", resultadoApi);
+                            console.log("error ", resultadoApi);
                         }
                     });
                 } else {
@@ -538,7 +548,7 @@ function misTransaccioneController($scope, $interval, $q, $rootScope, $routePara
                                 $("#modaldetPedido").modal("hide");
                                 $('#observacion_prod').val("");             
                             } else {
-                                console.log("respuesta update ", resultadoApi);
+                                console.log("error", resultadoApi);
                             } 
                         }); 
                     } 

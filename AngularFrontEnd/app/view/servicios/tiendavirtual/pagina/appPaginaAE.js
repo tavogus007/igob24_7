@@ -9,6 +9,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
         reader.readAsDataURL(xhr.response);
       };
       xhr.open('GET', url);
+      xmlHttp.setRequestHeader('Access-Control-Allow-Origin', '*');
       xhr.responseType = 'blob';
       xhr.send();
     }

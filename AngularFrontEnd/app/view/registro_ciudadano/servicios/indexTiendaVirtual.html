@@ -21,31 +21,38 @@
               </form>    
               <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadECONÓMICA">
                 <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
-                    <td data-title="'No'" ng-click="addDatosAE(tramite)"> {{$index+1}}</td>
+                    <td data-title="'No'"> {{$index+1}}</td>
                     <!--td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.IdActividad}}</td-->
-                    <td data-title="'Denominación'" ng-click="addDatosAE(tramite)">{{tramite.denominacion}}</td>
-                    <td data-title="'Dirección'" ng-click="addDatosAE(tramite)">{{tramite.Direccion}}</td>
-                    <td data-title="'Descripción'" ng-click="addDatosAE(tramite)">{{tramite.Descripcion}}</td>
+                    <td data-title="'Denominación'" ng-click="addDatosAE(tramite);">{{tramite.denominacion}}</td>
+                    <td data-title="'Dirección'" ng-click="addDatosAE(tramite);">{{tramite.Direccion}}</td>
+                    <td data-title="'Descripción'" ng-click="addDatosAE(tramite);" >{{tramite.Descripcion}}</td>
+                    <td data-title="'Estado'" ng-click="addDatosAE(tramite);" >
+                        <div class="badge badge-danger" ng-if="tramite.Estado == 'BS'">BAJA SIN DEUDA</div>
+                        <div class="badge badge-primary" ng-if="tramite.Estado == 'V'">VIGENTE</div>
+                        <div class="badge badge-danger" ng-if="tramite.Estado == 'BC'">BAJA CON DEUDA</div>
+                        <div class="badge badge-danger" ng-if="tramite.Estado == ''"></div>
+                    </td>
                     <!--td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td-->
-                    <td data-title="'Tienda Virtual'" >
-                      <a class="btn btn-success ng-binding" tooltip="Completar Info" ng-click="addDatosAE(tramite);">
-                        <i class="fa fa-desktop" aria-hidden="true"></i>
-                      </a>
+                    <td data-title="'Tienda Virtual'">
+                        <button class="btn btn-success ng-binding" tooltip="Completar Info" ng-click="addDatosAE(tramite);">
+                          <i class="fa fa-desktop" aria-hidden="true"></i>
+                        </button>
+                      
                     </td>
-                    <td data-title="'Productos'" >
-                      <a class="btn btn-success ng-binding" tooltip="Productos" ng-click="addProductoAE(tramite);">
+                    <td data-title="'Productos'">
+                      <button class="btn btn-success ng-binding" tooltip="Productos" ng-click="addProductoAE(tramite);">
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                      </a>
+                      </button>
                     </td>
-                    <td data-title="'Pago en Línea'" >
-                      <a class="btn btn-success ng-binding" tooltip="Pago en Línea" ng-click="addPagosAE(tramite);">
+                    <td data-title="'Pago en Línea'">
+                      <button class="btn btn-success ng-binding" tooltip="Pago en Línea" ng-click="addPagosAE(tramite);">
                         <i class="fa fa-credit-card" aria-hidden="true"></i>
-                      </a>
+                      </button>
                     </td>
-                    <td data-title="'Publicar Página'" >
-                      <a class="btn btn-success ng-binding" tooltip="Publicar Página" ng-click="confPublicar(tramite);">
+                    <td data-title="'Publicar Página'">
+                      <button class="btn btn-success ng-binding" tooltip="Publicar Página" ng-click="confPublicar(tramite);">
                         <i class="fa fa-cogs" aria-hidden="true"></i>
-                      </a>
+                      </button>
                     </td>
                 </tr>
               </table>

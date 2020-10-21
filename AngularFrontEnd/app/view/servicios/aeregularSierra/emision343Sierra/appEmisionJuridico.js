@@ -1486,7 +1486,7 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
             tramiteIgob.validarFormProcesos(function(resultado){
                 $scope.tramitesCiudadano();
                 $scope.bloquearBtnEnviarForm();
-                swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible para programar la inspección y/o verificación documental. Caso contrario puede apersonarse a la Plataforma Integra de su Macrodistrito para recabar mayor información.");
+                swal("ESTIMADO CIUDADANO.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Usted podrá realizar el seguimiento o consulta de su trámite a la línea gratuita 800148145, caso contrario puede apersonarse a las Plataformas Empresariales de Actividades Económicas, ubicadas en los Macrodistritos del municipio de La Paz.");
             });
         } catch (error){
             swal('', 'Registro no modificado', 'error');
@@ -3224,19 +3224,22 @@ function regularjuridicoSierraController($scope,$timeout, $rootScope, $routePara
 
     
     $scope.ShowPa = function(valor) {
+        $scope.calculo_total = 0;
         if (valor == 'true' || valor == true) {
             $scope.IsVisible = true;
             $scope.datos.listDeudas = [];
             $scope.datos.pago_adelantado = valor;
         } else{
             if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada_sierra == 1724 || $scope.datos.f01_categoria_agrupada_sierra == '1724' || $scope.datos.f01_tipo_lic_sierra == 21 || $scope.datos.f01_tipo_lic_sierra == '21') {
-                swal('Estimado Ciudadano', 'La actividade desarrollada seleccionada requiere que realice el Pago por Adelantado!', 'warning');
+                swal('Estimado Ciudadano', 'La actividad desarrollada seleccionada requiere que realice el Pago por Adelantado!', 'warning');
                 $scope.IsVisible = true;
+                $scope.datos.pago_adelantado = true;
                 document.getElementById('pago_adelantado').checked = true;
             } else{
                 $scope.datos.nro_ges = '';
                 $scope.datos.listDeudas = [];
                 $scope.IsVisible = false;
+                document.getElementById('pago_adelantado').checked = false;
                 $scope.datos.pago_adelantado = valor;
             };
         };

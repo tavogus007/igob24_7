@@ -1286,8 +1286,6 @@
                         <label for="Pago_Anticipado">
                         Desea realizar el Pago por Adelantado?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="checkbox" ng-model="datos.pago_adelantado" name="pago_adelantado" ng-change="ShowPa(datos.pago_adelantado);" id = "pago_adelantado" ng-disabled="desabilitado" required>
-                        <!--input type="radio" name="pago_adelantado" value = "SI" ng-model="datos.pago_adelantado" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        No <input type="radio" name="pago_adelantado" value = "NO" ng-model="datos.pago_adelantado" ng-change="ShowPa('NO')" ng-disabled="desabilitado" -->
                         </label>
                     </div>
                 </div>
@@ -1322,7 +1320,7 @@
                                     </tr>
                                     <tr>
                                         <td bgcolor = "black" colspan="7"><font color = "white">TOTAL A PAGAR</font></td>
-                                        <td bgcolor = "black"><font color = "white">{{calculo_total}} Bs.</font></td>
+                                        <td bgcolor = "black" align="right"><font color = "white">{{calculo_total}} Bs.</font></td>
                                     </tr>
                                 </table>
                             </div>
@@ -1334,15 +1332,12 @@
                             <div class="col-sm-12" align="left">
                                 <div class="alert alert-danger fade in">
                                     <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
-                                    Ud. puede verificar en su cuenta iGob dentro de {{mensajeCiudadano}}. de la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
-                                    <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado ({{mensajeCiudadano}}), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
+                                    Usted deberá verificar en su cuenta iGob 24/7 la liquidación (proforma) para el pago anticipado de la Patente de Funcionamiento, que le permitirá realizar el pago en entidades financieras autorizadas, con un plazo de 5 (cinco) días posteriores a la generación de la Licencia de Funcionamiento.
+                                    <br><bold>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (5 días), se revertirá la Modalidad de Pago Anticipado de la LICENCIA DE FUNCIONAMIENTO, adecuándose a las obligaciones tributarias regulares (Pago de Patente de Funcionamiento Anual).</bold>
                                 </div>
                             </div>
                         </div>
                     </div>
-                        <!--div class="col-md-12" style="text-align:right">
-                           <button class="btn btn-default" ng-click="registrarDeuda();" ng-disabled="btnCalcular" data-dismiss="modal">Realizar Pago Adelantado</button>
-                        </div-->
                 </div>
                 </br>
                 </br>

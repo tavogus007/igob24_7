@@ -3828,7 +3828,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             tramiteIgob.validarFormProcesos(function(resultado){
                 $scope.tramitesCiudadano();
                 $scope.bloquearBtnEnviarForm();
-                swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible para programar la inspección y/o verificación documental. Caso contrario puede apersonarse a la Plataforma Integra de su Macrodistrito para recabar mayor información.");
+                swal("ESTIMADO CIUDADANO.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Usted podrá realizar el seguimiento o consulta de su trámite a la línea gratuita 800148145, caso contrario puede apersonarse a las Plataformas Empresariales de Actividades Económicas, ubicadas en los Macrodistritos del municipio de La Paz.");
             });
         } catch (error){
             console.log("Error : ", error);
@@ -4202,6 +4202,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     };
 
     $scope.ShowPa = function(valor) {
+        $scope.calculo_total = 0;
         var fechaVen = $scope.datos.f01_vencimientoLicencia.split('/');
         var resFechaVen = fechaVen[2] + "-" + fechaVen[1] + "-" + fechaVen[0];
         var fechaAct = $scope.fechafinalserver.split('/');

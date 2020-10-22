@@ -231,7 +231,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
 
     }
     $scope.addDatosAE = function (tramite) {
-        if(tramite.Estado == 'V'){
+        if(tramite.Estado == 'VIGENTE'){
             cargando();
             $scope.template =   "";
             $scope.template         =   $scope.templates[0];
@@ -242,12 +242,12 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             $scope.sIdAeGrilla  =   tramite.IdActividad;
             $.LoadingOverlay("hide");
         }else{
-            swal('Sr. Ciudadano', "La Actividad Economica se encuentra con Baja.", 'warning');
+            swal('Sr. Ciudadano', "La Actividad Economica se encuentra con baja", 'warning');
         }
         
     }
     $scope.addPagosAE = function (tramite) {
-        if(tramite.Estado == 'V'){
+        if(tramite.Estado == 'VIGENTE'){
             cargando();
             $scope.template =   "";
             sessionService.set('IDAE', tramite.IdActividad);
@@ -265,11 +265,11 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 $.LoadingOverlay("hide");
             }
         }else{
-            swal('', "Actividad Economica con Baja.", 'warning');
+            swal('Sr. Ciudadano', "Actividad Economica se encuentra con baja.", 'warning');
         }
     }
     $scope.addProductoAE = function (tramite) {
-        if(tramite.Estado == 'V'){
+        if(tramite.Estado == 'VIGENTE'){
             cargando();
             $scope.template =   "";
             sessionService.set('IDAE', tramite.IdActividad);
@@ -287,11 +287,11 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 $.LoadingOverlay("hide");
             }
         }else{
-            swal('', "Actividad Economica con Baja.", 'warning');
+            swal('Sr. Ciudadano', "Actividad Economica se encuentra con baja.", 'warning');
         }
     }
     $scope.confPublicar = function (tramite) {
-        if(tramite.Estado == 'V'){
+        if(tramite.Estado == 'VIGENTE'){
             cargando();
             $scope.template =   "";
             sessionService.set('IDAE', tramite.IdActividad);
@@ -307,13 +307,13 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                 $scope.template         =   $scope.templates[3];
                 $.LoadingOverlay("hide");
             } catch(error){
-                swal('', "Debe habilitar la tienda virtual, antes de habilitar su página Web.", 'warning');
+                swal('Sr. Ciudadano', "Debe habilitar la tienda virtual, antes de habilitar su página Web.", 'warning');
                 sessionService.destroy('IDTV');
                 $scope.template =   "";
                 $.LoadingOverlay("hide");
             }
         }else{
-            swal('', "Actividad Economica con Baja.", 'warning');
+            swal('Sr. Ciudadano', "Actividad Economica se encuentra con baja.", 'warning');
         }
     }
     $scope.seleccionarPagoRender = function (tramite) {

@@ -27,9 +27,9 @@
                     <td data-title="'Dirección'" ng-click="addDatosAE(tramite);">{{tramite.Direccion}}</td>
                     <td data-title="'Descripción'" ng-click="addDatosAE(tramite);" >{{tramite.Descripcion}}</td>
                     <td data-title="'Estado'" ng-click="addDatosAE(tramite);" >
-                        <div class="badge badge-danger" ng-if="tramite.Estado == 'BS'">BAJA SIN DEUDA</div>
-                        <div class="badge badge-primary" ng-if="tramite.Estado == 'V'">VIGENTE</div>
-                        <div class="badge badge-danger" ng-if="tramite.Estado == 'BC'">BAJA CON DEUDA</div>
+                        <div class="badge badge-danger" ng-if="tramite.Estado == 'BAJA'">BAJA</div>
+                        <div class="badge badge-primary" ng-if="tramite.Estado == 'VIGENTE'">VIGENTE</div>
+                        <div class="badge badge-danger" ng-if="tramite.Estado == 'BAJA CON DEUDA'">BAJA CON DEUDA</div>
                         <div class="badge badge-danger" ng-if="tramite.Estado == ''"></div>
                     </td>
                     <!--td data-title="'Deuda'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaActividad}} </td-->

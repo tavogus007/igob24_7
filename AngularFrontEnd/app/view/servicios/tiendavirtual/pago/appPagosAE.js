@@ -10,7 +10,13 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
   $scope.btndelete = false;
   $scope.entidades = [];
   $scope.tipodePagoMsj = 0;
-
+  
+  $scope.infotipoPago = function(tipo){
+    if(tipo == 'QR'){
+      $scope.mensajetpPago = "El Código QR es una modalidad de Pago codificada e interoperable (interbancaria), que permitirá al usuario o cliente de cualquier banco utilizar su App Bancaria y escanear este código QR que permite realizar el pago mediante una transferencia interbancaria codificada desde su cuenta de su banco a la cuenta recaudadora de la Pyme en el BCP.";
+      swal("", $scope.mensajetpPago , "info");
+    }
+  }  
   $scope.mensajeAlerta = function(){
     if ( $scope.tipodePagoMsj == 1) {
       $scope.mensajetpPago = "Para efectuar el cobro a través del Banco de Crédito de Bolivia (BCP), mediante el cobro por QR-BCP"+
@@ -274,27 +280,7 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
         });
         break;
       case "2":
-        
-        /* if (datos.profile_id == "" ) {
-          $scope.smal_perfil = true;
-          alertify.error($scope.msError);
-          return false;
-        }
-        if (datos.access_key == "") {
-          $scope.smal_acc_key = true;
-          alertify.error($scope.msError);
-          return false;
-        }
-        if (datos.secret_key == "") {
-          $scope.smal_sec_key = true;
-          alertify.error($scope.msError);
-          return false;
-        }
-        if (datos.id_organizacion == "") {
-          $scope.smal_idOrg = true;
-          alertify.error($scope.msError);
-          return false;
-        } */
+              
         if (datos.cod_agregador == "") {
           $scope.smal_cod_agreg = true;
           alertify.error($scope.msError);
@@ -315,11 +301,7 @@ function pagosAEController($scope, $timeout, CONFIG, $window, $rootScope, sessio
           $scope.$apply(function () {
             var pagoAtc = new atc();
             pagoAtc.id_actividadeconomica = idAE;
-            pagoAtc.cod_agregador = datos.cod_agregador;
-            /*pagoAtc.id_organizacion = datos.id_organizacion;
-            pagoAtc.access_key = datos.access_key;
-            pagoAtc.profile_id = datos.profile_id;
-            pagoAtc.secret_key = datos.secret_key; */
+            pagoAtc.cod_agregador = datos.cod_agregador;            
             pagoAtc.registroAtc(function (resp) {
               var respuesta = JSON.parse(resp);
               respuesta = JSON.parse(respuesta);

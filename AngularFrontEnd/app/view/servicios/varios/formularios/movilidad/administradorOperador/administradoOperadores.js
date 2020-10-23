@@ -373,15 +373,15 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       && $scope.datos.RO_PUE_V!=''&&$scope.datos.RO_PUE_V!=undefined 
       && $scope.datos.RO_RAD_V!=''&&$scope.datos.RO_RAD_V!=undefined && $scope.datos.RO_CI_P!='' && $scope.datos.RO_CI_P!=undefined
       && $scope.datos.RO_EXP_P!=''&&$scope.datos.RO_EXP_P!=undefined && $scope.datos.RO_NOM_P!=''&&$scope.datos.RO_NOM_P!=undefined
-      && $scope.datos.RO_CEL_P!=''&&$scope.datos.RO_CEL_P!=undefined && $scope.datos.RO_MAC_P!='' && $scope.datos.RO_MAC_P!=undefined
+      && $scope.datos.RO_MAC_P!='' && $scope.datos.RO_MAC_P!=undefined
       && $scope.datos.RO_ZONA_P!=''&&$scope.datos.RO_ZONA_P!=undefined && $scope.datos.RO_CALL_P!='' && $scope.datos.RO_CALL_P!=undefined
       && $scope.datos.RO_NRO_P!=''&&$scope.datos.RO_NRO_P!=undefined && $scope.datos.RO_CI_POO!='' && $scope.datos.RO_CI_POO!=undefined
       && $scope.datos.RO_EXP_POO!=''&&$scope.datos.RO_EXP_POO!=undefined && $scope.datos.RO_NOM_POO!='' && $scope.datos.RO_NOM_POO!=undefined
-      && $scope.datos.RO_CEL_POO!=''&&$scope.datos.RO_CEL_POO!=undefined && $scope.datos.RO_MAC_POO!='' && $scope.datos.RO_MAC_POO!=undefined
+      && $scope.datos.RO_MAC_POO!='' && $scope.datos.RO_MAC_POO!=undefined
       && $scope.datos.RO_ZONA_POO!=''&&$scope.datos.RO_ZONA_POO!=undefined && $scope.datos.RO_CALL_POO!='' && $scope.datos.RO_CALL_POO!=undefined
       && $scope.datos.RO_NRO_POO!=''&&$scope.datos.RO_NRO_POO!=undefined)
     {
-      if($scope.datos.RO_MOD_VALUE=1){
+      if($scope.datos.RO_MOD_VALUE==1){
         var idSuc = document.getElementById("RO_ID_SUC").options[document.getElementById("RO_ID_SUC").selectedIndex].text;
       }else{
         var idSuc = '';
@@ -1025,11 +1025,11 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       color: '#fff' 
     },message: "Espere un momento por favor ..." }); 
     setTimeout(function(){
-      var detalle = '';
+      var detalle = [];
       if(veh.veh_ope_detalle_renov==null){
         detalle = [{"fecha_d":veh.veh_ope_vigencia_d,"fecha_a":veh.veh_ope_vigencia_a}];
       }else{
-        detalle =veh.veh_detalle_renov;
+        detalle = veh.veh_ope_detalle_renov;
         detalle.push({"fecha_d":veh.veh_ope_vigencia_d,"fecha_a":veh.veh_ope_vigencia_a});
       }
       detalle = JSON.stringify(detalle);
@@ -1083,7 +1083,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       color: '#fff' 
     },message: "Espere un momento por favor ..." }); 
     setTimeout(function(){
-      var detalle = '';
+      var detalle = [];
       if(cond.cond_ofi_detalle_renov==null){
         detalle = [{"fecha_d":cond.cond_ofi_vigencia_d,"fecha_a":cond.cond_ofi_vigencia_a}];
       }else{

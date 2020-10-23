@@ -176,7 +176,7 @@ function pagosAEController($scope, $timeout, CONFIG,$window,$rootScope,sessionSe
           $scope.mostrar = false;
         }
       } catch(error){
-        swal('', "Debe actualizar datos en tienda virtual: <br> Título, Descripción, Nombre de su página", 'error');
+        swal('', "Debe actualizar datos en tienda virtual:  Título, Descripción, Nombre de su página", 'error');
         $scope.mostrar = false;
       }
       

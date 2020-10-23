@@ -298,7 +298,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="form-group" >
+                        <div class="form-group" ><font color="#FF0000" size="4px" align="center"> * </font>
                             <label for="url" >Nombre para su página Web:</label>
                             <div class="controls">
                                 <input ng-model="datos.f01_dominio" id="f01_dominio" name="f01_dominio" class="form-control" minlength="4" maxlength="15" onpaste="return false;"  onkeypress="return soloLetras(event)" ng-change="validaDominio(datos.f01_dominio);"  placeholder="Nombre para la Página Web" ng-disabled="desabilitado" required/>
@@ -1048,6 +1048,14 @@
                         </div>
                     </div>
                     </div>
+                </div>
+                <div class="row" >
+                    <div class="col-md-10" align="left">
+                        <div class="alert alert-danger fade in">
+                            <strong>Debe completar todos los campos del formulario que están marcadas con </strong> <strong> <font color="#FF0000" size="4px" align="center"> * </font></strong>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
                 </div>
                 <div class="col-md-12" align="right">
                     <button ng-show="nuevo!=null" type="button" class="btn btn-default ng-binding" ng-click="registrarDatosAE(datos)">Registrar</button>

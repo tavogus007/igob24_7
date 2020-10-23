@@ -2,7 +2,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
     var fecha           = new Date();
     var fechactual      = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
     $scope.divJuridico              = false;
-    $scope.divOcultarJuegos         = true;
     $scope.tblTramites              =   {};
     $scope.trmUsuario               =   [];
     $scope.mostrarMsgActividadTrue  = false;
@@ -33,104 +32,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
     $scope.divDeudasPendientes = false;
     $scope.btnCalcular = true;
     $scope.btnFUM = false;
-
-    //RADIO PARA VER SI REALIZARA UNA NUEVA ACTIVIDAD O UNA RENOVACION
-    $scope.validarEmisionRenovacion = function (camb) {
-        var datosgen = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
-        if (camb != "NUEVO" && datosgen.length > 0) {
-            $scope.botones = null;
-            $scope.desabilitado = true;
-            swal('', "Favor revisar la información y seleccionar la Actividad Economica que realizará, para la Emisión de la Licencia.", 'warning');
-        }else{
-            $scope.botones = "mostrar";
-            $scope.desabilitado = false;
-        }
-    }
-
-   /*CIUDADANO - TIPO INICIO DE TRAMITE NUEVO - RENOVACION*/
-    $scope.cambioToggleForm = function (cambio) {
-        $scope.validarEmisionRenovacion(cambio);
-        if (cambio == "RENOVACION") {
-            $scope.mostrarMsgNuevaActividad = false;
-            $scope.mostrarMsgActividadTrue = true;
-            $scope.mostrarMsgActividadFalse = false;
-            $scope.formDatosAE = true;
-            $scope.tipoCategoria = false;
-            $scope.actividadDesarrollada = true;
-            $scope.datos.f01_id_actividad_economica = '';
-            $scope.datos.f01_nro_orden = "";
-            $scope.datos.f01_nit = '';
-            $scope.datos.f01_raz_soc = '';
-            $scope.datos.f01_sup = '';
-            $scope.datos.f01_cap_aprox = '';
-            $scope.datos.f01_de_hor = '';
-            $scope.datos.f01_a_hor = '';
-            $scope.datos.f01_fecha_ini_act = '';
-            $scope.datos.f01_estab_es = '';
-            $scope.datos.f01_macro_act = '';
-            $scope.datos.f01_macro_act_descrip = '';
-            $scope.datos.f01_dist_act = '';
-            $scope.datos.f01_dist_act_descrip = '';
-            $scope.datos.f01_tip_via_act = '';
-            $scope.datos.f01_zona_act = '';
-            $scope.datos.f01_zona_act_descrip = '';
-            $scope.datos.f01_num_act = '';
-            $scope.datos.f01_num_act1 = '';
-            $scope.datos.f01_edificio_act = '';
-            $scope.datos.f01_bloque_act = '';
-            $scope.datos.f01_piso_act = '';
-            $scope.datos.f01_dpto_of_loc = '';
-            $scope.datos.f01_tel_act1 = '';
-            $scope.datos.f01_cod_luz = '';
-            $scope.datos.f01_idCodigoZona = '';
-            $scope.datos.f01_casilla = '';
-            $scope.datos.f01_productosElaborados = '';
-            $scope.datos.f01_actividadesSecundarias = '';
-            $scope.datos.f01_factor = '';
-            $scope.datos.f01_tip_act = '';
-            $scope.datos.f01_tipo_lic = '';
-            $scope.datos.f01_categoria = '';
-            $scope.datos.f01_categoria_descrip = '';
-            $scope.datos.f01_tipo_lic = '';
-            $scope.datos.f01_tipo_lic_descrip = '';
-            $scope.datos.f01_categoria = '';
-            $scope.datos.f01_categoria_descrip = '';
-            $scope.datos.f01_categoria_agrupada = '';
-            $scope.datos.f01_categoria_descripcion = '';
-            $scope.datos.f01_categoria_agrupada_descripcion = '';
-            $scope.datos.f01_categoria_agrupada_descrip = '';
-            $scope.datos.f01_categoria_descrip2 = '';
-            $scope.licenciaToogle1 = true;
-            $scope.licenciaToogle2 = false;
-            $scope.licenciaToogle1 = false;
-            $scope.licenciaToogle2 = true;
-            $scope.publicidad = '';
-            $scope.publicidad_grilla = '';
-            $scope.datos.publicidad ='';
-            $scope.licdes=[];
-            $scope.multiple=[];
-            $scope.dscripcionlic = {};
-            $scope.licenciamul = '';
-            $scope.datos.licenciam = '';
-            $scope.licmul_grilla = '';
-            $scope.datos.Licenmul_grilla = '';
-            $scope.datos.mulact_principal = '';
-            $scope.publicid = '';
-            $scope.datos.f01_actividad_principal_array =[];
-            $scope.datos.FILE_CI = '';
-            $scope.datos.fileArchivosAd = '';
-            $scope.datos.pago_adelantado = '';
-            $scope.datos.nro_ges = '';
-            //LISTAMOS LA TABLA SI ESTA VACIA
-            $scope.validarActividadEconomica();
-        }
-        var datosgen       = ((typeof($scope.dataGenesisCidadano)    == 'undefined' || $scope.dataGenesisCidadano == null) ? {}  : $scope.dataGenesisCidadano);
-        if (JSON.stringify(datosgen) === '{}' && cambio != "NUEVO") {
-            $scope.mostrarMsgNuevaActividad = false;
-            swal('', " Estimado Ciudadano no tiene actividad económica registrada.", 'warning');
-            $scope.datos.rdTipoTramite = "NUEVO";
-        }
-    };
 
     $scope.cambioToggle1 = function(dato){
         $scope.lssubcategoria();
@@ -923,7 +824,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                         var combox = document.getElementById('f01_act_desarrolladamid');
                         selected2 = combox.options[combox.selectedIndex].text;
                         $scope.multiple.f01_act_desarrolladamdescrip = selected2;
-                        //$scope.multiple.f01_tae = datosLicM[0].tae;
                         $scope.getRequisitosFormulario(datosLicM[0].categoria_id_anterior,$scope.datos.f01_tipo_per);
                         deferred.resolve($scope.multiple);
                         if(!$scope.$$phase) {
@@ -1015,7 +915,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         $scope.datos.Licenmul_grilla = encabezado;
     }
 
-    $scope.detallem = [];
     $scope.editm = {};
     $scope.onlym=false;
     $scope.botonm="new";
@@ -1036,31 +935,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         $scope.botonm="new";
         delete $scope.editm[dato.idm];
         $scope.multiple = [];
-    }
-  ///TERMINA LICENCIA MULTIPLE
-
-    var requisitosDoc = [];
-    $scope.validacionRequisitos = function(sup){
-        requisitosDoc = $rootScope.datosRequisitos;
-        datoObjectFinal = [];
-        datoObjectFinal2 = [];
-        for (var i = 0; i < requisitosDoc.length; i++ ) {
-             datoObject = new Object();
-             datoObject2 = new Object();
-            if(requisitosDoc.resvalor == " PARA INMUEBLES CON SUPERFICIE MAYOR A 150 M2: PLANO ELABORADO POR ARQUITECTO DETALLANDO LOS AMBIENTES UTILIZADOS" && sup < 150){
-                datoObject2.resid        =   requisitosDoc[i].resid;
-                datoObject2.resvalor     =   requisitosDoc[i].resvalor;
-                datoObject2.estado       =   requisitosDoc[i].estado;
-                datoObjectFinal2[i]      =   datoObject2;
-            }
-            else{
-                datoObject.resid        =   requisitosDoc[i].resid;
-                datoObject.resvalor     =   requisitosDoc[i].resvalor;
-                datoObject.estado       =   requisitosDoc[i].estado;
-                datoObjectFinal[i]      =   datoObject;
-            }
-        }
-        $rootScope.datosRequisitosmostrar = datoObjectFinal;
     }
 
     $scope.getRequisitosCategoria = function(idCategoria, persona){
@@ -1871,9 +1745,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
     $scope.enviarFormProcesosLinea = function(paramForm){
         $scope.ultimoArrayAdjunto();
         $scope.capturarImagen();
-        //$scope.adjpublicidad(paramForm);
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
-        //$rootScope.validacionRequisitosTec();
         $scope.btnEnviarForm    =   true;
         var idProcodigo         =   'RE-LF';
         var datosNeXO = {};
@@ -2915,46 +2787,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
 
     var latitud = 0;
     var longitud = 0;
-    var activarClick = false;
-    var versionUrl = "";
-    var markerToClose = null;
-    var dynamicMarkers;
-    var vNroInsidenciaG = 0;
-    var recargaMapita;
-    var map;
-    var markers = [];
-
-    // Adds a marker to the map and push to the array.
-    $scope.addMarker = function(location) {
-        var marker = new google.maps.Marker({
-            position: location,
-            map: map
-        });
-        markers.push(marker);
-    }
-
-    // Sets the map on all markers in the array.
-    $scope.setMapOnAll = function(map) {
-        for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(map);
-        }
-    }
-
-    // Removes the markers from the map, but keeps them in the array.
-    $scope.clearMarkers = function() {
-        $scope.setMapOnAll(null);
-    }
-
-    // Shows any markers currently in the array.
-    $scope.showMarkers = function() {
-        $scope.setMapOnAll(map);
-    }
-
-    // Deletes all markers in the array by removing references to them.
-    $scope.deleteMarkers = function() {
-        $scope.clearMarkers();
-        markers = [];
-    }
 
     $scope.convertToDataURLviaCanvas = function (url, callback, outputFormat){
         var img = new Image();
@@ -3005,9 +2837,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             body:blob
         };
         fileUpload.uploadFileToUrl(blob, uploadUrl);
-       /* DreamFactory.api[CONFIG.SERVICE_ARCHIVO].createFile(resFormulario).success(function (response){
-        }).error(function(results){
-        });*/
     };
 
     $scope.capturarImagen = function(){
@@ -3238,11 +3067,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                     datos.f01_tipo_lic_descrip = ((typeof(datos.f01_tipo_lic_descrip) == 'undefined' || datos.f01_tipo_lic_descrip == null) ? "" : datos.f01_tipo_lic_descrip);
                     datos.f01_categoria_agrupada_descrip = ((typeof(datos.f01_categoria_agrupada_descrip) == 'undefined' || datos.f01_categoria_agrupada_descrip == null) ? "" : datos.f01_categoria_agrupada_descrip);
                     datos.f01_categoria_agrupada_descripcion = ((typeof(datos.f01_categoria_agrupada_descripcion) == 'undefined' || datos.f01_categoria_agrupada_descripcion == null) ? "" : datos.f01_categoria_agrupada_descripcion);
-                    /*if(datos.f01_tipo_lic != '32' || datos.f01_tipo_lic != 32){
-                        $scope.GetValueLicencia();
-                        $scope.GetValueCategoriaAgrupada();
-                        $scope.GetValueCategoria();
-                    }*/
                     if(datos.f01_tip_act =='MA' || datos.f01_tip_act =='MATRI'){
                         datos.f01_tip_act1 = 'MATRIZ';
                     }
@@ -3446,7 +3270,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                             stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> NO');
                         };
                     };
-
                     $scope.datosAnt.RepresentanteLegal_segundoNombre = ((typeof($scope.datosAnt.RepresentanteLegal_segundoNombre) == 'undefined' || $scope.datosAnt.RepresentanteLegal_segundoNombre == null) ? "" : $scope.datosAnt.RepresentanteLegal_segundoNombre);
                     $scope.datosAnt.RepresentanteLegal_tercerNombre = ((typeof($scope.datosAnt.RepresentanteLegal_tercerNombre) == 'undefined' || $scope.datosAnt.RepresentanteLegal_tercerNombre == null) ? "" : $scope.datosAnt.RepresentanteLegal_tercerNombre);
                     $scope.datosAnt.RepresentanteLegal_primerApellido = ((typeof($scope.datosAnt.RepresentanteLegal_primerApellido) == 'undefined' || $scope.datosAnt.RepresentanteLegal_primerApellido == null) ? "" : $scope.datosAnt.RepresentanteLegal_primerApellido);
@@ -3514,7 +3337,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                     stringFormulario40  =   stringFormulario40.replace("#numero#", $scope.datosAnt.numero);
                     stringFormulario40  =   stringFormulario40.replace("#numeroActividad#", $scope.datosAnt.numeroactividad);
                     stringFormulario40  =   stringFormulario40.replace("#idCodigoZona#", $scope.datosAnt.idcodigozona);
-
                     var multiAnt = '';
                     if ($scope.datosAnt.idtipolicencia == 26 || $scope.datosAnt.idtipolicencia == '26') {
                         stringFormulario40  =   stringFormulario40.replace("#tipocategoria#", 'MULTISERVICIOS');
@@ -4042,20 +3864,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         $scope.datos.INT_AC_NOMBRE_VIA = data.INT_AC_NOMBRE_VIA;
         $scope.obtenerHora();
         $scope.obtenerFecha();
-        //$scope.abrirMapa();
-        //$scope.open_mapa_ae();
-        if (data.FILE_FOTOCOPIA_CI)
-            $scope.divfileci = true;
-        if (data.FILE_FOTOCOPIA_CI_R)
-            $scope.divfilecir = true;
-        if ($scope.datos.f01_poder_representante)
-            $scope.divfilepoder = true;
-        if (data.f01_test_cons_sociedad_j)
-            $scope.divfiletest = true;
-        if (data.file_num_ident)
-            $scope.divfilenum = true;
-        if (data.file_fund_emp)
-            $scope.divfilefund = true;
     });
 
     $scope.GetValueTipoSociedad = function(){
@@ -4431,7 +4239,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             resDeudaPendiente.parametros = '{"ytaeGestion":"'+fecha.getFullYear()+'","yactividad_economica_id":"'+$scope.datos.f01_id_actividad_economica+'","yfechaActual":"'+$scope.fechafinalserver+'","yusrId":"7777"}';
             resDeudaPendiente.llamarregla_sierra(function(responseDeudasPend){
                 getDeudas = new reglasnegocioSierra();
-                getDeudas.identificador = 'VALLE_PRUEBA-SGEN-3335';
+                getDeudas.identificador = 'SERVICIO_SIERRA-PROC-3284';
                 getDeudas.parametros = '{"aeconomica_id":"'+$scope.datos.f01_id_actividad_economica+'","tipo_deuda":"actividadEconomica"}';
                 getDeudas.llamarregla_sierra(function(reslstDeudas){
                     var lstDeudas = JSON.parse(reslstDeudas);
@@ -4490,13 +4298,14 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                         $scope.FUM = generarITEM2.ir_codigo;
                         $scope.descripFUM = generarITEM2.ir_descripcion;
                         $scope.iddeudas = '';
-                        $scope.montos = '';
                         $scope.odms = '';
                         $scope.myJSONFUM = '';
                         $scope.myJSONtrans = '';
+                        datoObjectFUMFinal = [];
+                        datoObjectTransFinal = [];
+                        datoObjectTransFinal2 = [];
                         var deudasDuodecimas = JSON.parse($scope.datos.deudasPendiente[0].resultado);
                         $scope.iddeudas = $scope.iddeudas+''+deudasDuodecimas.deuda_id+',';
-                        $scope.montos = $scope.montos+''+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado/deudasDuodecimas.deuda_data.ufv_actual).toFixed(5)+',';
                         var dataFum = '';
                         var dataF = '{"gestion_pago":'+deudasDuodecimas.deuda_data.gestion+',"id_actividad":'+deudasDuodecimas.deuda_actividad_id+',"tipo_actividad":"actividadEconomica"}';
                         var detalle = '[{"odm_item_recaudador":"'+generarITEM2.ir_codigo+'","odm_pre_unitario":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'","odm_cantidad":"1","odm_sub_total":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'"}]';
@@ -4510,16 +4319,36 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                             success: function (responseODM) {
                                 console.log('odmm   ',responseODM);
                                 $scope.codigoODM = responseODM.data[0].nroodm;
-                                $scope.odms = $scope.odms+''+$scope.codigoODM+',';
-                                $scope.myJSONFUM = $scope.myJSONFUM +'{"observaciones":"","gestion":"'+deudasDuodecimas.deuda_data.gestion+'","urlfum":"","fum_tipo":"duodecima","usuario":"'+sessionService.get('USUARIO')+'"}-';
-                                $scope.myJSONtrans = $scope.myJSONtrans+'[{"idItemR":"'+$scope.FUM+'","descripcionItem":"'+$scope.descripFUM+'","Monto":"'+deudasDuodecimas.deuda_data.monto_total_bs_padelantado+'","patente_act_bs":"","viae_bs":"","descuento_bs":"","patente_con_descuento_bs":"","ufv":"'+deudasDuodecimas.deuda_data.ufv_actual+'"}]-';
+                                if (responseODM.data[0].nro_registro == 0) {
+                                    swal('', 'Error al generar correlativo, vuelva a imprimir la Proforma Por favor', 'error');
+                                } else{
+                                    $scope.odms = $scope.odms+''+$scope.codigoODM+',';
+                                    datoObjectFUM = new Object();
+                                    datoObjectTrans = new Object();
+                                    datoObjectFUM.observaciones = '';
+                                    datoObjectFUM.gestion = deudasDuodecimas.deuda_data.gestion;
+                                    datoObjectFUM.urlfum = '';
+                                    datoObjectFUM.fum_tipo = 'duodecima';
+                                    datoObjectFUM.usuario = sessionService.get('USUARIO');
+                                    datoObjectFUMFinal[pos] = datoObjectFUM;
+                                    datoObjectTrans.idItemR = $scope.FUM;
+                                    datoObjectTrans.descripcionItem = $scope.descripFUM;
+                                    datoObjectTrans.Monto = deudasDuodecimas.deuda_data.monto_total_bs_padelantado;
+                                    datoObjectTransFinal[0] = datoObjectTrans;
+                                    datoObjectTransFinal2[pos] = datoObjectTransFinal;
+                                }
+                                //$scope.myJSONFUM = $scope.myJSONFUM +'{"observaciones":"","gestion":"'+deudasDuodecimas.deuda_data.gestion+'","urlfum":"","fum_tipo":"duodecima","usuario":"'+sessionService.get('USUARIO')+'"}-';
+                                //$scope.myJSONtrans = $scope.myJSONtrans+'[{"idItemR":"'+$scope.FUM+'","descripcionItem":"'+$scope.descripFUM+'","Monto":"'+deudasDuodecimas.deuda_data.monto_total_bs_padelantado+'","patente_act_bs":"","viae_bs":"","descuento_bs":"","patente_con_descuento_bs":"","ufv":"'+deudasDuodecimas.deuda_data.ufv_actual+'"}]-';
                             },
                             error: function (responseODM, status, error) {
                                 dataResp = "{\"errorParametros\":{\"message\":\"" + responseODM + "\",\"code\":700}}";
                                 console.log("error", dataResp);
                             }
                         });
-                        $scope.registrarFUM($scope.iddeudas, $scope.montos, $scope.odms, $scope.myJSONFUM, $scope.myJSONtrans);
+                        //$scope.registrarFUM($scope.iddeudas, $scope.montos, $scope.odms, $scope.myJSONFUM, $scope.myJSONtrans);
+                        $scope.myJSONFUM = datoObjectFUMFinal;
+                        $scope.myJSONtrans = datoObjectTransFinal2;
+                        $scope.registrarFUM($scope.iddeudas, $scope.odms, $scope.myJSONFUM, $scope.myJSONtrans);
                     })
                     if(!$scope.$$phase) {
                         $scope.$apply();
@@ -4533,43 +4362,28 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         });
     }
 
-    $scope.registrarFUM = function(iddeudas, montos, odms, myJSONFUM, myJSONtrans){
-        var nombreCompleto = '';
-        var direccionCon = '';
-        $scope.objectFUM = myJSONFUM.substring(0,myJSONFUM.length-1);
-        $scope.dat_trasaccion = myJSONtrans.substring(0,myJSONtrans.length-1);
-        if ($scope.datos.f01_nit == undefined || $scope.datos.f01_nit == 'undefined' || $scope.datos.f01_nit == null) {
-            $scope.datos.f01_nit = '';
-        }
+    $scope.registrarFUM = function(iddeudas, odms, myJSONFUM, myJSONtrans){
         getIDFUM = new reglasnegocioSierra();
         getIDFUM.identificador = 'SERVICIO_SIERRA-MAES-2646';
         getIDFUM.parametros = '{}';
         getIDFUM.llamarregla_sierra(function(resIDFUM){
             var idfum = JSON.parse(resIDFUM);
             console.log('idfum    ',idfum);
-            var datos_FUM = JSON.stringify($scope.objectFUM);
-            var datos_transaccion = JSON.stringify($scope.dat_trasaccion);
-            var data_contri = '';
-            nombreCompleto = $scope.datos.f01_pri_nom_rep+' '+$scope.datos.f01_ape_pat_rep+' '+$scope.datos.f01_ape_mat_rep+' '+$scope.datos.f01_ape_cas_rep;
-            direccionCon = $scope.datos.f01_tipo_viarep+' '+$scope.datos.f01_nom_via_rep+' Nº '+$scope.datos.f01_num_rep+' '+$scope.datos.f01_zona_rep;
-            data_contri = '{"codigo":"","padron":"'+$scope.datos.f01_num_pmc+'","direccion":"'+$scope.datos.f01_dir_det_emp+'","contribuyente":"'+$scope.datos.f01_raz_soc_per_jur+'","contribuyente_tipo":"'+$scope.datos.f01_tipo_per+'","representanteLegal":"'+nombreCompleto+'","tipoIdentificacion":"NIT","numeroIdentificacion":"'+$scope.datos.f01_num_doc_per_jur+'","documentoRepresentante":"'+$scope.datos.f01_num_doc_rep+' '+$scope.datos.f01_expedido_rep+'"}';
-            var data_glosa = '';
-            var nomViaAct = '';
-            if ($scope.datos.f01_num_act_id == 0 || $scope.datos.f01_num_act_id == '0') {
-                nomViaAct = $scope.datos.f01_num_act_n;
-            } else{
-                nomViaAct = $scope.datos.f01_num_act;
-            };
-            var glosa = '{"detalleA":"'+$scope.datos.f01_raz_soc+'","nombre_zona":"'+$scope.datos.f01_zona_act_descrip+'","tipo_via":"'+$scope.datos.f01_tip_via_act+'","nombre_via":"'+nomViaAct+'","superficie":"'+$scope.datos.f01_sup+'","numero":"'+$scope.datos.f01_num_act1+'","tipo_licencia_descripcion":"'+$scope.datos.f01_tipo_lic_ant+'","descripcion":"","fecha_inicio":"","actividad_desarrollada":"'+$scope.datos.f01_categoria_agrupada_ant+'","nit":"'+$scope.datos.f01_nit+'","nro_sucursal":"0","actividad_economica_ant_id":"'+$scope.datos.f01_id_actividad_economica+'"}';
-            data_glosa = '{"cabecera":"ACTIVIDAD ECONÓMICA","detalles":'+glosa+',"pie":"","observaciones":""}';
+            var datos_FUM = JSON.stringify(myJSONFUM);
+            var datos_FUM2 = JSON.stringify(datos_FUM);
+            var datos_transaccion = JSON.stringify(myJSONtrans);
+            var datos_transaccion2 = JSON.stringify(datos_transaccion);
+            console.log('datos_transaccion2    ',datos_transaccion2);
             var jsonFUM = '';
-            jsonFUM = '{"xfum_ur_id":"1","xfum_usr_id":"7777","xfum_grupo":'+idfum[0].sp_obtener_grupo+',"xfum_tipo_origen":"actividadEconomica","xcorrelativo_tipo":"FUM","xfum_deudas":"'+iddeudas.substring(0,iddeudas.length-1)+'","xfum_montos_pagar":"'+montos.substring(0,montos.length-1)+'","xfum_data":'+datos_FUM+',"xfum_data_contribuyente":'+JSON.stringify(data_contri)+',"xfum_data_transaccion":'+datos_transaccion+',"xfum_data_glosa":'+JSON.stringify(data_glosa) +',"xfum_num_odm":"'+odms.substring(0,odms.length-1)+'","xtipo_proforma":"detallada","xtipo_fum":"duodecima"}';
+            //jsonFUM = '{"xfum_ur_id":"1","xfum_usr_id":"7777","xfum_grupo":'+idfum[0].sp_obtener_grupo+',"xfum_tipo_origen":"actividadEconomica","xcorrelativo_tipo":"FUM","xfum_deudas":"'+iddeudas.substring(0,iddeudas.length-1)+'","xfum_montos_pagar":"'+montos.substring(0,montos.length-1)+'","xfum_data":'+datos_FUM+',"xfum_data_contribuyente":'+JSON.stringify(data_contri)+',"xfum_data_transaccion":'+datos_transaccion+',"xfum_data_glosa":'+JSON.stringify(data_glosa) +',"xfum_num_odm":"'+odms.substring(0,odms.length-1)+'","xtipo_proforma":"detallada","xtipo_fum":"duodecima"}';
+            jsonFUM = '{"xfum_usr_id":7777,"xfum_tipo_act":"actividadEconomica","xdeudas_id":"'+iddeudas.substring(0,iddeudas.length-1)+'","xfum_data":'+datos_FUM2+',"xfum_data_transaccion":'+datos_transaccion2+',"xfum_data_glosa":"{}","xfum_num_odm":"'+odms.substring(0,odms.length-1)+'","xtipo_proforma":"detallada","xtipo_fum":"duodecima","xid_contribuyente":'+$scope.datos.f01_id_contribuyente+'}';
             registrarFUM = new reglasnegocioSierra();
-            registrarFUM.identificador = 'SERVICIO_SIERRA-MAES-3325';
+            //registrarFUM.identificador = 'SERVICIO_SIERRA-MAES-3325';
+            registrarFUM.identificador = 'SERVICIO_SIERRA-MAES-3386';
             registrarFUM.parametros = jsonFUM;
             registrarFUM.llamarregla_sierra(function(respuestaFUM){
                 var responseF = JSON.parse(respuestaFUM);
-                if (responseF[0].sp_insertar_fum_bloque != '[]' || responseF[0].sp_insertar_fum_bloque != '[ ]') {
+                if (responseF[0].sp_insertar_fum != '[]' || responseF[0].sp_insertar_fum != '[ ]') {
                     generarProforma = new reglasnegocioSierra();
                     generarProforma.identificador = 'SERVICIO_SIERRA-MAE-3342';
                     generarProforma.parametros = '{"xfum_grupo":'+idfum[0].sp_obtener_grupo+'}';

@@ -126,13 +126,13 @@
         </style>
 
     </head>
-    <div class="col-md-12" ng-controller="pagosAEController" ng-init="inicioTiendaVirtualPagos();">
+    <div class="col-md-12"  ng-controller="pagosAEController" ng-init="inicioTiendaVirtualPagos();">
       <div class="ibox float-e-margins">
         <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
             <h4>Datos complementarios del Pago en Linea Virtual</h4>
             <div class="row" ng-show = "tipo=='ATC'">                  
               <input type="checkbox" id="toggle4">
-              <label class="label__modal4" for="toggle4"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i> &nbsp; Ayuda Red Enlace</label>
+              <label style="background-color: #c9a990;"  class="label__modal4" for="toggle4"></label>
               <dialog class="dialog__modal4" >
           
                   <label for="toggle4" class="btn__close4">
@@ -168,12 +168,14 @@
                       </div>
                   </div>        
                   <p class="p__modal">
-                      El Formulario para la Afilación lo encontrara en el siguiente Link <a href="https://igob247.lapaz.bo/app/view/registro_ciudadano/docs/Formulario_ATC.pdf" target="_blank">Descargar Formulario de Afiliación</a>
+                      El Formulario para la Afilación lo encontrara en el siguiente Link   
+                      <a href="https://igob247.lapaz.bo/app/view/registro_ciudadano/docs/Formulario_ATC.pdf" target="_blank">Descargar Formulario de Afiliación</a><br><br>
+                      Para efectuar el cobro a través del servicio de Red Enlace CyberSource, mediante tarjetas de credito o debito 
+                      usted debe poseer credenciales (codigos de acceso) proporcionadas por Red Enlace. 
                   </p>
                                   
                   <label class="label__modal4" for="toggle4">Cerrar Ayuda</label>
-              </dialog>
-          
+              </dialog>          
             </div>
         </div>
         <div class="ibox-content">
@@ -194,19 +196,63 @@
                           
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1" ng-show = "tipo!='ATC'">
                   <div class="form-group" >
                     <br>
                     <a class="btn btn-success ng-binding" 
                       tooltip="Descripción del tipo de pago" 
                       ng-click="mensajeAlerta();">
                       <i class="glyphicon glyphicon-question-sign" aria-hidden="true"></i>
-                    </a>
-                    <!-- <button type="button" class="btn btn-default"
-                            tooltip="Descripción del tipo de pago"
-                                    ng-click="mensajeAlerta()"><i
-                                    class="glyphicon glyphicon-question-sign"></i></button> -->
+                    </a>                    
                   </div>
+                </div>
+                <div class="col-md-1" ng-show = "tipo=='ATC'"> 
+                  <br>                 
+                  <input type="checkbox" id="toggle4">
+                  <label class="label__modal4" for="toggle4"><i class="fa fa-question-circle fa-5" aria-hidden="true"></i></label>
+                  <dialog class="dialog__modal4" >
+              
+                      <label for="toggle4" class="btn__close4">
+                          <i class="fa fa-times color_i4" aria-hidden="true"></i>
+                      </label>
+                      
+                      <div class="post">
+                          <div class="header_post">
+                              <h3>PROCESO AFILIACIÓN COMERCIOS GAMLP – RED ENLACE</h3><br>
+                              <h3>REQUISITOS DE AFILIACIÓN</h3><br>
+                              <p><b>Establecimiento CON NIT</b><br>
+                              Fotocopia NIT – Certificado de inscripción del NIT<br>
+                              Fotocopia Firmada C.I.<br>
+                              Fotocopia Respaldo Cuenta Bancaria (Retiro o Depósito en Ventanillas del Banco de su cuenta o el Encabezado de algún extracto Bancario)*      
+                              </p>
+                              <p><b>Establecimiento SIN NIT</b><br>
+                              Fotocopia de Licencia de Funcionamiento o Credencial de Inscripción al GAMLP<br>
+                              Fotocopia de C.I. Firmado<br>
+                              Croquis de Ubicación del Establecimiento<br>
+                              Fotocopia Respaldo Cuenta Bancaria (Retiro o Depósito en Ventanillas del Banco de su cuenta o el Encabezado de algún extracto Bancario)*      
+                              </p>                          
+                              
+                          </div>                    
+                          <div class="body_post">
+                              <div class="post_content">
+                                  <h3>QUÉ ESTABLECIMIENTOS SON TOMADOS EN CUENTA EN EL GRUPO</h3>
+                                  <p><b>CON NIT</b> 
+                                  Segmentos - Formal - Informal - Mercados - Transportes - Restaurantes - Venta de Ropa	- Artesanos -Orfebres - Herreros - Albañiles Contratistas - Profesionales en Couching<br>
+                                  <b>SIN NIT</b>
+                                  Todos los demás establecimientos que cuenten con número de indentificación tributaria.      
+                                  </p>
+                              </div>
+                          </div>
+                      </div>        
+                      <p class="p__modal">
+                          El Formulario para la Afilación lo encontrara en el siguiente Link   
+                          <a href="https://igob247.lapaz.bo/app/view/registro_ciudadano/docs/Formulario_ATC.pdf" target="_blank">Descargar Formulario de Afiliación</a><br><br>
+                          Para efectuar el cobro a través del servicio de Red Enlace CyberSource, mediante tarjetas de credito o debito 
+                          usted debe poseer credenciales (codigos de acceso) proporcionadas por Red Enlace. 
+                      </p>
+                                      
+                      <label class="label__modal4" for="toggle4">Cerrar Ayuda</label>
+                  </dialog>              
                 </div>
                 <div ng-show = "tipo=='QR'">
                   <div class="col-md-6">

@@ -864,8 +864,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             var hora_ = fechaServ[1].split(':');
             fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
         }); 
-        setTimeout(function () {         
-            console.log("entro a respuesta")
+        setTimeout(function () {     
             var nombre = obj.getAttribute("name");
             var tamaniofile = obj.files[0];
             var oidCiudadano = sessionService.get('IDSOLICITANTE');

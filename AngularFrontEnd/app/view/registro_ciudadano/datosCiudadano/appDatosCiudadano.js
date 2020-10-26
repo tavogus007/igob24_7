@@ -864,12 +864,13 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             var hora_ = fechaServ[1].split(':');
             fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
         }); 
-        setTimeout(function(){         
+        setTimeout(function () {         
+            console.log("entro a respuesta")
             var nombre = obj.getAttribute("name");
             var tamaniofile = obj.files[0];
             var oidCiudadano = sessionService.get('IDSOLICITANTE');
             $scope.direccionvirtual = "RC_CLI";
-            var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/" + oidCiudadano + "/";
+            var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/" + oidCiudadano + "/"+'doc_'+$scope.datosSitram.frm_tra_if_codigo+'/';
             if (nombre == 'adjunto' && (typeof(obj.files[0]) != 'undefined') && (valor != 'undefined' && valor != '')){
                 var tipoDocci = obj.files[0].type;
                 var tipoDoc1 = obj.files[0].name;
@@ -882,7 +883,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         var filecompress = compressImage($scope.adjunto).then(function(respuestaci){
                             var imagenCia = respuestaci.type.split('/');
                             var tipoCia = imagenCia[1];
-                            nombreNuevoCIAnverso = 'doc_'+$scope.datosSitram.frm_tra_if_codigo+'_'+fechaNueva+'.'+tipoCia;
+                            nombreNuevoCIAnverso = fechaNueva+'.'+tipoCia;
                             fileUpload1.uploadFileToUrl1(respuestaci, uploadUrl, nombreNuevoCIAnverso);
                             $scope.registroAdj.adjunto = nombreNuevoCIAnverso;
                             $scope.adjunto = respuestaci;
@@ -892,7 +893,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         });
                     } else{
                         if (ext_doc == 'pdf' ||  ext_doc == 'docx' ||  ext_doc == 'docxlm' || ext_doc == 'xls' || ext_doc == 'xlsx') {
-                            nombreNuevoCIAnverso = 'doc_'+fechaNueva+'.'+tipoDocci;
+                            nombreNuevoCIAnverso = fechaNueva+'.'+tipoDocci;
                             fileUpload1.uploadFileToUrl1($scope.adjunto, uploadUrl,nombreNuevoCIAnverso);
                             $scope.registroAdj.adjunto = nombreNuevoCIAnverso;
                             $scope.btover = true;
@@ -921,7 +922,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 else{
                     if (tamaniofile.size <= 500000) {
                         if (ext_doc == 'png' || ext_doc == 'jpg' || ext_doc == 'jpeg' || ext_doc == 'bmp' || ext_doc == 'gif' || ext_doc == 'pdf' || ext_doc == 'docx' || ext_doc == 'docxlm' || ext_doc == 'xls' || ext_doc == 'xlsx') {
-                            nombreNuevoCIAnverso = 'doc_'+$scope.datosSitram.frm_tra_if_codigo+'_'+fechaNueva+'.'+ext_doc;
+                            nombreNuevoCIAnverso = fechaNueva+'.'+ext_doc;
                             fileUpload1.uploadFileToUrl1($scope.adjunto, uploadUrl,nombreNuevoCIAnverso);
                             $scope.registroAdj.adjunto = nombreNuevoCIAnverso;
                             $scope.btover=true;
@@ -998,7 +999,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 extCi                  =   extCi.toLowerCase();
             }catch(e){}
             if(imagen == 'adj'){
-                $scope.archivoCI = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registroAdj.adjunto + "?app_name=todoangular";
+                $scope.archivoCI = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" +'doc_'+$scope.datosSitram.frm_tra_if_codigo+'/'+ $scope.registroAdj.adjunto + "?app_name=todoangular";
                 if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip'){
                     window.open($scope.archivoCI, "_blank");
                 }else if(extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){
@@ -1010,6 +1011,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         };   
         $.unblockUI();
     }
+
 
     $scope.almacenarDocumentos = function(aFiles){
         var oidCiudadano = sessionService.get('IDSOLICITANTE');

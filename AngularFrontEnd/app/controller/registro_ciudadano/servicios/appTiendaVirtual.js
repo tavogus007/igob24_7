@@ -358,6 +358,122 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
         $rootScope.archivoLuz = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.datosinic.FILE_FACTURA_LUZ + "?app_name=todoangular";
         $.unblockUI();
     };
+
+        $scope.validacionDatosNatural = function(datos){
+        var datosfaltantes = '';
+        datosfaltantes = new Array();
+        if(datos.dtspsl_fec_nacimiento == ''){
+             datosfaltantes.push(' FECHA DE NACIMIENTO');
+        }
+        if(datos.dtspsl_expedido == '' || datos.dtspsl_expedido == ' '){
+             datosfaltantes.push(' EXPEDIDO');
+        }
+        if(datos.dtspsl_nombres == '' || datos.dtspsl_nombres == ' '){
+            datosfaltantes.push(' NOMBRES');
+        }
+        if(datos.dtspsl_materno == '' || datos.dtspsl_materno == ' '){
+            datosfaltantes.push(' APELLIDO MATERNO');
+        }
+        if(datos.dtspsl_movil == '' || datos.dtspsl_movil == ' '){
+            datosfaltantes.push(' CELULAR');
+        }
+        if((datos.dtspsl_correo == '')||(datos.dtspsl_correo == ' ')){
+            datosfaltantes.push(' CORREO');
+        }
+        if(datos.dtspsl_fec_nacimiento == '' || datos.dtspsl_fec_nacimiento == ' '){
+            datosfaltantes.push('FECHA DE NACIMIENTO');
+        }
+        if(datos.dtspsl_pais == '' || datos.dtspsl_pais == ' '){
+            datosfaltantes.push(' PAIS');
+        }
+        if(datos.dtspsl_departamento == '' || datos.dtspsl_departamento == ' '){
+            datosfaltantes.push(' DEPARTAMENTO');
+        }
+        if(datos.dtspsl_provincia == '' || datos.dtspsl_provincia == ' '){
+            datosfaltantes.push(' PROVINCIA');
+        }
+        if((datos.dtspsl_macrodistrito == '' || datos.dtspsl_macrodistrito_desc == '')){
+            datosfaltantes.push(' MACRODISTRITO');
+        }
+        if((datos.dtspsl_distrito == '' || datos.dtspsl_distrito_desc == '')){
+            datosfaltantes.push(' DISTRITO');
+        }
+        if((datos.dtspsl_zona_desc == '' || datos.dtspsl_zona == '')){
+            datosfaltantes.push(' ZONA');
+        }
+        if(datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0'){
+            datosfaltantes.push(' NOMBRE DE VIA');
+        }
+        if(datos.dtspsl_numero_casa == '' || datos.dtspsl_nombre_via == '0'){
+            datosfaltantes.push(' NUMERO DE DOMICILIO');
+        }
+        if(datos.dtspsl_file_fotocopia_ci == '' || datos.dtspsl_file_fotocopia_ci == ' ' ){
+            datosfaltantes.push(' DOCUMENTO DE IDENTIDAD ANVERSO');
+        }
+        if(datos.dtspsl_file_fotocopia_ci_r == '' || datos.dtspsl_file_fotocopia_ci_r == ' '){
+            datosfaltantes.push(' DOCUMENTO DE IDENTIDAD REVERSO');
+        }
+        $scope.datosfalt = datosfaltantes; 
+    }
+
+    $scope.validacionDatosJuridico = function(datos){
+        var datosfaltantes = '';
+        datosfaltantes = new Array();
+        if(datos.dtspsl_ci_representante == '' || datos.dtspsl_ci_representante == ' '){
+             datosfaltantes.push('CI DEL REPRESENTANTE LEGAL');
+        }
+        if(datos.dtspsl_razon_social == '' || datos.dtspsl_razon_social == ' '){
+             datosfaltantes.push(' RAZON SOCIAL');
+        }
+        if(datos.dtspsl_movil == ''){
+            datosfaltantes.push(' CELULAR');
+        }
+        if((datos.dtspsl_correo == '')||(datos.dtspsl_correo == ' ')){
+            datosfaltantes.push(' CORREO');
+        }
+        if(datos.dtspsl_pais == ''){
+            datosfaltantes.push(' PAIS');
+        }
+        if(datos.dtspsl_departamento == ''){
+            datosfaltantes.push(' DEPARTAMENTO');
+        }
+        if(datos.dtspsl_provincia == ''){
+            datosfaltantes.push(' PROVINCIA');
+        }
+        if((datos.dtspsl_macrodistrito == '' || datos.dtspsl_macrodistrito_desc == '')){
+            datosfaltantes.push(' MACRODISTRITO');
+        }
+        if((datos.dtspsl_distrito == '' || datos.dtspsl_distrito_desc == '')){
+            datosfaltantes.push(' DISTRITO');
+        }
+        if((datos.dtspsl_zona_desc == '' || datos.dtspsl_zona == '')){
+            datosfaltantes.push(' ZONA');
+        }
+        if(datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0'){
+            datosfaltantes.push(' NOMBRE DE VIA');
+        }
+        if(datos.dtspsl_numero_casa == '' || datos.dtspsl_nombre_via == '0'){
+            datosfaltantes.push(' NUMERO DE DOMICILIO');
+        }
+        if(datos.dtspsl_file_poder_legal == '' || datos.dtspsl_file_poder_legal == ' ' ){
+            datosfaltantes.push(' DOCUMENTO DE PODER DEL REPRESENTANTE LEGAL');
+        }
+        if(datos.dtspsl_file_num_ident == '' || datos.dtspsl_file_num_ident == ' '){
+            datosfaltantes.push(' DOCUMENTO TESTIMONIO DE CONSTITUCION');
+        }
+        if(datos.dtspsl_file_num_ident == '' || datos.dtspsl_file_num_ident == ' '){
+            datosfaltantes.push(' DOCUMENTO NUMERO DE IDENTIFICACION TRIBUTARIA (NIT)');
+        }
+        if(datos.dtspsl_file_fund_emp == '' || datos.dtspsl_file_fund_emp == ' '){
+            datosfaltantes.push(' DOCUMENTO FUNDEMPRESA');
+        }
+        if(datos.dtspsl_file_reg_comer == '' || datos.dtspsl_file_reg_comer == ' '){
+            datosfaltantes.push(' DOCUMENTO REGISTRO COMERCIAL');
+        }
+
+        $scope.datosfalt = datosfaltantes; 
+    }
+
     $scope.recuperandoDatosInicialesCiudadano = function(){
         var idCiudadano = sessionService.get('IDUSUARIO');
         $scope.datosIniciales = "";
@@ -374,6 +490,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
             fechactual      =   fecha.getFullYear() + "/" + fecha.getMonth() + "/" + fecha.getDate();
             if(sTipoPersona == 'NATURAL')
             {
+                $scope.validacionDatosNatural(datos);
                 if ((datos.dtspsl_nombres == '' || datos.dtspsl_materno == '' || datos.dtspsl_expedido == '' || datos.dtspsl_zona_desc == '' || datos.dtspsl_numero_casa == '' || datos.dtspsl_tipo_via == '' || datos.dtspsl_nombre_via == '' || datos.dtspsl_correo == '' || datos.dtspsl_file_fotocopia_ci == '') || (datos.dtspsl_nombres == ' ' || datos.dtspsl_materno == ' ' || datos.dtspsl_expedido == ' ' || datos.dtspsl_zona_desc == ' ' || datos.dtspsl_numero_casa == ' ' || datos.dtspsl_correo == ' ' || datos.dtspsl_file_fotocopia_ci == ' '))
                 {   
                     setTimeout(function(){
@@ -445,6 +562,7 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope ,$rou
                     }
                 $scope.datosIniciales = datosForm;
             }else{
+                $scope.validacionDatosJuridico(datos);
                 if ((datos.dtspsl_razon_social == '' || datos.dtspsl_nit == '' || datos.dtspsl_ci_representante == '' || datos.dtspsl_zona_desc == '' || datos.dtspsl_numero_casa == '' || datos.dtspsl_tipo_via == '' || datos.dtspsl_nombre_via == '' || datos.dtspsl_correo == '' || datos.dtspsl_file_poder_legal == '') || (datos.dtspsl_ci_representante == ' ' || datos.dtspsl_razon_social == ' ' || datos.dtspsl_zona_desc == ' ' || datos.dtspsl_numero_casa == ' ' || datos.dtspsl_tipo_via == ' ' || datos.dtspsl_nombre_via == ' ' || datos.dtspsl_correo == ' ' || datos.dtspsl_file_poder_legal == ' ' || datos.dtspsl_telefono == ' '))
                 {
                     setTimeout(function(){

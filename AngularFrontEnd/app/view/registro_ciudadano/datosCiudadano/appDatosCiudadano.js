@@ -864,7 +864,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             var hora_ = fechaServ[1].split(':');
             fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
         }); 
-        setTimeout(function () {     
+        setTimeout(function () {         
+            console.log("entro a respuesta")
             var nombre = obj.getAttribute("name");
             var tamaniofile = obj.files[0];
             var oidCiudadano = sessionService.get('IDSOLICITANTE');
@@ -884,7 +885,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             var tipoCia = imagenCia[1];
                             nombreNuevoCIAnverso = fechaNueva+'.'+tipoCia;
                             fileUpload1.uploadFileToUrl1(respuestaci, uploadUrl, nombreNuevoCIAnverso);
-                            $scope.registroAdj.adjunto = nombreNuevoCIAnverso;
+                            $scope.registroAdj.adjunto = 'doc_'+$scope.datosSitram.frm_tra_if_codigo+'/' + nombreNuevoCIAnverso;
                             $scope.adjunto = respuestaci;
                             document.getElementById('txt_adjunto').value = nombreNuevoCIAnverso;
                             $scope.btover=true;
@@ -894,7 +895,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         if (ext_doc == 'pdf' ||  ext_doc == 'docx' ||  ext_doc == 'docxlm' || ext_doc == 'xls' || ext_doc == 'xlsx') {
                             nombreNuevoCIAnverso = fechaNueva+'.'+tipoDocci;
                             fileUpload1.uploadFileToUrl1($scope.adjunto, uploadUrl,nombreNuevoCIAnverso);
-                            $scope.registroAdj.adjunto = nombreNuevoCIAnverso;
+                            $scope.registroAdj.adjunto ='doc_'+$scope.datosSitram.frm_tra_if_codigo+'/'+ nombreNuevoCIAnverso;
                             $scope.btover = true;
                             /*var zipci = new JSZip();
                             zipci.file($scope.adjunto.name, $scope.adjunto);
@@ -923,7 +924,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         if (ext_doc == 'png' || ext_doc == 'jpg' || ext_doc == 'jpeg' || ext_doc == 'bmp' || ext_doc == 'gif' || ext_doc == 'pdf' || ext_doc == 'docx' || ext_doc == 'docxlm' || ext_doc == 'xls' || ext_doc == 'xlsx') {
                             nombreNuevoCIAnverso = fechaNueva+'.'+ext_doc;
                             fileUpload1.uploadFileToUrl1($scope.adjunto, uploadUrl,nombreNuevoCIAnverso);
-                            $scope.registroAdj.adjunto = nombreNuevoCIAnverso;
+                            $scope.registroAdj.adjunto = 'doc_'+$scope.datosSitram.frm_tra_if_codigo+'/' + nombreNuevoCIAnverso;
                             $scope.btover=true;
                             document.getElementById('txt_adjunto').value = nombreNuevoCIAnverso;
                             //$scope.mostrarimg('adj');

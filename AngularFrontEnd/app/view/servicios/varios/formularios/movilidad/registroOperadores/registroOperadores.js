@@ -2572,7 +2572,6 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.listaCond();
     if($scope.objConductores.length <1){
       $scope.datos.PLACA1 = $scope.datos.RO_PLA_V1;
-
       if($scope.datos.RO_EXP_C1!='' && $scope.datos.RO_EXP_C1!=undefined && $scope.datos.PLACA1!='' && $scope.datos.PLACA1!=undefined
       &&$scope.datos.RO_NOM_C1!='' && $scope.datos.RO_NOM_C1!=undefined && $scope.datos.RO_PAT_C1!='' && $scope.datos.RO_PAT_C1!=undefined
       &&$scope.datos.RO_MAT_C1!='' && $scope.datos.RO_MAT_C1!=undefined && $scope.datos.RO_CEL_C1!='' && $scope.datos.RO_CEL_C1!=undefined
@@ -2608,6 +2607,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         datosCond.datos = datac;
         datosCond.usr_id = 1; 
         datosCond.ofi_id = id_suc; 
+        datosCond.tipo_ser = $scope.datos.RO_MOD; 
         datosCond.opcion = 'I';
         datosCond.conductorAbm (function(data){
          

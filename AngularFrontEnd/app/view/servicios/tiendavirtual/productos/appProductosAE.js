@@ -50,8 +50,6 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
     };
 
     $scope.almacenarRequisitos = function(aArchivos, idFiles) {
-        console.log("skdjfhskjadhfkjashdfk");
-        console.log("$rootScope.swArchivo:: ", $rootScope.swArchivo);
         var descDoc = "";
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer();
@@ -301,6 +299,9 @@ function productosController($scope, $timeout, CONFIG, $window, $rootScope, sess
             $scope.datosProd.f01_producto_oferta = "CON OFERTA";
         } else {
             $scope.datosProd.f01_producto_oferta = "SIN OFERTA";
+            data.f01_descripcion_oferta = '';
+            data.f01_de_fecha = '';
+            data.f01_hasta_fecha = ''
         }
 
         if (f0 != "" && f0 != null &&

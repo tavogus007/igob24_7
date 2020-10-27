@@ -161,12 +161,12 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope, $rou
                     $rootScope.inicializaInstagram = true;
                     $rootScope.inicializaYoutube = true;
                     $rootScope.inicializaOtro = true;
-                    $rootScope.$apply();
+                    
                 } else {
                     sessionService.set('IDTV', results[0].tv_idc);
                     $rootScope.nuevo = null;
                     $rootScope.update = 'mostrar';
-                    $rootScope.$apply();
+                    
                 }
             });
             $.LoadingOverlay("hide");
@@ -355,176 +355,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope, $rou
         $rootScope.archivoCIR = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datosinic.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";
         $rootScope.archivoLuz = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datosinic.FILE_FACTURA_LUZ + "?app_name=todoangular";
         $.unblockUI();
-    };
-
-    $scope.recuperandoDatosInicialesCiudadano = function () {
-        var idCiudadano = sessionService.get('IDUSUARIO');
-        $scope.datosIniciales = "";
-        var datosForm = {};
-        var sTipoPersona = "";
-        var recuperarDatos = new rcNatural();
-        recuperarDatos.oid = idCiudadano;
-        recuperarDatos.datosCiudadanoNatural(function (resultado) {
-            resultadoApi = JSON.parse(resultado);
-            datos = resultadoApi[0];
-            $scope.datosRecuperados = datos;
-            sTipoPersona = resultadoApi[0].dtspsl_tipo_persona;
-            $scope.sTipoPersona = resultadoApi[0].dtspsl_tipo_persona;
-            fechactual = fecha.getFullYear() + "/" + fecha.getMonth() + "/" + fecha.getDate();
-            if (sTipoPersona == 'NATURAL') {
-                datosForm['f01_tipo_per'] = sTipoPersona;
-                datosForm['f01_pri_nom_prop'] = datos.dtspsl_nombres;
-                datosForm['f01_ape_pat_prop'] = datos.dtspsl_paterno;
-                datosForm['f01_ape_mat_prop'] = datos.dtspsl_materno;
-                datosForm['f01_ape_cas_prop'] = datos.dtspsl_tercer_apellido;
-                datosForm['f01_fecha_nac'] = datos.dtspsl_fec_nacimiento;
-                datosForm['f01_nom_completo'] = datos.dtspsl_nombres + " " + datos.dtspsl_paterno + " " + datos.dtspsl_materno;
-                datosForm['f01_tip_doc_prop'] = "CI";
-                datosForm['f01_num_dos_prop'] = datos.dtspsl_ci;
-                datosForm['f01_expedido_prop'] = datos.dtspsl_expedido;
-                datosForm['f01_email_prop'] = datos.dtspsl_correo;
-                datosForm['f01_cel_prop'] = datos.dtspsl_movil;
-                datosForm['f01_telef_prop'] = datos.dtspsl_telefono;
-                datosForm['INT_FEC_SOLICITUD'] = fechactual;
-                datosForm['CI_BIGDATA'] = datos._id;
-                datosForm['f01_form_id'] = datos._id;
-                datosForm['INT_MACRODISTRITO'] = datos.dtspsl_macrodistrito;
-                datosForm['INT_OCUPACION'] = datos.dtspsl_ocupacion;
-                datosForm['INT_DIRECCION'] = datos.dtspsl_direccion;
-                datosForm['TIPO'] = "AE_INT_EMISION";
-                datosForm['f01_macro'] = datos.dtspsl_macrodistrito;
-                datosForm['f01_macro_des'] = datos.dtspsl_macrodistrito_desc;
-                datosForm['f01_distrito'] = datos.dtspsl_distrito;
-                datosForm['f01_distrito_desc'] = datos.dtspsl_distrito_desc;
-                datosForm['f01_zona'] = datos.dtspsl_zona;
-                datosForm['f01_zon_prop'] = datos.dtspsl_zona;
-                datosForm['f01_zon_prop_valor'] = datos.dtspsl_zona_desc;
-                datosForm['f01_zon_prop_desc'] = datos.dtspsl_zona_desc;
-                datosForm['INT_VIA'] = datos.dtspsl_tipo_via;
-                datosForm['f01_tip_via_prop'] = datos.dtspsl_tipo_via;
-                datosForm['f01_nom_via_prop'] = datos.dtspsl_nombre_via;
-                datosForm['f01_num_prop'] = datos.dtspsl_numero_casa;
-                datosForm['INT_EDIF'] = datos.dtspsl_edificio;
-                datosForm['f01_nom_edi_prop'] = datos.dtspsl_edificio;
-                datosForm['f01_bloq_prop'] = datos.dtspsl_bloque;
-                datosForm['f01_piso_prop'] = datos.dtspsl_piso;
-                datosForm['f01_depa_prop'] = datos.dtspsl_oficina;
-                datosForm['INT_PISO'] = datos.dtspsl_piso;
-                datosForm['INT_NUM_DEP'] = datos.dtspsl_oficina;
-                datosForm['INT_DIR_DET'] = datos.dtspsl_direccion;
-                datosForm['f01_dir_det_prop'] = datos.dtspsl_direccion;
-                if (datos.dtspsl_expedido) {
-                    if (datos.dtspsl_expedido == 'LPZ' || datos.dtspsl_expedido == 'CBB' || datos.dtspsl_expedido == 'SCZ' || datos.dtspsl_expedido == 'CHQ' || datos.dtspsl_expedido == 'TJA' || datos.dtspsl_expedido == 'PTS' || datos.dtspsl_expedido == 'ORU' || datos.dtspsl_expedido == 'BNI' || datos.dtspsl_expedido == 'PND') {
-                        datosForm['f01_nac_prop'] = 'BOLIVIANA';
-                        datosForm['INT_NACIONALIDAD'] = "BOLIVIANA";
-                    } else {
-                        datosForm['f01_nac_prop'] = 'EXTRANJERO';
-                        datosForm['INT_NACIONALIDAD'] = "EXTRANJERO";
-                    }
-                } else {
-                    console.log("LE FALTA LLENAR SU EXPEDIDO");
-                }
-
-                $scope.datosIniciales = datosForm;
-            } else {
-
-                var gestion = datos.dtspsl_poder_replegal.split(/[ -.!,&|\[\]/\\]+/);
-                if (gestion[1] == 'NaN' || gestion[1] == NaN || gestion[1] == 'undefined' || gestion[1] == undefined || gestion[1] == null || gestion[1] == '') {
-                    datosForm['f01_ges_vig_pod'] = gestion[0];
-                    datosForm['f01_num_pod_leg'] = gestion[0];
-                } else {
-                    datosForm['f01_num_pod_leg'] = gestion[0];
-                    datosForm['f01_ges_vig_pod'] = gestion[1];
-                };
-                datosForm['f01_tipo_per'] = sTipoPersona;
-                datosForm['f01_tip_doc_prop'] = "NIT";
-                datosForm['CI_BIGDATA'] = datos._id;
-                datosForm['f01_form_id'] = datos._id;
-                datosForm['f01_num_doc_per_jur'] = datos.dtspsl_nit;
-                datosForm['f01_raz_soc_per_jur'] = datos.dtspsl_razon_social;
-                datosForm['f01_num_doc_rep'] = datos.dtspsl_ci_representante;
-                datosForm['f01_tip_doc_rep'] = 'CI';
-                datosForm['f01_expedido_rep'] = datos.dtspsl_expedido;
-                datosForm['f01_email_rep'] = datos.dtspsl_correo;
-                datosForm['f01_cel_rep'] = datos.dtspsl_movil;
-                datosForm['f01_telef_rep'] = datos.dtspsl_telefono;
-                datosForm['INT_FEC_SOLICITUD'] = fechactual;
-                datosForm['f01_fecha_nac'] = datos.dtspsl_fec_nacimiento;
-                datosForm['TIPO'] = "AE_INT_EMISION";
-                datosForm['f01_raz_soc'] = datos.f01_raz_soc;
-                datosForm['INT_AC_MACRO_ID'] = "";
-                datosForm['f01_rl_nit'] = datos.dtspsl_nit;
-                datosForm['INT_RL_TIPO_DOCUMENTO'] = "NIT";
-                datosForm['f01_macro'] = datos.dtspsl_macrodistrito;
-                datosForm['f01_macro_des'] = datos.dtspsl_macrodistrito_desc;
-                datosForm['f01_distrito_desc'] = datos.dtspsl_distrito_desc;
-                datosForm['f01_distrito'] = datos.dtspsl_distrito;
-                datosForm['f01_zona'] = datos.dtspsl_zona;
-                datosForm['f01_zona_desc'] = datos.dtspsl_zona_desc;
-                datosForm['INT_VIA'] = datos.dtspsl_tipo_via;
-                datosForm['f01_tipo_via'] = datos.dtspsl_tipo_via;
-                datosForm['f01_nombre_via'] = datos.dtspsl_nombre_via;
-                datosForm['f01_numero_casa'] = datos.dtspsl_numero_casa;
-                datosForm['INT_RL_FEC_EMISION_DOCUMENTO'] = fechactual;
-                datosForm['f01_num_notaria'] = datos.dtspsl_nro_notaria;
-                datosForm['f01_num_not'] = datos.dtspsl_nro_notaria;
-                datosForm['INT_NACIONALIDAD'] = "BOLIVIANA";
-                datosForm['INT_RL_FEC_NACIMIENTO'] = datos.dtspsl_fec_nacimiento;
-                datosForm['INT_NIT'] = datos.dtspsl_nit;
-                datosForm['f01_poder_representante'] = datos.dtspsl_file_poder_legal;
-                datosForm['f01_test_cons_sociedad_j'] = datos.dtspsl_file_test_const;
-                datosForm['file_num_ident'] = datos.dtspsl_file_num_ident;
-                datosForm['file_reg_comer'] = datos.dtspsl_file_reg_comer;
-                datosForm['file_fund_emp'] = datos.dtspsl_file_fund_emp;
-                if (datos.dtspsl_ci_representante || datos.dtspsl_ci_representante != null && datos.dtspsl_ci_representante != "") {
-                    try {
-                        var buscarRepresentante = new rcNatural();
-                        buscarRepresentante.tipo_persona = "NATURAL";
-                        buscarRepresentante.ci = datos.dtspsl_ci_representante;
-                        buscarRepresentante.buscarPersona(function (resultado) {
-                            resultadoApiRepre = JSON.parse(resultado);
-                            var repLegalmongo = resultadoApiRepre;
-                            var dtsNombres = ((typeof (repLegalmongo[0].dtspsl_nombres) == 'undefined') ? "" : repLegalmongo[0].dtspsl_nombres);
-                            var dtsPaterno = ((typeof (repLegalmongo[0].dtspsl_paterno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_paterno);
-                            var dtsMaterno = ((typeof (repLegalmongo[0].dtspsl_materno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_materno);
-                            datosForm['id_representante'] = repLegalmongo[0]._id;
-                            datosForm['f01_pri_nom_prop'] = ((typeof (repLegalmongo[0].dtspsl_nombres) == 'undefined') ? "" : repLegalmongo[0].dtspsl_nombres);
-                            datosForm['f01_ape_pat_prop'] = ((typeof (repLegalmongo[0].dtspsl_paterno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_paterno);
-                            datosForm['f01_ape_mat_prop'] = ((typeof (repLegalmongo[0].dtspsl_materno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_materno);
-                            datosForm['INT_RL_FECHA_NAC'] = ((typeof (repLegalmongo[0].dtspsl_fec_nacimiento) == 'undefined') ? "" : repLegalmongo[0].dtspsl_fec_nacimiento);
-                            datosForm['INT_RL_FEC_NACIMIENTO'] = ((typeof (new Date(repLegalmongo[0].dtspsl_fec_nacimiento)) == 'undefined') ? "" : new Date(repLegalmongo[0].dtspsl_fec_nacimiento));
-                            datosForm['oid_representante_legal'] = repLegalmongo[0]._id;
-                            var sepNombre = repLegalmongo[0].dtspsl_nombres.split(" ");
-                            datosForm['f01_pri_nom_rep'] = ((repLegalmongo[0].dtspsl_nombres == 'undefined') ? "" : repLegalmongo[0].dtspsl_nombres);
-                            datosForm['f01_ape_cas_rep'] = ((typeof (repLegalmongo[0].dtspsl_tercer_apellido) == 'undefined') ? "" : repLegalmongo[0].dtspsl_tercer_apellido);
-                            datosForm['f01_ape_pat_rep'] = ((typeof (repLegalmongo[0].dtspsl_paterno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_paterno);
-                            datosForm['f01_ape_mat_rep'] = ((typeof (repLegalmongo[0].dtspsl_materno) == 'undefined') ? "" : repLegalmongo[0].dtspsl_materno);
-                            datosForm['f01_expedido_rep'] = repLegalmongo[0].dtspsl_expedido;
-                            datosForm['FILE_FOTOCOPIA_CI_RA'] = repLegalmongo[0].dtspsl_file_fotocopia_ci;
-                            datosForm['FILE_FOTOCOPIA_CI_RR'] = repLegalmongo[0].dtspsl_file_fotocopia_ci_r;
-                            datosForm['f01_macro_rep'] = repLegalmongo[0].dtspsl_macrodistrito;
-                            datosForm['f01_macro_desc_rep'] = repLegalmongo[0].dtspsl_macrodistrito_desc;
-                            datosForm['f01_dist_rep'] = repLegalmongo[0].dtspsl_distrito;
-                            datosForm['f01_zona_rep'] = repLegalmongo[0].dtspsl_zona;
-                            datosForm['f01_id_zona_rep'] = repLegalmongo[0].dtspsl_zona;
-                            datosForm['f01_zon_rep_valor'] = repLegalmongo[0].dtspsl_zona_desc;
-                            datosForm['f01_nom_via_rep'] = repLegalmongo[0].dtspsl_nombre_via;
-                            datosForm['f01_num_rep'] = repLegalmongo[0].dtspsl_numero_casa;
-                            datosForm['f01_tipo_viarep'] = repLegalmongo[0].dtspsl_tipo_via;
-                            datosForm['f01_num_rep'] = repLegalmongo[0].dtspsl_numero_casa;
-                            datosForm['f01_cel_rep'] = repLegalmongo[0].dtspsl_movil;
-                            datosForm['f01_email_rep'] = repLegalmongo[0].dtspsl_correo;
-                            datosForm['f01_telef_rep'] = repLegalmongo[0].dtspsl_telefono;
-                            datosForm['f01_expedido_rep'] = repLegalmongo[0].dtspsl_expedido;
-                        });
-                    } catch (e) {
-                        console.log('*Error*', e);
-                    }
-                }
-                $scope.datosIniciales = datosForm;
-            }
-
-        });
     };
 
     $scope.iniciandoDatos = function () {
@@ -871,9 +701,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope, $rou
                     $scope.datos.f01_tel_act1 = response[0].telefono;
                     $scope.datos.f01_casilla = response[0].casilla;
                     $scope.datos.f01_factor = response[0].tipoTrayecto;
-                    $scope.distritoZonas(smacrodes);
-                    $scope.actulizarIdDistrito(response[0].zona);
-
 
                     if (response[0].idactividad_desarrollada343 == '0' || response[0].idactividad_desarrollada343 == 0) {
                         $scope.LicenciaXCategoriaA(response[0].idActividadDesarrollada)
@@ -889,13 +716,10 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope, $rou
                     $scope.datos.f01_tipo_lic_ant = response[0].descripcion;
                     $scope.datos.f01_categoria_agrupada_ant = response[0].actividadesSecundarias;
                     $scope.datos.f01_categoria_descrip_ant = response[0].ActividadDesarrollada;
-                    $scope.cargarNombVia($scope.datos.f01_tip_via_act, $scope.datos.f01_zona_act);
-                    $scope.getDatosLotus(resultadoApi.success.dataSql.datosAE[0].idActividadEconomica, codhojaruta);
                     $scope.desabilitado = false;
                     $scope.botones = "mostrar";
 
                 }
-                //$rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
             } else {
                 swal('', "Datos no Encontrados !!!", 'warning');
             }
@@ -913,9 +737,6 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope, $rou
                 $scope.resultadoCP = $scope.resultadoLotus.success.data[0].datos;
                 $scope.datos.INT_AC_latitud = $scope.resultadoCP.INT_AC_latitud;
                 $scope.datos.INT_AC_longitud = $scope.resultadoCP.INT_AC_longitud;
-                //$scope.datos.f01_tipo_lic_descrip = $scope.resultadoCP.f01_tipo_lic_descrip;
-                //$scope.datos.f01_categoria_agrupada_descrip = $scope.resultadoCP.f01_categoria_agrupada_descrip;
-                //$scope.datos.f01_categoria_agrupada_descripcion = $scope.resultadoCP.f01_categoria_agrupada_descripcion;
                 $scope.datos.f01_casilla = $scope.resultadoCP.f01_casilla;
                 $scope.datos.f01_num_act = $scope.resultadoCP.f01_num_act;
                 $scope.datosAntMulti = $scope.resultadoLotus.success.data[0].datos.licencia_multiple;
@@ -1052,105 +873,11 @@ app.controller('serviciosControllerProducto', function ($scope, $rootScope, $rou
             $.unblockUI();
         }
     };
-    $scope.macrodistritos = function () {
-        $scope.aMacrodistritos = {};
-        var datosP = new macrodistritoLst();
-        datosP.obtmacro(function (resultado) {
-            data = JSON.parse(resultado);
-            if (data.success.length > 0) {
-                $scope.aMacrodistritos = data.success;
-            } else {
-                $scope.msg = "Error !!";
-            }
-        });
-    };
-    $scope.distritoZonas = function (idMacroJ) {
-        var idMacro = "";
-        if ($scope.aMacrodistritos) {
-            angular.forEach($scope.aMacrodistritos, function (value, key) {
-                if (value.mcdstt_macrodistrito == idMacroJ) {
-                    idMacro = value.mcdstt_id;
-                }
-            });
-        }
-        $scope.idMacro = idMacro;
-        $scope.datos.f01_macro_act = idMacro;
-        $scope.datos.INT_AC_MACRO_ID = idMacro;
-        $scope.aDistritoZona = {};
-        try {
-            var parametros = new distritoZona();
-            parametros.idMacro = idMacro;
-            parametros.obtdist(function (resultado) {
-                data = JSON.parse(resultado);
-                if (data.success.length > 0) {
-                    $scope.aDistritoZona = data.success;
-                    $scope.desabilitadoV = true;
-                    $scope.desabilitadoNo = true;
-                } else {
-                    $scope.msg = "Error !!";
-                }
-            });
-        } catch (error) {
-            $scope.desabilitadoZ = true;
-            $scope.desabilitadoV = true;
-            $scope.desabilitadoNo = true;
-        }
-    };
-    $scope.cargarNombVia = function (tipoVia, idZona) {
-        try {
-            var nomvia = new aelstNombreVia();
-            nomvia.idzona = $scope.datos.f01_zona_act;
-            nomvia.tipovia = tipoVia;
-            nomvia.aelst_NombreVia(function (res) {
-                x = JSON.parse(res);
-                response = x.success.data;
-                if (response.length > 0) {
-                    $scope.datosNombVia = response;
-                }
-            });
-        } catch (error) {
-            console.log('datos error via');
-        }
-    };
-    $scope.actulizarIdDistrito = function (zonadescrip) {
-        $scope.desabilitadoV = false;
-        var idDistrito = "";
-        var idZona = "";
-        var distNombre = zonadescrip;
-        if ($scope.aDistritoZona) {
-            angular.forEach($scope.aDistritoZona, function (value, key) {
-                if (value.dist_nombre == distNombre) {
-                    idDistrito = value.dist_dstt_id;
-                    idZona = value.dist_id;
-                }
-            });
-        }
-        $scope.datos.f01_dist_act = idDistrito;
-        $scope.datos.INT_AC_DISTRITO = idDistrito;
-        $scope.datos.INT_AC_ID_ZONA = idZona;
-        $scope.datos.f01_zona_act = idZona;
-        $scope.datos.f01_zona_act_descrip = zonadescrip;
-        $scope.datos.INT_ID_ZONA = idZona;
-        $scope.desabilitadoNo = true;
-    };
-    $scope.cargarNombViaTxt = function (valor) {
-        if (valor == "NINGUNO") {
-            $scope.datos.f01_factor = "VA";
-        } else {
-            $scope.datos.f01_factor = "TM";
-        }
-    };
-    $scope.GetValueMacrodistrito = function (macro) {
-        var e = document.getElementById("f01_macro_act");
-        $scope.datos.f01_macro_act_descrip = e.options[e.selectedIndex].text;
-    }
+
     $scope.$on('api:ready', function () {
-        $scope.recuperandoDatosInicialesCiudadano();
         $scope.obtenerContribuyente();
     });
     $scope.inicioServiciosP = function () {
-        $scope.recuperandoDatosInicialesCiudadano();
         $scope.obtenerContribuyente();
-        $scope.macrodistritos();
     };
 });

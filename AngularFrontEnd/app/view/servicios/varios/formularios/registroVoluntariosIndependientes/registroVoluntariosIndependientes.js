@@ -115,6 +115,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                 datosMascota.llamarregla(function (results) {
                     var res = JSON.parse(results);
                         id_tramite = res[0].sp_insertar_voluntario_sierra_igob;
+                        $scope.codigoTramite = id_tramite; //mag 
                         $scope.datos = {};
                         $scope.trmExperiencia = [];
                         $scope.trmAsociados = [];
@@ -277,12 +278,12 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                     }else{
                         if(validador_envio == 1){
                             $scope.crear_tramite(datos)
-                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
+                            $scope.f_actualizar("Su solicitud fue enviada,su número de trámite es:" + $scope.codigoTramite,'activo');
                         }else if(validador_envio == 2){
-                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
+                            $scope.f_actualizar("Su solicitud fue enviadasu número de trámite es:" + $scope.codigoTramite,'activo');
                         }else if(validador_envio == 3){
                             $scope.crear_tramite(datos)
-                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
+                            $scope.f_actualizar("Su solicitud fue enviadasu número de trámite es:" + $scope.codigoTramite,'activo');
                         }else if(validador_envio == 4){
                             $scope.f_actualizar_guardado('Su solicitud fue guardada','guardado');
                         }
@@ -329,12 +330,12 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                     }else{
                         if(validador_envio == 1){
                             $scope.crear_tramite(datos)
-                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
+                            $scope.f_actualizar("Su solicitud fue enviada, su número de trámite es:" + $scope.codigoTramite,'activo');
                         }else if(validador_envio == 2){
-                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
+                            $scope.f_actualizar("Su solicitud fue enviada, su número de trámite es:" + $scope.codigoTramite,'activo');
                         }else if(validador_envio == 3){
                             $scope.crear_tramite(datos)
-                            $scope.f_actualizar("Su solicitud fue enviada",'activo');
+                            $scope.f_actualizar("Su solicitud fue enviada,su número de trámite es:" + $scope.codigoTramite,'activo');
                         }else if(validador_envio == 4){
                             $scope.f_actualizar_guardado('Su solicitud fue guardada','guardado');
                         }
@@ -407,6 +408,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
                 results = JSON.parse(results);
                 results = results.success;
                 if(results.length > 0){
+                    $scope.validarFormProcesos();
                     alertify.success("Formulario almacenado");   
                     $.unblockUI();
                 }else{
@@ -418,6 +420,29 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
               $.unblockUI();
             }
         }
+             /*enviarFormProcesos*/
+    $scope.validarFormProcesos = function(){
+        var idTramite = sessionService.get('IDTRAMITE');
+        idUsuario = sessionService.get('IDUSUARIO');
+        nroTramiteEnviado = sessionService.get('NROTRAMITE');
+        idUsuario = 4;
+        try {
+            var idTramite = sessionService.get('IDTRAMITE');
+            //nroTramiteEnviado = sessionService.get('NROTRAMITE');
+            idUsuario = 4; 
+            var tramiteIgob = new datosFormularios();
+            tramiteIgob.frm_idTramite = idTramite;
+            tramiteIgob.frm_tra_enviado = 'SI';
+            tramiteIgob.frm_tra_if_codigo = $scope.codigoTramite;
+            tramiteIgob.frm_tra_id_usuario = idUsuario;
+            tramiteIgob.validarFormProcesos(function(resultado){
+                //swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + $scope.codigoTramite);
+            });
+        } catch (error){
+            swal('', 'Registro no modificado', 'error');
+            $.unblockUI(); 
+        }
+    };
 
         $scope.f_registrar = function(){
             $scope.xdeshabilitado = true;
@@ -469,6 +494,7 @@ function registroVoluntariosIndependientesController($scope,$q,$timeout,CONFIG,$
         $scope.f_actualizar_guardado = function(ytitulo,yestado){
             $scope.xdeshabilitado = false;
             $scope.div_boton_guardar = true;
+            $scope.codigoTramite = id_tramite; 
             var datosMascota = new reglasnegocioM();
             $scope.unido.datos_voluntario = $scope.datos;
             $scope.unido.datos_personales = $scope.datos_responsable;

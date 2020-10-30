@@ -260,9 +260,15 @@ textarea::-webkit-scrollbar-thumb {
     });
 
     $('.custom-upload input[type=file]').change(function(){
-      $(this).next().find('input').val($(this).val());
-      angular.element(this).scope().cambiarFile(this, $(this).val());
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
     });
+    function iniciarLoadFyle(){
+        $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+        });
+    }
 </script>
 <div ng-controller="datosCiudadanoController" data-ng-init="inicioDatosCiudadano();">
       <div class="col-md-12">

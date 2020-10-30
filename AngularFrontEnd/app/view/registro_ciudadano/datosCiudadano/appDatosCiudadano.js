@@ -232,19 +232,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             datosCiudadano.datosCiudadanoNatural(function(resultado){ 
                 response = JSON.parse(resultado);
                 sessionService.set('SERVICIOS', response[0].dtspsl_acepta_servicios);
-                /*if (sessionService.get('SERVICIOS')=='SI') {
-                    sessionService.set('US_IDROL', "5");
-                    $rootScope.stiporol = sessionService.get('US_IDROL');
-                } else {
-                    sessionService.set('US_IDROL', "4");
-                    $rootScope.stiporol = sessionService.get('US_IDROL');
-                }*/
-                // var UTCstring = (new Date()).toUTCString();
-
-                //var myDate = new Date(UTCstring *1000);
-               
-                //document.write(myDate.toGMTString()+"<br>"+myDate.toLocaleString());
-
                 $scope.vercorreo = "noexiste";
                 if (response[0].dtspsl_correo == "") {
                     $scope.vercorreo = null;
@@ -824,11 +811,15 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
     var nombreNuevoCIAnverso = '';
 
     $scope.cargarData = function(dataAdj){
-        console.log('dataAdj',dataAdj);
         $scope.datosSitram = dataAdj;
         if (dataAdj.obs_tra_tipo_resp == 'A') {
             $scope.respAdjunto = true;
             $scope.respInfo = false;
+            document.getElementById('txt_adjunto').value = '';
+            document.getElementById('adjunto').value = '';
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
         }
         if (dataAdj.obs_tra_tipo_resp == 'R') {
             $scope.respAdjunto = false;
@@ -977,6 +968,11 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     success: function (data){ console.log(data);
                         alertify.success("Información enviada");
                         $scope.archivarNotificacion($scope.datosSitram.obs_tra_id);
+                        document.getElementById('txt_adjunto').value = '';
+                        document.getElementById('adjunto').value = '';
+                        $scope.registroAdj.adjunto = '';
+                        $scope.adjunto = '';
+                        valor = '';
                         $scope.$apply();
                     },
                     error: function (data){ console.log(data);}
@@ -986,9 +982,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
     $scope.mostrarI = false;
 
     $scope.mostrarimg  =   function(imagen){
-        if (typeof($scope.adjunto) != 'undefined') {
-            $scope.registroAdj.adjunto = nombreNuevoCIAnverso;
-        };
         if (typeof($scope.registroAdj.adjunto) != 'undefined') {
             var nombreArchivoCi    =   "";
             nombreArchivoCi        =   $scope.registroAdj.adjunto;
@@ -998,7 +991,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 extCi                  =   extCi.toLowerCase();
             }catch(e){}
             if(imagen == 'adj'){
-                $scope.archivoCI = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" +'doc_'+$scope.datosSitram.frm_tra_if_codigo+'/'+ $scope.registroAdj.adjunto + "?app_name=todoangular";
+                $scope.archivoCI = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registroAdj.adjunto + "?app_name=todoangular";
                 if(extCi == 'pdf' ||  extCi == 'docx' ||  extCi == 'docxlm' || extCi == 'zip'){
                     window.open($scope.archivoCI, "_blank");
                 }else if(extCi == 'jpeg' || extCi == 'jpg' ||  extCi == 'png' ||  extCi == 'gif'){

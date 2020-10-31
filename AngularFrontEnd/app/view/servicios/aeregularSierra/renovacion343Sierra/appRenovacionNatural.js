@@ -2896,7 +2896,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     if (data.rdTipoTramite1 == 'RENOVACION') {
                         if (data.pago_adelantado == true && data.nro_ges != "") {
                             $scope.formulario401(data);
-                            $("#declaracionJ").modal("show");
+                            $("#declaracionN").modal("show");
                         } else{
                             if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
                                 $scope.serializarInformacion(data);
@@ -2967,7 +2967,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     if (data.rdTipoTramite1 == 'RENOVACION') {
                         if (data.pago_adelantado == true && data.nro_ges != "") {
                             $scope.formulario401(data);
-                            $("#declaracionJ").modal("show");
+                            $("#declaracionN").modal("show");
                         } else{
                             if (data.pago_adelantado == false || (data.pago_adelantado == "" || data.pago_adelantado == undefined || data.pago_adelantado == 'undefined')) {
                                 $scope.serializarInformacion(data);
@@ -3133,7 +3133,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descripcion#", datos.f01_categoria_agrupada_descripcion);
                         stringFormulario40  =   stringFormulario40.replace("#Licenmul_grilla#", multi);
                     };
-                    var tablapago = '';
+                    /*var tablapago = '';
                     if(datos.pago_adelantado == true){
                         stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SI');//datos.pago_adelantado);
                         stringFormulario40  =   stringFormulario40.replace("#nro_ges#", datos.nro_ges);
@@ -3142,7 +3142,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
                         stringFormulario40  =   stringFormulario40.replace("#nro_ges#", 'NINGUNA');
                         stringFormulario40  =   stringFormulario40.replace("#tablaP#", '');
-                    }
+                    }*/
                     stringFormulario40 = stringFormulario40.replace("#f01_idCodigoZona#",datos.f01_idCodigoZona);
                     var divfoodTruck = '';
                     if (datos.f01_categoria == 211 || datos.f01_categoria == '211') {
@@ -4136,8 +4136,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 $scope.totalD = 0;
             } else{
                 $.blockUI();
-                //$scope[name] = 'Running';
-                //var deferred = $q.defer();
                 var datoObject_cat = '[';
                 if ($scope.datos.f01_tipo_lic_sierra == 26 || $scope.datos.f01_tipo_lic_sierra == '26') {
                     var multiservicios = $scope.datos.licenciam;
@@ -4206,7 +4204,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         datoObjectPago[j] = datoObjectPP;
                         $scope.calculo_total = $scope.calculo_total + parseInt(pagoAE[j].monto_total_con_descuento);
                     };
-                    //var data = datoObjectPago;
                     $scope.datos.listDeudas = datoObjectPago;
                     $scope.datos.calculo_total = $scope.calculo_total;
                     $scope.listDeudas = datoObjectPago;
@@ -4215,9 +4212,8 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     }
                     console.log('$scope.listDeudas    ',$scope.datos.listDeudas);
                     $scope.tblDeudas.reload();
-                            $.unblockUI();
+                    $.unblockUI();
                 })
-                //return deferred.promise;
             }
         };
     }
@@ -4346,6 +4342,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         datoObjectTransFinal = [];
                         datoObjectTransFinal2 = [];
                         var deudasDuodecimas = JSON.parse($scope.datos.deudasPendiente[0].resultado);
+                        var montoufv = parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado/deudasDuodecimas.deuda_data.ufv_actual).toFixed(5);
                         $scope.iddeudas = $scope.iddeudas+''+deudasDuodecimas.deuda_id+',';
                         var dataFum = '';
                         var dataF = '{"gestion_pago":'+deudasDuodecimas.deuda_data.gestion+',"id_actividad":'+deudasDuodecimas.deuda_actividad_id+',"tipo_actividad":"actividadEconomica"}';
@@ -4371,12 +4368,12 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                                     datoObjectFUM.urlfum = '';
                                     datoObjectFUM.fum_tipo = 'duodecima';
                                     datoObjectFUM.usuario = sessionService.get('USUARIO');
-                                    datoObjectFUMFinal[pos] = datoObjectFUM;
+                                    datoObjectFUMFinal[0] = datoObjectFUM;
                                     datoObjectTrans.idItemR = $scope.FUM;
                                     datoObjectTrans.descripcionItem = $scope.descripFUM;
-                                    datoObjectTrans.Monto = deudasDuodecimas.deuda_data.monto_total_bs_padelantado;
+                                    datoObjectTrans.Monto = montoufv;//deudasDuodecimas.deuda_data.monto_total_bs_padelantado;
                                     datoObjectTransFinal[0] = datoObjectTrans;
-                                    datoObjectTransFinal2[pos] = datoObjectTransFinal;
+                                    datoObjectTransFinal2[0] = datoObjectTransFinal;
                                     //$scope.myJSONFUM = $scope.myJSONFUM +'{"observaciones":"","gestion":"'+deudasDuodecimas.deuda_data.gestion+'","urlfum":"","fum_tipo":"duodecima","usuario":"'+sessionService.get('USUARIO')+'"}-';
                                     //$scope.myJSONtrans = $scope.myJSONtrans+'[{"idItemR":"'+$scope.FUM+'","descripcionItem":"'+$scope.descripFUM+'","Monto":"'+deudasDuodecimas.deuda_data.monto_total_bs_padelantado+'","patente_act_bs":"","viae_bs":"","descuento_bs":"","patente_con_descuento_bs":"","ufv":"'+deudasDuodecimas.deuda_data.ufv_actual+'"}]-';
                                 };

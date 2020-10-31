@@ -4305,6 +4305,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                         datoObjectTransFinal = [];
                         datoObjectTransFinal2 = [];
                         var deudasDuodecimas = JSON.parse($scope.datos.deudasPendiente[0].resultado);
+                        var montoufv = parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado/deudasDuodecimas.deuda_data.ufv_actual).toFixed(5);
                         $scope.iddeudas = $scope.iddeudas+''+deudasDuodecimas.deuda_id+',';
                         var dataFum = '';
                         var dataF = '{"gestion_pago":'+deudasDuodecimas.deuda_data.gestion+',"id_actividad":'+deudasDuodecimas.deuda_actividad_id+',"tipo_actividad":"actividadEconomica"}';
@@ -4330,12 +4331,12 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                                     datoObjectFUM.urlfum = '';
                                     datoObjectFUM.fum_tipo = 'duodecima';
                                     datoObjectFUM.usuario = sessionService.get('USUARIO');
-                                    datoObjectFUMFinal[pos] = datoObjectFUM;
+                                    datoObjectFUMFinal[0] = datoObjectFUM;
                                     datoObjectTrans.idItemR = $scope.FUM;
                                     datoObjectTrans.descripcionItem = $scope.descripFUM;
-                                    datoObjectTrans.Monto = deudasDuodecimas.deuda_data.monto_total_bs_padelantado;
+                                    datoObjectTrans.Monto = montoufv;//deudasDuodecimas.deuda_data.monto_total_bs_padelantado;
                                     datoObjectTransFinal[0] = datoObjectTrans;
-                                    datoObjectTransFinal2[pos] = datoObjectTransFinal;
+                                    datoObjectTransFinal2[0] = datoObjectTransFinal;
                                 }
                                 //$scope.myJSONFUM = $scope.myJSONFUM +'{"observaciones":"","gestion":"'+deudasDuodecimas.deuda_data.gestion+'","urlfum":"","fum_tipo":"duodecima","usuario":"'+sessionService.get('USUARIO')+'"}-';
                                 //$scope.myJSONtrans = $scope.myJSONtrans+'[{"idItemR":"'+$scope.FUM+'","descripcionItem":"'+$scope.descripFUM+'","Monto":"'+deudasDuodecimas.deuda_data.monto_total_bs_padelantado+'","patente_act_bs":"","viae_bs":"","descuento_bs":"","patente_con_descuento_bs":"","ufv":"'+deudasDuodecimas.deuda_data.ufv_actual+'"}]-';

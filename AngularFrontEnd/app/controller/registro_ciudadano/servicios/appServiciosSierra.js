@@ -1,4 +1,4 @@
-﻿app.controller('serviciosController343Sierra', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad, $q) {
+app.controller('serviciosController343Sierra', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad, $q) {
     $scope.imageCST = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     $scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     var fecha= new Date();
@@ -936,8 +936,8 @@
                         var listarZonas = [$scope.distritoZonas($scope.datos.f01_macro_act)];
                         $q.all(listarZonas).then(function (resp) {
                             $scope.datos.f01_zona_act = cod_zona_sit;
-                            document.getElementById('f01_zona_act').value = cod_zona_sit;
-                            $scope.GetValueZona(cod_zona_sit);
+                            //document.getElementById('f01_zona_act').value = cod_zona_sit;
+                            //$scope.GetValueZona(cod_zona_sit);
                             $scope.actulizarIdDistrito();
                             reqwest({
                             url: url_vias,
@@ -1197,6 +1197,7 @@
         $scope.desabilitadoV = false;
         var idDistrito  = "";
         var idZona      = "";
+        var nombreZona = "";
         var dimZon = $scope.aDistritoZona.length;
         var distNombre  = $scope.datos.f01_zona_act;
         if($scope.aDistritoZona){
@@ -1205,6 +1206,7 @@
                 if(value.dist_id == $scope.zonaAct_id){
                     idDistrito  =   value.dist_dstt_id;
                     idZona      =   value.dist_id;
+                    nombreZona  =   value.dist_nombre;
                 }
             });
         }
@@ -1214,6 +1216,7 @@
         $scope.datos.INT_AC_ID_ZONA     =   idZona;
         deferred.resolve($scope.datos.f01_zona_act);
         $scope.datos.INT_ID_ZONA        =   idZona;
+        $scope.datos.f01_zona_act_descrip = nombreZona;
         $scope.desabilitadoNo = true;
         return deferred.promise;
     };

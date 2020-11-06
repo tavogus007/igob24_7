@@ -399,14 +399,14 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                             };
                             $scope.open_mapa_ae($scope.datos.INT_AC_latitud, $scope.datos.INT_AC_longitud);
                             if (datosLotus.f01_tipo_lic == '18' || datosLotus.f01_tipo_lic == 18) {
-                                $scope.mostrarzonaseguraj = true;
+                                $rootScope.mostrarzonasegura = true;
                                 if (datosLotus.f01_zona_segura == 'SI')
                                     $scope.datos.chkzonasegura = 'ZONASEGURA';
                                 else
                                     $scope.datos.chkzonasegura = 'NOZONASEGURA';
                             } else{
                                 $scope.datos.chkzonasegura = null;
-                                $scope.mostrarzonaseguraj = false;
+                                $rootScope.mostrarzonasegura = false;
                             };
                             if (datosLotus.f01_tipo_lic == '32' || datosLotus.f01_tipo_lic == 32) {
                                 $scope.sinmultiservicios = false;
@@ -429,13 +429,13 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                                         swma = 0;
                                 };
                                 if(swma == 1){
-                                    $scope.mostrarzonaseguraj = true;
+                                    $rootScope.mostrarzonasegura = true;
                                     if (datosLotus.f01_zona_segura == 'SI')
                                         $scope.datos.chkzonasegura = 'ZONASEGURA';
                                     else
                                         $scope.datos.chkzonasegura = 'NOZONASEGURA';
                                 }else{
-                                    $scope.mostrarzonaseguraj = false;
+                                    $rootScope.mostrarzonasegura = false;
                                 }
                             } else{
                                 $scope.sinmultiservicios = true;
@@ -1120,9 +1120,9 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
 
     $scope.GetValueZonaSegura = function (idCategoria){
         if(idCategoria == 3419 || idCategoria == 3420 || idCategoria == 3421 || idCategoria == 3422 || idCategoria == 3423 || idCategoria == 3424){
-            $scope.mostrarzonaseguraj = true;
+            $rootScope.mostrarzonasegura = true;
         }else{
-            $scope.mostrarzonaseguraj = false;
+            $rootScope.mostrarzonasegura = false;
         }
     }
 
@@ -1210,9 +1210,9 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                 }
             }
             if(swmul == 1){
-                $scope.mostrarzonaseguraj = true;
+                $rootScope.mostrarzonasegura = true;
             }else{
-                $scope.mostrarzonaseguraj = false;
+                $rootScope.mostrarzonasegura = false;
             }
             for (var i = 0; i < datoslicm.length && swproceso == 0; i++) {
                 if(datoslicm[k].f01_procesomul == 'GEN'){
@@ -3776,22 +3776,22 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         };
         switch (data.chkzonasegura) {
             case 'ZONASEGURA':
-                $scope.mostrarzonaseguraj = true;
+                $rootScope.mostrarzonasegura = true;
             break;
             case 'NOZONASEGURA':
-                $scope.mostrarzonaseguraj = true;
+                $rootScope.mostrarzonasegura = true;
             break;
             case '':
-                $scope.mostrarzonaseguraj = false;
+                $rootScope.mostrarzonasegura = false;
             break;
             case 'undefined':
-                $scope.mostrarzonaseguraj = false;
+                $rootScope.mostrarzonasegura = false;
             break;
             case undefined:
-                $scope.mostrarzonaseguraj = false;
+                $rootScope.mostrarzonasegura = false;
             break;
             case null:
-                $scope.mostrarzonaseguraj = false;
+                $rootScope.mostrarzonasegura = false;
             break;
         };
         //MOSTRAR VIAE

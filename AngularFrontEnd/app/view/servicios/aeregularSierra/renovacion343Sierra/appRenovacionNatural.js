@@ -564,9 +564,9 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
 
     $scope.GetValueZonaSegura = function (idCategoria){
         if(idCategoria == 3419 || idCategoria == 3420 || idCategoria == 3421 || idCategoria == 3422 || idCategoria == 3423 || idCategoria == 3424){
-            $scope.mostrarzonasegura = true;
+            $rootScope.mostrarzonasegura = true;
         }else{
-            $scope.mostrarzonasegura = false;
+            $rootScope.mostrarzonasegura = false;
         }
     }
 
@@ -874,26 +874,26 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         if (data.f01_tipo_lic_sierra == '12' || data.f01_tipo_lic_sierra == 12) {
             switch (data.chkzonasegura) {
                 case 'ZONASEGURA':
-                    $scope.mostrarzonasegura = true;
+                    $rootScope.mostrarzonasegura = true;
                 break;
                 case 'NOZONASEGURA':
-                    $scope.mostrarzonasegura = true;
+                    $rootScope.mostrarzonasegura = true;
                 break;
                 case '':
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
                 case 'undefined':
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
                 case undefined:
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
                 case null:
-                    $scope.mostrarzonasegura = false;
+                    $rootScope.mostrarzonasegura = false;
                 break;
             };
         } else{
-            $scope.mostrarzonasegura = false;
+            $rootScope.mostrarzonasegura = false;
         };
         if (data.licenciamulAnterior) {
             if (data.licenciamulAnterior.length > 0) {
@@ -1299,14 +1299,14 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                             };
                             $scope.open_mapa_ae($scope.datos.INT_AC_latitud, $scope.datos.INT_AC_longitud);
                             if (datosLotus.f01_tipo_lic == '18' || datosLotus.f01_tipo_lic == 18) {
-                                $scope.mostrarzonasegura = true;
+                                $rootScope.mostrarzonasegura = true;
                                 if (datosLotus.f01_zona_segura == 'SI')
                                     $scope.datos.chkzonasegura = 'ZONASEGURA';
                                 else
                                     $scope.datos.chkzonasegura = 'NOZONASEGURA';
                             } else{
                                 $scope.datos.chkzonasegura = null;
-                                $scope.mostrarzonasegura = false;
+                                $rootScope.mostrarzonasegura = false;
                             };
                             if (datosLotus.f01_tipo_lic == '32' || datosLotus.f01_tipo_lic == 32) {
                                 $scope.sinmultiservicios = false;
@@ -1329,13 +1329,13 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                                         swma = 0;
                                 };
                                 if(swma == 1){
-                                    $scope.mostrarzonasegura = true;
+                                    $rootScope.mostrarzonasegura = true;
                                     if (datosLotus.f01_zona_segura == 'SI')
                                         $scope.datos.chkzonasegura = 'ZONASEGURA';
                                     else
                                         $scope.datos.chkzonasegura = 'NOZONASEGURA';
                                 }else{
-                                    $scope.mostrarzonasegura = false;
+                                    $rootScope.mostrarzonasegura = false;
                                 }
                             } else{
                                 $scope.sinmultiservicios = true;

@@ -275,8 +275,10 @@ function datosTramite(datos,nroTram,codTram){
   };
   $.ajax({
     data: formularioDatos,
-    url: "http://192.168.5.141:8003/wsRCPG/sp_crear_datos_formulario",   
+    //url: "http://192.168.5.141:8003/wsRCPG/sp_crear_datos_formulario",  
+    url: jsonURLS.CONEXION_API_PG_RC+'wsRCPG/sp_crear_datos_formulario',  
     type: 'POST',
+    
     success: function (response) {
         validaDatos(nroTram,codTram);
       }
@@ -293,7 +295,8 @@ function validaDatos(nroTram,codTram){
   $.blockUI();
   $.ajax({
     data: validaDatos,
-    url: "http://192.168.5.141:8003/wsRCPG/validarFormProcesos",   
+    url: jsonURLS.CONEXION_API_PG_RC+'wsRCPG/validarFormProcesos',   
+    //url: "http://192.168.5.141:8003/wsRCPG/validarFormProcesos",   
     type: 'POST',
     success: function (response) {
       limpiar();

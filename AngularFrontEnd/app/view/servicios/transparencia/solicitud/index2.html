@@ -213,7 +213,7 @@ function tramitesFormulario(){
   $.blockUI();
   var fecha= new Date();
   var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-  var sIdServicio = 64;
+  var sIdServicio = 27;
   var sIdCiudadano = sIdCiudadano;
   var sFechaTramite = fechactual;
   var sdataCiudadano = {};
@@ -248,7 +248,7 @@ function tramitesFormulario(){
     frm_tra_enviado: 'NO',
     frm_tra_registrado: fechactual,
     frm_tra_modificado: fechactual,
-    id_servicio: 64,
+    id_servicio: 27,
     oid_ciudadano: sessionStorage.getItem('IDSOLICITANTE'),
     id_usuario: 3,
     frm_data_ciudadano: sjonDataCiudano
@@ -268,7 +268,7 @@ function tramitesFormulario(){
 function datosTramite(datos,nroTram,codTram){
   var sjonDataCiudadano = JSON.stringify(datos);  
   var formularioDatos = {
-    idServicio: 64,
+    idServicio: 27,
     data_json: sjonDataCiudadano,
     idCiudadano: sessionStorage.getItem('IDSOLICITANTE'),
     idusuario: 1,

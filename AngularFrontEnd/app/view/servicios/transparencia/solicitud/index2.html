@@ -255,7 +255,8 @@ function tramitesFormulario(){
   };
     $.ajax({
         data: formularioTramites,
-        url: "http://192.168.5.141:8003/wsRCPG/adicionaTramitesFormulario",   
+        url: jsonURLS.CONEXION_API_PG_RC+'wsRCPG/adicionaTramitesFormulario', 
+        //url: "http://192.168.5.141:8003/wsRCPG/adicionaTramitesFormulario",   
         type: 'POST',
         success: function (response) {
             var nroTramite = response.success[0].sp_insertar_formulario_tramites_datos;

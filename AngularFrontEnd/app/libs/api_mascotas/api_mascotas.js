@@ -8,33 +8,35 @@ var typeCall;
 if(jsonURLS){
     urlMaservicio    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "/motorservicio_pruebas/public/api/apiLogin";
     urlMaservicioReglas    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "motorservicio_pruebas/public/api/reglaNegocio/ejecutarWeb";
-    console.log('INTERMEDIO-----',urlMaservicio);
+    urlRCPG = jsonURLS.CONEXION_API_PG_RC + "wsRCPG";
     key = jsonURLS.KEY;
 
 }
 
-/*function ejecutarAjaxMASCOTAS(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
-  var headers = {};
+function ejecutarAjax1(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+  token = sessionStorage.getItem('TOKEN_API');
   $.ajax({
-      type: vTypeCall,
-      url: urlMaservicio + vUrlComp,
-      data: vDataCall,
-      //dataType: "json",
-      async: false,
-      //processData: true,
-      success: function(response) {
-        dataResp = JSON.stringify(response);
-        vFunctionResp(dataResp);
-      },
-      error: function (response, status, error) {
-        //dataResp = response.responseText;
-        dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-        vFunctionResp(dataResp);
-      }
-    });
-    return dataResp;
-};*/
-
+    type: vTypeCall,
+    url: urlRCPG + vUrlComp,
+    data: vDataCall,
+    //dataType: "json",
+    async: false,
+    headers: {
+      'Authorization': 'Bearer ' + token
+    },
+    //processData: true,
+    success: function(response) {
+      dataResp = JSON.stringify(response);
+      vFunctionResp(dataResp);
+    },
+    error: function (response, status, error) {
+      //dataResp = response.responseText;
+      dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+      vFunctionResp(dataResp);
+    }
+  });
+  return dataResp;
+};
 
 function ejecutarAjaxMASCOTAS(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
   var headers = {};
@@ -60,10 +62,6 @@ function ejecutarAjaxMASCOTAS(vUrlComp, vTypeCall, vDataCall, vFunctionResp,toke
   return dataResp;
 };
 
-
-
-
-
 /*API REGLAS DE NEGOCIO*/
 function reglasnegocioM(){
     this.identificador;
@@ -81,18 +79,25 @@ reglasnegocioM.prototype.llamarregla=function(functionResp){
     };
     ejecutarAjaxMASCOTAS(urlComp, typeCall, dataParams, functionResp,stoquenM);
 };
-//"parametros": this.parametros
-// ATM
-/*function rcTramitesAtm(){
-    this.sidciudadano;
-  };
-  
-  rcTramitesAtm.prototype.obtTramitesAtm = function (functionResp)
-  {
-  urlComp = "/listarTramitesAtm";
-  typeCall = "post";
-  dataParams = {
-          "sidciudadano": this.sidciudadano
-  };
-  ejecutarAjaxATM(urlComp, typeCall, dataParams, functionResp);
-  }*/
+
+function registroServicioMascotas() {
+    this.id_servicio;
+    this.oid_ciudadano;
+    this.id_usuario;
+    this.data_formulario;
+    this.data_ciudadano;      
+    
+};
+registroServicioMascotas.prototype.registro_Servicio_Mascotas = function (functionResp) {
+    urlCompAe = "/adicionaServiciosFormulario";
+    typeCallAe = "post";
+    dataParamsAe = {
+        "id_servicio":this.id_servicio,
+        "oid_ciudadano":this.oid_ciudadano,
+        "id_usuario":this.id_usuario,
+        "data_formulario":this.data_formulario,
+        "data_ciudadano":this.data_ciudadano
+        
+    };
+    ejecutarAjax1(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};

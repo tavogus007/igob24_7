@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
-  <head>
-    <link href="../../libs/css/sweetalert.css" rel="stylesheet">
-    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
-    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
-    <script type="text/javascript" src="../../view/servicios/varios/formularios/registroMascotas/registroMascotas.js"></script>
-    <script src="../../libs/loading/loadingoverlay.js"></script>
-    <script type="text/javascript" src="../../libs/js/jic.js"></script>
-    <!--link href="../../libs/css/select2.min.css" rel="stylesheet"/>
-    <script src="../../libs/js/select2.min.js"></script-->
-    <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
-    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
-    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
-  </head>
-  <style type="text/css">
+<head>
+<link href="../../libs/css/sweetalert.css" rel="stylesheet">
+<script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+<script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+<script type="text/javascript" src="../../view/servicios/varios/formularios/registroMascotas/registroMascotas.js"></script>
+<script src="../../libs/loading/loadingoverlay.js"></script>
+<script type="text/javascript" src="../../libs/js/jic.js"></script>
+<!--link href="../../libs/css/select2.min.css" rel="stylesheet"/>
+<script src="../../libs/js/select2.min.js"></script-->
+<script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+<link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+<link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+</head>
+<style type="text/css">
 
 
     #caja {
@@ -220,1014 +220,822 @@ function validateDecimal(valor) {
         
     }
 </script>
+<script type="text/javascript">
+    $('.modal').on('shown.bs.modal', function() {
+       $(this).before($('.modal-backdrop'));
+       $(this).css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 1);
+   });
 
-
-      <div class="page-content" ng-controller="registroMascotasController" data-ng-init="inicioServicios();">
+   $('.custom-upload input[type=file]').change(function(){
+       if($(this).val() != '' || $(this).val() != ""){
+           $(this).next().find('input').val($(this).val());
+           angular.element(this).scope().cambiarFile(this, $(this).val());
+       }
+   });
+</script>
+<div class="page-content" ng-controller="registroMascotasController" data-ng-init="inicioServicios();">
         <div class="col-md-12">
-          <div class="ibox float-e-margins">
-             <div id="mostrar" class="ibox-title">
-                <h5 class="ng-binding">Mis Mascotas</h5>
-                <a id="cerrar_rc" style="position: absolute; top: 5px;"><i class="fa-sort-desc fa fa-sort-asc" style="color: #00adb5" id="cerrar_i"></i></a>
-             </div>
-             <div class="ibox-content" id="caja">
-                  <div class="row">
-                   <div class="col-md-12">
-                      <form class="form-horizontal ng-pristine ng-valid">
-                            <div class="col-md-12" class="form-control">
-                                <div class="form-group" >
-                                    <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                                    <div class="col-sm-12" align="left">
-                                        <div class="alert alert-danger fade in">
-                                            <bold>Estimado Ciudadano:</bold> Para el registro de su mascota debe seguir los pasos 1 y 2.<br>Y señalar que el registro del Contacto Alternativo NO es obligatorio.<br>
+            <div class="ibox float-e-margins">
+                <div id="mostrar" class="ibox-title">
+                    <h5 class="ng-binding">Mis Mascotas</h5>
+                    <a id="cerrar_rc" style="position: absolute; top: 5px;"><i class="fa-sort-desc fa fa-sort-asc" style="color: #00adb5" id="cerrar_i"></i></a>
+                </div>
+                <div class="ibox-content" id="caja">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form class="form-horizontal ng-pristine ng-valid">
+                                <div class="col-md-12" class="form-control">
+                                    <div class="form-group" >
+                                        <label class="col-sm-12 control-label no-padding-right" for="url"></label>
+                                        <div class="col-sm-12" align="left">
+                                            <div class="alert alert-danger fade in">
+                                                <bold>Estimado Ciudadano:</bold> Para el registro de su mascota debe seguir los pasos 1 y 2.<br>Y señalar que el registro del Contacto Alternativo NO es obligatorio.<br>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                               <div class="col-md-6">
 
-                                  <div><img src="../../../app/view/img/perro.jpg" alt=" Imagen" height="70" width="70">
-                                      <!--img src="../../../app/view/img/gatito.gif" alt=" Imagen" height="60" width="60" tooltip="A mi también"--> 
-                                     
-                                     <a class="btn btn-redondo" tooltip="Registrar Mascota" ng-click="cargarNuevaDataMascota();">
-                                        <div class="shake-slow"><i class="fa fa-file blanco"></i></div>
-                                     </a>
-                                     <img src="../../../app/view/img/manito.gif" alt=" Imagen" height="20" width="40">
-                                  </div>
-                               </div>
-                            </div>
-
-                         <form class="form-horizontal ng-pristine ng-valid" action="index.html" method="post"> 
-                            <div class="col-md-12">
-                                <div class="form-group">   
-                                    <div class="controls">
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                              <label class="tamañoLabel">
-                                                <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="CIUDADANO" ng-disabled="valCiu"> <span class="label-text"></span>
-                                              </label> COMO CIUDADANO
-                                            </div>
-                                        </div>        
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                              <label class="tamañoLabel">
-                                                <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="INDEPENDIENTE" ng-disabled="valInd"> <span class="label-text"></span>
-                                              </label> COMO ANIMALISTA INDEPENDIENTE
-                                            </div>
-                                        </div>  
-                                        <div class="col-md-4">
-                                          <div class="form-check">
-                                            <label class="tamañoLabel">
-                                              <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="AGRUPADOS" ng-disabled="valAgr"> <span class="label-text"></span>
-                                            </label> COMO ANIMALISTA AGRUPADO
-                                          </div>
-                                      </div>                         
+                                <form class="form-horizontal ng-pristine ng-valid" action="index.html" method="post"> 
+                                <div class="col-md-12">
+                                    <div class="form-group">   
+                                        <div class="controls">
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <label class="tamañoLabel">
+                                                        <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="CIUDADANO" ng-disabled="valCiu"> <span class="label-text"></span>
+                                                    </label> COMO CIUDADANO
+                                                </div>
+                                            </div>        
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <label class="tamañoLabel">
+                                                    <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="INDEPENDIENTE" ng-disabled="valInd"> <span class="label-text"></span>
+                                                    </label> COMO ANIMALISTA INDEPENDIENTE
+                                                </div>
+                                            </div>  
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                <label class="tamañoLabel">
+                                                    <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="AGRUPADOS" ng-disabled="valAgr"> <span class="label-text"></span>
+                                                </label> COMO ANIMALISTA AGRUPADO
+                                                </div>
+                                            </div>                         
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <div class="col-md-6">
+                                        <div>  
+                                            <button ng-show="tipoR!=''" type="button" class="btn btn-default ng-binding" ng-click="cargarNuevaDataMascota()"><i class="fa fa-plus"  style="color:white"></i><font color="white"> Registrar</font></button>
+                                        </div>
                                     </div>
                                 </div>
-                              </div> 
 
-                           <table  ng-table="tablaTramites"  class="table table-striped table-hover">
-                             <tr style="cursor: pointer;text-align: center;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.xmascota_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
-                                <td data-title="'Imagen'" ng-click="seleccionarMascota(tramite);"><img src={{tramite.xmascota_imagen_url}} alt=" Imagen" height="42" width="42"></td>
-                                <td data-title="'Mascota'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.nombre_mas}}</td>
-                                <td data-title="'Raza'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.raza}}</td>
-                                <td data-title="'Sexo'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.sexo}}</td>                             
-                                <td data-title="'Edad'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad}}</td>   
-                                <td data-title="'Meses/Años'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad_desc}}</td>   
-                                <td data-title="'Estado'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_estado}}</td> 
-                                <td data-title="'Opciones'"><a class="btn btn-default btn-circle" data-target="#formModalElim" ng-click="llamModEli(tramite.xmascota_id)" data-toggle="modal"><i class="fa fa-trash-o" style="color:rgb(15, 15, 15)"></i></a></td>
-                                <!-- Modal ELIMINAR-->   
-                                    <div class="modal fade" id="formModalElim"  role="dialog" aria-labelledby="exampleModalCenterTitle">
-                                         <div class="modal-dialog modal-dialog-centered" role="document" id = "mdialTamanio">
-                                         <div class="modal-content">
-                                             <div class="modal-header">
-                                               <h2 class="modal-title" id="exampleModalCenterTitle"><center><strong>MOTIVO DE ELIMINACIÓN</strong></center></h2>
-                                             </div>
-                                             <div class="modal-body">
-
-                                                  <div>
-                                                     <label><h3><center>
-                                                       <input ng-model="datos.eutanasia" value="eutanasia" type="radio" name="eutanasia" ng-blur="verElim(datos.eutanasia,datos.fallecido)"> EUTANASIA</center></h3></label>
-                                                   </div>
-                                                   <div >
-                                                     <label><h3><center>
-                                                       <input ng-model="datos.fallecido" value="fallecido" type="radio" name="fallecido" ng-blur="verElim(datos.eutanasia,datos.fallecido)"> FALLECIMIENTO</center></h3></label>
-                                                   </div>
-                                            
-                                             </div>
-                                 
-                                             <div class="modal-footer">
-
-                                             <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >Cancelar</button>
-                                             <button id="btnElimMas" type="button" class="btn btn-default" data-dismiss="modal" ng-click="eliminarMascota(tramite.xmascota_id,datos.eutanasia,datos.fallecido)">Eliminar</button>
-                                             <!--button id="btncerrarmodal" type="button" class="btn btn-default" ng-click="aceptarCondicionesUso();" data-dismiss="modal">Cerrar</button-->
-                                             </div>
-                                         </div>
-                                         </div>
-                                    </div>
-                             </tr>
-                           </table>
-                         </form>
-                      </form>
-                   </div>
-                </div>
-             </div>
-          </div>
-       </div>
-
-
-
-      <!--MASCOTAS-->
-      <div ng-show="mostrar_form_mascotas" class="ibox float-e-margins col-md-12">
-        <!--div class="col-md-12">
-          <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-            <h4>Registrar Mascota</h4>
-          </div>
-        </div-->
-        <div>
-          <form name="signupForm">
-            <div class="col-md-12" class="form-control">
-                <div class="form-group" >
-                    <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                    <div class="col-sm-12" align="left">
-                        <div class="alert alert-danger fade in">
-                            <bold>PASO 1:</bold> Para el registro de su mascota debe llenar las casillas requeridas. Si su mascota tiene vacunas no olvide hacer click en la pestaña de VACUNAS. <br>
+                                <table  ng-table="tablaTramites"  class="table table-striped table-hover">
+                                    <tr style="cursor: pointer;text-align: center;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.xmascota_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                                        <td data-title="'Imagen'" ng-click="seleccionarMascota(tramite);"><img src={{tramite.xmascota_imagen_url}} alt=" Imagen" height="42" width="42"></td>
+                                        <td data-title="'Mascota'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.nombre_mas}}</td>
+                                        <td data-title="'Raza'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.raza}}</td>
+                                        <td data-title="'Sexo'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.sexo}}</td>                             
+                                        <td data-title="'Edad'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad}}</td>   
+                                        <td data-title="'Meses/Años'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad_desc}}</td>   
+                                        <td data-title="'Estado'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_estado}}</td> 
+                                        <td data-title="'Opciones'"><a class="btn btn-default btn-circle" data-target="#formModalElim" ng-click="llamModEli(tramite.xmascota_id)" data-toggle="modal"><i class="fa fa-trash-o" style="color:rgb(15, 15, 15)"></i></a></td>
+                                        <!-- Modal ELIMINAR-->   
+                                        <div class="modal fade" id="formModalElim"  role="dialog" aria-labelledby="exampleModalCenterTitle">
+                                            <div class="modal-dialog modal-dialog-centered" role="document" id = "mdialTamanio">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 class="modal-title" id="exampleModalCenterTitle"><center><strong>MOTIVO DE ELIMINACIÓN</strong></center></h2>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div>
+                                                            <label><h3><center>
+                                                            <input ng-model="datos.eutanasia" value="eutanasia" type="radio" name="eutanasia" ng-blur="verElim(datos.eutanasia,datos.fallecido)"> EUTANASIA</center></h3></label>
+                                                        </div>
+                                                        <div >
+                                                            <label><h3><center>
+                                                            <input ng-model="datos.fallecido" value="fallecido" type="radio" name="fallecido" ng-blur="verElim(datos.eutanasia,datos.fallecido)"> FALLECIMIENTO</center></h3></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >Cancelar</button>
+                                                        <button id="btnElimMas" type="button" class="btn btn-default" data-dismiss="modal" ng-click="eliminarMascota(tramite.xmascota_id,datos.eutanasia,datos.fallecido)">Eliminar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                </table>
+                                </form>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12" align="right">
-                <button id="miFormContacto" data-toggle="modal" data-target="#formModalContactos" ng-click="vaciarContactos();" type="button" class="btn btn-success" name="formEnviar">Registrar Contacto Alternativo</button><!--cambios-->
-                <img src="../../../app/view/img/contacto.png" alt=" Imagen" height="80" width="80">
-            </div>    
-            <div class="col-md-12">
-                <div class="tab-container">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="registro_ciudadano|servicios|index3.html#tabDatos" data-toggle="tab"><bold>Paso 1.1:</bold> Datos Generales</a></li>
-                        <li><a href="registro_ciudadano|servicios|index3.html#tabVacunas" data-toggle="tab"><bold>Paso 1.2:</bold> Vacunas</a></li>
-                        <!--li><a href="registro_ciudadano|servicios|index3.html#tabCAlternativo" data-toggle="tab"><bold>Paso 3:</bold> Contacto Alternativo</a></li-->
-                    </ul>
-                    <div><br></div>
-                <div class="tab-content">
-                      <div class="tab-pane active cont" id="tabDatos">
-                        <div class="col-lg-12" class="tab">
-                          <div class="ibox float-e-margins">
-                            <div class="row">
-                                <input type="hidden" ng-model="datos.ci_bigdata" id="ci_bigdata" name="ci_bigdata" class="form-control"  width="30%" height="30" ng-disabled="true"/>
-                                <input type="hidden" ng-model="datos.fec_solicitud" id="fec_solicitud" name="int_fec_solicitud" class="form-control"  width="30%" height="30" ng-disabled="true"/>
-                                <input type="hidden" ng-model="datos.xmascota_raza_id" id="xmascota_raza_id" name="xmascota_raza_id" class="form-control"  width="30%" height="30" ng-disabled="true"/>
-                                <input type="hidden" ng-model="datos.xmascota_raza" id="xmascota_raza" name="xmascota_raza" class="form-control"  width="30%" height="30" ng-disabled="true"/>
-
-                                <input type="hidden" ng-model="datos.xmascota_usr_id" id="xmascota_usr_id" name="xmascota_usr_id" class="form-control"  width="30%" height="30" ng-disabled="true"/>
-                                <input type="hidden" ng-model="datos.titular_id" id="titular_id" name="titular_id" class="form-control"  width="30%" height="30" ng-disabled="true"/>
-                                <input type="hidden" ng-model="datos.xmascota_titular_ci" id="xmascota_titular_ci" name="xmascota_titular_ci" class="form-control"  width="30%" height="30" ng-disabled="true"/>
-                                <input type="hidden" ng-model="datos.xmascota_especie" id="xmascota_especie" name="xmascota_especie" class="form-control"  width="30%" height="30" ng-disabled="true"/>
-                                <input type="hidden" ng-model="datos.xmascota_raza" id="xmascota_raza" name="xmascota_raza" class="form-control"  width="30%" height="30" ng-disabled="true"/>                                                                                                
-                                                                                                
-                                                                                                
-
-
-                                <div class="col-md-4">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Nombre (mascota):</label>                                                    
-                                            <div class="controls">
-                                                <input  ng-model="datos.mascota_nombre" name="mascota_nombre" id="mascota_nombre" class="form-control" type="text" placeholder="Ingrese nombre de su mascota" onkeyUp="return conMayusculas(this);"  ng-disabled="desabilitado" required>
-                                                <span style="color:red" ng-show="signupForm.mascota_nombre.$invalid">
-                                                    <span ng-show="signupForm.mascota_nombre.$error.required">Ingrese nombre de su mascota
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Especie : </label>
-                                            <div class="controls">
-                                                    <select id="reg_especie" name="reg_especie"  ng-model="datos.mascota_especie_id" ng-change="listarRaza(datos.mascota_especie_id);"  
-                                                    class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
-                                                        <option value="">--Seleccione--</option>
-                                                        <option value="1"> Canino  </option>
-                                                        <option value="2"> Felino  </option>
-                                                    </select>
-                                                        <span style="color:red" ng-show="signupForm.reg_especie.$invalid">
-                                                            <span ng-show="signupForm.reg_especie.$error.required">seleccione raza de su mascota
-                                                            </span>
-                                                        </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Raza: <font color="#FF0000"> * </font></label>
-                                            <div class="controls">
-                                                <select class="js-example-basic-single form-control"
-                                                ng-options="dato._raza_id as dato._raza_data for dato in mascotas_razas | orderBy:['nombre','_raza_id']"
-                                                ng-model="datos.xmascota_raza_id"
-                                                id="reg_raza"
-                                                name="reg_raza"
-                                                ng-change = "mostrarRaza(datos.xmascota_raza_id);"
-                                                ng-disabled="dsaraza || desabilitado"
-                                                required >
-                                                    <option value="">--Seleccione--</option>
-                                                </select>                                                
-                                                <span style="color:red" ng-show="signupForm.reg_raza.$invalid">
-                                                    <span>** Es requerido Raza</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>                              
+        </div>
+    <!--MASCOTAS-->
+    <div ng-show="mostrar_form_mascotas" class="ibox float-e-margins col-md-12">
+        <div>
+            <form name="signupForm">
+                <div class="col-md-12" class="form-control">
+                    <div class="form-group" >
+                        <label class="col-sm-12 control-label no-padding-right" for="url"></label>
+                        <div class="col-sm-12" align="left">
+                            <div class="alert alert-danger fade in">
+                                <bold>PASO 1:</bold> Para el registro de su mascota debe llenar las casillas requeridas. Si su mascota tiene vacunas no olvide hacer click en la pestaña de VACUNAS. <br>
                             </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Edad :</label>
-                                            <div class="controls">
-                                                <input  ng-model="datos.mascota_edad" name="reg_edad" id="reg_edad" class="form-control" type="text" placeholder="Ingrese Edad" onkeyUp="return valNumero(this);" ng-disabled="desabilitado" required>
-                                                <span style="color:red" ng-show="signupForm.reg_edad.$invalid">
-                                                    <span>** Es requerido Edad</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >En : </label>
-                                            <div class="controls">
-                                                <select id="reg_edad_des" 
-                                                    name="reg_edad_des"  
-                                                    ng-model="datos.reg_edad_des"  
-                                                    class="form-control" 
-                                                    placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
-                                                    <option value="">--Seleccione--</option>
-                                                    <option value="Años"> Años  </option>
-                                                    <option value="Meses"> Meses  </option>
-                                                </select>
-                                                <span style="color:red" ng-show="signupForm.reg_edad_des.$invalid">
-                                                    <span ng-show="signupForm.reg_edad_des.$error.required">** es requrido Mese/Años
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Sexo : </label>
-                                            <div class="controls">
-                                                <select id="reg_sexo" 
-                                                    name="reg_sexo"  
-                                                    ng-model="datos.reg_sexo"  
-                                                    class="form-control" 
-                                                    ng-change = "mostrarSexo(datos.reg_sexo)"
-                                                    placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
-                                                    <option value="-1">--Seleccione--</option>
-                                                    <option value="hembra"> Hembra  </option>
-                                                    <option value="macho"> Macho  </option>
-                                                </select>
-                                                <span style="color:red" ng-show="signupForm.reg_sexo.$invalid">
-                                                    <span ng-show="signupForm.reg_sexo.$error.required">** Es requerio sexo
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Peso (Kgs / grs.) : </label>
-                                            <div class="controls">
-                                                <input  ng-model="datos.mascota_peso" name="reg_peso" id="reg_peso" class="form-control" type="text" onkeypress="return filterFloat(event,this);" placeholder="Ingrese Peso" ng-disabled="desabilitado" required>
-                                                <span style="color:red" ng-show="signupForm.reg_peso.$invalid">
-                                                    <span ng-show="signupForm.reg_peso.$error.required">** Es requerio peso
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >En : </label>
-                                            <div class="controls">
-                                                <select id="reg_peso_des" 
-                                                    name="reg_peso_des"  
-                                                    ng-model="datos.reg_peso_des"  
-                                                    class="form-control" 
-                                                    placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
-                                                    <option value="">--Seleccione--</option>
-                                                    <option value="Kilos"> Kilos  </option>
-                                                    <option value="Gramos"> Gramos  </option>
-                                                </select>
-                                                <span style="color:red" ng-show="signupForm.reg_peso_des.$invalid">
-                                                    <span ng-show="signupForm.reg_peso_des.$error.required">** Es requerio kilos/meses
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                            <div class="col-md-4">
-                                <div class="col-md-12" align="left">
-                                    <div class="form-group" class="col-md-12">
-                                        <label for="url" >Color : </label>
-                                        <div class="controls">
-                                            <input  ng-model="datos.mascota_color" name="reg_color" id="reg_color" class="form-control" type="text" placeholder="Ingrese color" onkeyup="mayus(this);" onkeypress="return validar(event);" ng-disabled="desabilitado" required>
-                                            <span style="color:red" ng-show="signupForm.reg_color.$invalid">
-                                                <span ng-show="signupForm.reg_color.$error.required">** Es requerio color
-                                                </span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Tamaño : </label>
-                                            <div class="controls">
-                                                <select id="reg_tamanio" name="reg_tamanio"  ng-model="datos.mascota_tamanio"  class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
-                                                    <option value="">--Seleccione--</option>
-                                                    <option value="gigante"> Gigante  </option>
-                                                    <option value="grande"> Grande  </option>
-                                                    <option value="mediano"> Mediano  </option>
-                                                    <option value="pequeno"> Pequeño  </option>
-                                                </select>                                                                                              
-                                                <span style="color:red" ng-show="signupForm.reg_tamanio.$invalid">
-                                                    <span ng-show="signupForm.reg_tamanio.$error.required">** Es requerio tamaño
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="col-md-3">
-                                    <label>Imagen</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                            <div class="form-group custom-upload">
-                                                <div ng-show="validadoCI == null">
-                                                    <input type="file" id="ANTT_CON_ARR" name="href_ANTT_CON_ARR" uploader-model="ANTT_CON_ARR" accept="image/*" style="display: none;">
-                                                    <div class="input-group">
-                                                        <input id="txt_href_ANTT_CON_ARR" name="txt_href_ANTT_CON_ARR" ng-model="datos.href_ANTT_CON_ARR" type="text"  class="form-control input-lg" required>
-                                                        <span style="color:red" ng-show="signupForm.ANTT_CON_ARR.$invalid">
-                                                                <span ng-show="signupForm.ANTT_CON_ARR.$error.required">** Es requerio imagen
-                                                                </span>
-                                                            </span>
-                                                        <span class="input-group-btn">
-                                                            <a id="href_ANTT_CON_ARR"  href="">
-                                                                <button id="href_href_ANTT_CON_ARR" class="browse btn btn-primary input-lg" type="button" ng-show="btover1 != null" ng-click="mostrarimg('ciR');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                                            </a>
-                                                            <button id="btn_href_ANTT_CON_ARR" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('ANTT_CON_ARR', 'data' + $data.resvalor);"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div ng-show="validadoCI != null" style="width: 70%;">
-                                                    <input ng-model="signupForm.href_ANTT_CON_ARR" type="text" ng-disabled="false" required class="form-control" readonly="readonly" >
-                                                    <button class="btn btn-default btn-circle pull-right" ng-show="btover != null" ng-click="mostrarimg('ciR');" data-toggle="modal" > <i class="fa fa-eye fa-lg"></i></button>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>
-
-
-                               
-                              <div class="col-md-12">
-                                <div class="col-md-4">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Esterilizacion : </label>
-                                            <div class="controls">
-                                                <select id="reg_esterilizacion" name="reg_esterilizacion"  ng-model="datos.mascota_esterilizacion"  onkeyup="mayus(this);"  class="form-control" placeholder="-- Seleccione --" ng-click = "muestra_esterilizacion(datos.mascota_esterilizacion);" ng-disabled="desabilitado" required>
-                                                    <option value="">--Seleccione--</option>
-                                                    <option value="si"> Si  </option>
-                                                    <option value="no"> No  </option>
-                                                </select>
-                                                <span style="color:red" ng-show="signupForm.reg_esterilizacion.$invalid">
-                                                    <span ng-show="signupForm.reg_esterilizacion.$error.required">** Es requerio seleccionar esta opcion
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Desparasitacion :</label>
-                                            <div class="controls">
-                                                <select id="desparasitacion" name="desparasitacion"  ng-model="datos.mascota_desparasitacion"  class="form-control" placeholder="-- Seleccione --"  ng-click = "muestra_desparasitacion(datos.mascota_desparasitacion)" ng-disabled="desabilitado" required>
-                                                    <option value="">--Seleccione--</option>
-                                                    <option value="si"> Si  </option>
-                                                    <option value="no"> No  </option>
-                                                </select>                                                                                              
-                                                <span style="color:red" ng-show="signupForm.desparasitacion.$invalid">
-                                                    <span ng-show="signupForm.desparasitacion.$error.required">** Es  requerido seleccionar eta opción
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-
-
-                                            <label for="url" >Imagen :</label>
-                                            <div class="controls">
-
-                                                <td data-title="'Imagen'" ng-click="seleccionarMascota(tramite);" data-title-text="Imagen"><img src={{datos.imagen_png}} alt=" Imagen" height="90" width="90"></td>
-
-
-
-                                            </div>
-
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                                <div class="col-md-12" ng-show = "estrilizacion">
-                                    <legend>Datos Esterilización: </legend>
-                                </div>
-                                <div class="col-md-4" ng-show = "estrilizacion">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12" >
-                                            <label for="url" >Fecha de aplicacion  - Esterilización: <font color="#FF0000"> * </font></label >
-                                            <div class="controls">
-                                                <input  ng-model="datos.reg_feca" name="reg_feca" id="reg_feca" class="form-control" ng-disabled="desabilitado" type="date">
-                                                <span style="color:red" ng-show="signupForm.reg_feca.$invalid">
-                                                    <span ng-show="signupForm.reg_feca.$error.required">
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4" ng-show = "estrilizacion">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Marca - Esterilización: <font color="#FF0000"> * </font></label>
-                                            <div class="controls">
-                                                <select id="marca" name="marca"  ng-model="datos.mascota_marca"  class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado" ng-change="cambioNrocert();">
-                                                    <option value="">--Seleccione--</option>
-                                                    <option value="esterilizacion"> Ninguna  </option>
-                                                    <option value="certificado"> Certificado  </option>
-                                                    <option value="tatuaje"> Tatuaje  </option>
-                                                </select>
-                                                <span style="color:red" ng-show="signupForm.marca.$invalid">
-                                                    <span ng-show="signupForm.marca.$error.required">{{transalteTitulos.lbl_016_07_1}}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4" ng-show = "estrilizacion">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Nº Certificado : <font color="#FF0000"> * </font></label>
-                                            <div class="controls">
-                                                <input  ng-model="datos.mascota_certificado" name="reg_certificado" id="reg_certificado" class="form-control" type="text" placeholder="Ingrese Nro de certificado" onkeyUp="return valNumero(this);" ng-disabled="desabilitado">
-                                                <span style="color:red" ng-show="signupForm.reg_certificado.$invalid">
-                                                    <span ng-show="signupForm.reg_certificado.$error.required">{{translateTitulos.lbl_016_08_1}}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6" ng-show = "estrilizacion">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Nombre Veterinario : <font color="#FF0000"> * </font></label>
-                                            <div class="controls">
-                                                <input  ng-model="datos.mascota_veterinario" name="reg_veterinario" id="reg_veterinario" class="form-control" type="text" placeholder="Ingrese nombre de Veterinario"  onkeyup="mayus(this);" onkeypress="return validar(event);" ng-disabled="desabilitado">
-                                                <span style="color:red" ng-show="signupForm.reg_veterinario.$invalid">
-                                                    <span ng-show="signupForm.reg_veterinario.$error.required">{{translateTitulos.lbl_016_06_1}}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6" ng-show = "estrilizacion">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Nombre de la institucion : <font color="#FF0000"> * </font></label>
-                                            <div class="controls">
-                                                <input  ng-model="datos.mascota_institucion" name="reg_institucion" id="reg_institucion" class="form-control" type="text"   onkeyup="mayus(this);" placeholder="Ingrese Institución" ng-disabled="desabilitado">
-                                                <span style="color:red" ng-show="signupForm.reg_institucion.$invalid">
-                                                    <span ng-show="signupForm.reg_institucion.$error.required">{{translateTitulos.lbl_016_06_1}}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> 
-                            </div>
-                            <div class="row">
-                            </div>
-                            <div class="row">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12" ng-show = "desparasitacion">
-                                    <legend>Datos Desparasitación: </legend>
-                                </div>
-                                <div class="col-md-4" ng-show = "desparasitacion">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12" >
-                                            <label for="url" >Fecha de aplicacion  - Desparasitación: <font color="#FF0000"> * </font></label >
-                                            <div class="controls">
-                                                <input  ng-model="datos.mascota_feca_desparasitacion" name="mascota_feca_desparasitacion" id="mascota_feca_desparasitacion" class="form-control" type="date" ng-disabled="desabilitado">
-                                                <span style="color:red" ng-show="signupForm.mascota_feca_desparasitacion.$invalid">
-                                                    <span ng-show="signupForm.mascota_feca_desparasitacion.$error.required">
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4" ng-show = "desparasitacion">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Nombre Veterinario : <font color="#FF0000"> * </font></label>
-                                            <div class="controls">
-                                                <input  ng-model="datos.mascota_veterinario_desparasitacion" name="reg_veterinario" id="reg_veterinario" class="form-control" type="text" placeholder="Ingrese nombre de Veterinario"  onkeyup="mayus(this);" onkeypress="return validar(event);" ng-disabled="desabilitado">
-                                                <span style="color:red" ng-show="signupForm.reg_veterinario.$invalid">
-                                                    <span ng-show="signupForm.reg_veterinario.$error.required">{{translateTitulos.lbl_016_06_1}}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4" ng-show = "desparasitacion">
-                                    <div class="col-md-12" align="left">
-                                        <div class="form-group" class="col-md-12">
-                                            <label for="url" >Nombre de la institucion : <font color="#FF0000"> * </font></label>
-                                            <div class="controls">
-                                                <input  ng-model="datos.mascota_institucion_desparasitacion" name="reg_institucion" id="reg_institucion" class="form-control" type="text" placeholder="Ingrese Institución" onkeyup="mayus(this);" ng-disabled="desabilitado">
-                                                <span style="color:red" ng-show="signupForm.reg_institucion.$invalid">
-                                                    <span ng-show="signupForm.reg_institucion.$error.required">{{translateTitulos.lbl_016_06_1}}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> 
-                            </div>
-                                <!--adjuntar IMAGEN-->
-                                <!--div class="col-md-12">
-                                    <legend>Adjuntar Imagen de Mascota </legend>
-                                </div>
-                                <div class="col-md-12" class="form-control">
-                                        <div class="form-group" >
-                                            <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                                            <div class="col-sm-12" align="left">
-                                                <div class="alert alert-danger fade in">
-                                                    <bold>Estimado Ciudadano:</bold> Para qu el registro de su mascota sea completa, Ud. debe adjuntar alguna imagen / fotografia de la misma.
-                                                </div>
-                                            </div>
-                                        </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-4">
-                                        <div class="col-md-4">
-                                        <label>IMAGEN MASCOTA</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                                <div class="form-group custom-upload">
-                                                    <div ng-show="validadoCI == null">
-                                                        <input type="file" id="ANTT_CON_ARR" name="href_ANTT_CON_ARR" uploader-model="ANTT_CON_ARR" accept="image/*" style="display: none;">
-                                                        <div class="input-group">
-                                                            <input id="txt_href_ANTT_CON_ARR" name="txt_href_ANTT_CON_ARR" ng-model="datos.href_ANTT_CON_ARR" type="text"  class="form-control input-lg" required>
-                                                            <span style="color:red" ng-show="signupForm.ANTT_CON_ARR.$invalid">
-                                                                    <span ng-show="signupForm.ANTT_CON_ARR.$error.required">** Es requerio imagen
-                                                                    </span>
-                                                                </span>
-                                                            <span class="input-group-btn">
-                                                                <a id="href_ANTT_CON_ARR"  href="">
-                                                                    <button id="href_href_ANTT_CON_ARR" class="browse btn btn-primary input-lg" type="button" ng-show="btover1 != null" ng-click="mostrarimg('ciR');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                                                </a>
-                                                                <button id="btn_href_ANTT_CON_ARR" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('ANTT_CON_ARR', 'data' + $data.resvalor);"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" align="right">
+                    <button id="miFormContacto" data-toggle="modal" data-target="#formModalContactos" class="btn btn-default ng-binding" ng-click="vaciarContactos();" type="button" name="formEnviar"><font color="white">Registrar Contacto Alternativo</font></button><!--cambios-->
+                    <img src="../../../app/view/img/contacto.png" alt=" Imagen" height="80" width="80">
+                </div>    
+                <div class="col-md-12">
+                    <div class="tab-container">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="registro_ciudadano|servicios|index3.html#tabDatos" data-toggle="tab"><bold>DATOS GENERALES</bold></a></li>
+                            <li><a href="registro_ciudadano|servicios|index3.html#tabVacunas" data-toggle="tab"><bold>VACUNAS</bold></a></li>
+                        </ul>
+                        <div><br></div>
+                        <div class="tab-content">
+                            <div class="tab-pane active cont" id="tabDatos">
+                                <div class="col-lg-12" class="tab">
+                                    <div class="ibox float-e-margins">
+                                        <div class="row">
+                                            <input type="hidden" ng-model="datos.ci_bigdata" id="ci_bigdata" name="ci_bigdata" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                            <input type="hidden" ng-model="datos.fec_solicitud" id="fec_solicitud" name="int_fec_solicitud" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                            <input type="hidden" ng-model="datos.xmascota_raza_id" id="xmascota_raza_id" name="xmascota_raza_id" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                            <input type="hidden" ng-model="datos.xmascota_raza" id="xmascota_raza" name="xmascota_raza" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                            <input type="hidden" ng-model="datos.xmascota_usr_id" id="xmascota_usr_id" name="xmascota_usr_id" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                            <input type="hidden" ng-model="datos.titular_id" id="titular_id" name="titular_id" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                            <input type="hidden" ng-model="datos.xmascota_titular_ci" id="xmascota_titular_ci" name="xmascota_titular_ci" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                            <input type="hidden" ng-model="datos.xmascota_especie" id="xmascota_especie" name="xmascota_especie" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                            <input type="hidden" ng-model="datos.xmascota_raza" id="xmascota_raza" name="xmascota_raza" class="form-control"  width="30%" height="30" ng-disabled="true"/>                                                                                                
+                                            <div class="col-md-4">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Nombre (mascota):</label>                                                    
+                                                        <div class="controls">
+                                                            <input  ng-model="datos.mascota_nombre" name="mascota_nombre" id="mascota_nombre" class="form-control" type="text" placeholder="Ingrese nombre de su mascota" onkeyUp="return conMayusculas(this);"  ng-disabled="desabilitado" required>
+                                                            <span style="color:red" ng-show="signupForm.mascota_nombre.$invalid">
+                                                                <span ng-show="signupForm.mascota_nombre.$error.required">Nombre es requerido.</span>
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div ng-show="validadoCI != null" style="width: 70%;">
-                                                        <input ng-model="signupForm.href_ANTT_CON_ARR" type="text" ng-disabled="false" required class="form-control" readonly="readonly" >
-                                                        <button class="btn btn-default btn-circle pull-right" ng-show="btover != null" ng-click="mostrarimg('ciR');" data-toggle="modal" > <i class="fa fa-eye fa-lg"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Especie : </label>
+                                                        <div class="controls">
+                                                                <select id="reg_especie" name="reg_especie"  ng-model="datos.mascota_especie_id" ng-change="listarRaza(datos.mascota_especie_id);" class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
+                                                                    <option value="">--Seleccione--</option>
+                                                                    <option value="1"> Canino  </option>
+                                                                    <option value="2"> Felino  </option>
+                                                                </select>
+                                                                <span style="color:red" ng-show="signupForm.reg_especie.$invalid">
+                                                                    <span ng-show="signupForm.reg_especie.$error.required">Especie es requerido.</span>
+                                                                </span>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12"><font color="#FF0000"> * </font>
+                                                        <label for="url" >Raza: </label>
+                                                        <div class="controls">
+                                                            <select class="js-example-basic-single form-control" id="reg_raza"  name="reg_raza" ng-options="dato._raza_id as dato._raza_data for dato in mascotas_razas | orderBy:['nombre','_raza_id']" ng-model="datos.xmascota_raza_id" ng-change = "mostrarRaza(datos.xmascota_raza_id);" ng-disabled="dsaraza || desabilitado" required >
+                                                                <option value="">--Seleccione--</option>
+                                                            </select>                                                
+                                                            <span style="color:red" ng-show="signupForm.reg_raza.$invalid">
+                                                                <span>Raza es requerido.</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                              
                                         </div>
-
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Edad :</label>
+                                                        <div class="controls">
+                                                            <input  ng-model="datos.mascota_edad" name="reg_edad" id="reg_edad" class="form-control" type="text" placeholder="Ingrese Edad" onkeyUp="return valNumero(this);" ng-disabled="desabilitado" required>
+                                                            <span style="color:red" ng-show="signupForm.reg_edad.$invalid">
+                                                                <span>Edad es requerido.</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >En : </label>
+                                                        <div class="controls">
+                                                            <select id="reg_edad_des" 
+                                                                name="reg_edad_des"  
+                                                                ng-model="datos.reg_edad_des"  
+                                                                class="form-control" 
+                                                                placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
+                                                                <option value="">--Seleccione--</option>
+                                                                <option value="Años"> Años  </option>
+                                                                <option value="Meses"> Meses  </option>
+                                                            </select>
+                                                            <span style="color:red" ng-show="signupForm.reg_edad_des.$invalid">
+                                                                <span>Es requrido Mese/Años</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Sexo: </label>
+                                                        <div class="controls">
+                                                            <select id="reg_sexo" name="reg_sexo" ng-model="datos.reg_sexo" class="form-control" ng-change = "mostrarSexo(datos.reg_sexo)"  placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
+                                                                <option value="">--Seleccione--</option>
+                                                                <option value="hembra"> Hembra  </option>
+                                                                <option value="macho"> Macho  </option>
+                                                            </select>
+                                                            <span style="color:red" ng-show="signupForm.reg_sexo.$invalid">
+                                                                <span>Es requerio sexo.</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Peso (Kgs / grs.): </label>
+                                                        <div class="controls">
+                                                            <input  ng-model="datos.mascota_peso" name="reg_peso" id="reg_peso" class="form-control" type="text" onkeypress="return filterFloat(event,this);" placeholder="Ingrese Peso" ng-disabled="desabilitado" required>
+                                                            <span style="color:red" ng-show="signupForm.reg_peso.$invalid">
+                                                                <span ng-show="signupForm.reg_peso.$error.required">Es requerio peso.</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >En : </label>
+                                                        <div class="controls">
+                                                            <select id="reg_peso_des" name="reg_peso_des" ng-model="datos.reg_peso_des" class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
+                                                                <option value="">--Seleccione--</option>
+                                                                <option value="Kilos"> Kilos  </option>
+                                                                <option value="Gramos"> Gramos  </option>
+                                                            </select>
+                                                            <span style="color:red" ng-show="signupForm.reg_peso_des.$invalid">
+                                                                <span ng-show="signupForm.reg_peso_des.$error.required">Es requerio kilos/meses.
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Color : </label>
+                                                        <div class="controls">
+                                                            <input  ng-model="datos.mascota_color" name="reg_color" id="reg_color" class="form-control" type="text" placeholder="Ingrese color" onkeyup="mayus(this);" onkeypress="return validar(event);" ng-disabled="desabilitado" required>
+                                                            <span style="color:red" ng-show="signupForm.reg_color.$invalid">
+                                                                <span>Es requerio color.</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Tamaño : </label>
+                                                        <div class="controls">
+                                                            <select id="reg_tamanio" name="reg_tamanio"  ng-model="datos.mascota_tamanio"  class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
+                                                                <option value="">--Seleccione--</option>
+                                                                <option value="gigante"> Gigante  </option>
+                                                                <option value="grande"> Grande  </option>
+                                                                <option value="mediano"> Mediano  </option>
+                                                                <option value="pequeno"> Pequeño  </option>
+                                                            </select>                                                                                              
+                                                            <span style="color:red" ng-show="signupForm.reg_tamanio.$invalid">
+                                                                <span>Es requerio tamaño.</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <font color="#FF0000"> * </font>
+                                                        <label for="url">Imagen Mascota</label>
+                                                        <div class="controls">
+                                                            <div class="form-group custom-upload">
+                                                                <input type="file" id="IMAGEN_MASCOTA" name="IMAGEN_MASCOTA" ng-model="IMAGEN_MASCOTA" accept="pdf/*" style="display: none;">
+                                                                <div class="input-group">
+                                                                    <input id="txt_IMAGEN_MASCOTA" name="txt_IMAGEN_MASCOTA" ng-model="datos.IMAGEN_MASCOTA" type="text" ng-disabled="true" class="form-control input-lg" required>
+                                                                    <span class="input-group-btn">
+                                                                        <a id="href_IMAGEN_MASCOTA"  ng-show="btover7 != null" href="{{datos.IMAGEN_MASCOTA}}" target="_blank">
+                                                                            <button id="btn_IMAGEN_MASCOTA" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                        </a>
+                                                                        <button id="btn_IMAGEN_MASCOTA" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('IMAGEN_MASCOTA');" ng-disabled="xdeshabilitado" ><i class="glyphicon glyphicon-upload" ></i> Subir</button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-4">
+                                                    <div class="col-md-12" align="left">
+                                                        <div class="form-group" class="col-md-12">
+                                                            <font color="#FF0000"> * </font>
+                                                            <label for="url" >Esterilizacion : </label>
+                                                            <div class="controls">
+                                                                <select id="reg_esterilizacion" name="reg_esterilizacion"  ng-model="datos.mascota_esterilizacion"  onkeyup="mayus(this);"  class="form-control" ng-click = "muestra_esterilizacion(datos.mascota_esterilizacion);" ng-disabled="desabilitado" required>
+                                                                    <option value="">--Seleccione--</option>
+                                                                    <option value="si"> Si  </option>
+                                                                    <option value="no"> No  </option>
+                                                                </select>
+                                                                <span style="color:red" ng-show="signupForm.reg_esterilizacion.$invalid">
+                                                                    <span >Es requerido seleccionar una opción.</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="col-md-12" align="left">
+                                                        <div class="form-group" class="col-md-12">
+                                                            <font color="#FF0000"> * </font>
+                                                            <label for="url" >Desparasitacion :</label>
+                                                            <div class="controls">
+                                                                <select id="desparasitacion" name="desparasitacion"  ng-model="datos.mascota_desparasitacion"  class="form-control" ng-change = "muestra_desparasitacion(datos.mascota_desparasitacion)" ng-disabled="desabilitado" required>
+                                                                    <option value="">--Seleccione--</option>
+                                                                    <option value="si"> Si  </option>
+                                                                    <option value="no"> No  </option>
+                                                                </select>                                                                                              
+                                                                <span style="color:red" ng-show="signupForm.desparasitacion.$invalid">
+                                                                    <span >Es requerido seleccionar una opción.</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" ng-show = "estrilizacion">
+                                                <legend>Datos Esterilización: </legend>
+                                            </div>
+                                            <div class="col-md-4" ng-show = "estrilizacion">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12" >
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Fecha de aplicacion  - Esterilización:</label >
+                                                        <div class="controls">
+                                                            <input  ng-model="datos.reg_feca" name="reg_feca" id="reg_feca" class="form-control" ng-disabled="desabilitado" type="date">
+                                                            <span style="color:red" ng-show="signupForm.reg_feca.$invalid">
+                                                                <span ng-show="signupForm.reg_feca.$error.required">
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4" ng-show = "estrilizacion">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Marca - Esterilización:</label>
+                                                        <div class="controls">
+                                                            <select id="marca" name="marca"  ng-model="datos.mascota_marca"  class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado" ng-change="cambioNrocert();">
+                                                                <option value="">--Seleccione--</option>
+                                                                <option value="esterilizacion"> Ninguna  </option>
+                                                                <option value="certificado"> Certificado  </option>
+                                                                <option value="tatuaje"> Tatuaje  </option>
+                                                            </select>
+                                                            <span style="color:red" ng-show="signupForm.marca.$invalid">
+                                                                <span ng-show="signupForm.marca.$error.required">{{transalteTitulos.lbl_016_07_1}}
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4" ng-show = "estrilizacion">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Nº Certificado:</label>
+                                                        <div class="controls">
+                                                            <input  ng-model="datos.mascota_certificado" name="reg_certificado" id="reg_certificado" class="form-control" type="text" placeholder="Ingrese Nro de certificado" onkeyUp="return valNumero(this);" ng-disabled="desabilitado">
+                                                            <span style="color:red" ng-show="signupForm.reg_certificado.$invalid">
+                                                                <span ng-show="signupForm.reg_certificado.$error.required">{{translateTitulos.lbl_016_08_1}}
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" ng-show = "estrilizacion">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Nombre Veterinario:</label>
+                                                        <div class="controls">
+                                                            <input  ng-model="datos.mascota_veterinario" name="reg_veterinario" id="reg_veterinario" class="form-control" type="text" placeholder="Ingrese nombre de Veterinario"  onkeyup="mayus(this);" onkeypress="return validar(event);" ng-disabled="desabilitado">
+                                                            <span style="color:red" ng-show="signupForm.reg_veterinario.$invalid">
+                                                                <span ng-show="signupForm.reg_veterinario.$error.required">{{translateTitulos.lbl_016_06_1}}
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" ng-show = "estrilizacion">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Nombre de la institucion: </label>
+                                                        <div class="controls">
+                                                            <input  ng-model="datos.mascota_institucion" name="reg_institucion" id="reg_institucion" class="form-control" type="text"   onkeyup="mayus(this);" placeholder="Ingrese Institución" ng-disabled="desabilitado">
+                                                            <span style="color:red" ng-show="signupForm.reg_institucion.$invalid">
+                                                                <span ng-show="signupForm.reg_institucion.$error.required">{{translateTitulos.lbl_016_06_1}}
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" ng-show = "desparasitacion">
+                                                <legend>Datos Desparasitación: </legend>
+                                            </div>
+                                            <div class="col-md-4" ng-show = "desparasitacion">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12" >
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Fecha de aplicacion  - Desparasitación: </label >
+                                                        <div class="controls">
+                                                            <input  ng-model="datos.mascota_feca_desparasitacion" name="mascota_feca_desparasitacion" id="mascota_feca_desparasitacion" class="form-control" type="date" ng-disabled="desabilitado">
+                                                            <span style="color:red" ng-show="signupForm.mascota_feca_desparasitacion.$invalid">
+                                                                <span ng-show="signupForm.mascota_feca_desparasitacion.$error.required">
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4" ng-show = "desparasitacion">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Nombre Veterinario:</label >
+                                                        <div class="controls">
+                                                            <input  ng-model="datos.mascota_veterinario_desparasitacion" name="reg_veterinario" id="reg_veterinario" class="form-control" type="text" placeholder="Ingrese nombre de Veterinario"  onkeyup="mayus(this);" onkeypress="return validar(event);" ng-disabled="desabilitado">
+                                                            <span style="color:red" ng-show="signupForm.reg_veterinario.$invalid">
+                                                                <span ng-show="signupForm.reg_veterinario.$error.required">{{translateTitulos.lbl_016_06_1}}
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4" ng-show = "desparasitacion">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url" >Nombre de la institucion:</label>
+                                                        <div class="controls">
+                                                            <input  ng-model="datos.mascota_institucion_desparasitacion" name="reg_institucion" id="reg_institucion" class="form-control" type="text" placeholder="Ingrese Institución" onkeyup="mayus(this);" ng-disabled="desabilitado">
+                                                            <span style="color:red" ng-show="signupForm.reg_institucion.$invalid">
+                                                                <span ng-show="signupForm.reg_institucion.$error.required">{{translateTitulos.lbl_016_06_1}}
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
                                     </div>
-                                </div-->
-
-                            </div>
-                        </div>
-                      </div>
-
-
-
-
-
-
-
-
-
-
-                  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      <!--vacunas-->
-                    <div class="tab-pane" id="tabVacunas">
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url">Tipo de Vacuna:</label>
-                                <div class="controls">
-                                    <select id="tipo_vacuna" name="tipo_vacuna" placeholder="tipo_vacuna" ng-model="datos.tipo_vacuna" class="form-control" ng-disabled="desabilitado" required>
-                                        <option value="">--Seleccione--</option>
-                                        <option value="ANTIRABICA NACIONAL">ANTIRABICA NACIONAL</option>
-                                        <option value="ANTIRABICA AMERICANA">ANTIRABICA AMERICANA</option>
-                                        <option value="OCTUPLE">OCTUPLE</option>
-                                        <option value="TRIPLEFELINA">TRIPLEFELINA</option>
-                                    </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >Número de Dosis:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.nro_dosis" id="nro_dosis" name="nro_dosis" class="form-control"  onkeyUp="return valNumero(this);" ng-disabled="desabilitado" placeholder=" Ingrese Nro. dosis"required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >Fecha de Aplicación:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.fecha_vacuna"  id="fecha_vacuna" name="fecha_vacuna" type="date" class="form-control" ng-disabled="desabilitado" placeholder="Ingrese Fecha de aplicacion" required>
-                                </div>
-                            </div>
-                        </div>                                  
-                        
-
-                       
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >Nombre de veterinario/a:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.nomb_vete" id="nomb_vete" name="nomb_vete" class="form-control"  onkeyup="mayus(this);" onkeypress="return validar(event);" ng-disabled="desabilitado" placeholder="Ingrese nombre de veterinario" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                              <label for="url" >Institución / Nombre de Veterinaria:</label>
-                              <div class="controls">
-                                  <input ng-model="datos.inst_vete" id="inst_vete" name="inst_vete" class="form-control" onkeyup="mayus(this);" ng-disabled="desabilitado" placeholder="Ingrese Institución / Nombre de Veterinaria" required>
-                              </div>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-
-                          <div class="col-md-12">
-                              <legend> Detalle de las Vacunas:</legend>
-                              <div align=right >
-                                  <a class="btn btn-info btn-circle" ng-disabled="desabilitado" ng-click = "guarda_grilla(datos);"><i class="fa fa-plus"  title="Registrar una nueva vacuna" style="text-align:center;"></i></a>
-                                  <img src="../../../app/view/img/vacunas.jpg" alt=" Imagen" height="70" width="70" >
-                                  <img src="../../../app/view/img/manito.gif" alt=" Imagen" height="20" width="40" tooltip="Adicionar Vacunas">
-
-                              </div>
-                          </div>
-                          <div class="col-md-12" class="form-control">
-                            <div class="form-group" >
-                                <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                                <div class="col-sm-12" align="left">
-                                    <div class="alert alert-danger fade in">
-                                        <font><bold>Estimado Ciudadano:</bold></font> Para realizar una modificación ó eliminación a datos de la vacuna, debe dirigirse ó contactarse directamente con la Casa de la Mascota. Por ello debe estar seguro/a de que todos los datos introducidos sean los correctos.<br>
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-md-12">
-                              <div class="panel panel-default">
-                                  <div class="panel-body">
-                                    <div class="table-responsive">
-                                      <table ng-table="tablalstSoporte" show-filter="true" class="table table-striped table-bordered">
-                                          <tr ng-repeat="lstGrilla in data1" style="background-color:mintcream">
-                                              <td align="center" style="width:5%" data-title="'#'">{{$index+1}}</td>
-                                              <td class="text-center" style="width:15%" data-title="'TIPO DE VACUNA'" >
-                                              {{lstGrilla.tipo_vacuna}}
-                                              </td>
-                                              <td class="text-center" style="width:15%" data-title="'NRO. DE DOSIS'"  >
-                                              {{lstGrilla.nro_dosis}}
-                                              </td>
-                                              <td class="text-center" style="width:15%" data-title="'FECHA'">
-                                              {{lstGrilla.fecha_vacuna}}
-                                              </td>
-                                              <td class="text-center" style="width:15%" data-title="'VETERINARIO'">
-                                              {{lstGrilla.nomb_vete}}
-                                              </td>
-                                              <td class="text-center" style="width:15%" data-title="'INSTITUCIÓN'">
-                                                {{lstGrilla.inst_vete}}
-                                              </td>
-                                          </tr>
-                                      </table>  
-                                    </div>
-                                  </div>  
-                              </div>
-                            </div>
-                        </div>
-                    </div> 
-                    <!--contacto alternativo-->
-                    <!--div class="tab-pane" id="tabCAlternativo">
-                    <div class="col-md-12">
-                        <div class="form-group" >
-                            <label for="url" >C.I. Contacto:</label>
-                            <div class="controls">
-                                <input ng-model="datos.ci_ca" id="ci_ca" name="ci_ca" class="form-control" value = "{{ci_ca}}" onkeyUp="return valNumero(this);" placeholder="Ingrese ci de Contacto Alternativo" ng-disabled="desabilitado">
-                            </div>
-                        </div>
-                    </div>
-                      <div class="col-md-6">
-                          <div class="form-group" >
-                              <label for="url" >Nombres:</label>
-                              <div class="controls">
-                                <input ng-model="datos.nombre_ca" id="nombre_ca" name="nombre_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese nombre de contacto" ng-disabled="desabilitado" >
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-md-6">
-                      <div class="form-group" >
-                          <label for="url" >Paterno:</label>
-                          <div class="controls">
-                              <input ng-model="datos.apaterno_ca" id="apaterno_ca" name="apaterno_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese paterno de contacto" ng-disabled="desabilitado">
-                          </div>
-                      </div>
-                      </div>
-                      <div class="col-md-6">
-                      <div class="form-group" >
-                          <label for="url" >Materno:</label>
-                          <div class="controls">
-                              <input ng-model="datos.apmaterno_ca" id="apmaterno_ca" name="apmaterno_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese materno de contacto" ng-disabled="desabilitado">
-                          </div>
-                      </div>
-                      </div>
-                      <div class="col-md-6">
-                      <div class="form-group" >
-                          <label for="url" >Ap. Casada:</label>
-                          <div class="controls">
-                              <input ng-model="datos.apcasada_ca" id="apcasada_ca" name="apcasada_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese ap. de casada de contacto" ng-disabled="desabilitado">
-                          </div>
-                      </div>
-                      </div>
-                      <div class="col-md-4">
-                      <div class="form-group" >
-                          <label for="url" >Correo Electrónico:</label>
-                          <div class="controls">
-                              <input ng-model="datos.email_ca" id="email_ca" name="email_ca" class="form-control" ng-keyup="validaCorreo();" placeholder="Ingrese correo de contacto" ng-disabled="desabilitado">
-                          </div><br>
-                          <span id ="mensaje1" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
-                          <span id ="mensaje2" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span>
-                      </div>
-                      </div>
-                      <div class="col-md-4">
-                      <div class="form-group" >
-                          <label for="url" >Teléfono:</label>
-                          <div class="controls">
-                              <input ng-model="datos.fijo_ca" id="fijo_ca" name="fijo_ca" class="form-control" onkeyUp="return valNumero(this);" placeholder="Ingrese teléfono de contacto" ng-disabled="desabilitado">
-                          </div>
-                      </div>
-                      </div>
-                      <div class="col-md-4">
-                      <div class="form-group">
-                          <label for="url" >Celular:</label>
-                          <div class="controls">
-                              <input ng-model="datos.celular_ca" id="celular_ca" name="celular_ca" class="form-control" onkeyUp="return valNumero(this);" placeholder="Ingrese celular de contacto" ng-disabled="desabilitado">
-                          </div>
-                      </div>
-                      </div>  
-                     
-                      <div  class="col-md-12 container">
-                          <button type="button" class="btn btn-primary" ng-click="registrarContacto(datos);"> <i class="glyphicon fa fa-save"></i> Registrar Contactos</button>
-                      </div-->
-                    <!--/div-->
-                </div> 
-                 <!-- Modal COMPROMISO-->   
-                    <div class="modal fade" class="modal-body" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h2 class="modal-title" id="exampleModalLongTitle"><center><strong>COMPROMISO</strong></center></h2>
-                            </div>
-                            <div class="modal-body">
-                            <p style="text-align:center"><strong>COMPROMISO DE TENENCIA RESPONSABLE DE ANIMALES DE COMPAÑÍA </strong></p>
-                            <p>&nbsp;</p>
-                            <!--p style="text-align:justify">Yo, <strong>{{nombre}} {{paterno}} {{materno}}</strong> con C&eacute;dula de Identidad N&ordm; <strong>{{ci}} {{exp}}.</strong></p-->
-
-                            <p style="text-align:justify">&nbsp;</p>
-
-                            <p style="text-align:justify">En mi calidad de titular de la mascota registrada, me comprometo a no maltratar ni abandonar, brindar cuidado y atención a la mascota bajo mi custodia y cumplir las normas legales en actual vigencia. En cumplimiento a la Leyes Autonómicas Municipales 239-316 para Animales de Compañía y su reglamentación.”</p>
-                            <p style="text-align:justify">Yo {{nombre}} {{paterno}} {{materno}}, con Cédula de Identidad No. {{ci}} {{exp}}, con domicilio en {{direccion}} {{nro}} de la zona de {{zona}}, con teléfono No. {{celular}}, como titular del animal de compañía de especie {{especie}}, de nombre {{nombre_mas}}, raza {{raza}} , edad {{edad}} {{edad_desc}}, en el marco de la normativa vigente (nacional, departamental y/o municipal) lo cuidaré de forma responsable, brindándole alimento y agua, resguardo y cuidado médico veterinario adecuado, conforme a las necesidades de mi animal de compañía, sabiendo que entre las prohibiciones están el maltrato y/o el abandono del mismo.</p>
-
-                            </div>
-                
-                            <div class="modal-footer">
-
-                            <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >No Acepto</button>
-                            <button id="btncondicionesuso_a" type="button" class="btn btn-default" data-dismiss="modal">Acepto</button>
-                            <!--button id="btncerrarmodal" type="button" class="btn btn-default" ng-click="aceptarCondicionesUso();" data-dismiss="modal">Cerrar</button-->
-                            </div>
-                        </div>
-                        </div>
-                    </div> 
-                     <!-- Modal COMPROMISO RAZAS PELIGROSAS -->   
-                     <div class="modal fade" class="modal-body" id="formModalP" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h2 class="modal-title" id="exampleModalLongTitle"><center><strong>COMPROMISO</strong></center></h2>
-                            </div>
-                            <div class="modal-body">
-                            <p style="text-align:center"><strong>COMPROMISO DE TENENCIA DE MASCOTA POTENCIALMENTE PELIGROSA</strong></p>
-                            <p>&nbsp;</p>
-                            <!--p style="text-align:justify">Yo, <strong>{{nombre}} {{paterno}} {{materno}}</strong> con C&eacute;dula de Identidad N&ordm; <strong>{{ci}} {{exp}}.</strong></p-->
-
-                            <p style="text-align:justify">&nbsp;</p>
-
-                            <p style="text-align:justify">En mi calidad de titular de la mascota, registrada como potencialmente peligrosa, me hago responsable de ella y me comprometo a cumplir con las normas legales en actual vigencia.En aplicación a la ley 553, Ley Autonómica Municipal 239-316 y su reglamentación.”
-                                </p>
-                            </div>
-                            <div class="modal-footer">
-                            <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" ng-click="noValidaCondicionUso();">No Acepto</button>
-                            <button id="btncondicionesuso_a" type="button" class="btn btn-default" ng-click="validaCondicionUso();" data-dismiss="modal">Acepto</button>
-                            <!--button id="btncerrarmodal" type="button" class="btn btn-default" ng-click="aceptarCondicionesUso();" data-dismiss="modal">Cerrar</button-->
-                            </div>
-                        </div>
-                        </div>
-                    </div> 
-                        <!-- Modal REGISTRAR CONTACTO -->   
-                        <div class="modal fade" id="formModalContactos" role="dialog">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" >
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">REGISTRO DE CONTACTO ALTERNATIVO</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="col-md-12" class="form-control">
+                            <!--vacunas-->
+                            <div class="tab-pane" id="tabVacunas">
+                                    <div class="col-md-4">
                                         <div class="form-group" >
-                                            <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                                            <div class="col-sm-12" align="left">
-                                                <div class="alert alert-danger fade in">
-                                                    <bold>Estimado Ciudadano:</bold> Debe considerar los siguientes puntos: <br>1.  * NO es obligatorio realizar este registro. <br>2.  * En caso de registrar un Contacto Alternativo debe llenar las casillas requeridas.<br>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group" >
-                                                <label for="url" >Cédula de Identidad</label>
-                                                <div class="controls">
-                                                    <input ng-model="datos.ci_ca" id="ci_ca" name="ci_ca" class="form-control" placeholder="{{cedula}}" disabled="desabilitado" readonly>
-                                                </div>
-                                                <span style="color:red" ng-show="signupForm.ci_ca.$invalid">
-                                                    <span ng-show="signupForm.ci_ca.$error.required">** Carnet de Identidad es requerido.
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6" align = "right">
-                                            <div class="form-group">
-                                                <button id="recuperaContacto"  ng-click="cargarContactos();"  type="button" class="btn btn-default" name="recuperaContacto"  tooltip="Recuperar datos de Contacto Alternativo" ng-disabled="desabilitado">Recuperar Datos de Contacto</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group" >
-                                                <label for="url" >Nombres:</label>
-                                                <div class="controls">
-                                                    <input ng-model="datos.nombre_ca" id="nombre_ca" name="nombre_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese nombre de contacto" ng-disabled="desabilitado" required>
-                                                </div>
-                                                <span style="color:red" ng-show="signupForm.nombre_ca.$invalid">
-                                                    <span ng-show="signupForm.nombre_ca.$error.required">** Nombres es requerido.
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group" >
-                                                <label for="url" >Paterno:</label>
-                                                <div class="controls">
-                                                    <input ng-model="datos.apaterno_ca" id="apaterno_ca" name="apaterno_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese paterno de contacto" ng-disabled="desabilitado">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group" >
-                                                <label for="url" >Materno:</label>
-                                                <div class="controls">
-                                                    <input ng-model="datos.apmaterno_ca" id="apmaterno_ca" name="apmaterno_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese materno de contacto" ng-disabled="desabilitado" required>
-                                                </div>
-                                                <span style="color:red" ng-show="signupForm.apmaterno_ca.$invalid">
-                                                    <span ng-show="signupForm.apmaterno_ca.$error.required">** Apellido Materno es requerido.
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group" >
-                                                <label for="url" >Ap. Casada:</label>
-                                                <div class="controls">
-                                                    <input ng-model="datos.apcasada_ca" id="apcasada_ca" name="apcasada_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese ap. de casada de contacto" ng-disabled="desabilitado">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group" >
-                                                <label for="url" >Correo Electrónico:</label>
-                                                <div class="controls">
-                                                    <input ng-model="datos.email_ca" id="email_ca" name="email_ca" class="form-control" ng-keyup="validaCorreo();" placeholder="Ingrese correo de contacto" ng-disabled="desabilitado">
-                                                </div><br>
-                                                <!--span id ="mensaje1" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
-                                                <span id ="mensaje2" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span-->
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group" >
-                                                <label for="url" >Teléfono:</label>
-                                                <div class="controls">
-                                                    <input ng-model="datos.fijo_ca" id="fijo_ca" name="fijo_ca" class="form-control" onkeyUp="return valNumero(this);" placeholder="Ingrese teléfono de contacto" ng-disabled="desabilitado">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="url" >Celular:</label>
-                                                <div class="controls">
-                                                    <input ng-model="datos.celular_ca" id="celular_ca" name="celular_ca" class="form-control" onkeyUp="return valNumero(this);" placeholder="Ingrese celular de contacto" ng-disabled="desabilitado" required>
-                                                </div>
-                                                <span style="color:red" ng-show="signupForm.celular_ca.$invalid">
-                                                    <span ng-show="signupForm.celular_ca.$error.required">** Celular es requerido.
-                                                    </span>
+                                            <font color="#FF0000"> * </font>
+                                            <label for="url">Tipo de Vacuna:</label>
+                                            <div class="controls">
+                                                <select id="tipo_vacuna" name="tipo_vacuna" ng-model="datos.tipo_vacuna" class="form-control" ng-disabled="desabilitado" required>
+                                                    <option value="">--Seleccione--</option>
+                                                    <option value="ANTIRABICA NACIONAL">ANTIRABICA NACIONAL</option>
+                                                    <option value="ANTIRABICA AMERICANA">ANTIRABICA AMERICANA</option>
+                                                    <option value="OCTUPLE">OCTUPLE</option>
+                                                    <option value="TRIPLEFELINA">TRIPLEFELINA</option>
+                                                </select>
+                                                <span style="color:red" ng-show="signupForm.tipo_vacuna.$invalid">
+                                                    <span> Es requerido tipo de vacuna.</span>
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="btncerrarmodal" type="reset" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                    <button id="btncondicionesuso_a" type="button" class="btn btn-default" ng-click="registrarContacto(datos);" data-dismiss="modal" ng-disabled="signupForm.celular_ca.$invalid ||signupForm.apmaterno_ca.$invalid || signupForm.nombre_ca.$invalid ||signupForm.ci_ca.$error.required">Registrar Contacto</button>
+                                    <div class="col-md-4">
+                                        <div class="form-group" >
+                                            <font color="#FF0000"> * </font>
+                                            <label for="url" >Número de Dosis:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.nro_dosis" id="nro_dosis" name="nro_dosis" class="form-control"  onkeyUp="return valNumero(this);" ng-disabled="desabilitado" placeholder=" Ingrese Nro. dosis"required>
+                                                <span style="color:red" ng-show="signupForm.nro_dosis.$invalid">
+                                                    <span> Es requerido Número de Dosis. </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group" >
+                                            <font color="#FF0000"> * </font>
+                                            <label for="url" >Fecha de Aplicación:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.fecha_vacuna"  id="fecha_vacuna" name="fecha_vacuna" type="date" class="form-control" ng-disabled="desabilitado" placeholder="Ingrese Fecha de aplicacion" required>
+                                                <span style="color:red" ng-show="signupForm.fecha_vacuna.$invalid">
+                                                    <span> Es requerido Fecha de Aplicación. </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>                                  
+                                    <div class="col-md-4">
+                                        <div class="form-group" >
+                                            <font color="#FF0000"> * </font>
+                                            <label for="url" >Nombre de veterinario/a:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.nomb_vete" id="nomb_vete" name="nomb_vete" class="form-control"  onkeyup="mayus(this);" onkeypress="return validar(event);" ng-disabled="desabilitado" placeholder="Ingrese nombre de veterinario" required>
+                                                <span style="color:red" ng-show="signupForm.nomb_vete.$invalid">
+                                                    <span> Es requerido Nombre de Veterinaria. </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group" >
+                                            <font color="#FF0000"> * </font>
+                                            <label for="url" >Institución / Nombre de Veterinaria:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.inst_vete" id="inst_vete" name="inst_vete" class="form-control" onkeyup="mayus(this);" ng-disabled="desabilitado" placeholder="Ingrese Institución / Nombre de Veterinaria" required>
+                                                <span style="color:red" ng-show="signupForm.inst_vete.$invalid">
+                                                    <span> Es requerido Institución ó Nombre de Veterinaria. </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <font color="#FF0000"> * </font>
+                                            <legend> Detalle de las Vacunas:</legend>
+                                            <div align=right >
+                                                <button type="button" class="btn btn-default ng-binding" ng-click="guarda_grilla(datos);"ng-disabled="signupForm.tipo_vacuna.$invalid || signupForm.nro_dosis.$invalid || signupForm.fecha_vacuna.$invalid || signupForm.nomb_vete.$invalid || signupForm.inst_vete.$invalid" ><i class="fa fa-plus"  style="color:white"></i><font color="white"> Registrar Vacuna</font></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" class="form-control">
+                                            <div class="form-group" >
+                                                <label class="col-sm-12 control-label no-padding-right" for="url"></label>
+                                                <div class="col-sm-12" align="left">
+                                                    <div class="alert alert-danger fade in">
+                                                        <font><bold>Estimado Ciudadano:</bold></font> Para realizar una modificación ó eliminación a datos de la vacuna, debe dirigirse ó contactarse directamente con la Casa de la Mascota. Por ello debe estar seguro/a de que todos los datos introducidos sean los correctos.<br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="table-responsive">
+                                                        <table ng-table="tablalstSoporte" show-filter="true" class="table table-striped table-bordered">
+                                                            <tr ng-repeat="lstGrilla in data1" style="background-color:mintcream">
+                                                                <td align="center" style="width:5%" data-title="'#'">{{$index+1}}</td>
+                                                                <td class="text-center" style="width:15%" data-title="'TIPO DE VACUNA'" >
+                                                                {{lstGrilla.tipo_vacuna}}
+                                                                </td>
+                                                                <td class="text-center" style="width:15%" data-title="'NRO. DE DOSIS'"  >
+                                                                {{lstGrilla.nro_dosis}}
+                                                                </td>
+                                                                <td class="text-center" style="width:15%" data-title="'FECHA'">
+                                                                {{lstGrilla.fecha_vacuna}}
+                                                                </td>
+                                                                <td class="text-center" style="width:15%" data-title="'VETERINARIO'">
+                                                                {{lstGrilla.nomb_vete}}
+                                                                </td>
+                                                                <td class="text-center" style="width:15%" data-title="'INSTITUCIÓN'">
+                                                                {{lstGrilla.inst_vete}}
+                                                                </td>
+                                                            </tr>
+                                                        </table>  
+                                                    </div>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                        </div> 
+                        <!-- Modal COMPROMISO-->   
+                        <div class="modal fade" class="modal-body" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h2 class="modal-title" id="exampleModalLongTitle"><center><strong>COMPROMISO</strong></center></h2>
+                                    </div>
+                                    <div class="modal-body">
+                                    <p style="text-align:center"><strong>COMPROMISO DE TENENCIA RESPONSABLE DE ANIMALES DE COMPAÑÍA </strong></p>
+                                    <p>&nbsp;</p>
+                                    <!--p style="text-align:justify">Yo, <strong>{{nombre}} {{paterno}} {{materno}}</strong> con C&eacute;dula de Identidad N&ordm; <strong>{{ci}} {{exp}}.</strong></p-->
+
+                                    <p style="text-align:justify">&nbsp;</p>
+
+                                    <p style="text-align:justify">En mi calidad de titular de la mascota registrada, me comprometo a no maltratar ni abandonar, brindar cuidado y atención a la mascota bajo mi custodia y cumplir las normas legales en actual vigencia. En cumplimiento a la Leyes Autonómicas Municipales 239-316 para Animales de Compañía y su reglamentación.”</p>
+                                    <p style="text-align:justify">Yo {{nombre}} {{paterno}} {{materno}}, con Cédula de Identidad No. {{ci}} {{exp}}, con domicilio en {{direccion}} {{nro}} de la zona de {{zona}}, con teléfono No. {{celular}}, como titular del animal de compañía de especie {{especie}}, de nombre {{nombre_mas}}, raza {{raza}} , edad {{edad}} {{edad_desc}}, en el marco de la normativa vigente (nacional, departamental y/o municipal) lo cuidaré de forma responsable, brindándole alimento y agua, resguardo y cuidado médico veterinario adecuado, conforme a las necesidades de mi animal de compañía, sabiendo que entre las prohibiciones están el maltrato y/o el abandono del mismo.</p>
+
+                                    </div>
+                        
+                                    <div class="modal-footer">
+
+                                    <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >No Acepto</button>
+                                    <button id="btncondicionesuso_a" type="button" class="btn btn-default" data-dismiss="modal">Acepto</button>
+                                    <!--button id="btncerrarmodal" type="button" class="btn btn-default" ng-click="aceptarCondicionesUso();" data-dismiss="modal">Cerrar</button-->
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div><br><br>
+                        </div> 
+                            <!-- Modal COMPROMISO RAZAS PELIGROSAS -->   
+                            <div class="modal fade" class="modal-body" id="formModalP" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h2 class="modal-title" id="exampleModalLongTitle"><center><strong>COMPROMISO</strong></center></h2>
+                                        </div>
+                                        <div class="modal-body">
+                                        <p style="text-align:center"><strong>COMPROMISO DE TENENCIA DE MASCOTA POTENCIALMENTE PELIGROSA</strong></p>
+                                        <p>&nbsp;</p>
+                                        <!--p style="text-align:justify">Yo, <strong>{{nombre}} {{paterno}} {{materno}}</strong> con C&eacute;dula de Identidad N&ordm; <strong>{{ci}} {{exp}}.</strong></p-->
+
+                                        <p style="text-align:justify">&nbsp;</p>
+
+                                        <p style="text-align:justify">En mi calidad de titular de la mascota, registrada como potencialmente peligrosa, me hago responsable de ella y me comprometo a cumplir con las normas legales en actual vigencia.En aplicación a la ley 553, Ley Autonómica Municipal 239-316 y su reglamentación.”
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" ng-click="noValidaCondicionUso();">No Acepto</button>
+                                        <button id="btncondicionesuso_a" type="button" class="btn btn-default" ng-click="validaCondicionUso();" data-dismiss="modal">Acepto</button>
+                                        <!--button id="btncerrarmodal" type="button" class="btn btn-default" ng-click="aceptarCondicionesUso();" data-dismiss="modal">Cerrar</button-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                            <!-- Modal REGISTRAR CONTACTO -->   
+                            <div class="modal fade" id="formModalContactos" role="dialog">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content" >
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">REGISTRO DE CONTACTO ALTERNATIVO</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="col-md-12" class="form-control">
+                                                <div class="form-group" >
+                                                    <label class="col-sm-12 control-label no-padding-right" for="url"></label>
+                                                    <div class="col-sm-12" align="left">
+                                                        <div class="alert alert-danger fade in">
+                                                            <bold>Estimado Ciudadano:</bold> Debe considerar los siguientes puntos: <br>1.  * NO es obligatorio realizar este registro. <br>2.  * En caso de registrar un Contacto Alternativo debe llenar las casillas requeridas.<br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group" >
+                                                        <label for="url" >Cédula de Identidad</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.ci_ca" id="ci_ca" name="ci_ca" class="form-control" placeholder="{{cedula}}" disabled="desabilitado" readonly>
+                                                        </div>
+                                                        <span style="color:red" ng-show="signupForm.ci_ca.$invalid">
+                                                            <span ng-show="signupForm.ci_ca.$error.required">** Carnet de Identidad es requerido.
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" align = "right">
+                                                    <div class="form-group">
+                                                        <button id="recuperaContacto"  ng-click="cargarContactos();"  type="button" class="btn btn-default" name="recuperaContacto"  tooltip="Recuperar datos de Contacto Alternativo" ng-disabled="desabilitado">Recuperar Datos de Contacto</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group" >
+                                                        <label for="url" >Nombres:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.nombre_ca" id="nombre_ca" name="nombre_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese nombre de contacto" ng-disabled="desabilitado" required>
+                                                        </div>
+                                                        <span style="color:red" ng-show="signupForm.nombre_ca.$invalid">
+                                                            <span ng-show="signupForm.nombre_ca.$error.required">** Nombres es requerido.
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group" >
+                                                        <label for="url" >Paterno:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.apaterno_ca" id="apaterno_ca" name="apaterno_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese paterno de contacto" ng-disabled="desabilitado">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group" >
+                                                        <label for="url" >Materno:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.apmaterno_ca" id="apmaterno_ca" name="apmaterno_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese materno de contacto" ng-disabled="desabilitado" required>
+                                                        </div>
+                                                        <span style="color:red" ng-show="signupForm.apmaterno_ca.$invalid">
+                                                            <span ng-show="signupForm.apmaterno_ca.$error.required">** Apellido Materno es requerido.
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group" >
+                                                        <label for="url" >Ap. Casada:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.apcasada_ca" id="apcasada_ca" name="apcasada_ca" class="form-control" onkeyup="mayus(this);" onkeypress="return validar(event);" placeholder="Ingrese ap. de casada de contacto" ng-disabled="desabilitado">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group" >
+                                                        <label for="url" >Correo Electrónico:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.email_ca" id="email_ca" name="email_ca" class="form-control" ng-keyup="validaCorreo();" placeholder="Ingrese correo de contacto" ng-disabled="desabilitado">
+                                                        </div><br>
+                                                        <!--span id ="mensaje1" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
+                                                        <span id ="mensaje2" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span-->
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group" >
+                                                        <label for="url" >Teléfono:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.fijo_ca" id="fijo_ca" name="fijo_ca" class="form-control" onkeyUp="return valNumero(this);" placeholder="Ingrese teléfono de contacto" ng-disabled="desabilitado">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="url" >Celular:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.celular_ca" id="celular_ca" name="celular_ca" class="form-control" onkeyUp="return valNumero(this);" placeholder="Ingrese celular de contacto" ng-disabled="desabilitado" required>
+                                                        </div>
+                                                        <span style="color:red" ng-show="signupForm.celular_ca.$invalid">
+                                                            <span ng-show="signupForm.celular_ca.$error.required">** Celular es requerido.
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btncerrarmodal" type="reset" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                            <button id="btncondicionesuso_a" type="button" class="btn btn-default" ng-click="registrarContacto(datos);" data-dismiss="modal" ng-disabled="signupForm.celular_ca.$invalid ||signupForm.apmaterno_ca.$invalid || signupForm.nombre_ca.$invalid ||signupForm.ci_ca.$error.required">Registrar Contacto</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div><br><br>
                     <div class="col-md-12" class="form-control">
                         <div class="form-group" >
                             <label class="col-sm-12 control-label no-padding-right" for="url"></label>
@@ -1239,16 +1047,13 @@ function validateDecimal(valor) {
                         </div>
                     </div>
                     <div class="col-md-12" align="right" ></p></p>
-                        <img src="../../../app/view/img/corazon.gif" alt=" Imagen" height="80" width="80">
-                        <button id="miFormModificar" data-toggle="modal" data-target="#formModal" ng-show = "botonMod" ng-click="modificarInformacionMascota(datos);" type="button" class="btn btn-success1 fa fab fa-save fa-lg shake-little" name="formEnviar" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid" tooltip="Modificar Datos"></button>
-                        <button id="miFormGuardar"  ng-show = "botonCrea" ng-click="serializarInformacion(datos);"  type="button" class="btn btn-success1 fa fab fa-save fa-lg shake-little" name="formEnviar" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid" tooltip="Guardar Datos" ng-disabled="desabilitado"></button>
-                        <img src="../../../app/view/img/manito.gif" alt=" Imagen" height="20" width="40" tooltip="Guardar datos">
+                        <button id="miFormModificar" data-toggle="modal" data-target="#formModal" ng-show = "botonMod" ng-click="modificarInformacionMascota(datos);" type="button" class="btn btn-default ng-binding" name="miFormModificar" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid"><i class="fa fa-edit"  style="color:white"></i><font color="white"> Modificar</font></button>
+                        <button id="miFormGuardar" name="formEnviar" ng-show="botonCrea" type="button" class="btn btn-default ng-binding" ng-click="adicionarMascota(datos);" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || signupForm.reg_sexo.$invalid || signupForm.reg_peso.$invalid || signupForm.reg_peso_des.$invalid || signupForm.reg_color.$invalid || signupForm.reg_tamanio.$invalid || signupForm.reg_esterilizacion.$invalid || signupForm.desparasitacion.$invalid"  tooltip="Guardar Datos" ng-disabled="desabilitado"><i class="fa fa-save"  style="color:white"></i><font color="white"> Guardar</font></button>
                     </div>
-              </div>
-            </div>
-          </form>
+                </div>
+            </form>
         </div>
-      </div>       
-  </div>
+    </div>       
+</div>
 </html>
 

@@ -644,7 +644,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.datos.mascota_certificado = "";
   }
 
-
   $scope.mostrarInformacionMascota = function (data) {
     cargando();
     $datos_mascota1 = {};
@@ -1087,6 +1086,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       $scope.$apply();
     });
   }
+
   $scope.validarEmail = function (email_ca) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email_ca);
@@ -1134,6 +1134,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     });
 
   }
+
   $scope.vaciarContactos = function() {
 
     $scope.datos.nombre_ca = '';
@@ -1284,6 +1285,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       }
     });
   };
+
   //BAJA DE MASCOTA
   $scope.validarbaja = function (data) {
     swal({
@@ -1317,6 +1319,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     };
 
   }
+
   $scope.llamModEli = function (dato) {
     id_mas_luz = dato;
   }
@@ -1384,28 +1387,47 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   }
   ////ALMACENA VACUNAS EN LA GRILLA ///////
 
-  $scope.datosMascota = function (id) {
-    var datosMascota = new reglasnegocioM();
-    datosMascota.identificador = 'SERVICIO_VALLE-CM-391';
-    datosMascota.parametros = '{"especieid":1}';
-    datosMascota.llamarregla(function (results) {
-      results1 = JSON.parse(results);
-      $scope.tablaTramites.reload();
-      if (results.length > 0) {
-        $scope.datosMascota = results1;
-      } else {
-
-      }
-    });
-  };
-
-    //SELECCIONA TIPO DE VOLUNTARIO
-
+ //SELECCIONA TIPO DE VOLUNTARIO
     $scope.f_dinamico_Registro = function(data_ingreso){
       var sci = sessionService.get('CICIUDADANO');
       $scope.tipoR = data_ingreso;
-      $scope.listarMascotasXci(sci,$scope.tipoR);
+      if(data_ingreso == 'CIUDADANO'){
+        $scope.listarMascotasXci(sci,$scope.tipoR);
+        $rootScope.swhabilitado = true;
+      }else{
+        $scope.verificarAnimalista(sci);
+      }
     }
+
+  //VALIDA SI CIUDADANO ES TIENE CERTIFICADO DE ANIMALISTA
+  $scope.verificarAnimalista = function(ci){
+    $rootScope.swhabilitado = false;
+    $scope.tramiteAnimalista = '';
+    var datosMascota = new reglasnegocioM();
+    datosMascota.identificador = 'CASA_MASCOTA-2';
+    var sci = sessionService.get('CICIUDADANO');
+    var x_parametro = '{"xcarnet":"'+sci+'"}';
+    datosMascota.parametros = x_parametro;
+    datosMascota.llamarregla(function (results){
+      var x = JSON.parse(results); 
+      var ia_long = x.length;
+      for(i=0;i<ia_long;i++){
+        if(x[i].xestado == 'habilitado'){
+          $scope.tramiteAnimalista = x[i].xvoluntario_idm;
+          $rootScope.swhabilitado = true;
+          $scope.listarMascotasXci(sci,$scope.tipoR);
+        }
+      }
+      if($rootScope.swhabilitado == true){
+        $scope.listarMascotasXci(sci,$scope.tipoR);
+      }else{
+        $scope.tipoR = '';
+        $rootScope.swhabilitado = false;
+        swal('Estimado ciudadano', 'No puede registrar mascotas, no se encuentra habilitado como Animalista Independiente / Animalista Agrupado. Si desea registrarse como Voluntario debe ir a la opción de Registro de Animalistas', 'warning');
+      }
+    })
+  }
+  
 
   $scope.validaCorreo = function () {
     var $result = $("#result");

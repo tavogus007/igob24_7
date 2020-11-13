@@ -249,7 +249,15 @@ function validateDecimal(valor) {
                                         <label class="col-sm-12 control-label no-padding-right" for="url"></label>
                                         <div class="col-sm-12" align="left">
                                             <div class="alert alert-danger fade in">
-                                                <bold>Estimado Ciudadano:</bold> Para el registro de su mascota debe seguir los pasos 1 y 2.<br>Y señalar que el registro del Contacto Alternativo NO es obligatorio.<br>
+                                                <bold>Estimado Ciudadano:</bold>
+                                                <br> + Para realizar el registro ó visualización de sus mascotas, debe seleccionar: 
+                                                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * COMO CIUDADANO si desea registrar/visualizar o modificar datos de sus mascotas particulares. 
+                                                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * COMO ANIMALISTA INDEPENDIENTE si desea registrar/visualizar o modificar datos de sus mascotas como voluntario y posee su Certificado de Animalista Independiente.
+                                                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * COMO ANIMALISTA AGRUPADO si desea registrar/visualizar o modificar datos de sus mascotas como responsable de alguna Asociación de Voluntarios y posee su Certificado de Animalista Independiente.
+                                                <br> + Para el registro de su mascota debe llenar todos los campos con *. 
+                                                <br> + Si su mascota tiene Esterilización y/o Desparasitación, debe llenar los correspondientes campos.
+                                                <br> + El registro de vacunas NO es obligatorio.
+                                                <br> + El registro del Contacto Alternativo NO es obligatorio.<br>
                                             </div>
                                         </div>
                                     </div>
@@ -283,6 +291,9 @@ function validateDecimal(valor) {
                                         </div>
                                     </div>
                                 </div> 
+                                <div ng-show = "swhabilitado == false" align="right">
+                                    <a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroVoluntariosIndependientes/index.html'"><button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-list-alt"></i> Registro de Animalistas</button></a>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-md-6">
                                         <div>  
@@ -338,16 +349,6 @@ function validateDecimal(valor) {
     <div ng-show="mostrar_form_mascotas" class="ibox float-e-margins col-md-12">
         <div>
             <form name="signupForm">
-                <div class="col-md-12" class="form-control">
-                    <div class="form-group" >
-                        <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                        <div class="col-sm-12" align="left">
-                            <div class="alert alert-danger fade in">
-                                <bold>PASO 1:</bold> Para el registro de su mascota debe llenar las casillas requeridas. Si su mascota tiene vacunas no olvide hacer click en la pestaña de VACUNAS. <br>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-md-12" align="right">
                     <button id="miFormContacto" data-toggle="modal" data-target="#formModalContactos" class="btn btn-default ng-binding" ng-click="vaciarContactos();" type="button" name="formEnviar"><font color="white">Registrar Contacto Alternativo</font></button><!--cambios-->
                     <img src="../../../app/view/img/contacto.png" alt=" Imagen" height="80" width="80">
@@ -355,8 +356,8 @@ function validateDecimal(valor) {
                 <div class="col-md-12">
                     <div class="tab-container">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="registro_ciudadano|servicios|index3.html#tabDatos" data-toggle="tab"><bold>DATOS GENERALES</bold></a></li>
-                            <li><a href="registro_ciudadano|servicios|index3.html#tabVacunas" data-toggle="tab"><bold>VACUNAS</bold></a></li>
+                            <li class="active"><a href="registro_ciudadano|servicios|index3.html#tabDatos" data-toggle="tab"><bold>DATOS GENERALES DE LA MASCOTA</bold></a></li>
+                            <li><a href="registro_ciudadano|servicios|index3.html#tabVacunas" data-toggle="tab"><bold>REGISTRO DE VACUNAS</bold></a></li>
                         </ul>
                         <div><br></div>
                         <div class="tab-content">
@@ -1002,8 +1003,6 @@ function validateDecimal(valor) {
                                                         <div class="controls">
                                                             <input ng-model="datos.email_ca" id="email_ca" name="email_ca" class="form-control" ng-keyup="validaCorreo();" placeholder="Ingrese correo de contacto" ng-disabled="desabilitado">
                                                         </div><br>
-                                                        <!--span id ="mensaje1" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
-                                                        <span id ="mensaje2" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span-->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -1036,16 +1035,6 @@ function validateDecimal(valor) {
                                 </div>
                             </div>
                     </div><br><br>
-                    <div class="col-md-12" class="form-control">
-                        <div class="form-group" >
-                            <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                            <div class="col-sm-12" align="left">
-                                <div class="alert alert-danger fade in">
-                                    <bold>PASO 2:</bold> Guarde los datos, haciendo click cerca de la manito.<br>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-md-12" align="right" ></p></p>
                         <button id="miFormModificar" data-toggle="modal" data-target="#formModal" ng-show = "botonMod" ng-click="modificarInformacionMascota(datos);" type="button" class="btn btn-default ng-binding" name="miFormModificar" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid"><i class="fa fa-edit"  style="color:white"></i><font color="white"> Modificar</font></button>
                         <button id="miFormGuardar" name="formEnviar" ng-show="botonCrea" type="button" class="btn btn-default ng-binding" ng-click="adicionarMascota(datos);" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || signupForm.reg_sexo.$invalid || signupForm.reg_peso.$invalid || signupForm.reg_peso_des.$invalid || signupForm.reg_color.$invalid || signupForm.reg_tamanio.$invalid || signupForm.reg_esterilizacion.$invalid || signupForm.desparasitacion.$invalid"  tooltip="Guardar Datos" ng-disabled="desabilitado"><i class="fa fa-save"  style="color:white"></i><font color="white"> Guardar</font></button>

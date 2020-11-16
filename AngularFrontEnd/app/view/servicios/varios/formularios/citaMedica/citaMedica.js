@@ -18,14 +18,20 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     $scope.img_hoja_referencia = false;
     $scope.lstatencionesvacias = false;
     $scope.lstatenciones = false;
+    $scope.mostrarIframe = false;
     $scope.vectorMensaje = ['Nro. de Proforma:','Nombres:','Apellidos:','Correo Electrónico:','Ciudad:','País:','Especialidad:','Precio (Bs):'];
     if(jsonURLS){
         //var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";
-        var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";
+        //var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";
+        var urlFum = 'http://172.19.160.38:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php';
+        var urlPagoTarjeta = 'http://52.226.130.135:5433/api/pago-checkoutWeb';
+        var urlPagoClick = 'http://52.226.130.135:5433/api/envioPagoClickGamlp';
+        var urlPagoQR = 'http://52.226.130.135:5433/api/generarQrBcpGamlp';
+
       }
     $scope.get_renderizarHospitales = function(x){
         return $sce.trustAsHtml(x);
-        }; 
+        };
 
     var tiemporespuesta = null;
     var data = $scope.users;
@@ -52,12 +58,12 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     $scope.validarTelefono = function(nro){
         if(nro.length > 0){
             var res = nro.substring(0, 1);
-            if(res == 2 || res == 3 || res == 4){   
+            if(res == 2 || res == 3 || res == 4){
                 $scope.datosGrupo.telefonoTrabajo = nro.substring(0, 7);
-            } 
+            }
             else{
                 if(res == 7 || res == 6){
-                    $scope.datosGrupo.telefonoTrabajo = nro.substring(0, 8);      
+                    $scope.datosGrupo.telefonoTrabajo = nro.substring(0, 8);
                 }
                 else{
                     $scope.datosGrupo.telefonoTrabajo = '';
@@ -72,12 +78,12 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     $scope.validarTelefono2 = function(nro){
         if(nro.length > 0){
             var res = nro.substring(0, 1);
-            if(res == 2 || res == 3 || res == 4){   
+            if(res == 2 || res == 3 || res == 4){
                 $scope.datosGrupo.telefonoRef = nro.substring(0, 7);
-            } 
+            }
             else{
                 if(res == 7 || res == 6){
-                    $scope.datosGrupo.telefonoRef = nro.substring(0, 8);      
+                    $scope.datosGrupo.telefonoRef = nro.substring(0, 8);
                 }
                 else{
                     $scope.datosGrupo.telefonoRef = '';
@@ -92,7 +98,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     $scope.registrarHistoria = function(datos){
         if(datos.telefonoRef.length > 0){
             var res = datos.telefonoRef.substring(0, 1);
-            if(res == 2 || res == 3 || res == 4){  
+            if(res == 2 || res == 3 || res == 4){
                 if(datos.telefonoRef.length == 7){
                     $scope.numeroref = true;
                     $scope.variablem = "modal";
@@ -113,7 +119,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                         $scope.numeroref = false;
                         $scope.variablem = "";
                         alertify.error('El celular de referencia familiar es incorrecto');
-                    }      
+                    }
                 }
                 else{
                     $scope.datosGrupo.telefonoTrabajo = '';
@@ -128,7 +134,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
         }
         if(datos.telefonoTrabajo.length > 0){
             var res = datos.telefonoTrabajo.substring(0, 1);
-            if(res == 2 || res == 3 || res == 4){  
+            if(res == 2 || res == 3 || res == 4){
                 if(datos.telefonoTrabajo.length == 7){
                     $scope.numerotrabajo = true;
                     $scope.variablem = "modal";
@@ -149,7 +155,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                         $scope.numerotrabajo = false;
                         $scope.variablem = "";
                         alertify.error('El celular de trabajo es incorrecto');
-                    }      
+                    }
                 }
                 else{
                     $scope.datosGrupo.telefonoTrabajo = '';
@@ -177,8 +183,8 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
          closeOnConfirm: false,
          closeOnCancel: false ,
          cancelButtonText: "green",cancelButtonText:"NO"
-         }, 
-      function(isConfirm){ 
+         },
+      function(isConfirm){
          if (isConfirm) {
             if($scope.datosPaciente.dtspsl_fec_nacimiento == ' ' || $scope.datosPaciente.dtspsl_fec_nacimiento == '' || $scope.datosPaciente.dtspsl_fec_nacimiento == undefined || $scope.datosPaciente.dtspsl_fec_nacimiento == null || fec == 'Invalid Date'){
                 alertify.error('Completar su fecha de nacimiento en editar información Por favor');
@@ -216,8 +222,8 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
          closeOnConfirm: false,
          closeOnCancel: false ,
          cancelButtonText: "green",cancelButtonText:"NO"
-         }, 
-      function(isConfirm){ 
+         },
+      function(isConfirm){
          if (isConfirm) {
             $scope.entregarFicha();
             $scope.$apply();
@@ -238,8 +244,8 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
          closeOnConfirm: false,
          closeOnCancel: false ,
          cancelButtonText: "green",cancelButtonText:"NO"
-         }, 
-      function(isConfirm){ 
+         },
+      function(isConfirm){
          if (isConfirm) {
             $scope.reservarInternetley();
             swal.close();
@@ -539,7 +545,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
           $scope.vdepartamento = false;
           $scope.vdtspsl_provincia = false;
           $scope.vdtspsl_municipio = false;
-          $scope.vdtspsl_macrodistrito = false;   
+          $scope.vdtspsl_macrodistrito = false;
 
         if($scope.datosPaciente.dtspsl_fec_nacimiento == ' ' || $scope.datosPaciente.dtspsl_fec_nacimiento == '' || $scope.datosPaciente.dtspsl_fec_nacimiento == undefined || $scope.datosPaciente.dtspsl_fec_nacimiento == null){
             $scope.datosRequeridos = 1;
@@ -571,13 +577,13 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
         }
         if($scope.datosPaciente.dtspsl_macrodistrito == ' ' || $scope.datosPaciente.dtspsl_macrodistrito == '' || $scope.datosPaciente.dtspsl_macrodistrito == undefined || $scope.datosPaciente.dtspsl_macrodistrito == null){
             $scope.datosRequeridos = 1;
-            $scope.vdtspsl_macrodistrito = true;   
+            $scope.vdtspsl_macrodistrito = true;
         }
             if($scope.datosRequeridos == 1){
                 $scope.registroHistoriamodal = 'modaldeDatos';
             }
             else{
-                $scope.registroHistoriamodal = 'registroHistoria'; 
+                $scope.registroHistoriamodal = 'registroHistoria';
                 $scope.vhsp_id_hospital = datos.vhsp_id_hospital;
                 $scope.vhsp_codigo_hospital = datos.vhsp_codigo_hospital;
                 $scope.datosHospital = datos;
@@ -592,12 +598,12 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                       sql.SqlDinamic(function(res){
                           var x = JSON.parse(res);
                           var resultado = x.success.data;
-                          if (resultado[0].sp_dinamico != null) 
+                          if (resultado[0].sp_dinamico != null)
                           {
                              alertify.success('Se encontraron Datos de Referencia y Laborales');
                              $scope.datosGrupo.lugarTrabajo = resultado[0].sp_dinamico[0].vhcl_lugtra;
                              $scope.datosGrupo.direccionTrabajo = resultado[0].sp_dinamico[0].vhcl_dirtra;
-                             $scope.datosGrupo.telefonoTrabajo = resultado[0].sp_dinamico[0].vhcl_teltra;                
+                             $scope.datosGrupo.telefonoTrabajo = resultado[0].sp_dinamico[0].vhcl_teltra;
                              $scope.datosGrupo.responsableFamilia = resultado[0].sp_dinamico[0].vhcl_nomfam;
                              $scope.datosGrupo.nombrePadreTutor = resultado[0].sp_dinamico[0].vhcl_nompad;
                              $scope.datosGrupo.nombreMadre = resultado[0].sp_dinamico[0].vhcl_nommad;
@@ -615,12 +621,12 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                         $.LoadingOverlay("hide");
                         alertify.error('Error');
                     }
-                }   
+                }
             }
             //
             //$scope.registroHistoriamodal = 'registroHistoria';
-        
-        
+
+
     }
 
      $scope.cargarFichasReservadas = function () {
@@ -639,12 +645,14 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                 respuestaFichas = resultadoApi.success.data;
                 if(respuestaFichas.length>0)
                 {
+                    console.log('se va por verdad');
                     var data = respuestaFichas;
                     $scope.tramitesUsuario = respuestaFichas;
                     $scope.lstatencionesvacias = false;
                     $scope.lstatenciones = true;
                 }
                 else{
+                    console.log('se va por falso');
                     $scope.lstatencionesvacias = true;
                     $scope.lstatenciones = false;
                 }
@@ -657,7 +665,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
         });
     };
 
-  
+
 
     $scope.verificarRegistroPaciente = function () {
         var centralRiesgosSalud = new dataSalud();
@@ -710,6 +718,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                 $scope.hospitales = results;
                 $scope.hospitales_vista = true;
                 $scope.especialidad_vista = false;
+                $scope.lstatenciones = false;
             }
             else
             {
@@ -728,6 +737,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
         datosCiudadano.datosCiudadanoNatural(function(resultado){
             resultadoApi = JSON.parse(resultado);
             $scope.datosPaciente = resultadoApi[0];
+            console.log($scope.datosPaciente);
             $.LoadingOverlay("hide");
         });
     }
@@ -831,7 +841,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                 }
                 else
                 {
-                     alertify.error( 'Verificar el sexo');   
+                     alertify.error( 'Verificar el sexo');
                 }
             }
             $.LoadingOverlay("hide");
@@ -868,6 +878,8 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
             resultadoApi = JSON.parse(resultado);
             if( typeof(resultadoApi.success) != 'undefined')
             {   response = resultadoApi.success.data;
+                $scope.datosPacienteSalud = response;
+                console.log($scope.datosPacienteSalud);
                 if(response[0].vsexo != undefined || response[0].vsexo != null || response[0].vsexo != ''){
                     var genero = 'M';
                     if(response[0].vsexo == 2){
@@ -900,7 +912,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                 }
                 else
                 {
-                     alertify.error('Verificar el sexo');   
+                     alertify.error('Verificar el sexo');
                 }
             }
             $.LoadingOverlay("hide");
@@ -912,11 +924,39 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     }
 
     $scope.seleccionarEspecialidad = function(especialidades){
+        console.log(especialidades);
+        console.log($scope.datosHospital);
         $scope.precioConsulta = especialidades.precio;
         if(especialidades.cpcodigo_grupo== 'FI'){
             alertify.error('Especialidad No Disponible. \n\n Pase por el Hospital para reservar una ficha');
         }
         else{
+
+            try{
+                var sql = new dataDinamic();
+                sql.consulta = 'select itm_sucursal,itm_cod_ur,itm_cod_item,itm_monto from facturacion._tabla_intermedia where itm_hospital_id = '+$scope.datosHospital.vhsp_id_hospital+' and itm_estado = $$A$$ and itm_id_esp_siis = $$'+especialidades.hspcatid+'$$ and itm_idmodulo = $$1$$';
+                sql.SqlDinamic(function(res){
+                    var x = JSON.parse(res);
+                    var resultado = x.success.data;
+                    if (resultado[0].sp_dinamico != null)
+                    {
+                        console.log(resultado[0].sp_dinamico);
+                        $scope.datosIntermedio = resultado[0].sp_dinamico[0];
+                        console.log($scope.datosIntermedio);
+                    }
+                    else
+                    {
+                      alertify.error('No se programaron fichas para esta especialidad');
+                    }
+                    $.LoadingOverlay("hide");
+                });
+              }catch(e){
+                  $scope.tabla_consultorio = false;
+                  $.LoadingOverlay("hide");
+                  alertify.error('Error');
+              }
+
+
             $scope.fechaturnos = " ";
             $scope.fechaturnos = [];
             $scope.fechaDisponible = null;
@@ -934,7 +974,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
               sql.SqlDinamic(function(res){
                   var x = JSON.parse(res);
                   var resultado = x.success.data;
-                  if (resultado[0].sp_dinamico != null) 
+                  if (resultado[0].sp_dinamico != null)
                   {
                     $scope.medicos_vista = true;
                     $scope.especialidad_vista = false;
@@ -958,7 +998,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                 alertify.error('Error');
             }
         }
-        
+
     }
 
     $scope.seleccionarMedico = function(medico){
@@ -976,7 +1016,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
           sql.SqlDinamic(function(res){
               var x = JSON.parse(res);
               var resultado = x.success.data;
-              if (resultado[0].sp_dinamico != null) 
+              if (resultado[0].sp_dinamico != null)
               {
                 $scope.existe = resultado[0].sp_dinamico[0].sp_lst_verifica_pacientesficha_igob;
                 if($scope.existe > 0){
@@ -1000,7 +1040,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                         $scope.tabla_consultorio = false;
                         $.LoadingOverlay("hide");
                         alertify.error('Error');
-                    }    
+                    }
                 }
               }
             });
@@ -1019,7 +1059,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
         sql.SqlDinamic(function(res){
             var x = JSON.parse(res);
             var resultado = x.success.data;
-            if (resultado[0].sp_dinamico != null) 
+            if (resultado[0].sp_dinamico != null)
             {
                 $scope.lstmedicosvacias = false;
                 $scope.medicos = resultado[0].sp_dinamico;
@@ -1048,13 +1088,13 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
           sql.SqlDinamic(function(res){
               var x = JSON.parse(res);
               var resultado = x.success.data;
-              if (resultado[0].sp_dinamico != null) 
+              if (resultado[0].sp_dinamico != null)
               {
                 $scope.medicos = resultado[0].sp_dinamico;
               }
               else
               {
-                
+
               }
               $.LoadingOverlay("hide");
           });
@@ -1069,10 +1109,13 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
         if($scope.institucional){
             $scope.mostrarPrecio = true;
             $scope.precioM = $scope.precioConsulta;
+            $scope.mostrarclick = false;
+            $scope.mostrartarjeta = false;
+            $scope.mostrarqr = false;
         }
         else{
             $scope.mostrarPrecio = false;
-            $scope.precioM = '0';   
+            $scope.precioM = '0';
         }
         cargando();
         var horas = datos.Hora.split('a');
@@ -1105,8 +1148,8 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
          closeOnConfirm: false,
          closeOnCancel: false ,
          cancelButtonText: "green",cancelButtonText:"NO"
-         }, 
-          function(isConfirm){ 
+         },
+          function(isConfirm){
              if (isConfirm) {
                 swal.close();
                 $scope.hoja_referencia = false;
@@ -1136,12 +1179,12 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
 
     $scope.volverMedicos = function(){
         $scope.fichas_vista = false;
-        $scope.medicos_vista = true;  
+        $scope.medicos_vista = true;
     }
 
     $scope.volverFichas = function(){
         $scope.final_fichas = false;
-        $scope.fichas_vista = true;  
+        $scope.fichas_vista = true;
     }
 
     $scope.limpiarTodo = function(){
@@ -1152,6 +1195,9 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
         $scope.especialidad_vista = false;
         $scope.hoja_referencia = false;
         $scope.FormularioPago = false;
+        $scope.lstatencionesvacias = false;
+        $scope.lstatenciones = false;
+
     }
 
     $scope.volverHospitalesTabla = function(){
@@ -1169,13 +1215,13 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     $scope.volverHojaReferencia = function (){
        $scope.hoja_referencia = true;
        $scope.especialidad_vista = false;
-    }  
-     
+    }
+
     $scope.lmpCaptcha = function(datos){
         $scope.ErrorCapcha='';
     }
 
-    $scope.VerificarCapcha = function(datos, prsCI) {  
+    $scope.VerificarCapcha = function(datos, prsCI) {
         var captch  = $("#resultadoC").val();
         if(captch.length == 0)
             $scope.ErrorCapchasX = "";
@@ -1210,7 +1256,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
         salud.reservarFichaInternet(function(resultado){
             resultadoApi = JSON.parse(resultado);
             if( typeof(resultadoApi.success) != 'undefined')
-            {   
+            {
                 respuestaFicha = resultadoApi.success.data;
                 if(respuestaFicha.length>0)
                 {
@@ -1230,7 +1276,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                 $.LoadingOverlay("hide");
             }
             $.LoadingOverlay("hide");
-        }); 
+        });
     }
 
     $scope.volverReserva = function(){
@@ -1239,490 +1285,143 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     }
 
     $scope.pagoOnline = function(){
+        console.log('-- DATOS DEL PACIENTE --');
+        console.log($scope.datosPacienteSalud);
+        $scope.htmlIframe = "";
         if($scope.datosPaciente.dtspsl_correo == '' || $scope.datosPaciente.dtspsl_correo == null || $scope.datosPaciente.dtspsl_correo == undefined){
            alertify.error('Para utilizar nuestro servicio de Pago en linea necesitamos su correo electrónico.');
             setTimeout(function () {
             $scope.$apply(function () {
                 alertify.error('Debe actualizar su correo electrónico en sus datos personales.');
                  });
-             }, 5500); 
+             }, 5500);
         }
         else{
-            cargando();
-            setTimeout(function () {
-            $scope.$apply(function () {
-                $.LoadingOverlay("hide");
-                 });
-             }, 5000); 
-            $scope.htmlHospitales2 = "";
-            $scope.datosPagoOnline = {};
-            $scope.FormularioPago = true;
-            $scope.final_fichas = false;
-            var UnidadR="";
-            var Usuario="";
-            switch ($scope.idHospital) {
-              case 1:
-                UnidadR="43";
-                Usuario="50";
-              break;
-              case 2:
-                UnidadR="44";
-                Usuario="51";
-              break;
-              case 3:
-                UnidadR="59";
-                Usuario="55";
-              break;
-              case 5:
-                UnidadR="58";
-                Usuario="54";
-              break;
-              
-            }
-            var grupo = $scope.codigoespecialidad;
-            //var grupo = 'CE-'+$scope.especialidad_nombre;
-            switch (grupo) {
-              case "CA"://CARDIOLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000030",descripcion:"CE-CARDIOLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "CG"://CIRUGIA GENERAL
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000031",descripcion:"CE-CIRUGIA GENERAL",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "FI"://FISITOERAPIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000032",descripcion:"CE-FISIOTERAPIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "GO"://GINECO OBSTETRICIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000034",descripcion:"CE-GINECOLOGÍA OBSTETRICIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "MG"://MEDICINA GENERAL
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000035",descripcion:"CE-MEDICINA GENERAL",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "MI"://MEDICINA INTERNA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000036",descripcion:"CE-MEDICINA INTERNA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "NF"://NEFROLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000037",descripcion:"CE-NEFROLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "NU"://NUTRICION
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000038",descripcion:"CE-NUTRICION",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "OD":
-                    var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000039",descripcion:"CE-ODONTOLOGÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "PE"://PEDIATRIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000040",descripcion:"CE-PEDIATRÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "PS"://PSICOLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000041",descripcion:"CE-PSICOLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "TR"://TRAUMATOLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000042",descripcion:"CE-TRAUMATOLOGÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};       
-              break;
-              case "UR"://UROLOGÍA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000043",descripcion:"CE-UROLOGÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "GE"://CE-GASTROENTEROLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000044",descripcion:"CE-GASTROENTEROLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "AD"://CE-ATENCIÓN DIFERENCIADA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000045",descripcion:"CE-ATENCION DIFERENCIADA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "MF"://CE- MEDICINA FAMILIAR
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000046",descripcion:"CE-MEDICINA FAMILIAR",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "MFR"://CE - MEDICINA FISICA Y REHABILITACION
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000047",descripcion:"CE-MEDICINA FISICA Y REHABILITACION",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "NE"://CE-NEUMOLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000048",descripcion:"CE-NEUMOLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "RT"://CE - REUMATOLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000049",descripcion:"CE-REUMATOLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "TP"://CE-TRAUMATOLOGIA PEDIATRICA(PROGRAMA PIE EQUINO CAVO VARO)
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000050",descripcion:"CE-TRAUMATOLOGIA PEDIATRICA(PROGRAMA PIE EQUINO CAVO VARO)",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-            }
-            var formData = '{"personaId": "-1","clase": "N","gestion": "2018","observaciones": "NINGUNO","UnidadRecaudadoraId": "'+dataFum.idUnidadRecaudadora+'","usuario": "simgep","UsuarioIP": "192.168.5.248.1","equipo": "PAYME","cabecera": "'+dataFum.descripcion+'","itemsCadena": "'+dataFum.idItemRecaudador+'","montosCadena": "'+dataFum.costo+'","tipoActividad": "SIIS"}';
-              $.ajax({
-               type        : 'POST',            
-               url         : urlFum,
-               data        : formData,
-               dataType    : 'json',
-               crossDomain : true,
-               headers: {
-                 'Content-Type': 'application/json',
-               },success: function(dataIN) { 
-                    var fum = dataIN.RegistrarFUMMResult;
-                    var loginToken = new gLogin();
-                    loginToken.login(function(resultado){
-                          var resultado1 = JSON.parse(resultado);
-                          sessionService.set('TOKEN_SALUD', resultado1.token);
-                          var formData = {"ci":$scope.nroCi,"idfum":fum,"nombres":$scope.nombrePersona,"apellidos":$scope.appaternoPersona+' '+$scope.apmaternoPersona,"correo":$scope.email,"total":dataFum.costoPayme,"cabecera":dataFum.descripcion,"direccion":$scope.datosPaciente.dtspsl_direccion,"tipoServicio":"HOSPITAL_IGOB","ci_nit":$scope.nroCi,"idUsuario":Usuario,"idSucursal":UnidadR,"efectivo":dataFum.costo,"cantidad":1,"concepto":dataFum.descripcion,"totalFactura":dataFum.costo,"oid":$scope.idCiudadano,"vidpaciente":$scope.codigoSIIS,"vidservicio":$scope.idServicio,"vfechaatencion":$scope.fechaDisponible,"vhabilitacion":"SI","vnumeroficha":$scope.numero_ficha,"vhospitalid":$scope.idHospital,"vmedicoid":$scope.idDoctorUsuario,"vturnoid":$scope.idTurnoFicha,"vcodigoficha":$scope.codigo_ficha,"vusuario":$scope.nroCi,"vhorainicioficha":$scope.hora_inicio,"vhorafinficha":$scope.hora_fin,"vtipoconsulta":"C","vtipopaciente":"INSTITUCIONAL","vcancelo":"SI","vnro_fila":"0","vhistoria_sice":$scope.historia_clinica,"vcentro_salud":""};
-                          var idtoken =   sessionService.get('TOKEN_SALUD');
-                          var stoquen =  'Bearer <\\\"' + idtoken + '\\\">';        
-                          $.ajax({
-                            type        : 'POST',            
-                            url         : 'https://pagonline.lapaz.bo/api/consumoWalletEnvioSalud',
-                            data        : formData,
-                            dataType    : 'json',
-                            crossDomain : true,
-                            headers: {
-                                'authorization': stoquen
-                            },             
-                            success     : function(data) {
-                                 var params = { 'acquirerId' : '35',
-                                   'idCommerce' :'6935',
-                                   'purchaseOperationNumber':data.DatosCliente.idfum,
-                                   'purchaseAmount':data.DatosCliente.purchaseAmount,
-                                   'purchaseCurrencyCode':'068',
-                                   'language':'SP',
-                                   'shippingFirstName':data.DatosCliente.nombres,
-                                   'shippingLastName':data.DatosCliente.apellidos,
-                                   'shippingEmail':data.DatosCliente.correo,
-                                   'shippingAddress':$scope.datosPaciente.dtspsl_direccion,
-                                   'shippingZIP':'33',
-                                   'shippingCity':'La Paz',
-                                   'shippingState':'La Paz',
-                                   'shippingCountry':'BO',
-                                   'userCommerce':data.DatosCliente.identificacion,
-                                   'userCodePayme':data.ConsumoWallet.codAsoCardHolderWallet,
-                                   'descriptionProducts':data.DatosCliente.concepto,
-                                   'programmingLanguage':'PHP',
-                                   'reserved1':data.DatosCliente.idfum,
-                                   'reserved2':data.DatosCliente.tipoServicio,
-                                   'reserved3':data.DatosCliente.ci_nit,
-                                   'reserved4':data.DatosCliente.idUsuario,
-                                   'reserved5':data.DatosCliente.idSucursal,
-                                   'reserved6':data.DatosCliente.efectivo,
-                                   'reserved7':data.DatosCliente.cantidad,
-                                   'reserved8':data.DatosCliente.concepto,
-                                   'reserved9':data.DatosCliente.totalFactura,
-                                   'reserved10':data.DatosCliente.oid,
-                                   'reserved11':data.DatosCliente.vidpaciente,
-                                   'reserved12':data.DatosCliente.vidservicio,
-                                   'reserved13':data.DatosCliente.vfechaatencion,
-                                   'reserved14':data.DatosCliente.vhabilitacion,
-                                   'reserved15':data.DatosCliente.vnumeroficha,
-                                   'reserved16':data.DatosCliente.vhospitalid,
-                                   'reserved17':data.DatosCliente.vmedicoid,
-                                   'reserved18':data.DatosCliente.vturnoid,
-                                   'reserved19':data.DatosCliente.vcodigoficha,
-                                   'reserved20':data.DatosCliente.vusuario,
-                                   'reserved21':data.DatosCliente.vhorainicioficha,
-                                   'reserved22':data.DatosCliente.vhorafinficha,
-                                   'reserved23':data.DatosCliente.vtipoconsulta,
-                                   'reserved24':data.DatosCliente.vtipopaciente,
-                                   'reserved25':data.DatosCliente.vcancelo,
-                                   'reserved26':data.DatosCliente.vnro_fila,
-                                   'reserved27':data.DatosCliente.vhistoria_sice,
-                                   'reserved28':data.DatosCliente.vcentro_salud,
-                                   'purchaseVerification':data.DatosCliente.purchaseVerification,
-                                };
 
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'<form id="frmVPOS2" action="https://vpayment.verifika.com/VPOS2/faces/pages/startPayme.xhtml" class="form-horizontal" method="post" name="frmVPOS2" target="_blank">';
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'<div style="padding-left:50px;padding-right:50px" class="row">';
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'<div class="col-md-12">';
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'<div class="form-group">';
-                                var i = 0;
-                                angular.forEach(params,function(celda, fila){
-                                    
-                                    if(fila == 'shippingFirstName' || fila == 'shippingLastName' || fila == 'shippingEmail' || fila == 'descriptionProducts' || fila == 'shippingCity' || fila == 'shippingCountry' || fila == 'purchaseOperationNumber' || fila == 'reserved6'){
-                                        $scope.htmlHospitales2 = $scope.htmlHospitales2+'<div class="col-md-6">';
-                                        $scope.htmlHospitales2 = $scope.htmlHospitales2+'<label for="title">'+$scope.vectorMensaje[i]+'</label>';
-                                        $scope.htmlHospitales2 = $scope.htmlHospitales2+'<div class="controls">';
-                                        $scope.htmlHospitales2 = $scope.htmlHospitales2+'<input readOnly = "readonly" value="'+celda+'" id="'+fila+'" name="'+fila+'" class="form-control" type="text">';   
-                                        $scope.htmlHospitales2 = $scope.htmlHospitales2+'</div>';
-                                        $scope.htmlHospitales2 = $scope.htmlHospitales2+'</div>';
-                                        i = i+1;
+            console.log($scope.datosIntermedio);
+            var formData = '{"Tipo": "generarOdm","razon_social": "'+$scope.datosPaciente.dtspsl_paterno+'","ci_nit": "'+$scope.datosPaciente.dtspsl_ci+'","unidad_recaudadora": "'+$scope.datosIntermedio.itm_cod_ur+'","sucursal": "'+$scope.datosIntermedio.itm_sucursal+'","monto_total": "'+$scope.datosIntermedio.itm_monto+'","detalles": [{    "odm_item_recaudador": "'+$scope.datosIntermedio.itm_cod_item+'",    "odm_pre_unitario": "'+$scope.datosIntermedio.itm_monto+'",    "odm_cantidad": "1",    "odm_sub_total": "'+$scope.datosIntermedio.itm_monto+'"  }],"data": [{}]}';
+            console.log(formData);
+            $.ajax({
+                type        : 'POST',
+                url         : urlFum,
+                data        : formData,
+                dataType    : 'json',
+                crossDomain : true,
+                headers: {
+                  'Content-Type': 'application/json',
+                },success: function(dataIN) {
+                    console.log(dataIN);
+                    var odm = dataIN.data[0].nroodm;
+                    console.log('ESTE ES EL ODM');
+                    console.log(odm);
+                    console.log($scope.datosT.mes_tajeta);
+                    var x = $scope.datosT.mes_tajeta.split('/');
+                    console.log(x);
+                    var mes = x[0];
+                    var anio = '20'+x[1];
+                    console.log(mes);
+                    console.log(anio);
+                    var ficha = $scope.codigo_ficha.split('-');
+                    console.log(ficha[1]);
+                    try{
+                        var sql = new dataDinamic();
+                        sql.consulta = 'SELECT * from facturacion.sp_insertar_controlador_pruebas('+$scope.idHospital+','+$scope.datosPacienteSalud[0].idpersona+',1)';
+                        sql.SqlDinamic(function(res){
+                            var x = JSON.parse(res);
+                            var resultado = x.success.data;
+                            if (resultado[0].sp_dinamico != null)
+                            {
+                              var response = resultado[0].sp_dinamico;
+                              console.log('------ CODIGO DE FACTURA  -----');
+                              console.log(response);
+                              $scope.codigoFactura = response[0].sp_insertar_controlador_pruebas;
+                                var formDataPago = '{"odm":"'+odm+'","total":"'+$scope.datosIntermedio.itm_monto+'","nombres":"'+$scope.datosPaciente.dtspsl_nombres+'","apellidos":"'+$scope.datosPaciente.dtspsl_paterno+' '+$scope.datosPaciente.dtspsl_materno+'","direccion":"'+$scope.datosPaciente.dtspsl_direccion+'","email":"xcampi3570@gmail.com","celular":"'+$scope.datosPaciente.dtspsl_movil+'","sistema":"IGOB WEB","ci_nit":"'+$scope.datosPaciente.dtspsl_ci+'","uid_ciudadano":"'+$scope.datosPaciente._id+'","sucursal_facturacion":'+$scope.datosIntermedio.itm_sucursal+',"id_usuario_facturacion":0,"cantidad_item1":"","descripcion_item1":"","descripcion_item2":"","cantidad_item2":"","monto_item2":"","descripcion_item3":"","cantidad_item3":"","monto_item3":"","codigo_item1":"","codigo_item2":"","codigo_item3":"'+$scope.datosIntermedio.itm_cod_ur+'","estado_facturacion":"","monto_item1":"","reservado18":"","servicio":"HOSPITAL_IGOB","card_type":"001","card_number":"'+$scope.datosT.num_tajeta+'","card_expiry_month":"'+mes+'","card_expiry_year":"'+anio+'","card_cvn":"'+$scope.datosT.cvn_tarjeta+'","items":[{"concepto":"CONSULTA EXTERNA '+$scope.especialidad_nombre+' ","cantidad":1,"monto":"'+$scope.datosIntermedio.itm_monto+'","item_recaudador":'+$scope.datosIntermedio.itm_cod_item+',"unidad_recaudadora":'+$scope.datosIntermedio.itm_cod_ur+'}],"data_opcional":[{"vidpaciente":'+$scope.datosPacienteSalud[0].idpersona+',"vidservicio":'+$scope.idServicio+',"vfechaatencion":"'+$scope.fechaDisponible+'","vnumeroficha":'+$scope.numero_ficha+',"vhospitalid":'+$scope.idHospital+',"vmedicoid":'+$scope.idDoctorUsuario+',"vturnoid":'+$scope.idTurnoFicha+',"vcodigoficha":"'+ficha[1]+'","vhorainicioficha":"'+$scope.hora_inicio+'","vhorafinficha":"'+$scope.hora_fin+'","vtipoconsulta":"C","vtipoconsulta":"C","vorigen_atencion":"IGOB WEB","vnroodm":"'+odm+'","vhistoria_sice":"'+$scope.historia_clinica+'","codigo_generado":"'+$scope.codigoFactura+'","usr_usuario":"'+$scope.datosHospital.vhsp_usuario+'","usr_clave":"'+$scope.datosHospital.vhsp_contrasenia+'","tipoPago":"TARJETA"}]}';
+                                $.ajax({
+                                    type        : 'POST',
+                                    url         : 'http://52.226.130.135:5433/api/registroPagoCheckoutApiWeb',
+                                    data        : formDataPago,
+                                    dataType    : 'json',
+                                    crossDomain : true,
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    success: function(data) {
+                                        console.log('hola mundooooo');
+                                        console.log(data);
+                                        var idTransaccion = data.id_transaccion;
+                                        setTimeout(function () {
+                                            $scope.$apply(function () {
+                                            $scope.urlPagoTar = 'http://52.226.130.135:5433/api/pagoCheckoutApiWeb?id_cr_transaccion='+idTransaccion;
+                                            /*$scope.htmlIframe = $scope.htmlIframe +'<iframe src="'+$scope.urlPagoTar+'" width="100%" height="400"></iframe>';
+                                            console.log($scope.htmlIframe);
+                                            $scope.mostrarIframe = true;*/
+                                            var printContenidos = "<html>" +
+                                              "<head>" +
+                                              "<style>" +
+                                              ".tabla {" +
+                                              "border: 1px solid black;" +
+                                              "font-size:12px;" +
+                                              "border-collapse:collapse;" +
+                                              "}" +
+                                              ".letra {" +
+                                              "font-size:12px;" +
+                                              "border-collapse:collapse;" +
+                                              "}" +
+                                              "tr:first-child { border-top: none; }" +
+                                              "tr:last-child { border-bottom: none; }" +
+                                              "td:first-child { border-left: none; }" +
+                                              "td:last-child { border-right: none; }" +
+                                              "p { font-size: 11px;" +
+                                              "font-size-adjust: 1; " +
+                                              "}" +
+                                              "</style>" +
+                                              "</head>" +
+                                              "<body>" +
+                                              "<div>" +
+                                              "<FONT FACE='arial'>" +
+                                                    "<iframe scrolling='auto' src=" + $scope.urlPagoTar + " frameborder='0' width='100%' height='100%'></iframe>";
+                                                    printContenidos = printContenidos + "</font>" +
+                                              "</div>" +
+                                              "</body>" +
+                                              "</html>";
+                                            var popupWin = window.open('', '_blank', 'width=800,height=800');
+                                            popupWin.document.open()
+                                            popupWin.document.write('<html><head></head><body>' + printContenidos + '<br><br></html>');
+                                            popupWin.document.close();
+                                            $scope.pagar_tarjeta = false;
+
+                                            $scope.cargarFichasReservadas();
+                                                });
+                                        }, 1000);
+                                    },
+                                    error: function (xhr, status, error) {
+                                        alertify.error('Error Intente de nuevo !!');
                                     }
-                                    else{
-                                    }
-                                    
                                 });
-
-                                angular.forEach(params,function(celda, fila){
-                                    if(fila != 'shippingFirstName' && fila != 'shippingLastName' && fila != 'shippingEmail' && fila != 'descriptionProducts' && fila != 'shippingCity' && fila != 'shippingCountry' && fila != 'purchaseOperationNumber'){
-                                        $scope.htmlHospitales2 = $scope.htmlHospitales2+'<div class="col-md-12">';
-                                        $scope.htmlHospitales2 = $scope.htmlHospitales2+'<div class="controls">';
-                                        $scope.htmlHospitales2 = $scope.htmlHospitales2+'<input style="visibility: hidden;" value="'+celda+'" id="'+fila+'" name="'+fila+'" class="form-control" type="text">';
-                                        $scope.htmlHospitales2 = $scope.htmlHospitales2+'</div>';
-                                        $scope.htmlHospitales2 = $scope.htmlHospitales2+'</div>';
-                                    }
-                                    else{
-                                    }
-                                    
-                                });
-
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'</div>';
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'</div>';
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'</div>';
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'</form>';
-                                $scope.FormularioPago = true;
-                                $scope.formularioPago2 = true;
-                                $scope.lstatenciones = false;
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'</div>';
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'</div>';
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'</div>';
-                                $scope.htmlHospitales2 = $scope.htmlHospitales2+'</form>';
-                                $scope.$apply();
-                            },
-                            error: function (xhr, status, error) {
-                                alertify.error('Error Intente de nuevo !!');
                             }
-                        });
-                    });
-               },          
-               error: function (xhr, status, error) {
-                 }
-             });
-            }
-    }
-    
-    $scope.pagoOnlineAfuera = function(){
-        if($scope.datosPaciente.dtspsl_correo == '' || $scope.datosPaciente.dtspsl_correo == null || $scope.datosPaciente.dtspsl_correo == undefined){
-           alertify.error('Para utilizar nuestro servicio de Pago en linea necesitamos su correo electrónico.');
-            setTimeout(function () {
-            $scope.$apply(function () {
-                alertify.error('Debe actualizar su correo electrónico en sus datos personales.');
-                 });
-             }, 5500); 
-        }
-        else{
-            cargando();
-            setTimeout(function () {
-            $scope.$apply(function () {
-                $.LoadingOverlay("hide");
-                 });
-             }, 5000); 
-            $scope.htmlHospitales = "";
-            $scope.datosPagoOnline = {};
-            $scope.FormularioPago = true;
-            $scope.final_fichas = false;
-            var UnidadR="";
-            var Usuario="";
-            switch ($scope.idHospital) {
-              case 1:
-                UnidadR="43";
-                Usuario="50";
-              break;
-              case 2:
-                UnidadR="44";
-                Usuario="51";
-              break;
-              case 3:
-                UnidadR="59";
-                Usuario="55";
-              break;
-              case 5:
-                UnidadR="58";
-                Usuario="54";
-              break;
-              
-            }
-            var grupo = $scope.codigoespecialidad;
-            console.log($scope.codigoespecialidad);
-            //var grupo = 'CE-'+$scope.especialidad_nombre;
-            switch (grupo) {
-              case "CA"://CARDIOLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000030",descripcion:"CE-CARDIOLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "CG"://CIRUGIA GENERAL
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000031",descripcion:"CE-CIRUGIA GENERAL",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "FI"://FISITOERAPIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000032",descripcion:"CE-FISIOTERAPIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "GO"://GINECO OBSTETRICIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000034",descripcion:"CE-GINECOLOGÍA OBSTETRICIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "MG"://MEDICINA GENERAL
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000035",descripcion:"CE-MEDICINA GENERAL",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "MI"://MEDICINA INTERNA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000036",descripcion:"CE-MEDICINA INTERNA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "NF"://NEFROLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000037",descripcion:"CE-NEFROLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "NU"://NUTRICION
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000038",descripcion:"CE-NUTRICION",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "OD":
-                    var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000039",descripcion:"CE-ODONTOLOGÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "PE"://PEDIATRIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000040",descripcion:"CE-PEDIATRÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "PS"://PSICOLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000041",descripcion:"CE-PSICOLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "TR"://TRAUMATOLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000042",descripcion:"CE-TRAUMATOLOGÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};       
-              break;
-              case "UR"://UROLOGÍA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000043",descripcion:"CE-UROLOGÍA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "GE"://CE-GASTROENTEROLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000044",descripcion:"CE-GASTROENTEROLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "AD"://CE-ATENCIÓN DIFERENCIADA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000045",descripcion:"CE-ATENCION DIFERENCIADA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "MF"://CE- MEDICINA FAMILIAR
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000046",descripcion:"CE-MEDICINA FAMILIAR",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "MFR"://CE - MEDICINA FISICA Y REHABILITACION
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000047",descripcion:"CE-MEDICINA FISICA Y REHABILITACION",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "NE"://CE-NEUMOLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000048",descripcion:"CE-NEUMOLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "RT"://CE - REUMATOLOGIA
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000049",descripcion:"CE-REUMATOLOGIA",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-              case "TP"://CE-TRAUMATOLOGIA PEDIATRICA(PROGRAMA PIE EQUINO CAVO VARO)
-                 var dataFum={idUnidadRecaudadora:UnidadR,unidadRecaudadora:$scope.nombreHospital,idItemRecaudador:"9000050",descripcion:"CE-TRAUMATOLOGIA PEDIATRICA(PROGRAMA PIE EQUINO CAVO VARO)",gestion:"2018",costo:"25.00",costoPayme:"2500",estado:"V",UsuarioFac:Usuario};
-              break;
-            }
-
-            var formData = '{"personaId": "-1","clase": "N","gestion": "2018","observaciones": "NINGUNO","UnidadRecaudadoraId": "'+dataFum.idUnidadRecaudadora+'","usuario": "simgep","UsuarioIP": "192.168.5.248.1","equipo": "PAYME","cabecera": "'+dataFum.descripcion+'","itemsCadena": "'+dataFum.idItemRecaudador+'","montosCadena": "'+dataFum.costo+'","tipoActividad": "SIIS"}';
-              $.ajax({
-               type        : 'POST',            
-               url         : urlFum,
-               data        : formData,
-               dataType    : 'json',
-               crossDomain : true,
-               headers: {
-                 'Content-Type': 'application/json',
-               },success: function(dataIN) { 
-                    var fum = dataIN.RegistrarFUMMResult;
-                    var loginToken = new gLogin();
-                    loginToken.login(function(resultado){
-                          var resultado1 = JSON.parse(resultado);
-                          sessionService.set('TOKEN_SALUD', resultado1.token);
-                          var formData = {"ci":$scope.nroCi,"idfum":fum,"nombres":$scope.nombrePersona,"apellidos":$scope.appaternoPersona+' '+$scope.apmaternoPersona,"correo":$scope.email,"total":dataFum.costoPayme,"cabecera":dataFum.descripcion,"direccion":$scope.datosPaciente.dtspsl_direccion,"tipoServicio":"HOSPITAL_IGOB_RESERVA","ci_nit":$scope.nroCi,"idUsuario":Usuario,"idSucursal":UnidadR,"efectivo":dataFum.costo,"cantidad":1,"concepto":dataFum.descripcion,"totalFactura":dataFum.costo,"oid":$scope.idCiudadano,"vidpaciente":$scope.codigoSIIS,"vidservicio":$scope.idServicio,"vfechaatencion":$scope.fechaDisponible,"vhabilitacion":"SI","vnumeroficha":$scope.numero_ficha,"vhospitalid":$scope.idHospital,"vmedicoid":$scope.idDoctorUsuario,"vturnoid":$scope.idTurnoFicha,"vcodigoficha":$scope.codigo_ficha,"vusuario":$scope.nroCi,"vhorainicioficha":$scope.hora_inicio,"vhorafinficha":$scope.hora_fin,"vtipoconsulta":"C","vtipopaciente":"INSTITUCIONAL","vcancelo":"SI","vnro_fila":"0","vhistoria_sice":$scope.historia_clinica,"vcentro_salud":"","id_pres":$scope.pres_id};
-                          var idtoken =   sessionService.get('TOKEN_SALUD');
-                          var stoquen =  'Bearer <\\\"' + idtoken + '\\\">';        
-                          $.ajax({
-                            type        : 'POST',            
-                            url         : 'https://pagonline.lapaz.bo/api/consumoWalletEnvioSalud',
-                            data        : formData,
-                            dataType    : 'json',
-                            crossDomain : true,
-                            headers: {
-                                'authorization': stoquen
-                            },             
-                            success     : function(data) {
-                                 var params = { 'acquirerId' : '35',
-                                   'idCommerce' :'6935',
-                                   'purchaseOperationNumber':data.DatosCliente.idfum,
-                                   'purchaseAmount':data.DatosCliente.purchaseAmount,
-                                   'purchaseCurrencyCode':'068',
-                                   'language':'SP',
-                                   'shippingFirstName':data.DatosCliente.nombres,
-                                   'shippingLastName':data.DatosCliente.apellidos,
-                                   'shippingEmail':data.DatosCliente.correo,
-                                   'shippingAddress':$scope.datosPaciente.dtspsl_direccion,
-                                   'shippingZIP':'33',
-                                   'shippingCity':'La Paz',
-                                   'shippingState':'La Paz',
-                                   'shippingCountry':'BO',
-                                   'userCommerce':data.DatosCliente.identificacion,
-                                   'userCodePayme':data.ConsumoWallet.codAsoCardHolderWallet,
-                                   'descriptionProducts':data.DatosCliente.concepto,
-                                   'programmingLanguage':'PHP',
-                                   'reserved1':data.DatosCliente.idfum,
-                                   'reserved2':data.DatosCliente.tipoServicio,
-                                   'reserved3':data.DatosCliente.ci_nit,
-                                   'reserved4':data.DatosCliente.idUsuario,
-                                   'reserved5':data.DatosCliente.idSucursal,
-                                   'reserved6':data.DatosCliente.efectivo,
-                                   'reserved7':data.DatosCliente.cantidad,
-                                   'reserved8':data.DatosCliente.concepto,
-                                   'reserved9':data.DatosCliente.totalFactura,
-                                   'reserved10':data.DatosCliente.oid,
-                                   'reserved11':data.DatosCliente.vidpaciente,
-                                   'reserved12':data.DatosCliente.vidservicio,
-                                   'reserved13':data.DatosCliente.vfechaatencion,
-                                   'reserved14':data.DatosCliente.vhabilitacion,
-                                   'reserved15':data.DatosCliente.vnumeroficha,
-                                   'reserved16':data.DatosCliente.vhospitalid,
-                                   'reserved17':data.DatosCliente.vmedicoid,
-                                   'reserved18':data.DatosCliente.vturnoid,
-                                   'reserved19':data.DatosCliente.vcodigoficha,
-                                   'reserved20':data.DatosCliente.vusuario,
-                                   'reserved21':data.DatosCliente.vhorainicioficha,
-                                   'reserved22':data.DatosCliente.vhorafinficha,
-                                   'reserved23':data.DatosCliente.vtipoconsulta,
-                                   'reserved24':data.DatosCliente.vtipopaciente,
-                                   'reserved25':data.DatosCliente.vcancelo,
-                                   'reserved26':data.DatosCliente.vnro_fila,
-                                   'reserved27':data.DatosCliente.vhistoria_sice,
-                                   'reserved28':data.DatosCliente.vcentro_salud,
-                                   'reserved29':$scope.pres_id,
-                                   'purchaseVerification':data.DatosCliente.purchaseVerification,
-                                };
-
-                                $scope.htmlHospitales = $scope.htmlHospitales+'<form id="frmVPOS2" action="https://vpayment.verifika.com/VPOS2/faces/pages/startPayme.xhtml" class="form-horizontal" method="post" name="frmVPOS2" target="_blank">';
-                                $scope.htmlHospitales = $scope.htmlHospitales+'<div style="padding-left:50px;padding-right:50px" class="row">';
-                                $scope.htmlHospitales = $scope.htmlHospitales+'<div class="col-md-12">';
-                                $scope.htmlHospitales = $scope.htmlHospitales+'<div class="form-group">';
-                                var i = 0;
-                                angular.forEach(params,function(celda, fila){
-                                    
-                                    if(fila == 'shippingFirstName' || fila == 'shippingLastName' || fila == 'shippingEmail' || fila == 'descriptionProducts' || fila == 'shippingCity' || fila == 'shippingCountry' || fila == 'purchaseOperationNumber' || fila == 'reserved6'){
-                                        $scope.htmlHospitales = $scope.htmlHospitales+'<div class="col-md-6">';
-                                        $scope.htmlHospitales = $scope.htmlHospitales+'<label for="title">'+$scope.vectorMensaje[i]+'</label>';
-                                        $scope.htmlHospitales = $scope.htmlHospitales+'<div class="controls">';
-                                        $scope.htmlHospitales = $scope.htmlHospitales+'<input readOnly = "readonly" value="'+celda+'" id="'+fila+'" name="'+fila+'" class="form-control" type="text">';   
-                                        $scope.htmlHospitales = $scope.htmlHospitales+'</div>';
-                                        $scope.htmlHospitales = $scope.htmlHospitales+'</div>';
-                                        i = i+1;
-                                    }
-                                    else{
-                                    }
-                                    
-                                });
-
-                                angular.forEach(params,function(celda, fila){
-                                    if(fila != 'shippingFirstName' && fila != 'shippingLastName' && fila != 'shippingEmail' && fila != 'descriptionProducts' && fila != 'shippingCity' && fila != 'shippingCountry' && fila != 'purchaseOperationNumber'){
-                                        $scope.htmlHospitales = $scope.htmlHospitales+'<div class="col-md-12">';
-                                        $scope.htmlHospitales = $scope.htmlHospitales+'<div class="controls">';
-                                        $scope.htmlHospitales = $scope.htmlHospitales+'<input style="visibility: hidden;" value="'+celda+'" id="'+fila+'" name="'+fila+'" class="form-control" type="text">';
-                                        $scope.htmlHospitales = $scope.htmlHospitales+'</div>';
-                                        $scope.htmlHospitales = $scope.htmlHospitales+'</div>';
-                                    }
-                                    else{
-                                    }
-                                    
-                                });
-
-                                $scope.htmlHospitales = $scope.htmlHospitales+'</div>';
-                                $scope.htmlHospitales = $scope.htmlHospitales+'</div>';
-                                $scope.htmlHospitales = $scope.htmlHospitales+'</div>';
-                                $scope.htmlHospitales = $scope.htmlHospitales+'</form>';
-                                $scope.formularioPago2 = true;
-                                $scope.lstatenciones = false;
-                                $scope.htmlHospitales = $scope.htmlHospitales+'</div>';
-                                $scope.htmlHospitales = $scope.htmlHospitales+'</div>';
-                                $scope.htmlHospitales = $scope.htmlHospitales+'</div>';
-                                $scope.htmlHospitales = $scope.htmlHospitales+'</form>';
-                                $scope.$apply();
-                            },
-                            error: function (xhr, status, error) {
-                                alertify.error('Error Intente de nuevo !!');
+                            else
+                            {
+                              alertify.error('No se programaron fichas para esta especialidad');
                             }
+                            $.LoadingOverlay("hide");
                         });
-                    });
-               },          
-               error: function (xhr, status, error) {
-                 }
-             });
+                    }catch(e){
+                        $scope.tabla_consultorio = false;
+                        $.LoadingOverlay("hide");
+                        alertify.error('Error');
+                    }
+
+
+                },
+                error: function (xhr, status, error) {
+                }
+              });
             }
     }
 
-    
+
+
+
     $scope.addImage=function(e,idFoto){
         cargando();
         $scope.imagenReferencia = true;
@@ -1748,12 +1447,12 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
             $('#imgSalida').attr("src",result);
             var b64_2 = result.split('data:image/jpeg;base64,');
             $scope.labels2 = b64_2[1];
-            break;  
+            break;
             case 1:
             $('#imgSalida1').attr("src",result);
             var b64_1 = result.split('data:image/jpeg;base64,');
             $scope.labelºs1 = b64_1[1];
-            break;  
+            break;
         }
     }
 
@@ -1898,7 +1597,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
         salud.reservarFichaInternet(function(resultado){
             resultadoApi = JSON.parse(resultado);
             if( typeof(resultadoApi.success) != 'undefined')
-            {   
+            {
                 respuestaFicha = resultadoApi.success.data;
                 if(respuestaFicha.length>0)
                 {
@@ -1918,7 +1617,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                 $.LoadingOverlay("hide");
             }
             $.LoadingOverlay("hide");
-        }); 
+        });
     }
 
     $scope.pagarCertificado = function(){
@@ -1931,8 +1630,8 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
          closeOnConfirm: false,
          closeOnCancel: false ,
          cancelButtonText: "green",cancelButtonText:"NO"
-         }, 
-          function(isConfirm){ 
+         },
+          function(isConfirm){
              if (isConfirm) {
                 swal.close();
                 $('[name="frmVPOS2"]').submit();
@@ -1956,8 +1655,8 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
          closeOnConfirm: false,
          closeOnCancel: false ,
          cancelButtonText: "green",cancelButtonText:"NO"
-         }, 
-          function(isConfirm){ 
+         },
+          function(isConfirm){
              if (isConfirm) {
                 swal.close();
                 $('[name="frmVPOS2"]').submit();
@@ -1972,11 +1671,51 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     }
 
     $scope.pagoOnlineAfuera2 = function(datos){
+        $scope.vfact_url_factura = "https://testsecureacceptance.cybersource.com/silent/payer_authentication/hybrid?ccaAction=load";
+        var printContenidos = "<html>" +
+			"<head>" +
+			"<style>" +
+			".tabla {" +
+			"border: 1px solid black;" +
+			"font-size:12px;" +
+			"border-collapse:collapse;" +
+			"}" +
+			".letra {" +
+			"font-size:12px;" +
+			"border-collapse:collapse;" +
+			"}" +
+			"tr:first-child { border-top: none; }" +
+			"tr:last-child { border-bottom: none; }" +
+			"td:first-child { border-left: none; }" +
+			"td:last-child { border-right: none; }" +
+			"p { font-size: 11px;" +
+			"font-size-adjust: 1; " +
+			"}" +
+			"</style>" +
+			"</head>" +
+			"<body>" +
+			"<div>" +
+			"<FONT FACE='arial'>" +
+            "<iframe scrolling='auto' src=" + $scope.vfact_url_factura + " frameborder='0' width='100%' height='100%'></iframe>";
+            printContenidos = printContenidos + "</font>" +
+			"</div>" +
+			"</body>" +
+			"</html>";
+		var popupWin = window.open('', '_blank', 'width=800,height=800');
+		popupWin.document.open()
+		popupWin.document.write('<html><head></head><body>' + printContenidos + '<br><br></html>');
+		popupWin.document.close();
+        /*console.log('datos para pagar');
         console.log(datos);
+        $scope.datosFuera = datos;
         $scope.idHospital = datos.presidhospital;
         $scope.codigoespecialidad = datos.vesp_cod_especialidad;
         $scope.pres_id = datos.presid;
-        swal({
+        $scope.tarjetaD = false;
+        $scope.qrD = false;
+        $scope.qrD = false;
+        $scope.botonesPregunta = true;*/
+        /*swal({
          title: "¿Está seguro de realizar el Pago?",
          text: "Recordarle que su tarjeta debe estar habilitada para el pago en linea.",
          type: "warning",
@@ -1985,8 +1724,8 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
          closeOnConfirm: false,
          closeOnCancel: false ,
          cancelButtonText: "green",cancelButtonText:"NO"
-         }, 
-          function(isConfirm){ 
+         },
+          function(isConfirm){
              if (isConfirm) {
                 swal.close();
                 //$('[name="frmVPOS2"]').submit();
@@ -1997,30 +1736,313 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
              } else {
               swal.close();
              }
-        });
+        });*/
+    }
+
+    $scope.volverM = function(){
+        $scope.botonesPregunta = true;
+        $scope.tarjetaD = false;
+        $scope.qrD = false;
+    }
+
+    $scope.pagarOnlinePreguntarQR = function(){
+        console.log('hola mundoooo');
+        $scope.mostrarclick = false;
+        $scope.mostrartarjeta = false;
+        $scope.mostrarqr = true;
+        $scope.institucional = false;
+        $scope.volverPago = true;
+
+        $scope.tarjetaD = false;
+        $scope.qrD = true;
+        $scope.botonesPregunta = false;
+    }
+
+    $scope.mostrardatosTarjeta1 = function(){
+        console.log('hola mundo');
+        console.log($scope.datosT);
+        $scope.tarjetaD = true;
+        $scope.qrD = false;
+        $scope.botonesPregunta = false;
+    }
+
+    $scope.pagarOnlinePreguntarQR1 = function(){
+        swal({
+            title: "Atención!!",
+            text: "Favor tomar nota de lo siguiente: \n Con esta ficha debe pasar 30 minutos antes, directamente por enfermeria del para su control médico. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#55DD6B",confirmButtonText: "Continuar",
+            closeOnConfirm: false,
+            closeOnCancel: false ,
+            cancelButtonText: "green",cancelButtonText:"Cancelar"
+            },
+             function(isConfirm){
+                if (isConfirm) {
+                   swal.close();
+                   $scope.pagoOnlineQR();
+                   $scope.$apply();
+                } else {
+                 swal.close();
+                 $scope.$apply();
+                }
+           });
+    }
+
+    $scope.pagoOnlineQR = function(){
+        console.log(' Pago con QR');
+        if($scope.datosPaciente.dtspsl_correo == '' || $scope.datosPaciente.dtspsl_correo == null || $scope.datosPaciente.dtspsl_correo == undefined){
+            alertify.error('Para utilizar nuestro servicio de Pago en linea necesitamos su correo electrónico.');
+             setTimeout(function () {
+             $scope.$apply(function () {
+                 alertify.error('Debe actualizar su correo electrónico en sus datos personales.');
+                  });
+              }, 5500);
+         }
+         else{
+             /*console.log($scope.datosIntermedio);
+             var formData = '{"Tipo": "generarOdm","razon_social": "SIIS","ci_nit": "8747897","unidad_recaudadora": "179","sucursal": "154","monto_total": "25","detalles": {    "odm_item_recaudador": "3690",    "odm_pre_unitario": "25",    "odm_cantidad": "1",    "odm_sub_total": "25"  },"data": [{}]}';
+             console.log(formData);
+             $.ajax({
+                 type        : 'POST',
+                 url         : urlFum,
+                 data        : formData,
+                 dataType    : 'json',
+                 crossDomain : true,
+                 headers: {
+                   'Content-Type': 'application/json',
+                 },success: function(dataIN) {
+                     console.log(dataIN);
+                     var odm = dataIN.data[0].nroodm;
+                     console.log(odm);
+                     //PAGO ONLINE CON CLICK
+                     var formDataPago = '{"odm":"'+odm+'","total":4,"nombres":"Juan","apellidos":"Flores Cruz","direccion":"Villa Fatima, Calle Yungas, Nro  90","email":"abigail.rodascoria@gmail.com","celular":"73236689","sistema":"app_igob","ci_nit":"7063060","uid_ciudadano":"5ef5fa33d4bdc57c1400030d","sucursal_facturacion":111,"id_usuario_facturacion":69,"cantidad_item1":"","descripcion_item2":"reserva","cantidad_item2":74831,"monto_item2":"","codigo_item2":"","descripcion_item3":"","cantidad_item3":"","monto_item3":"","codigo_item3":"","codigo_item1":"","estado_facturacion":"","monto_item1":"","reservado18":3594,"descripcion_item1":"8907QWE","servicio":"PARQUEOS_IGOB","items":[{"id":3594,"monto":4}],"data_opcional":[]}';
+                     $.ajax({
+                         type        : 'POST',
+                         url         : urlPagoQR,
+                         data        : formDataPago,
+                         dataType    : 'json',
+                         crossDomain : true,
+                         headers: {
+                           'Content-Type': 'application/json',
+                         },success: function(dataIN) {
+                             console.log('-----PAGO POR QR --------');
+                             console.log(dataIN);
+                             $scope.imgQR = dataIN.data.qrImage;
+                             console.log('-------------------');
+                             console.log($scope.imgQR);
+                             console.log('-------------------');
+                             setTimeout(function () {
+                                $scope.$apply(function () {
+                                    $scope.imgQR = 'data:image/jpeg;base64,'+$scope.imgQR;
+                                    alertify.success('Se realizó el pago por Click correctamente');
+                                });
+                            }, 3000);
+
+                         },
+                         error: function (xhr, status, error) {
+                           }
+                       });
+                 },
+                 error: function (xhr, status, error) {
+                   }
+               });
+            }*/
+            var formData = '{"Tipo": "generarOdm","razon_social": "'+$scope.datosPaciente.dtspsl_paterno+'","ci_nit": "'+$scope.datosPaciente.dtspsl_ci+'","unidad_recaudadora": "'+$scope.datosIntermedio.itm_cod_ur+'","sucursal": "'+$scope.datosIntermedio.itm_sucursal+'","monto_total": "'+$scope.datosIntermedio.itm_monto+'","detalles": [{    "odm_item_recaudador": "'+$scope.datosIntermedio.itm_cod_item+'",    "odm_pre_unitario": "'+$scope.datosIntermedio.itm_monto+'",    "odm_cantidad": "1",    "odm_sub_total": "'+$scope.datosIntermedio.itm_monto+'"  }],"data": [{}]}';
+            console.log(formData);
+            $.ajax({
+                type        : 'POST',
+                url         : urlFum,
+                data        : formData,
+                dataType    : 'json',
+                crossDomain : true,
+                headers: {
+                  'Content-Type': 'application/json',
+                },success: function(dataIN) {
+                    console.log(dataIN);
+                    var odm = dataIN.data[0].nroodm;
+                    console.log('ESTE ES EL ODM');
+                    console.log(odm);
+                    var ficha = $scope.codigo_ficha.split('-');
+                    console.log(ficha[1]);
+                    try{
+                        var sql = new dataDinamic();
+                        sql.consulta = 'SELECT * from facturacion.sp_insertar_controlador_pruebas('+$scope.idHospital+','+$scope.datosPacienteSalud[0].idpersona+',1)';
+                        sql.SqlDinamic(function(res){
+                            var x = JSON.parse(res);
+                            var resultado = x.success.data;
+                            if (resultado[0].sp_dinamico != null)
+                            {
+                              var response = resultado[0].sp_dinamico;
+                              console.log('------ CODIGO DE FACTURA  -----');
+                              console.log(response);
+                              $scope.codigoFactura = response[0].sp_insertar_controlador_pruebas;
+                                var formDataPago = '{"odm":"'+odm+'","total":"'+$scope.datosIntermedio.itm_monto+'","nombres":"'+$scope.datosPaciente.dtspsl_nombres+'","apellidos":"'+$scope.datosPaciente.dtspsl_paterno+' '+$scope.datosPaciente.dtspsl_materno+'","direccion":"'+$scope.datosPaciente.dtspsl_direccion+'","email":"xcampi3570@gmail.com","celular":"'+$scope.datosPaciente.dtspsl_movil+'","sistema":"IGOB WEB","ci_nit":"'+$scope.datosPaciente.dtspsl_ci+'","uid_ciudadano":"'+$scope.datosPaciente._id+'","sucursal_facturacion":'+$scope.datosIntermedio.itm_sucursal+',"id_usuario_facturacion":0,"cantidad_item1":"","descripcion_item1":"","descripcion_item2":"","cantidad_item2":"","monto_item2":"","descripcion_item3":"","cantidad_item3":"","monto_item3":"","codigo_item1":"","codigo_item2":"","codigo_item3":"'+$scope.datosIntermedio.itm_cod_ur+'","estado_facturacion":"","monto_item1":"","reservado18":"",                                             "servicio":"HOSPITAL_IGOB","items":[{"concepto":"CONSULTA EXTERNA '+$scope.especialidad_nombre+' ","cantidad":1,"monto":"'+$scope.datosIntermedio.itm_monto+'","item_recaudador":'+$scope.datosIntermedio.itm_cod_item+',"unidad_recaudadora":'+$scope.datosIntermedio.itm_cod_ur+'}],"data_opcional":[{"vidpaciente":'+$scope.datosPacienteSalud[0].idpersona+',"vidservicio":'+$scope.idServicio+',"vfechaatencion":"'+$scope.fechaDisponible+'","vnumeroficha":'+$scope.numero_ficha+',"vhospitalid":'+$scope.idHospital+',"vmedicoid":'+$scope.idDoctorUsuario+',"vturnoid":'+$scope.idTurnoFicha+',"vcodigoficha":"'+ficha[1]+'","vhorainicioficha":"'+$scope.hora_inicio+'","vhorafinficha":"'+$scope.hora_fin+'","vtipoconsulta":"C","vtipoconsulta":"C","vorigen_atencion":"IGOB WEB","vnroodm":"'+odm+'","vhistoria_sice":"'+$scope.historia_clinica+'","codigo_generado":"'+$scope.codigoFactura+'","usr_usuario":"'+$scope.datosHospital.vhsp_usuario+'","usr_clave":"'+$scope.datosHospital.vhsp_contrasenia+'","tipoPago":"TARJETA"}]}';
+                                //var formDataPago = '{"odm":"'+odm+'","total":4,"nombres":"Juan","apellidos":"Flores Cruz","direccion":"Villa Fatima, Calle Yungas, Nro  90","email":"abigail.rodascoria@gmail.com","celular":"73236689",                                                                                                                                                                        "sistema":"app_igob","ci_nit":"7063060",                            "uid_ciudadano":"5ef5fa33d4bdc57c1400030d","sucursal_facturacion":111,                                      "id_usuario_facturacion":69,"cantidad_item1":"","descripcion_item2":"reserva","cantidad_item2":74831,"monto_item2":"","codigo_item2":"","descripcion_item3":"","cantidad_item3":"","monto_item3":"",                              "codigo_item3":"","codigo_item1":"","estado_facturacion":"",                   "monto_item1":"","reservado18":3594,"descripcion_item1":"8907QWE","servicio":"PARQUEOS_IGOB","items":[{"id":3594,"monto":4}],"data_opcional":[]}';
+                                $.ajax({
+                                    type        : 'POST',
+                                    url         : urlPagoQR,
+                                    data        : formDataPago,
+                                    dataType    : 'json',
+                                    crossDomain : true,
+                                    headers: {
+                                      'Content-Type': 'application/json',
+                                    },success: function(dataIN) {
+                                        console.log('-----PAGO POR QR --------');
+                                        console.log(dataIN);
+                                        $scope.imgQR = dataIN.data.qrImage;
+                                        console.log('-------------------');
+                                        console.log($scope.imgQR);
+                                        console.log('-------------------');
+                                        setTimeout(function () {
+                                           $scope.$apply(function () {
+                                               $scope.imgQR = 'data:image/jpeg;base64,'+$scope.imgQR;
+                                               alertify.success('Se genero el codigo QR correctamente puede realizar el pago.');
+                                           });
+                                       }, 1000);
+
+
+                                    },
+                                    error: function (xhr, status, error) {
+                                      }
+                                  });
+                            }
+
+                            else
+                            {
+                              alertify.error('No se programaron fichas para esta especialidad');
+                            }
+                            $.LoadingOverlay("hide");
+                        });
+                    }catch(e){
+                        $scope.tabla_consultorio = false;
+                        $.LoadingOverlay("hide");
+
+
+                        
+                        alertify.error('Error');
+                    }
+
+
+                },
+                error: function (xhr, status, error) {
+                }
+              });
+            }
+    }
+
+    $scope.pagarOnlinePreguntarClick = function(){
+
+        $scope.mostrarclick = true;
+        $scope.mostrartarjeta = false;
+        $scope.mostrarqr = false;
+        $scope.institucional = false;
+        $scope.volverPago = true;
+    }
+
+    $scope.pagarOnlinePreguntarClick1 = function(){
+        swal({
+            title: "Atención!!",
+            text: "Favor tomar nota de lo siguiente: \n Con esta ficha debe pasar 30 minutos antes, directamente por enfermeria del para su control médico. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#55DD6B",confirmButtonText: "Continuar",
+            closeOnConfirm: false,
+            closeOnCancel: false ,
+            cancelButtonText: "green",cancelButtonText:"Cancelar"
+            },
+             function(isConfirm){
+                if (isConfirm) {
+                   swal.close();
+                   $scope.pagoOnlineClick();
+                   $scope.$apply();
+                } else {
+                 swal.close();
+                 $scope.$apply();
+                }
+           });
+    }
+
+    $scope.pagoOnlineClick = function(){
+        console.log(' Pago con Click');
+        if($scope.datosPaciente.dtspsl_correo == '' || $scope.datosPaciente.dtspsl_correo == null || $scope.datosPaciente.dtspsl_correo == undefined){
+            alertify.error('Para utilizar nuestro servicio de Pago en linea necesitamos su correo electrónico.');
+             setTimeout(function () {
+             $scope.$apply(function () {
+                 alertify.error('Debe actualizar su correo electrónico en sus datos personales.');
+                  });
+              }, 5500);
+         }
+         else{
+             console.log($scope.datosIntermedio);
+             var formData = '{"Tipo": "generarOdm","razon_social": "SIIS","ci_nit": "8747897","unidad_recaudadora": "179","sucursal": "154","monto_total": "25","detalles": [{    "odm_item_recaudador": "3690",    "odm_pre_unitario": "25",    "odm_cantidad": "1",    "odm_sub_total": "25"  }],"data": [{}]}';
+             console.log(formData);
+             $.ajax({
+                 type        : 'POST',
+                 url         : urlFum,
+                 data        : formData,
+                 dataType    : 'json',
+                 crossDomain : true,
+                 headers: {
+                   'Content-Type': 'application/json',
+                 },success: function(dataIN) {
+                     console.log(dataIN);
+                     var odm = dataIN.data[0].nroodm;
+                     console.log(odm);
+                     //PAGO ONLINE CON CLICK
+                     var formDataPago = '{"odm":"'+odm+'","total":4,"nombres":"Juan","apellidos":"Flores Cruz","direccion":"Villa Fatima, Calle Yungas, Nro  90","email":"abigail.rodascoria@gmail.com","celular":"73236689","sistema":"app_igob","ci_nit":"7063060","uid_ciudadano":"5ef5fa33d4bdc57c1400030d","sucursal_facturacion":111,"id_usuario_facturacion":69,"cantidad_item1":"","descripcion_item2":"reserva","cantidad_item2":74831,"monto_item2":"","codigo_item2":"","descripcion_item3":"","cantidad_item3":"","monto_item3":"","codigo_item3":"","codigo_item1":"","estado_facturacion":"","monto_item1":"","reservado18":3594,"descripcion_item1":"8907QWE","servicio":"PARQUEOS_IGOB","latitud":"-17.373846","longitud":"-66.156699","items":[{"id":3594,"monto":4}],"data_opcional":[]}';
+                     $.ajax({
+                         type        : 'POST',
+                         url         : urlPagoClick,
+                         data        : formDataPago,
+                         dataType    : 'json',
+                         crossDomain : true,
+                         headers: {
+                           'Content-Type': 'application/json',
+                         },success: function(dataIN) {
+                             console.log('-----PAGO POR TARJETA DE CREDITO --------');
+                             console.log(dataIN);
+                             alertify.success('Se realizó el pago por Click correctamente');
+                         },
+                         error: function (xhr, status, error) {
+                           }
+                       });
+                 },
+                 error: function (xhr, status, error) {
+                   }
+               });
+            }
     }
 
     $scope.pagarOnlinePreguntar = function(){
+        $scope.mostrarclick = false;
+        $scope.mostrartarjeta = true;
+        $scope.mostrarqr = false;
+        $scope.volverPago = true;
+        $scope.institucional = false;
+    }
+
+    $scope.pagarOnlinePreguntar1 = function(){
         swal({
-         title: "Atención!!",
-         text: "Favor tomar nota de lo siguiente: \n Con esta ficha debe pasar 30 minutos antes, directamente por enfermeria del para su control médico. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
-         type: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#55DD6B",confirmButtonText: "Continuar",
-         closeOnConfirm: false,
-         closeOnCancel: false ,
-         cancelButtonText: "green",cancelButtonText:"Cancelar"
-         }, 
-          function(isConfirm){ 
-             if (isConfirm) {
-                swal.close();
-                $scope.pagoOnline();
-                $scope.$apply();
-             } else {
-              swal.close();
-              $scope.$apply();
-             }
-        });
+            title: "Atención!!",
+            text: "Favor tomar nota de lo siguiente: \n Con esta ficha debe pasar 30 minutos antes, directamente por enfermeria del para su control médico. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#55DD6B",confirmButtonText: "Continuar",
+            closeOnConfirm: false,
+            closeOnCancel: false ,
+            cancelButtonText: "green",cancelButtonText:"Cancelar"
+            },
+             function(isConfirm){
+                if (isConfirm) {
+                   swal.close();
+                   $scope.pagoOnline();
+                   //$scope.$apply();
+                } else {
+                 swal.close();
+                 $scope.$apply();
+                }
+           });
     }
 
     $scope.revertirFicha = function(datos){
@@ -2033,8 +2055,8 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
          closeOnConfirm: false,
          closeOnCancel: false ,
          cancelButtonText: "green",cancelButtonText:"NO"
-         }, 
-          function(isConfirm){ 
+         },
+          function(isConfirm){
              if (isConfirm) {
                 cargando();
                 swal.close();
@@ -2044,7 +2066,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                   sql.SqlDinamic(function(res){
                       var x = JSON.parse(res);
                       var resultado = x.success.data;
-                      if (resultado[0].sp_dinamico != null) 
+                      if (resultado[0].sp_dinamico != null)
                       {
                         var respuesta = resultado[0].sp_dinamico;
                         console.log(respuesta);
@@ -2074,14 +2096,227 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
         });
     }
 
-    
+    $scope.volverPagar = function(){
+        $scope.volverPago = false;
+        $scope.mostrarqr = false;
+        $scope.mostrartarjeta = false;
+        $scope.mostrarclick = false;
+        $scope.institucional = true;
+
+
+    }
+
+    $scope.ocultarIframe = function(){
+        $scope.mostrarDatos = true;
+        $scope.mostrarIframe = false;
+        $scope.datosT = "";
+        $scope.pagar_tarjeta = true;
+        $scope.final_fichas = false;
+    }
+
+
+
+
+
+    $scope.getReimprimir = function (dataFACT) {
+		$scope.abrirmodalFactura = "#impresionFactura";
+		$scope.factura = "active";
+		$('#factura').attr("src", dataFACT);
+	};
+
+
+	$scope.imprimirFactura = function (factura) {
+
+        console.log(factura);
+		var printContenidos = "<html>" +
+			"<head>" +
+			"<style>" +
+			".tabla {" +
+			"border: 1px solid black;" +
+			"font-size:12px;" +
+			"border-collapse:collapse;" +
+			"}" +
+			".letra {" +
+			"font-size:12px;" +
+			"border-collapse:collapse;" +
+			"}" +
+			"tr:first-child { border-top: none; }" +
+			"tr:last-child { border-bottom: none; }" +
+			"td:first-child { border-left: none; }" +
+			"td:last-child { border-right: none; }" +
+			"p { font-size: 11px;" +
+			"font-size-adjust: 1; " +
+			"}" +
+			"</style>" +
+			"</head>" +
+			"<body>" +
+			"<div>" +
+			"<FONT FACE='arial'>" +
+			"<iframe scrolling='auto' src=" + factura.vfact_url_factura + " frameborder='0' width='100%' height='100%'></iframe>";
+		printContenidos = printContenidos + "</font>" +
+			"</div>" +
+			"</body>" +
+			"</html>";
+		var popupWin = window.open('', '_blank', 'width=800,height=800');
+		popupWin.document.open()
+		popupWin.document.write('<html><head></head><body>' + printContenidos + '<br><br></html>');
+		popupWin.document.close();
+    }
+
+    $scope.volver = function(){
+        $scope.pagar_tarjeta = false;
+        $scope.final_fichas = true;
+    }
+
+    $scope.limpiarmodal = function(){
+        $scope.datosT = "";
+        $scope.mostrarIframe = false;
+        $scope.pagar_tarjeta = true;
+        $scope.final_fichas = false;
+    }
+
+    $scope.pagarT = function(){
+        console.log('DATOS PACIENTE');
+        console.log($scope.datosPaciente);
+        console.log('DATOS EXTERNOS');
+        console.log($scope.datosFuera);
+        console.log(' Pago con QR');
+        if($scope.datosPaciente.dtspsl_correo == '' || $scope.datosPaciente.dtspsl_correo == null || $scope.datosPaciente.dtspsl_correo == undefined){
+            alertify.error('Para utilizar nuestro servicio de Pago en linea necesitamos su correo electrónico.');
+             setTimeout(function () {
+             $scope.$apply(function () {
+                 alertify.error('Debe actualizar su correo electrónico en sus datos personales.');
+                  });
+              }, 5500);
+         }
+         else{
+            var formData = '{"Tipo": "generarOdm","razon_social": "'+$scope.datosPaciente.dtspsl_paterno+'","ci_nit": "'+$scope.datosPaciente.dtspsl_ci+'","unidad_recaudadora": "'+$scope.datosFuera.vitm_cod_ur+'","sucursal": "'+$scope.datosFuera.vitm_sucursal+'","monto_total": "'+$scope.datosFuera.vitm_monto+'","detalles": [{    "odm_item_recaudador": "'+$scope.datosFuera.vitm_cod_item+'",    "odm_pre_unitario": "'+$scope.datosFuera.vitm_monto+'",    "odm_cantidad": "1",    "odm_sub_total": "'+$scope.datosFuera.vitm_monto+'"  }],"data": [{}]}';
+            console.log(formData);
+            $.ajax({
+                type        : 'POST',
+                url         : urlFum,
+                data        : formData,
+                dataType    : 'json',
+                crossDomain : true,
+                headers: {
+                  'Content-Type': 'application/json',
+                },success: function(dataIN) {
+                    console.log(dataIN);
+                    var odm = dataIN.data[0].nroodm;
+                    console.log('ESTE ES EL ODM');
+                    console.log(odm);
+                    console.log($scope.datosT.mes_tajeta);
+                    var x = $scope.datosT.mes_tajeta.split('/');
+                    console.log(x);
+                    var mes = x[0];
+                    var anio = '20'+x[1];
+                    console.log(mes);
+                    console.log(anio);
+                    var ficha = $scope.datosFuera.prescodigo_ficha.split('-');
+                    console.log(ficha[1]);
+                    /*try{
+                        var sql = new dataDinamic();
+                        sql.consulta = 'SELECT * from facturacion.sp_insertar_controlador_pruebas('+$scope.idHospital+','+$scope.datosPacienteSalud[0].idpersona+',1)';
+                        sql.SqlDinamic(function(res){
+                            var x = JSON.parse(res);
+                            var resultado = x.success.data;
+                            if (resultado[0].sp_dinamico != null)
+                            {
+                              var response = resultado[0].sp_dinamico;
+                              console.log('------ CODIGO DE FACTURA  -----');
+                              console.log(response);
+                              $scope.codigoFactura = response[0].sp_insertar_controlador_pruebas;
+                                var formDataPago = '{"odm":"'+odm+'","total":"'+$scope.datosIntermedio.itm_monto+'","nombres":"'+$scope.datosPaciente.dtspsl_nombres+'","apellidos":"'+$scope.datosPaciente.dtspsl_paterno+' '+$scope.datosPaciente.dtspsl_materno+'","direccion":"'+$scope.datosPaciente.dtspsl_direccion+'","email":"xcampi3570@gmail.com","celular":"'+$scope.datosPaciente.dtspsl_movil+'","sistema":"IGOB WEB","ci_nit":"'+$scope.datosPaciente.dtspsl_ci+'","uid_ciudadano":"'+$scope.datosPaciente._id+'","sucursal_facturacion":'+$scope.datosIntermedio.itm_sucursal+',"id_usuario_facturacion":0,"cantidad_item1":"","descripcion_item1":"","descripcion_item2":"","cantidad_item2":"","monto_item2":"","descripcion_item3":"","cantidad_item3":"","monto_item3":"","codigo_item1":"","codigo_item2":"","codigo_item3":"'+$scope.datosIntermedio.itm_cod_ur+'","estado_facturacion":"","monto_item1":"","reservado18":"","servicio":"HOSPITAL_IGOB","card_type":"001","card_number":"'+$scope.datosT.num_tajeta+'","card_expiry_month":"'+mes+'","card_expiry_year":"'+anio+'","card_cvn":"'+$scope.datosT.cvn_tarjeta+'","items":[{"concepto":"CONSULTA EXTERNA '+$scope.especialidad_nombre+' ","cantidad":1,"monto":"'+$scope.datosIntermedio.itm_monto+'","item_recaudador":'+$scope.datosIntermedio.itm_cod_item+',"unidad_recaudadora":'+$scope.datosIntermedio.itm_cod_ur+'}],"data_opcional":[{"vidpaciente":'+$scope.datosPacienteSalud[0].idpersona+',"vidservicio":'+$scope.idServicio+',"vfechaatencion":"'+$scope.fechaDisponible+'","vnumeroficha":'+$scope.numero_ficha+',"vhospitalid":'+$scope.idHospital+',"vmedicoid":'+$scope.idDoctorUsuario+',"vturnoid":'+$scope.idTurnoFicha+',"vcodigoficha":"'+ficha[1]+'","vhorainicioficha":"'+$scope.hora_inicio+'","vhorafinficha":"'+$scope.hora_fin+'","vtipoconsulta":"C","vtipoconsulta":"C","vorigen_atencion":"IGOB WEB","vnroodm":"'+odm+'","vhistoria_sice":"'+$scope.historia_clinica+'","codigo_generado":"'+$scope.codigoFactura+'","usr_usuario":"'+$scope.datosHospital.vhsp_usuario+'","usr_clave":"'+$scope.datosHospital.vhsp_contrasenia+'","tipoPago":"TARJETA"}]}';
+                                $.ajax({
+                                    type        : 'POST',
+                                    url         : 'http://52.226.130.135:5433/api/registroPagoCheckoutApiWeb',
+                                    data        : formDataPago,
+                                    dataType    : 'json',
+                                    crossDomain : true,
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    success: function(data) {
+                                        console.log('hola mundooooo');
+                                        console.log(data);
+                                        var idTransaccion = data.id_transaccion;
+                                        setTimeout(function () {
+                                            $scope.$apply(function () {
+                                            $scope.urlPagoTar = 'http://52.226.130.135:5433/api/pagoCheckoutApiWeb?id_cr_transaccion='+idTransaccion;
+                                            $scope.htmlIframe = $scope.htmlIframe +'<iframe src="'+$scope.urlPagoTar+'" width="100%" height="400"></iframe>';
+                                            console.log($scope.htmlIframe);
+                                            $scope.mostrarIframe = true;
+                                                });
+                                        }, 1000);
+                                    },
+                                    error: function (xhr, status, error) {
+                                        alertify.error('Error Intente de nuevo !!');
+                                    }
+                                });
+                            }
+                            else
+                            {
+                              alertify.error('No se programaron fichas para esta especialidad');
+                            }
+                            $.LoadingOverlay("hide");
+                        });
+                    }catch(e){
+                        $scope.tabla_consultorio = false;
+                        $.LoadingOverlay("hide");
+                        alertify.error('Error');
+                    }*/
+
+
+                },
+                error: function (xhr, status, error) {
+                }
+              });
+         }
+        /*var printContenidos = "<html>" +
+			"<head>" +
+			"<style>" +
+			".tabla {" +
+			"border: 1px solid black;" +
+			"font-size:12px;" +
+			"border-collapse:collapse;" +
+			"}" +
+			".letra {" +
+			"font-size:12px;" +
+			"border-collapse:collapse;" +
+			"}" +
+			"tr:first-child { border-top: none; }" +
+			"tr:last-child { border-bottom: none; }" +
+			"td:first-child { border-left: none; }" +
+			"td:last-child { border-right: none; }" +
+			"p { font-size: 11px;" +
+			"font-size-adjust: 1; " +
+			"}" +
+			"</style>" +
+			"</head>" +
+			"<body>" +
+			"<div>" +
+			"<FONT FACE='arial'>" +
+			"<iframe scrolling='auto' src=" + "http://192.168.5.69/ifacturacion247_pruebas/public/files/2019/475801900001318/a39b8cdc40ded700b4e5ae5f01b7a81f84f94009.pdf" + " frameborder='0' width='100%' height='100%'></iframe>";
+		printContenidos = printContenidos + "</font>" +
+			"</div>" +
+			"</body>" +
+			"</html>";
+		var popupWin = window.open('', '_blank', 'width=800,height=800');
+		popupWin.document.open()
+		popupWin.document.write('<html><head></head><body>' + printContenidos + '<br><br></html>');
+		popupWin.document.close();*/
+    }
+
+
 
     $scope.$on('api:ready',function(){
+        $scope.lstatencionesvacias = true;
         $scope.obtenerDatos();
        $scope.verificarRegistroPaciente();
     });
 
     $scope.inicioSalud = function () {
+      $scope.lstatencionesvacias = true;
         $scope.obtenerDatos();
         $scope.verificarRegistroPaciente();
     };

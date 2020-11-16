@@ -10,6 +10,17 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     $scope.appaternoPersona = sessionService.get('US_PATERNO');
     $scope.apmaternoPersona = sessionService.get('US_MATERNO');
     $scope.email = sessionService.get('US_EMAIL');
+
+
+
+
+
+
+
+
+
+
+    
     $scope.tramitesUsuario = [];
     $scope.hospitales_vista = false;
     $scope.especialidad_vista = false;

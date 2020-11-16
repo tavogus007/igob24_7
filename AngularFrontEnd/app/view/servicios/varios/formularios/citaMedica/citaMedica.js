@@ -18,8 +18,6 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     $scope.img_hoja_referencia = false;
     $scope.lstatencionesvacias = false;
     $scope.lstatenciones = false;
-
-
     $scope.mostrarIframe = false;
     $scope.vectorMensaje = ['Nro. de Proforma:','Nombres:','Apellidos:','Correo Electrónico:','Ciudad:','País:','Especialidad:','Precio (Bs):'];
     if(jsonURLS){

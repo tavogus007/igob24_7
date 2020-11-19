@@ -267,7 +267,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
             $.unblockUI();
           }
         }else{
-          alert(8888);
           if ($scope.vacunas.length == 0) {
             swal({
               title: "Advertencia?",

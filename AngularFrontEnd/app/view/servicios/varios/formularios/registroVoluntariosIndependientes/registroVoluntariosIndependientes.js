@@ -1092,8 +1092,6 @@ function registroVoluntariosIndependientesController($scope, $q, $timeout, CONFI
                 var centro_1 = ol.proj.transform(coord, 'EPSG:3857', epsg4326);
                 var latitud = centro_1[1];
                 var longitud = centro_1[0];
-                console.log("Lucho latitud", latitud);
-                console.log("Lucho longitud", longitud);
                 $scope.datos.latitud_vol_dom = latitud;
                 $scope.datos.longitud_vol_dom = longitud;
                 var feature = $scope.map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
@@ -1120,7 +1118,6 @@ function registroVoluntariosIndependientesController($scope, $q, $timeout, CONFI
                     }).then(function (data) {
                         var feature = data.features[0];
                         var cod = feature.properties;
-                        console.log("Lucho datos zonas: ", cod);
                     });
                     reqwest({
                         url: url_vias,
@@ -1128,11 +1125,9 @@ function registroVoluntariosIndependientesController($scope, $q, $timeout, CONFI
                     }).then(function (data) {
                         var feature = data.features[0];
                         if (feature == undefined) {
-                            console.log("Lucho No hay vias...");
                         }
                         else {
                             var cod = feature.properties;
-                            console.log("Lucho datos de vias: ", cod);
                         }
 
                     });

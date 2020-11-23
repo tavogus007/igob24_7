@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
-  <head>
-    <script src="../../libs/apiMov/api_mov_infracciones.js"></script>
-    <link href="../../libs/css/sweetalert.css" rel="stylesheet"></link>
-    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
-    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
-    <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/permisosExcepcionales/formularioPermiso/formularioPermiso.js"></script>
-    <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script> 
-    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" /> 
-    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
-    <link href="../../libs/css/select2.min.css" rel="stylesheet" async/>
-    <script src="../../libs/js/select2.min.js" async></script>
-  </head>
+<head>
+  <script src="../../libs/apiMov/api_mov_infracciones.js"></script>
+  <link href="../../libs/css/sweetalert.css" rel="stylesheet">
+  </link>
+  <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+  <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+  <script type="text/javascript"
+    src="../../view/servicios/varios/formularios/movilidad/permisosExcepcionales/formularioPermiso/formularioPermiso.js"></script>
+  <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+  <link rel="stylesheet"
+    href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+  <link rel="stylesheet"
+    href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css"
+    id="toggleCSS" />
+  <link href="../../libs/css/select2.min.css" rel="stylesheet" async />
+  <script src="../../libs/js/select2.min.js" async></script>
+</head>
 <style>
   #caja {
     display: block;
   }
-  #mostrar{
-    display:block;
+
+  #mostrar {
+    display: block;
   }
-  #cerrar_rc{
+  #cerrar_rc {
     position: absolute;
     top: 5px;
     left: 92%;
@@ -38,15 +44,13 @@
   select:required:valid {
     border: 1px solid green;
   }
-  body{
+  body {
     background: #ecf0f1;
   }
-
   .table1 th {
     background-color: #fff !important;
   }
-
-  #cerrar_rc{
+  #cerrar_rc {
     position: absolute;
     top: 5px;
     left: 92%;
@@ -71,110 +75,114 @@
     background: #1abc9c;
   }
   .accordion-titulo span.toggle-icon:before {
-    content:"+";
+    content: "+";
   }
   .accordion-titulo.open span.toggle-icon:before {
-    content:"-";
+    content: "-";
   }
   .accordion-titulo span.toggle-icon {
     position: absolute;
     top: 10px;
     right: 20px;
     font-size: 28px;
-    font-weight:bold;
+    font-weight: bold;
   }
-
-  .tableE > thead > tr > th {
+  .tableE>thead>tr>th {
     border-bottom: 1px solid #FFFFE0;
     vertical-align: bottom;
     background: #FFEFD5;
     color: black;
   }
-
-  #modalTamanio{
+  #modalTamanio {
     width: 31% !important;
   }
-
-  .resaltado { background-color: #F9B1A7; }
+  .resaltado {
+    background-color: #F9B1A7;
+  }
 
   .btn-warning {
     background-color: #f8ac59;
     border-color: #f8ac59;
     color: #FFFFFF;
   }
+
   input:required:invalid {
     border: 1px solid red;
   }
+
   input:required:valid {
     border: 1px solid green;
   }
+
   select:required:invalid {
     border: 1px solid red;
   }
+
   select:required:valid {
-      border: 1px solid green;
+    border: 1px solid green;
   }
+
   .form-group {
-      padding-left: 8px;
+    padding-left: 8px;
   }
 
-  .tamañoLabel{
-      font-size: 18px;
+  .tamañoLabel {
+    font-size: 18px;
   }
 
-  input[type="radio"]{
-      position: absolute;
-      right: 9000px;
+  input[type="radio"] {
+    position: absolute;
+    right: 9000px;
   }
+
   /*Check box*/
-  input[type="radio"] + .label-text:before{
-      content: "\f096";
-      font-family: "FontAwesome";
-      speak: none;
-      font-style: normal;
-      font-weight: normal;
-      font-variant: normal;
-      text-transform: none;
-      line-height: 1;
-      -webkit-font-smoothing:antialiased;
-      width: 1em;
-      display: inline-block;
-      margin-right: 5px;
+  input[type="radio"]+.label-text:before {
+    content: "\f096";
+    font-family: "FontAwesome";
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    width: 1em;
+    display: inline-block;
+    margin-right: 5px;
   }
 
-  input[type="radio"]:checked + .label-text:before{
-      content: "\f14a";
-      color: #2980b9;
-      animation: effect 250ms ease-in;
+  input[type="radio"]:checked+.label-text:before {
+    content: "\f14a";
+    color: #2980b9;
+    animation: effect 250ms ease-in;
   }
 
-  input[type="radio"]:disabled + .label-text{
-      color: #aaa;
+  input[type="radio"]:disabled+.label-text {
+    color: #aaa;
   }
 
-  input[type="radio"]:disabled + .label-text:before{
-      content: "\f0c8";
-      color: #ccc;
+  input[type="radio"]:disabled+.label-text:before {
+    content: "\f0c8";
+    color: #ccc;
   }
-
 </style>
 <script type="text/javascript">
 
-  function validaLetras(campo){
+  function validaLetras(campo) {
     campo.value = campo.value.toUpperCase();
     var color = campo.value;
     emailRegex = /^[a-zA-Z ]+$/;
     if (emailRegex.test(color)) {
     }
-    else{
-      $("#"+campo.name).val('');
+    else {
+      $("#" + campo.name).val('');
     }
   }
 
-  function iniciarLoadFyle(){
-    $('.custom-upload input[type=file]').change(function(){
-    $(this).next().find('input').val($(this).val());
-    angular.element(this).scope().cambiarFile(this, $(this).val());
+  function iniciarLoadFyle() {
+    $('.custom-upload input[type=file]').change(function () {
+      $(this).next().find('input').val($(this).val());
+      angular.element(this).scope().cambiarFile(this, $(this).val());
     });
   }
 
@@ -183,303 +191,415 @@
   }
 </script>
 <script type="text/javascript">
-   
+
 </script>
-  <div id="principal" class="page-content" ng-controller="permisoCirculacionController" data-ng-init="inicio();">
-    <div class="col-lg-12">
-      <div  class="ibox-content" id="caja"> 
-        <div  class="row">                
-          <form name="signupForm" class="" role="form" novalidate>
-            <div id="container-main" class="ibox float-e-margins">
-              <div>
-                <form name="regrepresentante" class="form-horizontal" role="form" novalidate><br>
-                  <div class="col-md-12">
-                    <div class="ibox float-e-margins">
-                        <div class="col-md-12">
-                            <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-                            <h4>Datos del Solicitante</h4>
-                            </div>
-                        </div>
+<div id="principal" class="page-content" ng-controller="permisosExcepcionalesFormulario" data-ng-init="inicio();">
+  <div class="col-lg-12">
+    <div class="ibox-content" id="caja">
+      <div class="row">
+        <form name="signupForm" class="" role="form" novalidate>
+          <div id="container-main" class="ibox float-e-margins">
+            <div>
+              <form name="regrepresentante" class="form-horizontal" role="form" novalidate><br>
+                <div class="col-md-12">
+                  <div class="ibox float-e-margins">
+                    <div class="col-md-12">
+                      <div class="ibox-title cafeSuave"
+                        style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                        <h4>Datos del Solicitante</h4>
+                      </div>
                     </div>
                   </div>
-                  <div ng-show = "tipo_persona == 'NATURAL'">
-                    <div class="row" >
-                      <div class="col-md-12"><br>  
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >{{translateTitulos.lbl_12_27}}:</label>  
-                            <div class="controls">
-                              <input ng-model="datos.PER_TRA_NOMBRE" id="PER_TRA_NOMBRE" name="PER_TRA_NOMBRE" class="form-control"  width="30%" height="30" ng-disabled="true">
-                            </div>
+                </div>
+                <div ng-show="tipo_persona == 'NATURAL'">
+                  <div class="row">
+                    <div class="col-md-12"><br>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_27}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_NOMBRE" id="PER_TRA_NOMBRE" name="PER_TRA_NOMBRE"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
                         </div>
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
-                            <div class="controls">
-                              <input ng-model="datos.PER_TRA_PATERNO" id="PER_TRA_PATERNO" name="PER_TRA_PATERNO" class="form-control"  width="30%" height="30" ng-disabled="true">
-                            </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_28}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_PATERNO" id="PER_TRA_PATERNO" name="PER_TRA_PATERNO"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
                         </div>
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
-                            <div class="controls">
-                              <input ng-model="datos.PER_TRA_MATERNO" id="PER_TRA_MATERNO" name="PER_TRA_MATERNO" class="form-control"  width="30%" height="30" ng-disabled="true">
-                            </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_29}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_MATERNO" id="PER_TRA_MATERNO" name="PER_TRA_MATERNO"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
                         </div>
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >Ap. Casada:</label>
-                            <div class="controls">
-                              <input ng-model="datos.PER_TRA_CASADA" id="PER_TRA_CASADA" name="PER_TRA_CASADA" class="form-control"  width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div>                             
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >Número de documento:</label>
-                            <div class="controls">
-                              <input ng-model="datos.PER_TRA_CI" id="PER_TRA_CI" name="PER_TRA_CI" class="form-control"  width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div> 
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >Expedido:</label>
-                            <div class="controls">
-                              <input ng-model="datos.PER_TRA_EXPEDIDO" id="PER_TRA_EXPEDIDO" name="PER_TRA_EXPEDIDO" class="form-control"  width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div>                                                                                                            
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url">Celular:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_CELULAR" id="PER_TRA_CELULAR" name="PER_TRA_CELULAR" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
-                            </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Ap. Casada:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_CASADA" id="PER_TRA_CASADA" name="PER_TRA_CASADA"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
                         </div>
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url">Correo:</label>
-                            <div class="controls">
-                              <input type="email" ng-model="datos.PER_TRA_CORREO" id="PER_TRA_CORREO" name="PER_TRA_CORREO" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div> 
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >Zona:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_ZONA" id="PER_TRA_ZONA" name="PER_TRA_ZONA" class="form-control"   width="30%" height="30" ng-disabled="true">
-                            </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Número de documento:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_CI" id="PER_TRA_CI" name="PER_TRA_CI" class="form-control"
+                              width="30%" height="30" ng-disabled="true">
                           </div>
                         </div>
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >Tipo de Via:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_VIA" id="PER_TRA_VIA" name="PER_TRA_VIA" class="form-control"   width="30%" height="30" ng-disabled="true">
-                            </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Expedido:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_EXPEDIDO" id="PER_TRA_EXPEDIDO" name="PER_TRA_EXPEDIDO"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
                         </div>
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >Nombre de Via:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_NOMBRE_VIA" id="PER_TRA_NOMBRE_VIA" name="PER_TRA_NOMBRE_VIA" class="form-control"    width="30%" height="30" ng-disabled="true">
-                            </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Celular:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_CELULAR" id="PER_TRA_CELULAR"
+                              name="PER_TRA_CELULAR" class="form-control" style="text-transform:uppercase;" width="30%"
+                              height="30" ng-disabled="true">
                           </div>
-                        </div>                        
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >Nro. de Vivienda:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_NRO_V" id="PER_TRA_NRO_V" name="PER_TRA_NRO_V" class="form-control"   width="30%" height="30" ng-disabled="true">
-                            </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Correo:</label>
+                          <div class="controls">
+                            <input type="email" ng-model="datos.PER_TRA_CORREO" id="PER_TRA_CORREO"
+                              name="PER_TRA_CORREO" class="form-control" style="text-transform:uppercase;" width="30%"
+                              height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Zona:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_ZONA" id="PER_TRA_ZONA" name="PER_TRA_ZONA"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Tipo de Via:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_VIA" id="PER_TRA_VIA" name="PER_TRA_VIA"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Nombre de Via:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NOMBRE_VIA" id="PER_TRA_NOMBRE_VIA"
+                              name="PER_TRA_NOMBRE_VIA" class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Nro. de Vivienda:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NRO_V" id="PER_TRA_NRO_V" name="PER_TRA_NRO_V"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div ng-show = "tipo_persona == 'JURIDICO'">
-                    <div class="row">
+                </div>
+                <div ng-show="tipo_persona == 'JURIDICO'">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">NIT:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NIT" id="PER_TRA_NIT" name="PER_TRA_NIT"
+                              class="form-control" style="text-transform:uppercase;" width="30%" height="30"
+                              ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Razón Social:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_RAZON_SCI" id="PER_TRA_RAZON_SCI"
+                              name="PER_TRA_RAZON_SCI" class="form-control" style="text-transform:uppercase;"
+                              width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Poder de Representante Legal(Nro):</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_PODER" id="PER_TRA_PODER" name="PER_TRA_PODER"
+                              class="form-control" style="text-transform:uppercase;" width="30%" height="30"
+                              ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Nro de la Notaría:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NRO_NOTARIA" id="PER_TRA_NRO_NOTARIA"
+                              name="PER_TRA_NRO_NOTARIA" class="form-control" style="text-transform:uppercase;"
+                              width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Zona:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_ZONA_J" id="PER_TRA_ZONA_J" name="PER_TRA_ZONA_J"
+                              class="form-control" style="text-transform:uppercase;" width="30%" height="30"
+                              ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Tipo de Via:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_VIA_J" id="PER_TRA_VIA_J" name="PER_TRA_VIA_J"
+                              class="form-control" style="text-transform:uppercase;" width="30%" height="30"
+                              ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Nombre de Via:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NOMBRE_VIA_J" id="PER_TRA_NOMBRE_VIA_J"
+                              name="PER_TRA_NOMBRE_VIA_J" class="form-control" style="text-transform:uppercase;"
+                              width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Nro de Vivienda:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NRO_VV_J" id="PER_TRA_NRO_VV_J"
+                              name="PER_TRA_NRO_VV_J" class="form-control" style="text-transform:uppercase;" width="30%"
+                              height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
                       <div class="col-md-12">
-                        <div class="col-md-4" >
-                          <div class="form-group" >
-                            <label for="url">NIT:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_NIT" id="PER_TRA_NIT" name="PER_TRA_NIT" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div> 
-                        <div class="col-md-4" >
-                          <div class="form-group" >
-                            <label for="url">Razón Social:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_RAZON_SCI" id="PER_TRA_RAZON_SCI" name="PER_TRA_RAZON_SCI" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div> 
-                        <div class="col-md-4" >
-                          <div class="form-group" >
-                            <label for="url">Poder de Representante Legal(Nro):</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_PODER" id="PER_TRA_PODER" name="PER_TRA_PODER" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div> 
-                        <div class="col-md-4" >
-                          <div class="form-group" >
-                            <label for="url">Nro de la Notaría:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_NRO_NOTARIA" id="PER_TRA_NRO_NOTARIA" name="PER_TRA_NRO_NOTARIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div>                         
-                        <div class="col-md-4" >
-                          <div class="form-group" >
-                            <label for="url">Zona:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_ZONA_J" id="PER_TRA_ZONA_J" name="PER_TRA_ZONA_J" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div> 
-                        <div class="col-md-4" >
-                          <div class="form-group" >
-                            <label for="url">Tipo de Via:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_VIA_J" id="PER_TRA_VIA_J" name="PER_TRA_VIA_J" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div> 
-                        <div class="col-md-4" >
-                          <div class="form-group" >
-                            <label for="url">Nombre de Via:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_NOMBRE_VIA_J" id="PER_TRA_NOMBRE_VIA_J" name="PER_TRA_NOMBRE_VIA_J" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div> 
-                        <div class="col-md-4" >
-                          <div class="form-group" >
-                            <label for="url">Nro de Vivienda:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_NRO_VV_J" id="PER_TRA_NRO_VV_J" name="PER_TRA_NRO_VV_J" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
-                            </div>
+                        <h3>DATOS DEL REPRESENTANTE LEGAL</h3>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_27}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_NOMBRE_J" id="PER_TRA_NOMBRE_J" name="PER_TRA_NOMBRE_J"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
                         </div>
-                        <div class="col-md-12"><h3>DATOS DEL REPRESENTANTE LEGAL</h3></div>
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >{{translateTitulos.lbl_12_27}}:</label>   
-                            <div class="controls">
-                              <input ng-model="datos.PER_TRA_NOMBRE_J" id="PER_TRA_NOMBRE_J" name="PER_TRA_NOMBRE_J" class="form-control"  width="30%" height="30" ng-disabled="true">
-                            </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_28}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_PATERNO_J" id="PER_TRA_PATERNO_J" name="PER_TRA_PATERNO_J"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
                         </div>
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
-                            <div class="controls">
-                              <input ng-model="datos.PER_TRA_PATERNO_J" id="PER_TRA_PATERNO_J" name="PER_TRA_PATERNO_J" class="form-control"  width="30%" height="30" ng-disabled="true">
-                            </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_29}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_MATERNO_J" id="PER_TRA_MATERNO_J" name="PER_TRA_MATERNO_J"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
                         </div>
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
-                            <div class="controls">
-                              <input ng-model="datos.PER_TRA_MATERNO_J" id="PER_TRA_MATERNO_J" name="PER_TRA_MATERNO_J" class="form-control"  width="30%" height="30" ng-disabled="true">
-                            </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Número de documento:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_CI_J" id="PER_TRA_CI_J" name="PER_TRA_CI_J"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
-                        </div>                           
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >Número de documento:</label>
-                            <div class="controls">
-                              <input ng-model="datos.PER_TRA_CI_J" id="PER_TRA_CI_J" name="PER_TRA_CI_J" class="form-control"  width="30%" height="30" ng-disabled="true">
-                            </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Expedido:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_EXPEDIDO_J" id="PER_TRA_EXPEDIDO_J" name="PER_TRA_EXPEDIDO_J"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
-                        </div> 
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url" >Expedido:</label>
-                            <div class="controls">
-                              <input ng-model="datos.PER_TRA_EXPEDIDO_J" id="PER_TRA_EXPEDIDO_J" name="PER_TRA_EXPEDIDO_J" class="form-control"  width="30%" height="30" ng-disabled="true">
-                            </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Celular:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_CELULAR_J" id="PER_TRA_CELULAR_J"
+                              name="PER_TRA_CELULAR_J" class="form-control" style="text-transform:uppercase;"
+                              width="30%" height="30" ng-disabled="true">
                           </div>
-                        </div>  
-                        <div class="col-md-4">
-                          <div class="form-group" >
-                            <label for="url">Celular:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.PER_TRA_CELULAR_J" id="PER_TRA_CELULAR_J" name="PER_TRA_CELULAR_J" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="true">
-                            </div>
-                          </div>
-                        </div>   
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div>
                 <!--                                           div Radios Button                -->
                 <div class="ibox float-e-margins">
-                    <div class="col-md-12">
-                        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-                            <h4>TIPO DE PERMISOS:</h4>
-                        </div>
+                  <div class="col-md-12">
+                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                      <h4>TIPO DE PERMISOS:</h4>
                     </div>
+                  </div>
                 </div>
                 <br>
                 <br>
                 <div class="col-md-12">
-                    <div class="form-group">   
-                        <div class="controls">     
-                            <div class="col-md-3">
-                                <div class="form-check">
-                                  <label class="tamañoLabel">
-                                    <input type="radio" name="PER_TRA_DESCRIP_FOR" ng-model="datos.PER_TRA_DESCRIP_FOR" ng-change="docdinamicos(datos.PER_TRA_DESCRIP_FOR);" value="TRANSPORTE_DE_ENTREGA_ALIMENTOS" > <span class="label-text"></span>
-                                  </label>PARADA MOMENTANEA
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-check">
-                                  <label class="tamañoLabel">
-                                    <input type="radio" name="PER_TRA_DESCRIP_FOR" ng-model="datos.PER_TRA_DESCRIP_FOR" ng-change="docdinamicos(datos.PER_TRA_DESCRIP_FOR);" value="TRANSPORTE_PERSONAL"> <span class="label-text"></span>
-                                  </label>ESTACIONAMIENTO
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-check">
-                                  <label class="tamañoLabel">
-                                    <input type="radio" name="PER_TRA_DESCRIP_FOR" ng-model="datos.PER_TRA_DESCRIP_FOR" ng-change="docdinamicos(datos.PER_TRA_DESCRIP_FOR);" value="TRANSPORTE_DE_ENTREGA_PRODUCTOS"> <span class="label-text"></span>
-                                  </label>CIERRE DE VÍAS
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-check">
-                                  <label class="tamañoLabel">
-                                    <input type="radio" name="PER_TRA_DESCRIP_FOR" ng-model="datos.PER_TRA_DESCRIP_FOR" ng-change="docdinamicos(datos.PER_TRA_DESCRIP_FOR);" value="TRANSPORTE_MATERIA_PRIMA"> <span class="label-text"></span>
-                                  </label>ÁREA DE RESTRICCION VEHICULAR
-                                </div>
-                            </div>                                    
+                  <div class="form-group">
+                    <div class="controls">
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <label class="tamañoLabel">
+                            <input type="radio" name="PE_T_PERMISO_VALOR" ng-model="datos.PE_T_PERMISO_VALOR"
+                              ng-change="docdinamicos(datos.PE_T_PERMISO_VALOR);"
+                              value="TRANSPORTE_DE_ENTREGA_ALIMENTOS"> <span class="label-text"></span>
+                          </label>PARADA MOMENTANEA
                         </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <label class="tamañoLabel">
+                            <input type="radio" name="PE_T_PERMISO_VALOR" ng-model="datos.PE_T_PERMISO_VALOR"
+                              ng-change="docdinamicos(datos.PE_T_PERMISO_VALOR);" value="TRANSPORTE_PERSONAL"> <span
+                              class="label-text"></span>
+                          </label>ESTACIONAMIENTO
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <label class="tamañoLabel">
+                            <input type="radio" name="PE_T_PERMISO_VALOR" ng-model="datos.PE_T_PERMISO_VALOR"
+                              ng-change="docdinamicos(datos.PE_T_PERMISO_VALOR);"
+                              value="TRANSPORTE_DE_ENTREGA_PRODUCTOS"> <span class="label-text"></span>
+                          </label>CIERRE DE VÍAS
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <label class="tamañoLabel">
+                            <input type="radio" name="PE_T_PERMISO_VALOR" ng-model="datos.PE_T_PERMISO_VALOR"
+                              ng-change="docdinamicos(datos.PE_T_PERMISO_VALOR);" value="TRANSPORTE_MATERIA_PRIMA">
+                            <span class="label-text"></span>
+                          </label>ÁREA DE RESTRICCION VEHICULAR
+                        </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
                 <br>
                 <br>
-                    <div class="col-md-12" align="right"><br>
-                        <button id="miFormGuardar" ng-show="desabilitado
-                        ==false" ng-click="guardar_tramite_inicial(datos);"  type="button" class="btn btn-success fa fa-save" name="formEnviar">{{translateTitulos.lbl_016_29}}</button>
-                        <button ng-click="validarEnvio(datos);" id="gu" type="button" class="btn btn-success fa fa-mail-forward" ng-show="desabilitado==false">{{translateTitulos.lbl_016_30}} </button>
+                <br>
+                <br>
+                <div class="ibox float-e-margins">
+                  <div class="col-md-12">
+                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                      <h4>DATOS DE UBICACIÓN PARA EL PERMISO:</h4>
                     </div>
-                </form>
-              </div><br>  
-            </div>
-          </form>
-        </div>
+                  </div>
+                </div>
+                <br>
+                <br>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div style="width: 70%;height: 60%;border: #000000;border-style: solid;margin-left: 100px;"
+                      id="mapa_mascotas">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="url">Tipo de Ubicación</label>
+                      <div class="controls">
+                        <select id="INF_ORT_MACRO" name="INF_ORT_MACRO" placeholder="Macrodistrito"
+                          ng-model="datos.INF_ORT_MACRO" class="form-control" ng-disabled="desabilitado">
+                          <option value="">--Seleccionar--</option>
+                          <option value="ZONAL">ZONAL</option>
+                          <option value="MUNCIPAL">MUNCIPAL</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="url">Macrodistrito:</label>
+                        <div class="controls">
+                          <input ng-model="datos.mac" class="form-control" width="30%" height="30">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {{datos.macroluis}}
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="url">NUMERO PMC DE LICENCIA DE FUNCIONAMIENTO:</label>
+                        <div class="controls">
+                          <input type="text" ng-model="datos.macroluis" id="macroluis" name="macroluis"
+                            class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30"
+                            ng-disabled="true" requerid />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12" align="right"><br>
+                  <button id="miFormGuardar" ng-show="desabilitado
+                        ==false" ng-click="guardar_tramite(datos);" type="button" class="btn btn-success fa fa-save"
+                    name="formEnviar">{{translateTitulos.lbl_016_29}}</button>
+                  <button ng-click="validarEnvio(datos);" id="gu" type="button"
+                    class="btn btn-success fa fa-mail-forward"
+                    ng-show="desabilitado==false">{{translateTitulos.lbl_016_30}} </button>
+                </div>
+              </form>
+            </div><br>
+          </div>
+        </form>
       </div>
     </div>
   </div>
+</div>
 </html>

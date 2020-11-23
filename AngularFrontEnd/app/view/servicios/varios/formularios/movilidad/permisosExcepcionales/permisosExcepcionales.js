@@ -1,18 +1,18 @@
-function solicitudCirculacionController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, $timeout, obtFechaCorrecta,$route, obtFechaActual,fileUpload1) {
+function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, $timeout, obtFechaCorrecta,$route, obtFechaActual,fileUpload1) {
     var sIdCiudadano= sessionService.get('IDSOLICITANTE');
     $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
     $scope.oidCiu = sessionService.get('IDSOLICITANTE');
     $scope.tiposTramite = [
-        { detalle: 'Solicitud de permiso de transporte', id:'54',tipo:$scope.tipo_persona}
+        { detalle: 'Solicitud de permisos excepxionales', id:'66',tipo:$scope.tipo_persona}
     ];
     $scope.datos = {};
     $scope.tablaTramites        =   {};
     $scope.tramitesUsuario      =   [];
     $scope.templates =
     [ 
-      { name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/movilidad/permisosTransitorios/formularioPermiso/formularioPermiso.html'}
+      { name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/movilidad/permisosExcepcionales/formularioPermiso/formularioPermiso.html'}
     ];
-    $scope.solPerTra = 54;
+    $scope.solPerTra = 66;
     $scope.inicio = function(){
       $scope.tramitesCiudadano();
       $scope.cargarDatosCiudadano();
@@ -172,6 +172,10 @@ function solicitudCirculacionController($scope, $rootScope, $routeParams, $locat
               $scope.datos.PER_TRA_NOMBRE_VIA_J = results[0].dtspsl_nombre_via;   
               $scope.datos.PER_TRA_NRO_VV_J = results[0].dtspsl_numero_casa;
               $scope.datos.PER_TRA_CORREO = results[0].dtspsl_correo;   
+              $scope.datos.macroluis = 'asdfasdf';
+              console.log($scope.datos);
+             // $scope.datos.ggggg = "asdfasdfasdjawerghoípgh asdhoñugy";
+
               var buscarRepresentante = new rcNatural();
               buscarRepresentante.tipo_persona = "NATURAL"
               buscarRepresentante.ci = $scope.datos.PER_TRA_CI_J;
@@ -210,6 +214,7 @@ function solicitudCirculacionController($scope, $rootScope, $routeParams, $locat
                 });                          
               },300);
             }else{
+             
               $scope.datos.CI_BIGDATA = results[0]._id;
               $scope.datos.PER_TRA_NOMBRE = results[0].dtspsl_nombres;
               $scope.datos.PER_TRA_PATERNO = results[0].dtspsl_paterno;
@@ -224,6 +229,9 @@ function solicitudCirculacionController($scope, $rootScope, $routeParams, $locat
               $scope.datos.PER_TRA_VIA = results[0].dtspsl_tipo_via; 
               $scope.datos.PER_TRA_NOMBRE_VIA = results[0].dtspsl_nombre_via;
               $scope.datos.PER_TRA_NRO_V = results[0].dtspsl_numero_casa;
+              $scope.datos.macroluis = 'asdfasdf';
+              
+              console.log($scope.datos);
               if (results[0].dtspsl_file_fotocopia_ci != "") {
                 $scope.datos.INF_CI_ANVERSO = CONFIG.APIURL + "/files/RC_CLI/"+results[0]._id+"/"+results[0].dtspsl_file_fotocopia_ci+"?app_name=todoangular";
               }
@@ -246,11 +254,12 @@ function solicitudCirculacionController($scope, $rootScope, $routeParams, $locat
     
       var tramites  = new tramitesMovilidad();
       tramites.idCiudadano = sIdCiudadano;
-      tramites.descripcion="MOVILIDAD PERMISOS TRANSITORIOS";
+      tramites.descripcion="MOVILIDAD PERMISOS EXCEPCIONALES";
       tramites.listaTramitesMovilidad(function(results){
         results = JSON.parse(results).success;
         $scope.tramites = results;
         $scope.tramitesUsuario = results;
+        console.log("$scope.tramitesCiudadano:::::",$scope.tramitesCiudadano);
         $scope.tablaTramites.reload();
       })
     };

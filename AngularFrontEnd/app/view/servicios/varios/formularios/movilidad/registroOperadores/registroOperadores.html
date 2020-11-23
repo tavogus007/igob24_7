@@ -1182,7 +1182,7 @@ function validaSuperficie(sup)
                             </div>
                             <div class="col-md-6">
                               <div class="form-group custom-upload">
-                                <input type="file" id="f01_upload{{data.resid}}" ng-disabled="desabilita" name="f01_upload{{data.resid}}" accept="image/*"  style="display: none;">
+                                <input type="file" id="f01_upload{{data.resid}}" ng-disabled="desabilita" name="f01_upload{{data.resid}}"  style="display: none;">
                                 <div class="input-group">
                                   <input id="txt_f01_upload{{data.resid}}" ng-disabled="true" ng-model = "fileArRequisitos['f01_upload'+data.resid].campo" name="txt_f01_upload{{data.resid}}" type="text" placeholder="{{data.resvalor}}" class="form-control input-lg"  required>
                                   <span class="input-group-btn">
@@ -1316,6 +1316,7 @@ function validaSuperficie(sup)
                                     <option value="">--Seleccione--</option>
                                     <option value="LA PAZ">LA PAZ</option>
                                     <option value="EL ALTO">EL ALTO</option>
+                                    <option value="OTRO">OTRO</option>
                                 </select>
                               </div>
                             </div>                                                    

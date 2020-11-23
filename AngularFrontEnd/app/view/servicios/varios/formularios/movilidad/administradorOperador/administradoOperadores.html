@@ -9,7 +9,6 @@
     <link href="../../libs/css/select2.min.css" rel="stylesheet" async />
     <script src="../../libs/js/select2.min.js" async></script>
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" /> 
-    <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
   </head>
 <style>
   #caja {
@@ -641,7 +640,7 @@
                           </form>
                         </div>
                         <div class="modal-footer">
-                          <button ng-click="adiModVehiculo(0,'I');" type="button" class="btn btn-primary" ng-show="botonV=='new'"><i class="fa fa-save"></i>Guardar</button>
+                          <button ng-click="crea_tramite_lotus(datos,'V');" type="button" class="btn btn-primary" ng-show="botonV=='new'"><i class="fa fa-save"></i>Guardar</button>
                         </div>
                       </div>
                     </div>
@@ -952,7 +951,7 @@
                           </form>
                         </div>
                         <div class="modal-footer">
-                          <button ng-click="adiModConductor(0,'I');" type="button" class="btn btn-primary"  ng-show="botonC=='new'"><i class="fa fa-save"></i>&nbsp;Guardar</button>
+                          <button ng-click="crea_tramite_lotus(datos,'C');" type="button" class="btn btn-primary"  ng-show="botonC=='new'"><i class="fa fa-save"></i>&nbsp;Guardar</button>
                         </div>
                       </div>
                     </div>

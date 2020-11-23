@@ -33,7 +33,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     opeHab.nroDoc = nroDocCiu;
     opeHab.idCiu = sIdCiudadano;
     opeHab.listaOperadoresRep(function(results){
-      results = JSON.parse(results).success.data; 
+      results = JSON.parse(results).success.data;
       $scope.lista = true;
       $scope.operadoresUsuario = results;
       $scope.tablaOperadores.reload();
@@ -78,6 +78,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       });*/
       $scope.operador = ope;
       $scope.registro = true;
+      $scope.datosOfiR = ope.oficinas; 
       $scope.datos.ope_id = ope.xope_id;
       $scope.datos.den_ope = ope.xope_denominacion;
       $scope.datos.tip_ope = ope.xope_tipo_operador;
@@ -87,7 +88,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       $scope.listaVeh();
       $scope.listaCond();
       $scope.getComboClaseMovilidad();
-      $scope.buscaOficinas();
       $.unblockUI();
     },200);
   }
@@ -97,9 +97,13 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     var veh = new listaVehiculo();
     veh.ope_id = $scope.datos.ope_id; 
     veh.lstVehiculo(function(data){
-      data = JSON.parse(data).success.data;
-      $scope.objVehiculos = data;
-      $scope.tablaVehiculo.reload();
+      if(JSON.parse(data).success!= null){
+        data = JSON.parse(data).success.data;
+        $scope.objVehiculos = data;
+        $scope.tablaVehiculo.reload();
+      }else{
+        swal("Error!", "Ocurrio un error, vuelva intentar por favor.", "error");
+      }
     })
   }
 
@@ -393,7 +397,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       if($scope.datos.RO_MOD_VALUE == 3 || $scope.datos.RO_MOD_VALUE == 4 || $scope.datos.RO_MOD_VALUE==5 || $scope.datos.RO_MOD_VALUE==6){
         var nroAs = $scope.datos.RO_ASI_VJ1;
       }
-      $scope.datos.tipoRegistro = 'vehiculo';
       var datosV = {
         RO_NOM_SUC : document.getElementById("RO_ID_SUC").options[document.getElementById("RO_ID_SUC").selectedIndex].text,
         RO_TIP_V   : $scope.datos.RO_TIP_V,
@@ -437,9 +440,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       datosVeh.opcion = opcion;
       datosVeh.vehiculoAbm(function(results){
         results = JSON.parse(results).success.data[0];
-        if(results.sp_abm_operador_vehiculo = 'Insertado'){
-          $scope.crea_tramite_lotus($scope.datos,'V');
-        }
         $scope.datos = {};
         $scope.datos.ope_id = $scope.operador.xope_id;
         $scope.datos.den_ope = $scope.operador.xope_denominacion;
@@ -452,14 +452,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     else{
       swal("","Datos obligatorios, verifique los datos del formulario","warning");
     }
-  }
-
-  $scope.buscaOficinas = function(){
-    var ofic = new buscaOficinas();
-    ofic.idope = $scope.datos.ope_id;
-    ofic.buscaOficinasOperador(function(results){
-      $scope.datosOfiR = JSON.parse(results).success.data;
-    })
   }
 
   $scope.validaModelo = function (campo){
@@ -681,9 +673,13 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     var cond = new listaConductor();
     cond.ope_id = $scope.datos.ope_id; 
     cond.lstConductor(function(data){
-      data = JSON.parse(data).success.data;
-      $scope.objConductores = data;
-      $scope.tablaConductor.reload();
+      if(JSON.parse(data).success!= null){
+        data = JSON.parse(data).success.data;
+        $scope.objConductores = data;
+        $scope.tablaConductor.reload();
+      }else{
+        swal("Error!", "Ocurrio un error, vuelva intentar por favor.", "error");
+      }
     })
   }
 
@@ -803,7 +799,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
           $scope.datos.nom_suc = nom_suc;
         }
       });
-      $scope.datos.tipoRegistro = 'conductor';
       var dataC = {
         "RO_NOM_SUC" : nom_suc,
         "RO_EXP_C" : $scope.datos.RO_EXP_C,
@@ -833,9 +828,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       datosCond.opcion = opc;
       datosCond.conductorAbm (function(data){
         data = JSON.parse(data).success.data[0];
-        if(data.sp_abm_operador_conductor == 'Insertado'){
-          $scope.crea_tramite_lotus($scope.datos,'C');
-        }
         $scope.datos = {};
         $scope.datos.ope_id = $scope.operador.xope_id;
         $scope.datos.den_ope = $scope.operador.xope_denominacion;
@@ -968,6 +960,11 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
 
 //*********************FIN OBSERVACIONES*********************
   $scope.crea_tramite_lotus = function (datos,tipo) {
+    if(tipo=='V'){
+      $scope.datos.tipoRegistro = 'vehiculo';
+    }else{
+      $scope.datos.tipoRegistro = 'conductor';
+    }
     $.blockUI({ css: { 
         border: 'none', 
         padding: '10px', 
@@ -988,24 +985,40 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       var nroTramiteEnviado = sessionService.get('NROTRAMITE');
       tramite.tramite_linea(function(results){ 
         results = JSON.parse(results);
+        console.log(results,987654321);
         if (results !=null) {
-          var nrot = results.success.data[0].crea_tramite_linea;
-          swal({
-            title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
-            text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
-            html: true,
-            type: 'success',
-            //timer: 5000,
-          });
-          if(tipo == 'V')
-          {
-            $scope.listaVeh();
-          }
-          if(tipo == 'C')
-          {
-            $scope.listaCond();
+          if(results.success != null){
+            var nrot = results.success.data[0].crea_tramite_linea;
+            swal({
+              title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
+              text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
+              html: true,
+              type: 'success',
+              //timer: 5000,
+            });
+            if(tipo == 'V')
+            {
+              $scope.adiModVehiculo(0,'I');
+              $scope.listaVeh();
+            }
+            if(tipo == 'C')
+            {
+              $scope.adiModConductor(0,'I');
+              $scope.listaCond();
+            }
+          }else{        
+            if(tipo == 'V')
+            {
+              $('#vehiculo').modal('hide');
+            }
+            if(tipo == 'C')
+            {
+              $('#modalConductor').modal('hide');
+            }
+            swal("Error!", "Ocurrio un error, vuelva a intentarlo", "error"); 
           }
         }else{
+          alert(4555);
           console.log('Se envio el tramite');
         }
         $.unblockUI();

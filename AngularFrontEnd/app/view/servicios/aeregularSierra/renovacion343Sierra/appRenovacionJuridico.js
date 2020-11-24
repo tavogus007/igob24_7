@@ -61,7 +61,6 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             $scope.datos.rdTipoTramite = "RENOVACION";
             var tipoPersona     =   sessionService.get('TIPO_PERSONA');
             var idContribuyente =   dataGenesis.contribuyente_id;
-            var dataJur = '{"id_contribuyente":'+idContribuyente+',"tipo":"J"}';
             if(tipoPersona == "NATURAL"){
                 tipoPersona = "N";
             }else{
@@ -69,7 +68,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
             }
             var lstActEco = new reglasnegocioSierra();
             lstActEco.identificador = 'VALLE_PRUEBA-SGEN-3150';
-            lstActEco.parametros = dataJur;
+            lstActEco.parametros = '{"id_contribuyente":'+idContribuyente+'}';
             lstActEco.llamarregla_sierra(function(responseActEco){
                 if (responseActEco == '"{}"' || responseActEco == '"[{}]"' || responseActEco == '"[{ }]"') {
                     swal('', "El contribuyente no cuenta con Actividades Económicas.", 'warning');
@@ -245,314 +244,320 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
         $scope.publicid = '';
          var codhojaruta = "";
         var datosLotus = "";
-        $scope.datosAnterioresJuridico(tramite.idactividad);
         $scope.divDeudasPendientes = false;
         $scope.docPubNuevo = [];
         $scope.datos.docAdPublicidad = [];
         $scope.datos.licenciamulAnterior = [];
         $scope.datos.licenciam = [];
-        if(aniotram <= $scope.anioserver){
-            //if(tramite.IdActividad){
-            $scope.idActividiadEconomicaActual  =   tramite.idactividad;
-            $scope.datos.f01_id_actividad_economica = tramite.idactividad;
-            //}
-            $scope.sIdAeGrilla  =   tramite.idactividad;
-            var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-            if(tipoPersona == "JURIDICO"){
-                tipoPersona = "J";
-            }
-            var paramidAE = '{"id_actividad_economica":'+tramite.idactividad+'}';
-            var envioIdAe = new reglasnegocioSierra();
-            envioIdAe.identificador = 'VALLE_PRUEBA-SGEN-3145';
-            envioIdAe.parametros = paramidAE;
-            envioIdAe.llamarregla_sierra(function(responsedatosAE){
-                var respuestaDatos = JSON.parse(responsedatosAE);
-                var respuestaDatosPrimerNivel = respuestaDatos[0].sp_obtener_actividad_economica;
-                var datosActividadEconomica = JSON.parse(respuestaDatosPrimerNivel);
-                console.log('reccccccc     ',datosActividadEconomica);
-            //if (JSON.stringify(datosActividadEconomica.datosAE[0]) == '{}' || JSON.stringify(datosActividadEconomica.datosAE[0]) == '[{}]') {
-                if (datosActividadEconomica.datosAE == null) {
-                    swal('', "Datos no Encontrados !!!", 'warning');
-                } else {
-                    var datosAESdoNivel = datosActividadEconomica.datosAE;
-                    codhojaruta = datosAESdoNivel.hojaruta;
-                    var datosPublicidad = datosActividadEconomica.datosVIAE;
-                    console.log('pubbbbbbbb    ',datosPublicidad);
-                    $scope.datos.f01_nro_orden = datosAESdoNivel.numeroorden;
-                    $scope.idContribuyenteAEActual  =    datosAESdoNivel.idContribuyente;
-                    $scope.datos.f01_id_contribuyente = datosAESdoNivel.idContribuyente;
-                    $scope.datos.f01_id_contribuyente_temp = datosAESdoNivel.idContribuyente_ant;
-                    $scope.datos.f01_id_representante_legal_temp = datosAESdoNivel.idRepresentanteLegal_ant;
-                    $scope.datos.f01_id_actividad_economica_temp = datosAESdoNivel.idactividadeconomica_ant;
-                    $scope.datosRepresentanteLegal();
-                    tipoPersona = "J";
-                    var smacro = "MACRODISTRITO";
-                    var szona = "DISTRITO";
-                        //DATOS DE LA ACTIVIDAD ECONÓMICA
-                    //smacrodes = smacro + " " + datosAESdoNivel.IdMacrodistrito + " " + datosAESdoNivel.Macrodistrito;
-                        //szona       =   szona  +   " " +    response[0].idDistrito_actividadEconomica + " - " + response[0].zona;
-                    $scope.datos.f01_denominacion = datosAESdoNivel.denominacion;
-                    var hinicio = '';
-                    var hfinal = '';
-                    if (datosAESdoNivel.horarioatencion == undefined || datosAESdoNivel.horarioatencion == 'undefined' || datosAESdoNivel.horarioatencion == null) {
-                    } else{
-                        hinicio     =   ((typeof(datosAESdoNivel.horarioatencion) == 'undefined' || datosAESdoNivel.horarioatencion == null) ? ""   : datosAESdoNivel.horarioatencion.toUpperCase());
-                        hfinal      =   ((typeof(datosAESdoNivel.horarioatencion) == 'undefined' || datosAESdoNivel.horarioatencion == null) ? ""   : datosAESdoNivel.horarioatencion.toUpperCase());
-                        hinicio     =   hinicio.split('-')[0];
-                        hfinal      =   hfinal.split('-')[1];
-                    };
-                    if(datosAESdoNivel.idmacrodistrito == 2 || datosAESdoNivel.idmacrodistrito == '2'){
-                        smacrodes = smacro + " " + datosAESdoNivel.idmacrodistrito + " MAXIMILIANO PAREDES";
+        if (tramite.estado == 'baja' ) {
+            swal('', "Actividad Económica dada de BAJA !!!", 'warning');
+        } else{
+            if (tramite.estado == 'pre_baja') {
+                swal('', "Actividad Económica en PRE BAJA !!!", 'warning');
+            } else{
+                if(aniotram <= $scope.anioserver){
+                    $scope.datosAnterioresJuridico(tramite.idactividad);
+                    $scope.idActividiadEconomicaActual = tramite.idactividad;
+                    $scope.datos.f01_id_actividad_economica = tramite.idactividad;
+                    $scope.sIdAeGrilla = tramite.idactividad;
+                    var tipoPersona = sessionService.get('TIPO_PERSONA');
+                    if(tipoPersona == "JURIDICO"){
+                        tipoPersona = "J";
                     }
-                    else{
-                        smacrodes = datosAESdoNivel.macrodistrito;
-                    }
-                    $scope.getEstablecimiento(datosAESdoNivel.establecimiento);
-                    if(datosAESdoNivel.tipoactividad =='MA' || datosAESdoNivel.tipoactividad =='MATRI'){
-                        $scope.datos.f01_tip_act_dec = 'MATRIZ';
-                        $scope.datos.f01_tip_act = 'MA';
-                    }
-                    if(datosAESdoNivel.tipoactividad =='SU' || datosAESdoNivel.tipoactividad =='SUCUR'){
-                        $scope.datos.f01_tip_act_dec = 'SUCURSAL';
-                        $scope.datos.f01_tip_act = 'SU';
-                    }
-                    $scope.datos.f01_tip_act = datosAESdoNivel.tipoactividad;
-                    $scope.datos.f01_tipo_sociedad = datosAESdoNivel.RepresentanteLegal_tipoSociedad;
-                    $scope.datos.f01_tipo_respaldo = datosAESdoNivel.RepresentanteLegal_docRespaldo;
-                        /*DATOS DE LA ACTIVIDAD*/
-                    $scope.datos.f01_num_pmc = datosAESdoNivel.padrone;
-                    $scope.datos.f01_raz_soc = datosAESdoNivel.denominacion.replace(/"/,"");
-                    $scope.datos.f01_sup = datosAESdoNivel.superficie;
-                    $scope.datos.INT_AC_CAPACIDAD   =   datosAESdoNivel.capacidad;
-                    if($scope.datos.f01_sup != ''){
-                        $scope.calcularCapacidadAuto($scope.datos.f01_sup);
-                    }
-                    $scope.datos.f01_de_hor = hinicio;
-                    $scope.datos.f01_a_hor = hfinal;
-                    $scope.datos.f01_nro_actividad = datosAESdoNivel.numeroactividad;
-                    $scope.datos.f01_productosElaborados = datosAESdoNivel.productoselaborados.replace(/"/,"");
-                    $scope.datos.f01_actividadesSecundarias = datosAESdoNivel.actividadessecundarias;
-                        /*TIPO LICENCIA*/
-                    $scope.datos.f01_tipo_lic_ant = datosAESdoNivel.licencia_descripcion;
-                    $scope.datos.f01_categoria_agrupada_ant = datosAESdoNivel.categoria_descripcion;
-                    $scope.datos.f01_categoria_descrip_ant = datosAESdoNivel.actividad_desarrollada343;
-                    //$scope.datos.f01_categoria_agrupada = datosAESdoNivel.idactividaddesarrollada;
-                    $scope.obtenerActDes(datosAESdoNivel.idcategoria);
-                    //$scope.datos.f01_tipo_lic = response[0].idTipoLicencia;
-                    //$scope.datos.f01_tipo_lic_descrip = response[0].descripcion;
-                        /*Ubicación de Actividad Económica*/
-                    //$scope.actulizarIdDistrito();
-                    $scope.distritoZonas(datosAESdoNivel.idmacrodistrito);
-                    $scope.datos.f01_macro_act_descrip = smacrodes;
-                    $scope.datos.f01_dist_act = datosAESdoNivel.iddistrito_actividadeconomica;
-                    $scope.datos.INT_AC_ID_ZONA = datosAESdoNivel.id_zona_actividadeconomica;
-                    $scope.datos.f01_zona_act_descrip = datosAESdoNivel.zona;
-                    $scope.datos.f01_tip_via_act = datosAESdoNivel.tipovia;
-                    //$scope.datos.f01_idCodigoZona = datosAESdoNivel.idcodigozona;
-                    $scope.datos.INT_AC_MACRO_ID = datosAESdoNivel.idmacrodistrito;
-                    $scope.datos.f01_macro_act = datosAESdoNivel.idmacrodistrito;
-                    $scope.datos.f01_zona_act = datosAESdoNivel.id_zona_actividadeconomica;
-                    if (datosAESdoNivel.via == 'undefined' || datosAESdoNivel.via == undefined || datosAESdoNivel.via == null || datosAESdoNivel.via == null == '') {
-                        $scope.datos.f01_num_act = datosAESdoNivel.nueva_via;
-                    } else{
-                        $scope.datos.f01_num_act = datosAESdoNivel.via;
-                    };
-                    $scope.datos.f01_idCodigoZona = datosAESdoNivel.idcodigozona;
-                    var listarVias = [$scope.cargarNombVia($scope.datos.f01_tip_via_act, $scope.datos.f01_zona_act)];
-                        $q.all(listarVias).then(function (resp) {
-                        $scope.datos.f01_num_act_id = parseInt(datosAESdoNivel.idviaae);
-                        $scope.cargarNombViaTxt($scope.datos.f01_num_act);
-                        if (datosAESdoNivel.idviaae == 0 || datosAESdoNivel.idviaae == '0')
-                            $scope.datos.f01_num_act_n = datosAESdoNivel.nueva_via.replace(/"/,"");
-                    });
-                    $scope.datos.f01_num_act1 = datosAESdoNivel.numero.replace(/"/,"");
-                    if(datosAESdoNivel.edificio == 'undefined' || datosAESdoNivel.bloque == 'undefined' || datosAESdoNivel.piso == 'undefined' || datosAESdoNivel.departamento == 'undefined' || datosAESdoNivel.telefono == 'undefined'){
-                        datosAESdoNivel.edificio = '';
-                        datosAESdoNivel.bloque = '';
-                        datosAESdoNivel.piso = '';
-                        datosAESdoNivel.departamento = '';
-                        datosAESdoNivel.telefono = '';
-                    }
-                    $scope.datos.f01_edificio_act = datosAESdoNivel.edificio;
-                    $scope.datos.f01_bloque_act = datosAESdoNivel.bloque;
-                    $scope.datos.f01_piso_act = datosAESdoNivel.piso;
-                    $scope.datos.f01_dpto_of_loc = datosAESdoNivel.departamento;
-                    $scope.datos.f01_tel_act1 = datosAESdoNivel.telefono;
-                    $scope.datos.f01_casilla = datosAESdoNivel.direcciondetalladaae.replace(/"/,"");
-                    $scope.datos.f01_factor = datosAESdoNivel.tipotrayecto;
-                    $scope.datos.f01_vencimientoLicencia = datosAESdoNivel.fechavencimientolicencia;
-                    //INT_TRAMITE_RENOVA
-                    $scope.datos.INT_TRAMITE_RENOVA = tramite.idactividad;
-                    if (codhojaruta.substring(0,6) == 'EMI-AE' || codhojaruta.substring(0,6) == 'REN-LF' || codhojaruta.substring(0,6) == 'AER-EL' || codhojaruta.substring(0,7) == 'MOD_MOD' || codhojaruta.substring(0,8) == 'LICEN-AE' || codhojaruta.substring(0,5) == 'EM-LF' || codhojaruta.substring(0,5) == 'RE-LF') {  
-                        var dataLotus = $scope.getDatosLotus(datosAESdoNivel.idactividadeconomica,codhojaruta);
-                        dataLotus.then(function(respuestaLotus){
-                            datosLotus = respuestaLotus.success.data[0].datos;
-                            if ((datosLotus.INT_AC_latitud == 'undefined' && datosLotus.INT_AC_longitud == 'undefined') || (datosLotus.INT_AC_latitud == null && datosLotus.INT_AC_longitud == null)) {
-                                $scope.croquis = true;
-                                $scope.datos.INT_AC_latitud = '';
-                                $scope.datos.INT_AC_longitud = '';
-                                //$scope.open_map_ae();
+                    var paramidAE = '{"id_actividad_economica":'+tramite.idactividad+'}';
+                    var envioIdAe = new reglasnegocioSierra();
+                    envioIdAe.identificador = 'VALLE_PRUEBA-SGEN-3145';
+                    envioIdAe.parametros = paramidAE;
+                    envioIdAe.llamarregla_sierra(function(responsedatosAE){
+                        var respuestaDatos = JSON.parse(responsedatosAE);
+                        var respuestaDatosPrimerNivel = respuestaDatos[0].sp_obtener_actividad_economica;
+                        var datosActividadEconomica = JSON.parse(respuestaDatosPrimerNivel);
+                        console.log('reccccccc     ',datosActividadEconomica);
+                    //if (JSON.stringify(datosActividadEconomica.datosAE[0]) == '{}' || JSON.stringify(datosActividadEconomica.datosAE[0]) == '[{}]') {
+                        if (datosActividadEconomica.datosAE == null) {
+                            swal('', "Datos no Encontrados !!!", 'warning');
+                        } else {
+                            var datosAESdoNivel = datosActividadEconomica.datosAE;
+                            codhojaruta = datosAESdoNivel.hojaruta;
+                            var datosPublicidad = datosActividadEconomica.datosVIAE;
+                            console.log('pubbbbbbbb    ',datosPublicidad);
+                            $scope.datos.f01_nro_orden = datosAESdoNivel.numeroorden;
+                            $scope.idContribuyenteAEActual  =    datosAESdoNivel.idContribuyente;
+                            $scope.datos.f01_id_contribuyente = datosAESdoNivel.idContribuyente;
+                            $scope.datos.f01_id_contribuyente_temp = datosAESdoNivel.idContribuyente_ant;
+                            $scope.datos.f01_id_representante_legal_temp = datosAESdoNivel.idRepresentanteLegal_ant;
+                            $scope.datos.f01_id_actividad_economica_temp = datosAESdoNivel.idactividadeconomica_ant;
+                            $scope.datosRepresentanteLegal();
+                            tipoPersona = "J";
+                            var smacro = "MACRODISTRITO";
+                            var szona = "DISTRITO";
+                                //DATOS DE LA ACTIVIDAD ECONÓMICA
+                            //smacrodes = smacro + " " + datosAESdoNivel.IdMacrodistrito + " " + datosAESdoNivel.Macrodistrito;
+                                //szona       =   szona  +   " " +    response[0].idDistrito_actividadEconomica + " - " + response[0].zona;
+                            $scope.datos.f01_denominacion = datosAESdoNivel.denominacion;
+                            var hinicio = '';
+                            var hfinal = '';
+                            if (datosAESdoNivel.horarioatencion == undefined || datosAESdoNivel.horarioatencion == 'undefined' || datosAESdoNivel.horarioatencion == null) {
                             } else{
-                                $scope.croquis = null;
-                                $scope.datos.INT_AC_latitud = datosLotus.INT_AC_latitud;
-                                $scope.datos.INT_AC_longitud = datosLotus.INT_AC_longitud;
+                                hinicio     =   ((typeof(datosAESdoNivel.horarioatencion) == 'undefined' || datosAESdoNivel.horarioatencion == null) ? ""   : datosAESdoNivel.horarioatencion.toUpperCase());
+                                hfinal      =   ((typeof(datosAESdoNivel.horarioatencion) == 'undefined' || datosAESdoNivel.horarioatencion == null) ? ""   : datosAESdoNivel.horarioatencion.toUpperCase());
+                                hinicio     =   hinicio.split('-')[0];
+                                hfinal      =   hfinal.split('-')[1];
                             };
-                            $scope.open_mapa_ae($scope.datos.INT_AC_latitud, $scope.datos.INT_AC_longitud);
-                            if (datosLotus.f01_tipo_lic == '18' || datosLotus.f01_tipo_lic == 18) {
-                                $rootScope.mostrarzonasegura = true;
-                                if (datosLotus.f01_zona_segura == 'SI')
-                                    $scope.datos.chkzonasegura = 'ZONASEGURA';
-                                else
-                                    $scope.datos.chkzonasegura = 'NOZONASEGURA';
+                            if(datosAESdoNivel.idmacrodistrito == 2 || datosAESdoNivel.idmacrodistrito == '2'){
+                                smacrodes = smacro + " " + datosAESdoNivel.idmacrodistrito + " MAXIMILIANO PAREDES";
+                            }
+                            else{
+                                smacrodes = datosAESdoNivel.macrodistrito;
+                            }
+                            $scope.getEstablecimiento(datosAESdoNivel.establecimiento);
+                            if(datosAESdoNivel.tipoactividad =='MA' || datosAESdoNivel.tipoactividad =='MATRI'){
+                                $scope.datos.f01_tip_act_dec = 'MATRIZ';
+                                $scope.datos.f01_tip_act = 'MA';
+                            }
+                            if(datosAESdoNivel.tipoactividad =='SU' || datosAESdoNivel.tipoactividad =='SUCUR'){
+                                $scope.datos.f01_tip_act_dec = 'SUCURSAL';
+                                $scope.datos.f01_tip_act = 'SU';
+                            }
+                            $scope.datos.f01_tip_act = datosAESdoNivel.tipoactividad;
+                            $scope.datos.f01_tipo_sociedad = datosAESdoNivel.RepresentanteLegal_tipoSociedad;
+                            $scope.datos.f01_tipo_respaldo = datosAESdoNivel.RepresentanteLegal_docRespaldo;
+                                /*DATOS DE LA ACTIVIDAD*/
+                            $scope.datos.f01_num_pmc = datosAESdoNivel.padrone;
+                            $scope.datos.f01_raz_soc = datosAESdoNivel.denominacion.replace(/"/,"");
+                            $scope.datos.f01_sup = datosAESdoNivel.superficie;
+                            $scope.datos.INT_AC_CAPACIDAD   =   datosAESdoNivel.capacidad;
+                            if($scope.datos.f01_sup != ''){
+                                $scope.calcularCapacidadAuto($scope.datos.f01_sup);
+                            }
+                            $scope.datos.f01_de_hor = hinicio;
+                            $scope.datos.f01_a_hor = hfinal;
+                            $scope.datos.f01_nro_actividad = datosAESdoNivel.numeroactividad;
+                            $scope.datos.f01_productosElaborados = datosAESdoNivel.productoselaborados.replace(/"/,"");
+                            $scope.datos.f01_actividadesSecundarias = datosAESdoNivel.actividadessecundarias;
+                                /*TIPO LICENCIA*/
+                            $scope.datos.f01_tipo_lic_ant = datosAESdoNivel.licencia_descripcion;
+                            $scope.datos.f01_categoria_agrupada_ant = datosAESdoNivel.categoria_descripcion;
+                            $scope.datos.f01_categoria_descrip_ant = datosAESdoNivel.actividad_desarrollada343;
+                            //$scope.datos.f01_categoria_agrupada = datosAESdoNivel.idactividaddesarrollada;
+                            $scope.obtenerActDes(datosAESdoNivel.idcategoria);
+                            //$scope.datos.f01_tipo_lic = response[0].idTipoLicencia;
+                            //$scope.datos.f01_tipo_lic_descrip = response[0].descripcion;
+                                /*Ubicación de Actividad Económica*/
+                            //$scope.actulizarIdDistrito();
+                            $scope.distritoZonas(datosAESdoNivel.idmacrodistrito);
+                            $scope.datos.f01_macro_act_descrip = smacrodes;
+                            $scope.datos.f01_dist_act = datosAESdoNivel.iddistrito_actividadeconomica;
+                            $scope.datos.INT_AC_ID_ZONA = datosAESdoNivel.id_zona_actividadeconomica;
+                            $scope.datos.f01_zona_act_descrip = datosAESdoNivel.zona;
+                            $scope.datos.f01_tip_via_act = datosAESdoNivel.tipovia;
+                            //$scope.datos.f01_idCodigoZona = datosAESdoNivel.idcodigozona;
+                            $scope.datos.INT_AC_MACRO_ID = datosAESdoNivel.idmacrodistrito;
+                            $scope.datos.f01_macro_act = datosAESdoNivel.idmacrodistrito;
+                            $scope.datos.f01_zona_act = datosAESdoNivel.id_zona_actividadeconomica;
+                            if (datosAESdoNivel.via == 'undefined' || datosAESdoNivel.via == undefined || datosAESdoNivel.via == null || datosAESdoNivel.via == null == '') {
+                                $scope.datos.f01_num_act = datosAESdoNivel.nueva_via;
                             } else{
-                                $scope.datos.chkzonasegura = null;
-                                $rootScope.mostrarzonasegura = false;
+                                $scope.datos.f01_num_act = datosAESdoNivel.via;
                             };
-                            if (datosLotus.f01_tipo_lic == '32' || datosLotus.f01_tipo_lic == 32) {
-                                $scope.sinmultiservicios = false;
-                                $scope.conmultiservicios = true;
-                                for (var i = 0; i < datosAESdoNivel.id_licencia.length; i++) {
-                                    $scope.datos.licenciamulAnterior.push({
-                                        f01_tipo_licmid: datosAESdoNivel.id_licencia[i].id,
-                                        f01_tipo_licmdescrip: datosAESdoNivel.licencias_descripcion[i].descripcion,
-                                        f01_act_desarrolladamid: datosAESdoNivel.idcategoria[i].id,
-                                        f01_categoria_agrupada: datosAESdoNivel.idactividad_desarrollada343[i].id,
-                                        f01_cat_agrupadamdescrip: datosAESdoNivel.categoria_descripcion[i].descripcion,
-                                        f01_act_desarrolladamdescrip: datosAESdoNivel.actividad_desarrollada343[i].descripcion,
-                                    });
-                                };
-                                var swma = 0;
-                                for (var k = 0; k < $scope.datos.licenciamulAnterior.length && swma == 0; k++) {
-                                    if($scope.datos.licenciamulAnterior[k].f01_tipo_licmid == '12' || $scope.datos.licenciamulAnterior[k].f01_tipo_licmid == 12)
-                                        swma = 1;
-                                    else
-                                        swma = 0;
-                                };
-                                if(swma == 1){
-                                    $rootScope.mostrarzonasegura = true;
-                                    if (datosLotus.f01_zona_segura == 'SI')
-                                        $scope.datos.chkzonasegura = 'ZONASEGURA';
-                                    else
-                                        $scope.datos.chkzonasegura = 'NOZONASEGURA';
-                                }else{
-                                    $rootScope.mostrarzonasegura = false;
-                                }
-                            } else{
-                                $scope.sinmultiservicios = true;
-                                $scope.conmultiservicios = false;
-                            };
-                            if (datosLotus.File_Adjunto == 'undefined' || datosLotus.File_Adjunto == null) {
-                                $scope.reqdoc = true;
-                                $scope.docsAdjuntoAntiguo = [];
-                                $scope.datos.datosdocanterior = [];
-                            } else{
-                                $scope.reqdoc = null;
-                                $scope.docsAdjuntoAntiguo = datosLotus.File_Adjunto;
-                                $scope.datos.datosdocanterior = new Object();
-                                for (var i = 0; i < $scope.docsAdjuntoAntiguo.length; i++) {
-                                    if ($scope.docsAdjuntoAntiguo[i] == null || $scope.docsAdjuntoAntiguo[i] == 'undefined') {
+                            $scope.datos.f01_idCodigoZona = datosAESdoNivel.idcodigozona;
+                            var listarVias = [$scope.cargarNombVia($scope.datos.f01_tip_via_act, $scope.datos.f01_zona_act)];
+                                $q.all(listarVias).then(function (resp) {
+                                $scope.datos.f01_num_act_id = parseInt(datosAESdoNivel.idviaae);
+                                $scope.cargarNombViaTxt($scope.datos.f01_num_act);
+                                if (datosAESdoNivel.idviaae == 0 || datosAESdoNivel.idviaae == '0')
+                                    $scope.datos.f01_num_act_n = datosAESdoNivel.nueva_via.replace(/"/,"");
+                            });
+                            $scope.datos.f01_num_act1 = datosAESdoNivel.numero.replace(/"/,"");
+                            if(datosAESdoNivel.edificio == 'undefined' || datosAESdoNivel.bloque == 'undefined' || datosAESdoNivel.piso == 'undefined' || datosAESdoNivel.departamento == 'undefined' || datosAESdoNivel.telefono == 'undefined'){
+                                datosAESdoNivel.edificio = '';
+                                datosAESdoNivel.bloque = '';
+                                datosAESdoNivel.piso = '';
+                                datosAESdoNivel.departamento = '';
+                                datosAESdoNivel.telefono = '';
+                            }
+                            $scope.datos.f01_edificio_act = datosAESdoNivel.edificio;
+                            $scope.datos.f01_bloque_act = datosAESdoNivel.bloque;
+                            $scope.datos.f01_piso_act = datosAESdoNivel.piso;
+                            $scope.datos.f01_dpto_of_loc = datosAESdoNivel.departamento;
+                            $scope.datos.f01_tel_act1 = datosAESdoNivel.telefono;
+                            $scope.datos.f01_casilla = datosAESdoNivel.direcciondetalladaae.replace(/"/,"");
+                            $scope.datos.f01_factor = datosAESdoNivel.tipotrayecto;
+                            $scope.datos.f01_vencimientoLicencia = datosAESdoNivel.fechavencimientolicencia;
+                            //INT_TRAMITE_RENOVA
+                            $scope.datos.INT_TRAMITE_RENOVA = tramite.idactividad;
+                            if (codhojaruta.substring(0,6) == 'EMI-AE' || codhojaruta.substring(0,6) == 'REN-LF' || codhojaruta.substring(0,6) == 'AER-EL' || codhojaruta.substring(0,7) == 'MOD_MOD' || codhojaruta.substring(0,8) == 'LICEN-AE' || codhojaruta.substring(0,5) == 'EM-LF' || codhojaruta.substring(0,5) == 'RE-LF') {  
+                                var dataLotus = $scope.getDatosLotus(datosAESdoNivel.idactividadeconomica,codhojaruta);
+                                dataLotus.then(function(respuestaLotus){
+                                    datosLotus = respuestaLotus.success.data[0].datos;
+                                    if ((datosLotus.INT_AC_latitud == 'undefined' && datosLotus.INT_AC_longitud == 'undefined') || (datosLotus.INT_AC_latitud == null && datosLotus.INT_AC_longitud == null)) {
+                                        $scope.croquis = true;
+                                        $scope.datos.INT_AC_latitud = '';
+                                        $scope.datos.INT_AC_longitud = '';
+                                        //$scope.open_map_ae();
                                     } else{
-                                        var narchivo = $scope.docsAdjuntoAntiguo[i].url.split('?');
-                                        var achinom = narchivo[0].split('/');
-                                        var dimar = achinom.length;
-                                        var datosdocant = {
-                                            "titulo": $scope.docsAdjuntoAntiguo[i].nombre,
-                                            "nombreAcrh": achinom[dimar-1],
-                                            "url": $scope.docsAdjuntoAntiguo[i].url
+                                        $scope.croquis = null;
+                                        $scope.datos.INT_AC_latitud = datosLotus.INT_AC_latitud;
+                                        $scope.datos.INT_AC_longitud = datosLotus.INT_AC_longitud;
+                                    };
+                                    $scope.open_mapa_ae($scope.datos.INT_AC_latitud, $scope.datos.INT_AC_longitud);
+                                    if (datosLotus.f01_tipo_lic == '18' || datosLotus.f01_tipo_lic == 18) {
+                                        $rootScope.mostrarzonasegura = true;
+                                        if (datosLotus.f01_zona_segura == 'SI')
+                                            $scope.datos.chkzonasegura = 'ZONASEGURA';
+                                        else
+                                            $scope.datos.chkzonasegura = 'NOZONASEGURA';
+                                    } else{
+                                        $scope.datos.chkzonasegura = null;
+                                        $rootScope.mostrarzonasegura = false;
+                                    };
+                                    if (datosLotus.f01_tipo_lic == '32' || datosLotus.f01_tipo_lic == 32) {
+                                        $scope.sinmultiservicios = false;
+                                        $scope.conmultiservicios = true;
+                                        for (var i = 0; i < datosAESdoNivel.id_licencia.length; i++) {
+                                            $scope.datos.licenciamulAnterior.push({
+                                                f01_tipo_licmid: datosAESdoNivel.id_licencia[i].id,
+                                                f01_tipo_licmdescrip: datosAESdoNivel.licencias_descripcion[i].descripcion,
+                                                f01_act_desarrolladamid: datosAESdoNivel.idcategoria[i].id,
+                                                f01_categoria_agrupada: datosAESdoNivel.idactividad_desarrollada343[i].id,
+                                                f01_cat_agrupadamdescrip: datosAESdoNivel.categoria_descripcion[i].descripcion,
+                                                f01_act_desarrolladamdescrip: datosAESdoNivel.actividad_desarrollada343[i].descripcion,
+                                            });
                                         };
-                                        $scope.datos.datosdocanterior[i] = datosdocant;
+                                        var swma = 0;
+                                        for (var k = 0; k < $scope.datos.licenciamulAnterior.length && swma == 0; k++) {
+                                            if($scope.datos.licenciamulAnterior[k].f01_tipo_licmid == '12' || $scope.datos.licenciamulAnterior[k].f01_tipo_licmid == 12)
+                                                swma = 1;
+                                            else
+                                                swma = 0;
+                                        };
+                                        if(swma == 1){
+                                            $rootScope.mostrarzonasegura = true;
+                                            if (datosLotus.f01_zona_segura == 'SI')
+                                                $scope.datos.chkzonasegura = 'ZONASEGURA';
+                                            else
+                                                $scope.datos.chkzonasegura = 'NOZONASEGURA';
+                                        }else{
+                                            $rootScope.mostrarzonasegura = false;
+                                        }
+                                    } else{
+                                        $scope.sinmultiservicios = true;
+                                        $scope.conmultiservicios = false;
+                                    };
+                                    if (datosLotus.File_Adjunto == 'undefined' || datosLotus.File_Adjunto == null) {
+                                        $scope.reqdoc = true;
+                                        $scope.docsAdjuntoAntiguo = [];
+                                        $scope.datos.datosdocanterior = [];
+                                    } else{
+                                        $scope.reqdoc = null;
+                                        $scope.docsAdjuntoAntiguo = datosLotus.File_Adjunto;
+                                        $scope.datos.datosdocanterior = new Object();
+                                        for (var i = 0; i < $scope.docsAdjuntoAntiguo.length; i++) {
+                                            if ($scope.docsAdjuntoAntiguo[i] == null || $scope.docsAdjuntoAntiguo[i] == 'undefined') {
+                                            } else{
+                                                var narchivo = $scope.docsAdjuntoAntiguo[i].url.split('?');
+                                                var achinom = narchivo[0].split('/');
+                                                var dimar = achinom.length;
+                                                var datosdocant = {
+                                                    "titulo": $scope.docsAdjuntoAntiguo[i].nombre,
+                                                    "nombreAcrh": achinom[dimar-1],
+                                                    "url": $scope.docsAdjuntoAntiguo[i].url
+                                                };
+                                                $scope.datos.datosdocanterior[i] = datosdocant;
+                                            };
+                                        };
+                                    };
+                                });
+                            }
+                            /*DATOS PUBLICIDAD*/
+                            $scope.botones = "mostrar";
+                            $scope.desabilitado = false;
+                            if (JSON.stringify(datosPublicidad[0]) == '{}' || JSON.stringify(datosPublicidad[0]) == '[{}]' || JSON.stringify(datosPublicidad) == '[]') {
+                                $scope.datos.rdTipoTramite1 = 'RENOVACION';
+                                $scope.datos.swpublicidad = 'SP';
+                                $scope.licenciaToogle4 = false;
+                                $scope.pubMensaje = true;
+                            }else{
+                                $scope.datos.rdTipoTramite1 = 'NUEVO';
+                                $scope.listpub = [];
+                                $scope.pubMensaje = false;
+                                for (var i = 0; i < datosPublicidad.length; i++) {
+                                    var lstpublicidad = new Object();
+                                    lstpublicidad.idPublicidad = datosPublicidad[i].idpublicidad;
+                                    lstpublicidad.idPublicidad_temp = datosPublicidad[i].idpublicidad_ant;
+                                    lstpublicidad.INT_NRO_CARA = datosPublicidad[i].cara;
+                                    lstpublicidad.INT_SUP = datosPublicidad[i].superficie;
+                                    lstpublicidad.idcarac = datosPublicidad[i].idtipoletrero;
+                                    lstpublicidad.INT_TIPO_LETRE = datosPublicidad[i].descripciontipoletrero;
+                                    lstpublicidad.id_cara = datosPublicidad[i].idcaracteristica;
+                                    lstpublicidad.INT_CARA = datosPublicidad[i].caracteristica;
+                                    lstpublicidad.idcate = datosPublicidad[i].idcategoria;
+                                    lstpublicidad.INT_ALTO = datosPublicidad[i].alto;
+                                    lstpublicidad.INT_ANCHO = datosPublicidad[i].ancho;
+                                    lstpublicidad.INT_DESC = datosPublicidad[i].descripcion;
+                                    lstpublicidad.estado = 'V';
+                                    lstpublicidad.urlImagen = datosPublicidad[i].url_publicidad.url;
+                                    $scope.listpub[i] = lstpublicidad;
+                                };
+                                $scope.datos.swpublicidad = 'CP';
+                                $scope.licenciaToogle4 = true;
+                                $scope.datos.publicidad = $scope.listpub;
+                                $scope.Plubli_Grilla($scope.datos.publicidad);
+                                $scope.publicid = $scope.listpub;
+                            };
+                            //$scope.generarDeudasPendientes();
+                            var verificarDuodecima = [$scope.verificarDeudaDuodecima(tramite.idactividad)];
+                            $q.all(verificarDuodecima).then(function (respDou) {
+                                if (respDou[0] == '[{}]' || respDou[0] == '"[{}]"') {
+                                    $scope.generarDeudasPendientes();
+                                } else{
+                                    var lstDeudas = JSON.parse(respDou);
+                                    datoObjectDeudasPen = [];
+                                    var lstDeudasP = JSON.parse(lstDeudas[0].resultado);
+                                    if (lstDeudasP.deuda_estado == 'pagado' && lstDeudasP.deuda_tipo_inspag == 'DUODECIMA') {
+                                        $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO, UD. NO CUENTA CON DEUDAS. PUEDE SOLICITAR LA OPCIÓN DE PAGO ADELANTADO.';
+                                        $scope.mostrarMsgPagoTrue  = false;
+                                        $scope.mostrarMsgPagoFalse = true;
+                                        $scope.divDeudasPendientes = false;
+                                        $scope.datos.pago_duodecimas = 'SI';
+                                        if(!$scope.$$phase) {
+                                            $scope.$apply();
+                                        }
+                                    } else{
+                                        $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO SU(S) DEUDA(S) AÚN NO FUERON PAGADAS.';
+                                        $scope.datos.deudasPendiente = lstDeudas;
+                                        $scope.mostrarMsgPagoTrue = true;
+                                        $scope.mostrarMsgPagoFalse = false;
+                                        $scope.divDeudasPendientes = true;
+                                        $scope.datos.pago_duodecimas = 'NO';
+                                        for (var i = 0; i < lstDeudas.length; i++) {
+                                            var dataDeudas = JSON.parse(lstDeudas[i].resultado);
+                                            datoObjectDP = new Object();
+                                            datoObjectDP.nro = (i+1);
+                                            datoObjectDP.deuda_id = dataDeudas.deuda_actividad_id;
+                                            datoObjectDP.gestion = dataDeudas.deuda_data.gestion;
+                                            datoObjectDP.monto_ae = dataDeudas.deuda_data.montoDeterminado_ae_bs;
+                                            datoObjectDP.monto_viae = dataDeudas.deuda_data.viaeBs;
+                                            datoObjectDP.descuento = dataDeudas.deuda_data.porcentaje_desc_pago_adelantado;
+                                            datoObjectDP.monto_total = dataDeudas.deuda_data.deuda_tributaria_bs;
+                                            datoObjectDP.monto_descuento_bs_padelantado = dataDeudas.deuda_data.monto_descuento_bs_padelantado;
+                                            datoObjectDP.monto_total_bs_padelantado = dataDeudas.deuda_data.monto_total_bs_padelantado; 
+                                            datoObjectDeudasPen[i] = datoObjectDP;
+                                            $scope.datos.fecha_duodecima = dataDeudas.deuda_data.fecha_calculo_deuda;
+                                        };
+                                        $scope.divDeudasPendientes = true;
+                                        $scope.datos.listDeudasPendientes = datoObjectDeudasPen;
                                     };
                                 };
-                            };
-                        });
-                    }
-                    /*DATOS PUBLICIDAD*/
-                    $scope.botones = "mostrar";
-                    $scope.desabilitado = false;
-                    if (JSON.stringify(datosPublicidad[0]) == '{}' || JSON.stringify(datosPublicidad[0]) == '[{}]' || JSON.stringify(datosPublicidad) == '[]') {
-                        $scope.datos.rdTipoTramite1 = 'RENOVACION';
-                        $scope.datos.swpublicidad = 'SP';
-                        $scope.licenciaToogle4 = false;
-                        $scope.pubMensaje = true;
-                    }else{
-                        $scope.datos.rdTipoTramite1 = 'NUEVO';
-                        $scope.listpub = [];
-                        $scope.pubMensaje = false;
-                        for (var i = 0; i < datosPublicidad.length; i++) {
-                            var lstpublicidad = new Object();
-                            lstpublicidad.idPublicidad = datosPublicidad[i].idpublicidad;
-                            lstpublicidad.idPublicidad_temp = datosPublicidad[i].idpublicidad_ant;
-                            lstpublicidad.INT_NRO_CARA = datosPublicidad[i].cara;
-                            lstpublicidad.INT_SUP = datosPublicidad[i].superficie;
-                            lstpublicidad.idcarac = datosPublicidad[i].idtipoletrero;
-                            lstpublicidad.INT_TIPO_LETRE = datosPublicidad[i].descripciontipoletrero;
-                            lstpublicidad.id_cara = datosPublicidad[i].idcaracteristica;
-                            lstpublicidad.INT_CARA = datosPublicidad[i].caracteristica;
-                            lstpublicidad.idcate = datosPublicidad[i].idcategoria;
-                            lstpublicidad.INT_ALTO = datosPublicidad[i].alto;
-                            lstpublicidad.INT_ANCHO = datosPublicidad[i].ancho;
-                            lstpublicidad.INT_DESC = datosPublicidad[i].descripcion;
-                            lstpublicidad.estado = 'V';
-                            lstpublicidad.urlImagen = datosPublicidad[i].url_publicidad.url;
-                            $scope.listpub[i] = lstpublicidad;
-                        };
-                        $scope.datos.swpublicidad = 'CP';
-                        $scope.licenciaToogle4 = true;
-                        $scope.datos.publicidad = $scope.listpub;
-                        $scope.Plubli_Grilla($scope.datos.publicidad);
-                        $scope.publicid = $scope.listpub;
-                    };
-                    //$scope.generarDeudasPendientes();
-                    var verificarDuodecima = [$scope.verificarDeudaDuodecima(tramite.idactividad)];
-                    $q.all(verificarDuodecima).then(function (respDou) {
-                        if (respDou[0] == '[{}]' || respDou[0] == '"[{}]"') {
-                            $scope.generarDeudasPendientes();
-                        } else{
-                            var lstDeudas = JSON.parse(respDou);
-                            datoObjectDeudasPen = [];
-                            var lstDeudasP = JSON.parse(lstDeudas[0].resultado);
-                            if (lstDeudasP.deuda_estado == 'pagado' && lstDeudasP.deuda_tipo_inspag == 'DUODECIMA') {
-                                $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO, UD. NO CUENTA CON DEUDAS. PUEDE SOLICITAR LA OPCIÓN DE PAGO ADELANTADO.';
-                                $scope.mostrarMsgPagoTrue  = false;
-                                $scope.mostrarMsgPagoFalse = true;
-                                $scope.divDeudasPendientes = false;
-                                $scope.datos.pago_duodecimas = 'SI';
-                                if(!$scope.$$phase) {
-                                    $scope.$apply();
-                                }
-                            } else{
-                                $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO SU(S) DEUDA(S) AÚN NO FUERON PAGADAS.';
-                                $scope.datos.deudasPendiente = lstDeudas;
-                                $scope.mostrarMsgPagoTrue = true;
-                                $scope.mostrarMsgPagoFalse = false;
-                                $scope.divDeudasPendientes = true;
-                                $scope.datos.pago_duodecimas = 'NO';
-                                for (var i = 0; i < lstDeudas.length; i++) {
-                                    var dataDeudas = JSON.parse(lstDeudas[i].resultado);
-                                    datoObjectDP = new Object();
-                                    datoObjectDP.nro = (i+1);
-                                    datoObjectDP.deuda_id = dataDeudas.deuda_actividad_id;
-                                    datoObjectDP.gestion = dataDeudas.deuda_data.gestion;
-                                    datoObjectDP.monto_ae = dataDeudas.deuda_data.montoDeterminado_ae_bs;
-                                    datoObjectDP.monto_viae = dataDeudas.deuda_data.viaeBs;
-                                    datoObjectDP.descuento = dataDeudas.deuda_data.porcentaje_desc_pago_adelantado;
-                                    datoObjectDP.monto_total = dataDeudas.deuda_data.deuda_tributaria_bs;
-                                    datoObjectDP.monto_descuento_bs_padelantado = dataDeudas.deuda_data.monto_descuento_bs_padelantado;
-                                    datoObjectDP.monto_total_bs_padelantado = dataDeudas.deuda_data.monto_total_bs_padelantado; 
-                                    datoObjectDeudasPen[i] = datoObjectDP;
-                                    $scope.datos.fecha_duodecima = dataDeudas.deuda_data.fecha_calculo_deuda;
-                                };
-                                $scope.divDeudasPendientes = true;
-                                $scope.datos.listDeudasPendientes = datoObjectDeudasPen;
-                            };
-                        };
+                            });
+                            $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
+                        }
                     });
-                    $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
+                }else{
+                    swal('', "Actividad Economica Vigente!!!", 'warning');
                 }
-            });
-        }else{
-            swal('', "Actividad Economica Vigente!!!", 'warning');
-        }
+            };
+        };
     };
 
     $scope.getEstablecimiento = function(datoEstab){

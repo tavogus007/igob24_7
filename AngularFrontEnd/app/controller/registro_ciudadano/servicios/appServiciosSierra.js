@@ -492,17 +492,14 @@ app.controller('serviciosController343Sierra', function ($scope, $rootScope ,$ro
             complemento_ci = '';
         else
             complemento_ci = $scope.datosRecuperados.dtspsl_complemento.trim();
-        console.log('cccccccccc    ',$scope.datosRecuperados.dtspsl_complemento);
         if(tipoContribuyente == 'NATURAL'){
             if (complemento_ci == undefined || complemento_ci == 'undefined' || complemento_ci == null || complemento_ci == '')
                 ciDocumento = sessionService.get('CICIUDADANO');
-            
             else
                 ciDocumento = complemento_ci+'-'+sessionService.get('CICIUDADANO');
         }else if(tipoContribuyente == 'JURIDICO'){
             nitDocumento         =   sessionService.get('NITCIUDADANO');
         }
-        console.log('ciDocumento      ',ciDocumento);
         var dataNatural = '';
         dataNatural = '{"ycontribuyente_nro_documento":"'+ciDocumento+'","ycontribuyente_nit":"'+nitDocumento+'"}';
         try{
@@ -526,10 +523,9 @@ app.controller('serviciosController343Sierra', function ($scope, $rootScope ,$ro
                             tipoper = 'N';
                         else
                             tipoper = 'J';
-                        var dataNat = '{"id_contribuyente":'+$scope.dataGenesisCidadano.contribuyente_id+',"tipo":"'+tipoper+'"}';
                         var lstActEco = new reglasnegocioSierra();
                         lstActEco.identificador = 'VALLE_PRUEBA-SGEN-3150';
-                        lstActEco.parametros = dataNat;
+                        lstActEco.parametros = '{"id_contribuyente":'+$scope.dataGenesisCidadano.contribuyente_id+'}';
                         lstActEco.llamarregla_sierra(function(responseActEco){
                             if (responseActEco == '"{}"' || responseActEco == '"[{}]"' || responseActEco == '"[{ }]"') {
                             } else{

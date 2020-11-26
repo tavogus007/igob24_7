@@ -1,0 +1,246 @@
+
+<script id="titulo" type="text/html">
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
+        <h1 style="width: auto; padding: 10px; height: auto; background-color: #f9edd6; float: left; 
+     border-radius: 20px;" >{{titulo}} :</h1>
+    </div>
+</script>
+
+<script id="span" type="text/html">
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
+        <p>
+            <label class="ng-binding" style="margin-top: 20px;">{{titulo}}:</label>
+        </p>
+    </div>
+</script>
+
+<script id="texto" type="text/html">
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
+        <div class="form-group">
+            <label class="ng-binding">{{titulo}}:</label>
+            <div class="controls">
+                <input  type="text" id="{{campo}}" name="registro[]" placeholder="{{titulo}}" value="{{valor_campo}}" class="form-control" width="30%" height="30" tabindex="{{orden}}" {{{read}}} {{{deshabilitado}}}>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="numero" type="text/html">
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
+        <div class="form-group">
+            <label class="ng-binding">{{titulo}}:</label>
+            <div class="controls">
+                <input type="number" id="{{campo}}" name="registro[]" placeholder="{{titulo}}" value="{{valor_campo}}" class="form-control" width="30%" height="30" tabindex="{{orden}}" {{{read}}} {{{deshabilitado}}}>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="fecha" type="text/html">
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
+        <div class="form-group">
+            <label class="ng-binding">{{titulo}}:</label>
+            <div class="controls">
+                <input  type="date" id="{{campo}}" name="registro[]" placeholder="{{titulo}}" value="{{valor_campo}}" class="form-control" width="30%" height="30" tabindex="{{orden}}" {{{read}}} {{{deshabilitado}}}>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="hora" type="text/html">
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
+        <div class="form-group">
+            <label class="ng-binding">{{titulo}}:</label>
+            <div class="controls">
+                <input  type="time" id="{{campo}}" name="registro[]" placeholder="{{titulo}}" value="{{valor_campo}}" class="form-control" width="30%" height="30" tabindex="{{orden}}" {{{read}}} {{{deshabilitado}}}>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="check" type="text/html">
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
+        <div class="form-group">
+            <label class="ng-binding">{{titulo}}:</label>
+            <div class="controls">
+                <input type="checkbox" id="{{campo}}" name="registro[]" placeholder="{{titulo}}" class="form-control" width="30%" height="30" tabindex="{{orden}}" {{{read}}} {{{deshabilitado}}}>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="oculto" type="text/html">
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}" style="display: none">
+        <div class="form-group">
+            <label class="ng-binding">{{titulo}}:</label>
+            <div class="controls">
+                <input  type="hidden" id="{{campo}}" name="registro[]" placeholder="{{titulo}}" value="{{valor_campo}}" class="form-control" width="30%" height="30" tabindex="{{orden}}" {{{read}}} {{{deshabilitado}}}>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="html" type="text/html">
+    <!--verificardatos-->
+    {{{data}}}
+</script>
+<script id="html_tar" type="text/html">
+    <div id="div_titulo{{campo}}" name="componentes" class="col-md-{{columnas}}" >
+        <div class="form-group">
+            <label class="ng-binding">{{titulo}}:</label>
+        </div>
+    </div>
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}" >
+        <div class="form-group" style=" overflow:scroll; border-radius: 3px;border: 2px;border-color: #000000;background-color: #fdf7eb;border-style: solid; height: 300px;">
+            <div class="controls">
+                {{{data}}}
+            </div>
+        </div>
+    </div>
+</script>
+<script id="script" type="text/html">
+    <script type="text/javascript">
+        {{{comportamientos}}}
+    </script>
+</script>
+<script id="combo" type="text/html">
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
+        <div class="form-group">
+            <label class="ng-binding">{{titulo}}:</label>
+            <div class="controls">
+                <select id="{{campo}}" name="registro[]" placeholder="{{titulo}}" class="form-control" tabindex="{{orden}}" {{{eventos}}} {{{read}}} {{{deshabilitado}}}>
+                    <option value="-1">--seleccione--</option>
+                    {{#data}}
+                        <option value="{{valor}}" {{selected}}>{{dato}}</option>                        
+                    {{/data}}
+                </select>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="areatexto" type="text/html">
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
+        <div class="form-group">
+            <label class="ng-binding">{{titulo}}:</label>
+            <div class="controls">
+                <textarea cols="45" rows="5" placeholder="{{titulo}}" class="form-control" id="{{campo}}" name="registro[]" tabindex="{{orden}}" {{{read}}} {{{deshabilitado}}}> {{{valor_campo}}} </textarea>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="editor" type="text/html">
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
+        <div class="form-group">
+            <label class="ng-binding">{{titulo}}:</label>
+            <div class="controls">
+                <div class="col-sm-10" tabindex="{{orden}}">
+                    <textarea cols="45" rows="5"  class="mceEditorT{{titulo}}" placeholder="{{titulo}}" class="form-control" id="{{campo}}" name="registro[]" tabindex="{{orden}}" {{{read}}}>{{valor_campo}}</textarea>                
+                    <!--script type="text/javascript">tinymce.remove("textarea");tinymce.init({  mode : "specific_textareas", language : "es", editor_selector : /(mceEditorT)/,  height: 120,  theme: "modern",plugins: ["advlist autolink lists link image charmap print preview hr anchor pagebreak","searchreplace wordcount visualblocks visualchars code fullscreen","insertdatetime media nonbreaking save table contextmenu directionality","emoticons template paste textcolor colorpicker textpattern imagetools"  ]}); </script-->
+                    <script>
+                        tinymce.init({
+                    
+                        selector: 'textarea',
+                        language: 'es',
+                        height: 300,
+                        menubar: true,
+                        plugins: [
+                            'advlist autolink lists link image charmap print preview anchor',
+                            'searchreplace visualblocks code fullscreen',
+                            'insertdatetime media table paste code help wordcount'
+                        ],
+                        toolbar: 'undo redo | formatselect | ' +
+                        'bold italic backcolor | alignleft aligncenter ' +
+                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                        'removeformat | help' + 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'       
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="adjuntos" type="text/html">   
+  
+    <div id="div_{{campo}}" name="componentes" class="col-md-{{columnas}}">
+        <div class="form-group custom-upload col-sm-6">        
+            <input type="file" id="f01_upload_{{campo}}" name="f01_upload_{{campo}}" accept="image/*" style="display: none;" >
+            <div class="input-group col-xs-6">
+                <span class="input-group-addon" style="background-color:rgb(0, 185, 194 ,0.6);">
+                    <a title="Ayuda" data-toggle="popover" data-trigger="hover" data-content="Se puede enviar archivos de Imagen, PDF, documentos de Office y archivos comprimidos."><i class="glyphicon glyphicon-question-sign"></i></a>
+                </span>
+                <input type="hidden" name="{{campo}}_url" id = "{{campo}}_url" value="{{valor_campo_url}}">
+                <input id="{{campo}}" name="{{campo}}" type="text" placeholder="" value="{{valor_campo}}" class="form-control input-lg" disabled required>
+                <span class="input-group-btn">
+                    <a id="href_f01_upload_{{campo}}"   onclick = "verV2('href_f01_upload_{{campo}}','{{campo}}_url','btn_f01_upload_{{campo}}','{{campo}}')"  target="_blank">
+                    <button id="btn_f01_upload_{{campo}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                    </a>
+                    <button id="btn_f01_upload_{{campo}}" onclick="ejecutarFile('f01_upload_{{campo}}', '{{campo}}')" class="btnupload browse btn btn-primary input-lg" type="button" {{{deshabilitado}}} ><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var sidFile =   "";
+    	$('#f01_upload_{{campo}}').change(function(){
+            cambiarFile(this, $(this).val());            
+        });
+        
+        function cambiarFile(obj, valor){
+            var datos = new Array();
+            datos[obj.name] = valor;
+            subirRequisitos(obj, valor);
+        };   
+
+        function ver(id,id2,btn){
+            if(dataIgob.POC_ADJUNTOS_url != undefined){
+                document.getElementById(id).href=dataIgob.POC_ADJUNTOS_url;
+            }else{
+                var urlImg = document.getElementById(id2).value;
+                if(urlImg != ''){
+                    document.getElementById(id).href = urlImg;
+                }
+            }
+        }
+        
+        function verV2(id,id2,btn,obj){
+            var soidUsuario = sessionStorage.getItem('IDSOLICITANTE'); 
+            var sidTramite =  sessionStorage.getItem('IDTRAMITE');
+            var svalorUrlCampo = document.getElementById(obj).value;
+            var surlDoc = jsonURLS.APIURL + '/files/RC_CLI/' + soidUsuario + "/" + sidTramite + "/" + svalorUrlCampo + "?app_name=todoangular";  //oficial         
+
+            //var surlDoc = jsonURLS.URL_SITRAM+":80/files/RC_CLI/" + soidUsuario + "/" + sidTramite + "/" + svalorUrlCampo + "?app_name=todoangular";  //pruebas         
+
+            if(surlDoc != ''){
+                document.getElementById(id).href=surlDoc;
+            }
+        }       
+
+        function subirRequisitos(sobj, svalor){
+            var rMisDocs = new Array();
+            if(sobj.files[0]){
+                rMisDocs.push(sobj.files[0]);
+                angular.element(document.getElementById("id_serviciosLotusController")).scope().almacenarRequisitos(rMisDocs, sidFile);
+            }
+        };
+
+        function ejecutarFile(filename, idfile){            
+            var sid =   document.getElementById(filename);
+            sidFile =   idfile;
+            if(sid){
+                document.getElementById(filename).click();
+            }else{
+                alert("Error ");
+            }
+        };
+
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
+        });
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover();   
+        });
+    </script>
+
+</script>
+
+
+<script id="default" type="text/html">
+    <h5>
+        {{tipo}}
+    </h5>
+</script>

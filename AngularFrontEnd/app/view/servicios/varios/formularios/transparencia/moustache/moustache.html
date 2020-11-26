@@ -1,0 +1,284 @@
+<html>
+<head>
+<!--<script src="../../../app/view/servicios/varios/formularios/solicitudLotus/HTML/jquery-1.7.1.min.js"></script>-->
+<script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/jquery.mustache.js"></script>
+<script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/mustache.js"></script>    
+<script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/funciones.js"></script>
+<script type="text/javascript" src="../../libs/Librerias/tinymce5.4.1/tinymce.min.js"></script>
+<script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+<link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+<link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />    
+<!--<link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/HTML/css/bootstrap.min.css"> -->  
+<style>
+  /* Tooltip */
+  .test + .tooltip > .tooltip-inner {
+      background-color: #73AD21; 
+      color: #FFFFFF; 
+      border: 1px solid green; 
+      padding: 15px;
+      font-size: 15px;
+  }
+  /* Tooltip on top */
+  .test + .tooltip.top > .tooltip-arrow {
+      border-top: 5px solid green;
+  }
+  /* Tooltip on bottom */
+  .test + .tooltip.bottom > .tooltip-arrow {
+      border-bottom: 5px solid blue;
+  }
+  /* Tooltip on left */
+  .test + .tooltip.left > .tooltip-arrow {
+      border-left: 5px solid red;
+  }
+  /* Tooltip on right */
+  .test + .tooltip.right > .tooltip-arrow {
+      border-right: 5px solid black;
+  }
+  .tool-tip {
+    display: inline-block;
+  }
+  .tool-tip [disabled] {
+   pointer-events: none;
+  }
+  </style> 
+  
+<script type="text/javascript">
+    var urlHtmlComponentes =   "../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/componentes.htm";
+    var jsonForms  =   jDataFormsLotus;
+    var estadoT = sessionStorage.getItem('ESTADO');
+    if (estadoT==='SI'){
+        $('#botones').hide();
+        //$('#leyenda').show();
+        document.getElementById("senddata").disabled = true;
+        document.getElementById("savedata").disabled = true;
+        deshabilitado = "disabled";
+    } else {
+        $('#botones').show();
+        //$('#leyenda').hide();
+        document.getElementById("savedata").disabled = false;
+        deshabilitado = "";
+    }
+    $.Mustache.load(urlHtmlComponentes).done(function () {                
+        $.each(JSON.parse(jsonForms).formularios[0].campo_descripcion, function(idx,data) {
+            if(Object.keys(datos).length == 0){
+                data.valor_campo = svalorJosn[data.campo];
+            }                    
+            switch (data.tipo) {
+                case 'TIT':
+                    $('#principal').mustache('titulo', data);
+                    break;
+                case 'SPAN':
+                    $('#principal').mustache('span', data);
+                    break;
+                case 'TXT':
+                    if (data.estado=="LECTURA") {
+                        data.read ='readonly="readonly"';
+                    } else if(data.estado=="ESCRITURA") {
+                        data.read ="";
+                    } else {
+                        data.read = ' required ';
+                        valoresOC[posicion] = data.campo;
+                        valoresOM[posicion] = data.titulo;
+                        posicion++;
+                    }
+                    data.deshabilitado = deshabilitado;
+                    $('#principal').mustache('texto', data);
+                    break;
+                case 'CBO':
+                    if (data.estado=="LECTURA") {
+                        data.read ='readonly="readonly" disabled="true"';
+                    } else if(data.estado=="ESCRITURA") {
+                        data.read ="";
+                    } else {
+                        data.read = ' required ';
+                        valoresOC[posicion] = data.campo;
+                        valoresOM[posicion] = data.titulo;
+                        posicion++;
+                    }
+                    var eventos="";
+                    if(data.comportamientos){
+                        $.each(data.comportamientos, function(i,v) {
+                            x = JSON.stringify(v);
+                            quitarComillas = new RegExp('"', "g");
+                            x = x.replace(quitarComillas,"");
+                            x = x.substring(1, x.length -1);
+                            y = x.split(":");
+                            eventos = eventos + y[0] + '="' + y[1]+ '" ';
+                        });
+                        data.eventos = eventos;
+                    }
+                    if(data.data){
+                        $.each(data.data, function(i,v) {
+                            if(v.valor == data.valor_campo){
+                                v.selected = 'selected';
+                            }
+                            else{
+                                v.selected = '';
+                            }                                    
+                        });
+                    }
+                    data.deshabilitado = deshabilitado;
+                    $('#principal').mustache('combo', data);
+                    break;
+                case 'NRO':
+                    if (data.estado=="LECTURA") {
+                        data.read ='readonly="readonly"';
+                    } else if(data.estado=="ESCRITURA") {
+                        data.read ="";
+                    } else {
+                        data.read = ' required ';
+                        valoresOC[posicion] = data.campo;
+                        valoresOM[posicion] = data.titulo;
+                        posicion++;
+                    }
+                    data.deshabilitado = deshabilitado;
+                    $('#principal').mustache('numero', data);
+                    break;
+                case 'CHK':
+                    if (data.estado=="LECTURA") {
+                        data.read ='readonly="readonly"';
+                    } else if(data.estado=="ESCRITURA") {
+                        data.read ="";
+                    } else {
+                        data.read = ' required ';
+                        valoresOC[posicion] = data.campo;
+                        valoresOM[posicion] = data.titulo;
+                        posicion++;
+                    }
+                    data.deshabilitado = deshabilitado;
+                    $('#principal').mustache('check', data);
+                    break;
+                case 'HRS':
+                    if (data.estado=="LECTURA") {
+                        data.read ='readonly="readonly"';
+                    } else if(data.estado=="ESCRITURA") {
+                        data.read ="";
+                    } else {
+                        data.read = ' required ';
+                        valoresOC[posicion] = data.campo;
+                        valoresOM[posicion] = data.titulo;
+                        posicion++;
+                    }
+                    data.deshabilitado = deshabilitado;
+                    $('#principal').mustache('hora', data);
+                    break;
+                case 'TAR':
+                    if (data.estado=="LECTURA") {
+                        data.read ='readonly="readonly"';
+                    } else if(data.estado=="ESCRITURA") {
+                        data.read ="";
+                    } else {
+                        data.read = ' required ';
+                        valoresOC[posicion] = data.campo;
+                        valoresOM[posicion] = data.titulo;
+                        posicion++;
+                    }
+                    data.deshabilitado = deshabilitado;
+                    $('#principal').mustache('areatexto', data);
+                    break;
+                case 'EDT':
+                    if (data.estado=="LECTURA") {
+                        data.read ='readonly="readonly"';
+                    } else if(data.estado=="ESCRITURA") {
+                        data.read ="";
+                    } else {
+                        data.read = ' required ';
+                        valoresOC[posicion] = data.campo;
+                        valoresOM[posicion] = data.titulo;
+                        posicion++;
+                    }
+                    data.deshabilitado = deshabilitado;
+                    data.data =data.valor_campo;
+                    if (deshabilitado==='')
+                        $('#principal').mustache('editor', data);
+                    else
+                        $('#principal').mustache('html_tar', data);
+                    break;
+                case 'FEC':
+                    if (data.estado=="LECTURA") {
+                        data.read ='readonly="readonly"';
+                    } else if(data.estado=="ESCRITURA") {
+                        data.read ="";
+                    } else {
+                        data.read = ' required ';
+                        valoresOC[posicion] = data.campo;
+                        valoresOM[posicion] = data.titulo;
+                        posicion++;
+                    }
+                    data.deshabilitado = deshabilitado;
+                    $('#principal').mustache('fecha', data);
+                    break;
+                case 'ARC':
+                    if (data.estado=="LECTURA") {
+                        data.read ='readonly="readonly"';
+                    } else if(data.estado=="ESCRITURA") {
+                        data.read ="";
+                    } else {
+                        data.read = ' required ';
+                        valoresOC[posicion] = data.campo;
+                        valoresOM[posicion] = data.titulo;
+                        posicion++;
+                    }
+                    data.deshabilitado = deshabilitado;
+                    data.valor_campo_url = svalorJosn[data.campo + '_url'];
+                    $('#principal').mustache('adjuntos', data);
+                    break;                             
+                case 'HID':
+                    $('#principal').mustache('oculto', data);
+                    break;
+                case 'HTML':
+                    $('#principal').mustache('html', data);
+                    break;
+                case 'SCRIPT':
+                    $('#principal').mustache('script', data);
+                    break;
+                default:
+                    $('#principal').mustache('default', data);
+                    break;
+            }
+        });
+    });
+
+    $( document ).ready(function() {
+        if ($("#senddata").is(":disabled")){
+            $('[data-toggle="tooltip"]').tooltip('hide')
+            .attr('data-original-title', "Favor de Guardar el Formulario")
+            .tooltip('fixTitle')
+            .tooltip('show');
+        }
+    });
+</script>
+</head>
+<body>
+    <div>
+        <form id="frmCiudadano" name="frmCiudadano">
+            <div class="row principal" id="principal">
+            </div>
+            <!--div id="leyenda" style="-moz-transform: scale(3) rotate(-50deg) translateX(22px) skewX(0deg);-webkit-transform: scale(3) rotate(-50deg) translateX(22px) skewX(0deg);-o-transform: scale(3) rotate(-50deg) translateX(22px) skewX(0deg);-ms-transform: scale(3) rotate(-50deg) translateX(22px) skewX(0deg);transform: scale(3) rotate(50deg) translateX(22px) skewX(0deg);background: #f9edd6;margin-left: 1400px;margin-top: -1075px;width: 250px;"> <p align="center">Trámite enviado al GAMLP </p></div-->
+            <br>
+        </form>
+    </div>
+    <div class="col-md-4" align="right">
+        <div class="row" id="botones">
+            <div class="col-xs-6">   
+                   <button id="savedata" name="savedata" type="button" onclick="guardarData();" class="btn btn-success" tooltip="Guardar Formulario">
+                    <div class="info"><i class="fa fa-save fa-sm"></i> Guardar Formulario </div>
+                </button>
+            </div>
+            <div class="col-xs-6">
+                <span class="tool-tip" data-toggle="tooltip" data-placement="top" title="Favor de Guardar el Formulario">
+                    <button id="senddata" name="senddata" type="button" onclick="validarEnvioTramite();"  class="btn btn-success">
+                        <div class="info"><i class="fa fa-send fa-sm"></i> Enviar Formulario</div>
+                    </button>
+                </span>
+            </div>
+            <div class="alert alert-success" role="alert" style="display:none;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">   
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Success!</strong> You have been signed in successfully!
+            </div>        
+        </div>
+    </div>
+</body>
+</html>

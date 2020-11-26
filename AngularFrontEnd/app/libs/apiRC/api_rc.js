@@ -1292,6 +1292,19 @@ rcTramites.prototype.obtTramitesx = function (functionResp)
   ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 }
 
+rcTramites.prototype.obtTramitesy = function (functionResp)
+{
+  urlComp = "/listarTramitesT";
+  typeCall = "post";
+
+  dataParams = {
+          "oid": this.oid,
+          "tipo": this.tipo
+  };
+
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+}
+
 function macrodistritoLstid(){
     this.idMacro;
 };

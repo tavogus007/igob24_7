@@ -1,0 +1,750 @@
+{
+  "proceso": [
+    {
+      "prc_id": 223,
+      "prc_cat_id": null,
+      "prc_correlativo": 37,
+      "prc_nombre": "SERVICIOS EDUCATIVOS",
+      "prc_codigo": "SER",
+      "prc_registrado": "2018-06-06T18:20:47",
+      "prc_modificado": "2018-06-06T18:20:47",
+      "prc_usr_id": 2545,
+      "prc_estado": "A",
+      "prc_depuracion": true,
+      "prc_ws_id": 40,
+      "prc_vw_campos": null
+    }
+  ],
+  "actividades": [
+    {
+      "act_id": 1223,
+      "act_prc_id": 223,
+      "act_tipo_act_id": 1,
+      "act_nodo_id": 672,
+      "act_orden": 30,
+      "act_siguiente": 0,
+      "act_duracion": 1,
+      "act_nombre": "REGISTRAR EL GRUPO",
+      "act_inicio": "SI",
+      "act_fin": "NO",
+      "act_registrado": "2018-06-08T09:07:23",
+      "act_modificado": "2018-06-08T11:56:43",
+      "act_usr_id": 2545,
+      "act_estado": "A",
+      "act_hito_id": 15,
+      "act_derivacion": "SM"
+    },
+    {
+      "act_id": 1222,
+      "act_prc_id": 223,
+      "act_tipo_act_id": 2,
+      "act_nodo_id": 672,
+      "act_orden": 20,
+      "act_siguiente": 0,
+      "act_duracion": 1,
+      "act_nombre": "VERIFICACION DE GUIA",
+      "act_inicio": "SI",
+      "act_fin": "NO",
+      "act_registrado": "2018-06-08T09:07:23",
+      "act_modificado": "2018-06-08T11:56:43",
+      "act_usr_id": 2545,
+      "act_estado": "A",
+      "act_hito_id": 15,
+      "act_derivacion": "SM"
+    },
+    {
+      "act_id": 1207,
+      "act_prc_id": 223,
+      "act_tipo_act_id": 2,
+      "act_nodo_id": 672,
+      "act_orden": 10,
+      "act_siguiente": 0,
+      "act_duracion": 1,
+      "act_nombre": "VERIFICACION DE DOCUMENTOS",
+      "act_inicio": "SI",
+      "act_fin": "NO",
+      "act_registrado": "2018-06-06T18:45:18",
+      "act_modificado": "2018-06-08T11:56:43",
+      "act_usr_id": 2545,
+      "act_estado": "A",
+      "act_hito_id": 15,
+      "act_derivacion": "SM"
+    }
+  ],
+  "formularios": [
+    {
+      "campo_id": 1942,
+      "campo_nombre": "REGSITRO DE GRUPO",
+      "campo_descripcion": [
+        {
+          "titulo": "VERIFICACION DE GIA",
+          "campo": "SER_TIT",
+          "tipo": "TIT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 10
+        },
+        {
+          "titulo": "DATOS DEL RESPONSABLE",
+          "campo": "SER_TIT2",
+          "tipo": "TIT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 15
+        },
+        {
+          "titulo": "Nombre Completo",
+          "campo": "SER_NOM",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "4",
+          "estado": "LECTURA",
+          "orden": 20
+        },
+        {
+          "titulo": "Apellido Paterno",
+          "campo": "SER_APEP",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "8",
+          "estado": "LECTURA",
+          "orden": 30
+        },
+        {
+          "titulo": "Apellido Materno",
+          "campo": "SER_APEM",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "12",
+          "estado": "LECTURA",
+          "orden": 40
+        },
+        {
+          "titulo": "Carnet de Identidad",
+          "campo": "SER_CI",
+          "tipo": "NRO",
+          "posicion": "UP",
+          "columnas": "4",
+          "estado": "LECTURA",
+          "orden": 50
+        },
+        {
+          "titulo": "Correo",
+          "campo": "SER_COR",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "8",
+          "estado": "LECTURA",
+          "orden": 60
+        },
+        {
+          "titulo": "Cantidad de Persona",
+          "campo": "SER_CAN_TOT",
+          "tipo": "NRO",
+          "posicion": "UP",
+          "columnas": "12",
+          "estado": "LECTURA",
+          "orden": 70
+        },
+        {
+          "titulo": "Puesto del Responsable",
+          "campo": "SER_CAR",
+          "tipo": "CBO",
+          "posicion": "UP",
+          "columnas": "4",
+          "estado": "LECTURA",
+          "orden": 80,
+          "tipo_llenado": "datos",
+          "data": [
+            {
+              "valor": "1",
+              "dato": "DIRECTOR"
+            },
+            {
+              "valor": "2",
+              "dato": "PROFESOR"
+            },
+            {
+              "valor": "3",
+              "dato": "OTRO"
+            }
+          ]
+        },
+        {
+          "titulo": "SCRIPT1",
+          "campo": "SER_SCRIPT1",
+          "tipo": "SCRIPT",
+          "tipo_script": "IN",
+          "posicion": "UP",
+          "columnas": "1",
+          "comportamientos": "function registrar(){\nvar nombre = document.getElementById('SER_NOM').value;\nvar ap = document.getElementById('SER_APEP').value;\nvar pm = document.getElementById('SER_APEM').value;\nvar ci = document.getElementById('SER_CI').value;\nvar cor = document.getElementById('SER_COR').value;\nvar can = document.getElementById('SER_CAN_TOT').value;\nvar combo = document.getElementById(\n\n\"SER_CAR\n\n\");\nvar car= combo.options[combo.selectedIndex].text;\nvar fec = document.getElementById('SER_FEC').value;\nvar hora = document.getElementById('SER_HOR').value;\nvar urlRegla = \n\n\"http://172.19.65.94/api/reglaNegocio/ejecutarWeb\n\n\";\nvar urlToken = \n\n\"http://172.19.65.94/api/apiLogin\n\n\";\n $.ajax({\n    type        : 'POST',\n    url         :  urlToken,\n    data        : {'usr_usuario':'administrador','usr_clave':'123456'},\n    success: function(token1)\n    { \n      var grupo_data = '{\n\n\"responsable\n\n\": \n\n\"'+nombre+'\n\n\", \n\n\"gmail\n\n\": \n\n\"'+cor+'\n\n\", \n\n\"puesto_responsable\n\n\": \n\n\"'+car+'\n\n\", \n\n\"fecha\n\n\": \n\n\"'+fec+'\n\n\", \n\n\"hora\n\n\": \n\n\"'+hora+'\n\n\" , \n\n\"datos_grupos\n\n\": {\n\n\"cantidad\n\n\": '+can+', \n\n\"gia\n\n\":\n\n\"richar\n\n\", \n\n\"nombre\n\n\": \n\n\"richar\n\n\"}}';\n      grupo_data = JSON.stringify(grupo_data);\n      var formData = {\n\n\"identificador\n\n\": 'SERVICIO_VALLE-279' ,\n\n\"parametros\n\n\"  : '{\n\n\"xgrupo_id_ciudadano\n\n\":'+1+',\n\n\"xgrupo_data\n\n\":'+grupo_data+', \n\n\"xgrupo_usr_id\n\n\":'+ 1+'}'};  \n        var token = token1.token;\n        console.log(token,'tokrecup');\n        $.ajax({\n          type        : 'POST',\n          url         : urlRegla,\n          data        : formData,\n          dataType    : 'json',\n          crossDomain : true,\n          headers: \n          {\n           'authorization': 'Bearer' + token,\n          },\n          success: function(dataIN)\n          {\n            console.log(dataIN);\n           \n          },\n          error: function (xhr, status, error)\n          {\n          }\n        });\n    },\n    error: function(result)\n    {\n    },\n });\n}\nregistrar()\n",
+          "estado": "LECTURA",
+          "orden": 85
+        },
+        {
+          "titulo": "Fecha",
+          "campo": "SER_FEC",
+          "tipo": "FEC",
+          "posicion": "UP",
+          "columnas": "8",
+          "estado": "LECTURA",
+          "orden": 90
+        },
+        {
+          "titulo": "Hora",
+          "campo": "SER_HOR",
+          "tipo": "HRS",
+          "posicion": "UP",
+          "columnas": "12",
+          "estado": "LECTURA",
+          "orden": 100
+        },
+        {
+          "titulo": "DATOS DEL GIA",
+          "campo": "SER_TIT3",
+          "tipo": "TIT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 120
+        },
+        {
+          "titulo": "Nombre del Gia",
+          "campo": "SER_NOMG",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 130
+        }
+      ],
+      "campo_registrado": "2018-06-08T09:38:02",
+      "campo_modificado": "2018-06-27T16:19:06",
+      "campo_usr_id": 2545,
+      "campo_estado": "A",
+      "campo_prc_id": 223,
+      "campo_resumen": null
+    },
+    {
+      "campo_id": 1928,
+      "campo_nombre": "VERIFICACION DE DOCUMENTOS",
+      "campo_descripcion": [
+        {
+          "titulo": "VERIFICACION DE DOCUMENTOS",
+          "campo": "SER_TIT",
+          "tipo": "TIT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 10
+        },
+        {
+          "titulo": "DATOS DEL RESPONSABLE",
+          "campo": "SER_TIT2",
+          "tipo": "TIT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 15
+        },
+        {
+          "titulo": "Nombre Completo",
+          "campo": "SER_NOM",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 20
+        },
+        {
+          "titulo": "Apellido Paterno",
+          "campo": "SER_APEP",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "2",
+          "estado": "ESCRITURA",
+          "orden": 30
+        },
+        {
+          "titulo": "Apellido Materno",
+          "campo": "SER_APEM",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "3",
+          "estado": "ESCRITURA",
+          "orden": 40
+        },
+        {
+          "titulo": "Carnet de Identidad",
+          "campo": "SER_CI",
+          "tipo": "NRO",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 50
+        },
+        {
+          "titulo": "Telefono",
+          "campo": "SER_TEL",
+          "tipo": "NRO",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 59
+        },
+        {
+          "titulo": "Correo",
+          "campo": "SER_COR",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 60
+        },
+        {
+          "titulo": "Nombre de la Instutucion",
+          "campo": "SER_NOM_EST",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 63
+        },
+        {
+          "titulo": "Cantidad Total de  Personas",
+          "campo": "SER_CAN_TOT",
+          "tipo": "NRO",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 70
+        },
+        {
+          "titulo": "Puesto del Responsable",
+          "campo": "SER_CAR",
+          "tipo": "CBO",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 80,
+          "tipo_llenado": "datos",
+          "data": [
+            {
+              "valor": "1",
+              "dato": "DIRECTOR"
+            },
+            {
+              "valor": "2",
+              "dato": "PROFESOR"
+            },
+            {
+              "valor": "3",
+              "dato": "OTRO"
+            }
+          ]
+        },
+        {
+          "titulo": "HTML_1",
+          "campo": "HTML_1",
+          "tipo": "HTML",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 81,
+          "data": "<div style='display: table; width: 100%; border: 0px solid black;'>\n    <div style='display: table-row;'>\n        <div style='display: table-cell; width: 50%; border:'>"
+        },
+        {
+          "titulo": "Carta de Autorizacion",
+          "campo": "SER_CHE_CAR",
+          "tipo": "CHK",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 82
+        },
+        {
+          "titulo": "Nomina del Grupoo",
+          "campo": "SER_CHE_EST",
+          "tipo": "CHK",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 83
+        },
+        {
+          "titulo": "Fecha",
+          "campo": "SER_FEC",
+          "tipo": "FEC",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 90
+        },
+        {
+          "titulo": "HTML_2",
+          "campo": "HTML_2",
+          "tipo": "HTML",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 91,
+          "data": "</div>\n<div style='display: table-cell; width: 50%;'>"
+        },
+        {
+          "titulo": "Hora",
+          "campo": "SER_HOR",
+          "tipo": "HRS",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 100
+        },
+        {
+          "titulo": "HTML_3",
+          "campo": "HTML_3",
+          "tipo": "HTML",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 101,
+          "data": "</div>\n</div>\n</div>"
+        },
+        {
+          "titulo": "Cumple con los Requisitos",
+          "campo": "SER_CUM",
+          "tipo": "CBO",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "",
+          "orden": 110,
+          "tipo_llenado": "datos",
+          "data": [
+            {
+              "valor": "1",
+              "dato": "SI"
+            },
+            {
+              "valor": "2",
+              "dato": "NO"
+            }
+          ]
+        }
+      ],
+      "campo_registrado": "2018-06-06T18:20:47",
+      "campo_modificado": "2018-06-14T14:50:08",
+      "campo_usr_id": 2545,
+      "campo_estado": "A",
+      "campo_prc_id": 223,
+      "campo_resumen": null
+    },
+    {
+      "campo_id": 1940,
+      "campo_nombre": "VERIFICACION DE GIA",
+      "campo_descripcion": [
+        {
+          "titulo": "VERIFICACION DE GIA",
+          "campo": "SER_TIT",
+          "tipo": "TIT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 10
+        },
+        {
+          "titulo": "DATOS DEL RESPONSABLE",
+          "campo": "SER_TIT2",
+          "tipo": "TIT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 15
+        },
+        {
+          "titulo": "Nombre Completo",
+          "campo": "SER_NOM",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 20
+        },
+        {
+          "titulo": "Apellido Paterno",
+          "campo": "SER_APEP",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "2",
+          "estado": "LECTURA",
+          "orden": 30
+        },
+        {
+          "titulo": "Apellido Materno",
+          "campo": "SER_APEM",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "3",
+          "estado": "LECTURA",
+          "orden": 40
+        },
+        {
+          "titulo": "Carnet de Identidad",
+          "campo": "SER_CI",
+          "tipo": "NRO",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 50
+        },
+        {
+          "titulo": "Correo",
+          "campo": "SER_COR",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 60
+        },
+        {
+          "titulo": "Cantidad de Persona",
+          "campo": "SER_CAN_TOT",
+          "tipo": "NRO",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 70
+        },
+        {
+          "titulo": "Puesto del Responsable",
+          "campo": "SER_CAR",
+          "tipo": "CBO",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 80,
+          "tipo_llenado": "datos",
+          "data": [
+            {
+              "valor": "1",
+              "dato": "DIRECTOR"
+            },
+            {
+              "valor": "2",
+              "dato": "PROFESOR"
+            },
+            {
+              "valor": "3",
+              "dato": "OTRO"
+            }
+          ]
+        },
+        {
+          "titulo": "Fecha",
+          "campo": "SER_FEC",
+          "tipo": "FEC",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 90
+        },
+        {
+          "titulo": "Hora",
+          "campo": "SER_HOR",
+          "tipo": "HRS",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 100
+        },
+        {
+          "titulo": "EXISTE GUIA",
+          "campo": "SER_EXTG",
+          "tipo": "CBO",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 110,
+          "tipo_llenado": "datos",
+          "data": [
+            {
+              "valor": "1",
+              "dato": "SI"
+            },
+            {
+              "valor": "2",
+              "dato": "NO"
+            }
+          ]
+        },
+        {
+          "titulo": "DATOS DEL GIA",
+          "campo": "SER_TIT3",
+          "tipo": "TIT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "LECTURA",
+          "orden": 120
+        },
+        {
+          "titulo": "Nombre del Gia",
+          "campo": "SER_NOMG",
+          "tipo": "TXT",
+          "posicion": "UP",
+          "columnas": "1",
+          "estado": "ESCRITURA",
+          "orden": 130
+        }
+      ],
+      "campo_registrado": "2018-06-08T09:32:15",
+      "campo_modificado": "2018-06-11T09:32:21",
+      "campo_usr_id": 2545,
+      "campo_estado": "A",
+      "campo_prc_id": 223,
+      "campo_resumen": null
+    }
+  ],
+  "procact": [
+    {
+      "form_id": 3329,
+      "form_act_id": 1206,
+      "form_orden": 10,
+      "form_descripcion": "REGISTRO DE GRUPO",
+      "form_url": "../../../app/view/formularios/formularios/render.html?1928",
+      "form_registrado": "2018-06-06T18:25:51",
+      "form_modificado": "2018-06-06T18:25:51",
+      "form_usr_id": 2545,
+      "form_estado": "A",
+      "form_tipo_id": 1,
+      "form_direccionamiento": null
+    },
+    {
+      "form_id": 3330,
+      "form_act_id": 1207,
+      "form_orden": 10,
+      "form_descripcion": "REGISTRO DE GRUPO",
+      "form_url": "../../../app/view/formularios/formularios/render.html?1928",
+      "form_registrado": "2018-06-06T18:45:18",
+      "form_modificado": "2018-06-06T18:45:18",
+      "form_usr_id": 2545,
+      "form_estado": "A",
+      "form_tipo_id": 1,
+      "form_direccionamiento": null
+    },
+    {
+      "form_id": 3348,
+      "form_act_id": 1222,
+      "form_orden": 10,
+      "form_descripcion": "VERIFICACION",
+      "form_url": "../../../app/view/formularios/formularios/render.html?1940",
+      "form_registrado": "2018-06-08T09:32:56",
+      "form_modificado": "2018-06-08T09:32:56",
+      "form_usr_id": 2545,
+      "form_estado": "A",
+      "form_tipo_id": 1,
+      "form_direccionamiento": null
+    },
+    {
+      "form_id": 3350,
+      "form_act_id": 1223,
+      "form_orden": 10,
+      "form_descripcion": "REGISTRO DE GRUPO",
+      "form_url": "../../../app/view/formularios/formularios/render.html?1942",
+      "form_registrado": "2018-06-08T11:56:43",
+      "form_modificado": "2018-06-08T16:53:59",
+      "form_usr_id": 2545,
+      "form_estado": "A",
+      "form_tipo_id": 1,
+      "form_direccionamiento": null
+    }
+  ],
+  "reglact": [
+    {
+      "rgn_id": 1182,
+      "rgn_act_id": 1207,
+      "rgn_orden": 10,
+      "rgn_siguiente": 1222,
+      "rgn_registrado": "2018-06-08T11:56:43",
+      "rgn_modificado": "2018-06-08T11:56:43",
+      "rgn_usr_id": 2545,
+      "rgn_estado": "A",
+      "rgn_regla": "'#SER_CUM#' == '1'",
+      "rgn_campo": null,
+      "rgn_valor": null
+    },
+    {
+      "rgn_id": 1183,
+      "rgn_act_id": 1222,
+      "rgn_orden": 10,
+      "rgn_siguiente": 1223,
+      "rgn_registrado": "2018-06-08T11:56:43",
+      "rgn_modificado": "2018-06-08T16:53:59",
+      "rgn_usr_id": 2545,
+      "rgn_estado": "A",
+      "rgn_regla": "'#SER_EXTG#'=='1'",
+      "rgn_campo": null,
+      "rgn_valor": null
+    }
+  ],
+  "reglaproc": [
+    {
+      "rgnf_id": 5319,
+      "rgnf_form_id": 3329,
+      "rgnf_orden": 10,
+      "rgnf_siguiente_formulario": 3329,
+      "rgnf_regla": "TRUE",
+      "rgnf_campo": null,
+      "rgnf_valor": null,
+      "rgnf_registrado": "2018-06-06T18:25:51",
+      "rgnf_modificado": "2018-06-06T18:25:51",
+      "rgnf_usr_id": 2545,
+      "rgnf_estado": "A",
+      "rgnf_tipo_regla": "ENTRADA"
+    },
+    {
+      "rgnf_id": 5320,
+      "rgnf_form_id": 3330,
+      "rgnf_orden": 10,
+      "rgnf_siguiente_formulario": 3330,
+      "rgnf_regla": "true",
+      "rgnf_campo": null,
+      "rgnf_valor": null,
+      "rgnf_registrado": "2018-06-06T18:45:18",
+      "rgnf_modificado": "2018-06-06T18:48:54",
+      "rgnf_usr_id": 2545,
+      "rgnf_estado": "A",
+      "rgnf_tipo_regla": "ENTRADA"
+    },
+    {
+      "rgnf_id": 5345,
+      "rgnf_form_id": 3348,
+      "rgnf_orden": 10,
+      "rgnf_siguiente_formulario": 3348,
+      "rgnf_regla": "true",
+      "rgnf_campo": null,
+      "rgnf_valor": null,
+      "rgnf_registrado": "2018-06-08T09:32:56",
+      "rgnf_modificado": "2018-06-08T09:32:56",
+      "rgnf_usr_id": 2545,
+      "rgnf_estado": "A",
+      "rgnf_tipo_regla": "ENTRADA"
+    },
+    {
+      "rgnf_id": 5346,
+      "rgnf_form_id": 3350,
+      "rgnf_orden": 10,
+      "rgnf_siguiente_formulario": 3350,
+      "rgnf_regla": "true",
+      "rgnf_campo": null,
+      "rgnf_valor": null,
+      "rgnf_registrado": "2018-06-08T11:56:43",
+      "rgnf_modificado": "2018-06-08T11:56:43",
+      "rgnf_usr_id": 2545,
+      "rgnf_estado": "A",
+      "rgnf_tipo_regla": "ENTRADA"
+    }
+  ],
+  "impact": [],
+  "impresiones": [],
+  "nodoactividad": []
+}

@@ -172,7 +172,11 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
               $scope.datos.PER_TRA_NOMBRE_VIA_J = results[0].dtspsl_nombre_via;   
               $scope.datos.PER_TRA_NRO_VV_J = results[0].dtspsl_numero_casa;
               $scope.datos.PER_TRA_CORREO = results[0].dtspsl_correo;   
-              $scope.datos.macroluis = 'asdfasdf';
+              $scope.datos.macroluis = 'MACRODISTRITAL';
+              $scope.datos.zonaluis = 'VARIAS ZONAS';
+              $scope.datos.vialuis = 'VARIAS VARIAS VIAS';
+
+
               console.log($scope.datos);
              // $scope.datos.ggggg = "asdfasdfasdjawerghoípgh asdhoñugy";
 
@@ -229,8 +233,9 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
               $scope.datos.PER_TRA_VIA = results[0].dtspsl_tipo_via; 
               $scope.datos.PER_TRA_NOMBRE_VIA = results[0].dtspsl_nombre_via;
               $scope.datos.PER_TRA_NRO_V = results[0].dtspsl_numero_casa;
-              $scope.datos.macroluis = 'asdfasdf';
-              
+              $scope.datos.macroluis = 'MACRODISTRITAL';
+              $scope.datos.zonaluis = 'VARIAS ZONAS';
+              $scope.datos.vialuis = 'VARIAS VARIAS VIAS';
               console.log($scope.datos);
               if (results[0].dtspsl_file_fotocopia_ci != "") {
                 $scope.datos.INF_CI_ANVERSO = CONFIG.APIURL + "/files/RC_CLI/"+results[0]._id+"/"+results[0].dtspsl_file_fotocopia_ci+"?app_name=todoangular";

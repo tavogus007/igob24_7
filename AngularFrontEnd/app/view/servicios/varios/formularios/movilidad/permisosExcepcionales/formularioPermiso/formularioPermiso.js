@@ -3,12 +3,12 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
   $scope.tipo_persona = sessionService.get('TIPO_PERSONA');
   $scope.oidCiu = sessionService.get('IDSOLICITANTE');
   $scope.datos = {};
-  $scope.trmUsuario = [];
-  $scope.ocultaTipo = false;
   $scope.desabilitado = false;
-  $scope.div_actividad_economica = false;
-  $scope.div_solicitante = false;
-  $scope.div_dias_div = false;
+  $scope.div_zonal = false;
+  $scope.aMacrodistritos = {};
+  $scope.aDistritoZona = {};
+
+
   $scope.inicio = function () {
     console.log("$scope.datos.ggggg", $scope.datos.mac);
     //  $scope.open_mapa_mascotas();
@@ -26,7 +26,8 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
     } else {
       $scope.desabilitado = false;
     }
-    $scope.docdinamicos($scope.datos.PER_TRA_DESCRIP_FOR);
+    //$scope.docdinamicos($scope.datos.PER_TRA_DESCRIP_FOR);
+    $scope.cargarMacrodistritos();
     $("#valida").hide();
     $("#valida1").hide();
     document.getElementById('gu').disabled = true;
@@ -68,6 +69,11 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $.unblockUI();
     }
   }
+
+
+  $scope.f_mostrar_Modal = function () {
+    $("#myModal").modal("show");
+}
 
   ///////////////////////////ENVIO//////////////////////////////
   $scope.validarEnvio = function (data) {
@@ -515,6 +521,57 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
     }, 200);
   };
 
+
+  $scope.tipoUbicacionDinamico = function(data){
+    console.log("asdf",data);
+    if(data == 'MUNICIPAL'){
+      $scope.div_zonal = true;
+    }else {
+      $scope.div_zonal = false;
+    }
+  }
+  $scope.cargarMacrodistritos = function(){
+    var datosP = new macrodistritoLst();
+    datosP.obtmacro(function(resultado){
+      data = JSON.parse(resultado);
+      if(data.success.length > 0){
+        $scope.aMacrodistritos = data.success;
+        console.log("macro", $scope.aMacrodistritos);
+      }else{
+          $scope.msg = "Error !!";
+      }
+    });
+  }
+
+  $scope.listaZona = function(idMacroJ){ 
+    var idMacro = "";
+    if($scope.aMacrodistritos){
+      angular.forEach($scope.aMacrodistritos, function(value, key) {
+        if(value.mcdstt_macrodistrito == idMacroJ){
+          idMacro = value.mcdstt_id;
+        }
+      });
+    }        
+    $scope.datos.idMacro = idMacro;
+    $scope.aDistritoZona = {};
+    try{
+      if(idMacroJ.length != 0){
+        var parametros = new distritoZona();
+        parametros.idMacro = idMacro;
+        parametros.obtdist(function(resultado){
+          data = JSON.parse(resultado);
+          if(data.success.length > 0){
+            $scope.aDistritoZona = data.success;
+            console.log("zonassss",$scope.aDistritoZona);
+          }else{
+            $scope.msg = "Error !!";
+          } 
+        });
+      }
+    }catch(error){
+      console.log('error',error);
+    }
+  }
 
   //////////////////////////////////////// FIN DECLARACION JURADA
   $scope.fmostrarFormulario = function () {

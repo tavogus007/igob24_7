@@ -10,11 +10,11 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
     $scope.templates =
     [ 
         {name: 'template0.html', url: '../../../app/index.html'},//no existe en bd
-        {name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/moustache.html'}
+        {name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/transparencia/moustache/moustache.html'}
     ];
     var p = $scope.serviciosLotus = [
         { name: 'Correspondencia ciudadana', id:'17', idprc:'73', idcampo:'788', scodigo:'CORC'},
-        { name: 'Correspondencia al Concejo Municipal', id:'26', idprc:'73', idcampo:'819', scodigo:'CCCMD'},       
+        { name: 'Corrrespondencia al Concejo Municipal', id:'26', idprc:'73', idcampo:'819', scodigo:'CCCMD'},       
         
         { name: 'Denuncia Ciudadano', id:'67', idprc:'73', idcampo:'819', scodigo:'DRTRD'},       
 

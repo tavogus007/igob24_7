@@ -4,10 +4,19 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
   $scope.oidCiu = sessionService.get('IDSOLICITANTE');
   $scope.datos = {};
   $scope.desabilitado = false;
+  $scope.div_municipal = false;
   $scope.div_zonal = false;
+  $scope.div_boton_agregar_ubicacion = false;
   $scope.aMacrodistritos = {};
   $scope.aDistritoZona = {};
-
+  $scope.datos_zonales = {};
+  $scope.datos_zonales_inicio = {};
+  $scope.datos_zonales_inicio.tipo = "GRD";
+  $scope.datos_zonales_inicio.campos = "PE_MACRO|PE_DISTRI|PE_ZONA|PE_TIPO_VIA|PE_ENTRE_VIA|PE_Y_VIA|PE_NOM_VIA";
+  $scope.datos_zonales_inicio.tipo = "MACRODISTRITO|DISTRITO|ZONA|TIPO DE VIA|ENTRE VIA|Y VIA|VIA";
+  $scope.datos_zonales_inicio.tipo = "true|true|true|true|true|true|true|";
+  $scope.trm_Zonales = [];
+$scope.mod = {};
 
   $scope.inicio = function () {
     console.log("$scope.datos.ggggg", $scope.datos.mac);
@@ -74,7 +83,33 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
   $scope.f_mostrar_Modal = function () {
     $("#myModal").modal("show");
 }
+$scope.adicionarUbicacion = function (data) {
+  if($scope.datos_zonales.PE_MACRO == undefined || $scope.datos_zonales.PE_MACRO == 'undefined' || $scope.datos_zonales.PE_MACRO == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese el MacroDistrito.", "warning");
+  }else if($scope.datos_zonales.PE_ZONA == undefined || $scope.datos_zonales.PE_ZONA == 'undefined' || $scope.datos_zonales.PE_ZONA == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese la Zona.", "warning");
+  }else if($scope.datos_zonales.PE_TIPO_VIA_valor == undefined || $scope.datos_zonales.PE_TIPO_VIA_valor == 'undefined' || $scope.datos_zonales.PE_TIPO_VIA_valor == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese el tipo de vía.", "warning");
+  }else if($scope.datos_zonales.PE_ENTRE_VIA == undefined || $scope.datos_zonales.PE_ENTRE_VIA == 'undefined' || $scope.datos_zonales.PE_ENTRE_VIA == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese la Entre Vía.", "warning");
+  }else if($scope.datos_zonales.PE_Y_VIA_GR == undefined || $scope.datos_zonales.PE_Y_VIA_GR == 'undefined' || $scope.datos_zonales.PE_Y_VIA_GR == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese la Y Vía.", "warning");
+  }else if($scope.datos_zonales.PE_NOM_VIA == undefined || $scope.datos_zonales.PE_NOM_VIA == 'undefined' || $scope.datos_zonales.PE_NOM_VIA == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese el Nombre de la Vía.", "warning");
+  }else{
+    $scope.trm_Zonales.push(data);
+    $scope.datos_zonales = {};
+    $scope.tblZonas.reload();
+  }
+}
 
+$scope.eliminarUbicacion = function (dataExp) {
+  $scope.trm_Zonales.splice($scope.trm_Zonales.indexOf(dataExp), 1);
+  $scope.tblZonas.reload();
+}
+$scope.adicionarVehiculos = function(data){
+  console.log("adicionarVehiculos",data);
+}
   ///////////////////////////ENVIO//////////////////////////////
   $scope.validarEnvio = function (data) {
     swal({
@@ -131,6 +166,41 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       });
     }, 300);
   };
+
+  $scope.mensaje = function (x_title, x_texto, x_type) {
+        swal({
+            title: x_title,
+            text: x_texto,
+            type: x_type,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Aceptar',
+            closeOnConfirm: false
+        }, function () {
+            swal.close();
+        });
+    }
+
+  $scope.tblZonas = new ngTableParams({
+    page: 1,
+    count: 5,
+    filter: {},
+    sorting: {
+        //  IdActividad: 'desc'
+    }
+}, { 
+    total: $scope.trm_Zonales.length,
+    getData: function ($defer, params) {
+        var filteredData = params.filter() ?
+            $filter('filter')($scope.trm_Zonales, params.filter()) :
+            $scope.trm_Zonales;
+        var orderedData = params.sorting() ?
+            $filter('orderBy')(filteredData, params.orderBy()) :
+            $scope.trm_Zonales;
+        params.total($scope.trm_Zonales.length);
+        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+    }
+});
+
 
   $scope.validarFormProcesos = function (nroTramite) {
     idUsuario = sessionService.get('IDUSUARIO');
@@ -524,10 +594,14 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
 
   $scope.tipoUbicacionDinamico = function(data){
     console.log("asdf",data);
-    if(data == 'MUNICIPAL'){
-      $scope.div_zonal = true;
-    }else {
+    if(data == 2){
+      $scope.div_municipal = true;
       $scope.div_zonal = false;
+      $scope.div_boton_agregar_ubicacion = false;
+    }else {
+      $scope.div_municipal = false;
+      $scope.div_zonal = true;
+      $scope.div_boton_agregar_ubicacion = true;
     }
   }
   $scope.cargarMacrodistritos = function(){

@@ -1290,7 +1290,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                             $scope.botoneslic = true;
                             $scope.desabilitado = false;
                             if (codhojaruta.substring(0,6) == 'EMI-AE' || codhojaruta.substring(0,6) == 'REN-LF' || codhojaruta.substring(0,6) == 'AER-EL' || codhojaruta.substring(0,7) == 'MOD_MOD' || codhojaruta.substring(0,8) == 'LICEN-AE' || codhojaruta.substring(0,5) == 'EM-LF' || codhojaruta.substring(0,5) == 'RE-LF') {
-                                var dataLotus = $scope.getDatosLotus(datosAESdoNivel.idactividadeconomica,codhojaruta);
+                                var dataLotus = $scope.getDatosLotus(datosAESdoNivel.idactividadeconomica_ant,codhojaruta);
                                 dataLotus.then(function(respuesta){
                                     console.log('respuesta    ',respuesta);
                                     datosLotus = respuesta.success.data[0].datos;
@@ -1536,11 +1536,35 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     var respLstActEco = JSON.parse(responseActEco);
                     console.log('respLstActEco   ',respLstActEco);
                     if (respLstActEco.length > 0) {
+                        var cont = 0;
+                        var datosListaAE = [];
+                        for (var i = 0; i < respLstActEco.length; i++) {
+                            if (respLstActEco[i].estado == 'baja') {
+                            } else{
+                                objAE = new Object();
+                                objAE.ant_idactividad = respLstActEco[i].ant_idactividad;
+                                objAE.descripcion = respLstActEco[i].descripcion;
+                                objAE.deudaactividad = respLstActEco[i].deudaactividad;
+                                objAE.direccion = respLstActEco[i].direccion;
+                                objAE.estado = respLstActEco[i].estado;
+                                objAE.fecha_emision_licencia = respLstActEco[i].fecha_emision_licencia;
+                                objAE.fecha_vencimiento_licencia = respLstActEco[i].fecha_vencimiento_licencia;
+                                objAE.fechainicio = respLstActEco[i].fechainicio;
+                                objAE.gestiones = respLstActEco[i].gestiones;
+                                objAE.idactividad = respLstActEco[i].idactividad;
+                                objAE.licencia_estado = respLstActEco[i].licencia_estado;
+                                objAE.nro = respLstActEco[i].nro;
+                                objAE.plan_pagos_boolean = respLstActEco[i].plan_pagos_boolean;
+                                objAE.plan_pagos_detalles = respLstActEco[i].plan_pagos_detalles;
+                                datosListaAE[cont] = objAE;
+                                cont++;
+                            };
+                        };
                         $scope.formDatosAE = true;
                         $scope.mostrarMsgActividadTrue = true;
                         $scope.mostrarMsgActividadFalse = false;
-                        $scope.trmUsuario = respLstActEco;
-                        var data = respLstActEco;
+                        $scope.trmUsuario = datosListaAE;
+                        var data = datosListaAE;
                         deferred.resolve(respLstActEco);
                         $scope.tblTramites.reload();
                     }else{

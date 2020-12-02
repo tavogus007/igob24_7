@@ -125,7 +125,7 @@
                                 <table  ng-table="tblTramites" class="table  table-hover" id="lstActividadEconomica">
                                     <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.idactividad==sIdAeGrilla && {'background-color':'#D3D3D3','font-color':'#A2D5AE'}"><!--cambios-->
                                         <td data-title="'No'" ng-click="selActividadEconomica(tramite)">{{tramite.nro}}</td>
-                                        <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.idactividad}}</td>
+                                        <td data-title="'ID ACTIVIDAD'" ng-click="selActividadEconomica(tramite)">{{tramite.ant_idactividad}}</td>
                                         <td data-title="'DIRECCION'" ng-click="selActividadEconomica(tramite)">{{tramite.direccion}}</td>
                                         <td data-title="'DESCRIPCIÓN'" ng-click="selActividadEconomica(tramite)">{{tramite.descripcion}}</td>
                                         <td data-title="'DEUDA'" ng-click="selActividadEconomica(tramite)">{{tramite.deudaactividad}} </td>

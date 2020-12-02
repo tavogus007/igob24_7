@@ -6,6 +6,8 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
   $scope.desabilitado = false;
   $scope.div_municipal = false;
   $scope.div_zonal = false;
+  $scope.div_agregar_vehiculo = true;
+  $scope.datos_carro = {};
   $scope.div_boton_agregar_ubicacion = false;
   $scope.aMacrodistritos = {};
   $scope.aDistritoZona = {};
@@ -16,8 +18,9 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
   $scope.datos_zonales_inicio.tipo = "MACRODISTRITO|DISTRITO|ZONA|TIPO DE VIA|ENTRE VIA|Y VIA|VIA";
   $scope.datos_zonales_inicio.tipo = "true|true|true|true|true|true|true|";
   $scope.trm_Zonales = [];
-$scope.mod = {};
+  $scope.trm_Vehiculos = [];
 
+  $scope.mod = {};
   $scope.inicio = function () {
     console.log("$scope.datos.ggggg", $scope.datos.mac);
     //  $scope.open_mapa_mascotas();
@@ -103,13 +106,52 @@ $scope.adicionarUbicacion = function (data) {
   }
 }
 
+$scope.adicionarVehiculo = function (data) {
+  if($scope.datos_carro.PE_PLACA_CIRC == undefined || $scope.datos_carro.PE_PLACA_CIRC == 'undefined' || $scope.datos_carro.PE_PLACA_CIRC == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese la placa de circulación.", "warning");
+  }else if($scope.datos_carro.PE_RADICATORIA == undefined || $scope.datos_carro.PE_RADICATORIA == 'undefined' || $scope.datos_carro.PE_RADICATORIA == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese la Radicatoria.", "warning");
+  }else if($scope.datos_carro.PE_COLOR_VEH == undefined || $scope.datos_carro.PE_COLOR_VEH == 'undefined' || $scope.datos_carro.PE_COLOR_VEH == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese el color del vehículo.", "warning");
+  }else if($scope.datos_carro.PE_G_TIPO == undefined || $scope.datos_carro.PE_G_TIPO == 'undefined' || $scope.datos_carro.PE_G_TIPO == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese la clase del vehículo.", "warning");
+  }else if($scope.datos_carro.PE_MARCA_VEH == undefined || $scope.datos_carro.PE_MARCA_VEH == 'undefined' || $scope.datos_carro.PE_MARCA_VEH == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese la marca del vehículo.", "warning");
+  }else if($scope.datos_carro.PE_G_TIPO_valor == undefined || $scope.datos_carro.PE_G_TIPO_valor == 'undefined' || $scope.datos_carro.PE_G_TIPO_valor == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese el modelo del vehículo.", "warning");
+  }else if($scope.datos_carro.PE_TIPO_SERVICIO == undefined || $scope.datos_carro.PE_TIPO_SERVICIO == 'undefined' || $scope.datos_carro.PE_TIPO_SERVICIO == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese el servicio del vehículo.", "warning");
+  }else if($scope.datos_carro.PE_DIMENSIONES == undefined || $scope.datos_carro.PE_DIMENSIONES == 'undefined' || $scope.datos_carro.PE_DIMENSIONES == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese las dimensiones.", "warning");
+  }else if($scope.datos_carro.PE_NOMBRE_PROP == undefined || $scope.datos_carro.PE_NOMBRE_PROP == 'undefined' || $scope.datos_carro.PE_NOMBRE_PROP == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese el nombre del propietario.", "warning");
+  }else if($scope.datos_carro.PE_PLACA_OBSERVADO == undefined || $scope.datos_carro.PE_PLACA_OBSERVADO == 'undefined' || $scope.datos_carro.PE_PLACA_OBSERVADO == ""){
+    $scope.mensaje("Estimado Ciudadano", "Ingrese el campo observado.", "warning");
+  }else{
+    console.log("111111",data);
+    console.log("trm_Vehiculos 1",$scope.trm_Vehiculos);
+
+    $scope.trm_Vehiculos.push(data);
+
+    console.log("trm_Vehiculos 2",$scope.trm_Vehiculos);
+
+    $scope.datos_carro = {};
+    $scope.tblCarros.reload();
+  }
+}
+
+
 $scope.eliminarUbicacion = function (dataExp) {
   $scope.trm_Zonales.splice($scope.trm_Zonales.indexOf(dataExp), 1);
   $scope.tblZonas.reload();
 }
-$scope.adicionarVehiculos = function(data){
-  console.log("adicionarVehiculos",data);
+
+$scope.eliminarVehiculos = function (dataExp) {
+  $scope.trm_Vehiculos.splice($scope.trm_Vehiculos.indexOf(dataExp), 1);
+  $scope.tblCarros.reload();
 }
+
+
   ///////////////////////////ENVIO//////////////////////////////
   $scope.validarEnvio = function (data) {
     swal({
@@ -201,6 +243,27 @@ $scope.adicionarVehiculos = function(data){
     }
 });
 
+
+$scope.tblCarros = new ngTableParams({
+  page: 1,
+  count: 5,
+  filter: {},
+  sorting: {
+      //  IdActividad: 'desc'
+  }
+}, { 
+  total: $scope.trm_Vehiculos.length,
+  getData: function ($defer, params) {
+      var filteredData = params.filter() ?
+          $filter('filter')($scope.trm_Vehiculos, params.filter()) :
+          $scope.trm_Vehiculos;
+      var orderedData = params.sorting() ?
+          $filter('orderBy')(filteredData, params.orderBy()) :
+          $scope.trm_Vehiculos;
+      params.total($scope.trm_Vehiculos.length);
+      $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+  }
+});
 
   $scope.validarFormProcesos = function (nroTramite) {
     idUsuario = sessionService.get('IDUSUARIO');

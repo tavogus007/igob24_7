@@ -15,12 +15,35 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
   $scope.datos_zonales_inicio = {};
   $scope.datos_zonales_inicio.tipo = "GRD";
   $scope.datos_zonales_inicio.campos = "PE_MACRO|PE_DISTRI|PE_ZONA|PE_TIPO_VIA|PE_ENTRE_VIA|PE_Y_VIA|PE_NOM_VIA";
-  $scope.datos_zonales_inicio.tipo = "MACRODISTRITO|DISTRITO|ZONA|TIPO DE VIA|ENTRE VIA|Y VIA|VIA";
-  $scope.datos_zonales_inicio.tipo = "true|true|true|true|true|true|true|";
-  $scope.trm_Zonales = [];
-  $scope.trm_Vehiculos = [];
+  $scope.datos_zonales_inicio.titulos = "MACRODISTRITO|DISTRITO|ZONA|TIPO DE VIA|ENTRE VIA|Y VIA|VIA";
+  $scope.datos_zonales_inicio.impresiones = "true|true|true|true|true|true|true|";
 
-  $scope.mod = {};
+
+
+
+
+  $scope.datos_carros_inicial = {};
+  $scope.datos_carros_inicial.tipo = "GRD";
+  $scope.datos_carros_inicial.campos = "PE_PLACA_CIRC|PE_RADICATORIA|PE_COLOR|PE_G_TIPO|PE_MARCA_VEH|PE_COLOR_VEH|PE_TIPO_SERVICIO|PE_DIMENSIONES|PE_NOMBRE_PROP|PE_PLACA_OBSERVADO";
+  $scope.datos_carros_inicial.titulos = "PLACA DE CIRCULACIÓN|RADICATORIA|COLOR|CLASE|MARCA|MODELO|SERVICIO|DIMENSIONES|NOMBRE PROPIETARIO|OBSERVADO";
+  $scope.datos_carros_inicial.impresiones = "undefined|undefined|undefined|true|undefined|undefined|true|true|undefined|undefined|";
+
+
+
+
+
+
+  $scope.trm_Zonales = [];
+  $scope.envio_Zonales = [];
+  $scope.envio_Carros = [];
+
+
+  $scope.trm_Vehiculos = [];
+  $scope.div_jerarquia_viral = false;
+  $scope.div_foto_restriccion_vehicular = false;
+  $scope.div_mapa_datos = false;
+  $scope.div_cierre_formulario = false;
+  $scope.div_vehiculos_datos = false;
   $scope.inicio = function () {
     console.log("$scope.datos.ggggg", $scope.datos.mac);
     //  $scope.open_mapa_mascotas();
@@ -28,6 +51,11 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
 
   var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function (event, data) {
     $scope.datos = JSON.parse(data);
+    console.log($scope.datos,":::::::::::::::::::::");
+    //************** */
+    $scope.permisoDinamico($scope.datos.PE_T_PERMISO_VALOR);
+    $scope.tipoUbicacionDinamico($scope.datos.PE_UBICACION);
+    //***************************** */
     if ($scope.datos.File_Adjunto == undefined) {
       $scope.datos.File_Adjunto = [];
       $scope.datos.valPlaca = 2;
@@ -50,6 +78,41 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
   });
 
   //////////////////////////GUARDA TRAMITE//////////////////////
+  $scope.validacionFinal = function (data) {
+    /* if(){
+ pabon
+     }*/
+
+
+console.log("$scope.datos.PE_T_PERMISO_VALOR",$scope.datos.PE_T_PERMISO_VALOR);
+    if($scope.datos.PE_T_PERMISO_VALOR == 'PARADA MOMENTANEA'){
+
+
+
+      console.log("111111111",$scope.envio_Zonales);
+      $scope.envio_Zonales.push($scope.datos_zonales_inicio);
+      console.log("222222222222222222",$scope.envio_Zonales);
+      for(var i = 0 ; i < $scope.trm_Zonales.length ;i ++){
+       $scope.envio_Zonales.push($scope.trm_Zonales[i]);
+      }
+     $scope.datos.PE_GR_UBICACION = $scope.envio_Zonales;
+     console.log("PE_GR_UBICACION",$scope.datos.PE_GR_UBICACION);
+
+
+     console.log("111cc",$scope.envio_Carros);
+     $scope.envio_Carros.push($scope.datos_carros_inicial);
+     console.log("222ccc",$scope.envio_Carros);
+     for(var i = 0 ; i < $scope.trm_Vehiculos.length ;i ++){
+      $scope.envio_Carros.push($scope.trm_Vehiculos[i]);
+     }
+    $scope.datos.PE_G_VEHICULOS = $scope.envio_Carros;
+    console.log("PE_G_VEHICULOS",$scope.datos.PE_G_VEHICULOS);
+
+    }else if($scope.datos.PE_T_PERMISO_VALOR == 'PARADA MOMENTANEA'){
+      
+    }
+    //$scope.guardar_tramite(data);
+  }
   $scope.guardar_tramite = function (datos) {
     datos.Tipo_tramite_creado = "WEB";
     try {
@@ -82,74 +145,80 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
     }
   }
 
+  $scope.funcionLuis = function(data){
+    var fecha1 = moment('2016-07-12');
+var fecha2 = moment('2016-08-01');
+
+console.log(fecha2.diff(fecha1, 'days'), ' dias de diferencia');
+  }
 
   $scope.f_mostrar_Modal = function () {
     $("#myModal").modal("show");
-}
-$scope.adicionarUbicacion = function (data) {
-  if($scope.datos_zonales.PE_MACRO == undefined || $scope.datos_zonales.PE_MACRO == 'undefined' || $scope.datos_zonales.PE_MACRO == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese el MacroDistrito.", "warning");
-  }else if($scope.datos_zonales.PE_ZONA == undefined || $scope.datos_zonales.PE_ZONA == 'undefined' || $scope.datos_zonales.PE_ZONA == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese la Zona.", "warning");
-  }else if($scope.datos_zonales.PE_TIPO_VIA_valor == undefined || $scope.datos_zonales.PE_TIPO_VIA_valor == 'undefined' || $scope.datos_zonales.PE_TIPO_VIA_valor == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese el tipo de vía.", "warning");
-  }else if($scope.datos_zonales.PE_ENTRE_VIA == undefined || $scope.datos_zonales.PE_ENTRE_VIA == 'undefined' || $scope.datos_zonales.PE_ENTRE_VIA == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese la Entre Vía.", "warning");
-  }else if($scope.datos_zonales.PE_Y_VIA_GR == undefined || $scope.datos_zonales.PE_Y_VIA_GR == 'undefined' || $scope.datos_zonales.PE_Y_VIA_GR == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese la Y Vía.", "warning");
-  }else if($scope.datos_zonales.PE_NOM_VIA == undefined || $scope.datos_zonales.PE_NOM_VIA == 'undefined' || $scope.datos_zonales.PE_NOM_VIA == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese el Nombre de la Vía.", "warning");
-  }else{
-    $scope.trm_Zonales.push(data);
-    $scope.datos_zonales = {};
+  }
+  $scope.adicionarUbicacion = function (data) {
+    if ($scope.datos_zonales.PE_MACRO == undefined || $scope.datos_zonales.PE_MACRO == 'undefined' || $scope.datos_zonales.PE_MACRO == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese el MacroDistrito.", "warning");
+    } else if ($scope.datos_zonales.PE_ZONA == undefined || $scope.datos_zonales.PE_ZONA == 'undefined' || $scope.datos_zonales.PE_ZONA == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese la Zona.", "warning");
+    } else if ($scope.datos_zonales.PE_TIPO_VIA_valor == undefined || $scope.datos_zonales.PE_TIPO_VIA_valor == 'undefined' || $scope.datos_zonales.PE_TIPO_VIA_valor == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese el tipo de vía.", "warning");
+    } else if ($scope.datos_zonales.PE_ENTRE_VIA == undefined || $scope.datos_zonales.PE_ENTRE_VIA == 'undefined' || $scope.datos_zonales.PE_ENTRE_VIA == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese la Entre Vía.", "warning");
+    } else if ($scope.datos_zonales.PE_Y_VIA_GR == undefined || $scope.datos_zonales.PE_Y_VIA_GR == 'undefined' || $scope.datos_zonales.PE_Y_VIA_GR == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese la Y Vía.", "warning");
+    } else if ($scope.datos_zonales.PE_NOM_VIA == undefined || $scope.datos_zonales.PE_NOM_VIA == 'undefined' || $scope.datos_zonales.PE_NOM_VIA == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese el Nombre de la Vía.", "warning");
+    } else {
+      $scope.trm_Zonales.push(data);
+      $scope.datos_zonales = {};
+      $scope.tblZonas.reload();
+    }
+  }
+
+  $scope.adicionarVehiculo = function (data) {
+    if ($scope.datos_carro.PE_PLACA_CIRC == undefined || $scope.datos_carro.PE_PLACA_CIRC == 'undefined' || $scope.datos_carro.PE_PLACA_CIRC == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese la placa de circulación.", "warning");
+    } else if ($scope.datos_carro.PE_RADICATORIA == undefined || $scope.datos_carro.PE_RADICATORIA == 'undefined' || $scope.datos_carro.PE_RADICATORIA == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese la Radicatoria.", "warning");
+    } else if ($scope.datos_carro.PE_COLOR_VEH == undefined || $scope.datos_carro.PE_COLOR_VEH == 'undefined' || $scope.datos_carro.PE_COLOR_VEH == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese el color del vehículo.", "warning");
+    } else if ($scope.datos_carro.PE_G_TIPO == undefined || $scope.datos_carro.PE_G_TIPO == 'undefined' || $scope.datos_carro.PE_G_TIPO == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese la clase del vehículo.", "warning");
+    } else if ($scope.datos_carro.PE_MARCA_VEH == undefined || $scope.datos_carro.PE_MARCA_VEH == 'undefined' || $scope.datos_carro.PE_MARCA_VEH == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese la marca del vehículo.", "warning");
+    } else if ($scope.datos_carro.PE_G_TIPO_valor == undefined || $scope.datos_carro.PE_G_TIPO_valor == 'undefined' || $scope.datos_carro.PE_G_TIPO_valor == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese el modelo del vehículo.", "warning");
+    } else if ($scope.datos_carro.PE_TIPO_SERVICIO == undefined || $scope.datos_carro.PE_TIPO_SERVICIO == 'undefined' || $scope.datos_carro.PE_TIPO_SERVICIO == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese el servicio del vehículo.", "warning");
+    } else if ($scope.datos_carro.PE_DIMENSIONES == undefined || $scope.datos_carro.PE_DIMENSIONES == 'undefined' || $scope.datos_carro.PE_DIMENSIONES == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese las dimensiones.", "warning");
+    } else if ($scope.datos_carro.PE_NOMBRE_PROP == undefined || $scope.datos_carro.PE_NOMBRE_PROP == 'undefined' || $scope.datos_carro.PE_NOMBRE_PROP == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese el nombre del propietario.", "warning");
+    } else if ($scope.datos_carro.PE_PLACA_OBSERVADO == undefined || $scope.datos_carro.PE_PLACA_OBSERVADO == 'undefined' || $scope.datos_carro.PE_PLACA_OBSERVADO == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese el campo observado.", "warning");
+    } else {
+      console.log("111111", data);
+      console.log("trm_Vehiculos 1", $scope.trm_Vehiculos);
+
+      $scope.trm_Vehiculos.push(data);
+
+      console.log("trm_Vehiculos 2", $scope.trm_Vehiculos);
+
+      $scope.datos_carro = {};
+      $scope.tblCarros.reload();
+    }
+  }
+
+
+  $scope.eliminarUbicacion = function (dataExp) {
+    $scope.trm_Zonales.splice($scope.trm_Zonales.indexOf(dataExp), 1);
     $scope.tblZonas.reload();
   }
-}
 
-$scope.adicionarVehiculo = function (data) {
-  if($scope.datos_carro.PE_PLACA_CIRC == undefined || $scope.datos_carro.PE_PLACA_CIRC == 'undefined' || $scope.datos_carro.PE_PLACA_CIRC == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese la placa de circulación.", "warning");
-  }else if($scope.datos_carro.PE_RADICATORIA == undefined || $scope.datos_carro.PE_RADICATORIA == 'undefined' || $scope.datos_carro.PE_RADICATORIA == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese la Radicatoria.", "warning");
-  }else if($scope.datos_carro.PE_COLOR_VEH == undefined || $scope.datos_carro.PE_COLOR_VEH == 'undefined' || $scope.datos_carro.PE_COLOR_VEH == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese el color del vehículo.", "warning");
-  }else if($scope.datos_carro.PE_G_TIPO == undefined || $scope.datos_carro.PE_G_TIPO == 'undefined' || $scope.datos_carro.PE_G_TIPO == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese la clase del vehículo.", "warning");
-  }else if($scope.datos_carro.PE_MARCA_VEH == undefined || $scope.datos_carro.PE_MARCA_VEH == 'undefined' || $scope.datos_carro.PE_MARCA_VEH == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese la marca del vehículo.", "warning");
-  }else if($scope.datos_carro.PE_G_TIPO_valor == undefined || $scope.datos_carro.PE_G_TIPO_valor == 'undefined' || $scope.datos_carro.PE_G_TIPO_valor == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese el modelo del vehículo.", "warning");
-  }else if($scope.datos_carro.PE_TIPO_SERVICIO == undefined || $scope.datos_carro.PE_TIPO_SERVICIO == 'undefined' || $scope.datos_carro.PE_TIPO_SERVICIO == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese el servicio del vehículo.", "warning");
-  }else if($scope.datos_carro.PE_DIMENSIONES == undefined || $scope.datos_carro.PE_DIMENSIONES == 'undefined' || $scope.datos_carro.PE_DIMENSIONES == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese las dimensiones.", "warning");
-  }else if($scope.datos_carro.PE_NOMBRE_PROP == undefined || $scope.datos_carro.PE_NOMBRE_PROP == 'undefined' || $scope.datos_carro.PE_NOMBRE_PROP == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese el nombre del propietario.", "warning");
-  }else if($scope.datos_carro.PE_PLACA_OBSERVADO == undefined || $scope.datos_carro.PE_PLACA_OBSERVADO == 'undefined' || $scope.datos_carro.PE_PLACA_OBSERVADO == ""){
-    $scope.mensaje("Estimado Ciudadano", "Ingrese el campo observado.", "warning");
-  }else{
-    console.log("111111",data);
-    console.log("trm_Vehiculos 1",$scope.trm_Vehiculos);
-
-    $scope.trm_Vehiculos.push(data);
-
-    console.log("trm_Vehiculos 2",$scope.trm_Vehiculos);
-
-    $scope.datos_carro = {};
+  $scope.eliminarVehiculos = function (dataExp) {
+    $scope.trm_Vehiculos.splice($scope.trm_Vehiculos.indexOf(dataExp), 1);
     $scope.tblCarros.reload();
   }
-}
-
-
-$scope.eliminarUbicacion = function (dataExp) {
-  $scope.trm_Zonales.splice($scope.trm_Zonales.indexOf(dataExp), 1);
-  $scope.tblZonas.reload();
-}
-
-$scope.eliminarVehiculos = function (dataExp) {
-  $scope.trm_Vehiculos.splice($scope.trm_Vehiculos.indexOf(dataExp), 1);
-  $scope.tblCarros.reload();
-}
 
 
   ///////////////////////////ENVIO//////////////////////////////
@@ -188,12 +257,12 @@ $scope.eliminarVehiculos = function (dataExp) {
       $.blockUI();
       var f = new Date();
       datos.g_fecha = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear()
-      datos.g_tipo_tramite = 'PER_TRA';
+      datos.g_tipo_tramite = 'PEE';
       data_form = JSON.stringify(datos);
       var tramite = new crearTramiteMovilidad();
       tramite.usr_id = 1;
       tramite.datos = data_form;
-      tramite.procodigo = 'PER_TRA';
+      tramite.procodigo = 'PEE';
       var nroTramiteEnviado = sessionService.get('NROTRAMITE');
       tramite.tramite_linea(function (results) {
         results = JSON.parse(results);
@@ -210,60 +279,60 @@ $scope.eliminarVehiculos = function (dataExp) {
   };
 
   $scope.mensaje = function (x_title, x_texto, x_type) {
-        swal({
-            title: x_title,
-            text: x_texto,
-            type: x_type,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: 'Aceptar',
-            closeOnConfirm: false
-        }, function () {
-            swal.close();
-        });
-    }
+    swal({
+      title: x_title,
+      text: x_texto,
+      type: x_type,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Aceptar',
+      closeOnConfirm: false
+    }, function () {
+      swal.close();
+    });
+  }
 
   $scope.tblZonas = new ngTableParams({
     page: 1,
     count: 5,
     filter: {},
     sorting: {
-        //  IdActividad: 'desc'
+      //  IdActividad: 'desc'
     }
-}, { 
+  }, {
     total: $scope.trm_Zonales.length,
     getData: function ($defer, params) {
-        var filteredData = params.filter() ?
-            $filter('filter')($scope.trm_Zonales, params.filter()) :
-            $scope.trm_Zonales;
-        var orderedData = params.sorting() ?
-            $filter('orderBy')(filteredData, params.orderBy()) :
-            $scope.trm_Zonales;
-        params.total($scope.trm_Zonales.length);
-        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-    }
-});
-
-
-$scope.tblCarros = new ngTableParams({
-  page: 1,
-  count: 5,
-  filter: {},
-  sorting: {
-      //  IdActividad: 'desc'
-  }
-}, { 
-  total: $scope.trm_Vehiculos.length,
-  getData: function ($defer, params) {
       var filteredData = params.filter() ?
-          $filter('filter')($scope.trm_Vehiculos, params.filter()) :
-          $scope.trm_Vehiculos;
+        $filter('filter')($scope.trm_Zonales, params.filter()) :
+        $scope.trm_Zonales;
       var orderedData = params.sorting() ?
-          $filter('orderBy')(filteredData, params.orderBy()) :
-          $scope.trm_Vehiculos;
+        $filter('orderBy')(filteredData, params.orderBy()) :
+        $scope.trm_Zonales;
+      params.total($scope.trm_Zonales.length);
+      $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+    }
+  });
+
+
+  $scope.tblCarros = new ngTableParams({
+    page: 1,
+    count: 5,
+    filter: {},
+    sorting: {
+      //  IdActividad: 'desc'
+    }
+  }, {
+    total: $scope.trm_Vehiculos.length,
+    getData: function ($defer, params) {
+      var filteredData = params.filter() ?
+        $filter('filter')($scope.trm_Vehiculos, params.filter()) :
+        $scope.trm_Vehiculos;
+      var orderedData = params.sorting() ?
+        $filter('orderBy')(filteredData, params.orderBy()) :
+        $scope.trm_Vehiculos;
       params.total($scope.trm_Vehiculos.length);
       $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-  }
-});
+    }
+  });
 
   $scope.validarFormProcesos = function (nroTramite) {
     idUsuario = sessionService.get('IDUSUARIO');
@@ -290,7 +359,41 @@ $scope.tblCarros = new ngTableParams({
       $.unblockUI();
     }
   };
-  $scope.docdinamicos = function (data) {
+  $scope.permisoDinamico = function (data) {
+    console.log("data:::: ", data);
+    if (data == 'PARADA MOMENTANEA') {
+      $scope.div_jerarquia_viral = false;
+      $scope.div_foto_restriccion_vehicular = false;
+      $scope.div_mapa_datos = true;
+      $scope.div_cierre_formulario = false;
+      $scope.div_vehiculos_datos = true;
+
+    } else if (data == 'ESTACIONAMIENTO') {
+      $scope.div_jerarquia_viral = false;
+      $scope.div_foto_restriccion_vehicular = false;
+      $scope.div_cierre_formulario = false;
+      $scope.div_mapa_datos = true;
+      $scope.div_vehiculos_datos = true;
+
+    } else if (data == 'CIERRE DE VIAS') {
+      $scope.div_jerarquia_viral = true;
+      $scope.div_foto_restriccion_vehicular = false;
+      $scope.div_mapa_datos = true;
+      $scope.div_cierre_formulario = true;
+      $scope.div_vehiculos_datos = false;
+
+    } else if (data == 'AREA DE RESTRICCION VEHICULAR') {
+      $scope.div_jerarquia_viral = false;
+      $scope.div_foto_restriccion_vehicular = true;
+      $scope.div_mapa_datos = false;
+      $scope.div_cierre_formulario = false;
+      $scope.div_vehiculos_datos = true;
+
+
+    } else {
+      $scope.div_jerarquia_viral = false;
+
+    }
   }
   var iconStylep = new ol.style.Style({
     image: new ol.style.Icon({
@@ -655,58 +758,66 @@ $scope.tblCarros = new ngTableParams({
   };
 
 
-  $scope.tipoUbicacionDinamico = function(data){
-    console.log("asdf",data);
-    if(data == 2){
-      $scope.div_municipal = true;
-      $scope.div_zonal = false;
-      $scope.div_boton_agregar_ubicacion = false;
-    }else {
+  $scope.tipoUbicacionDinamico = function (data) {
+    console.log("asdf", data + '++' + $scope.datos.PE_T_PERMISO_VALOR);
+    if (data == 1 && $scope.datos.PE_T_PERMISO_VALOR == 'PARADA MOMENTANEA') {
       $scope.div_municipal = false;
       $scope.div_zonal = true;
       $scope.div_boton_agregar_ubicacion = true;
+    } else if (data == 1 && $scope.datos.PE_T_PERMISO_VALOR == 'ESTACIONAMIENTO') {
+      $scope.div_municipal = false;
+      $scope.div_zonal = true;
+      $scope.div_boton_agregar_ubicacion = false;
+    } else if (data == 1 && $scope.datos.PE_T_PERMISO_VALOR == 'CIERRE DE VIAS') {
+      $scope.div_municipal = false;
+      $scope.div_zonal = true;
+      $scope.div_boton_agregar_ubicacion = false;
+    } else if (data == 2) {
+      $scope.div_municipal = true;
+      $scope.div_zonal = false;
+      $scope.div_boton_agregar_ubicacion = false;
     }
   }
-  $scope.cargarMacrodistritos = function(){
+  $scope.cargarMacrodistritos = function () {
     var datosP = new macrodistritoLst();
-    datosP.obtmacro(function(resultado){
+    datosP.obtmacro(function (resultado) {
       data = JSON.parse(resultado);
-      if(data.success.length > 0){
+      if (data.success.length > 0) {
         $scope.aMacrodistritos = data.success;
         console.log("macro", $scope.aMacrodistritos);
-      }else{
-          $scope.msg = "Error !!";
+      } else {
+        $scope.msg = "Error !!";
       }
     });
   }
 
-  $scope.listaZona = function(idMacroJ){ 
+  $scope.listaZona = function (idMacroJ) {
     var idMacro = "";
-    if($scope.aMacrodistritos){
-      angular.forEach($scope.aMacrodistritos, function(value, key) {
-        if(value.mcdstt_macrodistrito == idMacroJ){
+    if ($scope.aMacrodistritos) {
+      angular.forEach($scope.aMacrodistritos, function (value, key) {
+        if (value.mcdstt_macrodistrito == idMacroJ) {
           idMacro = value.mcdstt_id;
         }
       });
-    }        
+    }
     $scope.datos.idMacro = idMacro;
     $scope.aDistritoZona = {};
-    try{
-      if(idMacroJ.length != 0){
+    try {
+      if (idMacroJ.length != 0) {
         var parametros = new distritoZona();
         parametros.idMacro = idMacro;
-        parametros.obtdist(function(resultado){
+        parametros.obtdist(function (resultado) {
           data = JSON.parse(resultado);
-          if(data.success.length > 0){
+          if (data.success.length > 0) {
             $scope.aDistritoZona = data.success;
-            console.log("zonassss",$scope.aDistritoZona);
-          }else{
+            console.log("zonassss", $scope.aDistritoZona);
+          } else {
             $scope.msg = "Error !!";
-          } 
+          }
         });
       }
-    }catch(error){
-      console.log('error',error);
+    } catch (error) {
+      console.log('error', error);
     }
   }
 

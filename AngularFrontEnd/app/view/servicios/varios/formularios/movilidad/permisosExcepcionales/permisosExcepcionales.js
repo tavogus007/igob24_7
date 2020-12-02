@@ -175,6 +175,9 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
               $scope.datos.macroluis = 'MACRODISTRITAL';
               $scope.datos.zonaluis = 'VARIAS ZONAS';
               $scope.datos.vialuis = 'VARIAS VARIAS VIAS';
+              $scope.datos.PE_JER_PRI = 'PRIMARIA';
+              $scope.datos.PE_JER_SEC = 'SECUNDARIA';
+              $scope.datos.PE_JER_TER = 'TERCIARIA';
 
 
               console.log($scope.datos);
@@ -236,6 +239,9 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
               $scope.datos.macroluis = 'MACRODISTRITAL';
               $scope.datos.zonaluis = 'VARIAS ZONAS';
               $scope.datos.vialuis = 'VARIAS VIAS';
+              $scope.datos.PE_JER_PRI = 'PRIMARIA';
+              $scope.datos.PE_JER_SEC = 'SECUNDARIA';
+              $scope.datos.PE_JER_TER = 'TERCIARIA';
               console.log($scope.datos);
               if (results[0].dtspsl_file_fotocopia_ci != "") {
                 $scope.datos.INF_CI_ANVERSO = CONFIG.APIURL + "/files/RC_CLI/"+results[0]._id+"/"+results[0].dtspsl_file_fotocopia_ci+"?app_name=todoangular";

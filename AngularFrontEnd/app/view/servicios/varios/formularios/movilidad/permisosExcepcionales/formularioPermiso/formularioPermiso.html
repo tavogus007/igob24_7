@@ -503,7 +503,7 @@
                         <div class="form-check">
                           <label class="tamañoLabel">
                             <input type="radio" name="PE_T_PERMISO_VALOR" ng-model="datos.PE_T_PERMISO_VALOR"
-                              ng-change="docdinamicos(datos.PE_T_PERMISO_VALOR);" value="PARADA MOMENTANEA"> <span
+                              ng-change="permisoDinamico(datos.PE_T_PERMISO_VALOR);" value="PARADA MOMENTANEA"> <span
                               class="label-text"></span>
                           </label>PARADA MOMENTANEA
                         </div>
@@ -512,7 +512,7 @@
                         <div class="form-check">
                           <label class="tamañoLabel">
                             <input type="radio" name="PE_T_PERMISO_VALOR" ng-model="datos.PE_T_PERMISO_VALOR"
-                              ng-change="docdinamicos(datos.PE_T_PERMISO_VALOR);" value="ESTACIONAMIENTO"> <span
+                              ng-change="permisoDinamico(datos.PE_T_PERMISO_VALOR);" value="ESTACIONAMIENTO"> <span
                               class="label-text"></span>
                           </label>ESTACIONAMIENTO
                         </div>
@@ -521,7 +521,7 @@
                         <div class="form-check">
                           <label class="tamañoLabel">
                             <input type="radio" name="PE_T_PERMISO_VALOR" ng-model="datos.PE_T_PERMISO_VALOR"
-                              ng-change="docdinamicos(datos.PE_T_PERMISO_VALOR);" value="CIERRE DE VIAS"> <span
+                              ng-change="permisoDinamico(datos.PE_T_PERMISO_VALOR);" value="CIERRE DE VIAS"> <span
                               class="label-text"></span>
                           </label>CIERRE DE VÍAS
                         </div>
@@ -530,7 +530,7 @@
                         <div class="form-check">
                           <label class="tamañoLabel">
                             <input type="radio" name="PE_T_PERMISO_VALOR" ng-model="datos.PE_T_PERMISO_VALOR"
-                              ng-change="docdinamicos(datos.PE_T_PERMISO_VALOR);" value="AREA DE RESTRICCION VEHICULAR">
+                              ng-change="permisoDinamico(datos.PE_T_PERMISO_VALOR);" value="AREA DE RESTRICCION VEHICULAR">
                             <span class="label-text"></span>
                           </label>ÁREA DE RESTRICCION VEHICULAR
                         </div>
@@ -541,6 +541,24 @@
                 <br>
                 <br>
                 <br>
+                <div ng-show="div_cierre_formulario == true">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="url">Tipo de Cierre</label>
+                        <div class="controls">
+                          <select id="PE_T_CIERRE_VALOR" name="PE_T_CIERRE_VALOR" placeholder="Macrodistrito"
+                            ng-model="datos.PE_T_CIERRE_VALOR" class="form-control" ng-disabled="desabilitado" required>
+                            <option value="">--Seleccionar--</option>
+                            <option value="1">PARCIAL</option>
+                            <option value="2">TOTAL</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             
                 <br>
                 <div class="ibox float-e-margins">
                   <div class="col-md-12">
@@ -551,6 +569,25 @@
                 </div>
                 <br>
                 <br>
+
+                <div ng-show="div_foto_restriccion_vehicular == true">
+           
+                <div class="row">
+                  <div class="col-md-12">
+                    <img src="../../../../../../../../assets/img/mapa_restriccion.png" alt=" Imagen" height="70%"
+                    width="90%" tooltip="Descarga el archivo" align="center">
+                  </div>
+                </div>
+                <br>
+              </div>
+
+
+
+
+
+              <div ng-show="div_mapa_datos == true">
+        
+
                 <div class="row">
                   <div class="col-md-12">
                     <div style="width: 70%;height: 60%;border: #000000;border-style: solid;margin-left: 100px;"
@@ -558,7 +595,7 @@
                     </div>
                   </div>
                 </div>
-                <br>
+
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
@@ -575,6 +612,8 @@
                     </div>
                   </div>
                 </div>
+
+
                 <div ng-show="div_municipal == true">
                   <div class="row">
                     <div class="col-md-12">
@@ -714,6 +753,19 @@
                       </div>
                     </div>
                   </div>
+                  <div class="row">
+                    <div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+
+                          <div class="controls">
+                            <button ng-click="funcionLuis(1);" type="button"
+                              class="btn btn-success fa fa-plus-square" ng-show="desabilitado==false">&nbsp;BOTON LUIS</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div class="col-md-12">
                     <div class="panel panel-default">
                       <div class="panel-heading"><B></B></div>
@@ -737,8 +789,21 @@
                     </div>
                   </div>
                 </div>
+
+
+              </div>
                 <br>
                 <br>
+
+
+
+
+
+
+
+                <div ng-show="div_vehiculos_datos == true">
+            
+
                 <div class="ibox float-e-margins">
                   <div class="col-md-12">
                     <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
@@ -753,16 +818,16 @@
                     <div class="form-group">
                       <label for="url">Nro de Espacio:</label>
                       <div class="controls">
-                        <input type="text" class="form-control" ng-model="datos.INF_O_RT_LUGAR" name="INF_O_RT_LUGAR"
+                        <input type="text" class="form-control" ng-model="datos.PE_NUM_ESP" name="PE_NUM_ESP"
                           value="memorandum" required ng-disabled="desabilitado">
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="url">Numero de :</label>
+                      <label for="url">Numero de Vehículo:</label>
                       <div class="controls">
-                        <input type="text" class="form-control" ng-model="datos.INF_O_RT_LUGAR" name="INF_O_RT_LUGAR"
+                        <input type="text" class="form-control" ng-model="datos.PE_NUM_VEH" name="PE_NUM_VEH"
                           value="memorandum" required ng-disabled="desabilitado">
                       </div>
                     </div>
@@ -947,14 +1012,15 @@
                   </div>
                 </div>
                 <br>
+              </div>
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="url">Tipo:</label>
                       <div class="controls">
-                        <select id="INF_ORT_MACRO" name="INF_ORT_MACRO" placeholder="Macrodistrito"
-                          ng-model="datos.INF_ORT_MACRO" class="form-control" ng-disabled="desabilitado"
-                          ng-change="tipoUbicacionDinamico(datos.INF_ORT_MACRO);">
+                        <select id="PE_TIPO" name="PE_TIPO" placeholder="Macrodistrito"
+                          ng-model="datos.PE_TIPO" class="form-control" ng-disabled="desabilitado"
+                          ng-change="tipoUbicacionDinamico(datos.PE_TIPO);">
                           <option value="">--Seleccionar--</option>
                           <option value="TRANSPORTE CARGA">TRANSPORTE CARGA</option>
                           <option value="TRANSPORTE TURISMO">TRANSPORTE TURISMO</option>
@@ -986,15 +1052,99 @@
                     <div class="form-group">
                       <label for="url">Motivo de Permisos:</label>
                       <div class="controls">
-                        <input type="text" class="form-control" ng-model="datos.INF_O_RT_LUGAR" name="INF_O_RT_LUGAR"
+                        <input type="text" class="form-control" ng-model="datos.PE_MOTIV" name="PE_MOTIV"
                           value="memorandum" required ng-disabled="desabilitado">
                       </div>
                     </div>
                   </div>
                 </div>
+                
+<br>
+<br>
+
+                <div ng-show="div_jerarquia_viral == true">
+
+                <br>
+                <div class="ibox float-e-margins">
+                  <div class="col-md-12">
+                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                      <h4>Jerarquia Víal:</h4>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <br>
+                <br>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="url">PRIMARIA:</label>
+                      <div class="controls">
+                        <input type="text" class="form-control" ng-model="datos.PE_JER_PRI"
+                          name="PE_JER_PRI" value="memorandum" required ng-disabled="true">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="url">Nro de Cuadras:</label>
+                      <div class="controls">
+                        <input type="text" class="form-control" ng-model="datos.PE_NRO_CUADRAS1"
+                          name="PE_NRO_CUADRAS1" value="memorandum" required ng-disabled="desabilitado">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="url">SECUNDARIA:</label>
+                      <div class="controls">
+                        <input type="text" class="form-control" ng-model="datos.PE_JER_SEC"
+                          name="PE_JER_SEC" value="memorandum" required ng-disabled="true">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="url">Nro de Cuadras:</label>
+                      <div class="controls">
+                        <input type="text" class="form-control" ng-model="datos.PE_NRO_CUADRAS2"
+                          name="PE_NRO_CUADRAS2" value="memorandum" required ng-disabled="desabilitado">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="url">TERCIARIA:</label>
+                      <div class="controls">
+                        <input type="text" class="form-control" ng-model="datos.PE_JER_TER"
+                          name="PE_JER_TER" value="memorandum" required ng-disabled="true">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="url">Nro de Cuadras:</label>
+                      <div class="controls">
+                        <input type="text" class="form-control" ng-model="datos.PE_NRO_CUADRAS3"
+                          name="PE_NRO_CUADRAS3" value="memorandum" required ng-disabled="desabilitado">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
                 <div class="col-md-12" align="right"><br>
                   <button id="miFormGuardar" ng-show="desabilitado
-                        ==false" ng-click="guardar_tramite(datos);" type="button" class="btn btn-success fa fa-save"
+                        ==false" ng-click="validacionFinal(datos);" type="button" class="btn btn-success fa fa-save"
                     name="formEnviar">{{translateTitulos.lbl_016_29}}</button>
                   <button ng-click="validarEnvio(datos);" id="gu" type="button"
                     class="btn btn-success fa fa-mail-forward"

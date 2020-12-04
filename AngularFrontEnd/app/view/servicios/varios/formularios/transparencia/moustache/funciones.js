@@ -123,7 +123,7 @@ function validarFrmProcesos (){
         tramiteIgob.frm_tra_id_usuario = idUsuario;
         tramiteIgob.validarFormProcesos(function(resultado){            
             swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente", "Su número de Trámite es: " + nroTramiteEnviado + "\n", "success");
-            angular.element(document.getElementById("id_serviciosLotusController")).scope().tramitesCiudadano();
+            angular.element(document.getElementById("id_serviciosTransparenciaController")).scope().tramitesCiudadano();
             $('#botones').hide();
             document.getElementById("senddata").disabled = true;
             document.getElementById("savedata").disabled = true;
@@ -228,12 +228,14 @@ function enviarData() {
     $.blockUI();
     setTimeout(function(){
         nroDatos = JSON.stringify(dataIgob).length;
+        console.log("GUARDAR DATA");
         if (nroDatos > 2){
             var datosSerializados = JSON.stringify(dataIgob);
             console.log('datosSerializados',datosSerializados);
             var datosTipoTramite = JSON.parse(datosSerializados);
             console.log('datosSerializados XXXX',datosTipoTramite.POC_TIPO_TRAMITE);
-            if (datosTipoTramite.POC_TIPO_TRAMITE == 'CORC'){
+
+            if (datosTipoTramite.POC_TIPO_TRAMITE == 'DRTRD'){
                 quitarComillas = new RegExp('id=\'tinymce\'', "g");
                 datosSerializados = datosSerializados.replace(quitarComillas,'');
                 quitarComillas = new RegExp('class=\'mce-content-body \'', "g");
@@ -249,7 +251,7 @@ function enviarData() {
                 var idProcodigo = 'SITR@M-';
                 var crearCaso   =   new gCrearCasoSitramEnLinea();
                 crearCaso.datos             = datosSerializados;
-                crearCaso.tipo_tramite      = "TD";
+                crearCaso.tipo_tramite      = "DRTRD";
                 crearCaso.sub_tipo_tramite  = 0;
                 crearCaso.tipo_hr           = "EXTERNA";
                 crearCaso.correlativo        = 0;
@@ -262,37 +264,9 @@ function enviarData() {
                 crearCaso.estado            = "ACTIVO";
                 console.log('crearCaso',crearCaso);
             }
-            if (datosTipoTramite.POC_TIPO_TRAMITE == 'CCCMD'){
-                quitarComillas = new RegExp('id=\'tinymce\'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'');
-            quitarComillas = new RegExp('class=\'mce-content-body \'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'');
-            quitarComillas = new RegExp('data-id=\'POC_DESCRIB\'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'');
-            quitarComillas = new RegExp('contenteditable=\'true\'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'');
-            quitarComillas = new RegExp('spellcheck=\'false\'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'');
-            quitarComillas = new RegExp('\'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'&#39;');
-            var idProcodigo = 'SITR@M-';
-            var crearCaso   =   new gCrearCasoSitramEnLinea();
-            crearCaso.datos             = datosSerializados;
-            crearCaso.tipo_tramite      = "CCCMD";
-            crearCaso.sub_tipo_tramite  = 0;
-            crearCaso.tipo_hr           = "EXTERNA";
-            crearCaso.correlativo        = 0;
-            crearCaso.hoja_asunto       = document.getElementById('POC_ASUNTO').value;
-            crearCaso.desc_fojas        = "0";
-            crearCaso.fojas             = 0;
-            crearCaso.nodo_origen       = 2979;
-            crearCaso.nodo_id           = 2979;
-            crearCaso.usuario           = 'Ciudadano';//sessionStorage.getItem('USUARIO');
-            crearCaso.estado            = "ACTIVO";
-            console.log('crearCaso',crearCaso);
-            }
           
-            crearCaso.crearCasoEnLineaSitram(function(response){                
+            crearCaso.crearCasoEnLineaSitram(function(response){
+                console.log(response);
                 try {
                     response    =   JSON.parse(response);
                     var results = response.success.data[0];

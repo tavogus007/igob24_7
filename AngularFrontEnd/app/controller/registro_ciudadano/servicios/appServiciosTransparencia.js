@@ -14,7 +14,7 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
     ];
     var p = $scope.serviciosLotus = [
         { name: 'Correspondencia ciudadana', id:'17', idprc:'73', idcampo:'788', scodigo:'CORC'},
-        { name: 'Corrrespondencia al Concejo Municipal', id:'26', idprc:'73', idcampo:'819', scodigo:'CCCMD'},       
+        { name: 'Correspondencia al Concejo Municipal', id:'26', idprc:'73', idcampo:'819', scodigo:'CCCMD'},       
         
         { name: 'Denuncia Ciudadano', id:'67', idprc:'73', idcampo:'819', scodigo:'DRTRD'},       
 

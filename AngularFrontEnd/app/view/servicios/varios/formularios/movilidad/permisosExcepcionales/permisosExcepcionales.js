@@ -179,8 +179,6 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
               $scope.datos.PE_JER_SEC = 'SECUNDARIA';
               $scope.datos.PE_JER_TER = 'TERCIARIA';
 
-
-              console.log($scope.datos);
              // $scope.datos.ggggg = "asdfasdfasdjawerghoípgh asdhoñugy";
 
               var buscarRepresentante = new rcNatural();
@@ -242,7 +240,6 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
               $scope.datos.PE_JER_PRI = 'PRIMARIA';
               $scope.datos.PE_JER_SEC = 'SECUNDARIA';
               $scope.datos.PE_JER_TER = 'TERCIARIA';
-              console.log($scope.datos);
               if (results[0].dtspsl_file_fotocopia_ci != "") {
                 $scope.datos.INF_CI_ANVERSO = CONFIG.APIURL + "/files/RC_CLI/"+results[0]._id+"/"+results[0].dtspsl_file_fotocopia_ci+"?app_name=todoangular";
               }
@@ -270,7 +267,6 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
         results = JSON.parse(results).success;
         $scope.tramites = results;
         $scope.tramitesUsuario = results;
-        console.log("$scope.tramitesCiudadano:::::",$scope.tramitesCiudadano);
         $scope.tablaTramites.reload();
       })
     };
@@ -372,7 +368,8 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
       }  
       $scope.template = $scope.templates[idTemplate];
       setTimeout(function(){
-        $rootScope.$broadcast('inicializarVista', tramite.form_contenido);
+        var dato = JSON.parse(tramite.form_contenido);
+        $rootScope.$broadcast('inicializarVista', dato);
       },500);
       $scope.$apply();
     };

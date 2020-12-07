@@ -542,189 +542,407 @@
                 <br>
                 <br>
                 <br>
-                <div ng-show="div_cierre_formulario == true">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="url">Tipo de Cierre</label>
-                        <div class="controls">
-                          <select id="PE_T_CIERRE_VALOR" name="PE_T_CIERRE_VALOR" placeholder="Macrodistrito"
-                            ng-model="datos.PE_T_CIERRE_VALOR" class="form-control" ng-disabled="desabilitado" required>
-                            <option value="">--Seleccionar--</option>
-                            <option value="1">PARCIAL</option>
-                            <option value="2">TOTAL</option>
-                          </select>
+                <div ng-show="div_formulario == true">
+                  <div ng-show="div_cierre_formulario == true">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="url">Tipo de Cierre</label>
+                          <div class="controls">
+                            <select id="PE_T_CIERRE_VALOR" name="PE_T_CIERRE_VALOR" placeholder="Macrodistrito"
+                              ng-model="datos.PE_T_CIERRE_VALOR" class="form-control" ng-disabled="desabilitado"
+                              required>
+                              <option value="">--Seleccionar--</option>
+                              <option value="1">PARCIAL</option>
+                              <option value="2">TOTAL</option>
+                            </select>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="ibox float-e-margins">
-                  <div class="col-md-12">
-                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-                      <h4>DATOS DE UBICACIÓN PARA EL PERMISO:</h4>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <br>
-                <div ng-show="div_foto_restriccion_vehicular == true">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <img src="../../../../../../../../assets/img/mapa_restriccion.png" alt=" Imagen" height="70%"
-                        width="90%" tooltip="Descarga el archivo" align="center">
                     </div>
                   </div>
                   <br>
-                </div>
-                <div ng-show="div_mapa_datos == true">
-                  <div class="row">
+                  <div class="ibox float-e-margins">
                     <div class="col-md-12">
-                      <div style="width: 70%;height: 60%;border: #000000;border-style: solid;margin-left: 100px;"
-                        id="mapa_mascotas">
+                      <div class="ibox-title cafeSuave"
+                        style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                        <h4>DATOS DE UBICACIÓN PARA EL PERMISO:</h4>
                       </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="url">Tipo de Ubicación</label>
-                        <div class="controls">
-                          <select id="PE_UBICACION" name="PE_UBICACION" placeholder="Macrodistrito"
-                            ng-model="datos.PE_UBICACION" class="form-control" ng-disabled="desabilitado" required
-                            ng-change="tipoUbicacionDinamico(datos.PE_UBICACION);">
-                            <option value="">--Seleccionar--</option>
-                            <option value="1">ZONAL</option>
-                            <option value="2">MUNICIPAL</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div ng-show="div_municipal == true">
+                  <br>
+                  <br>
+                  <div ng-show="div_foto_restriccion_vehicular == true">
                     <div class="row">
                       <div class="col-md-12">
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label for="url">Macrodistrito:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.macroluis" id="macroluis" name="macroluis"
-                                class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30"
-                                ng-disabled="true" requerid />
+                        <img src="../../../../../../../../assets/img/mapa_restriccion.png" alt=" Imagen" height="70%"
+                          width="90%" tooltip="Descarga el archivo" align="center">
+                      </div>
+                    </div>
+                    <br>
+                  </div>
+                  <div ng-show="div_mapa_datos == true">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div style="width: 70%;height: 60%;border: #000000;border-style: solid;margin-left: 100px;"
+                          id="mapa_mascotas">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="url">Tipo de Ubicación</label>
+                          <div class="controls">
+                            <select id="PE_UBICACION" name="PE_UBICACION" placeholder="Macrodistrito"
+                              ng-model="datos.PE_UBICACION" class="form-control" ng-disabled="desabilitado" required
+                              ng-change="tipoUbicacionDinamico(datos.PE_UBICACION);">
+                              <option value="">--Seleccionar--</option>
+                              <option value="1">ZONAL</option>
+                              <option value="2">MUNICIPAL</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div ng-show="div_municipal == true">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="url">Macrodistrito:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.macroluis" id="macroluis" name="macroluis"
+                                  class="form-control" style="text-transform:uppercase;" value="" width="30%"
+                                  height="30" ng-disabled="true" requerid />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="url">Zona:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.zonaluis" id="zonaluis" name="zonaluis"
+                                  class="form-control" style="text-transform:uppercase;" value="" width="30%"
+                                  height="30" ng-disabled="true" requerid />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="url">Via:</label>
+                              <div class="controls">
+                                <input type="text" ng-model="datos.vialuis" id="vialuis" name="vialuis"
+                                  class="form-control" style="text-transform:uppercase;" value="" width="30%"
+                                  height="30" ng-disabled="true" requerid />
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-4">
+                      </div>
+                    </div>
+                    <div ng-show="div_zonal == true">
+                      <div class="row">
+                        <div class="col-md-6">
                           <div class="form-group">
-                            <label for="url">Zona:</label>
+                            <label for="url">Macrodistrito</label>
                             <div class="controls">
-                              <input type="text" ng-model="datos.zonaluis" id="zonaluis" name="zonaluis"
-                                class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30"
-                                ng-disabled="true" requerid />
+                              <select id="PE_MACRO" name="PE_MACRO" placeholder="Macrodistrito"
+                                ng-model="datos_zonales.PE_MACRO" class="form-control"
+                                ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
+                                required ng-change="listaZona(datos_zonales.PE_MACRO)" ng-disabled="desabilitado">
+                                <option value="">--Seleccionar--</option>
+                              </select>
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                           <div class="form-group">
-                            <label for="url">Via:</label>
+                            <label for="url">Zona</label>
                             <div class="controls">
-                              <input type="text" ng-model="datos.vialuis" id="vialuis" name="vialuis"
-                                class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30"
-                                ng-disabled="true" requerid />
+                              <select id="PE_ZONA" name="PE_ZONA" placeholder="Zona" ng-model="datos_zonales.PE_ZONA"
+                                class="form-control"
+                                ng-options="zona.dist_nombre as zona.dist_nombre for zona in aDistritoZona" required
+                                ng-disabled="desabilitado">
+                                <option value="">--Seleccionar--</option>
+                              </select>
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Tipo de Vía:</label>
+                            <div class="controls">
+                              <select id="PE_TIPO_VIA_valor" name="PE_TIPO_VIA_valor" placeholder="Macrodistrito"
+                                required ng-model="datos_zonales.PE_TIPO_VIA_valor" class="form-control"
+                                ng-disabled="desabilitado"
+                                ng-change="tipoUbicacionDinamico(datos_zonales.PE_TIPO_VIA_valor);">
+                                <option value="">--Seleccionar--</option>
+                                <option value="AVENIDA">AVENIDA</option>
+                                <option value="CALLE">CALLE</option>
+                                <option value="PASAJE">PASAJE</option>
+                                <option value="PLAZA">PLAZA</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Entre Vía:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_zonales.PE_ENTRE_VIA"
+                                name="PE_ENTRE_VIA" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Y Vía:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_zonales.PE_Y_VIA_GR"
+                                name="PE_Y_VIA_GR" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Nombre de la Vía:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_zonales.PE_NOM_VIA"
+                                name="PE_NOM_VIA" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div ng-show="div_boton_agregar_ubicacion == true">
+                      <div class="row">
+                        <div>
+                          <div class="col-md-2">
+                            <div class="form-group">
+
+                              <div class="controls">
+                                <button ng-click="adicionarUbicacion(datos_zonales);" type="button"
+                                  class="btn btn-success fa fa-plus-square" ng-show="desabilitado==false">&nbsp;AGREGAR
+                                  UBICACIÓN</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="panel panel-default">
+                          <div class="panel-heading"><B></B></div>
+                          <div class="panel-body" ng-disabled="true">
+                            <table ng-table="tblZonas" class="table  table-hover">
+                              <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
+                                ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                                <td data-title="'#'" align="center">{{$index+1}}</td>
+                                <td data-title="'MacroDistrito'" align="center">{{tramite.PE_MACRO}}</td>
+                                <td data-title="'Zona'" align="center">{{tramite.PE_ZONA}}</td>
+                                <td data-title="'Tipo de Vía'" align="center">{{tramite.PE_TIPO_VIA_valor}}</td>
+                                <td data-title="'Entre Vía'" align="center">{{tramite.PE_ENTRE_VIA}}</td>
+                                <td data-title="'Y Vía'" align="center">{{tramite.PE_Y_VIA_GR}}</td>
+                                <td data-title="'Nombre de la Vía'" align="center">{{tramite.PE_NOM_VIA}}</td>
+                                <td data-title="'Eliminar'" align="center"><button ng-click="eliminarUbicacion(tramite)"
+                                    type="button" class="btn btn-danger fa fa-times"
+                                    ng-disabled="desabilitado"></button>
+                                </td>
+                              </tr>
+                            </table>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div ng-show="div_zonal == true">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Macrodistrito</label>
-                          <div class="controls">
-                            <select id="PE_MACRO" name="PE_MACRO" placeholder="Macrodistrito"
-                              ng-model="datos_zonales.PE_MACRO" class="form-control"
-                              ng-options="macro.mcdstt_macrodistrito as macro.mcdstt_macrodistrito for macro in aMacrodistritos"
-                              required ng-change="listaZona(datos_zonales.PE_MACRO)" ng-disabled="desabilitado">
-                              <option value="">--Seleccionar--</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Zona</label>
-                          <div class="controls">
-                            <select id="PE_ZONA" name="PE_ZONA" placeholder="Zona" ng-model="datos_zonales.PE_ZONA"
-                              class="form-control"
-                              ng-options="zona.dist_nombre as zona.dist_nombre for zona in aDistritoZona" required
-                              ng-disabled="desabilitado">
-                              <option value="">--Seleccionar--</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Tipo de Vía:</label>
-                          <div class="controls">
-                            <select id="PE_TIPO_VIA_valor" name="PE_TIPO_VIA_valor" placeholder="Macrodistrito" required
-                              ng-model="datos_zonales.PE_TIPO_VIA_valor" class="form-control" ng-disabled="desabilitado"
-                              ng-change="tipoUbicacionDinamico(datos_zonales.PE_TIPO_VIA_valor);">
-                              <option value="">--Seleccionar--</option>
-                              <option value="AVENIDA">AVENIDA</option>
-                              <option value="CALLE">CALLE</option>
-                              <option value="PASAJE">PASAJE</option>
-                              <option value="PLAZA">PLAZA</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Entre Vía:</label>
-                          <div class="controls">
-                            <input type="text" class="form-control" ng-model="datos_zonales.PE_ENTRE_VIA"
-                              name="PE_ENTRE_VIA" value="memorandum" required ng-disabled="desabilitado">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Y Vía:</label>
-                          <div class="controls">
-                            <input type="text" class="form-control" ng-model="datos_zonales.PE_Y_VIA_GR"
-                              name="PE_Y_VIA_GR" value="memorandum" required ng-disabled="desabilitado">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Nombre de la Vía:</label>
-                          <div class="controls">
-                            <input type="text" class="form-control" ng-model="datos_zonales.PE_NOM_VIA"
-                              name="PE_NOM_VIA" value="memorandum" required ng-disabled="desabilitado">
-                          </div>
-                        </div>
+                  <br>
+                  <br>
+                  <div class="ibox float-e-margins">
+                    <div class="col-md-12">
+                      <div class="ibox-title cafeSuave"
+                        style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                        <h4>DATOS DEL VEHÍCULO:</h4>
                       </div>
                     </div>
                   </div>
-                  <div ng-show="div_boton_agregar_ubicacion == true">
+                  <div ng-show="div_vehiculos_datos == true">
+                    <br>
+                    <br>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">Nro de Espacio:</label>
+                          <div class="controls">
+                            <input type="number" class="form-control" ng-model="datos.PE_NUM_ESP" name="PE_NUM_ESP"
+                              value="memorandum" required ng-disabled="desabilitado">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">Numero de Vehículo:</label>
+                          <div class="controls">
+                            <input type="number" class="form-control" ng-model="datos.PE_NUM_VEH" name="PE_NUM_VEH"
+                              value="memorandum" required ng-disabled="desabilitado">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div ng-show="div_agregar_vehiculo == true">
+                      <div class="col-md-12" class="form-control">
+                        <div class="form-group">
+                          <label class="col-sm-12 control-label no-padding-right" for="url"></label>
+                          <div class="col-sm-12" align="left">
+                            <div class="alert alert-success fade in">
+                              <bold>Estimado Ciudadano:</bold>
+                              <br> + Para agregar la placa tome en cuenta el siguiente formato 3935NBN.
+                              <br>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Placa de Circulación:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_carro.PE_PLACA_CIRC"
+                                name="PE_PLACA_CIRC" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Radicatoria:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_carro.PE_RADICATORIA"
+                                name="PE_RADICATORIA" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Color:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_carro.PE_COLOR_VEH"
+                                name="PE_COLOR_VEH" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Clase:</label>
+                            <div class="controls">
+                              <select id="PE_G_TIPO" name="PE_G_TIPO" placeholder="Macrodistrito" required
+                                ng-model="datos_carro.PE_G_TIPO" class="form-control" ng-disabled="desabilitado">
+                                <option value="">--Seleccionar--</option>
+                                <option value="AUTOMOVIL">AUTOMOVIL</option>
+                                <option value="BUS ESCOLAR">BUS ESCOLAR</option>
+                                <option value="CARRY">CARRY</option>
+                                <option value="CAMION">CAMIÓN</option>
+                                <option value="CAMIONETA">CAMIONETA</option>
+                                <option value="COLECTIVO">COLECTIVO</option>
+                                <option value="VOLQUETA">VOLQUETA</option>
+                                <option value="FURGENETA">FURGENETA</option>
+                                <option value="JEEP">JEEP</option>
+                                <option value="MOTOCICLETA">MOTOCICLETA</option>
+                                <option value="BUS">BUS</option>
+                                <option value="MINIBUS">MINIBUS</option>
+                                <option value="VAGONETA">VAGONETA</option>
+                                <option value="TRAILER">TRAILER</option>
+                                <option value="OMNIBUS">OMNIBUS</option>
+                                <option value="OTROS">OTROS</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Marca:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_carro.PE_MARCA_VEH"
+                                name="PE_MARCA_VEH" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Modelo:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_carro.PE_G_TIPO_valor"
+                                name="PE_G_TIPO_valor" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Servicio:</label>
+                            <div class="controls">
+                              <select id="PE_TIPO_SERVICIO" name="PE_TIPO_SERVICIO" placeholder="Macrodistrito" required
+                                ng-model="datos_carro.PE_TIPO_SERVICIO" class="form-control" ng-disabled="desabilitado">
+                                <option value="">--Seleccionar--</option>
+                                <option value="PARTICULAR">PARTICULAR</option>
+                                <option value="PUBLICO">PÚBLICO</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Dimensiones:</label>
+                            <div class="controls">
+                              <select id="PE_DIMENSIONES" name="PE_DIMENSIONES" placeholder="Macrodistrito" required
+                                ng-model="datos_carro.PE_DIMENSIONES" class="form-control" ng-disabled="desabilitado">
+                                <option value="">--Seleccionar--</option>
+                                <option value="1 X 2">1 X 2</option>
+                                <option value="5 X 2.5">5 X 2.5</option>
+                                <option value="5 X 2.5">12 X 3</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Nombre Propietario:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_carro.PE_NOMBRE_PROP"
+                                name="PE_NOMBRE_PROP" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Observado:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_carro.PE_PLACA_OBSERVADO"
+                                name="PE_PLACA_OBSERVADO" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div class="row">
                       <div>
                         <div class="col-md-2">
                           <div class="form-group">
-
                             <div class="controls">
-                              <button ng-click="adicionarUbicacion(datos_zonales);" type="button"
+                              <button ng-click="adicionarVehiculo(datos_carro);" type="button"
                                 class="btn btn-success fa fa-plus-square" ng-show="desabilitado==false">&nbsp;AGREGAR
-                                UBICACIÓN</button>
+                                VEHÍCULO</button>
                             </div>
                           </div>
                         </div>
@@ -734,233 +952,228 @@
                       <div class="panel panel-default">
                         <div class="panel-heading"><B></B></div>
                         <div class="panel-body" ng-disabled="true">
-                          <table ng-table="tblZonas" class="table  table-hover">
+                          <table ng-table="tblCarros" class="table  table-hover">
                             <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
                               ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                              <!--cambios-->
                               <td data-title="'#'" align="center">{{$index+1}}</td>
-                              <td data-title="'MacroDistrito'" align="center">{{tramite.PE_MACRO}}</td>
-                              <td data-title="'Zona'" align="center">{{tramite.PE_ZONA}}</td>
-                              <td data-title="'Tipo de Vía'" align="center">{{tramite.PE_TIPO_VIA_valor}}</td>
-                              <td data-title="'Entre Vía'" align="center">{{tramite.PE_ENTRE_VIA}}</td>
-                              <td data-title="'Y Vía'" align="center">{{tramite.PE_Y_VIA_GR}}</td>
-                              <td data-title="'Nombre de la Vía'" align="center">{{tramite.PE_NOM_VIA}}</td>
-                              <td data-title="'Eliminar'" align="center"><button ng-click="eliminarUbicacion(tramite)"
-                                  type="button" class="btn btn-danger fa fa-times"
-                                  ng-disabled="xdeshabilitado"></button>
+                              <td data-title="'Placa'" align="center">{{tramite.PE_PLACA_CIRC}}</td>
+                              <td data-title="'Color'" align="center">{{tramite.PE_COLOR_VEH}}</td>
+                              <td data-title="'Clase'" align="center">{{tramite.PE_G_TIPO}}</td>
+                              <td data-title="'Marca'" align="center">{{tramite.PE_MARCA_VEH}}</td>
+                              <td data-title="'Modelo'" align="center">{{tramite.PE_G_TIPO_valor}}</td>
+                              <td data-title="'Nombre del Propietario'" align="center">{{tramite.PE_NOMBRE_PROP}}</td>
+                              <td data-title="'Eliminar'" align="center"><button ng-click="eliminarVehiculos(tramite)"
+                                  type="button" class="btn btn-danger fa fa-times" ng-disabled="desabilitado"></button>
                               </td>
                             </tr>
                           </table>
                         </div>
                       </div>
                     </div>
+                    <br>
                   </div>
-                </div>
-                <br>
-                <br>
-                <div ng-show="div_vehiculos_datos == true">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="url">Tipo:</label>
+                        <div class="controls">
+                          <select id="PE_TIPO" name="PE_TIPO" placeholder="Macrodistrito" ng-model="datos.PE_TIPO"
+                            class="form-control" ng-disabled="desabilitado"
+                            ng-change="tipoUbicacionDinamico(datos.PE_TIPO);">
+                            <option value="">--Seleccionar--</option>
+                            <option value="TRANSPORTE CARGA">TRANSPORTE CARGA</option>
+                            <option value="TRANSPORTE TURISMO">TRANSPORTE TURISMO</option>
+                            <option value="TRANSPORTE ESCOLAR">TRANSPORTE ESCOLAR</option>
+                            <option value="TRANSPORTE PERSONAL">TRANSPORTE PERSONAL</option>
+                            <option value="TRANSPORTE DE PASAJEROS">TRANSPORTE DE PASAJEROS</option>
+                            <option value="MEDIO DE COMUNICACION">MEDIO DE COMUNICACIÓN</option>
+                            <option value="CUERPO DIPLOMATICO">CUERPO DIPLOMÁTICO</option>
+                            <option value="DISTRIBUCION DE PRODUCTOS">DISTRIBUCIÓN DE PRODUCTOS</option>
+                            <option value="ENTIDAD FINANCIERA">ENTIDAD FINANCIERA</option>
+                            <option value="INSTITUCION PRIVADA">INSTITUCIÓN PRIVADA</option>
+                            <option value="INSTITUCION PUBLICA">INSTITUCIÓN PÚBLICA</option>
+                            <option value="GAMLP">GAMLP</option>
+                            <option value="SALUD">SALUD</option>
+                            <option value="HOTELES">HOTELES</option>
+                            <option value="SERVICIO PRIVADO">SERVICIO PRIVADO</option>
+                            <option value="SERVICIO PÚBLICO">SERVICIO PÚBLICO</option>
+                            <option value="FUNERARIAS">FUNERARIAS</option>
+                            <option value="LINEAS AÉREAS">LINEAS AÉREAS</option>
+                            <option value="SINDICATO DE TAXI">SINDICATO DE TAXI</option>
+                            <option value="EMPRESAS DE RADIO TAXIS">EMPRESAS DE RADIO TAXIS</option>
+                            <option value="SERVICIO PRIVADO DE TRANSPORTE">SERVICIO PRIVADO DE TRANSPORTE</option>
+                            <option value="OTRO">OTRO</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="url">Motivo de Permisos:</label>
+                        <div class="controls">
+                          <input type="text" class="form-control" ng-model="datos.PE_MOTIV" name="PE_MOTIV"
+                            value="memorandum" required ng-disabled="desabilitado">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <br>
+                  <div ng-show="div_jerarquia_viral == true">
+                    <br>
+                    <div class="ibox float-e-margins">
+                      <div class="col-md-12">
+                        <div class="ibox-title cafeSuave"
+                          style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                          <h4>Jerarquia Víal:</h4>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">PRIMARIA:</label>
+                          <div class="controls">
+                            <input type="text" class="form-control" ng-model="datos.PE_JER_PRI" name="PE_JER_PRI"
+                              value="memorandum" required ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">Nro de Cuadras:</label>
+                          <div class="controls">
+                            <input type="text" class="form-control" ng-model="datos.PE_NRO_CUADRAS1"
+                              name="PE_NRO_CUADRAS1" value="memorandum" required ng-disabled="desabilitado">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">SECUNDARIA:</label>
+                          <div class="controls">
+                            <input type="text" class="form-control" ng-model="datos.PE_JER_SEC" name="PE_JER_SEC"
+                              value="memorandum" required ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">Nro de Cuadras:</label>
+                          <div class="controls">
+                            <input type="text" class="form-control" ng-model="datos.PE_NRO_CUADRAS2"
+                              name="PE_NRO_CUADRAS2" value="memorandum" required ng-disabled="desabilitado">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">TERCIARIA:</label>
+                          <div class="controls">
+                            <input type="text" class="form-control" ng-model="datos.PE_JER_TER" name="PE_JER_TER"
+                              value="memorandum" required ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">Nro de Cuadras:</label>
+                          <div class="controls">
+                            <input type="text" class="form-control" ng-model="datos.PE_NRO_CUADRAS3"
+                              name="PE_NRO_CUADRAS3" value="memorandum" required ng-disabled="desabilitado">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
                   <div class="ibox float-e-margins">
                     <div class="col-md-12">
                       <div class="ibox-title cafeSuave"
                         style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-                        <h4>DATOS DEL VEHÍCULO:</h4>
+                        <h4>Fechas de Permiso:</h4>
                       </div>
                     </div>
                   </div>
                   <br>
-                  <br>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="url">Nro de Espacio:</label>
-                        <div class="controls">
-                          <input type="number" class="form-control" ng-model="datos.PE_NUM_ESP" name="PE_NUM_ESP"
-                            value="memorandum" required ng-disabled="desabilitado">
+                  <div ng-show="div_agregar_fecha == true">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">FECHA INICIO:</label>
+                          <div class="controls">
+                            <input type="date" class="form-control" ng-model="datos.PE_FECHA_INI" name="PE_FECHA_INI"
+                              value="memorandum" required ng-disabled="desabilitado">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">FECHA FIN:</label>
+                          <div class="controls">
+                            <input type="date" class="form-control" ng-model="datos.PE_FECHA_FIN" name="PE_FECHA_FIN"
+                              value="memorandum" required ng-disabled="desabilitado">
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="url">Numero de Vehículo:</label>
-                        <div class="controls">
-                          <input type="number" class="form-control" ng-model="datos.PE_NUM_VEH" name="PE_NUM_VEH"
-                            value="memorandum" required ng-disabled="desabilitado">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">HORA INICIO:</label>
+                          <div class="controls">
+                            <input type="time" class="form-control" ng-model="datos.PE_HORA_INICIO"
+                              name="PE_HORA_INICIO" value="memorandum" required ng-disabled="desabilitado">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">HORA FIN:</label>
+                          <div class="controls">
+                            <input type="time" class="form-control" ng-model="datos.PE_HORA_FIN" name="PE_HORA_FIN"
+                              value="memorandum" required ng-disabled="desabilitado">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div>
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <div class="controls">
+                              <button ng-click="agregarFecha();" type="button" class="btn btn-success fa fa-plus-square"
+                                ng-show="desabilitado==false">&nbsp;AGREGAR FECHA</button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <br>
-                  <div class="col-md-12" class="form-control">
-                    <div class="form-group">
-                      <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                      <div class="col-sm-12" align="left">
-                        <div class="alert alert-success fade in">
-                          <bold>Estimado Ciudadano:</bold>
-                          <br> + Para agregar la placa tome en cuenta el siguiente formato 3935NBN.
-                          <br>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <div ng-show="div_agregar_vehiculo == true">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Placa de Circulación:</label>
-                          <div class="controls">
-                            <input type="text" class="form-control" ng-model="datos_carro.PE_PLACA_CIRC"
-                              name="PE_PLACA_CIRC" value="memorandum" required ng-disabled="desabilitado">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Radicatoria:</label>
-                          <div class="controls">
-                            <input type="text" class="form-control" ng-model="datos_carro.PE_RADICATORIA"
-                              name="PE_RADICATORIA" value="memorandum" required ng-disabled="desabilitado">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Color:</label>
-                          <div class="controls">
-                            <input type="text" class="form-control" ng-model="datos_carro.PE_COLOR_VEH"
-                              name="PE_COLOR_VEH" value="memorandum" required ng-disabled="desabilitado">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Clase:</label>
-                          <div class="controls">
-                            <select id="PE_G_TIPO" name="PE_G_TIPO" placeholder="Macrodistrito" required
-                              ng-model="datos_carro.PE_G_TIPO" class="form-control" ng-disabled="desabilitado">
-                              <option value="">--Seleccionar--</option>
-                              <option value="AUTOMOVIL">AUTOMOVIL</option>
-                              <option value="BUS ESCOLAR">BUS ESCOLAR</option>
-                              <option value="CARRY">CARRY</option>
-                              <option value="CAMION">CAMIÓN</option>
-                              <option value="CAMIONETA">CAMIONETA</option>
-                              <option value="COLECTIVO">COLECTIVO</option>
-                              <option value="VOLQUETA">VOLQUETA</option>
-                              <option value="FURGENETA">FURGENETA</option>
-                              <option value="JEEP">JEEP</option>
-                              <option value="MOTOCICLETA">MOTOCICLETA</option>
-                              <option value="BUS">BUS</option>
-                              <option value="MINIBUS">MINIBUS</option>
-                              <option value="VAGONETA">VAGONETA</option>
-                              <option value="TRAILER">TRAILER</option>
-                              <option value="OMNIBUS">OMNIBUS</option>
-                              <option value="OTROS">OTROS</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Marca:</label>
-                          <div class="controls">
-                            <input type="text" class="form-control" ng-model="datos_carro.PE_MARCA_VEH"
-                              name="PE_MARCA_VEH" value="memorandum" required ng-disabled="desabilitado">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Modelo:</label>
-                          <div class="controls">
-                            <input type="text" class="form-control" ng-model="datos_carro.PE_G_TIPO_valor"
-                              name="PE_G_TIPO_valor" value="memorandum" required ng-disabled="desabilitado">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Servicio:</label>
-                          <div class="controls">
-                            <select id="PE_TIPO_SERVICIO" name="PE_TIPO_SERVICIO" placeholder="Macrodistrito" required
-                              ng-model="datos_carro.PE_TIPO_SERVICIO" class="form-control" ng-disabled="desabilitado">
-                              <option value="">--Seleccionar--</option>
-                              <option value="PARTICULAR">PARTICULAR</option>
-                              <option value="PUBLICO">PÚBLICO</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Dimensiones:</label>
-                          <div class="controls">
-                            <select id="PE_DIMENSIONES" name="PE_DIMENSIONES" placeholder="Macrodistrito" required
-                              ng-model="datos_carro.PE_DIMENSIONES" class="form-control" ng-disabled="desabilitado">
-                              <option value="">--Seleccionar--</option>
-                              <option value="1 X 2">1 X 2</option>
-                              <option value="5 X 2.5">5 X 2.5</option>
-                              <option value="5 X 2.5">12 X 3</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Nombre Propietario:</label>
-                          <div class="controls">
-                            <input type="text" class="form-control" ng-model="datos_carro.PE_NOMBRE_PROP"
-                              name="PE_NOMBRE_PROP" value="memorandum" required ng-disabled="desabilitado">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Observado:</label>
-                          <div class="controls">
-                            <input type="text" class="form-control" ng-model="datos_carro.PE_PLACA_OBSERVADO"
-                              name="PE_PLACA_OBSERVADO" value="memorandum" required ng-disabled="desabilitado">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div>
-                      <div class="col-md-2">
-                        <div class="form-group">
-                          <div class="controls">
-                            <button ng-click="adicionarVehiculo(datos_carro);" type="button"
-                              class="btn btn-success fa fa-plus-square" ng-show="desabilitado==false">&nbsp;AGREGAR
-                              VEHÍCULO</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                   <div class="col-md-12">
                     <div class="panel panel-default">
                       <div class="panel-heading"><B></B></div>
                       <div class="panel-body" ng-disabled="true">
-                        <table ng-table="tblCarros" class="table  table-hover">
+                        <table ng-table="tblFechas" class="table  table-hover">
                           <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
                             ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
                             <!--cambios-->
                             <td data-title="'#'" align="center">{{$index+1}}</td>
-                            <td data-title="'Placa'" align="center">{{tramite.PE_PLACA_CIRC}}</td>
-                            <td data-title="'Color'" align="center">{{tramite.PE_COLOR_VEH}}</td>
-                            <td data-title="'Clase'" align="center">{{tramite.PE_G_TIPO}}</td>
-                            <td data-title="'Marca'" align="center">{{tramite.PE_MARCA_VEH}}</td>
-                            <td data-title="'Modelo'" align="center">{{tramite.PE_G_TIPO_valor}}</td>
-                            <td data-title="'Nombre del Propietario'" align="center">{{tramite.PE_NOMBRE_PROP}}</td>
-                            <td data-title="'Eliminar'" align="center"><button ng-click="eliminarVehiculos(tramite)"
-                                type="button" class="btn btn-danger fa fa-times" ng-disabled="xdeshabilitado"></button>
+                            <td data-title="'HORA INICIAL'" align="center">{{tramite.horaInicio}}</td>
+                            <td data-title="'FECHA'" align="center">{{tramite.asignacion}}</td>
+                            <td data-title="'HORAL FINAL'" align="center">{{tramite.horaFin}}</td>
+                            <td data-title="'Eliminar'" align="center"><button ng-click="eliminarFechas(tramite)"
+                                type="button" class="btn btn-danger fa fa-times" ng-disabled="desabilitado"></button>
                             </td>
                           </tr>
                         </table>
@@ -969,211 +1182,6 @@
                   </div>
                   <br>
                 </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="url">Tipo:</label>
-                      <div class="controls">
-                        <select id="PE_TIPO" name="PE_TIPO" placeholder="Macrodistrito" ng-model="datos.PE_TIPO"
-                          class="form-control" ng-disabled="desabilitado"
-                          ng-change="tipoUbicacionDinamico(datos.PE_TIPO);">
-                          <option value="">--Seleccionar--</option>
-                          <option value="TRANSPORTE CARGA">TRANSPORTE CARGA</option>
-                          <option value="TRANSPORTE TURISMO">TRANSPORTE TURISMO</option>
-                          <option value="TRANSPORTE ESCOLAR">TRANSPORTE ESCOLAR</option>
-                          <option value="TRANSPORTE PERSONAL">TRANSPORTE PERSONAL</option>
-                          <option value="TRANSPORTE DE PASAJEROS">TRANSPORTE DE PASAJEROS</option>
-                          <option value="MEDIO DE COMUNICACION">MEDIO DE COMUNICACIÓN</option>
-                          <option value="CUERPO DIPLOMATICO">CUERPO DIPLOMÁTICO</option>
-                          <option value="DISTRIBUCION DE PRODUCTOS">DISTRIBUCIÓN DE PRODUCTOS</option>
-                          <option value="ENTIDAD FINANCIERA">ENTIDAD FINANCIERA</option>
-                          <option value="INSTITUCION PRIVADA">INSTITUCIÓN PRIVADA</option>
-                          <option value="INSTITUCION PUBLICA">INSTITUCIÓN PÚBLICA</option>
-                          <option value="GAMLP">GAMLP</option>
-                          <option value="SALUD">SALUD</option>
-                          <option value="HOTELES">HOTELES</option>
-                          <option value="SERVICIO PRIVADO">SERVICIO PRIVADO</option>
-                          <option value="SERVICIO PÚBLICO">SERVICIO PÚBLICO</option>
-                          <option value="FUNERARIAS">FUNERARIAS</option>
-                          <option value="LINEAS AÉREAS">LINEAS AÉREAS</option>
-                          <option value="SINDICATO DE TAXI">SINDICATO DE TAXI</option>
-                          <option value="EMPRESAS DE RADIO TAXIS">EMPRESAS DE RADIO TAXIS</option>
-                          <option value="SERVICIO PRIVADO DE TRANSPORTE">SERVICIO PRIVADO DE TRANSPORTE</option>
-                          <option value="OTRO">OTRO</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="url">Motivo de Permisos:</label>
-                      <div class="controls">
-                        <input type="text" class="form-control" ng-model="datos.PE_MOTIV" name="PE_MOTIV"
-                          value="memorandum" required ng-disabled="desabilitado">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <br>
-                <div ng-show="div_jerarquia_viral == true">
-                  <br>
-                  <div class="ibox float-e-margins">
-                    <div class="col-md-12">
-                      <div class="ibox-title cafeSuave"
-                        style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-                        <h4>Jerarquia Víal:</h4>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <br>
-                  <br>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="url">PRIMARIA:</label>
-                        <div class="controls">
-                          <input type="text" class="form-control" ng-model="datos.PE_JER_PRI" name="PE_JER_PRI"
-                            value="memorandum" required ng-disabled="true">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="url">Nro de Cuadras:</label>
-                        <div class="controls">
-                          <input type="text" class="form-control" ng-model="datos.PE_NRO_CUADRAS1"
-                            name="PE_NRO_CUADRAS1" value="memorandum" required ng-disabled="desabilitado">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="url">SECUNDARIA:</label>
-                        <div class="controls">
-                          <input type="text" class="form-control" ng-model="datos.PE_JER_SEC" name="PE_JER_SEC"
-                            value="memorandum" required ng-disabled="true">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="url">Nro de Cuadras:</label>
-                        <div class="controls">
-                          <input type="text" class="form-control" ng-model="datos.PE_NRO_CUADRAS2"
-                            name="PE_NRO_CUADRAS2" value="memorandum" required ng-disabled="desabilitado">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="url">TERCIARIA:</label>
-                        <div class="controls">
-                          <input type="text" class="form-control" ng-model="datos.PE_JER_TER" name="PE_JER_TER"
-                            value="memorandum" required ng-disabled="true">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="url">Nro de Cuadras:</label>
-                        <div class="controls">
-                          <input type="text" class="form-control" ng-model="datos.PE_NRO_CUADRAS3"
-                            name="PE_NRO_CUADRAS3" value="memorandum" required ng-disabled="desabilitado">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="ibox float-e-margins">
-                  <div class="col-md-12">
-                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-                      <h4>Agrege las fechas del permiso a solcitar:</h4>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="url">FECHA INICIO:</label>
-                      <div class="controls">
-                        <input type="date" class="form-control" ng-model="datos.PE_FECHA_INI" name="PE_FECHA_INI"
-                          value="memorandum" required ng-disabled="desabilitado">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="url">FECHA FIN:</label>
-                      <div class="controls">
-                        <input type="date" class="form-control" ng-model="datos.PE_FECHA_FIN" name="PE_FECHA_FIN"
-                          value="memorandum" required ng-disabled="desabilitado">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="url">HORA INICIO:</label>
-                      <div class="controls">
-                        <input type="time" class="form-control" ng-model="datos.PE_HORA_INICIO" name="PE_HORA_INICIO"
-                          value="memorandum" required ng-disabled="desabilitado">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="url">HORA FIN:</label>
-                      <div class="controls">
-                        <input type="time" class="form-control" ng-model="datos.PE_HORA_FIN" name="PE_HORA_FIN"
-                          value="memorandum" required ng-disabled="desabilitado">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div>
-                    <div class="col-md-2">
-                      <div class="form-group">
-                        <div class="controls">
-                          <button ng-click="agregarFecha();" type="button" class="btn btn-success fa fa-plus-square"
-                            ng-show="desabilitado==false">&nbsp;AGREGAR FECHA</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="col-md-12">
-                  <div class="panel panel-default">
-                    <div class="panel-heading"><B></B></div>
-                    <div class="panel-body" ng-disabled="true">
-                      <table ng-table="tblFechas" class="table  table-hover">
-                        <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
-                          ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
-                          <!--cambios-->
-                          <td data-title="'#'" align="center">{{$index+1}}</td>
-                          <td data-title="'HORA INICIAL'" align="center">{{tramite.horaInicio}}</td>
-                          <td data-title="'FECHA'" align="center">{{tramite.asignacion}}</td>
-                          <td data-title="'HORAL FINAL'" align="center">{{tramite.horaFin}}</td>
-                          <td data-title="'Eliminar'" align="center"><button ng-click="eliminarFechas(tramite)"
-                              type="button" class="btn btn-danger fa fa-times" ng-disabled="xdeshabilitado"></button>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <br>
                 <div class="col-md-12" align="right"><br>
                   <button id="miFormGuardar" ng-show="desabilitado
                         ==false" ng-click="validacionFinal(datos);" type="button" class="btn btn-success fa fa-save"

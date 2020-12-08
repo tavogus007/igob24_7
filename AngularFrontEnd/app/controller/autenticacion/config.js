@@ -79,8 +79,9 @@ var jsonURLS    =   {
         'usr_usuario'   : 'administrador',
         'usr_clave'     : '123456'
     },
-    SERVICE_GIS_AE_DZ:"https://servmonitoreo.lapaz.bo/"
+    SERVICE_GIS_AE_DZ:"https://servmonitoreo.lapaz.bo/",
     //https://gamlpmotores.lapaz.bo/gamlp179/igob247/generarFumOficial.php
+    SERVICEODM: "http://172.19.160.38:8081"
 };
 try{
     if(app){

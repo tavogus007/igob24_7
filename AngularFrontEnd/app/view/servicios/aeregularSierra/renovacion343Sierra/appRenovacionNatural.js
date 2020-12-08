@@ -24,7 +24,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     $scope.btnCalcular = true;
     $scope.IsVisible = false;
     $scope.tblDeudas = {};
-    //$scope.datos.listDeudas = [];
     $scope.listDeudas = [];
     $scope.divDeudasPendientes = false;
     $scope.btnFUM = false;
@@ -211,6 +210,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     datoObjectFile2.nombre = 'Cédula de identidad (Reverso)';
                     datoObjectFiles_ci[1] = datoObjectFile2;
                     $scope.datos.FILE_CI = datoObjectFiles_ci;
+                    $scope.datos.File_contribuyente = datoObjectFiles_ci;
                     $scope.getRequisitosActividad($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
                     $scope.getRequisitosFormulario($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
                     $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
@@ -809,7 +809,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             if(data[0].venviado != 'SI'){
                 if(data[0].datos.INT_FORM_ALMACENADO != 'G'){
                     $scope.validarActividadEconomica();
-                    //$scope.listadoActividadEconomica();
                 }else{
                     if(data[0].datos.rdTipoTramite == 'NUEVO'){
                         $scope.mostrarMsgNuevaActividad = true;
@@ -1040,7 +1039,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     };
 
     $scope.cambioToggle1 = function(dato){
-        //$scope.lscategoria();
         $scope.lssubcategoria();
         if ( dato == "NUEVO") {
             $scope.licenciaToogle4 = true;
@@ -1184,14 +1182,12 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         var respuestaDatos = JSON.parse(responsedatosAE);
                         var respuestaDatosPrimerNivel = respuestaDatos[0].sp_obtener_actividad_economica;
                         var datosActividadEconomica = JSON.parse(respuestaDatosPrimerNivel);
-                        console.log('reccccccc     ',datosActividadEconomica.datosAE);
                         //if (typeof datosActividadEconomica.datosAE == null || JSON.stringify(datosActividadEconomica.datosAE[0]) == '{}' || JSON.stringify(datosActividadEconomica.datosAE[0]) == '[{}]') {
                         if (datosActividadEconomica.datosAE == null) {
                             swal('', "Datos no Encontrados !!!", 'warning');
                         } else{
                             codhojaruta = datosActividadEconomica.datosAE.hojaruta;
                             var datosPublicidad = datosActividadEconomica.datosVIAE;
-                            console.log("datosPublicidad:: ", datosPublicidad);
                             var datosAESdoNivel = datosActividadEconomica.datosAE;
                             $scope.datos.f01_nro_orden = datosAESdoNivel.numeroorden;
                             $scope.idContribuyenteAEActual = datosAESdoNivel.idactividadeconomica;
@@ -1238,10 +1234,8 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                             $scope.datos.f01_nro_actividad = datosAESdoNivel.numeroactividad;
                             $scope.datos.f01_productosElaborados = datosAESdoNivel.productoselaborados.replace(/"/,"");
                             $scope.datos.f01_actividadesSecundarias = datosAESdoNivel.actividadessecundarias;
-                            //$scope.datos.f01_categoria_agrupada = datosAESdoNivel.idactividaddesarrollada;
                             $scope.datos.f01_categoria_descrip = datosAESdoNivel.actividad_desarrollada343;
                             $scope.obtenerActDes(datosAESdoNivel.idcategoria);
-                            //$scope.actulizarIdDistrito();
                             $scope.distritoZonas(datosAESdoNivel.idmacrodistrito);
                             $scope.datos.INT_AC_MACRO_ID = datosAESdoNivel.idmacrodistrito;
                             $scope.datos.f01_macro_act = datosAESdoNivel.idmacrodistrito;
@@ -1407,7 +1401,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                             $scope.Plubli_Grilla($scope.datos.publicidad);
                             $scope.publicid = $scope.listpub;
                         };
-                        //$scope.generarDeudasPendientes();
                         var verificarDuodecima = [$scope.verificarDeudaDuodecima(tramite.idactividad)];
                         $q.all(verificarDuodecima).then(function (respDou) {
                             if (respDou[0] == '[{}]' || respDou[0] == '"[{}]"') {
@@ -1534,7 +1527,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                     swal('', "El contribuyente no cuenta con Actividades Económicas.", 'warning');
                 } else{
                     var respLstActEco = JSON.parse(responseActEco);
-                    console.log('respLstActEco   ',respLstActEco);
                     if (respLstActEco.length > 0) {
                         var cont = 0;
                         var datosListaAE = [];
@@ -1657,10 +1649,12 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     /*REQUISITOS2018*/
     $scope.fileArRequisitos = {};
     $scope.fileAdjuntosPublicidad = {};
+    $scope.fileAdjuntosAE = {};
 
     $scope.adicionarArrayDeRequisitos = function(aArch,idFile){
         var descDoc = "";
         var fechaNueva = "";
+        var idp = 4;
         var fechaserver = new fechaHoraServer();
         fechaserver.fechahora(function(resp){
             var sfecha = JSON.parse(resp);
@@ -1672,9 +1666,10 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         angular.forEach($scope.docArray, function(doc, pos) {
             if(doc.resid == idFile){
                 descDoc = doc.desNom;
+                idp = doc.idnro;
             }
         })
-        if ($scope.docPubNuevo.length > 0) {
+        if ($scope.docPubNuevo.length > 0 && ipd == 4) {
             angular.forEach($scope.docPubNuevo, function(doc, pos) {
                 if(doc.idP+''+doc.resid == idFile){
                     descDoc = doc.desNom;
@@ -1700,31 +1695,23 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         var adatafile   =   {};
         var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() + '" }';
         $scope.fileArRequisitos[aArch.name] = JSON.parse(myJSON);
-        var swp = 0;
-        var idp = 0;
-        for (var i = 0; i < $scope.docArray.length && swp == 0; i++) {
-            if ($scope.docArray[i].resid == idFile) {
-                idp = $scope.docArray[i].idnro;
-                swp = 1;
-            }
-            else{
-                idp = 4;
-            };
-        };
+        $scope.clonarRequisitosDocumentales($scope.fileArRequisitos);
         if (idp == 4) {
             var uploadUrlP = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
             var myJSONP = '{ "url":"' + uploadUrlP + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() + '" }';
             $scope.fileAdjuntosPublicidad[aArch.name] = JSON.parse(myJSONP);
             $scope.clonarRequisitosPublicidad($scope.fileAdjuntosPublicidad);
+        }else{
+            var myJSONAE = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_"+ aArch.id).text() +'"}';
+            $scope.fileAdjuntosAE[aArch.name] = JSON.parse(myJSONAE);
+            $scope.clonarRequisitosDocumentalesAE($scope.fileAdjuntosAE);
         };
-        $scope.clonarRequisitosDocumentales($scope.fileArRequisitos);
     }
     /*REQUISITOS2018*/
     $scope.clonarRequisitosDocumentales = function(aRequArchivos){
         var i = 0;
         $scope.File_Adjunto =   {};
         datoObjectFiles = [];
-        var longdato = 0;
         angular.forEach(aRequArchivos, function(archivo, key) {
             datoObjectFiles[i] = archivo;
             i = i +1;
@@ -1736,7 +1723,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         var i = 0;
         $scope.File_Publicidad = {};
         datoObjectFilesP = [];
-        var longdato = 0;
         angular.forEach(aRequArchivosP, function(archivo, key) {
             datoObjectFilesP[i] = archivo;
             i = i +1;
@@ -1744,8 +1730,17 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         $scope.datos.fileArchivosPublicidad = datoObjectFilesP;
     }
 
+    $scope.clonarRequisitosDocumentalesAE = function(aRequArchivosAE){
+        var k = 0;
+        datoObjectFilesAE = [];
+        angular.forEach(aRequArchivosAE, function(archivo, key) {
+            datoObjectFilesAE[k] = archivo;
+            k = k +1;
+        });
+        $scope.datos.fileArchivosAE = datoObjectFilesAE;
+    }
+
     $scope.ultimoArrayAdjunto = function(){
-        $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
         $scope.capturarImagen();
         datoObjectFiles = [];
         var datoObjectFile4 = new Object();
@@ -1757,7 +1752,8 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         datoObjectFile4.nombre = 'CROQUIS DE UBICACIÓN DE LA ACTIVIDAD ECONÓMICA';
         datoObjectFiles[0] = datoObjectFile4;
         $scope.datos.FILE_MAPA = datoObjectFiles;
-        $rootScope.FileAdjuntos =  $scope.datos.FILE_CI.concat($scope.datos.FILE_MAPA,$scope.datos.fileArchivosAd);
+        $rootScope.FileAdjuntos = $scope.datos.FILE_CI.concat($scope.datos.FILE_MAPA,$scope.datos.fileArchivosAd);
+        $rootScope.File_ae = $scope.datos.fileArchivosAE.concat($scope.datos.FILE_MAPA);
     }
     
     $scope.almacenarRequisitos = function(aArchivos,idFiles){
@@ -1777,7 +1773,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/";
         $.blockUI();
         angular.forEach(aArchivos, function(archivo, key) {
-            //var tamaniofile = obj.files[0];
             if(typeof(archivo) != 'undefined'){
                 angular.forEach($scope.docArray, function(doc, pos) {
                     if(doc.resid == idFiles[key]){
@@ -2288,7 +2283,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         $scope.publi = dato;
         $scope.publi.INT_ALTO = dato.INT_ALTO;
         $scope.publi.INT_ANCHO = dato.INT_ANCHO;
-        //$scope.publi.INT_NRO_CARA = dato.INT_NRO_CARA;
         $scope.publi.INT_TIPO_LETRE = dato.INT_TIPO_LETRE;
         $scope.publi.INT_CARA = dato.INT_CARA;
         $scope.publi.INT_DESC = dato.INT_DESC;
@@ -2354,7 +2348,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                             $scope.datos.publicidad[i].INT_TIPO_LETRE = dato.INT_TIPO_LETRE;
                             $scope.datos.publicidad[i].INT_CARA = dato.INT_CARA;
                             $scope.datos.publicidad[i].INT_DESC = dato.INT_DESC;
-                            //$scope.datos.publicidad[i].INT_NRO_CARA = dato.INT_NRO_CARA;
                         };              
                     }
                     datoObjectFinalV = [];
@@ -2522,7 +2515,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                             $scope.id = id;
                             $scope.publicid.push({
                                 id: id,
-                                //INT_NRO_CARA: public.INT_NRO_CARA,
                                 INT_CARA: public.INT_CARA,
                                 INT_CATE: public.INT_CATE,
                                 INT_TIPO_LETRE: public.INT_TIPO_LETRE,
@@ -2595,7 +2587,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                             $scope.id = id;
                             $scope.publicid.push({
                                 id: id,
-                                //INT_NRO_CARA: public.INT_NRO_CARA,
                                 INT_CARA: public.INT_CARA,
                                 INT_CATE: public.INT_CATE,
                                 INT_TIPO_LETRE: public.INT_TIPO_LETRE,
@@ -2655,7 +2646,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         for(j=0; j<dato.length;j++) {
             $scope.publi_grilla.push({
                 nroElem: j+1,
-                //FECHAINICIO: dato[j].FECHAINICIO,
                 INT_TIPO_LETRE: dato[j].INT_TIPO_LETRE,
                 INT_CARA: dato[j].INT_CARA,
                 INT_DESC: dato[j].INT_DESC,
@@ -2692,9 +2682,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
 
     $scope.onlyy=false;
     $scope.botonn="new";
-
-    ///AQUI TERMINA PUBLICIDAD///
-    //$scope.caras = [];
     $scope.detalle = [];
     $scope.edit = {};
 
@@ -2780,7 +2767,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         });
         $scope.user = "";
         $scope.detalle = [];
-        //$scope.actulizarCaras();
     };
     $scope.deleteUser = function(user){
         $scope.carass.splice( $scope.carass.indexOf(user), 1 );
@@ -2795,7 +2781,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             input.focus();
             input.select();
         }, 50);
-        //$scope.actulizarCaras();
     };
     $scope.actulizarCaras= function () {
         $scope.publi.caras = $scope.carass;
@@ -3035,15 +3020,12 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         var scirep = "";
         var sempresa = "";
         var snit = "";
-
         var validarCorrelativoPub = [$scope.generarCorrelativo('FORM_402')];
         $q.all(validarCorrelativoPub).then(function (resp) {
             $rootScope.f01_correlativo_form402 = resp[0];
-
             $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
             if($scope.tipoPersona == 'NATURAL' || $scope.tipoPersona == 'N'){
                 datos.f01_tipo_per_desc = 'NATURAL';
-                //urlFormularioN  =   "../../docs/AE_Formulario_401.html";
                 urlFormularioN  =   "../../docs/AE_Formulario_402Renov.html";
                 $("#msgformularioN").load(urlFormularioN, function(data) {
                     stringFormulario40  =   data;
@@ -3080,7 +3062,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         pubMod = '<tr><td>VIAE</td>'+
                         '<td>TIPO</td>' +
                         '<td>CARACTERÍSTICA</td>'+
-                        //'<td>CARAS</td>'+
                         '<td>DESCRIPCIÓN</td>'+
                         '<td>ALTO</td>'+
                         '<td>ANCHO</td>'+
@@ -3088,11 +3069,9 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         '<td>ESTADO</td></tr>';
                         for (i = 0; i < datos.publicidad.length; i++){
                             pubMod = pubMod +'<tr>' +
-                            //'<td>' + datos.publicidad[i].id + '</td>'+
                             '<td>' + (i+1) + '</td>'+
                             '<td>' + datos.publicidad[i].INT_TIPO_LETRE + '</td>'+
                             '<td>' + datos.publicidad[i].INT_CARA + '</td>'+
-                            //'<td>' + datos.publicidad[i].INT_NRO_CARA + '</td>'+
                             '<td>' + datos.publicidad[i].INT_DESC + '</td>'+
                             '<td>' + datos.publicidad[i].INT_ANCHO + '</td>'+
                             '<td>' + datos.publicidad[i].INT_ALTO + '</td>'+
@@ -3164,16 +3143,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         stringFormulario40  =   stringFormulario40.replace("#f01_categoria_agrupada_descripcion#", datos.f01_categoria_agrupada_descripcion);
                         stringFormulario40  =   stringFormulario40.replace("#Licenmul_grilla#", multi);
                     };
-                    /*var tablapago = '';
-                    if(datos.pago_adelantado == true){
-                        stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SI');//datos.pago_adelantado);
-                        stringFormulario40  =   stringFormulario40.replace("#nro_ges#", datos.nro_ges);
-                        stringFormulario40  =   stringFormulario40.replace("#tablaP#", '');
-                    }else{
-                        stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
-                        stringFormulario40  =   stringFormulario40.replace("#nro_ges#", 'NINGUNA');
-                        stringFormulario40  =   stringFormulario40.replace("#tablaP#", '');
-                    }*/
                     stringFormulario40 = stringFormulario40.replace("#f01_idCodigoZona#",datos.f01_idCodigoZona);
                     var divfoodTruck = '';
                     if (datos.f01_categoria == 211 || datos.f01_categoria == '211') {
@@ -3312,8 +3281,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         $scope.datosAnt.tipoActividad = 'SUCURSAL';
                     }
                     stringFormulario40  =   stringFormulario40.replace("#primerNombre#", $scope.datosAnt.primerNombre);
-                    //stringFormulario40  =   stringFormulario40.replace("#segundoNombre#", $scope.datosAnt.segundoNombre);
-                    //stringFormulario40  =   stringFormulario40.replace("#tercerNombre#", $scope.datosAnt.tercerNombre);
                     stringFormulario40  =   stringFormulario40.replace("#primerApellido#", $scope.datosAnt.primerApellido);
                     stringFormulario40  =   stringFormulario40.replace("#segundoApellido#", $scope.datosAnt.segundoApellido);
                     stringFormulario40  =   stringFormulario40.replace("#tercerApellido#", $scope.datosAnt.tercerApellido);
@@ -3351,7 +3318,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         pubAnt = '<tr><td>VIAE</td>'+
                         '<td>TIPO</td>' +
                         '<td>CARACTERÍSTICA</td>'+
-                        //'<td>CARAS</td>'+
                         '<td>DESCRIPCIÓN</td>'+
                         '<td>ALTO</td>'+
                         '<td>ANCHO</td>'+
@@ -3361,7 +3327,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                             '<td>' + datos.publicidadAntiguo_grilla[i].nroElem + '</td>'+
                             '<td>' + datos.publicidadAntiguo_grilla[i].descripcionTipoLetrero + '</td>'+
                             '<td>' + datos.publicidadAntiguo_grilla[i].caracteristica + '</td>'+
-                            //'<td>' + datos.publicidadAntiguo_grilla[i].cara + '</td>'+
                             '<td>' + datos.publicidadAntiguo_grilla[i].descripcion + '</td>'+
                             '<td>' + datos.publicidadAntiguo_grilla[i].alto + '</td>'+
                             '<td>' + datos.publicidadAntiguo_grilla[i].ancho + '</td>'+
@@ -3465,7 +3430,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         dataForm['tipoVia'] = $scope.datosAnt.tipovia;
         dataForm['via'] = $scope.datosAnt.via;
         dataForm['numero'] = $scope.datosAnt.numero;
-        //dataForm['publicidadAntiguo_grilla'] = $scope.datosAnt.publicidadAntiguo_grilla;
         var multiAnt = '';
         if ($scope.datosAnt.idtipolicencia == 26 || $scope.datosAnt.idtipolicencia == '26') {
             dataForm['descripcion'] = 'MULTISERVICIOS';
@@ -3495,7 +3459,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             pubAnt = '<table border="0.5" style="width:100%"><tr><td>VIAE</td>'+
             '<td>TIPO</td>' +
             '<td>CARACTERÍSTICA</td>'+
-            //'<td>CARAS</td>'+
             '<td>DESCRIPCIÓN</td>'+
             '<td>ALTO</td>'+
             '<td>ANCHO</td>'+
@@ -3505,7 +3468,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 '<td>' + data.publicidadAntiguo_grilla[i].nroElem + '</td>'+
                 '<td>' + data.publicidadAntiguo_grilla[i].descripcionTipoLetrero + '</td>'+
                 '<td>' + data.publicidadAntiguo_grilla[i].caracteristica + '</td>'+
-                //'<td>' + data.publicidadAntiguo_grilla[i].cara + '</td>'+
                 '<td>' + data.publicidadAntiguo_grilla[i].descripcion + '</td>'+
                 '<td>' + data.publicidadAntiguo_grilla[i].alto + '</td>'+
                 '<td>' + data.publicidadAntiguo_grilla[i].ancho + '</td>'+
@@ -3579,7 +3541,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         pubMod = '<table border="0.5" style="width:100%"><tr><td>VIAE</td>'+
         '<td>TIPO</td>' +
         '<td>CARACTERÍSTICA</td>'+
-        //'<td>CARAS</td>'+
         '<td>DESCRIPCIÓN</td>'+
         '<td>ALTO</td>'+
         '<td>ANCHO</td>'+
@@ -3588,10 +3549,8 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         for (i = 0; i < data.publicidad.length; i++){
             pubMod = pubMod +'<tr>' +
                 '<td>' + (i+1) + '</td>'+
-                //'<td>' + data.publicidad[i].idPublicidad + '</td>'+
                 '<td>' + data.publicidad[i].INT_TIPO_LETRE + '</td>'+
                 '<td>' + data.publicidad[i].INT_CARA + '</td>'+
-                //'<td>' + data.publicidad[i].INT_NRO_CARA + '</td>'+
                 '<td>' + data.publicidad[i].INT_DESC + '</td>'+
                 '<td>' + data.publicidad[i].INT_ANCHO + '</td>'+
                 '<td>' + data.publicidad[i].INT_ALTO + '</td>'+
@@ -3766,10 +3725,8 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         $scope.btnEnviarForm    =   true;
         var idProcodigo         =   'RE-LF';
         var datosNeXO = {};
-        $scope.divVIAE="mostrar";
         datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
         /*RENOVACION DE LICENCIAS*/
-        //if(paramForm.rdTipoTramite == "RENOVACION" || paramForm.rdTipoTramite == 'RENOVACION'){
         datosNeXO['f01_id_actividad_economica']   =   paramForm.f01_id_actividad_economica;
         datosNeXO['f01_id_actividad_economica_temp'] = paramForm.f01_id_actividad_economica_temp;
         datosNeXO['f01_id_contribuyente']   =   paramForm.f01_id_contribuyente;
@@ -3779,7 +3736,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         datosNeXO['INT_PMC']                    = paramForm.f01_num_pmc;//$scope.dataGenesisCidadano[0].padron;
         datosNeXO['INT_ID_CONTRIBUYENTE']       = paramForm.f01_id_contribuyente;//$scope.dataGenesisCidadano[0].idContribuyente;
         datosNeXO['INT_ID_ACTIVIDAD_ECONOMICA'] = paramForm.INT_TRAMITE_RENOVA;
-        //}
         datosNeXO['f01_nro_frm'] =  sessionService.get('IDTRAMITE');
         if ($scope.tipoPersona == 'NATURAL'){
             datosNeXO['f01_tipo_per']       =   'N';
@@ -3878,7 +3834,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datosNeXO['f01_requisitos_actividad_economica'] =  paramForm.f01_requisitos_actividad_economica;
             datosNeXO['f01_hojas_recibidas']        =  "0";
             datosNeXO['f01_observaciones_i']        =  "0";
-            //datosNeXO['f01_tipoZona_act'] = paramForm.f01_tipoZona_act;
             /*DATOSDELTITULARDELALICENCIA*/
             //DATOSGENERALES
             datosNeXO['f01_nit'] = paramForm.f01_nit;
@@ -3939,7 +3894,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datosNeXO['rdTipoTramite'] = paramForm.rdTipoTramite;
             datosNeXO['f01_nro_actividad']  =   paramForm.f01_nro_actividad;
             //PAGO ADELANTADO
-            //datosNeXO['pago_adelantado'] =  paramForm.pago_adelantado;
             if (paramForm.pago_adelantado == true) {
                 datosNeXO['pago_adelantado'] = 'SI';//$scope.pago_adelantado;
             } else{
@@ -3989,7 +3943,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datosNeXO['FILE_FOTOCOPIA_CI_R'] = paramForm.FILE_FOTOCOPIA_CI_R;
             datosNeXO['f01_croquis_ae'] = $scope.datos.ARCHIVOS_MULTIPLES_MAPA[0].nombre_archivo;
             datosNeXO['Licenmul_grilla'] = paramForm.Licenmul_grilla;
-            //datosNeXO['f01_categoria_descrip']      =  paramForm.f01_categoria_descripcion;
         }
             datosNeXO['f01_categoria_descrip']      =  paramForm.f01_categoria_descripcion;
             datosNeXO['f01_categoria_descrip2']      =  paramForm.f01_categoria_descripcion.toUpperCase();
@@ -4023,7 +3976,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             datosNeXO['f01_numdoclegal_ft'] = paramForm.f01_numdoclegal_ft;
             datosNeXO['f01_lugar_ft'] = paramForm.f01_lugar_ft;
         }
-        //datosNeXO['publicidad'] = paramForm.pubenvio;
         datosNeXO['publicidad_grilla'] = paramForm.publicidad_grilla;
         datosNeXO['licencia_multiple'] = paramForm.licenciam;
         datosNeXO['g_tipo'] = "AE-LINEA";
@@ -4040,7 +3992,8 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         decjuradaCU.nombre = 'CONDICIÓN DE USO';
         datoObjectdjCU[0] = decjuradaCU;
         datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN, datoObjectdjCU);
-
+        datosNeXO['File_ae'] = $rootScope.File_ae.concat(decjuradaN);
+        datosNeXO['File_contribuyente'] = $scope.datos.File_contribuyente.concat(datoObjectdjCU);
         if(paramForm.chkzonasegura == 'ZONASEGURA'){
             datosNeXO['f01_zona_segura'] = 'SI';
         }else{
@@ -4113,7 +4066,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
         var diasAnticipacion = fecha1.diff(fecha2, 'days');
         console.log(diasAnticipacion, ' dias de diferencia');
         var e = new Date();
-        console.log('acccc    ',$scope.datos.pago_duodecimas);
         e.setMonth(e.getMonth() + 23);
         $scope.datos.pago_adelantado = valor;
         if (valor == 'true' || valor == true) {
@@ -4130,20 +4082,15 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         $scope.IsVisible = false;
                         $scope.datos.pago_adelantado = false;
                         $scope.datos.nro_ges = '';
-                        //$scope.pago_adelantado = 'NO';
                     };
                 } else{
                     swal('', "Estimado ciudadano esta opción debe solicitarla con 30 días de anticipación a la fecha de vencimiento de su Licencia de Funcionamiento.\n Su licencia de Funcionamiento venció el "+ $scope.datos.f01_vencimientoLicencia +" \n Primero debe realizar el pago de sus deudas pendientes. Una vez realizado el pago puede realizar la solicitud de Pago Adelantado", 'warning');
                     $scope.IsVisible = false;
                     $scope.btnFUM = false;
-                    //$scope.divDeudasPendientes = true;
-                    //$scope.generarDeudasPendientes();
                     $scope.datos.pago_adelantado = false;
                     $scope.datos.nro_ges = '';
-                    //$scope.pago_adelantado = 'NO';
                 };
             }
-            //$scope.IsVisible = true;
         } else{
             $scope.IsVisible = false;
         };
@@ -4309,7 +4256,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 getDeudas.parametros = '{"aeconomica_id":"'+$scope.datos.f01_id_actividad_economica+'","tipo_deuda":"actividadEconomica"}';
                 getDeudas.llamarregla_sierra(function(reslstDeudas){
                     var lstDeudas = JSON.parse(reslstDeudas);
-                    console.log('deudasssssssssssss      ',lstDeudas);
                     datoObjectDeudasPen = [];
                     if (lstDeudas == '[{}]' || lstDeudas == '[{ }]' || lstDeudas == '{}') {
                     } else{
@@ -4325,13 +4271,12 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                             datoObjectDP.descuento = dataDeudas.deuda_data.porcentaje_desc_pago_adelantado;
                             datoObjectDP.monto_total = dataDeudas.deuda_data.deuda_tributaria_bs;
                             datoObjectDP.monto_descuento_bs_padelantado = dataDeudas.deuda_data.monto_descuento_bs_padelantado;
-                            datoObjectDP.monto_total_bs_padelantado = dataDeudas.deuda_data.monto_total_bs_padelantado; //parseFloat(dataDeudas.deuda_data.deuda_tributaria_bs - dataDeudas.deuda_data.monto_descuento_bs_padelantado);
+                            datoObjectDP.monto_total_bs_padelantado = dataDeudas.deuda_data.monto_total_bs_padelantado;
                             datoObjectDeudasPen[i] = datoObjectDP;
                         };
                         $scope.divDeudasPendientes = true;
                         $scope.datos.listDeudasPendientes = datoObjectDeudasPen;
                         var data = $scope.listDeudasPendientes;
-                        console.log('deeuuuuuuuuuuu     ',$scope.datos.listDeudasPendientes);
                     };
                     if(!$scope.$$phase) {
                         $scope.$apply();
@@ -4380,13 +4325,12 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                         var detalle = '[{"odm_item_recaudador":"'+generarITEM2.ir_codigo+'","odm_pre_unitario":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'","odm_cantidad":"1","odm_sub_total":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'"}]';
                         dataFum = '{"Tipo":"generarOdm","razon_social":"'+nombreCompleto+'","ci_nit":"'+$scope.datos.f01_num_dos_prop+'","unidad_recaudadora":"139","sucursal":"0","monto_total":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'","detalles":'+detalle+',"data":'+dataF+'}';
                         $.ajax({
-                            url: 'http://172.19.160.38:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php',
+                            url: jsonURLS.SERVICEODM+'/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php',
                             data: dataFum,
                             type: "POST",
                             dataType: "json",
                             async: false,
                             success: function (responseODM) {
-                                console.log('odmm   ',responseODM);
                                 $scope.codigoODM = responseODM.data[0].nroodm;
                                 if (responseODM.data[0].nro_registro == 0) {
                                     swal('', 'Error al generar correlativo, vuelva a imprimir la Proforma Por favor', 'error');
@@ -4402,11 +4346,9 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                                     datoObjectFUMFinal[0] = datoObjectFUM;
                                     datoObjectTrans.idItemR = $scope.FUM;
                                     datoObjectTrans.descripcionItem = $scope.descripFUM;
-                                    datoObjectTrans.Monto = montoufv;//deudasDuodecimas.deuda_data.monto_total_bs_padelantado;
+                                    datoObjectTrans.Monto = montoufv;
                                     datoObjectTransFinal[0] = datoObjectTrans;
                                     datoObjectTransFinal2[0] = datoObjectTransFinal;
-                                    //$scope.myJSONFUM = $scope.myJSONFUM +'{"observaciones":"","gestion":"'+deudasDuodecimas.deuda_data.gestion+'","urlfum":"","fum_tipo":"duodecima","usuario":"'+sessionService.get('USUARIO')+'"}-';
-                                    //$scope.myJSONtrans = $scope.myJSONtrans+'[{"idItemR":"'+$scope.FUM+'","descripcionItem":"'+$scope.descripFUM+'","Monto":"'+deudasDuodecimas.deuda_data.monto_total_bs_padelantado+'","patente_act_bs":"","viae_bs":"","descuento_bs":"","patente_con_descuento_bs":"","ufv":"'+deudasDuodecimas.deuda_data.ufv_actual+'"}]-';
                                 };
                             },
                             error: function (responseODM, status, error) {
@@ -4414,7 +4356,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                                 console.log("error", dataResp);
                             }
                         });
-                        //$scope.registrarFUM($scope.iddeudas, $scope.montos, $scope.odms, $scope.myJSONFUM, $scope.myJSONtrans);
                         $scope.myJSONFUM = datoObjectFUMFinal;
                         $scope.myJSONtrans = datoObjectTransFinal2;
                         $scope.registrarFUM($scope.iddeudas, $scope.odms, $scope.myJSONFUM, $scope.myJSONtrans);
@@ -4441,9 +4382,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
             var datos_FUM2 = JSON.stringify(datos_FUM);
             var datos_transaccion = JSON.stringify(myJSONtrans);
             var datos_transaccion2 = JSON.stringify(datos_transaccion);
-            console.log('datos_transaccion2    ',datos_transaccion2);
             var jsonFUM = '';
-            //jsonFUM = '{"xfum_ur_id":"1","xfum_usr_id":"7777","xfum_grupo":'+idfum[0].sp_obtener_grupo+',"xfum_tipo_origen":"actividadEconomica","xcorrelativo_tipo":"FUM","xfum_deudas":"'+iddeudas.substring(0,iddeudas.length-1)+'","xfum_montos_pagar":"'+montos.substring(0,montos.length-1)+'","xfum_data":'+datos_FUM+',"xfum_data_contribuyente":'+JSON.stringify(data_contri)+',"xfum_data_transaccion":'+datos_transaccion+',"xfum_data_glosa":'+JSON.stringify(data_glosa) +',"xfum_num_odm":"'+odms.substring(0,odms.length-1)+'","xtipo_proforma":"detallada","xtipo_fum":"duodecima"}';
             jsonFUM = '{"xfum_usr_id":7777,"xfum_tipo_act":"actividadEconomica","xdeudas_id":"'+iddeudas.substring(0,iddeudas.length-1)+'","xfum_data":'+datos_FUM2+',"xfum_data_transaccion":'+datos_transaccion2+',"xfum_data_glosa":"{}","xfum_num_odm":"'+odms.substring(0,odms.length-1)+'","xtipo_proforma":"detallada","xtipo_fum":"duodecima","xid_contribuyente":'+$scope.datos.f01_id_contribuyente+'}';
             registrarFUM = new reglasnegocioSierra();
             //registrarFUM.identificador = 'SERVICIO_SIERRA-MAES-3325';
@@ -4547,7 +4486,6 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
                 var verificarDuodecima = [$scope.verificarDeudaDuodecima($scope.datos.f01_id_actividad_economica)];
                 $q.all(verificarDuodecima).then(function (respDou) {
                     if (respDou[0] == '[{}]') {
-                        //$scope.generarDeudasPendientes();
                         console.log('genera duodecimas ');
                         $scope.mensajeVerificaPago = 'ESTIMADO CIUDADANO, UD. NO CUENTA CON DEUDAS. PUEDE SOLICITAR LA OPCIÓN DE PAGO ADELANTADO.';
                         $scope.mostrarMsgPagoTrue  = false;

@@ -189,6 +189,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           }
           $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
           $scope.datos.TRM_FECHAS = $scope.trm_fechas
+          $scope.datos.PE_T_PERMISO = "1";
           $scope.guardar_tramite($scope.datos);
         }
       } else if ($scope.datos.PE_T_PERMISO_VALOR == 'ESTACIONAMIENTO') {
@@ -250,6 +251,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           }
           $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
           $scope.datos.TRM_FECHAS = $scope.trm_fechas
+          $scope.datos.PE_T_PERMISO = "2";
           $scope.guardar_tramite($scope.datos);
 
         }
@@ -305,6 +307,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           }
           $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
           $scope.datos.TRM_FECHAS = $scope.trm_fechas
+          $scope.datos.PE_T_PERMISO = "3";
           $scope.guardar_tramite($scope.datos);
 
         }
@@ -338,6 +341,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           }
           $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
           $scope.datos.TRM_FECHAS = $scope.trm_fechas
+          $scope.datos.PE_T_PERMISO = "4";
           $scope.guardar_tramite($scope.datos);
         }
       }

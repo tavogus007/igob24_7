@@ -30,6 +30,7 @@ function regularRenovacionSierraController($scope,$timeout, $q, $rootScope, $rou
     $scope.formDatosAE           =  false;
     $scope.tblTramites        =   {};
     $scope.trmUsuario      =   [];
+    
 
     $scope.getRequisitosCategoria = function(idCategoria, persona){
         if(persona == 'NATURAL'){

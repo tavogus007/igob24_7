@@ -32,6 +32,7 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
     $scope.divDeudasPendientes = false;
     $scope.btnCalcular = true;
     $scope.btnFUM = false;
+    
 
     $scope.cambioToggle1 = function(dato){
         $scope.lssubcategoria();

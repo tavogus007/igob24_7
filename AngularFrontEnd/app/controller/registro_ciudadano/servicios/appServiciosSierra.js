@@ -1360,6 +1360,8 @@ app.controller('serviciosController343Sierra', function ($scope, $rootScope ,$ro
                             $scope.datos.FILE_FACTURA_LUZ = $scope.datosinic.FILE_FACTURA_LUZ;
                         }else{
                              if($scope.datos.f01_tipo_per == 'JURIDICO' || $scope.datos.f01_tipo_per == 'J'){
+                                console.log('$scope.datosIniciales::::   ',$scope.datosIniciales);
+                                
                                 $scope.datos.FILE_FOTOCOPIA_CI = $scope.datosIniciales.FILE_FOTOCOPIA_CI_RA;
                                 $scope.datos.FILE_FOTOCOPIA_CI_R = $scope.datosIniciales.FILE_FOTOCOPIA_CI_RR;
                             }    

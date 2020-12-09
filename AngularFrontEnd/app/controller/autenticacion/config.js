@@ -62,6 +62,7 @@ var jsonURLS    =   {
     API_URL_DMS_HTML: "http://192.168.5.141:80/dreamfactory/dist/generadorPaginas/",
     ///opt/dreamfactory-1.9.4-2/apps/dreamfactory/htdocs/web/dreamfactory/dist/generadorPaginas/elaborarPdf/elaborar    
     CONEXION_SERVICIOATM: "http://172.19.161.3/",//apiATM, CORREGIR SEGUN  EL AUTCONTROLLER
+    CONEXION_SERVICIOMASCOTAS: "http://192.168.5.69/", //externo MASCOTAS
     SERVICIO_URL_MASCOTAS:"http://40.117.46.159/dreamfactory/crearImagenBase64.php", //externo MASCOTAS
     URL_FILES:"http://192.168.5.141", //SERVICIO QUE GENERA URL
     //CONEXION_MOVILIDAD: "http://serigobvprueba.lapaz.bo/"
@@ -73,7 +74,7 @@ var jsonURLS    =   {
     CONEXION_SITRAM: "http://192.168.5.141", 
     CONEXION_API_PG_PRODUCTO: "http://192.168.5.141:8010/",//apirc
     CONEXION_PAGOS: "http://52.226.130.135:5433/",//apirc   
-    SERVICE_SIERRAM : "http://172.19.160.133/api/", //COMENTAR ESTA LINEA UNA VEZ SUBIDO A PRODUCCION LOS MODULOS DE EMSION Y RENOVACION CON LA INTEGRACION CON SIERRA
+    SERVICE_SIERRAM : "http://172.19.160.133/api/",//COMENTAR ESTA LINEA UNA VEZ SUBIDO A PRODUCCION LOS MODULOS DE EMSION Y RENOVACION CON LA INTEGRACION CON SIERRA
     SERVICE_GIS_AE_DZ:"https://servmonitoreo.lapaz.bo/"
     //https://gamlpmotores.lapaz.bo/gamlp179/igob247/generarFumOficial.php
 };

@@ -77,6 +77,7 @@ var jsonURLS    =   {
     SERVICE_SIERRAM : "http://172.19.160.133/api/",//COMENTAR ESTA LINEA UNA VEZ SUBIDO A PRODUCCION LOS MODULOS DE EMSION Y RENOVACION CON LA INTEGRACION CON SIERRA
     SERVICE_GIS_AE_DZ:"https://servmonitoreo.lapaz.bo/"
     //https://gamlpmotores.lapaz.bo/gamlp179/igob247/generarFumOficial.php
+    
 };
 try{
     if(app){

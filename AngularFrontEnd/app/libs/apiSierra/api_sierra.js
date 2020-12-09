@@ -4,7 +4,6 @@ if(jsonURLS){
     var urlCredenciales = jsonURLS.CREDENCIAL_MOTORES;
 }
 
-
 function ejecutarAjaxTokenSierra() {
     $.ajax({
         dataType: "json",

@@ -4258,7 +4258,8 @@ function renovacionJuridicoSierraController($scope,$timeout, $rootScope, $routeP
                         var detalle = '[{"odm_item_recaudador":"'+generarITEM2.ir_codigo+'","odm_pre_unitario":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'","odm_cantidad":"1","odm_sub_total":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'"}]';
                         dataFum = '{"Tipo":"generarOdm","razon_social":"'+nombreCompleto+'","ci_nit":"'+$scope.datos.f01_num_dos_prop+'","unidad_recaudadora":"139","sucursal":"0","monto_total":"'+parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado)+'","detalles":'+detalle+',"data":'+dataF+'}';
                         $.ajax({
-                            url: jsonURLS.SERVICEODM+'/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php',
+                            //url: jsonURLS.CONEXION_MOTOR_SERVICIO+'/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php',
+                            url: 'http://172.19.160.38:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php',
                             data: dataFum,
                             type: "POST",
                             dataType: "json",

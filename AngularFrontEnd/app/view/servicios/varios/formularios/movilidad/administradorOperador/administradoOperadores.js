@@ -440,6 +440,9 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       datosVeh.opcion = opcion;
       datosVeh.vehiculoAbm(function(results){
         results = JSON.parse(results).success.data[0];
+        if(results.sp_abm_operador_vehiculo = 'Insertado'){
+          $scope.crea_tramite_lotus($scope.datos,'V');
+        }
         $scope.datos = {};
         $scope.datos.ope_id = $scope.operador.xope_id;
         $scope.datos.den_ope = $scope.operador.xope_denominacion;
@@ -828,6 +831,9 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       datosCond.opcion = opc;
       datosCond.conductorAbm (function(data){
         data = JSON.parse(data).success.data[0];
+        if(data.sp_abm_operador_conductor == 'Insertado'){
+          $scope.crea_tramite_lotus($scope.datos,'C');
+        }
         $scope.datos = {};
         $scope.datos.ope_id = $scope.operador.xope_id;
         $scope.datos.den_ope = $scope.operador.xope_denominacion;
@@ -960,11 +966,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
 
 //*********************FIN OBSERVACIONES*********************
   $scope.crea_tramite_lotus = function (datos,tipo) {
-    if(tipo=='V'){
-      $scope.datos.tipoRegistro = 'vehiculo';
-    }else{
-      $scope.datos.tipoRegistro = 'conductor';
-    }
     $.blockUI({ css: { 
         border: 'none', 
         padding: '10px', 
@@ -996,26 +997,17 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
               type: 'success',
               //timer: 5000,
             });
-            if(tipo == 'V')
-            {
-              $scope.adiModVehiculo(0,'I');
-              $scope.listaVeh();
-            }
-            if(tipo == 'C')
-            {
-              $scope.adiModConductor(0,'I');
-              $scope.listaCond();
-            }
-          }else{        
-            if(tipo == 'V')
-            {
-              $('#vehiculo').modal('hide');
-            }
-            if(tipo == 'C')
-            {
-              $('#modalConductor').modal('hide');
-            }
+            
+          }else{
             swal("Error!", "Ocurrio un error, vuelva a intentarlo", "error"); 
+          }
+          if(tipo == 'V')
+          {
+            $scope.listaVeh();
+          }
+          if(tipo == 'C')
+          {
+            $scope.listaCond();
           }
         }else{
           alert(4555);

@@ -1302,10 +1302,10 @@ body.mobile-nav-active #mobile-nav-toggle{
     z-index: 999;
 
     -moz-animation: modalComunicado 2s forwards;
-    -moz-animation-delay: 10s;
+    -moz-animation-delay: 2s;
 
     animation: modalComunicado 2s;
-    animation-delay: 10s;
+    animation-delay: 2s;
     animation-fill-mode: forwards;
     visibility: hidden;
     opacity: 0;
@@ -1374,18 +1374,58 @@ body.mobile-nav-active #mobile-nav-toggle{
     width: 40px;
     line-height: 40px;
     border-radius: 50%;
-    right: 20px;
-    top: 20px;
+    right: 20%;
+    top: 9%;
     cursor: pointer;
 
     -moz-animation: modalComunicado 2s forwards;
-    -moz-animation-delay: 10s;
+    -moz-animation-delay: 2s;
 
     animation: modalComunicado 2s;
-    animation-delay: 10s;
+    animation-delay: 2s;
     animation-fill-mode: forwards;
     visibility: hidden;
     opacity: 0;
+}
+
+@media only screen and (max-width: 1024px) {
+    #cerrarCom + label {
+        right: 20%;
+        top: 19%;
+    }
+}
+/* Tablet Device = 768px */
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    #cerrarCom + label {
+        right: 5%;
+        top: 12%;
+    }
+}
+
+/* Wide Mobile = 480px */
+
+@media only screen and (max-width: 767px) {
+    #cerrarCom + label {
+        right: 5%;
+        top: 12%;
+    }
+}
+
+/* Small Device = 320px */
+
+@media only screen and (max-width: 479px) {
+    #cerrarCom + label {
+        right: 5%;
+        top: 25%;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    #cerrarCom + label {
+        right: 5%;
+        top: 25%;
+    }
 }
 
 #cerrarCom:checked + label, #cerrarCom:checked ~ .modalCom {

@@ -487,6 +487,21 @@
                     </div>
                   </div>
                 </div>
+                <div ng-show="div_licencia_funcionamiento == true">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">Licencia de Funcionamiento:</label>
+                          <div class="controls">
+                            <input type="text" class="form-control" ng-model="datos.PE_NRO_LICENCIA"
+                              name="PE_NRO_LICENCIA" value="memorandum" required ng-disabled="desabilitado">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="ibox float-e-margins">
                   <div class="col-md-12">
                     <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
@@ -549,9 +564,8 @@
                         <div class="form-group">
                           <label for="url">Tipo de Cierre</label>
                           <div class="controls">
-                            <select id="PE_T_CIERRE_VALOR" name="PE_T_CIERRE_VALOR" placeholder="Macrodistrito"
-                              ng-model="datos.PE_T_CIERRE_VALOR" class="form-control" ng-disabled="desabilitado"
-                              required>
+                            <select id="PE_T_CIERRE" name="PE_T_CIERRE" placeholder="Macrodistrito"
+                              ng-model="datos.PE_T_CIERRE" class="form-control" ng-disabled="desabilitado" required>
                               <option value="">--Seleccionar--</option>
                               <option value="1">PARCIAL</option>
                               <option value="2">TOTAL</option>
@@ -712,6 +726,17 @@
                             <div class="controls">
                               <input type="text" class="form-control" ng-model="datos_zonales.PE_NOM_VIA"
                                 name="PE_NOM_VIA" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Carril:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_zonales.PE_TRAMO" name="PE_TRAMO"
+                                value="memorandum" required ng-disabled="desabilitado">
                             </div>
                           </div>
                         </div>
@@ -971,37 +996,61 @@
                     <br>
                   </div>
                   <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="url">Tipo:</label>
-                        <div class="controls">
-                          <select id="PE_TIPO" name="PE_TIPO" placeholder="Macrodistrito" ng-model="datos.PE_TIPO"
-                            class="form-control" ng-disabled="desabilitado"
-                            ng-change="tipoUbicacionDinamico(datos.PE_TIPO);">
-                            <option value="">--Seleccionar--</option>
-                            <option value="12">TRANSPORTE CARGA</option>
-                            <option value="13">TRANSPORTE TURISMO</option>
-                            <option value="14">TRANSPORTE ESCOLAR</option>
-                            <option value="15">TRANSPORTE PERSONAL</option>
-                            <option value="16">TRANSPORTE DE PASAJEROS</option>
-                            <option value="17">MEDIO DE COMUNICACIÓN</option>
-                            <option value="18">CUERPO DIPLOMÁTICO</option>
-                            <option value="19">DISTRIBUCIÓN DE PRODUCTOS</option>
-                            <option value="20">ENTIDAD FINANCIERA</option>
-                            <option value="21">INSTITUCIÓN PRIVADA</option>
-                            <option value="22">INSTITUCIÓN PÚBLICA</option>
-                            <option value="23">GAMLP</option>
-                            <option value="24">SALUD</option>
-                            <option value="25">HOTELES</option>
-                            <option value="26">SERVICIO PRIVADO</option>
-                            <option value="27">SERVICIO PÚBLICO</option>
-                            <option value="28">FUNERARIAS</option>
-                            <option value="29">LINEAS AÉREAS</option>
-                            <option value="30">SINDICATO DE TAXI</option>
-                            <option value="31">EMPRESAS DE RADIO TAXIS</option>
-                            <option value="32">SERVICIO PRIVADO DE TRANSPORTE</option>
-                            <option value="otro">OTRO</option>
-                          </select>
+                    <div ng-show="div_primero_tipo == true">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">Tipo:</label>
+                          <div class="controls">
+                            <select id="PE_TIPO" name="PE_TIPO" placeholder="Macrodistrito" ng-model="datos.PE_TIPO"
+                              class="form-control" ng-disabled="desabilitado">
+                              <option value="">--Seleccionar--</option>
+                              <option value="12">TRANSPORTE CARGA</option>
+                              <option value="13">TRANSPORTE TURISMO</option>
+                              <option value="14">TRANSPORTE ESCOLAR</option>
+                              <option value="15">TRANSPORTE PERSONAL</option>
+                              <option value="16">TRANSPORTE DE PASAJEROS</option>
+                              <option value="17">MEDIO DE COMUNICACIÓN</option>
+                              <option value="18">CUERPO DIPLOMÁTICO</option>
+                              <option value="19">DISTRIBUCIÓN DE PRODUCTOS</option>
+                              <option value="20">ENTIDAD FINANCIERA</option>
+                              <option value="21">INSTITUCIÓN PRIVADA</option>
+                              <option value="22">INSTITUCIÓN PÚBLICA</option>
+                              <option value="23">GAMLP</option>
+                              <option value="24">SALUD</option>
+                              <option value="25">HOTELES</option>
+                              <option value="26">SERVICIO PRIVADO</option>
+                              <option value="27">SERVICIO PÚBLICO</option>
+                              <option value="28">FUNERARIAS</option>
+                              <option value="29">LINEAS AÉREAS</option>
+                              <option value="30">SINDICATO DE TAXI</option>
+                              <option value="31">EMPRESAS DE RADIO TAXIS</option>
+                              <option value="32">SERVICIO PRIVADO DE TRANSPORTE</option>
+                              <option value="otro">OTRO</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div ng-show="div_segundo_tipo == true">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">Tipo:</label>
+                          <div class="controls">
+                            <select id="PE_TIPO_CIERRE" name="PE_TIPO_CIERRE" placeholder="Macrodistrito"
+                              ng-model="datos.PE_TIPO_CIERRE" class="form-control" ng-disabled="desabilitado">
+                              <option value="">--Seleccionar--</option>
+                              <option value="1">OBRA CIVIL</option>
+                              <option value="2">FOLKLORICA</option>
+                              <option value="3">DEPORTIVA</option>
+                              <option value="4">ENTRETENIMIENTO</option>
+                              <option value="5">CIVICA</option>
+                              <option value="6">CULTURAL</option>
+                              <option value="7">RELIGIOSA</option>
+                              <option value="8">SOLIDARIDAD</option>
+                              <option value="9">EDUCATIVA</option>
+                              <option value="OTROS">OTROS</option>
+                            </select>
+                          </div>
                         </div>
                       </div>
                     </div>

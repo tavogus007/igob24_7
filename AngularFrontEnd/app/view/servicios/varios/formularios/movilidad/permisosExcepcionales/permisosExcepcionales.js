@@ -16,7 +16,6 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
   $scope.inicio = function () {
     $scope.tramitesCiudadano();
     $scope.cargarDatosCiudadano();
-    //   $scope.obtenerContribuyente();
     setTimeout(function () {
       iniciarLoadFyle();
     }, 1000);
@@ -178,9 +177,6 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
             $scope.datos.PE_JER_PRI = 'PRIMARIA';
             $scope.datos.PE_JER_SEC = 'SECUNDARIA';
             $scope.datos.PE_JER_TER = 'TERCIARIA';
-
-            // $scope.datos.ggggg = "asdfasdfasdjawerghoípgh asdhoñugy";
-
             var buscarRepresentante = new rcNatural();
             buscarRepresentante.tipo_persona = "NATURAL"
             buscarRepresentante.ci = $scope.datos.PE_CI_J;
@@ -194,8 +190,39 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
                   $scope.datos.PE_NOMBRE_J = x[0].dtspsl_nombres;
                   $scope.datos.PE_PATERNO_J = x[0].dtspsl_paterno;
                   $scope.datos.PE_MATERNO_J = x[0].dtspsl_materno;
+                  $scope.datos.PE_REPRESENTANTE = x[0].dtspsl_nombres + " " + x[0].dtspsl_paterno + " " + x[0].dtspsl_materno;
                   $scope.datos.PE_EXPEDIDO_J = x[0].dtspsl_expedido;
+                  console.log($scope.datos.PE_EXPEDIDO_J, "22222222");
                   $scope.datos.PE_CELULAR_J = x[0].dtspsl_telefono;
+                  switch ($scope.datos.PE_EXPEDIDO_J) {
+                    case 'LPZ':
+                      $scope.datos.PE_EXP_J = '1';
+                      break;
+                    case 'ORU':
+                      $scope.datos.PE_EXP_J = '2';
+                      break;
+                    case 'PTS':
+                      $scope.datos.PE_EXP_J = '3';
+                      break;
+                    case 'CBB':
+                      $scope.datos.PE_EXP_J = '4';
+                      break;
+                    case 'CHQ':
+                      $scope.datos.PE_EXP_J = '5';
+                      break;
+                    case 'TJA':
+                      $scope.datos.PE_EXP_J = '6';
+                      break;
+                    case 'BNI':
+                      $scope.datos.PE_EXP_J = '7';
+                      break;
+                    case 'PND':
+                      $scope.datos.PE_EXP_J = '8';
+                      break;
+                    case 'SCZ':
+                      $scope.datos.PE_EXP_J = '9';
+                      break;
+                  }
                 }
               }
             })
@@ -220,14 +247,14 @@ function solicitudPermisosExcepxionales($scope, $rootScope, $routeParams, $locat
           } else {
             $scope.datos.PE_TIPO_PERS = '1';
             $scope.datos.CI_BIGDATA = results[0]._id;
-            $scope.datos.PE_NOM = results[0].dtspsl_nombres;//************* */
-            $scope.datos.PE_PAT = results[0].dtspsl_paterno;//********** */
-            $scope.datos.PE_MAT = results[0].dtspsl_materno;//**************** */
-            $scope.datos.PE_CAS = results[0].dtspsl_tercer_apellido;//************** */
-            $scope.datos.PE_CEL = results[0].dtspsl_movil;//****************** */
-            $scope.datos.PE_CORREO = results[0].dtspsl_correo;//*********** */
-            $scope.datos.PE_EXP = results[0].dtspsl_expedido;   //************** */
-            $scope.datos.PE_CI = results[0].dtspsl_ci;    //*************** */
+            $scope.datos.PE_NOM = results[0].dtspsl_nombres;
+            $scope.datos.PE_PAT = results[0].dtspsl_paterno;
+            $scope.datos.PE_MAT = results[0].dtspsl_materno;
+            $scope.datos.PE_CAS = results[0].dtspsl_tercer_apellido;
+            $scope.datos.PE_CEL = results[0].dtspsl_movil;
+            $scope.datos.PE_CORREO = results[0].dtspsl_correo;
+            $scope.datos.PE_EXP = results[0].dtspsl_expedido;
+            $scope.datos.PE_CI = results[0].dtspsl_ci;
             $scope.datos.PE_ZONA_N = results[0].dtspsl_zona;
             $scope.datos.PE_ZONA_N = results[0].dtspsl_zona_desc;
             $scope.datos.PE_VIA = results[0].dtspsl_tipo_via;

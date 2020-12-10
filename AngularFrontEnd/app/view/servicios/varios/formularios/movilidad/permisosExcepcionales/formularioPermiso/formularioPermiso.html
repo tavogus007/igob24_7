@@ -309,8 +309,8 @@
                         <div class="form-group">
                           <label for="url">Zona:</label>
                           <div class="controls">
-                            <input type="text" ng-model="datos.PE_ZONA" id="PE_ZONA" name="PE_ZONA" class="form-control"
-                              width="30%" height="30" ng-disabled="true">
+                            <input type="text" ng-model="datos.PE_ZONA_N" id="PE_ZONA_N" name="PE_ZONA_N"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
                           </div>
                         </div>
                       </div>
@@ -487,6 +487,21 @@
                     </div>
                   </div>
                 </div>
+                <div ng-show="div_licencia_funcionamiento == true">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">Licencia de Funcionamiento:</label>
+                          <div class="controls">
+                            <input type="text" class="form-control" ng-model="datos.PE_NRO_LICENCIA"
+                              name="PE_NRO_LICENCIA" value="memorandum" required ng-disabled="desabilitado">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="ibox float-e-margins">
                   <div class="col-md-12">
                     <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
@@ -549,9 +564,8 @@
                         <div class="form-group">
                           <label for="url">Tipo de Cierre</label>
                           <div class="controls">
-                            <select id="PE_T_CIERRE_VALOR" name="PE_T_CIERRE_VALOR" placeholder="Macrodistrito"
-                              ng-model="datos.PE_T_CIERRE_VALOR" class="form-control" ng-disabled="desabilitado"
-                              required>
+                            <select id="PE_T_CIERRE" name="PE_T_CIERRE" placeholder="Macrodistrito"
+                              ng-model="datos.PE_T_CIERRE" class="form-control" ng-disabled="desabilitado" required>
                               <option value="">--Seleccionar--</option>
                               <option value="1">PARCIAL</option>
                               <option value="2">TOTAL</option>
@@ -660,10 +674,10 @@
                           <div class="form-group">
                             <label for="url">Zona</label>
                             <div class="controls">
-                              <select id="PE_ZONA" name="PE_ZONA" placeholder="Zona" ng-model="datos_zonales.PE_ZONA"
-                                class="form-control"
+                              <select id="PE_ZONA_VALOR" name="PE_ZONA_VALOR" placeholder="Zona"
+                                ng-model="datos_zonales.PE_ZONA_VALOR" class="form-control"
                                 ng-options="zona.dist_nombre as zona.dist_nombre for zona in aDistritoZona" required
-                                ng-disabled="desabilitado">
+                                ng-change="listaDistrito(datos_zonales.PE_ZONA_VALOR)" ng-disabled="desabilitado">
                                 <option value="">--Seleccionar--</option>
                               </select>
                             </div>
@@ -675,15 +689,13 @@
                           <div class="form-group">
                             <label for="url">Tipo de Vía:</label>
                             <div class="controls">
-                              <select id="PE_TIPO_VIA_valor" name="PE_TIPO_VIA_valor" placeholder="Macrodistrito"
-                                required ng-model="datos_zonales.PE_TIPO_VIA_valor" class="form-control"
-                                ng-disabled="desabilitado"
-                                ng-change="tipoUbicacionDinamico(datos_zonales.PE_TIPO_VIA_valor);">
+                              <select id="PE_TIPO_VIA" name="PE_TIPO_VIA" placeholder="Macrodistrito" required
+                                ng-model="datos_zonales.PE_TIPO_VIA" class="form-control" ng-disabled="desabilitado">
                                 <option value="">--Seleccionar--</option>
-                                <option value="AVENIDA">AVENIDA</option>
-                                <option value="CALLE">CALLE</option>
-                                <option value="PASAJE">PASAJE</option>
-                                <option value="PLAZA">PLAZA</option>
+                                <option value="1">AVENIDA</option>
+                                <option value="2">CALLE</option>
+                                <option value="3">PASAJE</option>
+                                <option value="4">PLAZA</option>
                               </select>
                             </div>
                           </div>
@@ -703,8 +715,8 @@
                           <div class="form-group">
                             <label for="url">Y Vía:</label>
                             <div class="controls">
-                              <input type="text" class="form-control" ng-model="datos_zonales.PE_Y_VIA_GR"
-                                name="PE_Y_VIA_GR" value="memorandum" required ng-disabled="desabilitado">
+                              <input type="text" class="form-control" ng-model="datos_zonales.PE_Y_VIA" name="PE_Y_VIA"
+                                value="memorandum" required ng-disabled="desabilitado">
                             </div>
                           </div>
                         </div>
@@ -714,6 +726,17 @@
                             <div class="controls">
                               <input type="text" class="form-control" ng-model="datos_zonales.PE_NOM_VIA"
                                 name="PE_NOM_VIA" value="memorandum" required ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Carril:</label>
+                            <div class="controls">
+                              <input type="text" class="form-control" ng-model="datos_zonales.PE_TRAMO" name="PE_TRAMO"
+                                value="memorandum" required ng-disabled="desabilitado">
                             </div>
                           </div>
                         </div>
@@ -743,10 +766,10 @@
                                 ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
                                 <td data-title="'#'" align="center">{{$index+1}}</td>
                                 <td data-title="'MacroDistrito'" align="center">{{tramite.PE_MACRO}}</td>
-                                <td data-title="'Zona'" align="center">{{tramite.PE_ZONA}}</td>
-                                <td data-title="'Tipo de Vía'" align="center">{{tramite.PE_TIPO_VIA_valor}}</td>
+                                <td data-title="'Zona'" align="center">{{tramite.PE_ZONA_VALOR}}</td>
+                                <td data-title="'Tipo de Vía'" align="center">{{tramite.PE_TIPO_VIA}}</td>
                                 <td data-title="'Entre Vía'" align="center">{{tramite.PE_ENTRE_VIA}}</td>
-                                <td data-title="'Y Vía'" align="center">{{tramite.PE_Y_VIA_GR}}</td>
+                                <td data-title="'Y Vía'" align="center">{{tramite.PE_Y_VIA}}</td>
                                 <td data-title="'Nombre de la Vía'" align="center">{{tramite.PE_NOM_VIA}}</td>
                                 <td data-title="'Eliminar'" align="center"><button ng-click="eliminarUbicacion(tramite)"
                                     type="button" class="btn btn-danger fa fa-times"
@@ -832,8 +855,8 @@
                           <div class="form-group">
                             <label for="url">Color:</label>
                             <div class="controls">
-                              <input type="text" class="form-control" ng-model="datos_carro.PE_COLOR_VEH"
-                                name="PE_COLOR_VEH" value="memorandum" required ng-disabled="desabilitado">
+                              <input type="text" class="form-control" ng-model="datos_carro.PE_COLOR" name="PE_COLOR"
+                                value="memorandum" required ng-disabled="desabilitado">
                             </div>
                           </div>
                         </div>
@@ -955,10 +978,9 @@
                           <table ng-table="tblCarros" class="table  table-hover">
                             <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
                               ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
-                              <!--cambios-->
                               <td data-title="'#'" align="center">{{$index+1}}</td>
                               <td data-title="'Placa'" align="center">{{tramite.PE_PLACA_CIRC}}</td>
-                              <td data-title="'Color'" align="center">{{tramite.PE_COLOR_VEH}}</td>
+                              <td data-title="'Color'" align="center">{{tramite.PE_COLOR}}</td>
                               <td data-title="'Clase'" align="center">{{tramite.PE_G_TIPO}}</td>
                               <td data-title="'Marca'" align="center">{{tramite.PE_MARCA_VEH}}</td>
                               <td data-title="'Modelo'" align="center">{{tramite.PE_G_TIPO_valor}}</td>
@@ -974,37 +996,61 @@
                     <br>
                   </div>
                   <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="url">Tipo:</label>
-                        <div class="controls">
-                          <select id="PE_TIPO" name="PE_TIPO" placeholder="Macrodistrito" ng-model="datos.PE_TIPO"
-                            class="form-control" ng-disabled="desabilitado"
-                            ng-change="tipoUbicacionDinamico(datos.PE_TIPO);">
-                            <option value="">--Seleccionar--</option>
-                            <option value="TRANSPORTE CARGA">TRANSPORTE CARGA</option>
-                            <option value="TRANSPORTE TURISMO">TRANSPORTE TURISMO</option>
-                            <option value="TRANSPORTE ESCOLAR">TRANSPORTE ESCOLAR</option>
-                            <option value="TRANSPORTE PERSONAL">TRANSPORTE PERSONAL</option>
-                            <option value="TRANSPORTE DE PASAJEROS">TRANSPORTE DE PASAJEROS</option>
-                            <option value="MEDIO DE COMUNICACION">MEDIO DE COMUNICACIÓN</option>
-                            <option value="CUERPO DIPLOMATICO">CUERPO DIPLOMÁTICO</option>
-                            <option value="DISTRIBUCION DE PRODUCTOS">DISTRIBUCIÓN DE PRODUCTOS</option>
-                            <option value="ENTIDAD FINANCIERA">ENTIDAD FINANCIERA</option>
-                            <option value="INSTITUCION PRIVADA">INSTITUCIÓN PRIVADA</option>
-                            <option value="INSTITUCION PUBLICA">INSTITUCIÓN PÚBLICA</option>
-                            <option value="GAMLP">GAMLP</option>
-                            <option value="SALUD">SALUD</option>
-                            <option value="HOTELES">HOTELES</option>
-                            <option value="SERVICIO PRIVADO">SERVICIO PRIVADO</option>
-                            <option value="SERVICIO PÚBLICO">SERVICIO PÚBLICO</option>
-                            <option value="FUNERARIAS">FUNERARIAS</option>
-                            <option value="LINEAS AÉREAS">LINEAS AÉREAS</option>
-                            <option value="SINDICATO DE TAXI">SINDICATO DE TAXI</option>
-                            <option value="EMPRESAS DE RADIO TAXIS">EMPRESAS DE RADIO TAXIS</option>
-                            <option value="SERVICIO PRIVADO DE TRANSPORTE">SERVICIO PRIVADO DE TRANSPORTE</option>
-                            <option value="OTRO">OTRO</option>
-                          </select>
+                    <div ng-show="div_primero_tipo == true">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">Tipo:</label>
+                          <div class="controls">
+                            <select id="PE_TIPO" name="PE_TIPO" placeholder="Macrodistrito" ng-model="datos.PE_TIPO"
+                              class="form-control" ng-disabled="desabilitado">
+                              <option value="">--Seleccionar--</option>
+                              <option value="12">TRANSPORTE CARGA</option>
+                              <option value="13">TRANSPORTE TURISMO</option>
+                              <option value="14">TRANSPORTE ESCOLAR</option>
+                              <option value="15">TRANSPORTE PERSONAL</option>
+                              <option value="16">TRANSPORTE DE PASAJEROS</option>
+                              <option value="17">MEDIO DE COMUNICACIÓN</option>
+                              <option value="18">CUERPO DIPLOMÁTICO</option>
+                              <option value="19">DISTRIBUCIÓN DE PRODUCTOS</option>
+                              <option value="20">ENTIDAD FINANCIERA</option>
+                              <option value="21">INSTITUCIÓN PRIVADA</option>
+                              <option value="22">INSTITUCIÓN PÚBLICA</option>
+                              <option value="23">GAMLP</option>
+                              <option value="24">SALUD</option>
+                              <option value="25">HOTELES</option>
+                              <option value="26">SERVICIO PRIVADO</option>
+                              <option value="27">SERVICIO PÚBLICO</option>
+                              <option value="28">FUNERARIAS</option>
+                              <option value="29">LINEAS AÉREAS</option>
+                              <option value="30">SINDICATO DE TAXI</option>
+                              <option value="31">EMPRESAS DE RADIO TAXIS</option>
+                              <option value="32">SERVICIO PRIVADO DE TRANSPORTE</option>
+                              <option value="otro">OTRO</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div ng-show="div_segundo_tipo == true">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">Tipo:</label>
+                          <div class="controls">
+                            <select id="PE_TIPO_CIERRE" name="PE_TIPO_CIERRE" placeholder="Macrodistrito"
+                              ng-model="datos.PE_TIPO_CIERRE" class="form-control" ng-disabled="desabilitado">
+                              <option value="">--Seleccionar--</option>
+                              <option value="1">OBRA CIVIL</option>
+                              <option value="2">FOLKLORICA</option>
+                              <option value="3">DEPORTIVA</option>
+                              <option value="4">ENTRETENIMIENTO</option>
+                              <option value="5">CIVICA</option>
+                              <option value="6">CULTURAL</option>
+                              <option value="7">RELIGIOSA</option>
+                              <option value="8">SOLIDARIDAD</option>
+                              <option value="9">EDUCATIVA</option>
+                              <option value="OTROS">OTROS</option>
+                            </select>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1167,7 +1213,6 @@
                         <table ng-table="tblFechas" class="table  table-hover">
                           <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
                             ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
-                            <!--cambios-->
                             <td data-title="'#'" align="center">{{$index+1}}</td>
                             <td data-title="'HORA INICIAL'" align="center">{{tramite.horaInicio}}</td>
                             <td data-title="'FECHA'" align="center">{{tramite.asignacion}}</td>

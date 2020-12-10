@@ -40,6 +40,9 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
   $scope.div_vehiculos_datos = false;
   $scope.div_formulario = false;
   $scope.div_agregar_fecha = false;
+  $scope.div_licencia_funcionamiento = false;
+  $scope.div_primero_tipo = false;
+  $scope.div_segundo_tipo = false;
   $scope.inicio = function () {
     $scope.open_mapa_mascotas();
   }
@@ -63,22 +66,22 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.trm_fechas = $scope.datos.TRM_FECHAS;
       $scope.tblFechas.reload();
       $scope.datos_zonales.PE_MACRO = $scope.datos.PE_MACRO_VALOR;
-      $scope.datos_zonales.PE_TIPO_VIA_valor = $scope.datos.PE_TIPO_VIA_VALOR;
+      $scope.datos_zonales.PE_TIPO_VIA = $scope.datos.PE_TIPO_VIA;
       $scope.datos_zonales.PE_ENTRE_VIA = $scope.datos.PE_ENTRE_VIA;
-      $scope.datos_zonales.PE_Y_VIA_GR = $scope.datos.PE_Y_VIA;
+      $scope.datos_zonales.PE_Y_VIA = $scope.datos.PE_Y_VIA;
       $scope.datos_zonales.PE_NOM_VIA = $scope.datos.PE_NOM_VIA;
-      $scope.datos_zonales.PE_ZONA = $scope.datos.PE_ZONA_VALOR;
+      $scope.datos_zonales.PE_ZONA_VALOR = $scope.datos.PE_ZONA_VALOR;
     } else if ($scope.datos.PE_T_PERMISO_VALOR == 'CIERRE DE VIAS') {
       $scope.permisoDinamico($scope.datos.PE_T_PERMISO_VALOR);
       $scope.tipoUbicacionDinamico($scope.datos.PE_UBICACION);
       $scope.trm_fechas = $scope.datos.TRM_FECHAS;
       $scope.tblFechas.reload();
       $scope.datos_zonales.PE_MACRO = $scope.datos.PE_MACRO_VALOR;
-      $scope.datos_zonales.PE_TIPO_VIA_valor = $scope.datos.PE_TIPO_VIA_VALOR;
+      $scope.datos_zonales.PE_TIPO_VIA = $scope.datos.PE_TIPO_VIA;
       $scope.datos_zonales.PE_ENTRE_VIA = $scope.datos.PE_ENTRE_VIA;
-      $scope.datos_zonales.PE_Y_VIA_GR = $scope.datos.PE_Y_VIA;
+      $scope.datos_zonales.PE_Y_VIA = $scope.datos.PE_Y_VIA;
       $scope.datos_zonales.PE_NOM_VIA = $scope.datos.PE_NOM_VIA;
-      $scope.datos_zonales.PE_ZONA = $scope.datos.PE_ZONA_VALOR;
+      $scope.datos_zonales.PE_ZONA_VALOR = $scope.datos.PE_ZONA_VALOR;
     } else if ($scope.datos.PE_T_PERMISO_VALOR == 'AREA DE RESTRICCION VEHICULAR') {
       $scope.permisoDinamico($scope.datos.PE_T_PERMISO_VALOR);
       $scope.tipoUbicacionDinamico($scope.datos.PE_UBICACION);
@@ -141,7 +144,9 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.mensaje("Estimado Ciudadano", "Ingrese el tipo de permiso.", "warning");
     } else {
       if ($scope.datos.PE_T_PERMISO_VALOR == 'PARADA MOMENTANEA') {
-        if ($scope.datos.PE_MAPA == undefined || $scope.datos.PE_MAPA == 'undefined' || $scope.datos.PE_MAPA == "") {
+        if ($scope.datos.PE_NRO_LICENCIA == undefined || $scope.datos.PE_NRO_LICENCIA == 'undefined' || $scope.datos.PE_NRO_LICENCIA == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el número de funcionamiento.", "warning");
+        } else if ($scope.datos.PE_MAPA == undefined || $scope.datos.PE_MAPA == 'undefined' || $scope.datos.PE_MAPA == "") {
           $scope.mensaje("Estimado Ciudadano", "Seleccione un punto en el mapa.", "warning");
         } else if ($scope.datos.PE_UBICACION == undefined || $scope.datos.PE_UBICACION == 'undefined' || $scope.datos.PE_UBICACION == "") {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el tipo de ubicación.", "warning");
@@ -189,25 +194,31 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           }
           $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
           $scope.datos.TRM_FECHAS = $scope.trm_fechas
+          $scope.datos.PE_T_PERMISO = "1";
+          $scope.datos.TotalCosto = "0";
           $scope.guardar_tramite($scope.datos);
         }
       } else if ($scope.datos.PE_T_PERMISO_VALOR == 'ESTACIONAMIENTO') {
-        if ($scope.datos.PE_MAPA == undefined || $scope.datos.PE_MAPA == 'undefined' || $scope.datos.PE_MAPA == "") {
+        if ($scope.datos.PE_NRO_LICENCIA == undefined || $scope.datos.PE_NRO_LICENCIA == 'undefined' || $scope.datos.PE_NRO_LICENCIA == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el número de funcionamiento.", "warning");
+        } else if ($scope.datos.PE_MAPA == undefined || $scope.datos.PE_MAPA == 'undefined' || $scope.datos.PE_MAPA == "") {
           $scope.mensaje("Estimado Ciudadano", "Seleccione un punto en el mapa.", "warning");
         } else if ($scope.datos.PE_UBICACION == undefined || $scope.datos.PE_UBICACION == 'undefined' || $scope.datos.PE_UBICACION == "") {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el tipo de ubicación.", "warning");
         } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_MACRO == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_MACRO == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_MACRO == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el macrodistrito.", "warning");
-        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA == "")) {
+        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA_VALOR == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA_VALOR == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA_VALOR == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese la zona.", "warning");
-        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA_valor == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA_valor == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA_valor == "")) {
+        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el tipo de vía.", "warning");
         } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ENTRE_VIA == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ENTRE_VIA == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ENTRE_VIA == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese la entre vía.", "warning");
-        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA_GR == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA_GR == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA_GR == "")) {
+        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese la y vía.", "warning");
         } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_NOM_VIA == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_NOM_VIA == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_NOM_VIA == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el nombre de la vía.", "warning");
+        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TRAMO == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TRAMO == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TRAMO == "")) {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el carril.", "warning");
         } else if ($scope.datos.PE_NUM_ESP == undefined || $scope.datos.PE_NUM_ESP == 'undefined' || $scope.datos.PE_NUM_ESP == "") {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el Nro de Espacio.", "warning");
         } else if ($scope.datos.PE_NUM_VEH == undefined || $scope.datos.PE_NUM_VEH == 'undefined' || $scope.datos.PE_NUM_VEH == "") {
@@ -232,11 +243,12 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
             $scope.datos.PE_TIPO_VIA1 = $scope.datos.vialuis;
           } else {
             $scope.datos.PE_MACRO_VALOR = $scope.datos_zonales.PE_MACRO;
-            $scope.datos.PE_ZONA_VALOR = $scope.datos_zonales.PE_ZONA;
-            $scope.datos.PE_TIPO_VIA_VALOR = $scope.datos_zonales.PE_TIPO_VIA_valor;
+            $scope.datos.PE_ZONA_VALOR = $scope.datos_zonales.PE_ZONA_VALOR;
+            $scope.datos.PE_TIPO_VIA = $scope.datos_zonales.PE_TIPO_VIA;
             $scope.datos.PE_ENTRE_VIA = $scope.datos_zonales.PE_ENTRE_VIA;
-            $scope.datos.PE_Y_VIA = $scope.datos_zonales.PE_Y_VIA_GR;
+            $scope.datos.PE_Y_VIA = $scope.datos_zonales.PE_Y_VIA;
             $scope.datos.PE_NOM_VIA = $scope.datos_zonales.PE_NOM_VIA;
+            $scope.datos.PE_TRAMO = $scope.datos_zonales.PE_TRAMO;
           }
           $scope.envio_Carros.push($scope.datos_carros_inicial);
           for (var i = 0; i < $scope.trm_Vehiculos.length; i++) {
@@ -250,11 +262,13 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           }
           $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
           $scope.datos.TRM_FECHAS = $scope.trm_fechas
+          $scope.datos.PE_T_PERMISO = "2";
+          $scope.datos.TotalCosto = "0";
           $scope.guardar_tramite($scope.datos);
 
         }
       } else if ($scope.datos.PE_T_PERMISO_VALOR == 'CIERRE DE VIAS') {
-        if ($scope.datos.PE_T_CIERRE_VALOR == undefined || $scope.datos.PE_T_CIERRE_VALOR == 'undefined' || $scope.datos.PE_T_CIERRE_VALOR == "") {
+        if ($scope.datos.PE_T_CIERRE == undefined || $scope.datos.PE_T_CIERRE == 'undefined' || $scope.datos.PE_T_CIERRE == "") {
           $scope.mensaje("Estimado Ciudadano", "Debe seleccionar el tipo de cierre.", "warning");
         } else if ($scope.datos.PE_MAPA == undefined || $scope.datos.PE_MAPA == 'undefined' || $scope.datos.PE_MAPA == "") {
           $scope.mensaje("Estimado Ciudadano", "Seleccione un punto en el mapa.", "warning");
@@ -262,19 +276,21 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           $scope.mensaje("Estimado Ciudadano", "Ingrese el tipo de ubicación.", "warning");
         } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_MACRO == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_MACRO == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_MACRO == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el macrodistrito.", "warning");
-        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA == "")) {
+        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA_VALOR == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA_VALOR == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ZONA_VALOR == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese la zona.", "warning");
-        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA_valor == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA_valor == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA_valor == "")) {
+        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TIPO_VIA == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el tipo de vía.", "warning");
         } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ENTRE_VIA == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ENTRE_VIA == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_ENTRE_VIA == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese la entre vía.", "warning");
-        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA_GR == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA_GR == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA_GR == "")) {
+        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_Y_VIA == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese la y vía.", "warning");
         } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_NOM_VIA == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_NOM_VIA == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_NOM_VIA == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el nombre de la vía.", "warning");
         } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_NOM_VIA == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_NOM_VIA == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_NOM_VIA == "")) {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el nombre de la vía.", "warning");
-        } else if ($scope.datos.PE_TIPO == undefined || $scope.datos.PE_TIPO == 'undefined' || $scope.datos.PE_TIPO == "") {
+        } else if (($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TRAMO == undefined) || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TRAMO == 'undefined') || ($scope.datos.PE_UBICACION == '1' && $scope.datos_zonales.PE_TRAMO == "")) {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el carril.", "warning");
+        } else if ($scope.datos.PE_TIPO_CIERRE == undefined || $scope.datos.PE_TIPO_CIERRE == 'undefined' || $scope.datos.PE_TIPO_CIERRE == "") {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el tipo.", "warning");
         } else if ($scope.datos.PE_MOTIV == undefined || $scope.datos.PE_MOTIV == 'undefined' || $scope.datos.PE_MOTIV == "") {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el Motivo de Permiso.", "warning");
@@ -293,11 +309,12 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
             $scope.datos.PE_TIPO_VIA1 = $scope.datos.vialuis;
           } else {
             $scope.datos.PE_MACRO_VALOR = $scope.datos_zonales.PE_MACRO;
-            $scope.datos.PE_ZONA_VALOR = $scope.datos_zonales.PE_ZONA;
-            $scope.datos.PE_TIPO_VIA_VALOR = $scope.datos_zonales.PE_TIPO_VIA_valor;
+            $scope.datos.PE_ZONA_VALOR = $scope.datos_zonales.PE_ZONA_VALOR;
+            $scope.datos.PE_TIPO_VIA = $scope.datos_zonales.PE_TIPO_VIA;
             $scope.datos.PE_ENTRE_VIA = $scope.datos_zonales.PE_ENTRE_VIA;
-            $scope.datos.PE_Y_VIA = $scope.datos_zonales.PE_Y_VIA_GR;
+            $scope.datos.PE_Y_VIA = $scope.datos_zonales.PE_Y_VIA;
             $scope.datos.PE_NOM_VIA = $scope.datos_zonales.PE_NOM_VIA;
+            $scope.datos.PE_TRAMO = $scope.datos_zonales.PE_TRAMO;
           }
           $scope.envio_Fechas.push($scope.datos_fecha_inicial);
           for (var i = 0; i < $scope.trm_fechas.length; i++) {
@@ -305,6 +322,9 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           }
           $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
           $scope.datos.TRM_FECHAS = $scope.trm_fechas
+          $scope.datos.PE_T_PERMISO = "3";
+          //  $scope.datos.PE_TIPO_CIERRE = $scope.datos.PE_TIPO;
+          $scope.datos.TotalCosto = "0";
           $scope.guardar_tramite($scope.datos);
 
         }
@@ -338,6 +358,9 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           }
           $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
           $scope.datos.TRM_FECHAS = $scope.trm_fechas
+          $scope.datos.PE_T_PERMISO = "4";
+          $scope.datos.TotalCosto = "0";
+          $scope.datos.PE_TIPO_AREA = $scope.datos.PE_TIPO;
           $scope.guardar_tramite($scope.datos);
         }
       }
@@ -440,18 +463,22 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
   $scope.adicionarUbicacion = function (data) {
     if ($scope.datos_zonales.PE_MACRO == undefined || $scope.datos_zonales.PE_MACRO == 'undefined' || $scope.datos_zonales.PE_MACRO == "") {
       $scope.mensaje("Estimado Ciudadano", "Ingrese el MacroDistrito.", "warning");
-    } else if ($scope.datos_zonales.PE_ZONA == undefined || $scope.datos_zonales.PE_ZONA == 'undefined' || $scope.datos_zonales.PE_ZONA == "") {
+    } else if ($scope.datos_zonales.PE_ZONA_VALOR == undefined || $scope.datos_zonales.PE_ZONA_VALOR == 'undefined' || $scope.datos_zonales.PE_ZONA_VALOR == "") {
       $scope.mensaje("Estimado Ciudadano", "Ingrese la Zona.", "warning");
-    } else if ($scope.datos_zonales.PE_TIPO_VIA_valor == undefined || $scope.datos_zonales.PE_TIPO_VIA_valor == 'undefined' || $scope.datos_zonales.PE_TIPO_VIA_valor == "") {
+    } else if ($scope.datos_zonales.PE_TIPO_VIA == undefined || $scope.datos_zonales.PE_TIPO_VIA == 'undefined' || $scope.datos_zonales.PE_TIPO_VIA == "") {
       $scope.mensaje("Estimado Ciudadano", "Ingrese el tipo de vía.", "warning");
     } else if ($scope.datos_zonales.PE_ENTRE_VIA == undefined || $scope.datos_zonales.PE_ENTRE_VIA == 'undefined' || $scope.datos_zonales.PE_ENTRE_VIA == "") {
       $scope.mensaje("Estimado Ciudadano", "Ingrese la Entre Vía.", "warning");
-    } else if ($scope.datos_zonales.PE_Y_VIA_GR == undefined || $scope.datos_zonales.PE_Y_VIA_GR == 'undefined' || $scope.datos_zonales.PE_Y_VIA_GR == "") {
+    } else if ($scope.datos_zonales.PE_Y_VIA == undefined || $scope.datos_zonales.PE_Y_VIA == 'undefined' || $scope.datos_zonales.PE_Y_VIA == "") {
       $scope.mensaje("Estimado Ciudadano", "Ingrese la Y Vía.", "warning");
     } else if ($scope.datos_zonales.PE_NOM_VIA == undefined || $scope.datos_zonales.PE_NOM_VIA == 'undefined' || $scope.datos_zonales.PE_NOM_VIA == "") {
       $scope.mensaje("Estimado Ciudadano", "Ingrese el Nombre de la Vía.", "warning");
+    } else if ($scope.datos_zonales.PE_TRAMO == undefined || $scope.datos_zonales.PE_TRAMO == 'undefined' || $scope.datos_zonales.PE_TRAMO == "") {
+      $scope.mensaje("Estimado Ciudadano", "Ingrese el carril.", "warning");
     } else {
-      $scope.trm_Zonales.push(data);
+      $scope.datos_zonales.PE_DISTRI = $scope.datos.PE_DISTRI;
+      $scope.datos_zonales.PE_ZONA = $scope.datos_zonales.PE_ZONA_VALOR;
+      $scope.trm_Zonales.push($scope.datos_zonales);
       $scope.datos_zonales = {};
       $scope.tblZonas.reload();
     }
@@ -461,7 +488,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.mensaje("Estimado Ciudadano", "Ingrese la placa de circulación.", "warning");
     } else if ($scope.datos_carro.PE_RADICATORIA == undefined || $scope.datos_carro.PE_RADICATORIA == 'undefined' || $scope.datos_carro.PE_RADICATORIA == "") {
       $scope.mensaje("Estimado Ciudadano", "Ingrese la Radicatoria.", "warning");
-    } else if ($scope.datos_carro.PE_COLOR_VEH == undefined || $scope.datos_carro.PE_COLOR_VEH == 'undefined' || $scope.datos_carro.PE_COLOR_VEH == "") {
+    } else if ($scope.datos_carro.PE_COLOR == undefined || $scope.datos_carro.PE_COLOR == 'undefined' || $scope.datos_carro.PE_COLOR == "") {
       $scope.mensaje("Estimado Ciudadano", "Ingrese el color del vehículo.", "warning");
     } else if ($scope.datos_carro.PE_G_TIPO == undefined || $scope.datos_carro.PE_G_TIPO == 'undefined' || $scope.datos_carro.PE_G_TIPO == "") {
       $scope.mensaje("Estimado Ciudadano", "Ingrese la clase del vehículo.", "warning");
@@ -478,7 +505,8 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
     } else if ($scope.datos_carro.PE_PLACA_OBSERVADO == undefined || $scope.datos_carro.PE_PLACA_OBSERVADO == 'undefined' || $scope.datos_carro.PE_PLACA_OBSERVADO == "") {
       $scope.mensaje("Estimado Ciudadano", "Ingrese el campo observado.", "warning");
     } else {
-      $scope.trm_Vehiculos.push(data);
+      $scope.datos_carro.PE_COLOR_VEH = $scope.datos_carro.PE_COLOR;
+      $scope.trm_Vehiculos.push($scope.datos_carro);
       $scope.datos_carro = {};
       $scope.tblCarros.reload();
     }
@@ -653,6 +681,9 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_cierre_formulario = false;
       $scope.div_vehiculos_datos = true;
       $scope.div_agregar_fecha = true;
+      $scope.div_licencia_funcionamiento = true;
+      $scope.div_primero_tipo = true;
+      $scope.div_segundo_tipo = false;
       $scope.tipoUbicacionDinamico($scope.datos.PE_UBICACION);
       $scope.open_mapa_mascotas();
     } else if (data == 'ESTACIONAMIENTO') {
@@ -663,6 +694,9 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_mapa_datos = true;
       $scope.div_vehiculos_datos = true;
       $scope.div_agregar_fecha = true;
+      $scope.div_licencia_funcionamiento = true;
+      $scope.div_primero_tipo = true;
+      $scope.div_segundo_tipo = false;
       $scope.tipoUbicacionDinamico($scope.datos.PE_UBICACION);
       $scope.open_mapa_mascotas();
     } else if (data == 'CIERRE DE VIAS') {
@@ -673,6 +707,9 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_cierre_formulario = true;
       $scope.div_vehiculos_datos = false;
       $scope.div_agregar_fecha = true;
+      $scope.div_licencia_funcionamiento = false;
+      $scope.div_primero_tipo = false;
+      $scope.div_segundo_tipo = true;
       $scope.tipoUbicacionDinamico($scope.datos.PE_UBICACION);
       $scope.open_mapa_mascotas();
     } else if (data == 'AREA DE RESTRICCION VEHICULAR') {
@@ -683,10 +720,14 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_cierre_formulario = false;
       $scope.div_vehiculos_datos = true;
       $scope.div_agregar_fecha = true;
+      $scope.div_licencia_funcionamiento = false;
+      $scope.div_primero_tipo = true;
+      $scope.div_segundo_tipo = false;
       $scope.tipoUbicacionDinamico($scope.PE_UBICACION);
       $scope.open_mapa_mascotas();
     } else {
       $scope.div_jerarquia_viral = false;
+      $scope.div_licencia_funcionamiento = false;
       $scope.tipoUbicacionDinamico($scope.datos.PE_UBICACION);
     }
   }
@@ -1089,7 +1130,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
         }
       });
     }
-    $scope.datos.idMacro = idMacro;
+    $scope.datos.PE_MACRO = idMacro;
     $scope.aDistritoZona = {};
     try {
       if (idMacroJ.length != 0) {
@@ -1099,6 +1140,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           data = JSON.parse(resultado);
           if (data.success.length > 0) {
             $scope.aDistritoZona = data.success;
+            conso
           } else {
             $scope.msg = "Error !!";
           }
@@ -1106,6 +1148,14 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       }
     } catch (error) {
       console.log('error', error);
+    }
+  }
+  $scope.listaDistrito = function (idMacroJ) {
+    for (var i = 0; i < $scope.aDistritoZona.length; i++) {
+      if (idMacroJ == $scope.aDistritoZona[i].dist_nombre) {
+        $scope.datos.PE_DISTRI = $scope.aDistritoZona[i].dist_dstt_id;
+        $scope.datos.PE_ZONA = $scope.aDistritoZona[i].dist_id;
+      }
     }
   }
 }

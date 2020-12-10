@@ -68,7 +68,7 @@
 		height:60px; */
 		top: 35%;
 		right:15px;
-		z-index: 1500;
+		z-index: 900;
 		}
 		.i_status{
 			margin: 5px;
@@ -243,8 +243,16 @@
 	<link href="nuevoIgob/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	
 	<link href="nuevoIgob/css/style.min.css" rel="stylesheet">
+
+	<!-- <script>
+		$( document ).ready(function() {
+			$('#popCom').modal('toggle')
+		});
+	</script> -->
+
 </head>
 <body>
+
 	<div class=preloader>
 		<div class=sk-folding-cube>
 			<div class="sk-cube1 sk-cube"></div>
@@ -253,6 +261,41 @@
 			<div class="sk-cube3 sk-cube"></div>
 		</div>
 	</div>
+
+
+
+	<!-- Popup Modal -->
+<!-- <div id="popCom" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		  <h4 class="modal-title">Popup Title</h4>
+		</div>
+		<div class="modal-body">
+		  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+	  </div>
+  
+	</div>
+  </div> -->
+
+	<input type="checkbox" id="cerrarCom">
+	<label for="cerrarCom" id="btn-cerrarCom" title="Cerrar"><i class="fa fa-window-close" aria-hidden="true"></i></label>
+	<div class="modalCom">
+		<div class="container-fluid" style="margin: auto;">
+			<!-- <h2>COMUNICADO URGENTE</h2> -->
+			<div class="comContenido">
+				<img src="nuevoIgob/img/info1.webp" alt="" style="width: 100%;">
+			</div>
+	
+		</div>
+	</div>
+
+
 	<header id="header">
 		<div class="container-fluid">
 			<div id="logo" class="pull-left">

@@ -397,6 +397,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       if($scope.datos.RO_MOD_VALUE == 3 || $scope.datos.RO_MOD_VALUE == 4 || $scope.datos.RO_MOD_VALUE==5 || $scope.datos.RO_MOD_VALUE==6){
         var nroAs = $scope.datos.RO_ASI_VJ1;
       }
+      $scope.datos.tipoRegistro = 'vehiculo';
       var datosV = {
         RO_NOM_SUC : document.getElementById("RO_ID_SUC").options[document.getElementById("RO_ID_SUC").selectedIndex].text,
         RO_TIP_V   : $scope.datos.RO_TIP_V,
@@ -802,6 +803,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
           $scope.datos.nom_suc = nom_suc;
         }
       });
+      $scope.datos.tipoRegistro = 'conductor';
       var dataC = {
         "RO_NOM_SUC" : nom_suc,
         "RO_EXP_C" : $scope.datos.RO_EXP_C,

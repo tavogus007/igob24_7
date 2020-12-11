@@ -792,7 +792,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       && $scope.datos.RO_NRO_C!=undefined
       &&$scope.datos.RO_CAT_C!='' && $scope.datos.RO_CAT_C!=undefined && $scope.datos.RO_TIP_C!='' 
       && $scope.datos.RO_TIP_C!=undefined){
-      console.log("daaaa",$scope.datos.PLACA);
       var id_suc = 0;
       var nom_suc = '';
       angular.forEach($scope.objVehiculos,function(val, index)
@@ -988,7 +987,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       var nroTramiteEnviado = sessionService.get('NROTRAMITE');
       tramite.tramite_linea(function(results){ 
         results = JSON.parse(results);
-        console.log(results,987654321);
         if (results !=null) {
           if(results.success != null){
             var nrot = results.success.data[0].crea_tramite_linea;
@@ -1012,8 +1010,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
             $scope.listaCond();
           }
         }else{
-          alert(4555);
-          console.log('Se envio el tramite');
+          swal("Error!", "Ocurrio un error, vuelva a intentarlo", "error"); 
         }
         $.unblockUI();
       })  
@@ -1071,7 +1068,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
             }
           })
         }else{
-          console.log('Se envio el tramite');
+          console.log('No se envio el tramite');
         }
         $.unblockUI();
       }) 

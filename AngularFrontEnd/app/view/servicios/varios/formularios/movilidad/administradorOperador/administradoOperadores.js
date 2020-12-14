@@ -16,6 +16,8 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   $scope.fechaAct = new Date();
 
   $scope.inicio = function () {
+    swal("Aviso Importante!", "Le comunicamos que sus solicitudes de renovación de la Tarjeta Municipal de Operación Vehicular (TMOV) y Tarjeta de Identificación del Conductor (TIC), deben ser cargadas en el igob 24/7 a partir del martes 15 hasta el viernes 18 de diciembre del presente, caso contrario, se dará de baja a vehículos y conductores que no se encuentren con sus requisitos al día.");
+
     $scope.seleccionarTramite();
     $scope.getComboMarcaMovilidad();
     $scope.macrodistritos();
@@ -76,6 +78,8 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       act.actualiza_veh_cond(function(results){
         console.log(results)
       });*/
+     
+      
       $scope.operador = ope;
       $scope.registro = true;
       $scope.datosOfiR = ope.oficinas; 

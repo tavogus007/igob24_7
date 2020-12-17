@@ -235,7 +235,7 @@ function enviarData() {
             var datosTipoTramite = JSON.parse(datosSerializados);
             console.log('datosSerializados XXXX',datosTipoTramite.POC_TIPO_TRAMITE);
 
-            if (datosTipoTramite.POC_TIPO_TRAMITE == 'DRTRD'){
+            if (datosTipoTramite.POC_TIPO_TRAMITE == 'TRA'){
                 quitarComillas = new RegExp('id=\'tinymce\'', "g");
                 datosSerializados = datosSerializados.replace(quitarComillas,'');
                 quitarComillas = new RegExp('class=\'mce-content-body \'', "g");
@@ -251,7 +251,7 @@ function enviarData() {
                 var idProcodigo = 'SITR@M-';
                 var crearCaso   =   new gCrearCasoSitramEnLinea();
                 crearCaso.datos             = datosSerializados;
-                crearCaso.tipo_tramite      = "DRTRD";
+                crearCaso.tipo_tramite      = "TRA";
                 crearCaso.sub_tipo_tramite  = 0;
                 crearCaso.tipo_hr           = "EXTERNA";
                 crearCaso.correlativo        = 0;

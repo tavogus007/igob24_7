@@ -784,24 +784,26 @@
                   </div>
                   <br>
                   <br>
-                  <div class="ibox float-e-margins">
-                    <div class="col-md-12">
-                      <div class="ibox-title cafeSuave"
-                        style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-                        <h4>DATOS DEL VEHÍCULO:</h4>
+                  <div ng-show="div_vehiculos_datos == true">
+                    <div class="ibox float-e-margins">
+                      <div class="col-md-12">
+                        <div class="ibox-title cafeSuave"
+                          style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                          <h4>DATOS DEL VEHÍCULO:</h4>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div ng-show="div_vehiculos_datos == true">
                     <br>
                     <br>
                     <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="url">Nro de Espacio:</label>
-                          <div class="controls">
-                            <input type="number" class="form-control" ng-model="datos.PE_NUM_ESP" name="PE_NUM_ESP"
-                              value="memorandum" required ng-disabled="desabilitado">
+                      <div ng-show="div_nro_esapacios == true">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="url">Nro de Espacio:</label>
+                            <div class="controls">
+                              <input type="number" class="form-control" ng-model="datos.PE_NUM_ESP" name="PE_NUM_ESP"
+                                value="memorandum" required ng-disabled="desabilitado">
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -868,20 +870,22 @@
                                 ng-model="datos_carro.PE_G_TIPO" class="form-control" ng-disabled="desabilitado">
                                 <option value="">--Seleccionar--</option>
                                 <option value="AUTOMOVIL">AUTOMOVIL</option>
+                                <option value="BUS">BUS</option>
                                 <option value="BUS ESCOLAR">BUS ESCOLAR</option>
+                                <option value="CABINADO">CABINADO</option>
                                 <option value="CARRY">CARRY</option>
                                 <option value="CAMION">CAMIÓN</option>
                                 <option value="CAMIONETA">CAMIONETA</option>
                                 <option value="COLECTIVO">COLECTIVO</option>
-                                <option value="VOLQUETA">VOLQUETA</option>
                                 <option value="FURGENETA">FURGENETA</option>
                                 <option value="JEEP">JEEP</option>
                                 <option value="MOTOCICLETA">MOTOCICLETA</option>
-                                <option value="BUS">BUS</option>
+                                <option value="MICROBUS">MICROBUS</option>
                                 <option value="MINIBUS">MINIBUS</option>
-                                <option value="VAGONETA">VAGONETA</option>
-                                <option value="TRAILER">TRAILER</option>
                                 <option value="OMNIBUS">OMNIBUS</option>
+                                <option value="TRAILER">TRAILER</option>
+                                <option value="VAGONETA">VAGONETA</option>
+                                <option value="VOLQUETA">VOLQUETA</option>
                                 <option value="OTROS">OTROS</option>
                               </select>
                             </div>
@@ -947,15 +951,6 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="url">Observado:</label>
-                            <div class="controls">
-                              <input type="text" class="form-control" ng-model="datos_carro.PE_PLACA_OBSERVADO"
-                                name="PE_PLACA_OBSERVADO" value="memorandum" required ng-disabled="desabilitado">
-                            </div>
-                          </div>
-                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -997,6 +992,17 @@
                   </div>
                   <div class="row">
                     <div ng-show="div_primero_tipo == true">
+                      <div class="ibox float-e-margins">
+                        <div class="col-md-12">
+                          <div class="ibox-title cafeSuave"
+                            style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                            <h4>MOTIVO DEL PERMISO:</h4>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <br>
+                      <br>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="url">Tipo:</label>
@@ -1004,6 +1010,7 @@
                             <select id="PE_TIPO" name="PE_TIPO" placeholder="Macrodistrito" ng-model="datos.PE_TIPO"
                               class="form-control" ng-disabled="desabilitado">
                               <option value="">--Seleccionar--</option>
+                              <option value="1">OBRA CIVIL</option>
                               <option value="12">TRANSPORTE CARGA</option>
                               <option value="13">TRANSPORTE TURISMO</option>
                               <option value="14">TRANSPORTE ESCOLAR</option>
@@ -1032,6 +1039,17 @@
                       </div>
                     </div>
                     <div ng-show="div_segundo_tipo == true">
+                      <div class="ibox float-e-margins">
+                        <div class="col-md-12">
+                          <div class="ibox-title cafeSuave"
+                            style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                            <h4>MOTIVO DEL PERMISO:</h4>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <br>
+                      <br>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="url">Tipo:</label>
@@ -1149,6 +1167,7 @@
                       </div>
                     </div>
                   </div>
+                  <br>
                   <br>
                   <div ng-show="div_agregar_fecha == true">
                     <div class="row">

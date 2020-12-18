@@ -43,6 +43,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
   $scope.div_licencia_funcionamiento = false;
   $scope.div_primero_tipo = false;
   $scope.div_segundo_tipo = false;
+  $scope.div_nro_esapacios = false;
   $scope.inicio = function () {
     $scope.open_mapa_mascotas();
   }
@@ -329,9 +330,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
 
         }
       } else if ($scope.datos.PE_T_PERMISO_VALOR == 'AREA DE RESTRICCION VEHICULAR') {
-        if ($scope.datos.PE_NUM_ESP == undefined || $scope.datos.PE_NUM_ESP == 'undefined' || $scope.datos.PE_NUM_ESP == "") {
-          $scope.mensaje("Estimado Ciudadano", "Ingrese el Nro de Espacio.", "warning");
-        } else if ($scope.datos.PE_NUM_VEH == undefined || $scope.datos.PE_NUM_VEH == 'undefined' || $scope.datos.PE_NUM_VEH == "") {
+        if ($scope.datos.PE_NUM_VEH == undefined || $scope.datos.PE_NUM_VEH == 'undefined' || $scope.datos.PE_NUM_VEH == "") {
           $scope.mensaje("Estimado Ciudadano", "Ingrese el Nro de Vehículo .", "warning");
         } else if ($scope.datos.PE_NUM_VEH <= 0) {
           $scope.mensaje("Estimado Ciudadano", "Tome en cuenta que deben ser mas de un vehículo.", "warning");
@@ -502,8 +501,6 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.mensaje("Estimado Ciudadano", "Ingrese las dimensiones.", "warning");
     } else if ($scope.datos_carro.PE_NOMBRE_PROP == undefined || $scope.datos_carro.PE_NOMBRE_PROP == 'undefined' || $scope.datos_carro.PE_NOMBRE_PROP == "") {
       $scope.mensaje("Estimado Ciudadano", "Ingrese el nombre del propietario.", "warning");
-    } else if ($scope.datos_carro.PE_PLACA_OBSERVADO == undefined || $scope.datos_carro.PE_PLACA_OBSERVADO == 'undefined' || $scope.datos_carro.PE_PLACA_OBSERVADO == "") {
-      $scope.mensaje("Estimado Ciudadano", "Ingrese el campo observado.", "warning");
     } else {
       $scope.datos_carro.PE_COLOR_VEH = $scope.datos_carro.PE_COLOR;
       $scope.trm_Vehiculos.push($scope.datos_carro);
@@ -680,6 +677,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_mapa_datos = true;
       $scope.div_cierre_formulario = false;
       $scope.div_vehiculos_datos = true;
+      $scope.div_nro_esapacios = true;
       $scope.div_agregar_fecha = true;
       $scope.div_licencia_funcionamiento = true;
       $scope.div_primero_tipo = true;
@@ -693,6 +691,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_cierre_formulario = false;
       $scope.div_mapa_datos = true;
       $scope.div_vehiculos_datos = true;
+      $scope.div_nro_esapacios = true;
       $scope.div_agregar_fecha = true;
       $scope.div_licencia_funcionamiento = true;
       $scope.div_primero_tipo = true;
@@ -706,6 +705,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_mapa_datos = true;
       $scope.div_cierre_formulario = true;
       $scope.div_vehiculos_datos = false;
+      $scope.div_nro_esapacios = false;
       $scope.div_agregar_fecha = true;
       $scope.div_licencia_funcionamiento = false;
       $scope.div_primero_tipo = false;
@@ -719,6 +719,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_mapa_datos = false;
       $scope.div_cierre_formulario = false;
       $scope.div_vehiculos_datos = true;
+      $scope.div_nro_esapacios = false;
       $scope.div_agregar_fecha = true;
       $scope.div_licencia_funcionamiento = false;
       $scope.div_primero_tipo = true;

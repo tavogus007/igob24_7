@@ -498,16 +498,16 @@ body.mobile-nav-active #mobile-nav-toggle{
   background-image: url("../img/inform/info4.webp");
 }
 .s-wrap .s-item-2 {
-  background-image: url("../img/inform/info3.webp");
-}
-.s-wrap .s-item-3 {
   background-image: url("../img/inform/info2.webp");
 }
-.s-wrap .s-item-4 {
+.s-wrap .s-item-3 {
   background-image: url("../img/inform/info4.webp");
 }
+.s-wrap .s-item-4 {
+  background-image: url("../img/inform/info2.webp");
+}
 .s-wrap .s-item-5 {
-  background-image: url("../img/inform/info3.webp");
+  background-image: url("../img/inform/info4.webp");
 }
 
 .s-type-1 .s-control {

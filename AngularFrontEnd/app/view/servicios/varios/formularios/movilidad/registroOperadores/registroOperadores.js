@@ -893,9 +893,6 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
               $scope.requisitosConductor = JSON.parse(data).success.data;
               $scope.datos.fileRequisitosCond = {};
             })
-            setTimeout(function(){
-              iniciarLoadFyle();
-            }, 1000); 
             $scope.botonesGuardar = true;        
           }else{
             if($scope.datos.RO_MOD==1){
@@ -1700,6 +1697,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   };
 
   $scope.cambiarFile = function(obj, valor){
+    console.log("flaviaaaaaa");
     setTimeout(function(){
       $rootScope.leyenda1 = obj.name;
     }, 500);
@@ -1736,6 +1734,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/";
     $.blockUI();
     angular.forEach(aArchivos, function(archivo, key) {
+      $scope.adjunto = document.getElementById('f01_upload'+idFiles[key]).files[0];
+      console.log('flaviaaaaa ccc',$scope.adjunto);
       if(typeof(archivo) != 'undefined'){
         if($scope.reqVehiculo == 0){
           angular.forEach($scope.requisitosVehiculo, function(doc, pos) {
@@ -1777,7 +1777,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
             if (imagenNueva[imagenNueva.length-1] == 'pdf' ||  imagenNueva[imagenNueva.length-1] == 'docx' ||  imagenNueva[imagenNueva.length-1] == 'docxlm' ||
               imagenNueva[imagenNueva.length-1] == 'PDF' ||  imagenNueva[imagenNueva.length-1] == 'DOCX' ||  imagenNueva[imagenNueva.length-1] == 'DOCXLM' ) {
               $scope.documentosarc[key] = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/movilidad/"  + "/" + nombreFileN + "?app_name=todoangular";
-              fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
+              fileUpload1.uploadFileToUrl1($scope.adjunto, uploadUrl, nombreFileN);
               document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreFileN;
               $.unblockUI();
             }
@@ -1792,7 +1792,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
             if (imagenNueva[imagenNueva.length-1] == 'png' || imagenNueva[imagenNueva.length-1] == 'jpg' || imagenNueva[imagenNueva.length-1] == 'jpeg' || imagenNueva[imagenNueva.length-1] == 'bmp' || imagenNueva[imagenNueva.length-1] == 'gif' || imagenNueva[imagenNueva.length-1] == 'pdf' || imagenNueva[imagenNueva.length-1] == 'docx' || imagenNueva[imagenNueva.length-1] == 'docxlm' || 
               imagenNueva[imagenNueva.length-1] == 'PNG' || imagenNueva[imagenNueva.length-1] == 'JPG' || imagenNueva[imagenNueva.length-1] == 'JPEG' || imagenNueva[imagenNueva.length-1] == 'BMP' || imagenNueva[imagenNueva.length-1] == 'GIF' || imagenNueva[imagenNueva.length-1] == 'PDF' || imagenNueva[imagenNueva.length-1] == 'DOCX' || imagenNueva[imagenNueva.length-1] == 'DOCXLM') {
                 $scope.documentosarc[key] = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/movilidad/"  + "/" + nombreFileN + "?app_name=todoangular";
-                fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
+                fileUpload1.uploadFileToUrl1($scope.adjunto, uploadUrl, nombreFileN);
                 document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreFileN;
                 $.unblockUI();
             } else{
@@ -1800,7 +1800,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
               if (imagenNueva[imagenNueva.length-1] == 'pdf' ||  imagenNueva[imagenNueva.length-1] == 'docx' ||  imagenNueva[imagenNueva.length-1] == 'docxlm' ||
                 imagenNueva[imagenNueva.length-1] == 'PDF' ||  imagenNueva[imagenNueva.length-1] == 'DOCX' ||  imagenNueva[imagenNueva.length-1] == 'DOCXLM' ) {
                 $scope.documentosarc[key] = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/movilidad/"  + "/" + nombreFileN + "?app_name=todoangular";
-                fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
+                fileUpload1.uploadFileToUrl1($scope.adjunto, uploadUrl, nombreFileN);
                 document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreFileN;
                 $.unblockUI();
               }
@@ -2502,12 +2502,12 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         && $scope.datos.RO_PUE_V1!=''&&$scope.datos.RO_PUE_V1!=undefined 
         && $scope.datos.RO_RAD_V1!=''&&$scope.datos.RO_RAD_V1!=undefined && $scope.datos.RO_CI_P1!='' && $scope.datos.RO_CI_P1!=undefined
         && $scope.datos.RO_EXP_P1!=''&&$scope.datos.RO_EXP_P1!=undefined && $scope.datos.RO_NOM_P1!=''&&$scope.datos.RO_NOM_P1!=undefined
-        && $scope.datos.RO_PAT_P1!=''&&$scope.datos.RO_PAT_P1!=undefined && $scope.datos.RO_MAT_P1!=''&&$scope.datos.RO_MAT_P1!=undefined
+        && $scope.datos.RO_PAT_P1!=''&&$scope.datos.RO_PAT_P1!=undefined 
         && $scope.datos.RO_CEL_P1!=''&&$scope.datos.RO_CEL_P1!=undefined && $scope.datos.RO_MAC_P1!='' && $scope.datos.RO_MAC_P1!=undefined
         && $scope.datos.RO_ZONA_P1!=''&&$scope.datos.RO_ZONA_P1!=undefined && $scope.datos.RO_CALL_P1!='' && $scope.datos.RO_CALL_P1!=undefined
         && $scope.datos.RO_NRO_P1!=''&&$scope.datos.RO_NRO_P1!=undefined && $scope.datos.RO_CI_POO1!='' && $scope.datos.RO_CI_POO1!=undefined
         && $scope.datos.RO_EXP_POO1!=''&&$scope.datos.RO_EXP_POO1!=undefined && $scope.datos.RO_NOM_POO1!='' && $scope.datos.RO_NOM_POO1!=undefined
-        && $scope.datos.RO_PAT_POO1!=''&&$scope.datos.RO_PAT_POO1!=undefined && $scope.datos.RO_MAT_POO1!='' && $scope.datos.RO_MAT_POO1!=undefined
+        && $scope.datos.RO_PAT_POO1!=''&&$scope.datos.RO_PAT_POO1!=undefined 
         && $scope.datos.RO_CEL_POO1!=''&&$scope.datos.RO_CEL_POO1!=undefined && $scope.datos.RO_MAC_POO1!='' && $scope.datos.RO_MAC_POO1!=undefined
         && $scope.datos.RO_ZONA_POO1!=''&&$scope.datos.RO_ZONA_POO1!=undefined && $scope.datos.RO_CALL_POO1!='' && $scope.datos.RO_CALL_POO1!=undefined
         && $scope.datos.RO_NRO_POO1!=''&&$scope.datos.RO_NRO_POO1!=undefined)
@@ -2574,7 +2574,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.datos.PLACA1 = $scope.datos.RO_PLA_V1;
       if($scope.datos.RO_EXP_C1!='' && $scope.datos.RO_EXP_C1!=undefined && $scope.datos.PLACA1!='' && $scope.datos.PLACA1!=undefined
       &&$scope.datos.RO_NOM_C1!='' && $scope.datos.RO_NOM_C1!=undefined && $scope.datos.RO_PAT_C1!='' && $scope.datos.RO_PAT_C1!=undefined
-      &&$scope.datos.RO_MAT_C1!='' && $scope.datos.RO_MAT_C1!=undefined && $scope.datos.RO_CEL_C1!='' && $scope.datos.RO_CEL_C1!=undefined
+      && $scope.datos.RO_CEL_C1!='' && $scope.datos.RO_CEL_C1!=undefined
       &&$scope.datos.RO_MAC_C1!='' && $scope.datos.RO_MAC_C1!=undefined && $scope.datos.RO_ZONA_C1!='' && $scope.datos.RO_ZONA_C1!=undefined
       &&$scope.datos.RO_CALL_C1!='' && $scope.datos.RO_CALL_C1!=undefined && $scope.datos.RO_NRO_C1!='' && $scope.datos.RO_NRO_C1!=undefined
       &&$scope.datos.RO_CAT_C1!='' && $scope.datos.RO_CAT_C1!=undefined && $scope.datos.RO_TIP_C1!='' && $scope.datos.RO_TIP_C1!=undefined)
@@ -2635,7 +2635,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         $scope.requisitosConductor = JSON.parse(data).success.data;
         setTimeout(function(){
           iniciarLoadFyle();
-        }, 1000); 
+        }, 1000);
         $scope.datos.fileRequisitosCond = {};
       })
     }

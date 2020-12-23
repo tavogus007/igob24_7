@@ -1182,14 +1182,14 @@ function validaSuperficie(sup)
                             </div>
                             <div class="col-md-6">
                               <div class="form-group custom-upload">
-                                <input type="file" id="f01_upload{{data.resid}}" ng-disabled="desabilita" name="f01_upload{{data.resid}}"  style="display: none;">
+                                <input type="file" id="f01_upload{{data.resid}}" ng-disabled="desabilita" name="f01_upload{{data.resid}}" uploader-model="f01_upload{{data.resid}}" style="display: none;">
                                 <div class="input-group">
                                   <input id="txt_f01_upload{{data.resid}}" ng-disabled="true" ng-model = "fileArRequisitos['f01_upload'+data.resid].campo" name="txt_f01_upload{{data.resid}}" type="text" placeholder="{{data.resvalor}}" class="form-control input-lg"  required>
                                   <span class="input-group-btn">
                                     <a id="href_f01_upload{{data.resid}}" ng-show="fileArRequisitos['f01_upload'+data.resid].url" href="{{fileArRequisitos['f01_upload'+data.resid].url}}" target="_blank">
                                       <button id="btn_f01_ver{{data.resid}}" class="browse btn btn-success input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                     </a>
-                                    <button ng-disabled="desabilita" id="btn_f01_upload{{data.resid}}" ng-click="ejecutarFile('f01_upload' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                    <button ng-disabled="desabilita" id="btn_f01_upload{{data.resid}}" ng-click="ejecutarFile('f01_upload' + data.resid)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                                   </span>
                                 </div>
                               </div>
@@ -1379,7 +1379,7 @@ function validaSuperficie(sup)
                                 </div>
                                 <div class="col-md-3">
                                   <div class="form-group">
-                                    <label class="control-label">Paterno:</label>
+                                    <label class="control-label">Primer Apellido:</label>
                                     <div class="input-group col-md-12">
                                       <input id="RO_PAT_P1" name="RO_PAT_P1" type="text"  class="form-control" placeholder="Paterno" ng-model="datos.RO_PAT_P1"  onkeyup="validaLetras(this);mayus(this);" required ng-disabled="desabilita || desabilitaVeh" />
                                     </div>
@@ -1387,9 +1387,9 @@ function validaSuperficie(sup)
                                 </div>
                                 <div class="col-md-3">
                                   <div class="form-group">
-                                    <label class="control-label">Materno:</label>
+                                    <label class="control-label">Segundo Apellido:</label>
                                     <div class="input-group col-md-12">
-                                      <input id="RO_MAT_P1" name="RO_MAT_P1" type="text" class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_P1" onkeyup="validaLetras(this);mayus(this);" required ng-disabled="desabilita || desabilitaVeh"/>
+                                      <input id="RO_MAT_P1" name="RO_MAT_P1" type="text" class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_P1" onkeyup="validaLetras(this);mayus(this);"  ng-disabled="desabilita || desabilitaVeh"/>
                                     </div>
                                   </div>
                                 </div>  
@@ -1497,7 +1497,7 @@ function validaSuperficie(sup)
                                 </div>                            
                                 <div class="col-md-3">
                                   <div class="form-group">
-                                    <label class="control-label">Paterno:</label>
+                                    <label class="control-label">Primer Apellido:</label>
                                     <div class="input-group col-md-12">
                                       <input id="RO_PAT_POO1" name="RO_PAT_POO1" type="text"  class="form-control" placeholder="Paterno" ng-model="datos.RO_PAT_POO1" onkeyup="validaLetras(this);" required ng-disabled="desabilita || desabilitaVeh"/>
                                     </div>
@@ -1505,9 +1505,9 @@ function validaSuperficie(sup)
                                 </div>
                                 <div class="col-md-3">
                                   <div class="form-group">
-                                    <label class="control-label">Materno:</label>
+                                    <label class="control-label">Segundo Apellido:</label>
                                     <div class="input-group col-md-12">
-                                      <input id="RO_MAT_POO1" name="RO_MAT_POO1" type="text"  class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_POO1"   onkeyup="validaLetras(this);" required ng-disabled="desabilita || desabilitaVeh"/>
+                                      <input id="RO_MAT_POO1" name="RO_MAT_POO1" type="text"  class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_POO1"   onkeyup="validaLetras(this);"  ng-disabled="desabilita || desabilitaVeh"/>
                                     </div>
                                   </div>
                                 </div>                                                                                                   
@@ -1664,7 +1664,7 @@ function validaSuperficie(sup)
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label class="control-label">Paterno:</label>
+                              <label class="control-label">Primer Apellido:</label>
                               <div class="input-group col-md-12">
                                 <input id="RO_PAT_C1" name="RO_PAT_C1" type="text"  class="form-control" placeholder="Paterno" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_PAT_C1"  onkeyup="validaLetras(this); mayus(this);" required />
                               </div>
@@ -1672,9 +1672,9 @@ function validaSuperficie(sup)
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label class="control-label">Materno:</label>
+                              <label class="control-label">Segundo Apellido:</label>
                               <div class="input-group col-md-12">
-                                <input id="RO_MAT_C1" name="RO_MAT_C1" type="text"  class="form-control" placeholder="Materno" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_MAT_C1"  onkeyup="validaLetras(this); mayus(this);" required />
+                                <input id="RO_MAT_C1" name="RO_MAT_C1" type="text"  class="form-control" placeholder="Materno" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_MAT_C1"  onkeyup="validaLetras(this); mayus(this);"  />
                               </div>
                             </div>
                           </div>   

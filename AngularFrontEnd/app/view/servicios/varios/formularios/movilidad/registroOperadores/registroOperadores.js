@@ -2495,6 +2495,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   var swAdiC = 0;
   $scope.adicionaVehiculoConductor = function(){
     $scope.listaVeh();
+    console.log($scope.objVehiculos);
     if($scope.objVehiculos.length<1){
       if($scope.datos.RO_PLA_V1!='' && $scope.datos.RO_PLA_V1!=undefined && $scope.datos.RO_TIP_V1!='' && $scope.datos.RO_TIP_V1!=undefined
         && $scope.datos.RO_CLA_V1!=''&&$scope.datos.RO_CLA_V1!=undefined && $scope.datos.RO_MAR_V1!='' && $scope.datos.RO_MAR_V1!=undefined
@@ -2561,8 +2562,89 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         datosVeh.id_ofi = 0; 
         datosVeh.opcion = 'I';
         datosVeh.vehiculoAbm(function(results){
+          if(JSON.parse(results).success.data[0].sp_abm_operador_vehiculo=='Insertado'){
+            swAdiV = 0;
+          }else{
+            swAdiV = 1;
+          }
         })
-        swAdiV = 0;
+      }
+      else{
+        swal("","Datos obligatorios, verifique los datos del Vehiculo","warning");
+        swAdiV = 1;
+      }
+    }else{
+      if($scope.datos.RO_PLA_V1!='' && $scope.datos.RO_PLA_V1!=undefined && $scope.datos.RO_TIP_V1!='' && $scope.datos.RO_TIP_V1!=undefined
+        && $scope.datos.RO_CLA_V1!=''&&$scope.datos.RO_CLA_V1!=undefined && $scope.datos.RO_MAR_V1!='' && $scope.datos.RO_MAR_V1!=undefined
+        && $scope.datos.RO_MOD_V1!=''&&$scope.datos.RO_MOD_V1!=undefined && $scope.datos.RO_COLOR_V1!='' && $scope.datos.RO_COLOR_V1!=undefined
+        && $scope.datos.RO_PUE_V1!=''&&$scope.datos.RO_PUE_V1!=undefined 
+        && $scope.datos.RO_RAD_V1!=''&&$scope.datos.RO_RAD_V1!=undefined && $scope.datos.RO_CI_P1!='' && $scope.datos.RO_CI_P1!=undefined
+        && $scope.datos.RO_EXP_P1!=''&&$scope.datos.RO_EXP_P1!=undefined && $scope.datos.RO_NOM_P1!=''&&$scope.datos.RO_NOM_P1!=undefined
+        && $scope.datos.RO_PAT_P1!=''&&$scope.datos.RO_PAT_P1!=undefined 
+        && $scope.datos.RO_CEL_P1!=''&&$scope.datos.RO_CEL_P1!=undefined && $scope.datos.RO_MAC_P1!='' && $scope.datos.RO_MAC_P1!=undefined
+        && $scope.datos.RO_ZONA_P1!=''&&$scope.datos.RO_ZONA_P1!=undefined && $scope.datos.RO_CALL_P1!='' && $scope.datos.RO_CALL_P1!=undefined
+        && $scope.datos.RO_NRO_P1!=''&&$scope.datos.RO_NRO_P1!=undefined && $scope.datos.RO_CI_POO1!='' && $scope.datos.RO_CI_POO1!=undefined
+        && $scope.datos.RO_EXP_POO1!=''&&$scope.datos.RO_EXP_POO1!=undefined && $scope.datos.RO_NOM_POO1!='' && $scope.datos.RO_NOM_POO1!=undefined
+        && $scope.datos.RO_PAT_POO1!=''&&$scope.datos.RO_PAT_POO1!=undefined 
+        && $scope.datos.RO_CEL_POO1!=''&&$scope.datos.RO_CEL_POO1!=undefined && $scope.datos.RO_MAC_POO1!='' && $scope.datos.RO_MAC_POO1!=undefined
+        && $scope.datos.RO_ZONA_POO1!=''&&$scope.datos.RO_ZONA_POO1!=undefined && $scope.datos.RO_CALL_POO1!='' && $scope.datos.RO_CALL_POO1!=undefined
+        && $scope.datos.RO_NRO_POO1!=''&&$scope.datos.RO_NRO_POO1!=undefined)
+      {
+        if($scope.datos.RO_MOD == 2 ){
+          var nroAs = $scope.datos.RO_ASI_V1;
+        }
+        if($scope.datos.RO_MOD == 3 || $scope.datos.RO_MOD == 4 || $scope.datos.RO_MOD==5 || $scope.datos.RO_MOD==6){
+          var nroAs = $scope.datos.RO_ASI_VE1;
+        }    
+        var datosV = {
+          RO_NOM_SUC : '',
+          RO_TIP_V   : $scope.datos.RO_TIP_V1,
+          RO_CLA_V   : $scope.datos.RO_CLA_V1,
+          RO_MAR_V   : $scope.datos.RO_MAR_V1,
+          RO_MOD_V   : $scope.datos.RO_MOD_V1,
+          RO_COLOR_V : $scope.datos.RO_COLOR_V1,
+          RO_PUE_V   : $scope.datos.RO_PUE_V1,
+          RO_ASI_V   : nroAs,      
+          RO_RAD_V   : $scope.datos.RO_RAD_V1,
+          RO_CI_P    : $scope.datos.RO_CI_P1,
+          RO_EXP_P   : $scope.datos.RO_EXP_P1,
+          RO_NOM_P   : $scope.datos.RO_NOM_P1,      
+          RO_PAT_P   : $scope.datos.RO_PAT_P1,
+          RO_MAT_P   : $scope.datos.RO_MAT_P1,
+          RO_CEL_P   : $scope.datos.RO_CEL_P1,
+          RO_MAC_P   : $scope.datos.RO_MAC_P1,
+          RO_ZONA_P  : $scope.datos.RO_ZONA_P1,      
+          RO_CALL_P  : $scope.datos.RO_CALL_P1,
+          RO_NRO_P   : $scope.datos.RO_NRO_P1,
+          RO_CI_POO  : $scope.datos.RO_CI_POO1,
+          RO_EXP_POO   : $scope.datos.RO_EXP_POO1,
+          RO_NOM_POO  : $scope.datos.RO_NOM_POO1,      
+          RO_PAT_POO  : $scope.datos.RO_PAT_POO1,
+          RO_MAT_POO   : $scope.datos.RO_MAT_POO1,
+          RO_CEL_POO  : $scope.datos.RO_CEL_POO1,
+          RO_MAC_POO   : $scope.datos.RO_MAC_POO1,
+          RO_ZONA_POO  : $scope.datos.RO_ZONA_POO1,      
+          RO_CALL_POO  : $scope.datos.RO_CALL_POO1,
+          RO_NRO_POO   : $scope.datos.RO_NRO_POO1,
+          RO_VEH_ADJ : $scope.datos.fileRequisitosVeh
+        };
+        datosV = JSON.stringify(datosV);
+        var datosVeh = new vehiculo();
+        datosVeh.id =  $scope.objVehiculos[0].veh_ope_id; 
+        datosVeh.ope_id = $scope.datosOperador.id_ope;
+        datosVeh.placa = $scope.datos.RO_PLA_V1; 
+        datosVeh.datos = datosV; 
+        datosVeh.usr_id = 1; 
+        datosVeh.tipo_ser = $scope.datos.RO_MOD; 
+        datosVeh.id_ofi = 0; 
+        datosVeh.opcion = 'A';
+        datosVeh.vehiculoAbm(function(results){
+          if(JSON.parse(results).success.data[0].sp_abm_operador_vehiculo=='Actualizado'){
+            swAdiV = 0;
+          }else{
+            swAdiV = 1;
+          }
+        })
       }
       else{
         swal("","Datos obligatorios, verifique los datos del Vehiculo","warning");
@@ -2610,9 +2692,64 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         datosCond.tipo_ser = $scope.datos.RO_MOD; 
         datosCond.opcion = 'I';
         datosCond.conductorAbm (function(data){
-         
+          if(JSON.parse(data).success.data[0].sp_abm_operador_conductor=='Insertado'){
+            swAdiC = 0;
+          }else
+          {
+            swAdiC = 1;
+          }
         })
-        swAdiC = 0;
+      }else{
+        swAdiC = 1;
+        swal("","Datos obligatorios, verifique los datos del Conductor","warning");
+      }
+    }else{
+      $scope.datos.PLACA1 = $scope.datos.RO_PLA_V1;
+      if($scope.datos.RO_EXP_C1!='' && $scope.datos.RO_EXP_C1!=undefined && $scope.datos.PLACA1!='' && $scope.datos.PLACA1!=undefined
+      &&$scope.datos.RO_NOM_C1!='' && $scope.datos.RO_NOM_C1!=undefined && $scope.datos.RO_PAT_C1!='' && $scope.datos.RO_PAT_C1!=undefined
+      && $scope.datos.RO_CEL_C1!='' && $scope.datos.RO_CEL_C1!=undefined
+      &&$scope.datos.RO_MAC_C1!='' && $scope.datos.RO_MAC_C1!=undefined && $scope.datos.RO_ZONA_C1!='' && $scope.datos.RO_ZONA_C1!=undefined
+      &&$scope.datos.RO_CALL_C1!='' && $scope.datos.RO_CALL_C1!=undefined && $scope.datos.RO_NRO_C1!='' && $scope.datos.RO_NRO_C1!=undefined
+      &&$scope.datos.RO_CAT_C1!='' && $scope.datos.RO_CAT_C1!=undefined && $scope.datos.RO_TIP_C1!='' && $scope.datos.RO_TIP_C1!=undefined)
+      {
+        var id_suc = 0;
+        var nom_suc = '';
+        var dataC = {
+          "RO_NOM_SUC" : nom_suc,
+          "RO_EXP_C" : $scope.datos.RO_EXP_C1,
+          "PLACA"    : $scope.datos.PLACA1 ,
+          "RO_NOM_C" : $scope.datos.RO_NOM_C1,
+          "RO_PAT_C" : $scope.datos.RO_PAT_C1,
+          "RO_MAT_C" : $scope.datos.RO_MAT_C1,
+          "RO_TEL_C" : $scope.datos.RO_TEL_C1,
+          "RO_CORR_C" : $scope.datos.RO_CORR_C1,
+          "RO_CEL_C" : $scope.datos.RO_CEL_C1,
+          "RO_MAC_C" : $scope.datos.RO_MAC_C1,
+          "RO_ZONA_C" : $scope.datos.RO_ZONA_C1,
+          "RO_CALL_C" : $scope.datos.RO_CALL_C1,
+          "RO_NRO_C" : $scope.datos.RO_NRO_C1,
+          "RO_CAT_C" : $scope.datos.RO_CAT_C1,
+          "RO_TIP_C" : $scope.datos.RO_TIP_C1,
+          "RO_DOC_COND" : $scope.datos.fileRequisitosCond
+        }
+        datac = JSON.stringify(dataC);
+        var datosCond = new conductor();
+        datosCond.id = $scope.objConductores[0].cond_ofi_id; 
+        datosCond.ope_id = $scope.datosOperador.id_ope;
+        datosCond.ci = $scope.datos.RO_CI_C1;
+        datosCond.datos = datac;
+        datosCond.usr_id = 1; 
+        datosCond.ofi_id = id_suc; 
+        datosCond.tipo_ser = $scope.datos.RO_MOD; 
+        datosCond.opcion = 'A';
+        datosCond.conductorAbm (function(data){
+          if(JSON.parse(data).success.data[0].sp_abm_operador_conductor=='Actualizado'){
+            swAdiC = 0;
+          }else
+          {
+            swAdiC = 1;
+          }
+        })
       }else{
         swAdiC = 1;
         swal("","Datos obligatorios, verifique los datos del Conductor","warning");
@@ -2622,7 +2759,6 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.crea_tramite_lotus($scope.datos);
     }
   }
-
 //******************Conductor***************************************
   $scope.crearCond = function(acc){
     if(acc == 1){

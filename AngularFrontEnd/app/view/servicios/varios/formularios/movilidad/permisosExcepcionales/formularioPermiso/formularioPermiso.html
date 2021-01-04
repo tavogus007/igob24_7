@@ -1055,7 +1055,8 @@
                           <label for="url">Tipo:</label>
                           <div class="controls">
                             <select id="PE_TIPO_CIERRE" name="PE_TIPO_CIERRE" placeholder="Macrodistrito"
-                              ng-model="datos.PE_TIPO_CIERRE" class="form-control" ng-disabled="desabilitado">
+                              ng-model="datos.PE_TIPO_CIERRE" class="form-control" ng-disabled="desabilitado"
+                              ng-change="tipoDinamico(datos.PE_TIPO_CIERRE)">
                               <option value="">--Seleccionar--</option>
                               <option value="1">OBRA CIVIL</option>
                               <option value="2">FOLKLORICA</option>
@@ -1245,6 +1246,821 @@
                     </div>
                   </div>
                   <br>
+                  <div ng-show="div_adjunto_global_primero == true">
+                    <br>
+                    <div class="ibox float-e-margins">
+                      <div class="col-md-12">
+                        <div class="ibox-title cafeSuave"
+                          style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                          <h4>Documentos para Adjuntar:</h4>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">* Licencia de Funcionamiento vigente en el caso de actividades económicas
+                              (original y fotocopia)</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_LIC_FUN_AE" name="FILE_LIC_FUN_AE"
+                                uploader-model="FILE_LIC_FUN_AE" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_LIC_FUN_AE" name="txt_FILE_LIC_FUN_AE"
+                                  ng-model="datos.FILE_LIC_FUN_AE" type="text" ng-disabled="true"
+                                  class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_LIC_FUN_AE" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button"
+                                      ng-show="btover1 != null" ng-click="mostrarimg('FILE_LIC_FUN_AE');"
+                                      data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_LIC_FUN_AE" class="btnupload browse btn btn-primary input-lg"
+                                    type="button" ng-click="ejecutarFile('FILE_LIC_FUN_AE');"
+                                    ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">* Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03, con
+                              radicatoria en el Municipio de La Paz (original y fotocopia), a nombre de la persona
+                              natural o juridica , pública o privada solicitante:</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_CERTIFICADO_DE_PRO_REG_VEH"
+                                name="FILE_CERTIFICADO_DE_PRO_REG_VEH" uploader-model="FILE_CERTIFICADO_DE_PRO_REG_VEH"
+                                accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_CERTIFICADO_DE_PRO_REG_VEH"
+                                  name="txt_FILE_CERTIFICADO_DE_PRO_REG_VEH"
+                                  ng-model="datos.FILE_CERTIFICADO_DE_PRO_REG_VEH" type="text" ng-disabled="true"
+                                  class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_CERTIFICADO_DE_PRO_REG_VEH" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button"
+                                      ng-show="btover2 != null"
+                                      ng-click="mostrarimg('FILE_CERTIFICADO_DE_PRO_REG_VEH');" data-toggle="modal"><i
+                                        class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_CERTIFICADO_DE_PRO_REG_VEH"
+                                    class="btnupload browse btn btn-primary input-lg" type="button"
+                                    ng-click="ejecutarFile('FILE_CERTIFICADO_DE_PRO_REG_VEH');"
+                                    ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">* Póliza del Seguro Obligatorio de Accidentes de Transito (SOAT) vigente
+                              (original y fotocopia):</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_SOAT" name="FILE_SOAT" uploader-model="FILE_SOAT"
+                                accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_SOAT" name="txt_FILE_SOAT" ng-model="datos.FILE_SOAT" type="text"
+                                  ng-disabled="true" class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_SOAT" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button"
+                                      ng-show="btover3 != null" ng-click="mostrarimg('FILE_SOAT');"
+                                      data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_SOAT" class="btnupload browse btn btn-primary input-lg"
+                                    type="button" ng-click="ejecutarFile('FILE_SOAT');" ng-disabled="desabilitado"><i
+                                      class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">* Documento que demuestre la vinculación de la persona natural o jurídica ,
+                              pública o privada solicitante , con los vehículos motorizados, mismo que debera incluir
+                              placas de circulación, nombre de los propietarios y vigencia, cuando corresponda:</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_VINCULACION_PERDONA" name="FILE_VINCULACION_PERDONA"
+                                uploader-model="FILE_VINCULACION_PERDONA" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_VINCULACION_PERDONA" name="txt_FILE_VINCULACION_PERDONA"
+                                  ng-model="datos.FILE_VINCULACION_PERDONA" type="text" ng-disabled="true"
+                                  class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_VINCULACION_PERDONA" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button"
+                                      ng-show="btover4 != null" ng-click="mostrarimg('FILE_VINCULACION_PERDONA');"
+                                      data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_VINCULACION_PERDONA"
+                                    class="btnupload browse btn btn-primary input-lg" type="button"
+                                    ng-click="ejecutarFile('FILE_VINCULACION_PERDONA');" ng-disabled="desabilitado"><i
+                                      class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">* Tarjeta Municipal de Operación Vehicular, cuando corresponda (original y
+                              fotocopia)</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_TARJETA_MUNICIPAL" name="FILE_TARJETA_MUNICIPAL"
+                                uploader-model="FILE_TARJETA_MUNICIPAL" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_TARJETA_MUNICIPAL" name="txt_FILE_TARJETA_MUNICIPAL"
+                                  ng-model="datos.FILE_TARJETA_MUNICIPAL" type="text" ng-disabled="true"
+                                  class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="FILE_TARJETA_MUNICIPAL" href="">
+                                    <button id="href_FILE_TARJETA_MUNICIPAL" class="browse btn btn-primary input-lg"
+                                      type="button" ng-show="btover5 != null"
+                                      ng-click="mostrarimg('FILE_TARJETA_MUNICIPAL');" data-toggle="modal"><i
+                                        class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_TARJETA_MUNICIPAL"
+                                    class="btnupload browse btn btn-primary input-lg" type="button"
+                                    ng-click="ejecutarFile('FILE_TARJETA_MUNICIPAL');" ng-disabled="desabilitado"><i
+                                      class="glyphicon glyphicon-upload"></i>Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">* Tarjeta de Identificación del Conductor, cuando corresponda (original y
+                              fotocopia)</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_TARJETA_CONDUCTOR" name="FILE_TARJETA_CONDUCTOR"
+                                uploader-model="FILE_TARJETA_CONDUCTOR" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_TARJETA_CONDUCTOR" name="txt_FILE_TARJETA_CONDUCTOR"
+                                  ng-model="datos.FILE_TARJETA_CONDUCTOR" type="text" ng-disabled="true"
+                                  class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="FILE_TARJETA_CONDUCTOR" href="">
+                                    <button id="href_FILE_TARJETA_CONDUCTOR" class="browse btn btn-primary input-lg"
+                                      type="button" ng-show="btover22 != null"
+                                      ng-click="mostrarimg('FILE_TARJETA_CONDUCTOR');" data-toggle="modal"><i
+                                        class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_TARJETA_CONDUCTOR"
+                                    class="btnupload browse btn btn-primary input-lg" type="button"
+                                    ng-click="ejecutarFile('FILE_TARJETA_CONDUCTOR');" ng-disabled="desabilitado"><i
+                                      class="glyphicon glyphicon-upload"></i>Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">* No tener deudas pendientes sobre impuestos a la propiedad de vehículos ni
+                              sanciones en materia de transpote urbano , estacionamientos y paradas momentáneas con el
+                              GAMLP</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_SIN_DEUDAS_IMPUESTOS" name="FILE_SIN_DEUDAS_IMPUESTOS"
+                                uploader-model="FILE_SIN_DEUDAS_IMPUESTOS" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_SIN_DEUDAS_IMPUESTOS" name="txt_FILE_SIN_DEUDAS_IMPUESTOS"
+                                  ng-model="datos.FILE_SIN_DEUDAS_IMPUESTOS" type="text" ng-disabled="true"
+                                  class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="FILE_SIN_DEUDAS_IMPUESTOS" href="">
+                                    <button id="href_FILE_SIN_DEUDAS_IMPUESTOS" class="browse btn btn-primary input-lg"
+                                      type="button" ng-show="btover6 != null"
+                                      ng-click="mostrarimg('FILE_SIN_DEUDAS_IMPUESTOS');" data-toggle="modal"><i
+                                        class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_SIN_DEUDAS_IMPUESTOS"
+                                    class="btnupload browse btn btn-primary input-lg" type="button"
+                                    ng-click="ejecutarFile('FILE_SIN_DEUDAS_IMPUESTOS');" ng-disabled="desabilitado"><i
+                                      class="glyphicon glyphicon-upload"></i>Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">* Resolución Administrativa vigente emitida por la Autoridad Tributaria
+                              Municipal de liberación de impuestos (si corresponde)(original y fotocopia):</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_RESOLUCION_ADMINISTRATIVA"
+                                name="FILE_RESOLUCION_ADMINISTRATIVA" uploader-model="FILE_RESOLUCION_ADMINISTRATIVA"
+                                accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_RESOLUCION_ADMINISTRATIVA" name="txt_FILE_RESOLUCION_ADMINISTRATIVA"
+                                  ng-model="datos.FILE_RESOLUCION_ADMINISTRATIVA" type="text" ng-disabled="true"
+                                  class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="FILE_RESOLUCION_ADMINISTRATIVA" href="">
+                                    <button id="href_FILE_RESOLUCION_ADMINISTRATIVA"
+                                      class="browse btn btn-primary input-lg" type="button" ng-show="btover7 != null"
+                                      ng-click="mostrarimg('FILE_RESOLUCION_ADMINISTRATIVA');" data-toggle="modal"><i
+                                        class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_RESOLUCION_ADMINISTRATIVA"
+                                    class="btnupload browse btn btn-primary input-lg" type="button"
+                                    ng-click="ejecutarFile('FILE_RESOLUCION_ADMINISTRATIVA');"
+                                    ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i>Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">* Croquis de ubición de la vía donde solicita el permiso excepcional, para
+                              el caso de estacionamientos y paradas momentáneas, incierto en el Formulario de
+                              Solicitud:</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_CROQUIS" name="FILE_CROQUIS" uploader-model="FILE_CROQUIS"
+                                accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_CROQUIS" name="txt_FILE_CROQUIS" ng-model="datos.FILE_CROQUIS"
+                                  type="text" ng-disabled="true" class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="FILE_CROQUIS" href="">
+                                    <button id="href_FILE_CROQUIS" class="browse btn btn-primary input-lg" type="button"
+                                      ng-show="btover8 != null" ng-click="mostrarimg('FILE_CROQUIS');"
+                                      data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_CROQUIS" class="btnupload browse btn btn-primary input-lg"
+                                    type="button" ng-click="ejecutarFile('FILE_CROQUIS');" ng-disabled="desabilitado"><i
+                                      class="glyphicon glyphicon-upload"></i>Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                  </div>
+                  <div ng-show="div_adjunto_global_segundo == true">
+                    <br>
+                    <div class="ibox float-e-margins">
+                      <div class="col-md-12">
+                        <div class="ibox-title cafeSuave"
+                          style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                          <h4>Documentos para Adjuntar:</h4>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <!--B-->
+
+                    <div ng-show="segundo_tipo_adjuntos_uno == true">
+
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Contrato para la ejecución de obras civiles cuando corresponda
+                                (original
+                                y fotocopia):</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_CONTRA_OBRAS_CIVIL" name="FILE_CONTRA_OBRAS_CIVIL"
+                                  uploader-model="FILE_CONTRA_OBRAS_CIVIL" accept="pdf/*" style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_CONTRA_OBRAS_CIVIL" name="txt_FILE_CONTRA_OBRAS_CIVIL"
+                                    ng-model="datos.FILE_CONTRA_OBRAS_CIVIL" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="href_FILE_CONTRA_OBRAS_CIVIL" target="_blank" href="">
+                                      <button id="" class="browse btn btn-primary input-lg" type="button"
+                                        ng-show="btover9 != null" ng-click="mostrarimg('FILE_CONTRA_OBRAS_CIVIL');"
+                                        data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_CONTRA_OBRAS_CIVIL"
+                                      class="btnupload browse btn btn-primary input-lg" type="button"
+                                      ng-click="ejecutarFile('FILE_CONTRA_OBRAS_CIVIL');" ng-disabled="desabilitado"><i
+                                        class="glyphicon glyphicon-upload"></i> Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Croquis de ubicación de la vía donde solicita el permiso excepcional,
+                                inserto en el Formulario de Solicitud:</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_CROQUIS_UBI_VIA_PERMISO" name="FILE_CROQUIS_UBI_VIA_PERMISO"
+                                  uploader-model="FILE_CROQUIS_UBI_VIA_PERMISO" accept="pdf/*" style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_CROQUIS_UBI_VIA_PERMISO" name="txt_FILE_CROQUIS_UBI_VIA_PERMISO"
+                                    ng-model="datos.FILE_CROQUIS_UBI_VIA_PERMISO" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="href_FILE_CROQUIS_UBI_VIA_PERMISO" target="_blank" href="">
+                                      <button id="" class="browse btn btn-primary input-lg" type="button"
+                                        ng-show="btover10 != null"
+                                        ng-click="mostrarimg('FILE_CROQUIS_UBI_VIA_PERMISO');" data-toggle="modal"><i
+                                          class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_CROQUIS_UBI_VIA_PERMISO"
+                                      class="btnupload browse btn btn-primary input-lg" type="button"
+                                      ng-click="ejecutarFile('FILE_CROQUIS_UBI_VIA_PERMISO');"
+                                      ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i>
+                                      Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Permiso de Construcción:</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_PERMISO_CONSTRUCCION" name="FILE_PERMISO_CONSTRUCCION"
+                                  uploader-model="FILE_PERMISO_CONSTRUCCION" accept="pdf/*" style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_PERMISO_CONSTRUCCION" name="txt_FILE_PERMISO_CONSTRUCCION"
+                                    ng-model="datos.FILE_PERMISO_CONSTRUCCION" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="href_FILE_PERMISO_CONSTRUCCION" target="_blank" href="">
+                                      <button id="" class="browse btn btn-primary input-lg" type="button"
+                                        ng-show="btover11 != null" ng-click="mostrarimg('FILE_PERMISO_CONSTRUCCION');"
+                                        data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_PERMISO_CONSTRUCCION"
+                                      class="btnupload browse btn btn-primary input-lg" type="button"
+                                      ng-click="ejecutarFile('FILE_PERMISO_CONSTRUCCION');"
+                                      ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i>
+                                      Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Autorización para movimiento de tierra, cuando corresponda:</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_AUTO_TIERRA" name="FILE_AUTO_TIERRA"
+                                  uploader-model="FILE_AUTO_TIERRA" accept="pdf/*" style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_AUTO_TIERRA" name="txt_FILE_AUTO_TIERRA"
+                                    ng-model="datos.FILE_AUTO_TIERRA" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="href_FILE_AUTO_TIERRA" target="_blank" href="">
+                                      <button id="" class="browse btn btn-primary input-lg" type="button"
+                                        ng-show="btover12 != null" ng-click="mostrarimg('FILE_AUTO_TIERRA');"
+                                        data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_AUTO_TIERRA" class="btnupload browse btn btn-primary input-lg"
+                                      type="button" ng-click="ejecutarFile('FILE_AUTO_TIERRA');"
+                                      ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i>
+                                      Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Planos aprobados por el GAMLP, cuando corresponda:</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_PLANOS_APRO" name="FILE_PLANOS_APRO"
+                                  uploader-model="FILE_PLANOS_APRO" accept="pdf/*" style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_PLANOS_APRO" name="txt_FILE_PLANOS_APRO"
+                                    ng-model="datos.FILE_PLANOS_APRO" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="FILE_PLANOS_APRO" href="">
+                                      <button id="href_FILE_PLANOS_APRO" class="browse btn btn-primary input-lg"
+                                        type="button" ng-show="btover13 != null"
+                                        ng-click="mostrarimg('FILE_PLANOS_APRO');" data-toggle="modal"><i
+                                          class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_PLANOS_APRO" class="btnupload browse btn btn-primary input-lg"
+                                      type="button" ng-click="ejecutarFile('FILE_PLANOS_APRO');"
+                                      ng-disabled="desabilitado"><i
+                                        class="glyphicon glyphicon-upload"></i>Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Plan de manejo de Tráfico, para el caso de cierres de vías primarias y
+                                de
+                                vías secundarias o terciarias por donde circulen rutas del servicio público de
+                                transporte
+                                colectivo de pasajeros.</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_PLAN_MANEJO_TRAFICO" name="FILE_PLAN_MANEJO_TRAFICO"
+                                  uploader-model="FILE_PLAN_MANEJO_TRAFICO" accept="pdf/*" style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_PLAN_MANEJO_TRAFICO" name="txt_FILE_PLAN_MANEJO_TRAFICO"
+                                    ng-model="datos.FILE_PLAN_MANEJO_TRAFICO" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="FILE_PLAN_MANEJO_TRAFICO" href="">
+                                      <button id="href_FILE_PLAN_MANEJO_TRAFICO" class="browse btn btn-primary input-lg"
+                                        type="button" ng-show="btover14 != null"
+                                        ng-click="mostrarimg('FILE_PLAN_MANEJO_TRAFICO');" data-toggle="modal"><i
+                                          class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_PLAN_MANEJO_TRAFICO"
+                                      class="btnupload browse btn btn-primary input-lg" type="button"
+                                      ng-click="ejecutarFile('FILE_PLAN_MANEJO_TRAFICO');" ng-disabled="desabilitado"><i
+                                        class="glyphicon glyphicon-upload"></i>Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                    </div>
+                    <!--C-->
+                    <div ng-show="segundo_tipo_adjuntos_dos == true">
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Licencia de Funcionamientro vigente de la actividad económica, cuando
+                                corresponda (original y fotocopia) </label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_LICENCIA_FUNCIONAMIENTO_AE"
+                                  name="FILE_LICENCIA_FUNCIONAMIENTO_AE"
+                                  uploader-model="FILE_LICENCIA_FUNCIONAMIENTO_AE" accept="pdf/*"
+                                  style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_LICENCIA_FUNCIONAMIENTO_AE"
+                                    name="txt_FILE_LICENCIA_FUNCIONAMIENTO_AE"
+                                    ng-model="datos.FILE_LICENCIA_FUNCIONAMIENTO_AE" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="FILE_LICENCIA_FUNCIONAMIENTO_AE" href="">
+                                      <button id="href_FILE_LICENCIA_FUNCIONAMIENTO_AE"
+                                        class="browse btn btn-primary input-lg" type="button" ng-show="btover15 != null"
+                                        ng-click="mostrarimg('FILE_LICENCIA_FUNCIONAMIENTO_AE');" data-toggle="modal"><i
+                                          class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_LICENCIA_FUNCIONAMIENTO_AE"
+                                      class="btnupload browse btn btn-primary input-lg" type="button"
+                                      ng-click="ejecutarFile('FILE_LICENCIA_FUNCIONAMIENTO_AE');"
+                                      ng-disabled="desabilitado"><i
+                                        class="glyphicon glyphicon-upload"></i>Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Conformidad de la Secretaría Municipal de Culturas, de la respectiva
+                                Subalcaldía o de la Dirección de Desportes, según corresponda</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_CONFORMIDAD_SEC_MUN_CUL" name="FILE_CONFORMIDAD_SEC_MUN_CUL"
+                                  uploader-model="FILE_CONFORMIDAD_SEC_MUN_CUL" accept="pdf/*" style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_CONFORMIDAD_SEC_MUN_CUL" name="txt_FILE_CONFORMIDAD_SEC_MUN_CUL"
+                                    ng-model="datos.FILE_CONFORMIDAD_SEC_MUN_CUL" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="FILE_CONFORMIDAD_SEC_MUN_CUL" href="">
+                                      <button id="href_FILE_CONFORMIDAD_SEC_MUN_CUL"
+                                        class="browse btn btn-primary input-lg" type="button" ng-show="btover16 != null"
+                                        ng-click="mostrarimg('FILE_CONFORMIDAD_SEC_MUN_CUL');" data-toggle="modal"><i
+                                          class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_CONFORMIDAD_SEC_MUN_CUL"
+                                      class="btnupload browse btn btn-primary input-lg" type="button"
+                                      ng-click="ejecutarFile('FILE_CONFORMIDAD_SEC_MUN_CUL');"
+                                      ng-disabled="desabilitado"><i
+                                        class="glyphicon glyphicon-upload"></i>Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Croquis con el detalle de vías y recorrido propuesto para la actividad,
+                                inserto en el Formulario de Solicitud.</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_DET_VIAS_RECORRIDO_ACTIVIDAD"
+                                  name="FILE_DET_VIAS_RECORRIDO_ACTIVIDAD"
+                                  uploader-model="FILE_DET_VIAS_RECORRIDO_ACTIVIDAD" accept="pdf/*"
+                                  style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_DET_VIAS_RECORRIDO_ACTIVIDAD"
+                                    name="txt_FILE_DET_VIAS_RECORRIDO_ACTIVIDAD"
+                                    ng-model="datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="FILE_DET_VIAS_RECORRIDO_ACTIVIDAD" href="">
+                                      <button id="href_FILE_DET_VIAS_RECORRIDO_ACTIVIDAD"
+                                        class="browse btn btn-primary input-lg" type="button" ng-show="btover17 != null"
+                                        ng-click="mostrarimg('FILE_DET_VIAS_RECORRIDO_ACTIVIDAD');"
+                                        data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_DET_VIAS_RECORRIDO_ACTIVIDAD"
+                                      class="btnupload browse btn btn-primary input-lg" type="button"
+                                      ng-click="ejecutarFile('FILE_DET_VIAS_RECORRIDO_ACTIVIDAD');"
+                                      ng-disabled="desabilitado"><i
+                                        class="glyphicon glyphicon-upload"></i>Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Plan de Manejo de Tráfico, para el caso de cierre de vías primarias y
+                                de
+                                vías secundarias o terciarias por donde circulen rutas del servicio público de
+                                transporte
+                                colectivo de pasajeros.</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_PLAN_TRAFICO" name="FILE_PLAN_TRAFICO"
+                                  uploader-model="FILE_PLAN_TRAFICO" accept="pdf/*" style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_PLAN_TRAFICO" name="txt_FILE_PLAN_TRAFICO"
+                                    ng-model="datos.FILE_PLAN_TRAFICO" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="FILE_PLAN_TRAFICO" href="">
+                                      <button id="href_FILE_PLAN_TRAFICO" class="browse btn btn-primary input-lg"
+                                        type="button" ng-show="btover18 != null"
+                                        ng-click="mostrarimg('FILE_PLAN_TRAFICO');" data-toggle="modal"><i
+                                          class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_PLAN_TRAFICO" class="btnupload browse btn btn-primary input-lg"
+                                      type="button" ng-click="ejecutarFile('FILE_PLAN_TRAFICO');"
+                                      ng-disabled="desabilitado"><i
+                                        class="glyphicon glyphicon-upload"></i>Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                    </div>
+                    <!--D-->
+                    <div ng-show="segundo_tipo_adjuntos_tercero == true">
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Croquis con el detalle de vías y recorrido propuesto para la actividad,
+                                inserto en el Formulario de Solicitud.</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2"
+                                  name="FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2"
+                                  uploader-model="FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2" accept="pdf/*"
+                                  style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2"
+                                    name="txt_FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2"
+                                    ng-model="datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2" href="">
+                                      <button id="href_FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2"
+                                        class="browse btn btn-primary input-lg" type="button" ng-show="btover19 != null"
+                                        ng-click="mostrarimg('FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2');"
+                                        data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2"
+                                      class="btnupload browse btn btn-primary input-lg" type="button"
+                                      ng-click="ejecutarFile('FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2');"
+                                      ng-disabled="desabilitado"><i
+                                        class="glyphicon glyphicon-upload"></i>Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Plan de Manejo de Tráfico, para el caso de cierre de vías primarias y
+                                de
+                                vías secundarias o terciarias por donde circulen rutas del servicio público de
+                                transporte
+                                colectivo de pasajeros.</label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_PLAN_TRAFICO_2" name="FILE_PLAN_TRAFICO_2"
+                                  uploader-model="FILE_PLAN_TRAFICO_2" accept="pdf/*" style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_PLAN_TRAFICO_2" name="txt_FILE_PLAN_TRAFICO_2"
+                                    ng-model="datos.FILE_PLAN_TRAFICO_2" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="FILE_PLAN_TRAFICO_2" href="">
+                                      <button id="href_FILE_PLAN_TRAFICO_2" class="browse btn btn-primary input-lg"
+                                        type="button" ng-show="btover20 != null"
+                                        ng-click="mostrarimg('FILE_PLAN_TRAFICO_2');" data-toggle="modal"><i
+                                          class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_PLAN_TRAFICO_2"
+                                      class="btnupload browse btn btn-primary input-lg" type="button"
+                                      ng-click="ejecutarFile('FILE_PLAN_TRAFICO_2');" ng-disabled="desabilitado"><i
+                                        class="glyphicon glyphicon-upload"></i>Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="url">* Otras manifestaciones folklóricas populares que no estén previstas en
+                                el
+                                calendario Festivo , Folklórico y Ritual </label>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group custom-upload">
+                                <input type="file" id="FILE_OTRAS_MANIFESTACIONES" name="FILE_OTRAS_MANIFESTACIONES"
+                                  uploader-model="FILE_OTRAS_MANIFESTACIONES" accept="pdf/*" style="display: none;">
+                                <div class="input-group">
+                                  <input id="txt_FILE_OTRAS_MANIFESTACIONES" name="txt_FILE_OTRAS_MANIFESTACIONES"
+                                    ng-model="datos.FILE_OTRAS_MANIFESTACIONES" type="text" ng-disabled="true"
+                                    class="form-control input-lg" required>
+                                  <span class="input-group-btn">
+                                    <a id="FILE_OTRAS_MANIFESTACIONES" href="">
+                                      <button id="href_FILE_OTRAS_MANIFESTACIONES"
+                                        class="browse btn btn-primary input-lg" type="button" ng-show="btover21 != null"
+                                        ng-click="mostrarimg('FILE_OTRAS_MANIFESTACIONES');" data-toggle="modal"><i
+                                          class="glyphicon glyphicon-eye-open"></i></button>
+                                    </a>
+                                    <button id="btn_FILE_OTRAS_MANIFESTACIONES"
+                                      class="btnupload browse btn btn-primary input-lg" type="button"
+                                      ng-click="ejecutarFile('FILE_OTRAS_MANIFESTACIONES');"
+                                      ng-disabled="desabilitado"><i
+                                        class="glyphicon glyphicon-upload"></i>Subir</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+
+                    </div>
+
+
+
+
+
+                  </div>
                 </div>
                 <div class="col-md-12" align="right"><br>
                   <button id="miFormGuardar" ng-show="desabilitado

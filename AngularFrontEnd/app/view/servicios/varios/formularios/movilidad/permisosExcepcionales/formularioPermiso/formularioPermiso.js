@@ -44,6 +44,11 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
   $scope.div_primero_tipo = false;
   $scope.div_segundo_tipo = false;
   $scope.div_nro_esapacios = false;
+  $scope.div_adjunto_global_primero = false;
+  $scope.div_adjunto_global_segundo = false;
+  $scope.segundo_tipo_adjuntos_uno = false;
+  $scope.segundo_tipo_adjuntos_dos = false;
+  $scope.segundo_tipo_adjuntos_tercero = false;
   $scope.inicio = function () {
     $scope.open_mapa_mascotas();
   }
@@ -169,6 +174,24 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           $scope.mensaje("Estimado Ciudadano", "Ingrese el Motivo de Permiso.", "warning");
         } else if ($scope.trm_fechas.length <= 0) {
           $scope.mensaje("Estimado Ciudadano", "Debe ingresar al menos una fecha.", "warning");
+        } else if ($scope.datos.FILE_LIC_FUN_AE == undefined || $scope.datos.FILE_LIC_FUN_AE == 'undefined' || $scope.datos.FILE_LIC_FUN_AE == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Licencia de Funcionamiento.", "warning");
+        } else if ($scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH == undefined || $scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH == 'undefined' || $scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Certificado de Propiedad.", "warning");
+        } else if ($scope.datos.FILE_SOAT == undefined || $scope.datos.FILE_SOAT == 'undefined' || $scope.datos.FILE_SOAT == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de SOAT.", "warning");
+        } else if ($scope.datos.FILE_VINCULACION_PERDONA == undefined || $scope.datos.FILE_VINCULACION_PERDONA == 'undefined' || $scope.datos.FILE_VINCULACION_PERDONA == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de vinculación.", "warning");
+        } else if ($scope.datos.FILE_TARJETA_MUNICIPAL == undefined || $scope.datos.FILE_TARJETA_MUNICIPAL == 'undefined' || $scope.datos.FILE_TARJETA_MUNICIPAL == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Tarjeta Municipal.", "warning");
+        } else if ($scope.datos.FILE_TARJETA_CONDUCTOR == undefined || $scope.datos.FILE_TARJETA_CONDUCTOR == 'undefined' || $scope.datos.FILE_TARJETA_CONDUCTOR == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Tarjeta de Identificación del Conductor.", "warning");
+        } else if ($scope.datos.FILE_SIN_DEUDAS_IMPUESTOS == undefined || $scope.datos.FILE_SIN_DEUDAS_IMPUESTOS == 'undefined' || $scope.datos.FILE_SIN_DEUDAS_IMPUESTOS == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de que no tiene documentos pendientes.", "warning");
+        } else if ($scope.datos.FILE_RESOLUCION_ADMINISTRATIVA == undefined || $scope.datos.FILE_RESOLUCION_ADMINISTRATIVA == 'undefined' || $scope.datos.FILE_RESOLUCION_ADMINISTRATIVA == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Resolución Administrativa.", "warning");
+        } else if ($scope.datos.FILE_CROQUIS == undefined || $scope.datos.FILE_CROQUIS == 'undefined' || $scope.datos.FILE_CROQUIS == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento del corquis de ubicación.", "warning");
         } else {
           $scope.envio_Zonales = [];
           $scope.datos.PE_GR_UBICACION = [];
@@ -197,7 +220,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           $scope.datos.TRM_FECHAS = $scope.trm_fechas
           $scope.datos.PE_T_PERMISO = "1";
           $scope.datos.TotalCosto = "0";
-          $scope.guardar_tramite($scope.datos);
+          $scope.ultimoArrayAdjunto();
         }
       } else if ($scope.datos.PE_T_PERMISO_VALOR == 'ESTACIONAMIENTO') {
         if ($scope.datos.PE_NRO_LICENCIA == undefined || $scope.datos.PE_NRO_LICENCIA == 'undefined' || $scope.datos.PE_NRO_LICENCIA == "") {
@@ -236,8 +259,25 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           $scope.mensaje("Estimado Ciudadano", "Ingrese el Motivo de Permiso.", "warning");
         } else if ($scope.trm_fechas.length <= 0) {
           $scope.mensaje("Estimado Ciudadano", "Debe ingresar al menos una fecha.", "warning");
+        } else if ($scope.datos.FILE_LIC_FUN_AE == undefined || $scope.datos.FILE_LIC_FUN_AE == 'undefined' || $scope.datos.FILE_LIC_FUN_AE == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Licencia de Funcionamiento.", "warning");
+        } else if ($scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH == undefined || $scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH == 'undefined' || $scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Certificado de Propiedad.", "warning");
+        } else if ($scope.datos.FILE_SOAT == undefined || $scope.datos.FILE_SOAT == 'undefined' || $scope.datos.FILE_SOAT == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de SOAT.", "warning");
+        } else if ($scope.datos.FILE_VINCULACION_PERDONA == undefined || $scope.datos.FILE_VINCULACION_PERDONA == 'undefined' || $scope.datos.FILE_VINCULACION_PERDONA == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de vinculación.", "warning");
+        } else if ($scope.datos.FILE_TARJETA_MUNICIPAL == undefined || $scope.datos.FILE_TARJETA_MUNICIPAL == 'undefined' || $scope.datos.FILE_TARJETA_MUNICIPAL == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Tarjeta Municipal.", "warning");
+        } else if ($scope.datos.FILE_TARJETA_CONDUCTOR == undefined || $scope.datos.FILE_TARJETA_CONDUCTOR == 'undefined' || $scope.datos.FILE_TARJETA_CONDUCTOR == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Tarjeta de Identificación del Conductor.", "warning");
+        } else if ($scope.datos.FILE_SIN_DEUDAS_IMPUESTOS == undefined || $scope.datos.FILE_SIN_DEUDAS_IMPUESTOS == 'undefined' || $scope.datos.FILE_SIN_DEUDAS_IMPUESTOS == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de que no tiene documentos pendientes.", "warning");
+        } else if ($scope.datos.FILE_RESOLUCION_ADMINISTRATIVA == undefined || $scope.datos.FILE_RESOLUCION_ADMINISTRATIVA == 'undefined' || $scope.datos.FILE_RESOLUCION_ADMINISTRATIVA == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Resolución Administrativa.", "warning");
+        } else if ($scope.datos.FILE_CROQUIS == undefined || $scope.datos.FILE_CROQUIS == 'undefined' || $scope.datos.FILE_CROQUIS == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento del corquis de ubicación.", "warning");
         } else {
-
           if ($scope.datos.PE_UBICACION == '2') {
             $scope.datos.PE_MACRO1 = $scope.datos.macroluis;
             $scope.datos.PE_ZONA1 = $scope.datos.zonaluis;
@@ -265,8 +305,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           $scope.datos.TRM_FECHAS = $scope.trm_fechas
           $scope.datos.PE_T_PERMISO = "2";
           $scope.datos.TotalCosto = "0";
-          $scope.guardar_tramite($scope.datos);
-
+          $scope.ultimoArrayAdjunto();
         }
       } else if ($scope.datos.PE_T_PERMISO_VALOR == 'CIERRE DE VIAS') {
         if ($scope.datos.PE_T_CIERRE == undefined || $scope.datos.PE_T_CIERRE == 'undefined' || $scope.datos.PE_T_CIERRE == "") {
@@ -304,30 +343,134 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
         } else if ($scope.trm_fechas.length <= 0) {
           $scope.mensaje("Estimado Ciudadano", "Debe ingresar al menos una fecha.", "warning");
         } else {
-          if ($scope.datos.PE_UBICACION == '2') {
-            $scope.datos.PE_MACRO1 = $scope.datos.macroluis;
-            $scope.datos.PE_ZONA1 = $scope.datos.zonaluis;
-            $scope.datos.PE_TIPO_VIA1 = $scope.datos.vialuis;
-          } else {
-            $scope.datos.PE_MACRO_VALOR = $scope.datos_zonales.PE_MACRO;
-            $scope.datos.PE_ZONA_VALOR = $scope.datos_zonales.PE_ZONA_VALOR;
-            $scope.datos.PE_TIPO_VIA = $scope.datos_zonales.PE_TIPO_VIA;
-            $scope.datos.PE_ENTRE_VIA = $scope.datos_zonales.PE_ENTRE_VIA;
-            $scope.datos.PE_Y_VIA = $scope.datos_zonales.PE_Y_VIA;
-            $scope.datos.PE_NOM_VIA = $scope.datos_zonales.PE_NOM_VIA;
-            $scope.datos.PE_TRAMO = $scope.datos_zonales.PE_TRAMO;
-          }
-          $scope.envio_Fechas.push($scope.datos_fecha_inicial);
-          for (var i = 0; i < $scope.trm_fechas.length; i++) {
-            $scope.envio_Fechas.push($scope.trm_fechas[i]);
-          }
-          $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
-          $scope.datos.TRM_FECHAS = $scope.trm_fechas
-          $scope.datos.PE_T_PERMISO = "3";
-          //  $scope.datos.PE_TIPO_CIERRE = $scope.datos.PE_TIPO;
-          $scope.datos.TotalCosto = "0";
-          $scope.guardar_tramite($scope.datos);
+          if ($scope.datos.PE_TIPO_CIERRE == '1' || $scope.datos.PE_TIPO_CIERRE == 1) {
 
+            if ($scope.datos.FILE_CONTRA_OBRAS_CIVIL == undefined || $scope.datos.FILE_CONTRA_OBRAS_CIVIL == 'undefined' || $scope.datos.FILE_CONTRA_OBRAS_CIVIL == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de contrato para la ejecución de obras civiles.", "warning");
+            } else if ($scope.datos.FILE_CROQUIS_UBI_VIA_PERMISO == undefined || $scope.datos.FILE_CROQUIS_UBI_VIA_PERMISO == 'undefined' || $scope.datos.FILE_CROQUIS_UBI_VIA_PERMISO == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de croquis de ubicación de la vía.", "warning");
+            } else if ($scope.datos.FILE_PERMISO_CONSTRUCCION == undefined || $scope.datos.FILE_PERMISO_CONSTRUCCION == 'undefined' || $scope.datos.FILE_PERMISO_CONSTRUCCION == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de permiso de construcción.", "warning");
+            } else if ($scope.datos.FILE_AUTO_TIERRA == undefined || $scope.datos.FILE_AUTO_TIERRA == 'undefined' || $scope.datos.FILE_AUTO_TIERRA == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de autorización para movimiento de tierra.", "warning");
+            } else if ($scope.datos.FILE_PLANOS_APRO == undefined || $scope.datos.FILE_PLANOS_APRO == 'undefined' || $scope.datos.FILE_PLANOS_APRO == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de planos aprobados por el GAMLP.", "warning");
+            } else if ($scope.datos.FILE_PLAN_MANEJO_TRAFICO == undefined || $scope.datos.FILE_PLAN_MANEJO_TRAFICO == 'undefined' || $scope.datos.FILE_PLAN_MANEJO_TRAFICO == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento del plan de manejo de tráfico.", "warning");
+            } else {
+              if ($scope.datos.PE_UBICACION == '2') {
+                $scope.datos.PE_MACRO1 = $scope.datos.macroluis;
+                $scope.datos.PE_ZONA1 = $scope.datos.zonaluis;
+                $scope.datos.PE_TIPO_VIA1 = $scope.datos.vialuis;
+              } else {
+                $scope.datos.PE_MACRO_VALOR = $scope.datos_zonales.PE_MACRO;
+                $scope.datos.PE_ZONA_VALOR = $scope.datos_zonales.PE_ZONA_VALOR;
+                $scope.datos.PE_TIPO_VIA = $scope.datos_zonales.PE_TIPO_VIA;
+                $scope.datos.PE_ENTRE_VIA = $scope.datos_zonales.PE_ENTRE_VIA;
+                $scope.datos.PE_Y_VIA = $scope.datos_zonales.PE_Y_VIA;
+                $scope.datos.PE_NOM_VIA = $scope.datos_zonales.PE_NOM_VIA;
+                $scope.datos.PE_TRAMO = $scope.datos_zonales.PE_TRAMO;
+              }
+              $scope.envio_Fechas.push($scope.datos_fecha_inicial);
+              for (var i = 0; i < $scope.trm_fechas.length; i++) {
+                $scope.envio_Fechas.push($scope.trm_fechas[i]);
+              }
+              $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
+              $scope.datos.TRM_FECHAS = $scope.trm_fechas
+              $scope.datos.PE_T_PERMISO = "3";
+              $scope.datos.TotalCosto = "0";
+              $scope.ultimoArrayAdjunto();
+            }
+          } else if ($scope.datos.PE_TIPO_CIERRE == '6' || $scope.datos.PE_TIPO_CIERRE == 6 || $scope.datos.PE_TIPO_CIERRE == '3' || $scope.datos.PE_TIPO_CIERRE == 3 || $scope.datos.PE_TIPO_CIERRE == '5' || $scope.datos.PE_TIPO_CIERRE == 5 || $scope.datos.PE_TIPO_CIERRE == '7' || $scope.datos.PE_TIPO_CIERRE == 7) {
+            if ($scope.datos.FILE_LICENCIA_FUNCIONAMIENTO_AE == undefined || $scope.datos.FILE_LICENCIA_FUNCIONAMIENTO_AE == 'undefined' || $scope.datos.FILE_LICENCIA_FUNCIONAMIENTO_AE == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de licencia de funcionamiento.", "warning");
+            } else if ($scope.datos.FILE_CONFORMIDAD_SEC_MUN_CUL == undefined || $scope.datos.FILE_CONFORMIDAD_SEC_MUN_CUL == 'undefined' || $scope.datos.FILE_CONFORMIDAD_SEC_MUN_CUL == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de conformidad de la Secretaría Municipal de Culturas.", "warning");
+            } else if ($scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD == undefined || $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD == 'undefined' || $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de croquis de la vía.", "warning");
+            } else if ($scope.datos.FILE_PLAN_TRAFICO == undefined || $scope.datos.FILE_PLAN_TRAFICO == 'undefined' || $scope.datos.FILE_PLAN_TRAFICO == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de plan de manejo de tráfico para el uso de cierre de vías.", "warning");
+            } else {
+              if ($scope.datos.PE_UBICACION == '2') {
+                $scope.datos.PE_MACRO1 = $scope.datos.macroluis;
+                $scope.datos.PE_ZONA1 = $scope.datos.zonaluis;
+                $scope.datos.PE_TIPO_VIA1 = $scope.datos.vialuis;
+              } else {
+                $scope.datos.PE_MACRO_VALOR = $scope.datos_zonales.PE_MACRO;
+                $scope.datos.PE_ZONA_VALOR = $scope.datos_zonales.PE_ZONA_VALOR;
+                $scope.datos.PE_TIPO_VIA = $scope.datos_zonales.PE_TIPO_VIA;
+                $scope.datos.PE_ENTRE_VIA = $scope.datos_zonales.PE_ENTRE_VIA;
+                $scope.datos.PE_Y_VIA = $scope.datos_zonales.PE_Y_VIA;
+                $scope.datos.PE_NOM_VIA = $scope.datos_zonales.PE_NOM_VIA;
+                $scope.datos.PE_TRAMO = $scope.datos_zonales.PE_TRAMO;
+              }
+              $scope.envio_Fechas.push($scope.datos_fecha_inicial);
+              for (var i = 0; i < $scope.trm_fechas.length; i++) {
+                $scope.envio_Fechas.push($scope.trm_fechas[i]);
+              }
+              $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
+              $scope.datos.TRM_FECHAS = $scope.trm_fechas
+              $scope.datos.PE_T_PERMISO = "3";
+              $scope.datos.TotalCosto = "0";
+              $scope.ultimoArrayAdjunto();
+            }
+          } else if ($scope.datos.PE_TIPO_CIERRE == '2' || $scope.datos.PE_TIPO_CIERRE == 2 || $scope.datos.PE_TIPO_CIERRE == '8' || $scope.datos.PE_TIPO_CIERRE == 8 || $scope.datos.PE_TIPO_CIERRE == '9' || $scope.datos.PE_TIPO_CIERRE == 9) {
+            if ($scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2 == undefined || $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2 == 'undefined' || $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2 == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de croquis con el detalle de vías.", "warning");
+            } else if ($scope.datos.FILE_PLAN_TRAFICO_2 == undefined || $scope.datos.FILE_PLAN_TRAFICO_2 == 'undefined' || $scope.datos.FILE_PLAN_TRAFICO_2 == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de plan de tráfico.", "warning");
+            } else if ($scope.datos.FILE_OTRAS_MANIFESTACIONES == undefined || $scope.datos.FILE_OTRAS_MANIFESTACIONES == 'undefined' || $scope.datos.FILE_OTRAS_MANIFESTACIONES == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de otras manifestaciones folkloricas.", "warning");
+            } else if ($scope.datos.FILE_PLAN_TRAFICO == undefined || $scope.datos.FILE_PLAN_TRAFICO == 'undefined' || $scope.datos.FILE_PLAN_TRAFICO == "") {
+              $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de plan de manejo de tráfico para el uso de cierre de vías.", "warning");
+            } else {
+              if ($scope.datos.PE_UBICACION == '2') {
+                $scope.datos.PE_MACRO1 = $scope.datos.macroluis;
+                $scope.datos.PE_ZONA1 = $scope.datos.zonaluis;
+                $scope.datos.PE_TIPO_VIA1 = $scope.datos.vialuis;
+              } else {
+                $scope.datos.PE_MACRO_VALOR = $scope.datos_zonales.PE_MACRO;
+                $scope.datos.PE_ZONA_VALOR = $scope.datos_zonales.PE_ZONA_VALOR;
+                $scope.datos.PE_TIPO_VIA = $scope.datos_zonales.PE_TIPO_VIA;
+                $scope.datos.PE_ENTRE_VIA = $scope.datos_zonales.PE_ENTRE_VIA;
+                $scope.datos.PE_Y_VIA = $scope.datos_zonales.PE_Y_VIA;
+                $scope.datos.PE_NOM_VIA = $scope.datos_zonales.PE_NOM_VIA;
+                $scope.datos.PE_TRAMO = $scope.datos_zonales.PE_TRAMO;
+              }
+              $scope.envio_Fechas.push($scope.datos_fecha_inicial);
+              for (var i = 0; i < $scope.trm_fechas.length; i++) {
+                $scope.envio_Fechas.push($scope.trm_fechas[i]);
+              }
+              $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
+              $scope.datos.TRM_FECHAS = $scope.trm_fechas
+              $scope.datos.PE_T_PERMISO = "3";
+              $scope.datos.TotalCosto = "0";
+              $scope.ultimoArrayAdjunto();
+            }
+          } else {
+            if ($scope.datos.PE_UBICACION == '2') {
+              $scope.datos.PE_MACRO1 = $scope.datos.macroluis;
+              $scope.datos.PE_ZONA1 = $scope.datos.zonaluis;
+              $scope.datos.PE_TIPO_VIA1 = $scope.datos.vialuis;
+            } else {
+              $scope.datos.PE_MACRO_VALOR = $scope.datos_zonales.PE_MACRO;
+              $scope.datos.PE_ZONA_VALOR = $scope.datos_zonales.PE_ZONA_VALOR;
+              $scope.datos.PE_TIPO_VIA = $scope.datos_zonales.PE_TIPO_VIA;
+              $scope.datos.PE_ENTRE_VIA = $scope.datos_zonales.PE_ENTRE_VIA;
+              $scope.datos.PE_Y_VIA = $scope.datos_zonales.PE_Y_VIA;
+              $scope.datos.PE_NOM_VIA = $scope.datos_zonales.PE_NOM_VIA;
+              $scope.datos.PE_TRAMO = $scope.datos_zonales.PE_TRAMO;
+            }
+            $scope.envio_Fechas.push($scope.datos_fecha_inicial);
+            for (var i = 0; i < $scope.trm_fechas.length; i++) {
+              $scope.envio_Fechas.push($scope.trm_fechas[i]);
+            }
+            $scope.datos.PE_VEHICULOS_FECHAS = $scope.envio_Fechas;
+            $scope.datos.TRM_FECHAS = $scope.trm_fechas
+            $scope.datos.PE_T_PERMISO = "3";
+            $scope.datos.TotalCosto = "0";
+            $scope.ultimoArrayAdjunto();
+          }
         }
       } else if ($scope.datos.PE_T_PERMISO_VALOR == 'AREA DE RESTRICCION VEHICULAR') {
         if ($scope.datos.PE_NUM_VEH == undefined || $scope.datos.PE_NUM_VEH == 'undefined' || $scope.datos.PE_NUM_VEH == "") {
@@ -344,6 +487,24 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           $scope.mensaje("Estimado Ciudadano", "Ingrese el Motivo de Permiso.", "warning");
         } else if ($scope.trm_fechas.length <= 0) {
           $scope.mensaje("Estimado Ciudadano", "Debe ingresar al menos una fecha.", "warning");
+        } else if ($scope.datos.FILE_LIC_FUN_AE == undefined || $scope.datos.FILE_LIC_FUN_AE == 'undefined' || $scope.datos.FILE_LIC_FUN_AE == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Licencia de Funcionamiento.", "warning");
+        } else if ($scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH == undefined || $scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH == 'undefined' || $scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Certificado de Propiedad.", "warning");
+        } else if ($scope.datos.FILE_SOAT == undefined || $scope.datos.FILE_SOAT == 'undefined' || $scope.datos.FILE_SOAT == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de SOAT.", "warning");
+        } else if ($scope.datos.FILE_VINCULACION_PERDONA == undefined || $scope.datos.FILE_VINCULACION_PERDONA == 'undefined' || $scope.datos.FILE_VINCULACION_PERDONA == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de vinculación.", "warning");
+        } else if ($scope.datos.FILE_TARJETA_MUNICIPAL == undefined || $scope.datos.FILE_TARJETA_MUNICIPAL == 'undefined' || $scope.datos.FILE_TARJETA_MUNICIPAL == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Tarjeta Municipal.", "warning");
+        } else if ($scope.datos.FILE_TARJETA_CONDUCTOR == undefined || $scope.datos.FILE_TARJETA_CONDUCTOR == 'undefined' || $scope.datos.FILE_TARJETA_CONDUCTOR == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Tarjeta de Identificación del Conductor.", "warning");
+        } else if ($scope.datos.FILE_SIN_DEUDAS_IMPUESTOS == undefined || $scope.datos.FILE_SIN_DEUDAS_IMPUESTOS == 'undefined' || $scope.datos.FILE_SIN_DEUDAS_IMPUESTOS == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de que no tiene documentos pendientes.", "warning");
+        } else if ($scope.datos.FILE_RESOLUCION_ADMINISTRATIVA == undefined || $scope.datos.FILE_RESOLUCION_ADMINISTRATIVA == 'undefined' || $scope.datos.FILE_RESOLUCION_ADMINISTRATIVA == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento de Resolución Administrativa.", "warning");
+        } else if ($scope.datos.FILE_CROQUIS == undefined || $scope.datos.FILE_CROQUIS == 'undefined' || $scope.datos.FILE_CROQUIS == "") {
+          $scope.mensaje("Estimado Ciudadano", "Ingrese el documento del corquis de ubicación.", "warning");
         } else {
           $scope.envio_Carros.push($scope.datos_carros_inicial);
           for (var i = 0; i < $scope.trm_Vehiculos.length; i++) {
@@ -360,7 +521,7 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
           $scope.datos.PE_T_PERMISO = "4";
           $scope.datos.TotalCosto = "0";
           $scope.datos.PE_TIPO_AREA = $scope.datos.PE_TIPO;
-          $scope.guardar_tramite($scope.datos);
+          $scope.ultimoArrayAdjunto();
         }
       }
     }
@@ -682,6 +843,8 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_licencia_funcionamiento = true;
       $scope.div_primero_tipo = true;
       $scope.div_segundo_tipo = false;
+      $scope.div_adjunto_global_primero = true;
+      $scope.div_adjunto_global_segundo = false;
       $scope.tipoUbicacionDinamico($scope.datos.PE_UBICACION);
       $scope.open_mapa_mascotas();
     } else if (data == 'ESTACIONAMIENTO') {
@@ -696,6 +859,8 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_licencia_funcionamiento = true;
       $scope.div_primero_tipo = true;
       $scope.div_segundo_tipo = false;
+      $scope.div_adjunto_global_primero = true;
+      $scope.div_adjunto_global_segundo = false;
       $scope.tipoUbicacionDinamico($scope.datos.PE_UBICACION);
       $scope.open_mapa_mascotas();
     } else if (data == 'CIERRE DE VIAS') {
@@ -710,6 +875,8 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_licencia_funcionamiento = false;
       $scope.div_primero_tipo = false;
       $scope.div_segundo_tipo = true;
+      $scope.div_adjunto_global_primero = false;
+      $scope.div_adjunto_global_segundo = false;
       $scope.tipoUbicacionDinamico($scope.datos.PE_UBICACION);
       $scope.open_mapa_mascotas();
     } else if (data == 'AREA DE RESTRICCION VEHICULAR') {
@@ -724,12 +891,34 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       $scope.div_licencia_funcionamiento = false;
       $scope.div_primero_tipo = true;
       $scope.div_segundo_tipo = false;
+      $scope.div_adjunto_global_primero = true;
+      $scope.div_adjunto_global_segundo = false;
       $scope.tipoUbicacionDinamico($scope.PE_UBICACION);
       $scope.open_mapa_mascotas();
     } else {
       $scope.div_jerarquia_viral = false;
       $scope.div_licencia_funcionamiento = false;
       $scope.tipoUbicacionDinamico($scope.datos.PE_UBICACION);
+    }
+  }
+  $scope.tipoDinamico = function (data) {
+    $scope.div_adjunto_global_primero = false;
+    $scope.div_adjunto_global_segundo = true;
+
+    if (data == '1' || data == 1) {
+      $scope.segundo_tipo_adjuntos_uno == true;
+      $scope.segundo_tipo_adjuntos_dos == false;
+      $scope.segundo_tipo_adjuntos_tercero == false;
+    }
+    if (data == '6' || data == 6 || data == '3' || data == 3 || data == '5' || data == 5 || data == '7' || data == 7) {
+      $scope.segundo_tipo_adjuntos_uno == false;
+      $scope.segundo_tipo_adjuntos_dos == true;
+      $scope.segundo_tipo_adjuntos_tercero == false;
+    }
+    if (data == '2' || data == 2 || data == '8' || data == 8 || data == '9' || data == 9) {
+      $scope.segundo_tipo_adjuntos_uno == false;
+      $scope.segundo_tipo_adjuntos_dos == false;
+      $scope.segundo_tipo_adjuntos_tercero == true;
     }
   }
   var iconStylep = new ol.style.Style({
@@ -1159,4 +1348,976 @@ function permisosExcepcionalesFormulario($scope, $rootScope, $routeParams, $loca
       }
     }
   }
+  $scope.ejecutarFile = function (idfile) {
+    var sid = document.getElementById(idfile);
+    if (sid) {
+      document.getElementById(idfile).click();
+    } else {
+      alert("Error ");
+    }
+  }
+
+  $scope.cambiarFile = function (obj, valor) {
+    var arraydoc = ["pdf", "doc", "docx", ".docx", ".docxlm"];
+    $scope.registroAdj = [];
+    var fechaNueva = "";
+    var fechaserver = new fechaHoraServer();
+    fechaserver.fechahora(function (resp) {
+      var sfecha = JSON.parse(resp);
+      var fechaServ = (sfecha.success.fecha).split(' ');
+      var fecha_ = fechaServ[0].split('-');
+      var hora_ = fechaServ[1].split(':');
+      fechaNueva = fecha_[0] + fecha_[1] + fecha_[2] + '_' + hora_[0] + hora_[1];
+    });
+    $.blockUI();
+    setTimeout(function () {
+      var nombre = obj.getAttribute("name");
+      var objarchivo = obj.files[0];
+      $scope.FILE_LIC_FUN_AE = obj.files[0];
+      $scope.FILE_CERTIFICADO_DE_PRO_REG_VEH = obj.files[0];
+      $scope.FILE_SOAT = obj.files[0];
+      $scope.FILE_VINCULACION_PERDONA = obj.files[0];
+      $scope.FILE_TARJETA_MUNICIPAL = obj.files[0];
+      $scope.FILE_SIN_DEUDAS_IMPUESTOS = obj.files[0];
+      $scope.FILE_RESOLUCION_ADMINISTRATIVA = obj.files[0];
+      $scope.FILE_CROQUIS = obj.files[0];
+      $scope.FILE_CONTRA_OBRAS_CIVIL = obj.files[0];
+      $scope.FILE_CROQUIS_UBI_VIA_PERMISO = obj.files[0];
+      $scope.FILE_PERMISO_CONSTRUCCION = obj.files[0];
+      $scope.FILE_AUTO_TIERRA = obj.files[0];
+      $scope.FILE_PLANOS_APRO = obj.files[0];
+      $scope.FILE_PLAN_MANEJO_TRAFICO = obj.files[0];
+      $scope.FILE_LICENCIA_FUNCIONAMIENTO_AE = obj.files[0];
+      $scope.FILE_CONFORMIDAD_SEC_MUN_CUL = obj.files[0];
+      $scope.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD = obj.files[0];
+      $scope.FILE_PLAN_TRAFICO = obj.files[0];
+      $scope.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2 = obj.files[0];
+      $scope.FILE_PLAN_TRAFICO_2 = obj.files[0];
+      $scope.FILE_OTRAS_MANIFESTACIONES = obj.files[0];
+      $scope.FILE_TARJETA_CONDUCTOR = obj.files[0];
+      var oidCiudadano = sessionService.get('IDSOLICITANTE');
+      $scope.direccionvirtual = "RC_CLI";
+      var sDirTramite = $scope.datos.PE_CI;
+      var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/" + oidCiudadano + "/" + sDirTramite + "/";
+      if (nombre == 'FILE_LIC_FUN_AE' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_LIC_FUN_AE = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_LIC_FUN_AE = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover1 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_LIC_FUN_AE = "";
+            $scope.FILE_LIC_FUN_AE = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_CERTIFICADO_DE_PRO_REG_VEH' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_CERTIFICADO_DE_PRO_REG_VEH = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover2 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH = "";
+            $scope.FILE_CERTIFICADO_DE_PRO_REG_VEH = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_SOAT' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_SOAT = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_SOAT = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover3 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_SOAT = "";
+            $scope.FILE_SOAT = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_VINCULACION_PERDONA' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_VINCULACION_PERDONA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_VINCULACION_PERDONA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover4 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_VINCULACION_PERDONA = "";
+            $scope.FILE_VINCULACION_PERDONA = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_TARJETA_MUNICIPAL' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_TARJETA_MUNICIPAL = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_TARJETA_MUNICIPAL = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover5 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_TARJETA_MUNICIPAL = "";
+            $scope.FILE_TARJETA_MUNICIPAL = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_SIN_DEUDAS_IMPUESTOS' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_SIN_DEUDAS_IMPUESTOS = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_SIN_DEUDAS_IMPUESTOS = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover6 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_SIN_DEUDAS_IMPUESTOS = "";
+            $scope.FILE_SIN_DEUDAS_IMPUESTOS = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_RESOLUCION_ADMINISTRATIVA' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_RESOLUCION_ADMINISTRATIVA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_RESOLUCION_ADMINISTRATIVA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover7 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_RESOLUCION_ADMINISTRATIVA = "";
+            $scope.FILE_RESOLUCION_ADMINISTRATIVA = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_CROQUIS' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_CROQUIS = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_CROQUIS = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover8 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_CROQUIS = "";
+            $scope.FILE_CROQUIS = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_CONTRA_OBRAS_CIVIL' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_CONTRA_OBRAS_CIVIL = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_CONTRA_OBRAS_CIVIL = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover9 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_CONTRA_OBRAS_CIVIL = "";
+            $scope.FILE_CONTRA_OBRAS_CIVIL = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_CROQUIS_UBI_VIA_PERMISO' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_CROQUIS_UBI_VIA_PERMISO = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_CROQUIS_UBI_VIA_PERMISO = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover10 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_CROQUIS_UBI_VIA_PERMISO = "";
+            $scope.FILE_CROQUIS_UBI_VIA_PERMISO = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_PERMISO_CONSTRUCCION' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_PERMISO_CONSTRUCCION = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_PERMISO_CONSTRUCCION = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover11 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_PERMISO_CONSTRUCCION = "";
+            $scope.FILE_PERMISO_CONSTRUCCION = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_AUTO_TIERRA' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_AUTO_TIERRA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_AUTO_TIERRA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover12 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_AUTO_TIERRA = "";
+            $scope.FILE_AUTO_TIERRA = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_PLANOS_APRO' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_PLANOS_APRO = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_PLANOS_APRO = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover13 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_PLANOS_APRO = "";
+            $scope.FILE_PLANOS_APRO = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_PLAN_MANEJO_TRAFICO' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_PLAN_MANEJO_TRAFICO = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_PLAN_MANEJO_TRAFICO = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover14 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_PLAN_MANEJO_TRAFICO = "";
+            $scope.FILE_PLAN_MANEJO_TRAFICO = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_LICENCIA_FUNCIONAMIENTO_AE' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_LICENCIA_FUNCIONAMIENTO_AE = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_LICENCIA_FUNCIONAMIENTO_AE = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover15 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_LICENCIA_FUNCIONAMIENTO_AE = "";
+            $scope.FILE_LICENCIA_FUNCIONAMIENTO_AE = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_CONFORMIDAD_SEC_MUN_CUL' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_CONFORMIDAD_SEC_MUN_CUL = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_CONFORMIDAD_SEC_MUN_CUL = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover16 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_CONFORMIDAD_SEC_MUN_CUL = "";
+            $scope.FILE_CONFORMIDAD_SEC_MUN_CUL = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_DET_VIAS_RECORRIDO_ACTIVIDAD' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover17 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD = "";
+            $scope.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_PLAN_TRAFICO' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_PLAN_TRAFICO = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_PLAN_TRAFICO = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover18 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_PLAN_TRAFICO = "";
+            $scope.FILE_PLAN_TRAFICO = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2 = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2 = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover19 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2 = "";
+            $scope.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2 = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_PLAN_TRAFICO_2' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_PLAN_TRAFICO_2 = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_PLAN_TRAFICO_2 = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover20 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_PLAN_TRAFICO_2 = "";
+            $scope.FILE_PLAN_TRAFICO_2 = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_OTRAS_MANIFESTACIONES' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_OTRAS_MANIFESTACIONES = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_OTRAS_MANIFESTACIONES = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover21 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_OTRAS_MANIFESTACIONES = "";
+            $scope.FILE_OTRAS_MANIFESTACIONES = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+      if (nombre == 'FILE_TARJETA_CONDUCTOR' && (typeof (obj.files[0]) != 'undefined')) {
+        var nomdocumento = obj.files[0].name;
+        var docextension = nomdocumento.split('.');
+        var ext_doc = docextension[docextension.length - 1].toLowerCase();
+        if (ext_doc == "pdf" || ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+          if (objarchivo.size <= 15000000) {
+            var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+            fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+            $scope.datos.FILE_TARJETA_CONDUCTOR = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.FILE_TARJETA_CONDUCTOR = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            document.getElementById("txt_" + nombre).value = nombreNuevo;
+            document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+            $scope.btover22 = "mostrar";
+          } else {
+            swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+            document.getElementById("txt_" + nombre).value = "";
+            document.getElementById("href_" + nombre).href = "";
+            $scope.registroAdj.adjunto = '';
+            $scope.adjunto = '';
+            valor = '';
+            $scope.datos.FILE_TARJETA_CONDUCTOR = "";
+            $scope.FILE_TARJETA_CONDUCTOR = "";
+            $.unblockUI();
+          }
+        } else {
+          swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo pdf', 'error');
+          document.getElementById("txt_" + nombre).value = "";
+          document.getElementById("href_" + nombre).href = "";
+          $scope.registroAdj.adjunto = '';
+          $scope.adjunto = '';
+          valor = '';
+          $.unblockUI();
+        }
+      }
+    }, 1000);
+    $.unblockUI();
+  }
+
+  $scope.adjuntoUno = function () {
+    datoObjectFiles = [];
+    var datoObjectFile1 = new Object();
+    var datoObjectFile2 = new Object();
+    var datoObjectFile3 = new Object();
+    var datoObjectFile4 = new Object();
+    var datoObjectFile5 = new Object();
+    var datoObjectFile6 = new Object();
+    var datoObjectFile7 = new Object();
+    var datoObjectFile8 = new Object();
+    var datoObjectFile9 = new Object();
+    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+    $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+    datoObjectFile1.url = $scope.datos.FILE_LIC_FUN_AE;
+    datoObjectFile1.campo = $scope.datos.FILE_LIC_FUN_AE;
+    datoObjectFile1.nombre = 'Licencia de Funcionamiento vigente en el caso de actividades económicas';
+    datoObjectFile2.url = $scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH;
+    datoObjectFile2.campo = $scope.datos.FILE_CERTIFICADO_DE_PRO_REG_VEH;
+    datoObjectFile2.nombre = 'Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03, con radicatoria en el Municipio de La Paz, a nombre de la persona natural o juridica, pública o privada solicitante:';
+    datoObjectFile3.url = $scope.datos.FILE_SOAT;
+    datoObjectFile3.campo = $scope.datos.FILE_SOAT;
+    datoObjectFile3.nombre = 'Póliza del Seguro Obligatorio de Accidentes de Transito (SOAT) vigente';
+    datoObjectFile4.url = $scope.datos.FILE_VINCULACION_PERDONA;
+    datoObjectFile4.campo = $scope.datos.FILE_VINCULACION_PERDONA;
+    datoObjectFile4.nombre = 'Documento que demuestre la vinculación de la persona natural o jurídica , pública o privada solicitante , con los vehículos motorizados, mismo que debera incluir placas de circulación, nombre de los propietarios y vigencia';
+    datoObjectFile5.url = $scope.datos.FILE_TARJETA_MUNICIPAL;
+    datoObjectFile5.campo = $scope.datos.FILE_TARJETA_MUNICIPAL;
+    datoObjectFile5.nombre = 'Tarjeta Municipal de Operación Vehicular, cuando corresponda';
+    datoObjectFile6.url = $scope.datos.FILE_TARJETA_MUNICIPAL;
+    datoObjectFile6.campo = $scope.datos.FILE_TARJETA_MUNICIPAL;
+    datoObjectFile6.nombre = 'Tarjeta Municipal de Operación Vehicular, cuando corresponda';
+    datoObjectFile7.url = $scope.datos.FILE_SIN_DEUDAS_IMPUESTOS;
+    datoObjectFile7.campo = $scope.datos.FILE_SIN_DEUDAS_IMPUESTOS;
+    datoObjectFile7.nombre = 'No tener deudas pendientes sobre impuestos a la propiedad de vehículos ni sanciones en materia de transpote urbano , estacionamientos y paradas momentáneas con el GAMLP';
+    datoObjectFile8.url = $scope.datos.FILE_RESOLUCION_ADMINISTRATIVA;
+    datoObjectFile8.campo = $scope.datos.FILE_RESOLUCION_ADMINISTRATIVA;
+    datoObjectFile8.nombre = 'Resolución Administrativa vigente emitida por la Autoridad Tributaria Municipal de liberación de impuestos';
+    datoObjectFile9.url = $scope.datos.FILE_CROQUIS;
+    datoObjectFile9.campo = $scope.datos.FILE_CROQUIS;
+    datoObjectFile9.nombre = 'Croquis de ubición de la vía donde solicita el permiso excepcional, para el caso de estacionamientos y paradas momentáneas, incierto en el Formulario de Solicitud';
+    datoObjectFiles[0] = datoObjectFile1;
+    datoObjectFiles[1] = datoObjectFile2;
+    datoObjectFiles[2] = datoObjectFile3;
+    datoObjectFiles[3] = datoObjectFile4;
+    datoObjectFiles[4] = datoObjectFile5;
+    datoObjectFiles[5] = datoObjectFile6;
+    datoObjectFiles[6] = datoObjectFile7;
+    datoObjectFiles[7] = datoObjectFile8;
+    datoObjectFiles[8] = datoObjectFile9;
+    $scope.datos.FileDocumentos = datoObjectFiles;
+    $rootScope.FileAdjuntos = datoObjectFiles;
+    $scope.datos.File_Adjunto = datoObjectFiles;
+    $scope.guardar_tramite($scope.datos);
+  }
+
+  $scope.adjuntoDos = function () {
+    datoObjectFiles = [];
+    var datoObjectFile1 = new Object();
+    var datoObjectFile2 = new Object();
+    var datoObjectFile3 = new Object();
+    var datoObjectFile4 = new Object();
+    var datoObjectFile5 = new Object();
+    var datoObjectFile6 = new Object();
+    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+    $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+    datoObjectFile1.url = $scope.datos.FILE_CONTRA_OBRAS_CIVIL;
+    datoObjectFile1.campo = $scope.datos.FILE_CONTRA_OBRAS_CIVIL;
+    datoObjectFile1.nombre = 'Contrato para la ejecución de obras civiles';
+    datoObjectFile2.url = $scope.datos.FILE_CROQUIS_UBI_VIA_PERMISO;
+    datoObjectFile2.campo = $scope.datos.FILE_CROQUIS_UBI_VIA_PERMISO;
+    datoObjectFile2.nombre = 'Croquis de ubicación de la vía donde solicita el permiso excepcional';
+    datoObjectFile3.url = $scope.datos.FILE_PERMISO_CONSTRUCCION;
+    datoObjectFile3.campo = $scope.datos.FILE_PERMISO_CONSTRUCCION;
+    datoObjectFile3.nombre = 'Permiso de Construcción';
+    datoObjectFile4.url = $scope.datos.FILE_AUTO_TIERRA;
+    datoObjectFile4.campo = $scope.datos.FILE_AUTO_TIERRA;
+    datoObjectFile4.nombre = 'Autorización para movimiento de tierra';
+    datoObjectFile5.url = $scope.datos.FILE_PLANOS_APRO;
+    datoObjectFile5.campo = $scope.datos.FILE_PLANOS_APRO;
+    datoObjectFile5.nombre = 'Planos aprobados por el GAMLP';
+    datoObjectFile6.url = $scope.datos.FILE_PLAN_MANEJO_TRAFICO;
+    datoObjectFile6.campo = $scope.datos.FILE_PLAN_MANEJO_TRAFICO;
+    datoObjectFile6.nombre = 'Plan de manejo de Tráfico, para el caso de cierres de vías primarias y de vías secundarias o terciarias por donde circulen rutas del servicio público de transporte colectivo de pasajeros';
+    datoObjectFiles[0] = datoObjectFile1;
+    datoObjectFiles[1] = datoObjectFile2;
+    datoObjectFiles[2] = datoObjectFile3;
+    datoObjectFiles[3] = datoObjectFile4;
+    datoObjectFiles[4] = datoObjectFile5;
+    datoObjectFiles[5] = datoObjectFile6;
+    $scope.datos.FileDocumentos = datoObjectFiles;
+    $rootScope.FileAdjuntos = datoObjectFiles;
+    $scope.datos.File_Adjunto = datoObjectFiles;
+    $scope.guardar_tramite($scope.datos);
+  }
+
+  $scope.adjuntoTres = function () {
+    datoObjectFiles = [];
+    var datoObjectFile1 = new Object();
+    var datoObjectFile2 = new Object();
+    var datoObjectFile3 = new Object();
+    var datoObjectFile4 = new Object();
+    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+    $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+    datoObjectFile1.url = $scope.datos.FILE_LICENCIA_FUNCIONAMIENTO_AE;
+    datoObjectFile1.campo = $scope.datos.FILE_LICENCIA_FUNCIONAMIENTO_AE;
+    datoObjectFile1.nombre = 'Licencia de Funcionamientro vigente de la actividad económica';
+    datoObjectFile2.url = $scope.datos.FILE_CONFORMIDAD_SEC_MUN_CUL;
+    datoObjectFile2.campo = $scope.datos.FILE_CONFORMIDAD_SEC_MUN_CUL;
+    datoObjectFile2.nombre = 'Conformidad de la Secretaría Municipal de Culturas, de la respectiva Subalcaldía o de la Dirección de Desportes';
+    datoObjectFile3.url = $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD;
+    datoObjectFile3.campo = $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD;
+    datoObjectFile3.nombre = 'Croquis con el detalle de vías y recorrido propuesto para la actividad';
+    datoObjectFile4.url = $scope.datos.FILE_PLAN_TRAFICO;
+    datoObjectFile4.campo = $scope.datos.FILE_PLAN_TRAFICO;
+    datoObjectFile4.nombre = 'Plan de Manejo de Tráfico, para el caso de cierre de vías primarias y de vías secundarias o terciarias por donde circulen rutas del servicio público de transporte colectivo de pasajeros';
+    datoObjectFiles[0] = datoObjectFile1;
+    datoObjectFiles[1] = datoObjectFile2;
+    datoObjectFiles[2] = datoObjectFile3;
+    datoObjectFiles[3] = datoObjectFile4;
+    $scope.datos.FileDocumentos = datoObjectFiles;
+    $rootScope.FileAdjuntos = datoObjectFiles;
+    $scope.datos.File_Adjunto = datoObjectFiles;
+    $scope.guardar_tramite($scope.datos);
+  }
+
+  $scope.adjuntoCuatro = function () {
+    datoObjectFiles = [];
+    var datoObjectFile1 = new Object();
+    var datoObjectFile2 = new Object();
+    var datoObjectFile3 = new Object();
+    $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+    $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+    datoObjectFile1.url = $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2;
+    datoObjectFile1.campo = $scope.datos.FILE_DET_VIAS_RECORRIDO_ACTIVIDAD_2;
+    datoObjectFile1.nombre = 'Croquis con el detalle de vías y recorrido propuesto para la actividad';
+    datoObjectFile2.url = $scope.datos.FILE_PLAN_TRAFICO_2;
+    datoObjectFile2.campo = $scope.datos.FILE_PLAN_TRAFICO_2;
+    datoObjectFile2.nombre = 'Plan de Manejo de Tráfico, para el caso de cierre de vías primarias y de vías secundarias o terciarias por donde circulen rutas del servicio público de transporte colectivo de pasajeros';
+    datoObjectFile3.url = $scope.datos.FILE_OTRAS_MANIFESTACIONES;
+    datoObjectFile3.campo = $scope.datos.FILE_OTRAS_MANIFESTACIONES;
+    datoObjectFile3.nombre = 'Otras manifestaciones folklóricas populares que no estén previstas en el calendario Festivo , Folklórico y Ritual';
+    datoObjectFiles[0] = datoObjectFile1;
+    datoObjectFiles[1] = datoObjectFile2;
+    datoObjectFiles[2] = datoObjectFile3;
+    $scope.datos.FileDocumentos = datoObjectFiles;
+    $rootScope.FileAdjuntos = datoObjectFiles;
+    $scope.datos.File_Adjunto = datoObjectFiles;
+    $scope.guardar_tramite($scope.datos);
+  }
+
+  $scope.ultimoArrayAdjunto = function () {
+    if ($scope.datos.PE_T_PERMISO_VALOR == 'PARADA MOMENTANEA' || $scope.datos.PE_T_PERMISO_VALOR == 'ESTACIONAMIENTO' || $scope.datos.PE_T_PERMISO_VALOR == 'AREA DE RESTRICCION VEHICULAR') {
+      $scope.adjuntoUno();
+    } else if ($scope.datos.PE_T_PERMISO_VALOR == 'CIERRE DE VIAS') {
+      if ($scope.datos.PE_TIPO_CIERRE == '1' || $scope.datos.PE_TIPO_CIERRE == 1) {
+        $scope.adjuntoDos();
+      } else if ($scope.datos.PE_TIPO_CIERRE == '6' || $scope.datos.PE_TIPO_CIERRE == 6 || $scope.datos.PE_TIPO_CIERRE == '3' || $scope.datos.PE_TIPO_CIERRE == 3 || $scope.datos.PE_TIPO_CIERRE == '5' || $scope.datos.PE_TIPO_CIERRE == 5 || $scope.datos.PE_TIPO_CIERRE == '7' || $scope.datos.PE_TIPO_CIERRE == 7) {
+        $scope.adjuntoTres();
+      } else if ($scope.datos.PE_TIPO_CIERRE == '2' || $scope.datos.PE_TIPO_CIERRE == 2 || $scope.datos.PE_TIPO_CIERRE == '8' || $scope.datos.PE_TIPO_CIERRE == 8 || $scope.datos.PE_TIPO_CIERRE == '9' || $scope.datos.PE_TIPO_CIERRE == 9) {
+        $scope.adjuntoCuatro();
+      } else {
+        $scope.guardar_tramite($scope.datos);
+      }
+    } else {
+      swal('Advertencia', 'hubo un errror al momento de agregar los archivos', 'error');
+    }
+
+  }
+
 }

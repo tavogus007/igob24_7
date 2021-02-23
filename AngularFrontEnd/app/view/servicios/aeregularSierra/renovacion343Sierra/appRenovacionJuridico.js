@@ -4224,19 +4224,19 @@ function renovacionJuridicoSierraController($scope, $timeout, $rootScope, $route
                         $.ajax({
 
                             url: jsonURLS.SERVICE_SIERRA_ODM + 'v.0.1/sierra/generacion_ODM', //descomentar esta linea una puesto en produccion
-							//url: jsonURLS.SERVICE_SIERRAM + 'SierraValle_Oficial/public/v.0.1/sierra/generacion_ODM', //descomentar esta linea una puesto en produccion
+                            //url: jsonURLS.SERVICE_SIERRAM + 'SierraValle_Oficial/public/v.0.1/sierra/generacion_ODM', //descomentar esta linea una puesto en produccion
                             //url: 'http://172.19.160.38:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php', //comentar esta linea una vez puesto en produccion
                             data: dataFum,
                             type: "POST",
                             dataType: "json",
-                            async: false,							
-							headers: {
-								'authorization': 'Bearer ' +  sessionStorage.getItem('TOKEN_MOTORODM')         
-							},
+                            async: false,
+                            headers: {
+                                'authorization': 'Bearer ' + sessionStorage.getItem('TOKEN_MOTORODM')
+                            },
                             success: function(responseODM) {
                                 console.log('odmm   ', responseODM);
-                                $scope.codigoODM = responseODM.data[0].nroodm;
-                                if (responseODM.data[0].nro_registro == 0) {
+                                $scope.codigoODM = responseODM.data.nro_odm;
+                                if (responseODM.data.nro_registro == 0) {
                                     swal('', 'Error al generar correlativo, vuelva a imprimir la Proforma Por favor', 'error');
                                 } else {
                                     $scope.odms = $scope.odms + '' + $scope.codigoODM + ',';

@@ -826,13 +826,21 @@ app.controller('serviciosController343Sierra', function ($scope, $rootScope ,$ro
 
             vectorLayer.getSource().clear();
             ////////////////////////////////////////////////////////////////////////
-            if (latitud != undefined)
+            if(isNaN(latitud))
             {
-                var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
-                feature.setStyle(iconStyle);
-                vectorSource.addFeature(feature);
-                $scope.map.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
+                $scope.map.getView().setCenter(ol.proj.fromLonLat([-68.133555,-16.495687]));
                 $scope.map.getView().setZoom(15);
+            }
+            else
+            {
+               if (latitud != undefined)
+                {
+                    var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
+                    feature.setStyle(iconStyle);
+                    vectorSource.addFeature(feature);
+                    $scope.map.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
+                    $scope.map.getView().setZoom(15);
+                } 
             }
             //////////////////////////////////////////////////////////////////////////
 

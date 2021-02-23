@@ -182,93 +182,88 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
 
     $scope.LicenciaXCategoriaA = function(idDesarrollada) {
         $.blockUI();
-        if (superficie) {
-            //$scope.datos.rdTipoTramite = 'NUEVO';
-            $scope[name] = 'Running';
-            var deferred = $q.defer();
-            datoObjectFile1 = new Object();
-            datoObjectFile2 = new Object();
-            datoObjectFile3 = new Object();
-            datoObjectFile4 = new Object();
-            datoObjectFile5 = new Object();
-            datoObjectFile6 = new Object();
-            datoObjectFiles_ci = [];
-            $scope.datos.FILE_CI = '';
-            $scope.datos.fileArchivosAd = '';
-            try {
-                var dataDesLic = '{"id_actividad_desarrollada":"' + idDesarrollada + '"}';
-                var resDatosLic = new reglasnegocioSierra();
-                resDatosLic.identificador = 'VALLE_PRUEBA-SGEN-3151';
-                resDatosLic.parametros = dataDesLic;
-                resDatosLic.llamarregla_sierra(function(responseDatosLic) {
-                    var datosLic = JSON.parse(responseDatosLic);
-                    if (datosLic.length > 0) {
-                        $scope.sCategoria = true;
-                        $scope.smultiservicios = false;
-                        $scope.datosActividadLicencia = datosLic;
-                        $scope.datos.f01_tipo_lic = datosLic[0].lic_ant_id;
-                        $scope.datos.f01_tipo_lic_sierra = datosLic[0].idtipolicencia;
-                        $scope.datos.f01_tipo_lic_descrip = datosLic[0].tipolicenciadescripcion;
-                        $scope.datos.f01_categoria_agrupada_sierra = datosLic[0].categoria_id;
-                        $scope.datos.f01_categoria_agrupada = datosLic[0].categoria_id_anterior;
-                        $scope.datos.f01_categoria_agrupada_dem = datosLic[0].addescripcion;
-                        $scope.datos.f01_categoria_agrupada_descrip = datosLic[0].addescripcion;
-                        $scope.datos.f01_proceso = datosLic[0].proceso;
-                        $scope.GetValueZonaSegura(datosLic[0].categoria_id_anterior);
-                        var comboz = document.getElementById('f01_categoria_descrip');
-                        selected2 = comboz.options[comboz.selectedIndex].text;
-                        $scope.datos.f01_categoria_descripcion = selected2;
-                        $scope.datos.f01_categoria_descrip2 = selected2;
-                        $scope.datos.f01_categoria_agrupada_descripcion = selected2;
-                        $scope.datos.f01_actividadesSecundarias = datosLic[0].ad3436descripcion;
-                    } else {
-                        $scope.msg = "Error !!";
-                    }
-                    if (idDesarrollada == 907 || idDesarrollada == '907') {
-                        $scope.sCategoria = false;
-                        $scope.smultiservicios = true;
-                        $scope.actividadDesarrolladaM();
-                    }
-                    datoObjectFile1.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + $scope.datos.id_representante + "/" + $scope.datos.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
-                    datoObjectFile1.campo = 'Cedula de identidad (Anverso)';
-                    datoObjectFile1.nombre = 'Cedula de identidad (Anverso)';
-                    datoObjectFiles_ci[0] = datoObjectFile1;
-                    datoObjectFile2.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + $scope.datos.id_representante + "/" + $scope.datos.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";
-                    datoObjectFile2.campo = 'Cedula de identidad (Reverso)';
-                    datoObjectFile2.nombre = 'Cedula de identidad (Reverso)';
-                    datoObjectFiles_ci[1] = datoObjectFile2;
-                    datoObjectFile3.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.f01_poder_representante + "?app_name=todoangular";
-                    datoObjectFile3.campo = 'Poder de Representación Legal';
-                    datoObjectFile3.nombre = 'Poder de Representación Legal';
-                    datoObjectFiles_ci[2] = datoObjectFile3;
-                    datoObjectFile4.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.f01_test_cons_sociedad_j + "?app_name=todoangular";
-                    datoObjectFile4.campo = 'Testimonio de Constitución de Sociedad';
-                    datoObjectFile4.nombre = 'Testimonio de Constitución de Sociedad';
-                    datoObjectFiles_ci[3] = datoObjectFile4;
-                    datoObjectFile5.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.file_num_ident + "?app_name=todoangular";
-                    datoObjectFile5.campo = 'NIT o inscripción al Régimen Simplificado';
-                    datoObjectFile5.nombre = 'NIT o inscripción al Régimen Simplificado';
-                    datoObjectFiles_ci[4] = datoObjectFile5;
-                    datoObjectFile6.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.file_fund_emp + "?app_name=todoangular";
-                    datoObjectFile6.campo = 'FUNDEMPRESA o Matricula de Comercio';
-                    datoObjectFile6.nombre = 'FUNDEMPRESA o Matricula de Comercio';
-                    datoObjectFiles_ci[5] = datoObjectFile6;
-                    $scope.datos.FILE_CI = datoObjectFiles_ci;
-                    $scope.datos.File_contribuyente = datoObjectFiles_ci;
-                    $scope.getRequisitosFormulario($scope.datos.f01_categoria_agrupada, $scope.datos.f01_tipo_per);
-                    $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada, $scope.datos.f01_tipo_per);
-                    $scope.getRequisitosTecnicosCategoria($scope.datos.f01_categoria_agrupada, $scope.datos.f01_tipo_per);
-                    if (!$scope.$$phase) {
-                        $scope.$apply();
-                    }
-                    $.unblockUI();
-                });
-            } catch (e) {
-                console.log("Error en la actividad desarrollada");
+        //$scope.datos.rdTipoTramite = 'NUEVO';
+        $scope[name] = 'Running';
+        var deferred = $q.defer();
+        datoObjectFile1 = new Object();
+        datoObjectFile2 = new Object();
+        datoObjectFile3 = new Object();
+        datoObjectFile4 = new Object();
+        datoObjectFile5 = new Object();
+        datoObjectFile6 = new Object();
+        datoObjectFiles_ci = [];
+        $scope.datos.FILE_CI = '';
+        $scope.datos.fileArchivosAd = '';
+        try {
+            var dataDesLic = '{"id_actividad_desarrollada":"' + idDesarrollada + '"}';
+            var resDatosLic = new reglasnegocioSierra();
+            resDatosLic.identificador = 'VALLE_PRUEBA-SGEN-3151';
+            resDatosLic.parametros = dataDesLic;
+            resDatosLic.llamarregla_sierra(function(responseDatosLic) {
+                var datosLic = JSON.parse(responseDatosLic);
+                if (datosLic.length > 0) {
+                    $scope.sCategoria = true;
+                    $scope.smultiservicios = false;
+                    $scope.datosActividadLicencia = datosLic;
+                    $scope.datos.f01_tipo_lic = datosLic[0].lic_ant_id;
+                    $scope.datos.f01_tipo_lic_sierra = datosLic[0].idtipolicencia;
+                    $scope.datos.f01_tipo_lic_descrip = datosLic[0].tipolicenciadescripcion;
+                    $scope.datos.f01_categoria_agrupada_sierra = datosLic[0].categoria_id;
+                    $scope.datos.f01_categoria_agrupada = datosLic[0].categoria_id_anterior;
+                    $scope.datos.f01_categoria_agrupada_dem = datosLic[0].addescripcion;
+                    $scope.datos.f01_categoria_agrupada_descrip = datosLic[0].addescripcion;
+                    $scope.datos.f01_proceso = datosLic[0].proceso;
+                    $scope.GetValueZonaSegura(datosLic[0].categoria_id_anterior);
+                    var comboz = document.getElementById('f01_categoria_descrip');
+                    selected2 = comboz.options[comboz.selectedIndex].text;
+                    $scope.datos.f01_categoria_descripcion = selected2;
+                    $scope.datos.f01_categoria_descrip2 = selected2;
+                    $scope.datos.f01_categoria_agrupada_descripcion = selected2;
+                    $scope.datos.f01_actividadesSecundarias = datosLic[0].ad3436descripcion;
+                } else {
+                    $scope.msg = "Error !!";
+                }
+                if (idDesarrollada == 907 || idDesarrollada == '907') {
+                    $scope.sCategoria = false;
+                    $scope.smultiservicios = true;
+                    $scope.actividadDesarrolladaM();
+                }
+                datoObjectFile1.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + $scope.datos.id_representante + "/" + $scope.datos.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
+                datoObjectFile1.campo = 'Cedula de identidad (Anverso)';
+                datoObjectFile1.nombre = 'Cedula de identidad (Anverso)';
+                datoObjectFiles_ci[0] = datoObjectFile1;
+                datoObjectFile2.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + $scope.datos.id_representante + "/" + $scope.datos.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";
+                datoObjectFile2.campo = 'Cedula de identidad (Reverso)';
+                datoObjectFile2.nombre = 'Cedula de identidad (Reverso)';
+                datoObjectFiles_ci[1] = datoObjectFile2;
+                datoObjectFile3.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.f01_poder_representante + "?app_name=todoangular";
+                datoObjectFile3.campo = 'Poder de Representación Legal';
+                datoObjectFile3.nombre = 'Poder de Representación Legal';
+                datoObjectFiles_ci[2] = datoObjectFile3;
+                datoObjectFile4.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.f01_test_cons_sociedad_j + "?app_name=todoangular";
+                datoObjectFile4.campo = 'Testimonio de Constitución de Sociedad';
+                datoObjectFile4.nombre = 'Testimonio de Constitución de Sociedad';
+                datoObjectFiles_ci[3] = datoObjectFile4;
+                datoObjectFile5.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.file_num_ident + "?app_name=todoangular";
+                datoObjectFile5.campo = 'NIT o inscripción al Régimen Simplificado';
+                datoObjectFile5.nombre = 'NIT o inscripción al Régimen Simplificado';
+                datoObjectFiles_ci[4] = datoObjectFile5;
+                datoObjectFile6.url = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.file_fund_emp + "?app_name=todoangular";
+                datoObjectFile6.campo = 'FUNDEMPRESA o Matricula de Comercio';
+                datoObjectFile6.nombre = 'FUNDEMPRESA o Matricula de Comercio';
+                datoObjectFiles_ci[5] = datoObjectFile6;
+                $scope.datos.FILE_CI = datoObjectFiles_ci;
+                $scope.datos.File_contribuyente = datoObjectFiles_ci;
+                $scope.getRequisitosFormulario($scope.datos.f01_categoria_agrupada, $scope.datos.f01_tipo_per);
+                $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada, $scope.datos.f01_tipo_per);
+                $scope.getRequisitosTecnicosCategoria($scope.datos.f01_categoria_agrupada, $scope.datos.f01_tipo_per);
+                if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
                 $.unblockUI();
-            }
-        } else {
-            swal('', "Llene el campo de la superficie!!!", 'warning');
+            });
+        } catch (e) {
+            console.log("Error en la actividad desarrollada");
             $.unblockUI();
         }
     }
@@ -313,53 +308,48 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
 
     $scope.LicenciaXCategoriaM = function(idDesarrollada) {
         $.blockUI();
-        if (superficie) {
-            $.blockUI();
-            $scope[name] = 'Running';
-            var deferred = $q.defer();
-            datoObjectFile1 = new Object();
-            datoObjectFile2 = new Object();
-            datoObjectFiles_ci = [];
-            try {
-                var dataDesLicM = '{"id_actividad_desarrollada":"' + idDesarrollada + '"}';
-                var resDatosLicM = new reglasnegocioSierra();
-                resDatosLicM.identificador = 'VALLE_PRUEBA-SGEN-3151';
-                resDatosLicM.parametros = dataDesLicM;
-                resDatosLicM.llamarregla_sierra(function(responseDatosLicM) {
-                    var obtLicM = JSON.parse(responseDatosLicM);
-                    var datosLicM = obtLicM;
-                    if (datosLicM.length > 0) {
-                        $scope.multiple = datosLicM;
-                        $scope.multiple.f01_tipo_licmid = datosLicM[0].idtipolicencia;
-                        $scope.multiple.f01_tipo_licmdescrip = datosLicM[0].tipolicenciadescripcion;
-                        $scope.multiple.f01_cat_agrupadamid = datosLicM[0].categoria_id;
-                        $scope.multiple.f01_categoria_agrupada = datosLicM[0].categoria_id_anterior;
-                        $scope.multiple.f01_cat_agrupadamdescrip = datosLicM[0].addescripcion;
-                        $scope.multiple.f01_act_desarrolladamid = datosLicM[0].idactividaddesarrollada343;
-                        $scope.multiple.f01_procesomul = datosLicM[0].proceso;
-                        var combox = document.getElementById('f01_act_desarrolladamid');
-                        selected2 = combox.options[combox.selectedIndex].text;
-                        $scope.multiple.f01_act_desarrolladamdescrip = selected2;
-                        //$scope.multiple.f01_tae = datosLicM[0].tae;
-                        $scope.getRequisitosFormulario(datosLicM[0].categoria_id_anterior, $scope.datos.f01_tipo_per);
-                        deferred.resolve($scope.multiple);
-                        if (!$scope.$$phase) {
-                            $scope.$apply();
-                        }
-                        $.unblockUI();
-                    } else {
-                        $scope.msg = "Error !!";
-                        $.unblockUI();
+        $scope[name] = 'Running';
+        var deferred = $q.defer();
+        datoObjectFile1 = new Object();
+        datoObjectFile2 = new Object();
+        datoObjectFiles_ci = [];
+        try {
+            var dataDesLicM = '{"id_actividad_desarrollada":"' + idDesarrollada + '"}';
+            var resDatosLicM = new reglasnegocioSierra();
+            resDatosLicM.identificador = 'VALLE_PRUEBA-SGEN-3151';
+            resDatosLicM.parametros = dataDesLicM;
+            resDatosLicM.llamarregla_sierra(function(responseDatosLicM) {
+                var obtLicM = JSON.parse(responseDatosLicM);
+                var datosLicM = obtLicM;
+                if (datosLicM.length > 0) {
+                    $scope.multiple = datosLicM;
+                    $scope.multiple.f01_tipo_licmid = datosLicM[0].idtipolicencia;
+                    $scope.multiple.f01_tipo_licmdescrip = datosLicM[0].tipolicenciadescripcion;
+                    $scope.multiple.f01_cat_agrupadamid = datosLicM[0].categoria_id;
+                    $scope.multiple.f01_categoria_agrupada = datosLicM[0].categoria_id_anterior;
+                    $scope.multiple.f01_cat_agrupadamdescrip = datosLicM[0].addescripcion;
+                    $scope.multiple.f01_act_desarrolladamid = datosLicM[0].idactividaddesarrollada343;
+                    $scope.multiple.f01_procesomul = datosLicM[0].proceso;
+                    var combox = document.getElementById('f01_act_desarrolladamid');
+                    selected2 = combox.options[combox.selectedIndex].text;
+                    $scope.multiple.f01_act_desarrolladamdescrip = selected2;
+                    //$scope.multiple.f01_tae = datosLicM[0].tae;
+                    $scope.getRequisitosFormulario(datosLicM[0].categoria_id_anterior, $scope.datos.f01_tipo_per);
+                    deferred.resolve($scope.multiple);
+                    if (!$scope.$$phase) {
+                        $scope.$apply();
                     }
-                });
-            } catch (e) {
-                console.log("Error en la actividad desarrollada");
-                $.unblockUI();
-            }
-        } else {
-            swal('', "Llene el campo de la superficie!!!", 'warning');
+                    $.unblockUI();
+                } else {
+                    $scope.msg = "Error !!";
+                    $.unblockUI();
+                }
+            });
+        } catch (e) {
+            console.log("Error en la actividad desarrollada");
             $.unblockUI();
         }
+
     }
 
     $scope.guardarLicencia = function(licencia) {

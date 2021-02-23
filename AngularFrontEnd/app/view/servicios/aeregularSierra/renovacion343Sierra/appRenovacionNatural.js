@@ -4288,12 +4288,16 @@ function regularRenovacionSierraController($scope, $timeout, $q, $rootScope, $ro
                         dataFum = '{"Tipo":"generarOdm","razon_social":"' + nombreCompleto + '","ci_nit":"' + $scope.datos.f01_num_dos_prop + '","unidad_recaudadora":"139","sucursal":"0","monto_total":"' + parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado) + '","detalles":' + detalle + ',"data":' + dataF + '}';
                         $.ajax({
 
-                            url: jsonURLS.SERVICE_SIERRAM + 'SierraValle_Oficial/public/v.0.1/sierra/generacion_ODM', //descomentar esta linea una puesto en produccion
+                            url: jsonURLS.SERVICE_SIERRA_ODM + 'v.0.1/sierra/generacion_ODM', //descomentar esta linea una puesto en produccion
+							//url: jsonURLS.SERVICE_SIERRAM + 'SierraValle_Oficial/public/v.0.1/sierra/generacion_ODM', //descomentar esta linea una puesto en produccion
                             //url: 'http://172.19.160.38:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php', //comentar esta linea una vez puesto en produccion
                             data: dataFum,
                             type: "POST",
                             dataType: "json",
                             async: false,
+							headers: {
+								'authorization': 'Bearer ' +  sessionStorage.getItem('TOKEN_MOTORODM')         
+							},
                             success: function(responseODM) {
                                 $scope.codigoODM = responseODM.data[0].nroodm;
                                 if (responseODM.data[0].nro_registro == 0) {

@@ -4220,11 +4220,11 @@ function renovacionJuridicoSierraController($scope, $timeout, $rootScope, $route
                         var dataFum = '';
                         var dataF = '{"gestion_pago":' + deudasDuodecimas.deuda_data.gestion + ',"id_actividad":' + deudasDuodecimas.deuda_actividad_id + ',"tipo_actividad":"actividadEconomica"}';
                         var detalle = '[{"odm_item_recaudador":"' + generarITEM2.ir_codigo + '","odm_pre_unitario":"' + parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado) + '","odm_cantidad":"1","odm_sub_total":"' + parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado) + '"}]';
-                        dataFum = '{"Tipo":"generarOdm","razon_social":"' + nombreCompleto + '","ci_nit":"' + $scope.datos.f01_num_dos_prop + '","unidad_recaudadora":"139","sucursal":"0","monto_total":"' + parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado) + '","detalles":' + detalle + ',"data":' + dataF + '}';
+                        dataFum = '{"Tipo":"generarOdm","razon_social":"' + $scope.datos.f01_raz_soc_per_jur + '","ci_nit":"' + $scope.datos.f01_num_doc_per_jur + '","unidad_recaudadora":"139","sucursal":"0","monto_total":"' + parseFloat(deudasDuodecimas.deuda_data.monto_total_bs_padelantado) + '","detalles":' + detalle + ',"data":' + dataF + '}';
                         $.ajax({
 
-                            //url: jsonURLS.CONEXION_MOTOR_SERVICIO+'/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php',//descomentar esta linea una puesto en produccion
-                            url: 'http://172.19.160.38:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php', //comentar esta linea una vez puesto en produccion
+                            url: jsonURLS.SERVICE_SIERRAM + 'SierraValle_Oficial/public/v.0.1/sierra/generacion_ODM', //descomentar esta linea una puesto en produccion
+                            //url: 'http://172.19.160.38:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php', //comentar esta linea una vez puesto en produccion
                             data: dataFum,
                             type: "POST",
                             dataType: "json",

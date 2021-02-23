@@ -784,13 +784,14 @@ app.controller('serviciosController343Sierra', function ($scope, $rootScope ,$ro
     }
     ///////////////////****MAPA GIS*****/////////////////////////
     $scope.open_mapa_ae = function(lat, lon) {
+        $("#map_principal").empty();
         setTimeout(function() {
             var latitud = lat;
             var longitud = lon;
+            latitud = parseFloat(latitud);
+            longitud = parseFloat(longitud);
             console.log("latitud...",latitud);
-            //map.removeLayer(vectorLayer_inci_baja);
-            $("#map_principal").empty();
-
+            console.log("longitud...",longitud);
             $scope.map = new ol.Map
             ({
               target: 'map_principal',

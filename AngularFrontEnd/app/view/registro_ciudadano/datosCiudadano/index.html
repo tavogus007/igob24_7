@@ -562,7 +562,11 @@ textarea::-webkit-scrollbar-thumb {
                               <button id="btnMacotas"  type="button" class="btn btn-success fa fa-download">DESCARGAR</button>
                               </a>
                             </div>
-                            
+                            <div ng-show ="(data.obj_url_AE !=null)">
+                              <a href="{{data.obj_url_AE}}" target="_blank"  data-toggle="tooltip" data-placement="left"  title="Ver/Descargar">
+                              <button id="btnAE"  type="button" class="btn btn-success fa fa-download">DESCARGAR</button>
+                              </a>
+                            </div>    
                       </div>
 
                   </div>

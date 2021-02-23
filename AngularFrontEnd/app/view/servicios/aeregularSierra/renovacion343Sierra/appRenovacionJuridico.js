@@ -657,7 +657,7 @@ function renovacionJuridicoSierraController($scope, $timeout, $rootScope, $route
         }
     }
 
-    $scope.LicenciaXCategoriaA = function(idDesarrollada, superficie) {
+    $scope.LicenciaXCategoriaA = function(idDesarrollada) {
         $.blockUI();
         datoObjectFile1 = new Object();
         datoObjectFile2 = new Object();
@@ -669,7 +669,7 @@ function renovacionJuridicoSierraController($scope, $timeout, $rootScope, $route
         $scope.datos.FILE_CI = '';
         $scope.datos.fileArchivosAd = '';
         try {
-            var dataDesLic = '{"id_actividad_desarrollada":"' + idDesarrollada + '", "superficie":"' + superficie + '"}';
+            var dataDesLic = '{"id_actividad_desarrollada":"' + idDesarrollada + '"}';
             var resDatosLic = new reglasnegocioSierra();
             resDatosLic.identificador = 'VALLE_PRUEBA-SGEN-3151';
             resDatosLic.parametros = dataDesLic;
@@ -805,7 +805,7 @@ function renovacionJuridicoSierraController($scope, $timeout, $rootScope, $route
         }
     };
 
-    $scope.LicenciaXCategoriaM = function(idDesarrollada, superficie) {
+    $scope.LicenciaXCategoriaM = function(idDesarrollada) {
         $.blockUI();
         $scope[name] = 'Running';
         var deferred = $q.defer();
@@ -813,7 +813,7 @@ function renovacionJuridicoSierraController($scope, $timeout, $rootScope, $route
         datoObjectFile2 = new Object();
         datoObjectFiles_ci = [];
         try {
-            var dataDesLicM = '{"id_actividad_desarrollada":"' + idDesarrollada + '", "superficie":"' + superficie + '"}';
+            var dataDesLicM = '{"id_actividad_desarrollada":"' + idDesarrollada + '"}';
             var resDatosLicM = new reglasnegocioSierra();
             resDatosLicM.identificador = 'VALLE_PRUEBA-SGEN-3151';
             resDatosLicM.parametros = dataDesLicM;

@@ -206,7 +206,7 @@ var osm_udit = new ol.layer.Tile({
 });
 
 var municipios = new ol.layer.Tile({
-  title: 'MunicipioFFFFFFF',
+  title: 'Municipio',
       visible: true,
       source: new ol.source.TileWMS({
           url: 'http://sitservicios.lapaz.bo/geoserver/wms',

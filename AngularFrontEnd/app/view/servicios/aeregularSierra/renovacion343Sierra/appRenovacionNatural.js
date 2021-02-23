@@ -4269,7 +4269,7 @@ function regularRenovacionSierraController($scope, $timeout, $q, $rootScope, $ro
                     getITEM.parametros = '{"id_unidad_recaudadora":"139"}';
                     getITEM.llamarregla(function(resItem) {
                         var generarITEM = JSON.parse(resItem);
-                        var generarITEM2 = JSON.parse(generarITEM[19].xtodo);
+                        var generarITEM2 = JSON.parse(generarITEM[6].xtodo);
                         $scope.FUM = generarITEM2.ir_codigo;
                         $scope.descripFUM = generarITEM2.ir_descripcion;
                         $scope.iddeudas = '';

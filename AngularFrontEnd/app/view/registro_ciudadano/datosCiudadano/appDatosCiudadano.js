@@ -753,7 +753,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 datoObjectNoti = new Object();
                 $scope.notMascotas = aNotif.success[i];
                 var mensaje = aNotif.success[i].obs_tra_observaciones;
-                valor = mensaje.indexOf("&#34")
+                valor = mensaje.indexOf("&#34");
                 var resS = mensaje.split("&#34");
                 if(valor != -1){
                     $scope.actDetalle = resS[0];
@@ -778,7 +778,46 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 datoObjectNoti.obj_url_ra = 'noRA';
                 datoObjectNotiFinal[i] = datoObjectNoti;
                 $scope.myObj = datoObjectNotiFinal; //aNotif.success;
-                }else{                                                              //CASO CONTRARIO....
+                }else if(aNotif.success[i].obs_tra_sistema == 'MODIFICACIÓN DE LICENCIAS' && aNotif.success[i].serdv_descripcion == 'MODIFICACION DE LICENCIAS DE FUNCIONAMIENTO 2019'){      //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
+                    datoObjectNoti = new Object();
+                    var mensaje = aNotif.success[i].obs_tra_observaciones;
+                    var mensaje = aNotif.success[i].obs_tra_observaciones;
+                    valorAE = mensaje.indexOf("&#34");
+                    var resAE = mensaje.split("&#34");
+                    if(valorAE != -1){
+                        $scope.actDetalle = resAE[0];
+                        var mensajeIgob = resAE[0];
+                        $scope.resAE = resAE[1];
+                        console.log('$scope.resAE',mensajeIgob);
+                        console.log('$scope.resAE1',$scope.resAE);
+                        datoObjectNoti.obj_url_AE = $scope.resAE;
+                    }else{
+                        var mensajeIgob = mensaje;
+                    }
+                    datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
+                    datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
+                    datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
+                    datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
+                    datoObjectNoti.obs_tra_observaciones = mensajeIgob;
+                    datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
+                    datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
+                    datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
+                    datoObjectNoti.mensajeIgob = $scope.resAE1;
+                    if ($scope.resAE1 == undefined){
+                        datoObjectNoti.obj_url_ra = "noRA";
+                    }else{
+                        if(resAE.length > 1){
+                            datoObjectNoti.obj_url_AE = $scope.resAE1;
+                            datoObjectNoti.obj_url_ra = "noRA";
+                        }else{
+                            datoObjectNoti.obj_URL_AE = $scope.resAE1;
+                            datoObjectNoti.obj_url_ra = "noRA";
+                        }
+                    }
+                    datoObjectNotiFinal[i] = datoObjectNoti;
+                    $scope.myObj = datoObjectNotiFinal; //aNotif.success;
+                }else{                                  //CASO CONTRARIO....
                     $scope.myObj = aNotif.success;
                     datoObjectNoti = new Object();
                     datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
@@ -796,6 +835,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus; 
                     datoObjectNoti.obj_url_ra = "noRA";
                     datoObjectNoti.obj_url = "noSitram";
+                    datoObjectNoti.obj_url_AE = "noAE";
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal;
                 }

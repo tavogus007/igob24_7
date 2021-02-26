@@ -627,12 +627,12 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         var rcNot=new rcNotificaciones();
         rcNot.oid = sessionService.get('IDCIUDADANO');
         rcNot.obtenerNotificaciones(function(resultado){
-            ////console.log('resultado',resultado);
             aNotif = JSON.parse(resultado);
-            console.log('aNotif',aNotif);
             var notificaciones = aNotif.success.length;
             datoObjectNotiFinal = [];
             for(i = 0; i < notificaciones; i++){
+                var fecharegistro = new Date(aNotif.success[i].obs_tra_registrado);
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 if(aNotif.success[i].serdv_descripcion == 'ANTENA CIUDADANO'){      //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
                     datoObjectNoti = new Object();
                     var mensaje = aNotif.success[i].obs_tra_observaciones;
@@ -660,7 +660,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                     datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                     datoObjectNoti.obs_tra_observaciones = mensajeIgob[0];
-                    datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                     datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                     datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                     datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
@@ -697,7 +698,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus;
                     datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                     datoObjectNoti.obs_tra_observaciones = mensajeIgob[0];
-                    datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                     datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                     datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                     datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
@@ -735,7 +737,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                         datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                         datoObjectNoti.obs_tra_observaciones = mensajeIgob;
-                        datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                        //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                        datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                         datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                         datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                         datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
@@ -771,7 +774,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                 datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                 datoObjectNoti.obs_tra_observaciones = mensajeIgob;
-                datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                 datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                 datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                 datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
@@ -788,8 +792,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         $scope.actDetalle = resAE[0];
                         var mensajeIgob = resAE[0];
                         $scope.resAE = resAE[1];
-                        console.log('$scope.resAE',mensajeIgob);
-                        console.log('$scope.resAE1',$scope.resAE);
                         datoObjectNoti.obj_url_AE = $scope.resAE;
                     }else{
                         var mensajeIgob = mensaje;
@@ -799,9 +801,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                     datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                     datoObjectNoti.obs_tra_observaciones = mensajeIgob;
-                    console.log('aNotif_obs_tra_registrado',aNotif.success[i].obs_tra_registrado);
-                    datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
-                    //console.log('datoObjectNoti.obs_tra_registrado',datoObjectNoti.obs_tra_registrado);
+                    //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                     datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                     datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                     datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
@@ -820,7 +821,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     }
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
-                    console.log('$scope.myObj',$scope.myObj);
                 }else{                                  //CASO CONTRARIO....
                     $scope.myObj = aNotif.success;
                     datoObjectNoti = new Object();
@@ -830,7 +830,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                     datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                     datoObjectNoti.obs_tra_observaciones = aNotif.success[i].obs_tra_observaciones;
-                    datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                     datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                     datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                     datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;

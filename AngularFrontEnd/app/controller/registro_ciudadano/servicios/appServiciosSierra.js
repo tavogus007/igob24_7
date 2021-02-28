@@ -43,8 +43,8 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
         { name: 'template19.html', url: '../../../app/view/servicios/aeregularSierra/renovacion343Sierra/renovacionJuridico.html' }
     ];
     $scope.serivicosInternet = [
-        { name: 'Emisión de Licencias de Funcionamiento', id: '28' },
-        { name: 'Renovación de Licencias de Funcionamiento', id: '29' }
+        { name: 'Emisión de Licencias de Funcionamiento', id: '16' },
+        { name: 'Renovación de Licencias de Funcionamiento', id: '44' }
     ];
 
     $scope.btnEnviarForm = true;
@@ -56,8 +56,8 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
     var aDocAdjuntos = new Array();
     $rootScope.decJuradaNatural = "";
     $rootScope.decJuradaJuridico = "";
-    $scope.emision = 28;
-    $scope.renovacion = 29;
+    $scope.emision = 16;
+    $scope.renovacion = 44;
 
     $scope.seleccionarProceso = function(proceso) {
         $scope.procesoSeleccionado = proceso.id;

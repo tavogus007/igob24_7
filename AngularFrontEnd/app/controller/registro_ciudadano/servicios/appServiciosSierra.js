@@ -772,6 +772,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
         }
         ///////////////////****MAPA GIS*****/////////////////////////
     $scope.open_mapa_ae = function(lat, lon) {
+        
         $("#map_principal").empty();
         setTimeout(function() {
             var latitud = lat;
@@ -832,6 +833,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                 vectorSource.clear();
                 if (jsonURLS) {
                     var url_sit = jsonURLS.SIT_GEO;
+                    console.log("URL SIT...",url_sit);
                 }
                 var url_r = url_sit + '/geoserver/wms';
                 var viewResolution = view.getResolution();
@@ -845,9 +847,10 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                 datos.latitud = latitud;
                 datos.longitud = longitud;
                 var url = url_sit + '/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,' + wkt + ')';
+                
                 $scope.datos.INT_AC_latitud = latitud;
                 $scope.datos.INT_AC_longitud = longitud;
-                ///////////////////PARA PATTY//////////////////////////////////////////////////////////////
+                ///////////////////PARA SIERRA//////////////////////////////////////////////////////////////
                 var feature = $scope.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
                     return feature;
                 });
@@ -893,7 +896,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                         var feature = data.features[0];
                         var cod = feature.properties;
                         var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-", ""));
-                        console.log("Patty zona tributaria: ", codigo_zona_tributaria);
+                        console.log("zona tributaria: ", codigo_zona_tributaria);
                         $scope.datos.f01_idCodigoZona = codigo_zona_tributaria;
                     });
 
@@ -903,7 +906,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                     }).then(function(data) {
                         var feature = data.features[0];
                         var cod = feature.properties;
-                        console.log("Patty datos zonas: ", cod);
+                        console.log("datos zonas: ", cod);
                         //var zona = cod.codigozona;
                         var cod_zona_sit = cod.codigozona;
                         var macrodistrito = cod.macrodistrito;
@@ -929,11 +932,11 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                                 var feature = data.features[0];
                                 //$scope.GetValueZona();
                                 if (feature == undefined) {
-                                    console.log("Patty No hay vias...");
+                                    console.log("No hay vias...");
                                     $scope.datos.f01_tip_via_act = '';
                                 } else {
                                     var cod = feature.properties;
-                                    console.log("Patty datos de vias: ", cod);
+                                    console.log("datos de vias: ", cod);
                                     var cod = feature.properties;
                                     var nombre_via = cod.nombrevia;
                                     var tipo_via = cod.tipovia;
@@ -977,13 +980,13 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                     }).then(function(data) {
                         var feature = data.features[0];
                         if (feature == undefined) {
-                            console.log("Patty...No es Zona Segura...");
+                            console.log("No es Zona Segura...");
                             id_zona_segura = 0;
                             console.log("NO ES ZONA SEGURA ID: ", id_zona_segura);
                             $scope.GetZonaSeguraV(id_zona_segura);
                         } else {
                             var cod = feature.properties;
-                            console.log("Patty datos zona seguras: ", cod);
+                            console.log("datos zona seguras: ", cod);
                             switch (cod.id) {
                                 case 1:
                                     id_zona_segura = 3;

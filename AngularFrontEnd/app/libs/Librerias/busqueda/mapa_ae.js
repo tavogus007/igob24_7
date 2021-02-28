@@ -89,7 +89,7 @@ var vias = new ol.layer.Tile({
   //opacity: 0.3,
   visible: true,
   source: new ol.source.TileWMS({
-    url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+    url: 'https://gamlpmotores.lapaz.bo/sitgeo/geoserver/wms',
     params: { 'LAYERS': 'catastro:vias2', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
     serverType: 'geoserver',
     //crossOrigin: '*'
@@ -108,7 +108,7 @@ var zonas_tributarias = new ol.layer.Tile({
             opacity: 0.3,
             visible: false,
             source: new ol.source.TileWMS({
-            url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+            url: 'https://gamlpmotores.lapaz.bo/sitgeo/geoserver/wms',
             params: { 'LAYERS': 'catastro:zonasvalor2015', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
             serverType: 'geoserver',
             crossOriginKeyword: 'anonymous'
@@ -204,12 +204,13 @@ var osm_udit = new ol.layer.Tile({
                                                               ,crossOrigin: 'Anonymous'
                                                             })
 });
+//SIT_GEO: "https://gamlpmotores.lapaz.bo/sitgeo"
 
 var municipios = new ol.layer.Tile({
   title: 'Municipio',
-      visible: true,
+      visible: false,
       source: new ol.source.TileWMS({
-          url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+          url: 'https://gamlpmotores.lapaz.bo/sitgeo/geoserver/wms',
           params: { 'LAYERS': 'g_municipio3', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
           serverType: 'geoserver',
           crossOriginKeyword: 'anonymous'

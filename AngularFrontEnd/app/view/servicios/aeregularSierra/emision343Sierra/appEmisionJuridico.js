@@ -1111,7 +1111,7 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         //$rootScope.validacionRequisitosTec();        
         $scope.btnEnviarForm = true;
-        var idProcodigo = 'EM-LF';
+        var idProcodigo = 'EM-LFS';
         var datosNeXO = {};
         if (paramForm.OTRO_VIA != "") {
             $scope.nombre_via = paramForm.OTRO_VIA;

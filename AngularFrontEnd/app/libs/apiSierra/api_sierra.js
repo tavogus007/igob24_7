@@ -1,7 +1,7 @@
 if(jsonURLS){
     //var urlLoginSierra =  jsonURLS.CONEXION_MOTOR_SERVICIO+"motorservicio_pruebas/public/api/apiLogin"; //DESCOMENTAR ESTA LINEA UNA VEZ PUESTO EN PRODUCCION
     var urlLoginSierra =  jsonURLS.SERVICE_SIERRAM+"apiLogin";//COMENTAR ESTA LINEA UNA VEZ PUESTO EN PRODUCCION
-    var urlCredenciales = jsonURLS.CREDENCIAL_MOTORES;
+    var urlCredenciales = jsonURLS.CREDENCIAL_MOTORES_SIERRA;
 }
 
 function ejecutarAjaxTokenSierra() {
@@ -23,6 +23,7 @@ function ejecutarAjaxTokenSierra() {
 }
 
 function gLoginSierra() {};
+
 gLoginSierra.prototype.login_sierra = function (functionResp) {
     ejecutarAjaxTokenSierra(functionResp);
 };

@@ -133,6 +133,24 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             }
         });
     }
+	//SIERRA
+	 $scope.sesionTokenODM=function(){
+        var urlToken = CONFIG.SERVICE_SIERRA_ODM + "api/apiLogin";
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url : urlToken,
+            data: CONFIG.CREDENCIAL_MOTORESODM,
+            async: false,
+            success: function(response) {
+                dataResp = JSON.stringify(response);
+                sessionStorage.setItem('TOKEN_MOTORODM', response.token);
+            },
+            error: function (response, status, error) {
+                dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+            }
+        });
+    }
 
     //LA LLAMDADA NO DEBERIA SER DESDE AQUI
     /*$scope.sesionTokenATM=function(){
@@ -209,6 +227,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             var sActFisica  =   "";
             var sActDigital =   "";
             $scope.sesionToken();
+			$scope.sesionTokenODM();
             //$scope.sesionTokenATM();
             $scope.sesionTokenMas();
             $rootScope.mostrarMenuMascota = "NO";

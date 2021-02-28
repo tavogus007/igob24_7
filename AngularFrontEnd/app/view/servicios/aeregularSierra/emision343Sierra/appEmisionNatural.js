@@ -2905,7 +2905,7 @@ function regularSierraController($scope, $timeout, $q, $rootScope, $routeParams,
         $scope.ultimoArrayAdjunto();
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm = true;
-        var idProcodigo = 'EM-LF';
+        var idProcodigo = 'EM-LFS';
         var datosNeXO = {};
         $scope.divVIAE = "mostrar";
         datosNeXO['f01_actividadesSecundarias'] = paramForm.f01_actividadesSecundarias;

@@ -45,8 +45,8 @@ var jsonURLS    =   {
     //URLS_API
     //CONEXION_API_PG_IF: "http://172.19.161.199:9091/",//login, apirc, lotus
     //REVISAR INICIO
-    CONEXION_API_PG_IF: "http://192.168.5.141:9091/",
-    CONEXION_API_PG_GENESIS: "http://192.168.5.141:9091/",
+    CONEXION_API_PG_IF: "http://192.168.5.141:9001/",
+    CONEXION_API_PG_GENESIS: "http://192.168.5.141:9001/",
     //REVISAR FIN
     //CONEXION_API_PG_RC: "http://40.117.46.159:9093/",//login, apirc, lotus
     CONEXION_API_PG_RC: "http://192.168.5.141:8003/",//login, apirc, lotusoficial
@@ -74,7 +74,17 @@ var jsonURLS    =   {
     CONEXION_SITRAM: "http://192.168.5.141", 
     CONEXION_API_PG_PRODUCTO: "http://192.168.5.141:8010/",//apirc
     CONEXION_PAGOS: "http://52.226.130.135:5433/",//apirc   
-    SERVICE_SIERRAM : "http://172.19.160.133/api/",//COMENTAR ESTA LINEA UNA VEZ SUBIDO A PRODUCCION LOS MODULOS DE EMSION Y RENOVACION CON LA INTEGRACION CON SIERRA
+    //SERVICE_SIERRAM : "http://172.19.160.133/api/",//COMENTAR ESTA LINEA UNA VEZ SUBIDO A PRODUCCION LOS MODULOS DE EMSION Y RENOVACION CON LA INTEGRACION CON SIERRA
+	SERVICE_SIERRAM : "http://131.0.0.11:90/api/",//COMENTAR ESTA LINEA UNA VEZ SUBIDO A PRODUCCION LOS MODULOS DE EMSION Y RENOVACION CON LA INTEGRACION CON SIERRA
+    CREDENCIAL_MOTORES_SIERRA: {
+        'usr_usuario'   : 'administrador',
+        'usr_clave'     : 'Adm1nSierra113'
+    },
+	SERVICE_SIERRA_ODM : "http://sierra247.lapaz.bo/SierraValle_Oficial/public/",
+	CREDENCIAL_MOTORESODM: {
+        'usr_usuario'   : 'administrador',
+        'usr_clave'     : '123456'
+    },	
     SERVICE_GIS_AE_DZ:"https://servmonitoreo.lapaz.bo/"
     //https://gamlpmotores.lapaz.bo/gamlp179/igob247/generarFumOficial.php
     

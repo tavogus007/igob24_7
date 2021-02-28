@@ -321,7 +321,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!--div class="col-md-4">
                     <div class="form-group">
                         <font color="#FF0000" size="4px"> * </font>
                         <label for="url">{{translateTitulos.lbl_12_34}}: </label>
@@ -330,7 +330,7 @@
                                 required>
                         </div>
                     </div>
-                </div>
+                </div-->
                 <div class="col-md-4">
                     <div class="form-group">
                         <font color="#FF0000" size="4px"> * </font>
@@ -525,6 +525,30 @@
                     </div>
                 </div>
                 <!--TERMINA TIPO DE LICENCIA MULTIPLE-->
+                <div class="col-md-6" ng-show="mostrarsinsuperficie">
+                    <div class="form-group">
+                        <font color="#FF0000" size="4px"> * </font>
+                        <label for="url">Descripcion S/C Superficie: </label>
+                        <div class="controls">
+                            <select id="f01_act_s_superficie" name="f01_act_s_superficie" ng-disabled="desabilitado" ng-model="datos.f01_act_s_superficie" class="form-control" ng-change="cambioSuperficie(datos.f01_act_s_superficie)" required>
+                                    <option value="">--Seleccionar--</option>
+                                    <option value="CONSUPERFICIE"> CON SUPERFICIE  </option>
+                                    <option value="SINSUPERFICIE"> SIN SUPERFICIE  </option>
+                                </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" ng-show="mostrarsuperficie">
+                    <div class="form-group">
+                        <font color="#FF0000" size="4px"> * </font>
+                        <label for="url">{{translateTitulos.lbl_12_34}}: </label>
+                        <div class="controls">
+                            <input type="text" ng-model="datos.f01_sup" id="f01_sup" name="f01_sup" class="form-control" width="30%" height="30" ng-disabled="desabilitado || desabilitadoSup" ng-change="verificarSuperficie(datos.f01_sup);calcularCapacidad(datos.f01_sup);" onkeyUp=" vsuperficie(this)"
+                                required/>
+                        </div>
+                    </div>
+                </div>
                 <!--PARA FOOD TRUCK-->
                 <div ng-show="datos.f01_categoria_descrip==211 || datos.f01_categoria_descrip=='211'">
                     <div class="col-md-12">

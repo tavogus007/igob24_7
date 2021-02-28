@@ -23,6 +23,8 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
     $scope.listDeudas = [];
     $scope.btnCalcular = true;
     $scope.datos.montoDeuda = [];
+    $scope.mostrarsinsuperficie = false;
+    $scope.mostrarsuperficie = false;
 
     /*CIUDADANO - TIPO INICIO DE TRAMITE NUEVO - RENOVACION*/
     $scope.cambioToggleForm = function() {
@@ -109,6 +111,26 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
             $scope.licenciaToogle4 = true;
         } else {
             $scope.licenciaToogle4 = false;
+        }
+    }
+    $scope.mostrarSuperficie = function(tipolic, categoriaagrupada, idDesarrollada) {
+        console.log(tipolic, categoriaagrupada, idDesarrollada);
+        if (tipolic == 27 || tipolic == '27' || categoriaagrupada == 3451 || categoriaagrupada == '3451' || idDesarrollada == 881 || idDesarrollada == '881') {
+            $scope.mostrarsinsuperficie = true;
+            $scope.mostrarsuperficie = true;
+        } else {
+            $scope.mostrarsuperficie = true;
+            $scope.mostrarsinsuperficie = false;
+        }
+    }
+
+    $scope.cambioSuperficie = function(dato) {
+        if (dato == 'SINSUPERFICIE') {
+            $scope.datos.f01_sup = "0";
+            $scope.desabilitadoSup = true;
+        } else {
+            $scope.datos.f01_sup = "";
+            $scope.desabilitadoSup = false;
         }
     }
 
@@ -257,6 +279,7 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
                 $scope.getRequisitosFormulario($scope.datos.f01_categoria_agrupada, $scope.datos.f01_tipo_per);
                 $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada, $scope.datos.f01_tipo_per);
                 $scope.getRequisitosTecnicosCategoria($scope.datos.f01_categoria_agrupada, $scope.datos.f01_tipo_per);
+                $scope.mostrarSuperficie($scope.datos.f01_tipo_lic, $scope.datos.f01_categoria_agrupada, idDesarrollada);
                 if (!$scope.$$phase) {
                     $scope.$apply();
                 }

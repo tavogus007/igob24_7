@@ -981,6 +981,9 @@ function regularSierraController($scope, $timeout, $q, $rootScope, $routeParams,
         } else {
             $scope.mostrarsuperficie = true;
             $scope.mostrarsinsuperficie = false;
+            $scope.datos.f01_sup = "";
+            $scope.desabilitadoSup = false;
+            $scope.datos.f01_act_s_superficie = "";
         }
     }
 
@@ -3110,6 +3113,7 @@ function regularSierraController($scope, $timeout, $q, $rootScope, $routeParams,
             datosNeXO['f01_categoria_agrupada_descrip'] = paramForm.f01_categoria_agrupada_descrip;
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;
             datosNeXO['id_zona_segura'] = paramForm.id_zona_segura;
+            datosNeXO['f01_act_s_superficie'] = paramForm.f01_act_s_superficie;
             var datoObjectdj = [];
             var decjuradaN = new Object();
             if ($rootScope.decJuradaNatural) {

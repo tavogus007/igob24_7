@@ -121,6 +121,9 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
         } else {
             $scope.mostrarsuperficie = true;
             $scope.mostrarsinsuperficie = false;
+            $scope.datos.f01_sup = "";
+            $scope.desabilitadoSup = false;
+            $scope.datos.f01_act_s_superficie = "";
         }
     }
 
@@ -1330,6 +1333,7 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
             datosNeXO['f01_longitud_emp'] = paramForm.f01_longitud_emp;
             datosNeXO['f01_latitud_rl_rep'] = paramForm.f01_latitud_rl_rep;
             datosNeXO['f01_longitud_rl_rep'] = paramForm.f01_longitud_rl_rep;
+            datosNeXO['f01_act_s_superficie'] = paramForm.f01_act_s_superficie;
             if (paramForm.chkzonasegura == 'ZONASEGURA') {
                 datosNeXO['f01_zona_segura'] = 'SI';
             } else {

@@ -1742,7 +1742,7 @@ function renovacionJuridicoSierraController($scope, $timeout, $rootScope, $route
         $scope.capturarImagen();
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm = true;
-        var idProcodigo = 'RE-LF';
+        var idProcodigo = 'RE-LFS';
         var datosNeXO = {};
         if (paramForm.OTRO_VIA != "") {
             $scope.nombre_via = paramForm.OTRO_VIA;
@@ -3113,10 +3113,12 @@ function renovacionJuridicoSierraController($scope, $timeout, $rootScope, $route
                         stringFormulario40 = stringFormulario40.replace("#pago_adel#", 'SI'); //datos.pago_adelantado);
                         stringFormulario40 = stringFormulario40.replace("#nro_ges#", datos.nro_ges);
                         stringFormulario40 = stringFormulario40.replace("#tablaP#", '');
+                        stringFormulario40 = stringFormulario40.replace("#pagoadelantado#", "Me comprometo a mantener las condiciones técnicas y ubicación de la Actividad Económica por el periodo autorizado, caso contrario  me someteré a lo dispuesto en la Ley Municipal Autonómica 343/2018, sin reclamo alguno.");
                     } else {
                         stringFormulario40 = stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
                         stringFormulario40 = stringFormulario40.replace("#nro_ges#", 'NINGUNA');
                         stringFormulario40 = stringFormulario40.replace("#tablaP#", tablapago);
+                        stringFormulario40 = stringFormulario40.replace("#pagoadelantado#", "");
                     }
                     stringFormulario40 = stringFormulario40.replace("#f01_idCodigoZona#", datos.f01_idCodigoZona);
                     var divfoodTruck = '';
@@ -3534,6 +3536,11 @@ function renovacionJuridicoSierraController($scope, $timeout, $rootScope, $route
             dataForm['pago_adel'] = 'SIN PAGO ADELANTADO';
             dataForm['nro_ges'] = 'NINGUNA';
             dataForm['tablaP'] = '';
+        }
+        if (data.pago_adelantado == true) {
+            dataForm['pagoadelantado'] = 'Me comprometo a mantener las condiciones técnicas y ubicación de la Actividad Económica por el periodo autorizado, caso contrario  me someteré a lo dispuesto en la Ley Municipal Autonómica 343/2018, sin reclamo alguno.';
+        } else {
+            dataForm['pagoadelantado'] = '';
         }
         var divfoodTruck = '';
         if (data.f01_categoria == 211 || data.f01_categoria == '211') {

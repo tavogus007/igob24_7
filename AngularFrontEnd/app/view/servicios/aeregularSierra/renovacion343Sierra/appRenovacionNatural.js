@@ -3303,6 +3303,18 @@ function regularRenovacionSierraController($scope, $timeout, $q, $rootScope, $ro
                     } else {
                         stringFormulario40 = stringFormulario40.replace("#publicidadAntiguo_grilla#", 'ACTIVIDAD ECONOMICA SIN ELEMENTOS DE IDENTIFICACIÓN');
                     }
+                    var tablapago = '';
+                    if (datos.pago_adelantado == true) {
+                        stringFormulario40 = stringFormulario40.replace("#pago_adel#", 'SI'); //datos.pago_adelantado);
+                        stringFormulario40 = stringFormulario40.replace("#nro_ges#", datos.nro_ges);
+                        stringFormulario40 = stringFormulario40.replace("#tablaP#", '');
+                        stringFormulario40 = stringFormulario40.replace("#pagoadelantado#", "Me comprometo a mantener las condiciones técnicas y ubicación de la Actividad Económica por el periodo autorizado, caso contrario  me someteré a lo dispuesto en la Ley Municipal Autonómica 343/2018, sin reclamo alguno.");
+                    } else {
+                        stringFormulario40 = stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
+                        stringFormulario40 = stringFormulario40.replace("#nro_ges#", 'NINGUNA');
+                        stringFormulario40 = stringFormulario40.replace("#tablaP#", tablapago);
+                        stringFormulario40 = stringFormulario40.replace("#pagoadelantado#", "");
+                    }
                     var multiAnt = '';
                     if ($scope.datosAnt.idtipolicencia == 26 || $scope.datosAnt.idtipolicencia == '26') {
                         stringFormulario40 = stringFormulario40.replace("#tipocategoria#", 'MULTISERVICIOS');
@@ -3535,6 +3547,11 @@ function regularRenovacionSierraController($scope, $timeout, $q, $rootScope, $ro
             dataForm['nro_ges'] = 'NINGUNA';
             dataForm['tablaP'] = tablapago;
         }
+        if (data.pago_adelantado == true) {
+            dataForm['pagoadelantado'] = 'Me comprometo a mantener las condiciones técnicas y ubicación de la Actividad Económica por el periodo autorizado, caso contrario  me someteré a lo dispuesto en la Ley Municipal Autonómica 343/2018, sin reclamo alguno.';
+        } else {
+            dataForm['pagoadelantado'] = '';
+        }
         var divfoodTruck = '';
         if (data.f01_categoria == 211 || data.f01_categoria == '211') {
             divfoodTruck = divfoodTruck + '<table border="0" style="width:100%">' +
@@ -3688,7 +3705,7 @@ function regularRenovacionSierraController($scope, $timeout, $q, $rootScope, $ro
         $scope.ultimoArrayAdjunto();
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm = true;
-        var idProcodigo = 'RE-LF';
+        var idProcodigo = 'RE-LFS';
         var datosNeXO = {};
         datosNeXO['f01_actividadesSecundarias'] = paramForm.f01_actividadesSecundarias;
         /*RENOVACION DE LICENCIAS*/

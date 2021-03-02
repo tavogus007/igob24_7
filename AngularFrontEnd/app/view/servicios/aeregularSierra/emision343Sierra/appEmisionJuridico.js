@@ -958,6 +958,7 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
                                 idcarac: public.idcarac,
                                 idcate: public.idcate,
                                 INT_SUP: total.toFixed(2),
+                                estado: 'N',
                                 idPublicidad_temp: resp[0]
                             });
                             $scope.publi = [];
@@ -1030,6 +1031,7 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
                                 idcarac: public.idcarac,
                                 idcate: public.idcate,
                                 INT_SUP: supe,
+                                estado: 'N',
                                 idPublicidad_temp: resp[0]
                             });
                             $scope.publi = [];
@@ -2545,10 +2547,12 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
                         stringFormulario40 = stringFormulario40.replace("#pago_adel#", 'SI'); //datos.pago_adelantado);
                         stringFormulario40 = stringFormulario40.replace("#nro_ges#", datos.nro_ges);
                         stringFormulario40 = stringFormulario40.replace("#tablaP#", '');
+                        stringFormulario40 = stringFormulario40.replace("#pagoadelantado#", "Me comprometo a mantener las condiciones técnicas y ubicación de la Actividad Económica por el periodo autorizado, caso contrario  me someteré a lo dispuesto en la Ley Municipal Autonómica 343/2018, sin reclamo alguno.");
                     } else {
                         stringFormulario40 = stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
                         stringFormulario40 = stringFormulario40.replace("#nro_ges#", 'NINGUNA');
                         stringFormulario40 = stringFormulario40.replace("#tablaP#", '');
+                        stringFormulario40 = stringFormulario40.replace("#pagoadelantado#", "");
                     }
                     var divfoodTruck = '';
                     if (datos.f01_categoria == 211 || datos.f01_categoria == '211') {
@@ -2764,6 +2768,11 @@ function regularjuridicoSierraController($scope, $timeout, $rootScope, $routePar
                 dataForm['pago_adel'] = 'SIN PAGO ADELANTADO';
                 dataForm['nro_ges'] = 'NINGUNA';
                 dataForm['tablaP'] = '';
+            }
+            if (data.pago_adelantado == true) {
+                dataForm['pagoadelantado'] = 'Me comprometo a mantener las condiciones técnicas y ubicación de la Actividad Económica por el periodo autorizado, caso contrario  me someteré a lo dispuesto en la Ley Municipal Autonómica 343/2018, sin reclamo alguno.';
+            } else {
+                dataForm['pagoadelantado'] = '';
             }
             dataForm['nro_ges'] = data.nro_ges;
             if (data.f01_tip_act == 'MA' || data.f01_tip_act == 'MATRI') {

@@ -533,8 +533,6 @@
                                                                             </a>
                                                                             <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_FOTOCOPIA_CI');"><i class="glyphicon glyphicon-upload" ></i> Subir</button>
                                                                         </span>
-                                                                    
-
                                                                     </div>											
                                                                 </div>
                                                             </div>
@@ -736,7 +734,7 @@
                                                                 ng-model="registro.zona"
                                                                 class="js-example-basic-single form-control"
                                                                 ng-options="disZona.dist_id as disZona.dist_nombre for disZona in aMacroZona | orderBy:['nombre','dist_nombre']"
-                                                                ng-change="macrodistritosidM(registro.zona); actulizarIdDistritoM(registro.zona);" 
+                                                                ng-change="macrodistritosidM(registro.zona);" 
                                                                 ng-required="true">
                                                               <option value="">--Seleccionar--</option>
                                                         </select>
@@ -746,17 +744,8 @@
                                                 </div>
 
                                             <div class="hr-line-dashed"></div>
-                                            <div class="form-group">
+                                            <!--div class="form-group">
                                                 <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_06}}:</label>
-                                                <div class="col-sm-8">
-                                                    <!--input
-                                                        id="macrodistrito_desc"
-                                                        name="macrodistrito_desc"
-                                                        placeholder="Macrodistrito"
-                                                        ng-model="registro.macrodistrito_desc"
-                                                        class="form-control" 
-                                                        ng-disabled="true"
-                                                    -->
                                                      <select id="prsMacrodistrito"
                                                         name="prsMacrodistrito"
                                                         placeholder="Macroditrito"
@@ -770,15 +759,22 @@
                                                     <span style="color:red" ng-show="signupForm.prsMacrodistrito.$invalid">
                                                     <span ng-show="signupForm.prsMacrodistrito.$error.required">Llenar el macrodistrito</span>
                                                 </div>
+                                            </div-->
+
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Macrodistrito:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="prsMacrodistrito" name="prsMacrodistrito"  placeholder="Macrodistrito" ng-model="registro.prsMacrodistrito" style="text-transform:uppercase;" readonly/>
+                                                </div>
                                             </div>
 
                                             <div class="hr-line-dashed"></div>
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_07}}:</label>
                                                 <div class="col-sm-8">
-                                                    <input id="distrito_desc" name="distrito_desc" placeholder="Distrito" ng-model="registro.distrito_desc" class="form-control" ng-disabled="true" required>
-                                                    <span style="color:red" ng-show="signupForm.distrito_desc.$invalid">
-                                                    <span ng-show="signupForm.distrito_desc.$error.required">Llenar el distrito</span>
+                                                    <input type ="text" id="distrito_desc" name="distrito_desc" placeholder="Distrito" ng-model="registro.distrito_desc" class="form-control" ng-disabled="true" required>
+                                                    <!--span style="color:red" ng-show="signupForm.distrito_desc.$invalid">
+                                                    <span ng-show="signupForm.distrito_desc.$error.required">Llenar el distrito</span-->
                                                 </div>
                                             </div>
                                             <input type="hidden" name="zona" ng-model="registro.zona_desc" id="zona">
@@ -1195,7 +1191,6 @@
                                                             class="form-control ng-pristine ng-valid js-example-basic-single"
                                                             ng-change="macrodistritosidM(registro.zona);actulizarIdDistritoM(registro.zona);"
                                                             ng-options="disZona.dist_id as disZona.dist_nombre for disZona in aMacroZona | orderBy:['nombre','dist_nombre']" 
-
                                                             required>
                                                             <option value="">--Seleccione--</option>
                                                         </select>
@@ -1204,7 +1199,7 @@
                                                 </div>
 
                                                 <div class="hr-line-dashed"></div>
-                                                <div class="form-group">
+                                                <!--div class="form-group">
                                                     <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_06}}:</label>
                                                     <div class="col-sm-8">
                                                          <select id="prsMacrodistritoj"
@@ -1216,14 +1211,12 @@
                                                             ng-required="true"
                                                             ng-disabled="true">
                                                         </select>
-                                                        <!--input
-                                                            id="macrodistrito_desc"
-                                                            name="macrodistrito_desc"
-                                                            placeholder="Ingrese el Macrodistrito"
-                                                            ng-model="registro.macrodistrito_desc"
-                                                            class="form-control" 
-                                                            ng-disabled="true"
-                                                            -->
+                                                    </div>
+                                                </div-->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Macrodistrito:</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control" id="prsMacrodistritoj" name="prsMacrodistritoj"  placeholder="Macrodistrito" ng-model="registro.prsMacrodistritoj" style="text-transform:uppercase;" readonly/>
                                                     </div>
                                                 </div>
 
@@ -1231,7 +1224,7 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_07}}:</label>
                                                     <div class="col-sm-8">
-                                                        <input id="distrito_desc" name="distrito_desc" placeholder="Ingrese el Distrito" ng-model="registro.distrito_desc" class="form-control" ng-disabled="true" required>
+                                                        <input id="distrito_descj" name="distrito_descj" placeholder="Ingrese el Distrito" ng-model="registro.distrito_desc" class="form-control" ng-disabled="true" required>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="zona" ng-model="registro.zona_desc" id="zona">
@@ -1775,7 +1768,6 @@
                                     <a class="btn btn-default" style="color:#ffffff" href="#/dashboard">{{translateTitulos.lbl_01_01_01}}</a>
                                 </td>
                                  <td>
-
                                     <button id="grabar" data-toggle="modal" data-target="#formModal" type="submit" ng-click="validacamposJuridico();"  class="btn btn-success"  ng-disabled="signupFormJuridico.rlNom.$invalid ||signupFormJuridico.rlMaterno.$invalid||signupFormJuridico.nit.$invalid||signupFormJuridico.mprRazon.$invalid||signupFormJuridico.repCi.$invalid||signupFormJuridico.mprPoder.$invalid||signupFormJuridico.mprNotaria.$invalid || signupFormJuridico.pais.$invalid||signupFormJuridico.departamento.$invalid||signupFormJuridico.provincia.$invalid||signupFormJuridico.chkCondiciones_juridico.$invalid || signupFormJuridico.municipio.$invalid || signupFormJuridico.macrodistrito.$invalid || signupFormJuridico.distrito.$invalid || signupFormJuridico.zona.$invalid || signupFormJuridico.tipo_via.$invalid || signupFormJuridico.nombrevia.$invalid || signupFormJuridico.mprCorreo.$invalid || signupFormJuridico.mprCelular.$invalid">
                                         {{translateTitulos.lbl_03_03_03}}
                                     </button>

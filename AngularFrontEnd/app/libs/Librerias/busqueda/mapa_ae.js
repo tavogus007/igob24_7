@@ -157,7 +157,7 @@ var zonas_udit = new ol.layer.Tile({
 var zonas_seguras_udit = new ol.layer.Tile({
             title: 'Zonas Seguras',
             //opacity: 0.3,
-            visible: false,
+            visible: true,
             source: new ol.source.TileWMS({
             url: ' https://servgeo.lapaz.bo/geoserver/wms',
             //url: 'http://sitservicios.lapaz.bo/geoserver/wms',

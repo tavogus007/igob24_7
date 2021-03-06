@@ -779,8 +779,9 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
             var longitud = lon;
             latitud = parseFloat(latitud);
             longitud = parseFloat(longitud);
-            console.log("latitud...", latitud);
-            console.log("longitud...", longitud);
+            console.log("******INICIANDO MAPA*******");
+            console.log("latitud y longitud...", latitud, longitud);
+            
             $scope.map = new ol.Map({
                 target: 'map_principal',
                 layers: [
@@ -789,6 +790,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                         layers: [
                             osm,
                             municipios,
+                            zonas_seguras_udit,
                             zonas_tributarias,
                             vias
                         ]
@@ -833,7 +835,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                 vectorSource.clear();
                 if (jsonURLS) {
                     var url_sit = jsonURLS.SIT_GEO;
-                    console.log("URL SIT...",url_sit);
+                    console.log("URL GEO...",url_sit);
                 }
                 var url_r = url_sit + '/geoserver/wms';
                 var viewResolution = view.getResolution();
@@ -1036,11 +1038,11 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                 );
                 feature.setStyle(iconStyle);
                 vectorSource.addFeature(feature);
-                console.log("JSON DATOS", datos);
+                //console.log("JSON DATOS", datos);
                 return datos;
             });
             //////////////////////////////////////
-        }, 550);
+        }, 200);
     };
 
     $scope.buscar_ubicacion_p = function() {

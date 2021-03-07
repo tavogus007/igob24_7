@@ -1217,7 +1217,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
 
     $scope.GetZonaSeguraV = function(idzonasegura) {
         if (idzonasegura != 0 || idzonasegura != '0') {
-            if ($rootScope.mostrarzonasegura == true || $rootScope.mostrarzonasegura == 'true') {
+            /*if ($rootScope.mostrarzonasegura == true || $rootScope.mostrarzonasegura == 'true') {
                 $scope.datos.chkzonasegura = 'ZONASEGURA';
                 $scope.datos.id_zona_segura = idzonasegura;
                 $scope.datos.f01_zon_seg = 'SI';
@@ -1230,7 +1230,15 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                     $scope.datos.chkzonasegura = 'NOZONASEGURA';
                     $scope.datos.id_zona_segura = id_zona_segura;
                 }
-            }
+            }*/
+            if ($rootScope.mostrarzonasegura == true || $rootScope.mostrarzonasegura == 'true' || $rootScope.mostrarzonasegura == false || $rootScope.mostrarzonasegura == 'false') {
+                $scope.datos.chkzonasegura = 'ZONASEGURA';
+                $scope.datos.id_zona_segura = idzonasegura;
+                $scope.datos.f01_zon_seg = 'SI';
+            } else {
+                $scope.datos.chkzonasegura = 'NOZONASEGURA';
+                $scope.datos.id_zona_segura = id_zona_segura;
+            }            
         } else {
             $scope.datos.chkzonasegura = 'NOZONASEGURA';
             $scope.datos.id_zona_segura = 0;

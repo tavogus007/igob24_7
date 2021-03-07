@@ -994,14 +994,14 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                                     id_zona_segura = 3;
                                     console.log("CALACOTO ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
-                                    alert("Usted selecciono una Zona Segura...");
+                                    swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 2:
                                     id_zona_segura = 5;
                                     console.log("VILLA FATIMA ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
-                                    alert("Usted selecciono una Zona Segura...");
+                                    swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 3:
@@ -1009,7 +1009,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                                     console.log("SAN SEBASTIAN ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
                                     console.log("EL ROSARIO ID: ", id_zona_segura);
-                                    alert("Usted selecciono una Zona Segura...");
+                                    swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 4:
@@ -1017,14 +1017,14 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                                     console.log("14 DE SEPTIEMBRE ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
                                     console.log("CAYAMPAYA ID: ", id_zona_segura);
-                                    alert("Usted selecciono una Zona Segura...");
+                                    swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 6:
                                     id_zona_segura = 4;
                                     console.log("SOPOCACHI ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
-                                    alert("Usted selecciono una Zona Segura...");
+                                    swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 default:

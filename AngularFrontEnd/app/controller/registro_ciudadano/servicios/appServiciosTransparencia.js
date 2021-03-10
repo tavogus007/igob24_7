@@ -13,7 +13,7 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
         {name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/transparencia/moustache/moustache.html'}
     ];
     var p = $scope.serviciosLotus = [
-        { name: 'Denuncia Ciudadano', id:'67', idprc:'73', idcampo:'819', scodigo:'TRA'},       
+        { name: 'Denuncias Transparencia', id:'67', idprc:'73', idcampo:'819', scodigo:'TRA'},       
         { name: 'Correspondencia ciudadana', id:'17', idprc:'73', idcampo:'788', scodigo:'CORC'},
         { name: 'Correspondencia al Concejo Municipal', id:'26', idprc:'73', idcampo:'819', scodigo:'CCCMD'},       
         

@@ -715,7 +715,8 @@
                         new ol.layer.Group({
                                             title: 'Mapas Base',
                                             layers: [
-                                                      osm
+                                                      osm,
+                                                      zonas_seguras_udit
                                                     ]
                                           }),
                         new ol.layer.Group({

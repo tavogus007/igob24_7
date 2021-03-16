@@ -1173,6 +1173,17 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         }
     }    
 
+    $scope.cambioSuperficie = function(dato) {
+        if (dato == 'SINSUPERFICIE') {
+            $scope.datos.f01_sup = "0";
+            $scope.desabilitadoSup = true;
+        } else {
+            $scope.datos.f01_sup = "";
+            $scope.desabilitadoSup = false;
+        }
+    }
+
+
     $scope.IsVisible = false;
     /*$scope.ShowPa = function(valor) {
         $scope.pago_adelantado = valor;
@@ -1284,7 +1295,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             if (sup > 0) {
                 swss = 0;
             } else {
-                if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada_sierra == 1724 || $scope.datos.f01_categoria_agrupada_sierra == '1724' || $scope.datos.f01_tipo_lic == 21 || $scope.datos.f01_tipo_lic == '21') {
+                if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada == 1724 || $scope.datos.f01_categoria_agrupada == '1724' || $scope.datos.f01_tipo_lic == 21 || $scope.datos.f01_tipo_lic == '21') {
                     dataActEco = '{"tm_va":"' + $scope.datos.f01_factor + '","superficie":"' + $scope.datos.f01_sup + '","codigo_zona":"' + $scope.datos.f01_idCodigoZona + '","categorias_id":' + datoObject_cat + ',"id_zona":"' + $scope.datos.f01_zona_act + '","viae":"[]"}';
                     dataDeuda = '{"actividad_economica":' + JSON.stringify(dataActEco) + ',"yfecha_inicio_cobro":"' + $scope.fechafinalserver + '","yanios":"' + nroges + '"}';
                 } else {
@@ -1302,12 +1313,17 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 calcularD.factor = $scope.datos.f01_factor;
                 calcularD.idActividadDesarrollada = $scope.datos.f01_categoria_agrupada;
                 calcularD.superficieOcupada = $scope.datos.f01_sup;
-                calcularD.cadena = "";//pubDeuda
+                calcularD.cadena = idPubS;//pubDeuda
                 calcularD.idZona = $scope.datos.f01_zona_act;
                 calcularD.gestionesPrevias = nroges;
                 calcularD.getCalcular_Patente343(function(resDeuda){
                     var deudasAE = JSON.parse(resDeuda);
                     $scope.listDeudas = deudasAE.success.dataSql;
+
+
+                    console.log("$scope.listDeudas : ", $scope.listDeudas);
+
+
                     var data = $scope.listDeudas;
                     deferred.resolve($scope.listDeudas);
                     console.log("LISAR DEUDDAS ..");

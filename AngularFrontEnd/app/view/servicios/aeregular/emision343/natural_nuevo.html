@@ -1169,15 +1169,15 @@
                                 </div>
                                 <div class="panel-body">
                                     <table ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
-                                        <tr ng-repeat="duedasCiu in datos.listDeudas" align="right">
+                                        <tr ng-repeat="duedasCiu in listDeudas" align="right">
                                             <td data-title="'Nº'">{{duedasCiu.nro}}</td>
-                                            <td data-title="'GESTIÓN'">{{duedasCiu.gestion}}</td>
-                                            <td data-title="'MONTO ACT. ECO. Bs.'">{{duedasCiu.monto_ae}}</td>
-                                            <td data-title="'MONTO ELEM. PUB. Bs.'">{{duedasCiu.monto_viae}}</td>
-                                            <td data-title="'DESCUENTO EN %'">{{duedasCiu.descuento}}</td>
-                                            <td data-title="'PATENTE Bs.'">{{duedasCiu.monto_total}}</td>
-                                            <td data-title="'DESCUENTO Bs.'">{{duedasCiu.monto_descuento}}</td>
-                                            <td data-title="'MONTO TOTAL Bs.'">{{duedasCiu.monto_total_con_descuento}}</td>
+                                            <td data-title="'GESTIÓN'">{{duedasCiu.inicio}}</td>
+                                            <td data-title="'MONTO ACT. ECO. Bs.'">{{duedasCiu.montoPatente}}</td>
+                                            <td data-title="'MONTO ELEM. PUB. Bs.'">{{duedasCiu.montoVIAE}}</td>
+                                            <td data-title="'DESCUENTO EN %'">{{duedasCiu.ufvVencimiento}}</td>
+                                            <td data-title="'PATENTE Bs.'">{{duedasCiu.montoPatente}}</td>
+                                            <td data-title="'DESCUENTO Bs.'">{{duedasCiu.montoDescuento}}</td>
+                                            <td data-title="'MONTO TOTAL Bs.'">{{duedasCiu.montoTotal}}</td>
                                         </tr>
                                         <tr>
                                             <td bgcolor="black" colspan="7">

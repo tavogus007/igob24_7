@@ -1417,7 +1417,7 @@ function validaSuperficie(sup)
                                     </div>
                                   </div>
                                 </div>                                    
-                                <div class="col-md-3">
+                                <div class="col-md-3" ng-show="mostrarZonaProp==false">
                                   <div class="form-group" >
                                     <label for="url" class="control-label">Zona:</label>
                                     <div class="controls">  
@@ -1432,7 +1432,15 @@ function validaSuperficie(sup)
                                       </select>
                                     </div>  
                                   </div>
-                                </div>                           
+                                </div> 
+                                <div class="col-md-3" ng-show="mostrarZonaProp==true">
+                                  <div class="form-group">
+                                    <label class="control-label">Zona:</label>
+                                    <div class="controls">
+                                      <input id="RO_ZONA_P1_OTRO" name="RO_ZONA_P1_OTRO" type="text"  class="form-control" placeholder="Zona" ng-model="datos.RO_ZONA_P1_OTRO"  required ng-disabled="desabilitaVeh" onkeyup="mayus(this);"/>
+                                    </div>
+                                  </div>
+                                </div>                          
                                 <div class="col-md-3">
                                   <div class="form-group">
                                     <label class="control-label">Dirección:</label>
@@ -1535,7 +1543,7 @@ function validaSuperficie(sup)
                                     </div>
                                   </div>
                                 </div>                        
-                                <div class="col-md-3">
+                                <div class="col-md-3" ng-show="mostrarZonaPoo==false">
                                   <div class="form-group" >
                                     <label for="url" class="control-label">Zona:</label>
                                     <div class="controls">
@@ -1547,6 +1555,14 @@ function validaSuperficie(sup)
                                               ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZonaPos | orderBy:['nombre','dist_nombre']" ng-disabled="desabilita || desabilitaVeh">
                                         <option value="">--Seleccionar--</option>
                                       </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3" ng-show="mostrarZonaPoo==true">
+                                  <div class="form-group">
+                                    <label class="control-label">Zona:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_ZONA_POO1_OTRO" name="RO_ZONA_POO1_OTRO" type="text"  class="form-control" placeholder="Zona" ng-model="datos.RO_ZONA_POO1_OTRO" onkeyup="mayus(this);" required ng-disabled="desabilitaVeh"/>
                                     </div>
                                   </div>
                                 </div>
@@ -1719,7 +1735,7 @@ function validaSuperficie(sup)
                               </div>
                             </div>
                           </div>                                                       
-                          <div class="col-md-3">
+                          <div class="col-md-3" ng-show="mostrarOtraZona == false">
                             <div class="form-group" >
                               <label for="url" class="control-label">Zona:</label>
                               <div class="controls">  
@@ -1737,6 +1753,14 @@ function validaSuperficie(sup)
                               </div>  
                             </div>
                           </div> 
+                          <div class="col-md-3" ng-show="mostrarOtraZona == true">
+                            <div class="form-group" >
+                              <label for="url" class="control-label">Zona:</label>
+                              <div class="controls">
+                                <input id="RO_ZONA_C1_OTRO" name="RO_ZONA_C1_OTRO" type="text"  class="form-control" ng-disabled="desabilitaCon" placeholder="Zona" ng-model="datos.RO_ZONA_C1_OTRO"  style="text-transform:uppercase;" required />
+                              </div>
+                            </div>
+                          </div>
                           <div class="col-md-3">
                             <div class="form-group">
                               <label class="control-label">Calle:</label>

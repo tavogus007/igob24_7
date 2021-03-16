@@ -525,7 +525,7 @@ img {
    <div class="col-lg-12" style="z-index: 100;">
       <div class="ibox float-e-margins">
          <div id="mostrar" class="ibox-title">
-            <h5>Denuncias Sitram</h5>
+            <h5>Denuncias Transparencia</h5>
             <a href="#" id="cerrar_rc" ><i class="fa fa-sort-asc flechaOscura" id="cerrar_i"></i></a>
          </div>
          <div class="ibox-content" id="caja">
@@ -821,9 +821,9 @@ img {
                                 </thead>
                                 <tbody>
                                   <tr style="cursor: pointer;" class="column" ng-repeat="proceso in serviciosLotus | filter:query " >
-                                      <td data-title="'Trámite'"  ng-click="seleccionarProcesoT(proceso)" align="left" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style"  ng-show="proceso.name=='Denuncia Ciudadano'">{{$index+1}}</td>
+                                      <td data-title="'Trámite'"  ng-click="seleccionarProcesoT(proceso)" align="left" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style"  ng-show="proceso.name=='Denuncias Transparencia'">{{$index+1}}</td>
                                               
-                                      <td data-title="'Crear Tramite'"  align="left" ng-click="seleccionarProcesoT(proceso)" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style"  ng-show="proceso.name=='Denuncia Ciudadano'">
+                                      <td data-title="'Crear Tramite'"  align="left" ng-click="seleccionarProcesoT(proceso)" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style"  ng-show="proceso.name=='Denuncias Transparencia'">
 
 
                                         <div class="fixed-action-btn">
@@ -841,7 +841,7 @@ img {
                                             </ul>
                                         </div>
                                       </td>
-                                      <td data-title="'Proceso'" sortable="'name'" filter="{'name':'text'}" ng-click="seleccionarProcesoT(proceso)" align="left" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style" ng-show="proceso.name=='Denuncia Ciudadano'">{{proceso.name}}</td>
+                                      <td data-title="'Proceso'" sortable="'name'" filter="{'name':'text'}" ng-click="seleccionarProcesoT(proceso)" align="left" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style" ng-show="proceso.name=='Denuncias Transparencia'">{{proceso.name}}</td>
 
                                   </tr>
                               </tbody>

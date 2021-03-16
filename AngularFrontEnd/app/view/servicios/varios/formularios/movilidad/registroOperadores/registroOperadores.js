@@ -636,6 +636,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.datos.RO_CEL_P1 = datosTram.RO_CEL_P1;
       $scope.datos.RO_MAC_P1 = datosTram.RO_MAC_P1;
       $scope.datos.RO_ZONA_P1 = datosTram.RO_ZONA_P1;      
+      $scope.datos.RO_ZONA_P1_OTRO = datosTram.RO_ZONA_P1_OTRO;      
       $scope.datos.RO_CALL_P1 = datosTram.RO_CALL_P1;
       $scope.datos.RO_NRO_P1 = datosTram.RO_NRO_P1;
       $scope.datos.RO_CI_POO1 = datosTram.RO_CI_POO1;
@@ -646,6 +647,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.datos.RO_CEL_POO1 = datosTram.RO_CEL_POO1;
       $scope.datos.RO_MAC_POO1 = datosTram.RO_MAC_POO1;
       $scope.datos.RO_ZONA_POO1 = datosTram.RO_ZONA_POO1;      
+      $scope.datos.RO_ZONA_POO1_OTRO = datosTram.RO_ZONA_POO1_OTRO;      
       $scope.datos.RO_CALL_POO1 = datosTram.RO_CALL_POO1;
       $scope.datos.RO_NRO_POO1 = datosTram.RO_NRO_POO1;
       $scope.datos.RO_EXP_C1 = datosTram.RO_EXP_C1;
@@ -658,6 +660,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.datos.RO_CEL_C1 = datosTram.RO_CEL_C1;
       $scope.datos.RO_MAC_C1 = datosTram.RO_MAC_C1;
       $scope.datos.RO_ZONA_C1 = datosTram.RO_ZONA_C1;
+      $scope.datos.RO_ZONA_C1_OTRO = datosTram.RO_ZONA_C1_OTRO;
       $scope.datos.RO_CALL_C1 = datosTram.RO_CALL_C1;
       $scope.datos.RO_NRO_C1 = datosTram.RO_NRO_C1;
       $scope.datos.RO_CAT_C1 = datosTram.RO_CAT_C1;
@@ -670,6 +673,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       }else{
         $scope.fileArRequisitos = {};
       }
+      $scope.distritoZonasTipo($scope.datos.RO_MAC_P1,'Prop');
+      $scope.distritoZonasTipo($scope.datos.RO_MAC_C1,'Cond');
     }else{
       $scope.datos.RO_TIP_OPE = ''; 
       $scope.datos.RO_DEN = '';
@@ -704,6 +709,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.datos.RO_CEL_P1 = '';
       $scope.datos.RO_MAC_P1 = '';
       $scope.datos.RO_ZONA_P1 = '';      
+      $scope.datos.RO_ZONA_P1_OTRO = '';      
       $scope.datos.RO_CALL_P1 = '';
       $scope.datos.RO_NRO_P1 = '';
       $scope.datos.RO_CI_POO1 = '';
@@ -714,6 +720,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.datos.RO_CEL_POO1 = '';
       $scope.datos.RO_MAC_POO1 = '';
       $scope.datos.RO_ZONA_POO1 = '';      
+      $scope.datos.RO_ZONA_POO1_OTRO = '';      
       $scope.datos.RO_CALL_POO1 = '';
       $scope.datos.RO_NRO_POO1 = '';
       $scope.datos.RO_EXP_C1 = '';
@@ -726,6 +733,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.datos.RO_CEL_C1 = '';
       $scope.datos.RO_MAC_C1 = '';
       $scope.datos.RO_ZONA_C1 = '';
+      $scope.datos.RO_ZONA_C1_OTRO = '';
       $scope.datos.RO_CALL_C1 = '';
       $scope.datos.RO_NRO_C1 = '';
       $scope.datos.RO_CAT_C1 = '';
@@ -2495,7 +2503,12 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   var swAdiC = 0;
   $scope.adicionaVehiculoConductor = function(){
     $scope.listaVeh();
-    console.log($scope.objVehiculos);
+    if($scope.datos.RO_MAC_P1=='OTRO'){
+      $scope.datos.RO_ZONA_P1 = $scope.datos.RO_ZONA_P1_OTRO;
+    }
+    if($scope.datos.RO_MAC_POO1=='OTRO'){
+      $scope.datos.RO_ZONA_POO1 = $scope.datos.RO_ZONA_POO1_OTRO;
+    }
     if($scope.objVehiculos.length<1){
       if($scope.datos.RO_PLA_V1!='' && $scope.datos.RO_PLA_V1!=undefined && $scope.datos.RO_TIP_V1!='' && $scope.datos.RO_TIP_V1!=undefined
         && $scope.datos.RO_CLA_V1!=''&&$scope.datos.RO_CLA_V1!=undefined && $scope.datos.RO_MAR_V1!='' && $scope.datos.RO_MAR_V1!=undefined
@@ -2652,6 +2665,9 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       }
     }
     $scope.listaCond();
+    if($scope.datos.RO_MAC_C1 == 'OTRO'){
+      $scope.datos.RO_ZONA_C1 = $scope.datos.RO_ZONA_C1_OTRO;
+    }
     if($scope.objConductores.length <1){
       $scope.datos.PLACA1 = $scope.datos.RO_PLA_V1;
       if($scope.datos.RO_EXP_C1!='' && $scope.datos.RO_EXP_C1!=undefined && $scope.datos.PLACA1!='' && $scope.datos.PLACA1!=undefined
@@ -2731,7 +2747,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
           "RO_CAT_C" : $scope.datos.RO_CAT_C1,
           "RO_TIP_C" : $scope.datos.RO_TIP_C1,
           "RO_DOC_COND" : $scope.datos.fileRequisitosCond
-        }
+        };
         datac = JSON.stringify(dataC);
         var datosCond = new conductor();
         datosCond.id = $scope.objConductores[0].cond_ofi_id; 
@@ -2800,8 +2816,8 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
       $scope.datos.RO_ZONA_POO1 = $scope.datos.RO_ZONA_P1;
       $scope.datos.RO_CALL_POO1 = $scope.datos.RO_CALL_P1;
       $scope.datos.RO_NRO_POO1 = $scope.datos.RO_NRO_P1;
-      $scope.distritoZonasTipo($scope.datos.RO_MAC_POO1,'Pos')
     }
+    $scope.distritoZonasTipo($scope.datos.RO_MAC_POO1,'Pos')
   }
 
   $scope.validaPropietario = function(){

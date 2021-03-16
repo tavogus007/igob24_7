@@ -1189,7 +1189,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             $scope.datos.listDeudas = [];
             $scope.datos.pago_adelantado = valor;
         } else {
-            if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada_sierra == 1724 || $scope.datos.f01_categoria_agrupada_sierra == '1724' || $scope.datos.f01_tipo_lic_sierra == 21 || $scope.datos.f01_tipo_lic_sierra == '21') {
+            if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada_sierra == 1724 || $scope.datos.f01_categoria_agrupada_sierra == '1724' || $scope.datos.f01_tipo_lic == 21 || $scope.datos.f01_tipo_lic == '21') {
                 swal('Estimado Ciudadano', 'La actividad desarrollada seleccionada requiere que realice el Pago por Adelantado!', 'warning');
                 $scope.IsVisible = true;
                 $scope.datos.pago_adelantado = true;
@@ -1204,6 +1204,30 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         };
     }
 
+    
+    $scope.tblDeudas = {};
+    $scope.listDeudas = [];
+    $scope.tblDeudas = new ngTableParams({
+        page: 1,
+        count: 10,
+        filter: {},
+        sorting: {
+            vtra_id: 'desc'
+        }
+    }, {
+        total: $scope.listDeudas.length,
+        getData: function($defer, params) {
+            var filteredData = params.filter() ?
+            $filter('filter')($scope.listDeudas, params.filter()) :
+            $scope.listDeudas;
+            var orderedData = params.sorting() ?
+            $filter('orderBy')(filteredData, params.orderBy()) :
+            $scope.listDeudas;
+            params.total($scope.listDeudas.length);
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+        }
+    });
+
     $scope.calcularDeudas = function(sup, nroges) {
         $scope.datos.montoDeuda = [];
         var fechaP = new Date();
@@ -1216,15 +1240,16 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         };
         $scope.datos.listDeudas = [];
         var dataDeuda = '';
-        var dataActEco = '';
-        if ($scope.datos.f01_idCodigoZona == 'undefined' || $scope.datos.f01_idCodigoZona == null || $scope.datos.f01_idCodigoZona == "" || $scope.datos.f01_tipo_lic_sierra == 'undefined' || $scope.datos.f01_tipo_lic_sierra == null || $scope.datos.f01_tipo_lic_sierra == "" || $scope.datos.rdTipoTramite1 == 'undefined' || $scope.datos.rdTipoTramite1 == null || $scope.datos.rdTipoTramite1 == "" || $scope.datos.f01_zona_act == 'undefined' || $scope.datos.f01_zona_act == null || $scope.datos.f01_zona_act == "") {
+        var dataActEco = '';           
+
+        if ($scope.datos.f01_idCodigoZona == 'undefined' || $scope.datos.f01_idCodigoZona == null || $scope.datos.f01_idCodigoZona == "" || $scope.datos.f01_tipo_lic == 'undefined' || $scope.datos.f01_tipo_lic == null || $scope.datos.f01_tipo_lic == "" || $scope.datos.rdTipoTramite1 == 'undefined' || $scope.datos.rdTipoTramite1 == null || $scope.datos.rdTipoTramite1 == "" || $scope.datos.f01_zona_act == 'undefined' || $scope.datos.f01_zona_act == null || $scope.datos.f01_zona_act == "") {
             swal('', 'Complete todos los datos por favor!  ', 'warning');
             $scope.datos.nro_ges = '';
         } else {
             $.blockUI();
             var swss = 0;
             var datoObject_cat = '[';
-            if ($scope.datos.f01_tipo_lic_sierra == 26 || $scope.datos.f01_tipo_lic_sierra == '26') {
+            if ($scope.datos.f01_tipo_lic == 26 || $scope.datos.f01_tipo_lic == '26') {
                 var multiservicios = $scope.datos.licenciam;
                 for (i = 0; i < multiservicios.length; i++) {
                     datoObject_cat = datoObject_cat + multiservicios[i].f01_cat_agrupadamid + ',';
@@ -1259,7 +1284,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             if (sup > 0) {
                 swss = 0;
             } else {
-                if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada_sierra == 1724 || $scope.datos.f01_categoria_agrupada_sierra == '1724' || $scope.datos.f01_tipo_lic_sierra == 21 || $scope.datos.f01_tipo_lic_sierra == '21') {
+                if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada_sierra == 1724 || $scope.datos.f01_categoria_agrupada_sierra == '1724' || $scope.datos.f01_tipo_lic == 21 || $scope.datos.f01_tipo_lic == '21') {
                     dataActEco = '{"tm_va":"' + $scope.datos.f01_factor + '","superficie":"' + $scope.datos.f01_sup + '","codigo_zona":"' + $scope.datos.f01_idCodigoZona + '","categorias_id":' + datoObject_cat + ',"id_zona":"' + $scope.datos.f01_zona_act + '","viae":"[]"}';
                     dataDeuda = '{"actividad_economica":' + JSON.stringify(dataActEco) + ',"yfecha_inicio_cobro":"' + $scope.fechafinalserver + '","yanios":"' + nroges + '"}';
                 } else {
@@ -1268,15 +1293,35 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     swss = 1;
                 };
             };
+            var deferred = $q.defer();
             if (swss == 0) {
-                $scope.calculo_total = 0;
+                //REGISTRO DE DEUDAS 343
+                var calcularD = new getCalcularPatente343();
+                calcularD.gestion = gestionP;
+                calcularD.codigoZona = $scope.datos.f01_idCodigoZona;
+                calcularD.factor = $scope.datos.f01_factor;
+                calcularD.idActividadDesarrollada = $scope.datos.f01_categoria_agrupada;
+                calcularD.superficieOcupada = $scope.datos.f01_sup;
+                calcularD.cadena = "";//pubDeuda
+                calcularD.idZona = $scope.datos.f01_zona_act;
+                calcularD.gestionesPrevias = nroges;
+                calcularD.getCalcular_Patente343(function(resDeuda){
+                    var deudasAE = JSON.parse(resDeuda);
+                    $scope.listDeudas = deudasAE.success.dataSql;
+                    var data = $scope.listDeudas;
+                    deferred.resolve($scope.listDeudas);
+                    console.log("LISAR DEUDDAS ..");
+                    $scope.tblDeudas.reload();
+                    $.unblockUI();   
+                });
+
+                /*$scope.calculo_total = 0;
                 var calcularD = new reglasnegocioSierra();
                 calcularD.identificador = 'SERVICIO_VALLE_AE-3277';
                 calcularD.parametros = dataDeuda;
                 calcularD.llamarregla_sierra(function(resDeuda) {
                     var deudasAE = JSON.parse(resDeuda);
-                    var pagoAE = deudasAE.datos;
-                    console.log('calculooooo    ', deudasAE);
+                    var pagoAE = deudasAE.datos;                  
                     $scope.datos.montoDeuda = pagoAE;
                     datoObjectPago = [];
                     for (j = 0; j < pagoAE.length; j++) {
@@ -1303,7 +1348,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     }
                     $scope.tblDeudas.reload();
                     $.unblockUI();
-                })
+                })*/
+
             } else {
                 $.unblockUI();
             };
@@ -3134,7 +3180,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             dataForm['f01_tip_act'] = 'SUCURSAL';
         }
         var multi = '';
-        if (data.f01_tipo_lic_sierra == 26 || data.f01_tipo_lic_sierra == '26') {
+        if (data.f01_tipo_lic == 26 || data.f01_tipo_lic == '26') {
             dataForm['f01_tipo_lic_descrip'] = data.f01_tipo_lic_descrip;
             dataForm['f01_categoria_agrupada_descrip'] = data.f01_tipo_lic_descrip;
             dataForm['f01_categoria_agrupada_descripcion'] = data.f01_tipo_lic_descrip;
@@ -3572,7 +3618,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['f01_tel_act1']=paramForm.f01_tel_act1;
             datosNeXO['f01_casilla']=paramForm.f01_casilla;
             datosNeXO['f01_cod_luz']=paramForm.f01_cod_luz;
-            datosNeXO['f01_idCodigoZona']="";
+            datosNeXO['f01_idCodigoZona'] = paramForm.f01_idCodigoZona;
             datosNeXO['f04_res_solicitud_upaee']="";
             datosNeXO['f08_hojas_recibidas']="0";
             datosNeXO['f08_observaciones_i']="0";

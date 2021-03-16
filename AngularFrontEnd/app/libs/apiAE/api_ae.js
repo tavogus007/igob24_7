@@ -239,6 +239,35 @@ getDatosLicencia.prototype.getDatos_Licencia = function (functionResp) {
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
 };
 
+function getCalcularPatente343() {
+    this.gestion;
+    this.codigoZona;
+    this.factor;
+    this.idActividadDesarrollada;
+    this.superficieOcupada;
+    this.cadena;
+    this.idZona;
+    this.gestionesPrevias;
+};
+
+
+//idActividadEconomica +"\', @tipo
+getCalcularPatente343.prototype.getCalcular_Patente343 = function (functionResp) {
+    urlCompAe = "/calcularPatente343";
+    typeCallAe = "post";
+    dataParamsAe = {
+        "gestion":this.gestion,
+        "codigoZona":this.codigoZona,
+        "factor":this.factor,
+        "idActividadDesarrollada":this.idActividadDesarrollada,
+        "superficieOcupada":this.superficieOcupada,
+        "cadena":this.cadena,
+        "idZona":this.idZona,
+        "gestionesPrevias":this.gestionesPrevias
+    };
+    ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};
+
 function getHomologacion() {
     this.idActividadDesarrollada;
 };

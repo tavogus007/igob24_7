@@ -1560,6 +1560,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             datosNeXO['f01_tip_act']                    =   'SU';
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;
             datosNeXO['f01_idCodigoZona'] = paramForm.f01_idCodigoZona;
+            
             //PAGO ADELANTADO
             datosNeXO['pago_adel'] =  $scope.pago_adelantado;
             datosNeXO['nro_ges'] =  paramForm.nro_ges;

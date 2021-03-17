@@ -3507,7 +3507,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.ultimoArrayAdjunto();
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm    =   true;
-        var idProcodigo         =   'EM-LF2222';
+        var idProcodigo         =   'EM-LF';
         var datosNeXO = {};
         $scope.divVIAE="mostrar";
         datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;

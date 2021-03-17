@@ -1015,12 +1015,14 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         else{
             $scope.licenciaToogle4 = false;
         }
-        if (data.pago_adel == 'SI') {
+
+
+        /*if (data.pago_adel == 'SI') {
             $scope.IsVisible = true;
         } else{
             $scope.IsVisible = false;
             $scope.datos.pago_adel = 'NO';
-        };
+        };*/
 
         if(typeof(data.INT_AC_MACRO_ID) != 'undefined'){
             //LISTANDO ZONAS
@@ -1194,16 +1196,19 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         };
     }*/
     $scope.ShowPa = function(valor) {
+        console.log("PAGO ADELANTADO :", valor);
         $scope.calculo_total = 0;
         if (valor == 'true' || valor == true) {
             $scope.IsVisible = true;
             $scope.datos.listDeudas = [];
             $scope.datos.pago_adelantado = valor;
+            $scope.datos.pago_adel = 'SI';
         } else {
-            if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada_sierra == 1724 || $scope.datos.f01_categoria_agrupada_sierra == '1724' || $scope.datos.f01_tipo_lic == 21 || $scope.datos.f01_tipo_lic == '21') {
+            if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada == 1724 || $scope.datos.f01_categoria_agrupada == '1724' || $scope.datos.f01_tipo_lic == 21 || $scope.datos.f01_tipo_lic == '21') {
                 swal('Estimado Ciudadano', 'La actividad desarrollada seleccionada requiere que realice el Pago por Adelantado!', 'warning');
                 $scope.IsVisible = true;
                 $scope.datos.pago_adelantado = true;
+                $scope.datos.pago_adel = 'SI';
                 document.getElementById('pago_adelantado').checked = true;
             } else {
                 $scope.datos.nro_ges = '';
@@ -1211,6 +1216,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 $scope.IsVisible = false;
                 document.getElementById('pago_adelantado').checked = false;
                 $scope.datos.pago_adelantado = valor;
+                $scope.datos.pago_adel = 'NO';
             };
         };
     }
@@ -1267,7 +1273,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 }
                 datoObject_cat = datoObject_cat.substring(0, datoObject_cat.length - 1);
             } else {
-                datoObject_cat = datoObject_cat + $scope.datos.f01_categoria_agrupada_sierra;
+                datoObject_cat = datoObject_cat + $scope.datos.f01_categoria_agrupada;
             }
             datoObject_cat = datoObject_cat + ']';
             if ($scope.datos.rdTipoTramite1 == "NUEVO") {
@@ -1319,11 +1325,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 calcularD.getCalcular_Patente343(function(resDeuda){
                     var deudasAE = JSON.parse(resDeuda);
                     $scope.listDeudas = deudasAE.success.dataSql;
-
-
                     console.log("$scope.listDeudas : ", $scope.listDeudas);
-
-
                     var data = $scope.listDeudas;
                     deferred.resolve($scope.listDeudas);
                     console.log("LISAR DEUDDAS ..");
@@ -3144,6 +3146,11 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     $scope.fmostrarFormulario();
                 },500);
             })
+
+
+            console.log(" ARMAR DATOS FORMULARIO :", datos);
+
+
             $scope.armarDatosForm(datos,fechaActualS, sHora);
         }
     }
@@ -3271,10 +3278,15 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         dataForm['hora_sist'] = sHora;
         dataForm['f01_idCodigoZona'] = data.f01_idCodigoZona;
         var tablapago = '';
+
+        console.log("PAGO ADELANTANDO 2:", data.pago_adelantado);
+        dataForm['pago_adel'] = 'NO';
+
         if (data.pago_adelantado == true) {
             dataForm['pago_adel'] = 'SI'; //data.pago_adelantado;
             dataForm['nro_ges'] = data.nro_ges;
             dataForm['tablaP'] = '';
+            console.log("PAGO ADELANTANDO 222:", data.pago_adelantado);
         } else {
             dataForm['pago_adel'] = 'SIN PAGO ADELANTADO';
             dataForm['nro_ges'] = 'NINGUNA';
@@ -3359,6 +3371,9 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
 
    /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function (data) {
+
+        console.log("verificarCamposInternet :", data);
+
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         var taemayor = 0;
@@ -3465,6 +3480,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     /*CIUDADANO - ENVIAR FORMULARIO NATURAL*/
      //enviarFormProcesosLinea
     $scope.validarEnvio = function(data){
+        console.log("ENVIAR DATA FORM : ", data);
+
         swal({
             title: 'CONFIRMAR',
             text: 'El envío de la presente solicitud de licencia de funcionamiento de actividad económica, (DD.JJ.) generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',
@@ -3484,10 +3501,13 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     
 
     $scope.enviarFormProcesosLinea = function(paramForm){
+
+        console.log("DATOS PARA ENVIAR PAGO ADELANTADO :", paramForm);
+
         $scope.ultimoArrayAdjunto();
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm    =   true;
-        var idProcodigo         =   'EM-LF';
+        var idProcodigo         =   'EM-LF2222';
         var datosNeXO = {};
         $scope.divVIAE="mostrar";
         datosNeXO['f01_actividadesSecundarias'] =   paramForm.f01_actividadesSecundarias;
@@ -3703,6 +3723,11 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         datosNeXO['g_tipo'] = "AE-LINEA";
         datosNeXO['g_fecha'] = fechactual;
         datosNeXO['g_origen'] = "IGOB247";
+        datosNeXO['f01_listDeudas'] = $scope.listDeudas;    
+        
+        console.log("PAGO ADELANTADO : ", paramForm.pago_adel);
+        console.log("PAGO ADELANTADO : ", paramForm.nro_ges);
+
         datosNeXO['pago_adel'] = paramForm.pago_adel;//$scope.pago_adelantado;
         datosNeXO['nro_ges'] =  paramForm.nro_ges;
         if(paramForm.chkzonasegura == 'ZONASEGURA'){

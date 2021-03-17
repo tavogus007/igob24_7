@@ -1470,6 +1470,9 @@
     };
 
     $scope.serializarInformacion = function(obj){
+
+        console.log("SERIALIZAR INFORMACION :", obj );
+        
         obj.f01_macro_act = parseInt(obj.f01_macro_act);
         if(obj.f01_tipo_lic == '1' || obj.f01_tipo_lic == '3' || obj.f01_tipo_lic == '4'){
             obj.f01_actividadesSecundarias = obj.f01_categoria_agrupada_descrip;

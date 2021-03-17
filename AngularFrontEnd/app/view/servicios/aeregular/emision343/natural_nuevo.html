@@ -154,6 +154,7 @@
             <h4>Actividad Económica Regular</h4><!--cambios-->
         </div>
         <div class="ibox-content">
+
             <form name="signupForm"  ng-controller="serviciosController" class="form-horizontal" role="form" novalidate>
                 <div ng-show = "formulario != null">                     
                     <div class="col-md-12">
@@ -1164,29 +1165,24 @@
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <B>GESTIONES A PAGAR</B>
-                                    
+                                    <B>GESTIONES A PAGAR</B>                                    
                                 </div>
                                 <div class="panel-body">
                                     <table ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
-                                        <tr ng-repeat="duedasCiu in listDeudas" align="right">
-                                            <td data-title="'Nº'">{{duedasCiu.nro}}</td>
-                                            <td data-title="'GESTIÓN'">{{duedasCiu.inicio}}</td>
-                                            <td data-title="'MONTO ACT. ECO. Bs.'">{{duedasCiu.montoPatente}}</td>
-                                            <td data-title="'MONTO ELEM. PUB. Bs.'">{{duedasCiu.montoVIAE}}</td>
-                                            <td data-title="'DESCUENTO EN %'">{{duedasCiu.ufvVencimiento}}</td>
-                                            <td data-title="'PATENTE Bs.'">{{duedasCiu.montoPatente}}</td>
-                                            <td data-title="'DESCUENTO Bs.'">{{duedasCiu.montoDescuento}}</td>
-                                            <td data-title="'MONTO TOTAL Bs.'">{{duedasCiu.montoTotal}}</td>
+                                        <tr ng-repeat="deudasCiu in listDeudas" ng-if="deudasCiu.montoPatente!=0">
+                                            <td data-title="'Nº'">{{deudasCiu.numero}}</td>
+                                            <td data-title="'GESTIÓN INICIO'">{{deudasCiu.inicio}}</td>
+                                            <td data-title="'GESTIÓN FIN'">{{deudasCiu.fin}}</td>
+                                            <td data-title="'MONTO PATENTE'">{{deudasCiu.montoPatente}}</td>
+                                            <td data-title="'MONTO VIAE'">{{deudasCiu.montoVIAE}}</td>
+                                            <td data-title="'MONTO SIN DESC.'">{{deudasCiu.montoTotalSinDescuento}}</td>
+                                            <td data-title="'DESCUENTO'">{{deudasCiu.montoDescuento}}</td>
+                                            <td data-title="'MONTO TOTAL'">{{deudasCiu.montoTotal}}</td>
                                         </tr>
                                         <tr>
-                                            <td bgcolor="black" colspan="7">
-                                                <font color="white">TOTAL A PAGAR</font>
-                                            </td>
-                                            <td bgcolor="black" align="right">
-                                                <font color="white">{{calculo_total}} Bs.</font>
-                                            </td>
-                                        </tr>
+                                            <td bgcolor = "black" colspan="7"><font color = "white">TOTAL A PAGAR</font></td>
+                                            <td bgcolor = "black" align="right"><font color = "white">{{montoTotal}} Bs.</font></td>
+                                        </tr
                                     </table>
                                 </div>
                             </div>
@@ -1254,6 +1250,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     </div>
                 </div>
                    

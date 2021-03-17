@@ -1158,6 +1158,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             $scope.licenciaToogle4 = true;
         } else {
             $scope.licenciaToogle4 = false;
+            $scope.calcularDeudasDesdePublicidad(false);            
+            //$scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
         }
     }
 
@@ -1313,24 +1315,34 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             var deferred = $q.defer();
             if (swss == 0) {
                 //REGISTRO DE DEUDAS 343
+                $scope.montoTotal = "0";
+                var aDatosPublicidad = '';
+                aDatosPublicidad = JSON.stringify($scope.datos.publicidad);
                 var calcularD = new getCalcularPatente343();
                 calcularD.gestion = gestionP;
                 calcularD.codigoZona = $scope.datos.f01_idCodigoZona;
                 calcularD.factor = $scope.datos.f01_factor;
                 calcularD.idActividadDesarrollada = $scope.datos.f01_categoria_agrupada;
                 calcularD.superficieOcupada = $scope.datos.f01_sup;
-                calcularD.cadena = idPubS;//pubDeuda
+                calcularD.cadena = aDatosPublicidad;//pubDeuda
                 calcularD.idZona = $scope.datos.f01_zona_act;
                 calcularD.gestionesPrevias = nroges;
                 calcularD.getCalcular_Patente343(function(resDeuda){
                     var deudasAE = JSON.parse(resDeuda);
-                    $scope.listDeudas = deudasAE.success.dataSql;
-                    console.log("$scope.listDeudas : ", $scope.listDeudas);
-                    var data = $scope.listDeudas;
-                    deferred.resolve($scope.listDeudas);
-                    console.log("LISAR DEUDDAS ..");
-                    $scope.tblDeudas.reload();
-                    $.unblockUI();   
+                    var sdeuda = ((typeof(deudasAE.success) == 'undefined' || deudasAE.success == null) ? '0' : '1');
+                    if(sdeuda != '0'){
+                        $scope.listDeudas = deudasAE.success.dataSql;
+                        var data = $scope.listDeudas;
+                        deferred.resolve($scope.listDeudas);
+                        $scope.montoTotal = $scope.listDeudas[$scope.listDeudas.length - 1].montoTotal;                    
+                        $scope.tblDeudas.reload();
+                        $.unblockUI();  
+                    }else{
+                        swal('Error', 'Ocurrieron algunos inconvenientes durante el procesamiento de sus datos. Favor de volver a intentarlo mas tarde', 'warning');
+                        console.log("ERROR !! :", deudasAE.error);
+                        $scope.listDeudas = [];
+                        $.unblockUI();  
+                    }
                 });
 
                 /*$scope.calculo_total = 0;
@@ -1372,7 +1384,18 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 $.unblockUI();
             };
         }
-    }    
+    }
+
+    $scope.calcularDeudasDesdePublicidad = function(dato){
+        console.log("dato == true && $scope.datos.pago_adelantado == true :", dato, " * " , $scope.datos.pago_adelantado);
+        if(dato == false && $scope.datos.pago_adelantado == true){
+            $scope.datos.publicidad = [];
+            console.log("$scope.datos.f01_sup, $scope.datos.nro_ges :", $scope.datos.f01_sup, $scope.datos.nro_ges);
+            $scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
+        }else if( dato == true  && $scope.datos.pago_adelantado == true){
+            $scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
+        }
+    }
 
    /*CIUDADANO - TIPO INICIO DE TRAMITE NUEVO - RENOVACION*/
    $scope.cambioToggleForm = function () {
@@ -2563,6 +2586,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                         $scope.lssubcategoria();
                         $scope.datos.publicidad = $scope.publicid;
                         $scope.Plubli_Grilla($scope.publicid);
+                        $scope.calcularDeudasDesdePublicidad(true); 
                     } else {
                         sweet.show('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
                     }
@@ -2610,6 +2634,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                         $scope.lssubcategoria();
                         $scope.datos.publicidad = $scope.publicid;
                         $scope.Plubli_Grilla($scope.publicid);
+                        $scope.calcularDeudasDesdePublicidad(true); 
                     } else {
                         sweet.show('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
                     }

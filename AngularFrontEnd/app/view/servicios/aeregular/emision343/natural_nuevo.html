@@ -1167,7 +1167,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <table ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
-                                        <tr ng-repeat="deudasCiu in listDeudas" ng-if="deudasCiu.montoPatente!=0">
+                                        <tr ng-repeat="deudasCiu in datos.listDeudas" ng-if="deudasCiu.montoPatente!=0">
                                             <td data-title="'Nº'">{{deudasCiu.numero}}</td>
                                             <td data-title="'GESTIÓN INICIO'">{{deudasCiu.inicio}}</td>
                                             <td data-title="'GESTIÓN FIN'">{{deudasCiu.fin}}</td>
@@ -1328,8 +1328,7 @@
                 <div class="hr-line-dashed"></div>
                 <input type="hidden" ng-model="datos.f01_actividadesDesarrolladasc" id="f01_actividadesDesarrolladasc" name="f01_actividadesDesarrolladasc" class="form-control">
                 <input type="hidden" ng-model="datos.f01_actividadesCAAD" id="f01_actividadesCAAD" name="f01_actividadesCAAD" class="form-control">   
-                <input type="hidden" ng-model="datos.pago_adel" id="pago_adel" name="pago_adel" class="form-control">
-
+                
                 <div class="col-md-12">
                     <legend></legend>
                 </div>

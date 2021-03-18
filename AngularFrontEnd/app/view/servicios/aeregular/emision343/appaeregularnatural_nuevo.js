@@ -933,6 +933,11 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 $scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
             }            
         }        
+        
+        if($scope.datos.f01_categoria_descrip != '' && $scope.datos.f01_sup != ''){
+            $scope.LicenciaXCategoriaA(datos.f01_categoria_descrip, datos.f01_sup)
+        }        
+
     });
 
     var clsIniciarGrillaAE = $rootScope.$on('inicializarGrillaAE', function(event, data){
@@ -1023,11 +1028,11 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         }
 
 
-        /*if (data.pago_adel == 'SI') {
+        /*if (data.pago_adelantado == 'SI') {
             $scope.IsVisible = true;
         } else{
             $scope.IsVisible = false;
-            $scope.datos.pago_adel = 'NO';
+            $scope.datos.pago_adelantado = 'NO';
         };*/
 
         if(typeof(data.INT_AC_MACRO_ID) != 'undefined'){
@@ -1210,13 +1215,13 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             $scope.IsVisible = true;
             $scope.datos.listDeudas = [];
             $scope.datos.pago_adelantado = valor;
-            $scope.datos.pago_adel = 'SI';
+           
         } else {
             if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada == 1724 || $scope.datos.f01_categoria_agrupada == '1724' || $scope.datos.f01_tipo_lic == 21 || $scope.datos.f01_tipo_lic == '21') {
                 swal('Estimado Ciudadano', 'La actividad desarrollada seleccionada requiere que realice el Pago por Adelantado!', 'warning');
                 $scope.IsVisible = true;
-                $scope.datos.pago_adelantado = true;
-                $scope.datos.pago_adel = 'SI';
+                $scope.datos.pago_adelantado = valor;
+               
                 document.getElementById('pago_adelantado').checked = true;
             } else {
                 $scope.datos.nro_ges = '';
@@ -1224,7 +1229,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 $scope.IsVisible = false;
                 document.getElementById('pago_adelantado').checked = false;
                 $scope.datos.pago_adelantado = valor;
-                $scope.datos.pago_adel = 'NO';
+                $scope.datos.pago_adelantado = 'NO';
             };
         };
     }
@@ -1306,9 +1311,9 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             };
             dataActEco = '{"tm_va":"' + $scope.datos.f01_factor + '","superficie":"' + $scope.datos.f01_sup + '","codigo_zona":"' + $scope.datos.f01_idCodigoZona + '","categorias_id":' + datoObject_cat + ',"id_zona":"' + $scope.datos.f01_zona_act + '","viae":' + idPubS + '}';
             dataDeuda = '{"actividad_economica":' + JSON.stringify(dataActEco) + ',"yfecha_inicio_cobro":"' + $scope.fechafinalserver + '","yanios":"' + nroges + '"}';
-            if (sup > 0) {
+            if (sup >= 0) {//sup > 0
                 swss = 0;
-            } else {
+            } /*else {
                 if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada == 1724 || $scope.datos.f01_categoria_agrupada == '1724' || $scope.datos.f01_tipo_lic == 21 || $scope.datos.f01_tipo_lic == '21') {
                     dataActEco = '{"tm_va":"' + $scope.datos.f01_factor + '","superficie":"' + $scope.datos.f01_sup + '","codigo_zona":"' + $scope.datos.f01_idCodigoZona + '","categorias_id":' + datoObject_cat + ',"id_zona":"' + $scope.datos.f01_zona_act + '","viae":"[]"}';
                     dataDeuda = '{"actividad_economica":' + JSON.stringify(dataActEco) + ',"yfecha_inicio_cobro":"' + $scope.fechafinalserver + '","yanios":"' + nroges + '"}';
@@ -1317,7 +1322,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     $scope.datos.nro_ges = '';
                     swss = 1;
                 };
-            };
+            };*/
             var deferred = $q.defer();
             if (swss == 0) {
                 //REGISTRO DE DEUDAS 343
@@ -1337,6 +1342,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     var deudasAE = JSON.parse(resDeuda);
                     var sdeuda = ((typeof(deudasAE.success) == 'undefined' || deudasAE.success == null) ? '0' : '1');
                     if(sdeuda != '0'){
+                        $scope.datos.listDeudas = deudasAE.success.dataSql;
                         $scope.listDeudas = deudasAE.success.dataSql;
                         var data = $scope.listDeudas;
                         deferred.resolve($scope.listDeudas);
@@ -1474,7 +1480,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         $scope.datos.FILE_CI='';
         $scope.datos.FILE_MAPA='';
         //pago adelantado
-        $scope.datos.pago_adel = '';
+        $scope.datos.pago_adelantado = '';
         $scope.datos.nro_ges = '';
     };
 
@@ -3311,15 +3317,15 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         var tablapago = '';
 
         console.log("PAGO ADELANTANDO 2:", data.pago_adelantado);
-        dataForm['pago_adel'] = 'NO';
+        dataForm['pago_adelantado'] = 'NO';
 
         if (data.pago_adelantado == true) {
-            dataForm['pago_adel'] = 'SI'; //data.pago_adelantado;
+            dataForm['pago_adelantado'] = 'SI'; //data.pago_adelantado;
             dataForm['nro_ges'] = data.nro_ges;
             dataForm['tablaP'] = '';
             console.log("PAGO ADELANTANDO 222:", data.pago_adelantado);
         } else {
-            dataForm['pago_adel'] = 'SIN PAGO ADELANTADO';
+            dataForm['pago_adelantado'] = 'SIN PAGO ADELANTADO';
             dataForm['nro_ges'] = 'NINGUNA';
             dataForm['tablaP'] = '';
         }
@@ -3756,12 +3762,15 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         datosNeXO['g_tipo'] = "AE-LINEA";
         datosNeXO['g_fecha'] = fechactual;
         datosNeXO['g_origen'] = "IGOB247";
-        datosNeXO['f01_listDeudas'] = $scope.listDeudas;    
-        
-        console.log("PAGO ADELANTADO : ", paramForm.pago_adel);
-        console.log("PAGO ADELANTADO : ", paramForm.nro_ges);
+        datosNeXO['f01_listDeudas'] = paramForm.listDeudas;
 
-        datosNeXO['pago_adel'] = paramForm.pago_adel;//$scope.pago_adelantado;
+        if (paramForm.pago_adelantado = true) {
+            datosNeXO['pago_adelantado'] = 'SI';
+        } else {
+            datosNeXO['pago_adelantado'] = 'NO';
+        }
+
+        //datosNeXO['pago_adelantado'] = paramForm.pago_adelantado;//$scope.pago_adelantado;
         datosNeXO['nro_ges'] =  paramForm.nro_ges;
         if(paramForm.chkzonasegura == 'ZONASEGURA'){
             datosNeXO['f01_zona_segura'] = 'SI';

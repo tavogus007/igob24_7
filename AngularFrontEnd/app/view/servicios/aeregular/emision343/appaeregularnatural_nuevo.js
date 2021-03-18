@@ -909,7 +909,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         }catch(e){}
     };
 
-    var clsIniciarHtmlForm = $rootScope.$on('inicializarHtmlForm', function(event, tramite){
+    var clsIniciarHtmlForm = $rootScope.$on('inicializarHtmlForm', function(event, tramite){        
         if (tramite.venviado == 'SI') {
             $scope.btnGuardarForm           =   true;
             $scope.desabilitado             =   true;
@@ -927,6 +927,12 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         }
         $.unblockUI();
         $scope.initMap();
+        $scope.ShowPa($scope.datos.pago_adelantado);
+        if($scope.datos.pago_adelantado == true){
+            if($scope.datos.f01_sup != '' && $scope.datos.f01_sup != null && $scope.datos.nro_ges != '' && $scope.datos.nro_ges != null){
+                $scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
+            }            
+        }        
     });
 
     var clsIniciarGrillaAE = $rootScope.$on('inicializarGrillaAE', function(event, data){
@@ -1505,7 +1511,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             clsIniciarCamposInternet();
             clsIniciarGrillaAE();
             clsIniciaBtnHabilitar();
-            clsIniciarHtmlForm();
+            clsIniciarHtmlForm();            
         },2000);
     });
 
@@ -3474,6 +3480,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
         }
+        //HABILITAR LOS BOTONES UNA VEZ GUARDADO
+        $scope.desabilitado = false;
     }
 
     /*enviarFormProcesos*/

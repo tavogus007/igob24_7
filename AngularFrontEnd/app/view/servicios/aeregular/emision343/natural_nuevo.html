@@ -1137,14 +1137,12 @@
                     
                     <div class="col-md-12">
                         <legend>Datos Pago Adelantado:</legend>
-                        ID ZONA : {{datos.f01_idCodigoZona}}
                     </div>
                     <div class="col-md-12" class="form-control">
                         <div class="col-md-6" class="form-control">
-                            <label for="Pago_Anticipado">
-                            <font color="#FF0000" size="4px">*  </font>
-                            Desea realizar el Pago por Adelantado?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" ng-model="datos.pago_adelantado" name="pago_adelantado" ng-change="ShowPa(datos.pago_adelantado);" id = "pago_adelantado" ng-disabled="desabilitado" required>
+                            <label for="Pago_Anticipado">                            
+                                Desea realizar el Pago por Adelantado?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" ng-model="datos.pago_adelantado" name="pago_adelantado" ng-change="ShowPa(datos.pago_adelantado);" id = "pago_adelantado" ng-disabled="desabilitado" required/>
                             </label>
                         </div>
                     </div>
@@ -1182,7 +1180,7 @@
                                         <tr>
                                             <td bgcolor = "black" colspan="7"><font color = "white">TOTAL A PAGAR</font></td>
                                             <td bgcolor = "black" align="right"><font color = "white">{{montoTotal}} Bs.</font></td>
-                                        </tr
+                                        </tr>
                                     </table>
                                 </div>
                             </div>

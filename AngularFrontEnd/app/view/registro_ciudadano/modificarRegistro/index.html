@@ -278,7 +278,7 @@
                     <div class="row">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>{{translateTitulos.lbl_06_1_1}} {{tipo}}</h5>
+                                <h5>{{translateTitulos.lbl_06_1_1}} {{tipo}}  </h5>
                             </div>
                         </div>
                     </div>
@@ -734,7 +734,7 @@
                                                                 ng-model="registro.zona"
                                                                 class="js-example-basic-single form-control"
                                                                 ng-options="disZona.dist_id as disZona.dist_nombre for disZona in aMacroZona | orderBy:['nombre','dist_nombre']"
-                                                                ng-change="macrodistritosidM(registro.zona);" 
+                                                                ng-change="actulizarIdDistritoM(registro.zona);" 
                                                                 ng-required="true">
                                                               <option value="">--Seleccionar--</option>
                                                         </select>
@@ -1808,7 +1808,7 @@
 						  <div class="col-sm-12">
 							<input id="prsCi" name="prsCi" type="text" class="form-control" maxlength="12" minlength="7" placeholder="No. De Documento" ng-model="registro.cedula2" required/>
 							<span style="color:red" ng-show="signupForm.prsCi.$invalid">
-							  <span ng-show="signupForm.prsCi.$error.required">{{translateIdioma.lbl_09_23}}.
+							  <span ng-show="signupForm.prsCi.$error.required">AAAAA{{translateIdioma.lbl_09_23}}.
 							  </span>
 							</span>
 							<font color="#FF0000" >

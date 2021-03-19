@@ -395,7 +395,7 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
                 $scope.registro.FILE_FOTOCOPIA_CI_R = results[0].dtspsl_file_fotocopia_ci_r;
                 $scope.registro.FILE_CONDICIONES_USO = results[0].dtspsl_file_condiciones_uso
                 $scope.registro.FILE_FACTURA_LUZ = results[0].dtspsl_file_factura_luz;
-                $scope.macrodistritosidM(results[0].dtspsl_zona);
+              //  $scope.macrodistritosidM(results[0].dtspsl_zona);
                 if (results[0].dtspsl_nombre_via) {
                     if(results[0].dtspsl_nombre_via.indexOf('%%')!=-1){
                         var arrayVia = results[0].dtspsl_nombre_via.split('%%');
@@ -475,7 +475,7 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
                 $scope.registro.zona = parseInt(results[0].dtspsl_zona);
                 $scope.registro.zona_desc = results[0].dtspsl_zona_desc;					
                 $scope.registro.tipo_via = results[0].dtspsl_tipo_via;
-				$scope.macrodistritosidM(results[0].dtspsl_zona);
+				//$scope.macrodistritosidM(results[0].dtspsl_zona);
 				$scope.vias(results[0].dtspsl_zona,results[0].dtspsl_tipo_via);	
 				$scope.registro.nombrevia = results[0].dtspsl_nombre_via;
 				
@@ -1031,13 +1031,15 @@ $scope.mostrarNatural = null;
     }
 
 /*******************CARGAR ZONA MACRODISTRITO ******************************/
-    /*$scope.MacroZona  =   function(){
+    
+    $scope.MacroZona = function(){
         try{
             var parametros = new ZonaMacro();
             parametros.Zona_Macro(function(resultado){
                 data = JSON.parse(resultado);
                     if(data.success.length > 0){
                         $scope.aMacroZona = data.success;
+                        console.log(' $scope.aMacroZona', $scope.aMacroZona);
                     }else{
                         $scope.msg = "Error !!";
                     }
@@ -1045,8 +1047,8 @@ $scope.mostrarNatural = null;
         }catch(error){
            console.log("error en zonas");
         }  
-    };*/
-    $scope.MacroZona = function() {
+    };
+    /*$scope.MacroZona = function() {
         try{
             $.ajax({
                 type: 'POST',
@@ -1075,19 +1077,33 @@ $scope.mostrarNatural = null;
         }catch (error){
             $scope.errors["error_rol"] = error;
         }
-    };
+    };*/
 
-    /*$scope.actulizarIdDistritoM  =   function(zonaid){
+    $scope.actulizarIdDistritoM  =   function(zonaid){
+        console.log('zonaid',zonaid);
         $scope.desabilitadoV=false;
         var idDistrito  = "";
         var zonaDescrip      = "";
         var distNombre  = zonaid;
+        console.log('$scope.aMacroZona',$scope.aMacroZona);
         if($scope.aMacroZona){
             angular.forEach($scope.aMacroZona, function(value, key) {
+              
                 if(value.dist_id == distNombre){
                     idDistrito  =   value.dist_dstt_id;
                     zonaDescrip      =   value.dist_nombre;
                     idMacro     =   value.dist_macro_id;
+                    $scope.idMacroSit_desc = 'MACRODISTRITO'+' '+value.dist_macro_id;
+                    $scope.idMacroSit  =   value.dist_macro_id;
+                        $scope.idDistritoSit = value.dist_dstt_id;
+                        if(sessionService.get('TIPO_PERSONA') == 'NATURAL'){
+                            document.getElementById("prsMacrodistrito").value = $scope.idMacroSit_desc;
+                            document.getElementById("distrito_desc").value = $scope.idDistritoSit; 
+                        }
+                        if(sessionService.get('TIPO_PERSONA') == 'JURIDICO'){
+                            document.getElementById("prsMacrodistritoj").value = $scope.idMacroSit_desc;
+                            document.getElementById("distrito_descj").value = $scope.idDistritoSit;
+                        }
                 }
             });
         }
@@ -1095,9 +1111,9 @@ $scope.mostrarNatural = null;
         $scope.registro.zona_desc   =   zonaDescrip;
         $scope.registro.distrito = idDistrito  
         $scope.registro.distrito_desc = "DISTRITO "+idDistrito;
-    };*/
+    };
 
-    $scope.macrodistritosidM = function(zonaid){
+    /*$scope.macrodistritosidM = function(zonaid){
         var idMacro = "";
         if(zonaid != "" && zonaid != undefined && zonaid != ' ' && zonaid != 'undefined'){
             var distNombre  = zonaid;
@@ -1141,7 +1157,7 @@ $scope.mostrarNatural = null;
         }else{
             console.log("no tiene zona registrada");
         }
-    };
+    };*/
  /********************************* CARGAR ZONA ****************************/ 
      $scope.cargarZona = function(idZona){
         var szona   = new reglasnegocio();
@@ -2457,8 +2473,6 @@ $scope.vias_v2= function(zona,tipo)
                 lat: parseFloat($scope.registro.latitud), 
                 lng: parseFloat($scope.registro.longitud)
             };
-
-            console.log("kkkkkkk",nuevoUbicacion);
             $scope.open_map_registroJ(nuevoUbicacion)
 
 
@@ -2469,9 +2483,6 @@ $scope.vias_v2= function(zona,tipo)
                 lat: -16.495635, 
                 lng: -68.133543
             };
-
-            console.log("hhhhhhhh",nuevoUbicacion);
-
             $scope.open_map_registroJ(nuevoUbicacion)
 
             mapj.setCenter(nuevoUbicacion);

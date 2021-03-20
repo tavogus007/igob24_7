@@ -337,7 +337,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <!--div class="col-md-4">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_34}}: </label>
@@ -345,25 +345,25 @@
                                 <input type="text" ng-model="datos.f01_sup" id="f01_sup" name="f01_sup" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" ng-change="verificarSuperficie(datos.f01_sup);calcularCapacidad(datos.f01_sup);" onkeyUp=" vsuperficie(this)" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
+                    </div-->
+                    <div class="col-md-3">
                         <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>                                             
+                            <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_36}}:</label>
-                            <div class="input-group clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true" placeholder="HORA INICIO ATENCION">
-                                <input  ng-model="datos.f01_de_hor" id="f01_de_hor" name="f01_de_hor" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                            <div class="input-group clockpicker pull-center" data-placement="bottom" data-align="top" data-autoclose="true" placeholder="HORA INICIO ATENCION">
+                                <input  ng-model="datos.f01_de_hor" id="f01_de_hor" name="f01_de_hor" class="form-control" type="text" class="form-control" ng-disabled="true" required/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>                                             
+                            <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_37}}:</label>
-                            <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                <input  ng-model="datos.f01_a_hor" id="f01_a_hor" name="f01_a_hor" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                            <div class="input-group clockpicker pull-center" data-placement="bottom" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                <input  ng-model="datos.f01_a_hor" id="f01_a_hor" name="f01_a_hor" class="form-control" type="text" class="form-control" ng-disabled="true" required/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
@@ -564,7 +564,7 @@
                                 required/>
                         </div>
                     </div>
-                </div>                    
+                </div>                 
                     <!--PARA FOOD TRUCK-->
                     <div ng-show = "datos.f01_categoria_descrip==211 || datos.f01_categoria_descrip=='211'">
                         <div class="col-md-12">
@@ -1127,27 +1127,23 @@
                             <div class="col-md-12">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <B>GESTIONES A PAGAR</B>
+                                        <B>GESTIONES A PAGAR</B>                                    
                                     </div>
                                     <div class="panel-body">
                                         <table ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
-                                            <tr ng-repeat="duedasCiu in datos.listDeudas" align="right">
-                                                <td data-title="'Nº'">{{duedasCiu.nro}}</td>
-                                                <td data-title="'GESTIÓN'">{{duedasCiu.gestion}}</td>
-                                                <td data-title="'MONTO ACT. ECO. Bs.'">{{duedasCiu.monto_ae}}</td>
-                                                <td data-title="'MONTO ELEM. PUB. Bs.'">{{duedasCiu.monto_viae}}</td>
-                                                <td data-title="'DESCUENTO EN %'">{{duedasCiu.descuento}}</td>
-                                                <td data-title="'PATENTE Bs.'">{{duedasCiu.monto_total}}</td>
-                                                <td data-title="'DESCUENTO Bs.'">{{duedasCiu.monto_descuento}}</td>
-                                                <td data-title="'MONTO TOTAL Bs.'">{{duedasCiu.monto_total_con_descuento}}</td>
+                                            <tr ng-repeat="deudasCiu in datos.listDeudas" ng-if="deudasCiu.montoPatente!=0">
+                                                <td data-title="'Nº'">{{deudasCiu.numero}}</td>
+                                                <td data-title="'GESTIÓN INICIO'">{{deudasCiu.inicio}}</td>
+                                                <td data-title="'GESTIÓN FIN'">{{deudasCiu.fin}}</td>
+                                                <td data-title="'MONTO PATENTE'">{{deudasCiu.montoPatente}}</td>
+                                                <td data-title="'MONTO VIAE'">{{deudasCiu.montoVIAE}}</td>
+                                                <td data-title="'MONTO SIN DESC.'">{{deudasCiu.montoTotalSinDescuento}}</td>
+                                                <td data-title="'DESCUENTO'">{{deudasCiu.montoDescuento}}</td>
+                                                <td data-title="'MONTO TOTAL'">{{deudasCiu.montoTotal}}</td>
                                             </tr>
                                             <tr>
-                                                <td bgcolor="black" colspan="7">
-                                                    <font color="white">TOTAL A PAGAR</font>
-                                                </td>
-                                                <td bgcolor="black" align="right">
-                                                    <font color="white">{{calculo_total}} Bs.</font>
-                                                </td>
+                                                <td bgcolor = "black" colspan="7"><font color = "white">TOTAL A PAGAR</font></td>
+                                                <td bgcolor = "black" align="right"><font color = "white">{{montoTotal}} Bs.</font></td>
                                             </tr>
                                         </table>
                                     </div>

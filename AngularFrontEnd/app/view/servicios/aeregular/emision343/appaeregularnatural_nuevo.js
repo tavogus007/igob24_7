@@ -1229,7 +1229,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 $scope.IsVisible = false;
                 document.getElementById('pago_adelantado').checked = false;
                 $scope.datos.pago_adelantado = valor;
-                $scope.datos.pago_adelantado = 'NO';
+                //$scope.datos.pago_adelantado = 'NO';
             };
         };
     }

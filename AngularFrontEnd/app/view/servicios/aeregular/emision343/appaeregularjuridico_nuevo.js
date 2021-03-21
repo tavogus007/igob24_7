@@ -20,6 +20,17 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
 
     $scope.mostrarsinsuperficie = false;
     $scope.mostrarsuperficie = false;
+
+    $scope.calcularDeudasDesdePublicidad = function(dato){
+        console.log("dato == true && $scope.datos.pago_adelantado == true :", dato, " * " , $scope.datos.pago_adelantado);
+        if(dato == false && $scope.datos.pago_adelantado == true){
+            $scope.datos.publicidad = [];
+            console.log("$scope.datos.f01_sup, $scope.datos.nro_ges :", $scope.datos.f01_sup, $scope.datos.nro_ges);
+            $scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
+        }else if( dato == true  && $scope.datos.pago_adelantado == true){
+            $scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
+        }
+    }    
    
    /*CIUDADANO - TIPO INICIO DE TRAMITE NUEVO - RENOVACION*/
     $scope.cambioToggleForm = function () {
@@ -95,19 +106,22 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         $scope.datos.FILE_CI = '';
         $scope.datos.fileArchivosAd = '';   
         //pago adelantado
-        $scope.datos.pago_adel = '';
+        $scope.datos.pago_adelantado = '';
         $scope.datos.nro_ges = '';
     };
+
 
     $scope.cambioToggle1 = function(dato){
         $scope.lscategoria();
         $scope.lssubcategoria();
         if ( dato == "NUEVO") {
-                $scope.licenciaToogle4 = true;
+            $scope.licenciaToogle4 = true;
         } else {
-                $scope.licenciaToogle4 = false;
+            $scope.licenciaToogle4 = false;
+            $scope.calcularDeudasDesdePublicidad(false);            
+            //$scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
         }
-    }
+    }    
 
     $scope.mostrarSuperficie = function(tipolic, categoriaagrupada, idDesarrollada) {
         console.log(tipolic, categoriaagrupada, idDesarrollada);
@@ -143,6 +157,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         };
     }*/
     $scope.ShowPa = function(valor) {
+        console.log("$scope.datos.pago_adelantado 123:", $scope.datos.pago_adelantado);
         $scope.calculo_total = 0;
         if (valor == 'true' || valor == true) {
             $scope.IsVisible = true;
@@ -160,9 +175,11 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                 $scope.IsVisible = false;
                 document.getElementById('pago_adelantado').checked = false;
                 $scope.datos.pago_adelantado = valor;
+                //$scope.datos.pago_adelantado = 'NO';
             };
         };
     }    
+
 
     $scope.tblDeudas = {};
     $scope.listDeudas = [];
@@ -376,6 +393,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     $scope.datos.fileArchivosAd = '';
 
         $scope.catactividadDesarrollada = function(){
+            console.log("LISTAR ACTIVIDAD DESARROLLADA :");
         $.blockUI();
         $scope.datos.rdTipoTramite = 'NUEVO';
         //$scope.datos.f01_actividad_desarrollada = "";
@@ -394,6 +412,9 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                         }
                     };
                     $scope.datosActividad = datosLic;
+                    try{
+                        $scope.$apply();
+                    }catch(e){}
                 }else{
                     $scope.msg = "Error !!";
                 }
@@ -490,6 +511,10 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     }
 
     $scope.actividadDesarrolladaM = function(){
+
+        alert("actividadDesarrolladaM");
+
+
         $.blockUI();
         var datosMulti = [];
         try{
@@ -1368,6 +1393,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                         $scope.lssubcategoria();
                         $scope.datos.publicidad = $scope.publicid;
                         $scope.Plubli_Grilla($scope.publicid);
+                        $scope.calcularDeudasDesdePublicidad(true);                        
                     } else {
                         sweet.show('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
                     }
@@ -1414,7 +1440,8 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                         $scope.publi.idcate=6;
                         $scope.lssubcategoria();
                         $scope.datos.publicidad = $scope.publicid;
-                        $scope.Plubli_Grilla($scope.publicid);
+                        $scope.Plubli_Grilla($scope.publicid);                        
+                        $scope.calcularDeudasDesdePublicidad(true); 
                     } else {
                         sweet.show('', 'La superficie de la VIAE excede los estadares permitidos', 'error');
                     }
@@ -1663,7 +1690,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             datosNeXO['f01_idCodigoZona'] = paramForm.f01_idCodigoZona;
             
             //PAGO ADELANTADO
-            datosNeXO['pago_adel'] =  $scope.pago_adelantado;
+            datosNeXO['pago_adelantado'] =  $scope.pago_adelantado;
             datosNeXO['nro_ges'] =  paramForm.nro_ges;
             if(paramForm.f01_tipo_lic == 32 || paramForm.f01_tipo_lic == '32'){
                 datosNeXO['f01_idcat_multi_principal'] = paramForm.xf01_idcat_multi_principal;
@@ -1694,6 +1721,13 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         datosNeXO['g_tipo']                     =   "AE-LINEA";
         datosNeXO['g_fecha']                    =   fechactual;
         datosNeXO['g_origen']                   =   "IGOB247";
+        datosNeXO['f01_listDeudas'] = paramForm.listDeudas;
+        if (paramForm.pago_adelantado = true) {
+            datosNeXO['pago_adelantado'] = 'SI';
+        } else {
+            datosNeXO['pago_adelantado'] = 'NO';
+        }
+
         if(paramForm.f01_tipo_lic == 32 || paramForm.f01_tipo_lic == '32'){
             datosNeXO['descriplic'] = $scope.datos.descriplic;
             datosNeXO['idLic'] = $scope.datos.idLic;
@@ -1744,6 +1778,9 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                 archivo1 = "";
                 //CREAR CASO AE LINEA
                 //REQUISITOS PARA CREAR LA ACTIVIDAD ECONOMICA INT_AC_MACRO_ID, INT_ID_CAT_AGRUPADA
+
+                console.log("DATOS SERIALIZADOS :", datosSerializados);
+
                 var crearCaso   =   new gCrearCaso();
                 crearCaso.usr_id    = 1,
                 crearCaso.datos     = datosSerializados,
@@ -2621,7 +2658,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     }
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
-    $scope.verificarCamposInternet = function (data) {       
+    $scope.verificarCamposInternet = function (data) {     
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         var taemayor = 0;
@@ -2697,6 +2734,8 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                 swal('', "Datos obligatorios, verifique los datos del formulario", 'warning');
             }
         }
+        //HABILITAR LOS BOTONES UNA VEZ GUARDADO
+        $scope.desabilitado = false;
     }
 
     $scope.formulario401 = function(datos){
@@ -2992,7 +3031,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             dataForm['f01_num_pmc'] = data.f01_num_pmc;
             dataForm['f01_nro_orden'] = data.f01_nro_orden;
             //pago adelantado
-            dataForm['pago_adel'] = $scope.pago_adelantado;
+            dataForm['pago_adelantado'] = $scope.pago_adelantado;
             dataForm['nro_ges'] = data.nro_ges;
             if(data.f01_tip_act =='MA' || data.f01_tip_act =='MATRI'){
                 dataForm['f01_tip_act'] =  'MATRIZ';
@@ -3159,12 +3198,12 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         else{
             $scope.licenciaToogle4 = false;
         }
-        if (data.pago_adel == 'SI') {
+        /*if (data.pago_adelantado == 'SI') {
             $scope.IsVisible = true;
         } else{
             $scope.IsVisible = false;
-            $scope.datos.pago_adel = 'NO';
-        };
+            $scope.datos.pago_adelantado = 'NO';
+        };*/
 
         if(typeof(data.INT_AC_MACRO_ID) != 'undefined'){
             //LISTANDO ZONAS
@@ -3333,12 +3372,26 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         }
         $.unblockUI();
         $scope.initMap();
+        $scope.ShowPa($scope.datos.pago_adelantado);
+        if($scope.datos.pago_adelantado == true){
+            if($scope.datos.f01_sup != '' && $scope.datos.f01_sup != null && $scope.datos.nro_ges != '' && $scope.datos.nro_ges != null){
+                $scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
+            }            
+        }
+        
+        if($scope.datos.f01_categoria_descrip != '' && $scope.datos.f01_sup != ''){
+            $scope.LicenciaXCategoriaA(datos.f01_categoria_descrip, datos.f01_sup)
+        }           
     });
 
     $scope.$on('$destroy', function() {
-        clsIniciarHtmlForm();
-        clsIniciarCamposInternet();
-        clsIniciarGrillaAE();
-        clsIniciaBtnHabilitar();
+        setTimeout(function(){
+            clsValidarBtnEnviar();
+            clsIniciarCamposInternet();
+            clsIniciarGrillaAE();
+            clsIniciaBtnHabilitar();
+            clsIniciarHtmlForm();            
+        },2000);
     });
+
 };

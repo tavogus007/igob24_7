@@ -3143,6 +3143,12 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         }
     });
 
+    //INICIAR VARIABLES EN EL FORMULARIO
+    var clsIniciarZonas = $rootScope.$on('iniciaDatosCboZona', function(event, data){
+        $scope.aDistritoZona = {};
+        $scope.aDistritoZona = data;
+    });
+
     var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data){
         $scope.catactividadDesarrollada();
         $scope.macrodistritos();
@@ -3390,7 +3396,8 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             clsIniciarCamposInternet();
             clsIniciarGrillaAE();
             clsIniciaBtnHabilitar();
-            clsIniciarHtmlForm();            
+            clsIniciarHtmlForm();     
+            clsIniciarZonas();       
         },2000);
     });
 

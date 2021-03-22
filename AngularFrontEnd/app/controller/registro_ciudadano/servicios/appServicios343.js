@@ -1205,11 +1205,11 @@
     }
 
     /////////////////////////////////////////////////////////////
-    $scope.distritoZonas = function(idMacroJ){     
-    console.log("idMacroJ: ", idMacroJ);   
+    $scope.distritoZonas = function(idMacroJ){
+        console.log("idMacroNJ: ", idMacroJ);   
         $scope.datos.f01_macro_act    =   idMacroJ;
-        $scope.datos.INT_AC_MACRO_ID = idMacroJ;
-        $scope.aDistritoZona = {};
+        $scope.datos.INT_AC_MACRO_ID = idMacroJ;        
+        $scope.aDistritoZona = {};         
         try{
             $scope[name] = 'Running';
             var deferred = $q.defer();
@@ -1224,12 +1224,14 @@
                     console.log("aDistritoZona: ", $scope.aDistritoZona);   
                     deferred.resolve(data.success);
                     $scope.desabilitadoV=true;
-                    $scope.desabilitadoNo=true;
+                    $scope.desabilitadoNo=true;                    
+                    $rootScope.$broadcast('iniciaDatosCboZona', data.success);
                 }else{
                     $scope.msg = "Error !!";
                 }
             });
         }catch(error){
+            console.log("Error zonas :", error);
             $scope.desabilitadoZ=true;
             $scope.desabilitadoV=true;
             $scope.desabilitadoNo=true;
@@ -1279,7 +1281,7 @@
         $scope.desabilitadoNo=true;
     };
 
-    $scope.cargarNombViaTxt = function(valor) {
+    $scope.cargarNombViaTxt = function(valor) {        
         if (valor == "NINGUNO"){
             $scope.datos.f01_factor = "VA";
         } else {

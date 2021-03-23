@@ -561,9 +561,9 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
 
     $scope.GetValueZonaSegura = function (idCategoria){
         if(idCategoria == 3419 || idCategoria == 3420 || idCategoria == 3421 || idCategoria == 3422 || idCategoria == 3423 || idCategoria == 3424){
-            $scope.mostrarzonasegura = true;
+            $rootScope.mostrarzonasegura = true;
         }else{
-            $scope.mostrarzonasegura = false;
+            $rootScope.mostrarzonasegura = false;
         }
     }
 
@@ -645,9 +645,9 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 }
             }
             if(swmul == 1){
-                $scope.mostrarzonasegura = true;
+                $rootScope.mostrarzonasegura = true;
             }else{
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             }
         }
         $scope.actividadDesCat = datosaux;
@@ -1008,22 +1008,22 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
 
         switch (data.chkzonasegura) {
             case 'ZONASEGURA':
-                $scope.mostrarzonasegura = true;
+                $rootScope.mostrarzonasegura = true;
             break;
             case 'NOZONASEGURA':
-                $scope.mostrarzonasegura = true;
+                $rootScope.mostrarzonasegura = true;
             break;
             case '':
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             break;
             case 'undefined':
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             break;
             case undefined:
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             break;
             case null:
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             break;
         };
         //MOSTRAR VIAE
@@ -3026,7 +3026,12 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     '<td>' + datos.publicidad[i].INT_SUP + '</td></tr>';
                 }
                 //CABECERA
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
+                //stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
+                if (datos.f01_num_pmc == undefined || datos.f01_num_pmc == 'undefined' || datos.f01_num_pmc == null || datos.f01_num_pmc == '') {
+                    stringFormulario40 = stringFormulario40.replace("#f01_num_pmc#", 'CONTRIBUYENTE NUEVO');
+                } else {
+                    stringFormulario40 = stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
+                };  
                 stringFormulario40  =   stringFormulario40.replace("#f01_nro_orden#", datos.f01_nro_orden);
                 stringFormulario40  =   stringFormulario40.replace("#f01_tipo_form#", '401');
                 stringFormulario40  =   stringFormulario40.replace("#f01_tipo_per_desc#", datos.f01_tipo_per_desc);
@@ -3178,6 +3183,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 stringFormulario40  =   stringFormulario40.replace("#f01_dpto_of_loc#", datos.f01_dpto_of_loc);
                 stringFormulario40  =   stringFormulario40.replace("#f01_tel_act1#", datos.f01_tel_act1);
                 stringFormulario40 = stringFormulario40.replace("#f01_idCodigoZona#", datos.f01_idCodigoZona);
+                stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", "ZONA SEGURA: " + datos.f01_zon_seg);
                 if (datos.f01_num_act == 'NINGUNO') {
                     stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act_n);
                 } else{

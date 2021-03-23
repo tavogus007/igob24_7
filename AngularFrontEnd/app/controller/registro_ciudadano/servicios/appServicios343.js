@@ -1297,6 +1297,9 @@
    
     
     $scope.GetZonaSeguraV = function(idzonasegura) {
+
+        console.log("zs:", idzonasegura);
+        
         if (idzonasegura != 0 || idzonasegura != '0') {
             /*if ($rootScope.mostrarzonasegura == true || $rootScope.mostrarzonasegura == 'true') {
                 $scope.datos.chkzonasegura = 'ZONASEGURA';
@@ -1312,6 +1315,9 @@
                     $scope.datos.id_zona_segura = id_zona_segura;
                 }
             }*/
+
+            console.log("zs", $rootScope.mostrarzonasegura);
+
             if ($rootScope.mostrarzonasegura == true || $rootScope.mostrarzonasegura == 'true' || $rootScope.mostrarzonasegura == false || $rootScope.mostrarzonasegura == 'false') {
                 $scope.datos.chkzonasegura = 'ZONASEGURA';
                 $scope.datos.id_zona_segura = idzonasegura;
@@ -1319,6 +1325,7 @@
             } else {
                 $scope.datos.chkzonasegura = 'NOZONASEGURA';
                 $scope.datos.id_zona_segura = id_zona_segura;
+                $scope.datos.f01_zon_seg = 'NO';
             }            
         } else {
             $scope.datos.chkzonasegura = 'NOZONASEGURA';

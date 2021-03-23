@@ -1072,9 +1072,9 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
 
     $scope.GetValueZonaSegura = function (idCategoria){
         if(idCategoria == 3419 || idCategoria == 3420 || idCategoria == 3421 || idCategoria == 3422 || idCategoria == 3423 || idCategoria == 3424){
-            $scope.mostrarzonasegura = true;
+            $rootScope.mostrarzonasegura = true;
         }else{
-            $scope.mostrarzonasegura = false;
+            $rootScope.mostrarzonasegura = false;
         }
     }
 
@@ -1157,9 +1157,9 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                 }
             }
             if(swmul == 1){
-                $scope.mostrarzonasegura = true;
+                $rootScope.mostrarzonasegura = true;
             }else{
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             }
         }
         $scope.actividadDesCat = datosaux;
@@ -2811,8 +2811,14 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                     '<td>' + datos.publicidad[i].INT_ALTO + '</td>'+
                     '<td>' + datos.publicidad[i].INT_SUP + '</td></tr>';
                 }
+                                
                 //CABECERA
-                stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
+                //stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
+                if (datos.f01_num_pmc == undefined || datos.f01_num_pmc == 'undefined' || datos.f01_num_pmc == null || datos.f01_num_pmc == '') {
+                    stringFormulario40 = stringFormulario40.replace("#f01_num_pmc#", 'CONTRIBUYENTE NUEVO');
+                } else {
+                    stringFormulario40 = stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
+                };                
                 stringFormulario40  =   stringFormulario40.replace("#f01_nro_orden#", datos.f01_nro_orden);
                 stringFormulario40  =   stringFormulario40.replace("#f01_tipo_form#", '401');
                 stringFormulario40  =   stringFormulario40.replace("#f01_tipo_per_desc#", datos.f01_tipo_per_desc);
@@ -2964,6 +2970,8 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                 stringFormulario40  =   stringFormulario40.replace("#f01_piso_act#", datos.f01_piso_act);
                 stringFormulario40  =   stringFormulario40.replace("#f01_dpto_of_loc#", datos.f01_dpto_of_loc);
                 stringFormulario40  =   stringFormulario40.replace("#f01_tel_act1#", datos.f01_tel_act1);
+                stringFormulario40  =   stringFormulario40.replace("#f01_idCodigoZona#", datos.f01_idCodigoZona);
+                stringFormulario40  =   stringFormulario40.replace("#zonaSegura#", "ZONA SEGURA: " + datos.f01_zon_seg);
                 if (datos.f01_num_act == 'NINGUNO') {
                     stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act_n);
                 } else{
@@ -3179,22 +3187,22 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
 
         switch (data.chkzonasegura) {
             case 'ZONASEGURA':
-                $scope.mostrarzonasegura = true;
+                $rootScope.mostrarzonasegura = true;
             break;
             case 'NOZONASEGURA':
-                $scope.mostrarzonasegura = true;
+                $rootScope.mostrarzonasegura = true;
             break;
             case '':
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             break;
             case 'undefined':
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             break;
             case undefined:
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             break;
             case null:
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             break;
         };
         //MOSTRAR VIAE
@@ -3390,15 +3398,23 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         }           
     });
 
-    $scope.$on('$destroy', function() {
-        setTimeout(function(){
-            clsValidarBtnEnviar();
-            clsIniciarCamposInternet();
-            clsIniciarGrillaAE();
-            clsIniciaBtnHabilitar();
-            clsIniciarHtmlForm();     
-            clsIniciarZonas();       
-        },2000);
+    var clsValidarBtnEnviar = $rootScope.$on('validarBtnEnviar', function(event, data){
+        if(data > 0){
+            $scope.btnEnviarForm = false;
+        }else{
+            $scope.btnEnviarForm = true;
+        }
     });
 
+
+    $scope.$on('$destroy', function() {
+        setTimeout(function(){
+            clsIniciarHtmlForm();
+            clsIniciarCamposInternet();
+            clsIniciarGrillaAE();
+            clsIniciaBtnHabilitar();              
+            clsValidarBtnEnviar();
+            clsIniciarZonas();
+        },1000);        
+    });
 };

@@ -756,6 +756,7 @@
             //////////////////////////////////////////////////////////////////////////
 
             $scope.map.on('click', function(evt) {
+                $.blockUI(); 
                 datos = {};
                 vectorSource.clear();
                 if (jsonURLS) {
@@ -844,7 +845,8 @@
                         document.getElementById('f01_macro_act').value = $scope.datos.f01_macro_act;
                         $scope.datos.INT_AC_MACRO_ID = parseInt(idMacrodistrito);
                         document.getElementById('INT_AC_MACRO_ID').value = $scope.datos.f01_macro_act;
-                        $scope.GetValueMacrodistrito(idMacrodistrito);
+                        //$scope.GetValueMacrodistrito(idMacrodistrito);
+                        $scope.GetValueMacrodistrito(0);
                         $scope.zonaAct_id = cod_zona_sit;
                         var listarZonas = [$scope.distritoZonas($scope.datos.f01_macro_act)];
                         $q.all(listarZonas).then(function(resp) {
@@ -1293,6 +1295,7 @@
         var e = document.getElementById("f01_macro_act");
         $scope.datos.f01_macro_act_descrip = e.options[e.selectedIndex].text;
         console.log("f01_macro_act_descrip:: ", $scope.datos.f01_macro_act_descrip);
+        $.unblockUI();
     }
    
     

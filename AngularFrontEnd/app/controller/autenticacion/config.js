@@ -69,7 +69,10 @@ var jsonURLS    =   {
     CONEXION_MOVILIDAD: "http://192.168.5.141:2020/",
     CONEXION_SITV3: "http://192.168.6.111/SITv3Desarrollo/",
     //CONEXION_SITV3_Antena: "http://sitservicios.lapaz.bo/",
-    SIT_GEO: "http://sitservicios.lapaz.bo",//Pruebas
+    //SIT_GEO: "https://gamlpmotores.lapaz.bo",//Pruebas
+    //UDIT_GEO:"https://servgeo.lapaz.bo",//Pruebas
+    SIT_GEO: "http://192.168.5.84:8080/",
+    UDIT_GEO:"http://192.168.6.46:8080/",
     URL_SITRAM: "http://192.168.5.141",
     CONEXION_SITRAM: "http://192.168.5.141", 
     CONEXION_API_PG_PRODUCTO: "http://192.168.5.141:8010/",//apirc

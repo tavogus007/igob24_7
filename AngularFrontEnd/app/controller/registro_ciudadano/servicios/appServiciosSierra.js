@@ -779,8 +779,8 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
             var longitud = lon;
             latitud = parseFloat(latitud);
             longitud = parseFloat(longitud);
-            console.log("******INICIANDO MAPA*******");
-            console.log("latitud y longitud...", latitud, longitud);
+            //console.log("******INICIANDO MAPA*******");
+            //console.log("latitud y longitud...", latitud, longitud);
             
             $scope.map = new ol.Map({
                 target: 'map_principal',
@@ -835,7 +835,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                 vectorSource.clear();
                 if (jsonURLS) {
                     var url_sit = jsonURLS.SIT_GEO;
-                    console.log("URL GEO...",url_sit);
+                    //console.log("URL GEO...",url_sit);
                 }
                 var url_r = url_sit + '/geoserver/wms';
                 var viewResolution = view.getResolution();
@@ -898,7 +898,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                         var feature = data.features[0];
                         var cod = feature.properties;
                         var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-", ""));
-                        console.log("zona tributaria: ", codigo_zona_tributaria);
+                        //console.log("zona tributaria: ", codigo_zona_tributaria);
                         $scope.datos.f01_idCodigoZona = codigo_zona_tributaria;
                     });
 
@@ -908,13 +908,13 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                     }).then(function(data) {
                         var feature = data.features[0];
                         var cod = feature.properties;
-                        console.log("datos zonas: ", cod);
+                        //console.log("datos zonas: ", cod);
                         //var zona = cod.codigozona;
                         var cod_zona_sit = cod.codigozona;
                         var macrodistrito = cod.macrodistrito;
                         var idMacrodistrito = cod.macro;
                         var distrito = cod.distrito;
-                        console.log('idMacrodistrito     ', idMacrodistrito);
+                        //console.log('idMacrodistrito     ', idMacrodistrito);
                         $scope.datos.f01_macro_act = idMacrodistrito;
                         document.getElementById('f01_macro_act').value = $scope.datos.f01_macro_act;
                         $scope.datos.INT_AC_MACRO_ID = parseInt(idMacrodistrito);
@@ -934,11 +934,11 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                                 var feature = data.features[0];
                                 //$scope.GetValueZona();
                                 if (feature == undefined) {
-                                    console.log("No hay vias...");
+                                    //console.log("No hay vias...");
                                     $scope.datos.f01_tip_via_act = '';
                                 } else {
                                     var cod = feature.properties;
-                                    console.log("datos de vias: ", cod);
+                                    //console.log("datos de vias: ", cod);
                                     var cod = feature.properties;
                                     var nombre_via = cod.nombrevia;
                                     var tipo_via = cod.tipovia;
@@ -982,9 +982,9 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                     }).then(function(data) {
                         var feature = data.features[0];
                         if (feature == undefined) {
-                            console.log("No es Zona Segura...");
+                            //console.log("No es Zona Segura...");
                             id_zona_segura = 0;
-                            console.log("NO ES ZONA SEGURA ID: ", id_zona_segura);
+                            //console.log("NO ES ZONA SEGURA ID: ", id_zona_segura);
                             $scope.GetZonaSeguraV(id_zona_segura);
                         } else {
                             var cod = feature.properties;
@@ -992,37 +992,37 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
                             switch (cod.id) {
                                 case 1:
                                     id_zona_segura = 3;
-                                    console.log("CALACOTO ID: ", id_zona_segura);
+                                    //console.log("CALACOTO ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
                                     swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 2:
                                     id_zona_segura = 5;
-                                    console.log("VILLA FATIMA ID: ", id_zona_segura);
+                                    //console.log("VILLA FATIMA ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
                                     swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 3:
                                     id_zona_segura = 1;
-                                    console.log("SAN SEBASTIAN ID: ", id_zona_segura);
+                                    //console.log("SAN SEBASTIAN ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
-                                    console.log("EL ROSARIO ID: ", id_zona_segura);
+                                    //console.log("EL ROSARIO ID: ", id_zona_segura);
                                     swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 4:
                                     id_zona_segura = 2;
-                                    console.log("14 DE SEPTIEMBRE ID: ", id_zona_segura);
+                                    //console.log("14 DE SEPTIEMBRE ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
-                                    console.log("CAYAMPAYA ID: ", id_zona_segura);
+                                    //console.log("CAYAMPAYA ID: ", id_zona_segura);
                                     swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 6:
                                     id_zona_segura = 4;
-                                    console.log("SOPOCACHI ID: ", id_zona_segura);
+                                    //console.log("SOPOCACHI ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
                                     swal('', "Usted selecciono una Zona Segura", 'success');
 
@@ -1050,7 +1050,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
         var f = '';
         //var nombre = document.getElementById('busqueda_p').value;
         var nombre = $('#busqueda_p').val();
-        console.log("ZONA en appServicios343..!!! ", nombre);
+        //console.log("ZONA en appServicios343..!!! ", nombre);
 
         nombre = nombre.toUpperCase();
         var ca = "CALLE ";
@@ -1062,7 +1062,7 @@ app.controller('serviciosController343Sierra', function($scope, $rootScope, $rou
         ///////////////////////////////
         if (nombre === '') {
             var obj = { 'nombre': 'INTRODUZCA DATOS!!!...' };
-            console.log("Vacio :", obj);
+            //console.log("Vacio :", obj);
             //map.removeLayer(vectorLayerZonas);
             vectorLayerZonas.getSource().clear();
         } else {

@@ -2114,6 +2114,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
 
     // ***********************  MAPA     **************************************************************************************************************************************************
     /////////////////////  MAPA CON OL4 ///////////////////////////////////////////
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    /*
     var map = new ol.Map();
 
       var epsg32719 = 'EPSG:32719';
@@ -2197,114 +2199,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                   })
       });
 
-      var osm_udit = new ol.layer.Tile({
-                                  title: 'OSM',
-                                  visible: true,
-                                  //render: 'canvas',
-                                  source: new ol.source.TileWMS({
-                                                                  url: 'http://192.168.6.46:8080/geoserver/DEGEM/wms',
-                                                                  //url: 'http://localhost:8090/geoserver/DEGEM/wms',
-                                                                  params: {'LAYERS': 'DEGEM:osm_udit', 'VERSION': '1.1.1','FORMAT': 'image/png','TILED': true},
-                                                                  serverType: 'geoserver'
-                                                                  ,crossOrigin: 'Anonymous'
-                                                                })
-      });
-
-      var municipios = new ol.layer.Tile({
-        title: 'Municipio',
-            visible: true,
-            source: new ol.source.TileWMS({
-                url: 'http://sitservicios.lapaz.bo/geoserver/wms',
-                params: { 'LAYERS': 'g_municipio', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
-                serverType: 'geoserver',
-                crossOriginKeyword: 'anonymous'
-        })
-      });
-
-      var img_sat_2018 = new ol.layer.Tile({
-                                              title: 'Kompsat 2018',
-                                              visible: false,
-                                              //render: 'canvas',
-                                              source: new ol.source.TileWMS({
-                                                                              url: 'http://192.168.5.94:8080/geoserver/wms',
-                                                                              params: {'LAYERS': 'raster:kompsat_2018', 'VERSION': '1.1.1','FORMAT': 'image/png','TILED': true},
-                                                                              serverType: 'geoserver',
-                                                                              crossOrigin: '*'
-                                                                            })
-      });
-
-      var macrodistritos = new ol.layer.Tile({
-        title: 'Macrodistritos 2017',
-        visible: false,
-        source: new ol.source.TileWMS({
-            url: 'http://192.168.5.94:8080/geoserver/wms',
-            params: {'LAYERS': 'lapaz:macrodistritos_2017', 'VERSION': '1.1.0','FORMAT': 'image/png','STYLES':'lp_macrodistritos2017','TILED': true},
-            crossOriginKeyword: 'anonymous'
-        })
-      });
-
-      var riesgos_2011 = new ol.layer.Tile({
-            title: 'Zonas de Riesgo',
-            opacity: 0.5,
-            visible: true,
-            source: new ol.source.TileWMS({
-                url: 'http://sitservicios.lapaz.bo/geoserver/wms',
-                params: { 'LAYERS': 'g_riesgos_2011', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
-                serverType: 'geoserver',
-                crossOriginKeyword: 'anonymous'
-            })
-      });
-
-      var distritos_m_2017 = new ol.layer.Tile({
-                              title: 'Distritos Municipales 2017',
-                              visible: false,
-                              //render: 'canvas',
-                              source: new ol.source.TileWMS({
-                                                             url: 'http://192.168.5.94:8080/geoserver/wms',
-                                                              params: {'LAYERS': 'lapaz:distritos_2017', 'VERSION': '1.1.0','FORMAT': 'image/png','STYLES':'lp_distritos2017','TILED': true},
-                                                              serverType: 'geoserver',
-                                                              crossOrigin: '1'
-                                                            })
-      });
-
-      var restitucion_2006 = new ol.layer.Tile({
-                              title: 'Restitucion 2006',
-                              visible: false,
-                              //render: 'canvas',
-                              source: new ol.source.TileWMS({
-                                                              url: 'http://192.168.5.94:8080/geoserver/wms',
-                                                              params: {'LAYERS': 'g_restitucion_2006', 'VERSION': '1.1.0','FORMAT': 'image/png','TILED': true},
-                                                              serverType: 'geoserver',
-                                                              crossOrigin: '1'
-                                                            })
-      });
-
-      var planimetria = new ol.layer.Tile({
-                              title: 'Planimetria',
-                              visible: false,
-                              //render: 'canvas',
-                              source: new ol.source.TileWMS({
-                                                              url: 'http://192.168.5.94:8080/geoserver/wms',
-                                                              params: {'LAYERS': 'archivo:planimetrias', 'VERSION': '1.1.0','FORMAT': 'image/png','STYLES':'planimetrias_desc','TILED': true},
-                                                              serverType: 'geoserver',
-                                                              crossOrigin: '1'
-                                                            })
-      });
-
-      var ortofotos_2006 = new ol.layer.Tile({
-                              title: 'Ortofotos 2006',
-                              visible: false,
-                              //render: 'canvas',
-                              source: new ol.source.TileWMS({
-                                                             url: 'http://192.168.5.94:8080/geoserver/wms',
-                                                              params: {'LAYERS': 'lapaz:ortofotos2006', 'VERSION': '1.1.0','FORMAT': 'image/jpeg','TILED': true},
-                                                              serverType: 'geoserver',
-                                                              crossOrigin: '1'
-                                                            })
-      });
-
-      function buscar_ubicacion()
-      {
+    function buscar_ubicacion()
+    {
         var nombre_1 = new Array();
         var f = '';
         var nombre = document.getElementById('busqueda').value;
@@ -2358,7 +2254,8 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
           }
         }
-      }
+    }
+    */
     ///////////////////////////////////////////////////////////////////////////////
     var latitud = 0;
     var longitud = 0;

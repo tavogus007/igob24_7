@@ -164,6 +164,26 @@ var vectorLayer = new ol.layer.Vector({
 });
 */
 /*-----------------------------------------------------------------------------------------*/
+
+var GEO_SIT    = "";
+var GEO_UDIT   = "";
+var urlGEO_SIT = "";
+var urlGEO_UDIT= ""; 
+
+if (jsonURLS) {
+  try{
+        GEO_SIT = jsonURLS.SIT_GEO;
+        urlGEO_SIT = GEO_SIT+"geoserver/wms";
+        console.log("URL GEO SIT ...",urlGEO_SIT);
+    }catch(e){console.log("Warning:", e);}
+
+  try{
+        GEO_UDIT = jsonURLS.UDIT_GEO;
+        urlGEO_UDIT = GEO_UDIT+"geoserver/wms";
+        console.log("URL GEO UDIT...",urlGEO_UDIT);
+    }catch(e){console.log("Warning:", e);}
+}
+
  var map = new ol.Map({
         layers: [
             new ol.layer.Group({
@@ -210,7 +230,7 @@ var vectorLayer = new ol.layer.Vector({
                           visible: false,
                           //render: 'canvas',
                           source: new ol.source.TileWMS({
-                                                          url: 'http://192.168.5.94:8080/geoserver/wms',
+                                                          url: urlGEO_SIT,
                                                           params: {'LAYERS': 'raster:kompsat_2018', 'VERSION': '1.1.1','FORMAT': 'image/png','TILED': true},
                                                           serverType: 'geoserver',
                                                           crossOrigin: '*'

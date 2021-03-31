@@ -824,7 +824,7 @@
                         var feature = data.features[0];
                         var cod = feature.properties;
                         var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-", ""));
-                        console.log("zona tributaria: ", codigo_zona_tributaria);
+                        //console.log("zona tributaria: ", codigo_zona_tributaria);
                         $scope.datos.f01_idCodigoZona = codigo_zona_tributaria;
                     });
 
@@ -840,7 +840,7 @@
                         var macrodistrito = cod.macrodistrito;
                         var idMacrodistrito = cod.macro;
                         var distrito = cod.distrito;
-                        console.log('idMacrodistrito     ', idMacrodistrito);
+                        //console.log('idMacrodistrito     ', idMacrodistrito);
                         $scope.datos.f01_macro_act = idMacrodistrito;
                         document.getElementById('f01_macro_act').value = $scope.datos.f01_macro_act;
                         $scope.datos.INT_AC_MACRO_ID = parseInt(idMacrodistrito);
@@ -861,11 +861,11 @@
                                 var feature = data.features[0];
                                 //$scope.GetValueZona();
                                 if (feature == undefined) {
-                                    console.log("No hay vias...");
+                                    //console.log("No hay vias...");
                                     $scope.datos.f01_tip_via_act = '';
                                 } else {
                                     var cod = feature.properties;
-                                    console.log("datos de vias: ", cod);
+                                    //console.log("datos de vias: ", cod);
                                     var cod = feature.properties;
                                     var nombre_via = cod.nombrevia;
                                     var tipo_via = cod.tipovia;
@@ -909,47 +909,47 @@
                     }).then(function(data) {
                         var feature = data.features[0];
                         if (feature == undefined) {
-                            console.log("No es Zona Segura...");
+                            //console.log("No es Zona Segura...");
                             id_zona_segura = 0;
-                            console.log("NO ES ZONA SEGURA ID: ", id_zona_segura);
+                            //console.log("NO ES ZONA SEGURA ID: ", id_zona_segura);
                             $scope.GetZonaSeguraV(id_zona_segura);
                         } else {
                             var cod = feature.properties;
-                            console.log("datos zona seguras: ", cod);
+                            //console.log("datos zona seguras: ", cod);
                             switch (cod.id) {
                                 case 1:
                                     id_zona_segura = 3;
-                                    console.log("CALACOTO ID: ", id_zona_segura);
+                                    //console.log("CALACOTO ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
                                     swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 2:
                                     id_zona_segura = 5;
-                                    console.log("VILLA FATIMA ID: ", id_zona_segura);
+                                    //console.log("VILLA FATIMA ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
                                     swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 3:
                                     id_zona_segura = 1;
-                                    console.log("SAN SEBASTIAN ID: ", id_zona_segura);
+                                    //console.log("SAN SEBASTIAN ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
-                                    console.log("EL ROSARIO ID: ", id_zona_segura);
+                                    //console.log("EL ROSARIO ID: ", id_zona_segura);
                                     swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 4:
                                     id_zona_segura = 2;
-                                    console.log("14 DE SEPTIEMBRE ID: ", id_zona_segura);
+                                    //console.log("14 DE SEPTIEMBRE ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
-                                    console.log("CAYAMPAYA ID: ", id_zona_segura);
+                                    //console.log("CAYAMPAYA ID: ", id_zona_segura);
                                     swal('', "Usted selecciono una Zona Segura", 'success');
 
                                     break;
                                 case 6:
                                     id_zona_segura = 4;
-                                    console.log("SOPOCACHI ID: ", id_zona_segura);
+                                    //console.log("SOPOCACHI ID: ", id_zona_segura);
                                     $scope.GetZonaSeguraV(id_zona_segura);
                                     swal('', "Usted selecciono una Zona Segura", 'success');
 
@@ -1032,7 +1032,7 @@
                 var latitud = centro_1[1];
                 var longitud = centro_1[0];
                 wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
-                console.log("PUNTO",centro_1);
+                //console.log("PUNTO",centro_1);
                 $("#INT_AC_latitud").val(latitud);
                 $("#INT_AC_longitud").val(longitud);
                 $scope.datos.INT_AC_longitud = longitud;
@@ -1077,7 +1077,7 @@
                     ///////////////////////////////////////////////////////////
                     var cod = feature.properties;
                     var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                    console.log("codigo zona tributaria: ",codigo_zona_tributaria);
+                    //console.log("codigo zona tributaria: ",codigo_zona_tributaria);
                     $scope.datos.f01_idCodigoZona = codigo_zona_tributaria;
                     ///////////////////////////////////////////////////////////
                   });
@@ -1093,10 +1093,10 @@
                     var macrodistrito = cod.macrodistrito;
                     var cod_zona= cod.codigozona;
                     var distrito= cod.distrito;
-                    console.log("zona: ",zona);
-                    console.log("macrodistrito: ",macrodistrito);
-                    console.log("distrito: ",distrito);
-                    console.log("cod zona: ",cod_zona);
+                    //console.log("zona: ",zona);
+                    //console.log("macrodistrito: ",macrodistrito);
+                    //console.log("distrito: ",distrito);
+                    //console.log("cod zona: ",cod_zona);
                     /////////////////////////////////////////////
                     //console.log("hhhhh",n_genesis);
                     for (var i=0;i<n_genesis;i++)
@@ -1104,7 +1104,7 @@
                       if(geo_id_sit_servicio[i]=== cod_zona )
                       {
                         cod_zona_genesis = geo_id_genesis[i];
-                        console.log("cod zona genesis: ",cod_zona_genesis);
+                        //console.log("cod zona genesis: ",cod_zona_genesis);
                       }
                     }
                     /////////////////////////////////////////////
@@ -1120,8 +1120,8 @@
                     var cod = feature.properties;
                     var nombre_via = cod.nombrevia;
                     var tipo_via = cod.tipovia;
-                    console.log("nombre via: ",nombre_via);
-                    console.log("tipo via: ",tipo_via);
+                    //console.log("nombre via: ",nombre_via);
+                    //console.log("tipo via: ",tipo_via);
                     ///////////////////////////////////////////////////////////
                   });
                 }
@@ -1142,7 +1142,7 @@
       var f = '';
       //var nombre = document.getElementById('busqueda_p').value;
       var nombre = $('#busqueda_p').val();
-      console.log("ZONA en appServicios343..!!! ",nombre);
+      //console.log("ZONA en appServicios343..!!! ",nombre);
 
       nombre = nombre.toUpperCase();
       var ca = "CALLE ";
@@ -1155,7 +1155,7 @@
       if(nombre==='')
       {
         var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
-        console.log("Vacio :",obj);
+        //console.log("Vacio :",obj);
         //map.removeLayer(vectorLayerZonas);
         vectorLayerZonas.getSource().clear();
       }
@@ -1201,7 +1201,7 @@
         if(c==0)
         {
           var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
-          console.log("Vacio :",obj);
+          //console.log("Vacio :",obj);
         }
       }   
     }

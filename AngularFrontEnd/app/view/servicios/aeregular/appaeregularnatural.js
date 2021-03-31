@@ -2370,13 +2370,10 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
     {
         setTimeout(function()
         {
-            //console.log("ENTRANDO AL MAPA AE REGULAR...");
+            console.log("ENTRANDO AL MAPA AE REGULAR...");
             var latitud = $scope.datos.INT_AC_latitud;
             var longitud = $scope.datos.INT_AC_longitud;
-            //console.log("latitud...",latitud);
-            //map.removeLayer(vectorLayer_inci_baja);
             $("#mapActividadAERegular").empty();
-
             $scope.map = new ol.Map
             ({
               target: 'mapActividadAERegular',
@@ -2430,11 +2427,8 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
                 if(jsonURLS)
                 {
                     var url_sit    =   jsonURLS.SIT_GEO;
-                    //console.log('INTERMEDIO EN MAPA-----',url_sit);
                 }
                 var url_r = url_sit+'/geoserver/wms';
-                //console.log("URL PARA RIESGOS",url_r);
-
                 var viewResolution = view.getResolution();
                
                 var coord = $scope.map.getCoordinateFromPixel(evt.pixel);
@@ -2448,62 +2442,13 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
                 datos.latitud = latitud;
                 datos.longitud = longitud;
               
-                var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';   
-                
-                //console.log ("latitud: ",latitud);
-                //console.log ("longitud: ",longitud);
+                var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';
 
                 $rootScope.laaa = latitud;
                 $rootScope.looo = longitud;
                 $scope.datos.INT_AC_latitud = $rootScope.laaa;
                 $scope.datos.INT_AC_longitud = $rootScope.looo;
 
-                /*
-                setTimeout(function()
-                {
-                    $.ajax({
-                          url: url,
-                          //data: parameters,
-                          type: 'GET',
-                          dataType: 'jsonp',
-                          jsonpCallback: 'getJson',
-                          success: function (data)
-                          {
-                            //console.log('OK.....', data);
-                            if(data.features.length == 1)
-                            {                         
-                                var distrito = data.features[0].properties.distrito;
-                                var idMacrodistrito = data.features[0].properties.macro;                  
-                                var macrodistrito =  data.features[0].properties.macrodistrito;                
-                                var zona = data.features[0].properties.zona;
-                                var codigo_zona = data.features[0].properties.codigozona;
-                                datos.zona = zona;
-                                datos.cod_zona_sit = codigo_zona;
-                                datos.distrito = distrito;
-                                datos.macrodistrito = macrodistrito;
-                                
-                                var n_genesis = geo_id_genesis.length;
-                                for (var i=0;i<n_genesis;i++)
-                                {
-                                    if(geo_id_sit_servicio[i ]=== codigo_zona )
-                                    {
-                                        cod_zona_genesis = geo_id_genesis[i];
-                                        datos.cod_zona_genesis = cod_zona_genesis;
-                                    }
-                                } 
-                            }
-                            else
-                            {
-                                console.log("ningun resultado para zonas");
-                            }
-                          },
-                          error: function (data)
-                          { 
-                            console.log(data);
-                          }   
-                        });
-                },500);
-                */
                 var feature = $scope.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
                   return feature;
                 });
@@ -2513,7 +2458,6 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
                 }
                 else
                 {
-                    //alert();
                     var url_zonas_tributarias = zonas_tributarias_udit.getSource().getGetFeatureInfoUrl(
                               evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
                                 'INFO_FORMAT': 'application/json',
@@ -2527,8 +2471,6 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
                                 'propertyName': 'zonaref,macrodistr,subalcaldi,codigozona,macro,distrito'
                               }
                             );
-
-
 
                     var url_zonas_seguras = zonas_seguras_udit.getSource().getGetFeatureInfoUrl(
                               evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
@@ -2552,7 +2494,7 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
                         var feature = data.features[0];
                         var cod = feature.properties;
                         var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                        //console.log("Patty zona tributaria: ",codigo_zona_tributaria);
+                        console.log("zona tributaria: ",codigo_zona_tributaria);
                     });
 
                     reqwest({
@@ -2562,7 +2504,7 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
                     {
                         var feature = data.features[0];
                         var cod = feature.properties;
-                        //console.log("Patty datos zonas: ",cod);
+                        //console.log("datos zonas: ",cod);
                         /////////////////////////////////////////
                         datos.zona = cod.zonaref;
                         datos.cod_zona_sit = cod.codigozona;
@@ -2588,12 +2530,12 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
                         var feature = data.features[0];  
                         if(feature == undefined)
                         {
-                            //console.log("Patty...No es Zona Segura...");
+                            //console.log("No es Zona Segura...");
                         }
                         else
                         {
                             var cod = feature.properties;
-                            //console.log("Patty datos zona seguras: ",cod);   
+                            //console.log("datos zona seguras: ",cod);   
                         }
                         
                     });
@@ -2606,12 +2548,12 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
                         var feature = data.features[0];  
                         if(feature == undefined)
                         {
-                            //console.log("Patty No hay vias...");
+                            //console.log("No hay vias...");
                         }
                         else
                         {
                             var cod = feature.properties;
-                            //console.log("Patty datos de vias: ",cod);   
+                            //console.log("datos de vias: ",cod);   
                         }
                         
                     });
@@ -2625,7 +2567,7 @@ function regularController($scope,$timeout, $q, $rootScope, $routeParams, $locat
                 feature.setStyle(iconStyle);
                 vectorSource.addFeature(feature);
 
-                console.log("JSON DATOS",datos);
+                //console.log("JSON DATOS",datos);
                 return datos;
             });
         

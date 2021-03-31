@@ -1,19 +1,32 @@
+var GEO_SIT    = "";
+var GEO_UDIT   = "";
+var urlGEO_SIT = "";
+var urlGEO_UDIT= ""; 
+
+if (jsonURLS) {
+  try{
+        GEO_SIT = jsonURLS.SIT_GEO;
+        urlGEO_SIT = GEO_SIT+"geoserver/wms";
+        //console.log("URL GEO SIT ...",urlGEO_SIT);
+    }catch(e){console.log("Warning:", e);}
+
+  try{
+        GEO_UDIT = jsonURLS.UDIT_GEO;
+        urlGEO_UDIT = GEO_UDIT+"geoserver/wms";
+        //console.log("URL GEO UDIT...",urlGEO_UDIT);
+    }catch(e){console.log("Warning:", e);}
+}
+
 function graficarMapaGeroserver(idNamef, lat, lon){
     var map;
     var pDefecto;
     var vectorSource = new ol.source.Vector(),
         vectorLayer = new ol.layer.Vector({
             source: vectorSource
-        });
+    });
 
-    //var lat = -16.503849;
-    //var lon = -68.149352;
-
-    /*var lat = xmap.lat;
-    var lon = xmap.lng;*/
-
-    console.log("LATITUD :", lat);
-    console.log("LATITUD :", lon);
+    //console.log("LATITUD :", lat);
+    //console.log("LATITUD :", lon);
 
     pDefecto = [parseFloat(lon), parseFloat(lat)];
 
@@ -25,12 +38,12 @@ function graficarMapaGeroserver(idNamef, lat, lon){
 
                     new ol.layer.Tile({
                         visible: true,
-                        source: new ol.source.TileWMS(({
-                        url: 'http://192.168.5.48:8081/geoserver/wms?',
-                        params: {'LAYERS': 'geobolivia:bolivia', 'VERSION': '1.1.0','FORMAT': 'image/png','TILED': true},
-                        serverType: 'geoserver',
-                        crossOrigin: '*'
-                        }))
+                        source: new ol.source.TileWMS({
+                                                          url: urlGEO_UDIT,
+                                                          params: {'LAYERS': 'DEGEM:osm_udit', 'VERSION': '1.1.1','FORMAT': 'image/png','TILED': true},
+                                                          serverType: 'geoserver',
+                                                          crossOrigin: 'Anonymous'
+                                                    })
                     }),
                     vectorLayer
 

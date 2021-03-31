@@ -694,13 +694,11 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
     }
     ///////////////////****MAPA GIS*****/////////////////////////
 
-
+    
     $scope.open_mapa_ae = function()
     {
         setTimeout(function()
         {
-            console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICAS");
-            //map.removeLayer(vectorLayer_inci_baja);
             $("#map_principal").empty();
             $scope.map = new ol.Map
             ({
@@ -826,19 +824,19 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
                                 if(data.features.length == 1)
                                 {                         
                                   var distrito = data.features[0].properties.distrito;
-                                  console.log('distrito:', distrito);
+                                  //console.log('distrito:', distrito);
 
                                   var cod_macrodistrito = data.features[0].properties.macro;
-                                  console.log('cod macro:', cod_macrodistrito);
+                                  //console.log('cod macro:', cod_macrodistrito);
                               
                                   var macrodistrito =  data.features[0].properties.macrodistrito;
-                                  console.log('macrodistrito:', macrodistrito);
+                                  //console.log('macrodistrito:', macrodistrito);
                                                       
                                   var zona = data.features[0].properties.zona;
-                                  console.log('zona:', zona);
+                                  //console.log('zona:', zona);
 
                                   var codigo_zona = data.features[0].properties.codigozona;
-                                  console.log('cod zona sit:',codigo_zona);
+                                  //console.log('cod zona sit:',codigo_zona);
 
                                   datos.zona = zona;
                                   datos.cod_zona_sit = codigo_zona;
@@ -851,7 +849,7 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
                                     if(geo_id_sit_servicio[i ]=== codigo_zona )
                                     {
                                       cod_zona_genesis = geo_id_genesis[i];
-                                      console.log("cod zona genesis: ",cod_zona_genesis);
+                                      //console.log("cod zona genesis: ",cod_zona_genesis);
                                       datos.cod_zona_genesis = cod_zona_genesis;
                                     }
                                   }
@@ -872,7 +870,7 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
                                                 var cod_zona_t = data.features[0].properties.grupovalor;
                                                 cod_zona_t = cod_zona_t.replace("-","");
                                                 var cod_zona_tributaria = parseInt(cod_zona_t);
-                                                console.log("cod zona tributaria: ",cod_zona_tributaria);
+                                                //console.log("cod zona tributaria: ",cod_zona_tributaria);
                                                 datos.codigo_zona_tributaria = cod_zona_tributaria;
                                                 setTimeout(function()
                                                 {
@@ -888,20 +886,20 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
                                                             if(c==1)
                                                             {
                                                               var id_via = data.features[0].properties.idvias;
-                                                              console.log("id via: ",id_via);
+                                                              //console.log("id via: ",id_via);
 
                                                               var nombre_via = data.features[0].properties.nombrevia;
-                                                              console.log("nombre via: ",nombre_via);
+                                                              //console.log("nombre via: ",nombre_via);
 
                                                               var tipo_via = data.features[0].properties.tipovia;
-                                                              console.log("tipo via: ",tipo_via);
+                                                              //console.log("tipo via: ",tipo_via);
 
                                                               datos.nombre_via = nombre_via;
                                                               datos.tipo_via = tipo_via;
                                                             }
                                                             else
                                                             {
-                                                              console.log("ningun resultado para vias");
+                                                              //console.log("ningun resultado para vias");
                                                             }
                                                           }
                                                         });
@@ -909,7 +907,7 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
                                               }
                                               else
                                               {
-                                                console.log("ningun resultado para zona tributaria");
+                                                //console.log("ningun resultado para zona tributaria");
                                               }
                                             }
                                           });
@@ -917,7 +915,7 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
                                 }
                                 else
                                 {
-                                  console.log("ningun resultado para zonas");
+                                  //console.log("ningun resultado para zonas");
                                 }
                               },
                               error: function (data)
@@ -934,20 +932,21 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
                 feature.setStyle(iconStyle);
                 vectorSource.addFeature(feature);
 
-                console.log("JSON DATOS",datos);
+                //console.log("JSON DATOS",datos);
                 return datos;
             });
             //////////////////////////////////////
         },550);
     };
-
+    
+    
     $scope.buscar_ubicacion_p = function()
     {
       var nombre_1 = new Array();
       var f = '';
       //var nombre = document.getElementById('busqueda_p').value;
       var nombre = $('#busqueda_p').val();
-      console.log("ZONA EN appServicios...",nombre);
+      //console.log("ZONA EN appServicios...",nombre);
       nombre = nombre.toUpperCase();
       var ca = "CALLE ";
       ca = ca.concat(nombre);
@@ -959,7 +958,7 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
       if(nombre==='')
       {
         var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
-        console.log("Vacio :",obj);
+        //console.log("Vacio :",obj);
         //map.removeLayer(vectorLayerZonas);
         vectorLayerZonas.getSource().clear();
       }
@@ -998,18 +997,18 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
             setTimeout(function(){
               //alert();
               vectorLayerZonas.getSource().clear();
-            },2400);
+            },4000);
 
           }
         }
         if(c==0)
         {
           var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
-          console.log("Vacio :",obj);
+          //console.log("Vacio :",obj);
         }
       }   
     }
-
+    
     /////////////////////////////////////////////////////////////
 
       

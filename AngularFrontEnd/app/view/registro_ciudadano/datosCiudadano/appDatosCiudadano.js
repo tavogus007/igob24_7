@@ -628,6 +628,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         rcNot.oid = sessionService.get('IDCIUDADANO');
         rcNot.obtenerNotificaciones(function(resultado){
             aNotif = JSON.parse(resultado);
+            console.log('anotif',aNotif);
             var notificaciones = aNotif.success.length;
             datoObjectNotiFinal = [];
             for(i = 0; i < notificaciones; i++){
@@ -722,7 +723,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     }
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
-                }else if((aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'CORRESPONDENCIA CIUDADANA')||(aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'CORRESPONDENCIA CIUDADANA CM DIGITAL') ||(aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'DENUNCIAS')){
+                }else if((aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'CORRESPONDENCIA CIUDADANA')||(aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'CORRESPONDENCIA CIUDADANA CM DIGITAL') ||(aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'DENUNCIAS TRANSPARENCIA')){
                         datoObjectNoti = new Object();
                         $scope.notSitram = aNotif.success[i];
                         var mensaje = aNotif.success[i].obs_tra_observaciones;
@@ -731,6 +732,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         var mensajeIgob = resS[0];
                         $scope.resS1 = resS[1];
                         $scope.resS2 = JSON.parse($scope.resS1);
+                        console.log('$scope.resS2',$scope.resS2);
                         datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
                         datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
                         datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;

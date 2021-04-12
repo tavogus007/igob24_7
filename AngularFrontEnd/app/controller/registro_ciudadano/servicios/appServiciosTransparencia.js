@@ -167,6 +167,24 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
             $scope.$apply();
         }); 
 
+        /*var tam=p.length;                            
+        for (var i = 0; i < tam; i++)
+        {
+            var idValue = p[i].id;
+            if(idValue == i_xXs)
+            {
+                $scope.id     = p[i].id;
+                $scope.name   = p[i].name;
+                $scope.idprc  = p[i].idprc;
+                $scope.idcampo= p[i].idcampo;
+                $scope.scodigo= p[i].scodigo;
+
+                $('#registroLotus').modal('hide');
+                $('#renderLotus').modal('show');
+            }
+        }*/ 
+    }
+
     $scope.volverMenuAyuda = function()
     {   
         $("#element").fadeIn("slow");
@@ -235,7 +253,7 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
         }
         $scope.datosfalt = datosfaltantes; 
     }
-   
+
     $scope.validacionDatosJuridico = function(datos){
         var datosfaltantes = '';
         datosfaltantes = new Array();
@@ -852,27 +870,6 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
             error: function (response){ console.log(response);}
         });
     }
-
-    /*$scope.tablaHistorico = new ngTableParams({
-        page: 1,
-        count: 4,
-        filter: {},
-        sorting: {
-            vtra_id: 'desc'
-        }
-    }, {
-        total: $scope.tablaHistoricoMovimientos.length,
-        getData: function($defer, params) {
-            var filteredData = params.filter() ?
-            $filter('filter')($scope.tablaHistoricoMovimientos, params.filter()) :
-            $scope.tablaHistoricoMovimientos;
-            var orderedData = params.sorting() ?
-            $filter('orderBy')(filteredData, params.orderBy()) :
-            $scope.tablaHistoricoMovimientos;
-            params.total($scope.tablaHistoricoMovimientos.length);
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-        }
-    });*/
 
     $scope.cargaActuacionHistorico = function(histo, vuid, nrocopia, usuario, copiaid) {
         $scope.dataH = [];

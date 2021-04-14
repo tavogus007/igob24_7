@@ -2,7 +2,6 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
     var sIdCiudadano= sessionService.get('IDSOLICITANTE');
     $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
     $scope.oidCiu = sessionService.get('IDSOLICITANTE');
-    console.log("$sope_datos",$scope.datos);
     $scope.datos = {};
     $scope.ocultaTipo = false;
     $scope.desabilitado = false;
@@ -16,7 +15,6 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
   
     var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
       $scope.datos = JSON.parse(data);
-      console.log($scope.datos,"$scope.datos llllllllllllllllll");
       $scope.dinamicoTipoVehiculo($scope.datos.INF_TIPO_VEHICULO);
       $scope.enviado = sessionService.get('ESTADO');
       $scope.macrodistritos();
@@ -156,7 +154,6 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
         datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
         datos.g_tipo_tramite = 'MOV_DEN_CON';
         datos.vtra_id = sessionService.get('IDTRAMITE');
-        console.log($scope.datos,'datossss');
         data_form = JSON.stringify(datos);
         var tramite = new crearTramiteMovilidad();
         tramite.usr_id = 1;    
@@ -219,7 +216,6 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
         data = JSON.parse(resultado);
         if(data.success.length > 0){
           $scope.aMacrodistritos = data.success;
-          console.log("macro", $scope.aMacrodistritos);
         }else{
             $scope.msg = "Error !!";
         }
@@ -245,7 +241,6 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
             data = JSON.parse(resultado);
             if(data.success.length > 0){
               $scope.aDistritoZona = data.success;
-              console.log("zonassss",$scope.aDistritoZona);
             }else{
               $scope.msg = "Error !!";
             } 
@@ -279,7 +274,6 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
       var datosP = new buscaOperadorRadioTaxi();
       datosP.listaOperadorRadioTaxi(function(resultado){
         data = JSON.parse(resultado);
-        console.log("operadorRadiotaxis",data);
         $scope.aListadoOperadorTaxi = data.success;
         $scope.aListadoOperadorTaxi = $scope.aListadoOperadorTaxi.data;
       });

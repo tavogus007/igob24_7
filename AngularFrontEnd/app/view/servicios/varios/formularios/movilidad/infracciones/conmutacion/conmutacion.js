@@ -54,7 +54,6 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
         results = JSON.parse(results);
         results = results.success;
         if(results.length > 0){
-          //$scope.tramitesCiudadano();
           alertify.success("Formulario almacenado");
           document.getElementById('gu').disabled=false;     
           $.unblockUI();
@@ -83,7 +82,6 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
     }, function() {
       swal.close();
       setTimeout(function(){
-        console.log("datos",$scope.datos);
         if($scope.datos.infracciones.length >0){
           var busca = new buscaInfraccion();
           busca.placa = $scope.datos.INF_PLACA;
@@ -116,9 +114,7 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
                 html: true,
                 type: 'error',
               });
-            }
-            console.log("tamaño",respuesta);
-            
+            }            
           })
         }else{
           swal({
@@ -152,7 +148,6 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
       registrar.registraConmutacion(function(resultado){
         resultado = JSON.parse(resultado);
         if(resultado.success.code == "200"){
-          console.log("flavia",resultado);
           $scope.INF_GRILLA = [];
           var encabezado = [];
           var indice = 1;
@@ -182,7 +177,6 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
           datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
           datos.g_tipo_tramite = 'INF_CONM';
           datos.vtra_id = sessionService.get('IDTRAMITE');
-          console.log($scope.datos,'datossss');
           data_form = JSON.stringify(datos);
           var tramite = new crearTramiteMovilidad();
           tramite.usr_id = 1;    
@@ -243,7 +237,6 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
       busca.tipo = tipo;
       busca.buscaInfraccionesPlacaTipo(function(resultado){
         $scope.datos.infracciones = JSON.parse(resultado).success.data;
-        console.log("tamaño",$scope.datos.infracciones);
         if($scope.datos.infracciones.length==0){
           swal('Advertencia', 'La placa no cuenta no infracciones', 'warning');
           $swCantidad = 0;
@@ -273,7 +266,6 @@ function conmutacionController($scope, $rootScope, $routeParams, $location, $htt
   ///////////////////////////////validacion//////////////////////////////////
   $scope.validaPlaca = function (campo){
     $scope.datos.INF_PLACA = campo.toUpperCase();
-    console.log("flavia",campo);
     emailRegex = /^[0-9]{3,4}[A-Z]{3}$/;
     if (emailRegex.test($scope.datos.INF_PLACA)) {
       $scope.datos.valPlaca = 0;

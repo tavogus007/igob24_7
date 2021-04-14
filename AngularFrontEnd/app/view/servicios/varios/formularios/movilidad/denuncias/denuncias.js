@@ -1,5 +1,4 @@
 function DenunciaController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, $timeout, obtFechaCorrecta,$route, obtFechaActual,fileUpload1) {
-    console.log("inicio");
     var sIdCiudadano= sessionService.get('IDSOLICITANTE');
     $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
     $scope.oidCiu = sessionService.get('IDSOLICITANTE');
@@ -185,7 +184,6 @@ function DenunciaController($scope, $rootScope, $routeParams, $location, $http, 
               buscarRepresentante.ci = $scope.datos.INF_CI_J;
               buscarRepresentante.buscarPersona(function(res){
                 var x = JSON.parse(res);
-                console.log('111sss',x);
                 if (x.error) {
                   $.unblockUI();
                 }else {
@@ -196,7 +194,6 @@ function DenunciaController($scope, $rootScope, $routeParams, $location, $http, 
                     $scope.datos.INF_MATERNO_J = x[0].dtspsl_materno;
                     $scope.datos.INF_CELULAR_J = x[0].dtspsl_movil;
                     $scope.datos.INF_EXPEDIDO_J = x[0].dtspsl_expedido;
-                    console.log($scope.datos,"datos ciudadano");   
                   }
                 }
               })
@@ -242,7 +239,6 @@ function DenunciaController($scope, $rootScope, $routeParams, $location, $http, 
               }
             }
           }
-          console.log("datos ciudadano",$scope.datos);
         }else{
           console.log("NO EXISTE DATOS");
         }
@@ -261,7 +257,6 @@ function DenunciaController($scope, $rootScope, $routeParams, $location, $http, 
       tramites.listaTramitesMovilidad(function(results){
         results = JSON.parse(results).success;
         $scope.tramites = results;
-        console.log($scope.tramites,'777');
         $scope.tramitesUsuario = results;
         $scope.tablaTramites.reload();
       })
@@ -375,7 +370,6 @@ function DenunciaController($scope, $rootScope, $routeParams, $location, $http, 
         $rootScope.$broadcast('inicializarVista', tramite.form_contenido);
       },500);
       $scope.$apply();
-      console.log("template",$scope.template);
     };
   }
   

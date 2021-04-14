@@ -14,7 +14,7 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
   {"nro":9,"desc":"Servicio Privado de Transporte Personal"},
   {"nro":10,"desc":"Servicio Privado de Transporte de Salud y Emergencias"},
   {"nro":10,"desc":"Servicio Privado de Transporte de Carga - Distribución de Productos"}];
-  var idServicioInf = 43;
+
   $scope.ocultaTipo = false;
   $scope.desabilitado = true;
   $swCantidad = 1;
@@ -25,7 +25,6 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
   }
 
   var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
-    console.log("datossss",data);
     $scope.datos = JSON.parse(data);
     $scope.enviado = sessionService.get('ESTADO');
     if($scope.datos.File_Adjunto == undefined){
@@ -96,13 +95,11 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
       if(typeof(archivo) != 'undefined'){
         descDoc = 'Requisito_Impugnacion'+idFiles;
         var imagenNueva = archivo.name.split('.');
-        console.log('aArchivos',imagenNueva);
         var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[imagenNueva.length-1];
         if (archivo.size > 500000 && archivo.size <= 15000000) {
           if (imagenNueva[imagenNueva.length-1] == "png" || imagenNueva[imagenNueva.length-1] == "jpg" || imagenNueva[imagenNueva.length-1] == "jpeg" || imagenNueva[imagenNueva.length-1] == "bmp" || imagenNueva[imagenNueva.length-1] == "gif" || 
             imagenNueva[imagenNueva.length-1] == "PNG" || imagenNueva[imagenNueva.length-1] == "JPG" || imagenNueva[imagenNueva.length-1] == "JPEG" || imagenNueva[imagenNueva.length-1] == "BMP" || imagenNueva[imagenNueva.length-1] == "GIF") {
             var filecompress = compressImage(archivo).then(function(respuestaFile){
-              console.log('respuestaFile',respuestaFile);
               var imagenFile = respuestaFile.name.split('.');
               var tipoFile = imagenFile[1];
               var nombreNuevo = descDoc + '_'+fechaNueva+'.'+imagenNueva[imagenNueva.length-1];
@@ -131,7 +128,6 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
                 document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreFileN;
                 $.unblockUI();
             } else{
-              console.log(imagenNueva[1]);
               if (imagenNueva[imagenNueva.length-1] == 'pdf' ||  imagenNueva[imagenNueva.length-1] == 'docx' ||  imagenNueva[imagenNueva.length-1] == 'docxlm' ||
                 imagenNueva[imagenNueva.length-1] == 'PDF' ||  imagenNueva[imagenNueva.length-1] == 'DOCX' ||  imagenNueva[imagenNueva.length-1] == 'DOCXLM' ) {
                 fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
@@ -151,7 +147,6 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
         }
       }else{
       }
-      console.log("flavia",archivo);
     });
   };
 
@@ -176,15 +171,11 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
     var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual  + '/'+ nombreFileN + "?app_name=todoangular";
     var descrip =  document.getElementById('lbl_f01_upload'+idFile).innerHTML;
     descrip = descrip.replace("\n","");
-    console.log(uploadUrl);
     var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "idRequisito":'+idFile+',"nombre":"'+descrip+'"}';
-    console.log("uno",myJSON);
     $scope.datos.File_Adjunto[idFile] = JSON.parse(myJSON);
-    console.log($scope.datos.File_Adjunto);
   }
   //////////////////////////GUARDA TRAMITE//////////////////////
   $scope.guardar_tramite = function(datos){ 
-    console.log("datos",datos);
     datos.Tipo_tramite_creado = "WEB";
     try {
       var datosSerializados   =  JSON.stringify(datos);
@@ -279,7 +270,6 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
     },message: "Espere un momento por favor ..." }); 
     setTimeout(function(){
       $.blockUI();
-      console.log("datos",datos);
       $scope.INF_GRILLA = [];
       var encabezado = [];
       var indice = 1;
@@ -309,7 +299,6 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
       datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
       datos.g_tipo_tramite = 'INF_IMPUG';
       datos.vtra_id = sessionService.get('IDTRAMITE');
-      console.log("datos enviados",datos);
       data_form = JSON.stringify(datos);
       var tramite = new crearTramiteMovilidad();
       tramite.usr_id = 1;    
@@ -372,14 +361,12 @@ function impugnacionController($scope, $rootScope, $routeParams, $location, $htt
       busca.placa = placa;
       busca.buscaInfraccionesPlaca(function(resultado){
         $scope.datos.infracciones = JSON.parse(resultado).success.data;
-        console.log("tamaño",$scope.datos.infracciones);
         if($scope.datos.infracciones.length==0){
           swal('Advertencia', 'La placa no cuenta no infracciones', 'warning');
           $swCantidad = 0;
         }
       })
     }
-    console.log("placa",placa.length);
   }
 
 }

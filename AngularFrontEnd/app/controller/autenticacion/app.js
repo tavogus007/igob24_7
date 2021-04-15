@@ -1,16 +1,9 @@
-var app = angular.module('myApp', ['ngResource','ngRoute', 'ngAnimate', 'toaster', 'ngTable','ui.bootstrap','angularMoment', 'hSweetAlert','ngCkeditor','integralui','xeditable','angularFileUpload','angularSoap','pdf']); //'uiGmapgoogle-maps','ngMap' ,
-                                 //'ngResource','ngRoute', 'ngAnimate', 'toaster', 'ngTable', 'ngDreamFactory','ui.bootstrap','angularMoment', 'hSweetAlert','ngSanitize'
-                                 //.constant('DSP_URL', 'http://192.168.5.141:80').constant('DSP_API_KEY', 'todoangular').constant('DEV_ENV', 0);
-/*app.config(['$httpProvider', 'DSP_API_KEY', function($httpProvider, DSP_API_KEY) {
-    $httpProvider.defaults.headers.common['X-DreamFactory-Application-Name'] = DSP_API_KEY;
-  }]);*/
+var app = angular.module('myApp', ['ngResource','ngRoute', 'ngAnimate', 'toaster', 'ngTable','ui.bootstrap','angularMoment', 'hSweetAlert','ngCkeditor','integralui','xeditable','angularFileUpload','angularSoap','pdf']); 
 
 app.factory("wsRgistrarPubliciadad", ['$soap',function($soap){
     var base_url = "http://srvcronos/webservicios/registrapublicidad.asmx";
-    //?op=registra_publicidadess
     return {
-        registra_publicidades: function(datos){     //if (datos.f01_nom_edi_prop   == '') datos.f01_nom_edi_prop=" ";
-            //console.log("---****-->",datos);
+        registra_publicidades: function(datos){            
             return $soap.post(base_url,"registra_publicidades", {letrero:{"idActividadEconomica":91340,
                                                                   "idContribuyente": 244605,
                                                                   "clase": "N",
@@ -37,12 +30,8 @@ app.factory("wsRgistrarPubliciadad", ['$soap',function($soap){
 
 app.factory("wsObito", ['$soap',function($soap){
     var base_url = "http://prometeo/AdministracionSatelite/Service1.asmx";
-    //var base_url = "http://gmlpsr0116/swGenesis/swLicencia.asmx";
-    return {
-        //RegistroSIMGEPsolicitud: function(gnombres_t, gprimer_apellido_t, gsegundo_apellido_t, gcarnet_t, gci_expedido_t, gparentesco, gmotivo, gtitular_zona, gtitular_via, gtipo_via, gtitular_nro, gtitular_fono, gtitular_correo, gnombres_f, gprimer_apellido_f, gsegundo_apellido_f, gapellido_casado_f, gfecha_def_1, gfecha_def_2, gcarnet_f, gobservaciones){
+    return {        
         RegistroSIMGEPsolicitud: function(datos){
-            //console.log(datos);
-            //console.log("111111",gnombres_t, gprimer_apellido_t, gsegundo_apellido_t, gcarnet_t, gci_expedido_t, gparentesco, gmotivo, gtitular_zona, gtitular_via, gtipo_via, gtitular_nro, gtitular_fono, gtitular_correo, gnombres_f, gprimer_apellido_f, gsegundo_apellido_f, gapellido_casado_f, gfecha_def_1, gfecha_def_2, gcarnet_f, gobservaciones,"222222")
             return $soap.post(base_url,"RegistroSIMGEPsolicitud", {
                 nombres_t: datos.nombres_t,
                 primer_apellido_t: datos.primer_apellido_t,
@@ -96,25 +85,6 @@ app.service('registroLog', function(CONFIG){
      }
 });
 
-/************ s1 **************/
-/*
-app.service('registroLog', function(DreamFactory,CONFIG){
-    //$scope.almacenarLog = function(sIdUsuario, sIdCiudadano, sIdFormulario, sEvento){
-    this.almacenarLog = function(sIdUsuario, sIdCiudadano, sIdFormulario, sEvento){
-        var fecha = new Date();
-        var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-        var aLog = new reglasnegocio();
-        aLog.id = 124;
-        aLog.parametros = '{"lgs_usr_id":"'+ sIdUsuario +'","lgs_dtspsl_id":"'+ sIdCiudadano +'","lgs_frm_id":"'+ sIdFormulario +'","lgs_evento":"'+ sEvento +'"}';
-        aLog.llamarregla(function(data){
-        //servicio insertar usuarios
-        data = JSON.parse(data);
-            console.log("Registro almacenado");
-        });
-     }
-});
-*/
-/***************************/
 app.service('obtFechaActual', function(CONFIG){
     this.obtenerFechaActual = function(){
         var fecha       =   new Date();
@@ -215,7 +185,6 @@ app.service('fileUpload1', ['$http', '$location', function ($http,$location) {
     this.uploadFileToUrl1 = function(file, uploadUrl,nombre){
         var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
         var sidusuario = sessionStorage.getItem('IDUSUARIO');
-        //var sidusuario = sessionStorage.getItem('IDUSUARIO');
         var srutaf = '';
         try{
             var suploadurl = uploadUrl;
@@ -311,10 +280,7 @@ app.controller('NavCtrl',['$scope', '$http','$rootScope','sessionService','CONFI
                     var sgrupo = "";
                     var lstGrupos = [];
                     var lstSubGrupo = [];
-                    var j=0;
-                
-                    console.log("RESULTADO :", results);
-                
+                    var j=0;                
                     $.each(results, function(key, value){
                         var lstOpciones = [];
                         var sContenido = value["contenido"].replace("../", "");
@@ -345,12 +311,9 @@ app.controller('NavCtrl',['$scope', '$http','$rootScope','sessionService','CONFI
                     listarMenu = listarMenu.replace(/}","{/gi, "},{");
                     listarMenu = listarMenu.replace(/\"\]/gi, "]");
                     listarMenu = listarMenu.replace(/\\"/gi, '"');
-                    //console.log(listarMenu);
                     $scope.categories = JSON.parse(listarMenu);
-
                 }else{
                     $scope.msg = "Error en usurio y/o contraseña";
-                    //$location.path('');
                 }
         });
     }
@@ -361,16 +324,11 @@ app.controller('NavCtrl',['$scope', '$http','$rootScope','sessionService','CONFI
 
     };
 
-    //al realizar f5
     $scope.$on('api:ready',function(){
-        $scope.validarRenderizacion();
-        //$scope.generarMenu();
+        $scope.validarRenderizacion();      
     });
     $scope.inicioMenu = function () {
         $scope.validarRenderizacion();
-        //if(DreamFactory.api[CONFIG.SERVICE]){
-            //$scope.generarMenu();
-        //}
     };
 }]);
 
@@ -378,7 +336,6 @@ app.controller('NavCtrl',['$scope', '$http','$rootScope','sessionService','CONFI
 app.config(['$routeProvider',
   function ($routeProvider) {
         $default = '../autenticacion/index.html';
-        //$ruta = '../administracion/usuarios.html';
         $routeProvider.
         when('/login', {
             title: 'Login',
@@ -459,9 +416,7 @@ app.config(['$routeProvider',
                 $rootScope.usMaterno = sessionService.get('US_MATERNO');
                 $rootScope.usTipoPersona = sessionService.get('TIPO_PERSONA');
                 $rootScope.stiporol = sessionService.get('US_IDROL');
-
                 $rootScope.sservicios = sessionService.get('SERVICIOS');
-                //alert("usuario:" + sessionService.get('US_IDROL'));
                 if ($rootScope.usuario) {
                     $rootScope.nombre = sessionService.get('USUARIO');
                 } else {
@@ -472,29 +427,15 @@ app.config(['$routeProvider',
                         }catch(e){}
                         $location.path("");
                     }
-                }
-                /*if (sessionService.get('SERVICIOS')=='SI') {
-                    sessionService.set('US_IDROL', "5");
-                    $rootScope.stiporol = sessionService.get('US_IDROL');
-                } else {
-                    sessionService.set('US_IDROL', "4");
-                    $rootScope.stiporol = sessionService.get('US_IDROL');
-                }*/
+                }                
             }else{
                 if(next.originalPath != "/registro"){
                     try{
                         document.getElementById('menuIzqui').style.display = 'none';
                         document.getElementById('menuIzqui2').style.display = 'none';
                     }catch(e){}
-                    //$location.path("");
-                    //alert(1);
                     window.location.href = "../autenticacion/partials/login_.html";
-                    //http://localhost:3055/app/view/autenticacion/partials/login_.html
-                    //$location.path("login");
                 }
-                //$location.path("login");
-                //window.location.href = "../../index.html";
-                //alert("no existe session storage");
             }
         });
     });

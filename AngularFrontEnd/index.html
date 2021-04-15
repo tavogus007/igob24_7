@@ -37,30 +37,8 @@
 		}
 	</style> 
 	<style>
-	/* .social {
-		position:fixed;
-		top: 55%;
-		right:15px;
-		z-index: 1500;
-	}
-	
-		.social ul {
-			list-style: none;
-		}
-	
-		.social ul li a {
-			display: inline-block;
-			color:#fff !important;
-			font-weight: 700;
-			background: #e41b25;
-			padding: 10px 15px;
-			text-decoration: none;
-			box-shadow: 2px 2px 3px #646464;
-		} */
 		.div_btn {
 		position:fixed;
-		/* width:60px;
-		height:60px; */
 		top: 35%;
 		right:15px;
 		z-index: 900;
@@ -83,8 +61,7 @@
 		}
 		.add-btn:hover {
 		width: 120px;
-		}
-		
+		}		
 		.add-btn::before,
 		.add-btn::after {
 		transition: width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
@@ -106,7 +83,6 @@
 		border-top-left-radius: 2px;
 		border-bottom-left-radius: 2px;
 		}
-
 		.icon-btn:focus {
 		outline: none;
 		}
@@ -156,7 +132,6 @@
 		height: 4px;
 		top: calc(50% - 2px);
 		}
-
 		.part {
 		float: left;
 		height: 100%;
@@ -184,7 +159,6 @@
 		.modal-header .close{
 			margin: 0rem 0rem 0rem auto !important;
 		}
-
 		.modal-body .content_mod {
 			max-height: 70%;
 			overflow-y: auto;
@@ -200,11 +174,9 @@
 			color: #2e2e2e !important;
 			font-weight: 550;
 		}
-
 		.form-control {
 			box-shadow: 0 8px 6px -6px #555 !important;
 		}
-
 		.button_send {
 		background: #e41b25;
 		margin: 0px 0 0px 0;
@@ -220,7 +192,6 @@
 		transition: all 0.5s ease;
 		box-shadow: none;
 		}
-
 		.back_modal {
 			background: #FBCC00 !important;
 		}
@@ -232,19 +203,10 @@
 	<meta http-equiv="last-modified" content="Mon, 16 Jul 2018 12:00:00 GMT" />
 	<meta http-equiv="Cache-Control" content="max-age=7200">
 	<link href="nuevoIgob/img/favicon.png" rel=icon>
-	<link href="nuevoIgob/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	
+	<link href="nuevoIgob/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">	
 	<link href="nuevoIgob/css/style.min.css" rel="stylesheet">
-
-	<!-- <script>
-		$( document ).ready(function() {
-			$('#popCom').modal('toggle')
-		});
-	</script> -->
-
 </head>
 <body>
-
 	<div class=preloader>
 		<div class=sk-folding-cube>
 			<div class="sk-cube1 sk-cube"></div>
@@ -253,23 +215,6 @@
 			<div class="sk-cube3 sk-cube"></div>
 		</div>
 	</div>
-
-	<!--Popup COMUNICADOS (NO BORRAR)-->
-
-	<!-- <input type="checkbox" id="cerrarCom">
-	<label for="cerrarCom" id="btn-cerrarCom" title="Cerrar"><i class="fa fa-window-close" aria-hidden="true"></i></label>
-	<div class="modalCom">
-		<div class="container-fluid" style="margin: auto;">
-			<div class="comContenido">
-				<img src="nuevoIgob/img/inform/info3.webp" alt="" style="width: 100%;">
-			</div>
-	
-		</div>
-	</div> -->
-
-	<!--Fin de Popup COMUNICADOS -->
-
-
 	<header id="header">
 		<div class="container-fluid">
 			<div id="logo" class="pull-left">
@@ -341,13 +286,6 @@
 				<span class=sr-only>Next</span>
 			</a>
 		</div>
-
-		<!--div class="div_btn">
-			<button class="icon-btn add-btn" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal" onclick="cerrarModales(1)">
-			  <i class="fa fa-edit i_status"></i>
-			  <div class="btn-txt">Denuncias</div>
-			</button>
-		</div-->
 		<div class="div_btn" style="margin-top: 50px;">
 			<button class="icon-btn add-btn" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal" onclick="cerrarModales(2)">
 				<i class="fa fa-gears i_status"></i>
@@ -364,8 +302,6 @@
 								Recepción de Denuncias
 							</h1>
 						</article>
-
-						<!-- <h4 class="modal-title">Recepción de Denuncias</h4> -->
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
 					<div class="modal-body">
@@ -503,8 +439,7 @@
 										Seleccione Archivo
 									  </span>
 									</label>
-								  </div>
-								<!--input type="file" id="prueba2" multiple accept="image/*" onchange="getBase64()"-->
+								  </div>								
 								<span id="msjImg" style="display: none;color:red;font-weight:bold; font-size:12px">La imagen debe ser menor a 7mb</span>
 							</div>   
 						</div>
@@ -552,16 +487,14 @@
 			</div>
 		</div>
 		<div class="modal fade" id="soporteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg" role="document">
-				<!-- Modal content-->
+			<div class="modal-dialog modal-lg" role="document">				
 				<div class="modal-content">
 					<div class="modal-header">
 						<article class="part card-details">
 							<h1>
 								Soporte iGob 24/7
 							</h1>
-						</article>
-						<!-- <h4 class="modal-title">Soporte iGob 24/7</h4> -->
+						</article>						
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
 					<div class="modal-body back_modal">
@@ -665,8 +598,7 @@
 						<button type="button" class="button_send" data-dismiss="modal">Cerrar</button>
 					</div>
 				</div>
-			</div>
-		</div>
+			</div>		</div>
 	</div>
 	<br>
 	<section>
@@ -1591,7 +1523,6 @@ function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido,
 <script type="text/javascript">
 	$('.spin-icon_env_5').click(function (){
 		$(".theme-config-box_icon_5").toggleClass("show");
-		//$(".theme-config-box_icon_3").toggleClass("hidden");
 	});
 </script>
 <script type="text/javascript">
@@ -1601,10 +1532,8 @@ function mostrarMarker(latitud, longitud, plataformaTitulo, plataformaContenido,
 		getlimpiareRROR();
 		getlimpiareRRORC();
 		noVacio();		
-		noVacioC();
-		//$( "#htmlDenuncias" ).load( "../../app/view/servicios/transparencia/denuncias/index.html" );
+		noVacioC();		
 	}); 
 </script>
-
 </body>
 </html>

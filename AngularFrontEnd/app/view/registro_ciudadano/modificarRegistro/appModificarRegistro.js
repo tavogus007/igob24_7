@@ -188,9 +188,6 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
 	    swal('', 'Tipo de archivo incorrecto elimine porfavor', 'error');   
         $scope.desabilitado2=true;
     }
-    
-    //end changes
-    //Star image 
 
     $scope.addImage=function(e,idFoto){
         $.blockUI();  
@@ -222,8 +219,7 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
             break;  
         }
     }
-    //end image
-    //after to upload the image
+
     uploader.onAfterAddingAll = function(addedFileItems) {
     };
     uploader.onBeforeUploadItem = function(item) {
@@ -238,13 +234,14 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
         direccionURL = direccionURL+"/"+archivoUpload;
         cambiaimagen = "SI"
     };
-    //end
+
     /***********************API COMBO PROFESION **************************/
 	$scope.getProfesion = function(){
        var validarpromesas = [$scope.getprof()];
        $q.all(validarpromesas).then(function (resp) {//AE - Validar Envio Licencia
        });
     }
+
     $scope.getprof = function(){
 		$scope[name] = 'Running';
         var deferred = $q.defer();
@@ -256,15 +253,12 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
             $scope.getpro=JSON.parse(resultado);
             if(resultado == '[]' || resultado == '[{}]' || resultado == ' ' || resultado == '')
             {
-				swal('', 'Error, sin datos', 'error'); 
-
-				
+				swal('', 'Error, sin datos', 'error');
             }
 			else{
                  deferred.resolve(resultado);
             }
-        });  
-
+        });
         return deferred.promise;
     };
 
@@ -395,7 +389,7 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
                 $scope.registro.FILE_FOTOCOPIA_CI_R = results[0].dtspsl_file_fotocopia_ci_r;
                 $scope.registro.FILE_CONDICIONES_USO = results[0].dtspsl_file_condiciones_uso
                 $scope.registro.FILE_FACTURA_LUZ = results[0].dtspsl_file_factura_luz;
-              //  $scope.macrodistritosidM(results[0].dtspsl_zona);
+
                 if (results[0].dtspsl_nombre_via) {
                     if(results[0].dtspsl_nombre_via.indexOf('%%')!=-1){
                         var arrayVia = results[0].dtspsl_nombre_via.split('%%');
@@ -434,10 +428,8 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
                 $scope.registro.activaciond = results[0].dtspsl_activaciond;                 ////recuperar  para las modificaciones
                 $scope.registro.fec_activacionf = results[0].dtspsl_fec_activacionf;         ////recuperar  para las modificaciones
                 $scope.registro.fec_activaciond = results[0].dtspsl_fec_activaciond;         ////recuperar  para las modificaciones
-
                 $scope.registro.razon = results[0].dtspsl_razon_social;
                 $scope.registro.mprTelefono = results[0].dtspsl_telefono;
-                //mostrarNumComplemento                        
                 $scope.registro.mprCelular = results[0].dtspsl_movil;                        
                 $scope.registro.mprCorreo = results[0].dtspsl_correo;   
 				if($scope.registro.correo=="")	
@@ -475,7 +467,6 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
                 $scope.registro.zona = parseInt(results[0].dtspsl_zona);
                 $scope.registro.zona_desc = results[0].dtspsl_zona_desc;					
                 $scope.registro.tipo_via = results[0].dtspsl_tipo_via;
-				//$scope.macrodistritosidM(results[0].dtspsl_zona);
 				$scope.vias(results[0].dtspsl_zona,results[0].dtspsl_tipo_via);	
 				$scope.registro.nombrevia = results[0].dtspsl_nombre_via;
 				
@@ -495,7 +486,6 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
                 $scope.registro.FILE_FACTURA_LUZ = results[0].dtspsl_file_factura_luz;
                 /************** Obtener Datos persona RL **********************/
                 var sCiRepresentanteLegal   =   ((typeof(results[0].dtspsl_ci_representante) == 'undefined' || results[0].dtspsl_ci_representante == null) ? ""   : results[0].dtspsl_ci_representante.trim());
-                //console.log("sCiRepresentanteLegal: ", sCiRepresentanteLegal);
                 if(sCiRepresentanteLegal != null && sCiRepresentanteLegal != "")
                 {
                     var fitro;     
@@ -633,7 +623,6 @@ $scope.startDateOpen2 = function($event) {
 $scope.estado_Civil = function(){
    var validarpromesas = [$scope.estadoCivil()];
    $q.all(validarpromesas).then(function (resp) {//AE - Validar Envio Licencia
-       //console.log("respLicencia: ", resp);
    });
 }
 $scope.estadoCivil = function(){
@@ -948,8 +937,6 @@ $scope.mostrarNatural = null;
          }             
      });
     };
-	
-    /*********************************************************************/   
     /************************ CARGAR MUNICIPIO ******************************/
     $scope.cargarMunicipio = function(idProvincia){
         var smunicipio   = new reglasnegocio();
@@ -1030,7 +1017,7 @@ $scope.mostrarNatural = null;
         document.getElementById('prsZona_d').value = '';
     }
 
-/*******************CARGAR ZONA MACRODISTRITO ******************************/
+    /*******************CARGAR ZONA MACRODISTRITO ******************************/
     
     $scope.MacroZona = function(){
         try{
@@ -1039,7 +1026,6 @@ $scope.mostrarNatural = null;
                 data = JSON.parse(resultado);
                     if(data.success.length > 0){
                         $scope.aMacroZona = data.success;
-                        console.log(' $scope.aMacroZona', $scope.aMacroZona);
                     }else{
                         $scope.msg = "Error !!";
                     }
@@ -1048,6 +1034,7 @@ $scope.mostrarNatural = null;
            console.log("error en zonas");
         }  
     };
+    //HABILITAR ZONAS DEL SIT, CUANDO ESTE ESTE HABILITADO
     /*$scope.MacroZona = function() {
         try{
             $.ajax({
@@ -1080,12 +1067,10 @@ $scope.mostrarNatural = null;
     };*/
 
     $scope.actulizarIdDistritoM  =   function(zonaid){
-        console.log('zonaid',zonaid);
         $scope.desabilitadoV=false;
         var idDistrito  = "";
         var zonaDescrip      = "";
-        var distNombre  = zonaid;
-        console.log('$scope.aMacroZona',$scope.aMacroZona);
+        var distNombre  = zonaid;        
         if($scope.aMacroZona){
             angular.forEach($scope.aMacroZona, function(value, key) {
               
@@ -1658,10 +1643,6 @@ $scope.vias_v2= function(zona,tipo)
         $scope.deshabilitadoNv=false;
     });
 };  
-  
-
-
-
 
 /**************************************************************************************/    
     ///////////////////////////////////////////////
@@ -2162,8 +2143,6 @@ $scope.vias_v2= function(zona,tipo)
       $scope.swjur = null;
       var buscarCiudadano = new rcNatural();
       buscarCiudadano.ci = reg.cedula;
-      /*if (reg.complemento!=null)
-        buscarCiudadano.complemento = reg.complemento;*/
         buscarCiudadano.buscarNatural_c(function(resultado) {
         resultadoApi = JSON.parse(resultado);
         if(resultadoApi.length > 0) {
@@ -2189,9 +2168,8 @@ $scope.vias_v2= function(zona,tipo)
               $scope.registro.lugarNacimiento = repLegalmongo[0].dtspsl_lugar_nacimiento;
             }
             else {
-              $scope.swjur = 'mostrar';
-              sweetAlert('Persona Registrada', 'Estimado Ciudadano(a). Para registrarse como Persona Jurídica, su cuenta debe ser activada. Para ello debe apersonarse a Plataforma del G.A.M.L.P. ó para más información contactarse con nuestra linea gratuita 800 13 5555', 'warning');
-			  
+              sweetAlert('Persona Registrada', 'Estimado Ciudadano(a). Para registrarse como Persona Jurídica, su cuenta debe ser activada. Para ello debe apersonarse a Plataforma del G.A.M.L.P. ó para más información contactarse con nuestra linea gratuita 800 13 5555', 'warning');                
+              /*$scope.swjur = 'mostrar';
 			  $scope.registro.nombre = "";
               $scope.registro.paterno = "";
               $scope.registro.materno = "";
@@ -2208,12 +2186,11 @@ $scope.vias_v2= function(zona,tipo)
               $scope.registro.ocupacion = "";
               $scope.registro.otra_profesion = "";
               $scope.registro.profesion = "";
-              $scope.registro.lugarNacimiento = "";
-			  
+              $scope.registro.lugarNacimiento = "";			  
               $scope.obtDatos="";
               $scope.tablaCiudadanos = null;
               $scope.tablaEmpresas = null;
-              $scope.bloquear3 = false;
+              $scope.bloquear3 = false;*/
             } 
         } else {
           sweetAlert('', 'Para registrarse como Persona Jurídica, primero debe registrar, a la Persona Natural!!!', 'warning');
@@ -2329,6 +2306,7 @@ $scope.vias_v2= function(zona,tipo)
     var markersj = [];
 
     $scope.initMap = function() {
+        /*
         var haightAshbury = {
             lat: -16.495635, 
             lng: -68.133543
@@ -2343,7 +2321,6 @@ $scope.vias_v2= function(zona,tipo)
             center: haightAshbury,
         });
 
-        // This event listener will call addMarker() when the map is clicked.
         map.addListener('click', function(event) {
             $scope.deleteMarkers();
             $scope.registro.latitud = event.latLng.lat();
@@ -2356,7 +2333,8 @@ $scope.vias_v2= function(zona,tipo)
             $scope.registro.latitud = event.latLng.lat();
             $scope.registro.longitud = event.latLng.lng();
             $scope.addMarkerJ(event.latLng);
-        });   
+        });
+        */
     }
     
     $scope.restaurarmapa    =   function(){
@@ -2413,7 +2391,7 @@ $scope.vias_v2= function(zona,tipo)
       $scope.setMapOnAllJ(null);
   }
 
-    // Shows any markers currently in the array.
+
     $scope.showMarkers = function() {
       $scope.setMapOnAll(map);
   }
@@ -2445,18 +2423,13 @@ $scope.vias_v2= function(zona,tipo)
                 lng: parseFloat($scope.registro.longitud)
             };
 
-            //map.setCenter(nuevoUbicacion);
             $scope.addMarker(nuevoUbicacion);
-
-            //console.log("tttttttttt",nuevoUbicacion);
             $scope.open_map_registroN(nuevoUbicacion);
-
         }else{
             var nuevoUbicacion = {
                 lat: -16.495635, 
                 lng: -68.133543
             };
-            //map.setCenter(nuevoUbicacion);
             $scope.addMarker(nuevoUbicacion);
             $scope.open_map_registroN(nuevoUbicacion);
         }         
@@ -2473,10 +2446,7 @@ $scope.vias_v2= function(zona,tipo)
                 lat: parseFloat($scope.registro.latitud), 
                 lng: parseFloat($scope.registro.longitud)
             };
-            $scope.open_map_registroJ(nuevoUbicacion)
-
-
-            //mapj.setCenter(nuevoUbicacion);
+            $scope.open_map_registroJ(nuevoUbicacion);
             $scope.addMarkerJ(nuevoUbicacion);
         }else{
             var nuevoUbicacion = {
@@ -2490,14 +2460,11 @@ $scope.vias_v2= function(zona,tipo)
         }         
     }
 
-    ///////////////////////MAPA GIS///////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     
     var epsg32719 = 'EPSG:32719';
     var epsg4326 = 'EPSG:4326';
     proj4.defs(epsg32719, '+proj=utm +zone=19 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs');
-    proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');    
     var view = new ol.View({center: ol.proj.fromLonLat([-68.133605,-16.495745]), zoom: 18});
     var vectorSource = new ol.source.Vector();
     var vectorLayer = new ol.layer.Vector({ source: vectorSource });
@@ -2516,11 +2483,9 @@ $scope.vias_v2= function(zona,tipo)
 
     var osm_udit = new ol.layer.Tile({
                               title: 'OSM',
-                              visible: true,
-                              //render: 'canvas',
+                              visible: true,                              
                               source: new ol.source.TileWMS({
-                                                              url: 'https://servgeo.lapaz.bo/geoserver/wms',
-                                                              //url: 'http://localhost:8090/geoserver/DEGEM/wms',
+                                                              url: 'https://servgeo.lapaz.bo/geoserver/wms',                                                              
                                                               params: {'LAYERS': 'DEGEM:osm_udit', 'VERSION': '1.1.1','FORMAT': 'image/png','TILED': true},
                                                               serverType: 'geoserver'
                                                               ,crossOrigin: 'Anonymous'
@@ -2666,10 +2631,8 @@ $scope.vias_v2= function(zona,tipo)
 
     $scope.open_map_registroN = function(nuevoUbicacion)
     {
-        
         var latitud = nuevoUbicacion.lat;
         var longitud = nuevoUbicacion.lng;
-
         setTimeout(function()
         {
           var style = new ol.style.Style({
@@ -2688,13 +2651,11 @@ $scope.vias_v2= function(zona,tipo)
               })
           });
 
-          $("#mapModificar_1").empty();
-            //////////////////////////////////////////////////////////////////
+          $("#mapModificar_1").empty();            
           var epsg32719 = 'EPSG:32719';
           var epsg4326 = 'EPSG:4326';
           proj4.defs(epsg32719, '+proj=utm +zone=19 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs');
-          proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');
-          ////////////////////////////////////////////////////////////////////////
+          proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');          
           $scope.mapa = new ol.Map({
               layers: [
                   new ol.layer.Group({
@@ -2708,15 +2669,7 @@ $scope.vias_v2= function(zona,tipo)
                           //lotes_1,
                           vectorLayer
                         ]
-                    })    
-                                //  ,
-                                //  new ol.layer.Group({
-                                //                        title: 'Capas',
-                                //                        layers: [
-                                //                               
-                                //                                ]
-                                //                    })
-                                //  
+                    })
                 ],
                 //overlays: [featureOverlay],
                 target: 'mapModificar_1',
@@ -2730,20 +2683,17 @@ $scope.vias_v2= function(zona,tipo)
           vectorLayer.getSource().clear();
 
           if (isNaN(latitud) && isNaN(longitud))
-          {
-              //console.log("no existe Lat y Lon o son undefined");
+          {              
           }
           else
           {
               if(latitud === '' || longitud === '')
               {
-                  //console.log("lat y lon son cadena vacia");
                   map.getView().setCenter(ol.proj.fromLonLat([-68.133605,-16.495745]));
                   map.getView().setZoom(16);
               }
               else
               {
-                  //console.log("existe lat y lon");
                   latitud = parseFloat(latitud);
                   longitud = parseFloat(longitud);
                   var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
@@ -2755,9 +2705,6 @@ $scope.vias_v2= function(zona,tipo)
           }
           ////////////////////////////////////////////////////////////////////////
           var n_genesis = geo_id_genesis.length;
-          //console.log("n_id_gene...",n_genesis);
-          //console.log("n_id_sit...",geo_id_sit.length);
-          //console.log("n_id_serv...",geo_id_sit_servicio.length);
           $scope.mapa.on('click', function (evt)
           {
             vectorSource.clear();
@@ -2768,10 +2715,6 @@ $scope.vias_v2= function(zona,tipo)
             var latitud = centro_1[1];
             var longitud = centro_1[0];
             wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
-            
-            //console.log("latitud:",latitud);
-            //console.log("longitud:",longitud);
-
             $scope.registro.longitud = longitud;
             $scope.registro.latitud = latitud;
             /////////////////////////////////////////////////////////////////////
@@ -2783,8 +2726,7 @@ $scope.vias_v2= function(zona,tipo)
                 var props = feature.getProperties();
             }
             else
-            {
-              //alert();
+            {              
               var url_zonas_tributarias = zonas_tributarias_udit.getSource().getGetFeatureInfoUrl(
                 evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
                   'INFO_FORMAT': 'application/json',
@@ -2811,27 +2753,7 @@ $scope.vias_v2= function(zona,tipo)
                       'propertyName': 'codigocatastral'
                   }
               );
-              /*
-              reqwest({
-                  url: url_lotes,
-                  type: 'json',
-              }).then(function(data) {
-                var feature = data.features[0];
-                console.log("feeeee",feature);
-                if(feature === undefined)
-                {
-                    console.log("No se encuentran datos para lotes...");
-                }
-                else
-                {
-                    ///////////////////////////////////////////////////////////
-                    var cod = feature.properties;
-                    var codigo_catastro = cod.codigocatastral;
-                    console.log("codigo catastro: ",codigo_catastro);
-                    ///////////////////////////////////////////////////////////
-                }
-              });
-              */
+              
               reqwest({
                   url: url_zonas_tributarias,
                   type: 'json',
@@ -2840,7 +2762,6 @@ $scope.vias_v2= function(zona,tipo)
                 ///////////////////////////////////////////////////////////
                 var cod = feature.properties;
                 var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                //console.log("codigo zona tributaria: ",codigo_zona_tributaria);
                 ///////////////////////////////////////////////////////////
               });
               reqwest({
@@ -2855,19 +2776,13 @@ $scope.vias_v2= function(zona,tipo)
                 var macrodistrito = cod.macrodistr;
                 var cod_zona= cod.codigozona;
                 var distrito= cod.distrito;
-                //console.log("cod zona serv sit: ",cod_zona);
                 /////////////////////////////////////////////
-                //console.log("hhhhh",n_genesis);
                 for (var i=0;i<n_genesis;i++) {
                     if(geo_id_sit_servicio[i ]=== cod_zona) {
-                        cod_zona_genesis = geo_id_genesis[i];
-                        //console.log("cod zona genesis: ",cod_zona_genesis);
+                        cod_zona_genesis = geo_id_genesis[i];                        
                     }
                 }
                 /////////////////////////////////////////////
-                //console.log("zona: ",zona);
-                //console.log("macrodistrito: ",macrodistrito);
-                //console.log("distrito: ",distrito);
               });
               
               reqwest({
@@ -2877,17 +2792,14 @@ $scope.vias_v2= function(zona,tipo)
               {
                 var feature = data.features[0];
                 if(feature === undefined)
-                {
-                    //console.log("No se encuentran datos para vias...");
+                {                    
                 }
                 else
                 {
                     //////////////////////////////////////////////////////////
                     var cod = feature.properties;
                     var nombre_via = cod.nombrevia;
-                    var tipo_via = cod.tipovia;
-                    //console.log("nombre via: ",nombre_via);
-                    //console.log("tipo via: ",tipo_via);
+                    var tipo_via = cod.tipovia;                    
                     //////////////////////////////////////////////////////////
                 }
               });
@@ -2947,14 +2859,6 @@ $scope.vias_v2= function(zona,tipo)
                           vectorLayer
                         ]
                     })    
-                                //  ,
-                                //  new ol.layer.Group({
-                                //                        title: 'Capas',
-                                //                        layers: [
-                                //                               
-                                //                                ]
-                                //                    })
-                                //  
                 ],
                 //overlays: [featureOverlay],
                 target: 'mapModificarJ_1',
@@ -2968,20 +2872,17 @@ $scope.vias_v2= function(zona,tipo)
           vectorLayer.getSource().clear();
 
           if (isNaN(latitud) && isNaN(longitud))
-          {
-              //console.log("no existe Lat y Lon o son undefined");
+          {              
           }
           else
           {
               if(latitud === '' || longitud === '')
               {
-                  //console.log("lat y lon son cadena vacia");
                   map.getView().setCenter(ol.proj.fromLonLat([-68.133605,-16.495745]));
                   map.getView().setZoom(16);
               }
               else
               {
-                  //console.log("existe lat y lon");
                   latitud = parseFloat(latitud);
                   longitud = parseFloat(longitud);
                   var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
@@ -2993,9 +2894,6 @@ $scope.vias_v2= function(zona,tipo)
           }
           ////////////////////////////////////////////////////////////////////////
           var n_genesis = geo_id_genesis.length;
-          //console.log("n_id_gene...",n_genesis);
-          //console.log("n_id_sit...",geo_id_sit.length);
-          //console.log("n_id_serv...",geo_id_sit_servicio.length);
           $scope.mapa.on('click', function (evt)
           {
             vectorSource.clear();
@@ -3006,10 +2904,6 @@ $scope.vias_v2= function(zona,tipo)
             var latitud = centro_1[1];
             var longitud = centro_1[0];
             wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
-            
-            //console.log("latitud:",latitud);
-            //console.log("longitud:",longitud);
-
             $scope.registro.longitud = longitud;
             $scope.registro.latitud = latitud;
             /////////////////////////////////////////////////////////////////////
@@ -3022,7 +2916,6 @@ $scope.vias_v2= function(zona,tipo)
             }
             else
             {
-              //alert();
               var url_zonas_tributarias = zonas_tributarias_udit.getSource().getGetFeatureInfoUrl(
                 evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
                   'INFO_FORMAT': 'application/json',
@@ -3049,27 +2942,7 @@ $scope.vias_v2= function(zona,tipo)
                       'propertyName': 'codigocatastral'
                   }
               );
-              /*
-              reqwest({
-                  url: url_lotes,
-                  type: 'json',
-              }).then(function(data) {
-                var feature = data.features[0];
-                console.log("feeeee",feature);
-                if(feature === undefined)
-                {
-                    console.log("No se encuentran datos para lotes...");
-                }
-                else
-                {
-                    ///////////////////////////////////////////////////////////
-                    var cod = feature.properties;
-                    var codigo_catastro = cod.codigocatastral;
-                    console.log("codigo catastro: ",codigo_catastro);
-                    ///////////////////////////////////////////////////////////
-                }
-              });
-              */
+
               reqwest({
                   url: url_zonas_tributarias,
                   type: 'json',
@@ -3078,7 +2951,6 @@ $scope.vias_v2= function(zona,tipo)
                 ///////////////////////////////////////////////////////////
                 var cod = feature.properties;
                 var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                //console.log("codigo zona tributaria: ",codigo_zona_tributaria);
                 ///////////////////////////////////////////////////////////
               });
               reqwest({
@@ -3093,19 +2965,13 @@ $scope.vias_v2= function(zona,tipo)
                 var macrodistrito = cod.macrodistr;
                 var cod_zona= cod.codigozona;
                 var distrito= cod.distrito;
-                //console.log("cod zona serv sit: ",cod_zona);
                 /////////////////////////////////////////////
-                //console.log("hhhhh",n_genesis);
                 for (var i=0;i<n_genesis;i++) {
                     if(geo_id_sit_servicio[i ]=== cod_zona) {
                         cod_zona_genesis = geo_id_genesis[i];
-                        //console.log("cod zona genesis: ",cod_zona_genesis);
                     }
                 }
                 /////////////////////////////////////////////
-                //console.log("zona: ",zona);
-                //console.log("macrodistrito: ",macrodistrito);
-                //console.log("distrito: ",distrito);
               });
               
               reqwest({
@@ -3116,16 +2982,13 @@ $scope.vias_v2= function(zona,tipo)
                 var feature = data.features[0];
                 if(feature === undefined)
                 {
-                    //console.log("No se encuentran datos para vias...");
                 }
                 else
                 {
                     //////////////////////////////////////////////////////////
                     var cod = feature.properties;
                     var nombre_via = cod.nombrevia;
-                    var tipo_via = cod.tipovia;
-                    //console.log("nombre via: ",nombre_via);
-                    //console.log("tipo via: ",tipo_via);
+                    var tipo_via = cod.tipovia;                 
                     //////////////////////////////////////////////////////////
                 }
               });
@@ -3145,7 +3008,6 @@ $scope.vias_v2= function(zona,tipo)
     {
       var nombre_1 = new Array();
       var f = '';
-      //var nombre = $("#busqueda_p1").val();
       var nombre_j = document.getElementById('busqueda_pj').value;
       var nombre_n = document.getElementById('busqueda_pn').value;
       if(nombre_j === '')
@@ -3157,7 +3019,6 @@ $scope.vias_v2= function(zona,tipo)
         var nombre = nombre_j;
       }
       nombre = nombre.toUpperCase();
-      //console.log(nombre);
       var ca = "CALLE ";
       ca = ca.concat(nombre);
       var c = 0;
@@ -3168,8 +3029,6 @@ $scope.vias_v2= function(zona,tipo)
       if(nombre==='')
       {
         var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
-        //console.log("Vacio :",obj);
-        //map.removeLayer(vectorLayerZonas);
         vectorLayerZonas.getSource().clear();
       }
       else
@@ -3192,7 +3051,6 @@ $scope.vias_v2= function(zona,tipo)
           }
           if(c>0)
           {
-            //alert("mapa_principal");
             geo_zona = JSON.stringify(geo_zona);
             vectorLayerZonas.setSource(new ol.source.Vector({
                                                          features: (new ol.format.GeoJSON({defaultDataProjection:'EPSG:3857'})).readFeatures(geo_zona)
@@ -3204,8 +3062,7 @@ $scope.vias_v2= function(zona,tipo)
             $scope.mapa.getView().setCenter([xx,yy]);
             $scope.mapa.getView().setZoom(15);
 
-            setTimeout(function(){
-              //alert();
+            setTimeout(function(){              
               vectorLayerZonas.getSource().clear();
             },2400);
 
@@ -3214,13 +3071,9 @@ $scope.vias_v2= function(zona,tipo)
         if(c==0)
         {
           var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
-          //console.log("Vacio :",obj);
         }
       }   
     };
-
-    ////////////////////////////////////////////////////////////////
-
     $scope.cerrarMapa = function () {
         $scope.mostrarMapa = false;
     };
@@ -3428,16 +3281,6 @@ $scope.vias_v2= function(zona,tipo)
                             fileUpload1.uploadFileToUrl1($scope.FILE_FOTOCOPIA_CI, uploadUrl,nombreNuevoCIAnverso);
                             $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
                             $scope.btover = true;
-                            /*var zipci = new JSZip();
-                            zipci.file($scope.FILE_FOTOCOPIA_CI.name, $scope.FILE_FOTOCOPIA_CI);
-                            zipci.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobci) {
-                                nombreNuevoCIAnverso = 'CI_anverso_'+fechaNueva+'.zip';
-                                fileUpload1.uploadFileToUrl1(blobci, uploadUrl, nombreNuevoCIAnverso);
-                                $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
-                                $scope.FILE_FOTOCOPIA_CI = blobci; 
-                                $scope.btover=true; 
-                                document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;                         
-                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo CEDULA DE IDENTIDAD no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -3457,7 +3300,6 @@ $scope.vias_v2= function(zona,tipo)
                             fileUpload1.uploadFileToUrl1($scope.FILE_FOTOCOPIA_CI, uploadUrl,nombreNuevoCIAnverso);
                             $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
                             $scope.btover=true;
-                            //console.log(nombreNuevoCIAnverso,888);
                             document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;                         
                             $.unblockUI();
                         } else{
@@ -3509,15 +3351,6 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.registro.FILE_FOTOCOPIA_CI_R = nombreNuevoCIReverso;
                             $scope.btover1 = true;
                             $.unblockUI();
-                            /*var zipcir = new JSZip();
-                            zipcir.file($scope.FILE_FOTOCOPIA_CI_R.name, $scope.FILE_FOTOCOPIA_CI_R);
-                            zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobcir) {
-                                nombreNuevoCIReverso = 'CI_reverso_'+fechaNueva+'.zip';
-                                fileUpload1.uploadFileToUrl1(blobcir, uploadUrl,nombreNuevoCIReverso);
-                                $scope.registro.FILE_FOTOCOPIA_CI_R = nombreNuevoCIReverso;
-                                $scope.FILE_FOTOCOPIA_CI_R = blobcir; 
-                                $scope.btover1=true;
-                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo CEDULA DE IDENTIDAD no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -3579,14 +3412,6 @@ $scope.vias_v2= function(zona,tipo)
                             nombreNuevoPoderLegal = 'poder_'+fechaNueva+'.'+tipoDocpl;
                             fileUpload1.uploadFileToUrl1($scope.FILE_PODER_LEGAL, uploadUrl,nombreNuevoPoderLegal);
                             $scope.registro.FILE_PODER_LEGAL = nombreNuevoPoderLegal;
-                            /*var zippl = new JSZip();
-                            zippl.file($scope.FILE_PODER_LEGAL.name, $scope.FILE_PODER_LEGAL);
-                            zippl.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobpl) {
-                                nombreNuevoPoderLegal = 'poder_'+fechaNueva+'.zip';
-                                fileUpload1.uploadFileToUrl1(blobpl, uploadUrl,nombreNuevoPoderLegal);
-                                $scope.registro.FILE_PODER_LEGAL = blobpl.name;
-                                $scope.FILE_PODER_LEGAL = blobpl;                            
-                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo PODER DEL REPRESENTANTE LEGAL no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -3646,16 +3471,7 @@ $scope.vias_v2= function(zona,tipo)
                         if (tipoDoctc == 'pdf' ||  tipoDoctc == 'docx' ||  tipoDoctc == 'docxlm') {
                             nombreNuevoTestimonio = 'testimonio_'+fechaNueva+'.'+tipoDoctc;
                             fileUpload1.uploadFileToUrl1($scope.FILE_TEST_CONST, uploadUrl, nombreNuevoTestimonio);
-                            $scope.registro.FILE_TEST_CONST = nombreNuevoTestimonio;
-                            /*var ziptc = new JSZip();
-                            ziptc.file($scope.FILE_TEST_CONST.name, $scope.FILE_TEST_CONST);
-                            ziptc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobtc) {
-                                nombreNuevoTestimonio = 'testimonio_'+fechaNueva+'.zip';
-                                fileUpload1.uploadFileToUrl1(blobtc, uploadUrl,nombreNuevoTestimonio);
-                                $scope.registro.FILE_TEST_CONST = nombreNuevoTestimonio;
-                                $scope.FILE_TEST_CONST = blobtc;                            
-                            })*/
-                        }
+                            $scope.registro.FILE_TEST_CONST = nombreNuevoTestimonio;                        }
                         else{
                             swal('Advertencia', 'El archivo TESTIMONIO DE CONSTITUCION no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
                             document.getElementById('txt_FILE_TEST_CONST').value = '';
@@ -3716,14 +3532,6 @@ $scope.vias_v2= function(zona,tipo)
                             fileUpload1.uploadFileToUrl1($scope.FILE_NUM_IDENT, uploadUrl, nombreNuevoNit);
                             $scope.registro.FILE_NUM_IDENT = nombreNuevoNit;
                             $.unblockUI();
-                            /*var zipnu = new JSZip();
-                            zipnu.file($scope.FILE_NUM_IDENT.name, $scope.FILE_NUM_IDENT);
-                            zipnu.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobni) {
-                                nombreNuevoNit = 'nit_'+fechaNueva+'.zip';
-                                fileUpload1.uploadFileToUrl1(blobni, uploadUrl, nombreNuevoNit);
-                                $scope.registro.FILE_NUM_IDENT = nombreNuevoNit;
-                                $scope.FILE_NUM_IDENT = blobni;                            
-                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo NUMERO DE IDENTIFICACION no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -3784,14 +3592,6 @@ $scope.vias_v2= function(zona,tipo)
                             nombreNuevoFundaempresa = 'fundempresa_'+fechaNueva+'.'+tipoDocfe;
                             fileUpload1.uploadFileToUrl1($scope.FILE_FUND_EMP, uploadUrl, nombreNuevoFundaempresa);
                             $scope.registro.FILE_FUND_EMP = nombreNuevoFundaempresa;
-                            /*var zipfe = new JSZip();
-                            zipfe.file($scope.FILE_FUND_EMP.name, $scope.FILE_FUND_EMP);
-                            zipfe.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobfe) {
-                                nombreNuevoFundaempresa = 'fundempresa_'+fechaNueva+'.zip';
-                                fileUpload1.uploadFileToUrl1(blobfe, uploadUrl ,nombreNuevoFundaempresa);
-                                $scope.registro.FILE_FUND_EMP = nombreNuevoFundaempresa;
-                                $scope.FILE_FUND_EMP = blobfe;                            
-                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo FUNDEMPRESA no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -3849,14 +3649,6 @@ $scope.vias_v2= function(zona,tipo)
                             nombreNuevoRgComer = 'regcomer_'+fechaNueva+'.'+tipoDocrc;
                             fileUpload1.uploadFileToUrl1($scope.FILE_REG_COMER, uploadUrl, nombreNuevoRgComer);
                             $scope.registro.FILE_REG_COMER = nombreNuevoRgComer;
-                            /*var ziprc = new JSZip();
-                            ziprc.file($scope.FILE_REG_COMER.name, $scope.FILE_REG_COMER);
-                            ziprc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobrc) {
-                                blobrc.name = nombrerc;
-                                fileUpload.uploadFileToUrl(blobrc, uploadUrl);
-                                $scope.registro.FILE_REG_COMER = blobrc.name;
-                                $scope.FILE_REG_COMER = blobrc;                            
-                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo REGISTRO COMERCIAL no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');

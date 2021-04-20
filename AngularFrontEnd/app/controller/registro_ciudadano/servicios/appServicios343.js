@@ -915,6 +915,76 @@
                         $scope.GetValueMacrodistrito(idMacrodistrito);
                         //$("#f01_macro_act_descrip").val(idMacrodistrito);
                         $scope.datos.f01_zona_act_descrip = zona;
+                         ////////////////////////////////////////////////
+                        if($scope.datos.f01_zona_act_descrip === "EL ROSARIO")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "ROSARIO";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "ALTO VINO TINTO")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "VINO TINTO";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "ZONA NORTE")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "NORTE";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "AGUA DE LA VIDA NORTE")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "AGUA DE LA VIDA";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "KOCHAPAMPA")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "COCHAPAMPA";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "ALTO PURA PURA SAN SEBASTIAN")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "ALTO PURA PURA";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "ALTO PURA PURA ALTO SAN PEDRO")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "ALTO PURA PURA";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "CIUDAD DEL NIÑO")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "CIUDAD DEL NINO";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "MESETA ACHUMANI")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "MESETA DE ACHUMANI";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "MIRAFLORES SUR")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "MIRAFLORES BAJO";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "SAN JUAN DE COTAHUMA")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "COTAHUMA";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "23 DE MARZO LA HOYADA")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "23 DE MARZO (ALTO TEJAR)";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "HUAYLLANI")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "HUAYLLANI (ACHUMANI)";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "ALTO LA FLORIDA")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "LA FLORIDA";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "LOS ROSALES ALTO CALACOTO")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "LOS ROSALES CALACOTO-COTA";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "OVEJUYO EL ARENAL")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "PLAYON OVEJUYO";
+                        }
+                        if($scope.datos.f01_zona_act_descrip === "VILLA APAÑA")
+                        {
+                            $scope.datos.f01_zona_act_descrip = "APANA";
+                        }
+                        ////////////////////////////////////////////////
                         //$("#f01_zona_act_descrip").val(zona);
                         var listarZonas = [$scope.distritoZonas(idMacrodistrito)];
                         $q.all(listarZonas).then(function(resp) {

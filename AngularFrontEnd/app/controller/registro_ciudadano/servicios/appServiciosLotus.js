@@ -12,25 +12,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         {name: 'template0.html', url: '../../../app/index.html'},//no existe en bd
         {name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/moustache.html'}
     ];
-    var p = $scope.serviciosLotus = [
-        { name: 'Correspondencia ciudadana', id:'17', idprc:'73', idcampo:'788', scodigo:'CORC'},
-        { name: 'Corrrespondencia al Concejo Municipal', id:'26', idprc:'73', idcampo:'819', scodigo:'CCCMD'},        { name: 'Ejecución de procesos de fiscalización', id:'23', idprc:'73', idcampo:'812', scodigo:'EPFZ'},
-        { name: 'Denuncias y reclamos', id:'24', idprc:'73', idcampo:'790', scodigo:'DRTR'},
-        { name: 'Calificación de años de servicio', id:'25', idprc:'73', idcampo:'821', scodigo:'CAS'},
-        { name: 'Fotocopias', id:'26', idprc:'73', idcampo:'815', scodigo:'FOT'},
-        { name: 'Publicidad urbana', id:'27', idprc:'73', idcampo:'810', scodigo:'PUB'},
-        { name: 'Catastro', id:'28', idprc:'73', idcampo:'856', scodigo:'CAT'},
-        { name: 'Inmuebles', id:'29', idprc:'73', idcampo:'835', scodigo:'INM'},
-        { name: 'Administración territorial', id:'30', idprc:'73', idcampo:'816', scodigo:'ADMT'},
-        { name: 'Fiscalización tributos municipales', id:'31', idprc:'73', idcampo:'857', scodigo:'FTM'},
-        { name: 'Vehículos', id:'32', idprc:'73', idcampo:'836', scodigo:'VEH'},
-        { name: 'Planilla pago de obras', id:'33', idprc:'73', idcampo:'854', scodigo:'PPO'},        
-        { name: 'Correspondencia Ciudadana cm (cccm)', id:'34', idprc:'73', idcampo:'819', scodigo:'CCCM'},        
-        { name: 'Comercio en vías y espacios públicos', id:'35', idprc:'73', idcampo:'820', scodigo:'CVEP'},
-        { name: 'Mercados municipales de abasto', id:'36', idprc:'73', idcampo:'792', scodigo:'MMA'},
-        { name: 'Transferencia de área residual', id:'37', idprc:'73', idcampo:'791', scodigo:'TAR'},
-        { name: 'Uso de espacios públicos temporales', id:'38', idprc:'73', idcampo:'861', scodigo:'UEPP'}
-    ];
     $scope.btnEnviarForm = true;
     $scope.habGuardar1 = true;
     $scope.template     =   "";
@@ -60,72 +41,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
 
         var idData = $.getJSON("../../controller/registro_ciudadano/servicios/ayuda.json", function(data) 
         {
-            /*angular.forEach(data, function(value, key) 
-            {
-              var idAyuda = i_xXs;
-              var id      = value['id'];
-              
-              if(id==idAyuda)
-              {
-                $scope.id         = value['id']; 
-                $scope.name       = value['name'];
-                $scope.description= value['description'];
-                                console.log($scope.description,'idAyuda');
-
-                $scope.image1     = value['image1'];
-                $scope.image2     = value['image2'];
-                $scope.image3     = value['image3'];
-                $scope.step1      = value['step1'];
-                //console.log($scope.step1,'step1');
-                //var text = 
-                $scope.step2      = value['step2'];
-                document.getElementById('texto').innerHTML= $scope.step1;
-
-                $scope.step3      = value['step3'];
-                $scope.step4      = value['step4'];
-                $scope.step5      = value['step5'];
-                $scope.step6      = value['step6'];
-
-
-                var showChar = 100;
-                var ellipsestext = " . . . ";
-                var moretext = "+ MÁS DESCRIPCIÓN";
-                var lesstext = "- MENOS DESCRIPCIÓN";                      
-                var content = $scope.description= value['description'];
-
-                if(content.length > showChar) 
-                {
-                    var c = content.substr(0, showChar);
-                    var html = '<div  class="abstract" style="text-align: justify !important;">' + c + ellipsestext + '</div>' + '<div class="morecontent" style="text-align: justify !important;">' + content + '</div>' + '<a><span class="ready-btn1">' + moretext + '</span></a>';
-                    $('.more').html(html);
-                }
-                else
-                {
-                    var html = '<div class="" style="text-align: justify !important;">' + content + '</div>';
-                    $('.more').html(html);
-                }
-                   
-                $('.ready-btn1').click(function() 
-                {
-                  if($(this).hasClass('less')) 
-                  {
-                    $(this).removeClass('less');
-                    $(this).html(moretext);
-                    $('.abstract').removeClass('hidden');
-                  }
-                  else
-                  {
-                    $(this).addClass('less');
-                    $(this).html(lesstext);
-                    $('.abstract').addClass('hidden');
-                  }
-                    $(this).parent().prev().slideToggle('fast');
-                    $(this).prev().slideToggle('fast');
-                    return false;
-                });
-
-              }
-            });*/
+           
             angular.forEach(data, function(value, key) 
             {
               var idAyuda = i_xXs;
@@ -227,24 +143,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
               }
             });
             $scope.$apply();
-        }); 
-
-        /*var tam=p.length;                            
-        for (var i = 0; i < tam; i++)
-        {
-            var idValue = p[i].id;
-            if(idValue == i_xXs)
-            {
-                $scope.id     = p[i].id;
-                $scope.name   = p[i].name;
-                $scope.idprc  = p[i].idprc;
-                $scope.idcampo= p[i].idcampo;
-                $scope.scodigo= p[i].scodigo;
-
-                $('#registroLotus').modal('hide');
-                $('#renderLotus').modal('show');
-            }
-        }*/ 
+        });      
     }
 
     $scope.volverMenuAyuda = function()
@@ -315,64 +214,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         }
         $scope.datosfalt = datosfaltantes; 
     }
-    /*
-    $scope.validacionDatosJuridico = function(datos){
-        var datosfaltantes = '';
-        datosfaltantes = new Array();
-        if(datos.dtspsl_ci_representante == '' || datos.dtspsl_ci_representante == ' '){
-             datosfaltantes.push('CI DEL REPRESENTANTE LEGAL');
-        }
-        if(datos.dtspsl_razon_social == '' || datos.dtspsl_razon_social == ' '){
-             datosfaltantes.push(' RAZON SOCIAL');
-        }
-        if(datos.dtspsl_movil == ''){
-            datosfaltantes.push(' CELULAR');
-        }
-        if((datos.dtspsl_correo == '')||(datos.dtspsl_correo == ' ')){
-            datosfaltantes.push(' CORREO');
-        }
-        if(datos.dtspsl_pais == ''){
-            datosfaltantes.push(' PAIS');
-        }
-        if(datos.dtspsl_departamento == ''){
-            datosfaltantes.push(' DEPARTAMENTO');
-        }
-        if(datos.dtspsl_provincia == ''){
-            datosfaltantes.push(' PROVINCIA');
-        }
-        if((datos.dtspsl_macrodistrito == '' || datos.dtspsl_macrodistrito_desc == '')){
-            datosfaltantes.push(' MACRODISTRITO');
-        }
-        if((datos.dtspsl_distrito == '' || datos.dtspsl_distrito_desc == '')){
-            datosfaltantes.push(' DISTRITO');
-        }
-        if((datos.dtspsl_zona_desc == '' || datos.dtspsl_zona == '')){
-            datosfaltantes.push(' ZONA');
-        }
-        if(datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0'){
-            datosfaltantes.push(' NOMBRE DE VIA');
-        }
-        if(datos.dtspsl_numero_casa == '' || datos.dtspsl_nombre_via == '0'){
-            datosfaltantes.push(' NUMERO DE DOMICILIO');
-        }
-        if(datos.dtspsl_file_poder_legal == '' || datos.dtspsl_file_poder_legal == ' ' ){
-            datosfaltantes.push(' DOCUMENTO DE PODER DEL REPRESENTANTE LEGAL');
-        }
-        if(datos.dtspsl_file_num_ident == '' || datos.dtspsl_file_num_ident == ' '){
-            datosfaltantes.push(' DOCUMENTO TESTIMONIO DE CONSTITUCION');
-        }
-        if(datos.dtspsl_file_num_ident == '' || datos.dtspsl_file_num_ident == ' '){
-            datosfaltantes.push(' DOCUMENTO NUMERO DE IDENTIFICACION TRIBUTARIA (NIT)');
-        }
-        if(datos.dtspsl_file_fund_emp == '' || datos.dtspsl_file_fund_emp == ' '){
-            datosfaltantes.push(' DOCUMENTO FUNDEMPRESA');
-        }
-        if(datos.dtspsl_file_reg_comer == '' || datos.dtspsl_file_reg_comer == ' '){
-            datosfaltantes.push(' DOCUMENTO REGISTRO COMERCIAL');
-        }
-
-        $scope.datosfalt = datosfaltantes; 
-    }*/
     $scope.validacionDatosJuridico = function(datos){
         var datosfaltantes = '';
         datosfaltantes = new Array();
@@ -483,6 +324,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         try {
             var rData = new rcTramites();
             rData.oid = sIdCiudadano;
+            //rData.tipo = sTipo;
             rData.obtTramitesx(function(res){
                 r = JSON.parse(res);                
                 results = r.success;
@@ -674,6 +516,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     };    
 
     $scope.seleccionarProcesoT = function (tramite) {
+        $scope.procesoSeleccionado  =   tramite.id;
         $scope.formtramite  =   tramite;   
         $scope.tramiteSeleccionadoP  =   tramite.idcampo;
     };
@@ -688,17 +531,9 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     }
 
     $scope.recuperarFormsxProceso = function (tramite) {
-        if (tramite.vdvser_id == 17){
             try{
                 jDataFormsLotus     =   [];
-                var sidproceso      =   73;
-                var sidcampo        =   tramite.datos.INT_ID_FORM_LOTUS;
-                var getFormJson     =   new getFormulario();
-                getFormJson.idprc   =   sidproceso;
-                getFormJson.idcampo =   sidcampo;
                 $.getJSON( "../../controller/registro_ciudadano/servicios/correspondencia.json", function( respuesta ) {
-                   
-                    //var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
                     var forms   =   respuesta.success.data[0].exportar_formulario;         
                     jDataFormsLotus =   forms;
                     $scope.tramiteSeleccionadoP  =   tramite.idcampo;
@@ -712,35 +547,10 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 console.log("Error al Procesar formulario:",e);
                 $.unblockUI();
             }
-        }
-        if(tramite.vdvser_id == 26){
-            try{
-                jDataFormsLotus     =   [];
-                var sidproceso      =   73;
-                var sidcampo        =   tramite.datos.INT_ID_FORM_LOTUS;
-                var getFormJson     =   new getFormulario();
-                getFormJson.idprc   =   sidproceso;
-                getFormJson.idcampo =   sidcampo;
-                $.getJSON( "../../controller/registro_ciudadano/servicios/correspondencia.json", function( respuesta ) {
-                    //var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
-                    var forms   =   respuesta.success.data[0].exportar_formulario;       
-                    jDataFormsLotus =   forms;
-                    $scope.tramiteSeleccionadoP  =   tramite.idcampo;
-                    $scope.formtramite  =   tramite;
-                    //CARGAR FORMULARIO
-                    $scope.seleccionarTramiteRender(tramite);
-                    $scope.$apply();
-                    $.unblockUI();
-                });
-            }catch(e){
-                console.log("Error al Procesar formulario:",e);
-                $.unblockUI();
-            }
-        }
-
+       // }
     };    
 
-    $scope.seleccionarTramiteRender = function (tramite) {
+    $scope.seleccionarTramiteRender = function (tramite) {  
         $rootScope.tramiteId = tramite.vtra_id;
         sessionService.set('IDTRAMITE', tramite.vtra_id);
         sessionService.set('IDSERVICIO', tramite.vdvser_id);
@@ -823,7 +633,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             }, 1000);
         });
     }
-
 
     $scope.adicionarServicioGamlp = function(tramite){
         $scope.template = "";
@@ -1012,28 +821,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             error: function (response){ console.log(response);}
         });
     }
-
-    /*$scope.tablaHistorico = new ngTableParams({
-        page: 1,
-        count: 4,
-        filter: {},
-        sorting: {
-            vtra_id: 'desc'
-        }
-    }, {
-        total: $scope.tablaHistoricoMovimientos.length,
-        getData: function($defer, params) {
-            var filteredData = params.filter() ?
-            $filter('filter')($scope.tablaHistoricoMovimientos, params.filter()) :
-            $scope.tablaHistoricoMovimientos;
-            var orderedData = params.sorting() ?
-            $filter('orderBy')(filteredData, params.orderBy()) :
-            $scope.tablaHistoricoMovimientos;
-            params.total($scope.tablaHistoricoMovimientos.length);
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-        }
-    });*/
-
     $scope.cargaActuacionHistorico = function(histo, vuid, nrocopia, usuario, copiaid) {
         $scope.dataH = [];
         $.ajax({
@@ -1081,16 +868,34 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             error: function (response){ console.log(response);}
         });
     }
+
+    $scope.obtenerDatosServicio = function(){
+        $scope.tramite_ciudadano = 'SITRAM_C';
+        var sData = new obtIdServicio();
+        sData.codigo = $scope.tramite_ciudadano;
+        sData.obt_Id_Servicio(function(res){
+            $scope.res = JSON.parse(res);
+            $scope.resMenu = $scope.res.success;
+            $rootScope.serviciosLotus = $scope.resMenu;
+        })
+    }
+
+
     
     $scope.$on('api:ready',function(){
         $scope.obtenerFecha();
         $scope.recuperandoDatosInicialesCiudadano();        
         $scope.tramitesCiudadano();
+        $scope.obtenerDatosServicio();
+       
     });
 
     $scope.inicioServicios = function () {        
         $scope.obtenerFecha();
         $scope.recuperandoDatosInicialesCiudadano();        
         $scope.tramitesCiudadano();
+        $scope.obtenerDatosServicio();
+        
+
     };
 });

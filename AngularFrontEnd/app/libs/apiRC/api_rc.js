@@ -1305,6 +1305,22 @@ rcTramites.prototype.obtTramitesy = function (functionResp)
   ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 }
 
+function obtIdServicio(){
+  this.codigo;
+};
+
+obtIdServicio.prototype.obt_Id_Servicio = function (functionResp)
+{
+urlComp = "/obtIdServicio";
+typeCall = "post";
+
+dataParams = {
+        "codigo": this.codigo
+};
+
+ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+}
+
 function macrodistritoLstid(){
     this.idMacro;
 };

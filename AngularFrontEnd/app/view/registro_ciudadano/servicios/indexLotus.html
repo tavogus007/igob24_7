@@ -54,15 +54,6 @@
   {
     display:none;
   }
-
-  /*.iconBtn:hover
-  {
-    transform : scale(2);
-    -moz-transform : scale(2);      
-    -webkit-transform : scale(2); 
-    -o-transform : scale(2);
-  }*/
-
   .iconBtn:hover {
     transform:scale(0.8);
             -ms-transform:scale(0.8); // IE 9 
@@ -85,35 +76,6 @@
   .hidden { display:none; }
 
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <style type="">
   /*----------------------------------------
  10.Portfolio Area Css
@@ -544,12 +506,6 @@ img {
     });
 });
 </script>
-
-
-<!--<div id="prueba" style="height:200px; width:500px; background-color:#C3C3C3; padding:50px 50px 50px 50px;"></div>-->
-
-
-
 <div id="id_serviciosLotusController" ng-controller="serviciosLotusController" ng-init="inicioServicios();">
    <div class="col-lg-12" style="z-index: 100;">
       <div class="ibox float-e-margins">
@@ -563,14 +519,10 @@ img {
                   <form class="form-horizontal ng-pristine ng-valid">
                         <div class="form-group">
                            <div class="col-lg-5">
-                                
-                                    <!--<a class="btn btn-primary" tooltip = "Crear Trámite" ng-click="adicionarServicioGamlp();" >
-                                        Crear Caso
-                                    </a>-->
                                   <div>
                                   <a class="btn btn-success" data-toggle="modal" tooltip = "Crear el trámite" ng-click="clsRegistrarNuevo();" data-target="#registroLotus">
                                      <i class="glyphicon glyphicon-plus"></i>
-                                     {{translateTitulos.lbl_10_02}}  <!--{{translateTitulos.lbl_10_02}}-->
+                                     {{translateTitulos.lbl_10_02}}  
                                   </a>
                                   <a class="btn btn-success" tooltip = "Notificaciones" href="#/dashboard">
                                     <i class="fa fa-tags blanco"> </i> 
@@ -603,6 +555,7 @@ img {
                       <td data-title="'Sub Tipo de Trámite'" ng-click="seleccionarTramite(tramite)" align="left">{{tramite.subtipo}}</td> 
                       <td data-title="'Fecha Inicio'" ng-click="seleccionarTramite(tramite)" align="left">{{tramite.vfecha}} </td> 
                       <td data-title="'Fecha Envió'" ng-click="seleccionarTramite(tramite)" align="left">{{tramite.vmodificado | date:'yyyy-MM-dd HH:mm:ss'}} </td> 
+                      <td data-title="'Servicio'" ng-click="seleccionarTramite(tramite)" align="left">{{tramite.vdvser_id}} </td> 
                       <td data-title="'Estado'" ng-click="seleccionarTramite(tramite)" align="left">
                         <div ng-show="tramite.venviado=='SI'"> 
                           <h1><span class="badge badge-primary">Enviado al GAMLP</span></h1>
@@ -611,12 +564,6 @@ img {
                           <h1><span class="badge badge-info">En proceso </span></h1>
                         </div>
                       </td>
-                      <!--td data-title="'Ver Histórico'"  align="left">
-                        <div ng-show="tramite.venviado=='SI'">                          
-                          <button id="btn_f01_upload_POC_ADJUNTOS" class="browse btn btn-primary input-lg" type="button" data-toggle="modal" data-target="#historico" ng-click="lista_historico(tramite);"><i class="glyphicon glyphicon-eye-open"></i></button>                        
-                        </div>                         
-                      </td-->
-                      <!--<td data-title="'Subtipo'" ng-click="seleccionarTramite(tramite)">{{tramite.datos.TIPO}}</td>-->
                     </tr>
                   </table>
                </div>
@@ -654,22 +601,9 @@ img {
                                 <td data-title="Nodo">{{histo.nombrenodo}}</td>
                                 <td data-title="Fecha de Recepci&oacute;n">{{histo.vfecharecepcion}}</td>
                                 <td data-title="Recibido por">{{histo.vusuariorecepcion}}</td>
-                                <!--<td align="center" data-title="'Ver Actuaci&oacute;n'">
-                            <a align="right" ng-click="cargaActuacionHistorico(histo, histo.vuid, histo.vcopianro_copia, histo.vusuarioenvio, histo.vcopiaid)" class="btn btn-default btn-circle" data-toggle="modal" ><i class="fa fa-history" style="color:#249FE6"></i></a>   
-                          </td>-->
                             </tr>
                         </tbody> 
                       </table>
-
-                      <!--<table ng-table="tablaHistorico" class="table table-striped table-bordered ">
-                        <tr ng-repeat="histo in tablaHistoricoMovimientos">
-                          <td data-title="'Fecha de env&iacute;o'">{{histo.vfechaenvio}}</td>
-                          <td data-title="'Enviado por'">{{histo.vusuarioenvio}}</td>
-                          <td data-title="'Nodo'">{{histo.nombrenodo}}</td>
-                          <td data-title="'Fecha de Recepci&oacute;n'">{{histo.vfecharecepcion}}</td>
-                          <td data-title="'Recibido por'">{{histo.vusuariorecepcion}}</td>
-                        </tr>
-                      </table>-->
                     </div> 
                     <div ng-show="actH=='mostrar'">                     
                           <h4 >Actuaci&oacute;n</h4>
@@ -765,43 +699,11 @@ img {
                               </div>
                             </div>
                           </div>
-                          <!--<div class="col-md-12">
-                            <div class="col-md-12">
-                              <div class="form-group" >
-                                <label for="url" >ARCHIVOS:</label>
-                                <div class="controls">
-                                  <table class="table table-striped table-bordered" ng-show="conArchivos">
-                                    <thead>
-                                      <th>#&nbsp;</th>
-                                      <th>Ver&nbsp;</th>
-                                      <th>Archivo&nbsp;</th>
-                                      <th>Descripci&oacute;n&nbsp;</th>
-                                    </thead>  
-                                    <tbody>
-                                      <tr class="column" ng-repeat="archivo in obtArchivosAdjuntos">
-                                        <td>{{$index+1}}</td>
-                                        <td>
-                                          <a target="_blank" tooltip = "Ver" href="{{archivo.doc_url_logica}}" class="btn btn-default btn-circle"><i class="fa fa-eye" style="color:#249FE6"></i></a>
-                                        </td>
-                                        <td>{{archivo.doc_tipo_documento}}</td>
-                                        <td>{{archivo.doc_descripcion}}</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <div ng-show="sinArchivos">
-                                    Trámite sin Archivos
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div> -->                    
                     </div>
                   </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>                               
-                   <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                   <button ng-click="confirmarServicioGamlp(data);" data-dismiss="modal" ng-disabled="btnNuevoTramtite" type="button" class="btn btn-primary"  ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'">Crear</button>  -->                          
                 </div>
             </div>
         </div>
@@ -849,15 +751,15 @@ img {
                         
                                 </thead>
                                 <tbody>
-                                  <tr style="cursor: pointer;" class="column" ng-repeat="proceso in serviciosLotus | filter:query " >
-                                      <td data-title="'Trámite'"  ng-click="seleccionarProcesoT(proceso)" align="left" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style"  ng-show="proceso.name=='Correspondencia ciudadana' || proceso.name=='Corrrespondencia al Concejo Municipal'">{{$index+1}}</td>
-                                              <ul class="horizontal">
-                                      <td data-title="'Crear Tramite'"  align="left" ng-click="seleccionarProcesoT(proceso)" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style"  ng-show="proceso.name=='Correspondencia ciudadana' || proceso.name=='Corrrespondencia al Concejo Municipal'">                                        
+                                  <tr style="cursor: pointer;" class="column" ng-repeat="proceso in serviciosLotus" ng-style="proceso.id==procesoSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}">
+                                      <td data-title="'Trámite'"  ng-click="seleccionarProcesoT(proceso)" align="left" >{{$index+1}}</td>
+                                      <ul class="horizontal">
+                                      <td data-title="'Crear Tramite'"  align="left" ng-click="seleccionarProcesoT(proceso)" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}">                                        
                                         <div class="fixed-action-btn">
                                               <ul class="horizontal">
                                                   <li style="background: #ffffff;color: #ffffff;">
                                                       <a tooltip = "Crear" ng-click="adicionarServicioGamlpV(proceso);" data-dismiss="modal" ng-disabled="btnNuevoTramtite" type="button" >
-                                                          <i class="glyphicon glyphicon-plus" style="color:black"></i>
+                                                          <i class="glyphicon glyphicon-plus" style="color:black "></i>
                                                       </a>
                                                   </li>
                                                   <li style="background: #ffffff;color: #ffffff;">
@@ -868,8 +770,7 @@ img {
                                               </ul>
                                           </div>
                                       </td>
-                                      <td data-title="'Proceso'" sortable="'name'" filter="{'name':'text'}" ng-click="seleccionarProcesoT(proceso)" align="left" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style" ng-show="proceso.name=='Correspondencia ciudadana'">{{proceso.name}}</td>
-                                      <td data-title="'Proceso'" sortable="'name'" filter="{'name':'text'}" ng-click="seleccionarProcesoT(proceso)" align="left" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style" ng-show="proceso.name=='Corrrespondencia al Concejo Municipal'">{{proceso.name}}</td>
+                                      <td data-title="'Proceso'" sortable="'name'" filter="{'name':'text'}" ng-click="seleccionarProcesoT(proceso)" align="left" >{{proceso.name}}</td>
 
                                   </tr>
                               </tbody>
@@ -891,10 +792,6 @@ img {
                                 <table style="width:100%">
                                     <tr>
                                         <td class="moreCat" ALIGN="justify" style="width:100%"> {{step1}}</p></td>
-                                        <!--td style="width:50%">
-                                          <center>
-                                            <img src="{{image1}}" alt="" width="30%" height="30%" />
-                                          </center></td-->
                                     </tr>
                                     <tr>
                                         <td ALIGN="justify" style="width:50%"><p><b><font font size="2"color="#21B9BB">Paso 2: Respaldos</font></b> {{step2}}.</p></td>
@@ -907,181 +804,11 @@ img {
                                 </table>   
                             </div>
                             
-                            <!--
-
-                          <div class="col-xs-12 col-sm-12 well">      
-                            <div class="col-xs-4 col-sm-4">
-                                <div id="portfolio" class="portfolio-area area-padding fix">
-                                  <div class="container">
-                                    <div class="row">
-                                      <div class="awesome-project-content">
-                                        <div class="col-md-4 col-sm-4 col-xs-12 design development">
-                                          <div class="single-awesome-project">
-                                            <div class="awesome-img">
-                                              <a href="#"><img src="{{image1}}" alt="" /></a>
-                                              <div class="add-actions text-center">
-                                                <div class="project-dec">
-                                                  <a class="venobox" data-gall="myGallery" href="img/portfolio/1.jpg">
-                                                    <h4>PASO 1</h4>
-                                                    <span>{{step1}}</span>
-                                                  </a>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 col-sm-4 design development">
-                                <div id="portfolio" class="portfolio-area area-padding fix">
-                                  <div class="container">
-                                    <div class="row">
-                                      <div class="awesome-project-content">
-                                        <div class="col-md-4 col-sm-4 col-xs-12 design development">
-                                          <div class="single-awesome-project">
-                                            <div class="awesome-img">
-                                              <a href="#"><img src="{{image1}}" alt="" /></a>
-                                              <div class="add-actions text-center">
-                                                <div class="project-dec">
-                                                  <a class="venobox" data-gall="myGallery" href="img/portfolio/1.jpg">
-                                                    <h4>PASO 2</h4>
-                                                    <span>{{step2}}</span>
-                                                  </a>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 col-sm-4 design development">
-                                <div id="portfolio" class="portfolio-area area-padding fix">
-                                  <div class="container">
-                                    <div class="row">
-                                      <div class="awesome-project-content">
-                                        <div class="col-md-4 col-sm-4 col-xs-12 design development">
-                                          <div class="single-awesome-project">
-                                            <div class="awesome-img">
-                                              <a href="#"><img src="{{image1}}" alt="" /></a>
-                                              <div class="add-actions text-center">
-                                                <div class="project-dec">
-                                                  <a class="venobox" data-gall="myGallery" href="img/portfolio/1.jpg">
-                                                    <h4>PASO 3</h4>
-                                                    <span>{{step3}}</span>
-                                                  </a>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 col-sm-4 design development">
-                                <div id="portfolio" class="portfolio-area area-padding fix">
-                                  <div class="container">
-                                    <div class="row">
-                                      <div class="awesome-project-content">
-                                        <div class="col-md-4 col-sm-4 col-xs-12 design development">
-                                          <div class="single-awesome-project">
-                                            <div class="awesome-img">
-                                              <a href="#"><img src="{{image1}}" alt="" /></a>
-                                              <div class="add-actions text-center">
-                                                <div class="project-dec">
-                                                  <a class="venobox" data-gall="myGallery" href="img/portfolio/1.jpg">
-                                                    <h4>PASO 4</h4>
-                                                    <span>{{step4}}</span>
-                                                  </a>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 col-sm-4 design development">
-                                <div id="portfolio" class="portfolio-area area-padding fix">
-                                  <div class="container">
-                                    <div class="row">
-                                      <div class="awesome-project-content">
-                                        <div class="col-md-4 col-sm-4 col-xs-12 design development">
-                                          <div class="single-awesome-project">
-                                            <div class="awesome-img">
-                                              <a href="#"><img src="{{image1}}" alt="" /></a>
-                                              <div class="add-actions text-center">
-                                                <div class="project-dec">
-                                                  <a class="venobox" data-gall="myGallery" href="img/portfolio/1.jpg">
-                                                    <h4>PASO 5</h4>
-                                                    <span>{{step5}}</span>
-                                                  </a>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 col-sm-4 design development">
-                                <div id="portfolio" class="portfolio-area area-padding fix">
-                                  <div class="container">
-                                    <div class="row">
-                                      <div class="awesome-project-content">
-                                        <div class="col-md-4 col-sm-4 col-xs-12 design development">
-                                          <div class="single-awesome-project">
-                                            <div class="awesome-img">
-                                              <a href="#"><img src="{{image1}}" alt="" /></a>
-                                              <div class="add-actions text-center">
-                                                <div class="project-dec">
-                                                  <a class="venobox" data-gall="myGallery" href="img/portfolio/1.jpg">
-                                                    <h4>PASO 6</h4>
-                                                    <span>{{step6}}</span>
-                                                  </a>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-                            
-                          </div>  -->
+                          
                         </div>
                       </div>
                     </form>
                 </div>
-                <!--div class="modal-footer">
-                  <div class="row">
-                    <div class="col-sm-6 text-left">
-                    <button id="btnVolver" ng-click="volverMenuAyuda()" type="button" class="btn btn-info">Volver</button>
-                    </div>
-                    <div class="col-sm-6 text-right">
-                    <button type="button" class="btn btn-info" ng-click="cerrarMenuAyuda();" data-dismiss="modal">{{translateTitulos.lbl_05_05_05}}</button>
-                    <button ng-click="adicionarServicioGamlp(formtramite);" data-dismiss="modal" ng-disabled="btnNuevoTramtite" type="button" class="btn btn-info"  ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'">{{translateTitulos.lbl_04_04_04}}</button>
-                    </div>
-                  </div>
-                </div-->
             </div>
         </div>
   </div>
@@ -1089,6 +816,4 @@ img {
   <div class="col-lg-12">
       <div id="templateUrl" ng-include="template.url" class="animated fadeInUp" ></div>
   </div>
-
-
 </div>

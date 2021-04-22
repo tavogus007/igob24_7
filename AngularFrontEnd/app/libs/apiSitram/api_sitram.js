@@ -18,7 +18,6 @@ function ejecutarAjaxSitram(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
       async: false,
       //processData: true,
       success: function(response) {
-        console.log(response);
         dataResp = JSON.stringify(response);
         vFunctionResp(dataResp);
       },
@@ -93,7 +92,6 @@ rcTramitesitram.prototype.crearTramitesitram = function (functionResp)
           "estado": this.estado,
           "actdetalle": this.actdetalle
         };
-        console.log("PARAEMTRSO...:",dataParams);
         ejecutarAjaxSitram(urlComp, typeCall, dataParams, functionResp);
     }
     else

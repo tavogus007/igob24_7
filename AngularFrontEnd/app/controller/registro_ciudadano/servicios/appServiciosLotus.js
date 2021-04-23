@@ -574,6 +574,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     
     /*RECUPERAR DATOS - INICIAR FORMULARIO*/
     $scope.recuperarSerializarInfo= function(tramite){
+        alert(1111);
         try{
             var sIdTramite      = tramite.vtra_id;
             var sIdCiudadano    = sessionService.get('IDSOLICITANTE');//IDCIUDADANO
@@ -748,56 +749,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             }
         });
     };
-
-      //fecha del servidor
-    $scope.obtenerFecha = function(){
-        $scope.fechafinalserver = "";
-        var sfecha = "";
-        try{
-            var fechaactualn = new fechaserver();
-            fechaactualn.obtfechahora(function(resultado){
-                sfecha  =   JSON.parse(resultado).success.fecha;
-            });
-
-            var sfechafinal =   "";
-            if(sfecha != null && sfecha != "") {
-                var snuevafecha = "";
-                var nrof    =   0;
-                try{
-                    nrof    =   sfecha.split("/").length;
-                }catch(e){}
-                if(nrof > 1){
-                    var dateString = sfecha;
-                    var dateParts = sfecha.split("/");
-                    snuevafecha = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);// month is 0-based
-                }else{
-                    snuevafecha = new Date(sfecha);
-                }
-
-                var messnuevafecha = "";
-                var diasnuevafecha = "";
-                if(snuevafecha != 'Invalid Date'){
-                    messnuevafecha        =     snuevafecha.getMonth()+1;
-                    messnuevafecha        =     (messnuevafecha < 10) ? '0' + messnuevafecha : messnuevafecha;
-                    if (snuevafecha.getDate()<10){
-                        diasnuevafecha = "0" + (snuevafecha.getDate());
-                    }else{
-                        diasnuevafecha = snuevafecha.getDate();
-                    }
-                    sfechafinal = diasnuevafecha + "/" + messnuevafecha + "/" + snuevafecha.getFullYear();
-                $scope.anioserver = snuevafecha.getFullYear();
-                }
-            } else {
-                sfechafinal =  sfecha;
-            }
-            $scope.fechafinalserver = sfechafinal;
-            return sfechafinal;
-        }catch(e){
-            $.unblockUI();
-        }
-    };
-
-    
     $scope.tablaHistorico = {};
     $scope.actH = false;    
 
@@ -883,7 +834,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
 
     
     $scope.$on('api:ready',function(){
-        $scope.obtenerFecha();
+        //$scope.obtenerFecha();
         $scope.recuperandoDatosInicialesCiudadano();        
         $scope.tramitesCiudadano();
         $scope.obtenerDatosServicio();
@@ -891,7 +842,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     });
 
     $scope.inicioServicios = function () {        
-        $scope.obtenerFecha();
+        //$scope.obtenerFecha();
         $scope.recuperandoDatosInicialesCiudadano();        
         $scope.tramitesCiudadano();
         $scope.obtenerDatosServicio();

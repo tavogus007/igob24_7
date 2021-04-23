@@ -8,11 +8,6 @@ var valoresOC = new Array();
 var valoresOM = new Array();
 posicion = 0;
 tabOrder = 1;
-var fechaactualh = new fechaserver();
-fechaactualh.obtfechahora(function(resultado){
-    sfecha  =   JSON.parse(resultado).success.fecha;
-    dataIgob['g_fecha'] =  sfecha;
-});
 document.getElementById("senddata").disabled = true;
 function validarFormularioRender() {
     var todoCorrecto = true;
@@ -40,7 +35,6 @@ function guardarData () {
                     valorCampo = dataFrm[i].value;
                     nombreCampo = dataFrm[i].id;
                     tipo = dataFrm[i].type;
-                    //dataIgob[nombreCampo] = valorCampo;
                     if (document.getElementById(nombreCampo+"_ifr")){
                         var iFrame =  document.getElementById(nombreCampo+"_ifr");
                         var iFrameBody;

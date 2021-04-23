@@ -574,7 +574,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     
     /*RECUPERAR DATOS - INICIAR FORMULARIO*/
     $scope.recuperarSerializarInfo= function(tramite){
-        alert(1111);
         try{
             var sIdTramite      = tramite.vtra_id;
             var sIdCiudadano    = sessionService.get('IDSOLICITANTE');//IDCIUDADANO
@@ -693,7 +692,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             $.unblockUI();
         }
     };
-    
     $scope.almacenarRequisitos = function(aArchivos, idFile){
         document.getElementById('href_f01_upload_'+idFile).href = '';
         document.getElementById(idFile).value = '';

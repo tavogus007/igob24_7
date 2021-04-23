@@ -685,8 +685,7 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 else{
                     $.unblockUI();
                 }
-            });
-            
+            });         
         }catch(e){
             console.log('*Error*');
             $.unblockUI();

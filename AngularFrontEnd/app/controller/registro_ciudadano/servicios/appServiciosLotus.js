@@ -324,8 +324,8 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
         try {
             var rData = new rcTramites();
             rData.oid = sIdCiudadano;
-            //rData.tipo = sTipo;
-            rData.obtTramitesx(function(res){
+            rData.codigo = 'SITRAM_C';
+            rData.obtTramitesPorTipoTramite (function(res){
                 r = JSON.parse(res);                
                 results = r.success;
                 angular.forEach(results,function(val, index){
@@ -547,7 +547,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                 console.log("Error al Procesar formulario:",e);
                 $.unblockUI();
             }
-       // }
     };    
 
     $scope.seleccionarTramiteRender = function (tramite) {  
@@ -731,7 +730,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
                         document.getElementById(idFile).value = '';
                     }
                 }else{
-                    //swal('Advertencia', 'El tama&ntilde;o del archivo es muy grande', 'error');
                     swal({
                         title:'Advertencia',
                         text: "El tama&ntilde;o del archivo es muy grande",
@@ -763,55 +761,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             success: function (response){ 
                 $scope.tablaHistoricoMovimientos = response.success.data;
                 $scope.$apply();
-
-                //$scope.tablaHistorico.reload();
-            },
-            error: function (response){ console.log(response);}
-        });
-    }
-    $scope.cargaActuacionHistorico = function(histo, vuid, nrocopia, usuario, copiaid) {
-        $scope.dataH = [];
-        $.ajax({
-            type: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            url: CONFIG.CONEXION_API_PG_IF + 'wsIf/verActuacionPendientef',
-            dataType: 'json',
-            data: '{"idtramite":"'+ vuid +'", "nrocopia":"0", "usuario":"'+ usuario +'", "idh":"'+ copiaid +'"}',
-            success: function (response){ console.log(response);
-                var acthisto = response.success.data;
-                $scope.dataH = acthisto;
-                X = new RegExp("<br />", "g");
-                if(acthisto.length > 0){
-                    $scope.dataH.fecha_creacion = acthisto[0].fecha_creacion;
-                    $scope.dataH.fecha_modificacion = acthisto[0].fecha_modificacion;
-                    $scope.dataH.actTipoActuacion =  acthisto[0].acttiponom;
-                    if (acthisto[0].acttipoid == 2 || acthisto[0].acttipoid == '2') {
-                        $scope.msitramHis = true;
-                        $scope.mproveidoHis = false;
-                        var detalleS = JSON.parse(acthisto[0].actdetalle);
-                        var detalleSitram = JSON.parse(detalleS);
-                        $scope.dataH.actEntregado = detalleSitram['Entregado'];
-                        $scope.dataH.actCI = detalleSitram['CI'];
-                        $scope.dataH.actPoderLegal = detalleSitram['PoderLegal'];
-                        $scope.dataH.actNotaria = detalleSitram['Notaria'];
-                        $scope.dataH.actConcepto = detalleSitram['Concepto'].replace(X, '\n');
-                        $scope.dataH.actLiquidacion1 = detalleSitram['Liquidacion'];
-                        $scope.dataH.actImporte1 = detalleSitram['Importe'];
-                    } else{
-                        $scope.msitramHis = false;
-                        $scope.mproveidoHis = true;
-                        var detalleProveido = JSON.parse(acthisto[0].actdetalle);
-                        $scope.dataH.actDetalle = detalleProveido['actDetalle'].replace(X, '\n');
-                    };
-                    //$scope.getDocumentoA($scope.actuacion_pendiente[0].id_actuacion);
-                    $scope.actH = 'mostrar';
-                    $scope.$apply();
-                    
-                }else{
-                    swal('Advertencia', 'No existe proveido', 'warning');
-                    $scope.actH = false;
-                    $scope.$apply();
-                }
             },
             error: function (response){ console.log(response);}
         });
@@ -827,11 +776,8 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
             $rootScope.serviciosLotus = $scope.resMenu;
         })
     }
-
-
-    
+   
     $scope.$on('api:ready',function(){
-        //$scope.obtenerFecha();
         $scope.recuperandoDatosInicialesCiudadano();        
         $scope.tramitesCiudadano();
         $scope.obtenerDatosServicio();
@@ -839,7 +785,6 @@ app.controller('serviciosLotusController', function ($scope, $rootScope ,$routeP
     });
 
     $scope.inicioServicios = function () {        
-        //$scope.obtenerFecha();
         $scope.recuperandoDatosInicialesCiudadano();        
         $scope.tramitesCiudadano();
         $scope.obtenerDatosServicio();

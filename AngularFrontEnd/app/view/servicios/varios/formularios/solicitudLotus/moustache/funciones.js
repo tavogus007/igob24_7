@@ -174,7 +174,7 @@ function enviarData() {
                 crearCaso.fojas             = 0;
                 crearCaso.nodo_origen       = 2979;
                 crearCaso.nodo_id           = 2979;
-                crearCaso.usuario           = 'Ciudadano';//sessionStorage.getItem('USUARIO');
+                crearCaso.usuario           = 'Ciudadano';
                 crearCaso.estado            = "ACTIVO";
             }
             if (datosTipoTramite.POC_TIPO_TRAMITE == 'CCCMD'){
@@ -202,7 +202,7 @@ function enviarData() {
             crearCaso.fojas             = 0;
             crearCaso.nodo_origen       = 2979;
             crearCaso.nodo_id           = 2979;
-            crearCaso.usuario           = 'Ciudadano';//sessionStorage.getItem('USUARIO');
+            crearCaso.usuario           = 'Ciudadano';
             crearCaso.estado            = "ACTIVO";
             }
           

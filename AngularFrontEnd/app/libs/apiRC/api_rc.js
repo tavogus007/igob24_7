@@ -1280,28 +1280,15 @@ function rcTramites(){
     this.oid;
 };
 
-rcTramites.prototype.obtTramitesx = function (functionResp)
+rcTramites.prototype.obtTramitesPorTipoTramite=function (functionResp)
 {
-  urlComp = "/listarTramitesx";
-  typeCall = "post";
-
-  dataParams = {
-          "oid": this.oid
-  };
-
-  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
-}
-
-rcTramites.prototype.obtTramitesy = function (functionResp)
-{
-  urlComp = "/listarTramitesT";
+  urlComp = "/listarTramitesPorCodigo";
   typeCall = "post";
 
   dataParams = {
           "oid": this.oid,
-          "tipo": this.tipo
+          "codigo": this.codigo
   };
-
   ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 }
 

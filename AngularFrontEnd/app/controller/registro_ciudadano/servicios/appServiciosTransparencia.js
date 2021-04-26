@@ -12,29 +12,7 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
         {name: 'template0.html', url: '../../../app/index.html'},//no existe en bd
         {name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/transparencia/moustache/moustache.html'}
     ];
-    var p = $scope.serviciosLotus = [
-        { name: 'Denuncias Transparencia', id:'32', idprc:'73', idcampo:'819', scodigo:'TRA'},       
-        { name: 'Correspondencia ciudadana', id:'17', idprc:'73', idcampo:'788', scodigo:'CORC'},
-        { name: 'Correspondencia al Concejo Municipal', id:'26', idprc:'73', idcampo:'819', scodigo:'CCCMD'},       
-        
 
-        { name: 'Ejecución de procesos de fiscalización', id:'23', idprc:'73', idcampo:'812', scodigo:'EPFZ'},
-        { name: 'Denuncias y reclamos', id:'24', idprc:'73', idcampo:'790', scodigo:'DRTR'},
-        { name: 'Calificación de años de servicio', id:'25', idprc:'73', idcampo:'821', scodigo:'CAS'},
-        { name: 'Fotocopias', id:'26', idprc:'73', idcampo:'815', scodigo:'FOT'},
-        { name: 'Publicidad urbana', id:'27', idprc:'73', idcampo:'810', scodigo:'PUB'},
-        { name: 'Catastro', id:'28', idprc:'73', idcampo:'856', scodigo:'CAT'},
-        { name: 'Inmuebles', id:'29', idprc:'73', idcampo:'835', scodigo:'INM'},
-        { name: 'Administración territorial', id:'30', idprc:'73', idcampo:'816', scodigo:'ADMT'},
-        { name: 'Fiscalización tributos municipales', id:'31', idprc:'73', idcampo:'857', scodigo:'FTM'},
-        { name: 'Vehículos', id:'32', idprc:'73', idcampo:'836', scodigo:'VEH'},
-        { name: 'Planilla pago de obras', id:'33', idprc:'73', idcampo:'854', scodigo:'PPO'},        
-        { name: 'Correspondencia Ciudadana cm (cccm)', id:'34', idprc:'73', idcampo:'819', scodigo:'CCCM'},        
-        { name: 'Comercio en vías y espacios públicos', id:'35', idprc:'73', idcampo:'820', scodigo:'CVEP'},
-        { name: 'Mercados municipales de abasto', id:'36', idprc:'73', idcampo:'792', scodigo:'MMA'},
-        { name: 'Transferencia de área residual', id:'37', idprc:'73', idcampo:'791', scodigo:'TAR'},
-        { name: 'Uso de espacios públicos temporales', id:'38', idprc:'73', idcampo:'861', scodigo:'UEPP'}
-    ];
     $scope.btnEnviarForm = true;
     $scope.habGuardar1 = true;
     $scope.template     =   "";
@@ -50,7 +28,6 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
         $("#titleModal").show();
         $("#titleModal2").hide();
     }
-
 
     $scope.functionAyuda = function(i_xXs)
     {
@@ -201,7 +178,6 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
 
         $("#element2").hide();
         $("#btnVolver").hide();
-        //$("#registroLotus").modal('toggle');
     }
 
 
@@ -361,13 +337,12 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
     /*LISTADO DE TRAMITES GRILLA - SOLICITUD*/
     $scope.tramitesCiudadano = function(tramite){
         sIdCiudadano = sessionService.get('IDSOLICITANTE');
-        sTipo = 32;
         try {
             var rData = new rcTramites();
             rData.oid = sIdCiudadano;
-            rData.tipo = sTipo;
-            rData.obtTramitesy(function(res){
-                r = JSON.parse(res);                
+            rData.codigo = 'SITRAM_D';
+            rData.obtTramitesPorTipoTramite (function(res){ 
+               r = JSON.parse(res);                
                 results = r.success;
                 angular.forEach(results,function(val, index){
                     var fechadata = new Date(results[index].vregistrado);
@@ -571,29 +546,21 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
     }
 
     $scope.recuperarFormsxProceso = function (tramite) {
-        if(tramite.vdvser_id == 32){
-            try{
-                jDataFormsLotus     =   [];
-                var sidproceso      =   73;
-                var sidcampo        =   tramite.datos.INT_ID_FORM_LOTUS;
-                var getFormJson     =   new getFormulario();
-                getFormJson.idprc   =   sidproceso;
-                getFormJson.idcampo =   sidcampo;
+        try{
+            jDataFormsLotus     =   [];
                 $.getJSON( "../../controller/registro_ciudadano/servicios/transparencia.json", function( respuesta ) {
-                    //var forms   =   JSON.parse(respuesta).success.data[0].exportar_formulario;
-                    var forms   =   respuesta.success.data[0].exportar_formulario;       
-                    jDataFormsLotus =   forms;
-                    $scope.tramiteSeleccionadoP  =   tramite.idcampo;
-                    $scope.formtramite  =   tramite;
-                    //CARGAR FORMULARIO
-                    $scope.seleccionarTramiteRender(tramite);
-                    $scope.$apply();
-                    $.unblockUI();
-                });
-            }catch(e){
-                console.log("Error al Procesar formulario:",e);
+                var forms   =   respuesta.success.data[0].exportar_formulario;         
+                jDataFormsLotus =   forms;
+                $scope.tramiteSeleccionadoP  =   tramite.idcampo;
+                $scope.formtramite  =   tramite;
+                //CARGAR FORMULARIO
+                $scope.seleccionarTramiteRender(tramite);
+                $scope.$apply();
                 $.unblockUI();
-            }
+            });
+        }catch(e){
+            console.log("Error al Procesar formulario:",e);
+            $.unblockUI();
         }
 
     };    
@@ -651,8 +618,6 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
             $.unblockUI();
         }
     };
-
-
     $scope.clsRegistrarNuevo    =   function()
     {
         $("#btnVolver").hide();     
@@ -662,8 +627,6 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
         $("#titleModal").show();
         $scope.formtramite  =   {};
     }
-
-
     $scope.adicionarServicioGamlpV = function(tramite){
         swal({
             title: 'CONFIRMAR',
@@ -681,8 +644,6 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
             }, 1000);
         });
     }
-
-
     $scope.adicionarServicioGamlp = function(tramite){
         $scope.template = "";
         var dataInicio  =   { };
@@ -870,64 +831,27 @@ app.controller('serviciosTransparenciaController', function ($scope, $rootScope 
             error: function (response){ console.log(response);}
         });
     }
-
-    $scope.cargaActuacionHistorico = function(histo, vuid, nrocopia, usuario, copiaid) {
-        $scope.dataH = [];
-        $.ajax({
-            type: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            url: CONFIG.CONEXION_API_PG_IF + 'wsIf/verActuacionPendientef',
-            dataType: 'json',
-            data: '{"idtramite":"'+ vuid +'", "nrocopia":"0", "usuario":"'+ usuario +'", "idh":"'+ copiaid +'"}',
-            success: function (response){ console.log(response);
-                var acthisto = response.success.data;
-                $scope.dataH = acthisto;
-                X = new RegExp("<br />", "g");
-                if(acthisto.length > 0){
-                    $scope.dataH.fecha_creacion = acthisto[0].fecha_creacion;
-                    $scope.dataH.fecha_modificacion = acthisto[0].fecha_modificacion;
-                    $scope.dataH.actTipoActuacion =  acthisto[0].acttiponom;
-                    if (acthisto[0].acttipoid == 2 || acthisto[0].acttipoid == '2') {
-                        $scope.msitramHis = true;
-                        $scope.mproveidoHis = false;
-                        var detalleS = JSON.parse(acthisto[0].actdetalle);
-                        var detalleSitram = JSON.parse(detalleS);
-                        $scope.dataH.actEntregado = detalleSitram['Entregado'];
-                        $scope.dataH.actCI = detalleSitram['CI'];
-                        $scope.dataH.actPoderLegal = detalleSitram['PoderLegal'];
-                        $scope.dataH.actNotaria = detalleSitram['Notaria'];
-                        $scope.dataH.actConcepto = detalleSitram['Concepto'].replace(X, '\n');
-                        $scope.dataH.actLiquidacion1 = detalleSitram['Liquidacion'];
-                        $scope.dataH.actImporte1 = detalleSitram['Importe'];
-                    } else{
-                        $scope.msitramHis = false;
-                        $scope.mproveidoHis = true;
-                        var detalleProveido = JSON.parse(acthisto[0].actdetalle);
-                        $scope.dataH.actDetalle = detalleProveido['actDetalle'].replace(X, '\n');
-                    };
-                    //$scope.getDocumentoA($scope.actuacion_pendiente[0].id_actuacion);
-                    $scope.actH = 'mostrar';
-                    $scope.$apply();
-                    
-                }else{
-                    swal('Advertencia', 'No existe proveido', 'warning');
-                    $scope.actH = false;
-                    $scope.$apply();
-                }
-            },
-            error: function (response){ console.log(response);}
-        });
+  
+    $scope.obtenerDatosServicio = function(){
+        $scope.tramite_ciudadano = 'SITRAM_D';
+        var sData = new obtIdServicio();
+        sData.codigo = $scope.tramite_ciudadano;
+        sData.obt_Id_Servicio(function(res){
+            $scope.res = JSON.parse(res);
+            $scope.resMenu = $scope.res.success;
+            $rootScope.serviciosLotusT = $scope.resMenu;
+        })
     }
     
     $scope.$on('api:ready',function(){
-        $scope.obtenerFecha();
         $scope.recuperandoDatosInicialesCiudadano();        
         $scope.tramitesCiudadano();
+        $scope.obtenerDatosServicio();
     });
 
     $scope.inicioServicios = function () {        
-        $scope.obtenerFecha();
         $scope.recuperandoDatosInicialesCiudadano();        
         $scope.tramitesCiudadano();
+        $scope.obtenerDatosServicio();
     };
 });

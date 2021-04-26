@@ -628,7 +628,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         rcNot.oid = sessionService.get('IDCIUDADANO');
         rcNot.obtenerNotificaciones(function(resultado){
             aNotif = JSON.parse(resultado);
-            console.log('anotif',aNotif);
             var notificaciones = aNotif.success.length;
             datoObjectNotiFinal = [];
             for(i = 0; i < notificaciones; i++){
@@ -732,14 +731,12 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         var mensajeIgob = resS[0];
                         $scope.resS1 = resS[1];
                         $scope.resS2 = JSON.parse($scope.resS1);
-                        console.log('$scope.resS2',$scope.resS2);
                         datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
                         datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
                         datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
                         datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                         datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                         datoObjectNoti.obs_tra_observaciones = mensajeIgob;
-                        //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
                         datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                         datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                         datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
@@ -776,7 +773,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                 datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                 datoObjectNoti.obs_tra_observaciones = mensajeIgob;
-                //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
                 datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                 datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                 datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
@@ -832,7 +828,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                     datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                     datoObjectNoti.obs_tra_observaciones = aNotif.success[i].obs_tra_observaciones;
-                    //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
                     datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                     datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                     datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
@@ -926,7 +921,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             $scope.adjunto = respuestaci;
                             document.getElementById('txt_adjunto').value = nombreNuevoCIAnverso;
                             $scope.btover=true;
-                            //$scope.mostrarimg('adj');
                         });
                     } else{
                         if (ext_doc == 'pdf' ||  ext_doc == 'docx' ||  ext_doc == 'docxlm' || ext_doc == 'xls' || ext_doc == 'xlsx') {
@@ -934,16 +928,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             fileUpload1.uploadFileToUrl1($scope.adjunto, uploadUrl,nombreNuevoCIAnverso);
                             $scope.registroAdj.adjunto ='doc_'+$scope.datosSitram.frm_tra_if_codigo+'/'+ nombreNuevoCIAnverso;
                             $scope.btover = true;
-                            /*var zipci = new JSZip();
-                            zipci.file($scope.adjunto.name, $scope.adjunto);
-                            zipci.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobci) {
-                                nombreNuevoCIAnverso = 'doc_'+$scope.datosSitram.frm_tra_if_codigo+'_'+fechaNueva+'.zip';
-                                fileUpload1.uploadFileToUrl1(blobci, uploadUrl, nombreNuevoCIAnverso);
-                                $scope.registroAdj.adjunto = nombreNuevoCIAnverso;
-                                $scope.adjunto = blobci; 
-                                $scope.btover=true; 
-                                document.getElementById('txt_adjunto').value = nombreNuevoCIAnverso;
-                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -964,7 +948,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             $scope.registroAdj.adjunto = 'doc_'+$scope.datosSitram.frm_tra_if_codigo+'/' + nombreNuevoCIAnverso;
                             $scope.btover=true;
                             document.getElementById('txt_adjunto').value = nombreNuevoCIAnverso;
-                            //$scope.mostrarimg('adj');
                             $.unblockUI();
                         } else{
                             swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -1118,16 +1101,13 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         i = i.replace("http://40.117.46.159:80/rest", CONFIG.APIURL);
                     }					
                     $scope.t = i;
-                    //$scope.vdoc_url = dataValue['vdoc_url'];
                     $scope.$apply(); 
-                    //$scope.descripcion_corta=value['descripcion_corta'];
                 }
             });
 
 
             $scope.valida = 1;
             $scope.msj1 = '';
-            //$scope.tablaDocumentos.reload();
             $.unblockUI();
           };
         });      
@@ -1168,16 +1148,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         link.download = 'Condiciones_de_Uso.pdf';
         link.dispatchEvent(new MouseEvent('click'));
     }
-
-    /*$scope.actualizarNoticia = function() {
-        $scope.recuperarNoticias();         
-    };
-    $scope.seleccionarNoticia = function(noticia) {
-        $scope.tituloSeleccionado = noticia.cnttitulo;
-        $scope.imagenSeleccionada = noticia.cntimagen;
-        $scope.resumenSeleccionado = noticia.cntresumen;
-        $scope.origenSeleccionado = noticia.cnturl;
-    } */    
 
     ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
         try{ 

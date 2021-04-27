@@ -7,8 +7,6 @@
 <script type="text/javascript" src="../../view/servicios/varios/formularios/registroMascotas/registroMascotas.js"></script>
 <script src="../../libs/loading/loadingoverlay.js"></script>
 <script type="text/javascript" src="../../libs/js/jic.js"></script>
-<!--link href="../../libs/css/select2.min.css" rel="stylesheet"/>
-<script src="../../libs/js/select2.min.js"></script-->
 <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
 <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
 <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
@@ -161,10 +159,6 @@ function validateDecimal(valor) {
     te = String.fromCharCode(tecla); 
     return patron.test(te);
     }
-
-  /*$(document).ready(function() {
-      $('.js-example-basic-single').select2();
-  });*/
 </script>
  <script type="text/javascript">
      $('.modal').on('shown.bs.modal', function() {
@@ -869,8 +863,6 @@ function validateDecimal(valor) {
                                     <div class="modal-body">
                                     <p style="text-align:center"><strong>COMPROMISO DE TENENCIA RESPONSABLE DE ANIMALES DE COMPAÑÍA </strong></p>
                                     <p>&nbsp;</p>
-                                    <!--p style="text-align:justify">Yo, <strong>{{nombre}} {{paterno}} {{materno}}</strong> con C&eacute;dula de Identidad N&ordm; <strong>{{ci}} {{exp}}.</strong></p-->
-
                                     <p style="text-align:justify">&nbsp;</p>
 
                                     <p style="text-align:justify">En mi calidad de titular de la mascota registrada, me comprometo a no maltratar ni abandonar, brindar cuidado y atención a la mascota bajo mi custodia y cumplir las normas legales en actual vigencia. En cumplimiento a la Leyes Autonómicas Municipales 239-316 para Animales de Compañía y su reglamentación.”</p>
@@ -882,7 +874,6 @@ function validateDecimal(valor) {
 
                                     <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >No Acepto</button>
                                     <button id="btncondicionesuso_a" type="button" class="btn btn-default" data-dismiss="modal">Acepto</button>
-                                    <!--button id="btncerrarmodal" type="button" class="btn btn-default" ng-click="aceptarCondicionesUso();" data-dismiss="modal">Cerrar</button-->
                                     </div>
                                 </div>
                             </div>
@@ -892,22 +883,20 @@ function validateDecimal(valor) {
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h2 class="modal-title" id="exampleModalLongTitle"><center><strong>COMPROMISO</strong></center></h2>
+                                        <h2 class="modal-title" id="exampleModalLongTitle" style="text-align:center"><strong>COMPROMISO</strong></h2>
                                         </div>
                                         <div class="modal-body">
                                         <p style="text-align:center"><strong>COMPROMISO DE TENENCIA DE MASCOTA POTENCIALMENTE PELIGROSA</strong></p>
                                         <p>&nbsp;</p>
-                                        <!--p style="text-align:justify">Yo, <strong>{{nombre}} {{paterno}} {{materno}}</strong> con C&eacute;dula de Identidad N&ordm; <strong>{{ci}} {{exp}}.</strong></p-->
 
                                         <p style="text-align:justify">&nbsp;</p>
 
-                                        <p style="text-align:justify">En mi calidad de titular de la mascota, registrada como potencialmente peligrosa, me hago responsable de ella y me comprometo a cumplir con las normas legales en actual vigencia.En aplicación a la ley 553, Ley Autonómica Municipal 239-316 y su reglamentación.”
-                                            </p>
+                                        <p style="text-align:justify">En mi calidad de titular de la mascota registrada, me comprometo hacerme responsable de mi mascota y cumplir con las normas legales en actual vigencia: en aplicación de la Ley 553, al Texto Ordenado de las Leyes Municipales Autonómicas 239/316, Reglamento de la Ley Municipal Autonómica para Animales de Compañía, Artículos del 5 al 17, del 86 -89."</p>
+                                        <p style="text-align:justify">Además de regularizar el registro de mi mascota en las instancias competentes, según la Ley 553 expresa (En el lapso de 6 meses).”</p>    
                                         </div>
                                         <div class="modal-footer">
                                         <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" ng-click="noValidaCondicionUso();">No Acepto</button>
                                         <button id="btncondicionesuso_a" type="button" class="btn btn-default" ng-click="validaCondicionUso();" data-dismiss="modal">Acepto</button>
-                                        <!--button id="btncerrarmodal" type="button" class="btn btn-default" ng-click="aceptarCondicionesUso();" data-dismiss="modal">Cerrar</button-->
                                         </div>
                                     </div>
                                 </div>

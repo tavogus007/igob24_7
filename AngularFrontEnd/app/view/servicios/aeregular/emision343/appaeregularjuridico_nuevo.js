@@ -214,10 +214,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
         } else {
             $scope.mensajeCiudadano = ' los proximos 5 días, ';
         };
-        $scope.datos.listDeudas = [];
-        var dataDeuda = '';
-        var dataActEco = '';           
-
+        $scope.datos.listDeudas = [];        
         if ($scope.datos.f01_idCodigoZona == 'undefined' || $scope.datos.f01_idCodigoZona == null || $scope.datos.f01_idCodigoZona == "" || $scope.datos.f01_tipo_lic == 'undefined' || $scope.datos.f01_tipo_lic == null || $scope.datos.f01_tipo_lic == "" || $scope.datos.rdTipoTramite1 == 'undefined' || $scope.datos.rdTipoTramite1 == null || $scope.datos.rdTipoTramite1 == "" || $scope.datos.f01_zona_act == 'undefined' || $scope.datos.f01_zona_act == null || $scope.datos.f01_zona_act == "") {
             swal('', 'Complete todos los datos por favor!  ', 'warning');
             $scope.datos.nro_ges = '';
@@ -255,20 +252,10 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             } else {
                 idPubS = '[]';
             };
-            dataActEco = '{"tm_va":"' + $scope.datos.f01_factor + '","superficie":"' + $scope.datos.f01_sup + '","codigo_zona":"' + $scope.datos.f01_idCodigoZona + '","categorias_id":' + datoObject_cat + ',"id_zona":"' + $scope.datos.f01_zona_act + '","viae":' + idPubS + '}';
-            dataDeuda = '{"actividad_economica":' + JSON.stringify(dataActEco) + ',"yfecha_inicio_cobro":"' + $scope.fechafinalserver + '","yanios":"' + nroges + '"}';
+
             if (sup >= 0) {//sup > 0
                 swss = 0;
-            } /*else {
-                if ($scope.datos.f01_categoria_descrip == 881 || $scope.datos.f01_categoria_descrip == '881' || $scope.datos.f01_categoria_agrupada == 1724 || $scope.datos.f01_categoria_agrupada == '1724' || $scope.datos.f01_tipo_lic == 21 || $scope.datos.f01_tipo_lic == '21') {
-                    dataActEco = '{"tm_va":"' + $scope.datos.f01_factor + '","superficie":"' + $scope.datos.f01_sup + '","codigo_zona":"' + $scope.datos.f01_idCodigoZona + '","categorias_id":' + datoObject_cat + ',"id_zona":"' + $scope.datos.f01_zona_act + '","viae":"[]"}';
-                    dataDeuda = '{"actividad_economica":' + JSON.stringify(dataActEco) + ',"yfecha_inicio_cobro":"' + $scope.fechafinalserver + '","yanios":"' + nroges + '"}';
-                } else {
-                    swal('', 'Introduzca un valor mayor a 0 en la superficie por favor!', 'warning');
-                    $scope.datos.nro_ges = '';
-                    swss = 1;
-                };
-            };*/
+            } 
             var deferred = $q.defer();
             if (swss == 0) {
                 //REGISTRO DE DEUDAS 343
@@ -303,40 +290,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                     }
                 });
 
-                /*$scope.calculo_total = 0;
-                var calcularD = new reglasnegocioSierra();
-                calcularD.identificador = 'SERVICIO_VALLE_AE-3277';
-                calcularD.parametros = dataDeuda;
-                calcularD.llamarregla_sierra(function(resDeuda) {
-                    var deudasAE = JSON.parse(resDeuda);
-                    var pagoAE = deudasAE.datos;                  
-                    $scope.datos.montoDeuda = pagoAE;
-                    datoObjectPago = [];
-                    for (j = 0; j < pagoAE.length; j++) {
-                        datoObjectPP = new Object();
-                        datoObjectPP.nro = (j + 1);
-                        datoObjectPP.gestion = pagoAE[j].gestion;
-                        if ($scope.datos.f01_sup == 0)
-                            datoObjectPP.monto_ae = pagoAE[j].monto_fijo;
-                        else
-                            datoObjectPP.monto_ae = pagoAE[j].monto_ae;
-                        datoObjectPP.monto_viae = pagoAE[j].monto_viae;
-                        datoObjectPP.descuento = pagoAE[j].descuento;
-                        datoObjectPP.monto_total = pagoAE[j].monto_total;
-                        datoObjectPP.monto_descuento = pagoAE[j].monto_descuento;
-                        datoObjectPP.monto_total_con_descuento = pagoAE[j].monto_total_con_descuento;
-                        datoObjectPago[j] = datoObjectPP;
-                        $scope.calculo_total = $scope.calculo_total + parseInt(pagoAE[j].monto_total_con_descuento);
-                    };
-                    $scope.datos.listDeudas = datoObjectPago;
-                    $scope.datos.calculo_total = $scope.calculo_total;
-                    $scope.listDeudas = datoObjectPago;
-                    if (!$scope.$$phase) {
-                        $scope.$apply();
-                    }
-                    $scope.tblDeudas.reload();
-                    $.unblockUI();
-                })*/
+            
 
             } else {
                 $.unblockUI();
@@ -2854,15 +2808,17 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                 stringFormulario40  =   stringFormulario40.replace("#publicidad_grilla#", pubMod);
                  //pago adelantado
                 var tablapago = '';
-                if($scope.pago_adelantado == 'undefined' || $scope.pago_adelantado == undefined  || $scope.pago_adelantado == 'NO'){
-                    stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
-                    stringFormulario40  =   stringFormulario40.replace("#nro_ges#", 'NINGUNA');
-                    stringFormulario40  =   stringFormulario40.replace("#tablaP#", tablapago);
-                }else{
-                    stringFormulario40  =   stringFormulario40.replace("#pago_adel#", $scope.pago_adelantado);
-                    stringFormulario40  =   stringFormulario40.replace("#nro_ges#", datos.nro_ges);
-                    stringFormulario40  =   stringFormulario40.replace("#tablaP#", tablapago);
-                };
+                if (datos.pago_adelantado == true) {
+                    stringFormulario40 = stringFormulario40.replace("#pago_adel#", 'SI'); //datos.pago_adelantado);
+                    stringFormulario40 = stringFormulario40.replace("#nro_ges#", datos.nro_ges);
+                    stringFormulario40 = stringFormulario40.replace("#tablaP#", '');
+                    stringFormulario40 = stringFormulario40.replace("#pagoadelantado#", "Me comprometo a mantener las condiciones técnicas y ubicación de la Actividad Económica por el periodo autorizado, caso contrario  me someteré a lo dispuesto en la Ley Municipal Autonómica 343/2018, sin reclamo alguno.");
+                } else {
+                    stringFormulario40 = stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
+                    stringFormulario40 = stringFormulario40.replace("#nro_ges#", 'NINGUNA');
+                    stringFormulario40 = stringFormulario40.replace("#tablaP#", '');
+                    stringFormulario40 = stringFormulario40.replace("#pagoadelantado#", "");
+                }
                 var divfoodTruck = '';
                 if (datos.f01_categoria == 211 || datos.f01_categoria == '211') {
                     divfoodTruck = divfoodTruck + '<div class="row"><div class="col-md-12" style="margin: 10px">'+

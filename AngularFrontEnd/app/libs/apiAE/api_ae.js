@@ -298,7 +298,36 @@ lstActividadEconomicaVentas.prototype.lstActividadEconomicaVentas = function (fu
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
 };
 
-function reglasnegocioSierra() {
+function pagoAdelaRenovacion() {
+    this.idActividadEconomica;
+    this.gestion;
+    this.codigoZona;
+    this.factor;
+    this.idActividadDesarrollada;
+    this.superficieOcupada;
+    this.cadena;
+    this.idZona;
+    this.gestionesPrevias;
+};
+
+pagoAdelaRenovacion.prototype.getPagoAdelRenovacion = function (functionResp) {
+    urlCompAe = "/caculoDeudasPagoAdelantado";
+    typeCallAe = "post";
+    dataParamsAe = {
+        "idActividadEconomica": this.idActividadEconomica,
+        "gestion":this.gestion,
+        "codigoZona":this.codigoZona,
+        "factor":this.factor,
+        "idActividadDesarrollada":this.idActividadDesarrollada,
+        "superficieOcupada":this.superficieOcupada,
+        "cadena":this.cadena,
+        "idZona":this.idZona,
+        "gestionesPrevias":this.gestionesPrevias
+    };
+    ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};
+
+/*function reglasnegocioSierra() {
     this.identificador;
     this.parametros;
 };
@@ -313,4 +342,4 @@ reglasnegocioSierra.prototype.llamarregla_sierra = function(functionResp){
         "parametros": this.parametros
     };
     ejecutarAjaxMotorSierra(urlComp, typeCall, dataParams, functionResp,stoquen);
-};
+};*/

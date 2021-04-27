@@ -995,63 +995,71 @@
                     </div>
                 </div>
                     <!--   PAGO ADELANTADO   -->
-                <!--div class="col-md-12">
-                    <legend>Datos Pago Anticipado:</legend>
-                </div>
-                <div class = "col-md-12" class="form-control">
-                    <div class = "col-md-6" class="form-control">
-                        <label for="Pago_Anticipado">
-                        Desea realizar el Pago por Adelantado?
-                        Si <input type="radio" name="pago_adel" value = "SI" ng-model="datos.pago_adel" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        No <input type="radio" name="pago_adel" value = "NO" ng-model="datos.pago_adel" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
-                        </label>
-                    </div>
-                </div-->
-                <!--div ng-show="IsVisible==true">
-                    <div class = "col-md-6" class="form-control">
-                        <div class="form-group">
-                        <legend>Gestiones a Pagar:</legend>
-                            <div class="controls">
-                                <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" ng-change="calcularDeudas(datos.f01_id_actividad_economica, datos.nro_ges);" name="nro_ges" ng-disabled="desabilitado">
-                                    <option value="">--Seleccionar--</option>
-                                    <option value="2"> 2 </option>
-                                    <option value="4"> 4 </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-md-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><B>GESTIONES A PAGAR</B></div>
-                            <div class="panel-body">
-                                <table  ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
-                                    <tr ng-repeat="duedasCiu in $data">
-                                        <td data-title="'Nº'">{{duedasCiu.numero}}</td>
-                                        <td data-title="'GESTIÓN'">{{duedasCiu.gestion}}</td>
-                                        <td data-title="'MONTO'">{{duedasCiu.total}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td bgcolor = "black"><font color = "white"> TOTAL A PAGAR</font></td>
-                                        <td bgcolor = "black"></td>
-                                        <td bgcolor = "black"><font color = "white">{{getTotal() | currency}}</font></td>
-                                    </tr>
-                                </table>
-                            </div>
+                        <legend>Datos Pago Adelantado:</legend>
+                    </div>
+                    <div class="col-md-12" class="form-control">
+                        <div class="col-md-6" class="form-control">
+                            <label for="Pago_Anticipado">                            
+                                Desea realizar el Pago por Adelantado?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" ng-model="datos.pago_adelantado" name="pago_adelantado" ng-change="ShowPa(datos.pago_adelantado);" id = "pago_adelantado" ng-disabled="desabilitado" required/>
+                            </label>
                         </div>
                     </div>
-                        <div class="col-md-12" class="form-control" ng-show="IsVisible">
-                            <div class="form-group" >
+                    <div ng-show="IsVisible">
+                        <div class="col-md-6" class="form-control">
+                            <div class="form-group">
+                                <legend>Gestiones a Pagar:</legend>
+                                <div class="controls">
+                                    <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" name="nro_ges" ng-disabled="desabilitado" ng-change="calcularDeudas(datos.nro_ges)" required>
+                                        <option value="">--Seleccionar--</option>
+                                        <option value="2"> 2 </option>
+                                        <option value="4"> 4 </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <B>GESTIONES A PAGAR</B>                                    
+                                </div>
+                                <div class="panel-body">
+                                    <table ng-table="tblDeudas" class="table table-hover" id="tblDeudas">
+                                        <tr ng-repeat="deudasCiu in datos.listDeudas" ng-if="deudasCiu.montoPatente!=0">
+                                            <td data-title="'Nº'">{{deudasCiu.numero}}</td>
+                                            <td data-title="'GESTIÓN INICIO'">{{deudasCiu.inicio}}</td>
+                                            <td data-title="'GESTIÓN FIN'">{{deudasCiu.fin}}</td>
+                                            <td data-title="'MONTO PATENTE'">{{deudasCiu.montoPatente}}</td>
+                                            <td data-title="'MONTO VIAE'">{{deudasCiu.montoVIAE}}</td>
+                                            <td data-title="'MONTO SIN DESC.'">{{deudasCiu.montoTotalSinDescuento}}</td>
+                                            <td data-title="'DESCUENTO'">{{deudasCiu.montoDescuento}}</td>
+                                            <td data-title="'MONTO TOTAL'">{{deudasCiu.montoTotal}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor = "black" colspan="7"><font color = "white">TOTAL A PAGAR</font></td>
+                                            <td bgcolor = "black" align="right"><font color = "white">{{montoTotal}} Bs.</font></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" class="form-control">
+                            <div class="form-group">
                                 <label class="col-sm-12 control-label no-padding-right" for="url"></label>
                                 <div class="col-sm-12" align="left">
                                     <div class="alert alert-danger fade in">
-                                        <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
-                                        Ud. puede verificar en su cuenta iGob dentro de 48 hrs. la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
-                                        <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (48 hrs), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
+                                        <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br> Usted deberá verificar en su cuenta iGob 24/7 la liquidación (proforma) para el
+                                        pago anticipado de la Patente de Funcionamiento, que le permitirá realizar el pago en entidades financieras autorizadas, con un plazo de 5 (cinco) días posteriores a la generación de la Licencia de Funcionamiento.
+                                        <br>
+                                        <bold>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (5 días), se revertirá la Modalidad de Pago Anticipado de la LICENCIA DE FUNCIONAMIENTO, adecuándose a las obligaciones tributarias regulares (Pago de
+                                            Patente de Funcionamiento Anual).</bold>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div-->
+                    </div>
                     </br>
                     </br>
                     <div class="col-md-12">
@@ -1109,6 +1117,7 @@
                        <input type="hidden" ng-model="datos.f01_nro_actividad" id="f01_nro_actividad" name="f01_nro_actividad" class="form-control">
                         <input type="hidden" ng-model="datos.pubenvio" id="pubenvio" name="pubenvio" class="form-control">
                         <input type="hidden" ng-model="datos.publicidad_grilla" id="publicidad_grilla" name="publicidad_grilla" class="form-control">
+                        <input type="hidden" ng-model="datos.listDeudas" id="listDeudas" name="listDeudas" class="form-control" />
 
 
                     </div>

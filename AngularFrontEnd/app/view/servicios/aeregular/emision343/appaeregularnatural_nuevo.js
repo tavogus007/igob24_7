@@ -1365,41 +1365,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     }
                 });
 
-                /*$scope.calculo_total = 0;
-                var calcularD = new reglasnegocioSierra();
-                calcularD.identificador = 'SERVICIO_VALLE_AE-3277';
-                calcularD.parametros = dataDeuda;
-                calcularD.llamarregla_sierra(function(resDeuda) {
-                    var deudasAE = JSON.parse(resDeuda);
-                    var pagoAE = deudasAE.datos;                  
-                    $scope.datos.montoDeuda = pagoAE;
-                    datoObjectPago = [];
-                    for (j = 0; j < pagoAE.length; j++) {
-                        datoObjectPP = new Object();
-                        datoObjectPP.nro = (j + 1);
-                        datoObjectPP.gestion = pagoAE[j].gestion;
-                        if ($scope.datos.f01_sup == 0)
-                            datoObjectPP.monto_ae = pagoAE[j].monto_fijo;
-                        else
-                            datoObjectPP.monto_ae = pagoAE[j].monto_ae;
-                        datoObjectPP.monto_viae = pagoAE[j].monto_viae;
-                        datoObjectPP.descuento = pagoAE[j].descuento;
-                        datoObjectPP.monto_total = pagoAE[j].monto_total;
-                        datoObjectPP.monto_descuento = pagoAE[j].monto_descuento;
-                        datoObjectPP.monto_total_con_descuento = pagoAE[j].monto_total_con_descuento;
-                        datoObjectPago[j] = datoObjectPP;
-                        $scope.calculo_total = $scope.calculo_total + parseInt(pagoAE[j].monto_total_con_descuento);
-                    };
-                    $scope.datos.listDeudas = datoObjectPago;
-                    $scope.datos.calculo_total = $scope.calculo_total;
-                    $scope.listDeudas = datoObjectPago;
-                    if (!$scope.$$phase) {
-                        $scope.$apply();
-                    }
-                    $scope.tblDeudas.reload();
-                    $.unblockUI();
-                })*/
-
+              
             } else {
                 $.unblockUI();
             };
@@ -1407,7 +1373,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
     }
 
     $scope.calcularDeudasDesdePublicidad = function(dato){
-        console.log("dato == true && $scope.datos.pago_adelantado == true :", dato, " * " , $scope.datos.pago_adelantado);
         if(dato == false && $scope.datos.pago_adelantado == true){
             $scope.datos.publicidad = [];
             console.log("$scope.datos.f01_sup, $scope.datos.nro_ges :", $scope.datos.f01_sup, $scope.datos.nro_ges);
@@ -2986,14 +2951,16 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                     stringFormulario40  =   stringFormulario40.replace("#Licenmul_grilla#", multi);
                 };
                 var tablapago = '';
-                if($scope.pago_adelantado == 'undefined' || $scope.pago_adelantado == undefined  || $scope.pago_adelantado == 'NO'){
-                    stringFormulario40  =   stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
-                    stringFormulario40  =   stringFormulario40.replace("#nro_ges#", 'NINGUNA');
-                    stringFormulario40  =   stringFormulario40.replace("#tablaP#", tablapago);
-                }else{
-                    stringFormulario40  =   stringFormulario40.replace("#pago_adel#", $scope.pago_adelantado);
-                    stringFormulario40  =   stringFormulario40.replace("#nro_ges#", datos.nro_ges);
-                    stringFormulario40  =   stringFormulario40.replace("#tablaP#", tablapago);
+                if (datos.pago_adelantado == true) {
+                    stringFormulario40 = stringFormulario40.replace("#pago_adel#", 'SI'); //datos.pago_adelantado);
+                    stringFormulario40 = stringFormulario40.replace("#nro_ges#", datos.nro_ges);
+                    stringFormulario40 = stringFormulario40.replace("#tablaP#", '');
+                    stringFormulario40 = stringFormulario40.replace("#pagoadelantado#", "Me comprometo a mantener las condiciones técnicas y ubicación de la Actividad Económica por el periodo autorizado, caso contrario  me someteré a lo dispuesto en la Ley Municipal Autonómica 343/2018, sin reclamo alguno.");
+                } else {
+                    stringFormulario40 = stringFormulario40.replace("#pago_adel#", 'SIN PAGO ADELANTADO');
+                    stringFormulario40 = stringFormulario40.replace("#nro_ges#", 'NINGUNA');
+                    stringFormulario40 = stringFormulario40.replace("#tablaP#", '');
+                    stringFormulario40 = stringFormulario40.replace("#pagoadelantado#", "");
                 }
                 var divfoodTruck = '';
                 if (datos.f01_categoria == 211 || datos.f01_categoria == '211') {
@@ -3228,14 +3195,12 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         dataForm['f01_idCodigoZona'] = data.f01_idCodigoZona;
         var tablapago = '';
 
-        console.log("PAGO ADELANTANDO 2:", data.pago_adelantado);
         dataForm['pago_adelantado'] = 'NO';
 
         if (data.pago_adelantado == true) {
             dataForm['pago_adelantado'] = 'SI'; //data.pago_adelantado;
             dataForm['nro_ges'] = data.nro_ges;
             dataForm['tablaP'] = '';
-            console.log("PAGO ADELANTANDO 222:", data.pago_adelantado);
         } else {
             dataForm['pago_adelantado'] = 'SIN PAGO ADELANTADO';
             dataForm['nro_ges'] = 'NINGUNA';
@@ -3682,7 +3647,6 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['pago_adelantado'] = 'NO';
         }
 
-        //datosNeXO['pago_adelantado'] = paramForm.pago_adelantado;//$scope.pago_adelantado;
         datosNeXO['nro_ges'] =  paramForm.nro_ges;
         if(paramForm.chkzonasegura == 'ZONASEGURA'){
             datosNeXO['f01_zona_segura'] = 'SI';

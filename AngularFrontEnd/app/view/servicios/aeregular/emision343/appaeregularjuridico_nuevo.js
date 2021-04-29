@@ -342,7 +342,6 @@ function regularjuridicoNuevoController($scope, $timeout, $rootScope, $routePara
     $scope.datos.fileArchivosAd = '';
 
     $scope.catactividadDesarrollada = function() {
-        console.log("LISTAR ACTIVIDAD DESARROLLADA :");
         $.blockUI();
         $scope.datos.rdTipoTramite = 'NUEVO';
         //$scope.datos.f01_actividad_desarrollada = "";
@@ -1580,11 +1579,6 @@ function regularjuridicoNuevoController($scope, $timeout, $rootScope, $routePara
             var sIdTramite = $rootScope.tramiteId;
             var datosSerializados = JSON.stringify(datosNeXO);
             archivo1 = "";
-            //CREAR CASO AE LINEA
-            //REQUISITOS PARA CREAR LA ACTIVIDAD ECONOMICA INT_AC_MACRO_ID, INT_ID_CAT_AGRUPADA
-
-            console.log("DATOS SERIALIZADOS :", datosSerializados);
-
             var crearCaso = new gCrearCaso();
             crearCaso.usr_id = 1,
                 crearCaso.datos = datosSerializados,
@@ -2298,16 +2292,13 @@ function regularjuridicoNuevoController($scope, $timeout, $rootScope, $routePara
         imgCroquis.insertarDoc(function(resultado) {
             resultadoApi = JSON.parse(resultado);
             if (resultadoApi.success) {
-                //console.log("REGISTRO IMAGEN CORRECTAMENTE CORRECTO");
             } else {
                 $.unblockUI();
                 swal(resultadoApi.error.message);
             }
         });
     };
-
-    // ***********************  MAPA     **************************************************************************************************************************************************
-
+    // ***********************  MAPA     ***************
     var latitud = 0;
     var longitud = 0;
     var activarClick = false;

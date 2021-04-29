@@ -158,7 +158,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
 
     $scope.LicenciaXCategoriaA = function(idDesarrollada, superficie) {
         $.blockUI();
-        console.log("SUPERFICIE :", superficie);
         var superficie = ((typeof(datos.superficie) == 'undefined' || datos.superficie == null) ? 0 : datos.superficie);
         //$scope.datos.rdTipoTramite = 'NUEVO';
         datoObjectFile1 = new Object();
@@ -746,115 +745,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         });
     };
 
-
-    /*$scope.distritoZonas = function(idMacroJ){
-         var idMacro = "";
-         if($scope.aMacrodistritos){
-             angular.forEach($scope.aMacrodistritos, function(value, key) {
-                 if(value.mcdstt_macrodistrito == idMacroJ){
-                     idMacro = value.mcdstt_id;
-                 }
-             });
-         }
-         $scope.idMacro = idMacro;
-         $scope.datos.f01_macro_act    =   idMacro;
-         if($scope.datos.g_origen != 'POS/EMPR2017'){
-             $scope.datos.INT_AC_MACRO_ID    =   idMacro;
-         }
-         $scope.datos.INT_AC_MACRO_ID = idMacro;
-         $scope.aDistritoZona = {};
-         try{
-             var parametros = new distritoZona();
-             parametros.idMacro = idMacro;
-             parametros.obtdist(function(resultado){
-                 data = JSON.parse(resultado);
-                 if(data.success.length > 0){
-                     $scope.desabilitadoZ=false;
-                     $scope.aDistritoZona = data.success;
-                     $scope.desabilitadoV=true;
-                     $scope.desabilitadoNo=true;
-                 }else{
-                     $scope.msg = "Error !!";
-                 }
-             });
-         }catch(error){
-             $scope.desabilitadoZ=true;
-             $scope.desabilitadoV=true;
-             $scope.desabilitadoNo=true;
-         }
-     };
-
-     $scope.macrodistritosid = function(idzona){
-         $scope.datos.f01_tip_via_act = '';
-         var distNombre  = idzona;
-         if($scope.aMacroZona){
-             angular.forEach($scope.aMacroZona, function(value, key) {
-                 if(value.dist_id== distNombre){
-                     idMacro  =   value.dist_macro_id;
-                 }
-             });
-         }
-         $scope.idMacro = idMacro;
-         $scope.datos.f01_macro_act    =   idMacro;
-         $scope.datos.INT_AC_MACRO = idMacro;
-         if($scope.datos.g_origen != 'POS/EMPR2017'){
-             $scope.datos.INT_AC_MACRO_ID    =   idMacro;
-         }
-         $scope.datos.INT_AC_MACRO_ID = idMacro;
-         $scope.aMacrodistritos = {};
-         var datosP = new macrodistritoLstid();
-         datosP.idMacro =  idMacro;
-         datosP.obtmacrodistrito(function(resultado){
-             data = JSON.parse(resultado);
-             if(data.success.length > 0){
-                 $scope.datos.f01_macro_act_descrip = data.success[0].mcdstt_macrodistrito;
-             }else{
-                 $scope.msg = "Error !!";
-             }
-         });
-     };
-
-     $scope.MacroZona  =   function(){
-         $scope.aMacroZona = '';
-         try{
-             var parametros = new ZonaMacro();
-             parametros.Zona_Macro(function(resultado){
-                 data = JSON.parse(resultado);
-                 if(data.success.length > 0){
-                     $scope.aMacroZona = data.success;
-                 }else{
-                     $scope.msg = "Error !!";
-                 }
-             });
-         }catch(error){
-            console.log("error en zonas");
-         }
-     };
-
-     $scope.vias= function(zona,tipo){
-         $scope.z =zona;
-         $scope.t =tipo;
-         try{
-             var datos = new tipoVia();
-             datos.idz = zona;
-             datos.tipo = tipo;
-             datos.obt_tipoVia(function(results){
-                 $scope.tip_vias =   [];
-                 var aTipoVia    =   {};
-                 aTipoVia["idv"] = "OTROS";
-                 aTipoVia["nombrev"] = "OTRO";
-                 data = JSON.parse(resultado);
-                 if(data.success.length > 0 ){
-                     $scope.tip_vias =   data.success;
-                 }
-                 $scope.tip_vias.push(aTipoVia);
-                 $scope.desabilitadoNo=false;
-             })
-         }catch(error){
-             console.log("error en via");
-         }
-     };*/
-
     var clsValidarBtnEnviar = $rootScope.$on('validarBtnEnviar', function(event, data) {
         if (data > 0) {
             $scope.btnEnviarForm = false;
@@ -1026,15 +916,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             $scope.licenciaToogle4 = false;
         }
 
-        /*if (data.pago_adelantado == 'SI') {
-            $scope.IsVisible = true;
-        } else{
-            $scope.IsVisible = false;
-            $scope.datos.pago_adelantado = 'NO';
-        };*/
-
-        console.log("data.INT_AC_MACRO_ID AAAA:", data.INT_AC_MACRO_ID);
-
         if (typeof(data.INT_AC_MACRO_ID) != 'undefined') {
             //LISTANDO ZONAS
             $scope.aDistritoZona = {};
@@ -1174,7 +1055,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
     $scope.mostrarSuperficie = function(tipolic, categoriaagrupada, idDesarrollada) {
-        console.log(tipolic, categoriaagrupada, idDesarrollada);
         if (tipolic == 27 || tipolic == '27' || categoriaagrupada == 3451 || categoriaagrupada == '3451' || idDesarrollada == 881 || idDesarrollada == '881') {
             $scope.mostrarsinsuperficie = true;
             $scope.mostrarsuperficie = true;
@@ -1208,7 +1088,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         };
     }*/
     $scope.ShowPa = function(valor) {
-        console.log("PAGO ADELANTADO :", valor);
         $scope.calculo_total = 0;
         if (valor == 'true' || valor == true) {
             $scope.IsVisible = true;
@@ -1351,7 +1230,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                         $.unblockUI();
                     } else {
                         swal('Error', 'Ocurrieron algunos inconvenientes durante el procesamiento de sus datos. Favor de volver a intentarlo mas tarde', 'warning');
-                        console.log("ERROR !! :", deudasAE.error);
                         $scope.listDeudas = [];
                         $.unblockUI();
                     }
@@ -1367,7 +1245,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     $scope.calcularDeudasDesdePublicidad = function(dato) {
         if (dato == false && $scope.datos.pago_adelantado == true) {
             $scope.datos.publicidad = [];
-            console.log("$scope.datos.f01_sup, $scope.datos.nro_ges :", $scope.datos.f01_sup, $scope.datos.nro_ges);
             $scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
         } else if (dato == true && $scope.datos.pago_adelantado == true) {
             $scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
@@ -2065,151 +1942,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     };
 
-    // ***********************  MAPA     **************************************************************************************************************************************************
-    /////////////////////  MAPA CON OL4 ///////////////////////////////////////////
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-    /*
-    var map = new ol.Map();
-
-      var epsg32719 = 'EPSG:32719';
-      var epsg4326 = 'EPSG:4326';
-      proj4.defs(epsg32719, '+proj=utm +zone=19 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs');
-      proj4.defs(epsg4326,'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');
-
-
-      var vectorSourceB = new ol.source.Vector({});
-      var vectorLayerZonas = new ol.layer.Vector();
-
-      var vectorSource = new ol.source.Vector();
-      var vectorLayer = new ol.layer.Vector({source: vectorSource});
-
-      //map.addLayer(vectorLayerZonas);
-
-      var myStyleZonas = new ol.style.Style({
-               stroke : new ol.style.Stroke({color : 'blue',width : 1}),
-               fill : new ol.style.Fill({color: 'transparent'})
-      });
-
-      var view = new ol.View({
-                              //projection: projection19,
-                              center: ol.proj.fromLonLat([ -68.122455, -16.498960]),
-                              zoom: 16
-                              //minZoom: 2,
-                              //maxZoom: 20
-      });
-
-      var buscar = document.getElementById('buscar');
-      var vectorLayer_inci_alta = new ol.layer.Vector();
-      var vectorLayer_inci_media = new ol.layer.Vector();
-      var vectorLayer_inci_baja = new ol.layer.Vector();
-
-      var vectorLayer_ambulancias = new ol.layer.Vector();
-      var vectorLayer_gruas = new ol.layer.Vector();
-      var vectorLayer_motos = new ol.layer.Vector();
-      var vectorLayer_patrullas = new ol.layer.Vector();
-      var vectorLayer_camionetas = new ol.layer.Vector();
-
-      var vectorLayer_poligonos = new ol.layer.Vector();
-      map.addLayer(vectorLayer_poligonos);
-      var vectorLayer_lineas = new ol.layer.Vector();
-      map.addLayer(vectorLayer_lineas);
-
-      var geojson_empiezo = '{"type":"FeatureCollection","name":"puntos_geo_3857","crs":{"type":"name","properties":{"name": "urn:ogc:def:crs:EPSG::3857"}},"features": [';
-      var geojson_cuerpo ='';
-      var geojson_fin = ']}';
-      var geojson_c = '';
-      var centro = '';
-      var geo_cuerpo_l = '';
-      var geo_cuerpo_p = '';
-
-      var geo_empiezo = '{"type":"FeatureCollection","name":"puntos_geo_3857","crs":{"type":"name","properties":{"name": "urn:ogc:def:crs:EPSG::3857"}},"features": [';
-      var geo_fin = ']}';
-
-      var coord ='';
-      //$scope.popup = '';
-
-      var popup = document.getElementById('popup');
-      var popup_closer = document.getElementById('popup-closer');
-      var popup_content = document.getElementById('popup-content');
-      var olpopup = new ol.Overlay({element: popup,autoPan: false});
-
-
-      var iconStyle_riesgo = new ol.style.Style({
-                  image: new ol.style.Circle({
-                    radius: 7,
-                    fill: new ol.style.Fill({
-                      color: 'blue'
-                    })
-                  })
-      });
-
-      var iconStyle = new ol.style.Style({
-                  image: new ol.style.Circle({
-                    radius: 7,
-                    fill: new ol.style.Fill({
-                      color: 'red'
-                    })
-                  })
-      });
-
-    function buscar_ubicacion()
-    {
-        var nombre_1 = new Array();
-        var f = '';
-        var nombre = document.getElementById('busqueda').value;
-        nombre = nombre.toUpperCase();
-        var ca = "CALLE ";
-        ca = ca.concat(nombre);
-        var c = 0;
-        /////////////////////////////
-        var tipo = "lugares";
-        var data = '';
-        ///////////////////////////////
-        if(nombre==='')
-        {
-          var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
-          map.removeLayer(vectorLayerZonas);
-        }
-        else
-        {
-          if(tipo == 'lugares')
-          {
-            map.removeLayer(vectorLayerZonas);
-            for (var i=0;i<geo_zonas.features.length;i++)
-            {
-              var nombre_zona =  geo_zonas.features[i].properties.zonaref;
-              var x_c = geo_zonas_centroides.features[i].geometry.coordinates[0];
-              var y_c = geo_zonas_centroides.features[i].geometry.coordinates[1];
-              if(nombre === nombre_zona)
-              {
-                c=c+1;
-                var geo_zona =  geo_zonas.features[i];
-                var xx = x_c;
-                var yy = y_c;
-              }
-            }
-            if(c>0)
-            {
-              geo_zona = JSON.stringify(geo_zona);
-              vectorLayerZonas.setSource(new ol.source.Vector({
-                                                           features: (new ol.format.GeoJSON({defaultDataProjection:'EPSG:3857'})).readFeatures(geo_zona)
-              }));
-
-              vectorLayerZonas.setStyle(myStyleZonas);
-
-              map.addLayer(vectorLayerZonas);
-              map.getView().setCenter([xx,yy]);
-              map.getView().setZoom(15);
-            }
-          }
-          if(c==0)
-          {
-            var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
-          }
-        }
-    }
-    */
-    ///////////////////////////////////////////////////////////////////////////////
     var latitud = 0;
     var longitud = 0;
     var activarClick = false;
@@ -2763,44 +2495,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    /*$scope.cargarNombVia = function(tipoVia, dato) {
-        try{
-            var nomvia = new aelstNombreVia();
-            nomvia.idzona = dato.f01_zona_act;
-            nomvia.tipovia = tipoVia;
-            nomvia.aelst_NombreVia(function(res){
-                x = JSON.parse(res);
-                response = x.success.data;
-                if (response.length > 0) {
-                    $scope.datosNombVia = response;
-                    $scope.nombreViaCmb = true;
-                    if (dato.f01_factor == "VA") {
-                        $scope.nombreViaTxt = true;
-                    } else {
-                        $scope.nombreViaTxt = false;
-                    }
-                } else{
-                    $scope.nombreViaCmb = true;
-                    $scope.nombreViaTxt = false;
-                };
-            });
-        }catch (error){
-            console.log('datos error via:', error);
-        }
-    };*/
-
-    /*$scope.cargarNombViaTxt = function(valor) {
-        if (valor == "NINGUNO"){
-            $scope.nombreViaTxt = true;
-            $scope.tipoTrayecto = false;
-            $scope.datos.f01_factor ="VA";
-        } else {
-            $scope.nombreViaTxt = false;
-            $scope.tipoTrayecto = true;
-            $scope.datos.f01_num_act_n =   "";
-        }
-    };*/
-
     $scope.startDateOpenIni = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -3052,11 +2746,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                     $scope.fmostrarFormulario();
                 }, 500);
             })
-
-
-            console.log(" ARMAR DATOS FORMULARIO :", datos);
-
-
             $scope.armarDatosForm(datos, fechaActualS, sHora);
         }
     }
@@ -3275,9 +2964,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
     $scope.verificarCamposInternet = function(data) {
-
-        console.log("verificarCamposInternet :", data);
-
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         var taemayor = 0;
@@ -3377,16 +3063,13 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible para programar la inspección y/o verificación documental. Caso contrario puede apersonarse a la Plataforma Integra de su Macrodistrito para recabar mayor información.");
             });
         } catch (error) {
-            console.log("Error : ", error);
             swal('', 'Registro no modificado', 'error');
             $.unblockUI();
         }
     };
-    /*CIUDADANO - ENVIAR FORMULARIO NATURAL*/
+
     //enviarFormProcesosLinea
     $scope.validarEnvio = function(data) {
-        console.log("ENVIAR DATA FORM : ", data);
-
         swal({
             title: 'CONFIRMAR',
             text: 'El envío de la presente solicitud de licencia de funcionamiento de actividad económica, (DD.JJ.) generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',
@@ -3406,9 +3089,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
 
 
     $scope.enviarFormProcesosLinea = function(paramForm) {
-
-        console.log("DATOS PARA ENVIAR PAGO ADELANTADO :", paramForm);
-
         $scope.ultimoArrayAdjunto();
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm = true;
@@ -3549,8 +3229,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 datosNeXO['f01_num_act_n'] = (paramForm.f01_num_act_n).toUpperCase();
             }
             datosNeXO['f01_num_act'] = paramForm.f01_num_act; //paramForm.f01_tip_via_act;
-            //datosNeXO['f01_num_act_n']=paramForm.f01_num_act_n;//paramForm.f01_num_act;
-            //datosNeXO['f01_factor']="";
             datosNeXO['f01_num_act1'] = paramForm.f01_num_act1;
             datosNeXO['f01_edificio_act'] = paramForm.f01_edificio_act;
             datosNeXO['f01_bloque_act'] = paramForm.f01_bloque_act;
@@ -3723,15 +3401,12 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                         alert("conexion fallida ");
                     }
                 });
-            /* }else{
-                 swal('', "Complete sus Datos de Direccion", 'warning');
-             }  */
+           
         } else {
             swal('', "Datos obligatorios, verifique los datos del formulario E", 'warning');
         }
     };
-    ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     try {
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();

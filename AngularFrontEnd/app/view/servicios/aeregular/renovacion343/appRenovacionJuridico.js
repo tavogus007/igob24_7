@@ -350,7 +350,6 @@ function renovacionJuridicoController($scope, $timeout, $rootScope, $routeParams
         var dato = tramite.FechaInicio.split('/');
         aniotram = dato[2];
         var anioserv = $scope.anioserver.toString();
-        console.log(aniotram, "anos : ", anioserv);
         if (aniotram != anioserv) {
             if (tramite.IdActividad) {
                 $scope.idActividiadEconomicaActual = tramite.IdActividad;

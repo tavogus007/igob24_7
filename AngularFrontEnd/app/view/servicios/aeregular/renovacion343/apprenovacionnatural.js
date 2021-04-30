@@ -1344,7 +1344,9 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
         var codhojaruta = "";
         var datosLotus = "";
         $scope.datosAnterioresNatural(tramite.IdActividad);
-        if (aniotram == $scope.anioserver) {
+        console.log(aniotram,' :: ',$scope.anioserver);
+        
+        if (aniotram != $scope.anioserver) {
             if (tramite.IdActividad) {
                 $scope.idActividiadEconomicaActual = tramite.IdActividad;
                 $scope.datos.f01_id_actividad_economica = tramite.IdActividad;

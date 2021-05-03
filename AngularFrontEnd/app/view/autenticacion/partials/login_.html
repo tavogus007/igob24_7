@@ -1,9 +1,9 @@
 <style>
-  /* table.one {
+  table.one {
     border-collapse:collapse;
     width:100%;
     border-spacing:10px;
-  } */
+  }
   tr.color {
     background-color:#6F7072;
   }
@@ -29,21 +29,21 @@
     border: 1px solid red;
   }
   input:required:valid {
-    border: 1px solid #00800000;
+    border: 1px solid green;
   }
   select:required:invalid {
     border: 1px solid red;
   }
   select:required:valid {
-    border: 1px solid #00800000;
+    border: 1px solid green;
   }
   .form-group {
     padding-left: 8px;
   }
   .box2{
     display: inline-block;
-    /* width: 190px; */
-    margin: 3px;
+    width: 190px;
+    margin: 2px;
   }
 </style>
 <script type="text/javascript">
@@ -57,27 +57,61 @@
       document.getElementById('clave').value      = '';
     }
 </script>
-
+<style type="text/css">
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, font, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      outline: 0;
+      font-size: 100%;
+      vertical-align: baseline;
+      background: transparent;
+    }
+    body {
+      background-image: linear-gradient(rgba(34, 40, 49, 0.1), rgba(0, 0, 0, 0.1)), url(../../../../assets/img/5.jpg);
+      background-size: cover;
+      color: #000;
+      margin: 0 auto;
+      padding: 0;
+      position: relative;
+    }
+    .contenedor_log{
+      margin: 7% auto;
+      position: relative;
+    }
+    .over{
+      margin: 0px;
+      padding: 0px;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+      background-image: url(../../../libs/img/overlays/05.png);
+    }
+</style>
 <html onload="clearTxt();">
   <head>
       <meta charset="utf-8"/>
       <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
       <meta content="width=device-width, initial-scale=1" name="viewport"/>
       <title>iGob 24/7</title>
-      <link href="../../../../structureIgob/images/favicon.png" rel="icon">
-      <!-- <script type="text/javascript" src="../../../libs/js/jquery-1.11.2.min.js"></script> -->
-      <script src="../../../../structureIgob/js/jquery-3.3.1.min.js"></script>
-  
+      <link href="../../../../nuevoIgob/img/favicon.png" rel="icon">
+      <script type="text/javascript" src="../../../libs/js/jquery-1.11.2.min.js"></script>
       <script type="text/javascript" src="../../../controller/autenticacion/config.js"></script>  
       <script type="text/javascript" src="../../../libs/js/aes.js"></script>       
       <script type="text/javascript" src="../../../libs/login/login.js"></script>
-      <!-- <link rel="stylesheet" href="../../../libs/css_one/bootstrap.min.css"/> -->
-      <!-- <link rel="stylesheet" href="../../../libs/css_one/styleinspinia.min.css"/> -->
+      <link rel="stylesheet" href="../../../libs/css_one/bootstrap.min.css"/>
+      <link rel="stylesheet" href="../../../libs/css_one/styleinspinia.min.css"/>
       <link rel="stylesheet" href="../../../libs/css/sweetalert.min.css"/>
-
-      <link rel="stylesheet" href="../../../../structureIgob/css/bootstrap.min.css">
-      <link rel="stylesheet" href="../../../../structureIgob/fonts/icofont/icofont.css">
-      <link rel="stylesheet" href="../../../../structureIgob/css/login/login.css">
       <style>
           .ng-table tr.colorInactivo td { background-color: #F9EFE0; font-weight: bold; }
           .ng-table tr.colorBloqueado td { background-color: #D9E9F7; font-weight: bold; }
@@ -321,656 +355,494 @@
 
     </script>
 
-    <script>
-      var numero = "";
-      var captchaerror="";
-      if(sessionStorage.getItem("Idioma") != null) 
-      {
-        var idioma = sessionStorage.getItem("Idioma");
-      }
-      else 
-      {
-        sessionStorage.setItem("Idioma", "C");
-        idioma = sessionStorage.getItem("Idioma", "C");
-      }
-      var verTitulos = new idiomaPlat();
-      verTitulos.idioma = sessionStorage.getItem("Idioma");
-      var elArray = new Array();
-      verTitulos.obtenerTitulos(function(resultado)
-      {
-          a = JSON.parse(resultado);
-          $.each( a.success, function( key, value ) 
-          {
-              elArray[value.idm_label] = value.idm_contenido;
-          });
-      });
-      function autenticacionNode()
-      {
-          var sUsuario        = $("#usuario").val();
-          var sClave          = $("#clave").val();
-          
 
-          var objLogin        = new loginNode();
-          objLogin.usuario    =  sUsuario;
-          objLogin.pin        =  sClave;
-          objLogin.iniciarLogin(function(resultado)
+<script>
+  var numero = "";
+  var captchaerror="";
+  if(sessionStorage.getItem("Idioma") != null) 
+  {
+    var idioma = sessionStorage.getItem("Idioma");
+  }
+  else 
+  {
+    sessionStorage.setItem("Idioma", "C");
+    idioma = sessionStorage.getItem("Idioma", "C");
+  }
+  var verTitulos = new idiomaPlat();
+  verTitulos.idioma = sessionStorage.getItem("Idioma");
+  var elArray = new Array();
+  verTitulos.obtenerTitulos(function(resultado)
+  {
+      a = JSON.parse(resultado);
+      $.each( a.success, function( key, value ) 
+      {
+          elArray[value.idm_label] = value.idm_contenido;
+      });
+  });
+  function autenticacionNode()
+  {
+      var sUsuario        = $("#usuario").val();
+      var sClave          = $("#clave").val();
+      
+
+      var objLogin        = new loginNode();
+      objLogin.usuario    =  sUsuario;
+      objLogin.pin        =  sClave;
+      objLogin.iniciarLogin(function(resultado)
+      {
+          response = JSON.parse(resultado);
+          if (!response.error) 
           {
-              response = JSON.parse(resultado);
-              if (!response.error) 
-              {
-                  $.unblockUI();
-                    var aRespuesta    =   new Array();
-                    var sNroRegistros =   0;
-                    aRespuesta.push(response);
-                    sNroRegistros     =   Object.keys(aRespuesta[0]).length;
-                    if(sNroRegistros > 0)
+              $.unblockUI();
+                var aRespuesta    =   new Array();
+                var sNroRegistros =   0;
+                aRespuesta.push(response);
+                sNroRegistros     =   Object.keys(aRespuesta[0]).length;
+                if(sNroRegistros > 0)
+                {
+                    var sError  = ((typeof(aRespuesta[0].error) == 'undefined' || aRespuesta[0].error == null) ? ""   : aRespuesta[0].error);
+                    if(sError && sError != "")
                     {
-                        var sError  = ((typeof(aRespuesta[0].error) == 'undefined' || aRespuesta[0].error == null) ? ""   : aRespuesta[0].error);
-                        if(sError && sError != "")
-                        {
-                            sweetAlert("", "Error en usuario y/o contraseña vuelva a intentarlo por favor", "warning");
-                        }
-                        else
-                        {
-                          var sJson = aRespuesta[0];
-                          if(aRespuesta[0].dtspsl_activaciond.trim()   !=   ""  &&  aRespuesta[0].dtspsl_activacionf.trim()    !=   "")
-                          {
-                              sessionStorage.setItem("autenticacion", JSON.stringify(aRespuesta));
-                              window.location.href = "../index.html";
-                          }
-                          else
-                          {
-                              var sMensaje    =   "por primera y única vez,";
-                              sweetAlert('', "Estimado usuario. Active su cuenta aproximándose " + sMensaje +" a la plataforma más cercana, donde validarán sus datos y activarán su cuenta. Otorgándole acceso a los servicios en línea del GAMLP.", 'warning');
-                          }
-                        }
+                        sweetAlert("", "Error en usuario y/o contraseña vuelva a intentarlo por favor", "warning");
                     }
                     else
                     {
-                      sweetAlert("", "Error en usuario y/o contraseña vuelva a intentarlo por favor", "warning");
-                    }
-              }
-              else
-              {
-                if(response.error.code == 603)
-                {
-                    sweetAlert("", "Error en usuario y/o contraseña vuelva a intentarlo por favor", "warning");
-                }
-                else if(response.error.code == 602)
-                {
-                    sweetAlert("", "Usuario no registrado", "warning");
-                }
-              }
-          });
-      }
-      function resetPassword()
-      {
-        var captch  = $("#resultadoC").val();
-        var id = numero;
-        var verCaptcha = new captcha();
-        verCaptcha.identificador = id;
-        verCaptcha.respuesta = captch;
-        verCaptcha.verificarCaptcha(function(resultado)
-        {
-          json = JSON.parse(resultado);
-          if(json.success[0] == undefined)
-          {
-              sweetAlert("", "Error en el captcha intentar de nuevo por favor", "warning");
-              obtCaptha();
-          }
-          else
-          {
-              resetPassword2();
-          }
-        });
-      }
-      function getlimpiareRROR()
-      {
-        var usuario = $("#prsCI").val();
-        var correo = $("#prsCorreo").val();
-        var captch  = $("#resultadoC").val();
-        if(usuario!=""&&correo != "" && captch != "")
-        {
-          document.getElementById("EnvRes").disabled = false;
-        }
-        else
-        {
-          document.getElementById("EnvRes").disabled = true;
-        }
-      }
-      function resetPassword2()
-      {
-        var sUser   = $("#prsCI").val();
-        var sEmail  = $("#prsCorreo").val();
-        var objPassword = new password();
-        objPassword.usuario = sUser;
-        objPassword.correo  = sEmail;
-        objPassword.resetPass(function(resultado)
-        {
-            response = JSON.parse(resultado);
-            if (!response.error) 
-            {
-              var aRespuesta    =   new Array();
-              var sNroRegistros =   0;
-              aRespuesta.push(response);
-              sNroRegistros     =   Object.keys(aRespuesta[0]).length;
-              if(sNroRegistros > 0)
-              {
-                var sError  = ((typeof(aRespuesta[0].error) == 'undefined' || aRespuesta[0].error == null) ? ""   : aRespuesta[0].error);
-                  if(sError && sError != "") 
-                  {
-                      sweetAlert("", "Error en usuario y/o e-mail vuelva a intentarlo por favor", "warning");
-                  }
-                  else 
-                  {
                       var sJson = aRespuesta[0];
-                      if(aRespuesta[0].success != "") 
+                      if(aRespuesta[0].dtspsl_activaciond.trim()   !=   ""  &&  aRespuesta[0].dtspsl_activacionf.trim()    !=   "")
                       {
-                        var scorreo = document.getElementById("prsCorreo").value;
-                        document.getElementById("prsCI").value="";
-                        document.getElementById("prsCorreo").value="";
-                        var npin=aRespuesta[0].success.PIN;
-                        sweetAlert("RESTAURACIÓN EXITOSA", "Estimado Ciudadano, revise la bandeja de su correo electrónico.  " + scorreo, "success");
-                        var ciudadano="";
-                        var mensajeCorreo = "_Estimado_Ciudadano_su_Nuevo_PIN_es_:_<b>_" + npin + "_</b>";
-                        var vAsunto ="Restauración_de_PIN_24/7";
-                        var vMensaje = "";
-                        var email=sEmail;
-                        var sMensajeValidacion = mensajeCorreo.replace(/ /g, "_");
-                        var parametros = {
-                            "cuerpo" : sMensajeValidacion,
-                            "asunto" : vAsunto,
-                            "para" : email,
-                            "ciudadano" : ciudadano,
-                            "mensaje": vMensaje
-                        }
-                        $.ajax({ 
-                            data: parametros, 
-                            url: enviocorreo,//'http://200.105.139.183:9090/smsemail/email/mail.php',
-                            type: 'get', 
-                            beforeSend: function (){}, 
-                            success: function (response){}
-                        });
-                      } 
-                      else 
+                          sessionStorage.setItem("autenticacion", JSON.stringify(aRespuesta));
+                          window.location.href = "../index.html";
+                      }
+                      else
                       {
-                          var sMensaje    = "por primera y única vez,";
+                          var sMensaje    =   "por primera y única vez,";
                           sweetAlert('', "Estimado usuario. Active su cuenta aproximándose " + sMensaje +" a la plataforma más cercana, donde validarán sus datos y activarán su cuenta. Otorgándole acceso a los servicios en línea del GAMLP.", 'warning');
                       }
-                  }
-              }
-              else 
-              {
-                sweetAlert("", "Error en usuario y/o contraseña vuelva a intentarlo por favor", "warning");
-              }
-            } 
-            else 
-            {
-                if(response.error.code == 603)
-                {
-                    sweetAlert("", "Error en usuario y/o email vuelva a intentarlo por favor", "warning");
-                }
-            }
-        });
-      }
-      function obtCaptha()
-      {
-        var objCaptcha = new captcha();
-        objCaptcha.obtcaptcha(function(resultado)
-        {
-          json = JSON.parse(resultado);
-          partes = json.success[0].sp_captcha_porx1.split(',');
-          numero = partes[0].substring(1);
-          i1=(partes[2]+ "," + partes[3]);
-          i2=(partes[4] + "," + partes[5]);
-          document.getElementById('img2').src = i1.substring(1, i1.length - 1);
-          document.getElementById('img1').src = i2.substring(1, i2.length - 2);
-          var lengua = "";
-          if(partes[1] == 'A') {
-              lengua = 'AYMARA';
-          } else if(partes[1] == 'Q') {
-              lengua = 'QUECHUA';
-          } else if(partes[1] == 'G'){
-              lengua = 'GUARANI';
-          } else if(partes[1] == 'C'){
-              lengua = 'CASTELLANO';
-          } else {
-          }
-          document.getElementById('img1').title = "Palabra en " + lengua;
-          document.getElementById('resultadoC').placeholder = "Ingrese texto: " + lengua + " CASTELLANO";
-          document.getElementById('lbllengua').placeholder = "Ingrese texto: " + lengua + " CASTELLANO";
-        });
-      }
-
-      function limpiarCamposRecuperacion()
-      {
-        document.getElementById("prsCorreo").disabled = true;         
-        document.getElementById("prsCorreo").value = '';
-        document.getElementById("prsCI").value = '';
-        document.getElementById("resultadoC").disabled = true;
-        document.getElementById("EnvRes").disabled = true;                            
-        document.getElementById("btnObtenerCapcha").disabled = true;
-        document.getElementById("resultadoC").value = '';                   
-        document.getElementById("resultadoC").value = '';
-        document.getElementById("resultadoC").value = '';
-      }
-
-      function limpiarCamposValidarCi()
-      {
-        document.getElementById("prsCorreo").disabled = true;         
-        document.getElementById("prsCorreo").value = '';
-        document.getElementById("resultadoC").disabled = true;
-        document.getElementById("EnvRes").disabled = true;                            
-        document.getElementById("btnObtenerCapcha").disabled = true;
-        document.getElementById("resultadoC").value = '';                   
-        document.getElementById("resultadoC").value = '';
-        document.getElementById("resultadoC").value = '';
-        document.getElementById("msg_correo").innerHTML = "Nota: Para restaurar su contraseña, su Correo Electrónico debe estar registrado en la cuenta del iGob 24/7.";
-        document.getElementById("msg_correo").style.color = "black";
-        document.getElementById("resultadoC").disabled = false;
-      }
-
-      function capLock(e){}
-      
-      var con_api_if  = "";
-      if(jsonURLS)
-      {              
-        con_api_if = jsonURLS.CONEXION_API_PG_RC;
-        urlRC = jsonURLS.CONEXION_API_PG_RC + "wsRCIgob";
-        key = jsonURLS.KEY;
-      }
-      var scorreociudadano = "";  
-
-
-      function validarCedulaIdentidad(ci)
-      {   
-        limpiarCamposValidarCi();
-        var stoquen = "";
-        var urlToken = urlRC + "/token2";
-        $.ajax({
-            dataType: "json",
-            type: "POST",
-            url : urlToken,
-            data: {},
-            async: false,
-            success: function(response) {
-              var token = response.token;
-              stoquen =  'Bearer ' + token;
-            },
-            error: function (response, status, error) {
-                dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-                console.log(dataResp);
-            }
-        });
-        $.ajax({ 
-            data: {ci:ci.value}, 
-            url: con_api_if + 'wsRCIgob/validarciudadano',
-            type: 'post', 
-            headers: {
-              'authorization': stoquen
-            }, 
-            beforeSend: function(){}, 
-            success: function (response) 
-            { 
-              response = CryptoJS.AES.decrypt(response, key);
-              response = response.toString(CryptoJS.enc.Utf8);
-              response = JSON.parse(response);
-              console.log(response,888);                    
-              if(response.error)
-              {                      
-                document.getElementById("msg_cedula").innerHTML = "Usuario no registrado";
-                document.getElementById("msg_cedula").style.color = "red";                
-                document.getElementById("resultadoC").disabled = true;
-                document.getElementById("resultadoC").value = "";
-                document.getElementById("resultadoC").disabled = true;
-                document.getElementById("btnObtenerCapcha").disabled = true;    
-                document.getElementById("EnvRes").disabled = true;
-                document.getElementById("prsCorreo").disabled = true;
-                document.getElementById("prsCorreo").value = "";                            
-              }
-              else
-              {
-                document.getElementById("msg_cedula").innerHTML = "";
-                document.getElementById("msg_cedula").style.color = "black";
-                scorreociudadano = response[0].mail;
-                var correo  =   ((typeof(scorreociudadano)    == 'undefined' || scorreociudadano  == null) ? '' : scorreociudadano);
-                if(correo.trim() != "")
-                {
-                  document.getElementById("prsCorreo").disabled = true;
-                  document.getElementById("prsCorreo").value = correo;
-                  document.getElementById("resultadoC").disabled = false;    
-                  document.getElementById("btnObtenerCapcha").disabled = false;
+                    }
                 }
                 else
                 {
-                  document.getElementById("msg_correo").innerHTML = "Señor ciudadano. No se puede restablecer su contraseña, debido a que usted no posee su correo electrónico en nuestros registros. Debe llamar a la línea gratuita 800 13 5555 para mayor información.";
-                  document.getElementById("msg_correo").style.color = "red";
-                  document.getElementById("resultadoC").disabled = true;
+                  sweetAlert("", "Error en usuario y/o contraseña vuelva a intentarlo por favor", "warning");
                 }
-              }
-            }
-        });
-      }
-
-      function validarCorreoElectronico(correo)
-      {
-        var correoinput = correo.value;
-        if(correoinput  != scorreociudadano)
-        {
-          document.getElementById("msg_correo").innerHTML = "El correo electronico no esta registrado dentro del igob247";
-          document.getElementById("msg_correo").style.color = "red";
-          document.getElementById("resultadoC").disabled = true;
-        }
-        else
-        {
-          document.getElementById("msg_correo").innerHTML = "Nota: Para restaurar su contraseña, su Correo Electrónico debe estar registrado en la cuenta del iGob 24/7.";
-          document.getElementById("msg_correo").style.color = "black";
-          document.getElementById("resultadoC").disabled = false;
-        }
-      }            
-      var tiemporespuesta = null;
-      var ErrorCapchasXX  = "";
-      var SuccesCapchasxx = "";
-      var habGuardar1 = "";
-      function verificarKeyPress(captch)
-      {
-        var id = numero;
-        var verCaptcha = new captcha();
-        verCaptcha.identificador = id;
-        verCaptcha.respuesta = captch;
-        verCaptcha.verificarCaptcha(function(resultado)
-        {
-            json = JSON.parse(resultado);
-            var nroregsitros = json.success.length;
-            if(nroregsitros == 0)
+          }
+          else
+          {
+            if(response.error.code == 603)
             {
-                habGuardar1 = true;
-                ErrorCapchasXX = "Verifique el Capcha";
-                SuccesCapchasxx="";
-                document.getElementById("msg_capcha").innerHTML = ErrorCapchasXX;
-                document.getElementById("msg_cedula").style.color = "red";
-                document.getElementById("EnvRes").disabled = true;
+                sweetAlert("", "Error en usuario y/o contraseña vuelva a intentarlo por favor", "warning");
+            }
+            else if(response.error.code == 602)
+            {
+                sweetAlert("", "Usuario no registrado", "warning");
+            }
+          }
+      });
+  }
+  function resetPassword()
+  {
+    var captch  = $("#resultadoC").val();
+    var id = numero;
+    var verCaptcha = new captcha();
+    verCaptcha.identificador = id;
+    verCaptcha.respuesta = captch;
+    verCaptcha.verificarCaptcha(function(resultado)
+    {
+      json = JSON.parse(resultado);
+      if(json.success[0] == undefined)
+      {
+          sweetAlert("", "Error en el captcha intentar de nuevo por favor", "warning");
+          obtCaptha();
+      }
+      else
+      {
+          resetPassword2();
+      }
+    });
+  }
+  function getlimpiareRROR()
+  {
+    var usuario = $("#prsCI").val();
+    var correo = $("#prsCorreo").val();
+    var captch  = $("#resultadoC").val();
+    if(usuario!=""&&correo != "" && captch != "")
+    {
+       document.getElementById("EnvRes").disabled = false;
+    }
+    else
+    {
+      document.getElementById("EnvRes").disabled = true;
+    }
+  }
+  function resetPassword2()
+  {
+    var sUser   = $("#prsCI").val();
+    var sEmail  = $("#prsCorreo").val();
+    var objPassword = new password();
+    objPassword.usuario = sUser;
+    objPassword.correo  = sEmail;
+    objPassword.resetPass(function(resultado)
+    {
+        response = JSON.parse(resultado);
+        if (!response.error) 
+        {
+          var aRespuesta    =   new Array();
+          var sNroRegistros =   0;
+          aRespuesta.push(response);
+          sNroRegistros     =   Object.keys(aRespuesta[0]).length;
+          if(sNroRegistros > 0)
+          {
+            var sError  = ((typeof(aRespuesta[0].error) == 'undefined' || aRespuesta[0].error == null) ? ""   : aRespuesta[0].error);
+              if(sError && sError != "") 
+              {
+                  sweetAlert("", "Error en usuario y/o e-mail vuelva a intentarlo por favor", "warning");
+              }
+              else 
+              {
+                  var sJson = aRespuesta[0];
+                  if(aRespuesta[0].success != "") 
+                  {
+                    var scorreo = document.getElementById("prsCorreo").value;
+                    document.getElementById("prsCI").value="";
+                    document.getElementById("prsCorreo").value="";
+                    var npin=aRespuesta[0].success.PIN;
+                    sweetAlert("RESTAURACIÓN EXITOSA", "Estimado Ciudadano, revise la bandeja de su correo electrónico.  " + scorreo, "success");
+                    var ciudadano="";
+                    var mensajeCorreo = "_Estimado_Ciudadano_su_Nuevo_PIN_es_:_<b>_" + npin + "_</b>";
+                    var vAsunto ="Restauración_de_PIN_24/7";
+                    var vMensaje = "";
+                    var email=sEmail;
+                    var sMensajeValidacion = mensajeCorreo.replace(/ /g, "_");
+                    var parametros = {
+                        "cuerpo" : sMensajeValidacion,
+                        "asunto" : vAsunto,
+                        "para" : email,
+                        "ciudadano" : ciudadano,
+                        "mensaje": vMensaje
+                    }
+                    $.ajax({ 
+                        data: parametros, 
+                        url: enviocorreo,//'http://200.105.139.183:9090/smsemail/email/mail.php',
+                        type: 'get', 
+                        beforeSend: function (){}, 
+                        success: function (response){}
+                    });
+                  } 
+                  else 
+                  {
+                      var sMensaje    = "por primera y única vez,";
+                      sweetAlert('', "Estimado usuario. Active su cuenta aproximándose " + sMensaje +" a la plataforma más cercana, donde validarán sus datos y activarán su cuenta. Otorgándole acceso a los servicios en línea del GAMLP.", 'warning');
+                  }
+              }
+          }
+          else 
+          {
+            sweetAlert("", "Error en usuario y/o contraseña vuelva a intentarlo por favor", "warning");
+          }
+        } 
+        else 
+        {
+            if(response.error.code == 603)
+            {
+                sweetAlert("", "Error en usuario y/o email vuelva a intentarlo por favor", "warning");
+            }
+        }
+    });
+  }
+  function obtCaptha()
+  {
+    var objCaptcha = new captcha();
+    objCaptcha.obtcaptcha(function(resultado)
+    {
+      json = JSON.parse(resultado);
+      partes = json.success[0].sp_captcha_porx1.split(',');
+      numero = partes[0].substring(1);
+      i1=(partes[2]+ "," + partes[3]);
+      i2=(partes[4] + "," + partes[5]);
+      document.getElementById('img2').src = i1.substring(1, i1.length - 1);
+      document.getElementById('img1').src = i2.substring(1, i2.length - 2);
+      var lengua = "";
+      if(partes[1] == 'A') {
+          lengua = 'AYMARA';
+      } else if(partes[1] == 'Q') {
+          lengua = 'QUECHUA';
+      } else if(partes[1] == 'G'){
+          lengua = 'GUARANI';
+      } else if(partes[1] == 'C'){
+          lengua = 'CASTELLANO';
+      } else {
+      }
+      document.getElementById('img1').title = "Palabra en " + lengua;
+      document.getElementById('resultadoC').placeholder = "Ingrese texto: " + lengua + " CASTELLANO";
+      document.getElementById('lbllengua').placeholder = "Ingrese texto: " + lengua + " CASTELLANO";
+    });
+  }
+
+  function limpiarCamposRecuperacion()
+  {
+    document.getElementById("prsCorreo").disabled = true;         
+    document.getElementById("prsCorreo").value = '';
+    document.getElementById("prsCI").value = '';
+    document.getElementById("resultadoC").disabled = true;
+    document.getElementById("EnvRes").disabled = true;                            
+    document.getElementById("btnObtenerCapcha").disabled = true;
+    document.getElementById("resultadoC").value = '';                   
+    document.getElementById("resultadoC").value = '';
+    document.getElementById("resultadoC").value = '';
+  }
+
+  function limpiarCamposValidarCi()
+  {
+    document.getElementById("prsCorreo").disabled = true;         
+    document.getElementById("prsCorreo").value = '';
+    document.getElementById("resultadoC").disabled = true;
+    document.getElementById("EnvRes").disabled = true;                            
+    document.getElementById("btnObtenerCapcha").disabled = true;
+    document.getElementById("resultadoC").value = '';                   
+    document.getElementById("resultadoC").value = '';
+    document.getElementById("resultadoC").value = '';
+    document.getElementById("msg_correo").innerHTML = "Nota: Para restaurar su contraseña, su Correo Electrónico debe estar registrado en la cuenta del iGob 24/7.";
+    document.getElementById("msg_correo").style.color = "black";
+    document.getElementById("resultadoC").disabled = false;
+  }
+
+  function capLock(e){}
+  
+  var con_api_if  = "";
+  if(jsonURLS)
+  {              
+    con_api_if = jsonURLS.CONEXION_API_PG_RC;
+    urlRC = jsonURLS.CONEXION_API_PG_RC + "wsRCIgob";
+    key = jsonURLS.KEY;
+  }
+  var scorreociudadano = "";  
+
+
+  function validarCedulaIdentidad(ci)
+  {   
+    limpiarCamposValidarCi();
+    var stoquen = "";
+    var urlToken = urlRC + "/token2";
+    $.ajax({
+        dataType: "json",
+        type: "POST",
+        url : urlToken,
+        data: {},
+        async: false,
+        success: function(response) {
+          var token = response.token;
+          stoquen =  'Bearer ' + token;
+        },
+        error: function (response, status, error) {
+            dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+            console.log(dataResp);
+        }
+    });
+    $.ajax({ 
+        data: {ci:ci.value}, 
+        url: con_api_if + 'wsRCIgob/validarciudadano',
+        type: 'post', 
+        headers: {
+          'authorization': stoquen
+        }, 
+        beforeSend: function(){}, 
+        success: function (response) 
+        { 
+          response = CryptoJS.AES.decrypt(response, key);
+          response = response.toString(CryptoJS.enc.Utf8);
+          response = JSON.parse(response);
+          console.log(response,888);                    
+          if(response.error)
+          {                      
+            document.getElementById("msg_cedula").innerHTML = "Usuario no registrado";
+            document.getElementById("msg_cedula").style.color = "red";                
+            document.getElementById("resultadoC").disabled = true;
+            document.getElementById("resultadoC").value = "";
+            document.getElementById("resultadoC").disabled = true;
+            document.getElementById("btnObtenerCapcha").disabled = true;    
+            document.getElementById("EnvRes").disabled = true;
+            document.getElementById("prsCorreo").disabled = true;
+            document.getElementById("prsCorreo").value = "";                            
+          }
+          else
+          {
+            document.getElementById("msg_cedula").innerHTML = "";
+            document.getElementById("msg_cedula").style.color = "black";
+            scorreociudadano = response[0].mail;
+            var correo  =   ((typeof(scorreociudadano)    == 'undefined' || scorreociudadano  == null) ? '' : scorreociudadano);
+            if(correo.trim() != "")
+            {
+              document.getElementById("prsCorreo").disabled = true;
+              document.getElementById("prsCorreo").value = correo;
+              document.getElementById("resultadoC").disabled = false;    
+              document.getElementById("btnObtenerCapcha").disabled = false;
             }
             else
             {
-                habGuardar1 = false;
-                ErrorCapchasXX = "";
-                SuccesCapchasxx="Capcha correcto";
-                document.getElementById("msg_capcha").innerHTML = SuccesCapchasxx;
-                document.getElementById("msg_cedula").style.color = "black";
-                document.getElementById("EnvRes").disabled = false;
+              document.getElementById("msg_correo").innerHTML = "Señor ciudadano. No se puede restablecer su contraseña, debido a que usted no posee su correo electrónico en nuestros registros. Debe llamar a la línea gratuita 800 13 5555 para mayor información.";
+              document.getElementById("msg_correo").style.color = "red";
+              document.getElementById("resultadoC").disabled = true;
             }
-        });
-      }
-      function VerificarCapchaa (datos)
-      {
-          document.getElementById("EnvRes").disabled = true;
-          var captch  = $("#resultadoC").val();
-          if(captch.length == 0)
-              ErrorCapchasXX = "";
-          if(captch.length > 3)
-          {
-              clearTimeout(tiemporespuesta);
-              tiemporespuesta = setTimeout(verificarKeyPress.bind(undefined, captch), 1500);
           }
-      };
-    </script>
+        }
+    });
+  }
 
-<main>
-  <div class="container-fluid">
+  function validarCorreoElectronico(correo)
+  {
+    var correoinput = correo.value;
+    if(correoinput  != scorreociudadano)
+    {
+      document.getElementById("msg_correo").innerHTML = "El correo electronico no esta registrado dentro del igob247";
+      document.getElementById("msg_correo").style.color = "red";
+      document.getElementById("resultadoC").disabled = true;
+    }
+    else
+    {
+      document.getElementById("msg_correo").innerHTML = "Nota: Para restaurar su contraseña, su Correo Electrónico debe estar registrado en la cuenta del iGob 24/7.";
+      document.getElementById("msg_correo").style.color = "black";
+      document.getElementById("resultadoC").disabled = false;
+    }
+  }            
+  var tiemporespuesta = null;
+  var ErrorCapchasXX  = "";
+  var SuccesCapchasxx = "";
+  var habGuardar1 = "";
+  function verificarKeyPress(captch)
+  {
+    var id = numero;
+    var verCaptcha = new captcha();
+    verCaptcha.identificador = id;
+    verCaptcha.respuesta = captch;
+    verCaptcha.verificarCaptcha(function(resultado)
+    {
+        json = JSON.parse(resultado);
+        var nroregsitros = json.success.length;
+        if(nroregsitros == 0)
+        {
+            habGuardar1 = true;
+            ErrorCapchasXX = "Verifique el Capcha";
+            SuccesCapchasxx="";
+            document.getElementById("msg_capcha").innerHTML = ErrorCapchasXX;
+            document.getElementById("msg_cedula").style.color = "red";
+            document.getElementById("EnvRes").disabled = true;
+        }
+        else
+        {
+            habGuardar1 = false;
+            ErrorCapchasXX = "";
+            SuccesCapchasxx="Capcha correcto";
+            document.getElementById("msg_capcha").innerHTML = SuccesCapchasxx;
+            document.getElementById("msg_cedula").style.color = "black";
+            document.getElementById("EnvRes").disabled = false;
+        }
+    });
+  }
+  function VerificarCapchaa (datos)
+  {
+      document.getElementById("EnvRes").disabled = true;
+      var captch  = $("#resultadoC").val();
+      if(captch.length == 0)
+          ErrorCapchasXX = "";
+      if(captch.length > 3)
+      {
+          clearTimeout(tiemporespuesta);
+          tiemporespuesta = setTimeout(verificarKeyPress.bind(undefined, captch), 1500);
+      }
+  };
+</script>
+
+
+<!-- LOGIN -->   
+<div class="over">
+  <div class="contenedor_log" >
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
     <div class="row">
-      <div class="col-sm-4 login-section-wrapper loginBackground">
-
-        <div class="brand-wrapper" data-aos="fade-up" data-aos-delay="100">
-          <a href="../../../../index.html">
-          <img src="../../../../structureIgob/images/logNormal.png" alt="logo" class="logo">
-          </a>
-        </div>
-        <div class="login-wrapper my-auto">
-          
-          <div class="contenedor_log" >
-            <div class="middle-box text-center loginscreen  animated fadeInDown">
-            <div class="row">
-            <div class="col-md-12">
-              <div class="logo_integra">
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div  class="col-md-12">
-              <h3 class="login-title">
-                <script type="text/javascript">
-                    document.write(elArray["lbl_02_03"]);
-                </script>
-              </h3>
-              <div style="text-align: left;">
-                <div class="form-group label-floating is-empty">
-                  <label class="control-label" for="focusedInput1" placeholder="Usuario" >
-                  <script type="text/javascript">
-                     document.write(elArray["lbl_02_04"]);
-                  </script></label>
-                  <input class="form-control" type="text" id="usuario" tabindex="1" name="usuario" ng-model="login.usuario" placeholder="USUARIO" maxlength="">
-                  <p class="form-alert" id="name-form-alert" style="display:none;color:#e41b25;">El Usuario es requerido</p>
-                  <p class="form-alert" id="namelengthMin-form-alert" style="display:none;color:#e41b25;">La longitud del campo es muy corto</p>
-                  <p class="form-alert" id="namelengthMax-form-alert" style="display:none;color:#e41b25;">La longitud del campo es muy largo</p>
-        
-                </div>
-                <div class="form-group label-floating is-empty">
-                  <label class="control-label" for="focusedInput1" for="clave">
-                  <script type="text/javascript">
-                     document.write(elArray["lbl_02_06"]);
-                  </script></label> 
-                  <div class="input-group">
-                    <input type="password" id="clave" name="clave" tabindex="2" class="form-control" type="text" ng-model="login.clave" placeholder="CONTRASEÑA" onKeyPress="capLock(event)" maxlength="99" th="100">            
-                    <span class="input-group-addon" onmousedown="RFunction();"onmouseup="RFunction1();">
-                      <i class="icofont-unlock" style="color: #FBCC00; font-size: 40px;"></i>
-                    </span>
-                  </div>
-                  <!--<a id="mC" name="mC" onClick="RFunction();" value="1" style="float: right;">Mostrar Contraseña</a>-->
-        
-                  <p class="form-alert" id="pass-form-alert" style="display:none;color:#e41b25;">La Contraseña es requerido</p>
-                  <p class="form-alert" id="passlengthMin-form-alert" style="display:none;color:#e41b25;">La longitud del campo es muy corto</p>
-                  <p class="form-alert" id="passlengthMax-form-alert" style="display:none;color:#e41b25;">La longitud del campo es muy largo</p>
-        
-                </div>
-              </div>
-              <div id="caplock" style="visibility:hidden">El bloqueo de mayúsculas está activado</div>
-              <button id="btnIngresar" class="btn btn-sm btn-white btn-block" onclick="autenticacionNodeR();" style="color: #152030; background-color: #ffc107; border: 1px solid #ffc107; padding: 2px; font-size: 18px;">Ingresar<div class="ripple-container"></div>
-              </button>
-              <br>
-              <p><a style="font-size: 21px;color:#152030 !important; " data-toggle="modal" data-target="#password" onClick="obtCaptha();limpiarCamposRecuperacion();"><small>
-              <script type="text/javascript">
-                     document.write(elArray["lbl_02_09"]);
-              </script></small></a></p>
-              <p><a href="../../../../index.html" ui-sref="forgot_password" href="/forgot_password" style="font-size: 21px;color:#152030 !important" ><small>
-              <script type="text/javascript">
-                   document.write(elArray["lbl_02_10"]);
-              </script></small><div class="ripple-container"></div></a>
-              </p>
-            </div>
-          </div>
-          </div>
-          </div>
-        </div>
-        
-      </div>
-      <div class="col-sm-8 px-0 d-none d-sm-block">
-        <!-- <img src="images/cadastral.jpg" alt="login image" class="login-img"> -->
-
-        <div class="card1 pb-5">
-          <div class="row">
-              <h5 class="titleSectionStore">PRUEBE NUESTRAS APLICACIONES MÓVILES</h5>
-          </div>
-          <div class="row px-3 justify-content-center mt-lg-5 mt-md-0">
-              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="4000">
-                  <ol class="carousel-indicators">
-                      <li data-target="#carouselExampleIndicators" data-slide-to="0" id="li1" class="active"></li>
-                      <li data-target="#carouselExampleIndicators" data-slide-to="1" id="li2"></li>
-                      <li data-target="#carouselExampleIndicators" data-slide-to="2" id="li3"></li>
-                      <!-- <li data-target="#carouselExampleIndicators" data-slide-to="3" id="li4"></li>
-                      <li data-target="#carouselExampleIndicators" data-slide-to="4" id="li5"></li> -->
-                  </ol>
-                  <div class="carousel-inner">
-                      <div class="carousel-item active card border-0 card-0">
-                          <div class="text-center"> <img src="../../../../structureIgob/images/iconsApps/taximetro.png" class="img-fluid profile-pic"> </div>
-                          <!-- <h6 class="font-weight-bold mt-5">QUIBITO JUSTO</h6> <small class="mb-2">APLICACIÓN</small>
-                          <hr width="50%">
-                          <p class="content mt-2 mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod incididunt ut labore et dolore magna aliqua.<br>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> -->
-                          <hr width="100%">
-                          <div class="row">
-                            <div class="col-lg-4 columns">
-                              <div class="captureStoreGraphic"> 
-                                <img src="../../../../structureIgob/images/iconsApps/captureTaximetro.png" alt="sample" style="height: 100%;">
-                              </div>
-                            </div>
-                              
-                            <div class="col-lg-8 columns">
-                              <h1 class="titleStore">QUIBITO JUSTO</h1>
-                              <hr width="50%">
-                              <span class="descriptionStore">Permite supervisar tu trayecto cuando viajas en taxi utilizando tu ubicación GPS, velocidad y tiempo para obtener de manera precisa el cobro correspondiente.</span>
-
-                              <div class="buttonsStore">
-                                <div class="row container d-flex justify-content-initial">
-                                  <div class="template-demo mt-2"> 
-                                    <!-- <a href="index.html" class="btn btn-outline-light btn-icon-text"> 
-                                      <i class="icofont-brand-apple btn-icon-prepend mdi-36px"></i> 
-                                      <span class="d-inline-block text-left"> <small class="font-weight-light d-block">Disponible en</small> App Store </span>
-                                    </a>  -->
-                                    <a href="https://play.google.com/store/apps/details?id=com.gamlp.taximetro" class="btn btn-outline-light btn-icon-text"> 
-                                      <i class="icofont-brand-android-robot btn-icon-prepend mdi-36px"></i> 
-                                      <span class="d-inline-block text-left"> <small class="font-weight-light d-block">Disponible en</small> Google Play </span>
-                                    </a> 
-                                  </div>
-                                </div>
-                              </div>
-
-                            </div>
-                          
-                          </div>
-                      </div>
-
-                      <div class="carousel-item card border-0 card-0">
-                        <div class="text-center"> <img src="../../../../structureIgob/images/iconsApps/caserita.png" class="img-fluid profile-pic"> </div>
-                        <!-- <h6 class="font-weight-bold mt-5">CASERIT@ VIRTUAL</h6> <small class="mb-2">APLICACIÓN</small>
-                        <hr width="50%">
-                        <p class="content mt-2 mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod incididunt ut labore et dolore magna aliqua.<br>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> -->
-
-                        <hr width="100%">
-                        <div class="row">
-                          <div class="col-lg-4 columns">
-                            <div class="captureStoreGraphic"> 
-                              <img src="../../../../structureIgob/images/iconsApps/captureCaserita.png" alt="sample" style="height: 100%;">
-                            </div>
-                          </div>
-                            
-                          <div class="col-lg-8 columns">
-                            <h1 class="titleStore">CASERIT@ VIRTUAL</h1>
-                            <hr width="50%">
-                            <span class="descriptionStore">Descubra los mejores servicios y productos cerca de usted; COMERCIO ELECTRÓNICO en: alimentos, construcción, entretenimiento, hoteleria, turismo, industria, salud, etc.</span>
-
-                            <div class="buttonsStore">
-                              <div class="row container d-flex justify-content-initial">
-                                <div class="template-demo mt-2"> 
-                                  <!-- <a href="index.html" class="btn btn-outline-light btn-icon-text"> 
-                                    <i class="icofont-brand-apple btn-icon-prepend mdi-36px"></i> 
-                                    <span class="d-inline-block text-left"> <small class="font-weight-light d-block">Disponible en</small> App Store </span>
-                                  </a>  -->
-                                  <a href="https://play.google.com/store/apps/details?id=com.gamlp.igob247aeenlinea" target="_blank" class="btn btn-outline-light btn-icon-text"> 
-                                    <i class="icofont-brand-android-robot btn-icon-prepend mdi-36px"></i> 
-                                    <span class="d-inline-block text-left"> <small class="font-weight-light d-block">Disponible en</small> Google Play </span>
-                                  </a> 
-                                </div>
-                              </div>
-                            </div>
-
-                          </div>
-                        
-                        </div>
-                      </div>
-                      <div class="carousel-item card border-0 card-0">
-                          <div class="text-center"> <img src="../../../../structureIgob/images/iconsApps/igob.png" class="img-fluid profile-pic"> </div>
-                          <!-- <h6 class="font-weight-bold mt-5">iGob 24/7</h6> <small class="mb-2">APLICACIÓN</small>
-                          <hr width="50%">
-                          <p class="content mt-2 mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod incididunt ut labore et dolore magna aliqua.<br>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> -->
-
-                          <hr width="100%">
-                          <div class="row">
-                            <div class="col-lg-4 columns">
-                              <div class="captureStoreGraphic"> 
-                                <img src="../../../../structureIgob/images/iconsApps/captureIgob.png" alt="sample" style="height: 100%;">
-                              </div>
-                            </div>
-                              
-                            <div class="col-lg-8 columns">
-                              <h1 class="titleStore">iGob 24/7</h1>
-                              <hr width="50%">
-                              <span class="descriptionStore">Modernizando e innovando la gestión pública, en cuanto a optimización de servicios, acceso a información e interacción ciudadana, las 24 horas del día.</span>
-
-                              <div class="buttonsStore">
-                                <div class="row container d-flex justify-content-initial">
-                                  <div class="template-demo mt-2"> 
-                                    <a href="https://apps.apple.com/us/app/igob-24-7/id1413515752" target="_blank" class="btn btn-outline-light btn-icon-text"> 
-                                      <i class="icofont-brand-apple btn-icon-prepend mdi-36px"></i> 
-                                      <span class="d-inline-block text-left"> <small class="font-weight-light d-block">Disponible en</small> App Store </span>
-                                    </a> 
-                                    <a href="https://play.google.com/store/apps/details?id=com.gamlp.igob247" target="_blank" class="btn btn-outline-light btn-icon-text"> 
-                                      <i class="icofont-brand-android-robot btn-icon-prepend mdi-36px"></i> 
-                                      <span class="d-inline-block text-left"> <small class="font-weight-light d-block">Disponible en</small> Google Play </span>
-                                    </a> 
-                                  </div>
-                                </div>
-                              </div>
-
-                            </div>
-                          
-                          </div>
-                      </div>
-
-
-
-                      <!-- <div class="carousel-item card border-0 card-0">
-                          <div class="text-center"> <img src="https://i.imgur.com/ndQx2Rg.jpg" class="img-fluid profile-pic"> </div>
-                          <h6 class="font-weight-bold mt-5">Richard Finch</h6> <small class="mb-2">UI/UX Designer</small>
-                          <hr width="50%">
-                          <p class="content mt-2 mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod incididunt ut labore et dolore magna aliqua.<br>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                      </div>
-                      <div class="carousel-item card border-0 card-0">
-                          <div class="text-center"> <img src="https://i.imgur.com/gazoShk.jpg" class="img-fluid profile-pic"> </div>
-                          <h6 class="font-weight-bold mt-5">Marielle Haag</h6> <small class="mb-2">Backend Developer</small>
-                          <hr width="50%">
-                          <p class="content mt-2 mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod incididunt ut labore et dolore magna aliqua.<br>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                      </div> -->
-                  </div>
-              </div>
-          </div>
-        </div>
-        
+    <div class="col-md-12">
+      <div class="logo_integra">
       </div>
     </div>
   </div>
-</main>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="logo_integra">
+        <img src="../../../libs/img/logo.png" width="146px" height="62px" class="img-responsive center-block" alt="" class="img-responsive img-rounded"/>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div  class="col-md-12" style="border:border:2px solid; border-color:#C9F ;background:#fff ; z-index: 100; border-radius: 8px;">
+      <h3 style="color: black; padding: 0px 0px 30px 0px">
+        <script type="text/javascript">
+            document.write(elArray["lbl_02_03"]);
+        </script>
+      </h3>
+      <div style="text-align: left;">
+        <div class="form-group label-floating is-empty">
+          <label style="color:#152030" class="control-label" for="focusedInput1" placeholder="Usuario" >
+          <script type="text/javascript">
+             document.write(elArray["lbl_02_04"]);
+          </script></label>
+          <input class="form-control" type="text" id="usuario" tabindex="1" name="usuario" ng-model="login.usuario" placeholder="USUARIO" maxlength="">
+          <p class="form-alert" id="name-form-alert" style="display:none;color:red;"">El Usuario es requerido</p>
+          <p class="form-alert" id="namelengthMin-form-alert" style="display:none;color:red;"">La longitud del campo es muy corto</p>
+          <p class="form-alert" id="namelengthMax-form-alert" style="display:none;color:red;"">La longitud del campo es muy largo</p>
 
+        </div>
+        <div class="form-group label-floating is-empty">
+          <label style="color:#152030" class="control-label" for="focusedInput1" for="clave">
+          <script type="text/javascript">
+             document.write(elArray["lbl_02_06"]);
+          </script></label> 
+          <div class="input-group">
+            <input type="password" id="clave" name="clave" tabindex="2" class="form-control" type="text" ng-model="login.clave" placeholder="CONTRASEÑA" onKeyPress="capLock(event)" maxlength="99" th="100">            
+            <span class="input-group-addon" onmousedown="RFunction();"onmouseup="RFunction1();">
+              <i class="glyphicon glyphicon-eye-open"></i>
+            </span>
+          </div>
+          <!--<a id="mC" name="mC" onClick="RFunction();" value="1" style="float: right;">Mostrar Contraseña</a>-->
+
+          <p class="form-alert" id="pass-form-alert" style="display:none;color:red;">La Contraseña es requerido</p>
+          <p class="form-alert" id="passlengthMin-form-alert" style="display:none;color:red;">La longitud del campo es muy corto</p>
+          <p class="form-alert" id="passlengthMax-form-alert" style="display:none;color:red;">La longitud del campo es muy largo</p>
+
+        </div>
+      </div>
+      <div id="caplock" style="visibility:hidden">El bloqueo de mayúsculas está activado</div>
+      <button id="btnIngresar" class="btn btn-sm btn-white btn-block" onclick="autenticacionNodeR();" style="color: #152030; background-color: rgb(254, 191, 0); border: 2px solid rgb(254, 191, 0); padding: 2px; font-size: 18px;">Ingresar<div class="ripple-container"></div>
+      </button>
+      <br>
+      <p><a style="font-size: 21px;color:#152030 !important; " data-toggle="modal" data-target="#password" onClick="obtCaptha();limpiarCamposRecuperacion();"><small>
+      <script type="text/javascript">
+             document.write(elArray["lbl_02_09"]);
+      </script></small></a></p>
+      <p><a href="../../../../index.html" ui-sref="forgot_password" href="/forgot_password" style="font-size: 21px;color:#152030 !important" ><small>
+      <script type="text/javascript">
+           document.write(elArray["lbl_02_10"]);
+      </script></small><div class="ripple-container"></div></a>
+      </p>
+    </div>
+  </div>
+  </div>
+  </div>
+</div>
+<!-- endLOGIN -->
 
 
 <!-- MODAL -->
 <div class="modal fade" id="password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
     <div class="modal-content">
       <form name="signupForm" readOnly="true" novalidate>
         <div class="modal-header">
-          <h3 style="font-size: 18px;font-weight: 600; color: #FBCC00;"><script type="text/javascript">document.write(elArray["lbl_20_43"]);</script></h3>
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
           <!--<h4 class="modal-title" id="myModalLabel">Envio de Mensaje</h4>-->
+          <center><h3><script type="text/javascript">document.write(elArray["lbl_20_43"]);</script></h3></center>
+          <center><h5><script type="text/javascript">document.write(elArray["lbl_20_44"]);</script></h5>
+          <img src="../../../../assets/img/cominiquese.png" width="234px" height="61px">
+          <center><h5>Para restaurar su contraseña, su correo electrónico debe estar registrado en el iGOB247. Ante cualquier duda o consulta debe contactarse con la línea gratuita 800 13 5555.</h5>
+          </center>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <div class="col-md-12">
-              <center><h5 style="font-size: 15px;font-weight: 600; color: 707070 !important;"><script type="text/javascript">document.write(elArray["lbl_20_44"]);</script></h5>
-                <img src="../../../../assets/img/cominiquese.png" width="234px" height="61px"></center>
-                <center><h5 style="font-size: 15px;font-weight: 600; color: 707070 !important;">Para restaurar su contraseña, su correo electrónico debe estar registrado en el iGOB247. Ante cualquier duda o consulta debe contactarse con la línea gratuita 800 13 5555.</h5></center>
-            </div>
-          </div>
           <div class="row">
             <div class="col-md-10">
               <div class="form-group" >
@@ -986,14 +858,14 @@
                 <label for="url" ><script type="text/javascript">document.write(elArray["lbl_06_18"]);</script></label>
                 <div class="controls">
                   <input ng-model="prsCorreo" id="prsCorreo" name="prsCorreo" onChange="validarCorreoElectronico(this);" onKeyPress="getlimpiareRROR()" class="form-control" type="email" placeholder="Ingrese Correo Eléctronico" disabled required/>
-                  <p id="msg_correo"<h5 style="font-size: 15px;font-weight: 600; color: 707070 !important;"><script type="text/javascript">document.write(elArray["lbl_20_45"]);</script></h5></p>
+                  <p id="msg_correo"<h5><script type="text/javascript">document.write(elArray["lbl_20_45"]);</script></h5></p>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="col-md-12" align="center" >
-            <table width="100%" border="3" cellspacing="0" cellpadding="2"  class="one">
+            <table width="50%" border="3" cellspacing="0" cellpadding="2"  class="one">
                 <tr class="color">
                   <div style="background: #FFFFFF;" >
                      <div class="box2">
@@ -1032,13 +904,8 @@
   </div>
 </div>
 <!--/ endMODAL-->
-
-
-<script src="../../../../structureIgob/js/popper.min.js"></script>
-<script src="../../../../structureIgob/js/bootstrap.min.js"></script>
-
 <script type="text/javascript" src="../../../libs/js/jquery.blockUI.min.js"></script>
-<!-- <script type="text/javascript" src="../../../libs/js_one/bootstrap.min.js"></script> -->
+<script type="text/javascript" src="../../../libs/js_one/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../../libs/js/sweetalert.min.js"></script>
 </body>
 </html>

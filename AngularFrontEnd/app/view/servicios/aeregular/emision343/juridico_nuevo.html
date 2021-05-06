@@ -348,7 +348,7 @@
                             </div>
                         </div>
                     </div-->
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_36}}:</label>
@@ -360,7 +360,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_37}}:</label>
@@ -426,7 +426,7 @@
                                     id="f01_categoria_descrip"
                                     name="f01_categoria_descrip"
                                     ng-disabled="desabilitado"
-                                    ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip, datos.f01_sup);"
+                                    ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip);"
                                     required>
                                     <option value="">--Seleccionar--</option>
                                 </select>
@@ -470,7 +470,7 @@
                                                     id="f01_act_desarrolladamid"
                                                     name="f01_act_desarrolladamid"
                                                     ng-disabled="desabilitado"
-                                                    ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid, datos.f01_sup);"
+                                                    ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid);"
                                                     required>
                                                     <option value="">--Seleccionar--</option>
                                                 </select>
@@ -1105,7 +1105,7 @@
                         <div class="col-md-12" class="form-control">
                             <div class="col-md-6" class="form-control">
                                 <label for="Pago_Anticipado">
-                                Desea realizar el Pago por Adelantado?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                ¿Desea realizar el Pago por Adelantado?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <input type="checkbox" ng-model="datos.pago_adelantado" name="pago_adelantado" ng-change="ShowPa(datos.pago_adelantado);" id = "pago_adelantado" ng-disabled="desabilitado" required>
                                 </label>
                             </div>

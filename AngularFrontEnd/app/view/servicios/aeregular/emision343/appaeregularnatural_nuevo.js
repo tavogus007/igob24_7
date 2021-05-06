@@ -156,9 +156,8 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
 
-    $scope.LicenciaXCategoriaA = function(idDesarrollada, superficie) {
+    $scope.LicenciaXCategoriaA = function(idDesarrollada) {
         $.blockUI();
-        var superficie = ((typeof(datos.superficie) == 'undefined' || datos.superficie == null) ? 0 : datos.superficie);
         //$scope.datos.rdTipoTramite = 'NUEVO';
         datoObjectFile1 = new Object();
         datoObjectFile2 = new Object();
@@ -166,7 +165,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         try {
             var nDatosLic = new getDatosLicencia();
             nDatosLic.idActividadDesarrollada = idDesarrollada;
-            nDatosLic.superficie = superficie;
+            nDatosLic.superficie = "0";
             nDatosLic.getDatos_Licencia(function(resDatosLic) {
                 var obtLic = JSON.parse(resDatosLic);
                 var datosLic = obtLic.success.dataSql;
@@ -293,7 +292,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
 
-    $scope.LicenciaXCategoriaM = function(idDesarrolladaM, superficie) {
+    $scope.LicenciaXCategoriaM = function(idDesarrolladaM) {
         //$scope.datos.rdTipoTramite = 'NUEVO';
         $.blockUI();
         datoObjectFile1 = new Object();
@@ -302,7 +301,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         try {
             var nDatosLicM = new getDatosLicencia();
             nDatosLicM.idActividadDesarrollada = idDesarrolladaM;
-            nDatosLicM.superficie = superficie;
+            nDatosLicM.superficie = "0";
             nDatosLicM.getDatos_Licencia(function(resDatosLicM) {
                 var obtLicM = JSON.parse(resDatosLicM);
                 var datosLicM = obtLicM.success.dataSql;
@@ -820,7 +819,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
 
         if ($scope.datos.f01_categoria_descrip != '' && $scope.datos.f01_sup != '') {
-            $scope.LicenciaXCategoriaA(datos.f01_categoria_descrip, datos.f01_sup)
+            $scope.LicenciaXCategoriaA(datos.f01_categoria_descrip)
         }
 
     });

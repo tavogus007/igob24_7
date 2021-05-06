@@ -638,7 +638,7 @@ function renovacionJuridicoController($scope, $timeout, $rootScope, $routeParams
         }
     }
 
-    $scope.LicenciaXCategoriaA = function(idDesarrollada, superficie) {
+    $scope.LicenciaXCategoriaA = function(idDesarrollada) {
         $.blockUI();
         datoObjectFile1 = new Object();
         datoObjectFile2 = new Object();
@@ -652,7 +652,7 @@ function renovacionJuridicoController($scope, $timeout, $rootScope, $routeParams
         try {
             var nDatosLic = new getDatosLicencia();
             nDatosLic.idActividadDesarrollada = idDesarrollada;
-            nDatosLic.superficie = superficie;
+            nDatosLic.superficie = "0";
             nDatosLic.getDatos_Licencia(function(resDatosLic) {
                 var obtLic = JSON.parse(resDatosLic);
                 var datosLic = obtLic.success.dataSql;
@@ -778,7 +778,7 @@ function renovacionJuridicoController($scope, $timeout, $rootScope, $routeParams
         }
     }
 
-    $scope.LicenciaXCategoriaM = function(idDesarrollada, superficie) {
+    $scope.LicenciaXCategoriaM = function(idDesarrollada) {
         $.blockUI();
         $scope[name] = 'Running';
         var deferred = $q.defer();
@@ -788,7 +788,7 @@ function renovacionJuridicoController($scope, $timeout, $rootScope, $routeParams
         try {
             var nDatosLic = new getDatosLicencia();
             nDatosLic.idActividadDesarrollada = idDesarrollada;
-            nDatosLic.superficie = superficie;
+            nDatosLic.superficie = "0";
             nDatosLic.getDatos_Licencia(function(resDatosLicM) {
                 var obtLicM = JSON.parse(resDatosLicM);
                 var datosLicM = obtLicM.success.dataSql;

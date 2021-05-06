@@ -146,7 +146,7 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
         }
     }
 
-    $scope.LicenciaXCategoriaA = function(idDesarrollada, superficie) {
+    $scope.LicenciaXCategoriaA = function(idDesarrollada) {
         $.blockUI();
         //$scope.datos.rdTipoTramite = 'NUEVO';
         datoObjectFile1 = new Object();
@@ -155,7 +155,7 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
         try {
             var nDatosLic = new getDatosLicencia();
             nDatosLic.idActividadDesarrollada = idDesarrollada;
-            nDatosLic.superficie = superficie;
+            nDatosLic.superficie = "0";
             nDatosLic.getDatos_Licencia(function(resDatosLic) {
                 var obtLic = JSON.parse(resDatosLic);
                 var datosLic = obtLic.success.dataSql;
@@ -280,7 +280,7 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
 
     $scope.multiple.f01_cat_agrupadamdescripcion = 'PRUEBA VALOR DE INCIIO';
 
-    $scope.LicenciaXCategoriaMultiservicioRen = function(idDesarrolladaM, superficie) {
+    $scope.LicenciaXCategoriaMultiservicioRen = function(idDesarrolladaM) {
         //$scope.datos.rdTipoTramite = 'NUEVO';
         $.blockUI();
         datoObjectFile1 = new Object();
@@ -289,7 +289,7 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
         try {
             var nDatosLicM = new getDatosLicencia();
             nDatosLicM.idActividadDesarrollada = idDesarrolladaM;
-            nDatosLicM.superficie = superficie;
+            nDatosLicM.superficie = "0";
             nDatosLicM.getDatos_Licencia(function(resDatosLicM) {
                 var obtLicM = JSON.parse(resDatosLicM);
                 var datosLicM = obtLicM.success.dataSql;
@@ -312,7 +312,6 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
         } catch (e) {
             console.log("Error en la actividad desarrollada");
         }
-
     }
 
 

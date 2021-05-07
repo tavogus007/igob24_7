@@ -459,7 +459,7 @@
                                             id="f01_categoria_descrip"
                                             name="f01_categoria_descrip"
                                             ng-disabled="desabilitado"
-                                            ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip, datos.f01_sup);"
+                                            ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip);"
                                             required>
                                             <option value="">--Seleccionar--</option>
                                         </select>
@@ -506,7 +506,7 @@
                                                             id="f01_act_desarrolladamid"
                                                             name="f01_act_desarrolladamid"
                                                             ng-disabled="desabilitado"
-                                                            ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid, datos.f01_sup);"
+                                                            ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid);"
                                                             required>
                                                             <option value="">--Seleccionar--</option>
                                                         </select>
@@ -774,7 +774,7 @@
                             <legend>{{translateTitulos.lbl_12_39}}:</legend>
                         </div>
 
-                         <div class="col-md-6">
+                         <div class="col-md-4">
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> * </font>
                                 <label for="url" >Macrodistrito:</label>
@@ -800,7 +800,7 @@
                             </div>
                         </div>
                         
-                       <div class="col-md-6">
+                       <div class="col-md-4">
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> * </font>
                                 <label for="url" >Zona:</label>
@@ -841,7 +841,7 @@
                         <div class="col-md-4">
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >V&iacute;a: <font color="#FF0000"> * </font></label>
+                                <label for="url" >V&iacute;a:</label>
                                 <div class="controls">
                                     <select
                                         id="f01_num_act"
@@ -906,6 +906,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
+                                    <font color="#FF0000" size="4px"></font>
                                 <label for="url" >{{translateTitulos.lbl_12_43}}:</label>
                                 <div class="controls">
                                     <input ng-model="datos.f01_bloque_act" id="f01_bloque_act" name="f01_bloque_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
@@ -914,6 +915,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
+                                    <font color="#FF0000" size="4px"></font>
                                 <label for="url" >{{translateTitulos.lbl_12_44}}:</label>
                                 <div class="controls">
                                     <input ng-model="datos.f01_piso_act" id="f01_piso_act" name="f01_piso_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
@@ -922,6 +924,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
+                                    <font color="#FF0000" size="4px"></font>
                                 <label for="url" >{{translateTitulos.lbl_12_45}}:</label>
                                 <div class="controls">
                                     <input ng-model="datos.f01_dpto_of_loc" id="f01_dpto_of_loc" name="f01_dpto_of_loc" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
@@ -930,13 +933,14 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group" >
+                                    <font color="#FF0000" size="4px"></font>
                                 <label for="url" >Tel&eacute;fono/Celular::</label>
                                 <div class="controls">
                                     <input ng-model="datos.f01_tel_act1" id="f01_tel_act1" maxlength="7" name="f01_tel_act1" placeholder="Teléfono ej.22451630" class="form-control"  width="30%" height="30" onkeyUp="soloNumerico(this);"  ng-disabled="desabilitadoO || desabilitado"/>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> * </font>
                                 <label for="url" >Referencia de la Dirección de la Actividad Económica para mayor presición:</label>
@@ -1142,7 +1146,7 @@
                     <div class="col-md-12" class="form-control">
                         <div class="col-md-6" class="form-control">
                             <label for="Pago_Anticipado">                            
-                                Desea realizar el Pago por Adelantado?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                ¿Desea realizar el Pago por Adelantado?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <input type="checkbox" ng-model="datos.pago_adelantado" name="pago_adelantado" ng-change="ShowPa(datos.pago_adelantado);" id = "pago_adelantado" ng-disabled="desabilitado" required/>
                             </label>
                         </div>

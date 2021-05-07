@@ -439,7 +439,7 @@
                                     id="f01_categoria_descrip"
                                     name="f01_categoria_descrip"
                                     ng-disabled="desabilitado"
-                                    ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip, datos.f01_sup);"
+                                    ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip);"
                                     required>
                                     <option value="">--Seleccionar--</option>
                                 </select>
@@ -484,7 +484,7 @@
                                                     id="f01_act_desarrolladamid"
                                                     name="f01_act_desarrolladamid"
                                                     ng-disabled="desabilitado"
-                                                    ng-change="LicenciaXCategoriaM(multipleJuridico.f01_act_desarrolladamid, datos.f01_sup);"
+                                                    ng-change="LicenciaXCategoriaM(multipleJuridico.f01_act_desarrolladamid);"
                                                     required>
                                                     <option value="">--Seleccionar--</option>
                                                 </select>
@@ -601,7 +601,7 @@
                     <div class="col-md-12">
                         <legend>{{translateTitulos.lbl_12_39}}:</legend>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
@@ -625,7 +625,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
@@ -645,7 +645,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
@@ -664,7 +664,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >V&iacute;a: <font color="#FF0000"> * </font></label>
@@ -684,7 +684,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6" ng-show="datos.f01_num_act == 'NINGUNO'">
+                    <div class="col-md-4" ng-show="datos.f01_num_act == 'NINGUNO'">
                         <div class="form-group" >
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
@@ -703,7 +703,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6" ng-show="false">
+                    <div class="col-md-4" ng-show="false">
                         <div class="form-group">
                             <label for="url" >Tipo Trayecto:</label>
                             <div class="controls">
@@ -711,7 +711,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_41}}:</label>

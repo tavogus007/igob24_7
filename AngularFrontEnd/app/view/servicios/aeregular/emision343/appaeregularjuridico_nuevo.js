@@ -925,24 +925,30 @@ function regularjuridicoNuevoController($scope, $timeout, $rootScope, $routePara
         $scope.datos.f01_actividadesDesarrolladasc = $scope.actividadDes;
     }
 
-    $scope.GetValueActividadesCatDesarrollada = function() {
+        $scope.GetValueActividadesCatDesarrollada = function () {
         $scope.actividadDesCat = "";
         var datosaux = '';
+        var datoscat = '';
+        var datosact = '';
         var datoslicm = {};
         if ($scope.datos.licenciam.length > 0) {
             datoslicm = $scope.datos.licenciam;
             for (var j = 0; j < datoslicm.length; j++) {
                 if (j + 1 == datoslicm.length) {
                     if (datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == '18' || datoslicm[j].f01_tipo_licmid == 18) {
-                        datosaux = datosaux + datoslicm[j].f01_cat_agrupadamdescrip;
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip;
                     } else {
                         datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip;
                     }
                 } else {
                     if (datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == '18' || datoslicm[j].f01_tipo_licmid == 18) {
-                        datosaux = datosaux + datoslicm[j].f01_cat_agrupadamdescrip + " - ";
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip + " - ";;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip + " - ";
                     } else {
-                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip + " - ";
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip + " - ";;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip + " - ";
                     }
                 }
             }
@@ -962,6 +968,7 @@ function regularjuridicoNuevoController($scope, $timeout, $rootScope, $routePara
         }
         $scope.actividadDesCat = datosaux;
         $scope.datos.f01_actividadesSecundarias = $scope.actividadDesCat;
+        $scope.datos.f01_categorias_multi = datosact;
     }
 
     $scope.SeleccionaPrioridad = function(dato) {
@@ -1481,29 +1488,32 @@ function regularjuridicoNuevoController($scope, $timeout, $rootScope, $routePara
             datosNeXO['file_num_ident'] = paramForm.file_num_ident;
             datosNeXO['file_fund_emp'] = paramForm.file_fund_emp;
             datosNeXO['file_reg_comer'] = paramForm.file_reg_comer;
-            /*REQUISITOSDELAACTIVIDADECONOMICA*/
             datosNeXO['f01_actividad_desarrollada'] = "";
-            /*CAMPOS GENERICOS NATURAL Y JURIDICO*/ //-->EL CAMPO NO SE ESTA GENERANDO CORRECTAMENTE
-            /*REQUISITOSDELAACTIVIDADECONOMICA*/
             datosNeXO['Licenmul_grilla'] = paramForm.Licenmul_grilla;
             datosNeXO['f01_tip_act'] = 'SU';
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;
             datosNeXO['f01_idCodigoZona'] = paramForm.f01_idCodigoZona;
 
             //PAGO ADELANTADO
-            datosNeXO['pago_adelantado'] = $scope.pago_adelantado;
-            datosNeXO['nro_ges'] = paramForm.nro_ges;
+            if (paramForm.pago_adelantado == true) {
+                datosNeXO['pago_adelantado'] = 'SI'; 
+                datosNeXO['nro_ges'] = paramForm.nro_ges;
+            } else {
+                datosNeXO['pago_adelantado'] = 'NO';
+                datosNeXO['nro_ges'] = '';
+            };
             if (paramForm.f01_tipo_lic == 32 || paramForm.f01_tipo_lic == '32') {
                 datosNeXO['f01_idcat_multi_principal'] = paramForm.xf01_idcat_multi_principal;
                 datosNeXO['f01_descat_multi_principal'] = paramForm.xf01_descat_multi_principal;
                 datosNeXO['f01_act_principal'] = paramForm.f01_act_principal;
                 datosNeXO['f01_act_principal2'] = paramForm.f01_act_principal2;
                 datosNeXO['f01_actividad_principal_array'] = paramForm.f01_actividad_principal_array;
+                datosNeXO['f01_categorias_multi'] = paramForm.f01_categorias_multi;
             } else {
                 datosNeXO['f01_idcat_multi_principal'] = '';
                 datosNeXO['f01_descat_multi_principal'] = '';
                 datosNeXO['f01_act_principal'] = '';
-                datosNeXO['f01_act_principal2'] = '';
+                datosNeXO['f01_categorias_multi'] = "";
             }
         }
 
@@ -2450,7 +2460,7 @@ function regularjuridicoNuevoController($scope, $timeout, $rootScope, $routePara
     }
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
-    $scope.verificarCamposInternet = function(data) {
+    $scope.verificacionDeCampos = function(data) {
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         var taemayor = 0;

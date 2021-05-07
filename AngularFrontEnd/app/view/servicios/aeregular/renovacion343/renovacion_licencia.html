@@ -1217,11 +1217,11 @@
                                         <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura"
                                             value="ZONASEGURA"
                                             ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();"
-                                            ng-disabled="desabilitado">Es Zona Segura &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            ng-disabled="true">Es Zona Segura &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura"
                                             value="NOZONASEGURA"
                                             ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();"
-                                            ng-disabled="desabilitado">No es Zona Segura
+                                            ng-disabled="true">No es Zona Segura
                                         <br>
                                     </div>
                                 </div>
@@ -1566,6 +1566,8 @@
                         name="publicidad_grilla" class="form-control">
                     <input type="hidden" ng-model="datos.listDeudas" id="listDeudas" name="listDeudas"
                         class="form-control" />
+                    <input type="hidden" ng-model="datos.f01_categorias_multi" id="f01_categorias_multi"
+                        name="f01_categorias_multi" class="form-control" />
 
                 </div>
 
@@ -1624,7 +1626,7 @@
                 <br><br><br><br>
                 <div class="col-md-12" align="right" ng-show="botones != null">
                     <button id="miFormGuardar"
-                        ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button"
+                        ng-click="ultimoArrayAdjunto();verificacionDeCampos(datos);getCaptchasXX();" type="button"
                         class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="habGuardar1"
                         tooltip="Guardar Formulario">
                         <!--{{translateTitulos.lbl_016_29}}--></button>

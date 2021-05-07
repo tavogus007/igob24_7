@@ -596,7 +596,7 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
         $scope.datos.f01_actividadesDesarrolladasc = $scope.actividadDes;
     }
 
-    $scope.GetValueActividadesCatDesarrollada = function() {
+    $scope.GetValueActividadesCatDesarrollada = function () {
         $scope.actividadDesCat = "";
         var datosaux = '';
         var datoscat = '';
@@ -632,9 +632,9 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
                 }
             }
             if (swmul == 1) {
-                $scope.mostrarzonasegura = true;
+                $rootScope.mostrarzonasegura = true;
             } else {
-                $scope.mostrarzonasegura = false;
+                $rootScope.mostrarzonasegura = false;
             }
         }
         $scope.actividadDesCat = datosaux;
@@ -1331,7 +1331,6 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
 
 
     $scope.selActividadEconomica = function(tramite) {
-        var fechatram = "";
         var aniotram = "";
         var dato = tramite.FechaInicio.split('/');
         aniotram = dato[2];
@@ -1343,8 +1342,6 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
         var codhojaruta = "";
         var datosLotus = "";
         $scope.datosAnterioresNatural(tramite.IdActividad);
-        console.log(aniotram,' :: ',$scope.anioserver);
-        
         if (aniotram != $scope.anioserver) {
             if (tramite.IdActividad) {
                 $scope.idActividiadEconomicaActual = tramite.IdActividad;
@@ -2753,7 +2750,7 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
     };
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
-    $scope.verificarCamposInternet = function(data) {
+    $scope.verificacionDeCampos = function(data) {
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         var taemayor = 0;
@@ -3832,11 +3829,6 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
                 datosNeXO['File_Adjunto'] = $rootScope.FileAdjuntos.concat(decjuradaN);;
             }
 
-            if (paramForm.g_origen_p) {
-                datosNeXO['g_origen_p'] = paramForm.g_origen_p;
-            } else {
-                datosNeXO['g_origen_p'] = "";
-            }
             datosNeXO['f01_tip_act'] = paramForm.f01_tip_act;
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;
             /*CAMPOS GENERICOS NATURAL Y JURIDICO*/ //-->EL CAMPO NO SE ESTA GENERANDO CORRECTAMENTE
@@ -3853,11 +3845,13 @@ function regularRenovacionController($scope, $timeout, $q, $rootScope, $routePar
                 datosNeXO['f01_act_principal'] = paramForm.f01_act_principal;
                 datosNeXO['f01_act_principal2'] = paramForm.f01_act_principal2;
                 datosNeXO['f01_actividad_principal_array'] = paramForm.f01_actividad_principal_array;
+                datosNeXO['f01_categorias_multi'] = paramForm.f01_categorias_multi;
             } else {
                 datosNeXO['f01_idcat_multi_principal'] = '';
                 datosNeXO['f01_descat_multi_principal'] = '';
                 datosNeXO['f01_act_principal'] = '';
                 datosNeXO['f01_actividad_principal_array'] = '';
+                datosNeXO['f01_categorias_multi'] = '';
             }
             //datosNeXO['f01_categoria_descrip']      =  paramForm.f01_categoria_descripcion;
         }

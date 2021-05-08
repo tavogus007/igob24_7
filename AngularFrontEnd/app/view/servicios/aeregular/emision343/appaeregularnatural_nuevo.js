@@ -19,7 +19,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     $scope.smultiservicios = false;
     $scope.mostrarsuperficie = false;
 
-    $scope.getRequisitosCategoria = function(idCategoria, persona) {
+    $scope.getRequisitosCategoria = function (idCategoria, persona) {
         if (persona == 'NATURAL') {
             persona = 'N';
         }
@@ -29,7 +29,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             var ndCategoria = new aelstRequisitosDocCategoria();
             ndCategoria.dependencia = idCategoria;
             ndCategoria.tipopersona = persona;
-            ndCategoria.aelst_RequisitosDocCategoria(function(res) {
+            ndCategoria.aelst_RequisitosDocCategoria(function (res) {
                 x = JSON.parse(res);
                 var datosRequisitosTmp = x.success.data;
                 datoObjectFinal = [];
@@ -50,7 +50,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     };
 
-    $scope.getRequisitosCategoriaTecnicos = function(idTipoLicencia, idCategoria, persona) {
+    $scope.getRequisitosCategoriaTecnicos = function (idTipoLicencia, idCategoria, persona) {
         if (idTipoLicencia == 17 || idTipoLicencia == '17' || idTipoLicencia == 18 || idTipoLicencia == '18') {
             $scope.getRequisitosTecnicosActividad(idCategoria, persona);
         } else {
@@ -58,7 +58,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.getRequisitosTecnicosActividad = function(idCategoria, persona) {
+    $scope.getRequisitosTecnicosActividad = function (idCategoria, persona) {
         if (persona == 'NATURAL') {
             persona = 'N';
         }
@@ -66,7 +66,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             var ntActividad = new aelstRequisitosTecActividad();
             ntActividad.dependencia = idCategoria;
             ntActividad.tipopersona = persona;
-            ntActividad.aelst_RequisitosTecActividad(function(res) {
+            ntActividad.aelst_RequisitosTecActividad(function (res) {
                 x = JSON.parse(res);
                 datosRequisitosTmp = x.success.data;
                 datoObjectFinal = [];
@@ -85,7 +85,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     };
 
-    $scope.getRequisitosTecnicosCategoria = function(idCategoria, persona) {
+    $scope.getRequisitosTecnicosCategoria = function (idCategoria, persona) {
         if (persona == 'NATURAL') {
             persona = 'N';
         }
@@ -93,7 +93,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             var parametro = new aelstRequisitosTecCategoria();
             parametro.idCategoria = idCategoria;
             parametro.tipopersona = 'N';
-            parametro.aelst_RequisitosTecCategoria(function(res) {
+            parametro.aelst_RequisitosTecCategoria(function (res) {
                 x = JSON.parse(res);
                 datosRequisitosTmp = x.success.data;
                 datoObjectFinal = [];
@@ -112,7 +112,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     };
 
-    $scope.limpiarmultiple = function() {
+    $scope.limpiarmultiple = function () {
         $scope.licdes = [];
         //$scope.multiple=[];
         $scope.dscripcionlic = {};
@@ -125,14 +125,14 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.datos.xf01_descat_multi_principal = '';
     }
 
-    $scope.catactividadDesarrollada = function() {
+    $scope.catactividadDesarrollada = function () {
         $.blockUI();
         $scope.datos.rdTipoTramite = 'NUEVO';
         //$scope.datos.f01_actividad_desarrollada = "";
         $scope.datosActividad = "";
         try {
             var nActividadDesarrollada = new getDatosActividadDesarrollada343();
-            nActividadDesarrollada.getDatos_ActividadDesarrollada343(function(resActDes) {
+            nActividadDesarrollada.getDatos_ActividadDesarrollada343(function (resActDes) {
                 var lstActividadDesarrollada = JSON.parse(resActDes);
                 $scope.datosActividad = "";
                 var datosLic = lstActividadDesarrollada.success.dataSql;
@@ -156,7 +156,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
 
-    $scope.LicenciaXCategoriaA = function(idDesarrollada) {
+    $scope.LicenciaXCategoriaA = function (idDesarrollada) {
         $.blockUI();
         //$scope.datos.rdTipoTramite = 'NUEVO';
         datoObjectFile1 = new Object();
@@ -166,7 +166,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             var nDatosLic = new getDatosLicencia();
             nDatosLic.idActividadDesarrollada = idDesarrollada;
             nDatosLic.superficie = "0";
-            nDatosLic.getDatos_Licencia(function(resDatosLic) {
+            nDatosLic.getDatos_Licencia(function (resDatosLic) {
                 var obtLic = JSON.parse(resDatosLic);
                 var datosLic = obtLic.success.dataSql;
                 if (datosLic.length > 0) {
@@ -216,13 +216,13 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.getRequisitosActividad = function(idCategoria, persona) {
+    $scope.getRequisitosActividad = function (idCategoria, persona) {
         persona = sessionService.get('TIPO_PERSONA');
         try {
             var parametros = new aelstRequisitosDocActividad();
             parametros.dependencia = idCategoria;
             parametros.tipopersona = persona;
-            parametros.aelst_RequisitosDocActividad(function(res) {
+            parametros.aelst_RequisitosDocActividad(function (res) {
                 x = JSON.parse(res);
                 datosRequisitosTmp = x.success.data;
                 datoObjectFinal = [];
@@ -242,16 +242,16 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     };
 
 
-    $scope.actividadDesarrolladaM = function() {
+    $scope.actividadDesarrolladaM = function () {
         $.blockUI();
         var datosMulti = [];
         try {
             var nActividadDesarrollada = new getDatosActividadDesarrollada343();
-            nActividadDesarrollada.getDatos_ActividadDesarrollada343(function(resActDesM) {
+            nActividadDesarrollada.getDatos_ActividadDesarrollada343(function (resActDesM) {
                 var lstActividadDesM = JSON.parse(resActDesM);
                 var dataResp = lstActividadDesM.success.dataSql;
                 for (var i = 0; i < dataResp.length; i++) {
-                    if (dataResp[i].idActividadDesarrollada343 == '907' || dataResp[i].idActividadDesarrollada343 == 907) {} else {
+                    if (dataResp[i].idActividadDesarrollada343 == '907' || dataResp[i].idActividadDesarrollada343 == 907) { } else {
                         objMulti = new Object();
                         objMulti.codigo343 = dataResp[i].codigo343;
                         objMulti.descripcion343 = dataResp[i].descripcion343;
@@ -276,11 +276,11 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.obtenerActDes = function(idActividadDesarrollada) {
+    $scope.obtenerActDes = function (idActividadDesarrollada) {
         $scope.datosactividadDes = "";
         var dato = new getHomologacion();
         dato.idActividadDesarrollada = idActividadDesarrollada;
-        dato.get_Homologacion(function(res) {
+        dato.get_Homologacion(function (res) {
             x = JSON.parse(res);
             var resp = x.success.dataSql;
             $scope.datos.f01_categoria_agrupada = resp[0].idCategoria;
@@ -292,7 +292,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
 
-    $scope.LicenciaXCategoriaM = function(idDesarrolladaM) {
+    $scope.LicenciaXCategoriaM = function (idDesarrolladaM) {
         //$scope.datos.rdTipoTramite = 'NUEVO';
         $.blockUI();
         datoObjectFile1 = new Object();
@@ -302,7 +302,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             var nDatosLicM = new getDatosLicencia();
             nDatosLicM.idActividadDesarrollada = idDesarrolladaM;
             nDatosLicM.superficie = "0";
-            nDatosLicM.getDatos_Licencia(function(resDatosLicM) {
+            nDatosLicM.getDatos_Licencia(function (resDatosLicM) {
                 var obtLicM = JSON.parse(resDatosLicM);
                 var datosLicM = obtLicM.success.dataSql;
                 $scope.multiple = datosLicM;
@@ -325,7 +325,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
 
-    $scope.guardarLicencia = function(licencia) {
+    $scope.guardarLicencia = function (licencia) {
         $scope.dscripcionlic = {};
         if ($scope.dscripcionlic.f01_act_desarrolladamdescrip == '--Seleccione--') {
             $scope.dscripcionlic.f01_act_desarrolladamdescrip = '';
@@ -378,7 +378,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.Licencia_Multiple = function(dato) {
+    $scope.Licencia_Multiple = function (dato) {
         $scope.licmul_grilla = [];
         var encabezado = [];
         var indice = 1;
@@ -398,7 +398,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             });
         }
         var jsonString = '[' + (encabezado) + ']';
-        angular.forEach($scope.licmul_grilla, function(value, key) {
+        angular.forEach($scope.licmul_grilla, function (value, key) {
             encabezado[indice] = value;
             indice = indice + 1;
         });
@@ -410,24 +410,24 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     $scope.onlym = false;
     $scope.botonm = "new";
 
-    $scope.modificarLic = function(dato) {
+    $scope.modificarLic = function (dato) {
         $scope.onlym = true;
         $scope.botonm = "upd";
         $scope.multiple = dato;
     }
 
-    $scope.eliminarLic = function(dato) {
+    $scope.eliminarLic = function (dato) {
         $scope.licenciamul.splice($scope.licenciamul.indexOf(dato), 1);
         $scope.idm = $scope.idm - 1;
     }
 
-    $scope.modificarLicencia = function(dato) {
-            $scope.onlym = true;
-            $scope.botonm = "new";
-            delete $scope.editm[dato.idm];
-            $scope.multiple = [];
-        }
-        ///TERMINA LICENCIA MULTIPLE
+    $scope.modificarLicencia = function (dato) {
+        $scope.onlym = true;
+        $scope.botonm = "new";
+        delete $scope.editm[dato.idm];
+        $scope.multiple = [];
+    }
+    ///TERMINA LICENCIA MULTIPLE
 
     //UPLOAD  FILES
     $rootScope.vid = sessionService.get('IDCIUDADANO');
@@ -438,7 +438,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     });
     uploader.filters.push({
         name: 'customFilter',
-        fn: function(item /*{File|FileLikeObject}*/ , options) {
+        fn: function (item /*{File|FileLikeObject}*/, options) {
             return this.queue.length < 10;
         }
     });
@@ -449,19 +449,19 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
 
     uploader.filters.push({
         name: 'customFilter',
-        fn: function(item, options) {
+        fn: function (item, options) {
             return this.queue.length < 2;
         }
     });
-    uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/ , filter, options) {
+    uploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
         console.info('onWhenAddingFileFailed', item, filter, options);
     };
     /////////////////////////////////////////////////////////////////
-    $scope.verificarSuperficie = function(superficie) {
+    $scope.verificarSuperficie = function (superficie) {
         $scope.validarRequisitosForm();
     }
 
-    $scope.calcularCapacidad = function(superficie) {
+    $scope.calcularCapacidad = function (superficie) {
         if (superficie) {
             superficie = superficie.replace(/[^,.0-9]+/g, "");
             superficie = superficie.replace(/,/g, ".")
@@ -472,7 +472,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.lstRequisitosTecnicosMultiples = function(licenciamul) {
+    $scope.lstRequisitosTecnicosMultiples = function (licenciamul) {
         var sconsulta = '[';
         for (i = 0; i < licenciamul.length; i++) {
             sconsulta = sconsulta + '{"id":' + licenciamul[i].f01_cat_agrupadamid + "},";
@@ -486,7 +486,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             var ndCategoria = new aelstRequisitostecmul();
             ndCategoria.dependencia = aidCategoria;
             ndCategoria.tipopersona = persona;
-            ndCategoria.aelst_Requisitostecmul(function(res) {
+            ndCategoria.aelst_Requisitostecmul(function (res) {
                 var result = JSON.parse(res);
                 var datosRequisitosTmp = result.success.data;
                 datoObjectFinal = [];
@@ -499,14 +499,14 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 }
                 $scope.datos.f01_requisitos_tecnicos = datoObjectFinal;
                 $rootScope.datosTecnicos = datoObjectFinal;
-                setTimeout(function() {
+                setTimeout(function () {
                     iniciarLoadFyle();
                 }, 1000);
             })
         }
     };
 
-    $scope.limpiarlic = function() {
+    $scope.limpiarlic = function () {
         $scope.datos.f01_tipo_lic_descrip = '';
         $scope.datos.f01_categoria_agrupada_dem = '';
         $scope.datos.f01_categoria_agrupada_descrip = '';
@@ -515,7 +515,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.datos.f01_categoria_agrupada_descripcion = '';
     }
 
-    $scope.limpiarcateg = function() {
+    $scope.limpiarcateg = function () {
         $scope.datos.f01_categoria_agrupada_dem = '';
         $scope.datos.f01_categoria_agrupada_descrip = '';
         $scope.datos.f01_categoria_descripcion = '';
@@ -523,20 +523,20 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.datos.f01_categoria_agrupada_descripcion = '';
     }
 
-    $scope.limpiaractdes = function() {
+    $scope.limpiaractdes = function () {
         $scope.datos.f01_categoria_descripcion = '';
         $scope.datos.f01_categoria_descrip2 = '';
         $scope.datos.f01_categoria_agrupada_descripcion = '';
     }
 
-    $scope.GetValueCategoriaAgrupada = function() {
+    $scope.GetValueCategoriaAgrupada = function () {
         $scope.limpiarcateg();
         var e = document.getElementById('f01_categoria_agrupada');
         $scope.datos.f01_categoria_agrupada_dem = e.options[e.selectedIndex].text;
         $scope.datos.f01_categoria_agrupada_descrip = e.options[e.selectedIndex].text;
     }
 
-    $scope.GetValueCategoria = function() {
+    $scope.GetValueCategoria = function () {
         $scope.limpiaractdes();
         var e = document.getElementById('f01_categoria_descrip');
         $scope.datos.f01_categoria_descripcion = e.options[e.selectedIndex].text;
@@ -545,17 +545,17 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.datos.f01_categoria_agrupada_descripcion = e.options[e.selectedIndex].text;
     }
 
-    $scope.GetValueZonaContribuyente = function() {
+    $scope.GetValueZonaContribuyente = function () {
         var e = document.getElementById("f01_zon_prop");
         $scope.datos.f01_zon_prop_descrip = e.options[e.selectedIndex].text;
     }
 
-    $scope.GetValueZonaContribuyenteJuridico = function() {
+    $scope.GetValueZonaContribuyenteJuridico = function () {
         var e = document.getElementById("f01_id_zona_rep");
         $scope.datos.f01_zona_rep = e.options[e.selectedIndex].text;
     }
 
-    $scope.GetValueZonaSegura = function(idCategoria) {
+    $scope.GetValueZonaSegura = function (idCategoria) {
         if (idCategoria == 3419 || idCategoria == 3420 || idCategoria == 3421 || idCategoria == 3422 || idCategoria == 3423 || idCategoria == 3424) {
             $rootScope.mostrarzonasegura = true;
         } else {
@@ -563,7 +563,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.GetValueActividadSecundaria = function() {
+    $scope.GetValueActividadSecundaria = function () {
         $scope.actividadSecund = "";
         var datosaux = '';
         var datoslicm = {};
@@ -586,7 +586,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.datos.f01_actividadesSecundarias = $scope.actividadSecund;
     }
 
-    $scope.GetValueActividadDesarrollada = function() {
+    $scope.GetValueActividadDesarrollada = function () {
         $scope.actividadDes = "";
         var datosaux = '';
         var datoslicm = {};
@@ -609,24 +609,30 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.datos.f01_actividadesDesarrolladasc = $scope.actividadDes;
     }
 
-    $scope.GetValueActividadesCatDesarrollada = function() {
+    $scope.GetValueActividadesCatDesarrollada = function () {
         $scope.actividadDesCat = "";
         var datosaux = '';
+        var datoscat = '';
+        var datosact = '';
         var datoslicm = {};
         if ($scope.datos.licenciam.length > 0) {
             datoslicm = $scope.datos.licenciam;
             for (var j = 0; j < datoslicm.length; j++) {
                 if (j + 1 == datoslicm.length) {
                     if (datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == '18' || datoslicm[j].f01_tipo_licmid == 18) {
-                        datosaux = datosaux + datoslicm[j].f01_cat_agrupadamdescrip;
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip;
                     } else {
                         datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip;
                     }
                 } else {
                     if (datoslicm[j].f01_tipo_licmid == '17' || datoslicm[j].f01_tipo_licmid == 17 || datoslicm[j].f01_tipo_licmid == '18' || datoslicm[j].f01_tipo_licmid == 18) {
-                        datosaux = datosaux + datoslicm[j].f01_cat_agrupadamdescrip + " - ";
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip + " - ";;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip + " - ";
                     } else {
-                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip + " - ";
+                        datosaux = datosaux + datoslicm[j].f01_act_desarrolladamdescrip + " - ";;
+                        datosact = datosact + datoslicm[j].f01_cat_agrupadamdescrip + " - ";
                     }
                 }
             }
@@ -646,9 +652,10 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
         $scope.actividadDesCat = datosaux;
         $scope.datos.f01_actividadesSecundarias = $scope.actividadDesCat;
+        $scope.datos.f01_categorias_multi = datosact;
     }
 
-    $scope.SeleccionaPrioridad = function(dato) {
+    $scope.SeleccionaPrioridad = function (dato) {
         var arraydata = [];
         $scope.datos.f01_act_principal = '';
         if (dato.f01_cat_agrupadamid == 5 || dato.f01_cat_agrupadamid == 6 || dato.f01_cat_agrupadamid == 25) {
@@ -680,7 +687,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
     //ALMACENAR ARHIVOS EN EL IF-GENESIS
-    $scope.guardarAdjuntosMultiplesMapa = function(datosCaso) {
+    $scope.guardarAdjuntosMultiplesMapa = function (datosCaso) {
         var sdataArchivo = datosCaso[0].sp_pmfunction_crearcaso_linea;
         var aDatosCaso = sdataArchivo.split(',');
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
@@ -722,19 +729,19 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         imgCroquis.doc_correlativo = "";
         imgCroquis.doc_tipo_documento_ext = "";
         imgCroquis.doc_id_carpeta = 0;
-        imgCroquis.insertarDoc(function(resultado) {
+        imgCroquis.insertarDoc(function (resultado) {
             resultadoApi = JSON.parse(resultado);
-            if (resultadoApi.success) {} else {
+            if (resultadoApi.success) { } else {
                 $.unblockUI();
                 swal(resultadoApi.error.message);
             }
         });
     };
 
-    $scope.macrodistritos = function() {
+    $scope.macrodistritos = function () {
         $scope.aMacrodistritos = {};
         var datosP = new macrodistritoLst();
-        datosP.obtmacro(function(resultado) {
+        datosP.obtmacro(function (resultado) {
             data = JSON.parse(resultado);
             if (data.success.length > 0) {
                 $scope.aMacrodistritos = data.success;
@@ -744,7 +751,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         });
     };
 
-    var clsValidarBtnEnviar = $rootScope.$on('validarBtnEnviar', function(event, data) {
+    var clsValidarBtnEnviar = $rootScope.$on('validarBtnEnviar', function (event, data) {
         if (data > 0) {
             $scope.btnEnviarForm = false;
         } else {
@@ -753,7 +760,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     });
 
     //validarBtnEnviar
-    $scope.validarBtnEnviar = function(cont) {
+    $scope.validarBtnEnviar = function (cont) {
         if (cont > 0) {
             $scope.btnEnviarForm = false;
         } else {
@@ -761,11 +768,11 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     };
 
-    $scope.getDatos = function() {
+    $scope.getDatos = function () {
         $scope.estado_formulario = "sin_dato";
     };
 
-    $scope.cargarDatos = function() { //magali
+    $scope.cargarDatos = function () { //magali
         $scope.sTipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.inciarUpload();
         $scope.getCaptchasXX();
@@ -785,15 +792,15 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.catactividadDesarrollada();
     };
 
-    $scope.inciarUpload = function() {
+    $scope.inciarUpload = function () {
         try {
-            $('#multiDocsButon').click(function() {
+            $('#multiDocsButon').click(function () {
                 $('#multiDocsFile').click();
             });
-        } catch (e) {}
+        } catch (e) { }
     };
 
-    var clsIniciarHtmlForm = $rootScope.$on('inicializarHtmlForm', function(event, tramite) {
+    var clsIniciarHtmlForm = $rootScope.$on('inicializarHtmlForm', function (event, tramite) {
         if (tramite.venviado == 'SI') {
             $scope.btnGuardarForm = true;
             $scope.desabilitado = true;
@@ -805,7 +812,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             $scope.desabilitado = false;
             $scope.botones = "mostar";
         }
-        var datosgen = ((typeof($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {} : $scope.dataGenesisCidadano);
+        var datosgen = ((typeof ($scope.dataGenesisCidadano) == 'undefined' || $scope.dataGenesisCidadano == null) ? {} : $scope.dataGenesisCidadano);
         if (tramite.venviado == 'NO' && JSON.stringify(datosgen) === '{}') {
             $scope.mostrarMsgNuevaActividad = false;
         }
@@ -824,7 +831,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
 
     });
 
-    var clsIniciarGrillaAE = $rootScope.$on('inicializarGrillaAE', function(event, data) {
+    var clsIniciarGrillaAE = $rootScope.$on('inicializarGrillaAE', function (event, data) {
         $scope.formDatosAE = false;
         $scope.mostrarMsgActividadTrue = false;
         $scope.mostrarMsgActividadFalse = false;
@@ -846,22 +853,22 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     });
 
     //INICIAR VARIABLES EN EL FORMULARIO
-    var clsIniciarZonas = $rootScope.$on('iniciaDatosCboZona', function(event, data) {
+    var clsIniciarZonas = $rootScope.$on('iniciaDatosCboZona', function (event, data) {
         $scope.aDistritoZona = {};
         $scope.aDistritoZona = data;
     });
 
     //INICIAR VARIABLES EN EL FORMULARIO
-    var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function(event, data) {
+    var clsIniciarCamposInternet = $rootScope.$on('inicializarCamposInternet', function (event, data) {
         $scope.catactividadDesarrollada();
         $scope.macrodistritos();
         $scope.multiple = [];
         $scope.GetValueZonaSegura(data.f01_categoria_agrupada);
-        if ((data.INT_AC_latitud == 'undefined' && data.INT_AC_longitud == 'undefined') || (data.INT_AC_latitud == undefined && data.INT_AC_longitud == undefined) || (data.INT_AC_latitud == '' && data.INT_AC_longitud == '')) {} else {
+        if ((data.INT_AC_latitud == 'undefined' && data.INT_AC_longitud == 'undefined') || (data.INT_AC_latitud == undefined && data.INT_AC_longitud == undefined) || (data.INT_AC_latitud == '' && data.INT_AC_longitud == '')) { } else {
             $scope.open_map_ae2(data.INT_AC_latitud, data.INT_AC_longitud);
         };
         //REQUISITOS DOCUMENTALES
-        var categoriaAgrupadaDesc = ((typeof(data.f01_categoria_agrupada) == 'undefined' || data.f01_categoria_agrupada == null) ? '' : data.f01_categoria_agrupada);
+        var categoriaAgrupadaDesc = ((typeof (data.f01_categoria_agrupada) == 'undefined' || data.f01_categoria_agrupada == null) ? '' : data.f01_categoria_agrupada);
         if (categoriaAgrupadaDesc != '') {
             $scope.getRequisitosTecnicosCategoria(data.f01_categoria_agrupada, data.f01_tipo_per);
         }
@@ -874,10 +881,10 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             $scope.smultiservicios = false;
         }
 
-        if (data.f01_tip_via_act == '' || data.f01_tip_via_act == undefined || data.f01_tip_via_act == 'undefined') {} else {
+        if (data.f01_tip_via_act == '' || data.f01_tip_via_act == undefined || data.f01_tip_via_act == 'undefined') { } else {
             $scope.cargarNombVia(data.f01_tip_via_act, data.f01_zona_act);
         };
-        if (data.f01_categoria_agrupada == '' || data.f01_categoria_agrupada == undefined || data.f01_categoria_agrupada == 'undefined') {} else {
+        if (data.f01_categoria_agrupada == '' || data.f01_categoria_agrupada == undefined || data.f01_categoria_agrupada == 'undefined') { } else {
             if (data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32') { //verificamos si la licencia es multiple
                 $scope.lstRequisitosMultiples2018(data.licenciam);
             } else {
@@ -915,13 +922,13 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             $scope.licenciaToogle4 = false;
         }
 
-        if (typeof(data.INT_AC_MACRO_ID) != 'undefined') {
+        if (typeof (data.INT_AC_MACRO_ID) != 'undefined') {
             //LISTANDO ZONAS
             $scope.aDistritoZona = {};
             try {
                 var parametros = new distritoZona();
                 parametros.idMacro = data.f01_macro_act;
-                parametros.obtdist(function(resultado) {
+                parametros.obtdist(function (resultado) {
                     data = JSON.parse(resultado);
                     if (data.success.length > 0) {
                         $scope.aDistritoZona = data.success;
@@ -929,12 +936,12 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                         $scope.msg = "Error !!";
                     }
                 });
-            } catch (error) {}
+            } catch (error) { }
         }
 
         $scope.obtenerHora();
         $scope.obtenerFecha();
-        if (typeof($scope.datos.INT_VIA) != 'undefined') {
+        if (typeof ($scope.datos.INT_VIA) != 'undefined') {
             var idTipoVia = $scope.datos.INT_VIA;
             var tipoVia = [
                 { name: 'AVENIDA', id: '1' },
@@ -942,14 +949,14 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 { name: 'CALLEJON', id: '3' },
                 { name: 'PASAJE', id: '4' }
             ];
-            angular.forEach(tipoVia, function(value, key) {
+            angular.forEach(tipoVia, function (value, key) {
                 if (value.id == idTipoVia) {
                     $scope.datos.INT_TIP_VIA = value.name;
                 }
             });
         }
         //EXTRAYENDO EXPEDIDO
-        if (typeof($scope.datos.f01_expedido_prop) != 'undefined') {
+        if (typeof ($scope.datos.f01_expedido_prop) != 'undefined') {
             var ideExpedido = $scope.datos.f01_expedido_prop;
             var tipoExpedido = [
                 { name: 'LA PAZ', value: 'LPZ', id: '1' },
@@ -963,7 +970,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 { name: 'BENI', value: 'BNI', id: '9' },
                 { name: 'EXTRANJERO', value: 'EXT', id: '10' }
             ];
-            angular.forEach(tipoExpedido, function(value, key) {
+            angular.forEach(tipoExpedido, function (value, key) {
                 if (value.id == ideExpedido) {
                     $scope.datos.f01_expedido_prop = value.value;
                 }
@@ -975,11 +982,11 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }); //INICIAR CAMPOS INTERNET
 
     //fecha del servidor
-    $scope.obtenerFecha = function() {
+    $scope.obtenerFecha = function () {
         var sfecha = "";
         try {
             var fechaactualn = new fechaserver();
-            fechaactualn.obtfechahora(function(resultado) {
+            fechaactualn.obtfechahora(function (resultado) {
                 sfecha = JSON.parse(resultado).success.fecha;
             });
             var sfechafinal = "";
@@ -988,7 +995,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 var nrof = 0;
                 try {
                     nrof = sfecha.split("/").length;
-                } catch (e) {}
+                } catch (e) { }
                 if (nrof > 1) {
                     var dateString = sfecha;
                     var dateParts = sfecha.split("/");
@@ -1019,10 +1026,10 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     };
 
-    $scope.obtenerHora = function() {
+    $scope.obtenerHora = function () {
         var sfecha = "";
         var fechaactualh = new fechaserver();
-        fechaactualh.obtfechahora(function(resultado) {
+        fechaactualh.obtfechahora(function (resultado) {
             sfecha = JSON.parse(resultado).success.fecha;
         });
         var sfechafinal = "";
@@ -1041,7 +1048,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         return sfechafinal;
     };
 
-    $scope.cambioToggle1 = function(dato) {
+    $scope.cambioToggle1 = function (dato) {
         $scope.lscategoria();
         $scope.lssubcategoria();
         if (dato == "NUEVO") {
@@ -1053,7 +1060,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.mostrarSuperficie = function(tipolic, categoriaagrupada, idDesarrollada) {
+    $scope.mostrarSuperficie = function (tipolic, categoriaagrupada, idDesarrollada) {
         if (tipolic == 27 || tipolic == '27' || categoriaagrupada == 3451 || categoriaagrupada == '3451' || idDesarrollada == 881 || idDesarrollada == '881') {
             $scope.mostrarsinsuperficie = true;
             $scope.mostrarsuperficie = true;
@@ -1066,7 +1073,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.cambioSuperficie = function(dato) {
+    $scope.cambioSuperficie = function (dato) {
         if (dato == 'SINSUPERFICIE') {
             $scope.datos.f01_sup = "0";
             $scope.desabilitadoSup = true;
@@ -1086,7 +1093,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             $scope.IsVisible = false;
         };
     }*/
-    $scope.ShowPa = function(valor) {
+    $scope.ShowPa = function (valor) {
         $scope.calculo_total = 0;
         if (valor == 'true' || valor == true) {
             $scope.IsVisible = true;
@@ -1122,20 +1129,20 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             vtra_id: 'desc'
         }
     }, {
-        total: $scope.listDeudas.length,
-        getData: function($defer, params) {
-            var filteredData = params.filter() ?
-                $filter('filter')($scope.listDeudas, params.filter()) :
-                $scope.listDeudas;
-            var orderedData = params.sorting() ?
-                $filter('orderBy')(filteredData, params.orderBy()) :
-                $scope.listDeudas;
-            params.total($scope.listDeudas.length);
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-        }
-    });
+            total: $scope.listDeudas.length,
+            getData: function ($defer, params) {
+                var filteredData = params.filter() ?
+                    $filter('filter')($scope.listDeudas, params.filter()) :
+                    $scope.listDeudas;
+                var orderedData = params.sorting() ?
+                    $filter('orderBy')(filteredData, params.orderBy()) :
+                    $scope.listDeudas;
+                params.total($scope.listDeudas.length);
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            }
+        });
 
-    $scope.calcularDeudas = function(sup, nroges) {
+    $scope.calcularDeudas = function (sup, nroges) {
         $scope.datos.montoDeuda = [];
         var fechaP = new Date();
         var gestionP = fechaP.getFullYear();
@@ -1216,9 +1223,9 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 calcularD.cadena = aDatosPublicidad; //pubDeuda
                 calcularD.idZona = $scope.datos.f01_zona_act;
                 calcularD.gestionesPrevias = nroges;
-                calcularD.getCalcular_Patente343(function(resDeuda) {
+                calcularD.getCalcular_Patente343(function (resDeuda) {
                     var deudasAE = JSON.parse(resDeuda);
-                    var sdeuda = ((typeof(deudasAE.success) == 'undefined' || deudasAE.success == null) ? '0' : '1');
+                    var sdeuda = ((typeof (deudasAE.success) == 'undefined' || deudasAE.success == null) ? '0' : '1');
                     if (sdeuda != '0') {
                         $scope.datos.listDeudas = deudasAE.success.dataSql;
                         $scope.listDeudas = deudasAE.success.dataSql;
@@ -1241,7 +1248,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.calcularDeudasDesdePublicidad = function(dato) {
+    $scope.calcularDeudasDesdePublicidad = function (dato) {
         if (dato == false && $scope.datos.pago_adelantado == true) {
             $scope.datos.publicidad = [];
             $scope.calcularDeudas($scope.datos.f01_sup, $scope.datos.nro_ges);
@@ -1251,7 +1258,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
     /*CIUDADANO - TIPO INICIO DE TRAMITE NUEVO - RENOVACION*/
-    $scope.cambioToggleForm = function() {
+    $scope.cambioToggleForm = function () {
         //$scope.validarRequisitosForm();
         $scope.botones = "mostrar";
         $scope.desabilitado = false;
@@ -1327,8 +1334,8 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
 
     // =========================================FIN DE LA PARTE DE LA VIA===================================//
     //DOCUMENTOS ADJUNTOS OBLIGATORIOS
-    var clsIniciarFechaObligatorio = $rootScope.$on('inicializarFechaOblitatorio', function(event, data) {
-        var archivosAdjuntos = ((typeof(data.ARCHIVOS_MULTIPLES) == 'undefined') ? "" : data.ARCHIVOS_MULTIPLES);
+    var clsIniciarFechaObligatorio = $rootScope.$on('inicializarFechaOblitatorio', function (event, data) {
+        var archivosAdjuntos = ((typeof (data.ARCHIVOS_MULTIPLES) == 'undefined') ? "" : data.ARCHIVOS_MULTIPLES);
         if (archivosAdjuntos.length > 0) {
             $scope.adjuntoObligatorio = false;
             $scope.adjuntoCssObligatorio = "border-style: solid; border-width: 1px; border-color: #577C27;";
@@ -1338,7 +1345,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     });
 
-    var clsIniciaBtnHabilitar = $rootScope.$on('iniciaBtnHabilitar', function(event, data) {
+    var clsIniciaBtnHabilitar = $rootScope.$on('iniciaBtnHabilitar', function (event, data) {
         $scope.btnEnviarForm = false;
         if (data) {
             if (data == 'G') {
@@ -1352,8 +1359,8 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     });
 
-    $scope.$on('$destroy', function() {
-        setTimeout(function() {
+    $scope.$on('$destroy', function () {
+        setTimeout(function () {
             clsValidarBtnEnviar();
             clsIniciarCamposInternet();
             clsIniciarGrillaAE();
@@ -1375,7 +1382,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     $scope.nroOrdenActividiadEconomicaActual = "";
     $scope.idContribuyenteAEActual = "";
 
-    $scope.validarActividadEconomica = function() {
+    $scope.validarActividadEconomica = function () {
         //$.blockUI();
         //$scope.mostrarMsgActividadTrue  = false;
         //$scope.mostrarMsgActividadFalse = false;
@@ -1407,18 +1414,18 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         //$scope.datos.f01_tip_via_prop = "";
     };*/
 
-    $scope.mostrarCamposJuegos = function() {
+    $scope.mostrarCamposJuegos = function () {
         $scope.divOcultarJuegos = true;
     };
 
-    $scope.ocultarCamposJuegos = function() {
-            $scope.divOcultarJuegos = false;
-        }
-        ////////////////REQUISITOS 2018/////////
+    $scope.ocultarCamposJuegos = function () {
+        $scope.divOcultarJuegos = false;
+    }
+    ////////////////REQUISITOS 2018/////////
     $scope.aDocObligarios = new Array();
-    $scope.cambiarFile = function(obj, valor) {
+    $scope.cambiarFile = function (obj, valor) {
         $scope.datos[obj.name] = valor;
-        setTimeout(function() {
+        setTimeout(function () {
             $rootScope.leyenda1 = obj.name;
         }, 500);
         /*REQUISITOS2018*/
@@ -1426,7 +1433,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     };
 
     /*REQUISITOS2018*/
-    $scope.subirRequisitos = function(sobj, svalor) {
+    $scope.subirRequisitos = function (sobj, svalor) {
         var rMisDocs = new Array();
         var idFiles = new Array();
         if (sobj.files[0]) {
@@ -1443,78 +1450,78 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
 
     /*REQUISITOS2018*/
     $scope.fileArRequisitos = {};
-    $scope.adicionarArrayDeRequisitos = function(aArch, idFile) {
-            var descDoc = "";
-            var fechaNueva = "";
-            var fechaserver = new fechaHoraServer();
-            fechaserver.fechahora(function(resp) {
-                var sfecha = JSON.parse(resp);
-                var fechaServ = (sfecha.success.fecha).split(' ');
-                var fecha_ = fechaServ[0].split('-');
-                var hora_ = fechaServ[1].split(':');
-                fechaNueva = fecha_[0] + fecha_[1] + fecha_[2] + '_' + hora_[0] + hora_[1];
-            });
-            angular.forEach($scope.docArray, function(doc, pos) {
-                if (doc.resid == idFile) {
-                    descDoc = doc.desNom;
-                }
-            })
-            var imagenNueva = aArch.files[0].name.split('.');
-            var tam = aArch.files[0];
-            var nombreFileN = descDoc + '_' + fechaNueva + '.' + imagenNueva[1];
-            $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
-            var sDirTramite = sessionService.get('IDTRAMITE');
-            $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
-            if (aArch.files[0].size > 500000 && aArch.files[0].size <= 15000000) {
-                if (imagenNueva[1] == "png" || imagenNueva[1] == "jpg" || imagenNueva[1] == "jpeg" || imagenNueva[1] == "bmp" || imagenNueva[1] == "gif") {
-                    var filecompress = compressImage(aArch.files[0]).then(function(respuestaFile) {
-                        var imagenFile = respuestaFile.name.split('.');
-                        var tipoFile = imagenFile[1];
-                        nombreFileN = descDoc + '_' + fechaNueva + '.' + tipoFile;
-                    });
-                }
+    $scope.adicionarArrayDeRequisitos = function (aArch, idFile) {
+        var descDoc = "";
+        var fechaNueva = "";
+        var fechaserver = new fechaHoraServer();
+        fechaserver.fechahora(function (resp) {
+            var sfecha = JSON.parse(resp);
+            var fechaServ = (sfecha.success.fecha).split(' ');
+            var fecha_ = fechaServ[0].split('-');
+            var hora_ = fechaServ[1].split(':');
+            fechaNueva = fecha_[0] + fecha_[1] + fecha_[2] + '_' + hora_[0] + hora_[1];
+        });
+        angular.forEach($scope.docArray, function (doc, pos) {
+            if (doc.resid == idFile) {
+                descDoc = doc.desNom;
             }
-            var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
-            var adatafile = {};
-            var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_" + aArch.id).text() + '" }';
-            $scope.fileArRequisitos[aArch.name] = JSON.parse(myJSON);
-            $scope.clonarRequisitosDocumentales($scope.fileArRequisitos);
+        })
+        var imagenNueva = aArch.files[0].name.split('.');
+        var tam = aArch.files[0];
+        var nombreFileN = descDoc + '_' + fechaNueva + '.' + imagenNueva[1];
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+        var sDirTramite = sessionService.get('IDTRAMITE');
+        $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+        if (aArch.files[0].size > 500000 && aArch.files[0].size <= 15000000) {
+            if (imagenNueva[1] == "png" || imagenNueva[1] == "jpg" || imagenNueva[1] == "jpeg" || imagenNueva[1] == "bmp" || imagenNueva[1] == "gif") {
+                var filecompress = compressImage(aArch.files[0]).then(function (respuestaFile) {
+                    var imagenFile = respuestaFile.name.split('.');
+                    var tipoFile = imagenFile[1];
+                    nombreFileN = descDoc + '_' + fechaNueva + '.' + tipoFile;
+                });
+            }
         }
-        /*REQUISITOS2018*/
-    $scope.clonarRequisitosDocumentales = function(aRequArchivos) {
+        var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
+        var adatafile = {};
+        var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "nombre":"' + $("#lbl_" + aArch.id).text() + '" }';
+        $scope.fileArRequisitos[aArch.name] = JSON.parse(myJSON);
+        $scope.clonarRequisitosDocumentales($scope.fileArRequisitos);
+    }
+    /*REQUISITOS2018*/
+    $scope.clonarRequisitosDocumentales = function (aRequArchivos) {
         var i = 0;
         $scope.File_Adjunto = {};
         datoObjectFiles = [];
         var longdato = 0;
-        angular.forEach(aRequArchivos, function(archivo, key) {
+        angular.forEach(aRequArchivos, function (archivo, key) {
             datoObjectFiles[i] = archivo;
             i = i + 1;
         });
         $scope.datos.fileArchivosAd = datoObjectFiles;
     }
 
-    $scope.ultimoArrayAdjunto = function() {
-            //$scope.getRequisitosCategoriaTecnicos($scope.datos.f01_tipo_lic,$scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
-            $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada, $scope.datos.f01_tipo_per);
-            $scope.capturarImagen();
-            datoObjectFiles = [];
-            var datoObjectFile4 = new Object();
-            $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
-            $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
-            var nombre_mapa = $scope.datos.ARCHIVOS_MULTIPLES_MAPA[0].nombre_archivo;
-            datoObjectFile4.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + nombre_mapa + "?app_name=todoangular";
-            datoObjectFile4.campo = $scope.datos.ARCHIVOS_MULTIPLES_MAPA[0].nombre_archivo;
-            datoObjectFile4.nombre = 'CROQUIS DE UBICACIÓN DE LA ACTIVIDAD ECONÓMICA';
-            datoObjectFiles[0] = datoObjectFile4;
-            $scope.datos.FILE_MAPA = datoObjectFiles;
-            $rootScope.FileAdjuntos = $scope.datos.FILE_CI.concat($scope.datos.FILE_MAPA, $scope.datos.fileArchivosAd);
-        }
-        /*REQUISITOS2018*/
-    $scope.almacenarRequisitos = function(aArchivos, idFiles) {
+    $scope.ultimoArrayAdjunto = function () {
+        //$scope.getRequisitosCategoriaTecnicos($scope.datos.f01_tipo_lic,$scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
+        $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada, $scope.datos.f01_tipo_per);
+        $scope.capturarImagen();
+        datoObjectFiles = [];
+        var datoObjectFile4 = new Object();
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+        $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+        var nombre_mapa = $scope.datos.ARCHIVOS_MULTIPLES_MAPA[0].nombre_archivo;
+        datoObjectFile4.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + nombre_mapa + "?app_name=todoangular";
+        datoObjectFile4.campo = $scope.datos.ARCHIVOS_MULTIPLES_MAPA[0].nombre_archivo;
+        datoObjectFile4.nombre = 'CROQUIS DE UBICACIÓN DE LA ACTIVIDAD ECONÓMICA';
+        datoObjectFiles[0] = datoObjectFile4;
+        $scope.datos.FILE_MAPA = datoObjectFiles;
+        $rootScope.FileAdjuntos = $scope.datos.FILE_CI.concat($scope.datos.FILE_MAPA, $scope.datos.fileArchivosAd);
+    }
+    /*REQUISITOS2018*/
+    $scope.almacenarRequisitos = function (aArchivos, idFiles) {
         var descDoc = "";
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer();
-        fechaserver.fechahora(function(resp) {
+        fechaserver.fechahora(function (resp) {
             var sfecha = JSON.parse(resp);
             var fechaServ = (sfecha.success.fecha).split(' ');
             var fecha_ = fechaServ[0].split('-');
@@ -1526,10 +1533,10 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
         var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/";
         $.blockUI();
-        angular.forEach(aArchivos, function(archivo, key) {
+        angular.forEach(aArchivos, function (archivo, key) {
             //var tamaniofile = obj.files[0];
-            if (typeof(archivo) != 'undefined') {
-                angular.forEach($scope.docArray, function(doc, pos) {
+            if (typeof (archivo) != 'undefined') {
+                angular.forEach($scope.docArray, function (doc, pos) {
                     if (doc.resid == idFiles[key]) {
                         descDoc = doc.desNom;
                     }
@@ -1538,7 +1545,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 var nombreFileN = descDoc + '_' + fechaNueva + '.' + imagenNueva[1];
                 if (archivo.size > 500000 && archivo.size <= 15000000) {
                     if (imagenNueva[1] == "png" || imagenNueva[1] == "jpg" || imagenNueva[1] == "jpeg" || imagenNueva[1] == "bmp" || imagenNueva[1] == "gif") {
-                        var filecompress = compressImage(archivo).then(function(respuestaFile) {
+                        var filecompress = compressImage(archivo).then(function (respuestaFile) {
                             var imagenFile = respuestaFile.name.split('.');
                             var tipoFile = imagenFile[1];
                             var nombreNuevo = descDoc + '_' + fechaNueva + '.' + tipoFile;
@@ -1575,17 +1582,17 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                         swal('Advertencia', 'El tamaño del archivo es muy grande', 'error');
                     };
                 }
-            } else {}
+            } else { }
         });
     };
 
     /*REQUISITOS2018*/
-    $scope.validarRequisitosForm = function() {
+    $scope.validarRequisitosForm = function () {
         datoObjectFile1 = new Object();
         datoObjectFile2 = new Object();
         datoObjectFiles_ci = [];
         //INICIAR DOCUMENTOS DE IDENTIDAD
-        angular.forEach($scope.docArray, function(value, key) {
+        angular.forEach($scope.docArray, function (value, key) {
             //VALIDANDO EL DOCUMENTO DE IDENTIDAD - IGOB
             if (value.idnro == 1) {
                 document.getElementById('txt_f01_upload' + value.resid).value = 'Cedula de identidad (Anverso).jpg';
@@ -1800,19 +1807,19 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
 
     }
 
-    $scope.iniciarRequsitosDoc = function(data) {
+    $scope.iniciarRequsitosDoc = function (data) {
         var validarpromesas = [$scope.iniciarRequisitosForm(data)];
-        $q.all(validarpromesas).then(function(resp) { //AE - Validar Envio Licencia
+        $q.all(validarpromesas).then(function (resp) { //AE - Validar Envio Licencia
         });
     }
 
     /*REQUISITOS2018*/
-    $scope.iniciarRequisitosForm = function(data) {
+    $scope.iniciarRequisitosForm = function (data) {
         $scope.fileArRequisitos = {};
         if (data.sArrayFileArRequisitos) {
             $scope.fileArRequisitos = data.sArrayFileArRequisitos;
-            setTimeout(function() {
-                angular.forEach(data.sArrayFileArRequisitos, function(value, key) {
+            setTimeout(function () {
+                angular.forEach(data.sArrayFileArRequisitos, function (value, key) {
                     $("#txt_" + key).val(value.campo);
                     //deferred.resolve(data);
                 });
@@ -1824,7 +1831,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
 
     $scope.archotro = false;
     $scope.archpdf = false;
-    $scope.vizualizarImagen = function(imagen) {
+    $scope.vizualizarImagen = function (imagen) {
         var extencionpri = imagen.split('.');
         var extencionseg = extencionpri[4].split('?');
         if (extencionseg[0] == "png" || extencionseg[0] == "jpg" || extencionseg[0] == "JPG" || extencionseg[0] == "jpeg" || extencionseg[0] == "gif" || extencionseg[0] == "PNG" || extencionseg[0] == "JPEG" || extencionseg[0] == "GIF") {
@@ -1856,7 +1863,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
     /*REQUISITOS2018*/
-    $scope.getRequisitosFormulario = function(sidcategoria, stipoper) {
+    $scope.getRequisitosFormulario = function (sidcategoria, stipoper) {
         if (stipoper == 'NATURAL') {
             stipoper = 'N';
         }
@@ -1868,7 +1875,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 ndCategoria.sidcategoria = idCategoria;
                 ndCategoria.stipopersona = 'N';
                 ndCategoria.stipo = "EMISION";
-                ndCategoria.aelstRequisitos2018(function(res) {
+                ndCategoria.aelstRequisitos2018(function (res) {
                     var result = JSON.parse(res);
                     var datosRequisitosTmp = result.success.data;
                     datoObjectFinal = [];
@@ -1883,7 +1890,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                         datoObjectFinal[j] = datoObject;
                     }
                     $scope.docArray = datoObjectFinal;
-                    setTimeout(function() {
+                    setTimeout(function () {
                         iniciarLoadFyle();
                         $scope.validarRequisitosForm();
                     }, 1000);
@@ -1893,7 +1900,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     };
 
     /*REQUISITOS2018 - array*/
-    $scope.lstRequisitosMultiples2018 = function(licenciamul) {
+    $scope.lstRequisitosMultiples2018 = function (licenciamul) {
         var sconsulta = '[';
         for (i = 0; i < licenciamul.length; i++) {
             sconsulta = sconsulta + '{"id":' + licenciamul[i].f01_cat_agrupadamid + "},";
@@ -1908,7 +1915,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 var ndCategoria = new aeRequisitosDoc2018array();
                 ndCategoria.asidcategoria = aidCategoria;
                 ndCategoria.astipopersona = persona;
-                ndCategoria.aelstRequisitos2018_array(function(res) {
+                ndCategoria.aelstRequisitos2018_array(function (res) {
                     var result = JSON.parse(res);
                     var datosRequisitosTmp = result.success.data;
                     datoObjectFinal = [];
@@ -1922,7 +1929,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                         datoObjectFinal[j] = datoObject;
                     }
                     $scope.docArray = datoObjectFinal;
-                    setTimeout(function() {
+                    setTimeout(function () {
                         iniciarLoadFyle();
                         $scope.validarRequisitosForm();
                     }, 1000);
@@ -1932,7 +1939,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     };
 
     /*REQUISITOS2018*/
-    $scope.ejecutarFile = function(idfile) {
+    $scope.ejecutarFile = function (idfile) {
         var sid = document.getElementById(idfile);
         if (sid) {
             document.getElementById(idfile).click();
@@ -1952,7 +1959,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     var map;
     var markers = [];
 
-    $scope.initMap = function() {
+    $scope.initMap = function () {
         var haightAshbury = {
             lat: -16.495635,
             lng: -68.133543
@@ -1962,7 +1969,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 zoom: 15,
                 center: haightAshbury
             });
-            map.addListener('click', function(event) {
+            map.addListener('click', function (event) {
                 $scope.deleteMarkers();
                 $rootScope.laaa = event.latLng.lat();
                 $rootScope.looo = event.latLng.lng();
@@ -1970,11 +1977,11 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 $scope.datos.INT_AC_longitud = $rootScope.looo;
                 $scope.addMarker(event.latLng);
             });
-        } catch (err) {}
+        } catch (err) { }
     }
 
     // Adds a marker to the map and push to the array.
-    $scope.addMarker = function(location) {
+    $scope.addMarker = function (location) {
         var marker = new google.maps.Marker({
             position: location,
             map: map
@@ -1983,32 +1990,32 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
     // Sets the map on all markers in the array.
-    $scope.setMapOnAll = function(map) {
+    $scope.setMapOnAll = function (map) {
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(map);
         }
     }
 
     // Removes the markers from the map, but keeps them in the array.
-    $scope.clearMarkers = function() {
+    $scope.clearMarkers = function () {
         $scope.setMapOnAll(null);
     }
 
     // Shows any markers currently in the array.
-    $scope.showMarkers = function() {
+    $scope.showMarkers = function () {
         $scope.setMapOnAll(map);
     }
 
     // Deletes all markers in the array by removing references to them.
-    $scope.deleteMarkers = function() {
+    $scope.deleteMarkers = function () {
         $scope.clearMarkers();
         markers = [];
     }
 
-    $scope.convertToDataURLviaCanvas = function(url, callback, outputFormat) {
+    $scope.convertToDataURLviaCanvas = function (url, callback, outputFormat) {
         var img = new Image();
         img.crossOrigin = 'Anonymous';
-        img.onload = function() {
+        img.onload = function () {
             var canvas = document.createElement('CANVAS');
             var ctx = canvas.getContext('2d');
             var dataURL;
@@ -2022,7 +2029,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         img.src = url;
     };
 
-    $scope.subirImgBase64 = function(imagen, url, nombre) {
+    $scope.subirImgBase64 = function (imagen, url, nombre) {
         var contentType = 'image/png';
         var b64Data = imagen;
         var blob = b64toBlob(b64Data, contentType);
@@ -2059,40 +2066,40 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     };
 
     var aDocAdjuntosmapa = new Object();
-    $scope.capturarImagen = function() {
-            $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
-            //var latitud = $rootScope.laaa;
-            //var longitud = $rootScope.looo;
-            var latitud = $scope.datos.INT_AC_latitud;
-            var longitud = $scope.datos.INT_AC_longitud;
+    $scope.capturarImagen = function () {
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+        //var latitud = $rootScope.laaa;
+        //var longitud = $rootScope.looo;
+        var latitud = $scope.datos.INT_AC_latitud;
+        var longitud = $scope.datos.INT_AC_longitud;
 
-            $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
-            var sDirTramite = sessionService.get('IDTRAMITE');
-            $scope.url = "RC_CLI/" + $scope.oidCiudadano + "/" + sDirTramite;
-            $scope.archivo1 = sDirTramite + "croquisActividad.jpg";
-            $scope.datos.INT_AC_direccionImagenmapa = CONFIG.APIURL + "/files/" + $scope.url + "/" + $scope.archivo1 + "?app_name=todoangular";
-            aDocAdjuntosmapa = [];
-            var datosAdjuntosmapa = {
-                "nombre_archivo": $scope.archivo1,
-                "tam_archivo": '0',
-                "estado_archivo": "Env.",
-                "opcion_archivo": "-",
-                "url_archivo": $scope.datos.INT_AC_direccionImagenmapa,
-                "docdatos": "Croquis de la actividad",
-                "descripcion": "Croquis de la actividad",
-                "titulo": "Croquis"
-            };
-            aDocAdjuntosmapa[0] = datosAdjuntosmapa;
-            $scope.datos.ARCHIVOS_MULTIPLES_MAPA = aDocAdjuntosmapa;
-            $scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center=' + latitud + ',' + longitud + '&zoom=18&size=900x500&maptype=roadmap&markers=color:red|label:S|' + latitud + ',' + longitud + '&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function(base64Img) {
-                var Imagen = base64Img.replace(/data:image\/png;base64,/i, '');
-                $scope.Imagenb = Imagen;
-                $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);
-            });
-        }
-        //DATOS PUBLICIDAD ->   categoria -> tipo de letrero  ***********************************************************************************************************************************
-    $scope.verSuperficie = function(p) {
-        if (p == false || typeof(p) == 'undefined') {
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+        var sDirTramite = sessionService.get('IDTRAMITE');
+        $scope.url = "RC_CLI/" + $scope.oidCiudadano + "/" + sDirTramite;
+        $scope.archivo1 = sDirTramite + "croquisActividad.jpg";
+        $scope.datos.INT_AC_direccionImagenmapa = CONFIG.APIURL + "/files/" + $scope.url + "/" + $scope.archivo1 + "?app_name=todoangular";
+        aDocAdjuntosmapa = [];
+        var datosAdjuntosmapa = {
+            "nombre_archivo": $scope.archivo1,
+            "tam_archivo": '0',
+            "estado_archivo": "Env.",
+            "opcion_archivo": "-",
+            "url_archivo": $scope.datos.INT_AC_direccionImagenmapa,
+            "docdatos": "Croquis de la actividad",
+            "descripcion": "Croquis de la actividad",
+            "titulo": "Croquis"
+        };
+        aDocAdjuntosmapa[0] = datosAdjuntosmapa;
+        $scope.datos.ARCHIVOS_MULTIPLES_MAPA = aDocAdjuntosmapa;
+        $scope.convertToDataURLviaCanvas('https://maps.googleapis.com/maps/api/staticmap?center=' + latitud + ',' + longitud + '&zoom=18&size=900x500&maptype=roadmap&markers=color:red|label:S|' + latitud + ',' + longitud + '&key=AIzaSyD_c3VUlclgLDhXQ_UHkGZ8uQiSeNHQHgw', function (base64Img) {
+            var Imagen = base64Img.replace(/data:image\/png;base64,/i, '');
+            $scope.Imagenb = Imagen;
+            $scope.subirImgBase64($scope.Imagenb, $scope.url, $scope.archivo1);
+        });
+    }
+    //DATOS PUBLICIDAD ->   categoria -> tipo de letrero  ***********************************************************************************************************************************
+    $scope.verSuperficie = function (p) {
+        if (p == false || typeof (p) == 'undefined') {
             $scope.publi.INT_ALTO = 0;
             $scope.publi.INT_ANCHO = 0;
             $scope.especial = "mostrar";
@@ -2101,7 +2108,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.modificarPlubli = function(dato) {
+    $scope.modificarPlubli = function (dato) {
         $scope.onlyy = true;
         $scope.botonn = "upd";
         $scope.publi = dato;
@@ -2110,12 +2117,12 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.ltCaracteristica(dato.INT_TIPO_LETRE);
     }
 
-    $scope.eliminarPubli = function(dato) {
+    $scope.eliminarPubli = function (dato) {
         $scope.publicid.splice($scope.publicid.indexOf(dato), 1);
         $scope.id = $scope.id - 1;
     }
 
-    $scope.eliminarPublicidad = function(data) {
+    $scope.eliminarPublicidad = function (data) {
         swal({
             title: 'Eliminar',
             text: 'Esta seguro de Eliminar la Publicidad?',
@@ -2124,17 +2131,17 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             confirmButtonColor: '#DD6B55',
             confirmButtonText: 'SI',
             closeOnConfirm: true
-        }, function() {
+        }, function () {
             $scope.publicid.splice($scope.publicid.indexOf(data), 1);
             $scope.eliminarPublicidadGrilla(data);
         });
     }
 
-    $scope.eliminarPublicidadGrilla = function(fila) {
+    $scope.eliminarPublicidadGrilla = function (fila) {
         var indexini = 0;
         var indexfin = -1;
         var results = $scope.datos.publicidad_grilla;
-        $.each(results, function(key, value) {
+        $.each(results, function (key, value) {
             if (key > 0) {
                 if (fila.alto == value.alto && fila.ancho == value.ancho && fila.caracteristica == value.caracteristica && fila.cara == value.cara && fila.superficie == value.superficie && fila.descripcionTipoLetrero == value.descripcionTipoLetrero) {
                     indexfin = indexini;
@@ -2148,7 +2155,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.$apply();
     }
 
-    $scope.guardarpublicidad = function(public) {
+    $scope.guardarpublicidad = function (public) {
         if (public.INT_SUPERFICIE) {
             if (public.INT_CARA == '' || public.INT_CARA == null ||
                 public.INT_CATE == '' || public.INT_CATE == null || public.INT_TIPO_LETRE == '' || public.INT_TIPO_LETRE == null ||
@@ -2248,7 +2255,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.Plubli_Grilla = function(dato) {
+    $scope.Plubli_Grilla = function (dato) {
         $scope.publi_grilla = [];
         var encabezado = [];
         var indice = 1;
@@ -2269,18 +2276,18 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             });
         }
         var jsonString = '[' + (encabezado) + ']';
-        angular.forEach($scope.publi_grilla, function(value, key) {
+        angular.forEach($scope.publi_grilla, function (value, key) {
             encabezado[indice] = value;
             indice = indice + 1;
         });
         $scope.datos.publicidad_grilla = encabezado;
     }
 
-    $scope.lscategoria = function() {
+    $scope.lscategoria = function () {
         $scope.DataCategoria = {};
         try {
             var parametros = new PUBlstCategoriaL();
-            parametros.PUB_lstCategoriaL(function(res) {
+            parametros.PUB_lstCategoriaL(function (res) {
                 x = JSON.parse(res);
                 response = x.success.data;
                 if (response.length > 0) {
@@ -2294,11 +2301,11 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     };
 
-    $scope.actulizarCaracteristica = function() {
+    $scope.actulizarCaracteristica = function () {
         var id_cara = "";
         var distNombre = $scope.publi.INT_CARA;
         if ($scope.lCaracteristica) {
-            angular.forEach($scope.lCaracteristica, function(value, key) {
+            angular.forEach($scope.lCaracteristica, function (value, key) {
                 if (value.p_caracteristica == distNombre) {
                     id_cara = value.p_idcaracteristica;
                 }
@@ -2307,12 +2314,12 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.publi.id_cara = id_cara;
     };
 
-    $scope.lsCaracteristica = function() {
+    $scope.lsCaracteristica = function () {
         $scope.lsTipovia = {};
         try {
             var parametros = new lstCaracteristica();
             parametros.clasificador = 9;
-            parametros.lst_Caracteristica(function(res) {
+            parametros.lst_Caracteristica(function (res) {
                 x = JSON.parse(res);
                 response = x.success.data;
                 if (response.length > 0) {
@@ -2329,11 +2336,11 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     $scope.onlyy = false;
     $scope.botonn = "new";
 
-    $scope.eliminarPubli = function(dato) {
+    $scope.eliminarPubli = function (dato) {
         $scope.publicid.splice($scope.publicid.indexOf(dato), 1);
     }
 
-    $scope.modificarpublicidad = function(dato) {
+    $scope.modificarpublicidad = function (dato) {
         var superior = dato.INT_ALTO * dato.INT_ANCHO;
         superior = (Math.round(superior * 10) / 10) + "";
         var supe = superior.replace(",", ".");
@@ -2345,7 +2352,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.lssubcategoria();
     }
 
-    $scope.NumericoAlto = function(alto) {
+    $scope.NumericoAlto = function (alto) {
         if (alto) {
             alto = alto.replace(/[^,.0-9]+/g, "");
             alto = alto.replace(/,/g, ".");
@@ -2353,7 +2360,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.NumericoAncho = function(ancho) {
+    $scope.NumericoAncho = function (ancho) {
         if (ancho) {
             ancho = ancho.replace(/[^,.0-9]+/g, "");
             ancho = ancho.replace(/,/g, ".");
@@ -2374,7 +2381,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     $scope.fechadatoo = "01/01/1900";
 
     $scope.publi = [];
-    $scope.lssubcategoria = function() {
+    $scope.lssubcategoria = function () {
         $scope.publi.INT_CATE = "II Fija";
         $scope.publi.idcate = 6;
         $scope.TipoLetrero = [
@@ -2385,12 +2392,12 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         ];
     };
 
-    $scope.ltCaracteristica = function(idlee) {
+    $scope.ltCaracteristica = function (idlee) {
         $scope.lCaracteristica = {};
         var idcarac = "";
         //ID CARACTERISITICA
         if ($scope.TipoLetrero) {
-            angular.forEach($scope.TipoLetrero, function(value, key) {
+            angular.forEach($scope.TipoLetrero, function (value, key) {
                 if (value.p_descripcion == idlee) {
                     idcarac = value.p_idtipoletrero;
                 }
@@ -2417,10 +2424,10 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     };
 
-    $scope.addUser = function(user) {
+    $scope.addUser = function (user) {
         if ($scope.carass == '' || $scope.carass == null || $scope.carass == "undefined") {
             $scope.carass = [];
-        } else {}
+        } else { }
         $scope.carass.push({
             desc: user.desc,
             sup: user.sup
@@ -2428,30 +2435,30 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.user = "";
         $scope.detalle = [];
     };
-    $scope.deleteUser = function(user) {
+    $scope.deleteUser = function (user) {
         $scope.carass.splice($scope.carass.indexOf(user), 1);
     };
-    $scope.editUser = function(user) {
+    $scope.editUser = function (user) {
         delete $scope.edit[user.id];
     };
-    $scope.showEdition = function($event, id) {
+    $scope.showEdition = function ($event, id) {
         $scope.edit[id] = true;
         var input = angular.element($event.currentTarget).parent().find("input")[0];
-        setTimeout(function() {
+        setTimeout(function () {
             input.focus();
             input.select();
         }, 50);
     };
-    $scope.actulizarCaras = function() {
+    $scope.actulizarCaras = function () {
         $scope.publi.caras = $scope.carass;
     };
-    $scope.toggleMin = function() {
+    $scope.toggleMin = function () {
         $scope.minDate = new Date("2011-09-24".replace(/-/g, '\/'));
     };
 
     $scope.toggleMin();
 
-    $scope.changeHandler = function() {
+    $scope.changeHandler = function () {
         var d = new Date($scope.publi.FECHAINICIO);
         var mes = d.getUTCMonth() + 1;
         if (mes.toString().length == 1)
@@ -2459,7 +2466,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         $scope.publi.FECHAINICIO = "01/" + mes + "/" + d.getFullYear();
     };
 
-    $scope.startDateOpen = function($event) {
+    $scope.startDateOpen = function ($event) {
         if (!$scope.desabilitado) {
             $event.preventDefault();
             $event.stopPropagation();
@@ -2467,7 +2474,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     };
 
-    $scope.$watch('datos.f01_fecha_nac', function() {
+    $scope.$watch('datos.f01_fecha_nac', function () {
         try {
             if ($scope.datos.f01_fecha_nac) {
                 var dia_nacim = $scope.datos.f01_fecha_nac.getDate();
@@ -2475,15 +2482,15 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 var anio_nacim = $scope.datos.f01_fecha_nac.getFullYear();
                 $scope.datos.f01_fecha_nac = dia_nacim + "/" + mes_nacim + "/" + anio_nacim;
             }
-        } catch (err) {}
+        } catch (err) { }
     });
 
-    $scope.seleccionarProcesoCombo = function(proceso) {
+    $scope.seleccionarProcesoCombo = function (proceso) {
         $scope.procesoSeleccionado = 12;
         $scope.btnNuevoTramtite = false;
     };
 
-    $scope.calcularCapacidad = function(superficie) {
+    $scope.calcularCapacidad = function (superficie) {
         if (superficie) {
             superficie = superficie.replace(/[^,.0-9]+/g, "");
             superficie = superficie.replace(/,/g, ".")
@@ -2494,13 +2501,13 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.startDateOpenIni = function($event) {
+    $scope.startDateOpenIni = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.startDateOpenedIni = true;
     };
 
-    $scope.formulario401 = function(datos) {
+    $scope.formulario401 = function (datos) {
         $rootScope.datosEnv = "";
         var fecha = new Date();
         var fechaActualS = "";
@@ -2520,30 +2527,30 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         if ($scope.tipoPersona == 'NATURAL' || $scope.tipoPersona == 'N') {
             datos.f01_tipo_per_desc = 'NATURAL';
             urlFormularioN = "../../docs/AE_Formulario_401_343.html";
-            $("#msgformularioN").load(urlFormularioN, function(data) {
+            $("#msgformularioN").load(urlFormularioN, function (data) {
                 stringFormulario40 = data;
-                datos.f01_tipo_per_desc = ((typeof(datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
-                datos.f01_seg_nom_prop = ((typeof(datos.f01_seg_nom_prop) == 'undefined' || datos.f01_seg_nom_prop == null) ? "" : datos.f01_seg_nom_prop);
-                datos.f01_ape_pat_prop = ((typeof(datos.f01_ape_pat_prop) == 'undefined' || datos.f01_ape_pat_prop == null) ? "" : datos.f01_ape_pat_prop);
-                datos.f01_ape_mat_prop = ((typeof(datos.f01_ape_mat_prop) == 'undefined' || datos.f01_ape_mat_prop == null) ? "" : datos.f01_ape_mat_prop);
-                datos.f01_ape_cas_prop = ((typeof(datos.f01_ape_cas_prop) == 'undefined' || datos.f01_ape_cas_prop == null) ? "" : datos.f01_ape_cas_prop);
-                datos.f01_tip_doc_prop = ((typeof(datos.f01_tip_doc_prop) == 'undefined' || datos.f01_tip_doc_prop == null) ? "" : datos.f01_tip_doc_prop);
-                datos.f01_expedido_prop = ((typeof(datos.f01_expedido_prop) == 'undefined' || datos.f01_expedido_prop == null) ? "" : datos.f01_expedido_prop);
-                datos.f01_nit_prop = ((typeof(datos.f01_nit_prop) == 'undefined' || datos.f01_nit_prop == null) ? "" : datos.f01_nit_prop);
-                datos.f01_zon_prop_valor = ((typeof(datos.f01_zon_prop_valor) == 'undefined' || datos.f01_zon_prop_valor == null) ? "" : datos.f01_zon_prop_valor);
-                datos.f01_tip_via_prop = ((typeof(datos.f01_tip_via_prop) == 'undefined' || datos.f01_tip_via_prop == null) ? "" : datos.f01_tip_via_prop);
-                datos.f01_num_prop = ((typeof(datos.f01_num_prop) == 'undefined' || datos.f01_num_prop == null) ? "" : datos.f01_num_prop);
-                datos.f01_nom_edi_prop = ((typeof(datos.f01_nom_edi_prop) == 'undefined' || datos.f01_nom_edi_prop == null) ? "" : datos.f01_nom_edi_prop);
-                datos.f01_bloq_prop = ((typeof(datos.f01_bloq_prop) == 'undefined' || datos.f01_bloq_prop == null) ? "" : datos.f01_bloq_prop);
-                datos.f01_piso_prop = ((typeof(datos.f01_piso_prop) == 'undefined' || datos.f01_piso_prop == null) ? "" : datos.f01_piso_prop);
-                datos.f01_depa_prop = ((typeof(datos.f01_depa_prop) == 'undefined' || datos.f01_depa_prop == null) ? "" : datos.f01_depa_prop);
-                datos.f01_telef_prop = ((typeof(datos.f01_telef_prop) == 'undefined' || datos.f01_telef_prop == null) ? "" : datos.f01_telef_prop);
-                datos.f01_cel_prop = ((typeof(datos.f01_cel_prop) == 'undefined' || datos.f01_cel_prop == null) ? "" : datos.f01_cel_prop);
-                datos.f01_num_pmc = ((typeof(datos.f01_num_pmc) == 'undefined' || datos.f01_num_pmc == null) ? "" : datos.f01_num_pmc);
-                datos.f01_nro_orden = ((typeof(datos.f01_nro_orden) == 'undefined' || datos.f01_nro_orden == null) ? "" : datos.f01_nro_orden);
-                datos.f01_tipo_lic_descrip = ((typeof(datos.f01_tipo_lic_descrip) == 'undefined' || datos.f01_tipo_lic_descrip == null) ? "" : datos.f01_tipo_lic_descrip);
-                datos.f01_categoria_agrupada_descrip = ((typeof(datos.f01_categoria_agrupada_descrip) == 'undefined' || datos.f01_categoria_agrupada_descrip == null) ? "" : datos.f01_categoria_agrupada_descrip);
-                datos.f01_categoria_agrupada_descripcion = ((typeof(datos.f01_categoria_agrupada_descripcion) == 'undefined' || datos.f01_categoria_agrupada_descripcion == null) ? "" : datos.f01_categoria_agrupada_descripcion);
+                datos.f01_tipo_per_desc = ((typeof (datos.f01_tipo_per_desc) == 'undefined' || datos.f01_tipo_per_desc == null) ? "" : datos.f01_tipo_per_desc);
+                datos.f01_seg_nom_prop = ((typeof (datos.f01_seg_nom_prop) == 'undefined' || datos.f01_seg_nom_prop == null) ? "" : datos.f01_seg_nom_prop);
+                datos.f01_ape_pat_prop = ((typeof (datos.f01_ape_pat_prop) == 'undefined' || datos.f01_ape_pat_prop == null) ? "" : datos.f01_ape_pat_prop);
+                datos.f01_ape_mat_prop = ((typeof (datos.f01_ape_mat_prop) == 'undefined' || datos.f01_ape_mat_prop == null) ? "" : datos.f01_ape_mat_prop);
+                datos.f01_ape_cas_prop = ((typeof (datos.f01_ape_cas_prop) == 'undefined' || datos.f01_ape_cas_prop == null) ? "" : datos.f01_ape_cas_prop);
+                datos.f01_tip_doc_prop = ((typeof (datos.f01_tip_doc_prop) == 'undefined' || datos.f01_tip_doc_prop == null) ? "" : datos.f01_tip_doc_prop);
+                datos.f01_expedido_prop = ((typeof (datos.f01_expedido_prop) == 'undefined' || datos.f01_expedido_prop == null) ? "" : datos.f01_expedido_prop);
+                datos.f01_nit_prop = ((typeof (datos.f01_nit_prop) == 'undefined' || datos.f01_nit_prop == null) ? "" : datos.f01_nit_prop);
+                datos.f01_zon_prop_valor = ((typeof (datos.f01_zon_prop_valor) == 'undefined' || datos.f01_zon_prop_valor == null) ? "" : datos.f01_zon_prop_valor);
+                datos.f01_tip_via_prop = ((typeof (datos.f01_tip_via_prop) == 'undefined' || datos.f01_tip_via_prop == null) ? "" : datos.f01_tip_via_prop);
+                datos.f01_num_prop = ((typeof (datos.f01_num_prop) == 'undefined' || datos.f01_num_prop == null) ? "" : datos.f01_num_prop);
+                datos.f01_nom_edi_prop = ((typeof (datos.f01_nom_edi_prop) == 'undefined' || datos.f01_nom_edi_prop == null) ? "" : datos.f01_nom_edi_prop);
+                datos.f01_bloq_prop = ((typeof (datos.f01_bloq_prop) == 'undefined' || datos.f01_bloq_prop == null) ? "" : datos.f01_bloq_prop);
+                datos.f01_piso_prop = ((typeof (datos.f01_piso_prop) == 'undefined' || datos.f01_piso_prop == null) ? "" : datos.f01_piso_prop);
+                datos.f01_depa_prop = ((typeof (datos.f01_depa_prop) == 'undefined' || datos.f01_depa_prop == null) ? "" : datos.f01_depa_prop);
+                datos.f01_telef_prop = ((typeof (datos.f01_telef_prop) == 'undefined' || datos.f01_telef_prop == null) ? "" : datos.f01_telef_prop);
+                datos.f01_cel_prop = ((typeof (datos.f01_cel_prop) == 'undefined' || datos.f01_cel_prop == null) ? "" : datos.f01_cel_prop);
+                datos.f01_num_pmc = ((typeof (datos.f01_num_pmc) == 'undefined' || datos.f01_num_pmc == null) ? "" : datos.f01_num_pmc);
+                datos.f01_nro_orden = ((typeof (datos.f01_nro_orden) == 'undefined' || datos.f01_nro_orden == null) ? "" : datos.f01_nro_orden);
+                datos.f01_tipo_lic_descrip = ((typeof (datos.f01_tipo_lic_descrip) == 'undefined' || datos.f01_tipo_lic_descrip == null) ? "" : datos.f01_tipo_lic_descrip);
+                datos.f01_categoria_agrupada_descrip = ((typeof (datos.f01_categoria_agrupada_descrip) == 'undefined' || datos.f01_categoria_agrupada_descrip == null) ? "" : datos.f01_categoria_agrupada_descrip);
+                datos.f01_categoria_agrupada_descripcion = ((typeof (datos.f01_categoria_agrupada_descripcion) == 'undefined' || datos.f01_categoria_agrupada_descripcion == null) ? "" : datos.f01_categoria_agrupada_descripcion);
                 if (datos.f01_tip_act == 'MA' || datos.f01_tip_act == 'MATRI') {
                     datos.f01_tip_act1 = 'MATRIZ';
                 }
@@ -2741,7 +2748,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 stringFormulario40 = stringFormulario40.replace("#fecha_sist2#", fechaActualS);
                 $scope.msgformularioN = stringFormulario40;
                 $scope.notifcondicionesuso = stringFormulario40;
-                setTimeout(function() {
+                setTimeout(function () {
                     $scope.fmostrarFormulario();
                 }, 500);
             })
@@ -2749,7 +2756,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         }
     }
 
-    $scope.armarDatosForm = function(data, sfecha, sHora) {
+    $scope.armarDatosForm = function (data, sfecha, sHora) {
         $rootScope.datosForm401 = "";
         var dataForm = {};
         //CABECERA
@@ -2956,13 +2963,13 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
 
-    $scope.fmostrarFormulario = function() {
+    $scope.fmostrarFormulario = function () {
         $("#exampleModalCenter1").modal({ backdrop: 'static', keyboard: false });
         $('#msgformularioN').html($scope.msgformularioN);
     }
 
     /*VERIFICANDO CAMPOS OBLIGATORIOS*/
-    $scope.verificarCamposInternet = function(data) {
+    $scope.verificacionDeCampos = function (data) {
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         var taemayor = 0;
@@ -3042,7 +3049,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     }
 
     /*enviarFormProcesos*/
-    $scope.validarFormProcesos = function(datosForm) {
+    $scope.validarFormProcesos = function (datosForm) {
         var idTramite = sessionService.get('IDTRAMITE');
         idUsuario = sessionService.get('IDUSUARIO');
         nroTramiteEnviado = sessionService.get('NROTRAMITE');
@@ -3056,7 +3063,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             tramiteIgob.frm_tra_enviado = 'SI';
             tramiteIgob.frm_tra_if_codigo = nroTramiteEnviado;
             tramiteIgob.frm_tra_id_usuario = idUsuario;
-            tramiteIgob.validarFormProcesos(function(resultado) {
+            tramiteIgob.validarFormProcesos(function (resultado) {
                 $scope.tramitesCiudadano();
                 $scope.bloquearBtnEnviarForm();
                 swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramiteEnviado + "\n Nos contactaremos con usted a la brevedad posible para programar la inspección y/o verificación documental. Caso contrario puede apersonarse a la Plataforma Integra de su Macrodistrito para recabar mayor información.");
@@ -3068,7 +3075,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
     };
 
     //enviarFormProcesosLinea
-    $scope.validarEnvio = function(data) {
+    $scope.validarEnvio = function (data) {
         swal({
             title: 'CONFIRMAR',
             text: 'El envío de la presente solicitud de licencia de funcionamiento de actividad económica, (DD.JJ.) generará todos los derechos y obligaciones establecidas por ley, ¿se encuentra seguro de realizar el envío?',
@@ -3078,16 +3085,16 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             confirmButtonText: 'SI',
             cancelButtonText: 'NO',
             closeOnConfirm: false
-        }, function() {
+        }, function () {
             swal.close();
-            setTimeout(function() {
+            setTimeout(function () {
                 $scope.enviarFormProcesosLinea(data);
             }, 1000);
         });
     };
 
 
-    $scope.enviarFormProcesosLinea = function(paramForm) {
+    $scope.enviarFormProcesosLinea = function (paramForm) {
         $scope.ultimoArrayAdjunto();
         $scope.tipoPersona = sessionService.get('TIPO_PERSONA');
         $scope.btnEnviarForm = true;
@@ -3208,7 +3215,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             datosNeXO['f01_cel_prop'] = paramForm.f01_cel_prop;
             datosNeXO['f01_email_prop'] = paramForm.f01_email_prop;
             /*DATOSDELAACTIVIDADAECONOMICA*/
-            //DATOS TECNICOS
             datosNeXO['f01_nit'] = "";
             datosNeXO['f01_raz_soc'] = paramForm.f01_raz_soc;
             datosNeXO['f01_sup'] = paramForm.f01_sup;
@@ -3261,12 +3267,6 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             decjuradaN.nombre = 'DECLARACIÓN JURADA';
             datoObjectdj[0] = decjuradaN;
             datosNeXO['File_Adjunto'] = $rootScope.FileAdjuntos.concat(decjuradaN);
-            //datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos;
-            if (paramForm.g_origen_p) {
-                datosNeXO['g_origen_p'] = paramForm.g_origen_p;
-            } else {
-                datosNeXO['g_origen_p'] = "";
-            }
             datosNeXO['f01_tip_act'] = 'SU';
             datosNeXO['f01_actividad_desarrollada'] = paramForm.f01_categoria_descrip2;
             /*CAMPOS GENERICOS NATURAL Y JURIDICO*/ //-->EL CAMPO NO SE ESTA GENERANDO CORRECTAMENTE
@@ -3283,11 +3283,13 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                 datosNeXO['f01_act_principal'] = paramForm.f01_act_principal;
                 datosNeXO['f01_act_principal2'] = paramForm.f01_act_principal2;
                 datosNeXO['f01_actividad_principal_array'] = paramForm.f01_actividad_principal_array;
+                datosNeXO['f01_categorias_multi'] = paramForm.f01_categorias_multi;
             } else {
                 datosNeXO['f01_idcat_multi_principal'] = '';
                 datosNeXO['f01_descat_multi_principal'] = '';
                 datosNeXO['f01_act_principal'] = '';
                 datosNeXO['f01_actividad_principal_array'] = '';
+                datosNeXO['f01_categorias_multi'] = '';
             }
             //datosNeXO['f01_categoria_descrip']      =  paramForm.f01_categoria_descripcion;
         }
@@ -3306,14 +3308,13 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
         datosNeXO['g_fecha'] = fechactual;
         datosNeXO['g_origen'] = "IGOB247";
         datosNeXO['f01_listDeudas'] = paramForm.listDeudas;
-
-        if (paramForm.pago_adelantado = true) {
-            datosNeXO['pago_adelantado'] = 'SI';
+        if (paramForm.pago_adelantado == true) {
+            datosNeXO['pago_adelantado'] = 'SI'; //$scope.pago_adelantado;
+            datosNeXO['nro_ges'] = paramForm.nro_ges;
         } else {
             datosNeXO['pago_adelantado'] = 'NO';
-        }
-
-        datosNeXO['nro_ges'] = paramForm.nro_ges;
+            datosNeXO['nro_ges'] = '';
+        };
         if (paramForm.chkzonasegura == 'ZONASEGURA') {
             datosNeXO['f01_zona_segura'] = 'SI';
         } else {
@@ -3370,7 +3371,7 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
             crearCaso.usr_id = 1,
                 crearCaso.datos = datosSerializados,
                 crearCaso.procodigo = idProcodigo,
-                crearCaso.crearCasoAeLinea(function(response) {
+                crearCaso.crearCasoAeLinea(function (response) {
                     try {
                         $scope.botones = null;
                         $scope.desabilitado = true;
@@ -3393,19 +3394,19 @@ function regularNuevoController($scope, $timeout, $q, $rootScope, $routeParams, 
                             ///$scope.capturarImagen();
                             $scope.validarFormProcesos(paramForm);
                             $scope.guardarAdjuntosMultiplesMapa(results);
-                        } catch (e) {}
+                        } catch (e) { }
                         $.unblockUI();
                     } catch (e) {
                         console.log("falla: ", e);
                         alert("conexion fallida ");
                     }
                 });
-           
+
         } else {
             swal('', "Datos obligatorios, verifique los datos del formulario E", 'warning');
         }
     };
-    
+
     try {
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();

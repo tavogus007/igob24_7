@@ -1319,7 +1319,6 @@
         $.unblockUI();
     }
 
-
     $scope.GetZonaSeguraV = function (idzonasegura) {
         if (idzonasegura != 0 || idzonasegura != '0') {
             /*if ($rootScope.mostrarzonasegura == true || $rootScope.mostrarzonasegura == 'true') {

@@ -252,8 +252,7 @@ function renovacionJuridicoController($scope, $timeout, $rootScope, $routeParams
                 if (responseLegal.length > 0) {
                     var datos = {};
                     $scope.datos.f01_tipo_per = "J";
-                    $scope.datos.f01_id_representante_legal = responseLegal[0].idRepresentanteLegal; //idRepresentanteLegal
-                    $scope.datos.f01_expedido_rep = responseLegal[0].expedicion; //expedicion
+                    $scope.datos.f01_id_representante_legal = responseLegal[0].idRepresentanteLegal; //idRepresentanteLegal                   
                 } else {
                     swal('', "No existen ninguno ciudadano", 'error');
                 }

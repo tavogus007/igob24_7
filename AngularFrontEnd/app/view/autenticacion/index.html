@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>IGOB 24/7 - GAMLP</title>
-    <link href="../../../../nuevoIgob/img/favicon.png" rel="icon">
+    <link href="../../../../structureIgob/images/favicon.png" rel="icon">
     <script src="../../libs/js/jquery-1.11.2.min.js"></script>
     <!--IGOBXXXX-->
     <script src="../../libs/css/js/foundation-datepicker.js"></script>
@@ -163,79 +163,13 @@
 		top: calc(50% - 2px);
 		}
 
-		.part {
-		float: left;
-		height: 100%;
-		}
-		.part.card-details {
-		padding: 0px 0px 0;
-    	width: 60%;
-		}
-		.part.card-details h1 {
-		background-color: #e41b25;
-		color: white;
-		font-family: 'Montserrat', sans-serif;
-		font-size: 26px;
-		font-weight: 700;
-		text-transform: uppercase;
-		padding: 14px 0 10px 49px;
-		letter-spacing: 1px;
-		margin-left: -52px;
-		width: 150%;
-		box-shadow: 10px 10px 5px #00000040;
-		}
 		.modal-header{
-			padding: 0.5rem !important;
+			background: #e30613;
 		}
-		.modal-header .close{
-			margin: 0rem 0rem 0rem auto !important;
-		}
-
-		.modal-body .content_mod {
-			max-height: 70%;
-			overflow-y: auto;
-			overflow-x: hidden;
-			padding: 5px;
-		}
-		.modal-body h5 {
-			color: #2e2e2e !important;
-			font-weight: 700;
-			text-transform: uppercase;
-		}
-		.modal-body label {
-			color: #2e2e2e !important;
-			font-weight: 550;
+		.modal-title {
+			color: #fff;
 		}
 
-		.form-control {
-			box-shadow: 0 8px 6px -6px #555 !important;
-		}
-
-		.button_send {
-		background: #e41b25;
-        margin: 0px 0 0px 0;
-		padding: 8px 16px;
-		color: #fff;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-		box-shadow: 0 8px 6px -6px #555;
-		}
-		.button_send:hover {
-		letter-spacing: 2px;
-		transition: all 0.5s ease;
-		box-shadow: none;
-		}
-
-		.back_modal {
-			background: #FBCC00 !important;
-		}
-		.modal-dialog {
-			max-width: 60% !important;
-        }
-        .modal-header {
-        min-height: 100px !important;
-        }
 </style>
 <body onload="finalizarMascara();">
     <div id="dvContenidoVacio">
@@ -249,15 +183,15 @@
     <div id="dvContenidoView" style="display:none;">
         <div id="dvContenido" ng-if='usuario && nombre' style="position: relative; display:none;">
             <nav class="navbar navbar-inverse megamenu navbar-fixed-top megamenu"
-                style="background: #222831 !important;">
+                style="">
                 <!--Menu Bar-->
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <div style="position: relative; top: 1px;  left: -13px;"><img class="hidden-xs img-responsive"
-                                src="../../libs/img/logo_int_white3.png"></div>
+                        <div style="position: relative; margin: 5px 0 5px 0;"><img class="hidden-xs img-responsive"
+                                src="../../libs/img/log.png"></div>
                     </div>
                     <div id="bs-example-navbar-collapse-1" ng-controller="NavCtrl" data-ng-init="inicioMenu()">
-                        <ul class="nav navbar-nav navbar-right">
+                        <ul class="nav navbar-nav navbar-right" style="margin: 10px 0 0 0;">
                             <li class="dropdown" ng-controller="authCtrl">
                                 <a class="dropdown-toggle" data-toggle="dropdown">
                                     <small><b>{{nombre}}</b></small>&nbsp;
@@ -672,25 +606,20 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="button_send" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
                 </div>
              </div>
              <div class="modal fade" id="informacionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <article class="part card-details">
-							<h1>
-								Solicitud de Información
-							</h1>
-						</article>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <!-- <h4 class="modal-title">Solicitud de Información</h4> -->
+                    <div class="modal-header" style="background: #e30613;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel" style="color: #f5f5f5;">SOLICITUD DE INFORMACIÓN</h4>
                     </div>
-                    <div class="modal-body back_modal">
+                    <div class="modal-body">
                         <form name="formularioHistorico" readOnly="true" novalidate>
                             <div>
                                 <iframe width="100%" height="450px" id="solicitud"
@@ -699,7 +628,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="button_send" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
                 </div>
@@ -708,14 +637,9 @@
                 <div class="modal-dialog">
                 <!-- Modal content-->
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <article class="part card-details">
-                                <h1>
-                                    Soporte iGob 24/7
-                                </h1>
-                            </article>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <!-- <h4 class="modal-title">Soporte iGob 24/7</h4> -->
+                        <div class="modal-header" style="background: #e30613;">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel" style="color: #f5f5f5;">SOPORTE iGOB 24/7</h4>
                         </div>
                         <div class="modal-body back_modal">
                             <form name="formularioHistorico" readOnly="true" novalidate>
@@ -726,7 +650,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="button_send" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
                 </div>

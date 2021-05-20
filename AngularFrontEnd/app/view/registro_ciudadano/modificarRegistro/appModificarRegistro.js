@@ -304,6 +304,7 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
             $scope.MacroZona();
             if(results[0].dtspsl_tipo_persona == "NATURAL") 
             {   
+                $scope.acepta_servicios =  results[0].dtspsl_acepta_servicios;
                 $scope.mostrarNatural = null;
                 $scope.mostrarJuridico = "NO_MOSTRAR";
                 $scope.tipo = "NATURAL";
@@ -414,6 +415,7 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
                 $.unblockUI();
             }
             else if(results[0].dtspsl_tipo_persona == "JURIDICO"){
+                $scope.acepta_servicios =  results[0].dtspsl_acepta_servicios;
                 $scope.mostrarJuridico = null;
                 $scope.mostrarNatural = "NO_MOSTRAR";
                 $scope.tipo = "JURIDICO";    
@@ -1647,7 +1649,7 @@ $scope.vias_v2= function(zona,tipo)
 /**************************************************************************************/    
     ///////////////////////////////////////////////
     //creando un nuevo registro 
-    $scope.validacamposJuridico = function (){                 
+    $scope.validacamposJuridico = function (){   
         $scope.isDisabled = false;
         $scope.getCaptchasX();
         if(tipoPersona == 'NATURAL'){
@@ -1731,7 +1733,7 @@ $scope.vias_v2= function(zona,tipo)
        archivoNUM="";
        archivoFUD="";
        archivoREG="";
-       if(tipoPersona == "NATURAL"){
+    if(tipoPersona == "NATURAL"){
 
         if (response.FILE_FOTOCOPIA_CI!=null) { 
             partes =  response.FILE_FOTOCOPIA_CI.split("\\");
@@ -1925,6 +1927,7 @@ $scope.vias_v2= function(zona,tipo)
             modificarCiudadano.ci_discapacitado     = response.ci_discapacitado;
             modificarCiudadano.persona_discapacidad = response.persona_discapacidad;
             modificarCiudadano.fec_expiracion_dis   = response.fec_expiracion_dis;
+            modificarCiudadano.dtspsl_acepta_servicios = $scope.acepta_servicios;
             if ($scope.nombreFile1 == 'undefined' || $scope.nombreFile1 == null) {
                 $scope.nombreFile1 = "";
             };
@@ -2002,6 +2005,7 @@ $scope.vias_v2= function(zona,tipo)
             modificarJuridico.file_num_ident=archivoNUM;
             modificarJuridico.file_fund_emp=archivoFUD;
             modificarJuridico.file_reg_comer=archivoREG;
+            modificarJuridico.dtspsl_acepta_servicios = $scope.acepta_servicios;
 
             if ($scope.nombreFile1 == 'undefined' || $scope.nombreFile1 == null) {
                 $scope.nombreFile1 = "";

@@ -111,7 +111,6 @@ function ejecutarAjax_A(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
       //processData: true,
       success: function(response) {
         dataResp = JSON.stringify(response);
-        console.log("AAAAAAAAAAAAAAAAAAAAA...",dataResp);
         vFunctionResp(dataResp);
       },
       error: function (response, status, error) {
@@ -366,6 +365,7 @@ function rcNatural(){
     this.pinNuevo;
     this.pin;
     this.tipo_documento;
+    this.dtspsl_acepta_servicios;
 
 };
 
@@ -594,10 +594,11 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "usr_id": this.usr_id,
           "activacionf": "SI",
           "activaciond": "SI",
-          "tipo_documento": this.tipo_documento 
+          "tipo_documento": this.tipo_documento,
+           
         };
 
-        //console.log("PARAEMTRSO...:",dataParams);
+        console.log("PARAEMTRSO...:",dataParams);
 
         ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
     }
@@ -686,8 +687,11 @@ rcNatural.prototype.modificarNatural = function (functionResp)
           "ci_discapacitado": ((typeof(this.ci_discapacitado) == 'undefined' || this.ci_discapacitado == null) ? "" : this.ci_discapacitado),
           "persona_discapacidad": ((typeof(this.persona_discapacidad) == 'undefined' || this.persona_discapacidad == null) ? "" : this.persona_discapacidad),
           "fec_expiracion_dis": ((typeof(this.fec_expiracion_dis) == 'undefined' || this.fec_expiracion_dis == null) ? "" : this.fec_expiracion_dis),
-          "sistema_modificador": 'IGOB_MOD'
+          "sistema_modificador": 'IGOB_MOD',
+          "dtspsl_acepta_servicios": ((typeof(this.dtspsl_acepta_servicios ) == 'undefined' || this.dtspsl_acepta_servicios  == null) ? "" : this.dtspsl_acepta_servicios )
+
         };
+        console.log('dataParams NATURAL',dataParams);
         ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
     }
     else
@@ -772,6 +776,7 @@ function rcJuridico() {
 
     this.oid;
     this.tipo_empresa;
+    this.dtspsl_acepta_servicios;
 };
 
 
@@ -876,8 +881,11 @@ rcJuridico.prototype.modificarJuridico = function (functionResp)
         "file_fund_emp" : ((typeof(this.file_fund_emp) == 'undefined' || this.file_fund_emp == null) ? "" : this.file_fund_emp),
         "file_reg_comer" : ((typeof(this.file_reg_comer) == 'undefined' || this.file_reg_comer == null) ? "" : this.file_reg_comer),
         "URL": this.URL,
-        "sistema_modificador":'IGOB_MOD'
+        "sistema_modificador":'IGOB_MOD',
+        "dtspsl_acepta_servicios": ((typeof(this.dtspsl_acepta_servicios ) == 'undefined' || this.dtspsl_acepta_servicios  == null) ? "" : this.dtspsl_acepta_servicios )
+
     };
+    console.log('dataParams JURIDICO',dataParams);
     ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
 };
 

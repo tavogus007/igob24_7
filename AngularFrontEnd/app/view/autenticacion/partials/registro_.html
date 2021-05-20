@@ -171,7 +171,13 @@
               if(resultadoApi.length > 0){
                   var repLegalmongo = resultadoApi;
                   if(repLegalmongo[0].dtspsl_activaciond == "SI" && repLegalmongo[0].dtspsl_activacionf == "SI"){
-                    $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres;
+                    $scope.show_juridico_bloque_1();
+                    if(repLegalmongo[0].dtspsl_tercerapellido === "" || repLegalmongo[0].dtspsl_tercerapellido === undefined){
+                      $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres+" "+repLegalmongo[0].dtspsl_paterno+" "+repLegalmongo[0].dtspsl_materno;
+                    }
+                    else{
+                      $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres+" "+repLegalmongo[0].dtspsl_paterno+" "+repLegalmongo[0].dtspsl_materno+" DE "+repLegalmongo[0].dtspsl_tercerapellido;
+                    }
                     $scope.registro.paterno = repLegalmongo[0].dtspsl_paterno;
                     $scope.registro.materno = repLegalmongo[0].dtspsl_materno;
                     $scope.registro.tercer = repLegalmongo[0].dtspsl_tercerapellido; 
@@ -655,8 +661,9 @@
                       $scope.cisw2 = 'mostrar';
                       $scope.cisw3 = null;
                       $scope.bloquear2 = true;
-                    }else{
-                        $scope.existeNit = false; 
+                    }
+                    else{
+                        $scope.existeNit = false;
                     }
                   }else{
                     $.unblockUI(); 
@@ -664,6 +671,7 @@
                     $scope.cisw2 = null;
                     $scope.existeNit = false; 
                     $scope.bloquear2 = false;
+                    $scope.show_juridico_bloque_2();
                   }     
                     
                 });    
@@ -1280,16 +1288,16 @@
             registrarCiudadano.tercer_apellido = response.tercer;
             registrarCiudadano.expedido = response.expedido;
             registrarCiudadano.fec_nacimiento = response.fecha_nacimiento;
-            registrarCiudadano.lugar_nacimiento = response.lugarNacimiento;
+            registrarCiudadano.lugar_nacimiento = "LPZ";
             registrarCiudadano.pais_origen = response.pais_origen;
             registrarCiudadano.sexo = response.sexo;
-            registrarCiudadano.id_estado_civil = response.estado_civil;
-            registrarCiudadano.profesion = response.profesion;
+            registrarCiudadano.id_estado_civil = "S";
+            registrarCiudadano.profesion = "OTROS";
             registrarCiudadano.otra_profesion = response.otra_profesion;
             registrarCiudadano.telefono = response.telefono;
             registrarCiudadano.movil = response.celular;
             registrarCiudadano.correo = response.correo;
-            registrarCiudadano.direccion = response.direccion;
+            registrarCiudadano.direccion = "AVENIDA LOS OLIVOS";
             registrarCiudadano.usr_id = "0";
             registrarCiudadano.tipo_documento = $rootScope.tipoDocumento;
             registrarCiudadano.sistema_creado = 'IGOB247';
@@ -1311,7 +1319,7 @@
             registrarJuridico.nit=response.nit;
             registrarJuridico.id_estado_civil = 'PJ';
             registrarJuridico.razonSocial=response.razonSocial;
-            registrarJuridico.telefono=response.telefonoEmp;
+            registrarJuridico.telefono="2380122";
             registrarJuridico.movil=response.celularEmp;
             registrarJuridico.correo=response.correoEmp;
             registrarJuridico.ci=$scope.cedulaCondR;
@@ -1625,9 +1633,21 @@
           //$scope.registro = "";     
           $scope.stiloFecha   =  "border: 1px solid #FF4040;";
         }
-        $scope.getTipoPersona = function (val) {  
+
+        $scope.show_juridico_bloque_1 = function(){
+          $("#juridico_bloque_1").show();
+        };
+
+        $scope.show_juridico_bloque_2 = function(){
+          $("#juridico_bloque_2").show();
+        };
+
+        $scope.getTipoPersona = function (val) {
+          $("#juridico_bloque_1").hide();
+          $("#juridico_bloque_2").hide(); 
           $scope.bloquear1 = true;
-          $scope.bloquear2 = true;      
+          $scope.bloquear2 = true;
+
           if (val.tipoPersoneria == "NATURAL") {              
             $scope.mostrarNatural = true;
             $scope.mostrarJuridico = false;
@@ -2247,12 +2267,12 @@
                                 <span align = "right" ng-show="signupForm.materno.$error.required">{{translateIdioma.lbl_20_24}}</span>
                               </span>
                             </div>
-                          </div>
-                          <div class="hr-line-dashed"></div>                       
+                          </div>                      
+                          <!--
                           <div class="form-group">
                             <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_09}}:</label>
                             <div class="col-sm-8">
-                                <p class="input-group"><input name="fechaNac" id="fechaNac" type="date" placeholder="{{translateTitulos.lbl_06_09}}"   class="form-control" datepicker-popup="" ng-model="registro.fecha_nacimiento" is-open="startDateOpened" close-text="Close" ng-disabled="true" max-date="model.endDate" required/>   
+                                <p class="input-group"><input name="fechaNac" id="fechaNac" type="date" placeholder="{{translateTitulos.lbl_06_09}}"   class="form-control" datepicker-popup="" ng-model="registro.fecha_nacimiento" is-open="startDateOpened" close-text="Close" ng-disabled="true" max-date="model.endDate" />   
                                   <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="startDateOpen($event)" ng-disabled="bloquear1" required><i class="glyphicon glyphicon-calendar"></i></button>
                                   </span>
@@ -2262,6 +2282,7 @@
                               </span>                                    
                             </div>
                           </div>
+                          -->
                           <div class="hr-line-dashed"></div>
                           <div class="form-group" ng-show = "otroLugar">
                             <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_11}}</label>
@@ -2269,10 +2290,11 @@
                               <input id="paisOrigen" name="paisOrigen" type="text" class="form-control" style="text-transform:uppercase;" placeholder="País Origen" ng-model="registro.pais_origen"/>
                             </div>
                           </div>
+                          <!--
                           <div class="form-group">
                             <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_10}}:</label>
                             <div class="col-sm-8">
-                              <select id="lugarNacimiento" name="lugarNacimiento" class="form-control" ng-model="registro.lugarNacimiento" name="lugarNacimiento" placeholder="Lugar Nacimiento" ng-change="GetValueLugarNacimiento();" ng-disabled="bloquear1" required>
+                              <select id="lugarNacimiento" name="lugarNacimiento" class="form-control" ng-model="registro.lugarNacimiento" name="lugarNacimiento" placeholder="Lugar Nacimiento" ng-change="GetValueLugarNacimiento();">
                                 <option value="">--Selecccione--</option>
                                 <option value="LPZ">LA PAZ</option>
                                 <option value="CBB">COCHABAMBA</option>
@@ -2290,6 +2312,8 @@
                               </span>
                             </div>
                           </div>
+                          -->
+                          
                         </div>
                         <div class="col-sm-6">
                         <div class="hr-line-dashed"></div>
@@ -2305,12 +2329,12 @@
                               </span>
                             </div>
                           </div>
-                          <div class="hr-line-dashed">
-                          </div>
+                          
+                          <!--
                           <div class="form-group">
                             <label class="col-sm-3 control-label">{{translateIdioma.lbl_06_12}}:</label>
                             <div class="col-sm-8">
-                              <select id="estCivil" class="form-control" ng-model="registro.estado_civil" name="estCivil" placeholder="Lugar Nacimiento" ng-disabled="bloquear1" ng-change = "getEstadoCivil(registro)" required>
+                              <select id="estCivil" class="form-control" ng-model="registro.estado_civil" name="estCivil" placeholder="Lugar Nacimiento" ng-disabled="bloquear1" ng-change = "getEstadoCivil(registro)">
                                 <option value="">--Selecccione--</option>
                                 <option value="C">Casado/a </option>
                                 <option value="D">Divorciado/a</option>
@@ -2322,18 +2346,19 @@
                               </span>
                             </div>
                           </div>
+                          -->
                           <div class="form-group" ng-show="activarEstCivil==true && activarCasada==true">
                             <label class="col-sm-3 control-label">Apellido Cónyugue:</label>
                             <div class="col-sm-8">
                               <input class="form-control" id="tercer" name="tercer" type="text" class="cajatexto" placeholder="Apellido Cónyugue" onkeypress="return validar(event);" ng-model="registro.tercer" style="text-transform:uppercase;" ng-change = "conv_Mayus_c()" maxlength="25" ng-disabled="bloquear1"/>
                             </div>
                           </div>
-                          <div class="hr-line-dashed">
-                          </div>
+                          
+                          <!--
                           <div class="form-group">
                             <label class="col-sm-3 control-label">Profesión / Oficio:</label>
                             <div class="col-sm-8">
-                              <select id="profesion" name="profesion" placeholder="País" class="form-control" required  ng-disabled="bloquear1" ng-model="registro.profesion" ng-options="obj.prf_profesion as obj.prf_profesion for obj in combop" value="{{registro.prf_profesion}}">
+                              <select id="profesion" name="profesion" placeholder="País" class="form-control" ng-disabled="bloquear1" ng-model="registro.profesion" ng-options="obj.prf_profesion as obj.prf_profesion for obj in combop" value="{{registro.prf_profesion}}">
                                 <option value="">--Selecccione--</option>
                               </select>
                               <span style="color:red" ng-show="signupForm.profesion.$invalid">
@@ -2341,6 +2366,7 @@
                               </span>
                             </div>
                           </div>
+                          -->
                           <div class="form-group" ng-if = "registro.profesion == 'OTROS'">
                             <label class="col-sm-3 control-label"></label>
                             <div class="col-sm-8">
@@ -2395,8 +2421,9 @@
                           </div>
                           <div class="hr-line-dashed">
                           </div>
+                          <!--
                           <div class="form-group">
-                            <label class="col-sm-3 control-label" class="lbl_03_19"> {{translateIdioma.lbl_03_19}}:</label>
+                            <label class="col-sm-3 control-label" class="lbl_03_19">ggggggg {{translateIdioma.lbl_03_19}}:</label>
                             <div class="col-sm-8">
                               <textarea id="direccion" name="direccion" type="text" class="form-control" placeholder="{{translateIdioma.lbl_03_19}}" ng-model="registro.direccion" style="text-transform:uppercase;" ng-disabled="bloquear1" required> </textarea>
                               <span style="color:red" ng-show="signupForm.direccion.$invalid">
@@ -2404,6 +2431,7 @@
                               </span>
                             </div>
                           </div>
+                        -->
                         </div>
                     </div>
                   </div>
@@ -2478,9 +2506,9 @@
               <!-- JURIDICO -->
               <div  ng-show="mostrarJuridico == true" id="Juridica">
                 <form name="signupFormJuridico" class="form-horizontal ng-pristine ng-valid" role="form" novalidate>
-                  <div class="ibox-content">
+                  <div class="ibox-content" style="width: 100%">
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-offset-2 col-md-8 col-md-offset-2">
                         <div class="form-group">
                           <h4 class="header blue lighter bigger">
                             ESTIMADO CIUDADANO: Para realizar el registro de Persona Jurídica, primero debe buscar al Representante Legal, el cual debe estar registrado como PERSONA NATURAL y siga los pasos 1 y 2.
@@ -2491,7 +2519,7 @@
                         </span>
                       </div>
                    
-                      <div class="col-sm-6 b-r">
+                      <div class="col-md-offset-2 col-md-8 col-md-offset-2">
                         <div class="form-group">
                           <div class="hr-line-dashed"></div>
                           <h4 class="header blue lighter bigger">
@@ -2554,14 +2582,8 @@
                         </div>
                         <div class="hr-line-dashed">
                         </div>
-                        <div class="form-group">
-                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_02}}:</label>
-                          <div class="col-sm-8">
-                            <input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="{{translateIdioma.lbl_06_02}}" ng-model="registro.nombre"  style="text-transform:uppercase;" ng-disabled="true"  required/>
-                            <span style="color:red" ng-show="signupFormJuridico.nombre.$invalid">
-                            <span align = "right" ng-show="signupFormJuridico.nombre.$error.required">Para registrar una persona Jurídica, primero debe buscar a la Persona Natural</span>
-                          </div>
-                        </div>
+                        
+                        <!--
                         <div class="hr-line-dashed">
                         </div>
                         <div class="form-group">
@@ -2578,11 +2600,12 @@
                             <input id="materno" name="materno" type="text" class="cajatexto" placeholder="{{translateIdioma.lbl_06_04}}" ng-model="registro.materno" style="text-transform:uppercase;" ng-disabled="true" required/>
                           </div>
                         </div>
-                        <div class="hr-line-dashed">
-                        </div>
+                        -->
+                        
                         
                       </div>
                       <div class="col-sm-6"> 
+                      <!--
                       <div class="hr-line-dashed"></div>
                         <div class="form-group">
                           <label class="col-sm-3 control-label">Apellido Cónyugue:</label>
@@ -2590,16 +2613,19 @@
                             <input id="tercer" name="tercer" type="text" class="cajatexto"  ng-model="registro.tercer" style="text-transform:uppercase;" ng-disabled="true"  />
                           </div>
                         </div>
-                         <div class="hr-line-dashed">
-                        </div>
+                      -->
+                         
+                        <!--
                         <div class="form-group">
-                          <label class="col-sm-3 control-label">{{translateIdioma.lbl_06_08_08}}:</label>
+                          <label class="col-sm-3 control-label">GGGG {{translateIdioma.lbl_06_08_08}}:</label>
                           <div class="col-sm-8">
                             <span class="block input-icon input-icon-right">
                               <input type="text" class="form-control" ng-model="registro.telefono" maxlength="7" onkeyUp="valNumeroTelefono(this);" style="text-transform:uppercase;" ng-disabled="true"/>
                             </span>
                           </div>
                         </div>
+                        -->
+                        <!--
                         <div class="hr-line-dashed">
                         </div>
                         <div class="form-group">
@@ -2610,6 +2636,8 @@
                             </span>
                           </div>
                         </div>
+                        -->
+                        <!--
                         <div class="hr-line-dashed">
                         </div>
                         <div class="form-group">
@@ -2618,6 +2646,8 @@
                             <textarea id="direccion" name="direccion" type="text" class="cajatexto" placeholder="{{translateIdioma.lbl_03_23_23}}" ng-model="registro.direccion" style="text-transform:uppercase;" ng-disabled="true"> </textarea>
                           </div>
                         </div>
+                        -->
+                        <!--
                         <div class="hr-line-dashed">
                         </div>
                         <div class="form-group">
@@ -2629,84 +2659,131 @@
                             </span>
                           </div>
                         </div>
+                      -->
                       </div>
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <h4 class="header blue lighter bigger">
-                            {{translateIdioma.lbl_09_16}}
-                          </h4>
+                      <div id="juridico_bloque_1" style="display: none">
+                        <div class="col-md-offset-2 col-md-8 col-md-offset-2">
+                          <div class="form-group">
+                            <h4 class="header blue lighter bigger">
+                              {{translateIdioma.lbl_09_16}}
+                            </h4>
+                          </div>
                         </div>
-                      </div>
-                      <div class="col-sm-6 b-r">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="tipo_persona">Tipo de Empresa: </label>
+                        <div class="col-md-offset-2 col-md-8 col-md-offset-2">
+                          <div class="form-group">
+                            <!--<label class="col-sm-4 control-label">{{translateIdioma.lbl_06_02}}:</label>-->
+                            <label class="col-sm-4 control-label">Nombre completo:</label>
                             <div class="col-sm-8">
-                              <select id="tipoEmpresa" class="form-control" ng-model="registro.tipoEmpresa" placeholder="Seleccione" name="tipoEmpresa" ng-disabled="desabilitado" ng-change="" required>
-                                <option  value="">--Seleccione--</option>
-                                <option  value="1">Comunicación</option>
-                                <option  value="2">Animalista</option>
-                                <option  value="3">Operador Radio Taxi</option>
-                                <option  value="4">Veterinaria</option>
-                                <option  value="0">Otro</option>
-                              </select>
+                              
+                              <!--<input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="{{translateIdioma.lbl_06_02}}" ng-model="registro.nombre"  style="text-transform:uppercase;" ng-disabled="true"  required/>-->
+                              <input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="NOMBRE COMPLETO" ng-model="registro.nombre"  style="text-transform:uppercase;" ng-disabled="true"  required/>
+                              <span style="color:red" ng-show="signupFormJuridico.nombre.$invalid">
+                              <span align = "right" ng-show="signupFormJuridico.nombre.$error.required">Para registrar una persona Jurídica, primero debe buscar a la Persona Natural</span>
                             </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_03_27_27}}:</label>
-                          <div class="col-sm-8">
-                            <div class="col-sm-12">
-                              <div class="col-sm-10">
-                                <input class="cajatexto" type="text" id="nit" name="nit"   placeholder="{{translateIdioma.lbl_03_27_27}}" maxlength="12" ng-model="registro.nit" onkeyUp="return valNumero(this);" required />
-                                <div>
-                                  <span style="color:red" ng-show="signupFormJuridico.nit.$invalid">
-                                    <span align = "right" ng-show="signupFormJuridico.nit.$error.required">{{translateIdioma.lbl_20_34}}</span>
-                                  </span>
-                                   <span id="cisw2" style = "color:red;font-weight:bold; font-size:12px" ng-if="cisw2 != null">¡El número de N.I.T. ya se encuentra registrado!</span>
-                                   <span id ="mensaje24" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es válido para un N.I.T.</span>
+                          </div>
+                        </div>  
+                        <div class="col-md-offset-2 col-md-8 col-md-offset-2">
+                          <div class="form-group">
+                              <label class="col-sm-4 control-label" for="tipo_persona">Tipo de Empresa: </label>
+                              <div class="col-sm-8">
+                                <select id="tipoEmpresa" class="form-control" ng-model="registro.tipoEmpresa" placeholder="Seleccione" name="tipoEmpresa" ng-disabled="desabilitado" ng-change="" required>
+                                  <option  value="">--Seleccione--</option>
+                                  <option  value="1">Comunicación</option>
+                                  <option  value="2">Animalista</option>
+                                  <option  value="3">Operador Radio Taxi</option>
+                                  <option  value="4">Veterinaria</option>
+                                  <option  value="0">Otro</option>
+                                </select>
+                              </div>
+                          </div>
+                          <div class="hr-line-dashed"></div>
+                          <div class="form-group">
+                            <label class="col-sm-4 control-label">{{translateIdioma.lbl_03_27_27}}:</label>
+                            <div class="col-sm-8">
+                              <div class="col-sm-12">
+                                <div class="col-sm-10">
+                                  <input class="cajatexto" type="text" id="nit" name="nit"   placeholder="{{translateIdioma.lbl_03_27_27}}" maxlength="12" ng-model="registro.nit" onkeyUp="return valNumero(this);" required />
+                                  <div>
+                                    <span style="color:red" ng-show="signupFormJuridico.nit.$invalid">
+                                      <span align = "right" ng-show="signupFormJuridico.nit.$error.required">{{translateIdioma.lbl_20_34}}</span>
+                                    </span>
+                                     <span id="cisw2" style = "color:red;font-weight:bold; font-size:12px" ng-if="cisw2 != null">¡El número de N.I.T. ya se encuentra registrado!</span>
+                                     <span id ="mensaje24" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es válido para un N.I.T.</span>
+                                  </div>
+                                </div>
+                                <div class="col-sm-2">
+                                  <button ng-click="cuentaDigCi(registro);" class="btn btn-default" type="button">Buscar</button>
                                 </div>
                               </div>
-                              <div class="col-sm-2">
-                                <button ng-click="cuentaDigCi(registro);" class="btn btn-default" type="button">Buscar</button>
+                            </div>
+                          </div>
+                          <div class="hr-line-dashed">
+                          </div>
+
+                          <div id="juridico_bloque_2" style="display: none">
+                            <div class="form-group">
+                              <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_14}}:</label>
+                              <div class="col-sm-8">
+                                <input type="text" id="razonSocial" name="razonSocial" class="cajatexto" placeholder="{{translateIdioma.lbl_06_12_14}}" ng-model="registro.razonSocial" style="text-transform:uppercase;" ng-change = "conv_Mayus_rs()" ng-disabled = "bloquear2" required />
+                                <span style="color:red" ng-show="signupFormJuridico.razonSocial.$invalid">
+                                  <span align = "right" ng-show="signupFormJuridico.razonSocial.$error.required">{{translateIdioma.lbl_20_35}}</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="hr-line-dashed">
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_15}}:</label>
+                              <div class="col-sm-8">
+                                <input  type="text" id="poder_rep" name="poder_rep" class="cajatexto" placeholder="{{translateIdioma.lbl_06_12_15}}" ng-model="registro.repLegal" onkeyUp="checkInput(this);" onChange="checkInput(this);" ng-disabled = "bloquear2" required/>
+                                <span style="color:red" ng-show="signupFormJuridico.poder_rep.$invalid">
+                                  <span align = "right" ng-show="signupFormJuridico.poder_rep.$error.required">{{translateIdioma.lbl_20_36}}</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="hr-line-dashed">
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_16}}:</label>
+                              <div class="col-sm-8">
+                                <input type="text" id="nroNotaria" name="nroNotaria" class="cajatexto" placeholder="{{translateIdioma.lbl_06_12_16}}" ng-model="registro.nroNotaria" onkeyUp="return valNumero(this);" ng-disabled = "bloquear2" required/>
+                                <span style="color:red" ng-show="signupFormJuridico.nroNotaria.$invalid">
+                                  <span align = "right" ng-show="signupFormJuridico.nroNotaria.$error.required">{{translateIdioma.lbl_20_37}}</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="hr-line-dashed">
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_18}}:</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="{{translateIdioma.lbl_06_12_18}}" ng-model="registro.celularEmp" minlength="8" maxlength="8" onkeyUp="return valNumeroCelular(this);" ng-disabled = "bloquear2"/>
+                                <span id ="mensaje8" style = "color:red;font-weight:bold; font-size:12px">¡Debe introducir como mínimo 8 dígitos!.</span>
+                                <br><span id ="mensaje9" style = "color:red;font-weight:bold; font-size:12px">¡Este dato es obligatorio.!</span>
+                                <span id ="mensaje20" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es correcto.</span>
+                              </div>
+                            </div>
+                            <div class="hr-line-dashed">
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_18}}:</label>
+                              <div class="col-sm-8">
+                                <input type="email" class="form-control" placeholder="{{translateIdioma.lbl_06_18}}" id="correoEmp" name="correoEmp" ng-model="registro.correoEmp" ng-keyup="validaCorreoJ();" ng-disabled = "bloquear2" required focus/>
+                                <span style="color:red" ng-show="signupFormJuridico.correoEmp.$invalid">
+                                  <span align = "right" ng-show="signupFormJuridico.correoEmp.$error.required">{{translateIdioma.lbl_20_32}}</span>
+                                </span>
+                                <br><span id ="mensaje11" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
+                                <span id ="mensaje12" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span>
                               </div>
                             </div>
                           </div>
+
                         </div>
-                        <div class="hr-line-dashed">
-                        </div>
-                        <div class="form-group">
-                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_14}}:</label>
-                          <div class="col-sm-8">
-                            <input type="text" id="razonSocial" name="razonSocial" class="cajatexto" placeholder="{{translateIdioma.lbl_06_12_14}}" ng-model="registro.razonSocial" style="text-transform:uppercase;" ng-change = "conv_Mayus_rs()" ng-disabled = "bloquear2" required />
-                            <span style="color:red" ng-show="signupFormJuridico.razonSocial.$invalid">
-                              <span align = "right" ng-show="signupFormJuridico.razonSocial.$error.required">{{translateIdioma.lbl_20_35}}</span>
-                            </span>
-                          </div>
-                        </div>
-                        <div class="hr-line-dashed">
-                        </div>
-                        <div class="form-group">
-                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_15}}:</label>
-                          <div class="col-sm-8">
-                            <input  type="text" id="poder_rep" name="poder_rep" class="cajatexto" placeholder="{{translateIdioma.lbl_06_12_15}}" ng-model="registro.repLegal" onkeyUp="checkInput(this);" onChange="checkInput(this);" ng-disabled = "bloquear2" required/>
-                            <span style="color:red" ng-show="signupFormJuridico.poder_rep.$invalid">
-                              <span align = "right" ng-show="signupFormJuridico.poder_rep.$error.required">{{translateIdioma.lbl_20_36}}</span>
-                            </span>
-                          </div>
-                        </div>
-                        <div class="hr-line-dashed">
-                        </div>
-                        <div class="form-group">
-                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_16}}:</label>
-                          <div class="col-sm-8">
-                            <input type="text" id="nroNotaria" name="nroNotaria" class="cajatexto" placeholder="{{translateIdioma.lbl_06_12_16}}" ng-model="registro.nroNotaria" onkeyUp="return valNumero(this);" ng-disabled = "bloquear2" required/>
-                            <span style="color:red" ng-show="signupFormJuridico.nroNotaria.$invalid">
-                              <span align = "right" ng-show="signupFormJuridico.nroNotaria.$error.required">{{translateIdioma.lbl_20_37}}</span>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-sm-6"><br><br><br><br><br>
+                      </div> 
+                      
+                      <!---------------------------------------------------------------->
+                      <div class="col-md-offset-2 col-md-8 col-md-offset-2">
+                        <!--
                         <div class="form-group">
                           <label class="col-sm-3 control-label">{{translateIdioma.lbl_06_08_08}}:</label>
                           <div class="col-sm-8">
@@ -2714,38 +2791,13 @@
                             <br><span id ="mensaje18" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es correcto.</span>
                           </div>
                         </div>
-                        <div class="hr-line-dashed">
-                        </div>
-                        <div class="form-group">
-                          <label class="col-sm-3 control-label">{{translateIdioma.lbl_06_12_18}}:</label>
-                          <div class="col-sm-8">
-                            <input type="text" class="form-control" placeholder="{{translateIdioma.lbl_06_12_18}}" ng-model="registro.celularEmp" minlength="8" maxlength="8" onkeyUp="return valNumeroCelular(this);" ng-disabled = "bloquear2"/>
-                            <br><span id ="mensaje8" style = "color:red;font-weight:bold; font-size:12px">¡Debe introducir como mínimo 8 dígitos!.</span>
-                            <br><span id ="mensaje9" style = "color:red;font-weight:bold; font-size:12px">¡Este dato es obligatorio.!</span>
-                            <span id ="mensaje20" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es correcto.</span>
-                          </div>
-                        </div>
-                        <div class="hr-line-dashed">
-                        </div>
-                        <div class="form-group">
-                          <label class="col-sm-3 control-label">{{translateIdioma.lbl_06_18}}:</label>
-                          <div class="col-sm-8">
-                            <input type="email" class="form-control" placeholder="{{translateIdioma.lbl_06_18}}" id="correoEmp" name="correoEmp" ng-model="registro.correoEmp" ng-keyup="validaCorreoJ();" ng-disabled = "bloquear2" required focus/>
-                            <span style="color:red" ng-show="signupFormJuridico.correoEmp.$invalid">
-                              <span align = "right" ng-show="signupFormJuridico.correoEmp.$error.required">{{translateIdioma.lbl_20_32}}</span>
-                            </span>
-                            <br><span id ="mensaje11" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
-                            <span id ="mensaje12" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span>
-                          </div>
-                        </div>
+                        -->
                       </div>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-1">
-                        &nbsp; &nbsp;
-                    </div>
-                    <div class="col-sm-10">
+                    
+                    <div class="col-md-offset-2 col-md-8 col-md-offset-2">
                         <p>
                           <font color="#FF1100">
                               Con esta opción podrá tener acceso limitado a los servicios en línea del Gobierno Autónomo Municipal de La Paz, si desea acceder a más servicios, le pedimos que pueda apersonarse por única vez a una de nuestras plataformas de atención presencial del GAMLP para realizar la validación de sus datos personales. Para ello usted debe llevar su Cédula de Identidad Original.

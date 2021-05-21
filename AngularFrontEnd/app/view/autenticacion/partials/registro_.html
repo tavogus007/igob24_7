@@ -1636,10 +1636,19 @@
 
         $scope.show_juridico_bloque_1 = function(){
           $("#juridico_bloque_1").show();
+          $scope.bloquearNombreCompleto = true;
         };
 
         $scope.show_juridico_bloque_2 = function(){
           $("#juridico_bloque_2").show();
+        };
+
+        $scope.hide_juridico_bloque_1 = function(){
+          $("#juridico_bloque_1").hide();
+        };
+
+        $scope.hide_juridico_bloque_2 = function(){
+          $("#juridico_bloque_2").hide();
         };
 
         $scope.getTipoPersona = function (val) {
@@ -1647,6 +1656,10 @@
           $("#juridico_bloque_2").hide(); 
           $scope.bloquear1 = true;
           $scope.bloquear2 = true;
+
+          $("#tipoDoc" ).val("");
+
+          //$scope.tipoDoc = '';
 
           if (val.tipoPersoneria == "NATURAL") {              
             $scope.mostrarNatural = true;
@@ -1660,6 +1673,8 @@
             tipoPersona = "JURIDICO";
             $scope.bloquear3 = false;
             $scope.habilitarCondicion = true;
+            ////////////////*******************
+            $scope.bloquearCi = false;
           };        
           $scope.limpiarFormRegistro();
           $scope.tipo = val.tipoPersoneria;
@@ -1678,7 +1693,8 @@
             $("#mensaje26").hide();
            
           };
-          if (val.tipoDoc == "solo_ci") {              
+          if (val.tipoDoc == "solo_ci") {
+            $scope.hide_juridico_bloque_1();              
             $scope.mostrarSoloCi = true;
             $scope.mostrarCiCompl = false;
             $scope.mostrarExtr = false;
@@ -1689,6 +1705,7 @@
             $rootScope.tipoDocumento= "carnet";
           };
           if (val.tipoDoc == "ci_compl") {
+            $scope.hide_juridico_bloque_1(); 
             $scope.mostrarSoloCi = false;
             $scope.mostrarCiCompl = true;
             $scope.mostrarExtr = false;
@@ -1699,6 +1716,7 @@
             $rootScope.tipoDocumento= "carnet";
           };
           if (val.tipoDoc == "extr") {
+            $scope.hide_juridico_bloque_1(); 
             $scope.mostrarSoloCi = false;
             $scope.mostrarCiCompl = false;
             $scope.mostrarExtr = true;
@@ -1709,6 +1727,7 @@
             $rootScope.tipoDocumento= "extranjero";
           }; 
           if (val.tipoDoc == "pasaporte") {
+            $scope.hide_juridico_bloque_1(); 
             $scope.mostrarSoloCi = false;
             $scope.mostrarCiCompl = false;
             $scope.mostrarExtr = false;
@@ -2676,7 +2695,7 @@
                             <div class="col-sm-8">
                               
                               <!--<input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="{{translateIdioma.lbl_06_02}}" ng-model="registro.nombre"  style="text-transform:uppercase;" ng-disabled="true"  required/>-->
-                              <input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="NOMBRE COMPLETO" ng-model="registro.nombre"  style="text-transform:uppercase;" ng-disabled="true"  required/>
+                              <input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="NOMBRE COMPLETO" ng-model="registro.nombre"  style="text-transform:uppercase; background:#DFE9F4 " ng-disabled = "bloquearNombreCompleto"  required/>
                               <span style="color:red" ng-show="signupFormJuridico.nombre.$invalid">
                               <span align = "right" ng-show="signupFormJuridico.nombre.$error.required">Para registrar una persona Jurídica, primero debe buscar a la Persona Natural</span>
                             </div>

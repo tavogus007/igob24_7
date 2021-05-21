@@ -171,6 +171,7 @@
               if(resultadoApi.length > 0){
                   var repLegalmongo = resultadoApi;
                   if(repLegalmongo[0].dtspsl_activaciond == "SI" && repLegalmongo[0].dtspsl_activacionf == "SI"){
+                    $scope.show_juridico_bloque_0();
                     $scope.show_juridico_bloque_1();
                     if(repLegalmongo[0].dtspsl_tercerapellido === "" || repLegalmongo[0].dtspsl_tercerapellido === undefined){
                       $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres+" "+repLegalmongo[0].dtspsl_paterno+" "+repLegalmongo[0].dtspsl_materno;
@@ -1634,6 +1635,10 @@
           $scope.stiloFecha   =  "border: 1px solid #FF4040;";
         }
 
+        $scope.show_juridico_bloque_0 = function(){
+          $("#juridico_bloque_0").show();
+        };
+
         $scope.show_juridico_bloque_1 = function(){
           $("#juridico_bloque_1").show();
           $scope.bloquearNombreCompleto = true;
@@ -1643,6 +1648,9 @@
           $("#juridico_bloque_2").show();
         };
 
+        $scope.hide_juridico_bloque_0 = function(){
+          $("#juridico_bloque_0").hide();
+        };
         $scope.hide_juridico_bloque_1 = function(){
           $("#juridico_bloque_1").hide();
         };
@@ -1652,8 +1660,9 @@
         };
 
         $scope.getTipoPersona = function (val) {
-          $("#juridico_bloque_1").hide();
-          $("#juridico_bloque_2").hide(); 
+          $scope.hide_juridico_bloque_0();
+          $scope.hide_juridico_bloque_1();
+          $scope.hide_juridico_bloque_2();
           $scope.bloquear1 = true;
           $scope.bloquear2 = true;
 
@@ -1680,7 +1689,9 @@
           $scope.tipo = val.tipoPersoneria;
           $scope.registro.tipoP = val.tipoPersoneria.toUpperCase();
         };
+
         $("#mensaje29").show();
+        
         $scope.getTipoDoc = function (val) {
           $scope.tipoDoc = val.tipoDoc;
           if (val.tipoDoc == 'undefined' || val.tipoDoc == undefined || val.tipoDoc == '') {   
@@ -1694,6 +1705,7 @@
            
           };
           if (val.tipoDoc == "solo_ci") {
+            $scope.hide_juridico_bloque_0();
             $scope.hide_juridico_bloque_1();              
             $scope.mostrarSoloCi = true;
             $scope.mostrarCiCompl = false;
@@ -1705,6 +1717,7 @@
             $rootScope.tipoDocumento= "carnet";
           };
           if (val.tipoDoc == "ci_compl") {
+            $scope.hide_juridico_bloque_0();
             $scope.hide_juridico_bloque_1(); 
             $scope.mostrarSoloCi = false;
             $scope.mostrarCiCompl = true;
@@ -1716,6 +1729,7 @@
             $rootScope.tipoDocumento= "carnet";
           };
           if (val.tipoDoc == "extr") {
+            $scope.hide_juridico_bloque_0();
             $scope.hide_juridico_bloque_1(); 
             $scope.mostrarSoloCi = false;
             $scope.mostrarCiCompl = false;
@@ -1727,6 +1741,7 @@
             $rootScope.tipoDocumento= "extranjero";
           }; 
           if (val.tipoDoc == "pasaporte") {
+            $scope.hide_juridico_bloque_0();
             $scope.hide_juridico_bloque_1(); 
             $scope.mostrarSoloCi = false;
             $scope.mostrarCiCompl = false;
@@ -2601,6 +2616,20 @@
                         </div>
                         <div class="hr-line-dashed">
                         </div>
+
+                        <div id="juridico_bloque_0" style="display: none">
+                          <div class="form-group">
+                            <!--<label class="col-sm-4 control-label">{{translateIdioma.lbl_06_02}}:</label>-->
+                            <label class="col-sm-4 control-label">Nombre completo:</label>
+                            <div class="col-sm-8">
+                              
+                              <!--<input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="{{translateIdioma.lbl_06_02}}" ng-model="registro.nombre"  style="text-transform:uppercase;" ng-disabled="true"  required/>-->
+                              <input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="NOMBRE COMPLETO" ng-model="registro.nombre"  style="text-transform:uppercase; background:#DFE9F4 " ng-disabled = "bloquearNombreCompleto"  required/>
+                              <span style="color:red" ng-show="signupFormJuridico.nombre.$invalid">
+                              <span align = "right" ng-show="signupFormJuridico.nombre.$error.required">Para registrar una persona Jurídica, primero debe buscar a la Persona Natural</span>
+                            </div>
+                          </div>
+                        </div>
                         
                         <!--
                         <div class="hr-line-dashed">
@@ -2688,19 +2717,6 @@
                             </h4>
                           </div>
                         </div>
-                        <div class="col-md-offset-2 col-md-8 col-md-offset-2">
-                          <div class="form-group">
-                            <!--<label class="col-sm-4 control-label">{{translateIdioma.lbl_06_02}}:</label>-->
-                            <label class="col-sm-4 control-label">Nombre completo:</label>
-                            <div class="col-sm-8">
-                              
-                              <!--<input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="{{translateIdioma.lbl_06_02}}" ng-model="registro.nombre"  style="text-transform:uppercase;" ng-disabled="true"  required/>-->
-                              <input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="NOMBRE COMPLETO" ng-model="registro.nombre"  style="text-transform:uppercase; background:#DFE9F4 " ng-disabled = "bloquearNombreCompleto"  required/>
-                              <span style="color:red" ng-show="signupFormJuridico.nombre.$invalid">
-                              <span align = "right" ng-show="signupFormJuridico.nombre.$error.required">Para registrar una persona Jurídica, primero debe buscar a la Persona Natural</span>
-                            </div>
-                          </div>
-                        </div>  
                         <div class="col-md-offset-2 col-md-8 col-md-offset-2">
                           <div class="form-group">
                               <label class="col-sm-4 control-label" for="tipo_persona">Tipo de Empresa: </label>

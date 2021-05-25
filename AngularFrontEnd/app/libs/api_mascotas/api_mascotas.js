@@ -79,7 +79,6 @@ reglasnegocioM.prototype.llamarregla=function(functionResp){
     };
     ejecutarAjaxMASCOTAS(urlComp, typeCall, dataParams, functionResp,stoquenM);
 };
-
 function registroServicioMascotas() {
     this.id_servicio;
     this.oid_ciudadano;

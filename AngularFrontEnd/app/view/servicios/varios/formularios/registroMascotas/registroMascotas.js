@@ -936,6 +936,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   }
 
   $scope.cargarNuevaDataMascota = function () {
+    $scope.desabilitado = false;
     $scope.datos.IMAGEN_MASCOTA = '';
      $scope.btover7 = false;
       $scope.botonMod = false;

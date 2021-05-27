@@ -238,56 +238,7 @@ function validateDecimal(valor) {
                     <div class="row">
                         <div class="col-md-12">
                             <form class="form-horizontal ng-pristine ng-valid">
-                                <div class="col-md-12" class="form-control">
-                                    <div class="form-group" >
-                                        <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                                        <div class="col-sm-12" align="left">
-                                            <div class="alert alert-danger fade in">
-                                                <bold>Estimado Ciudadano:</bold>
-                                                <br> + Para realizar el registro ó visualización de sus mascotas, debe seleccionar: 
-                                                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * COMO CIUDADANO si desea registrar/visualizar o modificar datos de sus mascotas particulares. 
-                                                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * COMO ANIMALISTA INDEPENDIENTE si desea registrar/visualizar o modificar datos de sus mascotas como voluntario y posee su Certificado de Animalista Independiente.
-                                                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * COMO ANIMALISTA AGRUPADO si desea registrar/visualizar o modificar datos de sus mascotas como responsable de alguna Asociación de Voluntarios y posee su Certificado de Animalista Independiente.
-                                                <br> + Para el registro de su mascota debe llenar todos los campos con *. 
-                                                <br> + Si su mascota tiene Esterilización y/o Desparasitación, debe llenar los correspondientes campos.
-                                                <br> + El registro de vacunas NO es obligatorio.
-                                                <br> + El registro del Contacto Alternativo NO es obligatorio.<br>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <form class="form-horizontal ng-pristine ng-valid" action="index.html" method="post"> 
-                                <div class="col-md-12">
-                                    <div class="form-group">   
-                                        <div class="controls">
-                                            <div class="col-md-4">
-                                                <div class="form-check">
-                                                    <label class="tamañoLabel">
-                                                        <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="CIUDADANO" ng-disabled="valCiu"> <span class="label-text"></span>
-                                                    </label> COMO CIUDADANO
-                                                </div>
-                                            </div>        
-                                            <div class="col-md-4">
-                                                <div class="form-check">
-                                                    <label class="tamañoLabel">
-                                                    <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="INDEPENDIENTE" ng-disabled="valInd"> <span class="label-text"></span>
-                                                    </label> COMO ANIMALISTA INDEPENDIENTE
-                                                </div>
-                                            </div>  
-                                            <div class="col-md-4">
-                                                <div class="form-check">
-                                                <label class="tamañoLabel">
-                                                    <input type="radio" name="tipo_registro" ng-model="datos.tipo_registro" ng-change="f_dinamico_Registro(datos.tipo_registro);" value="AGRUPADOS" ng-disabled="valAgr"> <span class="label-text"></span>
-                                                </label> COMO ANIMALISTA AGRUPADO
-                                                </div>
-                                            </div>                         
-                                        </div>
-                                    </div>
-                                </div> 
-                                <div ng-show = "swhabilitado == false" align="right">
-                                    <a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroVoluntariosIndependientes/index.html'"><button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-list-alt"></i> Registro de Animalistas</button></a>
-                                </div>
                                 <div class="form-group">
                                     <div class="col-md-6">
                                         <div>  
@@ -543,14 +494,14 @@ function validateDecimal(valor) {
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <font color="#FF0000"> * </font>
-                                                        <label for="url">Imagen Mascota</label>
+                                                        <label for="url">ADJUNTE UNA IMAGEN DE SU MASCOTA</label>
                                                         <div class="controls">
                                                             <div class="form-group custom-upload">
                                                                 <input type="file" id="IMAGEN_MASCOTA" name="IMAGEN_MASCOTA" ng-model="IMAGEN_MASCOTA" accept="pdf/*" style="display: none;">
                                                                 <div class="input-group">
-                                                                    <input id="txt_IMAGEN_MASCOTA" name="txt_IMAGEN_MASCOTA" ng-model="datos.IMAGEN_MASCOTA" type="text" ng-disabled="true" class="form-control input-lg" required>
+                                                                    <input id="txt_IMAGEN_MASCOTA" name="txt_IMAGEN_MASCOTA" ng-model="datos.IMAGEN_MASCOTA" type="hidden" ng-disabled="true" class="form-control input-lg required">
                                                                     <span class="input-group-btn">
-                                                                        <a id="href_IMAGEN_MASCOTA"  ng-show="btover7 != null" href="{{datos.IMAGEN_MASCOTA}}" target="_blank">
+                                                                        <a id="href_IMAGEN_MASCOTA"  ng-show="btover7" href="{{datos.IMAGEN_MASCOTA}}" target="_blank">
                                                                             <button id="btn_IMAGEN_MASCOTA" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                                         </a>
                                                                         <button id="btn_IMAGEN_MASCOTA" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('IMAGEN_MASCOTA');" ng-disabled="xdeshabilitado" ><i class="glyphicon glyphicon-upload" ></i> Subir</button>
@@ -872,8 +823,8 @@ function validateDecimal(valor) {
                         
                                     <div class="modal-footer">
 
-                                    <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >No Acepto</button>
-                                    <button id="btncondicionesuso_a" type="button" class="btn btn-default" data-dismiss="modal">Acepto</button>
+                                    <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" ng-click="noValidaCondicionUso()">No Acepto</button>
+                                    <button id="btnRegistro" type="button" class="btn btn-default" data-dismiss="modal" ng-click="adicionarMascota(datos)">Acepto</button>
                                     </div>
                                 </div>
                             </div>
@@ -1025,13 +976,14 @@ function validateDecimal(valor) {
                             </div>
                     </div><br><br>
                     <div class="col-md-12" align="right" ></p></p>
-                        <button id="miFormModificar" data-toggle="modal" data-target="#formModal" ng-show = "botonMod" ng-click="modificarInformacionMascota(datos);" type="button" class="btn btn-default ng-binding" name="miFormModificar" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid"><i class="fa fa-edit"  style="color:white"></i><font color="white"> Modificar</font></button>
-                        <button id="miFormGuardar" name="formEnviar" ng-show="botonCrea" type="button" class="btn btn-default ng-binding" ng-click="adicionarMascota(datos);" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || signupForm.reg_sexo.$invalid || signupForm.reg_peso.$invalid || signupForm.reg_peso_des.$invalid || signupForm.reg_color.$invalid || signupForm.reg_tamanio.$invalid || signupForm.reg_esterilizacion.$invalid || signupForm.desparasitacion.$invalid"  tooltip="Guardar Datos" ng-disabled="desabilitado"><i class="fa fa-save"  style="color:white"></i><font color="white"> Guardar</font></button>
+                        <button id="miFormModificar" ng-show = "botonMod" ng-click="modificarInformacionMascota(datos);" type="button" class="btn btn-default ng-binding" name="miFormModificar" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || !swimagen"><i class="fa fa-edit"  style="color:white"></i><font color="white"> Modificar</font></button>
+                        <button id="miFormGuardar" name="formEnviar" ng-show="botonCrea" type="button" class="btn btn-default ng-binding" ng-click="verificarDatos();" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || signupForm.reg_sexo.$invalid || signupForm.reg_peso.$invalid || signupForm.reg_peso_des.$invalid || signupForm.reg_color.$invalid || signupForm.reg_tamanio.$invalid || signupForm.reg_esterilizacion.$invalid || signupForm.desparasitacion.$invalid || !swimagen"  tooltip="Guardar Datos" ng-disabled="desabilitado"><i class="fa fa-save"  style="color:white"></i><font color="white"> Guardar</font></button>
                     </div>
                 </div>
             </form>
         </div>
     </div>       
 </div>
+
 </html>
 

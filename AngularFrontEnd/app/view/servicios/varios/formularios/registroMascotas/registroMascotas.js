@@ -426,12 +426,12 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     if ($scope.botonMod == true) {
       $scope.dataMascota.xmascota_id = data.xmascota_id;
       $scope.dataMascota.xmascota_imagen_url = $scope.IMAGEN_MASCOTA;//data.xmascota_imagen_url;
-      $scope.dataMascota.xpertenece = $scope.tipoR;
+     // $scope.dataMascota.xpertenece = $scope.tipoR;
     }
     if ($scope.botonCrea == true) {
       $scope.dataMascota.titular_id = "0";//data.xmascota_titular_id;//2
       $scope.dataMascota.xmascota_imagen_url = $scope.IMAGEN_MASCOTA;
-      $scope.dataMascota.xpertenece = $scope.tipoR;
+     // $scope.dataMascota.xpertenece = $scope.tipoR;
     }
 
     if (data.xmascota_raza_id) {
@@ -1502,7 +1502,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.recuperandoDatosInicialesCiudadano();
     id = 1;
     $scope.datosMascota('1');
-    $scope.tipoR = 'CIUDADANO';
+    //$scope.tipoR = 'CIUDADANO';
     var sci = sessionService.get('CICIUDADANO');
       $scope.listarMascotasXci(sci);
    

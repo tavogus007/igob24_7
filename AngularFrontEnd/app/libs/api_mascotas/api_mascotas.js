@@ -2,12 +2,10 @@ var urlComp;
 var dataResp;
 var dataParams;
 var typeCall;
-//var urlAservicio    =    "";//"http://192.168.5.69/api/reglaNegocio/ejecutarWeb";
 
 
 if(jsonURLS){
-    urlMaservicio    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "/motorservicio_pruebas/public/api/apiLogin";
-    urlMaservicioReglas    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "motorservicio_pruebas/public/api/reglaNegocio/ejecutarWeb";
+    urlMaservicio    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "api/reglaNegocio/ejecutarWeb";
     urlRCPG = jsonURLS.CONEXION_API_PG_RC + "wsRCPG";
     key = jsonURLS.KEY;
 
@@ -41,7 +39,7 @@ function ejecutarAjax1(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
 function ejecutarAjaxMASCOTAS(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
   var headers = {};
   $.ajax({
-    url: urlMaservicioReglas,
+    url: urlMaservicio,
     data: vDataCall,
     type:"POST",
     dataType: "json",
@@ -71,7 +69,7 @@ function reglasnegocioM(){
 reglasnegocioM.prototype.llamarregla=function(functionResp){
   var idtoken =   sessionStorage.getItem('TOKEN_MOTORM');
   var stoquenM =  'Bearer ' + idtoken ;
-    urlComp = urlMaservicioReglas;
+    urlComp = urlMaservicio;
     typeCall = "post";
     dataParams= {
         "identificador" : this.identificador,

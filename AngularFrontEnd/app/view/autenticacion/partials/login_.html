@@ -1,4 +1,14 @@
 <style>
+  .aEnlaceCustom > small {
+    font-size: 15px;
+    font-weight: 500;
+    color: #808080;
+    cursor: pointer;
+  }  
+  .aEnlaceCustom > small:hover {
+    color: #e30613 !important;
+    text-decoration: underline !important;
+  }
   /* table.one {
     border-collapse:collapse;
     width:100%;
@@ -8,20 +18,20 @@
     background-color:#6F7072;
   }
   td.color2 {
-    border: #0ACC9E 5px solid;
-    background-color:#0ACC9E;
+    border: #00b3ba 2px solid;
+    background-color:#00b3ba;
     border-width:5px;
     padding:1px;
   }
   td.colorCA {
-    border: #0ACC9E 5px solid;
+    border: #00b3ba 2px solid;
     background-color:#FFFFFF;
     border-width:5px;
     padding:1px;
   }
   td.color22 {
-    border: #0ACC9E 5px solid;
-    background-color:#0ACC9E;
+    border:#00b3ba 2px solid;
+    background-color:#00b3ba;
     border-width:5px;
     padding:1px;
   }
@@ -764,7 +774,7 @@
                   <div class="input-group">
                     <input type="password" id="clave" name="clave" tabindex="2" class="form-control" type="text" ng-model="login.clave" placeholder="CONTRASEÑA" onKeyPress="capLock(event)" maxlength="99" th="100">            
                     <span class="input-group-addon" onmousedown="RFunction();"onmouseup="RFunction1();">
-                      <i class="icofont-unlock" style="color: #FBCC00; font-size: 40px;"></i>
+                      <i class="icofont-unlock" style="color: #006e80; font-size: 40px;"></i>
                     </span>
                   </div>
                   <!--<a id="mC" name="mC" onClick="RFunction();" value="1" style="float: right;">Mostrar Contraseña</a>-->
@@ -776,14 +786,14 @@
                 </div>
               </div>
               <div id="caplock" style="visibility:hidden">El bloqueo de mayúsculas está activado</div>
-              <button id="btnIngresar" class="btn btn-sm btn-white btn-block" onclick="autenticacionNodeR();" style="color: #152030; background-color: #ffc107; border: 1px solid #ffc107; padding: 2px; font-size: 18px;">Ingresar<div class="ripple-container"></div>
+              <button id="btnIngresar" class="btn btn-sm btn-white btn-block" onclick="autenticacionNodeR();" style="color: #eefeff; background: linear-gradient(270deg, #00b3ba, #23a0af); border: 2px solid #006e80 !important; padding: 2px; font-size: 16px; font-weight: 600;">Ingresar<div class="ripple-container"></div>
               </button>
               <br>
-              <p><a style="font-size: 21px;color:#152030 !important; " data-toggle="modal" data-target="#password" onClick="obtCaptha();limpiarCamposRecuperacion();"><small>
+              <p><a class="aEnlaceCustom" data-toggle="modal" data-target="#password" onClick="obtCaptha();limpiarCamposRecuperacion();"><small>
               <script type="text/javascript">
                      document.write(elArray["lbl_02_09"]);
-              </script></small></a></p>
-              <p><a href="../../../../index.html" ui-sref="forgot_password" href="/forgot_password" style="font-size: 21px;color:#152030 !important" ><small>
+              </script> ¡Presione aqui!</small></a></p>
+              <p><a href="../../../../index.html" ui-sref="forgot_password" href="/forgot_password" class="aEnlaceCustom"><small>
               <script type="text/javascript">
                    document.write(elArray["lbl_02_10"]);
               </script></small><div class="ripple-container"></div></a>
@@ -939,8 +949,8 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <form name="signupForm" readOnly="true" novalidate>
-        <div class="modal-header">
-          <h3 style="font-size: 18px;font-weight: 600; color: #FBCC00;"><script type="text/javascript">document.write(elArray["lbl_20_43"]);</script></h3>
+        <div class="modal-header" style="background: linear-gradient(270deg, #00b3ba, #23a0af);">
+          <h3 style="font-size: 18px;font-weight: 600; color: #eefeff;"><script type="text/javascript">document.write(elArray["lbl_20_43"]);</script></h3>
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
           <!--<h4 class="modal-title" id="myModalLabel">Envio de Mensaje</h4>-->
         </div>
@@ -1006,7 +1016,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal"><script type="text/javascript">document.write(elArray["lbl_020_18"]);</script></button>
-          <button id= "EnvRes" data-toggle="modal" onClick="resetPassword();" odisabled=""  data-target="#formModal" type="submit" class="btn btn-primary" data-dismiss="modal" style="background-color: #0ACC9E"><script type="text/javascript">document.write(elArray["lbl_013_44"]);</script></button>        
+          <button id= "EnvRes" data-toggle="modal" onClick="resetPassword();" odisabled=""  data-target="#formModal" type="submit" class="btn btn-primary" data-dismiss="modal" style="background-color: #00b3ba"><script type="text/javascript">document.write(elArray["lbl_013_44"]);</script></button>        
         </div>
       </form>
     </div>

@@ -23,12 +23,11 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     if(jsonURLS){
         //var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";
         //var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";
-        
-        
+
+
         var urlFum = CONFIG.CONEXION_ODM;
         var urlPagoTarjetaX = CONFIG.CONEXION_PAGOS + 'registroDataPagoCheckout';
         var urlPagoTarjetaY = CONFIG.CONEXION_PAGOS + 'pago-checkout';
-
         var urlPagoTarjeta = CONFIG.CONEXION_PAGOS + 'pago-checkoutWeb';
         var urlPagoClick = CONFIG.CONEXION_PAGOS + 'envioPagoClickGamlp';
         var urlPagoQR = CONFIG.CONEXION_PAGOS + 'generarQrBcpGamlp';
@@ -782,6 +781,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     }
 
     $scope.preguntarHojadeReferencia = function(datosHospital){
+      console.log('entra');
         $scope.datosHospital = datosHospital;
     }
 
@@ -1345,7 +1345,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                                     type        : 'POST',
                                     //url         : 'http://52.226.130.135:5433/api/registroPagoCheckoutApiWeb',//panchito
                                     url         : urlPagoTarjetaX,//panchito
-                                    
+
                                     data        : formDataPago,
                                     dataType    : 'json',
                                     crossDomain : true,

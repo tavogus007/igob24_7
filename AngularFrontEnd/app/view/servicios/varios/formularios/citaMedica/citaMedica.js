@@ -709,6 +709,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
     };
 
     $scope.lstHospital = function(){
+         $scope.pagar_tarjeta = false;
         cargando();
         var listaDatosHospital = new dataSalud();
             listaDatosHospital.ci = $scope.nroCi;
@@ -723,6 +724,7 @@ function saludController($scope, $rootScope, $routeParams, $location, $http, Dat
                 $scope.hospitales_vista = true;
                 $scope.especialidad_vista = false;
                 $scope.lstatenciones = false;
+
             }
             else
             {

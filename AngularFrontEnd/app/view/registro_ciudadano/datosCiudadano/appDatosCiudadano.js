@@ -630,9 +630,9 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             aNotif = JSON.parse(resultado);
             var notificaciones = aNotif.success.length;
             datoObjectNotiFinal = [];
-            var notificaciones = aNotif.success.length;
-            datoObjectNotiFinal = [];
             for(i = 0; i < notificaciones; i++){
+                var fecharegistro = new Date(aNotif.success[i].obs_tra_registrado);
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 if(aNotif.success[i].serdv_descripcion == 'ANTENA CIUDADANO'){      //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
                     datoObjectNoti = new Object();
                     var mensaje = aNotif.success[i].obs_tra_observaciones;
@@ -660,7 +660,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                     datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                     datoObjectNoti.obs_tra_observaciones = mensajeIgob[0];
-                    datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                     datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                     datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                     datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
@@ -697,7 +698,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus;
                     datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                     datoObjectNoti.obs_tra_observaciones = mensajeIgob[0];
-                    datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                     datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                     datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                     datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
@@ -720,7 +722,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     }
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
-                }else if((aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'CORRESPONDENCIA CIUDADANA')||(aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'CORRESPONDENCIA CIUDADANA CM DIGITAL')){
+                }else if((aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'CORRESPONDENCIA CIUDADANA')||(aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'CORRESPONDENCIA CIUDADANA CM DIGITAL') ||(aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'DENUNCIAS TRANSPARENCIA')){
                         datoObjectNoti = new Object();
                         $scope.notSitram = aNotif.success[i];
                         var mensaje = aNotif.success[i].obs_tra_observaciones;
@@ -735,7 +737,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                         datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                         datoObjectNoti.obs_tra_observaciones = mensajeIgob;
-                        datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                        datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                         datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                         datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                         datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
@@ -753,7 +755,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 datoObjectNoti = new Object();
                 $scope.notMascotas = aNotif.success[i];
                 var mensaje = aNotif.success[i].obs_tra_observaciones;
-                valor = mensaje.indexOf("&#34")
+                valor = mensaje.indexOf("&#34");
                 var resS = mensaje.split("&#34");
                 if(valor != -1){
                     $scope.actDetalle = resS[0];
@@ -771,14 +773,53 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                 datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                 datoObjectNoti.obs_tra_observaciones = mensajeIgob;
-                datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                 datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                 datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                 datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
                 datoObjectNoti.obj_url_ra = 'noRA';
                 datoObjectNotiFinal[i] = datoObjectNoti;
                 $scope.myObj = datoObjectNotiFinal; //aNotif.success;
-                }else{                                                              //CASO CONTRARIO....
+                }else if(aNotif.success[i].obs_tra_sistema == 'MODIFICACIÓN DE LICENCIAS' && aNotif.success[i].serdv_descripcion == 'MODIFICACION DE LICENCIAS DE FUNCIONAMIENTO 2019'){      //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
+                    datoObjectNoti = new Object();
+                    var mensaje = aNotif.success[i].obs_tra_observaciones;
+                    var mensaje = aNotif.success[i].obs_tra_observaciones;
+                    valorAE = mensaje.indexOf("&#34");
+                    var resAE = mensaje.split("&#34");
+                    if(valorAE != -1){
+                        $scope.actDetalle = resAE[0];
+                        var mensajeIgob = resAE[0];
+                        $scope.resAE = resAE[1];
+                        datoObjectNoti.obj_url_AE = $scope.resAE;
+                    }else{
+                        var mensajeIgob = mensaje;
+                    }
+                    datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
+                    datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
+                    datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
+                    datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
+                    datoObjectNoti.obs_tra_observaciones = mensajeIgob;
+                    //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
+                    datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
+                    datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
+                    datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
+                    datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
+                    datoObjectNoti.mensajeIgob = $scope.resAE1;
+                    if ($scope.resAE1 == undefined){
+                        datoObjectNoti.obj_url_ra = "noRA";
+                    }else{
+                        if(resAE.length > 1){
+                            datoObjectNoti.obj_url_AE = $scope.resAE1;
+                            datoObjectNoti.obj_url_ra = "noRA";
+                        }else{
+                            datoObjectNoti.obj_URL_AE = $scope.resAE1;
+                            datoObjectNoti.obj_url_ra = "noRA";
+                        }
+                    }
+                    datoObjectNotiFinal[i] = datoObjectNoti;
+                    $scope.myObj = datoObjectNotiFinal; //aNotif.success;
+                }else{                                  //CASO CONTRARIO....
                     $scope.myObj = aNotif.success;
                     datoObjectNoti = new Object();
                     datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
@@ -787,7 +828,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
                     datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
                     datoObjectNoti.obs_tra_observaciones = aNotif.success[i].obs_tra_observaciones;
-                    datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
                     datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
                     datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
                     datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
@@ -796,6 +837,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus; 
                     datoObjectNoti.obj_url_ra = "noRA";
                     datoObjectNoti.obj_url = "noSitram";
+                    datoObjectNoti.obj_url_AE = "noAE";
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal;
                 }
@@ -879,7 +921,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             $scope.adjunto = respuestaci;
                             document.getElementById('txt_adjunto').value = nombreNuevoCIAnverso;
                             $scope.btover=true;
-                            //$scope.mostrarimg('adj');
                         });
                     } else{
                         if (ext_doc == 'pdf' ||  ext_doc == 'docx' ||  ext_doc == 'docxlm' || ext_doc == 'xls' || ext_doc == 'xlsx') {
@@ -887,16 +928,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             fileUpload1.uploadFileToUrl1($scope.adjunto, uploadUrl,nombreNuevoCIAnverso);
                             $scope.registroAdj.adjunto ='doc_'+$scope.datosSitram.frm_tra_if_codigo+'/'+ nombreNuevoCIAnverso;
                             $scope.btover = true;
-                            /*var zipci = new JSZip();
-                            zipci.file($scope.adjunto.name, $scope.adjunto);
-                            zipci.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobci) {
-                                nombreNuevoCIAnverso = 'doc_'+$scope.datosSitram.frm_tra_if_codigo+'_'+fechaNueva+'.zip';
-                                fileUpload1.uploadFileToUrl1(blobci, uploadUrl, nombreNuevoCIAnverso);
-                                $scope.registroAdj.adjunto = nombreNuevoCIAnverso;
-                                $scope.adjunto = blobci; 
-                                $scope.btover=true; 
-                                document.getElementById('txt_adjunto').value = nombreNuevoCIAnverso;
-                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -917,7 +948,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                             $scope.registroAdj.adjunto = 'doc_'+$scope.datosSitram.frm_tra_if_codigo+'/' + nombreNuevoCIAnverso;
                             $scope.btover=true;
                             document.getElementById('txt_adjunto').value = nombreNuevoCIAnverso;
-                            //$scope.mostrarimg('adj');
                             $.unblockUI();
                         } else{
                             swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -1015,10 +1045,31 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             $scope.Advertencia1 = "ok";
         }
     }; 
-    
+
+    /***********recuperar  imagen*************/
+    $scope.$on('api:ready',function(){
+        $scope.datospersonaJuridica  =   "hide";
+        $scope.recuperarDatosRegistro();
+        $scope.recuperarDatosDocumentos();
+        $scope.datosReportePlaformista();
+        $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
+        $scope.notificaciones();
+
+    });   
+    $scope.inicioDatosCiudadano = function () {
+        $scope.datospersonaJuridica  =   "hide";
+        $scope.recuperarDatosRegistro();
+        $scope.recuperarDatosDocumentos();
+        $scope.datosReportePlaformista();
+        $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
+        $scope.notificaciones();
+        /** MODIFICACIONES RMCF **/
+        $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
+    };
+
+
     $scope.getDocumento = function(usuario,sistema,proceso,ci_nodo)
     {
-	console.log("getDocumento 01062021");
         $.blockUI();
         var resRoles = new reglasnegocio();
         resRoles.identificador = 'RCCIUDADANO_72';
@@ -1050,44 +1101,17 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                         i = i.replace("http://40.117.46.159:80/rest", CONFIG.APIURL);
                     }					
                     $scope.t = i;
-                    //$scope.vdoc_url = dataValue['vdoc_url'];
                     $scope.$apply(); 
-                    //$scope.descripcion_corta=value['descripcion_corta'];
                 }
             });
 
 
             $scope.valida = 1;
             $scope.msj1 = '';
-            //$scope.tablaDocumentos.reload();
             $.unblockUI();
           };
         });      
-    };
-    /***********recuperar  imagen*************/
-    $scope.$on('api:ready',function(){
-        $scope.datospersonaJuridica  =   "hide";
-        $scope.recuperarDatosRegistro();
-        $scope.recuperarDatosDocumentos();
-        $scope.datosReportePlaformista();
-        $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
-        $scope.notificaciones();
-        $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
-
-    });   
-    $scope.inicioDatosCiudadano = function () {
-        $scope.datospersonaJuridica  =   "hide";
-        $scope.recuperarDatosRegistro();
-        $scope.recuperarDatosDocumentos();
-        $scope.datosReportePlaformista();
-        $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
-        $scope.notificaciones();
-        /** MODIFICACIONES RMCF **/
-        $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
-    };
-
-
-
+      };
 
     $scope.ImprimirUrl = function (fum) 
     {
@@ -1124,16 +1148,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         link.download = 'Condiciones_de_Uso.pdf';
         link.dispatchEvent(new MouseEvent('click'));
     }
-
-    /*$scope.actualizarNoticia = function() {
-        $scope.recuperarNoticias();         
-    };
-    $scope.seleccionarNoticia = function(noticia) {
-        $scope.tituloSeleccionado = noticia.cnttitulo;
-        $scope.imagenSeleccionada = noticia.cntimagen;
-        $scope.resumenSeleccionado = noticia.cntresumen;
-        $scope.origenSeleccionado = noticia.cnturl;
-    } */    
 
     ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
         try{ 

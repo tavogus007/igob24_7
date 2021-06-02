@@ -61,11 +61,10 @@ var jsonURLS    =   {
     CONEXION_SITRAM: "http://192.168.5.141", 
     CONEXION_API_PG_PRODUCTO: "http://192.168.5.141:8010/",
 	SERVICE_SIERRAM : "http://131.0.0.11:90/api/",
-    //CONEXION_PAGOS: "http://52.226.130.135:5433/", 
     //CONEXION_PAGOS: "http://172.18.2.153:8000/api/",    
-    //CONEXION_PAGOS: "http://127.0.0.1:8000/api/",    
-    CONEXION_PAGOS: "http://131.0.0.12:8080/payme/public/api/",    
-    //CONEXION_PAGOS: "http://52.226.130.135:5433/api/",    
+    
+    CONEXION_PAGOS: "http://52.226.130.135:5433/api/",    
+    //CONEXION_PAGOS: "http://131.0.0.12:8080/payme/public/api/",    
 
 
     //CONEXION_ODM : "http://172.18.2.41:8081/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php",

@@ -1930,8 +1930,8 @@ body:after {
             visibility: visible;
           }
           .btn-secondary:not(:disabled):not(.disabled):active {
-            background-color:#ffc107;
-            border-color: #ffb103;
+            background-color: #006e80;
+            border-color: #eefeff;
           }
 
 

@@ -444,20 +444,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
     
     $scope.registro = aRegistro;
     $scope.registro2 = aEstadoC;    
-    $scope.aLogPlataforma = ""; 
-
-    /************************* datos Reporte Plaformista ***********************************/
-    $scope.datosReportePlaformista = function () {
-        var datosReporteP = new reglasnegocio();
-        datosReporteP.identificador = "RCCIUDADANO_52";
-        datosReporteP.parametros = '{"susuarioid":"' + idUsuario + '","susciudadanoid":"' + $rootScope.vid + '"}';
-        datosReporteP.llamarregla(function(results){
-            results = JSON.parse(results);
-            if(results.length > 0){
-                $scope.aLogPlataforma = results;
-            }             
-        });                  
-    }; 
     /*****************************************************************************************/
      $scope.modificarDatosRegistro = function(vid){
         $rootScope.habilitartab = 'no';     
@@ -1051,7 +1037,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         $scope.datospersonaJuridica  =   "hide";
         $scope.recuperarDatosRegistro();
         $scope.recuperarDatosDocumentos();
-        $scope.datosReportePlaformista();
         $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
         $scope.notificaciones();
 
@@ -1060,7 +1045,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         $scope.datospersonaJuridica  =   "hide";
         $scope.recuperarDatosRegistro();
         $scope.recuperarDatosDocumentos();
-        $scope.datosReportePlaformista();
         $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
         $scope.notificaciones();
         /** MODIFICACIONES RMCF **/

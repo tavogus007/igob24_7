@@ -592,8 +592,8 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "sistema_creado":"IGOB247",
           "tipo_persona": "NATURAL",
           "usr_id": this.usr_id,
-          "activacionf": "SI",
-          "activaciond": "SI",
+          "activacionf": "NO",
+          "activaciond": "NO",
           "tipo_documento": this.tipo_documento,
            
         };
@@ -819,8 +819,8 @@ rcJuridico.prototype.crearJuridico = function (functionResp)
           "sistema":"IGOB247",
           "sistema_creado":"IGOB247",
           "usr_id": this.usr_id,
-          "activacionf": "SI",
-          "activaciond": "SI"
+          "activacionf": "NO",
+          "activaciond": "NO"
         };
 
         ejecutarAjax(urlComp, typeCall, dataParams, functionResp);

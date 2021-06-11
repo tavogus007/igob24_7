@@ -427,8 +427,14 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-3 control-label">{{translateTitulos.lbl_06_12}}:</label>
                                                     <div class="col-sm-9">
-                                                    <select id="prsEstCivil" name="prsEstCivil" placeholder="{{translateTitulos.lbl_06_12}}"
-                                                    class="form-control" required  ng-model="registro.estado_civil" ng-options="obj.estcivil_valor as obj.estcivil for obj in aEstadoCivil" value="{{registro.estcivil_valor}}" ></select>
+                                                    <!--select id="prsEstCivil" name="prsEstCivil" placeholder="{{translateTitulos.lbl_06_12}}" class="form-control" required  ng-model="registro.estado_civil" ng-options="obj.estcivil_valor as obj.estcivil for obj in aEstadoCivil" value="{{registro.estcivil_valor}}" ></select-->
+                                                    <select id="prsEstCivil" name="prsEstCivil" class="form-control" ng-model="registro.estado_civil"  placeholder="Lugar Nacimiento" ng-disabled="bloquear1">
+                                                        <option value="">--Selecccione--</option>
+                                                        <option value="C">Casado/a </option>
+                                                        <option value="D">Divorciado/a</option>
+                                                        <option value="S">Soltero/a</option>
+                                                        <option value="V">Viudo/a</option>
+                                                      </select>    
                                                     </div>
                                                 </div>
                                                 <div class="hr-line-dashed"></div>
@@ -460,7 +466,7 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-3 control-label">{{translateTitulos.lbl_06_12_18}}:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" id="prsCelular" name="prsCelular" class="form-control" placeholder="{{translateTitulos.lbl_09_15}}" ng-model="registro.celular" ng-minlength="8" maxlength="8" onkeyUp="valNumeroCelular(this,'mensaje6');" required/>
+                                                        <input type="text" ng-model="registro.celular"  id="prsCelular" name="prsCelular" class="form-control" placeholder="{{translateTitulos.lbl_09_15}}" ng-minlength="8" maxlength="8" onkeyUp="valNumeroCelular(this,'mensaje6');" required/>
 														<br><span id ="mensaje6" style = "color:red;font-weight:bold; font-size:14px">El numero de celular no es correcto. Debe contener 8 digitos(Ej:71512348)</span>
                                                         <span style="color:red" ng-show="signupForm.prsCelular.$invalid">
                                                         <span ng-show="signupForm.prsCelular.$error.required">Llenar el numero de celular</span>
@@ -683,7 +689,11 @@
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_02}}:</label>
                                                 <div class="col-sm-8">
-                                                    <select id="paisN" name="paisN" placeholder="{{translateTitulos.lbl_07_02}}" ng-model="registro.pais" class="form-control" required  ng-change="actualizaDepartamento(registro.pais)" ng-model="registro.pais" ng-options="obj.pais_codigo as obj.pais_pais for obj in comdpais" value="{{obj.pais_codigo}}"></select>
+                                                    <!--select id="paisN" name="paisN" placeholder="{{translateTitulos.lbl_07_02}}" ng-model="registro.pais" class="form-control" required  ng-change="actualizaDepartamento(registro.pais)" ng-model="registro.pais" ng-options="obj.pais_codigo as obj.pais_pais for obj in comdpais" value="{{obj.pais_codigo}}"></select-->
+                                                    <select  id="paisN" name="paisN"  placeholder="Pais" ng-model="registro.pais"  class="form-control"  value="{{registro.pais}}">
+                                                        <option value="">--Seleccionar--</option>
+                                                        <option value="1">BOLIVIA</option>
+                                                    </select>
                                                     <br>
                                                     <span style="color:red" ng-show="signupForm.paisN.$invalid">
                                                     <span ng-show="signupForm.paisN.$error.required">Llenar el Pais de Residencia</span>
@@ -693,7 +703,19 @@
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_03}}:</label>
                                                 <div class="col-sm-8">
-                                                    <select id="departamentoN" name="departamentoN" placeholder="{{translateTitulos.lbl_07_03}}" ng-model="registro.departamento" class="form-control" required  ng-disabled="deshabilitadoD" ng-change="cargarProvincia_v2(registro.departamento);limpiarDepartamento();" ng-options="obj.dpto_codigo as obj.dpto_departamento for obj in comdepa" value="{{obj.dpto_codigo}}"></select>
+                                                    <!--select id="departamentoN" name="departamentoN" placeholder="{{translateTitulos.lbl_07_03}}" ng-model="registro.departamento" class="form-control" required  ng-disabled="deshabilitadoD" ng-change="cargarProvincia_v2(registro.departamento);limpiarDepartamento();" ng-options="obj.dpto_codigo as obj.dpto_departamento for obj in comdepa" value="{{obj.dpto_codigo}}"></select-->
+                                                    <select  id="departamentoN" name="departamentoN"  placeholder="Pais" ng-model="registro.departamento"  class="form-control"  value="{{registro.departamento}}" ng-disabled="deshabilitadoD" ng-change="cargarProvincia_v2(registro.departamento);limpiarDepartamento(); required">
+                                                        <option value="">--Seleccionar--</option>
+                                                        <option value="LPZ">LA PAZ</option>
+                                                        <option value="CHQ">CHUQUISACA</option>
+                                                        <option value="CBB">COCHABAMBA</option>
+                                                        <option value="BNI">BENI</option>
+                                                        <option value="PND">PANDO</option>
+                                                        <option value="SCZ">SANTA CRUZ</option>
+                                                        <option value="TJA">TARIJA</option>
+                                                        <option value="ORU">ORURO</option>
+                                                        <option value="PTS">POTOSÍ</option>
+                                                    </select>
                                                     <br>
                                                     <span style="color:red" ng-show="signupForm.departamentoN.$invalid">
                                                     <span ng-show="signupForm.departamentoN.$error.required">Llenar el Departamento</span>
@@ -1153,14 +1175,30 @@
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_02}}:</label>
                                                 <div class="col-sm-8">
-                                                    <select id="pais" name="pais" placeholder="País" ng-model="registro.pais" class="form-control" required  ng-change="actualizaDepartamento(registro.pais)" ng-model="registro.pais" ng-options="obj.pais_codigo as obj.pais_pais for obj in comdpais" value="{{registro.pais}}"></select>
+                                                    <!--select id="pais" name="pais" placeholder="País" ng-model="registro.pais" class="form-control" required  ng-change="actualizaDepartamento(registro.pais)" ng-model="registro.pais" ng-options="obj.pais_codigo as obj.pais_pais for obj in comdpais" value="{{registro.pais}}"></select-->
+                                                    <select  id="pais" name="pais"  placeholder="Tipo Vía" ng-model="registro.pais"  class="form-control"  value="{{registro.pais}}">
+                                                        <option value="">--Seleccionar--</option>
+                                                        <option value="1">BOLIVIA</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="hr-line-dashed"></div>
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_03}}:</label>
                                                 <div class="col-sm-8">
-                                                    <select id="departamento" name="departamento" placeholder="País" ng-model="registro.departamento" class="form-control"  ng-disabled="deshabilitadoD" ng-change="cargarProvincia_v2(registro.departamento)" ng-options="obj.dpto_codigo as obj.dpto_departamento for obj in comdepa" value="{{registro.dpto_codigo}}" required></select>
+                                                    <!--select id="departamento" name="departamento"  ng-model="registro.departamento" class="form-control"  ng-change="cargarProvincia_v2(registro.departamento)" ng-options="obj.dpto_codigo as obj.dpto_departamento for obj in comdepa" value="{{registro.dpto_codigo}}" required></select-->
+                                                    <select  id="departamento" name="departamento" ng-model="registro.departamento"  class="form-control"  value="{{registro.departamento}}" ng-disabled="deshabilitadoD" ng-change="cargarProvincia_v2(registro.departamento);limpiarDepartamento(); required">
+                                                        <option value="">--Seleccionar--</option>
+                                                        <option value="LPZ">LA PAZ</option>
+                                                        <option value="CHQ">CHUQUISACA</option>
+                                                        <option value="CBB">COCHABAMBA</option>
+                                                        <option value="BNI">BENI</option>
+                                                        <option value="PND">PANDO</option>
+                                                        <option value="SCZ">SANTA CRUZ</option>
+                                                        <option value="TJA">TARIJA</option>
+                                                        <option value="ORU">ORURO</option>
+                                                        <option value="PTS">POTOSÍ</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="hr-line-dashed"></div>

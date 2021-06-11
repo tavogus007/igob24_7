@@ -1698,3 +1698,73 @@ guardarCondicionUso.prototype.guardarCondicion_deUso = function (functionResp){
     };
     ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
 };
+
+//Actualizacion Mongo Motores
+rcJuridico.prototype.obtieneRepresentanteLegal = function (functionResp)
+{
+    urlComp = "/getDataRepLegal";
+    typeCall = "post";
+    dataParams = {
+      "ci":  this.ci,
+      "tipo_persona":  this.tipo_persona,
+      "estado": this.estado,
+      "actFisica":this.actFisica,
+      "actDigital":this.actDigital
+
+    };
+
+    ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+};
+rcJuridico.prototype.validaNitRepresentanteLegal = function (functionResp)
+{
+    urlComp = "/getDataPersonaJuridica";
+    typeCall = "post";
+    dataParams = {
+      "nit":  this.nit,
+      "estado": this.estado
+    };
+
+    ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+};
+rcNatural.prototype.validaCi_Natural = function (functionResp)
+{
+    urlComp = "/validaNatural";
+    typeCall = "post";
+    dataParams = {
+      "ci":  this.ci,
+      "tipo_persona":this.tipo_persona,
+      "estado": this.estado
+    };
+
+    ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+};
+
+
+function rcProvincias() {
+  this.idProv;
+};
+rcProvincias.prototype.getProv = function (functionResp)
+{
+  urlComp = "/provinciaLst";
+  typeCall = "post";
+  dataParams = {
+    "idProv":  this.idProv
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+
+};
+
+function rcMunicipios() {
+  this.idMun;
+};
+rcMunicipios.prototype.getMun = function (functionResp)
+{
+  urlComp = "/municipioLst";
+  typeCall = "post";
+  dataParams = {
+    "idMun":  this.idMun
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+
+};
+

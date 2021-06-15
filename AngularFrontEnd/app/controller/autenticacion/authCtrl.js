@@ -801,7 +801,6 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             $scope.sstyloLetter  =   "extendido";            
         }
     }
-
     $rootScope.fmostrarCondicionesUso   =   function(){        
         $("#exampleModalCenter").modal({backdrop: 'static', keyboard: false});        
         $('#msgcondicionesuso').html($scope.msgcondicionesuso);

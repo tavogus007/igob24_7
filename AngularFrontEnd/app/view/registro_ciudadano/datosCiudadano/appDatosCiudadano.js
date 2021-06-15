@@ -1186,7 +1186,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         });
     }
 
-
     $scope.ImprimirUrl = function (fum) 
     {
         $scope.archivoFile = fum.split(":");

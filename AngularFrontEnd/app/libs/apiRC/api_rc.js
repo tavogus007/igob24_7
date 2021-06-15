@@ -1776,7 +1776,6 @@ function getCondicionUso(){
   this.sdoc_proceso;
   this.sdoc_ci_nodo;
 }
-
 getCondicionUso.prototype.get_CondicionUso = function (functionResp){
   urlComp = "/listarAdjuntos"
   typeCall = "post";

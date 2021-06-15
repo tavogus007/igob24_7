@@ -419,8 +419,8 @@ textarea::-webkit-scrollbar-thumb {
                                 <p id="collapseSummary1" align="justify">
                                     Por favor, lea detenidamente las condiciones del presente documento, puesto que indican sus derechos y responsabilidades al visitar la Plataforma Electrónica Innovador iGob 24/7.
                                 </p>
-                                <p ng-show="aceptarcondiciones"><a data-toggle="modal" ng-click="fmostrarCondicionesUso();">Aceptar Condiciones de uso</a></p>                              
-								                <p ng-show="! aceptarcondiciones"><a href="{{t}}" target="_blank">Descargar condiciones de Uso</a></p>
+                                <p ng-show="muestraCondicion==true"><a data-toggle="modal" ng-click="fmostrarCondicionesUso();">Aceptar Condiciones de uso</a></p>                              
+								                <p ng-show="muestraCondicion==false"><a href="{{t}}" target="_blank">Descargar condiciones de Uso</a></p>
                             </div>
                         </div>                      
                   </div>

@@ -801,8 +801,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             $scope.sstyloLetter  =   "extendido";            
         }
     }
-
-    $scope.fmostrarCondicionesUso   =   function(){        
+    $rootScope.fmostrarCondicionesUso   =   function(){        
         $("#exampleModalCenter").modal({backdrop: 'static', keyboard: false});        
         $('#msgcondicionesuso').html($scope.msgcondicionesuso);
     }
@@ -880,7 +879,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                             $scope.validarmodal =   true;
                         }else{
                             setTimeout(function(){                            
-                                $scope.fmostrarCondicionesUso();
+                                $rootScope.fmostrarCondicionesUso();
                             },500);
                         }          
                     }else if(tienecondicionesuso   ==  'SI'){

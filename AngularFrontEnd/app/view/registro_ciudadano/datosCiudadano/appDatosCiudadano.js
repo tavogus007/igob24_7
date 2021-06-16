@@ -1,5 +1,4 @@
-function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, 
-    LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, fileUpload1, $timeout, obtFechaCorrecta, obtFechaActual) {
+function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, fileUpload1, $timeout, obtFechaCorrecta, obtFechaActual) {
     
     var aRegistro = { "cedula": "","complemento": "","celular":"","correo":"","direccion":"","estado_civil":"","fecha_nacimiento":"","materno":"","nombre":"","ocupacion":"",
      "paterno":"","sexo":"","telefono":"","cedula2": "","complemento2": "","repLegal": "","nroDocumento": "","nroNotaria": "",
@@ -1052,50 +1051,140 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
     };
 
 
-    $scope.getDocumento = function(usuario,sistema,proceso,ci_nodo)
-    {
-        $.blockUI();
-        var resRoles = new reglasnegocio();
-        resRoles.identificador = 'RCCIUDADANO_72';
-        resRoles.parametros = '{"sdoc_usuario":"'+ usuario +'","sdoc_sistema":"","sdoc_proceso":"'+ proceso +'","sdoc_ci_nodo":"'+ ci_nodo +'"}';
-        resRoles.llamarregla(function(response)
-        {
-          $scope.obtDatos = JSON.parse(response);
-          if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
-            $scope.tablaDocumentos = null;
-            $("#divMsj").css({'display' : 'block' });
-            $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
-            $.unblockUI();
-            alertify.warning('No existen datos');  
-          }
-          else
-          {
-            var data = JSON.parse(response);
-            var u;
-            angular.forEach(data, function(dataValue, dataKey) 
-            {
-                var n = $scope.vdoc_nombre = dataValue['vdoc_nombre'];            
-                var s = $scope.vdoc_sistema= dataValue['vdoc_sistema'];
-                u = $scope.vdoc_url    = dataValue['vdoc_url'];
-                if(n == "CONDICIONES DE USO" || s == "vdoc_sistema")
-                {
-                    var y = $scope.vdoc_url = dataValue['vdoc_url'];
-                    var i = y.toString();
-                    if(i.indexOf("http://40.117.46.159:80/rest") != -1){
-                        i = i.replace("http://40.117.46.159:80/rest", CONFIG.APIURL);
-                    }					
+    $scope.getDocumentoPromesa = function(){
+        var validarpromesas = [$scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null)];
+        $q.all(validarpromesas).then(function (resp) {
+            console.log("respCU: ", resp);
+        });
+    }
+ 
+    $scope.getDocumento = function(usuario,sistema,proceso,ci_nodo){
+      $scope[name] = 'Running';
+      var deferred = $q.defer();
+      $scope.t = '';
+      var cu = new getCondicionUso();  
+      cu.sdoc_usuario = usuario;
+      cu.sdoc_sistema = sistema;
+      cu.sdoc_proceso = proceso;
+      cu.nombreCU = ci_nodo;
+      cu.get_CondicionUso(function(resultado){
+      resultadoApi = JSON.parse(resultado);
+      $scope.getCu = resultadoApi.success;
+      console.log('$scope.getCu',$scope.getCu);
+
+      if(sessionService.get('SERVICIOS') == 'SI'){
+        if($scope.getCu.length>0){
+            $scope.muestraCondicion = false;
+            for(i=0;i<$scope.getCu.length;i++){
+                if($scope.getCu[i].vdoc_nombre = 'CONDICIONES DE USO' || $scope.getCu[i].vdoc_ci_nodo == 'CU' ){
+                  var y = $scope.getCu[i].vdoc_url;
+                  console.log('url',y);
+                  var i = y.toString();
+                    console.log('link',i);				
                     $scope.t = i;
-                    $scope.$apply(); 
+                    deferred.resolve(resultado);
                 }
-            });
+            }
+        }else{
+            $scope.muestraCondicionUso();
+        }      
+      }else{
+        console.log('El ciudadano no acepto las condiciones de uso');
+        $scope.muestraCondicionUso();
+ 
+      }
 
+      });
+      return deferred.promise;
 
-            $scope.valida = 1;
-            $scope.msj1 = '';
-            $.unblockUI();
-          };
-        });      
-      };
+    }
+
+    $scope.muestraCondicionUso = function(){
+        $scope.muestraCondicion = true;
+        var fechaserver = new fechaHoraServer(); 
+        fechaserver.fechahora(function(resp){
+            var sfecha = JSON.parse(resp);
+            var fecha = sfecha.success.fecha.split(" ")[0]; 
+            var hora = sfecha.success.fecha.split(" ")[1]; 
+            fecha = fecha.split("-")[2] + "/" + fecha.split("-")[1] + "/" + fecha.split("-")[0];
+            $scope.btncondicionesuso_n  =   true;
+            $scope.btncondicionesuso_a  =   true;
+            setTimeout(function(){
+                var dataLogin = JSON.parse(sessionStorage.getItem('autenticacion'));
+                console.log('dataLogin',dataLogin);
+                var valcondiciones          =   ((typeof(dataLogin[0].dtspsl_acepta_servicios) == 'undefined' || dataLogin[0].dtspsl_acepta_servicios == null) ? '' : dataLogin[0].dtspsl_acepta_servicios);
+                valcondiciones              =   valcondiciones.trim();
+                $rootScope.aceptarcondiciones   =   true;
+                var tienecondicionesuso     =   '';
+                var aceptacondicionesuso    =   '';
+                //alert(valcondiciones);
+                if(valcondiciones == 'SI'){
+                    tienecondicionesuso     =   'SI';
+                    aceptacondicionesuso    =   'SI';                   
+                }else if(valcondiciones == "NO" || valcondiciones == '' ){
+                    var svSession          =   ((typeof(sessionService.get('SERVICIOS_MODAL')) == 'undefined' || sessionService.get('SERVICIOS_MODAL') == null) ? '' : sessionService.get('SERVICIOS_MODAL'));
+                    if(svSession == 'NO' || svSession == '' || svSession == 'undefined' || svSession == null){
+                        tienecondicionesuso     =   'NO';
+                        aceptacondicionesuso    =   '';
+                    }else if(svSession == 'SI' &&  sessionService.get('US_IDROL') == '5'){
+                        $rootScope.stiporol = 5;
+                    }
+                }            
+                var stringCondicionesDeUso  =   "";
+                var urlcondiciones  =   "";
+                var snombre =   "";
+                var scedulaid   =   "";
+                var sexpedido   =   "";
+                var snombreREP = "";
+                var scirep = "";
+                var sempresa = "";
+                var snit = "";
+
+                if(sessionService.get("TIPO_PERSONA") == 'NATURAL'){
+                    urlcondiciones  =   "../../docs/condiciones_uso_natural_1.html";
+                    snombre = sessionService.get("US_NOMBRE") + " " + sessionService.get("US_PATERNO") + " " + sessionService.get("US_MATERNO");
+                    scedulaid   = sessionService.get("CICIUDADANO");
+                    sexpedido   = dataLogin[0].dtspsl_expedido;
+                }else if(sessionService.get("TIPO_PERSONA") == 'JURIDICO'){
+                    urlcondiciones  =   "../../docs/condiciones_uso_juridico_1.html";
+                    snombreREP = sessionService.get("REPRESENTANTE");
+                    snit = sessionService.get("NITCIUDADANO");
+                    sempresa = sessionService.get("US_NOMBRE");
+                    scirep = sessionService.get("REPRESENTANTECI");
+                    
+                }
+                $( "#msgcondicionesuso" ).load(urlcondiciones, function(data) {
+                    stringCondicionesDeUso  =   data;
+                    //..
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#USUARIO#", snombre);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#CEDULA#", scedulaid);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#EXPEDIDO#", sexpedido);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#FECHA#", fecha);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#HORA#", hora);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#REPRESENTANTE#", snombreREP);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#NIT#", snit);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#EMPRESA#", sempresa);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#REPRESENTANTECI#", scirep);
+                    $scope.vercondicionesuso    =   "mostrar";
+                    $scope.msgcondicionesuso = stringCondicionesDeUso;
+                    $scope.notifcondicionesuso = stringCondicionesDeUso;
+                    if(tienecondicionesuso   ==  'NO'){
+                        if(aceptacondicionesuso ==  'NO'){
+                            $scope.notifcondicionesuso = stringCondicionesDeUso;
+                            $scope.validarmodal =   true;
+                        }else{
+                            setTimeout(function(){                            
+                                $rootScope.fmostrarCondicionesUso();
+                            },500);
+                        }          
+                    }else if(tienecondicionesuso   ==  'SI'){
+                        $rootScope.aceptarcondiciones   =   false;
+                    }
+                });
+                $scope.$apply();
+            }, 500);
+        });
+    }
 
     $scope.ImprimirUrl = function (fum) 
     {

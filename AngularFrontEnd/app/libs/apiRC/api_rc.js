@@ -1768,3 +1768,22 @@ rcMunicipios.prototype.getMun = function (functionResp)
 
 };
 
+///Condiciones de uso dashboard
+
+function getCondicionUso(){
+  this.sdoc_usuario;
+  this.sdoc_sistema;
+  this.sdoc_proceso;
+  this.sdoc_ci_nodo;
+}
+getCondicionUso.prototype.get_CondicionUso = function (functionResp){
+  urlComp = "/listarAdjuntos"
+  typeCall = "post";
+  dataParams = {
+    "sdoc_usuario": this.sdoc_usuario,
+    "sdoc_sistema": this.sdoc_sistema,
+    "sdoc_proceso": this.sdoc_proceso,
+    "nombreCU": this.nombreCU
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+};

@@ -475,7 +475,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
     $scope.events = {};
 
     /******************************/
-    $scope.eventosCiudadano = function(sIdCiudadano){
+    /*$scope.eventosCiudadano = function(sIdCiudadano){
         var eventosCiu = new reglasnegocio();
         eventosCiu.identificador = "RCCIUDADANO_60";
         eventosCiu.parametros = '{"cev_dtspsl_id":"' + sIdCiudadano + '"}';
@@ -490,7 +490,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 $scope.msg = "No existen eventos!!";
             }
         });
-    };
+    };*/
     /*******************************/
 
     //Procesando los datos de los eventos del ciudadano
@@ -519,7 +519,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
     
     //Almacenar eventos del ciudadano
     /********************* registrar Eventos ********************************/
-    $scope.registrarEventos = function(datos){
+    /*$scope.registrarEventos = function(datos){
         var sEvento = datos.evento;
         var fFechaInicio = datos.fechaInicio;
         var fFechaFin = datos.fechaFin;
@@ -538,10 +538,10 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
             sweet.show('', 'Nuevo evento registrado', 'success');
         }); 
-    }
+    }*/
     /***************************************************************************/
     //Editar eventos del ciudadano
-    $scope.editarEvento = function(event) {
+    /*$scope.editarEvento = function(event) {
         //var sTitulo = event.idEvento;
         //var sId = sTitulo.substring(sTitulo.indexOf("id='") + 4, sTitulo.indexOf("'", sTitulo.indexOf("id='") + 4));
         $scope.btnAccion = "ACTUALIZAR";
@@ -551,11 +551,11 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         $scope.ciudadanoEventos.fechaInicio = event.startsAt;
         $scope.ciudadanoEventos.fechaFin = event.endsAt;
         $('#registroEvento').modal('show');
-    };
+    };*/
     
     //Editar eventos del ciudadano
     /*******************************************/
-    $scope.actualizarEventos = function(datos) {
+    /*$scope.actualizarEventos = function(datos) {
         var fFechaInicio = datos.fechaInicio;
         var fFechaFin = datos.fechaFin;
         var fecha = new Date();
@@ -574,11 +574,11 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
             sweet.show('', 'Evento modificado', 'success');
         })
-    };
+    };*/
     /****************************************/
     
     //Eliminar eventos del ciudadano 
-    $scope.eliminarEventosCiudadano = function(data){
+    /*$scope.eliminarEventosCiudadano = function(data){
         var eliminaEv = new reglasnegocio();
         eliminaEv.identificador = 'RCCIUDADANO_63';
         eliminaEv.parametros = '{"cev_estado":"B"}';
@@ -587,7 +587,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
             alertify.success('Evento eliminado correctamente');
         });
-    }
+    }*/
     /*******************************************/
     //Limpiar datos de evento
     $scope.limpiarEventos = function(){
@@ -1036,7 +1036,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         $scope.datospersonaJuridica  =   "hide";
         $scope.recuperarDatosRegistro();
         $scope.recuperarDatosDocumentos();
-        $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
+        //$scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
         $scope.notificaciones();
 
     });   
@@ -1044,7 +1044,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         $scope.datospersonaJuridica  =   "hide";
         $scope.recuperarDatosRegistro();
         $scope.recuperarDatosDocumentos();
-        $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
+        //$scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
         $scope.notificaciones();
         /** MODIFICACIONES RMCF **/
         $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
@@ -1070,17 +1070,13 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
       cu.get_CondicionUso(function(resultado){
       resultadoApi = JSON.parse(resultado);
       $scope.getCu = resultadoApi.success;
-      console.log('$scope.getCu',$scope.getCu);
-
       if(sessionService.get('SERVICIOS') == 'SI'){
         if($scope.getCu.length>0){
             $scope.muestraCondicion = false;
             for(i=0;i<$scope.getCu.length;i++){
-                if($scope.getCu[i].vdoc_nombre = 'CONDICIONES DE USO' || $scope.getCu[i].vdoc_ci_nodo == 'CU' ){
+                if($scope.getCu[i].vdoc_nombre == 'CONDICIONES DE USO' && $scope.getCu[i].vdoc_ci_nodo == 'CU' ){
                   var y = $scope.getCu[i].vdoc_url;
-                  console.log('url',y);
                   var i = y.toString();
-                    console.log('link',i);				
                     $scope.t = i;
                     deferred.resolve(resultado);
                 }

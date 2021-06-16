@@ -1787,3 +1787,25 @@ getCondicionUso.prototype.get_CondicionUso = function (functionResp){
   };
   ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 };
+
+function adicionaLogs(){
+  this.logs_usr_id;
+  this.logs_dtspsl_id;
+  this.logs_frm_id;
+  this.logs_evento;
+  this.logs_registrado;
+  this.logs_modificado;
+}
+adicionaLogs.prototype.adiciona_Logs = function (functionResp){
+  urlComp = "/addlogs"
+  typeCall = "post";
+  dataParams = {
+    "logs_usr_id": this.logs_modificado,
+    "logs_dtspsl_id": this.logs_modificado,
+    "logs_frm_id": this.logs_frm_id,
+    "logs_evento": this.logs_evento,
+    "logs_registrado": this.logs_registrado,
+    "logs_modificado": this.logs_modificado
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+};

@@ -15,6 +15,22 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.tipovehiculo_privado = {};
     $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"AUTOMOVIL"},{"nombre":"MOTOCICLETA"}]');
     $scope.div_escoger_servicio = false;
+    $scope.singular_Titulo = '(En formato PDF o DOC)';
+    $scope.singular_Respaldo = 'ADJUNTAR RESPALDO DEL MOTIVO DE LA SOLICITUD';
+    $scope.singular_Soat = 'ADJUNTE EL DOCUMENTO DEL SOAT ';
+    $scope.singular_Ruat = 'ADJUNTE EL DOCUMENTO DEL RUAT';
+    $scope.singular_Licencias = 'ADJUNTE SU LICENCIA DE CONDUCIR';
+    $scope.plural_Titulo = 'Los documentos para cada requisito en un solo archivo (En formato PDF o DOC)';
+    $scope.plural_Respaldo = 'ADJUNTAR RESPALDO DEL MOTIVO DE LA SOLICITUD';
+    $scope.plural_Soat = 'ADJUNTE EN UN SOLO DOCUMENTO EL SOAT DE TODOS VEHÍCULOS';
+    $scope.plural_Ruat = 'ADJUNTE EN UN SOLO DOCUMENTO EL RUAT DE TODOS VEHÍCULOS';
+    $scope.plural_Licencias = 'ADJUNTE EN UN SOLO DOCUMENTO LAS LICENCIAS DE LOS CONDUCTORES';
+    $scope.tituloRespaldo =  $scope.singular_Respaldo;
+    $scope.tituloSOAT =  $scope.singular_Soat;
+    $scope.tituloRUAT = $scope.singular_Ruat;
+    $scope.tituloLicencias = $scope.singular_Licencias;
+    $scope.tituloPrincipal = $scope.singular_Titulo;
+
     $scope.inicio = function () {
     }
     var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function (event, data) {
@@ -583,7 +599,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         $.unblockUI();
     }
 
-
+/*
     $scope.adjuntoDos = function () {
         datoObjectFiles = [];
         var datoObjectFile1 = new Object();
@@ -627,6 +643,43 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         $rootScope.FileAdjuntos = datoObjectFiles;
         $scope.datos.File_Adjunto = datoObjectFiles;
     }
+    */
+
+
+    $scope.adjuntoDos = function () {
+        datoObjectFiles = [];
+        var datoObjectFile1 = new Object();
+        var datoObjectFile2 = new Object();
+        var datoObjectFile3 = new Object();
+        var datoObjectFile4 = new Object();
+        var datoObjectFile5 = new Object();
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+        $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
+        datoObjectFile1.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_RESPALDO + "?app_name=todoangular";
+        datoObjectFile1.campo = $scope.datos.FILE_RESPALDO;
+        datoObjectFile1.nombre = $scope.tituloRespaldo;
+        datoObjectFile2.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOR_SOAT + "?app_name=todoangular";
+        datoObjectFile2.campo = $scope.datos.FILE_FOR_SOAT;
+        datoObjectFile2.nombre = $scope.tituloSOAT;
+        datoObjectFile3.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_RUAT_VEHICULO + "?app_name=todoangular";
+        datoObjectFile3.campo = $scope.datos.FILE_RUAT_VEHICULO;
+        datoObjectFile3.nombre = $scope.tituloRUAT;
+        datoObjectFile4.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_FOTO_LICENCIA_CI + "?app_name=todoangular";
+        datoObjectFile4.campo = $scope.datos.FILE_FOTO_LICENCIA_CI;
+        datoObjectFile4.nombre = $scope.tituloLicencias;
+        datoObjectFile5.url = $rootScope.decJuradaNaturalPermiso;
+        datoObjectFile5.campo = "DECLARACION JURADADA";
+        datoObjectFile5.nombre = 'DECLARACION JURADA';
+        datoObjectFiles[0] = datoObjectFile1;
+        datoObjectFiles[1] = datoObjectFile2;
+        datoObjectFiles[2] = datoObjectFile3;
+        datoObjectFiles[3] = datoObjectFile4;
+        datoObjectFiles[4] = datoObjectFile5;
+        $scope.datos.FileDocumentos = datoObjectFiles;
+        $rootScope.FileAdjuntos = datoObjectFiles;
+        $scope.datos.File_Adjunto = datoObjectFiles;
+    }
+
 
     $scope.tblTramites = new ngTableParams({
         page: 1,
@@ -668,8 +721,9 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
     });
- 
+
     $scope.verificacionFinalDeCamposFinal = function (data) {
+
         if ($scope.datos.PER_TRA_REG_TRANS == undefined || $scope.datos.PER_TRA_REG_TRANS == 'undefined') {
             swal('', "Ingrese el tipo de solicitud", 'warning');
         } else if (($scope.datos.PER_TRA_REG_TRANS == 'OTRO' && $scope.datos.PER_CIR_MOTIVO == undefined) || ($scope.datos.PER_TRA_REG_TRANS == 'OTRO' && $scope.datos.PER_CIR_MOTIVO == 'undefined')) {
@@ -684,13 +738,14 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             swal('', "Ajunte el documento del SOAT", 'warning');
         } else if ($scope.datos.FILE_RUAT_VEHICULO == undefined || $scope.datos.FILE_RUAT_VEHICULO == 'undefined') {
             swal('', "Ajunte el documento del RUAT", 'warning');
-        } else if ($scope.datos.FILE_FOTO_CARNET == undefined || $scope.datos.FILE_FOTO_CARNET == 'undefined') {
-            swal('', "Adjunte los carnets de Identidad", 'warning');
         } else if ($scope.datos.FILE_FOTO_LICENCIA_CI == undefined || $scope.datos.FILE_FOTO_LICENCIA_CI == 'undefined') {
             swal('', "Adjunte las licencias de conducir", 'warning');
-        } else if ($scope.datos.FILE_VEHICULO_FOTO == undefined || $scope.datos.FILE_VEHICULO_FOTO == 'undefined') {
-            swal('', "Adjunte las fotos de los vehiculos", 'warning');
         } else {
+            if($scope.datos.PER_TRA_REG_TRANS != 'OTRO'){
+                $scope.datos.PER_CIR_MOTIVO = $scope.datos.PER_TRA_REG_TRANS;
+            }else{
+                $scope.datos.PER_CIR_MOTIVO = $scope.datos.PER_CIR_MOTIVO.toUpperCase();
+            }
             $scope.armarCampos(data);
         }
     }
@@ -829,6 +884,37 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             scope.des_servicio_tres = false;
             scope.des_servicio_cuatro = true;
             $scope.div_motivo = true;
+        }
+    }
+
+    $scope.validaPlaca = function (campo) {
+        campo = campo.toUpperCase();
+        emailRegex = /^[0-9]{3,4}[A-Z]{3}$/;
+        if (emailRegex.test(campo)) {
+            valPlaca = 0;
+            $("#valida1").show();
+            $("#valida").hide();
+        } else {
+            $("#valida1").hide();
+            $("#valida").show();
+            valPlaca = 1;
+            $scope.desabilitaVeh = true;
+        };
+    }
+    $scope.titulos = function(campo){
+        console.log("ffffff",campo);
+        if (campo > 1){
+            $scope.tituloRespaldo =  $scope.plural_Respaldo;
+            $scope.tituloSOAT =  $scope.plural_Soat;
+            $scope.tituloRUAT = $scope.plural_Ruat;
+            $scope.tituloLicencias = $scope.plural_Licencias;
+            $scope.tituloPrincipal = $scope.plural_Titulo;
+        }else{
+            $scope.tituloRespaldo =  $scope.singular_Respaldo;
+            $scope.tituloSOAT =  $scope.singular_Soat;
+            $scope.tituloRUAT = $scope.singular_Ruat;
+            $scope.tituloLicencias = $scope.singular_Licencias;
+            $scope.tituloPrincipal = $scope.singular_Titulo; 
         }
     }
 }

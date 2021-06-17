@@ -540,6 +540,21 @@
                           <div class="form-check">
                             <label class="tamañoLabel">
                               <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS"
+                                ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="ACTIVIDAD ECONÓMICA"
+                                ng-disabled="des_servicio_cuatro"> <span class="label-text"></span>
+                            </label>ACTIVIDAD ECONÓMICA
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <div class="controls">
+                        <div class="col-md-6">
+                          <div class="form-check">
+                            <label class="tamañoLabel">
+                              <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS"
                                 ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="OTRO"
                                 ng-disabled="des_servicio_cuatro"> <span class="label-text"></span>
                             </label>OTRO
@@ -581,7 +596,7 @@
                       <div class="controls">
                         <input type="number" ng-model="datos.PER_TRA_CANT_VEHI_SOL" id="PER_TRA_CANT_VEHI_SOL"
                           name="PER_TRA_CANT_VEHI_SOL" class="form-control" style="text-transform:uppercase;" value=""
-                          width="30%" height="30" required ng-disabled="desabilitado" />
+                          width="30%" height="30" required ng-disabled="desabilitado" ng-keyup="titulos(datos.PER_TRA_CANT_VEHI_SOL);"/>
                       </div>
                     </div>
                   </div>
@@ -603,19 +618,21 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-sm-3">
                       <div class="form-group">
                         <label for="url">PLACA</label>
-                        <div class="controls">
-                          <input type="text" ng-model="datosV.placa" id="placa" name="placa" class="form-control"
-                            style="text-transform:uppercase;" value="" width="30%" height="30"
-                            ng-disabled="desabilitado" />
-                        </div>
+                        <input id="placa" name="placa" type="text" placeholder="Ejemplo: 1234ABC" maxlength="7"
+                          class="form-control" ng-model="datosV.placa" ng-keyup="validaPlaca(datosV.placa);" required
+                          onkeyup="mayus(this);" />
+                        <span id="valida" style="color:red;font-weight:bold; font-size:14px">La Placa es
+                          Incorrecta</span>
+                        <span id="valida1" style="color:green;font-weight:bold; font-size:14px">La Placa es
+                          Correcta</span>
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="form-group">
-                        <label for="url">CARNET DE IDENTIDAD</label>
+                        <label for="url">LICENCIA DE CONDUCIR</label>
                         <div class="controls">
                           <input type="text" ng-model="datosV.CI" id="CI" name="CI" class="form-control"
                             style="text-transform:uppercase;" value="" width="30%" height="30"
@@ -644,7 +661,7 @@
                               <!--cambios-->
                               <td data-title="'TIPO DE VEHÍCULO'" align="center">{{tramite.tipo_vehiculo}}</td>
                               <td data-title="'PLACA'" align="center">{{tramite.placa}}</td>
-                              <td data-title="'CI'" align="center">{{tramite.CI}}</td>
+                              <td data-title="'LICENCIA DE CONDUCIR'" align="center">{{tramite.CI}}</td>
                               <td data-title="'OPCION'" align="center"><button ng-click="eliminarVehiculo(tramite)"
                                   type="button" class="btn btn-danger fa fa-times"
                                   ng-show="desabilitado==false"></button></td>
@@ -673,7 +690,7 @@
                     <div class="col-md-12">
                       <div class="ibox-title cafeSuave"
                         style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-                        <h4>ADJUNTOS (Los documentos deben estar en solo archivo en formato PDF o DOC.):</h4>
+                        <h4>ADJUNTOS <a style="color:#FF0000";>{{tituloPrincipal}}</a></h4>
                       </div>
                     </div>
                   </div>
@@ -684,26 +701,24 @@
                       <div class="col-md-12">
                         <div class="row">
                           <div class="col-md-6">
-                            <label for="url">* ADJUNTAR REPALDO DEL MOTIVO DE LA SOLICITUD</label>
+                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloRespaldo}}</label>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group custom-upload">
-                              <input type="file" id="FILE_RESPALDO" name="FILE_RESPALDO"
-                                uploader-model="FILE_RESPALDO" accept="pdf/*" style="display: none;">
+                              <input type="file" id="FILE_RESPALDO" name="FILE_RESPALDO" uploader-model="FILE_RESPALDO"
+                                accept="pdf/*" style="display: none;">
                               <div class="input-group">
-                                <input id="txt_FILE_RESPALDO" name="txt_FILE_RESPALDO"
-                                  ng-model="datos.FILE_RESPALDO" type="text" ng-disabled="true"
-                                  class="form-control input-lg" required>
+                                <input id="txt_FILE_RESPALDO" name="txt_FILE_RESPALDO" ng-model="datos.FILE_RESPALDO"
+                                  type="text" ng-disabled="true" class="form-control input-lg" required>
                                 <span class="input-group-btn">
                                   <a id="href_FILE_RESPALDO" target="_blank" href="">
                                     <button id="" class="browse btn btn-primary input-lg" type="button"
                                       ng-show="btover11 != null" ng-click="mostrarimg('FILE_RESPALDO');"
                                       data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
-                                  <button id="btn_FILE_RESPALDO"
-                                    class="btnupload browse btn btn-primary input-lg" type="button"
-                                    ng-click="ejecutarFile('FILE_RESPALDO');" ng-disabled="desabilitado"><i
-                                      class="glyphicon glyphicon-upload"></i> Subir</button>
+                                  <button id="btn_FILE_RESPALDO" class="btnupload browse btn btn-primary input-lg"
+                                    type="button" ng-click="ejecutarFile('FILE_RESPALDO');"
+                                    ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                                 </span>
                               </div>
                             </div>
@@ -718,17 +733,15 @@
                       <div class="col-md-12">
                         <div class="row">
                           <div class="col-md-6">
-                            <label for="url">* ADJUNTE EN UN SOLO DOCUMENTO PDF, EL DOCUMENTO DEL SOAT DE LOS VEHÍCULOS
-                              AGREGADOS</label>
+                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloSOAT}}</label>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group custom-upload">
-                              <input type="file" id="FILE_FOR_SOAT" name="FILE_FOR_SOAT"
-                                uploader-model="FILE_FOR_SOAT" accept="pdf/*" style="display: none;">
+                              <input type="file" id="FILE_FOR_SOAT" name="FILE_FOR_SOAT" uploader-model="FILE_FOR_SOAT"
+                                accept="pdf/*" style="display: none;">
                               <div class="input-group">
-                                <input id="txt_FILE_FOR_SOAT" name="txt_FILE_FOR_SOAT"
-                                  ng-model="datos.FILE_FOR_SOAT" type="text" ng-disabled="true"
-                                  class="form-control input-lg" required>
+                                <input id="txt_FILE_FOR_SOAT" name="txt_FILE_FOR_SOAT" ng-model="datos.FILE_FOR_SOAT"
+                                  type="text" ng-disabled="true" class="form-control input-lg" required>
                                 <span class="input-group-btn">
                                   <a id="href_FILE_FOR_SOAT" target="_blank" href="">
                                     <button id="" class="browse btn btn-primary input-lg" type="button"
@@ -750,8 +763,7 @@
                       <div class="col-md-12">
                         <div class="row">
                           <div class="col-md-6">
-                            <label for="url">* ADJUNTE EN UN SOLO DOCUMENTO PDF TODOS LOS RUAT DE LOS VEHÍCULO(S)
-                              SOLICITADOS:</label>
+                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloRUAT}}</label>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group custom-upload">
@@ -778,12 +790,13 @@
                       </div>
                     </div>
                     <br>
+                    <!--
                     <div class="form-group">
                       <div class="col-md-12">
                         <div class="row">
                           <div class="col-md-6">
-                            <label for="url">* ADJUNTE EN UN SOLO DOCUMENTO PDF TODOS LOS CARNETS DE IDENTIDAD ANVERSO Y
-                              REVERSO DE CADA C.I.:</label>
+                            <label for="url"> * ADJUNTE EN UN SOLO DOCUMENTO PDF TODOS LOS CARNETS DE IDENTIDAD ANVERSO Y
+                              REVERSO DE CADA C.I. (PDF)</label>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group custom-upload">
@@ -799,10 +812,9 @@
                                       ng-show="btover6 != null" ng-click="mostrarimg('FILE_FOTO_CARNET');"
                                       data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
-                                  <button id="btn_FILE_FOTO_CARNET"
-                                    class="btnupload browse btn btn-primary input-lg" type="button"
-                                    ng-click="ejecutarFile('FILE_FOTO_CARNET');" ng-disabled="desabilitado"><i
-                                      class="glyphicon glyphicon-upload"></i> Subir</button>
+                                  <button id="btn_FILE_FOTO_CARNET" class="btnupload browse btn btn-primary input-lg"
+                                    type="button" ng-click="ejecutarFile('FILE_FOTO_CARNET');"
+                                    ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                                 </span>
                               </div>
                             </div>
@@ -811,12 +823,13 @@
                       </div>
                     </div>
                     <br>
+
+-->
                     <div class="form-group">
                       <div class="col-md-12">
                         <div class="row">
                           <div class="col-md-6">
-                            <label for="url">* ADJUNTE EN UN SOLO DOCUMENTO PDF TODAS LAS LICENCIAS DE LOS CONDUCTORES
-                              :</label>
+                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloLicencias}}</label>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group custom-upload">
@@ -843,11 +856,12 @@
                       </div>
                     </div>
                     <br>
+                    <!--
                     <div class="form-group">
                       <div class="col-md-12">
                         <div class="row">
                           <div class="col-md-6">
-                            <label for="url">* ADJUNTAR FOTOGRAFIAS DE LOS VEHÍCULOS SOLICITADOS</label>
+                            <label for="url"> * ADJUNTAR FOTOGRAFIAS DE LOS VEHÍCULOS SOLICITADOS (PDF)</label>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group custom-upload">
@@ -874,7 +888,8 @@
                         </div>
                       </div>
                     </div>
-                    <br>
+                   
+                    <br> -->
                   </div>
                 </div>
                 <div ng-show="botones_visibles == true">

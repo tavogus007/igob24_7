@@ -15,12 +15,12 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.tipovehiculo_privado = {};
     $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"AUTOMOVIL"},{"nombre":"MOTOCICLETA"}]');
     $scope.div_escoger_servicio = false;
-    $scope.singular_Titulo = '(En formato PDF o DOC)';
+    $scope.singular_Titulo = 'Adjunte los siguientes documentos (En formato PDF o DOC)';
     $scope.singular_Respaldo = 'ADJUNTAR RESPALDO DEL MOTIVO DE LA SOLICITUD';
     $scope.singular_Soat = 'ADJUNTE EL DOCUMENTO DEL SOAT ';
     $scope.singular_Ruat = 'ADJUNTE EL DOCUMENTO DEL RUAT';
     $scope.singular_Licencias = 'ADJUNTE SU LICENCIA DE CONDUCIR';
-    $scope.plural_Titulo = 'Los documentos para cada requisito en un solo archivo (En formato PDF o DOC)';
+    $scope.plural_Titulo = 'Adjunte los siguientes documentos para cada requisito en un solo archivo (En formato PDF o DOC)';
     $scope.plural_Respaldo = 'ADJUNTAR RESPALDO DEL MOTIVO DE LA SOLICITUD';
     $scope.plural_Soat = 'ADJUNTE EN UN SOLO DOCUMENTO EL SOAT DE TODOS VEHÍCULOS';
     $scope.plural_Ruat = 'ADJUNTE EN UN SOLO DOCUMENTO EL RUAT DE TODOS VEHÍCULOS';

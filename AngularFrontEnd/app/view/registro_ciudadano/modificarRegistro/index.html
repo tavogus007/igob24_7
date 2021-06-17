@@ -386,7 +386,7 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-3 control-label">{{translateTitulos.lbl_06_10}}:</label>
                                                     <div class="col-sm-9">
-                                                        <select id="prsLugarNacimiento" name="prsLugarNacimiento" placeholder="{{translateTitulos.lbl_06_10}}" ng-model="registro.lugarNacimiento" ng-change="GetValueLugarNacimiento();" class="form-control" ng-disabled="true">
+                                                        <select id="prsLugarNacimiento" name="prsLugarNacimiento" placeholder="{{translateTitulos.lbl_06_10}}" ng-model="registro.lugarNacimiento" ng-change="GetValueLugarNacimiento();" class="form-control" >
                                                             <option value="LPZ">LA PAZ</option>
                                                             <option value="CBB">COCHABAMBA</option>
                                                             <option value="SCZ">SANTA CRUZ</option>
@@ -419,8 +419,8 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-3 control-label">{{translateTitulos.lbl_018_22}}:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="radio" ng-model="registro.sexo" name="prsSexo" value="M" ng-change="" ng-disabled="true" required> {{translateTitulos.lbl_06_14}}
-                                                        <input type="radio" ng-model="registro.sexo" name="prsSexo" value="F" ng-change="" ng-disabled="true" required> {{translateTitulos.lbl_06_15}}
+                                                        <input type="radio" ng-model="registro.sexo" name="prsSexo" value="M" ng-change="" required> {{translateTitulos.lbl_06_14}}
+                                                        <input type="radio" ng-model="registro.sexo" name="prsSexo" value="F" ng-change="" required> {{translateTitulos.lbl_06_15}}
                                                     </div>
                                                 </div>
                                                 <div class="hr-line-dashed"></div>

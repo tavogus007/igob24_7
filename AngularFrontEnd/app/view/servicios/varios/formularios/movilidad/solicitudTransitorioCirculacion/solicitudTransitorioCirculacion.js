@@ -3,7 +3,7 @@ function solicitudDeleveryController($scope, $rootScope, $routeParams, $location
     $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
     $scope.oidCiu = sessionService.get('IDSOLICITANTE');
     $scope.tiposTramite = [
-        { detalle: 'Solicitud de registro de permiso transitorio', id:'74',tipo:$scope.tipo_persona}
+        { detalle: 'Solicitud de registro Permiso de Circulación', id:'74',tipo:$scope.tipo_persona}
     ];
     $scope.datos = {};
     $scope.tablaTramites        =   {};
@@ -411,7 +411,7 @@ function solicitudDeleveryController($scope, $rootScope, $routeParams, $location
     };
     $scope.InsertarDocumentoTv = function(urlData){
         var sDocSistema     =   "IGOB247";
-        var sDocProceso     =   "PERMISO TRANSITORIO DE CIRCULACIÓN - DECLARACION JURADA";
+        var sDocProceso     =   "PERMISO DE CIRCULACIÓN - DECLARACION JURADA";
         var sDocId          =   1;
         var sDocCiNodo      =   "CU";
         var sDocDatos       =   "";
@@ -422,7 +422,7 @@ function solicitudDeleveryController($scope, $rootScope, $routeParams, $location
         var sDocUsuario     =   sessionService.get('IDSOLICITANTE');
         var sDocTipoDoc     =   "pdf";
         var sDocTamDoc      =   "";
-        var sDocNombre      =   "PERMISO TRANSITORIO DE CIRCULACIÓN - DECLARACION JURADA";
+        var sDocNombre      =   "PERMISO DE CIRCULACIÓN - DECLARACION JURADA";
         var sDocTpsId       =   0;
         var sDocUrlLogica   =   urlData;
         var sDocAcceso      =   "";

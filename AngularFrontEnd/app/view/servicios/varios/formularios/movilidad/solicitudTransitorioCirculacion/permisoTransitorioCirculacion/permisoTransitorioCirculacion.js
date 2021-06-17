@@ -723,7 +723,6 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     });
 
     $scope.verificacionFinalDeCamposFinal = function (data) {
-
         if ($scope.datos.PER_TRA_REG_TRANS == undefined || $scope.datos.PER_TRA_REG_TRANS == 'undefined') {
             swal('', "Ingrese el tipo de solicitud", 'warning');
         } else if (($scope.datos.PER_TRA_REG_TRANS == 'OTRO' && $scope.datos.PER_CIR_MOTIVO == undefined) || ($scope.datos.PER_TRA_REG_TRANS == 'OTRO' && $scope.datos.PER_CIR_MOTIVO == 'undefined')) {

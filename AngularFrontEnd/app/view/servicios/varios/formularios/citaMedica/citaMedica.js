@@ -19,6 +19,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
     $scope.lstatencionesvacias = false;
     $scope.lstatenciones = false;
     $scope.mostrarIframe = false;
+
+    
     $scope.vectorMensaje = ['Nro. de Proforma:','Nombres:','Apellidos:','Correo Electrónico:','Ciudad:','País:','Especialidad:','Precio (Bs):'];
     if(jsonURLS){
         //var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";

@@ -174,10 +174,12 @@
                     $scope.show_juridico_bloque_0();
                     $scope.show_juridico_bloque_1();
                     if(repLegalmongo[0].dtspsl_tercerapellido === "" || repLegalmongo[0].dtspsl_tercerapellido === undefined){
-                      $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres+" "+repLegalmongo[0].dtspsl_paterno+" "+repLegalmongo[0].dtspsl_materno;
+                      $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres;
+                      $scope.registro.nombre_j = repLegalmongo[0].dtspsl_nombres+" "+repLegalmongo[0].dtspsl_paterno+" "+repLegalmongo[0].dtspsl_materno;
                     }
                     else{
-                      $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres+" "+repLegalmongo[0].dtspsl_paterno+" "+repLegalmongo[0].dtspsl_materno+" DE "+repLegalmongo[0].dtspsl_tercerapellido;
+                      $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres;
+                      $scope.registro.nombre_j = repLegalmongo[0].dtspsl_nombres+" "+repLegalmongo[0].dtspsl_paterno+" "+repLegalmongo[0].dtspsl_materno+" DE "+repLegalmongo[0].dtspsl_tercerapellido;
                     }
                     $scope.registro.paterno = repLegalmongo[0].dtspsl_paterno;
                     $scope.registro.materno = repLegalmongo[0].dtspsl_materno;
@@ -667,7 +669,7 @@
                     }
                     else{
                         $scope.existeNit = false;
-                        $scope.show_juridico_bloque_2();
+                        $scope.hide_juridico_bloque_2();
                     }
                   }else{
                     $.unblockUI(); 
@@ -675,7 +677,7 @@
                     $scope.cisw2 = null;
                     $scope.existeNit = false; 
                     $scope.bloquear2 = false;
-                    $scope.hide_juridico_bloque_2();
+                    $scope.show_juridico_bloque_2();
                   }     
                     
                 });    
@@ -1291,18 +1293,18 @@
             registrarCiudadano.materno = response.materno;
             registrarCiudadano.tercer_apellido = response.tercer;
             registrarCiudadano.expedido = response.expedido;
-            registrarCiudadano.fec_nacimiento = response.fecha_nacimiento;
-            registrarCiudadano.lugar_nacimiento = "LPZ";
+            registrarCiudadano.fec_nacimiento = undefined;
+            registrarCiudadano.lugar_nacimiento = undefined;
             registrarCiudadano.pais_origen = response.pais_origen;
-            registrarCiudadano.sexo = "undefined";
+            registrarCiudadano.sexo = undefined;
             //console.log("SEXOOOOO...",registrarCiudadano.sexo);
-            registrarCiudadano.id_estado_civil = "S";
-            registrarCiudadano.profesion = "OTROS";
+            registrarCiudadano.id_estado_civil = undefined;
+            registrarCiudadano.profesion = undefined;
             registrarCiudadano.otra_profesion = response.otra_profesion;
             registrarCiudadano.telefono = response.telefono;
             registrarCiudadano.movil = response.celular;
             registrarCiudadano.correo = response.correo;
-            registrarCiudadano.direccion = "AVENIDA LOS OLIVOS";
+            registrarCiudadano.direccion = undefined;
             registrarCiudadano.usr_id = "0";
             registrarCiudadano.tipo_documento = $rootScope.tipoDocumento;
             registrarCiudadano.sistema_creado = 'IGOB247';
@@ -2631,11 +2633,11 @@
                         <div id="juridico_bloque_0" style="display: none">
                           <div class="form-group">
                             <!--<label class="col-sm-4 control-label">{{translateIdioma.lbl_06_02}}:</label>-->
-                            <label class="col-sm-4 control-label">Nombre completo:</label>
+                            <label class="col-sm-4 control-label">Nombreeeeee completo:</label>
                             <div class="col-sm-8">
                               
                               <!--<input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="{{translateIdioma.lbl_06_02}}" ng-model="registro.nombre"  style="text-transform:uppercase;" ng-disabled="true"  required/>-->
-                              <input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="NOMBRE COMPLETO" ng-model="registro.nombre"  style="text-transform:uppercase; background:#DFE9F4 " ng-disabled = "bloquearNombreCompleto"  required/>
+                              <input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="NOMBRE COMPLETO" ng-model="registro.nombre_j"  style="text-transform:uppercase; background:#DFE9F4 " ng-disabled = "bloquearNombreCompleto"  required/>
                               <span style="color:red" ng-show="signupFormJuridico.nombre.$invalid">
                               <span align = "right" ng-show="signupFormJuridico.nombre.$error.required">Para registrar una persona Jurídica, primero debe buscar a la Persona Natural</span>
                             </div>

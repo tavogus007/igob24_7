@@ -52,6 +52,7 @@ function ejecutarAjaxP(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
 function ejecutarAjax(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
     token = sessionStorage.getItem('TOKEN_API');
+    console.log("uuuuuuuuu",urlRC,vUrlComp);
     $.ajax({
       type: vTypeCall,
       url: urlRC + vUrlComp,
@@ -181,7 +182,7 @@ function validarNatural(opcion, datos) {
         if( ( typeof(datos.nombre) != 'undefined' && datos.nombre != null && datos.nombre != "") &&
             ( typeof(datos.materno) != 'undefined' && datos.materno != null && datos.materno != "") &&
             ( typeof(datos.ci) != 'undefined' && datos.ci != null && datos.ci != "") &&
-            ( typeof(datos.expedido) != 'undefined' && datos.expedido != null && datos.expedido != "") &&
+            ( typeof(datos.expedido) != 'undefined' && datos.expedido != null && datos.expedido != "") *&&
             ( typeof(datos.fec_nacimiento) != 'undefined' && datos.fec_nacimiento != null && datos.fec_nacimiento != "") &&
             ( typeof(datos.lugar_nacimiento) != 'undefined' && datos.lugar_nacimiento != null && datos.lugar_nacimiento != "") &&
             ( typeof(datos.sexo) != 'undefined' && datos.sexo != null && datos.sexo != "") &&
@@ -191,6 +192,18 @@ function validarNatural(opcion, datos) {
             return true
         }
         break;
+
+        case "NEW_REDUCIDO ":
+        if( ( typeof(datos.nombre) != 'undefined' && datos.nombre != null && datos.nombre != "") &&
+            ( typeof(datos.materno) != 'undefined' && datos.materno != null && datos.materno != "") &&
+            ( typeof(datos.ci) != 'undefined' && datos.ci != null && datos.ci != "") &&
+            ( typeof(datos.expedido) != 'undefined' && datos.expedido != null && datos.expedido != "") )
+        {
+            console.log("Entrando   al reducidooooooo");
+            return true
+        }
+        break;
+
 
       case "UPD":
         if( ( typeof(datos.nombre) != 'undefined' && datos.nombre != null && datos.nombre != "") &&
@@ -544,8 +557,10 @@ rcNatural.prototype.buscarNatural_nit = function (functionResp)
 rcNatural.prototype.crearNatural = function (functionResp)
 {
     urlComp = "/new";
+    urlComp_red = "/new_reducido";
     typeCall = "post";
 
+    /*
     if(validarNatural("NEW", this))
     {
         dataParams = {
@@ -567,7 +582,6 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "movil": this.movil,
           "correo": this.correo,
           "direccion": this.direccion,
-          
           "pais": this.pais,
           "departamento": this.departamento,
           "provincia": this.provincia,
@@ -587,7 +601,6 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "oficina": this.oficina,
           "latitud": this.latitud,
           "longitud": this.longitud,
-
           "sistema":"IGOB247",
           "sistema_creado":"IGOB247",
           "tipo_persona": "NATURAL",
@@ -595,7 +608,6 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "activacionf": "NO",
           "activaciond": "NO",
           "tipo_documento": this.tipo_documento,
-           
         };
 
         console.log("PARAEMTRSO...:",dataParams);
@@ -604,7 +616,67 @@ rcNatural.prototype.crearNatural = function (functionResp)
     }
     else
     {
-      dataResp = "{\"error\":{\"message\":\"Uno o varios campos obligatorios vacios\",\"code\":702}}";
+        dataResp = "{\"error\":{\"message\":\"Uno o varios campos obligatorios vacios\",\"code\":702}}";
+        functionResp(dataResp);
+    }
+    */
+    /////////////////////////////
+    if(validarNatural("NEW_REDUCIDO", this))
+    {
+        dataParams = {
+          "ci": this.ci,
+          "complemento": this.complemento,
+          "nombres": this.nombre,
+          "paterno": this.paterno,
+          "materno": this.materno,
+          "tercer_apellido": this.tercer_apellido,
+          "expedido": this.expedido,
+          "fec_nacimiento": this.fec_nacimiento,
+          "lugar_nacimiento": this.lugar_nacimiento,
+          "pais_origen": this.pais_origen,
+          "sexo": this.sexo,
+          "id_estado_civil": this.id_estado_civil,
+          "profesion": this.profesion,
+          "otra_profesion": this.otra_profesion,
+          "telefono": this.telefono,
+          "movil": this.movil,
+          "correo": this.correo,
+          "direccion": this.direccion,
+          "pais": this.pais,
+          "departamento": this.departamento,
+          "provincia": this.provincia,
+          "municipio": this.municipio,
+          "macrodistrito": this.macrodistrito,
+          "macrodistrito_desc": this.macrodistrito_desc,
+          "distrito": this.distrito,
+          "distrito_desc": this.distrito_desc,
+          "zona": this.zona,
+          "zona_desc": this.zona_desc,
+          "tipo_via": this.tipo_via,
+          "nombre_via": this.nombre_via,
+          "numero_casa": this.numero_casa,
+          "edificio": this.edificio,
+          "bloque": this.bloque,
+          "piso": this.piso,
+          "oficina": this.oficina,
+          "latitud": this.latitud,
+          "longitud": this.longitud,
+          "sistema":"IGOB247",
+          "sistema_creado":"IGOB247",
+          "tipo_persona": "NATURAL",
+          "usr_id": this.usr_id,
+          "activacionf": "NO",
+          "activaciond": "NO",
+          "tipo_documento": this.tipo_documento,
+        };
+
+        console.log("PARAEMTRSO...:",dataParams);
+
+        ejecutarAjax(urlComp_red, typeCall, dataParams, functionResp);
+    }
+    else
+    {
+        dataResp = "{\"error\":{\"message\":\"Uno o varios campos obligatorios vacios\",\"code\":702}}";
         functionResp(dataResp);
     }
 };
@@ -1784,28 +1856,6 @@ getCondicionUso.prototype.get_CondicionUso = function (functionResp){
     "sdoc_sistema": this.sdoc_sistema,
     "sdoc_proceso": this.sdoc_proceso,
     "nombreCU": this.nombreCU
-  };
-  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
-};
-
-function adicionaLogs(){
-  this.logs_usr_id;
-  this.logs_dtspsl_id;
-  this.logs_frm_id;
-  this.logs_evento;
-  this.logs_registrado;
-  this.logs_modificado;
-}
-adicionaLogs.prototype.adiciona_Logs = function (functionResp){
-  urlComp = "/addlogs"
-  typeCall = "post";
-  dataParams = {
-    "logs_usr_id": this.logs_modificado,
-    "logs_dtspsl_id": this.logs_modificado,
-    "logs_frm_id": this.logs_frm_id,
-    "logs_evento": this.logs_evento,
-    "logs_registrado": this.logs_registrado,
-    "logs_modificado": this.logs_modificado
   };
   ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 };

@@ -52,7 +52,7 @@ function ejecutarAjaxP(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
 function ejecutarAjax(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
     token = sessionStorage.getItem('TOKEN_API');
-    console.log("uuuuuuuuu",urlRC,vUrlComp);
+    
     $.ajax({
       type: vTypeCall,
       url: urlRC + vUrlComp,
@@ -182,7 +182,7 @@ function validarNatural(opcion, datos) {
         if( ( typeof(datos.nombre) != 'undefined' && datos.nombre != null && datos.nombre != "") &&
             ( typeof(datos.materno) != 'undefined' && datos.materno != null && datos.materno != "") &&
             ( typeof(datos.ci) != 'undefined' && datos.ci != null && datos.ci != "") &&
-            ( typeof(datos.expedido) != 'undefined' && datos.expedido != null && datos.expedido != "") *&&
+            ( typeof(datos.expedido) != 'undefined' && datos.expedido != null && datos.expedido != "") &&
             ( typeof(datos.fec_nacimiento) != 'undefined' && datos.fec_nacimiento != null && datos.fec_nacimiento != "") &&
             ( typeof(datos.lugar_nacimiento) != 'undefined' && datos.lugar_nacimiento != null && datos.lugar_nacimiento != "") &&
             ( typeof(datos.sexo) != 'undefined' && datos.sexo != null && datos.sexo != "") &&

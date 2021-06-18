@@ -193,7 +193,7 @@ function validarNatural(opcion, datos) {
         }
         break;
 
-        case "NEW_REDUCIDO ":
+        case "NEW_REDUCIDO":
         if( ( typeof(datos.nombre) != 'undefined' && datos.nombre != null && datos.nombre != "") &&
             ( typeof(datos.materno) != 'undefined' && datos.materno != null && datos.materno != "") &&
             ( typeof(datos.ci) != 'undefined' && datos.ci != null && datos.ci != "") &&

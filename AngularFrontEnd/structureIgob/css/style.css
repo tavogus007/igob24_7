@@ -1630,10 +1630,11 @@ Fab Municipality
 }
 
 /*==================================ModalComunicados====================================================*/
+
 .modalCom {
   width: 100%;
   height: 100vh;
-  background: #0000009a;
+  background: #000000c9;
   position: fixed;
   top: 0;
   left: 0;
@@ -1666,6 +1667,92 @@ Fab Municipality
   background: #00000099;
   border-radius: 5px;
 }
+
+.btn-modalCustom {
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 5px;
+  padding: 10px 20px; }
+  .btn-modalCustom:hover, .btn-modalCustom:active, .btn-modalCustom:focus {
+    outline: none;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important; }
+  .btn-modalCustom.btn-modalPrimary {
+    position: relative;
+    background: #00b3ba;
+    border: 2px solid #23a0af;
+    color: #fff;
+    -webkit-transition: 0.2s all;
+    transition: 0.2s all; }
+
+    .btn-modalCustom.btn-modalPrimary>i{
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      line-height: 40px;
+      color: #D10024;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .btn-modalCustom.btn-modalPrimary:hover {
+      background-color: #FFF;
+      color: #D10024;
+      border-color: #D10024;
+      padding: 10px 30px 10px 40px;}
+      .btn-modalCustom.btn-modalPrimary:hover>i {
+        opacity: 1;
+        visibility: visible;
+      }
+      .btn-modalPrimary:not(:disabled):not(.disabled):active {
+        background-color: #dc3545;
+        border-color: #bb0915;
+      }
+    .btn-modalCustom.btn-modalPrimary.btn-black--hover:hover {
+      background: #ffc107;
+      color: #fff; }
+
+
+      .btn-modalCustom.btn-modalSecondary {
+        position: relative;
+        background: #1f1f1f21;
+        border-color: #eefeff;
+        border: 2px solid;
+        color: #fff;
+        -webkit-transition: 0.2s all;
+        transition: 0.2s all; }
+    
+        .btn-modalCustom.btn-modalSecondary>i{
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+          line-height: 45px;
+          color: #e30613;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .btn-modalCustom.btn-modalSecondary:hover {
+          background-color: #FFF;
+          color: #e30613;
+          border-color: #e30613;
+          padding: 10px 30px 10px 40px;}
+          .btn-modalCustom.btn-modalSecondary:hover>i {
+            opacity: 1;
+            visibility: visible;
+          }
+          .btn-modalSecondary:not(:disabled):not(.disabled):active {
+            background-color: #006e80;
+            border-color: #eefeff;
+          }
+
+
+
+
 /* Tablet Device = 768px */
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {

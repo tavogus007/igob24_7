@@ -117,7 +117,7 @@
                                             <button class="btn btn-success" ng-show="solicitud.idEstado >= 4" ng-click="accionSeguimientoFlujo(solicitud)"><span class="glyphicon glyphicon-info-sign"></span> Seguimiento</button>
 
                                             <button class="btn btn-warning"  ng-show="solicitud.idEstado == 5" data-toggle="modal" data-target="#divPopup4" ng-click="accionImprimirProforma(solicitud)" title="Pago en el banco"><span class="glyphicon glyphicon-print" aria-hidden="true" ></span> Proforma de Pago (FUM)</button>
-                                            <button class="btn btn-warning"  ng-show="solicitud.idEstado == 5" ng-click="accionPagoOL(solicitud)" title="Pago en línea"><span class="glyphicon glyphicon-usd" aria-hidden="true"  ></span> Pago en línea</button>
+                                            <!--<button class="btn btn-warning"  ng-show="solicitud.idEstado == 5" ng-click="accionPagoOL(solicitud)" title="Pago en línea"><span class="glyphicon glyphicon-usd" aria-hidden="true"  ></span> Pago en línea</button>-->
 
                                             <button class="btn btn-warning" ng-show="solicitud.idEstado == 6 || solicitud.idEstado == 7"  ng-click="accionVerDocumentoFinalImagen(solicitud)"><span class="glyphicon glyphicon-folder-open"></span>  Ver Documento</button>
                                             <button class="btn btn-warning" ng-show="solicitud.idEstado == 6 || solicitud.idEstado == 7 "  ng-click="accionVerPlano(solicitud)"><span class="glyphicon glyphicon-folder-open"></span>  Ver Plano</button>

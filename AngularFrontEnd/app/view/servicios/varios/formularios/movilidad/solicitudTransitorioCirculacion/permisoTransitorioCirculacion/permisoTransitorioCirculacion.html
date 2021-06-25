@@ -541,7 +541,7 @@
                             <label class="tamañoLabel">
                               <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS"
                                 ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="ACTIVIDAD ECONÓMICA"
-                                ng-disabled="des_servicio_cuatro"> <span class="label-text"></span>
+                                ng-disabled="des_servicio_cinco"> <span class="label-text"></span>
                             </label>ACTIVIDAD ECONÓMICA
                           </div>
                         </div>
@@ -592,11 +592,11 @@
                   <br>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="url">INTRODUZCA EL NÚMERO DE VEHÍCULOS A SOLICITAR</label>
+                      <label for="url">CANTIDAD DE VEHÍCULOS A SOLICITAR</label>
                       <div class="controls">
                         <input type="number" ng-model="datos.PER_TRA_CANT_VEHI_SOL" id="PER_TRA_CANT_VEHI_SOL"
                           name="PER_TRA_CANT_VEHI_SOL" class="form-control" style="text-transform:uppercase;" value=""
-                          width="30%" height="30" required ng-disabled="desabilitado" ng-keyup="titulos(datos.PER_TRA_CANT_VEHI_SOL);"/>
+                          width="30%" height="30" required ng-disabled="true" ng-keyup="titulos(datos.PER_TRA_CANT_VEHI_SOL);"/>
                       </div>
                     </div>
                   </div>
@@ -622,7 +622,7 @@
                       <div class="form-group">
                         <label for="url">PLACA</label>
                         <input id="placa" name="placa" type="text" placeholder="Ejemplo: 1234ABC" maxlength="7"
-                          class="form-control" ng-model="datosV.placa" ng-keyup="validaPlaca(datosV.placa);" required
+                          class="form-control" ng-model="datosV.placa" ng-disabled="desabilitado" ng-keyup="validaPlaca(datosV.placa);" required
                           onkeyup="mayus(this);" />
                         <span id="valida" style="color:red;font-weight:bold; font-size:14px">La Placa es
                           Incorrecta</span>
@@ -642,7 +642,7 @@
                     </div>
                     <div class="col-md-2">
                       <div class="form-group">
-                        <label for="url">BOTON</label>
+                        <label for="url">AGREGAR</label>
                         <div class="controls">
                           <button ng-click="adicionarVehiculos(datosV);" type="button"
                             class="btn btn-success fa fa-plus-square" ng-show="desabilitado==false"></button>
@@ -680,7 +680,7 @@
                       <div class="controls">
                         <input type="text" ng-model="datos.PER_TRA_NUM_CONTACTO" id="PER_TRA_NUM_CONTACTO"
                           name="PER_TRA_NUM_CONTACTO" class="form-control" style="text-transform:uppercase;" value=""
-                          width="30%" height="30" required ng-disabled="desabilitado" />
+                          width="30%" height="30" placeholder="76213950 - 77766666" required ng-disabled="desabilitado" />
                       </div>
                     </div>
                   </div>
@@ -790,41 +790,6 @@
                       </div>
                     </div>
                     <br>
-                    <!--
-                    <div class="form-group">
-                      <div class="col-md-12">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label for="url"> * ADJUNTE EN UN SOLO DOCUMENTO PDF TODOS LOS CARNETS DE IDENTIDAD ANVERSO Y
-                              REVERSO DE CADA C.I. (PDF)</label>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group custom-upload">
-                              <input type="file" id="FILE_FOTO_CARNET" name="FILE_FOTO_CARNET"
-                                uploader-model="FILE_FOTO_CARNET" accept="pdf/*" style="display: none;">
-                              <div class="input-group">
-                                <input id="txt_FILE_FOTO_CARNET" name="txt_FILE_FOTO_CARNET"
-                                  ng-model="datos.FILE_FOTO_CARNET" type="text" ng-disabled="true"
-                                  class="form-control input-lg" required>
-                                <span class="input-group-btn">
-                                  <a id="href_FILE_FOTO_CARNET" target="_blank" href="">
-                                    <button id="" class="browse btn btn-primary input-lg" type="button"
-                                      ng-show="btover6 != null" ng-click="mostrarimg('FILE_FOTO_CARNET');"
-                                      data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                  </a>
-                                  <button id="btn_FILE_FOTO_CARNET" class="btnupload browse btn btn-primary input-lg"
-                                    type="button" ng-click="ejecutarFile('FILE_FOTO_CARNET');"
-                                    ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <br>
-
--->
                     <div class="form-group">
                       <div class="col-md-12">
                         <div class="row">
@@ -856,40 +821,6 @@
                       </div>
                     </div>
                     <br>
-                    <!--
-                    <div class="form-group">
-                      <div class="col-md-12">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label for="url"> * ADJUNTAR FOTOGRAFIAS DE LOS VEHÍCULOS SOLICITADOS (PDF)</label>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group custom-upload">
-                              <input type="file" id="FILE_VEHICULO_FOTO" name="FILE_VEHICULO_FOTO"
-                                uploader-model="FILE_VEHICULO_FOTO" accept="pdf/*" style="display: none;">
-                              <div class="input-group">
-                                <input id="txt_FILE_VEHICULO_FOTO" name="txt_FILE_VEHICULO_FOTO"
-                                  ng-model="datos.FILE_VEHICULO_FOTO" type="text" ng-disabled="true"
-                                  class="form-control input-lg" required>
-                                <span class="input-group-btn">
-                                  <a id="FILE_VEHICULO_FOTO" href="">
-                                    <button id="href_FILE_VEHICULO_FOTO" class="browse btn btn-primary input-lg"
-                                      type="button" ng-show="btover1 != null"
-                                      ng-click="mostrarimg('FILE_VEHICULO_FOTO');" data-toggle="modal"><i
-                                        class="glyphicon glyphicon-eye-open"></i></button>
-                                  </a>
-                                  <button id="btn_FILE_VEHICULO_FOTO" class="btnupload browse btn btn-primary input-lg"
-                                    type="button" ng-click="ejecutarFile('FILE_VEHICULO_FOTO');"
-                                    ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i>Subir</button>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                   
-                    <br> -->
                   </div>
                 </div>
                 <div ng-show="botones_visibles == true">

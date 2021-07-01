@@ -261,7 +261,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                 $rootScope.vid = results[0]._id;
                 $rootScope.mostrarMenuMascotaNatural = 'NO';                
                 $rootScope.mostrarMenuMascota = 'NO';                
-                if(sActivacionDigital == "SI" && sActivacionFisica == "SI"){
+                if(sActivacionFisica == "SI"){
                     $rootScope.mostrarMenuMascotaNatural = 'SI';                
                     $rootScope.mostrarMenuMascota = 'NO';  
                     //REGISTRAR EVENTO

@@ -256,3 +256,56 @@ dataSIT.prototype.tipoVia = function (vcodigoCatastral,functionResp)
         };
     ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
 };
+
+
+
+// ------------------------
+//  REGISTRO CATASTRAL
+// ------------------------
+// Obtiene datos del predio x codigo catastral
+dataSIT.prototype.catObtenerPredioxCodcat = function (vCC,vAccion, functionResp)
+{
+    wsMethodSIT = "/catObtenerPredioxCodcat";
+    typeCall = "post";
+    dataParams = {"codCat":  vCC, "accion":vAccion};
+
+    ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
+};
+// Obtiene datos del predio x wkt
+dataSIT.prototype.catObtenetPredioxWkt = function (vwkt,vAccion, functionResp)
+{
+    wsMethodSIT = "/catObtenetPredioxWkt";
+    typeCall = "post";
+    dataParams = {"wkt":  vwkt, "accion":vAccion};
+
+    ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
+};
+// Verifica si el predio tiene certificacion
+dataSIT.prototype.catPredioConCertificacion = function (vCC, functionResp)
+{
+    wsMethodSIT = "/catPredioConCertificacion";
+    typeCall = "post";
+    dataParams = {"codCat":  vCC};
+
+    ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
+};
+
+// Verifica reingreso
+dataSIT.prototype.catPredioReingreso = function (vCC,idTipoRegimen, functionResp)
+{
+    wsMethodSIT = "/catPredioReingreso";
+    typeCall = "post";
+    dataParams = {"codCat":  vCC, "idTipoRegimen":idTipoRegimen};
+
+    ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
+};
+// Verifica tramite en proceso
+dataSIT.prototype.catPredioTramiteEnProceso = function (vCC, functionResp)
+{
+    wsMethodSIT = "/catPredioTramiteEnproceso";
+    typeCall = "post";
+    dataParams = {"codCat":  vCC};
+
+    ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
+};
+

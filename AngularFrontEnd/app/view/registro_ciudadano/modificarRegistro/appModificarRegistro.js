@@ -3169,7 +3169,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDocci = nameArrayci[1];
                 var nombreci = nameArrayci[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocci == "png" || tipoDocci == "jpg" || tipoDocci == "jpeg" || tipoDocci == "bmp" || tipoDocci == "gif") {
+                    if (tipoDocci == "png" || tipoDocci == "jpg" || tipoDocci == "jpeg" || tipoDocci == "bmp" || tipoDocci == "gif" || tipoDocci == "PNG" || tipoDocci == "JPG" || tipoDocci == "JPEG" || tipoDocci == "BMP" || tipoDocci == "GIF") {
                         var filecompress = compressImage($scope.FILE_FOTOCOPIA_CI).then(function(respuestaci){
                             var imagenCia = respuestaci.name.split('.');
                             var tipoCia = imagenCia[1];
@@ -3181,7 +3181,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.btover=true;
                         });
                     } else{
-                        if (tipoDocci == 'pdf' ||  tipoDocci == 'docx' ||  tipoDocci == 'docxlm') {
+                        if (tipoDocci == 'pdf' ||  tipoDocci == 'docx' ||  tipoDocci == 'docxlm' || tipoDocci == 'PDF' ||  tipoDocci == 'DOCX' ||  tipoDocci == 'DOCXML') {
                             var zipci = new JSZip();
                             zipci.file($scope.FILE_FOTOCOPIA_CI.name, $scope.FILE_FOTOCOPIA_CI);
                             zipci.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobci) {
@@ -3206,7 +3206,7 @@ $scope.vias_v2= function(zona,tipo)
                 }  
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm') {
+                        if (tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm' || tipoDocci == 'PNG' || tipoDocci == 'JPG' || tipoDocci == 'JPEG' || tipoDocci == 'BMP' || tipoDocci == 'GIF' || tipoDocci == 'PDF' || tipoDocci == 'DOCX' || tipoDocci == 'DOCXML') {
                             nombreNuevoCIAnverso = 'CI_anverso_'+fechaNueva+'.'+tipoDocci;
                             fileUpload1.uploadFileToUrl1($scope.FILE_FOTOCOPIA_CI, uploadUrl,nombreNuevoCIAnverso);
                             $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
@@ -3245,7 +3245,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDoccir = nameArraycir[1];                
                 var nombrecir = nameArraycir[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDoccir == "png" || tipoDoccir == "jpg" || tipoDoccir == "jpeg" || tipoDoccir == "bmp" || tipoDoccir == "gif") {
+                    if (tipoDoccir == "png" || tipoDoccir == "jpg" || tipoDoccir == "jpeg" || tipoDoccir == "bmp" || tipoDoccir == "gif"  ||  tipoDoccir == "PNG" || tipoDoccir == "JPG" || tipoDoccir == "JPEG" || tipoDoccir == "BMP" || tipoDoccir == "GIF") {
                         var filecompress = compressImage($scope.FILE_FOTOCOPIA_CI_R).then(function(respuestacir){
                             var imagenCir = respuestacir.name.split('.');
                             var tipoCir = imagenCir[1];
@@ -3256,7 +3256,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.btover1=true;
                         });
                     } else{
-                        if (tipoDoccir == 'pdf' ||  tipoDoccir == 'docx' ||  tipoDoccir == 'docxlm') {
+                        if (tipoDoccir == 'pdf' ||  tipoDoccir == 'docx' ||  tipoDoccir == 'docxlm'  ||   tipoDoccir == 'PDF' ||  tipoDoccir == 'DOCX' ||  tipoDoccir == 'DOCXML') {
                             var zipcir = new JSZip();
                             zipcir.file($scope.FILE_FOTOCOPIA_CI_R.name, $scope.FILE_FOTOCOPIA_CI_R);
                             zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobcir) {
@@ -3280,7 +3280,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDoccir == 'png' || tipoDoccir == 'jpg' || tipoDoccir == 'jpeg' || tipoDoccir == 'bmp' || tipoDoccir == 'gif' || tipoDoccir == 'pdf' || tipoDoccir == 'docx' || tipoDoccir == 'docxlm') {
+                        if (tipoDoccir == 'png' || tipoDoccir == 'jpg' || tipoDoccir == 'jpeg' || tipoDoccir == 'bmp' || tipoDoccir == 'gif' || tipoDoccir == 'pdf' || tipoDoccir == 'docx' || tipoDoccir == 'docxlm'  ||  tipoDoccir == 'PNG' || tipoDoccir == 'JPG' || tipoDoccir == 'JPEG' || tipoDoccir == 'BMP' || tipoDoccir == 'GIF' || tipoDoccir == 'PDF' || tipoDoccir == 'DOCX' || tipoDoccir == 'DOCXML') {
                             nombreNuevoCIReverso = 'CI_reverso_'+fechaNueva+'.'+tipoDoccir;
                             fileUpload1.uploadFileToUrl1($scope.FILE_FOTOCOPIA_CI_R, uploadUrl,nombreNuevoCIReverso);
                             $scope.registro.FILE_FOTOCOPIA_CI_R = nombreNuevoCIReverso;
@@ -3313,7 +3313,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDocpl = nameArraypl[1];
                 var nombrepl = nameArraypl[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocpl == "png" || tipoDocpl == "jpg" || tipoDocpl == "jpeg" || tipoDocpl == "bmp" || tipoDocpl == "gif") {
+                    if (tipoDocpl == "png" || tipoDocpl == "jpg" || tipoDocpl == "jpeg" || tipoDocpl == "bmp" || tipoDocpl == "gif"  ||  tipoDocpl == "PNG" || tipoDocpl == "JPG" || tipoDocpl == "JPEG" || tipoDocpl == "BMP" || tipoDocpl == "GIF") {
                         var filecompress = compressImage($scope.FILE_PODER_LEGAL).then(function(respuestapl){
                             var imagenPoder = respuestapl.name.split('.');
                             var tipoPoder = imagenPoder[1];
@@ -3323,7 +3323,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_PODER_LEGAL = respuestapl;
                         });
                     } else{
-                        if (tipoDocpl == 'pdf' ||  tipoDocpl == 'docx' ||  tipoDocpl == 'docxlm') {
+                        if (tipoDocpl == 'pdf' ||  tipoDocpl == 'docx' ||  tipoDocpl == 'docxlm'  ||  tipoDocpl == 'PDF' ||  tipoDocpl == 'DOCX' ||  tipoDocpl == 'DOCXML') {
                             nombreNuevoPoderLegal = 'poder_'+fechaNueva+'.'+tipoDocpl;
                             fileUpload1.uploadFileToUrl1($scope.FILE_PODER_LEGAL, uploadUrl,nombreNuevoPoderLegal);
                             $scope.registro.FILE_PODER_LEGAL = nombreNuevoPoderLegal;
@@ -3349,7 +3349,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDocpl == 'png' || tipoDocpl == 'jpg' || tipoDocpl == 'jpeg' || tipoDocpl == 'bmp' || tipoDocpl == 'gif' || tipoDocpl == 'pdf' || tipoDocpl == 'docx' || tipoDocpl == 'docxlm') {
+                        if (tipoDocpl == 'png' || tipoDocpl == 'jpg' || tipoDocpl == 'jpeg' || tipoDocpl == 'bmp' || tipoDocpl == 'gif' || tipoDocpl == 'pdf' || tipoDocpl == 'docx' || tipoDocpl == 'docxlm'  ||  tipoDocpl == 'PNG' || tipoDocpl == 'JPG' || tipoDocpl == 'JPEG' || tipoDocpl == 'BMP' || tipoDocpl == 'GIF' || tipoDocpl == 'PDF' || tipoDocpl == 'DOCX' || tipoDocpl == 'DOCXML') {
                             nombreNuevoPoderLegal = 'poder_'+fechaNueva+'.'+tipoDocpl;
                             fileUpload1.uploadFileToUrl1($scope.FILE_PODER_LEGAL, uploadUrl,nombreNuevoPoderLegal);
                             $scope.registro.FILE_PODER_LEGAL = nombreNuevoPoderLegal;
@@ -3381,7 +3381,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDoctc = nameArraytc[1];
                 var nombretc = nameArraytc[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDoctc == "png" || tipoDoctc == "jpg" || tipoDoctc == "jpeg" || tipoDoctc == "bmp" || tipoDoctc == "gif") {
+                    if (tipoDoctc == "png" || tipoDoctc == "jpg" || tipoDoctc == "jpeg" || tipoDoctc == "bmp" || tipoDoctc == "gif"  || tipoDoctc == "PNG" || tipoDoctc == "JPG" || tipoDoctc == "JPEG" || tipoDoctc == "BMP" || tipoDoctc == "GIF") {
                         var filecompress = compressImage($scope.FILE_TEST_CONST).then(function(respuestatc){
                             var imagenTestimonio = respuestatc.name.split('.');
                             var tipoT = imagenTestimonio[1];
@@ -3391,7 +3391,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_TEST_CONST = respuestatc;
                         });
                     } else{
-                        if (tipoDoctc == 'pdf' ||  tipoDoctc == 'docx' ||  tipoDoctc == 'docxlm') {
+                        if (tipoDoctc == 'pdf' ||  tipoDoctc == 'docx' ||  tipoDoctc == 'docxlm'   ||   tipoDoctc == 'PDF' ||  tipoDoctc == 'DOCX' ||  tipoDoctc == 'DOCXML') {
                             var ziptc = new JSZip();
                             ziptc.file($scope.FILE_TEST_CONST.name, $scope.FILE_TEST_CONST);
                             ziptc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobtc) {
@@ -3414,7 +3414,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDoctc == 'png' || tipoDoctc == 'jpg' || tipoDoctc == 'jpeg' || tipoDoctc == 'bmp' || tipoDoctc == 'gif' || tipoDoctc == 'pdf' || tipoDoctc == 'docx' || tipoDoctc == 'docxlm') {
+                        if (tipoDoctc == 'png' || tipoDoctc == 'jpg' || tipoDoctc == 'jpeg' || tipoDoctc == 'bmp' || tipoDoctc == 'gif' || tipoDoctc == 'pdf' || tipoDoctc == 'docx' || tipoDoctc == 'docxlm'   ||   tipoDoctc == 'PNG' || tipoDoctc == 'JPG' || tipoDoctc == 'JPEG' || tipoDoctc == 'BMP' || tipoDoctc == 'GIF' || tipoDoctc == 'PDF' || tipoDoctc == 'DOCX' || tipoDoctc == 'DOCXML') {
                             nombreNuevoTestimonio = 'testimonio_'+fechaNueva+'.'+tipoDoctc;
                             fileUpload1.uploadFileToUrl1($scope.FILE_TEST_CONST, uploadUrl, nombreNuevoTestimonio);
                             $scope.registro.FILE_TEST_CONST = nombreNuevoTestimonio;
@@ -3446,7 +3446,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDocnu = nameArraynu[1];
                 var nombrenu = nameArraynu[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocnu == "png" || tipoDocnu == "jpg" || tipoDocnu == "jpeg" || tipoDocnu == "bmp" || tipoDocnu == "gif") {
+                    if (tipoDocnu == "png" || tipoDocnu == "jpg" || tipoDocnu == "jpeg" || tipoDocnu == "bmp" || tipoDocnu == "gif" || tipoDocnu == "PNG" || tipoDocnu == "JPG" || tipoDocnu == "JPEG" || tipoDocnu == "BMP" || tipoDocnu == "GIF") {
                         var filecompress = compressImage($scope.FILE_NUM_IDENT).then(function(respuestani){
                             var imagenNit = respuestani.name.split('.');
                             var tipoTest = imagenNit[1];
@@ -3456,7 +3456,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_NUM_IDENT = respuestani;
                         });
                     } else{
-                        if (tipoDocnu == 'pdf' ||  tipoDocnu == 'docx' ||  tipoDocnu == 'docxlm') {
+                        if (tipoDocnu == 'pdf' ||  tipoDocnu == 'docx' ||  tipoDocnu == 'docxlm'  || tipoDocnu == 'PDF' ||  tipoDocnu == 'DOCX' ||  tipoDocnu == 'DOCXML') {
                             nombreNuevoNit = 'nit_'+fechaNueva+'.'+tipoDocnu;
                             fileUpload1.uploadFileToUrl1($scope.FILE_NUM_IDENT, uploadUrl, nombreNuevoNit);
                             $scope.registro.FILE_NUM_IDENT = nombreNuevoNit;
@@ -3483,7 +3483,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDocnu == 'png' || tipoDocnu == 'jpg' || tipoDocnu == 'jpeg' || tipoDocnu == 'bmp' || tipoDocnu == 'gif' || tipoDocnu == 'pdf' || tipoDocnu == 'docx' || tipoDocnu == 'docxlm') {
+                        if (tipoDocnu == 'png' || tipoDocnu == 'jpg' || tipoDocnu == 'jpeg' || tipoDocnu == 'bmp' || tipoDocnu == 'gif' || tipoDocnu == 'pdf' || tipoDocnu == 'docx' || tipoDocnu == 'docxlm'  ||   tipoDocnu == 'PNG' || tipoDocnu == 'JPG' || tipoDocnu == 'JPEG' || tipoDocnu == 'BMP' || tipoDocnu == 'GIF' || tipoDocnu == 'PDF' || tipoDocnu == 'DOCX' || tipoDocnu == 'DOCXML') {
                             nombreNuevoNit = 'nit_'+fechaNueva+'.'+tipoDocnu;
                             fileUpload1.uploadFileToUrl1($scope.FILE_NUM_IDENT, uploadUrl, nombreNuevoNit);
                             $scope.registro.FILE_NUM_IDENT = nombreNuevoNit;
@@ -3515,7 +3515,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDocfe = nameArrayfe[1];
                 var nombrefe = nameArrayfe[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocfe == "png" || tipoDocfe == "jpg" || tipoDocfe == "jpeg" || tipoDocfe == "bmp" || tipoDocfe == "gif") {
+                    if (tipoDocfe == "png" || tipoDocfe == "jpg" || tipoDocfe == "jpeg" || tipoDocfe == "bmp" || tipoDocfe == "gif"  ||  tipoDocfe == "PNG" || tipoDocfe == "JPG" || tipoDocfe == "JPEG" || tipoDocfe == "BMP" || tipoDocfe == "GIF") {
                         var filecompress = compressImage($scope.FILE_FUND_EMP).then(function(respuestafe){
                             var imagenFun = respuestafe.name.split('.');
                             var tipoFun = imagenFun[1];
@@ -3525,7 +3525,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_FUND_EMP = respuestafe;
                         });
                     } else{
-                        if (tipoDocfe == 'pdf' ||  tipoDocfe == 'docx' ||  tipoDocfe == 'docxlm') {
+                        if (tipoDocfe == 'pdf' ||  tipoDocfe == 'docx' ||  tipoDocfe == 'docxlm'  || tipoDocfe == 'PDF' ||  tipoDocfe == 'DOCX' ||  tipoDocfe == 'DOCXLM') {
                             var zipfe = new JSZip();
                             zipfe.file($scope.FILE_FUND_EMP.name, $scope.FILE_FUND_EMP);
                             zipfe.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobfe) {
@@ -3548,7 +3548,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDocfe == 'png' || tipoDocfe == 'jpg' || tipoDocfe == 'jpeg' || tipoDocfe == 'bmp' || tipoDocfe == 'gif' || tipoDocfe == 'pdf' || tipoDocfe == 'docx' || tipoDocfe == 'docxlm') {
+                        if (tipoDocfe == 'png' || tipoDocfe == 'jpg' || tipoDocfe == 'jpeg' || tipoDocfe == 'bmp' || tipoDocfe == 'gif' || tipoDocfe == 'pdf' || tipoDocfe == 'docx' || tipoDocfe == 'docxlm' ||  tipoDocfe == 'PNG' || tipoDocfe == 'JPG' || tipoDocfe == 'JPEG' || tipoDocfe == 'BMP' || tipoDocfe == 'GIF' || tipoDocfe == 'PDF' || tipoDocfe == 'DOCX' || tipoDocfe == 'DOCXLM') {
                             nombreNuevoFundaempresa = 'fundempresa_'+fechaNueva+'.'+tipoDocfe;
                             fileUpload1.uploadFileToUrl1($scope.FILE_FUND_EMP, uploadUrl ,nombreNuevoFundaempresa);
                             $scope.registro.FILE_FUND_EMP = nombreNuevoFundaempresa;
@@ -3580,14 +3580,14 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDocrc = nameArrayrc[1];
                 var nombrerc = nameArrayrc[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocrc == "png" || tipoDocrc == "jpg" || tipoDocrc == "jpeg" || tipoDocrc == "bmp" || tipoDocrc == "gif") {
+                    if (tipoDocrc == "png" || tipoDocrc == "jpg" || tipoDocrc == "jpeg" || tipoDocrc == "bmp" || tipoDocrc == "gif"  ||  tipoDocrc == "PNG" || tipoDocrc == "JPG" || tipoDocrc == "JPEG" || tipoDocrc == "BMP" || tipoDocrc == "GIF") {
                         var filecompress = compressImage($scope.FILE_REG_COMER).then(function(respuestarc){
                             fileUpload.uploadFileToUrl(respuestarc, uploadUrl);
                             $scope.registro.FILE_REG_COMER = respuestarc.name;
                             $scope.FILE_REG_COMER = respuestarc;
                         });
                     } else{
-                        if (tipoDocrc == 'pdf' ||  tipoDocrc == 'docx' ||  tipoDocrc == 'docxlm') {
+                        if (tipoDocrc == 'pdf' ||  tipoDocrc == 'docx' ||  tipoDocrc == 'docxlm' ||  tipoDocrc == 'PDF' ||  tipoDocrc == 'DOCX' ||  tipoDocrc == 'DOCXLM') {
                             var ziprc = new JSZip();
                             ziprc.file($scope.FILE_REG_COMER.name, $scope.FILE_REG_COMER);
                             ziprc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobrc) {
@@ -3610,7 +3610,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDocrc == 'png' || tipoDocrc == 'jpg' || tipoDocrc == 'jpeg' || tipoDocrc == 'bmp' || tipoDocrc == 'gif' || tipoDocrc == 'pdf' || tipoDocrc == 'docx' || tipoDocrc == 'docxlm') {
+                        if (tipoDocrc == 'png' || tipoDocrc == 'jpg' || tipoDocrc == 'jpeg' || tipoDocrc == 'bmp' || tipoDocrc == 'gif' || tipoDocrc == 'pdf' || tipoDocrc == 'docx' || tipoDocrc == 'docxlm' || tipoDocrc == 'PNG' || tipoDocrc == 'JPG' || tipoDocrc == 'JPEG' || tipoDocrc == 'BMP' || tipoDocrc == 'GIF' || tipoDocrc == 'PDF' || tipoDocrc == 'DOCX' || tipoDocrc == 'DOCXLM') {
                             fileUpload.uploadFileToUrl($scope.FILE_REG_COMER, uploadUrl);
                             $scope.registro.FILE_REG_COMER = $scope.FILE_REG_COMER.name;
                             $.unblockUI();

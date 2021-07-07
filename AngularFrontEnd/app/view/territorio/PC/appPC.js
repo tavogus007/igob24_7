@@ -773,7 +773,7 @@ function PCController($scope, $rootScope, $routeParams, $location, $http, Data, 
     $scope.setPredioSeleccionado = function (objPredio) {
         $scope.predioSeleccionado = objPredio;
         $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
-        $scope.getPredioPropietarios($scope.predioSeleccionado.CodigoCatastral);
+        //$scope.getPredioPropietarios($scope.predioSeleccionado.CodigoCatastral);
     }
     
     $scope.getPredio = function (codCat) {
@@ -785,13 +785,24 @@ function PCController($scope, $rootScope, $routeParams, $location, $http, Data, 
             if(resApi.success)
             {
                 if(resApi.success.dataSql.length == 1) {
-                    $scope.setSolicitudDatosPredio(resApi.success.dataSql[0]);
+                    //Control de planimetria //Autor: JFC: Fecha:2021 07 06
+                    if(resApi.success.dataSql[0].codPlanimetria == null){
+                        $scope.predioSeleccionado = null;
+                        swal('', 'El predio seleccionado ('+  codCat +') no se encuentra dentro de una planimetría aprobada.\n\nDebe apersonarse a la Dirección de Administración Territorial en el Piso 6 del Edificio Tobía, ubicado en la calle Potosí esq. Colon,  para recibir mayor información.', 'error');
+                        console.log("El predio no tiene planimetria:" + codCat);
+                    }
+                    else{
+                        $scope.getPredioPropietarios($scope.predioSeleccionado.CodigoCatastral);
+                        $scope.setSolicitudDatosPredio(resApi.success.dataSql[0]);
+                    }
                 }
                 else if(resApi.success.dataSql.length == 0){
+                    $scope.predioSeleccionado = null;
                     swal('', 'Error no se encontró el predio con Código Catastral' + codCat+ " en la tabla consolidada", 'error');
                     console.log("Error no se encontró el predio con Cód Catastral:" + codCat);
                 }
                 else{
+                    $scope.predioSeleccionado = null;
                     swal('', 'Error se encontró más de un registro con el mismo Código Catastral: '+ codCat +' en la tabla consolidada', 'error');
                     console.log("Error se encontró más de un registro con el mismo Código Catastral:" + codCat);
                 }
@@ -800,6 +811,7 @@ function PCController($scope, $rootScope, $routeParams, $location, $http, Data, 
             else
             {
                 $.unblockUI();
+                $scope.predioSeleccionado = null;
                 swal('', 'Error al recuperar datos predios', 'error');
                 console.log("Error al recuperar datos predios",resApi.error.message,resApi.error.code);
             }

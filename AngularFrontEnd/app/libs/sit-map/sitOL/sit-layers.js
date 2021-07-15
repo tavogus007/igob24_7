@@ -6,6 +6,7 @@ function SITLayers(opts){
     this.url_wms = SITUtil.capas._get_url_wms();
     this.url_wmts = SITUtil.capas._get_url_wmts();
     this.url_wms_raster = 'http://192.168.5.68:8080/geoserver/uatg/wms?'; // gmlpsr00036
+
     this.wms_params = {
         FORMAT:'image/png',
         TRANSPARENT: true,
@@ -256,10 +257,9 @@ SITLayers.prototype.getDatcLayers = function (title, visible, openInLyrSwith) {
         ]
     });
 };
-
 SITLayers.prototype.getOverLayers = function (title, visible, openInLyrSwith) {
     var self = this,
-        t = title || 'DISTRITOS, PLANIMETRIAS',
+        t = title || 'MACRODISTRITOS',
         vis = visible || false,
         oils = openInLyrSwith || false;
 
@@ -268,6 +268,7 @@ SITLayers.prototype.getOverLayers = function (title, visible, openInLyrSwith) {
         visible: vis,
         openInLayerSwitcher: oils,
         layers: [
+            /*
             new ol.layer.Tile({
                 title: 'Planimetrias',
                 visible: false,
@@ -352,11 +353,11 @@ SITLayers.prototype.getOverLayers = function (title, visible, openInLyrSwith) {
                     serverType: 'geoserver',
                     tileGrid: self.tilegrids
                 })
-            }),
+            }),*/
             
             new ol.layer.Tile({
                 title:'Macrodistritos 2019',
-                visible: false,
+                visible: true,
                 //maxResolution: SITUtil.mapas.getResolutionForScale(10000.0, "m"),
                 source: new ol.source.TileWMS({
                     url: self.url_wms,
@@ -366,6 +367,130 @@ SITLayers.prototype.getOverLayers = function (title, visible, openInLyrSwith) {
                 })
             })
             
+        ]
+    });
+};
+SITLayers.prototype.getCatastroLayers = function(opts){
+    var self = this,
+        op = opts || {},
+        t = op.title || 'CATASTRO',
+        vis = op.visible || false,
+        oils = op.openInLayerSwitcher || false,
+        esZonaHom = op.mapaZonaValor || false,
+        esZonaRef = op.mapaZonaReferencial || false,
+        styManzana = esZonaRef ? 'ct_manzanas_zona2019' : 'ct_manzanas_ac2019',
+        escalaManzana = esZonaRef ? 25000.0 : 10000.0;
+
+    return new ol.layer.Group({
+        title: t,
+        visible: vis,
+        openInLayerSwitcher: oils,
+        layers: [
+            new ol.layer.Tile({
+                title:'Zonas Homogeneas',
+                visible:  esZonaHom,
+                maxResolution: SITUtil.mapas.getResolutionForScale(100000.0, "m"),
+                description:'Zonas homogeneas o zonas de valor vigentes',
+                queryMode: 'wms',
+                source: new ol.source.TileWMS({
+                    url: self.url_wms,
+                    params: $.extend({LAYERS:'catastro:zonasvalor2015', STYLES:'ct_zonas_valor'}, self.wms_params),
+                    crossOrigin: 'anonymous',
+                    tileGrid: self.tilegrid2
+                })
+            }),
+            new ol.layer.Tile({
+                title:'Lotes predios',
+                visible: !esZonaHom, // true,
+                maxResolution: SITUtil.mapas.getResolutionForScale(5000.0, "m"),
+                description:'Registro de lotes catastrales',
+                queryMode: 'wms',
+                wmsStyles: {
+                    'ct_lote_ac2019': {title: 'Codigo lote', desc: 'Numeros de lote asignados'},
+                    'ct_lote4': {title: 'Estado predio certificado', desc: 'Predios segÃºn estado de certificaciÃ³n'},
+                    'ct_lote_tipolev':{title: 'Tipo levantamiento', desc: 'Predios segÃºn el tipo de levantamiento'},
+                    'ct_lote_tipopredio':{title: 'Tipo de predio', desc: 'Tipo predio unifamiliar, PH y otros'}
+                },
+                source: new ol.source.TileWMS({
+                    url: self.url_wms,
+                    params: $.extend({LAYERS:'catastro:lotesestados', STYLES:'ct_lote_ac2019'}, self.wms_params),
+                    crossOrigin: 'anonymous',
+                    tileGrid: self.tilegrid2
+                })
+            }),
+
+            new ol.layer.Tile({
+                title:'Numeros de puerta',
+                visible: false,
+                maxResolution: SITUtil.mapas.getResolutionForScale(2500.0, "m"),
+                description:'Recopilacion de numeros de puerta (actualizado al 2016)',
+                queryMode: 'wms',
+                source: new ol.source.TileWMS({
+                    url: self.url_wms,
+                    params: $.extend({LAYERS:'sit:numeropuertas', STYLES:'sit_numeropuerta'}, self.wms_params),
+                    crossOrigin: 'anonymous',
+                    tileGrid: self.tilegrids
+                })
+            }),
+
+            new ol.layer.Tile({
+                title:'Manzanas',
+                visible: !esZonaHom, //true,
+                maxResolution: SITUtil.mapas.getResolutionForScale(escalaManzana, "m"), //10000.0
+                description:'Manzanas registrados o deslindados',
+                queryMode: 'wms',
+                opacity: 0.75,
+                wmsStyles: {
+                    'ct_manzanas_ac2019':{ title:'Codigos de manzana', desc:'Codigos asignados a las manzanas' },
+                    'ct_manzanas_zona2019':{ title:'Zonas declaradas', desc:'Manzanas segÃºn zona declarada por el administrado' },
+                    'ct_manzanas_serv2019':{ title:'Nro. de Servicios', desc:'Manzanas segÃºn acceso a servicios' }
+                },
+                source: new ol.source.TileWMS({
+                    url: self.url_wms,
+                    params: $.extend({LAYERS:'manzanas_zona', STYLES: styManzana}, self.wms_params), // 'ct_manzanas_ac2019'
+                    crossOrigin: 'anonymous',
+                    tileGrid: self.tilegrid2
+                })
+            }),
+
+            new ol.layer.Tile({
+                title:'Vias Catastro',
+                visible: true,
+                maxResolution: SITUtil.mapas.getResolutionForScale(25000.0, "m"),
+                description:'Registro vial de catastro',
+                queryMode: 'wms',
+                /*
+                wmsStyles: {
+                    ct_vias_ac2019: { title:'Nombre de via', desc:'Registro vial catastro, nominaciÃ³n de vÃ­as' },
+                    ct_vias_mat2019: { title:'Material vial', desc:'Vias segÃºn material de vÃ­a declarado' },
+                    ct_vias_tipo2019: { title:'Tipo de vÃ­a', desc:'Vias segÃºn tipo ej. Avenida, Calle, etc' },
+                    ct_vias_aprob2019: { title:'Vias con Ordenanza', desc:'Vias segÃºn instrumento de aprobaciÃ³n' }
+                },
+                */
+                source: new ol.source.TileWMS({
+                    url: self.url_wms,
+                    params: $.extend({LAYERS:'catastro:vias2', STYLES:'ct_vias_ac2019'}, self.wms_params),
+                    crossOrigin: 'anonymous',
+                    tileGrid: self.tilegrids
+                })
+            }),
+
+            new ol.layer.Tile({
+                title:'Distritos Catastrales',
+                visible: !esZonaHom && !esZonaRef, //true,
+                maxResolution: SITUtil.mapas.getResolutionForScale(250000.0, "m"),
+                description:'Distritos catastrales vigentes',
+                queryMode: 'wms',
+                source: new ol.source.TileWMS({
+                    url: self.url_wms,
+                    params: $.extend({LAYERS:'catastro:distritoscatastrales2', STYLES:'ct_distritoscat_ac2019'}, self.wms_params),
+                    crossOrigin: 'anonymous',
+                    tileGrid: self.tilegrids
+                })
+            })
+
+
+
         ]
     });
 };

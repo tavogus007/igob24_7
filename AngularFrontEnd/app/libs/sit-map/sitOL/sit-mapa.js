@@ -21,8 +21,8 @@ function SITMap(opts){
 
 SITMap.prototype.build = function(center, zoom, layers){
     var self = this,
-        centro = center || [597547.26, 8173016.93],
-        zm = zoom || 6,
+        centro = center || [594019.091, 8175106.283],
+        zm = zoom || 7,
         proj = this.projection,
         resols = this.resolutions,
         target = this.target,
@@ -213,7 +213,7 @@ SITMap.prototype.createControlBar = function (opts) {
             }
         }
     });
-    barra2.addControl(toggleGSV);
+    //barra2.addControl(toggleGSV);
 
     mainbar.addControl (new ol.control.ZoomToExtent({  extent: [ 596850,8163951 , 603610,8184461 ], tipLabel:'Zoom completo' }));
     //mainbar.addControl (new ol.control.Rotate());

@@ -16,6 +16,31 @@ app.filter("FormatoSercat", function(){
 	}
 });
 
+app.filter("FormatoFecha", function(){
+	return function(text) {
+		function getFormattedDate(date) {
+			var year = date.getFullYear();
+
+			var month = (1 + date.getMonth()).toString();
+			month = month.length > 1 ? month : '0' + month;
+
+			var day = date.getDate().toString();
+			day = day.length > 1 ? day : '0' + day;
+
+			return day + '/' + month + '/' + year;
+		}
+		
+		if(text != null){
+			var f =  "";
+			var fechaRegistro = new Date(text);
+			var f = getFormattedDate(fechaRegistro);
+
+			return f;
+
+		}
+	}
+});
+
 app.directive('vaCombo', function() {
 	return {
 		require: 'ngModel',
@@ -30,6 +55,20 @@ app.directive('vaCombo', function() {
 			}
 			mCtrl.$parsers.push(myValidation);
 		}
+	};
+});
+
+app.directive('ngEnter', function() {
+	return function(scope, element, attrs) {
+		element.bind("keydown keypress", function(event) {
+			if(event.which === 13) {
+				scope.$apply(function(){
+					scope.$eval(attrs.ngEnter, {'event': event});
+				});
+
+				event.preventDefault();
+			}
+		});
 	};
 });
 
@@ -50,8 +89,34 @@ function Padleft(pad,valor) {
 
 function RegistrocatastralController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad,$timeout,$window)
 {
-	//OK
-	joao = $scope;
+	//IMPORTANTE
+	$scope.configParametros = {
+		documentoSolicitud:{
+			idTipoDocIfile : 0, //Actualizar para PRODUCCION
+			acciones:{
+				obtener:function () {
+					var conf = new dataSITOL();
+					conf.catObtenerParam("CatastroDocIDRegistro",function(resultado){
+						var resApi = JSON.parse(resultado);
+						//console.log("datos param--->",resApi);
+						if(resApi.success)
+						{
+							$scope.configParametros.documentoSolicitud.idTipoDocIfile = parseInt(resApi.success.dataSql[0].valorParametro);
+						}
+						else
+						{
+							swal('', 'Error al obtener datos', 'error');
+							console.log("Error al obtener datos",resApi.error.message,resApi.error.code);
+							//$.unblockUI();
+						}
+					});
+				}
+			}
+		},
+		
+	}
+
+	dbg = $scope;
 	$scope.flujoSolicitud = {
 
 		paso:'bandeja', //seleccionPredio (ubicacion del predio)
@@ -64,9 +129,11 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				//Mensaje de tipo de actualizacion
 				//Setear variables;
 				$scope.solicitud.acciones.reset();
+
 				$scope.solicitud.acciones.establecerDatosSolicitante();
 				//Por ahora ir a paso siguiente, luego hace manual
-				$scope.flujoSolicitud.acciones.paso1();
+
+				//$scope.flujoSolicitud.acciones.paso1();
 
 			},
 			paso1:function () {
@@ -87,12 +154,35 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					},100);
 				}
 			},
-			paso2:function () {
+			//Habra pasos intermedios en servicio municipal
+			paso5:function () {
 				//Delegar a profesional externo
+
+				if($scope.mapa.estadoView != 'OK'){
+					setTimeout(function()
+					{
+						//try{
+							$scope.mapa.acciones.iniciarView();
+							$scope.mapa.estadoView ="OK";
+							$scope.mapa.acciones.establecerView($scope.solicitud.wkt);
+							//$scope.flujoSolicitud.opcionSeleccionPredio ='A';
+							//$scope.$apply();
+						//}catch(e){
+						//	console.log("error", e);
+						//}
+					},100);
+				}
+				else{
+					$scope.mapa.acciones.establecerView($scope.solicitud.wkt);
+				}
+
+
 				$scope.flujoSolicitud.paso = "delegacionProfesional";
 				if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
 					$scope.$apply();
 				}
+
+
 			},
 			cancelar:function (progreso) {
 				$scope.flujoSolicitud.paso = "bandeja";
@@ -101,7 +191,10 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			},
 			atras:function (paso) {
 				$scope.flujoSolicitud.paso = paso;
-			}
+				if(paso =='seleccionPredio'){
+					$scope.flujoSolicitud.acciones.paso1();
+				}
+			},
 		}
 	}
 	
@@ -133,29 +226,37 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				var predio = new dataSIT();
 				predio.catObtenerPredioxCodcat( codCat,"C1",function(resultado){
 					var resApi = JSON.parse(resultado);
-					//console.log("--->",resApi);
+					console.log("datos por CC",resApi);
 					if(resApi.success)
 					{
 						var datosPredio = resApi.success.dataSql[0];
-						console.log("datos predio--->",resApi.success.dataSql);
 						var matrizHabilitada = $scope.predio.acciones.verificarMatrizHabilitada(datosPredio.idTipoPredio);
 						if(matrizHabilitada == false){
 							var idTipoRegimen = 0;
 							idTipoRegimen = datosPredio.idTipoPredio == "1" || datosPredio.idTipoPredio == "2" ? 1:(datosPredio.idTipoPredio == "4"? 2 : 0 );
 							$scope.solicitud.acciones.establecerDatosBasicosPredio(datosPredio.codigoCatastral,datosPredio.descPlanimetria,datosPredio.direccion,datosPredio.edificio,datosPredio.idCodPlanimetria,datosPredio.idMacrodistrito,datosPredio.idPendienteTerreno,datosPredio.idTipoPredio,datosPredio.macrodistrito,datosPredio.nroPuerta,datosPredio.servAguaPotable,datosPredio.servAlcantarillado,datosPredio.servAlumbrado,datosPredio.servEnergiaElec,datosPredio.servGas,datosPredio.servTelefono,datosPredio.wkt,datosPredio.zona, datosPredio.iddistritoMunicipal, idTipoRegimen);
 							$scope.predio.acciones.verificarCertificacion($scope.solicitud.codigoCatastral);
-							$scope.mapa.acciones.obtenerRiesgo(datosPredio.wkt);
-							$scope.flujoSolicitud.acciones.paso2();
+							console.log("zona", datosPredio.zona);
+							if(datosPredio.zona == null || datosPredio.zona == undefined || datosPredio.zona == ""){
+								$scope.mapa.acciones.obtenerZona(datosPredio.wkt, "delegacionProfesional");
+							}
+							else{
+								//Zona de riesgo
+								$scope.mapa.acciones.obtenerRiesgo(datosPredio.wkt,"delegacionProfesional");
+							}
+
+							//$scope.mapa.acciones.obtenerRiesgo(datosPredio.wkt);
+							//$scope.flujoSolicitud.acciones.paso5();
 						}
 						else{
 							$('#divPopupMatrizHabilitada').modal('show');
+							$.unblockUI();
 						}
-						$.unblockUI();
 					}
 					else
 					{
-						swal('', 'Error al obtener datos', 'error');
-						console.log("Error al obtener datos",resApi.error.message,resApi.error.code);
+						swal('', 'Error al obtener datos del predio', 'error');
+						console.log("Error al obtener datos del predio",resApi.error.message,resApi.error.code);
 						$.unblockUI();
 					}
 				});
@@ -164,39 +265,48 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				$.blockUI();
 				var predio = new dataSIT();
 				predio.catObtenetPredioxWkt( wkt,"C2",function(resultado){
-					$.unblockUI();
+					//$.unblockUI();
 					var resApi = JSON.parse(resultado);
-					console.log("wkt--->",resApi);
+					//console.log("datos por wkt--->",resApi);
 					if(resApi.success)
 					{
 						var datosPredio = resApi.success.dataSql[0];
-
-						//Verificar tramite en proceso
 						var predio = new dataSIT();
 						predio.catPredioTramiteEnProceso( datosPredio.codigoCatastral,function(resultado){
-							$.unblockUI();
-							var resApi = JSON.parse(resultado);
-							if(resApi.success)
+							//$.unblockUI();
+							var resApiTramiteProceso = JSON.parse(resultado);
+							if(resApiTramiteProceso.success)
 							{
-								if(resApi.success.dataSql.length > 0){
-									var fechaRegistro = new Date(resApi.success.dataSql[0].fechaRegistro);
+								if(resApiTramiteProceso.success.dataSql.length > 0){
+									var fechaRegistro = new Date(resApiTramiteProceso.success.dataSql[0].fechaRegistro);
 									var cadFecha = getFormattedDate(fechaRegistro);
 									swal('', 'Este predio tiene un trámite en proceso, por lo que no puede continuar.\nFecha de Registro ' + cadFecha, 'error');
+									$.unblockUI();
 								}
 								else{
-									console.log("datos predio--->",resApi.success.dataSql);
 									var matrizHabilitada = $scope.predio.acciones.verificarMatrizHabilitada(datosPredio.idTipoPredio);
 									if(matrizHabilitada == false){
 										var idTipoRegimen = 0;
 										idTipoRegimen = datosPredio.idTipoPredio == "1" || datosPredio.idTipoPredio == "2" ? 1:(datosPredio.idTipoPredio == "4"? 2 : 0 );
 										$scope.solicitud.acciones.establecerDatosBasicosPredio(datosPredio.codigoCatastral,datosPredio.descPlanimetria,datosPredio.direccion,datosPredio.edificio,datosPredio.idCodPlanimetria,datosPredio.idMacrodistrito,datosPredio.idPendienteTerreno,datosPredio.idTipoPredio,datosPredio.macrodistrito,datosPredio.nroPuerta,datosPredio.servAguaPotable,datosPredio.servAlcantarillado,datosPredio.servAlumbrado,datosPredio.servEnergiaElec,datosPredio.servGas,datosPredio.servTelefono,datosPredio.wkt,datosPredio.zona, datosPredio.iddistritoMunicipal, idTipoRegimen);
 										$scope.predio.acciones.verificarCertificacion($scope.solicitud.codigoCatastral);
-										$scope.mapa.acciones.obtenerZona(wkt);
-										$scope.mapa.acciones.obtenerRiesgo(wkt);
-										$scope.flujoSolicitud.acciones.paso2();
+										//console.log("zona", datosPredio.zona);
+
+										if(datosPredio.zona == null || datosPredio.zona == undefined || datosPredio.zona == ""){
+											$scope.mapa.acciones.obtenerZona(wkt,"delegacionProfesional");
+										}
+										else{
+											//Zona de riesgo
+											$scope.mapa.acciones.obtenerRiesgo(wkt,"delegacionProfesional");
+										}
+
+										//
+										//$scope.flujoSolicitud.acciones.paso5();
 									}
 									else{
+										//console.log("matriz habilitada");
 										$('#divPopupMatrizHabilitada').modal('show');
+										$.unblockUI();
 									}
 								}
 							}
@@ -217,12 +327,12 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				});
 			},
 			verificarCertificacion:function(codCat){
-				$.blockUI();
+				//$.blockUI();
 				var predio = new dataSIT();
 				predio.catPredioConCertificacion( codCat,function(resultado){
-					$.unblockUI();
+					//$.unblockUI();
 					var resApi = JSON.parse(resultado);
-					console.log("verificarCertificacion--->",resApi);
+					//console.log("verificarCertificacion--->",resApi);
 					if(resApi.success)
 					{
 						var idTipoTramite = 0;
@@ -248,12 +358,12 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				});
 			},
 			verificarReingreso:function(codCat, idTipoRegimen){
-				$.blockUI();
+				//$.blockUI();
 				var predio = new dataSIT();
 				predio.catPredioReingreso( codCat,idTipoRegimen,function(resultado){
-					$.unblockUI();
+					//$.unblockUI();
 					var resApi = JSON.parse(resultado);
-					console.log("verificarReingreso--->",resApi);
+					//console.log("verificarReingreso--->",resApi);
 					if(resApi.success)
 					{
 						$scope.solicitud.tieneMensura =0;
@@ -291,7 +401,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				var predio = new dataSIT();
 				predio.catPredioTramiteEnProceso( codCat,function(resultado){
 					var resApi = JSON.parse(resultado);
-					console.log("verificar en proceso--->",resApi);
+					//console.log("verificar en proceso--->",resApi);
 					if(resApi.success)
 					{
 						if(resApi.success.dataSql.length > 0){
@@ -324,7 +434,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 		var day = date.getDate().toString();
 		day = day.length > 1 ? day : '0' + day;
 
-		return month + '/' + day + '/' + year;
+		return day + '/' + month + '/' + year;
 	}
 
 	$scope.solicitud = {
@@ -337,6 +447,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 		idTipoRegimen: null, //PU o PH
 		idCatastroTipoTramite: null, //1 nuevo, 2 actualziacion 3 reingreso
 
+		oid:null,
 		solicitante: null,
 		idTipoDocumento: null,
 		numDocumento: null,
@@ -409,6 +520,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				$scope.solicitud.idTipoRegimen= null; //PU o PH
 				$scope.solicitud.idCatastroTipoTramite= null; //1 nuevo; 2 actualziacion 3 reingreso
 
+				$scope.solicitud.oid = null;
 				$scope.solicitud.solicitante= null;
 				$scope.solicitud.idTipoDocumento= null;
 				$scope.solicitud.numDocumento= null;
@@ -422,7 +534,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				$scope.solicitud.profesionalTelefono=null;
 				$scope.solicitud.profesionalCab=null;
 
-				$scope.solicitud.idmacroDistrito= null;
+				$scope.solicitud.idMacrodistrito= null;
 				$scope.solicitud.iddistritoMunicipal= null;
 				$scope.solicitud.codigoCatastral= null;
 				$scope.solicitud.direccion= null;
@@ -484,6 +596,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				solicitud.catListaSolicitudes(
 					sNroDocCiudadano
 					, function(resultado){
+						$.unblockUI();
 						var resApi = JSON.parse(resultado);
 						if(resApi.success)
 						{
@@ -492,7 +605,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 						}
 						else
 						{
-							$.unblockUI();
+
 							console.log("Error al listar",resApi.error.message,resApi.error.code);
 						}
 					});
@@ -505,6 +618,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					var response = JSON.parse(resultado);
 					if (response.length > 0) {
 						var results = response;
+						$scope.solicitud.oid = sessionService.get('IDCIUDADANO');
 						var tipoPersona = results[0].dtspsl_tipo_persona;
 						if (tipoPersona == 'NATURAL') {
 							$scope.solicitud.tipoPersona = 'NATURAL';
@@ -604,7 +718,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			},
 			guardarEnviar: function () {
 				$.blockUI();
-				console.log("entro");
+				//console.log("entro");
 				var solicitud = new dataSITOL();
 				solicitud.catSolicitudReg(
 					$scope.solicitud.idCatastroTramiteOL==null?0:$scope.solicitud.idCatastroTramiteOL,
@@ -641,10 +755,12 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					$scope.solicitud.serBasAlumbradoPublico,
 					$scope.solicitud.serBasGasDomiciliario,
 					$scope.solicitud.tieneMensura,
-					$scope.solicitud.idInsFlujoAnterior
+					$scope.solicitud.idInsFlujoAnterior,
+					$scope.solicitud.riesgo,
+					$scope.solicitud.oid
 					, function(resultado){
 						var resApi = JSON.parse(resultado);
-						console.log(resApi);
+						//console.log(resApi);
 						if(resApi.success)
 						{
 							$.unblockUI();
@@ -656,6 +772,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 							else
 							{
 								swal('', 'Error al guardar', 'error');
+								$.unblockUI();
 							}
 						}
 						else
@@ -680,21 +797,186 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					if(data.res == "OK")
 					{
 						$scope.solicitud.acciones.listar();
-						$scope.flujoSolicitud.acciones.cancelar();
 						swal('', 'Registro guardado y delegado al arquitecto', 'success');
+						$scope.flujoSolicitud.acciones.cancelar();
+
 						$.unblockUI();
 					}
 					else
 					{
 						console.log("error email",data);
 						swal('', 'Error al enviar correo', 'error');
+						$.unblockUI();
 					}
 				}).error(function (data, status, headers, config) {
 					console.log("error email conexion",data, status, headers, config);
 					swal('', 'Error al enviar correo', 'error');
+					$.unblockUI();
 				});
 			},
+			seguimientoFlujo : function (sol) {
+				$.blockUI();
+				if(sol.piif)
+				{
+					var p = {q: sol.piif};
+					$http({
+						method: 'POST',
+						url: CONFIG.SERVICE_SITOLextgen + 'ApiMotorFlujo/FlujoSeguimientoTarea',
+						data: Object.toparams(p),
+						headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+					}).success(function (data, status, headers, config) {
+						if(data.res)
+						{
+							swal('', 'Error al consultar seguimiento de trámite', 'error');
+						}
+						else{
+							$('#seguimientoNroSolicitud').val(sol.idCatastroTramiteOL);
+							//$('#seguimientoTipoTramite').val($scope.config.tipoTramite.descripcion);
+							$scope.listaSeguimientoTareas = data;
+							$('#divPopupSeguimiento').modal('show');
+						}
+						$.unblockUI();
+					}).error(function (data, status, headers, config) {
+						swal('', 'Error al consultar seguimiento de trámite', 'error');
+						$.unblockUI();
+					});
+				}
+				else
+				{
+					swal('', 'Error al consultar seguimiento de trámite', 'error');
+					console.log("No se puede ver el seguimiento, parámetro no valido");
+				}
+			},
+			descargar:function (piif) {
+				var params = Object();
+				params.idoc = $scope.configParametros.documentoSolicitud.idTipoDocIfile;//195;
+				params.q = piif;
+				//return $http.post("DocumentoFlujo", JSON.stringify(params), { responseType: 'arraybuffer', headers: {} });
 
+				var promise = $http.post(CONFIG.SERVICE_SITOLextgen + 'Catastro/DocumentoFlujo', JSON.stringify(params), { responseType: 'arraybuffer', headers: {} });
+				promise.success(function (response) {
+					//console.log("response", response);
+					var formato = "pdf";
+					var nombreArchivo = "Solicitud.pdf";
+					var contentType = "";
+					if (formato == 'pdf') {
+						contentType = "application/pdf";
+					}
+					else if (formato == "dwg") {
+						contentType = "image/vnd.dwg";
+					}
+					var file = new Blob([response], { type: formato });
+					//console.log("file", file);
+					var isChrome = !!window.chrome && !!window.chrome.csi;//!!window.chrome.webstore;
+					var isIE = /*cc_on!*/false || !!document.documentMode;
+					var isEdge = !isIE && !!window.StyleMedia;
+					if (isChrome) {
+						var url = window.URL || window.webkitURL;
+
+						var downloadLink = angular.element('<a></a>');
+						downloadLink.attr('href', url.createObjectURL(file));
+						downloadLink.attr('target', '_self');
+						downloadLink.attr('download', nombreArchivo);
+						downloadLink[0].click();
+					}
+					else if (isEdge || isIE) {
+						window.navigator.msSaveOrOpenBlob(file, nombreArchivo);
+
+					}
+					else {
+						var fileURL = URL.createObjectURL(file);
+						window.open(fileURL);
+					}
+				})
+					.error(function (error) {
+						console.log("error", error);
+						$rootScope.notificacionError("Error al descargar archivo");
+					});
+			},
+			obtener:function (idCatastroTramiteOL, accion) {
+				$.blockUI();
+				var solicitud = new dataSITOL();
+				solicitud.catObtenerSolicitud(
+					idCatastroTramiteOL
+					, function(resultado){
+						$.unblockUI();
+						var resApi = JSON.parse(resultado);
+						if(resApi.success)
+						{
+							console.log("sss", resApi);
+							var data =resApi.success.dataSql[0];
+							$scope.solicitud.idCatastroTramiteOL = data.idCatastroTramiteOL;
+							$scope.solicitud.wkt  = data.wkt;
+							$scope.solicitud.idTipoRegimen  = data.idTipoRegimen;
+							$scope.solicitud.idCatastroTipoTramite = data.idCatastroTipoTramite;
+							$scope.solicitud.solicitante = data.solicitante;
+							$scope.solicitud.idTipoDocumento = data.idTipoDocumento;
+							$scope.solicitud.numDocumento = data.numDocumento;
+							$scope.solicitud.idExpedido = data.idExpedido;
+							$scope.solicitud.telefonoSolicitante = data.telefonoSolicitante;
+							$scope.solicitud.emailSolicitante = data.emailSolicitante;
+							$scope.solicitud.tipoPersona = data.tipoPersona;
+							$scope.solicitud.profesionalNombre = data.profesionalNombre;
+							$scope.solicitud.profesionalEmail = data.profesionalEmail;
+							$scope.solicitud.profesionalTelefono = data.profesionalTelefono;
+							$scope.solicitud.profesionalCab = data.profesionalCab;
+							$scope.solicitud.idMacrodistrito = data.idmacroDistrito;
+							$scope.solicitud.iddistritoMunicipal = data.iddistritoMunicipal;
+							$scope.solicitud.codigoCatastral = data.codigoCatastral;
+							$scope.solicitud.direccion = data.direccion;
+							$scope.solicitud.zona = data.zona;
+							$scope.solicitud.nroPuerta = data.nroPuerta;
+							$scope.solicitud.edificio = data.edificio;
+							$scope.solicitud.idCodPlanimetria = data.idCodPlanimetria;
+							$scope.solicitud.descPlanimetria = data.descPlanimetria;
+							$scope.solicitud.idTipoLote = data.idTipoLote;
+							$scope.solicitud.conCertificado = 0;//data.conCertificado;
+							if(data.conCertificado == true)
+								$scope.solicitud.conCertificado;
+
+							$scope.solicitud.carTerrPendiente = data.carTerrPendiente;
+
+							$scope.solicitud.serBasAlcantarillado = 0;
+							if(data.serBasAlcantarillado == true)
+								$scope.solicitud.serBasAlcantarillado = 1;
+
+							$scope.solicitud.serBasEnergiaElectrica = 0;
+							if(data.serBasEnergiaElectrica == true)
+								$scope.solicitud.serBasEnergiaElectrica = 1;
+
+							$scope.solicitud.serBasTelefono = 0;
+							if(data.serBasTelefono == true)
+								$scope.solicitud.serBasTelefono = 1;
+
+							$scope.solicitud.serBasAguaPotable = 0;
+							if(data.serBasAguaPotable == true)
+								$scope.solicitud.serBasAguaPotable = 1;
+
+							$scope.solicitud.serBasAlumbradoPublico = 0;
+							if(data.serBasAlumbradoPublico == true)
+								$scope.solicitud.serBasAlumbradoPublico = 1;
+
+							$scope.solicitud.serBasGasDomiciliario = 0;
+							if(data.serBasGasDomiciliario == true)
+								$scope.solicitud.serBasGasDomiciliario = 1;
+
+							$scope.solicitud.tieneMensura = data.tieneMensura;
+							$scope.solicitud.idInsFlujoAnterior = data.idInsFlujoAnterior;
+							$scope.solicitud.riesgo = data.riesgo;
+
+							if(accion == "delegar"){
+								$scope.flujoSolicitud.acciones.paso5();
+							}
+						}
+						else
+						{
+
+							console.log("Error al obtener data",resApi.error.message,resApi.error.code);
+						}
+					});
+
+			},
+			
 
 		}
 	}
@@ -750,7 +1032,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				$scope.profesinalExterno.filtro = "";
 			},
 			seleccionar : function (arqui) {
-				console.log(arqui);
+				//console.log(arqui);
 				$scope.solicitud.acciones.establecerDatosProfesional(arqui.arquitectoNombre,arqui.registroNacionalCAB,  arqui.telefonoCelular, arqui.correoElectronico);
 				//$scope.cambiarTextoBtnSolicitud();
 			}
@@ -774,8 +1056,13 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 	});
 		
 	
+	$scope.buscador ={
+		
+	}
+	
 	$scope.inicio = function () {
 		//$("#results").dialog({ autoOpen: false, width: 880, height: 605, zIndex: 3000, modal: true, title: "Ventana Resultados" });
+		/*
 		$.blockUI({ css: {
 			border: 'none',
 			padding: '10px',
@@ -786,14 +1073,19 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			opacity: .5,
 			color: '#fff'
 		},message: "Espere un momento porfavor..." });
+		*/
+
+
+
 		setTimeout(function()
 		{
 			try{
-
+				//$scope.mapa.acciones.iniciar();
 				//$scope.loginPagoEnLinea();
 				//$scope.recuperarDatosRegistro();
 				//$scope.CargarComboMotivos();
 				//$scope.CargarComboMotivosDetalle();
+				$scope.configParametros.documentoSolicitud.acciones.obtener();
 				$scope.solicitud.acciones.listar();
 				$scope.predio.acciones.listar();
 				$scope.profesinalExterno.acciones.listar();
@@ -808,28 +1100,22 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 
 	}
 
-	$scope.$on('api:ready',function(){
-		//$scope.loginPagoEnLinea();
-		//$scope.recuperarDatosRegistro();
-		//$scope.CargarComboMotivos();
-		//$scope.CargarComboMotivosDetalle();
-		//$scope.solicitudesCiudadano();
-		//$scope.registro3 = aReg;
-
-	});
 
 	//Mapa
 	$scope.mapa = {
 		estado:null,
+		estadoView:null,
 		acciones:{
+
 			iniciar:function () {
+
 				SITUtil.capas.GEOSERVER = "http://sitservicios.lapaz.bo/geoserver";
 				$scope.vectorSource = new ol.source.Vector(
 					//{
 					//features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
 					//}
 				);
-				$scope.vectorSource.set('name', 'Solicitud');
+				//$scope.vectorSource.set('name', 'Solicitud');
 
 				var image = new ol.style.Circle({
 					radius: 8,
@@ -843,15 +1129,21 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				};
 				$scope.vectorLayer = new ol.layer.Vector({
 					source: $scope.vectorSource,
-					style: styles.Point
+					style: styles.Point,
+					title: 'Predio seleccionado',
+					visible: true,
+					//style: search_style,
+					displayInLayerSwitcher: false
+					//allwaysOnTop: true
 				});
 
 				//Mapa
 				lays = new SITLayers();
 				m_app = new SITMap();
 				$scope.map = m_app.build(null, null, [
-					lays.getBaseLayers(null, true, true)
-					, lays.getOverLayers(null, true, false)
+					lays.getBaseLayers(null, false, true)
+					, lays.getCatastroLayers({visible: true, openInLayerSwitcher: true})
+					, lays.getOverLayers(null, false, false)
 					, $scope.vectorLayer
 				]);
 
@@ -948,6 +1240,132 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 
 				
 			},
+			iniciarView:function () {
+				$scope.vectorSourceView = new ol.source.Vector(
+					//{
+					//features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+					//}
+				);
+				//$scope.vectorSource.set('name', 'Solicitud');
+
+				var image = new ol.style.Circle({
+					radius: 8,
+					fill: new ol.style.Fill({ color: 'red' }),
+					stroke: new ol.style.Stroke({ color: 'red', width: 1 })
+				});
+				var styles = {
+					'Point': new ol.style.Style({
+						image: image
+					})
+				};
+				$scope.vectorLayerView = new ol.layer.Vector({
+					source: $scope.vectorSourceView,
+					style: styles.Point,
+					title: 'Predio seleccionado',
+					visible: true,
+					//style: search_style,
+					displayInLayerSwitcher: false
+					//allwaysOnTop: true
+				});
+
+				//Mapa
+				lays2 = new SITLayers();
+				$scope.m_app2 = new SITMap({"target":"map2"});
+				$scope.map2 = $scope.m_app2.build(null, null, [
+					//lays2.getBaseLayers(null, true, true)
+					lays2.getCatastroLayers({visible: true, openInLayerSwitcher: true})
+					,lays2.getOverLayers(null, true, false)
+					,$scope.vectorLayerView
+				]);
+
+				//(m_app.createLayerSwitcher()).hide();
+				//m_app.createControlBar(null);
+				//if(idTipo == "1")
+				//	m_app.createControlBarCustom(null, $scope.solicitud.acciones.establecerUbicacion);
+
+				//m_app.createControlBarCustom(null, $scope.ubicacion.setGeom, $scope.ubicacion.getData);
+				// busquedas
+				//var search_app = new SITSearch();
+
+				SITMap.prototype.zoomItem = function (geometry) {
+					var map = this.map,
+						fmtjson = new ol.format.GeoJSON(),
+						geom = fmtjson.readGeometry(geometry);
+					if (geom.getType() === "Point") {
+						map.getView().animate({
+							center: geom.getCoordinates(),
+							zoom: Math.max(map.getView().getZoom(), 11)
+						});
+					} else {
+						var extent = geom.getExtent();
+						map.getView().fit(extent, { size: map.getSize(), duration: 1000, easing: ol.easing.easeOut });
+					}
+					return;
+				};
+
+
+			},
+			establecerView: function (wkt) {
+				//console.log("vista preview wkt",wkt);
+				//{ "type": "Point", "coordinates": [593474.92801991, 8176131.72462349] }
+
+				/*
+				var val = wkt;//'GEOMETRYCOLLECTION(MULTIPOLYGON(((-0.12072212703174 51.51899157882951,-0.128597092699465 51.51191439062526,-0.129004788469729 51.51260880491084,-0.129584145616946 51.51374388239237,-0.130120587419924 51.51494569831,-0.130614113878664 51.51653471734371,-0.125507187914309 51.51718900318654,-0.121001076769289 51.519178508517115,-0.12072212703174 51.51899157882951))))';
+				var geojson_options = {};
+				var wkt_format = new OpenLayers.Format.WKT();
+				var testFeature = wkt_format.read(val);
+				var wkt_options = {};
+				var geojson_format = new OpenLayers.Format.GeoJSON(wkt_options);
+				var out = geojson_format.write(testFeature);
+*/
+
+/*
+				var formato = new ol.format.WKT;
+				var wkt = formato.readFeature(wkt);
+				//var routeFeature = format.writeFeature(wkt);
+				//var g = JSON.parse(routeFeature);
+				console.log("g",wkt);
+				*/
+
+				var format = new ol.format.WKT;
+				var feature = format.readFeature(wkt, {
+					dataProjection: 'EPSG:32719',
+					featureProjection: 'EPSG:32719'
+				});
+				//console.log("feature",feature);
+
+				var formatGeojson = new ol.format.GeoJSON();
+				var routeFeature = formatGeojson.writeFeature(feature);
+				var g = JSON.parse(routeFeature);
+				//console.log("geojson",g, routeFeature);
+				$scope.vectorSourceView.clear();
+				/*
+				var d = wkt.replace("POINT (","").replace("POINT(","").replace(")","").split(" ");
+				var g1 = { "type": "Point", "coordinates": d }
+				console.log("gg",g1);
+				$scope.vectorSourceView.clear();
+
+				geojsonObject = {
+					'type': 'FeatureCollection',
+					'crs': {
+						'type': 'name',
+						'properties': {
+							'name': 'EPSG:32719'
+						}
+					},
+					'features': [
+						{
+							'type': 'Feature',
+							'geometry': g1
+						}
+					]
+				};
+				//console.log("geojsonObject",geojsonObject);
+				$scope.vectorSourceView.addFeatures((new ol.format.GeoJSON()).readFeatures(geojsonObject));
+				*/
+				$scope.vectorSourceView.addFeatures([feature]);
+				$scope.m_app2.zoomItem(g.geometry);
+			},
 			marcar:function () {
 				var src = $scope.vectorLayer.getSource();
 				src.clear();
@@ -963,7 +1381,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					var formato = new ol.format.WKT;
 					var wkt = formato.writeFeature(e.feature);
 
-					console.log("--A", wkt);
+					//console.log("--A", wkt);
 					//callback(e.feature.values_.geometry.flatCoordinates);
 					//callback(g.geometry);
 
@@ -1098,8 +1516,9 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				});
 
 			},
-			obtenerZona: function (wkt) {
-				console.log("zona wkt");
+			obtenerZona: function (wkt, paso) {
+				//console.log("Buscando zona");
+				//$.blockUI();
 				$.ajax({
 					method: 'POST',
 					dataType: 'jsonp',
@@ -1119,26 +1538,29 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 						"CQL_FILTER": "INTERSECTS(Shape," + wkt + ")"
 					},
 					success: function (response) {
-						console.log("-----",response);
+						console.log("zona por wkt",response);
 						//$scope.getRiesgo(wkt, callbackRiesgo, callbackPlani, callbackLote);
 						if (response.features.length >= 1) {
 							$scope.solicitud.zona = response.features[0].properties.GDBSNOMB;
 							$scope.$apply();
-							//distrito = response.features[0].properties.distrito;
-
+							$scope.mapa.acciones.obtenerRiesgo(wkt,paso);
 						}
 						else {
-							console.log("Sin resultados de zonas");
+							$scope.solicitud.zona = "ZONA NO IDENTIFICADA";
+							$scope.$apply();
+							$scope.mapa.acciones.obtenerRiesgo(wkt, paso);
 						}
 					},
 					error: function (jqXHR, textStatus) {
 						console.log("Request failed: " + textStatus);
+						swal('', 'Error de red. No se pudo obtener la zona', 'error');
+						$.unblockUI();
 					}
 				});
 
 			},
-			obtenerRiesgo : function (wkt) {
-
+			obtenerRiesgo : function (wkt, paso) {
+				console.log("Buscando zona de riesgo");
 				$.ajax({
 					method: 'POST',
 					dataType: 'jsonp',
@@ -1157,24 +1579,271 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 						"CQL_FILTER": "INTERSECTS(wkb_geometry," + wkt + ")"
 					},
 					success: function (data) {
-						console.log("riesgo wkt",data);
+						$.unblockUI();
 						if (data.features.length >= 1) {
 							$scope.solicitud.riesgo = data.features[0].properties.grado;
 							$scope.$apply();
 						}
 						else {
-							console.log("Sin resultados de zona riesgo");
-							$.unblockUI();
+							$scope.solicitud.riesgo = "ZONA DE RIESGO NO IDENTIFICADA";
 							$scope.$apply();
 						}
-
+						if(paso == "delegacionProfesional"){
+							$scope.flujoSolicitud.acciones.paso5();
+						}
 					},
 					error: function (jqXHR, textStatus) {
 						console.log("Request failed: " + textStatus);
+						swal('', 'Error de red. No se pudo obtener la zona de riesgo', 'error');
+						$.unblockUI();
 					}
 				});
 
 			},
+
+			buscarContenedorCrear:function (data) {
+				console.log("entro");
+				var  mapPnlCnt = document.getElementById("mapPnlCnt");
+				if(mapPnlCnt){
+					var mapPnlCntRes = document.getElementById("mapPnlCntRes");
+					if(mapPnlCntRes){
+						mapPnlCntRes.remove();
+					}
+
+					mapPnlCntRes = document.createElement("div");
+					mapPnlCntRes.id = "mapPnlCntRes";
+					mapPnlCntRes.classList.add("sitMapPnlCntRes");
+					mapPnlCnt.appendChild(mapPnlCntRes);
+					isDown =false;
+					mapPnlCntRes.addEventListener('mousedown', function(e) {
+						isDown = true;
+						offset = [
+							mapPnlCntRes.offsetLeft - e.clientX,
+							mapPnlCntRes.offsetTop - e.clientY
+						];
+					}, true);
+					document.addEventListener('mouseup', function() {
+						isDown = false;
+					}, true);
+					document.addEventListener('mousemove', function(event) {
+						event.preventDefault();
+						if (isDown) {
+							mousePosition = {
+
+								x : event.clientX,
+								y : event.clientY
+
+							};
+							mapPnlCntRes.style.left = (mousePosition.x + offset[0]) + 'px';
+							mapPnlCntRes.style.top  = (mousePosition.y + offset[1]) + 'px';
+						}
+					}, true);
+
+					var mapPnlCntResHdr = document.getElementById("mapPnlCntResHdr");
+					if(!mapPnlCntResHdr){
+						mapPnlCntResHdr = document.createElement("div");
+						mapPnlCntRes.appendChild(mapPnlCntResHdr);
+					}
+
+					var mapPnlCntResBody = document.getElementById("mapPnlCntResBody");
+					if(!mapPnlCntResBody){
+						mapPnlCntResBody = document.createElement("div");
+						mapPnlCntRes.appendChild(mapPnlCntResBody);
+					}
+					mapPnlCntResBody.classList.add("sitMapPnlCntResBody");
+
+					var mapPnlCntResftr = document.getElementById("mapPnlCntResftr");
+					if(!mapPnlCntResftr){
+						mapPnlCntResftr = document.createElement("div");
+						mapPnlCntRes.appendChild(mapPnlCntResftr);
+						mapPnlCntResftr.classList.add("sitMapPnlCntResFtr");
+					}
+
+					var mapPnlCntResHdrCerrar = document.createElement("a");
+					mapPnlCntResHdrCerrar.setAttribute('href', "javascript:void(0)");
+					mapPnlCntResHdrCerrar.innerHTML="X";
+					mapPnlCntResHdrCerrar.classList.add("sitMapPnlCntResHdrCerrar");
+					mapPnlCntResHdrCerrar.addEventListener("click", function () {
+						mapPnlCntRes.remove();
+					});
+					//mapPnlCntResHdr.innerHTML='<a href="javascript:void(0)" class="sitMapPnlCntResHdrCerrar"><span >X</span></a>Resultado';
+					mapPnlCntResHdr.innerHTML='Resultado';
+					mapPnlCntResHdr.appendChild(mapPnlCntResHdrCerrar);
+					mapPnlCntResHdr.classList.add("sitMapPnlCntResHdr");
+
+
+
+					var mapPnlCntResBodyData = document.createElement("div");
+					
+
+					//mapPnlCntResBodyData
+
+
+					console.log(data);
+					if(data.length > 0){
+						mapPnlCntResBodyData.classList.add("sitMapPnlCntResBodyOverflow");
+						mapPnlCntResftr.innerHTML="Total items: " + data.length;
+
+						var mapPnlCntResBodyDataGrid = $("<table></table>").addClass('table').addClass('table-striped').addClass('table-hover').appendTo(mapPnlCntResBodyData);
+						data.forEach( function(valor, indice, array) {
+
+							var tr = $("<tr></tr>").appendTo(mapPnlCntResBodyDataGrid);
+							var col1 = $("<td></td>").text(valor.desc).css("font-weight", "bold").appendTo(tr);
+							var col2 = $("<td></td>").text(valor.layer).appendTo(tr);
+							var col3 = $("<td></td>").appendTo(tr);
+
+							var az = $("<a></a>").attr({href: 'javascript:void(0)', title: 'Seleccionar'}).appendTo(col3);
+							$("<span></span>")
+								.addClass('badge')
+								.css('cursor', 'pointer')
+								.text('Acercar')
+								.on("click", { srsName: 'EPSG:32719', geom: valor.geometry}, function (e) {
+									//console.log("e---",e);
+									clickSelectZoom(e);
+									// self._zoom_elem_features(e.data.nodoLi, add, e.data.srsName);
+								})
+								.appendTo(az);
+						});
+						//mapPnlCntResBodyData.appendChild(mapPnlCntResBodyDataGrid);
+					}
+					else{
+						mapPnlCntResBodyData.classList.add("sitMapPnlCntResBodySinDatos");
+						mapPnlCntResBodyData.innerHTML = "No se encontraron resultados";
+					}
+
+					mapPnlCntResBody.appendChild(mapPnlCntResBodyData);
+
+				}
+
+
+				clickSelectZoom = function(e){
+
+					clear_selections();
+					var fts = get_features_from_elem(e.data);
+					add_selections(fts);
+					zoom_to_selection();
+				}
+
+				getSrsName = function(k){
+					if($scope.map){
+						return $scope.map.getView().getProjection().getCode();
+					};
+					return null;
+				};
+				clear_selections = function(){
+					if (vlayer) {
+						var src = vlayer.getSource();
+						if (src) src.clear();
+					}
+				};
+
+				get_features_from_elem = function(e){
+					var mss = getSrsName(),
+						srsName = e.srsName,
+						opts = srsName ? {dataProjection: srsName, featureProjection:mss} : {},
+						fmtjson = new ol.format.GeoJSON(),
+						featureslist = [e.geom ] || [];
+					console.log("featureslist  ---",featureslist);
+					var features = fmtjson.readFeatures({
+						"type": "FeatureCollection",
+						"totalFeatures": featureslist.length,
+						"features": featureslist
+					}, opts);
+					console.log("features  ---",features);
+
+					return features;
+				};
+
+
+				add_selections = function(fts){
+					if (!vlayer) create_search_layer();
+					var src = this.vlayer.getSource();
+					src.addFeatures(fts);
+				}
+				search_style = [
+					new ol.style.Style({
+						stroke: new ol.style.Stroke({
+							color: 'rgb(255, 255, 0, 0.8)'
+							, width: 5
+
+						}),
+						// fill: new ol.style.Fill({color: 'rgba(128, 255, 255, 0.2)'}),
+						image: new ol.style.Circle({
+							// fill: new ol.style.Fill({color: 'rgba(128, 255, 255, 0.4)'}),
+							stroke: new ol.style.Stroke({color: 'rgba(255, 255, 0, 0.9)', width: 4}),
+							radius: 7
+						})
+					}),
+					new ol.style.Style({
+						stroke: new ol.style.Stroke({
+							color: 'rgba(200, 0, 0, 0.6)'
+							, width: 2
+							, lineDash: [4, 4]
+							// , lineDash: [6, 4]
+						}),
+						fill: new ol.style.Fill({color: 'rgba(255, 255, 0, 0.1)'}),
+						image: new ol.style.Circle({
+							fill: new ol.style.Fill({color: 'rgba(255, 255, 0, 0.4)'}),
+							stroke: new ol.style.Stroke({color: 'rgba(200, 0, 0, 0.9)', width: 1.2}),
+							radius: 6
+						})
+					})
+				];
+
+				create_search_layer = function () {
+					vlayer = new ol.layer.Vector({
+						title: 'busquedas',
+						visible: true,
+						style: search_style,
+						displayInLayerSwitcher: false,
+						allwaysOnTop: true,
+						source: new ol.source.Vector({wrapX: false})
+					});
+					$scope.map.addLayer(vlayer);
+				};
+
+				zoom_to_selection = function(){
+					if (!vlayer) return;
+
+					if($scope.map && hasSelections()){
+						var src = vlayer.getSource();
+						zoomToExtent(src.getExtent());
+					}
+				}
+				hasSelections = function(){
+					if($scope.map && vlayer){
+						var src = vlayer.getSource();
+						return (src && src.getFeatures() && src.getFeatures().length > 0);
+					}
+					return false;
+				}
+
+				zoomToExtent = function (ext) {
+					zm = getMaxZoomLevel();
+					$scope.map.getView().fit(ext, {size: $scope.map.getSize(), duration: 750, easing: ol.easing.easeOut, maxZoom:zm});
+				};
+				getMaxZoomLevel = function(){
+					//if(typeof this.maxZoom == 'number') return this.maxZoom;
+
+					if(!$scope.map){
+						return 12;
+					} else {
+						return $scope.map.getView().getMaxZoom() - 2;
+					}
+				}
+
+
+			},
+			busquedaLimpiar:function () {
+				var mapPnlCntRes = document.getElementById("mapPnlCntRes");
+				if(mapPnlCntRes){
+					mapPnlCntRes.remove();
+				}
+				$scope.busZona='';
+				$scope.busCC='';
+				$scope.busDir='';
+			},
+
 			buscarZona:function (s) {
 				var exprs = [];
 				exprs.push("zonaref ILIKE '%" + s + "%'");
@@ -1200,15 +1869,139 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					},
 					success: function (data) {
 						console.log("zonas",data);
+						var lista =[];
 						if (data.features.length >= 1) {
-							//$scope.solicitud.riesgo = data.features[0].properties.grado;
-							//$scope.$apply();
+							angular.forEach(data.features,function (item) {
+								console.log(item);
+								lista.push({"layer":"Zona","desc":item.properties.zona, "geometry":item.geometry})
+							});
 						}
 						else {
 							console.log("Sin resultados de zona ");
 							$.unblockUI();
 							$scope.$apply();
 						}
+						$scope.mapa.acciones.buscarContenedorCrear(lista);
+					},
+					error: function (jqXHR, textStatus) {
+						console.log("Request failed: " + textStatus);
+					}
+				});
+			},
+			buscarCC:function (s) {
+				var codcat = new sit.CodigoCatastral(s);
+				var exprs = "";
+				switch(codcat.modo) {
+					case "manzana":
+						exprs = "distritocatastral = " + codcat.distrito + " AND manzana = " + codcat.manzana;
+						break;
+					case "predio":
+					case "subpredio":
+					case "sifca":
+						exprs = "distritocatastral = " + codcat.distrito + " AND manzana = " + codcat.manzana + " AND predio = " + codcat.predio;
+						break;
+					default:
+						if (s.indexOf("%") != -1 || s.indexOf("_") != -1)
+							exprs = "codigocatastral LIKE '" + s + "'";
+						else
+							exprs = "codigocatastral LIKE '%" + s + "%'";
+				}
+				var query=exprs;
+
+				$.ajax({
+					method: 'POST',
+					dataType: 'jsonp',
+					jsonpCallback: 'getJson',
+					url: SITUtil.capas.GEOSERVER + '/catastro/ows',
+					data: {
+						"service": "WFS",
+						"version":"1.0.0",
+						"request": "GetFeature",
+						"typename": "catastro:lotesCertificados",
+						"outputFormat": "text/javascript",
+						"callback":"getJson",
+						"format_options":"callback: getJson",
+						"srsname": "EPSG:32719",
+						"maxFeatures": 50,
+						"CQL_FILTER": query
+					},
+					success: function (data) {
+						console.log("cc",data);
+						var lista =[];
+						if (data.features.length >= 1) {
+							angular.forEach(data.features,function (item) {
+								console.log(item);
+								lista.push({"layer":"Lote","desc":item.properties.codigocatastral, "geometry":item.geometry})
+							});
+						}
+						else {
+							console.log("Sin resultados de cc ");
+							$.unblockUI();
+							$scope.$apply();
+						}
+						$scope.mapa.acciones.buscarContenedorCrear(lista);
+					},
+					error: function (jqXHR, textStatus) {
+						console.log("Request failed: " + textStatus);
+					}
+				});
+			},
+			buscarDir:function (s) {
+				var spt = s.split(/(nro.|#)/i);
+				var exprs = [];
+				if(spt.length === 3){
+					var x = spt[0].trim(),
+						re = /^(calle|avenida|av.|c.|callejon|pasaje)\s+/i,
+						m = x.match(re),
+						nv = x;
+					if(m){
+						var y = {calle: "Calle", avenida:"Avenida", "av.":"Avenida", "c.":"Calle", "callejon":"Callejon", "pasaje":"Pasaje"},
+							z = y[m[1].toLowerCase()];
+						nv = x.replace(re, '');
+						exprs.push('tipo_via = \'' + z + '\'' );
+					}
+					exprs.push('nombre_via ILIKE \'%' + nv + '%\'');
+					if(spt[2]){
+						exprs.push('num_puerta ILIKE \'' + spt[2].trim() + '%\'');
+					}
+				} else {
+					exprs.push("nombre_via ILIKE '%" + s + "%'");
+				}
+				var query = exprs.join(" AND ");
+
+
+				$.ajax({
+					method: 'POST',
+					dataType: 'jsonp',
+					jsonpCallback: 'getJson',
+					url: SITUtil.capas.GEOSERVER + '/sit/ows',
+					data: {
+						"service": "WFS",
+						"version":"1.0.0",
+						"request": "GetFeature",
+						"typename": "sit:numeropuertas",
+						"outputFormat": "text/javascript",
+						"callback":"getJson",
+						"format_options":"callback: getJson",
+						"srsname": "EPSG:32719",
+						"maxFeatures": 50,
+						"CQL_FILTER": query
+					},
+					success: function (data) {
+						console.log("dir",data);
+						var lista =[];
+						if (data.features.length >= 1) {
+							angular.forEach(data.features,function (item) {
+								console.log(item);
+								lista.push({"layer":"Dirección","desc":item.properties.tipo_via + " " + item.properties.nombre_via + " #"+item.properties.num_puerta + ", " + item.properties.zona , "geometry":item.geometry})
+							});
+						}
+						else {
+							console.log("Sin resultados de dir ");
+							$.unblockUI();
+							$scope.$apply();
+						}
+						$scope.mapa.acciones.buscarContenedorCrear(lista);
 					},
 					error: function (jqXHR, textStatus) {
 						console.log("Request failed: " + textStatus);

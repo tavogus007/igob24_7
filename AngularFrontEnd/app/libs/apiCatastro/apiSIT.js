@@ -309,3 +309,4 @@ dataSIT.prototype.catPredioTramiteEnProceso = function (vCC, functionResp)
     ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
 };
 
+

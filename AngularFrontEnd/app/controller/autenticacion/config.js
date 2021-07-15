@@ -9,8 +9,8 @@ var jsonURLS    =   {
     // DUPLICADOS
     SERVICE_SIT: "wsSIT_",                                              //xxx
     SERVICE_SITOL: "wsSITOnline_",                                      //xxx
-    SERVICE_SITOLext: "http://gmlpsr00035/SITOLservicios/Servicios/",  //xxx
-    SERVICE_SITOLextgen: "http://gmlpsr00035/SITOLservicios/",         //xxx
+    SERVICE_SITOLext: "http://sim.lapaz.bo/sitolservicios/Servicios/",  //xxx
+    SERVICE_SITOLextgen: "http://sim.lapaz.bo/sitolservicios/",         //xxx
     //AUTOCONSULTA CIUDADANO
     SERVICE_SIMGEP_AE: "wsSimgepAe",                                    //xxx
     SERVICE_SIMGEP_TERRITORIAL: "wsSimgepTerritorial",                  //xxx

@@ -674,8 +674,28 @@ dataSITOL.prototype.catListaSolicitudes = function (numDocumento,functionResp)
     ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
 };
 
+dataSITOL.prototype.catObtenerSolicitud = function (idCatastroTramiteOL,functionResp)
+{
+    wsMethodSITOL = "/catObtenerSolicitud";
+    typeCall = "post";
+    dataParams = {
+        "idCatastroTramiteOL" : idCatastroTramiteOL
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
 
-dataSITOL.prototype.catSolicitudReg = function (idCatastroTramiteOL,wkt,idTipoRegimen, idCatastroTipoTramite, solicitante, idTipoDocumento, numDocumento, idExpedido, telefonoSolicitante, emailSolicitante, tipoPersona, profesionalNombre, profesionalEmail, profesionalTelefono, profesionalCab,idmacroDistrito,iddistritoMunicipal,codigoCatastral,direccion,zona,nroPuerta,edificio,idCodPlanimetria,descPlanimetria,idTipoLote, conCertificado,carTerrPendiente,serBasAlcantarillado,serBasEnergiaElectrica,serBasTelefono,serBasAguaPotable,serBasAlumbradoPublico,serBasGasDomiciliario,tieneMensura,idInsFlujoAnterior,
+dataSITOL.prototype.catObtenerParam = function (codParam,functionResp)
+{
+    wsMethodSITOL = "/catObtenerParam";
+    typeCall = "post";
+    dataParams = {
+        "codParametro" : codParam
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+
+dataSITOL.prototype.catSolicitudReg = function (idCatastroTramiteOL,wkt,idTipoRegimen, idCatastroTipoTramite, solicitante, idTipoDocumento, numDocumento, idExpedido, telefonoSolicitante, emailSolicitante, tipoPersona, profesionalNombre, profesionalEmail, profesionalTelefono, profesionalCab,idmacroDistrito,iddistritoMunicipal,codigoCatastral,direccion,zona,nroPuerta,edificio,idCodPlanimetria,descPlanimetria,idTipoLote, conCertificado,carTerrPendiente,serBasAlcantarillado,serBasEnergiaElectrica,serBasTelefono,serBasAguaPotable,serBasAlumbradoPublico,serBasGasDomiciliario,tieneMensura,idInsFlujoAnterior,riesgo,oid,
                                                 functionResp)
 {
     wsMethodSITOL = "/catSolicitudReg";
@@ -707,7 +727,7 @@ dataSITOL.prototype.catSolicitudReg = function (idCatastroTramiteOL,wkt,idTipoRe
         //"sector" : sector,
         "edificio" : edificio,
         //"bloque" : bloque,
-        //"riesgo" : riesgo,
+        "riesgo" : riesgo,
         "idCodPlanimetria" : idCodPlanimetria,
         "descPlanimetria" : descPlanimetria,
         "idTipoLote" : idTipoLote,
@@ -743,7 +763,8 @@ dataSITOL.prototype.catSolicitudReg = function (idCatastroTramiteOL,wkt,idTipoRe
         "serBasTelefono" : serBasTelefono,
         "serBasAguaPotable" : serBasAguaPotable,
         "serBasAlumbradoPublico" : serBasAlumbradoPublico,
-        "serBasGasDomiciliario" : serBasGasDomiciliario
+        "serBasGasDomiciliario" : serBasGasDomiciliario,
+        "oid":oid
         //"supTotalConstruida" : supTotalConstruida,
         //"supSegunLevantamiento" : supSegunLevantamiento,
         //"supSegunTestimonio" : supSegunTestimonio,

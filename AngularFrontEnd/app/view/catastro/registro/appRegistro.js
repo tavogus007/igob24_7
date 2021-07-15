@@ -1731,9 +1731,9 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					return null;
 				};
 				clear_selections = function(){
-					if (!vlayer) create_search_layer();
-					if (vlayer) {
-						var src = vlayer.getSource();
+					//if (!$scope.vlayer) create_search_layer();
+					if ($scope.vlayer) {
+						var src = $scope.vlayer.getSource();
 						if (src) src.clear();
 					}
 				};
@@ -1757,8 +1757,9 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 
 
 				add_selections = function(fts){
-					if (!vlayer) create_search_layer();
-					var src = this.vlayer.getSource();
+					if (!$scope.vlayer) create_search_layer();
+					//var src = this.$scope.vlayer.getSource();
+					var src = $scope.vlayer.getSource();
 					src.addFeatures(fts);
 				}
 				search_style = [
@@ -1792,7 +1793,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				];
 
 				create_search_layer = function () {
-					vlayer = new ol.layer.Vector({
+					$scope.vlayer = new ol.layer.Vector({
 						title: 'busquedas',
 						visible: true,
 						style: search_style,
@@ -1800,20 +1801,20 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 						allwaysOnTop: true,
 						source: new ol.source.Vector({wrapX: false})
 					});
-					$scope.map.addLayer(vlayer);
+					$scope.map.addLayer($scope.vlayer);
 				};
 
 				zoom_to_selection = function(){
-					if (!vlayer) return;
+					if (!$scope.vlayer) return;
 
 					if($scope.map && hasSelections()){
-						var src = vlayer.getSource();
+						var src = $scope.vlayer.getSource();
 						zoomToExtent(src.getExtent());
 					}
 				}
 				hasSelections = function(){
-					if($scope.map && vlayer){
-						var src = vlayer.getSource();
+					if($scope.map && $scope.vlayer){
+						var src = $scope.vlayer.getSource();
 						return (src && src.getFeatures() && src.getFeatures().length > 0);
 					}
 					return false;

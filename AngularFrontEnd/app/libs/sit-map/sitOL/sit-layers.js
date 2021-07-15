@@ -57,6 +57,8 @@ SITLayers.prototype.getBaseLayers = function(title, visible, openInLyrSwith){
                 baseLayer: true,
                 source: new ol.source.TileWMS({
                     url: url,
+                    serverType: 'geoserver',
+                    crossOriginKeyword: 'anonymous',
                     params: $.extend({}, params, {LAYERS: 'raster:Ortofotos1994'})
                 })
             }),
@@ -68,6 +70,8 @@ SITLayers.prototype.getBaseLayers = function(title, visible, openInLyrSwith){
                 baseLayer: true,
                 source: new ol.source.TileWMS({
                     url: 'http://192.168.5.68:8080/geoserver/raster/wms',
+                    serverType: 'geoserver',
+                    crossOriginKeyword: 'anonymous',
                     params: $.extend({}, params, {LAYERS: 'raster:quickbird2003'})
                 })
             }),
@@ -79,6 +83,8 @@ SITLayers.prototype.getBaseLayers = function(title, visible, openInLyrSwith){
                 baseLayer: true,
                 source: new ol.source.TileWMS({
                     url: url,
+                    serverType: 'geoserver',
+                    crossOriginKeyword: 'anonymous',
                     params: $.extend({}, params, {LAYERS: 'raster:ortofotos2006'})
                 })
             }),
@@ -90,6 +96,8 @@ SITLayers.prototype.getBaseLayers = function(title, visible, openInLyrSwith){
                 baseLayer: true,
                 source: new ol.source.TileWMS({
                     url: url,
+                    serverType: 'geoserver',
+                    crossOriginKeyword: 'anonymous',
                     params: $.extend({}, params, {LAYERS: 'raster:worldview2011'})
                 })
             }),
@@ -101,6 +109,8 @@ SITLayers.prototype.getBaseLayers = function(title, visible, openInLyrSwith){
                 baseLayer: true,
                 source: new ol.source.TileWMS({
                     url: url,
+                    serverType: 'geoserver',
+                    crossOriginKeyword: 'anonymous',
                     params: $.extend({}, params, {LAYERS: 'raster:geoeye2013'})
                 })
             }),
@@ -112,6 +122,8 @@ SITLayers.prototype.getBaseLayers = function(title, visible, openInLyrSwith){
                 baseLayer: true,
                 source: new ol.source.TileWMS({
                     url: url,
+                    serverType: 'geoserver',
+                    crossOriginKeyword: 'anonymous',
                     params: $.extend({}, params, {LAYERS: 'raster:kompsat_2018'})
                 })
             })
@@ -362,7 +374,9 @@ SITLayers.prototype.getOverLayers = function (title, visible, openInLyrSwith) {
                 source: new ol.source.TileWMS({
                     url: self.url_wms,
                     params: $.extend({ LAYERS: 'lapaz:macrodistritos_2019', STYLES: 'lp_macrodistritos2019' }, self.wms_params),
+                    //serverType: 'geoserver',
                     serverType: 'geoserver',
+                    crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrids
                 })
             })
@@ -395,7 +409,7 @@ SITLayers.prototype.getCatastroLayers = function(opts){
                 source: new ol.source.TileWMS({
                     url: self.url_wms,
                     params: $.extend({LAYERS:'catastro:zonasvalor2015', STYLES:'ct_zonas_valor'}, self.wms_params),
-                    crossOrigin: 'anonymous',
+                    //crossOrigin: 'anonymous',
                     serverType: 'geoserver',
                     crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrid2
@@ -416,7 +430,7 @@ SITLayers.prototype.getCatastroLayers = function(opts){
                 source: new ol.source.TileWMS({
                     url: self.url_wms,
                     params: $.extend({LAYERS:'catastro:lotesestados', STYLES:'ct_lote_ac2019'}, self.wms_params),
-                    crossOrigin: 'anonymous',
+                    //crossOrigin: 'anonymous',
                     serverType: 'geoserver',
                     crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrid2
@@ -432,7 +446,7 @@ SITLayers.prototype.getCatastroLayers = function(opts){
                 source: new ol.source.TileWMS({
                     url: self.url_wms,
                     params: $.extend({LAYERS:'sit:numeropuertas', STYLES:'sit_numeropuerta'}, self.wms_params),
-                    crossOrigin: 'anonymous',
+                    //crossOrigin: 'anonymous',
                     serverType: 'geoserver',
                     crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrids
@@ -478,7 +492,7 @@ SITLayers.prototype.getCatastroLayers = function(opts){
                 source: new ol.source.TileWMS({
                     url: self.url_wms,
                     params: $.extend({LAYERS:'catastro:vias2', STYLES:'ct_vias_ac2019'}, self.wms_params),
-                    crossOrigin: 'anonymous',
+                    //crossOrigin: 'anonymous',
                     serverType: 'geoserver',
                     crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrids
@@ -494,7 +508,7 @@ SITLayers.prototype.getCatastroLayers = function(opts){
                 source: new ol.source.TileWMS({
                     url: self.url_wms,
                     params: $.extend({LAYERS:'catastro:distritoscatastrales2', STYLES:'ct_distritoscat_ac2019'}, self.wms_params),
-                    crossOrigin: 'anonymous',
+                    //crossOrigin: 'anonymous',
                     serverType: 'geoserver',
                     crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrids

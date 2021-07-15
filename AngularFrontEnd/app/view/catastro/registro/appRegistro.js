@@ -1731,6 +1731,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					return null;
 				};
 				clear_selections = function(){
+					if (!vlayer) create_search_layer();
 					if (vlayer) {
 						var src = vlayer.getSource();
 						if (src) src.clear();

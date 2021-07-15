@@ -396,6 +396,8 @@ SITLayers.prototype.getCatastroLayers = function(opts){
                     url: self.url_wms,
                     params: $.extend({LAYERS:'catastro:zonasvalor2015', STYLES:'ct_zonas_valor'}, self.wms_params),
                     crossOrigin: 'anonymous',
+                    serverType: 'geoserver',
+                    crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrid2
                 })
             }),
@@ -414,7 +416,7 @@ SITLayers.prototype.getCatastroLayers = function(opts){
                 source: new ol.source.TileWMS({
                     url: self.url_wms,
                     params: $.extend({LAYERS:'catastro:lotesestados', STYLES:'ct_lote_ac2019'}, self.wms_params),
-                    //crossOrigin: 'anonymous',
+                    crossOrigin: 'anonymous',
                     serverType: 'geoserver',
                     crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrid2
@@ -431,6 +433,8 @@ SITLayers.prototype.getCatastroLayers = function(opts){
                     url: self.url_wms,
                     params: $.extend({LAYERS:'sit:numeropuertas', STYLES:'sit_numeropuerta'}, self.wms_params),
                     crossOrigin: 'anonymous',
+                    serverType: 'geoserver',
+                    crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrids
                 })
             }),
@@ -450,7 +454,7 @@ SITLayers.prototype.getCatastroLayers = function(opts){
                 source: new ol.source.TileWMS({
                     url: self.url_wms,
                     params: $.extend({LAYERS:'manzanas_zona', STYLES: styManzana}, self.wms_params), // 'ct_manzanas_ac2019'
-                    //crossOrigin: 'anonymous',
+                    crossOrigin: 'anonymous',
                     serverType: 'geoserver',
                     crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrid2
@@ -474,7 +478,7 @@ SITLayers.prototype.getCatastroLayers = function(opts){
                 source: new ol.source.TileWMS({
                     url: self.url_wms,
                     params: $.extend({LAYERS:'catastro:vias2', STYLES:'ct_vias_ac2019'}, self.wms_params),
-                    //crossOrigin: 'anonymous',
+                    crossOrigin: 'anonymous',
                     serverType: 'geoserver',
                     crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrids
@@ -490,7 +494,7 @@ SITLayers.prototype.getCatastroLayers = function(opts){
                 source: new ol.source.TileWMS({
                     url: self.url_wms,
                     params: $.extend({LAYERS:'catastro:distritoscatastrales2', STYLES:'ct_distritoscat_ac2019'}, self.wms_params),
-                    //crossOrigin: 'anonymous',
+                    crossOrigin: 'anonymous',
                     serverType: 'geoserver',
                     crossOriginKeyword: 'anonymous',
                     tileGrid: self.tilegrids

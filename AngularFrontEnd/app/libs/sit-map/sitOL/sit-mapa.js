@@ -227,7 +227,7 @@ SITMap.prototype.createControlBar = function (opts) {
     if(!this.scheme){
         this.scheme = new SITScheme(this.map, this.popup, "http://192.168.5.68:8080/geoserver/uatg/wms?");
     }
-    
+    /*
     this.map.on('pointermove', function (evt) {
         if (evt.dragging) {
             return;
@@ -237,7 +237,7 @@ SITMap.prototype.createControlBar = function (opts) {
             return true;
         }, { layerFilter: function (lyr) { return lyr.get("queryMode") === "wms"; } });
         self.map.getTargetElement().style.cursor = hit ? 'pointer' : '';
-    });
+    });*/
 
     this.map.on('singleclick', function (evt) {
         var self2 = this;

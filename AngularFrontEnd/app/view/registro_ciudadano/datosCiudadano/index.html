@@ -509,7 +509,7 @@ textarea::-webkit-scrollbar-thumb {
                      </div>
                   </div>
                   <!-- Dinamico-->
-                  <div class="vertical-timeline-block"  ng-repeat="data in myObj | orderBy:'obs_tra_id':true track by $index">
+                  <div class="vertical-timeline-block" ng-show = "(data.obs_tra_id !=null) && (data.obs_tra_id != '')"  ng-repeat="data in myObj | orderBy:'obs_tra_id':true track by $index">
                       <div class="vertical-timeline-icon blue-bg timeLineIcon"><!--Cambios-->
                         <i class="fa fa-tags blanco"></i><!--Cambios-->
                       </div>
@@ -528,7 +528,7 @@ textarea::-webkit-scrollbar-thumb {
                               <br>
                               <strong style="color: #39AB6F"><a href="" ng-click="archivarNotificacion(data.obs_tra_id);"> Archivar Notificación </a></strong>
                             </span>
-                            <div ng-show = "data.obj_url_ra != 'noRA'">
+                            <div ng-show = "(data.obj_url_ra !=null) && (data.obj_url_ra != 'noRA')">
                                 <a href="{{data.obj_url_ra}}" target="_blank"  data-toggle="tooltip" data-placement="left"  title="Ver/Descargar la R.A.">
                                 <button   id="ra1"  type="button" class="btn btn-success"><i class="fa fa-download"></i> DESCARGAR R.A.</button>
                                 </a>
@@ -551,7 +551,7 @@ textarea::-webkit-scrollbar-thumb {
                               <button id="btnMacotas"  type="button" class="btn btn-success"><i class="fa fa-download"></i> DESCARGAR</button>
                               </a>
                             </div>
-                            <div ng-show ="(data.obj_url_AE !=null) && (data.obj_url_AE !='noAE') ">
+                            <div ng-show ="(data.obj_url_AE !=null) && (data.obj_url_AE !='noAE')">
                               <a href="{{data.obj_url_AE}}" target="_blank"  data-toggle="tooltip" data-placement="left"  title="Ver/Descargar">
                               <button id="btnAE"  type="button" class="btn btn-success"> <i class="fa fa-download"></i> DESCARGAR</button>
                               </a>

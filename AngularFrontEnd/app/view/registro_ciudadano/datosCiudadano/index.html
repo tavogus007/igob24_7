@@ -509,7 +509,7 @@ textarea::-webkit-scrollbar-thumb {
                      </div>
                   </div>
                   <!-- Dinamico-->
-                  <div class="vertical-timeline-block"  ng-repeat="data in myObj | orderBy:'obs_tra_id':true">
+                  <div class="vertical-timeline-block"  ng-repeat="data in myObj | orderBy:'obs_tra_id':true track by $index">
                       <div class="vertical-timeline-icon blue-bg timeLineIcon"><!--Cambios-->
                         <i class="fa fa-tags blanco"></i><!--Cambios-->
                       </div>
@@ -551,14 +551,18 @@ textarea::-webkit-scrollbar-thumb {
                               <button id="btnMacotas"  type="button" class="btn btn-success"><i class="fa fa-download"></i> DESCARGAR</button>
                               </a>
                             </div>
-                            <div ng-show ="(data.obj_url_AE !=null)">
+                            <div ng-show ="(data.obj_url_AE !=null) && (data.obj_url_AE !='noAE') ">
                               <a href="{{data.obj_url_AE}}" target="_blank"  data-toggle="tooltip" data-placement="left"  title="Ver/Descargar">
                               <button id="btnAE"  type="button" class="btn btn-success"> <i class="fa fa-download"></i> DESCARGAR</button>
                               </a>
-                            </div> 
-                               
+                            </div>
+                            <!--ADJUNTOS GENERICO-->
+                            <div  ng-show ="(data.adjunto !=null)">
+                              <a href="{{data.adjunto}}" target="_blank"  data-toggle="tooltip" data-placement="left"  title="Ver/Descargar">
+                              <button id="btnDocGen"  type="button" class="btn btn-success"> <i class="fa fa-download"></i> DESCARGAR</button>
+                              </a>
+                            </div>                               
                       </div>
-
                   </div>
                </div>
             </div>

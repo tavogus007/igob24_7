@@ -4449,7 +4449,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       success: function (data) {
       },
       error: function (data) {
-        console.log(data);
+        console.log("Error: ",data);
       }
     });
   }
@@ -5256,7 +5256,6 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
           var rep_legal = "Documento del Representante Legal";
           $scope.guardarFiles(data[0].ant_sp_busquedafile, nombre_certificado, $scope.file_CERT_RADIODIFUSION);
           if (sessionService.get('NRO_PODER_PRINCIPAL') == $("#f01_ges_vig_pod").val()) {
-
             $scope.file_CI = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante + "/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RA + "?app_name=todoangular";
             $scope.file_CI_inv = CONFIG.APIURL + "/files/RC_CLI/" + $rootScope.datosIniciales.id_representante + "/" + $rootScope.datosIniciales.FILE_FOTOCOPIA_CI_RR + "?app_name=todoangular";
             $scope.rep_legal = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 + "/" + $rootScope.datosIniciales.f01_poder_representante + "?app_name=todoangular";
@@ -5269,22 +5268,29 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
             obt_data_file_rep_leg.identificador = "RCCIUDADANO_ANTENA-20-7";
             obt_data_file_rep_leg.parametros = '{"nit":"' + sessionService.get('NITCIUDADANO') + '","nro_poder":"' + $("#f01_ges_vig_pod").val() + '"}';
             obt_data_file_rep_leg.llamarregla(function (data) {
-
               $scope.$apply();
               data = JSON.parse(data);
-              data = JSON.parse(data[0].data_file_rp);
-              $scope.file_CI = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 + "/" + data[0].ci_inverso + "?app_name=todoangular";
-              $scope.file_CI_inv = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 + "/" + data[0].ci_reverso + "?app_name=todoangular";
-              $scope.rep_legal = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 + "/" + data[0].poder_legal + "?app_name=todoangular";
-              $scope.guardarFiles(data[0].ci_inverso, nombre_ci, $scope.file_CI);
-              $scope.guardarFiles(data[0].ci_reverso, nombre_ci_inv, $scope.file_CI_inv);
-              $scope.guardarFiles(data[0].poder_legal, rep_legal, $scope.rep_legal);
+              if (typeof data != "string"  ) {
+                data = JSON.parse(data[0].data_file_rp);
+                $scope.file_CI = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 + "/" + data[0].ci_inverso + "?app_name=todoangular";
+                $scope.file_CI_inv = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 + "/" + data[0].ci_reverso + "?app_name=todoangular";
+                $scope.rep_legal = CONFIG.APIURL + "/files/RC_CLI/" + oid_ciu1 + "/" + data[0].poder_legal + "?app_name=todoangular";
+                $scope.guardarFiles(data[0].ci_inverso, nombre_ci, $scope.file_CI);
+                $scope.guardarFiles(data[0].ci_reverso, nombre_ci_inv, $scope.file_CI_inv);
+                $scope.guardarFiles(data[0].poder_legal, rep_legal, $scope.rep_legal);
+              }else{
+                swal("Info!", "No se recupero los documentos del representante legal con número de poder "+$("#f01_ges_vig_pod").val() + ". Verifique si esta registrado correctamente por favor.", "info");
+                setTimeout(function () {
+                  $scope.$apply(function () {
+                    location.reload();
+                  });
+                }, 3000);
+              }              
             });
           }
         } else {
           swal("Error!..", "Es necesario que complemente los documentos necesarios para realizar el registro. Por favor Actualice su Información.", "error");
         }
-        //$scope.$apply();
       }, 200);
 
     });

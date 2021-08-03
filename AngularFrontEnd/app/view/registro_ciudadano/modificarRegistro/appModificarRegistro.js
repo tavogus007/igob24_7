@@ -92,7 +92,6 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
     $("#mensaje24").hide();
     $("#mensaje25").hide();
 
-
     $scope.GetValueLugarNacimiento = function () {
         $scope.registro.pais_origen = "";
         if($scope.registro.lugarNacimiento == "OTR")

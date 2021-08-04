@@ -211,11 +211,10 @@ function validarNatural(opcion, datos) {
             ( typeof(datos.ci) != 'undefined' && datos.ci != null && datos.ci != "") &&
             ( typeof(datos.expedido) != 'undefined' && datos.expedido != null && datos.expedido != "") &&
             ( typeof(datos.fec_nacimiento) != 'undefined' && datos.fec_nacimiento != null && datos.fec_nacimiento != "") &&
-            ( typeof(datos.lugar_nacimiento) != 'undefined' && datos.lugar_nacimiento != null && datos.lugar_nacimiento != "") &&
-            ( typeof(datos.sexo) != 'undefined' && datos.sexo != null && datos.sexo != "") &&
-            ( typeof(datos.id_estado_civil) != 'undefined' && datos.id_estado_civil != null && datos.id_estado_civil != "") &&
+            //( typeof(datos.lugar_nacimiento) != 'undefined' && datos.lugar_nacimiento != null && datos.lugar_nacimiento != "") &&
+            //( typeof(datos.sexo) != 'undefined' && datos.sexo != null && datos.sexo != "") &&
+            //( typeof(datos.id_estado_civil) != 'undefined' && datos.id_estado_civil != null && datos.id_estado_civil != "") &&
             ( typeof(datos.profesion) != 'undefined' && datos.profesion != null && datos.profesion != "")
-
             // ( typeof(datos.pais) != 'undefined' && datos.pais != null && datos.pais != "") &&
             // ( typeof(datos.departamento) != 'undefined' && datos.departamento != null && datos.departamento != "") &&
             // ( typeof(datos.provincia) != 'undefined' && datos.provincia != null && datos.provincia != "") &&
@@ -229,6 +228,7 @@ function validarNatural(opcion, datos) {
         {
             return true
         }
+        //return true;
         break;
 
       case "DEL":

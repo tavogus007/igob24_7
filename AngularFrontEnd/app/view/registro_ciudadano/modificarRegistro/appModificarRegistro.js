@@ -92,6 +92,7 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
     $("#mensaje24").hide();
     $("#mensaje25").hide();
 
+
     $scope.GetValueLugarNacimiento = function () {
         $scope.registro.pais_origen = "";
         if($scope.registro.lugarNacimiento == "OTR")
@@ -1633,7 +1634,7 @@ $scope.vias_v2= function(zona,tipo)
     //creando un nuevo registro 
     $scope.validacamposJuridico = function (){                 
         $scope.isDisabled = false;
-        $scope.getCaptchasX();
+        //$scope.getCaptchasX();
         if(tipoPersona == 'NATURAL'){
             $scope.opcionpersonaNatural = true;
             $scope.opcionpersonaJuridico = null;

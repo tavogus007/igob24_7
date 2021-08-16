@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+  <link href="../../libs/css/sweetalert.css" rel="stylesheet">
+  </link>
+  <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+  <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+  <script type="text/javascript"
+    src="../../view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/permisoTransitorioCirculacion/permisoTransitorioCirculacion.js"></script>
+  <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+  <link rel="stylesheet"
+    href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+  <link rel="stylesheet"
+    href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css"
+    id="toggleCSS" />
+  <link href="../../libs/css/select2.min.css" rel="stylesheet" async />
+  <script src="../../libs/js/select2.min.js" async></script>
+</head>
+<style>
+  #caja {
+    display: block;
+  }
+
+  #mostrar {
+    display: block;
+  }
+
+  #cerrar_rc {
+    position: absolute;
+    top: 5px;
+    left: 92%;
+    font-size: 38px;
+    color: #FFCB05 !important;
+  }
+
+  input:required:invalid {
+    border: 1px solid red;
+  }
+
+  input:required:valid {
+    border: 1px solid green;
+  }
+
+  select:required:invalid {
+    border: 1px solid red;
+  }
+
+  select:required:valid {
+    border: 1px solid green;
+  }
+
+  body {
+    background: #ecf0f1;
+  }
+
+  .table1 th {
+    background-color: #fff !important;
+  }
+
+  #cerrar_rc {
+    position: absolute;
+    top: 5px;
+    left: 92%;
+    font-size: 38px;
+    color: #FFCB05 !important;
+  }
+
+  .accordion-titulo {
+    position: relative;
+    display: block;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: 300;
+    background: #2c3e50;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .accordion-titulo.open {
+    background: #16a085;
+    color: #fff;
+  }
+
+  .accordion-titulo:hover {
+    background: #1abc9c;
+  }
+
+  .accordion-titulo span.toggle-icon:before {
+    content: "+";
+  }
+
+  .accordion-titulo.open span.toggle-icon:before {
+    content: "-";
+  }
+
+  .accordion-titulo span.toggle-icon {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .tableE>thead>tr>th {
+    border-bottom: 1px solid #FFFFE0;
+    vertical-align: bottom;
+    background: #FFEFD5;
+    color: black;
+  }
+
+  #modalTamanio {
+    width: 31% !important;
+  }
+
+  .resaltado {
+    background-color: #F9B1A7;
+  }
+
+  .btn-warning {
+    background-color: #f8ac59;
+    border-color: #f8ac59;
+    color: #FFFFFF;
+  }
+
+  input:required:invalid {
+    border: 1px solid red;
+  }
+
+  input:required:valid {
+    border: 1px solid green;
+  }
+
+  select:required:invalid {
+    border: 1px solid red;
+  }
+
+  select:required:valid {
+    border: 1px solid green;
+  }
+
+  .form-group {
+    padding-left: 8px;
+  }
+
+  .tamañoLabel {
+    font-size: 18px;
+  }
+
+  input[type="radio"] {
+    position: absolute;
+    right: 9000px;
+  }
+
+  /*Check box*/
+  input[type="radio"]+.label-text:before {
+    content: "\f096";
+    font-family: "FontAwesome";
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    width: 1em;
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  input[type="radio"]:checked+.label-text:before {
+    content: "\f14a";
+    color: #2980b9;
+    animation: effect 250ms ease-in;
+  }
+
+  input[type="radio"]:disabled+.label-text {
+    color: #aaa;
+  }
+
+  input[type="radio"]:disabled+.label-text:before {
+    content: "\f0c8";
+    color: #ccc;
+  }
+</style>
+<script type="text/javascript">
+
+  function validaLetras(campo) {
+    campo.value = campo.value.toUpperCase();
+    var color = campo.value;
+    emailRegex = /^[a-zA-Z ]+$/;
+    if (emailRegex.test(color)) {
+    }
+    else {
+      $("#" + campo.name).val('');
+    }
+  }
+
+  function iniciarLoadFyle() {
+    $('.custom-upload input[type=file]').change(function () {
+      $(this).next().find('input').val($(this).val());
+      angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+  }
+
+  function mayus(e) {
+    e.value = e.value.toUpperCase();
+  }
+</script>
+<script type="text/javascript">
+</script>
+<div id="principal" class="page-content" ng-controller="permisoDeleveryController" data-ng-init="inicio();">
+  <div class="col-lg-12">
+    <div class="ibox-content" id="caja">
+      <div class="row">
+        <form name="signupForm" class="" role="form" novalidate>
+          <div id="container-main" class="ibox float-e-margins">
+            <div>
+              <form name="regrepresentante" class="form-horizontal" role="form" novalidate><br>
+                <div class="col-md-12">
+                  <div class="ibox float-e-margins">
+                    <div class="col-md-12">
+                      <div class="ibox-title cafeSuave"
+                        style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                        <h4>Datos del Solicitante</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div ng-show="tipo_persona == 'NATURAL'">
+                  <div class="row">
+                    <div class="col-md-12"><br>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_27}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_NOMBRE" id="PER_TRA_NOMBRE" name="PER_TRA_NOMBRE"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_28}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_PATERNO" id="PER_TRA_PATERNO" name="PER_TRA_PATERNO"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_29}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_MATERNO" id="PER_TRA_MATERNO" name="PER_TRA_MATERNO"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Ap. Casada:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_CASADA" id="PER_TRA_CASADA" name="PER_TRA_CASADA"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Número de documento:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_CI" id="PER_TRA_CI" name="PER_TRA_CI" class="form-control"
+                              width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Expedido:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_EXPEDIDO" id="PER_TRA_EXPEDIDO" name="PER_TRA_EXPEDIDO"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Celular:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_CELULAR" id="PER_TRA_CELULAR"
+                              name="PER_TRA_CELULAR" class="form-control" style="text-transform:uppercase;" width="30%"
+                              height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Correo:</label>
+                          <div class="controls">
+                            <input type="email" ng-model="datos.PER_TRA_CORREO" id="PER_TRA_CORREO"
+                              name="PER_TRA_CORREO" class="form-control" style="text-transform:uppercase;" width="30%"
+                              height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Zona:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_ZONA" id="PER_TRA_ZONA" name="PER_TRA_ZONA"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Tipo de Via:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_VIA" id="PER_TRA_VIA" name="PER_TRA_VIA"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Nombre de Via:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NOMBRE_VIA" id="PER_TRA_NOMBRE_VIA"
+                              name="PER_TRA_NOMBRE_VIA" class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Nro. de Vivienda:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NRO_V" id="PER_TRA_NRO_V" name="PER_TRA_NRO_V"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div ng-show="tipo_persona == 'JURIDICO'">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">NIT:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NIT" id="PER_TRA_NIT" name="PER_TRA_NIT"
+                              class="form-control" style="text-transform:uppercase;" width="30%" height="30"
+                              ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Razón Social:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_RAZON_SCI" id="PER_TRA_RAZON_SCI"
+                              name="PER_TRA_RAZON_SCI" class="form-control" style="text-transform:uppercase;"
+                              width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Poder de Representante Legal(Nro):</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_PODER" id="PER_TRA_PODER" name="PER_TRA_PODER"
+                              class="form-control" style="text-transform:uppercase;" width="30%" height="30"
+                              ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Nro de la Notaría:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NRO_NOTARIA" id="PER_TRA_NRO_NOTARIA"
+                              name="PER_TRA_NRO_NOTARIA" class="form-control" style="text-transform:uppercase;"
+                              width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Zona:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_ZONA_J" id="PER_TRA_ZONA_J" name="PER_TRA_ZONA_J"
+                              class="form-control" style="text-transform:uppercase;" width="30%" height="30"
+                              ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Tipo de Via:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_VIA_J" id="PER_TRA_VIA_J" name="PER_TRA_VIA_J"
+                              class="form-control" style="text-transform:uppercase;" width="30%" height="30"
+                              ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Nombre de Via:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NOMBRE_VIA_J" id="PER_TRA_NOMBRE_VIA_J"
+                              name="PER_TRA_NOMBRE_VIA_J" class="form-control" style="text-transform:uppercase;"
+                              width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Nro de Vivienda:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_NRO_VV_J" id="PER_TRA_NRO_VV_J"
+                              name="PER_TRA_NRO_VV_J" class="form-control" style="text-transform:uppercase;" width="30%"
+                              height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <h3>DATOS DEL REPRESENTANTE LEGAL</h3>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_27}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_NOMBRE_J" id="PER_TRA_NOMBRE_J" name="PER_TRA_NOMBRE_J"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_28}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_PATERNO_J" id="PER_TRA_PATERNO_J" name="PER_TRA_PATERNO_J"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_12_29}}:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_MATERNO_J" id="PER_TRA_MATERNO_J" name="PER_TRA_MATERNO_J"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Número de documento:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_CI_J" id="PER_TRA_CI_J" name="PER_TRA_CI_J"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Expedido:</label>
+                          <div class="controls">
+                            <input ng-model="datos.PER_TRA_EXPEDIDO_J" id="PER_TRA_EXPEDIDO_J" name="PER_TRA_EXPEDIDO_J"
+                              class="form-control" width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">Celular:</label>
+                          <div class="controls">
+                            <input type="text" ng-model="datos.PER_TRA_CELULAR_J" id="PER_TRA_CELULAR_J"
+                              name="PER_TRA_CELULAR_J" class="form-control" style="text-transform:uppercase;"
+                              width="30%" height="30" ng-disabled="true">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="ibox float-e-margins">
+                    <div class="col-md-12">
+                      <div class="ibox-title cafeSuave"
+                        style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                        <h4>TIPO DE PERMISO :</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <div class="controls">
+                        <div class="col-md-6">
+                          <div class="form-check">
+                            <label class="tamañoLabel">
+                              <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS"
+                                ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="SALUD"
+                                ng-disabled="des_servicio_uno"> <span class="label-text"></span>
+                            </label>SALUD
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-check">
+                            <label class="tamañoLabel">
+                              <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS"
+                                ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="VEHÍCULO OFICIAL"
+                                ng-disabled="des_servicio_dos"> <span class="label-text"></span>
+                            </label>VEHÍCULO OFICIAL
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <div class="controls">
+                        <div class="col-md-6">
+                          <div class="form-check">
+                            <label class="tamañoLabel">
+                              <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS"
+                                ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="VIAJE"
+                                ng-disabled="des_servicio_tres"> <span class="label-text"></span>
+                            </label>VIAJE
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-check">
+                            <label class="tamañoLabel">
+                              <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS"
+                                ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="ACTIVIDAD ECONÓMICA"
+                                ng-disabled="des_servicio_cinco"> <span class="label-text"></span>
+                            </label>ACTIVIDAD ECONÓMICA
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <div class="controls">
+                        <div class="col-md-6">
+                          <div class="form-check">
+                            <label class="tamañoLabel">
+                              <input type="radio" name="PER_TRA_REG_TRANS" ng-model="datos.PER_TRA_REG_TRANS"
+                                ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS);" value="OTRO"
+                                ng-disabled="des_servicio_cuatro"> <span class="label-text"></span>
+                            </label>OTRO
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div ng-show="div_motivo == true">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="url">Indique otro tipo de servicio a solicitar</label>
+                        <div class="controls">
+                          <input type="text" ng-model="datos.PER_CIR_MOTIVO" id="PER_TRA_CANT_VEHI_SOL"
+                            name="PER_TRA_CANT_VEHI_SOL" class="form-control" style="text-transform:uppercase;" value=""
+                            width="30%" height="30" required ng-disabled="desabilitado" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <br>
+                <div>
+                  <div class="ibox float-e-margins">
+                    <div class="col-md-12">
+                      <div class="ibox-title cafeSuave"
+                        style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                        <h4>DATOS DE LOS VEHÍCULOS :</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <br>
+                  <br>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="url">CANTIDAD DE VEHÍCULOS A SOLICITAR</label>
+                      <div class="controls">
+                        <input type="number" ng-model="datos.PER_TRA_CANT_VEHI_SOL" id="PER_TRA_CANT_VEHI_SOL"
+                          name="PER_TRA_CANT_VEHI_SOL" class="form-control" style="text-transform:uppercase;" value=""
+                          width="30%" height="30" required ng-disabled="true" ng-keyup="titulos(datos.PER_TRA_CANT_VEHI_SOL);"/>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <br>
+                  <br>
+                  <div class="col-md-12">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="url">TIPO DE VEHÍCULO :</label>
+                        <div class="controls">
+                          <select id="tipo_vehiculo" name="tipo_vehiculo" placeholder="Macrodistrito"
+                            ng-model="datosV.tipo_vehiculo" class="form-control"
+                            ng-change="cambioCombo(datosV.tipo_vehiculo);"
+                            ng-options="ope.nombre as ope.nombre for ope in tipovehiculo_privado"
+                            ng-disabled="desabilitado">
+                            <option value="">--Seleccionar--</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label for="url">PLACA</label>
+                        <input id="placa" name="placa" type="text" placeholder="Ejemplo: 1234ABC" maxlength="7"
+                          class="form-control" ng-model="datosV.placa" ng-disabled="desabilitado" ng-keyup="validaPlaca(datosV.placa);" required
+                          onkeyup="mayus(this);" />
+                        <span id="valida" style="color:red;font-weight:bold; font-size:14px">La Placa es
+                          Incorrecta</span>
+                        <span id="valida1" style="color:green;font-weight:bold; font-size:14px">La Placa es
+                          Correcta</span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="url">LICENCIA DE CONDUCIR</label>
+                        <div class="controls">
+                          <input type="text" ng-model="datosV.CI" id="CI" name="CI" class="form-control"
+                            style="text-transform:uppercase;" value="" width="30%" height="30"
+                            ng-disabled="desabilitado" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <label for="url">AGREGAR</label>
+                        <div class="controls">
+                          <button ng-click="adicionarVehiculos(datosV);" type="button"
+                            class="btn btn-success fa fa-plus-square" ng-show="desabilitado==false"></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-heading"><B></B></div>
+                        <div class="panel-body" ng-disabled="true">
+                          <table ng-table="tblAutos" class="table  table-hover" id="lsVehiculos">
+                            <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
+                              ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                              <!--cambios-->
+                              <td data-title="'TIPO DE VEHÍCULO'" align="center">{{tramite.tipo_vehiculo}}</td>
+                              <td data-title="'PLACA'" align="center">{{tramite.placa}}</td>
+                              <td data-title="'LICENCIA DE CONDUCIR'" align="center">{{tramite.CI}}</td>
+                              <td data-title="'OPCION'" align="center"><button ng-click="eliminarVehiculo(tramite)"
+                                  type="button" class="btn btn-danger fa fa-times"
+                                  ng-show="desabilitado==false"></button></td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <br>
+                  <br>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="url">INTRODUZCA AL MENOS DOS NUMEROS TELEFONICOS DE CONTACTOS ALTERNATIVOS:</label>
+                      <div class="controls">
+                        <input type="text" ng-model="datos.PER_TRA_NUM_CONTACTO" id="PER_TRA_NUM_CONTACTO"
+                          name="PER_TRA_NUM_CONTACTO" class="form-control" style="text-transform:uppercase;" value=""
+                          width="30%" height="30" placeholder="76213950 - 77766666" required ng-disabled="desabilitado" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="ibox float-e-margins">
+                    <div class="col-md-12">
+                      <div class="ibox-title cafeSuave"
+                        style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+                        <h4> <a style="color:#FF0000";>{{tituloPrincipal}}</a></h4>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <br>
+                  <div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloRespaldo}}</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_RESPALDO" name="FILE_RESPALDO" uploader-model="FILE_RESPALDO"
+                                accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_RESPALDO" name="txt_FILE_RESPALDO" ng-model="datos.FILE_RESPALDO"
+                                  type="text" ng-disabled="true" class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_RESPALDO" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button"
+                                      ng-show="btover11 != null" ng-click="mostrarimg('FILE_RESPALDO');"
+                                      data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_RESPALDO" class="btnupload browse btn btn-primary input-lg"
+                                    type="button" ng-click="ejecutarFile('FILE_RESPALDO');"
+                                    ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloSOAT}}</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_FOR_SOAT" name="FILE_FOR_SOAT" uploader-model="FILE_FOR_SOAT"
+                                accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_FOR_SOAT" name="txt_FILE_FOR_SOAT" ng-model="datos.FILE_FOR_SOAT"
+                                  type="text" ng-disabled="true" class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_FOR_SOAT" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button"
+                                      ng-show="btover4 != null" ng-click="mostrarimg('FILE_FOR_SOAT');"
+                                      data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_FOR_SOAT" class="btnupload browse btn btn-primary input-lg"
+                                    type="button" ng-click="ejecutarFile('FILE_FOR_SOAT');"
+                                    ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloRUAT}}</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_RUAT_VEHICULO" name="FILE_RUAT_VEHICULO"
+                                uploader-model="FILE_RUAT_VEHICULO" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_RUAT_VEHICULO" name="txt_FILE_RUAT_VEHICULO"
+                                  ng-model="datos.FILE_RUAT_VEHICULO" type="text" ng-disabled="true"
+                                  class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_RUAT_VEHICULO" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button"
+                                      ng-show="btover3 != null" ng-click="mostrarimg('FILE_RUAT_VEHICULO');"
+                                      data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_RUAT_VEHICULO" class="btnupload browse btn btn-primary input-lg"
+                                    type="button" ng-click="ejecutarFile('FILE_RUAT_VEHICULO');"
+                                    ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloLicencias}}</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_FOTO_LICENCIA_CI" name="FILE_FOTO_LICENCIA_CI"
+                                uploader-model="FILE_FOTO_LICENCIA_CI" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_FOTO_LICENCIA_CI" name="txt_FILE_FOTO_LICENCIA_CI"
+                                  ng-model="datos.FILE_FOTO_LICENCIA_CI" type="text" ng-disabled="true"
+                                  class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_FOTO_LICENCIA_CI" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button"
+                                      ng-show="btover7 != null" ng-click="mostrarimg('FILE_FOTO_LICENCIA_CI');"
+                                      data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_FOTOCOPIA_CI" class="btnupload browse btn btn-primary input-lg"
+                                    type="button" ng-click="ejecutarFile('FILE_FOTO_LICENCIA_CI');"
+                                    ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                  </div>
+                </div>
+                <div ng-show="botones_visibles == true">
+                  <div class="col-md-12" align="right"><br>
+                    <button id="miFormGuardar" ng-show="desabilitado
+                        ==false" ng-click="verificacionFinalDeCamposFinal(datos);" type="button"
+                      class="btn btn-success fa fa-save" name="formEnviar">{{translateTitulos.lbl_016_29}}</button>
+                    <button ng-click="validarEnvio(datos);" id="gu" type="button"
+                      class="btn btn-success fa fa-mail-forward"
+                      ng-show="desabilitado==false">{{translateTitulos.lbl_016_30}} </button>
+                  </div>
+                </div>
+              </form>
+            </div><br>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+</html>

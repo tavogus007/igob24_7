@@ -1,12 +1,6 @@
-//var urlRC = "http://23.96.28.144:90/wsRC";
-//var urlRCPG = "http://23.96.28.144:90/wsRCPG";
-var urlRC   = "";//"http://192.168.5.141:9098/wsRC";
-var urlRCPG = "";//"http://192.168.5.141:9098/wsRCPG";
-var urlMservicio    =    "";//"http://192.168.5.69/api/reglaNegocio/ejecutarWeb";
-
-//var urlMservicio="http://localhost:9000/api/reglaNegocio/ejecutarWeb";
-//var urlRCPG = "http://192.168.35.84:9098/wsRCPG";
-
+var urlRC   = "";
+var urlRCPG = "";
+var urlMservicio    =    "";
 var urlComp;
 var dataResp;
 var dataParams;
@@ -38,7 +32,6 @@ function ejecutarAjaxP(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
       dataResp = response;
       dataResp = CryptoJS.AES.decrypt(dataResp, key);
       dataResp =  dataResp.toString(CryptoJS.enc.Utf8);
-      //console.log(dataResp,'dataResp');
       vFunctionResp(dataResp);
     },
     error: function (response, status, error) {
@@ -52,6 +45,7 @@ function ejecutarAjaxP(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
 function ejecutarAjax(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
     token = sessionStorage.getItem('TOKEN_API');
+    
     $.ajax({
       type: vTypeCall,
       url: urlRC + vUrlComp,
@@ -192,17 +186,27 @@ function validarNatural(opcion, datos) {
         }
         break;
 
+        case "NEW_REDUCIDO":
+        if( ( typeof(datos.nombre) != 'undefined' && datos.nombre != null && datos.nombre != "") &&
+            ( typeof(datos.materno) != 'undefined' && datos.materno != null && datos.materno != "") &&
+            ( typeof(datos.ci) != 'undefined' && datos.ci != null && datos.ci != "") &&
+            ( typeof(datos.expedido) != 'undefined' && datos.expedido != null && datos.expedido != "") )
+        {
+            return true
+        }
+        break;
+
+
       case "UPD":
         if( ( typeof(datos.nombre) != 'undefined' && datos.nombre != null && datos.nombre != "") &&
             ( typeof(datos.materno) != 'undefined' && datos.materno != null && datos.materno != "") &&
             ( typeof(datos.ci) != 'undefined' && datos.ci != null && datos.ci != "") &&
             ( typeof(datos.expedido) != 'undefined' && datos.expedido != null && datos.expedido != "") &&
             ( typeof(datos.fec_nacimiento) != 'undefined' && datos.fec_nacimiento != null && datos.fec_nacimiento != "") &&
-            ( typeof(datos.lugar_nacimiento) != 'undefined' && datos.lugar_nacimiento != null && datos.lugar_nacimiento != "") &&
-            ( typeof(datos.sexo) != 'undefined' && datos.sexo != null && datos.sexo != "") &&
-            ( typeof(datos.id_estado_civil) != 'undefined' && datos.id_estado_civil != null && datos.id_estado_civil != "") &&
+            //( typeof(datos.lugar_nacimiento) != 'undefined' && datos.lugar_nacimiento != null && datos.lugar_nacimiento != "") &&
+            //( typeof(datos.sexo) != 'undefined' && datos.sexo != null && datos.sexo != "") &&
+            //( typeof(datos.id_estado_civil) != 'undefined' && datos.id_estado_civil != null && datos.id_estado_civil != "") &&
             ( typeof(datos.profesion) != 'undefined' && datos.profesion != null && datos.profesion != "")
-
             // ( typeof(datos.pais) != 'undefined' && datos.pais != null && datos.pais != "") &&
             // ( typeof(datos.departamento) != 'undefined' && datos.departamento != null && datos.departamento != "") &&
             // ( typeof(datos.provincia) != 'undefined' && datos.provincia != null && datos.provincia != "") &&
@@ -216,6 +220,7 @@ function validarNatural(opcion, datos) {
         {
             return true
         }
+        //return true;
         break;
 
       case "DEL":
@@ -544,8 +549,10 @@ rcNatural.prototype.buscarNatural_nit = function (functionResp)
 rcNatural.prototype.crearNatural = function (functionResp)
 {
     urlComp = "/new";
+    urlComp_red = "/new_reducido";
     typeCall = "post";
 
+    /*
     if(validarNatural("NEW", this))
     {
         dataParams = {
@@ -567,7 +574,6 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "movil": this.movil,
           "correo": this.correo,
           "direccion": this.direccion,
-          
           "pais": this.pais,
           "departamento": this.departamento,
           "provincia": this.provincia,
@@ -587,15 +593,13 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "oficina": this.oficina,
           "latitud": this.latitud,
           "longitud": this.longitud,
-
           "sistema":"IGOB247",
           "sistema_creado":"IGOB247",
           "tipo_persona": "NATURAL",
           "usr_id": this.usr_id,
-          "activacionf": "SI",
-          "activaciond": "SI",
+          "activacionf": "NO",
+          "activaciond": "NO",
           "tipo_documento": this.tipo_documento,
-           
         };
 
         console.log("PARAEMTRSO...:",dataParams);
@@ -604,7 +608,64 @@ rcNatural.prototype.crearNatural = function (functionResp)
     }
     else
     {
-      dataResp = "{\"error\":{\"message\":\"Uno o varios campos obligatorios vacios\",\"code\":702}}";
+        dataResp = "{\"error\":{\"message\":\"Uno o varios campos obligatorios vacios\",\"code\":702}}";
+        functionResp(dataResp);
+    }
+    */
+    /////////////////////////////
+    if(validarNatural("NEW_REDUCIDO", this))
+    {
+        dataParams = {
+          "ci": this.ci,
+          "complemento": this.complemento,
+          "nombres": this.nombre,
+          "paterno": this.paterno,
+          "materno": this.materno,
+          "tercer_apellido": this.tercer_apellido,
+          "expedido": this.expedido,
+          "fec_nacimiento": this.fec_nacimiento,
+          "lugar_nacimiento": this.lugar_nacimiento,
+          "pais_origen": this.pais_origen,
+          "sexo": this.sexo,
+          "id_estado_civil": this.id_estado_civil,
+          "profesion": this.profesion,
+          "otra_profesion": this.otra_profesion,
+          "telefono": this.telefono,
+          "movil": this.movil,
+          "correo": this.correo,
+          "direccion": this.direccion,
+          "pais": this.pais,
+          "departamento": this.departamento,
+          "provincia": this.provincia,
+          "municipio": this.municipio,
+          "macrodistrito": this.macrodistrito,
+          "macrodistrito_desc": this.macrodistrito_desc,
+          "distrito": this.distrito,
+          "distrito_desc": this.distrito_desc,
+          "zona": this.zona,
+          "zona_desc": this.zona_desc,
+          "tipo_via": this.tipo_via,
+          "nombre_via": this.nombre_via,
+          "numero_casa": this.numero_casa,
+          "edificio": this.edificio,
+          "bloque": this.bloque,
+          "piso": this.piso,
+          "oficina": this.oficina,
+          "latitud": this.latitud,
+          "longitud": this.longitud,
+          "sistema":"IGOB247",
+          "sistema_creado":"IGOB247",
+          "tipo_persona": "NATURAL",
+          "usr_id": this.usr_id,
+          "activacionf": "NO",
+          "activaciond": "NO",
+          "tipo_documento": this.tipo_documento,
+        };
+        ejecutarAjax(urlComp_red, typeCall, dataParams, functionResp);
+    }
+    else
+    {
+        dataResp = "{\"error\":{\"message\":\"Uno o varios campos obligatorios vacios\",\"code\":702}}";
         functionResp(dataResp);
     }
 };
@@ -690,8 +751,7 @@ rcNatural.prototype.modificarNatural = function (functionResp)
           "sistema_modificador": 'IGOB_MOD',
           "dtspsl_acepta_servicios": ((typeof(this.dtspsl_acepta_servicios ) == 'undefined' || this.dtspsl_acepta_servicios  == null) ? "" : this.dtspsl_acepta_servicios )
 
-        };
-        console.log('dataParams NATURAL',dataParams);
+        };        
         ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
     }
     else
@@ -819,8 +879,8 @@ rcJuridico.prototype.crearJuridico = function (functionResp)
           "sistema":"IGOB247",
           "sistema_creado":"IGOB247",
           "usr_id": this.usr_id,
-          "activacionf": "SI",
-          "activaciond": "SI"
+          "activacionf": "NO",
+          "activaciond": "NO"
         };
 
         ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
@@ -885,7 +945,6 @@ rcJuridico.prototype.modificarJuridico = function (functionResp)
         "dtspsl_acepta_servicios": ((typeof(this.dtspsl_acepta_servicios ) == 'undefined' || this.dtspsl_acepta_servicios  == null) ? "" : this.dtspsl_acepta_servicios )
 
     };
-    console.log('dataParams JURIDICO',dataParams);
     ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
 };
 
@@ -1595,7 +1654,6 @@ $.ajax({
     },
     error: function (response, status, error) {
         dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-        //console.log('RESPUESTA =========>',dataResp);
     }
 });
 urlComp = "/validarciudadano";
@@ -1626,7 +1684,6 @@ $.ajax({
     },
     error: function (response, status, error) {
         dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-        console.log(dataResp);
     }
 });
 urlComp = "/validarciudadano_n";
@@ -1656,7 +1713,6 @@ validarCiudadanoR_j.prototype.validar_CiudadanoR_j=function(functionResp){
       },
       error: function (response, status, error) {
           dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-          console.log(dataResp);
       }
   });
   urlComp = "/validarciudadano_j";
@@ -1697,4 +1753,93 @@ guardarCondicionUso.prototype.guardarCondicion_deUso = function (functionResp){
       "nombreCU": this.nombreCU
     };
     ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+};
+
+//Actualizacion Mongo Motores
+rcJuridico.prototype.obtieneRepresentanteLegal = function (functionResp)
+{
+    urlComp = "/getDataRepLegal";
+    typeCall = "post";
+    dataParams = {
+      "ci":  this.ci,
+      "tipo_persona":  this.tipo_persona,
+      "estado": this.estado,
+      "actFisica":this.actFisica,
+      "actDigital":this.actDigital
+
+    };
+
+    ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+};
+rcJuridico.prototype.validaNitRepresentanteLegal = function (functionResp)
+{
+    urlComp = "/getDataPersonaJuridica";
+    typeCall = "post";
+    dataParams = {
+      "nit":  this.nit,
+      "estado": this.estado
+    };
+
+    ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+};
+rcNatural.prototype.validaCi_Natural = function (functionResp)
+{
+    urlComp = "/validaNatural";
+    typeCall = "post";
+    dataParams = {
+      "ci":  this.ci,
+      "tipo_persona":this.tipo_persona,
+      "estado": this.estado
+    };
+
+    ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+};
+
+
+function rcProvincias() {
+  this.idProv;
+};
+rcProvincias.prototype.getProv = function (functionResp)
+{
+  urlComp = "/provinciaLst";
+  typeCall = "post";
+  dataParams = {
+    "idProv":  this.idProv
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+
+};
+
+function rcMunicipios() {
+  this.idMun;
+};
+rcMunicipios.prototype.getMun = function (functionResp)
+{
+  urlComp = "/municipioLst";
+  typeCall = "post";
+  dataParams = {
+    "idMun":  this.idMun
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+
+};
+
+///Condiciones de uso dashboard
+
+function getCondicionUso(){
+  this.sdoc_usuario;
+  this.sdoc_sistema;
+  this.sdoc_proceso;
+  this.sdoc_ci_nodo;
+}
+getCondicionUso.prototype.get_CondicionUso = function (functionResp){
+  urlComp = "/listarAdjuntos"
+  typeCall = "post";
+  dataParams = {
+    "sdoc_usuario": this.sdoc_usuario,
+    "sdoc_sistema": this.sdoc_sistema,
+    "sdoc_proceso": this.sdoc_proceso,
+    "nombreCU": this.nombreCU
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 };

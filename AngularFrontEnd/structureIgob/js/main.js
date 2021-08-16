@@ -6,7 +6,11 @@ jQuery(document).ready(function($) {
 		easing: 'slide',
 		once: true
 	});
-   
+
+	window.setTimeout(function() {
+		$('#modalWarning').modal('show');
+	 }, 2000)
+
 
 	"use strict";
 

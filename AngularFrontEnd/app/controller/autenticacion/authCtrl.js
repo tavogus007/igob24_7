@@ -123,7 +123,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             type: "POST",
             url : urlToken,
             data: CONFIG.CREDENCIAL_MOTORES,
-            async: false,
+            async: true,
             success: function(response) {
                 dataResp = JSON.stringify(response);
                 sessionStorage.setItem('TOKEN_MOTOR', response.token);
@@ -133,6 +133,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             }
         });
     }
+    
 	//SIERRA
 	 $scope.sesionTokenODM=function(){
         var urlToken = CONFIG.SERVICE_SIERRA_ODM + "api/apiLogin";
@@ -172,12 +173,12 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
     }*/
 
     $scope.sesionTokenMas=function(){
-        var urlTokenM = CONFIG.CONEXION_SERVICIOMASCOTAS + "motorservicio_pruebas/public/api/apiLogin";
+        var urlTokenM = CONFIG.CONEXION_SERVICIOMASCOTAS + "api/apiLogin";
         $.ajax({
             dataType: "json",
             type: "POST",
             url : urlTokenM,
-            data: CONFIG.CREDENCIAL_MOTORES,
+            data: CONFIG.CREDENCIAL_MOTORESMASCOTAS,
             async: false,
             success: function(response) {
                 dataRespM = JSON.stringify(response);
@@ -227,7 +228,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             var sActFisica  =   "";
             var sActDigital =   "";
             $scope.sesionToken();
-			$scope.sesionTokenODM();
+			//$scope.sesionTokenODM();
             //$scope.sesionTokenATM();
             $scope.sesionTokenMas();
             $rootScope.mostrarMenuMascota = "NO";
@@ -260,7 +261,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                 $rootScope.vid = results[0]._id;
                 $rootScope.mostrarMenuMascotaNatural = 'NO';                
                 $rootScope.mostrarMenuMascota = 'NO';                
-                if(sActivacionDigital == "SI" && sActivacionFisica == "SI"){
+                if(sActivacionFisica == "SI"){
                     $rootScope.mostrarMenuMascotaNatural = 'SI';                
                     $rootScope.mostrarMenuMascota = 'NO';  
                     //REGISTRAR EVENTO
@@ -268,6 +269,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                     sessionService.set('US_ROL', "Ciudadano nivel 2");
                     $.unblockUI();
                     registroLog.almacenarLog(4,results[0]._id,0, "Inicio de session NIVEL 2");
+                    //http://localhost:3031/app/view/autenticacion/index.html#/registro_ciudadano|servicios|index3.html
                     var origenurlSesion = sessionStorage.getItem("urliniciomoduloigob");
                     origenurlSesion =   decodeURIComponent(origenurlSesion);
                     if(origenurlSesion && origenurlSesion != 'null'){
@@ -275,6 +277,14 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                         $location.path(origenurlSesion);
                     }else{
                         sessionService.set('SERVICIOS', results[0].dtspsl_acepta_servicios);
+                        //if (sessionService.get('SERVICIOS')=='SI') {
+                            //sessionService.set('US_IDROL', "5");
+                            //$rootScope.stiporol = sessionService.get('US_IDROL');
+                        //} else {
+                            //sessionService.set('US_IDROL', "4");
+                            //$rootScope.stiporol = sessionService.get('US_IDROL');
+                        //}
+
                         $rootScope.stiporol = sessionService.get('US_IDROL');                        
                         if(sessionStorage.getItem('sessionAPP')){	
                             var svariable = sessionStorage.getItem('sessionAPP');
@@ -295,16 +305,25 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                         }
                     }
                 } else if(sActivacionDigital == "NO" && sActivacionFisica == "NO") {
+
                     sessionService.set('US_IDROL', "4");
                     sessionService.set('US_ROL', "Ciudadano nivel 1");
                     $.unblockUI();
                     registroLog.almacenarLog(4,results[0]._id,0, "Inicio de session NIVEL 1");
+                    //http://localhost:3028/app/view/autenticacion/index.html#/registro_ciudadano|servicios|index3.html
                     var origenurlSesion = sessionStorage.getItem("urliniciomoduloigob");
                     if(origenurlSesion && origenurlSesion != 'null'){
                         sessionStorage.removeItem("urliniciomoduloigob");
                         $location.path(origenurlSesion);
                     }else{
                         sessionService.set('SERVICIOS', results[0].dtspsl_acepta_servicios);
+                        //if (sessionService.get('SERVICIOS')=='SI') {
+                            //sessionService.set('US_IDROL', "5");
+                            //$rootScope.stiporol = sessionService.get('US_IDROL');
+                        //} else {
+                            //sessionService.set('US_IDROL', "4");
+                            //$rootScope.stiporol = sessionService.get('US_IDROL');
+                        //}
                         $rootScope.stiporol = sessionService.get('US_IDROL');
                         $location.path('dashboard');
                     }
@@ -343,8 +362,16 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                                 if(results.dtspsl_tipo_empresa == 4){
                                     $rootScope.mostrarMenuMascota = "SI";
                                 }
-                            }
+                            }                                 
+                            //if (sessionService.get('SERVICIOS')=='SI') {
+                                //sessionService.set('US_IDROL', "5");
+                                //$rootScope.stiporol = sessionService.get('US_IDROL');
+                            //} else {
+                                //sessionService.set('US_IDROL', "4");
+                                //$rootScope.stiporol = sessionService.get('US_IDROL');
+                            //}
                             $location.path('dashboard');
+                        //} else if(sActivacionDigital == "NO" && sActivacionFisica == "NO") {
                         } else if((sActivacionDigital == "NO" && sActivacionFisica == "NO") || (sActivacionDigital == "NO" && sActivacionFisica == "SI") || (sActivacionDigital == "SI" && sActivacionFisica == "NO"))  {
                             sessionService.set('US_IDROL', "4");
                             sessionService.set('US_ROL', "Empresa nivel 1");
@@ -352,6 +379,21 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                             registroLog.almacenarLog(4,results[0]._id,0, "Inicio de session NIVEL 1");
                             sessionService.set('SERVICIOS', results[0].dtspsl_acepta_servicios);
                             $rootScope.stiporol = sessionService.get('US_IDROL');  
+                            /*
+                            console.log("RESPUESTA 123 :", results);
+                            if(results.dtspsl_tipo_empresa){
+                                if(results.dtspsl_tipo_empresa == 4){
+                                    $rootScope.mostrarMenuMascota = "SI";
+                                    alert($rootScope.mostrarMenuMascota);
+                                }
+                            }*/
+                            //if (sessionService.get('SERVICIOS')=='SI') {
+                                //sessionService.set('US_IDROL', "5");
+                                //$rootScope.stiporol = sessionService.get('US_IDROL');
+                            //} else {
+                                //sessionService.set('US_IDROL', "4");
+                                //$rootScope.stiporol = sessionService.get('US_IDROL');
+                            //}
                             $location.path('dashboard');
                         }else{
                             $.unblockUI();
@@ -362,13 +404,25 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             } else {
                 window.location.href = "../autenticacion/partials/login_.html";
             }
+        //$scope.changeMenu
         $scope.obtenerFecha();
         $scope.obtenerHora();
     }
     };
-
+    /*$scope.changeMenu = function () {
+        if ($rootScope.sAceptacion=='SI') {
+            sessionService.set('US_IDROL', "5");
+            $rootScope.stiporol = sessionService.get('US_IDROL');
+        } else {
+            sessionService.set('US_IDROL', "4");
+            $rootScope.stiporol = sessionService.get('US_IDROL');
+        }
+    }*/
     $scope.logout = function () {
+        //Registro log, cierre de sesison usuario
+        //registroLog.almacenarLog(sessionService.get('IDUSUARIO'),0,0, "Cierre de sesión");
         document.getElementById('dvContenidoView').style.display = 'none';
+        //document.getElementById('dvContenidoVacio').style.display = 'none';
         registroLog.almacenarLog(4,sessionService.get('IDUSUARIO'),0, "Cierre de sesión");
         //Destruyendo las variables de session
         sessionService.destroy('USER');
@@ -389,11 +443,17 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
         sessionService.destroy('TOKEN');
         sessionService.destroy('TOKEN_MOTOR');
         sessionService.destroy('TOKEN_MOTORA');
+
         sessionService.destroy('urliniciomoduloigob');
+
         document.getElementById('menuIzqui').style.display = 'none';
         document.getElementById('menuIzqui2').style.display = 'none';
         sessionStorage.removeItem("autenticacion");
         sessionService.destroy("SERVICIOS_MODAL");
+        //$location.path('');
+        //http://localhost:3055/app/view/index.html
+        //http://localhost:3055/app/view/autenticacion/partials/login5.html
+
         window.location.href = "../autenticacion/partials/login_.html";
     }
     $scope.registroCiudadano = function (customer) {
@@ -431,7 +491,8 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             type: 'get', 
             beforeSend: function () { 
             }, 
-            success: function (response) {                 
+            success: function (response) { 
+                //console.log(response); 
             }
         }); 
         sweet.show('', mensajeAlerta, 'success'); 
@@ -447,21 +508,75 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                 "filter": filtro
             }
         };
+        $.blockUI();
+
+        //console.log("*ACTULIZAR SERVICIO - MOTORES*");
+        //console.log("REMPLAZAR SERVICIO EN CADENA 1 :", "DreamFactory.api[CONFIG.SERVICERC].getRecordsByPost(misDatos).success(function (response)");
+        //console.log("REMPLAZAR SERVICIO EN CADENA 2 :", "DreamFactory.api[CONFIG.SERVICEMONGO].updateRecordsByIds(parametros).success(function (results)");
+        //alert("*ACTULIZAR SERVICIO - MOTORES*");
+
+        /*ACTULIZAR-SERVICIO-MOTORES*/
+        /*DreamFactory.api[CONFIG.SERVICERC].getRecordsByPost(misDatos).success(function (response){
+            var results=response.record;
+            console.log('javatest_results',results);
+            if(results.length == 0)
+               sweet.show('', 'no existe el usuario','error');
+           else{
+            $scope._id=results[0]._id;
+            $scope.correo=results[0].dtspsl_correo;
+            $scope.usuario=results[0].dtspsl_nombres;
+            if(results.length == 1){
+                console.log('DATOS CORRECTOS PIN');
+                var parametros = {
+                         "table_name":"ciudadanos",
+                         "body":{
+                                 "record": {
+                                     "dtspsl_pin": sNumeroAleatorio
+                                 }
+                         },
+                         "ids": $scope._id
+                }; 
+                var obj =  DreamFactory.api[CONFIG.SERVICEMONGO].updateRecordsByIds(parametros).success(function (results){
+                    sweet.show('', 'Actualizacion correcta', 'success'); 
+                    registroLog.almacenarLog(4,$rootScope.vid,0, "se modifico el Pin");
+                    var detalleMensaje  = "Su nuevo número de PIN : " + sNumeroAleatorio;
+                    var sCiudadano = $scope.usuario;
+                    var mensajeExito = "Su PIN fue restaurado";
+                    var sCorreo = $scope.correo;
+                    vAsunto = "Restauracion_de_PIN_GAMLP";
+                    vMensaje = "Usted_solicito,_Restauracion_de_PIN.";
+                    $scope.envioMensaje(detalleMensaje, mensajeExito, sCiudadano,prsCorreo);
+                    $scope.pin = sNumeroAleatorio;
+                });
+                obj.error(function(results){
+                   $.unblockUI();
+                        alert("error");
+               });
+            }
+            else{
+                sweet.show('', 'no existe el usuario'); 
+            }
+        }
+        }).error(function(results){
+                 alert("error");
+        });*/
+        /*FIN - ACTULIZAR-SERVICIO-MOTORES*/
         $.unblockUI();
         document.getElementById("prsCI").value="";
         document.getElementById("prsCorreo").value="";
     };
 
     $scope.inicioCapcha = function () {
-        $scope.getCaptchasX();
-
+        //if(DreamFactory.api[CONFIG.SERVICE]){
+            $scope.getCaptchasX();
+        //}
     };  
 
     $scope.obtenerFecha = function(){
         var sfecha = "";
         try{
-            var fechaactualn = new fechaHoraServer();
-            fechaactualn.fechahora(function(resultado){
+            var fechaactualn = new fechaHoraServer();//new fechaserver();
+            fechaactualn.fechahora(function(resultado){//obtfechahora(function(resultado){
                 sfecha  =   JSON.parse(resultado).success.fecha;
                 $rootScope.fechaServer = sfecha;
             });
@@ -728,7 +843,8 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             susuariop = sessionService.get('US_NOMBRE');
         }else{
             susuariop = sessionService.get('US_NOMBRE');
-        }            
+        }    
+        //var msgcondiciones  =   "Estimad@ " + susuariop + ": <br><br> Al no aceptar las condiciones uso del iGOB 24/7 usted ya no podrá acceder a los siguientes servicios: <br><br> • Solicitud de Licencias de funcionamiento. <br> • Solicitud de registro Catastral. <br> • Salud - Cita Médica. <br> • Certificado de Registro Catastral. <br> • Duplicado de registro Catastral. <br> • Documentos. <br><br> ¿Está seguro de NO ACEPTAR estas condiciones de uso? <br>";
         var msgcondiciones  =   "Estimad@ " + susuariop + ": <br><br> Al no aceptar las condiciones uso del iGob 24/7 usted ya no podrá acceder a los siguientes servicios: <br><br> • Seguimiento de Trámites y Servicios. <br> • Verificación de Documentos para Autorización de Viaje. <br> • Salud - Cita Médica. <br> • Espera en Línea en Plataformas de Atención Ciudadana. <br> • Catastro en línea (Duplicados, Actualizaciones). <br> • Territorio (Permisos de Construcción). <br> • Actividades Económicas Solicitud de Licencias de Funcionamiento. <br> • Reserva de Estacionamientos en Vía Pública. <br> • Foro de acciones y propuestas ciudadanas. <br> • Reclamos y Denuncias. <br> • Pagos en Línea. <br> • Bandeja de Notificaciones. <br> • Descargas de Aplicaciones Móviles. <br> • Documentos.<br><br><br>¿Está seguro de NO ACEPTAR estas condiciones de uso?";
         $('#msgcondicionesuso').html(msgcondiciones);
         if($scope.btncondicionesuso_n == false){
@@ -763,7 +879,8 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                     susuariop = sessionService.get('US_NOMBRE');
                 }else{
                     susuariop = sessionService.get('US_NOMBRE');
-                }                
+                }
+                //var msgcondiciones  =   "Felicidades " + susuariop + ". <br><br> Al aceptar las condiciones uso del iGOB 24/7, usted podrá acceder a los siguientes servicios: <br><br> • Seguimiento de Trámites y Servicios.<br> • Verificación de Documentos para Autorización de Viaje.<br> • Catastro en línea (Duplicados, Actualizaciones).<br> • Territorio (Permisos de Construcción).<br> • Actividades Económicas. Solicitud de Licencias de Funcionamiento. <br> • Foro de acciones y propuestas ciudadanas. <br> • Salud - Cita Médica. <br> • Espera en Línea en Plataformas de Atención Ciudadana. <br> • Documentos. <br> • Descargas de Aplicaciones Móviles.";
                 var msgcondiciones  = "";
                 if(sessionService.get('US_IDROL') == '4'){
                     msgcondiciones  =   "Estimad@ " + susuariop + ": <br><br> Active su cuenta aproximándose por primera y única vez, a la plataforma más cercana, donde validarán sus datos y activarán su cuenta. Otorgándole acceso a los servicios en línea del GAMLP.";
@@ -802,7 +919,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
         }
     }
 
-    $scope.fmostrarCondicionesUso   =   function(){        
+    $rootScope.fmostrarCondicionesUso   =   function(){        
         $("#exampleModalCenter").modal({backdrop: 'static', keyboard: false});        
         $('#msgcondicionesuso').html($scope.msgcondicionesuso);
     }
@@ -871,6 +988,9 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                     stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#NIT#", snit);
                     stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#EMPRESA#", sempresa);
                     stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#REPRESENTANTECI#", scirep);
+                    
+                    
+                    //var stringCondicionesDeUso  =   "INTRODUCCIÓN <br><br> Por favor, lea detenidamente las condiciones del presente documento ('Condiciones'), puesto que indican sus derechos y responsabilidades al visitar el sitio web http://igob247.lapaz.bo o fuentes, archivos de códigos fuente y correos electrónicos relacionados. Si accede o se registra para recibir Mensajes, acepta las presentes Condiciones.<br><br>Nuestros Sitio web incluye varios servicios. Solicitud de Licencias de funcionamiento, Solicitud de Viajes, Solicitud de registro Catastral, Salud - Cita Médica, Espera en Línea, Sigue Tu Trámite, Certificado de Registro Catastral, Duplicado de registro Catastral, Documentos y Descarga de Aplicaciones Móviles. <br><br> CUENTA DE CORREO ELECTRÓNICO <br><br> Para acceder a algunos servicios, es necesario crearse una cuenta de correo electrónico y así podrá acceder a funciones adicionales. Usted es el responsable de la actividad que se produzca en su cuenta. <br><br> CONTENIDO <br><br> Nuestros Mensajes incluyen contenido como información Personal, documentos, imágenes, fotografías, archivos digitales. La titularidad del Contenido le pertenece a GAMLP. <br><br> Parte del Contenido de los Mensajes se adquiere de fuentes que prohíben el uso de su Contenido sin una autorización previa. Cuando sea posible, el pie de página del Sitio web o el Contenido mostrará un aviso con la licencia pertinente..";
                     $scope.vercondicionesuso    =   "mostrar";
                     $scope.msgcondicionesuso = stringCondicionesDeUso;
                     $scope.notifcondicionesuso = stringCondicionesDeUso;
@@ -880,7 +1000,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
                             $scope.validarmodal =   true;
                         }else{
                             setTimeout(function(){                            
-                                $scope.fmostrarCondicionesUso();
+                                $rootScope.fmostrarCondicionesUso();
                             },500);
                         }          
                     }else if(tienecondicionesuso   ==  'SI'){

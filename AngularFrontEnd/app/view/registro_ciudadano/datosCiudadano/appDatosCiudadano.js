@@ -1,5 +1,4 @@
-function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, 
-    LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, fileUpload1, $timeout, obtFechaCorrecta, obtFechaActual) {
+function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, fileUpload1, $timeout, obtFechaCorrecta, obtFechaActual) {
     
     var aRegistro = { "cedula": "","complemento": "","celular":"","correo":"","direccion":"","estado_civil":"","fecha_nacimiento":"","materno":"","nombre":"","ocupacion":"",
      "paterno":"","sexo":"","telefono":"","cedula2": "","complemento2": "","repLegal": "","nroDocumento": "","nroNotaria": "",
@@ -444,20 +443,6 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
     
     $scope.registro = aRegistro;
     $scope.registro2 = aEstadoC;    
-    $scope.aLogPlataforma = ""; 
-
-    /************************* datos Reporte Plaformista ***********************************/
-    $scope.datosReportePlaformista = function () {
-        var datosReporteP = new reglasnegocio();
-        datosReporteP.identificador = "RCCIUDADANO_52";
-        datosReporteP.parametros = '{"susuarioid":"' + idUsuario + '","susciudadanoid":"' + $rootScope.vid + '"}';
-        datosReporteP.llamarregla(function(results){
-            results = JSON.parse(results);
-            if(results.length > 0){
-                $scope.aLogPlataforma = results;
-            }             
-        });                  
-    }; 
     /*****************************************************************************************/
      $scope.modificarDatosRegistro = function(vid){
         $rootScope.habilitartab = 'no';     
@@ -490,7 +475,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
     $scope.events = {};
 
     /******************************/
-    $scope.eventosCiudadano = function(sIdCiudadano){
+    /*$scope.eventosCiudadano = function(sIdCiudadano){
         var eventosCiu = new reglasnegocio();
         eventosCiu.identificador = "RCCIUDADANO_60";
         eventosCiu.parametros = '{"cev_dtspsl_id":"' + sIdCiudadano + '"}';
@@ -505,7 +490,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                 $scope.msg = "No existen eventos!!";
             }
         });
-    };
+    };*/
     /*******************************/
 
     //Procesando los datos de los eventos del ciudadano
@@ -534,7 +519,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
     
     //Almacenar eventos del ciudadano
     /********************* registrar Eventos ********************************/
-    $scope.registrarEventos = function(datos){
+    /*$scope.registrarEventos = function(datos){
         var sEvento = datos.evento;
         var fFechaInicio = datos.fechaInicio;
         var fFechaFin = datos.fechaFin;
@@ -553,10 +538,10 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
             sweet.show('', 'Nuevo evento registrado', 'success');
         }); 
-    }
+    }*/
     /***************************************************************************/
     //Editar eventos del ciudadano
-    $scope.editarEvento = function(event) {
+    /*$scope.editarEvento = function(event) {
         //var sTitulo = event.idEvento;
         //var sId = sTitulo.substring(sTitulo.indexOf("id='") + 4, sTitulo.indexOf("'", sTitulo.indexOf("id='") + 4));
         $scope.btnAccion = "ACTUALIZAR";
@@ -566,11 +551,11 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         $scope.ciudadanoEventos.fechaInicio = event.startsAt;
         $scope.ciudadanoEventos.fechaFin = event.endsAt;
         $('#registroEvento').modal('show');
-    };
+    };*/
     
     //Editar eventos del ciudadano
     /*******************************************/
-    $scope.actualizarEventos = function(datos) {
+    /*$scope.actualizarEventos = function(datos) {
         var fFechaInicio = datos.fechaInicio;
         var fFechaFin = datos.fechaFin;
         var fecha = new Date();
@@ -589,11 +574,11 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
             sweet.show('', 'Evento modificado', 'success');
         })
-    };
+    };*/
     /****************************************/
     
     //Eliminar eventos del ciudadano 
-    $scope.eliminarEventosCiudadano = function(data){
+    /*$scope.eliminarEventosCiudadano = function(data){
         var eliminaEv = new reglasnegocio();
         eliminaEv.identificador = 'RCCIUDADANO_63';
         eliminaEv.parametros = '{"cev_estado":"B"}';
@@ -602,7 +587,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
             alertify.success('Evento eliminado correctamente');
         });
-    }
+    }*/
     /*******************************************/
     //Limpiar datos de evento
     $scope.limpiarEventos = function(){
@@ -631,6 +616,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             var notificaciones = aNotif.success.length;
             datoObjectNotiFinal = [];
             for(i = 0; i < notificaciones; i++){
+                try{
                 var fecharegistro = new Date(aNotif.success[i].obs_tra_registrado);
                 var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 if(aNotif.success[i].serdv_descripcion == 'ANTENA CIUDADANO'){      //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
@@ -819,7 +805,48 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     }
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
-                }else{                                  //CASO CONTRARIO....
+                }else if(aNotif.success[i].obs_tra_sistema == 'CERO-PAPEL' && aNotif.success[i].serdv_descripcion == 'PERMISOS CIRCULACION'){      //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
+                    datoObjectNoti = new Object();
+                    var mensaje = aNotif.success[i].obs_tra_observaciones;
+                    var mensaje = aNotif.success[i].obs_tra_observaciones;
+                    valorAE = mensaje.indexOf("&#34");
+                    var resAE = mensaje.split("&#34");
+                    if(valorAE != -1){
+                        $scope.actDetalle = resAE[0];
+                        var mensajeIgob = resAE[0];
+                        $scope.resAE = resAE[1];
+                        datoObjectNoti.obj_url_AE = $scope.resAE;
+                    }else{
+                        var mensajeIgob = mensaje;
+                    }
+                    datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
+                    datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
+                    datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
+                    datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
+                    datoObjectNoti.obs_tra_observaciones = mensajeIgob;
+                    //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
+                    datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
+                    datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
+                    datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
+                    datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
+                    datoObjectNoti.mensajeIgob = $scope.resAE1;
+                    if ($scope.resAE1 == undefined){
+                        datoObjectNoti.obj_url_ra = "noRA";
+                    }else{
+                        if(resAE.length > 1){
+                            datoObjectNoti.obj_url_AE = $scope.resAE1;
+                            datoObjectNoti.obj_url_ra = "noRA";
+                        }else{
+                            datoObjectNoti.obj_URL_AE = $scope.resAE1;
+                            datoObjectNoti.obj_url_ra = "noRA";
+                        }
+                    }
+                    datoObjectNotiFinal[i] = datoObjectNoti;
+                    $scope.myObj = datoObjectNotiFinal; //aNotif.success;
+                }
+                else{//CASO CONTRARIO....
+                    var sAdjunto = 'NO';
                     $scope.myObj = aNotif.success;
                     datoObjectNoti = new Object();
                     datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
@@ -835,12 +862,20 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_tipo_resp = aNotif.success[i].obs_tra_tipo_resp; 
                     datoObjectNoti.obs_tra_id_tramite = aNotif.success[i].obs_tra_id_tramite;   
                     datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus; 
-                    datoObjectNoti.obj_url_ra = "noRA";
-                    datoObjectNoti.obj_url = "noSitram";
-                    datoObjectNoti.obj_url_AE = "noAE";
+                    try{//VALIDAMOS LOS ADJUNTOS SEGUN LOS NUEVOS CAMPOS
+                        datoObjectNoti.obj_url_ra = "noRA";
+                        datoObjectNoti.obj_url = "noSitram";
+                        datoObjectNoti.obj_url_AE = "noAE";                            
+                        sAdjunto = ((typeof(aNotif.success[i].adjuntos) == 'undefined' || aNotif.success[i].adjuntos == null) ? 'NO' : aNotif.success[i].adjuntos);                            
+                        if(sAdjunto != 'NO'){                                
+                            sAdjunto = aNotif.success[i].adjuntos[0].url;
+                            datoObjectNoti.adjunto = sAdjunto;                                
+                        }
+                    }catch(e){}
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal;
                 }
+                }catch(e){ console.log("NOTIFICACION N FALLIDA:",i + " " + aNotif.success[i].obs_tra_observaciones + " - " +  e.toString());}   
             }
         });
     }
@@ -1051,8 +1086,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         $scope.datospersonaJuridica  =   "hide";
         $scope.recuperarDatosRegistro();
         $scope.recuperarDatosDocumentos();
-        $scope.datosReportePlaformista();
-        $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
+        //$scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
         $scope.notificaciones();
 
     });   
@@ -1060,58 +1094,143 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
         $scope.datospersonaJuridica  =   "hide";
         $scope.recuperarDatosRegistro();
         $scope.recuperarDatosDocumentos();
-        $scope.datosReportePlaformista();
-        $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
+        //$scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
         $scope.notificaciones();
         /** MODIFICACIONES RMCF **/
         $scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null);
     };
 
 
-    $scope.getDocumento = function(usuario,sistema,proceso,ci_nodo)
-    {
-        $.blockUI();
-        var resRoles = new reglasnegocio();
-        resRoles.identificador = 'RCCIUDADANO_72';
-        resRoles.parametros = '{"sdoc_usuario":"'+ usuario +'","sdoc_sistema":"","sdoc_proceso":"'+ proceso +'","sdoc_ci_nodo":"'+ ci_nodo +'"}';
-        resRoles.llamarregla(function(response)
-        {
-          $scope.obtDatos = JSON.parse(response);
-          if ($scope.obtDatos == '[]' || $scope.obtDatos == '[{}]' || $scope.obtDatos == '[{ }]' || $scope.obtDatos == ' ' || $scope.obtDatos == '') {
-            $scope.tablaDocumentos = null;
-            $("#divMsj").css({'display' : 'block' });
-            $scope.msj1 = '¡ Estimado ciudadano, usted no cuenta con documentos hasta la fecha !'; 
-            $.unblockUI();
-            alertify.warning('No existen datos');  
-          }
-          else
-          {
-            var data = JSON.parse(response);
-            var u;
-            angular.forEach(data, function(dataValue, dataKey) 
-            {
-                var n = $scope.vdoc_nombre = dataValue['vdoc_nombre'];            
-                var s = $scope.vdoc_sistema= dataValue['vdoc_sistema'];
-                u = $scope.vdoc_url    = dataValue['vdoc_url'];
-                if(n == "CONDICIONES DE USO" || s == "vdoc_sistema")
-                {
-                    var y = $scope.vdoc_url = dataValue['vdoc_url'];
-                    var i = y.toString();
-                    if(i.indexOf("http://40.117.46.159:80/rest") != -1){
-                        i = i.replace("http://40.117.46.159:80/rest", CONFIG.APIURL);
-                    }					
+    $scope.getDocumentoPromesa = function(){
+        var validarpromesas = [$scope.getDocumento(sessionService.get('IDCIUDADANO'),'DMS',null,null)];
+        $q.all(validarpromesas).then(function (resp) {
+            console.log("respCU: ", resp);
+        });
+    }
+ 
+    $scope.getDocumento = function(usuario,sistema,proceso,ci_nodo){
+      $scope[name] = 'Running';
+      var deferred = $q.defer();
+      $scope.t = '';
+      var cu = new getCondicionUso();  
+      cu.sdoc_usuario = usuario;
+      cu.sdoc_sistema = sistema;
+      cu.sdoc_proceso = proceso;
+      cu.nombreCU = ci_nodo;
+      cu.get_CondicionUso(function(resultado){
+      resultadoApi = JSON.parse(resultado);
+      $scope.getCu = resultadoApi.success;
+      if(sessionService.get('SERVICIOS') == 'SI'){
+        if($scope.getCu.length>0){
+            $scope.muestraCondicion = false;
+            for(i=0;i<$scope.getCu.length;i++){
+                if($scope.getCu[i].vdoc_nombre == 'CONDICIONES DE USO' && $scope.getCu[i].vdoc_ci_nodo == 'CU' ){
+                  var y = $scope.getCu[i].vdoc_url;
+                  var i = y.toString();
                     $scope.t = i;
-                    $scope.$apply(); 
+                    deferred.resolve(resultado);
                 }
-            });
+            }
+        }else{
+            $scope.muestraCondicionUso();
+        }      
+      }else{
+        console.log('El ciudadano no acepto las condiciones de uso');
+        $scope.muestraCondicionUso();
+ 
+      }
 
+      });
+      return deferred.promise;
 
-            $scope.valida = 1;
-            $scope.msj1 = '';
-            $.unblockUI();
-          };
-        });      
-      };
+    }
+
+    $scope.muestraCondicionUso = function(){
+        $scope.muestraCondicion = true;
+        var fechaserver = new fechaHoraServer(); 
+        fechaserver.fechahora(function(resp){
+            var sfecha = JSON.parse(resp);
+            var fecha = sfecha.success.fecha.split(" ")[0]; 
+            var hora = sfecha.success.fecha.split(" ")[1]; 
+            fecha = fecha.split("-")[2] + "/" + fecha.split("-")[1] + "/" + fecha.split("-")[0];
+            $scope.btncondicionesuso_n  =   true;
+            $scope.btncondicionesuso_a  =   true;
+            setTimeout(function(){
+                var dataLogin = JSON.parse(sessionStorage.getItem('autenticacion'));
+                console.log('dataLogin',dataLogin);
+                var valcondiciones          =   ((typeof(dataLogin[0].dtspsl_acepta_servicios) == 'undefined' || dataLogin[0].dtspsl_acepta_servicios == null) ? '' : dataLogin[0].dtspsl_acepta_servicios);
+                valcondiciones              =   valcondiciones.trim();
+                $rootScope.aceptarcondiciones   =   true;
+                var tienecondicionesuso     =   '';
+                var aceptacondicionesuso    =   '';
+                //alert(valcondiciones);
+                if(valcondiciones == 'SI'){
+                    tienecondicionesuso     =   'SI';
+                    aceptacondicionesuso    =   'SI';                   
+                }else if(valcondiciones == "NO" || valcondiciones == '' ){
+                    var svSession          =   ((typeof(sessionService.get('SERVICIOS_MODAL')) == 'undefined' || sessionService.get('SERVICIOS_MODAL') == null) ? '' : sessionService.get('SERVICIOS_MODAL'));
+                    if(svSession == 'NO' || svSession == '' || svSession == 'undefined' || svSession == null){
+                        tienecondicionesuso     =   'NO';
+                        aceptacondicionesuso    =   '';
+                    }else if(svSession == 'SI' &&  sessionService.get('US_IDROL') == '5'){
+                        $rootScope.stiporol = 5;
+                    }
+                }            
+                var stringCondicionesDeUso  =   "";
+                var urlcondiciones  =   "";
+                var snombre =   "";
+                var scedulaid   =   "";
+                var sexpedido   =   "";
+                var snombreREP = "";
+                var scirep = "";
+                var sempresa = "";
+                var snit = "";
+
+                if(sessionService.get("TIPO_PERSONA") == 'NATURAL'){
+                    urlcondiciones  =   "../../docs/condiciones_uso_natural_1.html";
+                    snombre = sessionService.get("US_NOMBRE") + " " + sessionService.get("US_PATERNO") + " " + sessionService.get("US_MATERNO");
+                    scedulaid   = sessionService.get("CICIUDADANO");
+                    sexpedido   = dataLogin[0].dtspsl_expedido;
+                }else if(sessionService.get("TIPO_PERSONA") == 'JURIDICO'){
+                    urlcondiciones  =   "../../docs/condiciones_uso_juridico_1.html";
+                    snombreREP = sessionService.get("REPRESENTANTE");
+                    snit = sessionService.get("NITCIUDADANO");
+                    sempresa = sessionService.get("US_NOMBRE");
+                    scirep = sessionService.get("REPRESENTANTECI");
+                    
+                }
+                $( "#msgcondicionesuso" ).load(urlcondiciones, function(data) {
+                    stringCondicionesDeUso  =   data;
+                    //..
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#USUARIO#", snombre);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#CEDULA#", scedulaid);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#EXPEDIDO#", sexpedido);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#FECHA#", fecha);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#HORA#", hora);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#REPRESENTANTE#", snombreREP);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#NIT#", snit);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#EMPRESA#", sempresa);
+                    stringCondicionesDeUso  =   stringCondicionesDeUso.replace("#REPRESENTANTECI#", scirep);
+                    $scope.vercondicionesuso    =   "mostrar";
+                    $scope.msgcondicionesuso = stringCondicionesDeUso;
+                    $scope.notifcondicionesuso = stringCondicionesDeUso;
+                    if(tienecondicionesuso   ==  'NO'){
+                        if(aceptacondicionesuso ==  'NO'){
+                            $scope.notifcondicionesuso = stringCondicionesDeUso;
+                            $scope.validarmodal =   true;
+                        }else{
+                            setTimeout(function(){                            
+                                $rootScope.fmostrarCondicionesUso();
+                            },500);
+                        }          
+                    }else if(tienecondicionesuso   ==  'SI'){
+                        $rootScope.aceptarcondiciones   =   false;
+                    }
+                });
+                $scope.$apply();
+            }, 500);
+        });
+    }
 
     $scope.ImprimirUrl = function (fum) 
     {

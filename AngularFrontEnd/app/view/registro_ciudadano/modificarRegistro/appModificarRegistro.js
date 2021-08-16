@@ -245,29 +245,154 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
        $q.all(validarpromesas).then(function (resp) {//AE - Validar Envio Licencia
        });
     }
+
     $scope.getprof = function(){
-		$scope[name] = 'Running';
-        var deferred = $q.defer();
-        var resAccesos   = new reglasnegocio();
-        resAccesos.identificador = "RCCIUDADANO_27";
-        resAccesos.parametros = '{}';
-        resAccesos.llamarregla(function(resultado)
-        {
-            $scope.getpro=JSON.parse(resultado);
-            if(resultado == '[]' || resultado == '[{}]' || resultado == ' ' || resultado == '')
-            {
-				swal('', 'Error, sin datos', 'error'); 
-
-				
-            }
-			else{
-                 deferred.resolve(resultado);
-            }
-        });  
-
-        return deferred.promise;
+          var profesion = new rcProfesion();
+          profesion.getProfesiones(function(resultado){
+          resultadoApi = JSON.parse(resultado);
+          $scope.getpro = resultadoApi.success;
+        });   
     };
 
+   /* $scope.combopais = function(){
+        var pais = new rcPais();
+        pais.getPaises(function(resultado){
+        resultadoApi = JSON.parse(resultado);
+        $scope.comdpais = resultadoApi.success;
+      });   
+    };*/
+        
+    /*$scope.combodepa = function(){  
+        var depto = new rcDepartamento();
+        depto.getDepto(function(resultado){
+        resultadoApi = JSON.parse(resultado);
+        $scope.comdepa = resultadoApi.success;
+        });   
+
+    }*/
+    $scope.cargarProvincia_v2 = function(idProvi){
+        var prov = new rcProvincias();
+        prov.idProv = idProvi;
+        prov.getProv(function(resultado){
+        resultadoApi = JSON.parse(resultado);
+        resultsProv = resultadoApi.success;
+        if(resultsProv.length > 0){
+            $scope.aProvincias = resultsProv;
+            $scope.deshabilitadoP = false;
+            $scope.registro.provincia=0;
+            $scope.$apply();
+            $.unblockUI();
+        }
+        else{
+            $scope.msg = "Error !!";
+            $scope.deshabilitadoP = true;
+            $.unblockUI();
+        }
+            //// Se desactivan los combos dependientes posteriores a Municipio
+            $scope.deshabilitadoM = true;
+            $scope.deshabilitadoMc = true;
+            $scope.deshabilitadoDs = true;
+            $scope.deshabilitadoZ = true;
+            $scope.registro.municipio = '';
+            $scope.registro.macrodistrito = '';
+            $scope.registro.distrito = '';
+            $scope.registro.zona = '';
+            $scope.registro.tipo_via = '';
+            $scope.registro.nombrevia = '';
+            $scope.registro.otro_via = '';
+            $.unblockUI();
+        
+        });      
+
+    }
+
+    $scope.cargarProvincia = function(idProv){
+        var prov = new rcProvincias();
+        prov.idProv = idProv;
+        prov.getProv(function(resultado){
+        resultadoApi = JSON.parse(resultado);
+        resultsProv = resultadoApi.success;
+        if(resultsProv.length > 0){
+            $scope.aProvincias = resultsProv;
+            $scope.deshabilitadoP = false;
+        } else {
+            $scope.msg = "Error !!";
+            $scope.deshabilitadoP = true;
+            $scope.deshabilitadoM = true;
+            $scope.deshabilitadoMc = true;
+            $scope.deshabilitadoDs = true;
+            $scope.deshabilitadoZ = true;
+            $scope.registro.provincia = '';
+            $scope.registro.municipio = '';
+            $scope.registro.macrodistrito = '';
+            $scope.registro.macrodistrito_desc = '';
+            $scope.registro.distrito = '';
+            $scope.registro.distrito_desc = '';
+            $scope.registro.zona = '';
+            $scope.registro.zona_desc = '';
+
+        }             
+        
+        }); 
+
+    }
+    $scope.cargarMunicipio = function(idProvincia){
+        var mun = new rcMunicipios();
+        mun.idMun = idProvincia;
+        mun.getMun(function(resultado){
+        resultadoApi = JSON.parse(resultado);
+        resultsMuni = resultadoApi.success;
+        if(resultsMuni.length > 0){
+            $scope.aMunicipios = resultsMuni;
+            $scope.deshabilitadoM = false;
+        }else{
+            $scope.msg = "Error !!";
+            $scope.deshabilitadoM = true;
+            $scope.deshabilitadoMc = true;
+            $scope.deshabilitadoDs = true;
+            $scope.deshabilitadoZ = true;
+            $scope.registro.municipio = 0;
+            $scope.registro.macrodistrito = 0;
+            $scope.registro.distrito = 0;
+            $scope.registro.zona = 0; 
+            $scope.registro.zona_d = '';        
+        } 
+        });
+    }
+    $scope.cargarMunicipio_v2 = function(idProvincia){	
+        var mun = new rcMunicipios();
+        mun.idMun = idProvincia;
+        mun.getMun(function(resultado){
+        resultadoApi = JSON.parse(resultado);
+        resultsMuni = resultadoApi.success;
+        if(results.length > 0){
+            $scope.aMunicipios = resultsMuni;
+            $scope.deshabilitadoM = false;
+            $scope.registro.municipio = '';
+            $scope.$apply();
+            $.unblockUI();
+        }
+        else{
+            $scope.msg = "Error !!";
+            $scope.deshabilitadoM = true;
+            $.unblockUI();
+        }
+            //// Se desactivan los combos dependientes posteriores a Macrodistrito 
+            $scope.deshabilitadoMc = true;
+            $scope.deshabilitadoDs = true;
+            $scope.deshabilitadoZ = true;
+            $scope.deshabilitadoTv = true;
+            $scope.deshabilitadoNv = true;
+            $scope.registro.macrodistrito = '';
+            $scope.registro.distrito = '';
+            $scope.registro.zona = '';
+            $scope.registro.tipo_via = '';
+            $scope.registro.nombrevia = '';
+            $scope.registro.otro_via = '';
+            $scope.registro.zona_d = '';
+            $.unblockUI();  
+    });
+    }
     /*********************************************************************/
 	$scope.getDatosRegistro = function(){	
        var validarpromesas = [$scope.recuperarDatosRegistro()];
@@ -369,7 +494,7 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
                 $scope.actualizaDepartamento(results[0].dtspsl_pais);
                 $scope.registro.departamento = results[0].dtspsl_departamento;
                 $scope.cargarProvincia(results[0].dtspsl_departamento);
-                $scope.registro.provincia = results[0].dtspsl_provincia;                        
+                $scope.registro.provincia = results[0].dtspsl_provincia;  
                 $scope.cargarMunicipio(results[0].dtspsl_provincia);
                 $scope.registro.municipio = results[0].dtspsl_municipio;
 				$scope.idMunicipio = $scope.registro.municipio;	
@@ -489,56 +614,137 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
                 $scope.registro.FILE_FACTURA_LUZ = results[0].dtspsl_file_factura_luz;
                 /************** Obtener Datos persona RL **********************/
                 var sCiRepresentanteLegal   =   ((typeof(results[0].dtspsl_ci_representante) == 'undefined' || results[0].dtspsl_ci_representante == null) ? ""   : results[0].dtspsl_ci_representante.trim());
-                //console.log("sCiRepresentanteLegal: ", sCiRepresentanteLegal);
                 if(sCiRepresentanteLegal != null && sCiRepresentanteLegal != "")
                 {
-                    var fitro;     
-                    var dtspsl_tipo_persona="NATURAL";
-                    var dtspsl_estado="ACTIVO";
-                    var dtspsl_activacionf="SI";
-                    var dtspsl_activaciond="SI";
-                    filtro= '{"dtspsl_ci":"'+ sCiRepresentanteLegal + '","dtspsl_tipo_persona":"'+dtspsl_tipo_persona+'","dtspsl_estado":"'+dtspsl_estado+'","dtspsl_activacionf":"'+dtspsl_activacionf+'","dtspsl_activaciond":"'+dtspsl_activaciond+'"}';
-                    var resRepLegalMongo   = new reglasnegocio();
-                    resRepLegalMongo.identificador = "MONGO_RC_LAPAZ_173";
-                    resRepLegalMongo.parametros = filtro;
-                    resRepLegalMongo.llamarregla(function(results){
-                        results = JSON.parse(results);
-                        if (results !=null) {
-                            $.unblockUI(); 
-                            $scope.imagenPortada = results.dtspsl_URL;    // Recuperar informacion de la Imagen                       
-                            $scope.registro.nombre = results.dtspsl_nombres;
-                            $scope.registro.paterno = results.dtspsl_paterno;
-                            $scope.registro.materno = results.dtspsl_materno;
-                            $scope.registro.cedula = results.dtspsl_ci;
-                            $scope.registro.complemento = results.dtspsl_complemento;
-                            $scope.registro.cestcivil_id = results.dtspsl_id_estado_civil;
-                            $scope.registro.ocupacion = results.dtspsl_ocupacion;
-                            $scope.registro.profesion = results.dtspsl_profesion;
-                            $scope.registro.otra_profesion = results.dtspsl_otra_profesion;
-                            $scope.registro.celularRep = results.dtspsl_movil;
-                            $scope.registro.telefonoRep = results.dtspsl_telefono;
-                            $scope.registro.correoRep = results.dtspsl_correo;
-                            $scope.registro.direccionRep = results.dtspsl_direccion;
-                            $scope.registro.sexo = results.dtspsl_sexo;
-                            var oidR = results._id;
-                            $scope.registro.idrepre = oidR.$oid;
-                            if (results.dtspsl_file_fotocopia_ci) {
-                                $scope.btover_c=true;
-                            }
-                            $scope.registro.FILE_FOTOCOPIA_CI = results.dtspsl_file_fotocopia_ci;
-                            $scope.registro.FILE_FOTOCOPIA_CI_R = results.dtspsl_file_fotocopia_ci_r;
-							deferred.resolve(results);
-                        }else{
-                            $.unblockUI(); 
-							return deferred.promise;
-                        }
-                    });
+                    $scope.representanteLegal = sCiRepresentanteLegal;
+                    $scope.obtieneRepLegal();
                     $scope.cerrarMapa();
                     $.unblockUI(); 
                 }                               
             }   
 		
         });
+    };
+    $scope.obtieneRepLegal  =   function(){
+        try{
+            var parametros = new rcJuridico();
+            parametros.ci = $scope.representanteLegal,
+            parametros.tipo_persona = "NATURAL",
+            parametros.estado = 'ACTIVO',
+            parametros.actFisica = 'SI',
+            parametros.actDigital = 'SI'
+            parametros.obtieneRepresentanteLegal(function(resultado){
+                data = JSON.parse(resultado);
+                $scope.results = data;
+                if(data.length != null){
+                    $scope.imagenPortada = $scope.results[0].dtspsl_URL;    // Recuperar informacion de la Imagen                       
+                    $scope.registro.nombre = $scope.results[0].dtspsl_nombres;
+                    $scope.registro.paterno = $scope.results[0].dtspsl_paterno;
+                    $scope.registro.materno = $scope.results[0].dtspsl_materno;
+                    $scope.registro.cedula = $scope.results[0].dtspsl_ci;
+                    $scope.registro.complemento = $scope.results[0].dtspsl_complemento;
+                    $scope.registro.cestcivil_id = $scope.results[0].dtspsl_id_estado_civil;
+                    $scope.registro.ocupacion = $scope.results[0].dtspsl_ocupacion;
+                    $scope.registro.profesion = $scope.results[0].dtspsl_profesion;
+                    $scope.registro.otra_profesion = $scope.results[0].dtspsl_otra_profesion;
+                    $scope.registro.celularRep = $scope.results[0].dtspsl_movil;
+                    $scope.registro.telefonoRep = $scope.results[0].dtspsl_telefono;
+                    $scope.registro.correoRep = $scope.results[0].dtspsl_correo;
+                    $scope.registro.direccionRep = $scope.results[0].dtspsl_direccion;
+                    $scope.registro.sexo = $scope.results[0].dtspsl_sexo;
+                    var oidR = $scope.results[0]._id;
+                    //$scope.registro.idrepre = oidR.$oid;
+                    $scope.registro.idrepre = oidR;
+                    if ($scope.results[0].dtspsl_file_fotocopia_ci) {
+                        $scope.btover_c=true;
+                    }
+                    $scope.registro.FILE_FOTOCOPIA_CI = $scope.results[0].dtspsl_file_fotocopia_ci;
+                    $scope.registro.FILE_FOTOCOPIA_CI_R = $scope.results[0].dtspsl_file_fotocopia_ci_r;
+                }
+            });
+        }catch(error){
+           console.log("error en obtener datos de representante legal");
+        }  
+    };
+    $scope.validaNitRepLegal  =   function(){
+        try{
+            var parametros = new rcJuridico();
+            parametros.ci = $scope.representanteLegal,
+            parametros.tipo_persona = "NATURAL",
+            parametros.estado = 'ACTIVO',
+            parametros.actFisica = 'SI',
+            parametros.actDigital = 'SI'
+            parametros.obtieneRepresentanteLegal(function(resultado){
+                data = JSON.parse(resultado);
+                $scope.results = data;
+                if(data.length>0){
+                    $.unblockUI();
+                    $scope.validaNitJuridico();
+                    /*var filtroNit= '{"dtspsl_nit":"'+ $scope.cnit + '","dtspsl_estado":"ACTIVO"}';
+                    var resRepNit=new reglasnegocio();
+                    resRepNit.identificador="MONGO_RC_LAPAZ_175";
+                    resRepNit.parametros=filtroNit;
+                    resRepLegalMongo.llamarregla(function(data){
+                        data=JSON.parse(data);
+                        if (data !=null) {
+                            $scope.registroCiudadano(data);
+                        }else{
+                            $scope.errors["error_uos"] = error;
+                        }
+                    }).error(function(error){
+                        $scope.errors["error_uos"] = error;
+                    }); */
+                }else{
+                    swal('Advertencia', 'El número de CI no esta en Registro Ciudadano', 'warning'); 
+                    $scope.getCaptchasX();
+                    $.unblockUI();
+                }
+                
+            });
+        }catch(error){
+           console.log("error en obtener datos de representante legal");
+        }  
+    };
+    $scope.validaNitJuridico  =   function(){
+        try{
+            var parametros = new rcJuridico();
+            parametros.nit = $scope.cnit,
+            parametros.estado = 'ACTIVO',
+            parametros.validaNitRepresentanteLegal(function(resultado){
+                data = JSON.parse(resultado);
+                $scope.results = data;
+                if(data.length != null){
+                    $scope.registroCiudadano(data);
+                }else{
+                    $scope.errors["error_uos"] = error;
+                }
+            });
+        }catch(error){
+           console.log("error en obtener datos de representante legal");
+        }  
+    };
+    $scope.validaCiNatural  =   function(){
+        try{
+            var parametros = new rcNatural();
+            parametros.ci = $scope.cedula2,
+            parametros.tipo_persona = "NATURAL",
+            parametros.estado = 'ACTIVO'
+            parametros.validaCi_Natural(function(resultado){
+                data = JSON.parse(resultado);
+                $scope.results = data;
+                if($scope.results != null){
+                    $.unblockUI();
+                    $scope.registroCiudadano(data);   
+                }else{
+                    swal('Advertencia', 'El número de CI no esta en Registro Ciudadano', 'warning'); 
+                    $scope.getCaptchasX();
+                    $.unblockUI();
+                }
+                
+            });
+        }catch(error){
+           console.log("error en obtener datos de representante legal");
+        }  
     };
 
     $scope.validarEmail =function(email) {
@@ -624,13 +830,13 @@ $scope.startDateOpen2 = function($event) {
    $scope.startDateOpened2 = true;
 };
 /******************* API ESTADO CIVIL**********************************/
-$scope.estado_Civil = function(){
+/*$scope.estado_Civil = function(){
    var validarpromesas = [$scope.estadoCivil()];
    $q.all(validarpromesas).then(function (resp) {//AE - Validar Envio Licencia
        //console.log("respLicencia: ", resp);
    });
-}
-$scope.estadoCivil = function(){
+}*/
+/*$scope.estadoCivil = function(){
     $scope[name] = 'Running';
     var deferred = $q.defer();
     var sestadocivil   = new reglasnegocio();
@@ -650,7 +856,7 @@ $scope.estadoCivil = function(){
         }             
     });
     return deferred.promise;
-};
+};*/
 /**********************************************************************/    
 var aRegistro = {"cedula": "","complemento": "","celular":"","correo":"","direccion":"","estado_civil":"","fecha_nacimiento":"","fecha_vencimiento":"",
 "materno":"","nombre":"","ocupacion":"","profesion":"","otra_profesion":"","paterno":"","sexo":"","valid":"","valid2":"","telefono":"","cedula2": "","complemento2": "","repLegal": "","nroDocumento": "","nroNotaria": "",
@@ -785,40 +991,11 @@ $scope.mostrarNatural = null;
         if(tipoPersona == "JURIDICO") 
         {
             var cnit = response.nit;
+            $scope.cnit = response.nit;
             var cnit2 = response.nit2;
             if(cnit == cnit2) {
-                var dtspsl_tipo_persona="NATURAL";
-                var dtspsl_estado="ACTIVO";
-                var dtspsl_activacionf="SI";
-                var dtspsl_activaciond="SI";
-                filtrov= '{"dtspsl_ci":"'+ response.cedula + '","dtspsl_tipo_persona":"'+dtspsl_tipo_persona+'","dtspsl_estado":"'+dtspsl_estado+'","dtspsl_activacionf":"'+dtspsl_activacionf+'","dtspsl_activaciond":"'+dtspsl_activaciond+'"}';
-                var resRepLegalMongo   = new reglasnegocio();
-                resRepLegalMongo.identificador = "MONGO_RC_LAPAZ_174";
-                resRepLegalMongo.parametros = filtrov;
-                resRepLegalMongo.llamarregla(function(results){
-                    var datomongo=JSON.parse(results);
-                    if (results !=null) {
-                        $.unblockUI();
-                        var filtroNit= '{"dtspsl_nit":"'+ cnit + '","dtspsl_estado":"ACTIVO"}';
-                        var resRepNit=new reglasnegocio();
-                        resRepNit.identificador="MONGO_RC_LAPAZ_175";
-                        resRepNit.parametros=filtroNit;
-                        resRepLegalMongo.llamarregla(function(data){
-                            data=JSON.parse(data);
-                            if (data !=null) {
-                                $scope.registroCiudadano(data);
-                            }else{
-                                $scope.errors["error_uos"] = error;
-                            }
-                        }).error(function(error){
-                            $scope.errors["error_uos"] = error;
-                        }); 
-                    }else{
-						swal('Advertencia', 'El número de CI no esta en Registro Ciudadano', 'warning'); 
-                        $scope.getCaptchasX();
-                        $.unblockUI();
-                    }
-                });       
+                $scope.representanteLegal = response.cedula;
+                $scope.validaNitRepLegal();  
             } else{
 				swal('', 'El número de NIT  no concuerda con el anterior formulario', 'warning'); 
                 $.unblockUI();  
@@ -827,23 +1004,10 @@ $scope.mostrarNatural = null;
         } else {
             var ci1=response.cedula;
             var ci2=response.cedula2;
+            $scope.cedula2 = response.cedula2;
             if(ci1==ci2)
             {       
-                var filtroA= '{"dtspsl_ci":"'+ response.cedula2 + '","dtspsl_tipo_persona":"NATURAL","dtspsl_estado":"ACTIVO"}';
-                var resRepBus=new reglasnegocio();
-                resRepBus.identificador="MONGO_RC_LAPAZ_178";
-                resRepBus.parametros=filtroA;
-                    resRepBus.llamarregla(function(results){
-                        var datomongo=JSON.parse(results);
-                        if (results !=null) {
-                            $.unblockUI();
-                            $scope.registroCiudadano(results);   
-                        }else{
-							swal('', 'El número de CI no esta en Registro Ciudadano', 'warning'); 
-                            $scope.getCaptchasX();
-                            $.unblockUI();
-                        }
-                });      
+                $scope.validaCiNatural();  
             }else{
 				swal('', 'El número de ci no concuerda con el anterior formulario', 'warning'); 
                 $.unblockUI();  
@@ -880,24 +1044,10 @@ $scope.mostrarNatural = null;
 		$scope.celular_empresa=0;
     };
 	
-    $scope.combopais = function(){
-        var spais   = new reglasnegocio();
-        spais.identificador = "RCCIUDADANO_29";
-        spais.parametros = '{}';
-        spais.llamarregla(function(resultado){
-            $scope.comdpais = JSON.parse(resultado);
-        });  
-    };
+   
     
     /**************** API COMBO DEPARTAMENTOS ****************************/
-    $scope.combodepa = function(){  
-        var sdepartamento   = new reglasnegocio();
-        sdepartamento.identificador = "RCCIUDADANO_28";
-        sdepartamento.parametros = '{}';    
-        sdepartamento.llamarregla(function(resultado){
-            $scope.comdepa = JSON.parse(resultado);
-        });  
-    };
+    
 
     $scope.limpiarDepartamento = function (){
         $scope.registro.municipio = '';
@@ -913,61 +1063,13 @@ $scope.mostrarNatural = null;
         $scope.registro.nombrevia = '';
     }
     
-    /******************* API CARGAR PROVINCIAS **************************/
-    $scope.cargarProvincia = function(idProv){
-        var sprovincia   = new reglasnegocio();
-        sprovincia.identificador = "RCCIUDADANO_30";
-        sprovincia.parametros = '{"departamento":"'+ idProv + '"}';
-        sprovincia.llamarregla(function(results){
-            results = JSON.parse(results);
-            if(results.length > 0){
-             $scope.aProvincias = results;
-             $scope.deshabilitadoP = false;
-         } else {
-             $scope.msg = "Error !!";
-             $scope.deshabilitadoP = true;
-             $scope.deshabilitadoM = true;
-             $scope.deshabilitadoMc = true;
-             $scope.deshabilitadoDs = true;
-             $scope.deshabilitadoZ = true;
-             $scope.registro.provincia = '';
-             $scope.registro.municipio = '';
-             $scope.registro.macrodistrito = '';
-             $scope.registro.macrodistrito_desc = '';
-             $scope.registro.distrito = '';
-             $scope.registro.distrito_desc = '';
-             $scope.registro.zona = '';
-             $scope.registro.zona_desc = '';
-
-         }             
-     });
-    };
+    
 	
     /*********************************************************************/   
     /************************ CARGAR MUNICIPIO ******************************/
-    $scope.cargarMunicipio = function(idProvincia){
-        var smunicipio   = new reglasnegocio();
-        smunicipio.identificador = "RCCIUDADANO_23";
-        smunicipio.parametros = '{"provincia":"' + idProvincia + '"}';
-        smunicipio.llamarregla(function(results){
-            results = JSON.parse(results);
-            if(results.length > 0){
-             $scope.aMunicipios = results;
-             $scope.deshabilitadoM = false;
-         }else{
-             $scope.msg = "Error !!";
-             $scope.deshabilitadoM = true;
-             $scope.deshabilitadoMc = true;
-             $scope.deshabilitadoDs = true;
-             $scope.deshabilitadoZ = true;
-             $scope.registro.municipio = 0;
-             $scope.registro.macrodistrito = 0;
-             $scope.registro.distrito = 0;
-             $scope.registro.zona = 0; 
-             $scope.registro.zona_d = '';        
-         }             
-     });
-    };
+   
+
+
     /************************ CARGAR MACRODISTRITO ****************************/ 
     $scope.cargarMacrodistrito = function(idMac){
         $scope.idMacrod = idMac;
@@ -1337,88 +1439,8 @@ $scope.vias= function(zona,tipo){
         $scope.deshabilitadoNv=false;
     });
 };  
-/***************************************************************************/
-    //// ******* para los ng-change de los combos ******* ///
-    //// Cuando se hace una seleccion entonces se limpia los registros de los combos dependientes ////
-    /*****************************************************************************************/
-    $scope.cargarProvincia_v2 = function(idProv){
-      $.blockUI();   
-      var sprovincia   = new reglasnegocio();
-      sprovincia.identificador = "RCCIUDADANO_30";
-      $scope.obj={};
-      sprovincia.parametros = '{"departamento":"'+ idProv + '"}';
-      sprovincia.llamarregla(function(results){
-        results = JSON.parse(results);
-        if(results.length > 0){
-            if (typeof $scope.aProvincias !== 'undefined') {
-                $scope.aProvincias = results;
-            }else{
-                console.log("Error datos no definidos, cargar provincia");
-            }
-            
-            $scope.deshabilitadoP = false;
-            $scope.registro.provincia=0;
-            $scope.$apply();
-            $.unblockUI();
-        }
-        else{
-            $scope.msg = "Error !!";
-            $scope.deshabilitadoP = true;
-             $.unblockUI();
-        }
-            //// Se desactivan los combos dependientes posteriores a Municipio
-            $scope.deshabilitadoM = true;
-            $scope.deshabilitadoMc = true;
-            $scope.deshabilitadoDs = true;
-            $scope.deshabilitadoZ = true;
-            $scope.registro.municipio = '';
-            $scope.registro.macrodistrito = '';
-            $scope.registro.distrito = '';
-            $scope.registro.zona = '';
-            $scope.registro.tipo_via = '';
-            $scope.registro.nombrevia = '';
-            $scope.registro.otro_via = '';
-            $.unblockUI();
-        }); 
-  };  
-  /*****************************************************************************************/
-  $scope.cargarMunicipio_v2 = function(idProvincia){	
-      $.blockUI();    
-      var smunicipio   = new reglasnegocio();
-      smunicipio.identificador = "RCCIUDADANO_23";
-      smunicipio.parametros = '{"provincia":"' + idProvincia + '"}';
-      smunicipio.llamarregla(function(results){
 
-        results = JSON.parse(results);
-        if(results.length > 0){
-            $scope.aMunicipios = results;
-            $scope.deshabilitadoM = false;
-            $scope.registro.municipio = '';
-            $scope.$apply();
-            $.unblockUI();
-        }
-        else{
-            $scope.msg = "Error !!";
-            $scope.deshabilitadoM = true;
-            $.unblockUI();
-        }
-            //// Se desactivan los combos dependientes posteriores a Macrodistrito 
-            $scope.deshabilitadoMc = true;
-            $scope.deshabilitadoDs = true;
-            $scope.deshabilitadoZ = true;
-            $scope.deshabilitadoTv = true;
-            $scope.deshabilitadoNv = true;
-            $scope.registro.macrodistrito = '';
-            $scope.registro.distrito = '';
-            $scope.registro.zona = '';
-            $scope.registro.tipo_via = '';
-            $scope.registro.nombrevia = '';
-            $scope.registro.otro_via = '';
-            $scope.registro.zona_d = '';
-            $.unblockUI();
-        });
-  };
-  /**************************************************************************************/
+
   $scope.cargarMacrodistrito_v2 = function(idMunicipio){
     $scope.idMunicipio = idMunicipio;
     $.blockUI();
@@ -1604,7 +1626,7 @@ $scope.vias_v2= function(zona,tipo)
     //creando un nuevo registro 
     $scope.validacamposJuridico = function (){                 
         $scope.isDisabled = false;
-        $scope.getCaptchasX();
+        //$scope.getCaptchasX();
         if(tipoPersona == 'NATURAL'){
             $scope.opcionpersonaNatural = true;
             $scope.opcionpersonaJuridico = null;
@@ -1985,114 +2007,6 @@ $scope.vias_v2= function(zona,tipo)
             });
         }
      };
-/*
-     $scope.verificar = function(reg) {
-        sw =0;
-        $.blockUI();
-        var fitro;           
-        if(reg.complemento != null)
-        {            
-            var dtspsl_tipo_persona="NATURAL";
-            var dtspsl_estado="ACTIVO";
-            var dtspsl_activacionf="SI";
-            var dtspsl_activaciond="SI";
-            filtro= '{"dtspsl_ci":"'+ reg.cedula + '","dtspsl_complemento":"'+reg.complemento+',"dtspsl_tipo_persona":"'+dtspsl_tipo_persona+'","dtspsl_estado":"'+dtspsl_estado+'","dtspsl_activacionf":"'+dtspsl_activacionf+'","dtspsl_activaciond":"'+dtspsl_activaciond+'"}';
-            sw=0;
-        }
-        else{         
-            var dtspsl_tipo_persona="NATURAL";
-            var dtspsl_estado="ACTIVO";
-            var dtspsl_activacionf="SI";
-            var dtspsl_activaciond="SI";
-            filtro= '{"dtspsl_ci":"'+ reg.cedula + '","dtspsl_tipo_persona":"'+dtspsl_tipo_persona+'","dtspsl_estado":"'+dtspsl_estado+'","dtspsl_activacionf":"'+dtspsl_activacionf+'","dtspsl_activaciond":"'+dtspsl_activaciond+'"}';
-            sw=1
-        }
-        switch (sw) {
-            case 0:
-                var resRepLegalMongo   = new reglasnegocio();
-                resRepLegalMongo.identificador = "MONGO_RC_LAPAZ_174";
-                resRepLegalMongo.parametros = filtro;
-                resRepLegalMongo.llamarregla(function(results){
-                    if (results !=null) {
-                        $.unblockUI();
-                        if(tipoPersona == 'NATURAL')
-                        {
-							swal('', 'Persona ya Registrada!!!', 'success');
-                        }else
-                        {
-                            $scope.registro.nombre = results.dtspsl_nombres;
-                            $scope.registro.paterno = results.dtspsl_paterno;
-                            $scope.registro.materno = results.dtspsl_materno;
-                            $scope.registro.tercer = "";
-                            $scope.registro.cedula = results.dtspsl_ci;                
-                            $scope.registro.celularRep = results.dtspsl_movil;
-                            $scope.registro.telefonoRep = results.dtspsl_telefono;
-                            $scope.registro.correoRep = results.dtspsl_correo;
-                            $scope.registro.direccionRep = results.dtspsl_direccion;  
-							swal('', 'Datos Encontrados!!!', 'success');
-                        }
-                    }else{
-                        $.unblockUI();
-                        if(tipoPersona == 'NATURAL')
-                        {
-							swal('', 'Llene sus datos!!!!', 'success');
-                        }
-                        else
-                        {
-							swal('', 'Debe Registrar primero a la Persona Natural!!!', 'warning');
-                            $scope.registro = '';
-                        }
-
-                    }
-                     $scope.$apply();
-                });
-            break;
-            case 1:
-                var resRepLegalMongo   = new reglasnegocio();
-                resRepLegalMongo.identificador= "MONGO_RC_LAPAZ_173";
-                resRepLegalMongo.parametros = filtro;
-                resRepLegalMongo.llamarregla(function(results){
-					
-                    var datomongo=JSON.parse(results);console.log(datomongo);
-                    if (datomongo !=null) {console.log("datomongo:",datomongo);
-                        $.unblockUI();
-                        if(tipoPersona == 'NATURAL')
-                        {
-							swal('', 'Persona ya Registrada!!!!', 'success');
-                        }else
-                        {
-							$scope.sw = 1;
-                                $scope.registro.nombre = datomongo.dtspsl_nombres;
-                                $scope.registro.paterno = datomongo.dtspsl_paterno;
-                                $scope.registro.materno = datomongo.dtspsl_materno;
-                                $scope.registro.tercer = ""; 
-                                $scope.registro.cedula = datomongo.dtspsl_ci;                
-                                $scope.registro.celularRep = datomongo.dtspsl_movil;
-                                $scope.registro.telefonoRep = datomongo.dtspsl_telefono;
-                                $scope.registro.correoRep = datomongo.dtspsl_correo;
-                                $scope.registro.direccionRep = datomongo.dtspsl_direccion;  
-								swal('', 'Datos Encontrados!!!', 'success');
-                        }
-                    }else{
-                        $.unblockUI();
-                        if(tipoPersona == 'NATURAL')
-                        {
-							swal('', 'Llene sus datos!!!', 'success');
-                        }
-                        else
-                        {
-							swal('', 'Debe Registrar primero a la Persona Natural!!!!', 'warning');
-                            $scope.registro = '';
-                        }
-
-                    }
-                     $scope.$apply();
-                });
-            break;
-        }
-
-};
-*/
 
     $scope.verificar = function(reg) {
       $scope.swjur = null;
@@ -2383,20 +2297,15 @@ $scope.vias_v2= function(zona,tipo)
 
             //map.setCenter(nuevoUbicacion);
             $scope.addMarker(nuevoUbicacion);
-
-            console.log("tttttttttt",nuevoUbicacion);
             $scope.open_map_registroN(nuevoUbicacion);
 
         }else{
-
             var nuevoUbicacion = {
                 lat: -16.495635, 
                 lng: -68.133543
             };
             //map.setCenter(nuevoUbicacion);
             $scope.addMarker(nuevoUbicacion);
-
-            console.log("uuuuuuuuuuu",nuevoUbicacion);
             $scope.open_map_registroN(nuevoUbicacion);
         }         
     }
@@ -2412,8 +2321,6 @@ $scope.vias_v2= function(zona,tipo)
                 lat: parseFloat($scope.registro.latitud), 
                 lng: parseFloat($scope.registro.longitud)
             };
-
-            console.log("kkkkkkk",nuevoUbicacion);
             $scope.open_map_registroJ(nuevoUbicacion)
 
 
@@ -2424,9 +2331,6 @@ $scope.vias_v2= function(zona,tipo)
                 lat: -16.495635, 
                 lng: -68.133543
             };
-
-            console.log("hhhhhhhh",nuevoUbicacion);
-
             $scope.open_map_registroJ(nuevoUbicacion)
 
             mapj.setCenter(nuevoUbicacion);
@@ -2562,71 +2466,8 @@ $scope.vias_v2= function(zona,tipo)
 
         var latitud = nuevoUbicacion.lat;
         var longitud = nuevoUbicacion.lng;
-
-        console.log("ENTRANDO open_map_registro N", latitud,longitud);
-        //var mapa = new ol.Map();
+        //var mapa = new ol.Map();  
         
-        /*
-        setTimeout(function()
-        {
-            $("#mapModificar_1").empty();
-            mapa = new ol.Map({
-            layers: [
-                    new ol.layer.Group({
-                                          title: 'Mapas Base',
-                                          layers: [
-                                                    osm,
-                                                    municipios,
-                                                    macrodistritos,
-                                                    vectorLayer
-                                                  ]
-                                      })
-                   
-                  ],
-            //overlays: [featureOverlay],
-            target: 'mapModificar_1',
-            //controls: controls,
-            //interactions: mover,
-            view: view
-            });
-
-            var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: 'Leyenda'});
-            mapa.addControl(layerSwitcher);
-
-            var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
-            feature.setStyle(iconStyle_1);
-            vectorSource.addFeature(feature);
-            mapa.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
-            mapa.getView().setZoom(16);
-
-            var datos_salida = [];
-
-            mapa.on('click', function (evt)
-            {
-                vectorSource.clear();
-                var coord = mapa.getCoordinateFromPixel(evt.pixel);
-                var centro = ol.proj.transform(coord, 'EPSG:3857', epsg32719);
-                var wkt = '';
-                var centro_1 = ol.proj.transform(coord, 'EPSG:3857', epsg4326);
-                var latitud = centro_1[1];
-                var longitud = centro_1[0];
-                wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
-                console.log("PUNTO",centro_1);
-
-                $scope.registro.longitud = longitud;
-                $scope.registro.latitud = latitud;
-
-                $("#latitud").val(latitud);
-                $("#longitud").val(longitud);
-                /////////////////////////////////////////////////////////////////////
-                var feature = new ol.Feature(
-                new ol.geom.Point(ol.proj.fromLonLat(centro_1))
-                );
-                feature.setStyle(iconStyle_1);
-                vectorSource.addFeature(feature);
-            });
-        },500);
-        */
         setTimeout(function()
         {
           var style = new ol.style.Style({
@@ -2687,20 +2528,17 @@ $scope.vias_v2= function(zona,tipo)
           vectorLayer.getSource().clear();
 
           if (isNaN(latitud) && isNaN(longitud))
-          {
-              console.log("no existe Lat y Lon o son undefined");
+          {              
           }
           else
           {
               if(latitud === '' || longitud === '')
-              {
-                  console.log("lat y lon son cadena vacia");
+              {                  
                   map.getView().setCenter(ol.proj.fromLonLat([-68.133605,-16.495745]));
                   map.getView().setZoom(16);
               }
               else
               {
-                  console.log("existe lat y lon");
                   latitud = parseFloat(latitud);
                   longitud = parseFloat(longitud);
                   var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
@@ -2712,9 +2550,6 @@ $scope.vias_v2= function(zona,tipo)
           }
           ////////////////////////////////////////////////////////////////////////
           var n_genesis = geo_id_genesis.length;
-          //console.log("n_id_gene...",n_genesis);
-          //console.log("n_id_sit...",geo_id_sit.length);
-          console.log("n_id_serv...",geo_id_sit_servicio.length);
           $scope.mapa.on('click', function (evt)
           {
             vectorSource.clear();
@@ -2726,9 +2561,6 @@ $scope.vias_v2= function(zona,tipo)
             var longitud = centro_1[0];
             wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
             
-            console.log("latitud:",latitud);
-            console.log("longitud:",longitud);
-
             $scope.registro.longitud = longitud;
             $scope.registro.latitud = latitud;
             /////////////////////////////////////////////////////////////////////
@@ -2768,27 +2600,6 @@ $scope.vias_v2= function(zona,tipo)
                       'propertyName': 'codigocatastral'
                   }
               );
-              /*
-              reqwest({
-                  url: url_lotes,
-                  type: 'json',
-              }).then(function(data) {
-                var feature = data.features[0];
-                console.log("feeeee",feature);
-                if(feature === undefined)
-                {
-                    console.log("No se encuentran datos para lotes...");
-                }
-                else
-                {
-                    ///////////////////////////////////////////////////////////
-                    var cod = feature.properties;
-                    var codigo_catastro = cod.codigocatastral;
-                    console.log("codigo catastro: ",codigo_catastro);
-                    ///////////////////////////////////////////////////////////
-                }
-              });
-              */
               reqwest({
                   url: url_zonas_tributarias,
                   type: 'json',
@@ -2797,7 +2608,6 @@ $scope.vias_v2= function(zona,tipo)
                 ///////////////////////////////////////////////////////////
                 var cod = feature.properties;
                 var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                console.log("codigo zona tributaria: ",codigo_zona_tributaria);
                 ///////////////////////////////////////////////////////////
               });
               reqwest({
@@ -2812,19 +2622,13 @@ $scope.vias_v2= function(zona,tipo)
                 var macrodistrito = cod.macrodistrito;
                 var cod_zona= cod.codigozona;
                 var distrito= cod.distrito;
-                console.log("cod zona serv sit: ",cod_zona);
                 /////////////////////////////////////////////
-                //console.log("hhhhh",n_genesis);
                 for (var i=0;i<n_genesis;i++) {
                     if(geo_id_sit_servicio[i ]=== cod_zona) {
                         cod_zona_genesis = geo_id_genesis[i];
-                        console.log("cod zona genesis: ",cod_zona_genesis);
                     }
                 }
                 /////////////////////////////////////////////
-                console.log("zona: ",zona);
-                console.log("macrodistrito: ",macrodistrito);
-                console.log("distrito: ",distrito);
               });
               
               reqwest({
@@ -2843,8 +2647,6 @@ $scope.vias_v2= function(zona,tipo)
                     var cod = feature.properties;
                     var nombre_via = cod.nombrevia;
                     var tipo_via = cod.tipovia;
-                    console.log("nombre via: ",nombre_via);
-                    console.log("tipo via: ",tipo_via);
                     //////////////////////////////////////////////////////////
                 }
               });
@@ -2867,70 +2669,6 @@ $scope.vias_v2= function(zona,tipo)
         var latitud = nuevoUbicacion.lat;
         var longitud = nuevoUbicacion.lng;
 
-        console.log("ENTRANDO A open_map_registro J", latitud,longitud);
-        //var mapa = new ol.Map();
-        /*
-        setTimeout(function()
-        {
-            $("#mapModificarJ_1").empty();
-            mapa = new ol.Map({
-            layers: [
-                    new ol.layer.Group({
-                                          title: 'Mapas Base',
-                                          layers: [
-                                                    osm,
-                                                    municipios,
-                                                    macrodistritos,
-                                                    vectorLayer
-                                                  ]
-                                      })
-                   
-                  ],
-            //overlays: [featureOverlay],
-            target: 'mapModificarJ_1',
-            //controls: controls,
-            //interactions: mover,
-            view: view
-            });
-
-            var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: 'Leyenda'});
-            mapa.addControl(layerSwitcher);
-
-            var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
-            feature.setStyle(iconStyle_1);
-            vectorSource.addFeature(feature);
-            mapa.getView().setCenter(ol.proj.fromLonLat([longitud, latitud]));
-            mapa.getView().setZoom(16);
-
-            var datos_salida = [];
-
-            mapa.on('click', function (evt)
-            {
-                vectorSource.clear();
-                var coord = mapa.getCoordinateFromPixel(evt.pixel);
-                var centro = ol.proj.transform(coord, 'EPSG:3857', epsg32719);
-                var wkt = '';
-                var centro_1 = ol.proj.transform(coord, 'EPSG:3857', epsg4326);
-                var latitud = centro_1[1];
-                var longitud = centro_1[0];
-                wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
-                console.log("PUNTO",centro_1);
-
-                $scope.registro.longitud = longitud;
-                $scope.registro.latitud = latitud;
-
-                $("#latitud").val(latitud);
-                $("#longitud").val(longitud);
-                /////////////////////////////////////////////////////////////////////
-                var feature = new ol.Feature(
-                new ol.geom.Point(ol.proj.fromLonLat(centro_1))
-                );
-                feature.setStyle(iconStyle_1);
-                vectorSource.addFeature(feature);
-            });
-        },500);
-        */
-        
         setTimeout(function()
         {
           var style = new ol.style.Style({
@@ -2998,13 +2736,11 @@ $scope.vias_v2= function(zona,tipo)
           {
               if(latitud === '' || longitud === '')
               {
-                  console.log("lat y lon son cadena vacia");
                   map.getView().setCenter(ol.proj.fromLonLat([-68.133605,-16.495745]));
                   map.getView().setZoom(16);
               }
               else
               {
-                  console.log("existe lat y lon");
                   latitud = parseFloat(latitud);
                   longitud = parseFloat(longitud);
                   var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
@@ -3016,9 +2752,6 @@ $scope.vias_v2= function(zona,tipo)
           }
           ////////////////////////////////////////////////////////////////////////
           var n_genesis = geo_id_genesis.length;
-          //console.log("n_id_gene...",n_genesis);
-          //console.log("n_id_sit...",geo_id_sit.length);
-          //console.log("n_id_serv...",geo_id_sit_servicio.length);
           $scope.mapa.on('click', function (evt)
           {
             vectorSource.clear();
@@ -3029,10 +2762,6 @@ $scope.vias_v2= function(zona,tipo)
             var latitud = centro_1[1];
             var longitud = centro_1[0];
             wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
-            
-            console.log("latitud:",latitud);
-            console.log("longitud:",longitud);
-
             $scope.registro.longitud = longitud;
             $scope.registro.latitud = latitud;
             /////////////////////////////////////////////////////////////////////
@@ -3072,27 +2801,6 @@ $scope.vias_v2= function(zona,tipo)
                       'propertyName': 'codigocatastral'
                   }
               );
-              /*
-              reqwest({
-                  url: url_lotes,
-                  type: 'json',
-              }).then(function(data) {
-                var feature = data.features[0];
-                console.log("feeeee",feature);
-                if(feature === undefined)
-                {
-                    console.log("No se encuentran datos para lotes...");
-                }
-                else
-                {
-                    ///////////////////////////////////////////////////////////
-                    var cod = feature.properties;
-                    var codigo_catastro = cod.codigocatastral;
-                    console.log("codigo catastro: ",codigo_catastro);
-                    ///////////////////////////////////////////////////////////
-                }
-              });
-              */
               reqwest({
                   url: url_zonas_tributarias,
                   type: 'json',
@@ -3101,7 +2809,6 @@ $scope.vias_v2= function(zona,tipo)
                 ///////////////////////////////////////////////////////////
                 var cod = feature.properties;
                 var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                console.log("codigo zona tributaria: ",codigo_zona_tributaria);
                 ///////////////////////////////////////////////////////////
               });
               reqwest({
@@ -3116,19 +2823,13 @@ $scope.vias_v2= function(zona,tipo)
                 var macrodistrito = cod.macrodistrito;
                 var cod_zona= cod.codigozona;
                 var distrito= cod.distrito;
-                console.log("cod zona serv sit: ",cod_zona);
                 /////////////////////////////////////////////
-                //console.log("hhhhh",n_genesis);
                 for (var i=0;i<n_genesis;i++) {
                     if(geo_id_sit_servicio[i ]=== cod_zona) {
                         cod_zona_genesis = geo_id_genesis[i];
-                        console.log("cod zona genesis: ",cod_zona_genesis);
                     }
                 }
                 /////////////////////////////////////////////
-                console.log("zona: ",zona);
-                console.log("macrodistrito: ",macrodistrito);
-                console.log("distrito: ",distrito);
               });
               
               reqwest({
@@ -3147,8 +2848,6 @@ $scope.vias_v2= function(zona,tipo)
                     var cod = feature.properties;
                     var nombre_via = cod.nombrevia;
                     var tipo_via = cod.tipovia;
-                    console.log("nombre via: ",nombre_via);
-                    console.log("tipo via: ",tipo_via);
                     //////////////////////////////////////////////////////////
                 }
               });
@@ -3160,270 +2859,7 @@ $scope.vias_v2= function(zona,tipo)
             feature.setStyle(iconStyle);
             vectorSource.addFeature(feature);
           });
-        },500);
-        
-        /*
-        setTimeout(function()
-        {
-            console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICAS J");
-            //map.removeLayer(vectorLayer_inci_baja);
-            $("#mapModificarJ_1").empty();
-            $scope.map = new ol.Map
-            ({
-              target: 'mapModificarJ_1',
-              layers: [
-                        new ol.layer.Group({
-                                            title: 'Mapas Base',
-                                            layers: [
-                                                      osm,
-                                                      municipios,
-                                                      zonas_tributarias,
-                                                      lotes_1,
-                                                      vias  
-                                                    ]
-                                          }),
-                        new ol.layer.Group({
-                                            title: 'Capas',
-                                            layers: [
-                                                      //macrodistritos,
-                                                      vectorLayerZonas,
-                                                      vectorLayer
-                                                    ]
-                                          })
-                      ],
-
-              view: new ol.View({
-                zoom: 16,
-                center: ol.proj.fromLonLat([-68.133555,-16.495687])
-              })
-            });
-              
-            var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: 'Leyenda'});
-            $scope.map.addControl(layerSwitcher);
-
-            $scope.map.on('click', function (evt)
-            {
-                datos = {};
-                vectorSource.clear();
-                if(jsonURLS)
-                {
-                    var url_sit    =   jsonURLS.SIT_GEO;
-                    //console.log('INTERMEDIO EN MAPA-----',url_sit);
-                }
-                var url_r = 'http://sitservicios.lapaz.bo/geoserver/wms';
-                //console.log("URL PARA RIESGOS",url_r);
-
-                var viewResolution = view.getResolution();
-
-                var WMSsource_z = new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: url_r,
-                    params: {
-                              'FORMAT': 'image/png',
-                              'VERSION': '1.1.1',
-                              'LAYERS': 'sit:zonasgu2016',
-                              'TILED': true 
-                            }
-                });
-                var url_z = WMSsource_z.getGetFeatureInfoUrl(
-                                                          evt.coordinate, viewResolution, view.getProjection(),
-                                                          { 'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50  ,format_options: 'callback: getJson'}
-                );
-
-                var WMSsource_zt = new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: url_r,
-                    params: {
-                              'FORMAT': 'image/png',
-                              'VERSION': '1.1.1',
-                              'LAYERS': 'catastro:zonasvalor2015',
-                              'TILED': true 
-                            }
-                });
-                var url_zt = WMSsource_zt.getGetFeatureInfoUrl(
-                                                          evt.coordinate, viewResolution, view.getProjection(),
-                                                          { 'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50  ,format_options: 'callback: getJson'}
-                );
-
-                var WMSsource_v = new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: url_r,
-                    params: {
-                              'FORMAT': 'image/png',
-                              'VERSION': '1.1.1',
-                              'LAYERS': 'catastro:vias2',
-                              'TILED': true 
-                            }
-                });
-                var url_v = WMSsource_v.getGetFeatureInfoUrl(
-                                                          evt.coordinate, viewResolution, view.getProjection(),
-                                                          { 'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50  ,format_options: 'callback: getJson'}
-                );
-
-                var WMSsource_l = new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: url_r,
-                    params: {
-                              'FORMAT': 'image/png',
-                              'VERSION': '1.1.1',
-                              'LAYERS': 'catastro:lotes',
-                              'TILED': true 
-                            }
-                });
-                var url_l = WMSsource_l.getGetFeatureInfoUrl(
-                                                          evt.coordinate, viewResolution, view.getProjection(),
-                                                          { 'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50  ,format_options: 'callback: getJson'}
-                );
-
-                var coord = $scope.map.getCoordinateFromPixel(evt.pixel);
-                var centro = ol.proj.transform(coord,'EPSG:3857',epsg32719);
-                var wkt = '';
-                var centro_1 = ol.proj.transform(coord,'EPSG:3857',epsg4326);
-                var latitud = centro_1[1];
-                var longitud = centro_1[0];
-                wkt = "POINT("+centro[0]+" "+centro[1]+")";
-
-                datos.latitud = latitud;
-                datos.longitud = longitud;
-
-                $scope.registro.longitud = longitud;
-                $scope.registro.latitud = latitud;
-              
-                //var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';   
-                
-                console.log ("latitud: ",latitud);
-                console.log ("longitud: ",longitud);
-             
-                setTimeout(function()
-                {
-                    $.ajax({
-                              url: url_z,
-                              //data: parameters,
-                              type: 'GET',
-                              dataType: 'jsonp',
-                              jsonpCallback: 'getJson',
-                              success: function (data)
-                              {
-                                //console.log('OK.....', data);
-                                if(data.features.length == 1)
-                                {                         
-                                  var distrito = data.features[0].properties.distrito;
-                                  console.log('distrito:', distrito);
-
-                                  var cod_macrodistrito = data.features[0].properties.macro;
-                                  console.log('cod macro:', cod_macrodistrito);
-                              
-                                  var macrodistrito =  data.features[0].properties.macrodistrito;
-                                  console.log('macrodistrito:', macrodistrito);
-                                                      
-                                  var zona = data.features[0].properties.zona;
-                                  console.log('zona:', zona);
-
-                                  var codigo_zona = data.features[0].properties.codigozona;
-                                  console.log('cod zona sit:',codigo_zona);
-
-                                  datos.zona = zona;
-                                  datos.cod_zona_sit = codigo_zona;
-                                  datos.distrito = distrito;
-                                  datos.macrodistrito = macrodistrito;
-
-                                  var n_genesis = geo_id_genesis.length;
-                                  for (var i=0;i<n_genesis;i++)
-                                  {
-                                    if(geo_id_sit_servicio[i ]=== codigo_zona )
-                                    {
-                                      cod_zona_genesis = geo_id_genesis[i];
-                                      console.log("cod zona genesis: ",cod_zona_genesis);
-                                      datos.cod_zona_genesis = cod_zona_genesis;
-                                    }
-                                  }
-
-                                  setTimeout(function()
-                                  {
-                                    $.ajax({
-                                            type: "POST",
-                                            url:url_zt,
-                                            dataType: 'jsonp',
-                                            jsonpCallback: 'getJson',
-                                            success: function (data) 
-                                            {
-                                              var c = data.features.length;
-                                              //console.log(data.features);
-                                              if(c==1)
-                                              {
-                                                var cod_zona_t = data.features[0].properties.grupovalor;
-                                                cod_zona_t = cod_zona_t.replace("-","");
-                                                var cod_zona_tributaria = parseInt(cod_zona_t);
-                                                console.log("cod zona tributaria: ",cod_zona_tributaria);
-                                                datos.codigo_zona_tributaria = cod_zona_tributaria;
-                                                
-                                                setTimeout(function()
-                                                {
-                                                  $.ajax({
-                                                          type: "POST",
-                                                          url:url_v,
-                                                          dataType: 'jsonp',
-                                                          jsonpCallback: 'getJson',
-                                                          success: function (data) 
-                                                          {
-                                                            var c = data.features.length;
-                                                            //console.log(data.features);
-                                                            if(c==1)
-                                                            {
-                                                              var id_via = data.features[0].properties.idvias;
-                                                              console.log("id via: ",id_via);
-
-                                                              var nombre_via = data.features[0].properties.nombrevia;
-                                                              console.log("nombre via: ",nombre_via);
-
-                                                              var tipo_via = data.features[0].properties.tipovia;
-                                                              console.log("tipo via: ",tipo_via);
-
-                                                              datos.nombre_via = nombre_via;
-                                                              datos.tipo_via = tipo_via;
-                                                              
-                                                            }
-                                                            else
-                                                            {
-                                                              console.log("ningun resultado para vias");
-                                                            }
-                                                          }
-                                                        });
-                                                },250);
-                                              }
-                                              else
-                                              {
-                                                console.log("ningun resultado para zona tributaria");
-                                              }
-                                            }
-                                          });
-                                  },300);
-                                }
-                                else
-                                {
-                                  console.log("ningun resultado para zonas");
-                                }
-                              },
-                              error: function (data)
-                              { 
-                                console.log(data);
-                              }   
-                          });
-                },400);
-            
-                var feature = new ol.Feature(
-                      new ol.geom.Point(ol.proj.fromLonLat(centro_1))
-                );
-                    
-                feature.setStyle(iconStyle);
-                vectorSource.addFeature(feature);
-
-                console.log("JSON DATOS",datos);
-                return datos;
-            });
-            //////////////////////////////////////
-        },650);
-        */
+        },500);   
     };
 
     $scope.buscar_ubicacion_p = function()
@@ -3442,7 +2878,6 @@ $scope.vias_v2= function(zona,tipo)
         var nombre = nombre_j;
       }
       nombre = nombre.toUpperCase();
-      console.log(nombre);
       var ca = "CALLE ";
       ca = ca.concat(nombre);
       var c = 0;
@@ -3453,7 +2888,6 @@ $scope.vias_v2= function(zona,tipo)
       if(nombre==='')
       {
         var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
-        console.log("Vacio :",obj);
         //map.removeLayer(vectorLayerZonas);
         vectorLayerZonas.getSource().clear();
       }
@@ -3614,10 +3048,10 @@ $scope.vias_v2= function(zona,tipo)
 
     $scope.$on('api:ready',function(){
         $scope.getDatosRegistro();
-        $scope.estado_Civil();
+        //$scope.estado_Civil();
         $scope.getZonaMD();  
-        $scope.combopais(); 
-        $scope.combodepa();
+        //$scope.combopais(); 
+        //$scope.combodepa();
         $scope.getProfesion();
         $scope.MacroZona();
         if(typeof(google) != "undefined"){ 
@@ -3637,10 +3071,10 @@ $scope.vias_v2= function(zona,tipo)
 
     $scope.inicioEstadoCivil = function () {
         $scope.getDatosRegistro();
-        $scope.estado_Civil();
+        //$scope.estado_Civil();
         $scope.getZonaMD();
-        $scope.combopais();
-        $scope.combodepa();
+        //$scope.combopais();
+        //$scope.combodepa();
         $scope.getProfesion();
         $scope.habilitarForm();
         $scope.MacroZona();
@@ -3696,7 +3130,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDocci = nameArrayci[1];
                 var nombreci = nameArrayci[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocci == "png" || tipoDocci == "jpg" || tipoDocci == "jpeg" || tipoDocci == "bmp" || tipoDocci == "gif") {
+                    if (tipoDocci == "png" || tipoDocci == "jpg" || tipoDocci == "jpeg" || tipoDocci == "bmp" || tipoDocci == "gif" || tipoDocci == "PNG" || tipoDocci == "JPG" || tipoDocci == "JPEG" || tipoDocci == "BMP" || tipoDocci == "GIF") {
                         var filecompress = compressImage($scope.FILE_FOTOCOPIA_CI).then(function(respuestaci){
                             var imagenCia = respuestaci.name.split('.');
                             var tipoCia = imagenCia[1];
@@ -3708,7 +3142,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.btover=true;
                         });
                     } else{
-                        if (tipoDocci == 'pdf' ||  tipoDocci == 'docx' ||  tipoDocci == 'docxlm') {
+                        if (tipoDocci == 'pdf' ||  tipoDocci == 'docx' ||  tipoDocci == 'docxlm' || tipoDocci == 'PDF' ||  tipoDocci == 'DOCX' ||  tipoDocci == 'DOCXML') {
                             var zipci = new JSZip();
                             zipci.file($scope.FILE_FOTOCOPIA_CI.name, $scope.FILE_FOTOCOPIA_CI);
                             zipci.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobci) {
@@ -3733,12 +3167,11 @@ $scope.vias_v2= function(zona,tipo)
                 }  
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm') {
+                        if (tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm' || tipoDocci == 'PNG' || tipoDocci == 'JPG' || tipoDocci == 'JPEG' || tipoDocci == 'BMP' || tipoDocci == 'GIF' || tipoDocci == 'PDF' || tipoDocci == 'DOCX' || tipoDocci == 'DOCXML') {
                             nombreNuevoCIAnverso = 'CI_anverso_'+fechaNueva+'.'+tipoDocci;
                             fileUpload1.uploadFileToUrl1($scope.FILE_FOTOCOPIA_CI, uploadUrl,nombreNuevoCIAnverso);
                             $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
                             $scope.btover=true;
-                            //console.log(nombreNuevoCIAnverso,888);
                             document.getElementById('txt_FILE_FOTOCOPIA_CI').value = nombreNuevoCIAnverso;                         
                             $.unblockUI();
                         } else{
@@ -3773,7 +3206,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDoccir = nameArraycir[1];                
                 var nombrecir = nameArraycir[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDoccir == "png" || tipoDoccir == "jpg" || tipoDoccir == "jpeg" || tipoDoccir == "bmp" || tipoDoccir == "gif") {
+                    if (tipoDoccir == "png" || tipoDoccir == "jpg" || tipoDoccir == "jpeg" || tipoDoccir == "bmp" || tipoDoccir == "gif"  ||  tipoDoccir == "PNG" || tipoDoccir == "JPG" || tipoDoccir == "JPEG" || tipoDoccir == "BMP" || tipoDoccir == "GIF") {
                         var filecompress = compressImage($scope.FILE_FOTOCOPIA_CI_R).then(function(respuestacir){
                             var imagenCir = respuestacir.name.split('.');
                             var tipoCir = imagenCir[1];
@@ -3784,7 +3217,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.btover1=true;
                         });
                     } else{
-                        if (tipoDoccir == 'pdf' ||  tipoDoccir == 'docx' ||  tipoDoccir == 'docxlm') {
+                        if (tipoDoccir == 'pdf' ||  tipoDoccir == 'docx' ||  tipoDoccir == 'docxlm'  ||   tipoDoccir == 'PDF' ||  tipoDoccir == 'DOCX' ||  tipoDoccir == 'DOCXML') {
                             var zipcir = new JSZip();
                             zipcir.file($scope.FILE_FOTOCOPIA_CI_R.name, $scope.FILE_FOTOCOPIA_CI_R);
                             zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobcir) {
@@ -3808,7 +3241,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDoccir == 'png' || tipoDoccir == 'jpg' || tipoDoccir == 'jpeg' || tipoDoccir == 'bmp' || tipoDoccir == 'gif' || tipoDoccir == 'pdf' || tipoDoccir == 'docx' || tipoDoccir == 'docxlm') {
+                        if (tipoDoccir == 'png' || tipoDoccir == 'jpg' || tipoDoccir == 'jpeg' || tipoDoccir == 'bmp' || tipoDoccir == 'gif' || tipoDoccir == 'pdf' || tipoDoccir == 'docx' || tipoDoccir == 'docxlm'  ||  tipoDoccir == 'PNG' || tipoDoccir == 'JPG' || tipoDoccir == 'JPEG' || tipoDoccir == 'BMP' || tipoDoccir == 'GIF' || tipoDoccir == 'PDF' || tipoDoccir == 'DOCX' || tipoDoccir == 'DOCXML') {
                             nombreNuevoCIReverso = 'CI_reverso_'+fechaNueva+'.'+tipoDoccir;
                             fileUpload1.uploadFileToUrl1($scope.FILE_FOTOCOPIA_CI_R, uploadUrl,nombreNuevoCIReverso);
                             $scope.registro.FILE_FOTOCOPIA_CI_R = nombreNuevoCIReverso;
@@ -3841,7 +3274,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDocpl = nameArraypl[1];
                 var nombrepl = nameArraypl[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocpl == "png" || tipoDocpl == "jpg" || tipoDocpl == "jpeg" || tipoDocpl == "bmp" || tipoDocpl == "gif") {
+                    if (tipoDocpl == "png" || tipoDocpl == "jpg" || tipoDocpl == "jpeg" || tipoDocpl == "bmp" || tipoDocpl == "gif"  ||  tipoDocpl == "PNG" || tipoDocpl == "JPG" || tipoDocpl == "JPEG" || tipoDocpl == "BMP" || tipoDocpl == "GIF") {
                         var filecompress = compressImage($scope.FILE_PODER_LEGAL).then(function(respuestapl){
                             var imagenPoder = respuestapl.name.split('.');
                             var tipoPoder = imagenPoder[1];
@@ -3851,7 +3284,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_PODER_LEGAL = respuestapl;
                         });
                     } else{
-                        if (tipoDocpl == 'pdf' ||  tipoDocpl == 'docx' ||  tipoDocpl == 'docxlm') {
+                        if (tipoDocpl == 'pdf' ||  tipoDocpl == 'docx' ||  tipoDocpl == 'docxlm'  ||  tipoDocpl == 'PDF' ||  tipoDocpl == 'DOCX' ||  tipoDocpl == 'DOCXML') {
                             nombreNuevoPoderLegal = 'poder_'+fechaNueva+'.'+tipoDocpl;
                             fileUpload1.uploadFileToUrl1($scope.FILE_PODER_LEGAL, uploadUrl,nombreNuevoPoderLegal);
                             $scope.registro.FILE_PODER_LEGAL = nombreNuevoPoderLegal;
@@ -3877,7 +3310,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDocpl == 'png' || tipoDocpl == 'jpg' || tipoDocpl == 'jpeg' || tipoDocpl == 'bmp' || tipoDocpl == 'gif' || tipoDocpl == 'pdf' || tipoDocpl == 'docx' || tipoDocpl == 'docxlm') {
+                        if (tipoDocpl == 'png' || tipoDocpl == 'jpg' || tipoDocpl == 'jpeg' || tipoDocpl == 'bmp' || tipoDocpl == 'gif' || tipoDocpl == 'pdf' || tipoDocpl == 'docx' || tipoDocpl == 'docxlm'  ||  tipoDocpl == 'PNG' || tipoDocpl == 'JPG' || tipoDocpl == 'JPEG' || tipoDocpl == 'BMP' || tipoDocpl == 'GIF' || tipoDocpl == 'PDF' || tipoDocpl == 'DOCX' || tipoDocpl == 'DOCXML') {
                             nombreNuevoPoderLegal = 'poder_'+fechaNueva+'.'+tipoDocpl;
                             fileUpload1.uploadFileToUrl1($scope.FILE_PODER_LEGAL, uploadUrl,nombreNuevoPoderLegal);
                             $scope.registro.FILE_PODER_LEGAL = nombreNuevoPoderLegal;
@@ -3909,7 +3342,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDoctc = nameArraytc[1];
                 var nombretc = nameArraytc[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDoctc == "png" || tipoDoctc == "jpg" || tipoDoctc == "jpeg" || tipoDoctc == "bmp" || tipoDoctc == "gif") {
+                    if (tipoDoctc == "png" || tipoDoctc == "jpg" || tipoDoctc == "jpeg" || tipoDoctc == "bmp" || tipoDoctc == "gif"  || tipoDoctc == "PNG" || tipoDoctc == "JPG" || tipoDoctc == "JPEG" || tipoDoctc == "BMP" || tipoDoctc == "GIF") {
                         var filecompress = compressImage($scope.FILE_TEST_CONST).then(function(respuestatc){
                             var imagenTestimonio = respuestatc.name.split('.');
                             var tipoT = imagenTestimonio[1];
@@ -3919,7 +3352,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_TEST_CONST = respuestatc;
                         });
                     } else{
-                        if (tipoDoctc == 'pdf' ||  tipoDoctc == 'docx' ||  tipoDoctc == 'docxlm') {
+                        if (tipoDoctc == 'pdf' ||  tipoDoctc == 'docx' ||  tipoDoctc == 'docxlm'   ||   tipoDoctc == 'PDF' ||  tipoDoctc == 'DOCX' ||  tipoDoctc == 'DOCXML') {
                             var ziptc = new JSZip();
                             ziptc.file($scope.FILE_TEST_CONST.name, $scope.FILE_TEST_CONST);
                             ziptc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobtc) {
@@ -3942,7 +3375,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDoctc == 'png' || tipoDoctc == 'jpg' || tipoDoctc == 'jpeg' || tipoDoctc == 'bmp' || tipoDoctc == 'gif' || tipoDoctc == 'pdf' || tipoDoctc == 'docx' || tipoDoctc == 'docxlm') {
+                        if (tipoDoctc == 'png' || tipoDoctc == 'jpg' || tipoDoctc == 'jpeg' || tipoDoctc == 'bmp' || tipoDoctc == 'gif' || tipoDoctc == 'pdf' || tipoDoctc == 'docx' || tipoDoctc == 'docxlm'   ||   tipoDoctc == 'PNG' || tipoDoctc == 'JPG' || tipoDoctc == 'JPEG' || tipoDoctc == 'BMP' || tipoDoctc == 'GIF' || tipoDoctc == 'PDF' || tipoDoctc == 'DOCX' || tipoDoctc == 'DOCXML') {
                             nombreNuevoTestimonio = 'testimonio_'+fechaNueva+'.'+tipoDoctc;
                             fileUpload1.uploadFileToUrl1($scope.FILE_TEST_CONST, uploadUrl, nombreNuevoTestimonio);
                             $scope.registro.FILE_TEST_CONST = nombreNuevoTestimonio;
@@ -3974,7 +3407,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDocnu = nameArraynu[1];
                 var nombrenu = nameArraynu[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocnu == "png" || tipoDocnu == "jpg" || tipoDocnu == "jpeg" || tipoDocnu == "bmp" || tipoDocnu == "gif") {
+                    if (tipoDocnu == "png" || tipoDocnu == "jpg" || tipoDocnu == "jpeg" || tipoDocnu == "bmp" || tipoDocnu == "gif" || tipoDocnu == "PNG" || tipoDocnu == "JPG" || tipoDocnu == "JPEG" || tipoDocnu == "BMP" || tipoDocnu == "GIF") {
                         var filecompress = compressImage($scope.FILE_NUM_IDENT).then(function(respuestani){
                             var imagenNit = respuestani.name.split('.');
                             var tipoTest = imagenNit[1];
@@ -3984,7 +3417,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_NUM_IDENT = respuestani;
                         });
                     } else{
-                        if (tipoDocnu == 'pdf' ||  tipoDocnu == 'docx' ||  tipoDocnu == 'docxlm') {
+                        if (tipoDocnu == 'pdf' ||  tipoDocnu == 'docx' ||  tipoDocnu == 'docxlm'  || tipoDocnu == 'PDF' ||  tipoDocnu == 'DOCX' ||  tipoDocnu == 'DOCXML') {
                             nombreNuevoNit = 'nit_'+fechaNueva+'.'+tipoDocnu;
                             fileUpload1.uploadFileToUrl1($scope.FILE_NUM_IDENT, uploadUrl, nombreNuevoNit);
                             $scope.registro.FILE_NUM_IDENT = nombreNuevoNit;
@@ -4011,7 +3444,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDocnu == 'png' || tipoDocnu == 'jpg' || tipoDocnu == 'jpeg' || tipoDocnu == 'bmp' || tipoDocnu == 'gif' || tipoDocnu == 'pdf' || tipoDocnu == 'docx' || tipoDocnu == 'docxlm') {
+                        if (tipoDocnu == 'png' || tipoDocnu == 'jpg' || tipoDocnu == 'jpeg' || tipoDocnu == 'bmp' || tipoDocnu == 'gif' || tipoDocnu == 'pdf' || tipoDocnu == 'docx' || tipoDocnu == 'docxlm'  ||   tipoDocnu == 'PNG' || tipoDocnu == 'JPG' || tipoDocnu == 'JPEG' || tipoDocnu == 'BMP' || tipoDocnu == 'GIF' || tipoDocnu == 'PDF' || tipoDocnu == 'DOCX' || tipoDocnu == 'DOCXML') {
                             nombreNuevoNit = 'nit_'+fechaNueva+'.'+tipoDocnu;
                             fileUpload1.uploadFileToUrl1($scope.FILE_NUM_IDENT, uploadUrl, nombreNuevoNit);
                             $scope.registro.FILE_NUM_IDENT = nombreNuevoNit;
@@ -4043,7 +3476,7 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDocfe = nameArrayfe[1];
                 var nombrefe = nameArrayfe[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocfe == "png" || tipoDocfe == "jpg" || tipoDocfe == "jpeg" || tipoDocfe == "bmp" || tipoDocfe == "gif") {
+                    if (tipoDocfe == "png" || tipoDocfe == "jpg" || tipoDocfe == "jpeg" || tipoDocfe == "bmp" || tipoDocfe == "gif"  ||  tipoDocfe == "PNG" || tipoDocfe == "JPG" || tipoDocfe == "JPEG" || tipoDocfe == "BMP" || tipoDocfe == "GIF") {
                         var filecompress = compressImage($scope.FILE_FUND_EMP).then(function(respuestafe){
                             var imagenFun = respuestafe.name.split('.');
                             var tipoFun = imagenFun[1];
@@ -4053,7 +3486,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_FUND_EMP = respuestafe;
                         });
                     } else{
-                        if (tipoDocfe == 'pdf' ||  tipoDocfe == 'docx' ||  tipoDocfe == 'docxlm') {
+                        if (tipoDocfe == 'pdf' ||  tipoDocfe == 'docx' ||  tipoDocfe == 'docxlm'  || tipoDocfe == 'PDF' ||  tipoDocfe == 'DOCX' ||  tipoDocfe == 'DOCXLM') {
                             var zipfe = new JSZip();
                             zipfe.file($scope.FILE_FUND_EMP.name, $scope.FILE_FUND_EMP);
                             zipfe.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobfe) {
@@ -4076,7 +3509,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDocfe == 'png' || tipoDocfe == 'jpg' || tipoDocfe == 'jpeg' || tipoDocfe == 'bmp' || tipoDocfe == 'gif' || tipoDocfe == 'pdf' || tipoDocfe == 'docx' || tipoDocfe == 'docxlm') {
+                        if (tipoDocfe == 'png' || tipoDocfe == 'jpg' || tipoDocfe == 'jpeg' || tipoDocfe == 'bmp' || tipoDocfe == 'gif' || tipoDocfe == 'pdf' || tipoDocfe == 'docx' || tipoDocfe == 'docxlm' ||  tipoDocfe == 'PNG' || tipoDocfe == 'JPG' || tipoDocfe == 'JPEG' || tipoDocfe == 'BMP' || tipoDocfe == 'GIF' || tipoDocfe == 'PDF' || tipoDocfe == 'DOCX' || tipoDocfe == 'DOCXLM') {
                             nombreNuevoFundaempresa = 'fundempresa_'+fechaNueva+'.'+tipoDocfe;
                             fileUpload1.uploadFileToUrl1($scope.FILE_FUND_EMP, uploadUrl ,nombreNuevoFundaempresa);
                             $scope.registro.FILE_FUND_EMP = nombreNuevoFundaempresa;
@@ -4108,14 +3541,14 @@ $scope.vias_v2= function(zona,tipo)
                 tipoDocrc = nameArrayrc[1];
                 var nombrerc = nameArrayrc[0] + '.zip';
                 if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocrc == "png" || tipoDocrc == "jpg" || tipoDocrc == "jpeg" || tipoDocrc == "bmp" || tipoDocrc == "gif") {
+                    if (tipoDocrc == "png" || tipoDocrc == "jpg" || tipoDocrc == "jpeg" || tipoDocrc == "bmp" || tipoDocrc == "gif"  ||  tipoDocrc == "PNG" || tipoDocrc == "JPG" || tipoDocrc == "JPEG" || tipoDocrc == "BMP" || tipoDocrc == "GIF") {
                         var filecompress = compressImage($scope.FILE_REG_COMER).then(function(respuestarc){
                             fileUpload.uploadFileToUrl(respuestarc, uploadUrl);
                             $scope.registro.FILE_REG_COMER = respuestarc.name;
                             $scope.FILE_REG_COMER = respuestarc;
                         });
                     } else{
-                        if (tipoDocrc == 'pdf' ||  tipoDocrc == 'docx' ||  tipoDocrc == 'docxlm') {
+                        if (tipoDocrc == 'pdf' ||  tipoDocrc == 'docx' ||  tipoDocrc == 'docxlm' ||  tipoDocrc == 'PDF' ||  tipoDocrc == 'DOCX' ||  tipoDocrc == 'DOCXLM') {
                             var ziprc = new JSZip();
                             ziprc.file($scope.FILE_REG_COMER.name, $scope.FILE_REG_COMER);
                             ziprc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobrc) {
@@ -4138,7 +3571,7 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= 500000) {
-                        if (tipoDocrc == 'png' || tipoDocrc == 'jpg' || tipoDocrc == 'jpeg' || tipoDocrc == 'bmp' || tipoDocrc == 'gif' || tipoDocrc == 'pdf' || tipoDocrc == 'docx' || tipoDocrc == 'docxlm') {
+                        if (tipoDocrc == 'png' || tipoDocrc == 'jpg' || tipoDocrc == 'jpeg' || tipoDocrc == 'bmp' || tipoDocrc == 'gif' || tipoDocrc == 'pdf' || tipoDocrc == 'docx' || tipoDocrc == 'docxlm' || tipoDocrc == 'PNG' || tipoDocrc == 'JPG' || tipoDocrc == 'JPEG' || tipoDocrc == 'BMP' || tipoDocrc == 'GIF' || tipoDocrc == 'PDF' || tipoDocrc == 'DOCX' || tipoDocrc == 'DOCXLM') {
                             fileUpload.uploadFileToUrl($scope.FILE_REG_COMER, uploadUrl);
                             $scope.registro.FILE_REG_COMER = $scope.FILE_REG_COMER.name;
                             $.unblockUI();

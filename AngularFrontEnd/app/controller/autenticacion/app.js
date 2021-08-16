@@ -64,22 +64,28 @@ app.service('registroLog', function(CONFIG){
     this.almacenarLog = function(sIdUsuario, sIdCiudadano, sIdFormulario, sEvento){
         var fecha= new Date();
         var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-        var sreg = new reglasnegocio();
-        sreg.identificador = 'RCCIUDADANO_171';
-        sreg.parametros = {
-            'lgs_usr_id' : sIdUsuario,
-            'lgs_dtspsl_id': sIdCiudadano,
-            'lgs_frm_id': sIdFormulario,
-            'lgs_evento' : sEvento,
-            'lgs_registrado' : fechactual,
-            'lgs_modificado' : fechactual
+        var datos = {
+            "logs_usr_id": sIdUsuario,
+            "logs_dtspsl_id": sIdCiudadano,
+            "logs_frm_id": sIdFormulario,
+            "logs_evento": sEvento,
+            "logs_registrado": fechactual,
+            "logs_modificado": fechactual
         };
-        sreg.parametros = '{"lgs_usr_id":"' + sIdUsuario + '","lgs_dtspsl_id":"'+sIdCiudadano+'","lgs_frm_id":"'+sIdFormulario+'","lgs_evento":"' + sEvento + '","lgs_registrado":"' + fechactual + '","lgs_modificado":"'+fechactual+'"}';
-        sreg.llamarregla(function(results){
-            if(results.length > 0){
-                console.log("Se almaceno al historico",results);
-            }else{
-                console.log("Error al almacenar historico");
+        $.ajax({
+            data: datos,
+             url:CONFIG.CONEXION_API_PG_RC+'wsRCPG/addLogs',
+            type: 'POST',
+            success: function (response) {
+                var datos = JSON.stringify(response);
+                var resp = JSON.parse(datos).success[0]._log_sp_adicionar;
+                if(resp == true){
+                    console.log("Se almaceno al historico",resp);
+                }else{
+                    console.log("Error al almacenar historico");
+                }
+              
+
             }
         });
      }
@@ -270,7 +276,7 @@ app.factory("fileUploadcorr", ['$http','$location', function($http,$location){
 
 app.controller('NavCtrl',['$scope', '$http','$rootScope','sessionService','CONFIG', function ($scope, $http, $rootScope, sessionService,CONFIG) {
     "use strict";
-    $scope.generarMenu = function(){
+    /*$scope.generarMenu = function(){
         var smenu = new reglasnegocio();
         smenu.identificador = 'RCCIUDADANO_170';
         smenu.parametros = '{"idmenu":"4"}';
@@ -316,7 +322,7 @@ app.controller('NavCtrl',['$scope', '$http','$rootScope','sessionService','CONFI
                     $scope.msg = "Error en usurio y/o contraseña";
                 }
         });
-    }
+    }*/
     $scope.validarRenderizacion =   function(){
         document.getElementById('dvContenido').style.display = 'block';
         document.getElementById('menuIzqui').style.display = 'block';

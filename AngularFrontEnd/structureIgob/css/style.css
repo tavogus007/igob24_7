@@ -1667,7 +1667,11 @@ Fab Municipality
   background: #00000099;
   border-radius: 5px;
 }
-
+/* *******************MODAL CUSTOM BOOTSTRAP************************** */
+.header-modalCustom {
+  background: #f0583e;
+}
+/* *******************END MODAL CUSTOM BOOTSTRAP************************** */
 .btn-modalCustom {
   font-size: 12px;
   font-weight: 500;

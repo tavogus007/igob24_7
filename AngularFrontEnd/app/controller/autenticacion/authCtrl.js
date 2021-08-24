@@ -179,7 +179,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             type: "POST",
             url : urlTokenM,
             data: CONFIG.CREDENCIAL_MOTORESMASCOTAS,
-            async: false,
+            async: true,
             success: function(response) {
                 dataRespM = JSON.stringify(response);
                 sessionStorage.setItem('TOKEN_MOTORM', response.token);

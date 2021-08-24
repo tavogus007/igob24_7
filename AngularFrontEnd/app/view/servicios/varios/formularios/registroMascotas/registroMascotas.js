@@ -1499,19 +1499,25 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 }
 
   $scope.inicioServicios = function () {
-    $scope.recuperandoDatosInicialesCiudadano();
-    id = 1;
-    $scope.datosMascota('1');
-    //$scope.tipoR = 'CIUDADANO';
-    var sci = sessionService.get('CICIUDADANO');
-      $scope.listarMascotasXci(sci);
-   
-    $scope.perNatural = sessionService.get('TIPO_PERSONA');
-    $scope.ci = sessionService.get('CICIUDADANO');
-    $scope.nombre = sessionService.get('US_NOMBRE');
-    $scope.paterno = sessionService.get('US_PATERNO');
-    $scope.materno = sessionService.get('US_MATERNO');
-    $scope.exp = sessionService.get('CIEXPEDIDO');
-    $scope.obtenerDatosServicio();
+    var sTokenMascotas = sessionService.get('TOKEN_MOTORM');    
+    sTokenMascotas = ((typeof(sTokenMascotas) == 'undefined' || sTokenMascotas == null) ? '' : sTokenMascotas);
+    if(sTokenMascotas != ''){      
+      $scope.recuperandoDatosInicialesCiudadano();
+      id = 1;
+      $scope.datosMascota('1');      
+      var sci = sessionService.get('CICIUDADANO');
+      $scope.listarMascotasXci(sci);   
+      $scope.perNatural = sessionService.get('TIPO_PERSONA');
+      $scope.ci = sessionService.get('CICIUDADANO');
+      $scope.nombre = sessionService.get('US_NOMBRE');
+      $scope.paterno = sessionService.get('US_PATERNO');
+      $scope.materno = sessionService.get('US_MATERNO');
+      $scope.exp = sessionService.get('CIEXPEDIDO');
+      $scope.obtenerDatosServicio();
+    }else{    
+      alert("Estimado usuario. por el momento no podemos procesar su solicitud (Registro de Mascotas). Intentelo mas tarde porfavor.");
+      $location.path('dashboard');
+    }
   };
+
 }

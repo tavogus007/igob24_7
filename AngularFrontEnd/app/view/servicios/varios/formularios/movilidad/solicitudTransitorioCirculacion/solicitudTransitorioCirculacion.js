@@ -3,7 +3,7 @@ function solicitudDeleveryController($scope, $rootScope, $routeParams, $location
     $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
     $scope.oidCiu = sessionService.get('IDSOLICITANTE');
     $scope.tiposTramite = [
-        { detalle: 'Solicitud de registro Permiso de Circulación', id:'34',tipo:$scope.tipo_persona}
+        { detalle: 'Solicitud de registro Permiso de Circulación', id:'74',tipo:$scope.tipo_persona}
     ];
     $scope.datos = {};
     $scope.tablaTramites        =   {};
@@ -13,8 +13,8 @@ function solicitudDeleveryController($scope, $rootScope, $routeParams, $location
       { name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/permisoTransitorioCirculacion/permisoTransitorioCirculacion.html'}
     ];
   
-    //$scope.deleveryID = 74;
-    $scope.deleveryID = 34;
+    $scope.deleveryID = 74;
+    //$scope.deleveryID = 34;
     $scope.inicio = function(){
       $scope.tramitesCiudadano();
       $scope.cargarDatosCiudadano();

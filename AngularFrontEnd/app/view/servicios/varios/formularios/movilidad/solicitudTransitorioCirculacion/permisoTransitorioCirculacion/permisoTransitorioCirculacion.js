@@ -29,13 +29,14 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.singular_Titulo = 'Adjunte los siguientes documentos (En formato PDF, DOC, PNG, JPEG, JPG)';
     $scope.plural_Titulo = 'Adjunte los siguientes documentos para cada requisito en un solo archivo (En formato PDF o DOC)';
 
-    $scope.singular_Nota = 'Nota dirigida al Ing. Rodrigo Mollo';
+    $scope.singular_Nota = 'Nota dirigida al Ing. Rodrigo Mollo, Secretario Municipal de Movilidad, explicando las razones de la solicitud y adjuntando respaldos que justifiquen la misma';
+
     $scope.singular_CerPropiedad = 'Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03';
     $scope.singular_CeId = 'Fotocopia de Cédula de Identidad vigente del solicitante o Representante Legal';
     $scope.singular_Licencia = 'Fotocopia de Licencia de Funcionamiento Municipal';
     $scope.singular_Certi = 'Certificación del Departamento de Control de Empresas Privadas de Vigilancia de la Policía Boliviana';
 
-    $scope.plural_Nota = 'Nota dirigida al Ing. Rodrigo Mollo';
+    $scope.plural_Nota = 'Nota dirigida al Ing. Rodrigo Mollo, Secretario Municipal de Movilidad, explicando las razones de la solicitud y adjuntando respaldos que justifiquen la misma';
     $scope.plural_CerPropiedad = 'Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03 DE TODOS VEHÍCULOS';
     $scope.plural_CeId = 'Fotocopia de Cédula de Identidad vigente del solicitante o Representante Legal';
     $scope.plural_Licencia = 'Fotocopia de Licencia de Funcionamiento Municipal';

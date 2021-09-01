@@ -3131,6 +3131,8 @@ $scope.vias_v2= function(zona,tipo)
         
     //Documentos Adjuntos
     $scope.cambiarFile = function(obj, valor){
+        var svalor  =   ((typeof(valor) == 'undefined' || valor == null) ? '' : valor);
+        if(svalor != ''){        
         var stam_min = 5242880;//Bytes
         var stam_max = 15728640;//Bytes
         var fechaNueva = "";
@@ -3278,7 +3280,7 @@ $scope.vias_v2= function(zona,tipo)
                             $.unblockUI();
                         };
                     };
-                    if (tamaniofile.size > 15000000) {
+                    if (tamaniofile.size > stam_max) {
                         swal('Advertencia', 'El tamaño de la imagen CEDULA DE IDENTIDAD es muy grande', 'error');
                         document.getElementById('txt_FILE_FOTOCOPIA_CI_R').value = '';
                         document.getElementById('FILE_FOTOCOPIA_CI_R').value = '';
@@ -3336,7 +3338,7 @@ $scope.vias_v2= function(zona,tipo)
                             $.unblockUI();
                         };
                     };
-                    if (tamaniofile.size > 15000000) {
+                    if (tamaniofile.size > stam_max) {
                         swal('Advertencia', 'El tamaño del archivo PODER DEL REPRESENTANTE LEGAL es muy grande', 'error');
                         document.getElementById('txt_FILE_PODER_LEGAL').value = '';
                         document.getElementById('FILE_PODER_LEGAL').value = '';
@@ -3348,12 +3350,10 @@ $scope.vias_v2= function(zona,tipo)
                 }
             }
             if(nombre == 'FILE_TEST_CONST' && (typeof(obj.files[0]) != 'undefined')){
-                var tipoDoctc = obj.files[0].name;
-                var nameArraytc = tipoDoctc.split('.');
-                tipoDoctc = nameArraytc[1];
-                var nombretc = nameArraytc[0] + '.zip';
+                var s_formatodoc_tes = obj.files[0].type;
+	            s_formatodoc_tes = s_formatodoc_tes.split('/')[1];
                 if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
-                    if (tipoDoctc == "png" || tipoDoctc == "jpg" || tipoDoctc == "jpeg" || tipoDoctc == "bmp" || tipoDoctc == "gif"  || tipoDoctc == "PNG" || tipoDoctc == "JPG" || tipoDoctc == "JPEG" || tipoDoctc == "BMP" || tipoDoctc == "GIF") {
+                    if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
                         var filecompress = compressImage($scope.FILE_TEST_CONST).then(function(respuestatc){
                             var imagenTestimonio = respuestatc.name.split('.');
                             var tipoT = imagenTestimonio[1];
@@ -3363,7 +3363,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_TEST_CONST = respuestatc;
                         });
                     } else{
-                        if (tipoDoctc == 'pdf' ||  tipoDoctc == 'docx' ||  tipoDoctc == 'docxlm'   ||   tipoDoctc == 'PDF' ||  tipoDoctc == 'DOCX' ||  tipoDoctc == 'DOCXML') {
+                        if (validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
                             var ziptc = new JSZip();
                             ziptc.file($scope.FILE_TEST_CONST.name, $scope.FILE_TEST_CONST);
                             ziptc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobtc) {
@@ -3386,8 +3386,8 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= stam_min) {
-                        if (tipoDoctc == 'png' || tipoDoctc == 'jpg' || tipoDoctc == 'jpeg' || tipoDoctc == 'bmp' || tipoDoctc == 'gif' || tipoDoctc == 'pdf' || tipoDoctc == 'docx' || tipoDoctc == 'docxlm'   ||   tipoDoctc == 'PNG' || tipoDoctc == 'JPG' || tipoDoctc == 'JPEG' || tipoDoctc == 'BMP' || tipoDoctc == 'GIF' || tipoDoctc == 'PDF' || tipoDoctc == 'DOCX' || tipoDoctc == 'DOCXML') {
-                            nombreNuevoTestimonio = 'testimonio_'+fechaNueva+'.'+tipoDoctc;
+                        if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoTestimonio = 'testimonio_'+fechaNueva+'.'+s_formatodoc_tes;
                             fileUpload1.uploadFileToUrl1($scope.FILE_TEST_CONST, uploadUrl, nombreNuevoTestimonio);
                             $scope.registro.FILE_TEST_CONST = nombreNuevoTestimonio;
                             $.unblockUI();
@@ -3412,13 +3412,11 @@ $scope.vias_v2= function(zona,tipo)
                     }
                 }
             }
-            if(nombre == 'FILE_NUM_IDENT' && (typeof(obj.files[0]) != 'undefined')){
-                var tipoDocnu = obj.files[0].name;
-                var nameArraynu = tipoDocnu.split('.');
-                tipoDocnu = nameArraynu[1];
-                var nombrenu = nameArraynu[0] + '.zip';
+            if(nombre == 'FILE_NUM_IDENT' && (typeof(obj.files[0]) != 'undefined')){                
+                var s_formatodoc_nu = obj.files[0].type;
+                s_formatodoc_nu = s_formatodoc_nu.split('/')[1];                
                 if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
-                    if (tipoDocnu == "png" || tipoDocnu == "jpg" || tipoDocnu == "jpeg" || tipoDocnu == "bmp" || tipoDocnu == "gif" || tipoDocnu == "PNG" || tipoDocnu == "JPG" || tipoDocnu == "JPEG" || tipoDocnu == "BMP" || tipoDocnu == "GIF") {
+                    if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
                         var filecompress = compressImage($scope.FILE_NUM_IDENT).then(function(respuestani){
                             var imagenNit = respuestani.name.split('.');
                             var tipoTest = imagenNit[1];
@@ -3428,8 +3426,8 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_NUM_IDENT = respuestani;
                         });
                     } else{
-                        if (tipoDocnu == 'pdf' ||  tipoDocnu == 'docx' ||  tipoDocnu == 'docxlm'  || tipoDocnu == 'PDF' ||  tipoDocnu == 'DOCX' ||  tipoDocnu == 'DOCXML') {
-                            nombreNuevoNit = 'nit_'+fechaNueva+'.'+tipoDocnu;
+                        if (validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoNit = 'nit_'+fechaNueva+'.'+s_formatodoc_nu;
                             fileUpload1.uploadFileToUrl1($scope.FILE_NUM_IDENT, uploadUrl, nombreNuevoNit);
                             $scope.registro.FILE_NUM_IDENT = nombreNuevoNit;
                             $.unblockUI();
@@ -3455,8 +3453,8 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= stam_min) {
-                        if (tipoDocnu == 'png' || tipoDocnu == 'jpg' || tipoDocnu == 'jpeg' || tipoDocnu == 'bmp' || tipoDocnu == 'gif' || tipoDocnu == 'pdf' || tipoDocnu == 'docx' || tipoDocnu == 'docxlm'  ||   tipoDocnu == 'PNG' || tipoDocnu == 'JPG' || tipoDocnu == 'JPEG' || tipoDocnu == 'BMP' || tipoDocnu == 'GIF' || tipoDocnu == 'PDF' || tipoDocnu == 'DOCX' || tipoDocnu == 'DOCXML') {
-                            nombreNuevoNit = 'nit_'+fechaNueva+'.'+tipoDocnu;
+                        if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoNit = 'nit_'+fechaNueva+'.'+s_formatodoc_nu;
                             fileUpload1.uploadFileToUrl1($scope.FILE_NUM_IDENT, uploadUrl, nombreNuevoNit);
                             $scope.registro.FILE_NUM_IDENT = nombreNuevoNit;
                             $.unblockUI();
@@ -3482,12 +3480,10 @@ $scope.vias_v2= function(zona,tipo)
                 }
             }
             if(nombre == 'FILE_FUND_EMP' && (typeof(obj.files[0]) != 'undefined')){
-                var tipoDocfe = obj.files[0].name;
-                var nameArrayfe = tipoDocfe.split('.');
-                tipoDocfe = nameArrayfe[1];
-                var nombrefe = nameArrayfe[0] + '.zip';
+                var s_formatodocfe = obj.files[0].type;
+                s_formatodocfe = s_formatodocfe.split('/')[1];
                 if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
-                    if (tipoDocfe == "png" || tipoDocfe == "jpg" || tipoDocfe == "jpeg" || tipoDocfe == "bmp" || tipoDocfe == "gif"  ||  tipoDocfe == "PNG" || tipoDocfe == "JPG" || tipoDocfe == "JPEG" || tipoDocfe == "BMP" || tipoDocfe == "GIF") {
+                    if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
                         var filecompress = compressImage($scope.FILE_FUND_EMP).then(function(respuestafe){
                             var imagenFun = respuestafe.name.split('.');
                             var tipoFun = imagenFun[1];
@@ -3497,7 +3493,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_FUND_EMP = respuestafe;
                         });
                     } else{
-                        if (tipoDocfe == 'pdf' ||  tipoDocfe == 'docx' ||  tipoDocfe == 'docxlm'  || tipoDocfe == 'PDF' ||  tipoDocfe == 'DOCX' ||  tipoDocfe == 'DOCXLM') {
+                        if (validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
                             var zipfe = new JSZip();
                             zipfe.file($scope.FILE_FUND_EMP.name, $scope.FILE_FUND_EMP);
                             zipfe.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobfe) {
@@ -3520,8 +3516,8 @@ $scope.vias_v2= function(zona,tipo)
                 }
                 else{
                     if (tamaniofile.size <= stam_min) {
-                        if (tipoDocfe == 'png' || tipoDocfe == 'jpg' || tipoDocfe == 'jpeg' || tipoDocfe == 'bmp' || tipoDocfe == 'gif' || tipoDocfe == 'pdf' || tipoDocfe == 'docx' || tipoDocfe == 'docxlm' ||  tipoDocfe == 'PNG' || tipoDocfe == 'JPG' || tipoDocfe == 'JPEG' || tipoDocfe == 'BMP' || tipoDocfe == 'GIF' || tipoDocfe == 'PDF' || tipoDocfe == 'DOCX' || tipoDocfe == 'DOCXLM') {
-                            nombreNuevoFundaempresa = 'fundempresa_'+fechaNueva+'.'+tipoDocfe;
+                        if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoFundaempresa = 'fundempresa_'+fechaNueva+'.'+s_formatodocfe;
                             fileUpload1.uploadFileToUrl1($scope.FILE_FUND_EMP, uploadUrl ,nombreNuevoFundaempresa);
                             $scope.registro.FILE_FUND_EMP = nombreNuevoFundaempresa;
                             $.unblockUI();
@@ -3547,23 +3543,21 @@ $scope.vias_v2= function(zona,tipo)
                 }
             }
             if(nombre == 'FILE_REG_COMER' && (typeof(obj.files[0]) != 'undefined')){
-                var tipoDocrc = obj.files[0].name;
-                var nameArrayrc = tipoDocrc.split('.');
-                tipoDocrc = nameArrayrc[1];
-                var nombrerc = nameArrayrc[0] + '.zip';
-                if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocrc == "png" || tipoDocrc == "jpg" || tipoDocrc == "jpeg" || tipoDocrc == "bmp" || tipoDocrc == "gif"  ||  tipoDocrc == "PNG" || tipoDocrc == "JPG" || tipoDocrc == "JPEG" || tipoDocrc == "BMP" || tipoDocrc == "GIF") {
+                var s_formatodocrc = obj.files[0].type;
+                s_formatodocrc = s_formatodocrc.split('/')[1];                
+                if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
+                    if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
                         var filecompress = compressImage($scope.FILE_REG_COMER).then(function(respuestarc){
                             fileUpload.uploadFileToUrl(respuestarc, uploadUrl);
                             $scope.registro.FILE_REG_COMER = respuestarc.name;
                             $scope.FILE_REG_COMER = respuestarc;
                         });
                     } else{
-                        if (tipoDocrc == 'pdf' ||  tipoDocrc == 'docx' ||  tipoDocrc == 'docxlm' ||  tipoDocrc == 'PDF' ||  tipoDocrc == 'DOCX' ||  tipoDocrc == 'DOCXLM') {
+                        if (validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
                             var ziprc = new JSZip();
                             ziprc.file($scope.FILE_REG_COMER.name, $scope.FILE_REG_COMER);
                             ziprc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobrc) {
-                                blobrc.name = nombrerc;
+                                blobrc.name = 'fund_registro_comercio_'+fechaNueva+'.zip';
                                 fileUpload.uploadFileToUrl(blobrc, uploadUrl);
                                 $scope.registro.FILE_REG_COMER = blobrc.name;
                                 $scope.FILE_REG_COMER = blobrc;                            
@@ -3581,8 +3575,8 @@ $scope.vias_v2= function(zona,tipo)
                     }; 
                 }
                 else{
-                    if (tamaniofile.size <= 500000) {
-                        if (tipoDocrc == 'png' || tipoDocrc == 'jpg' || tipoDocrc == 'jpeg' || tipoDocrc == 'bmp' || tipoDocrc == 'gif' || tipoDocrc == 'pdf' || tipoDocrc == 'docx' || tipoDocrc == 'docxlm' || tipoDocrc == 'PNG' || tipoDocrc == 'JPG' || tipoDocrc == 'JPEG' || tipoDocrc == 'BMP' || tipoDocrc == 'GIF' || tipoDocrc == 'PDF' || tipoDocrc == 'DOCX' || tipoDocrc == 'DOCXLM') {
+                    if (tamaniofile.size <= stam_min) {
+                        if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
                             fileUpload.uploadFileToUrl($scope.FILE_REG_COMER, uploadUrl);
                             $scope.registro.FILE_REG_COMER = $scope.FILE_REG_COMER.name;
                             $.unblockUI();
@@ -3596,7 +3590,7 @@ $scope.vias_v2= function(zona,tipo)
                             $.unblockUI();
                         };
                     };
-                    if (tamaniofile.size > 15000000) {
+                    if (tamaniofile.size > stam_max) {
                         swal('Advertencia', 'El tamaño del archivo REGISTRO COMERCIAL es muy grande', 'error');
                         document.getElementById('FILE_REG_COMER').value = '';
                         document.getElementById('txt_FILE_REG_COMER').value = '';                        
@@ -3609,6 +3603,7 @@ $scope.vias_v2= function(zona,tipo)
             }
         $.unblockUI();
         },1000);
+        }
     };
     ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
     try{ 

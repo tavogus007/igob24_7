@@ -19,7 +19,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.des_servicio_cinco = false;
     $scope.div_motivo = false;
     $scope.tipoactividad = {};
-    $scope.tipoactividad = JSON.parse('[{"nombre":"EPSAS","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"DELAPAZ","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"LA PAZ LIMPIA","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"YPFB","cantidad":2, "lf": 0, "cer":1, "req_nom":1},{"nombre":"Empresas de telecomunicaciones","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Medios de comunicación","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Instituciones Públicas","cantidad":3, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Instituciones Privadas","cantidad":1, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Entidades Bancarias","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Funerarias","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Hoteles","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Empresas de turismo","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Lineas aéreas","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Empresas de seguridad privada","cantidad":1, "lf": 0, "cer":0, "req_nom":0},{"nombre":"Embajadas","cantidad":1, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Empresas de radio taxis","cantidad":7, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Sindicato de taxis(Constituidos como operadores)","cantidad":7, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Sindicato COTRANSTUR","cantidad":20, "lf": 1, "cer":1, "req_nom":1},{"nombre":"Persona Natural","cantidad":1, "lf": 1, "cer":1, "req_nom":1}]');
+    $scope.tipoactividad = JSON.parse('[{"nombre":"EPSAS","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"DELAPAZ","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"LA PAZ LIMPIA","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"YPFB","cantidad":2, "lf": 0, "cer":1, "req_nom":1},{"nombre":"Empresas de telecomunicaciones","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Medios de comunicación","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Instituciones Públicas","cantidad":3, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Instituciones Privadas","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Entidades Bancarias","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Funerarias","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Hoteles","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Empresas de turismo","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Lineas aéreas","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Empresas de seguridad privada","cantidad":1, "lf": 0, "cer":0, "req_nom":0},{"nombre":"Embajadas","cantidad":1, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Empresas de radio taxis","cantidad":7, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Sindicato de taxis(Constituidos como operadores)","cantidad":7, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Sindicato COTRANSTUR","cantidad":20, "lf": 1, "cer":1, "req_nom":1},{"nombre":"Persona Natural","cantidad":1, "lf": 1, "cer":1, "req_nom":1}]');
     $scope.tipovehiculo_privado = {};
     $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"AUTOMOVIL"}]');
     $scope.div_escoger_servicio = false;
@@ -38,7 +38,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
 
     $scope.plural_Nota = 'Nota dirigida al Ing. Rodrigo Mollo, Secretario Municipal de Movilidad, explicando las razones de la solicitud y adjuntando respaldos que justifiquen la misma';
     $scope.plural_CerPropiedad = 'Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03 DE TODOS VEHÍCULOS';
-    $scope.plural_CeId = 'Fotocopia de Cédula de Identidad vigente del solicitante o Representante Legal';
+    $scope.plural_CeId = 'Fotocopia de Cédula de Identidad vigente del Solicitante y del/los conductores.';
     $scope.plural_Licencia = 'Fotocopia de Licencia de Funcionamiento Municipal';
     $scope.plural_Certi = 'Certificación del Departamento de Control de Empresas Privadas de Vigilancia de la Policía Boliviana';
     /*
@@ -712,9 +712,11 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             }
         }
         if($scope.lf == 0){
-          if ($scope.datos.FILE_Licencia == undefined || $scope.datos.FILE_Licencia == 'undefined') {
-              swal('', "Adjunte la Fotocopia de Licencia de Funcionamiento Municipal", 'warning');
-              $scope.validadordocs = 1;
+          if($scope.datos.PER_TRA_REG_TRANS != 'Instituciones Privadas'){
+            if ($scope.datos.FILE_Licencia == undefined || $scope.datos.FILE_Licencia == 'undefined') {
+                swal('', "Adjunte la Fotocopia de Licencia de Funcionamiento Municipal", 'warning');
+                $scope.validadordocs = 1;
+            }
           }
         }
         if($scope.cer == 0){

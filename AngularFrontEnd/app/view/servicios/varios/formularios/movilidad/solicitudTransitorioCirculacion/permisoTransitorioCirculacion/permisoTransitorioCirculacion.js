@@ -21,7 +21,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.tipoactividad = {};
     $scope.tipoactividad = JSON.parse('[{"nombre":"EPSAS","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"DELAPAZ","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"LA PAZ LIMPIA","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"YPFB","cantidad":2, "lf": 0, "cer":1, "req_nom":1},{"nombre":"Empresas de telecomunicaciones","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Medios de comunicación","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Instituciones Públicas","cantidad":3, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Instituciones Privadas","cantidad":1, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Entidades Bancarias","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Funerarias","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Hoteles","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Empresas de turismo","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Lineas aéreas","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Empresas de seguridad privada","cantidad":1, "lf": 0, "cer":0, "req_nom":0},{"nombre":"Embajadas","cantidad":1, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Empresas de radio taxis","cantidad":7, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Sindicato de taxis(Constituidos como operadores)","cantidad":7, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Sindicato COTRANSTUR","cantidad":20, "lf": 1, "cer":1, "req_nom":1},{"nombre":"Persona Natural","cantidad":1, "lf": 1, "cer":1, "req_nom":1}]');
     $scope.tipovehiculo_privado = {};
-    $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"AUTOMOVIL"},{"nombre":"MOTOCICLETA"}]');
+    $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"AUTOMOVIL"}]');
     $scope.div_escoger_servicio = false;
 
 
@@ -132,7 +132,6 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                 }
             });
         } catch (e) {
-            console.log("Error..", e);
             $.unblockUI();
         }
     }
@@ -681,7 +680,6 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     });
 
     $scope.verificacionFinalDeCamposFinal = function (data) {
-        console.log("eeeeeee",$scope.trmAutos.length);
         $scope.validadordocs = 0;
         if ($scope.datos.PER_TRA_REG_TRANS == undefined || $scope.datos.PER_TRA_REG_TRANS == 'undefined') {
             swal('', "Ingrese el tipo de solicitud", 'warning');
@@ -809,7 +807,6 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         $('#msgformularioN').html($scope.msgformularioN);
     }
     $scope.adicionarVehiculos = function (data) {
-        console.log(data);
          if (data == undefined) {
             swal('', 'Agrege la informacion para adjuntar los vehículos', 'warning');
         } else if (data.tipo_vehiculo == '' || data.tipo_vehiculo == undefined) {
@@ -834,7 +831,6 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                 $scope.swcantidadmov = false;
             }
             $scope.datos.PER_TRA_CANT_VEHI_SOL = $scope.trmAutos.length;
-            console.log("3333333",$scope.trmAutos.length);
             $scope.trmAutos.push(data);
             $scope.tblAutos.reload();
             $scope.datosV = {};
@@ -887,10 +883,15 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         }else{
           $scope.CERT_SEG_PRIV = false;
         }
+
+        if($scope.datos.PER_TRA_REG_TRANS == 'Embajadas'){
+          $("#placa").attr('maxlength','20');
+        }else{
+          $("#placa").attr('maxlength','7');
+        }
     }
 
     $scope.ocultadorRadios = function (data) {
-        console.log("dddddd",data.PER_TRA_REG_TRANS);
         if (data.PER_TRA_REG_TRANS == 'SALUD') {
             $scope.des_servicio_uno = false;
             $scope.des_servicio_dos = true;
@@ -931,20 +932,27 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
 
     $scope.validaPlaca = function (campo) {
         $scope.validadorPlaca = 0;
-        campo = campo.toUpperCase();
-        emailRegex = /^[0-9]{3,4}[A-Z]{3}$/;
-        if (emailRegex.test(campo)) {
-            valPlaca = 0;
-            $scope.validadorPlaca = 1;
-            $("#valida1").show();
-            $("#valida").hide();
-        } else {
-            $scope.validadorPlaca = 2;
-            $("#valida1").hide();
-            $("#valida").show();
-            valPlaca = 1;
-            $scope.desabilitaVeh = true;
-        };
+        if($scope.datos.PER_TRA_REG_TRANS == 'Embajadas'){
+          valPlaca = 0;
+          $scope.validadorPlaca = 1;
+          $("#valida1").hide();
+          $("#valida").hide();
+        }else{
+          campo = campo.toUpperCase();
+          emailRegex = /^[0-9]{3,4}[A-Z]{3}$/;
+          if (emailRegex.test(campo)) {
+              valPlaca = 0;
+              $scope.validadorPlaca = 1;
+              $("#valida1").show();
+              $("#valida").hide();
+          } else {
+              $scope.validadorPlaca = 2;
+              $("#valida1").hide();
+              $("#valida").show();
+              valPlaca = 1;
+              $scope.desabilitaVeh = true;
+          };
+        }
     }
     $scope.titulos = function(campo){
         if (campo > 1){

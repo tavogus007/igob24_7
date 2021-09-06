@@ -814,7 +814,7 @@
                         var feature = data.features[0];
                         var cod = feature.properties;
                         var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                        
+                        $scope.datos.f01_idCodigoZona = codigo_zona_tributaria;
                     });
 
                     reqwest({

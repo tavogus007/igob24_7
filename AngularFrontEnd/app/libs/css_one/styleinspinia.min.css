@@ -680,6 +680,10 @@ body.mini-navbar .navbar-default .nav>li>.nav-second-level2 li a {
 .mini-navbar li.active .nav-second-level {
 	left: 66px;
 }
+.collapse.in {
+	display: block;
+	background: #036b76cc;
+}
 
 .navbar-default .special_link a {
 	background: #1ab394;
@@ -4033,13 +4037,16 @@ code {
 	border-image: none;
 	border-style: solid solid none;
 	border-width: 4px 0px 0;
-	color: #656565;
 	margin-bottom: 0;
 	padding: 7px 15px 7px;
 	height: 48px;
 	border-bottom: solid 2px #E2E2E2;
 }
-
+.ibox-subtitle {
+	padding: 7px 15px 7px;
+	color: #00adb5;
+	font-size: 15px;
+}
 .ibox-content {
 	background-color: #ffffff;
 	color: inherit;
@@ -4097,17 +4104,26 @@ table.table-mail tr td {
 	font-size: 24px;
 }
 
-.ibox-title h5 {
+.ibox-title > h5 {
 	display: inline-block;
-	font-size: 14px;
+	color: #078086;
+	font-size: 20px;
+	text-transform: uppercase;
 	margin: 0 0 7px;
 	padding: 0;
 	text-overflow: ellipsis;
 	float: left;
-	color: #222831 !important;
-	font-size: 16px !important;
 }
-
+.ibox-subtitle > h5 {
+	display: inline-block;
+	color: #00adb5;
+	font-size: 15px;
+	text-transform: uppercase;
+	margin: 0 0 7px;
+	padding: 0;
+	text-overflow: ellipsis;
+	float: left;
+}
 .ibox-title h4 {
 	display: inline-block;
 	font-size: 14px;
@@ -4798,7 +4814,7 @@ body.modal-open {
 
 .dashboard-header {
 	border-top: 0;
-	padding: 10px;
+	padding: 20px 10px 0px 10px;
 }
 
 .dashboard-header h2 {

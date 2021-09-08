@@ -41,7 +41,6 @@ app.filter("FormatoFecha", function(){
 	}
 });
 
-
 app.directive('vaCombo', function() {
 	return {
 		require: 'ngModel',
@@ -94,7 +93,7 @@ function arrayObjectIndexOf(miArray, buscarTexto, propiedad) {
 	return -1;
 }
 
-function RegistrocatastralController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad,$timeout,$window)
+function RegistrocatastralactController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad,$timeout,$window)
 {
 	//IMPORTANTE
 	$scope.configParametros = {
@@ -170,7 +169,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 	$scope.servicioCatastral = {
 		seleccionado : null,
 		municipal:{
-			titulo : "REGISTRO CATASTRAL MEDIANTE EL SERVICIO MUNICIPAL DE CATASTRO",
+			titulo : "ACTUALIZACIÓN DE DATOS TÉCNICOS MEDIANTE SERVICIO MUNICIPAL DE CATASTRO",
 			codigo :"municipal",
 			vistas:{
 				seleccionado:null,
@@ -181,7 +180,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			}
 		},
 		externo:{
-			titulo : "REGISTRO CATASTRAL MEDIANTE UN PROFESIONAL EXTERNO HABILITADO",
+			titulo : "ACTUALIZACIÓN DE DATOS TÉCNICOS MEDIANTE PROFESIONAL EXTERNO HABILITADO",
 			codigo :"externo",
 			vistas:{
 				seleccionado:null,
@@ -204,7 +203,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				$scope.servicioCatastral.seleccionado =  angular.copy(servicio);
 				$scope.servicioCatastral.seleccionado.vistas.seleccionado =angular.copy($scope.servicioCatastral.seleccionado.vistas.guia);
 				if($scope.servicioCatastral.seleccionado.codigo == $scope.servicioCatastral.externo.codigo){
-					$scope.solicitud.acciones.establecerDatosTipoServicioyRegistro(3,1);//tipo servicio 3 externo, tipo registro 1 nuevo
+					$scope.solicitud.acciones.establecerDatosTipoServicioyRegistro(3,2);//tipo servicio 3 externo, tipo registro 2 actualizacion
 				}
 			},
 			seleccionarVista:function (vista) {
@@ -212,6 +211,31 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			}
 		}
 		
+	}
+
+	$scope.vistaPreliminar = {
+		seleccionado : null,
+		inicio:{
+			titulo : "ACTUALIZACIÓN DE REGISTRO CATASTRAL",
+			codigo :"inicio",
+		},
+		datosLegales:{
+			titulo : "ACTUALIZACIONES INMEDIATAS EN PLATAFORMA",
+			codigo :"datoslegales",
+		},
+		datosTecnicos:{
+			titulo : "ACTUALIZACIÓN DE DATOS TÉCNICOS",
+			codigo :"datostecnicos",
+		},
+		acciones:{
+			seleccionar:function (vista) {
+				$scope.vistaPreliminar.seleccionado =  angular.copy(vista);
+			},
+			volverInicio:function () {
+				$scope.vistaPreliminar.acciones.seleccionar($scope.vistaPreliminar.inicio);
+				$scope.servicioCatastral.seleccionado = null;
+			},
+		}
 	}
 
 	
@@ -286,7 +310,6 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 		correosProcesamiento: null,
 		tieneMensura:null,
 		idInsFlujoAnterior:null,
-
 		msgReqLevantamiento:null,
 
 		listaExterno:[],
@@ -367,7 +390,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				$scope.solicitud.idInsFlujoAnterior = null;
 
 				$scope.profesinalExterno.encontrado = null;
-				$scope.solicitud.msgReqLevantamiento = null;
+				$scope.solicitud.msgReqLevantamiento= null;
 
 			},
 			listarExterno:function () {
@@ -378,7 +401,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				{
 					sNroDocCiudadano = sessionService.get('NITCIUDADANO');
 				}
-				var idCatastroTipoRegistro = 1;//Nuevo
+				var idCatastroTipoRegistro = 2;//Actualizacion
 				var idCatastroTipoServicio = 3;//Profesional externo
 				var solicitud = new dataSITOL();
 				solicitud.catListaSolicitudes(
@@ -402,7 +425,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			establecerDatosSolicitante:function () {
 
 				$scope.solicitud.idCatastroTipoServicio = 3; //1	CATASTRO MASIVO, 2	SERVICIO MUNICIPAL,3	CATASTRO EXTERNO
-				$scope.solicitud.idCatastroTipoRegistro = 1; // 1 nuevo, 2 actualizacion
+				$scope.solicitud.idCatastroTipoRegistro = 2; // 1 nuevo, 2 actualizacion
 
 				var datosCiudadano = new rcNatural();
 				datosCiudadano.oid = sessionService.get('IDCIUDADANO');
@@ -554,6 +577,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					$scope.solicitud.serBasGasDomiciliario = 0;
 				if($scope.solicitud.idInsFlujoAnterior == null || $scope.solicitud.idInsFlujoAnterior == undefined)
 					$scope.solicitud.idInsFlujoAnterior =0;
+
 				if($scope.solicitud.msgReqLevantamiento == null || $scope.solicitud.msgReqLevantamiento == undefined)
 					$scope.solicitud.msgReqLevantamiento = '';
 
@@ -656,10 +680,10 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					}
 				}).error(function (data, status, headers, config) {
 					console.log("error email conexion",data, status, headers, config);
+					swal('', 'Error al enviar correo', 'error');
 					$scope.solicitud.acciones.reset();
 					$scope.solicitud.acciones.listarExterno();
 					$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
-					swal('', 'Error al enviar correo', 'error');
 					$.unblockUI();
 				});
 			},
@@ -689,7 +713,6 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					$.unblockUI();
 				});
 			},
-
 			//Obsoleto
 			seguimientoFlujo : function (sol) {
 				$.blockUI();
@@ -935,48 +958,49 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 		setTimeout(function()
 		{
 			try{
+
 				//$scope.mapa.acciones.iniciar();
 				//$scope.srcTutorial="../Catastro/img/RegistroCatastralNuevoInfograma.png";
+				$scope.vistaPreliminar.acciones.seleccionar($scope.vistaPreliminar.inicio);
+
+
 				$scope.configParametros.documentoSolicitud.acciones.obtener();
 				$scope.configParametros.tasas.acciones.obtener();
 				$scope.solicitud.acciones.listarExterno();
 				$scope.solicitud.acciones.establecerDatosSolicitante();
-				//$scope.predio.acciones.listar();
+				$scope.predio.acciones.listar();
 				$scope.profesinalExterno.acciones.listar();
 
 				console.log("controlando redireccion de catastro");
-				var servicioCatReferer = sessionService.get('servicioCat');
+				var servicioCatReferer = sessionService.get('vistaCat');
 				if(servicioCatReferer){
 					console.log("Redireccion desde catastro",servicioCatReferer);
-					if(servicioCatReferer == 2){
-						$scope.solicitud.acciones.reset();
-						$scope.servicioCatastral.acciones.seleccionar($scope.servicioCatastral.municipal);
+					if(servicioCatReferer == 1){
+						$scope.vistaPreliminar.acciones.seleccionar($scope.vistaPreliminar.datosLegales);
 					}
-					else if(servicioCatReferer == 3){
-						$scope.solicitud.acciones.reset();
-						$scope.servicioCatastral.acciones.seleccionar($scope.servicioCatastral.externo);
+					else if(servicioCatReferer == 2){
+						$scope.vistaPreliminar.acciones.seleccionar($scope.vistaPreliminar.datosTecnicos);
 					}
-					sessionService.destroy('servicioCat');
+					sessionService.destroy('vistaCat');
 				}
-				
+
 			}catch(e)
 			{
 				console.log("error", e);
 			}
 		},500);
-
-		/*
 		setTimeout(function()
 		{
 			try{
-				sessionService.destroy('servicioCat');
+
+				sessionService.destroy('vistaCat');
 
 			}catch(e)
 			{
 				console.log("error", e);
 			}
 		},1000);
-		*/
+
 	}
 
 	$scope.loading = {
@@ -993,7 +1017,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 
 		paso:'bandeja', //seleccionPredio (ubicacion del predio)
 
-		opcionSeleccionPredio:'A',//A direccion referencial, B: lista de predios, C: ubicacion espacial
+		opcionSeleccionPredio:'B',//A direccion referencial, B: lista de predios, C: ubicacion espacial
 
 		acciones:{
 			inicio:function () {
@@ -1012,21 +1036,21 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			paso1:function () {
 				//Seleccion de predio
 				$scope.flujoSolicitud.paso = "seleccionPredio";
-				/*
+
 				if($scope.mapa.estado != 'OK'){
 					setTimeout(function()
 					{
 						try{
 							$scope.mapa.acciones.iniciar();
 							$scope.mapa.estado ="OK";
-							$scope.flujoSolicitud.opcionSeleccionPredio ='A';
+							//$scope.flujoSolicitud.opcionSeleccionPredio ='A';
 							$scope.$apply();
 						}catch(e){
 							console.log("error", e);
 						}
 					},100);
 				}
-				*/
+
 			},
 			//Habra pasos intermedios en servicio municipal
 			paso5:function () {
@@ -1105,13 +1129,14 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					if(resApi.success)
 					{
 						var datosPredio = resApi.success.dataSql[0];
-						var matrizHabilitada = $scope.predio.acciones.verificarMatrizHabilitada(datosPredio.idTipoPredio);
-						if(matrizHabilitada == false){
+						//var matrizHabilitada = $scope.predio.acciones.verificarMatrizHabilitada(datosPredio.idTipoPredio);
+						//if(matrizHabilitada == false){
+						if(true){
 							var idTipoRegimen = 0;
 							idTipoRegimen = datosPredio.idTipoPredio == "1" || datosPredio.idTipoPredio == "2" ? 1:(datosPredio.idTipoPredio == "4"? 2 : 0 );
 							$scope.solicitud.acciones.establecerDatosBasicosPredio(datosPredio.codigoCatastral,datosPredio.descPlanimetria,datosPredio.direccion,datosPredio.edificio,datosPredio.idCodPlanimetria,datosPredio.idMacrodistrito,datosPredio.idPendienteTerreno,datosPredio.idTipoPredio,datosPredio.macrodistrito,datosPredio.nroPuerta,datosPredio.servAguaPotable,datosPredio.servAlcantarillado,datosPredio.servAlumbrado,datosPredio.servEnergiaElec,datosPredio.servGas,datosPredio.servTelefono,datosPredio.wkt,datosPredio.zona, datosPredio.iddistritoMunicipal, idTipoRegimen);
 							$scope.predio.acciones.verificarCertificacion($scope.solicitud.codigoCatastral);
-							//console.log("zona", datosPredio.zona);
+							console.log("zona", datosPredio.zona);
 							if(datosPredio.zona == null || datosPredio.zona == undefined || datosPredio.zona == ""){
 								$scope.mapa.acciones.obtenerZona(datosPredio.wkt, "delegacionProfesional");
 							}
@@ -1245,11 +1270,12 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			},
 			verificarReingreso:function(codCat, idTipoRegimen){
 				//$.blockUI();
+				$scope.solicitud.msgReqLevantamiento=null;
 				var predio = new dataSIT();
 				predio.catPredioReingreso( codCat,idTipoRegimen,function(resultado){
 					//$.unblockUI();
 					var resApi = JSON.parse(resultado);
-					//console.log("verificarReingreso--->",resApi);
+					console.log("verificarReingreso--->",resApi);
 					if(resApi.success)
 					{
 						$scope.solicitud.tieneMensura =0;
@@ -1257,6 +1283,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 							$scope.solicitud.acciones.establecerTipoTramite(4);
 							$scope.solicitud.tieneMensura = resApi.success.dataSql[0].tieneMensura;
 							$scope.solicitud.idInsFlujoAnterior = resApi.success.dataSql[0].idInsFlujo;
+							$scope.solicitud.msgReqLevantamiento = resApi.success.dataSql[0].msgReqLevantamiento;
 						}
 						else{
 							$scope.solicitud.tieneMensura = 0;
@@ -1283,6 +1310,27 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				return res;
 			},
 			verificarTramiteEnProceso:function(codCat){
+				$scope.solicitud.codigoCatastral =  null;
+				$scope.solicitud.descPlanimetria =  null;
+				$scope.solicitud.direccion =  null;
+				$scope.solicitud.edificio =  null;
+				$scope.solicitud.idCodPlanimetria =  null;
+				$scope.solicitud.idMacrodistrito =  null;
+				$scope.solicitud.carTerrPendiente =  null;
+				$scope.solicitud.idTipoLote =  null;
+				$scope.solicitud.macrodistrito =  null;
+				$scope.solicitud.nroPuerta =  null;
+				$scope.solicitud.serBasAguaPotable =  null;
+				$scope.solicitud.serBasAlcantarillado =  null;
+				$scope.solicitud.serBasAlumbradoPublico =  null;
+				$scope.solicitud.serBasEnergiaElectrica =  null;
+				$scope.solicitud.serBasGasDomiciliario =  null;
+				$scope.solicitud.serBasTelefono =  null;
+				$scope.solicitud.wkt =  null;
+				$scope.solicitud.zona =  null;
+				$scope.solicitud.iddistritoMunicipal = null;
+
+				
 				//$.blockUI();
 				setTimeout(function(){
 					$.blockUI();
@@ -1329,6 +1377,8 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 		return day + '/' + month + '/' + year;
 	}
 
+
+	
 	$scope.profesinalExterno = {
 		lista:[],
 		filtro:null,
@@ -1387,28 +1437,33 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				$scope.solicitud.acciones.establecerDatosProfesional(arqui.arquitectoNombre,arqui.registroNacionalCAB,  arqui.telefonoCelular, arqui.correoElectronico);
 				//$scope.cambiarTextoBtnSolicitud();
 			},
-			buscarPorNro:function (nro) {
-				$scope.solicitud.profesionalNombre=null;
-				$scope.solicitud.profesionalEmail=null;
-				$scope.solicitud.profesionalTelefono=null;
-				$scope.solicitud.profesionalCab=null;
-				$scope.profesinalExterno.encontrado = null;
-				var encontrado = false;
-				angular.forEach($scope.profesinalExterno.lista, function (item) {
-					if(item.registroNacionalCAB + '' == nro + ''){
-						$scope.profesinalExterno.encontrado = true;
-						$scope.solicitud.acciones.establecerDatosProfesional(item.arquitectoNombre,item.registroNacionalCAB,  item.telefonoCelular, item.correoElectronico);
-					}
-				})
-				if($scope.profesinalExterno.encontrado == null){
-					$scope.profesinalExterno.encontrado= false;
-				}
-			}
 		}
 	}
+	$scope.tblProfesionalExterno = new ngTableParams({
+		page: 1,
+		count: 10,
+		filter: {},
+		sorting: {
+			arquitectoNombre: 'asc'
+		}
+	}, {
+		total: $scope.profesinalExterno.lista.length,
+		getData: function($defer, params) {
+			var filteredData = params.filter() ? $filter('filter')($scope.profesinalExterno.lista, params.filter()):$scope.profesinalExterno.lista;
+			var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) :$scope.profesinalExterno.lista;
+			params.total($scope.profesinalExterno.lista.length);
+			$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		}
+	});
+		
+	
+	$scope.buscador ={
+		
+	}
+	
 
 
-	//Mapa - Se utiizara en el servicio municipal
+	//Mapa
 	$scope.mapa = {
 		estado:null,
 		estadoView:null,
@@ -1827,6 +1882,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			obtenerZona: function (wkt, paso) {
 				//console.log("Buscando zona");
 				//$.blockUI();
+				SITUtil.capas.GEOSERVER = "http://sitservicios.lapaz.bo/geoserver";
 				$.ajax({
 					method: 'POST',
 					dataType: 'jsonp',
@@ -1869,6 +1925,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			},
 			obtenerRiesgo : function (wkt, paso) {
 				console.log("Buscando zona de riesgo");
+				SITUtil.capas.GEOSERVER = "http://sitservicios.lapaz.bo/geoserver";
 				$.ajax({
 					method: 'POST',
 					dataType: 'jsonp',
@@ -1896,9 +1953,10 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 							$scope.solicitud.riesgo = "ZONA DE RIESGO NO IDENTIFICADA";
 							$scope.$apply();
 						}
-						if(paso == "delegacionProfesional"){
+
+						/*if(paso == "delegacionProfesional"){
 							$scope.flujoSolicitud.acciones.paso5();
-						}
+						}*/
 					},
 					error: function (jqXHR, textStatus) {
 						console.log("Request failed: " + textStatus);
@@ -2454,4 +2512,129 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 	}
 
 
+
+
+	//Revisar
+
+
+
+    /*********************************** Registro en Integra *******************************************/
+    $scope.AddIntegra = function()
+    {
+    	$scope.RegistroFUM.mensaje = "Generando... espere por favor.";
+    	var fecha = new Date();
+    	var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+    	$scope.day = fecha.getDate();
+    	var mes = fecha.getMonth()+2;
+    	if(mes>11){mes = mes-12}
+    		$scope.month = monthNames[mes];
+    	$scope.year = fecha.getFullYear();
+    	var sIdServicio = $scope.ConfIntegra.idServicio;
+    	var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+    	var sFechaTramite = fechactual;
+		var aServicio = {};
+		var datosServicio   = new reglasnegocio();
+		datosServicio.identificador = 'RCCIUDADANO_68';
+		datosServicio.parametros = '{"frm_tra_dvser_id":"'+ sIdServicio +'","frm_tra_id_ciudadano":"'+ sIdCiudadano +'","frm_tra_fecha":"'+ sFechaTramite +'","frm_tra_enviado":"SI","frm_tra_id_usuario":"3"}';	
+		$.blockUI();
+		datosServicio.llamarregla(function(data){
+			data = JSON.parse(data);
+			$scope.ConfIntegra.idTramite = data.frm_tra_id;
+			if($scope.idTipoPago == 1) {
+				$('#divPopup4').modal('show');
+				$scope.genProforma();
+			}
+			else {
+				$scope.genProformaPagoOL();
+				$('#divPopupPagoTarjeta').modal('show');
+			}
+			$.unblockUI();
+		});
+	};
+ 	/********************************************************************************************/
+ 	$scope.UpdateIntegra = function(obj){ 
+        var fechactual          = obtFechaActual.obtenerFechaActual();
+        var datosSerializados   =  JSON.stringify(obj);
+        var idCiudadano         = sessionService.get('IDSOLICITANTE');
+        var idTramite           = $scope.ConfIntegra.idTramite;
+        var idServicio          = $scope.ConfIntegra.idServicio;
+        var updInt   = new reglasnegocio();
+     	updInt.identificador = 'RCCIUDADANO_80';
+     	updInt.parametros = '{}';
+        updInt.llamarregla(function(results){																																						
+        results = JSON.parse(results);
+        	$scope.AddIF(obj);
+        });
+    };
+ 	/********************************************************************************************/
+	$scope.AddIF = function(paramForm)
+	{
+		var idProcodigo = $scope.ConfIntegra.idProcodigo;
+        var datosSerializados = JSON.stringify(paramForm);
+        var serIF = new gCrearCaso();
+		serIF.usr_id=1;
+		serIF.datos=datosSerializados;
+		serIF.procodigo=$scope.ConfIntegra.idProcodigo;
+
+		serIF.crearCasoAeLinea( function(resultado)
+		{
+			$.unblockUI();
+		});
+    };
+
+	$scope.genAdj = function()
+	{
+		try{
+			var adjunto = new gDocumentos();
+			adjunto.doc_sistema = "CATASTRO";
+			adjunto.doc_proceso = 1;
+			adjunto.doc_id = 1;
+			adjunto.doc_ci_nodo = 1;
+			adjunto.doc_datos = "";
+			adjunto.doc_url = $scope.dplUrl;
+			adjunto.doc_version = 0;
+			adjunto.doc_tiempo = 2;
+			adjunto.doc_firma_digital = "";
+			adjunto.doc_usuario = "Ciudadano";
+			adjunto.doc_tipo_documento  ="";
+			adjunto.doc_tamanio_documento ="";
+			adjunto.doc_nombre ="DuplicadoCatastral";
+			adjunto.doc_tps_doc_id=0;
+			adjunto.doc_url_logica = $scope.dplUrl;
+			adjunto.doc_acceso="";
+			adjunto.doc_tipo_documento_ext="";
+			adjunto.doc_nrotramite_nexo=0;
+			adjunto.doc_id_codigo=0;
+
+			adjunto.doc_titulo ="";
+			adjunto.doc_palabras="";
+			adjunto.doc_registro="";
+			adjunto.doc_modificacion="";
+			adjunto.doc_estado="";
+			adjunto.doc_cuerpo="";
+			adjunto.doc_tipo_documentacion="";
+			adjunto.doc_tipo_ingreso="";
+			adjunto.doc_estado_de_envio="";
+			adjunto.doc_correlativo="";
+			adjunto.doc_id_carpeta = 0;
+
+			var fecha= new Date();
+			var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+
+				adjunto.insertarDoc(function(resultado){
+				//documento.insertarDoc(function(resultado){
+				var resultadoApi = JSON.parse(resultado);
+				if (resultadoApi.success){} 
+				else {
+					$.unblockUI();
+					sweet.show(resultadoApi.error.message);
+				}
+				$scope.dplUrl = "";
+			});
+		}
+		catch(e)
+		{
+			$scope.dplUrl = "";
+		}
+	};
 }

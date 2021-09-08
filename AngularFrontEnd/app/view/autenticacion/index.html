@@ -330,21 +330,22 @@
                                                 </ul>
                                             </li>
                                             <li ng-show="stiporol == '5' && sservicios  == 'SI'">
-                                                <a><i
+                                                <a onclick="window.location.href.endsWith('general')==false?window.location='#catastro|general':'';"><i
                                                         class="fa fa-caret-right blanco"></i>{{translateTitulos.lbl_04_05}}<span
                                                         class="fa arrow blanco"></span></a>
                                                 <ul class="nav nav-third-level">
+                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#catastro|registro">Registro Catastral</a></li>
+                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#catastro|registroAct">Actualización de Registro Catastral</a></li>
                                                     <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
                                                             href="#catastro|duplicado">{{translateTitulos.lbl_04_06}}</a>
                                                     </li>
-													<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#catastro|registro">Registro Catastral </a></li>
                                                 </ul>
                                             </li>
                                             <li ng-show="stiporol == '5' && sservicios  == 'SI'">
                                                 <a><i class="fa fa-caret-right blanco"></i>Territorio<span
                                                         class="fa arrow"></span></a>
                                                 <ul class="nav nav-third-level">
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click="" href="#territorio|PC">Permisos de Construcción</a></li>
+                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click="" href="#territorio|PC">Permisos de Construcción 3D</a></li>
 													<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|AsbuiltFracCercat">Planos As Built, Fraccionamiento PH y Certificación Catastral</a></li>
                                         			<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|FracCercat">Fraccionamiento PH y Certificación Catastral</a></li>
                                         			<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|Asbuilt">Planos As Built</a></li>
@@ -820,6 +821,8 @@
     <script src="../../view/catastro/duplicado/appDuplicado.js"></script>
     <script src="../../view/catastro/actualizaciones/appAct.js"></script>
     <script src="../../view/catastro/registro/appRegistro.js"></script>
+    <script src="../../view/catastro/registroAct/appRegistroAct.js"></script>
+    <script src="../../view/catastro/general/appCatastroGeneral.js"></script>
     <script src="../../view/territorio/PC/appPC.js?v=20181018"></script>
     <script src="../../view/territorio/AsbuiltFracCercat/appAsbuiltFracCercat.js"></script>
     <script src="../../view/territorio/FracCercat/appFracCercat.js"></script>

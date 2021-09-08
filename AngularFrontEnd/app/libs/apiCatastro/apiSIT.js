@@ -308,5 +308,14 @@ dataSIT.prototype.catPredioTramiteEnProceso = function (vCC, functionResp)
 
     ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
 };
+// Obtiene tasas de catastro
+dataSIT.prototype.catTasasCatastro = function ( functionResp)
+{
+    wsMethodSIT = "/catTasasCatastro";
+    typeCall = "post";
+    dataParams = {};
+
+    ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
+};
 
 

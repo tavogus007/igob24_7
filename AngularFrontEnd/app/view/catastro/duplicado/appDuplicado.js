@@ -47,9 +47,123 @@ function Padleft(pad,valor) {
 	var str = "" + valor;
 	return ans = pad.substring(0, pad.length - str.length) + str;
 };
-
+app.filter('unsafe', function($sce) { return $sce.trustAsHtml; });
 function DuplicadosController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad,$timeout,$window) 
 {
+	$scope.configParametros = {
+		documentoSolicitud:{
+			idTipoDocIfile : 0, //Actualizar para PRODUCCION
+			acciones:{
+				obtener:function () {
+					var conf = new dataSITOL();
+					conf.catObtenerParam("CatastroDocIDRegistro",function(resultado){
+						var resApi = JSON.parse(resultado);
+						//console.log("datos param--->",resApi);
+						if(resApi.success)
+						{
+							$scope.configParametros.documentoSolicitud.idTipoDocIfile = parseInt(resApi.success.dataSql[0].valorParametro);
+						}
+						else
+						{
+							swal('', 'Error al obtener datos', 'error');
+							console.log("Error al obtener datos",resApi.error.message,resApi.error.code);
+							//$.unblockUI();
+						}
+					});
+				}
+			}
+		},
+		tasas:{
+			servicioMunicipalNuevoMenor1000 : 0,
+			servicioMunicipalNuevoMenor2000 : 0,
+			servicioMunicipalNuevoMayor2000 : 0,
+			servicioExternoNuevo : 0,
+			servicioActualizacion : 0,
+			servicioDuplicado : 0,
+
+			acciones:{
+				obtener:function () {
+					var conf = new dataSIT();
+					conf.catTasasCatastro(function(resultado){
+						var resApi = JSON.parse(resultado);
+						console.log("datos param tasas--->",resApi);
+						if(resApi.success){
+							//$scope.configParametros.documentoSolicitud.idTipoDocIfile = parseInt(resApi.success.dataSql[0].valorParametro);
+							var data = resApi.success.dataSql;
+							angular.forEach(data, function (item) {
+								if(item.servicio == 'EXTERNO' && item.tipo == 'NUEVO'){
+									$scope.configParametros.tasas.servicioExternoNuevo = item.valor;
+								}
+								if(item.servicio == 'MUNICIPAL' && item.tipo == 'NUEVO' && item.tipoArea == 1){
+									$scope.configParametros.tasas.servicioMunicipalNuevoMenor1000 = item.valor;
+								}
+								if(item.servicio == 'MUNICIPAL' && item.tipo == 'NUEVO' && item.tipoArea == 2){
+									$scope.configParametros.tasas.servicioMunicipalNuevoMenor2000 = item.valor;
+								}
+								if(item.servicio == 'MUNICIPAL' && item.tipo == 'NUEVO' && item.tipoArea == 3){
+									$scope.configParametros.tasas.servicioMunicipalNuevoMayor2000 = item.valor;
+								}
+								if(item.servicio == 'ACTUALIZACION' && item.tipo == 'ACTUALIZACION'){
+									$scope.configParametros.tasas.servicioActualizacion = item.valor;
+								}
+								if(item.servicio == 'DUPLICADO' && item.tipo == 'DUPLICADO'){
+									$scope.configParametros.tasas.servicioDuplicado = item.valor;
+								}
+							})
+						}
+						else
+						{
+							swal('', 'Error al obtener datos', 'error');
+							console.log("Error al obtener datos",resApi.error.message,resApi.error.code);
+							//$.unblockUI();
+						}
+					});
+				}
+			}
+		},
+
+	}
+	$scope.servicioCatastral = {
+		seleccionado : null,
+		duplicado:{
+			titulo : "DUPLICADO DE CERTIFICADO CATASTRAL",
+			codigo :"duplicado",
+			vistas:{
+				seleccionado:null,
+				guia:{
+					titulo:"GUÍA DE TRÁMITE",
+					codigo:"guiaE"
+				},
+				tramites:{
+					titulo:"MIS TRÁMITES",
+					codigo:"tramitesE"
+				},
+				solicitar:{
+					titulo:"SOLICITAR TRÁMITE",
+					codigo:"solicitarE"
+				},
+			}
+		},
+		acciones:{
+			seleccionar:function (servicio) {
+				$scope.servicioCatastral.seleccionado =  angular.copy(servicio);
+				$scope.servicioCatastral.seleccionado.vistas.seleccionado =angular.copy($scope.servicioCatastral.seleccionado.vistas.guia);
+				//if($scope.servicioCatastral.seleccionado.codigo == $scope.servicioCatastral.externo.codigo){
+				//	$scope.solicitud.acciones.establecerDatosTipoServicioyRegistro(3,1);//tipo servicio 3 externo, tipo registro 1 nuevo
+				//}
+			},
+			seleccionarVista:function (vista) {
+				$scope.servicioCatastral.seleccionado.vistas.seleccionado =  angular.copy(vista);
+			}
+		}
+
+	}
+
+	$scope.servicioCatastral.acciones.seleccionar($scope.servicioCatastral.duplicado);
+	$scope.configParametros.tasas.acciones.obtener();
+
+
+
 	$scope.tablaSolicitudes   = {};
 	$scope.solicitudesUsuario = [];
 	$scope.RegistroFUM={
@@ -124,8 +238,9 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 	};*/
 
     $scope.inicioSolicitudes = function () 
-    { 
-         $.blockUI({ css: { 
+    {
+		//$('html, body').animate({scrollTop:0}, 'slow');
+		$.blockUI({ css: { 
                     border: 'none', 
                     padding: '10px', 
 
@@ -554,55 +669,84 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
         }
         $scope.resetUrl();
 
-        var busCodCat = new dataSIT();
-        busCodCat.dplBusCodCat( cc, nrodoc, 1, function(resultado){
-            var resApi = JSON.parse(resultado);
-            if(resApi.success)
-            {
-                $scope.resultadoBusqueda = resApi.success.dataSql[0];
-                if($scope.resultadoBusqueda)
-                {
-                    if($scope.resultadoBusqueda.res == "OK"){
-                        //VERIFICAMOS SI ES NUEVO TIPO DE TRAMITE, angel laura
-                        p = {
-                            CodCat: cc,nroDoc:nrodoc
-                        };
-                        $http({
-                            method: 'POST',
-                            url: CONFIG.SERVICE_SITOLextgen + 'DuplicadosPh/verTipoTramiteNuevo',
-                            data: Object.toparams(p),
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-                        }).success(function (data, status, headers, config) {
-                            if (data.res == 'nuevo') {
-                                $scope.NuevoTipoSolicitud=1;
-                                $scope.solicitudNueva();
-                            }
-                            else {
-                                $scope.NuevoTipoSolicitud=0;
-                                $scope.solicitudAntigua();
-                            }
-                        }).error(function (data, status, headers, config) {
-                            sweet.show('', 'Error al registrar proforma de pago', 'error');
-                            console.log("Error registro fum SIT ext, datos devueltos:", data);
-                        });
-                    	//-------------------------------------------------------
-                    }
-                    else
-                    {
-                        $('#visorPreview object').attr("data","");
-                        $scope.varSpin=false;
-                    }
-                }
-                $scope.codigoCatastral={};
-            }
-            else
-            {
-                sweet.show('', 'Error al buscar certificado', 'error');
-                $scope.spinner = false;
-                console.log("Error en la funcion BuscarCertificado", resApi.error.message);
-            }
-            $.unblockUI();
-        });
+		//Verificamos en sitram si el predio tiene tramites pendientes
+		console.log("verificar en sitram", cc);
+		p = {
+			codcat: cc
+		};
+		$http({
+			method: 'POST',
+			url: CONFIG.SERVICE_SITOLextgen + 'Servicios/validarDuplicado',
+			data: Object.toparams(p),
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		}).success(function (data, status, headers, config) {
+			if (data.res == 'OK') {
+				console.log(data);
+				if(data.resultado ==""){
+					var busCodCat = new dataSIT();
+					busCodCat.dplBusCodCat( cc, nrodoc, 1, function(resultado){
+						var resApi = JSON.parse(resultado);
+						if(resApi.success)
+						{
+							$scope.resultadoBusqueda = resApi.success.dataSql[0];
+							if($scope.resultadoBusqueda)
+							{
+								if($scope.resultadoBusqueda.res == "OK"){
+									//VERIFICAMOS SI ES NUEVO TIPO DE TRAMITE, angel laura
+									p = {
+										CodCat: cc,nroDoc:nrodoc
+									};
+									$http({
+										method: 'POST',
+										url: CONFIG.SERVICE_SITOLextgen + 'DuplicadosPh/verTipoTramiteNuevo',
+										data: Object.toparams(p),
+										headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+									}).success(function (data, status, headers, config) {
+										if (data.res == 'nuevo') {
+											$scope.NuevoTipoSolicitud=1;
+											$scope.solicitudNueva();
+										}
+										else {
+											$scope.NuevoTipoSolicitud=0;
+											$scope.solicitudAntigua();
+										}
+									}).error(function (data, status, headers, config) {
+										sweet.show('', 'Error al registrar proforma de pago', 'error');
+										console.log("Error registro fum SIT ext, datos devueltos:", data);
+									});
+									//-------------------------------------------------------
+								}
+								else
+								{
+									$('#visorPreview object').attr("data","");
+									$scope.varSpin=false;
+								}
+							}
+							$scope.codigoCatastral={};
+						}
+						else
+						{
+							sweet.show('', 'Error al buscar certificado', 'error');
+							$scope.spinner = false;
+							console.log("Error en la funcion BuscarCertificado", resApi.error.message);
+						}
+						$.unblockUI();
+					});
+				}
+				else{
+					$scope.resultadoBusqueda.res="ERROR";
+					$scope.resultadoBusqueda.msg=data.resultado;
+					$scope.varSpin=false;
+				}
+			}
+			else {
+				sweet.show('', 'Error al verificar tramites Sitram del predio:' + data.resultado, 'error');
+				console.log("Error al verificar tramites Sitram del predio:", data);
+			}
+		}).error(function (data, status, headers, config) {
+			sweet.show('', 'Error de conección al verificar tramites Sitram del predio:' + JSON.stringify(data), 'error');
+			console.log("Error de conección al verificar tramites Sitram del predio:", data);
+		});
 	};
 
 	$scope.solicitudAntigua=function() {
@@ -725,6 +869,8 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
         var url = '../catastro/img/Default.pdf';
         $('#PDFtoPrint').attr('src',url);
         $scope.RefreshUrl(url);
+		//$scope.servicioCatastral.seleccionado.vistas.seleccionado = angular.copy($scope.servicioCatastral.seleccionado.vistas.solicitar);
+		$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
     };
     $scope.pdfUrl = '../catastro/img/Default.pdf';
 

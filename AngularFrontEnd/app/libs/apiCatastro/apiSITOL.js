@@ -664,12 +664,14 @@ dataSITOL.prototype.solicitudPago = function (vidSolicitudPago,vidTramite,vfum,v
 //  REGISTRO CATASTRAL
 // ------------------------
 
-dataSITOL.prototype.catListaSolicitudes = function (numDocumento,functionResp)
+dataSITOL.prototype.catListaSolicitudes = function (numDocumento,idCatastroTipoRegistro,idCatastroTipoServicio,functionResp)
 {
     wsMethodSITOL = "/catListaSolicitudes";
     typeCall = "post";
     dataParams = {
-        "numDocumento" : numDocumento
+        "numDocumento" : numDocumento,
+        "idCatastroTipoRegistro":idCatastroTipoRegistro,
+        "idCatastroTipoServicio":idCatastroTipoServicio
     };
     ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
 };
@@ -695,7 +697,7 @@ dataSITOL.prototype.catObtenerParam = function (codParam,functionResp)
 };
 
 
-dataSITOL.prototype.catSolicitudReg = function (idCatastroTramiteOL,wkt,idTipoRegimen, idCatastroTipoTramite, solicitante, idTipoDocumento, numDocumento, idExpedido, telefonoSolicitante, emailSolicitante, tipoPersona, profesionalNombre, profesionalEmail, profesionalTelefono, profesionalCab,idmacroDistrito,iddistritoMunicipal,codigoCatastral,direccion,zona,nroPuerta,edificio,idCodPlanimetria,descPlanimetria,idTipoLote, conCertificado,carTerrPendiente,serBasAlcantarillado,serBasEnergiaElectrica,serBasTelefono,serBasAguaPotable,serBasAlumbradoPublico,serBasGasDomiciliario,tieneMensura,idInsFlujoAnterior,riesgo,oid,
+dataSITOL.prototype.catSolicitudReg = function (idCatastroTramiteOL,wkt,idTipoRegimen, idCatastroTipoTramite, solicitante, idTipoDocumento, numDocumento, idExpedido, telefonoSolicitante, emailSolicitante, tipoPersona, profesionalNombre, profesionalEmail, profesionalTelefono, profesionalCab,idmacroDistrito,iddistritoMunicipal,codigoCatastral,direccion,zona,nroPuerta,edificio,idCodPlanimetria,descPlanimetria,idTipoLote, conCertificado,carTerrPendiente,serBasAlcantarillado,serBasEnergiaElectrica,serBasTelefono,serBasAguaPotable,serBasAlumbradoPublico,serBasGasDomiciliario,tieneMensura,idInsFlujoAnterior,riesgo,oid,idCatastroTipoServicio, idCatastroTipoRegistro,msgReqLevantamiento,
                                                 functionResp)
 {
     wsMethodSITOL = "/catSolicitudReg";
@@ -764,7 +766,9 @@ dataSITOL.prototype.catSolicitudReg = function (idCatastroTramiteOL,wkt,idTipoRe
         "serBasAguaPotable" : serBasAguaPotable,
         "serBasAlumbradoPublico" : serBasAlumbradoPublico,
         "serBasGasDomiciliario" : serBasGasDomiciliario,
-        "oid":oid
+        "oid":oid,
+        "idCatastroTipoServicio":idCatastroTipoServicio,
+        "idCatastroTipoRegistro": idCatastroTipoRegistro,
         //"supTotalConstruida" : supTotalConstruida,
         //"supSegunLevantamiento" : supSegunLevantamiento,
         //"supSegunTestimonio" : supSegunTestimonio,
@@ -774,7 +778,7 @@ dataSITOL.prototype.catSolicitudReg = function (idCatastroTramiteOL,wkt,idTipoRe
         //"telefonoSolicitanteProp" : telefonoSolicitanteProp,
         //"emailSolicitanteProp" : emailSolicitanteProp,
         //"carViaPendiente" : carViaPendiente,
-
+        "msgReqLevantamiento":msgReqLevantamiento
     };
     ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
 };

@@ -1,0 +1,312 @@
+<style>
+
+    @media (min-width: 768px) {
+        #page-wrapper {
+            min-height: 768px;
+        }
+
+    }
+    .ibox-title-cat {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        background-color: #f5f5f5;
+        border-color: rgba(103, 226, 201, 0);
+        border-image: none;
+        border-style: solid solid none;
+        border-width: 4px 0px 0;
+        color: #656565;
+        margin-bottom: 0;
+        padding: 7px 15px 7px;
+        /*height: 60px;*/
+        border-bottom: solid 2px #23c6c8;
+    }
+    .ibox-content-cat {
+        background-color: #ffffff;
+        color: inherit;
+        padding: 15px 20px 20px 20px;
+        border-color: #23c6c8;
+        border-image: none;
+        border-style: solid solid none;
+        border-width: 1px 0px;
+    }
+
+    .txtSubtitulo{
+        color: #00b3ba;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .txtSubtituloIcon {
+        font-size: 35px!important;
+        color: #00b3ba;
+        cursor: auto!important;
+        display: inline-block;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .txtParrafo{
+        font-size: 14px;
+    }
+    .txtResaltado{
+        color: #00b3ba;
+    }
+    .separador{
+        padding: 3px;
+        border-top: 1px #00b3ba dashed;
+    }
+    .panel-horizontal{
+        display: inline-flex;
+        width: 100%;
+    }
+    .panel-horizontal-body{
+        width: 75%;
+    }
+
+    .panel-horizontal-heading{
+        width: 30%;
+        border-color: transparent!important;
+        display: table;
+        font-size: 15px;
+        font-weight: bold;
+
+
+        background-color: #f2dede!important;
+        color: #a94442!important;
+    }
+    .panel-horizontal-heading-hijo{
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .btn-width-total{
+        width: 100%;
+    }
+    .btn {
+        white-space: normal!important;
+    }
+    .a-alert{
+        color: #a94442!important
+    }
+
+</style>
+<script type="text/javascript" class="ng-scope">
+    //$('#divPopup2').modal('show');
+    $( document ).ready(function()
+    {
+        //$('#divPopup2').modal('show');
+    });
+</script>
+
+
+<div ng-controller="CatastrogeneralController" ng-init="inicio();">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title-cat" >
+                <h2><strong>TRÁMITES DE CATASTRO</strong></h2>
+            </div>
+            <div class="loaderContenedor" ng-show="loading.blockUI==true"><div class="loader"></div></div>
+
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="txtSubtitulo">
+                            <a href="#" class="txtSubtituloIcon">
+                                <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                            </a>
+                            ¿Qué es el catastro?
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p class="txtParrafo">Es el <strong class="txtResaltado">inventario físico</strong> de los bienes inmuebles públicos o privados situados en la jurisdicción del GAMLP, que contiene información física, económica y jurídica debidamente clasificada, catalogada, administrada, consultada y actualizada.</p>
+                    </div>
+                </div>
+                <div class="row separador"></div>
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="txtSubtitulo">
+                            <a href="#" class="txtSubtituloIcon">
+                                <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                            </a>
+                            ¿Qué es el Certificado de Registro Catastral?
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p class="txtParrafo">Es el único documento técnico por el cual el GAMLP brinda seguridad jurídica a los ciudadanos. Este certificado avala la existencia del registro de un bien inmueble y permite conocer su ubicación, superficie, límites, características y su valor catastral.</p>
+                    </div>
+                </div>
+                <div class="row separador"></div>
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <p class="txtSubtitulo">
+                            <a href="#" class="txtSubtituloIcon">
+                                <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                            </a>
+                            ¿Qué tipo de trámites puedo realizar?
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p class="txtParrafo">Usted puede realizar los siguientes trámites relacionados con Catastro:
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-danger panel-horizontal">
+                            <div class="panel-heading panel-horizontal-heading">
+                                <div class="panel-horizontal-heading-hijo">
+                                    <a href="#catastro|registro" class="a-alert">REGISTRO CATASTRAL:</a>
+                                </div>
+                            </div>
+                            <div class="panel-body panel-horizontal-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="txtParrafo">Cuando el bien inmueble no cuente con registro catastral o Certificado de Registro Catastral vigente. Este servicio puede ser solicitado mediante las siguientes modalidades:</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12" style="text-align: center">
+                                        <div class="row">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-5">
+                                                <!--<button class="btn btn-info btn-width-total" ng-click="servicios.registroCatastral.municipal()">Mediante el Servicio Municipal de Catastro</button>&nbsp;-->
+                                                <a href="#catastro|registro" ng-click="servicios.registroCatastral.municipal()" class="btn btn-info btn-width-total">Mediante el Servicio Municipal de Catastro</a>
+                                            </div>
+                                            <div class="col-sm-5" >
+                                                <a href="#catastro|registro" ng-click="servicios.registroCatastral.externo()" class="btn btn-info btn-width-total">Mediante un Profesional Externo habilitado</a>
+                                                <!--<button class="btn btn-info btn-width-total" ng-click="servicios.registroCatastral.externo()">Mediante un Profesional Externo habilitado</button>-->
+                                            </div>
+                                            <div class="col-sm-1"></div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-danger panel-horizontal">
+                            <div class="panel-heading panel-horizontal-heading">
+                                <div class="panel-horizontal-heading-hijo">
+                                    <a href="#catastro|registroAct" class="a-alert">ACTUALIZACIÓN DE REGISTRO CATASTRAL:</a>
+                                </div>
+                            </div>
+                            <div class="panel-body panel-horizontal-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="txtParrafo">Cuando un predio cuenta con un <strong class="txtResaltado">Certificado de Registro Catastral vigente (emitido de manera posterior a la gestión 2012)</strong>  y se requiere actualizar datos de dos tipos:</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-5">
+                                                <!--<button class="btn btn-info btn-width-total" ng-click="servicios.vistas.datosLegales()" >Actualizaciones de datos legales (inmediatas)</button>&nbsp;<br>-->
+                                                <a href="#catastro|registroAct" ng-click="servicios.vistas.datosLegales()" class="btn btn-info btn-width-total">Actualizaciones inmediatas en Plataforma</a>
+                                                <p class="txtParrafo">
+
+                                                    <ul>
+                                                        <li>Cambio de nombre de propietario</li>
+                                                        <li>Actualización de número de matrícula (Folio Real)</li>
+                                                        <li>Actualización de valor catastral</li>
+                                                        <li>Orden de vía</li>
+                                                        <li>Material en vía</li>
+                                                        <li>Cambio de número de puerta</li>
+                                                        <li>Ampliación de catastro provisional (60 días)</li>
+                                                        <li>Levantamiento de observaciones del Certificado de Registro Catastral</li>
+                                                    </ul>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-5" >
+                                                <!--<button class="btn btn-info btn-width-total" ng-click="servicios.vistas.datosTecnicos()" >Actualización de datos técnicos</button>-->
+                                                <a href="#catastro|registroAct" ng-click="servicios.vistas.datosTecnicos()" class="btn btn-info btn-width-total">Actualización de datos técnicos</a>
+                                                <p class="txtParrafo">
+
+                                                <ul>
+                                                    <li>Nuevas construcciones</li>
+                                                    <li>Demoliciones</li>
+                                                    <li>Cambios de trazo</li>
+                                                    <li>Adjudicación de áreas residuales</li>
+                                                    <li>Otros</li>
+                                                </ul>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-danger panel-horizontal">
+                            <div class="panel-heading panel-horizontal-heading">
+                                <div class="panel-horizontal-heading-hijo">
+                                    <a href="#catastro|duplicado" class="a-alert">DUPLICADO DE CERTIFICADO CATASTRAL:</a>
+                                </div>
+                            </div>
+                            <div class="panel-body panel-horizontal-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="txtParrafo">Consiste en obtener una copia fidedigna <a href="#catastro|duplicado" style="font-weight: bold" class="txtResaltado">en línea a través de internet</a>  del Certificado de Registro Catastral cuando éste haya sido <b class="txtResaltado"> emitido a partir de la gestión 2012</b> y las características del predio no sufrieron ninguna modificación física, económica y/o jurídica.</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+

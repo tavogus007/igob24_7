@@ -1,5 +1,12 @@
 <style>
+    @media (min-width: 768px) {
+        #page-wrapper {
+            min-height: 768px;
+        }
+
+    }
     /*para quitar las flechas en buscador*/
+
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button
     {
@@ -9,6 +16,7 @@
     input[type=number] {
         -moz-appearance: textfield;
     }
+    /*
     .img1{
         position: absolute;
         top:  65%;
@@ -21,7 +29,9 @@
     .rotate180 {-webkit-transform: rotate(180deg); transform: rotate(180deg); }
     .rotate270 {-webkit-transform: rotate(270deg); transform: rotate(270deg); }
     .fixed { position: fixed; top: 0; left: calc(50% - 480px); z-index: 100; width: 100%; padding: 1em; background: rgba(238, 238, 238,.9); width: 960px; }
+    */
     /*si necesitas que sea responsive*/
+    /*
     canvas {
         width: 100%;
         height: auto;
@@ -42,53 +52,183 @@
         font-size: 38px;
         color: #FFCB05 !important;
     }
+        */
 
-    /*ESTILOS PROPIOS DE CODIGO CAPTCHA*/
-    .ejemplo3 {
-        background-color: #6F7072;
 
-        color: #6F7072;
-        margin: 1px auto;
-        padding: 4px;
-        text-align: center;
-        width: 350px;
-    }
-    
-    input:required:invalid {
-        border: 1px solid red;
-    }
-    input:required:valid {
-        border: 1px solid green;
-    }
-    select:required:invalid {
-        border: 1px solid red;
-    }
-    select:required:valid {
-        border: 1px solid green;
-    }
-    .form-group {
-        padding-left: 8px;
-    }
-    .box2{
-        display: inline-block;
-        width: 190px;
-        margin: 2px;
-    }
-    input[type=radio] {
-        border: 0px;
-        width: 16px;
-        height: 16px;
+
+    .alert-info-lite{
+        color: #31708f;
+        background-color: #eef7fb;
+        border-color: #bce8f1;
     }
 
-    ul {
-        list-style: initial ! important;
+
+
+
+    .alert-info-dark{
+        color: #31708f;
+        background-color: #c5e4f1;
+        border-color: #87c7e2;
     }
 
-    .lblAdvertencia{
+    .alert-orange{
+        color: #d96a06;
+        background-color: #fde1c7;
+        border-color: #fbb97d;
+    }
+    .btn-info-ligero{
+        background-color: #97eced;
+        border-color: #97eced;
+        color: #797979;
+    }
+
+    /*spinner*/
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        top: 40%;
+        position: absolute;
+        left: 50%;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .loaderContenedor{
+        background-color: rgba(0, 0, 0, .6);
+        height: 100%;
+        left: 0;
+        margin: auto;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+    }
+
+    /*spinner buscador mapa*/
+    .loaderMini {
+        border: 10px solid #f3f3f3;
+        border-top: 10px solid #3498db;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        animation: spin 2s linear infinite;
+        top: 35%;
+        position: absolute;
+        left: 35%;
+    }
+
+
+
+
+
+    .ibox-title-cat {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        background-color: #f5f5f5;
+        border-color: rgba(103, 226, 201, 0);
+        border-image: none;
+        border-style: solid solid none;
+        border-width: 4px 0px 0;
+        color: #656565;
+        margin-bottom: 0;
+        padding: 7px 15px 7px;
+        /*height: 60px;*/
+        border-bottom: solid 2px #23c6c8;
+    }
+    .ibox-content-cat {
+        background-color: #ffffff;
+        color: inherit;
+        padding: 15px 20px 20px 20px;
+        border-color: #23c6c8;
+        border-image: none;
+        border-style: solid solid none;
+        border-width: 1px 0px;
+    }
+    .txtSubtitulo{
+        color: #00b3ba;
+        font-size: 20px;
         font-weight: bold;
-        color: red;
     }
-    /*ESTILOS PROPIOS DE CODIGO CAPTCHA FIN*/
+    .txtSubtituloIcon {
+        font-size: 35px!important;
+        color: #00b3ba;
+        cursor: auto!important;
+        display: inline-block;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .txtParrafo{
+        font-size: 14px;
+    }
+    .txtParrafoResaltado{
+        font-size: 15px;
+        font-weight: bold;
+        color: #000;
+    }
+    .txtResaltado{
+        color: #00b3ba;
+    }
+    .separador{
+        padding: 3px;
+        border-top: 1px #00b3ba dashed;
+    }
+    .separadorTab{
+        padding: 3px; border-top: 8px #c5e4f1 solid;
+    }
+
+    .alert-tab{
+        text-align: center;
+        font-size: 15px;
+        margin-bottom: 2px
+    }
+    .alert-info-dark-titulo{
+        font-weight: bold;
+        font-size: 17px;
+    }
+    .btn-width-total{
+        width: 100%;
+    }
+
+    .enlace{
+        text-decoration: underline;
+        font-weight: bold;
+        color: #23c6c8;
+    }
+    .btn{
+        white-space: normal!important;;
+    }
+    .btn-warning{
+        border-radius: 2px!important;
+        border: 1px solid #000!important;
+        background-color: #fff!important;
+        border-color: #e30613!important;
+        color: #e30613!important;
+    }
+
 </style>
 <script type="text/javascript" class="ng-scope">
     //$('#divPopup2').modal('show');
@@ -99,14 +239,183 @@
 </script>
 
 <div  ng-controller="DuplicadosController" ng-init="inicioSolicitudes();">
+
     <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <!--Pantalla de Inicio-->
+            <!--Servicio seleccionado-->
+            <div ng-show="servicioCatastral.seleccionado != null">
+                <!--duplicado-->
+                <div ng-show="servicioCatastral.seleccionado.codigo == servicioCatastral.duplicado.codigo">
+                    <div class="ibox-title-cat">
+                        <h2 ><strong>{{servicioCatastral.seleccionado.titulo}}</strong></h2>
+                    </div>
+                    <div class="ibox-content-cat">
+                        <div class="row">
+                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.guia)">
+                                <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.guia.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.guia.codigo}">
+                                    <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.guia.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
+                                    <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.guia.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.guia.titulo}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.tramites); solicitud.acciones.listarExterno()">
+                                <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.tramites.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.tramites.codigo}">
+                                    <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.tramites.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
+                                    <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.tramites.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.tramites.titulo}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar)">
+                                <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.solicitar.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.solicitar.codigo}">
+                                    <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.solicitar.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
+                                    <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.solicitar.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.solicitar.titulo}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-show="servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.guia.codigo" class="separadorTab">
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <p class="txtSubtitulo">
+                                        <a href="#" class="txtSubtituloIcon">
+                                            <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                        </a>
+                                        ¿Qué es y en qué consiste?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtParrafo">Consiste en obtener una copia fidedigna <a href="#catastro|duplicado" style="font-weight: bold" class="txtResaltado">en línea a través de internet</a>  del Certificado de Registro Catastral cuando éste haya sido <b class="txtResaltado"> emitido a partir de la gestión 2012</b> y las características del predio no sufrieron ninguna modificación física, económica y/o jurídica.</p>
+
+                                </div>
+                            </div>
+                            <div class="row separador"></div>
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <p class="txtSubtitulo">
+                                        <a href="#" class="txtSubtituloIcon">
+                                            <span class="glyphicon glyphicon-hourglass txtSubtituloIcon"></span>
+                                        </a>
+                                        ¿Cuánto tiempo dura el trámite?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtParrafo">El trámite se realiza de forma <strong class="txtResaltado">inmediata</strong> a través del <strong class="txtResaltado">Internet</strong>.</p>
+                                </div>
+                            </div>
+                            <div class="row separador"></div>
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <p class="txtSubtitulo">
+                                        <a href="#" class="txtSubtituloIcon">
+                                            <span class="glyphicon glyphicon-usd txtSubtituloIcon"></span>
+                                        </a>
+                                        ¿Cuánto debo pagar?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtParrafo">El costo es de {{configParametros.tasas.servicioDuplicado|number}} Bs., los cuales pueden ser cancelados en entidades financieras habilitadas.</p>
+                                </div>
+                            </div>
+                            <div class="row separador"></div>
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <p class="txtSubtitulo">
+                                        <a href="#" class="txtSubtituloIcon">
+                                            <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                        </a>
+                                        ¿Cómo inicio mi trámite?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtParrafo">Para iniciar este trámite, usted debe elegir la opción <a class="enlace" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar);" >SOLICITAR TRÁMITE</a>.
+                                         </p>
+                                </div>
+                            </div>
+                            <div class="row separador"></div>
+
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align: right">
+                                    <button class="btn btn-info " data-toggle="modal" data-target="#divPopup2" ng-click="cambiarImagen(0)"><span aria-hidden="true" title="Donde encontrar el c%oacute;digo catastral" ></span>Guía de trámite</button>
+                                    <!--<button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;"><span class="glyphicon glyphicon-home"></span> Volver al inicio</button>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.tramites.codigo" class="separadorTab">
+                            <div>
+                                <div class="panel ">
+                                    <table  ng-table="tablaSolicitudes"  class="table table-striped">
+                                        <tr ng-repeat="solicitud in $data  | filter:query " ng-style="solicitud.idEstado === '5' && {'background-color':'#fdeedc'} || solicitud.idEstado === '2' && {'background-color':'#ccf5f6'} || solicitud.idEstado === '4' && {'background-color':'#f8c7db'}" >
+                                            <td data-title="'Nro.'" >{{$index+1}}</td>
+                                            <td data-title="'Tipo de Trámite'" sortable="'TipoTra'">{{solicitud.TipoTra}}</td>
+                                            <td data-title="'Código Catastral'" sortable="'CodigoCatastral'">{{solicitud.CodigoCatastral | FormatoSercat}}</td>
+                                            <td data-title="'Proforma'" sortable="'FUM'" >{{solicitud.FUM}}</td>
+                                            <td data-title="'Fecha de Solicitud'" sortable="'FechaRegistro'" >{{solicitud.FechaRegistro}} </td>
+                                            <td data-title="'Estado'" sortable="'Estado'" >{{solicitud.Estado}}</td>
+                                            <td data-title="'Tipo de pago'" sortable="'tipoPago'" >{{solicitud.tipoPago}}</td>
+                                            <td data-title="'Acciones'">
+                                                <div id="divAcciones{{solicitud.IdRegistro}}"  >
+                                                    <button class="btn btn-warning" ng-show="VerificarDespliegueFUM(solicitud)" data-toggle="modal" data-target="#divPopup4" ng-click="ImprimirProforma(solicitud.f)"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Imprimir proforma de pago" ></span> Imprimir Proforma de Pago (FUM)</button>
+                                                    <!--<button class="btn btn-warning" ng-show="VerificarDespliegueEpago(solicitud)" ng-click="continuarPagoOL(solicitud)"><span class="glyphicon glyphicon-usd" aria-hidden="true" title="Imprimir proforma de pago" ></span> Continuar pago en línea</button>-->
+                                                    <button class="btn btn-info" ng-show="VerificarDespliegueCC(solicitud)" data-toggle="modal" data-target="#divPopup7" ng-click="DeplegarDpl(solicitud)"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Imprimir Certificado" ></span> Imprimir Duplicado del Certificado</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align: right">
+                                    <!--<button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;"><span class="glyphicon glyphicon-home"></span> Volver al inicio</button>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.solicitar.codigo" class="separadorTab">
+                            <div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-width-total" data-toggle="modal" data-target="#divPopup" ng-click="CargarPopupBuscador()" ><span></span>Solicitar duplicado</button>
+                                    </div>
+                                    <!--
+                                    <div class="col-md-3">
+                                        <button class="btn btn-info btn-width-total" data-toggle="modal" data-target="#divPopup2" ng-click="cambiarImagen(0)"><span aria-hidden="true" title="Donde encontrar el c%oacute;digo catastral" ></span>Guía de trámite</button>
+                                    </div>
+                                    -->
+                                    <div class="col-md-4">
+                                        <button class="btn btn-info btn-width-total" data-toggle="modal" data-target="#divPopupLstCC" ><span aria-hidden="true"></span>Ver mis predios</button>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="col-lg-12" ng-if="false">
 	    <div class="ibox float-e-margins">
-            <!--<div class="ibox-title">
-                <h5>SOLICITUD DE DUPLICADO DE CERTIFICADO DE REGISTRO CATASTRAL</h5>
-            </div>-->
-            <!--<div style="background: #ffbf01;padding: 1px 10px 1px 10px;">
-                <h4><strong>CONSULTE SU TRÁMITE O SERVICIO</strong></h4>
-            </div>-->
            <div class="cafeSuave" style="padding: 1px 10px 1px 10px;">
                 <h4 class="blanco"><strong>SOLICITUD DE DUPLICADO DE CERTIFICADO DE REGISTRO CATASTRAL</strong></h4>
             </div>
@@ -120,7 +429,6 @@
             </div>                     
             <hr>
             <div id="divBuscador">
-
                 <div class="col-md-3"></div>
                 <div class="col-md-2">
                     <button class="btn btn-success" data-toggle="modal" data-target="#divPopup" ng-click="CargarPopupBuscador()" ><span></span>Solicitar duplicado</button>
@@ -141,6 +449,7 @@
 			<div class="ibox-content" >
 			    <div>
 				    <div class="panel ">
+                        <!--
 					    <table  ng-table="tablaSolicitudes"  class="table table-striped">
 						    <tr ng-repeat="solicitud in $data  | filter:query " ng-style="solicitud.idEstado === '5' && {'background-color':'#fdeedc'} || solicitud.idEstado === '2' && {'background-color':'#ccf5f6'} || solicitud.idEstado === '4' && {'background-color':'#f8c7db'}" >
 							    <td data-title="'Nro.'" >{{$index+1}}</td>
@@ -153,12 +462,13 @@
                                 <td data-title="'Acciones'">
 								    <div id="divAcciones{{solicitud.IdRegistro}}"  >
 										<button class="btn btn-warning" ng-show="VerificarDespliegueFUM(solicitud)" data-toggle="modal" data-target="#divPopup4" ng-click="ImprimirProforma(solicitud.f)"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Imprimir proforma de pago" ></span> Imprimir Proforma de Pago (FUM)</button>
-                                        <!--<button class="btn btn-warning" ng-show="VerificarDespliegueEpago(solicitud)" ng-click="continuarPagoOL(solicitud)"><span class="glyphicon glyphicon-usd" aria-hidden="true" title="Imprimir proforma de pago" ></span> Continuar pago en línea</button>-->
+                                        <button class="btn btn-warning" ng-show="VerificarDespliegueEpago(solicitud)" ng-click="continuarPagoOL(solicitud)"><span class="glyphicon glyphicon-usd" aria-hidden="true" title="Imprimir proforma de pago" ></span> Continuar pago en línea</button>
 										<button class="btn btn-info" ng-show="VerificarDespliegueCC(solicitud)" data-toggle="modal" data-target="#divPopup7" ng-click="DeplegarDpl(solicitud)"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Imprimir Certificado" ></span> Imprimir Duplicado del Certificado</button>
                                     </div>
 								</td>
                             </tr>
                         </table>
+                    -->
                     </div>
                 </div>
             </div>
@@ -265,15 +575,15 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <img class="img1" src="../catastro/img/spin.gif" ng-show="varSpin" alt="no cargo imagen">
+                    <!--<img class="img1" src="../catastro/img/spin.gif" ng-show="varSpin" alt="no cargo imagen">-->
                     <button type="button" class="close" data-dismiss="modal" ng-click="resetUrl()">&times;</button>
                     <h3 class="modal-title" ng-show="tipoVisor == 1"><button class="btn-warning">Paso 2</button>&nbsp;Vista preliminar del Duplicado</h3>
                     <h3 class="modal-title" ng-show="tipoVisor == 2"><button class="btn-warning">Paso Final</button>&nbsp;Impresi&oacute;n del Duplicado</h3>
                     <br>
                     <div class="text-center">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup" ng-click="getCaptchasX();" ng-show="tipoVisor == 1"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Siguiente"></span>Atr&aacute;s</button>
-                        <button class="btn btn-info" ng-show="tipoVisor == 1" data-toggle="modal" data-target="#divPopup2" data-dismiss="modal" ng-click="cambiarImagen(2)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el C&oacute;digo Catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#divPopup3"  ng-show="confirmacionCiudadano == null && tipoVisor == 1"> ¿Problemas de visualizaci&oacute;n?</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#divPopup" ng-click="getCaptchasX();" ng-show="tipoVisor == 1"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Siguiente"></span>Atr&aacute;s</button>&nbsp;
+                        <button class="btn btn-info" ng-show="tipoVisor == 1" data-toggle="modal" data-target="#divPopup2" data-dismiss="modal" ng-click="cambiarImagen(2)"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el C&oacute;digo Catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>&nbsp;
+                        <button type="button" class="btn btn-info" data-dismiss="modal" data-toggle="modal" data-target="#divPopup3"  ng-show="confirmacionCiudadano == null && tipoVisor == 1"> ¿Problemas de visualizaci&oacute;n?</button>&nbsp;
                         <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#divPopup9" ng-show="resultadoBusqueda.res == 'OK' && tipoVisor == 1" ng-click="ProformaPago(resultadoBusqueda)">Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span> </button>
                     </div>
                 </div>
@@ -294,8 +604,12 @@
                     <div class="pull-right" style="padding: 1px">
                         <button class="btn btn-info" ng-click="zoomOut()" ng-show="resultadoBusqueda.res == 'OK' || tipoVisor == 2">-</button>
                     </div>
-                    <label ng-show="tipoVisor==1" style="color:{{resultadoBusqueda.res == 'OK'?'black':'red'}} font-size: 120%"><strong>{{resultadoBusqueda.msg}}</strong>
+                    <img class="img1" src="../catastro/img/spin.gif" ng-show="varSpin" alt="no cargo imagen">
+                    <label ng-show="tipoVisor==1" style="color:{{resultadoBusqueda.res == 'OK'?'black':'red'}} font-size: 120%">
+                        <!--<strong>{{resultadoBusqueda.msg}}</strong>-->
+                        <strong ng-bind-html="resultadoBusqueda.msg | unsafe"></strong>
                     </label>
+
                     <div id="visorPreview" ng-show="resultadoBusqueda.res == 'OK' || tipoVisor==2 ">
                         <ng-pdf id="pdfView" template-url="../catastro/partials/viewer.html" canvasid="pdf1" scale="1" ></ng-pdf>
                     </div>
@@ -347,7 +661,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h3 class="modal-title"><button class="btn-warning">Paso 3</button>Seleccionar el motivo de la solicitud. (Debe seleccionar el motivo y detalle).</h3>
+                    <h3 class="modal-title"><button class="btn-warning">Paso 3</button> Seleccionar el motivo de la solicitud. (Debe seleccionar el motivo y detalle).</h3>
                 </div>
                 <div class="modal-body">
                     <div ng-show="datospersonaNatural ==null"> <!--datosPersonaNatural == null-->
@@ -411,6 +725,8 @@
                                 <button class="btn btn-primary" data-dismiss="modal"  ng-click="cargarDescripcionMotivos()" data-toggle="modal" data-target="#divPopup12" ng-disabled="!(frmProforma.cmbMotivo.$dirty && frmProforma.cmbDetalleMotivo.$dirty && idMotivoDetalle != 0 && idMotivo != 0)">Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span></button>
                             </div>
                         </form>
+                        <br>
+
                     </div>
                     <div ng-show="datospersonaJuridica == null"> <!---->
                         <form name="frmProformaJ">
@@ -465,11 +781,13 @@
                                 <button class="btn btn-primary" data-dismiss="modal"  ng-click="cargarDescripcionMotivos()" data-toggle="modal" data-target="#divPopup12" ng-disabled="!(frmProformaJ.cmbMotivoJ.$dirty && frmProformaJ.cmbDetalleMotivoJ.$dirty && idMotivoDetalle != 0 && idMotivo != 0)"> Siguiente <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="Siguiente"></span></button>
                             </div>
                         </form>
+                        <br>
+                        <br>
                     </div>
                     <label></label><!--mantiene el modal-body en su posicion-->
                 </div>
                 <br>
-                <div class="modal-footer">
+                <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
                     <!--<button class="btn btn-info pull-left" data-toggle="modal" data-target="#divPopup2"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el codigo catastral"  ></span> GU&Iacute;A DE TRAMITE</button>-->
                 </div>
             </div>

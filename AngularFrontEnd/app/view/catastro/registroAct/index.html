@@ -1,0 +1,2158 @@
+<style>
+    @media (min-width: 768px) {
+        #page-wrapper {
+            min-height: 768px;
+        }
+
+    }
+
+    ol {
+        /*counter-reset: list;*/
+        margin: 0;
+    }
+    /*Solo se setea una vez*/
+    ol:first-of-type {
+        counter-reset: list;
+    }
+    ol > li {
+        list-style: none;
+        position: relative;
+    }
+
+    ol > li.lia:before {
+        counter-increment: list;
+        content: counter(list, lower-alpha) ") ";
+        position: absolute;
+        left: -1.4em;
+    }
+    ol > li.lib:before {
+        counter-increment: list;
+        content: counters(list, ".") ". ";
+
+        position: absolute;
+        left: -1.8em;
+    }
+
+    ol.lic {
+        counter-reset: list1;
+        margin: 0;
+    }
+    ol > li.lic:before {
+        counter-increment: list1;
+        content: counters(list1, ".") ". ";
+
+        position: absolute;
+        left: -1.8em;
+    }
+    .li-bold{
+        font-weight: bold;
+    }
+
+    .sitv3TextBoxDisabled{
+        padding: 10px;
+        border: 1px;
+        background-color: #f6f6f6;
+        border-radius: 5px;
+        width: 100%;
+        text-align: center;
+        font-weight: 500;
+        height: 36px;
+    }
+    /*Mapa buscador INICIO*/
+
+    .sitMapPnlCntRes{
+        position: absolute;
+        left: 15px;
+        bottom: 30px;
+        width: 300px;
+        height: 300px;
+        background-color: #F0F0F0;
+        color: #000000;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    .sitMapPnlCntResHdr{
+        border-bottom: 1px solid #ccc;
+        padding: 5px 10px 5px 10px;
+        cursor: move;
+        color: #585858;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .sitMapPnlCntResFtr{
+        border-top: 1px solid #ccc;
+        padding: 10px 10px 5px 10px;
+        cursor: move;
+        color: #585858;
+        font-size: 12px;
+        text-align: right;
+    }
+    .sitMapPnlCntResBody{
+        border-bottom: 1px solid #ccc;
+        /*padding: 5px 10px 5px 10px;*/
+        background-color: #ffffff;
+        font-size: 12px;
+        color: #585858;
+        height: 225px;
+    }
+    .sitMapPnlCntResHdrCerrar {
+        float: right;
+        color: white;
+        background-color: gray;
+        border-radius: 5px;
+        padding-right: 5px;
+        padding-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 0px;
+    }
+    .sitMapPnlCntResBodyOverflow{
+        height: 225px;
+
+        overflow-y: scroll;
+    }
+    .sitMapPnlCntResBodySinDatos{
+        padding-top: 90px;
+        padding-left: 40px;;
+    }
+    /*
+    .fa, .fas {
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+    }
+    .fa-times {
+        content: "\f00d";
+    }*/
+    .buscadorTituloLigero{
+        color: #7e7e7e;
+        font-weight: normal;
+    }
+    /*Mapa buscador FIN*/
+
+
+    .alert-info-lite{
+        color: #31708f;
+        background-color: #eef7fb;
+        border-color: #bce8f1;
+    }
+
+
+
+
+    .alert-info-dark{
+        color: #31708f;
+        background-color: #c5e4f1;
+        border-color: #87c7e2;
+    }
+
+    .alert-orange{
+        color: #d96a06;
+        background-color: #fde1c7;
+        border-color: #fbb97d;
+    }
+    .btn-info-ligero{
+        background-color: #97eced;
+        border-color: #97eced;
+        color: #797979;
+    }
+
+    /*spinner*/
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        top: 40%;
+        position: absolute;
+        left: 50%;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .loaderContenedor{
+        background-color: rgba(0, 0, 0, .6);
+        height: 100%;
+        left: 0;
+        margin: auto;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+    }
+
+    /*spinner buscador mapa*/
+    .loaderMini {
+        border: 10px solid #f3f3f3;
+        border-top: 10px solid #3498db;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        animation: spin 2s linear infinite;
+        top: 35%;
+        position: absolute;
+        left: 35%;
+    }
+
+
+
+
+
+    .ibox-title-cat {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        background-color: #f5f5f5;
+        border-color: rgba(103, 226, 201, 0);
+        border-image: none;
+        border-style: solid solid none;
+        border-width: 4px 0px 0;
+        color: #656565;
+        margin-bottom: 0;
+        padding: 7px 15px 7px;
+        /*height: 60px;*/
+        border-bottom: solid 2px #23c6c8;
+    }
+    .ibox-content-cat {
+        background-color: #ffffff;
+        color: inherit;
+        padding: 15px 20px 20px 20px;
+        border-color: #23c6c8;
+        border-image: none;
+        border-style: solid solid none;
+        border-width: 1px 0px;
+    }
+    .txtSubtitulo{
+        color: #00b3ba;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .txtSubtituloIcon {
+        font-size: 35px!important;
+        color: #00b3ba;
+        cursor: auto!important;
+        display: inline-block;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .txtParrafo{
+        font-size: 14px;
+    }
+    .txtParrafoResaltado{
+        font-size: 15px;
+        font-weight: bold;
+        color: #000;
+    }
+    .txtResaltado{
+        color: #00b3ba;
+    }
+    .separador{
+        padding: 3px;
+        border-top: 1px #00b3ba dashed;
+    }
+    .separadorTab{
+        padding: 3px; border-top: 8px #c5e4f1 solid;
+    }
+
+    .alert-tab{
+        text-align: center;
+        font-size: 15px;
+        margin-bottom: 2px
+    }
+    .alert-info-dark-titulo{
+        font-weight: bold;
+        font-size: 17px;
+    }
+    .btn-width-total{
+        width: 100%;
+    }
+
+    .predioSeleccionado{
+        background-color: #97eced!important;
+    }
+    .enlace{
+        text-decoration: underline;
+        font-weight: bold;
+        color: #23c6c8;
+    }
+    .btn{
+        white-space: normal!important;;
+    }
+</style>
+<script type="text/javascript" class="ng-scope">
+    //$('#divPopup2').modal('show');
+    $( document ).ready(function()
+    {
+        //$('#divPopup2').modal('show');
+    });
+</script>
+
+<link href="../../libs/sit-map/OpenLayers-5.3.0/ol.css" rel="stylesheet" type="text/css" />
+
+<!--<link href="../../libs/sit-map/ol-ext/v3.1.0/ol-ext.css" rel="stylesheet" type="text/css" />-->
+<link href="../../libs/sit-map/ol-ext/ol-ext.css" rel="stylesheet" type="text/css" />
+<link href="../../libs/sit-map/sitOL/sit-search.css" rel="stylesheet" type="text/css" />
+<script src="../../libs/sit-map/OpenLayers-5.3.0/ol.js" type="text/javascript"></script>
+<script src="../../libs/sit-map/ol-ext/v3.1.0/ol-ext.js" type="text/javascript"></script>
+<script src="../../libs/sit-map/sitOL/proj4.js"></script>
+<script src="../../libs/sit-map/sitOL/sit-util.js" type="text/javascript"></script>
+<script src="../../libs/sit-map/sitOL/sit-codigocatastral.js" type="text/javascript"></script>
+<script src="../../libs/sit-map/sitOL/sit-search.js" type="text/javascript"></script>
+<script src="../../libs/sit-map/sitOL/sit-search-app.js" type="text/javascript"></script>
+<script src="../../libs/sit-map/sitOL/GridUtil.js" type="text/javascript"></script>
+<script src="../../libs/sit-map/sitOL/sit-scheme.js?v=20190510_1633" type="text/javascript"></script>
+<script src="../../libs/sit-map/sitOL/sit-layers.js?v=20190510_1633" type="text/javascript"></script>
+<script src="../../libs/sit-map/sitOL/sit-mapa.js?v=20190510_1633" type="text/javascript"></script>
+
+
+<div ng-controller="RegistrocatastralactController" ng-init="inicio();">
+    <div class="col-lg-12">
+	    <div class="ibox float-e-margins">
+
+            <!--Pantallas de Inicio-->
+            <div ng-show="servicioCatastral.seleccionado == null">
+                <div ng-show="vistaPreliminar.seleccionado.codigo == vistaPreliminar.inicio.codigo">
+                    <div class="ibox-title-cat" >
+                        <h2 ><strong>{{vistaPreliminar.seleccionado.titulo}}</strong></h2>
+                    </div>
+                    <div class="ibox-content-cat">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtSubtitulo">
+                                    <a href="#" class="txtSubtituloIcon">
+                                        <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                    </a>
+                                    ¿En qué consiste la actualización de registro catastral?
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtParrafo">
+                                    La <strong class="txtResaltado">Actualización de Registro Catastral</strong> se realiza cuando un predio ya cuenta con un <strong class="txtResaltado">Certificado de Registro Catastral vigente (emitido de manera posterior a la gestión 2012)</strong> y se requiere actualizar por cambios de datos legales o técnicos.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row separador"></div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtSubtitulo">
+                                    <a href="#" class="txtSubtituloIcon">
+                                        <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                    </a>
+                                    ¿Qué tipo de actualizaciones puedo solicitar?
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtParrafo">Usted puede actualizar su registro catastral a través de las siguientes modalidades:</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12" style="text-align: center">
+                                <div class="row">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-width-total" ng-click="vistaPreliminar.acciones.seleccionar(vistaPreliminar.datosLegales)">Actualizaciones inmediatas en Plataforma</button>&nbsp;
+                                    </div>
+                                    <div class="col-sm-4" >
+                                        <button class="btn btn-info btn-width-total" ng-click="vistaPreliminar.acciones.seleccionar(vistaPreliminar.datosTecnicos)">Actualización de datos técnicos</button>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-4" style="text-align: left">
+                                        <p class="txtParrafo">
+
+                                        <ul>
+                                            <li>Cambio de nombre de propietario</li>
+                                            <li>Actualización de número de matrícula (Folio Real)</li>
+                                            <li>Actualización de valor catastral</li>
+                                            <li>Orden de vía</li>
+                                            <li>Material en vía</li>
+                                            <li>Cambio de número de puerta</li>
+                                            <li>Ampliación de catastro provisional (60 días)</li>
+                                            <li>Levantamiento de observaciones del Certificado de Registro Catastral</li>
+                                        </ul>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-4" style="text-align: left">
+                                        <p class="txtParrafo">
+
+                                        <ul>
+                                            <li>Nuevas construcciones</li>
+                                            <li>Demoliciones</li>
+                                            <li>Cambios de trazo</li>
+                                            <li>Adjudicación de áreas residuales</li>
+                                            <li>Otros</li>
+                                        </ul>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div ng-show="vistaPreliminar.seleccionado.codigo == vistaPreliminar.datosLegales.codigo">
+                    <div class="ibox-title-cat" >
+                        <h2 ><strong>{{vistaPreliminar.seleccionado.titulo}}</strong></h2>
+                    </div>
+                    <div class="ibox-content-cat">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtSubtitulo">
+                                    <a href="#" class="txtSubtituloIcon">
+                                        <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                    </a>
+                                    ¿Qué es y en qué consiste?
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtParrafo">
+                                    Consiste en actualizar el <b  class="txtResaltado">Certificado de Registro Catastral VIGENTE</b>, siempre y cuando las características físicas del predio no hayan sufrido modificaciones y solo se requiere cambiar, corregir o completar los datos del propietario, ya sea por compra y venta o por una corrección realizada en la oficina de Derechos Reales.<br>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row separador"></div>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="txtSubtitulo">
+                                            <a href="#" class="txtSubtituloIcon">
+                                                <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                            </a>
+                                            ¿Cuáles son consideradas actualizaciones inmediatas?
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="txtParrafo">
+                                        <ul>
+                                            <li>Cambio de nombre de propietario</li>
+                                            <li>Actualización de número de matrícula (Folio Real)</li>
+                                            <li>Actualización de valor catastral</li>
+                                            <li>Orden de vía</li>
+                                            <li>Material en vía</li>
+                                            <li>Cambio de número de puerta</li>
+                                            <li>Ampliación de catastro provisional (60 días)</li>
+                                            <li>Levantamiento de observaciones del Certificado de Registro Catastral</li>
+                                        </ul>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="txtSubtitulo">
+                                            <a href="#" class="txtSubtituloIcon">
+                                                <span class="glyphicon glyphicon-earphone txtSubtituloIcon"></span>
+                                            </a>
+                                            ¿Consultas adicionales?
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="txtParrafo">
+                                            Comuníquese con la línea gratuita: 800 – 135555
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row separador"></div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtSubtitulo">
+                                    <a href="#" class="txtSubtituloIcon">
+                                        <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                    </a>
+                                    ¿Dónde puedo realizar Actualizaciones inmediatas?
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtParrafo">
+                                    El trámite se inicia y concluye de forma inmediata en cualquier Plataforma Integral de Atención Ciudadana (PIAC):
+                                    <ul>
+                                        <li>Centro: Mercado Camacho, planta subsuelo Av. Camacho esq. Calle Bueno</li>
+                                        <li>Miraflores: Edificio Torre Vicenta, Av. Argentina N° 1843 esq. Calle Diaz Romero</li>
+                                        <li>Sur: Edificio Atlanta, Planta baja, Av. José Ballivián N° 720, entre las calles 13 y 14 de Calacoto</li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row separador"></div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtSubtitulo">
+                                    <a href="#" class="txtSubtituloIcon">
+                                        <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                    </a>
+                                    ¿Qué requisitos debo presentar para Actualizaciones inmediatas?
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <p class="txtParrafoResaltado"><span>REQUISITOS GENERALES</span></p>
+                                        <p class="txtParrafo">
+                                            <b>Persona Natural:</b>
+                                        <ol class="txtParrafo">
+                                            <li class="lia"> Documentos que respalden las modificaciones como: Fotografías, Informes Técnicos emitidos por el Gobierno Autónomo Municipal de La Paz, y otros que considere el administrado.</li>
+                                            <li class="lia"> Cédula Identidad del o los propietario(s) (original y fotocopia).</li>
+                                        </ol>
+                                        </p>
+                                        <p class="txtParrafo">
+                                            <b>Persona Jurídica:</b>
+                                            <br>
+                                            Además de los requisitos previamente requeridos, adjuntar:
+                                        <ol class="txtParrafo">
+                                            <li class="lia"> Documento de constitución de la empresa (original y fotocopia).</li>
+                                            <li class="lia"> Número de Identificación Tributaria (NIT) (original y fotocopia).</li>
+                                        </ol>
+                                        </p>
+                                        <p class="txtParrafo">
+                                            <b>En caso de ser apoderado:</b>
+                                            <br>
+                                            Además de los requisitos previamente requeridos, adjuntar:
+                                        <ol class="txtParrafo">
+                                            <li class="lia"> Poder de representación, sólo en caso que se actúe como apoderado o mandatario (original y fotocopia).</li>
+                                            <li class="lia"> Cédula de Identidad del apoderado (original y fotocopia).</li>
+                                        </ol>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="txtParrafoResaltado"><span>REQUISITOS ESPECÍFICOS</span></p>
+                                        <p class="txtParrafo">
+                                            <b>Para actualización de datos del/los propietario(s) y/o cambio de nombre en el Registro Catastral:</b>
+                                        <ol class="txtParrafo">
+                                            <li class="lib"> Testimonio de Propiedad del Bien Inmueble (original y fotocopia).</li>
+                                            <li class="lib"> Folio Real o Tarjeta de Propiedad (original y fotocopia).</li>
+                                            <li class="lib"> Cédula Identidad del o los propietario(s) (original y fotocopia).</li>
+                                            <li class="lib">Boleta de impuestos a nombre del propietario del Bien Inmueble (fotocopia).</li>
+                                        </ol>
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row separador"></div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtSubtitulo">
+                                    <a href="#" class="txtSubtituloIcon">
+                                        <span class="glyphicon glyphicon-usd txtSubtituloIcon"></span>
+                                    </a>
+                                    ¿Cuánto debo pagar?
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtParrafo">
+                                    {{configParametros.tasas.servicioActualizacion|number}} Bs (el monto se actualiza cada gestión en función a la UFV).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12" style="text-align: right">
+                                <button type="button" class="btn btn-info" ng-click="vistaPreliminar.acciones.volverInicio()"><span class="glyphicon glyphicon-home"></span> Volver al inicio</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="vistaPreliminar.seleccionado.codigo == vistaPreliminar.datosTecnicos.codigo">
+                    <div class="ibox-title-cat" >
+                        <h2 ><strong>{{vistaPreliminar.seleccionado.titulo}}</strong></h2>
+                    </div>
+                    <div class="ibox-content-cat">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtSubtitulo">
+                                    <a href="#" class="txtSubtituloIcon">
+                                        <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                    </a>
+                                    ¿Qué es y en qué consiste?
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtParrafo">
+                                    Consiste en actualizar el <strong class="txtResaltado">Certificado de Registro Catastral VIGENTE (emitido de manera posterior a la gestión 2012)</strong>, cuando las características del predio han sufrido modificaciones físicas.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row separador"></div>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="txtSubtitulo">
+                                            <a href="#" class="txtSubtituloIcon">
+                                                <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                            </a>
+                                            ¿Cuáles son consideradas actualizaciones de datos técnicos?
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="txtParrafo">
+                                        <ul>
+                                            <li>Nuevas construcciones</li>
+                                            <li>Demoliciones</li>
+                                            <li>Cambios de trazo</li>
+                                            <li>Adjudicación de áreas residuales</li>
+                                            <li>Otros</li>
+                                        </ul>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="txtSubtitulo">
+                                            <a href="#" class="txtSubtituloIcon">
+                                                <span class="glyphicon glyphicon-earphone txtSubtituloIcon"></span>
+                                            </a>
+                                            ¿Consultas adicionales?
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="txtParrafo">
+                                            Comuníquese con la línea gratuita: 800 – 135555
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row separador"></div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtSubtitulo">
+                                    <a href="#" class="txtSubtituloIcon">
+                                        <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                    </a>
+                                    ¿Cómo puedo solicitar la actualización de datos técnicos?
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="txtParrafo">
+                                    La actualización de datos técnicos pueden ser realizada mediante las siguientes modalidades:
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12" style="text-align: center">
+                                <div class="row">
+                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-5">
+                                        <button class="btn btn-info btn-width-total" ng-click="solicitud.acciones.reset();servicioCatastral.acciones.seleccionar(servicioCatastral.municipal)">Actualización de datos técnicos mediante Servicio Municipal de Catastro</button>&nbsp;
+                                    </div>
+                                    <div class="col-sm-5" >
+                                        <button class="btn btn-info btn-width-total" ng-click="solicitud.acciones.reset();servicioCatastral.acciones.seleccionar(servicioCatastral.externo)">Actualización de datos técnicos mediante un Profesional Externo Habilitado</button>
+                                    </div>
+                                    <div class="col-sm-1"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12" style="text-align: right">
+                                <button type="button" class="btn btn-info" ng-click="vistaPreliminar.acciones.volverInicio()"><span class="glyphicon glyphicon-home"></span> Volver al inicio</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Servicio seleccionado-->
+            <div ng-show="servicioCatastral.seleccionado != null">
+                <!--Municipal-->
+                <div ng-show="servicioCatastral.seleccionado.codigo == servicioCatastral.municipal.codigo">
+                    <div class="ibox-title-cat">
+                        <h2 ><strong>{{servicioCatastral.seleccionado.titulo}}</strong></h2>
+                    </div>
+                    <div class="ibox-content-cat">
+                        <div class="row">
+                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.guia)">
+                                <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.guia.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.guia.codigo}">
+                                    <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.guia.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
+                                    <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.guia.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.guia.titulo}}</span>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.tramites); solicitud.acciones.listarExterno()">
+                                <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.tramites.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.tramites.codigo}">
+                                    <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.tramites.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
+                                    <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.tramites.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.tramites.titulo}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar)">
+                                <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.solicitar.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.solicitar.codigo}">
+                                    <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.solicitar.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
+                                    <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.solicitar.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.solicitar.titulo}}</span>
+                                </div>
+                            </div>
+                            -->
+                        </div>
+                        <div ng-show="servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.guia.codigo" class="separadorTab">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtSubtitulo">
+                                        <a href="#" class="txtSubtituloIcon">
+                                            <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                        </a>
+                                        ¿Qué es y en qué consiste?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtParrafo">El Servicio Municipal de Catastro es ofrecido por el GAMLP, para la actualización de datos técnicos del Certificado de Registro Catastral de un bien inmueble; para lo cual, una brigada del GAMLP conformada por un Procesador Catastral, un Topógrafo y un Alarife, realizan una inspección para el levantamiento catastral (relevamiento de las características físicas del inmueble) y el levantamiento topográfico del bien inmueble (enlazado a la Red Geodésica Municipal).</p>
+                                </div>
+                            </div>
+                            <div class="row separador"></div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtSubtitulo">
+                                        <a href="#" class="txtSubtituloIcon">
+                                            <span class="glyphicon glyphicon-usd txtSubtituloIcon"></span>
+                                        </a>
+                                        ¿Cuánto debo pagar?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtParrafo">{{configParametros.tasas.servicioActualizacion|number}} Bs (el monto se actualiza cada gestión en función a la UFV).</p>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row separador"></div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtSubtitulo">
+                                        <a href="#" class="txtSubtituloIcon">
+                                            <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                        </a>
+                                        ¿Qué requisitos debo presentar?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="txtParrafoResaltado"><span>REQUISITOS GENERALES</span></p>
+                                            <p class="txtParrafo">
+                                                <b>Persona Natural:</b>
+                                            <ol class="txtParrafo">
+                                                <li class="lia"> Carta dirigida a la Unidad de Catastro, señalando las modificaciones a realizar en el registro.</li>
+                                                <li class="lia"> Documentos que respalden las modificaciones como: Fotografías, Informes Técnicos emitidos por el Gobierno Autónomo Municipal de La Paz, y otros que considere el administrado.</li>
+                                                <li class="lia"> Cédula Identidad del o los propietario(s) (original).</li>
+                                            </ol>
+                                            </p>
+                                            <p class="txtParrafo">
+                                                <b>Persona Jurídica:</b>
+                                                <br>
+                                                Además de los requisitos previamente requeridos, adjuntar:
+                                            <ol class="txtParrafo">
+                                                <li class="lia"> Documento de constitución de la empresa (original y fotocopia).</li>
+                                                <li class="lia"> Número de Identificación Tributaria (NIT) (original y fotocopia).</li>
+
+                                            </ol>
+                                            </p>
+                                            <p class="txtParrafo">
+                                                <b>En caso de ser apoderado:</b>
+                                                <br>
+                                                Además de los requisitos previamente requeridos, adjuntar:
+                                            <ol class="txtParrafo">
+                                                <li class="lia"> Poder de representación, sólo en caso que se actúe como apoderado o mandatario (original y fotocopia).</li>
+                                                <li class="lia"> Cédula de Identidad del apoderado (original y fotocopia).</li>
+                                            </ol>
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-6">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row separador"></div>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p class="txtSubtitulo">
+                                                <a href="#" class="txtSubtituloIcon">
+                                                    <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                                </a>
+                                                ¿Cómo inicio mi trámite?
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p class="txtParrafo">
+                                                Usted debe presentar sus requisitos en las Plataformas Integrales de Atención Ciudadana (PIAC):
+                                            <ul>
+                                                <li>Centro: Mercado Camacho, planta subsuelo Av. Camacho esq. Calle Bueno</li>
+                                                <li>Miraflores: Edificio Torre Vicenta, Av. Argentina N° 1843 esq. Calle Diaz Romero</li>
+                                                <li>Sur: Edificio Atlanta, Planta baja, Av. José Ballivián N° 720, entre las calles 13 y 14 de Calacoto</li>
+                                            </ul>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p class="txtSubtitulo">
+                                                <a href="#" class="txtSubtituloIcon">
+                                                    <span class="glyphicon glyphicon-earphone txtSubtituloIcon"></span>
+                                                </a>
+                                                ¿Consultas adicionales?
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p class="txtParrafo">
+                                                Comuníquese con la línea gratuita: 800 – 135555
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align: right">
+                                    <button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;vistaPreliminar.acciones.seleccionar(vistaPreliminar.datosTecnicos)"><span class="glyphicon glyphicon-chevron-left"></span> Atrás</button>&nbsp;
+                                    <button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;vistaPreliminar.acciones.seleccionar(vistaPreliminar.inicio);"><span class="glyphicon glyphicon-home"></span> Volver al inicio</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!--Externo-->
+                <div ng-show="servicioCatastral.seleccionado.codigo == servicioCatastral.externo.codigo">
+                    <div class="ibox-title-cat">
+                        <h2 ><strong>{{servicioCatastral.seleccionado.titulo}}</strong></h2>
+                    </div>
+                    <div class="ibox-content-cat">
+                        <div class="row">
+                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.guia)">
+                                <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.guia.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.guia.codigo}">
+                                    <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.guia.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
+                                    <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.guia.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.guia.titulo}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.tramites); solicitud.acciones.listarExterno()">
+                                <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.tramites.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.tramites.codigo}">
+                                    <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.tramites.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
+                                    <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.tramites.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.tramites.titulo}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar)">
+                                <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.solicitar.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.solicitar.codigo}">
+                                    <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.solicitar.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
+                                    <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.solicitar.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.solicitar.titulo}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-show="servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.guia.codigo" class="separadorTab">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtSubtitulo">
+                                        <a href="#" class="txtSubtituloIcon">
+                                            <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                        </a>
+                                        ¿Qué es y en qué consiste?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtParrafo">Usted puede contratar un profesional externo habilitado (arquitecto, ingeniero, topógrafo o geógrafo) para gestionar la actualización de un Certificado de Registro Catastral cuando las características del predio han sufrido modificaciones físicas.<br>
+                                        </p>
+                                </div>
+                            </div>
+                            <div class="row separador"></div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtSubtitulo">
+                                        <a href="#" class="txtSubtituloIcon">
+                                            <span class="glyphicon glyphicon-usd txtSubtituloIcon"></span>
+                                        </a>
+                                        ¿Cuánto debo pagar?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtParrafo">{{configParametros.tasas.servicioActualizacion|number}} (el monto se actualiza cada gestión en función a la UFV).</p>
+                                </div>
+                            </div>
+                            <div class="row separador"></div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtSubtitulo">
+                                        <a href="#" class="txtSubtituloIcon">
+                                            <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                        </a>
+                                        ¿Qué requisitos debo presentar?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <p class="txtParrafoResaltado"><span>REQUISITOS GENERALES</span></p>
+                                                    <p class="txtParrafo">
+                                                        <b>Persona Natural:</b>
+                                                    <ol class="txtParrafo">
+                                                        <li class="lia"> Carta dirigida a la Unidad de Catastro, señalando las modificaciones a realizar en el registro.</li>
+                                                        <li class="lia"> Documentos que respalden las modificaciones como: Fotografías, Informes Técnicos emitidos por el Gobierno Autónomo Municipal de La Paz, y otros que considere el administrado.</li>
+                                                        <li class="lia"> Cédula Identidad del o los propietario(s) (original).</li>
+                                                    </ol>
+                                                    </p>
+                                                    <p class="txtParrafo">
+                                                        <b>Persona Jurídica:</b>
+                                                        <br>
+                                                        Además de los requisitos previamente requeridos, adjuntar:
+                                                    <ol class="txtParrafo">
+                                                        <li class="lia"> Documento de constitución de la empresa (original).</li>
+                                                        <li class="lia"> Número de Identificación Tributaria (NIT) (original).</li>
+                                                    </ol>
+                                                    </p>
+                                                    <p class="txtParrafo">
+                                                        <b>En caso de ser apoderado:</b>
+                                                        <br>
+                                                        Además de los requisitos previamente requeridos, adjuntar:
+                                                    <ol class="txtParrafo">
+                                                        <li class="lia"> Poder de representación, sólo en caso que se actúe como apoderado o mandatario (original).</li>
+                                                        <li class="lia"> Cédula de Identidad del apoderado (original).</li>
+                                                    </ol>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row separador"></div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtSubtitulo">
+                                        <a href="#" class="txtSubtituloIcon">
+                                            <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                        </a>
+                                        ¿Cómo inicio mi trámite?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="txtParrafo">
+                                        Para iniciar este trámite, usted debe contratar a un profesional (arquitecto, ingeniero, topógrafo o geógrafo) para delegarle la atención de su trámite por este medio, eligiendo la opción <a class="enlace" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar)">SOLICITAR TRÁMITE</a> .
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align: right">
+                                    <button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;vistaPreliminar.acciones.seleccionar(vistaPreliminar.datosTecnicos)"><span class="glyphicon glyphicon-chevron-left"></span> Atrás</button>&nbsp;
+                                    <button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;vistaPreliminar.acciones.seleccionar(vistaPreliminar.inicio);"><span class="glyphicon glyphicon-home"></span> Volver al inicio</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.tramites.codigo" class="separadorTab">
+                            <div>
+                                <div class="panel ">
+                                    <table  ng-table="tblSolicitudesExterno"  class="table table-striped">
+                                        <tr ng-repeat="sol in $data  | filter:query " ng-style="solicitud.idEstado === '5' && {'background-color':'#fdeedc'} || solicitud.idEstado === '2' && {'background-color':'#ccf5f6'} || solicitud.idEstado === '4' && {'background-color':'#f8c7db'}" >
+                                            <td data-title="'Nro. Sitram'" >{{sol.sitramNro}}</td>
+                                            <td data-title="'Nro. Solicitud'" >{{sol.idCatastroTramiteOL}}</td>
+                                            <td data-title="'Código Catastral'" sortable="'codigoCatastral'">{{sol.codigoCatastral | FormatoSercat}}</td>
+                                            <td data-title="'Fecha de registro'" sortable="'fechaRegistro'" >{{sol.fechaRegistro | FormatoFecha }} </td>
+                                            <td data-title="'Profesional Externo'" sortable="'profesionalNombre'" >{{sol.profesionalNombre}}</td>
+                                            <td data-title="'Estado'" sortable="'estado'" >{{sol.estado}}</td>
+                                            <td data-title="'Acciones'">
+                                                <div   >
+                                                    <button class="btn btn-success" ng-show="sol.idInsFlujo != null && sol.idInsFlujo != undifined && sol.idInsFlujo != ''" ng-click="tmpSitram=sol.sitramNro;tmpSitramPwd=sol.sitramContrasena; solicitud.acciones.seguimientoSitram(tmpSitram,tmpSitramPwd)"><span class="glyphicon glyphicon-info-sign"></span> Seguimiento</button>
+                                                    <button class="btn btn-success" ng-show="sol.idEstado == 4" ng-click="solicitud.acciones.descargar(sol.piif)"><span class="glyphicon glyphicon-cloud-download"></span> Descargar Solicitud</button>
+                                                    <button class="btn btn-success" ng-show="sol.idEstado == 1 || sol.idEstado == 3 " ng-click="solicitud.acciones.obtener(sol.idCatastroTramiteOL,'delegar')"><span class="glyphicon glyphicon-share-alt"></span> Delegar solicitud</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align: right">
+                                    <button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;vistaPreliminar.acciones.seleccionar(vistaPreliminar.datosTecnicos)"><span class="glyphicon glyphicon-chevron-left"></span> Atrás</button>&nbsp;
+                                    <button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;vistaPreliminar.acciones.seleccionar(vistaPreliminar.inicio);"><span class="glyphicon glyphicon-home"></span> Volver al inicio</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.solicitar.codigo" class="separadorTab">
+                            <div>
+                                <div >
+                                    <form name = "frmSolicitud">
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <p class="txtParrafo txtParrafoResaltado">Para iniciar esta solicitud, usted debe coordinar con el profesional elegido, antes de iniciar su trámite por este medio.                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-sm-9">
+                                                <div >
+                                                    <button type="button" class="btn btn-primary btn-circle btn-lg">1<span style="font-size: 12px;">er</span></button><strong class="txtResaltado"> PASO. Elección del predio.</strong> &nbsp;<span class="glyphicon glyphicon-play txtParrafoResaltado"></span> <span class="txtParrafoResaltado"> Elija el predio que quiere actualizar</span>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <table class="table table-striped table-hover">
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>C&oacute;digo Catastral</th>
+                                                            <th>Zona</th>
+                                                            <th>Direcci&oacute;n</th>
+                                                        </tr>
+                                                        <tr ng-repeat="cc in predio.lista" ng-class="{'predioSeleccionado':solicitud.codigoCatastral == cc.CodigoCatastral}">
+                                                            <td>
+                                                                <button type="button" class="btn btn-info" tooltip="Seleccionar predio"  ng-show="solicitud.codigoCatastral != cc.CodigoCatastral" ng-click="predio.acciones.verificarTramiteEnProceso(cc.CodigoCatastral)"><span class="glyphicon glyphicon-ok"> </span> Seleccionar</button>
+                                                                <button type="button" class="btn btn-info" tooltip="Predio seleccionado"  ng-show="solicitud.codigoCatastral == cc.CodigoCatastral"><span class="glyphicon glyphicon-ok" ng-show="solicitud.codigoCatastral == cc.CodigoCatastral"> </span> SELECCIONADO</button>
+                                                            </td>
+                                                            <td width="150px">{{cc.CodigoCatastral | FormatoSercat}}</td>
+                                                            <td>{{cc.Zona}}</td>
+                                                            <td>{{cc.Direccion}}</td>
+                                                        </tr>
+                                                    </table>
+
+                                                    <div class="row" ng-show="solicitud.codigoCatastral != null && solicitud.codigoCatastral != undefined && solicitud.codigoCatastral != '' ">
+                                                        <div class="col-sm-12">
+                                                            <p class="txtParrafoResaltado">PREDIO ELEGIDO</p>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label>Zona</label>
+                                                                                <div class="controls" >
+                                                                                    <label class="sitv3TextBoxDisabled">{{solicitud.zona}}</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-5">
+                                                                            <div class="form-group">
+                                                                                <label>Dirección</label>
+                                                                                <div class="controls">
+                                                                                    <label class="sitv3TextBoxDisabled">Av/c. {{solicitud.direccion}} # {{solicitud.nroPuerta}}</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group"  >
+                                                                                <label>Código Catastral</label>
+                                                                                <div class="controls">
+                                                                                    <label class="sitv3TextBoxDisabled">{{solicitud.codigoCatastral | FormatoSercat}}</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="alert alert-success">
+                                                    <strong>AYUDA.</strong> Antes de iniciar su trámite, usted debe solicitar al profesional contratado, su número de registro nacional de colegiado.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div >
+                                                    <button type="button" class="btn btn-primary btn-circle btn-lg">2<span style="font-size: 12px;">do</span></button><strong class="txtResaltado"> PASO. Delegar solicitud a profesional externo.</strong> &nbsp;<span class="glyphicon glyphicon-play txtParrafoResaltado"></span> <span class="txtParrafoResaltado"> Introduzca el número de registro del profesional elegido:</span>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group" class="col-md-12">
+                                                                <label>Nº de Registro Nacional CAB</label>
+                                                                <div class="controls">
+                                                                    <div class="input-group" ng-class="{'has-error': frmSolicitud.cab.$error.required }">
+                                                                        <input type="text" class="form-control" ng-model="profesionalCab" placeholder="Buscar por Registro CAB" name="cab" required >
+                                                                        <div class="input-group-btn">
+                                                                            <button type="button" style="width: 200px" class="btn btn-info" title="Buscar profesional externo" ng-click="profesinalExterno.acciones.buscarPorNro(profesionalCab)">
+                                                                                <span class="glyphicon glyphicon-search"></span> Buscar profesional
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="help-block" style="color:red" ng-if="frmSolicitud.cab.$error.required">Requerido.</span>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <div class="col-md-12" align="left">
+                                                                <div class="form-group" class="col-md-12">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="alert alert-danger" ng-show="profesinalExterno.encontrado == false">
+                                                        No se encontró al profesional, verifique el Nº Nacional de Registro que introdujo. De estar correcto el Nº Nacional de Registro, el profesional no está registrado en el sistema, por lo que, él debe apersonarse a cualquier Plataforma Integral de Atención Ciudadana (PIAC) presentando su carnet de colegiado.
+                                                    </div>
+                                                    <div  ng-hide="solicitud.profesionalEmail == null || solicitud.profesionalEmail == undefined || solicitud.profesionalEmail ==''">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <label>Nº Registro Nacional CAB</label>
+                                                                    <div class="controls" >
+                                                                        <input  ng-model="solicitud.profesionalCab" class="form-control" type="text" required readonly>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group"  >
+                                                                    <label>Nombre del Profesional</label>
+                                                                    <div class="controls" ng-class="{'has-error': frmSolicitud.arquitecto.$error.required }">
+                                                                        <input  ng-model="solicitud.profesionalNombre" class="form-control" type="text" name="arquitecto" required readonly>
+                                                                    </div>
+                                                                    <span class="help-block" style="color:red" ng-if="frmSolicitud.arquitecto.$error.required">Requerido.</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <label>Teléfono Celular</label>
+                                                                    <div class="controls" ng-class="{'has-error': frmSolicitud.arquitectoFono.$error.required }">
+                                                                        <input  ng-model="solicitud.profesionalTelefono" class="form-control" type="text" name="arquitectoFono" required readonly>
+                                                                    </div>
+                                                                    <span class="help-block" style="color:red" ng-if="frmSolicitud.arquitectoFono.$error.required">Requerido.</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label>Correo Electrónico</label>
+                                                                    <div class="controls" ng-class="{'has-error': frmSolicitud.email.$error.required }">
+                                                                        <input  ng-model="solicitud.profesionalEmail" class="form-control" type="email" name="email" required readonly>
+                                                                    </div>
+                                                                    <span class="help-block" style="color:red" ng-if="frmSolicitud.email.$error.required">Requerido.</span>
+                                                                    <span class="help-block" style="color:red" ng-if="frmSolicitud.email.$invalid">Formato no valido.</span>
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12" style="text-align: right">
+                                                <button type="button" class="btn btn-info" ng-disabled="solicitud.profesionalEmail == null || solicitud.profesionalEmail == undefined || solicitud.profesionalEmail =='' || solicitud.codigoCatastral==null || solicitud.codigoCatastral==undefined || solicitud.codigoCatastral==''" data-toggle="modal" data-target="#modalConfirmacionEnvio"><span class="glyphicon glyphicon-envelope"></span> Delegar soliditud al profesional externo</button> &nbsp;
+                                                <button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;vistaPreliminar.acciones.seleccionar(vistaPreliminar.datosTecnicos)"><span class="glyphicon glyphicon-chevron-left"></span> Atrás</button>&nbsp;
+                                                <button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;vistaPreliminar.acciones.seleccionar(vistaPreliminar.inicio);"><span class="glyphicon glyphicon-home"></span> Volver al inicio</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+
+                                <div ng-show="false">
+
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="alert alert-success">
+                                                <label>Buscar en zona referencial.</label><br>
+                                                <span>Introduzca el nombre de la zona.</span>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Zona donde se encuentra el predio" ng-model="busZona" ng-enter="mapa.acciones.buscarZona(busZona)">
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-info-ligero" type="button" title="Limpiar" ng-click="mapa.acciones.busquedaLimpiar();">
+                                                            <i class="glyphicon glyphicon-remove"></i>
+                                                        </button>
+                                                        <button class="btn btn-info" type="button" title="Buscar zona referencial" style="font-family: sans-serif;border-left: 1px solid #ccc!important;" ng-click="mapa.acciones.buscarZona(busZona)">
+                                                            <i class="glyphicon glyphicon-search"> </i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <span style="padding: 2px">Ej.: miraflores</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="alert alert-orange">
+                                                <label>Buscar en Avenidas/Calles.</label><br>
+                                                <span>Introduzca el nombre de la Av. o calle.</span>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Avenida/calle" ng-model="busVia" ng-enter="mapa.acciones.buscarVia(busVia)">
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-info-ligero" type="button" title="Limpiar" ng-click="mapa.acciones.busquedaLimpiar();">
+                                                            <i class="glyphicon glyphicon-remove"></i>
+                                                        </button>
+                                                        <button class="btn btn-info" type="button" title="Buscar por avenidas/calles" style="font-family: sans-serif;border-left: 1px solid #ccc!important;" ng-click="mapa.acciones.buscarVia(busVia)">
+                                                            <i class="glyphicon glyphicon-search"> </i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <span style="padding: 2px">Ej.: René camacho</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="alert alert-info">
+                                                <label>Buscar por código catastral.</label><br>
+                                                <span>Introduzca el Código Catastral del predio.</span>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Código Catastral" ng-model="busCC"  ng-enter="mapa.acciones.buscarCC(busCC)">
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-info-ligero" type="button" title="¿Donde se encuentra el código catastral?"  data-toggle="modal" data-target="#divPopupAyudaCC">
+                                                            <i class="glyphicon glyphicon-question-sign"></i>
+                                                        </button>
+                                                        <button class="btn btn-info-ligero" type="button" title="Limpiar" style="font-family: sans-serif;border-left: 1px solid #ccc!important;" ng-click="mapa.acciones.busquedaLimpiar();">
+                                                            <i class="glyphicon glyphicon-remove"></i>
+                                                        </button>
+                                                        <button class="btn btn-info" type="button" title="Buscar por código catastral" style="font-family: sans-serif;border-left: 1px solid #ccc!important;" ng-click="mapa.acciones.buscarCC(busCC)">
+                                                            <i class="glyphicon glyphicon-search"> </i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <span style="padding: 2px">Ej.: 1-2-3, 001-0002-0003-0000, 001000200030000</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="alert alert-warning">
+                                                <label>Buscar por dirección.</label><br>
+                                                <span>Introduzca la dirección del predio.</span>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Dirección del predio" ng-model="busDir"  ng-enter="mapa.acciones.buscarDir(busDir)">
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-info-ligero" type="button" title="Limpiar" ng-click="mapa.acciones.busquedaLimpiar();">
+                                                            <i class="glyphicon glyphicon-remove"></i>
+                                                        </button>
+                                                        <button class="btn btn-info" type="button" title="Buscar por dirección" style="font-family: sans-serif;border-left: 1px solid #ccc!important;" ng-click="mapa.acciones.buscarDir(busDir)">
+                                                            <i class="glyphicon glyphicon-search"> </i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <span style="padding: 2px">Ej.: Ej: Sucre # 100, calle &quot;23&quot; # 15</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="padding-bottom: 10px;">
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-4">
+                                            <div class="btn-group btn-group-justified">
+                                                <a class="btn btn-info" ng-click="mapa.acciones.marcar()" title="Presione el botón y luego haga clic en el mapa para marcar el predio.">Marcar predio</a>
+                                                <a class="btn btn-info-ligero" ng-click="mapa.acciones.cancelar()">Cancelar marcar predio</a>
+                                                <!--<a class="btn btn-default" ng-click="mapa.acciones.busquedaLimpiar()">Limpiar </a>-->
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4"></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div id="mapPnlCnt" style="position: relative;">
+                                                <div id="map" style="border-radius: 10px; border: 1px solid #ccc;width: 100%;height: 500px;">  </div>
+                                                <div style="position: relative;">
+                                                    <div id="escala_txt"> </div>
+                                                    <div id="coords_txt" style="float: right"> </div>
+                                                </div>
+                                                <div id="wmsinfo"> </div>
+                                                <!--
+                                                <div id="mapResultado" style="position: absolute; left: 0px; top:0px; width: 100px;height: 100px; ">
+
+                                                </div>
+                                                -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <!-- Bandeja -->
+            <div ng-show="flujoSolicitud.paso =='bandeja'" class="ibox-content">
+                <div>
+                    <p>
+                        Si desea solicitar una actualización de Registro Catastral de su inmueble, presione el botón <strong>SOLICITAR ACTUALIZACIÓN DE REGISTRO CATASTRAL</strong>.
+                        <br>
+                        <!--Para m&aacute;s informaci&oacute;n presione el bot&oacute;n GU&Iacute;A DE TR&Aacute;MITE.-->
+                    </p>
+                </div>
+
+                <div id="divBuscador" class="row" style="padding: 20px;">
+
+                    <div class="col-sm-6">
+                        <button class="btn btn-success" ng-click="flujoSolicitud.acciones.inicio()" ><span></span>Solicitar Actualización de Registro Catastral</button>
+                        <button class="btn btn-info" data-toggle="modal" data-target="#divPopupTutorial"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Guía"  ></span> Guía de trámite</button>
+                    </div>
+                    <div class="col-sm-3">
+
+                    </div>
+                    <div class="col-sm-3">
+                        <!--<button class="btn btn-success" data-toggle="modal" data-target="#divPopup2" ng-click="cambiarImagen(0)"><span aria-hidden="true" title="Donde encontrar el c%oacute;digo catastral" ></span>Guía de trámite</button>-->
+                    </div>
+
+                </div>
+
+                <div id= "mostrar" class="ibox-title">
+                    <a  class="" ng-click="solicitud.acciones.listar()"><h5>MIS TR&Aacute;MITES</h5></a>
+                    &nbsp;&nbsp;
+                    <button type="button" class="close" style="font-size:20px; color: #222831; opacity: 1 !important" ng-click="solicitudesCiudadano()"><span class="fa fa-refresh fa-spin" title="Actualizar"></span></button><!--Cambios-->
+                </div>
+                <div class="ibox-content" >
+                    <div>
+                        <div class="panel ">
+                            <table  ng-table="tblSolicitudes"  class="table table-striped">
+                                <tr ng-repeat="sol in $data  | filter:query " ng-style="solicitud.idEstado === '5' && {'background-color':'#fdeedc'} || solicitud.idEstado === '2' && {'background-color':'#ccf5f6'} || solicitud.idEstado === '4' && {'background-color':'#f8c7db'}" >
+                                    <td data-title="'Nro. Sitram'" >{{sol.sitramNro}}</td>
+                                    <td data-title="'Nro. Solicitud'" >{{sol.idCatastroTramiteOL}}</td>
+                                    <td data-title="'Código Catastral'" sortable="'codigoCatastral'">{{sol.codigoCatastral | FormatoSercat}}</td>
+                                    <td data-title="'Fecha de registro'" sortable="'fechaRegistro'" >{{sol.fechaRegistro | FormatoFecha }} </td>
+                                    <td data-title="'Profesional Externo'" sortable="'profesionalNombre'" >{{sol.profesionalNombre}}</td>
+                                    <td data-title="'Estado'" sortable="'estado'" >{{sol.estado}}</td>
+                                    <td data-title="'Acciones'">
+                                        <div id="divAcciones"  >
+                                            <button class="btn btn-success" ng-show="sol.idInsFlujo != null && sol.idInsFlujo != undifined && sol.idInsFlujo != ''" ng-click="solicitud.acciones.seguimientoFlujo(sol)"><span class="glyphicon glyphicon-info-sign"></span> Seguimiento</button>
+                                            <button class="btn btn-success" ng-show="sol.idEstado == 4" ng-click="solicitud.acciones.descargar(sol.piif)"><span class="glyphicon glyphicon-cloud-download"></span> Descargar Solicitud</button>
+
+                                            <button class="btn btn-success" ng-show="sol.idEstado == 1 || sol.idEstado == 3 " ng-click="solicitud.acciones.obtener(sol.idCatastroTramiteOL,'delegar')"><span class="glyphicon glyphicon-share-alt"></span> Delegar solicitud</button>
+
+                                            <!--<button class="btn btn-success" ng-show="sol.idEstado == 1 || sol.idEstado == 2" ng-click="flujoSolicitud.acciones.paso5()">Delegar Trámite</button>-->
+                                            <!--
+                                            <button class="btn btn-warning" ng-show="VerificarDespliegueFUM(solicitud)" data-toggle="modal" data-target="#divPopup4" ng-click="ImprimirProforma(solicitud.f)"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Imprimir proforma de pago" ></span> Imprimir Proforma de Pago (FUM)</button>
+                                            <button class="btn btn-warning" ng-show="VerificarDespliegueEpago(solicitud)" ng-click="continuarPagoOL(solicitud)"><span class="glyphicon glyphicon-usd" aria-hidden="true" title="Imprimir proforma de pago" ></span> Continuar pago en línea</button>
+                                            <button class="btn btn-info" ng-show="VerificarDespliegueCC(solicitud)" data-toggle="modal" data-target="#divPopup7" ng-click="DeplegarDpl(solicitud)"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Imprimir Certificado" ></span> Imprimir Duplicado del Certificado</button>
+                                            -->
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- inicio - mensajes-->
+            <div ng-show="flujoSolicitud.paso =='inicio'" class="ibox-content">
+                <div>
+                    <div style="padding: 5px;    border-bottom: 6px solid #ccc!important;    border-color: #00b3ba!important;">
+                        <div class="row">
+                            <div class="col-sm-8" style="padding: 12px;">
+                                <strong style="font-size: 15px;">Iniciando solicitud. </strong>
+                            </div>
+                            <div class="col-sm-4" style="    padding: 12px;text-align: right;" >
+
+                                <button type="button" class="btn btn-info" ng-click="flujoSolicitud.acciones.cancelar()"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                                &nbsp;
+                                <button type="button" class="btn btn-success" ng-click="flujoSolicitud.acciones.paso1()">Continuar <span class="glyphicon glyphicon-arrow-right"></span> </button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            Ud. Puede realizar las siguientes actualizaciones de manera inmediata:
+                            <br><br>
+                            <ul>
+                                <li>Cambio Datos del Propietario</li>
+                                <li>Cambio Datos Legales</li>
+                                <li>Cambio Número de Puerta</li>
+                                <li>Observaciones Técnicas Certificado Catastral</li>
+                                <li>Actualización Valoración Catastral</li>
+                                <li>Actualización Valoración Catastral</li>
+                                <li>Cambio Orden de Vía</li>
+                                <li>Cambio Material en Vía</li>
+
+                            </ul>
+
+                            En las siguientes plataformas:
+                            <br><br>
+                            <ol>
+                                <li> Planta Baja Edif. Torre Vicenta - Av. Argentina No 1843 esq. Calle Diaz Romero, Miraflores.</li>
+                                <li> Planta Baja Edif. Atlanta Av. Gral. Jose Ballivian No 720 entre calles 13 y 14, Calacoto.</li>
+                                <li> En el Mercado Camacho, en la PIAC Centro- Calle Camacho y Bueno.</li>
+                            </ol>
+
+                            <br><br>
+                            <b>Si el tipo de actualización que desea realizar no está en el listado anterior, puede continuar con la solicitud presionando el botón “Continuar” en la parte superior.</b>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <!-- Paso 1 - Seleccion de predio -->
+            <div ng-show="flujoSolicitud.paso =='seleccionPredio'" class="ibox-content">
+                <div>
+                    <div style="padding: 5px;    border-bottom: 6px solid #ccc!important;    border-color: #00b3ba!important;">
+                        <div class="row">
+                            <div class="col-sm-8">
+                               <strong style="font-size: 15px;color:#00b3ba!important;">&nbsp;CREACIÓN Y DELEGACIÓN DE LA SOLICITUD AL PROFESIONAL EXTERNO</strong>
+                            </div>
+                            <div class="col-sm-4" style="text-align: right; " >
+                                <button type="button" class="btn btn-info" ng-click="flujoSolicitud.acciones.cancelar()"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+					<!--
+                    <div class="row">
+                        <div class="col-sm-4" style="cursor: pointer" ng-click="flujoSolicitud.opcionSeleccionPredio = 'A'">
+                            <div class="alert " style="margin-bottom: 2px" ng-class="{'alert-info-dark':flujoSolicitud.opcionSeleccionPredio == 'A', 'alert-info-lite':flujoSolicitud.opcionSeleccionPredio != 'A'}">
+                                <span class="glyphicon glyphicon-ok" style="font-size: 15px;" ng-show="flujoSolicitud.opcionSeleccionPredio == 'A'"></span>&nbsp;
+                                <strong style="font-size: 15px">Opción A: </strong> <span style="font-size: 14px">Introducir dirección referencial.</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4" style="cursor: pointer" ng-click="flujoSolicitud.opcionSeleccionPredio = 'B'">
+                            <div class="alert " style="margin-bottom: 2px" ng-class="{'alert-info-dark':flujoSolicitud.opcionSeleccionPredio == 'B', 'alert-info-lite':flujoSolicitud.opcionSeleccionPredio != 'B'}">
+                                <span class="glyphicon glyphicon-ok" style="font-size: 15px;" ng-show="flujoSolicitud.opcionSeleccionPredio == 'B'"></span>&nbsp;
+                                <strong style="font-size: 15px">Opción B: </strong> <span style="font-size: 14px">Seleccionar predio del ciudadano.</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4" style="cursor: pointer" ng-click="flujoSolicitud.opcionSeleccionPredio = 'C'">
+                            <div class="alert "  style="margin-bottom: 2px" ng-class="{'alert-info-dark':flujoSolicitud.opcionSeleccionPredio == 'C', 'alert-info-lite':flujoSolicitud.opcionSeleccionPredio != 'C'}">
+                                <span class="glyphicon glyphicon-ok" style="font-size: 15px;" ng-show="flujoSolicitud.opcionSeleccionPredio == 'C'"></span>&nbsp;
+                                <strong style="font-size: 15px">Opción C: </strong> <span style="font-size: 14px">Buscar el predio en el mapa.</span>
+                            </div>
+                        </div>
+                    </div>
+					-->
+                    <div ng-show="flujoSolicitud.opcionSeleccionPredio == 'A'" style="padding: 3px; border-top: 10px #b0daec solid; border-right: 10px #b0daec solid;">
+                        <br>
+                        <p>Introduzca la dirección referencial del predio, con el cual el profesional externo podrá ubicar el predio en el mapa del municipio.</p>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group"  >
+                                    <label>Zona referencial</label>
+                                    <div class="controls" ng-class="{'has-error': solicitud.zona==null || solicitud.zona==undefined || solicitud.zona=='' }">
+                                        <input  ng-model="solicitud.zona" class="form-control" type="text" name="zona" required >
+                                    </div>
+                                    <span class="help-block" style="color:red" ng-if="solicitud.zona==null || solicitud.zona==undefined || solicitud.zona==''">Requerido.</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Avenida/Calle/otros.</label>
+                                    <div class="controls" ng-class="{'has-error': solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion=='' }">
+                                        <input  ng-model="solicitud.direccion" class="form-control" type="text" name="direccion" required >
+                                    </div>
+                                    <span class="help-block" style="color:red" ng-if="solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion==''">Requerido.</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Nº de puerta</label>
+                                    <div class="controls" >
+                                        <input  ng-model="solicitud.nroPuerta" class="form-control" name="nroPuerta"  >
+                                    </div>
+                                    <!--<span class="help-block" style="color:red" ng-if="solicitud.nroPuerta==null || solicitud.nroPuerta==undefined || solicitud.nroPuerta==''">Requerido.</span>-->
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align: right; ">
+                                    <button type="button" class="btn btn-success" ng-click="flujoSolicitud.acciones.paso5()" ng-disabled="(solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion=='') || (solicitud.zona==null || solicitud.zona==undefined || solicitud.zona=='')">Continuar <span class="glyphicon glyphicon-arrow-right"></span> </button>
+                                    &nbsp;&nbsp;&nbsp;
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div ng-show="flujoSolicitud.opcionSeleccionPredio == 'B'" style="padding: 10px; ">
+                        <form>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div >
+                                        <h4>SELECCIÓN DEL PREDIO</h4>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <p>
+                                            Sr. Usuario, seleccione el predio de la lista de bajo, del cual desea realizar la actualización de registro catastral, presionando el botón “Seleccionar”.
+                                        </p>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div >
+                                        <h4>PROFESIONAL EXTERNO</h4>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <p>Busqué al profesional externo introduciendo el Nro. de Registro Nacional CAB del profesional y luego presioné el botón “Buscar Profesional”</p>
+                                        <br>
+                                        <div class="alert alert-info">
+                                            <strong>Importante!</strong>    Previamente deberá coordinar con el profesional externo y solicitar su Nº de Registro Nacional CAB para poder realizar la búsqueda en el sistema.
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group" class="col-md-12">
+                                                    <label>Nº de Registro Nacional CAB</label>
+                                                    <div class="controls">
+                                                        <div class="input-group" ng-class="{'has-error': frmSolicitud.cab.$error.required }">
+                                                            <input type="text" class="form-control" ng-model="solicitud.profesionalCab" placeholder="Buscar por Registro CAB" name="cab" required >
+                                                            <div class="input-group-btn">
+                                                                <button type="button" class="btn btn-info" title="Buscar profesional externo" ng-click="profesinalExterno.acciones.buscarPorNro(solicitud.profesionalCab)">
+                                                                    <span class="glyphicon glyphicon-search"></span> Buscar profesional
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <span class="help-block" style="color:red" ng-if="frmSolicitud.cab.$error.required">Requerido.</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group" class="col-md-12">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="alert alert-danger" ng-show="profesinalExterno.encontrado == false">
+                                            No se encontró al profesional, verifique el Nº Nacional de registro que introdujo. De estar correcto el Nº Nacional de registro el profesional no está registrado en el sistema, por lo que el profesional debe apersonarse a cualquiera de las plataformas PIAC y registrarse presentado su Carnet de Registro Colegiado.
+                                        </div>
+                                        <div  ng-hide="solicitud.profesionalEmail == null || solicitud.profesionalEmail == undefined || solicitud.profesionalEmail ==''">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group"  >
+                                                        <label>Nombre del Profesional</label>
+                                                        <div class="controls" ng-class="{'has-error': frmSolicitud.arquitecto.$error.required }">
+                                                            <input  ng-model="solicitud.profesionalNombre" class="form-control" type="text" name="arquitecto" required readonly>
+                                                        </div>
+                                                        <span class="help-block" style="color:red" ng-if="frmSolicitud.arquitecto.$error.required">Requerido.</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Teléfono Celular</label>
+                                                        <div class="controls" ng-class="{'has-error': frmSolicitud.arquitectoFono.$error.required }">
+                                                            <input  ng-model="solicitud.profesionalTelefono" class="form-control" type="text" name="arquitectoFono" required readonly>
+                                                        </div>
+                                                        <span class="help-block" style="color:red" ng-if="frmSolicitud.arquitectoFono.$error.required">Requerido.</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Correo Electrónico</label>
+                                                        <div class="controls" ng-class="{'has-error': frmSolicitud.email.$error.required }">
+                                                            <input  ng-model="solicitud.profesionalEmail" class="form-control" type="email" name="email" required readonly>
+                                                        </div>
+                                                        <span class="help-block" style="color:red" ng-if="frmSolicitud.email.$error.required">Requerido.</span>
+                                                        <span class="help-block" style="color:red" ng-if="frmSolicitud.email.$invalid">Formato no valido.</span>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12" style="padding: 12px;text-align: right;" >
+                                    <button type="button" class="btn btn-info" ng-disabled="solicitud.profesionalEmail == null || solicitud.profesionalEmail == undefined || solicitud.profesionalEmail =='' || solicitud.codigoCatastral==null || solicitud.codigoCatastral==undefined || solicitud.codigoCatastral==''" data-toggle="modal" data-target="#modalConfirmacionEnvio"><span class="glyphicon glyphicon-envelope"></span> Delegar soliditud al profesional externo</button>
+                                </div>
+                            </div>
+
+                        </form>
+
+
+
+                    </div>
+                    <div ng-show="flujoSolicitud.opcionSeleccionPredio == 'C'" style="padding: 3px; border-top: 10px #b0daec solid; border-left: 10px #b0daec solid;">
+                        <div id="results">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="alert alert-success">
+                                    <label>Buscar en zona referencial.</label><br>
+                                    <span>Introduzca el nombre de la zona.</span>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Zona donde se encuentra el predio" ng-model="busZona" ng-enter="mapa.acciones.buscarZona(busZona)">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-info-ligero" type="button" title="Limpiar" ng-click="mapa.acciones.busquedaLimpiar();">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </button>
+                                            <button class="btn btn-info" type="button" title="Buscar zona referencial" style="font-family: sans-serif;border-left: 1px solid #ccc!important;" ng-click="mapa.acciones.buscarZona(busZona)">
+                                                <i class="glyphicon glyphicon-search"> </i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <span style="padding: 2px">Ej.: miraflores</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="alert alert-orange">
+                                    <label>Buscar en Avenidas/Calles.</label><br>
+                                    <span>Introduzca el nombre de la Av. o calle.</span>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Avenida/calle" ng-model="busVia" ng-enter="mapa.acciones.buscarVia(busVia)">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-info-ligero" type="button" title="Limpiar" ng-click="mapa.acciones.busquedaLimpiar();">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </button>
+                                            <button class="btn btn-info" type="button" title="Buscar por avenidas/calles" style="font-family: sans-serif;border-left: 1px solid #ccc!important;" ng-click="mapa.acciones.buscarVia(busVia)">
+                                                <i class="glyphicon glyphicon-search"> </i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <span style="padding: 2px">Ej.: René camacho</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="alert alert-info">
+                                    <label>Buscar por código catastral.</label><br>
+                                    <span>Introduzca el Código Catastral del predio.</span>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Código Catastral" ng-model="busCC"  ng-enter="mapa.acciones.buscarCC(busCC)">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-info-ligero" type="button" title="¿Donde se encuentra el código catastral?"  data-toggle="modal" data-target="#divPopupAyudaCC">
+                                                <i class="glyphicon glyphicon-question-sign"></i>
+                                            </button>
+                                            <button class="btn btn-info-ligero" type="button" title="Limpiar" style="font-family: sans-serif;border-left: 1px solid #ccc!important;" ng-click="mapa.acciones.busquedaLimpiar();">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </button>
+                                            <button class="btn btn-info" type="button" title="Buscar por código catastral" style="font-family: sans-serif;border-left: 1px solid #ccc!important;" ng-click="mapa.acciones.buscarCC(busCC)">
+                                                <i class="glyphicon glyphicon-search"> </i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <span style="padding: 2px">Ej.: 1-2-3, 001-0002-0003-0000, 001000200030000</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="alert alert-warning">
+                                    <label>Buscar por dirección.</label><br>
+                                    <span>Introduzca la dirección del predio.</span>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Dirección del predio" ng-model="busDir"  ng-enter="mapa.acciones.buscarDir(busDir)">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-info-ligero" type="button" title="Limpiar" ng-click="mapa.acciones.busquedaLimpiar();">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </button>
+                                            <button class="btn btn-info" type="button" title="Buscar por dirección" style="font-family: sans-serif;border-left: 1px solid #ccc!important;" ng-click="mapa.acciones.buscarDir(busDir)">
+                                                <i class="glyphicon glyphicon-search"> </i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <span style="padding: 2px">Ej.: Ej: Sucre # 100, calle &quot;23&quot; # 15</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-bottom: 10px;">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4">
+                                <div class="btn-group btn-group-justified">
+                                    <a class="btn btn-info" ng-click="mapa.acciones.marcar()" title="Presione el botón y luego haga clic en el mapa para marcar el predio.">Marcar predio</a>
+                                    <a class="btn btn-info-ligero" ng-click="mapa.acciones.cancelar()">Cancelar marcar predio</a>
+                                    <!--<a class="btn btn-default" ng-click="mapa.acciones.busquedaLimpiar()">Limpiar </a>-->
+                                </div>
+                            </div>
+                            <div class="col-sm-4"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="mapPnlCnt" style="position: relative;">
+                                    <div id="map" style="border-radius: 10px; border: 1px solid #ccc;width: 100%;height: 500px;">  </div>
+                                    <div style="position: relative;">
+                                        <div id="escala_txt"> </div>
+                                        <div id="coords_txt" style="float: right"> </div>
+                                    </div>
+                                    <div id="wmsinfo"> </div>
+                                    <!--
+                                    <div id="mapResultado" style="position: absolute; left: 0px; top:0px; width: 100px;height: 100px; ">
+
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Paso 5 - Delegacion a profesional -->
+            <div ng-show="flujoSolicitud.paso =='delegacionProfesional'" class="ibox-content">
+                <div>
+                    <div style="padding: 5px;    border-bottom: 6px solid #ccc!important;    border-color: #00b3ba!important;">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <button type="button" class="btn btn-primary btn-circle btn-lg">2<span style="font-size: 12px;">do.</span></button> <strong style="font-size: 15px;">&nbsp;Paso. </strong>Delegar solicitud a profesional externo
+                            </div>
+                            <div class="col-sm-4" style="    padding: 10px;text-align: right;" >
+                                <button type="button" class="btn btn-info" ng-click="flujoSolicitud.acciones.atras('seleccionPredio')"><span class="glyphicon glyphicon-chevron-left"></span> Atrás</button>
+                                &nbsp;
+                                <button type="button" class="btn btn-info" ng-click="flujoSolicitud.acciones.cancelar()"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+
+                    <div>
+                        <div >
+                            <h4>PREDIO SELECCIONADO</h4>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group"  >
+                                                <label>Código Catastral</label>
+                                                <div class="controls">
+                                                    <label class="sitv3TextBoxDisabled">{{solicitud.codigoCatastral | FormatoSercat}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label>Zona</label>
+                                                <div class="controls" >
+                                                    <label class="sitv3TextBoxDisabled">{{solicitud.zona}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Dirección</label>
+                                                <div class="controls">
+                                                    <label class="sitv3TextBoxDisabled">Av/c. {{solicitud.direccion}} # {{solicitud.nroPuerta}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group"  >
+                                                <label>Planimetría</label>
+                                                <div class="controls">
+                                                    <label class="sitv3TextBoxDisabled"><span ng-show="solicitud.idCodPlanimetria != null">{{solicitud.descPlanimetria}} ({{solicitud.idCodPlanimetria}})</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label>Zona de riesgo</label>
+                                                <div class="controls" >
+                                                    <label class="sitv3TextBoxDisabled"><span ng-show="solicitud.riesgo != null">{{solicitud.riesgo}}</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Macrodistrito</label>
+                                                <div class="controls">
+                                                    <label class="sitv3TextBoxDisabled"><span ng-show="solicitud.macrodistrito != null">{{solicitud.macrodistrito}} ({{solicitud.idMacrodistrito}})</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div >
+                                                <div id="map2" style="border-radius: 10px; border: 1px solid #ccc;width: 100%;height: 200px;">  </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+                    <div>
+                        <div >
+                            <h4>DATOS PROFESIONAL EXTERNO</h4>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" class="col-md-12">
+                                        <label>Registro Nacional CAB</label>
+                                        <div class="controls">
+                                            <div class="input-group" ng-class="{'has-error': frmSolicitud.cab.$error.required }">
+                                                <input type="text" class="form-control" ng-model="solicitud.profesionalCab" placeholder="Buscar por Registro CAB" name="cab" required readonly>
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-info" title="Buscar profesional externo" data-toggle="modal" data-target="#divPopupListaArquitectos">
+                                                        <span class="glyphicon glyphicon-search"></span> Buscar profesional externo
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <span class="help-block" style="color:red" ng-if="frmSolicitud.cab.$error.required">Requerido.</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12" align="left">
+                                        <div class="form-group" class="col-md-12">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <form name = "frmSolicitud">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group"  >
+                                            <label>Nombre del Profesional</label>
+                                            <div class="controls" ng-class="{'has-error': frmSolicitud.arquitecto.$error.required }">
+                                                <input  ng-model="solicitud.profesionalNombre" class="form-control" type="text" name="arquitecto" required readonly>
+                                            </div>
+                                            <span class="help-block" style="color:red" ng-if="frmSolicitud.arquitecto.$error.required">Requerido.</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Teléfono Celular</label>
+                                            <div class="controls" ng-class="{'has-error': frmSolicitud.arquitectoFono.$error.required }">
+                                                <input  ng-model="solicitud.profesionalTelefono" class="form-control" type="text" name="arquitectoFono" required readonly>
+                                            </div>
+                                            <span class="help-block" style="color:red" ng-if="frmSolicitud.arquitectoFono.$error.required">Requerido.</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Correo Electrónico</label>
+                                            <div class="controls" ng-class="{'has-error': frmSolicitud.email.$error.required }">
+                                                <input  ng-model="solicitud.profesionalEmail" class="form-control" type="email" name="email" required readonly>
+                                            </div>
+                                            <span class="help-block" style="color:red" ng-if="frmSolicitud.email.$error.required">Requerido.</span>
+                                            <span class="help-block" style="color:red" ng-if="frmSolicitud.email.$invalid">Formato no valido.</span>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12" style="    padding: 12px;text-align: right;" ng-show="frmSolicitud.$valid " >
+                            <!--<button type="button" class="btn btn-info" ng-click="solicitud.acciones.guardarEnviar()"><span class="glyphicon glyphicon-envelope"></span> Delegar soliditud al profesional externo</button>-->
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalConfirmacionEnvio"><span class="glyphicon glyphicon-envelope"></span> Delegar soliditud al profesional externo</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Modal : Lista Arquitectos-->
+    <div id="divPopupListaArquitectos" class="modal fade" tabindex="-1" data-focus-on="input:first" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">Lista de Profesionales</h3>
+                </div>
+                <div class="modal-body">
+                    <form name="searchForm" >
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Ingrese el nombre del profesional o Nro. CAB" name="searchTerm" ng-model="profesinalExterno.filtro" required=required ng-keyup="profesinalExterno.acciones.filtrar()"/>
+                            <span class="input-group-btn">
+                                <!--
+                                  <button class="btn btn-info " type="submit" ng-disabled="searchForm.$invalid" title="Buscar">
+                                      <span class="glyphicon glyphicon-search"></span>
+                                  </button>
+                                  -->
+                                  <button class="btn btn-info " ng-click="profesinalExterno.acciones.limpiarFiltro()" title="Limpiar">
+                                      <span class="glyphicon glyphicon-remove" ></span>.
+                                  </button>
+                            </span>
+                        </div>
+                    </form>
+                    <br>
+                    <table  ng-table="tblProfesionalExterno"  class="table table-striped" show-filter="false" >
+                        <tr ng-repeat="arqui in $data "  >
+                            <td data-title="'Nombre Arquitecto'" sortable="'arquitectoNombre'" filter="{'arquitectoNombre':'text'}">{{arqui.arquitectoNombre}}</td>
+                            <td data-title="'Registro Nacional CAB'" sortable="'registroNacionalCAB'" filter="{'registroNacionalCAB':'text'}">{{arqui.registroNacionalCAB}}</td>
+                            <td data-title="'Teléfono'" sortable="'telefonoCelular'" filter="{'telefonoCelular':'text'}">{{arqui.telefonoCelular}}</td>
+                            <td data-title="'Correo Electrónico'" sortable="'correoElectronico'" filter="{'correoElectronico':'text'}">{{arqui.correoElectronico}}</td>
+                            <td data-title="'Acciones'">
+                                <div   >
+                                    <button class="btn btn-info" data-dismiss="modal" ng-click="profesinalExterno.acciones.seleccionar(arqui)">Seleccionar</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal : Mensaje matriz habilitada-->
+    <div id="divPopupMatrizHabilitada" class="modal fade" tabindex="-1" data-focus-on="input:first" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">Edificio Habilitado</h3>
+                </div>
+                <div class="modal-body">
+                    Sr. Usuario el edificio ya se encuentra habilitado en el sistema catastral, motivo por el cual usted puede realizar su registro de manera directa a través del Servicio Municipal de Catastro, apersonándose a las plataformas de atención al ciudadano.
+                    <br><br>
+                    Plataforma Integral de Atención al Ciudadano:<br><br>
+                    <ul>
+                        <li>“PIAC CAMACHO”, ubicado en el Mercado Camacho, Sub Suelo 1 (avenida Libertador Simón Bolívar esquina calle Bueno); en oficinas de la Plataforma Integral de Atención al Ciudadano</li>
+                        <li>“PIAC MIRAFLORES”, ubicada en el edificio “Torre Vicenta” (avenida Argentina esquina calle Díaz Romero de la zona Miraflores); o en oficinas de la Plataforma Integral de Atención al Ciudadano</li>
+                        <li>“PIAC SUR”, ubicado en el edificio “Atlanta” (avenida Ballivian entre las calles 13 y 14 de la zona Calacoto)</li>
+                    </ul>
+                    <br>
+                    Adjuntando los siguientes requisitos:<br><br>
+                    <ul>
+                        <li>Tarjeta de propiedad o folio real</li>
+                        <li>Testimonio de propiedad</li>
+                        <li>Cédula de identidad de los propietarios</li>
+                        <li>Boleta de impuestos</li>
+                        <li>Fotografías de la fachada</li>
+                        <li>Planos  de fraccionamiento de la Unidad (de no contar puede apersonarse a solicitar fotocopia legalizada en la plataforma de la UADT ubicada en planta baja del edificio Tobia)</li>
+                    </ul>
+
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Seguimiento Flujo-->
+    <div id="divPopupSeguimiento" class="modal fade" tabindex="-1" data-focus-on="input:first" role="dialog">
+        <div class="modal-dialog" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title"> Seguimiento del Trámite</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-inline">
+                                <div class="form-group" style="padding-right: 10px;">
+                                    <label >Nº de Sitram:</label>
+                                    <input type="text" class="form-control" id="seguimientoNroSolicitud" ng-model="tmpSitram">
+                                </div>
+                                <div class="form-group" style="padding-right: 10px;">
+                                    <label >Contraseña:</label>
+                                    <input type="password" class="form-control" id="seguimientoNroSolicitudPwd" ng-model="tmpSitramPwd">
+                                </div>
+                                <button type="button" class="btn btn-default" ng-click="solicitud.acciones.seguimientoSitram(tmpSitram,tmpSitramPwd)">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="table-responsive" ng-show="listaSeguimientoSitram.length>0">
+
+                        <p><strong>ASUNTO:</strong> {{listaSeguimientoSitram[0].asunto}}</p>
+
+                        <table class="table">
+                            <tr><td style="width: 150px; font-weight: bold;">#</td><td>1</td></tr>
+                            <tr><td style="width: 150px;">UBICACIÓN</td><td>{{listaSeguimientoSitram[0].tptrnombre}}</td></tr>
+                            <tr><td style="width: 150px;">FECHA</td><td>{{listaSeguimientoSitram[0].tsd}}</td></tr>
+                        </table>
+
+                        <br>
+
+                        <strong>ESTADO DEL TRÁMITE</strong>
+                        <hr>
+                        <table class="table table-bordered table-hover table-responsive table-striped">
+                            <tr ng-repeat="item in listaSeguimientoSitram">
+                                <td>
+                                    <table>
+                                        <tr><td style="width: 150px; font-weight: bold;">#</td><td>{{$index + 1}}</td></tr>
+                                        <tr><td style="width: 150px;">UBICACIÓN</td><td>{{item.tno}}</td></tr>
+                                        <tr><td style="width: 150px;">FECHA</td><td>{{item.tsd}}</td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal confirmacion de delegacion tramite-->
+    <div id="modalConfirmacionEnvio" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delegar solicitud a profesional externo</h4>
+                </div>
+                <div class="modal-body">
+                    <p style="font-size: 18px;">¿Sr. Usuario está seguro de delegar la solicitud al profesional externo <b>{{solicitud.profesionalNombre}}</b> ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="solicitud.acciones.guardarEnviar()">SI</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">NO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 6 Ayuda cod cat-->
+    <div id="divPopupAyudaCC" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="true">
+        <div class="modal-dialog" >
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Código Catastral</h4>
+                </div>
+                <div class="modal-body">
+                    <div >
+                        <img src="../catastro/img/catastroHelp.png" style="width: 100%; height: 100%" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Guía de Tramite  -->
+    <div id="divPopupTutorial"  class="modal fade" role="dialog" tabindex="-1" data-focus-on="input:first">
+        <div class="modal-dialog" >
+            &lt;!&ndash; Modal content&ndash;&gt;
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">Gu&iacute;a de tr&aacute;mite.</h3>
+                </div>
+                <div class="modal-body">
+                    <img src="{{srcTutorial}}" class="img-responsive" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

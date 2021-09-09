@@ -658,3 +658,127 @@ dataSITOL.prototype.solicitudPago = function (vidSolicitudPago,vidTramite,vfum,v
 };
 
 //------------------------------------
+
+
+// ------------------------
+//  REGISTRO CATASTRAL
+// ------------------------
+
+dataSITOL.prototype.catListaSolicitudes = function (numDocumento,idCatastroTipoRegistro,idCatastroTipoServicio,functionResp)
+{
+    wsMethodSITOL = "/catListaSolicitudes";
+    typeCall = "post";
+    dataParams = {
+        "numDocumento" : numDocumento,
+        "idCatastroTipoRegistro":idCatastroTipoRegistro,
+        "idCatastroTipoServicio":idCatastroTipoServicio
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+dataSITOL.prototype.catObtenerSolicitud = function (idCatastroTramiteOL,functionResp)
+{
+    wsMethodSITOL = "/catObtenerSolicitud";
+    typeCall = "post";
+    dataParams = {
+        "idCatastroTramiteOL" : idCatastroTramiteOL
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+dataSITOL.prototype.catObtenerParam = function (codParam,functionResp)
+{
+    wsMethodSITOL = "/catObtenerParam";
+    typeCall = "post";
+    dataParams = {
+        "codParametro" : codParam
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+
+dataSITOL.prototype.catSolicitudReg = function (idCatastroTramiteOL,wkt,idTipoRegimen, idCatastroTipoTramite, solicitante, idTipoDocumento, numDocumento, idExpedido, telefonoSolicitante, emailSolicitante, tipoPersona, profesionalNombre, profesionalEmail, profesionalTelefono, profesionalCab,idmacroDistrito,iddistritoMunicipal,codigoCatastral,direccion,zona,nroPuerta,edificio,idCodPlanimetria,descPlanimetria,idTipoLote, conCertificado,carTerrPendiente,serBasAlcantarillado,serBasEnergiaElectrica,serBasTelefono,serBasAguaPotable,serBasAlumbradoPublico,serBasGasDomiciliario,tieneMensura,idInsFlujoAnterior,riesgo,oid,idCatastroTipoServicio, idCatastroTipoRegistro,msgReqLevantamiento,
+                                                functionResp)
+{
+    wsMethodSITOL = "/catSolicitudReg";
+    typeCall = "post";
+    dataParams = {
+
+        "idCatastroTramiteOL" : idCatastroTramiteOL,
+        //"idInsFlujo" : idInsFlujo,
+        "wkt" : wkt,
+        "idTipoRegimen" : idTipoRegimen,
+        "idCatastroTipoTramite" : idCatastroTipoTramite,
+        "solicitante" : solicitante,
+        "idTipoDocumento" : idTipoDocumento,
+        "numDocumento" : numDocumento,
+        "idExpedido" : idExpedido,
+        "telefonoSolicitante" : telefonoSolicitante,
+        "emailSolicitante" : emailSolicitante,
+        "tipoPersona" : tipoPersona,
+        "profesionalNombre" : profesionalNombre,
+        "profesionalEmail" : profesionalEmail,
+        "profesionalTelefono" : profesionalTelefono,
+        "profesionalCab" : profesionalCab,
+        "idmacroDistrito" : idmacroDistrito,
+        "iddistritoMunicipal" : iddistritoMunicipal,
+        "codigoCatastral" : codigoCatastral,
+        "direccion" : direccion,
+        "zona" : zona,
+        "nroPuerta" : nroPuerta,
+        //"sector" : sector,
+        "edificio" : edificio,
+        //"bloque" : bloque,
+        "riesgo" : riesgo,
+        "idCodPlanimetria" : idCodPlanimetria,
+        "descPlanimetria" : descPlanimetria,
+        "idTipoLote" : idTipoLote,
+        //"superficie" : superficie,
+        //"numeroPisos" : numeroPisos,
+        //"numeroBloques" : numeroBloques,
+        //"tieneSotano" : tieneSotano,
+        //"numeroInmueble" : numeroInmueble,
+        //"pmc" : pmc,
+        //"observaciones" : observaciones,
+        //"idRequisitos" : idRequisitos,
+        "conCertificado" : conCertificado,
+        "tieneMensura":tieneMensura,
+        "idInsFlujoAnterior":idInsFlujoAnterior,
+        //"FUMCertificado" : FUMCertificado,
+        //"pagadoCertificado" : pagadoCertificado,
+        //"fechaRegistro" : fechaRegistro,
+        //"idEstado" : idEstado,
+        //"idResultado" : idResultado,
+        //"archivo1" : archivo1,
+        //"archivo2" : archivo2,
+        //"fechaEnvio" : fechaEnvio,
+        //"archivo3" : archivo3,
+        //"carTerrUbicacion" : carTerrUbicacion,
+        "carTerrPendiente" : carTerrPendiente,
+        //"carTerrNivel" : carTerrNivel,
+        //"carTerrForma" : carTerrForma,
+        //"carTerrAcera" : carTerrAcera,
+        //"carTerrFrente" : carTerrFrente,
+        //"carTerrFondo" : carTerrFondo,
+        "serBasAlcantarillado" : serBasAlcantarillado,
+        "serBasEnergiaElectrica" : serBasEnergiaElectrica,
+        "serBasTelefono" : serBasTelefono,
+        "serBasAguaPotable" : serBasAguaPotable,
+        "serBasAlumbradoPublico" : serBasAlumbradoPublico,
+        "serBasGasDomiciliario" : serBasGasDomiciliario,
+        "oid":oid,
+        "idCatastroTipoServicio":idCatastroTipoServicio,
+        "idCatastroTipoRegistro": idCatastroTipoRegistro,
+        //"supTotalConstruida" : supTotalConstruida,
+        //"supSegunLevantamiento" : supSegunLevantamiento,
+        //"supSegunTestimonio" : supSegunTestimonio,
+        //"correosProcesamiento" : correosProcesamiento,
+        //"idTipoAcceso" : idTipoAcceso,
+        //"archivo4" : archivo4,
+        //"telefonoSolicitanteProp" : telefonoSolicitanteProp,
+        //"emailSolicitanteProp" : emailSolicitanteProp,
+        //"carViaPendiente" : carViaPendiente,
+        "msgReqLevantamiento":msgReqLevantamiento
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};

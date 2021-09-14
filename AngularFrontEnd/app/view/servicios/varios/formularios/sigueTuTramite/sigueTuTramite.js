@@ -640,9 +640,16 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
     $scope.$on('api:ready', function () {
     });
     $scope.inicioSigueTuTramite = function () {
-      var ciCiudano = sessionService.get("CICIUDADANO");
+        var tipopersona = sessionService.get("TIPO_PERSONA");
+        var cinitciudadano = '';
+        if(tipopersona == 'NATURAL' || tipopersona == 'N'){
+            cinitciudadano = sessionService.get("CICIUDADANO");
+        }else{
+            cinitciudadano = sessionService.get("NITCIUDADANO");
+        }
+
       $scope.ciudadano = sessionService.get('US_NOMBRE')+' '+sessionService.get('US_PATERNO')+' '+sessionService.get('US_MATERNO');
-      $scope.validarTramiteLinea2(ciCiudano);
+      $scope.validarTramiteLinea2(cinitciudadano);
       //$scope.validarAutoconsulta(ciCiudano);
     };
 

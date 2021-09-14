@@ -326,7 +326,6 @@
                                     <tr>
                                     <th scope="col">#&nbsp;</th>
                                     <th scope="col">CODIGO TRÁMITE&nbsp;</th>
-                                    <th scope="col">SISTEMA&nbsp;</th>
                                     <th scope="col">ASUNTO&nbsp;</th>
                                     <th scope="col">FECHA&nbsp;</th>
                                     <th scope="col"><center>RESULTADOS&nbsp;</center></th>
@@ -338,10 +337,9 @@
                                     <tr ng-repeat="datos in tramitesciudadano">
                                         <td data-title="#">{{$index+1}}</td>
                                         <td data-title="CODIGO">{{datos.tcorrelativo}}</td>
-                                        <td data-title="SISTEMA">{{datos.sistema}}</td>
                                         <td data-title="ASUNTO">{{datos.tasunto}}</td>
                                         <td data-title="FECHA">{{datos.tfregistro | date : 'dd/MM/yyyy'}}</td>
-                                        <td align="center" ng-show={{datos.swPh}}><a tooltip="Ver resultados" ng-click="getResultados(datos)"><i class="fa fa-list-alt" style="font-size:24px;color:rgba(238, 185, 71, 0.938)"></i></a></td>
+                                        <td align="center" ng-show={{datos.swPh}}><a tooltip="Ver resultados" ng-click="getResultados(datos)" data-toggle="modal" data-target="#myModal"><i class="fa fa-list-alt" style="font-size:24px;color:rgba(238, 185, 71, 0.938)"></i></a></td>
                                         <td align="center" ng-show=!{{datos.swPh}}>{{datos.tresultado}}</td>
                                         <td data-title="VER HISTÓRICO" ng-show="{{datos.sitram}}"<center><a tooltip="Ver histórico" ng-click="getTramiteSitram247(datos)" class="btn btn-default btn-transfer"><i class="fa fa-external-link" ></i></a></center></td>
                                         <td data-title="VER HISTÓRICO" ng-show="{{datos.ceropapel}}"><center><a tooltip="Ver histórico" ng-click="verTramite(datos)" class="btn btn-default btn-transfer"><i class="fa fa-external-link" ></i></a></center></td>
@@ -525,7 +523,37 @@
         </div>
 
          <!-- * VISUALIZAR RESULTADOS PH - SITRAM 247 -->
-         <div class="col-md-12" ng-show="verResultados" class="row" align="center">
+
+
+         <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+            
+              <!-- Modal content-->
+              <div class="modal-content" style ="width: 600px;height: 400px;overflow-y: scroll;">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"><center><bold>Resultados de Unidades - Propiedad Horizontal</bold></center></h4>
+                </div>
+                <div class="modal-body">
+                    <table ng-table="tablaResultados" class="table table-striped">
+                        <tr ng-repeat="estados in $data"  class="text-left" style="cursor: pointer;" ng-style="{'background-color':'#EFF9F9'}"  >
+                            <td data-title="'Nro.'" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{$index+1}}</td>
+                            <td data-title="'Descripcion Unidad'" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{estados.descripcion_unidad}}</td>
+                            <td data-title="'Ubicacion'" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{estados.ubicacion}}</td>
+                            <td data-title="'Resultado'" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{estados.resultado}} </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+
+         <!--div class="col-md-12" ng-show="verResultados" class="row" align="center">
             <br>
             <div align="center">
                 <h4> <strong>RESULTADOS DE TRAMITES DE PROPIEDAD HORIZONTAL:</strong></h4>
@@ -547,7 +575,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div-->
 
         <!-- * AUTOCONSULTA AL CIUDADANO - LOTUS 247 -->
         <div ng-show="grillaHistorialLotus != null" class="col-md-12" class="row" align="center">

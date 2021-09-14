@@ -108,7 +108,7 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
         var siexiste5 = nrocaso.search(miRegExa5);
         var siexiste6 = nrocaso.search(miRegExa6);
         var siexiste7 = nrocaso.search(miRegExa7);
-        var siexiste8 = nrocaso.search(miRegExa8);
+      var siexiste8 = nrocaso.search(miRegExa8);
 
         if (siexiste1 != -1 || siexiste2 != -1 || siexiste3 != -1 || siexiste4 != -1 || siexiste5 != -1 || siexiste6 != -1 || siexiste7 != -1 || siexiste8 != -1) {
             $scope.getTramiteLotus(datos);
@@ -473,7 +473,6 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
         }
     };
 
-
     $scope.getResultados= function(datos){
 
         $scope.verResultados=true;
@@ -484,7 +483,7 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
             $scope.obtResultados =  $scope.resultados;
             $scope.tablaResultados = new ngTableParams({
                 page: 1,
-                count: 5,
+                count: 10,
                 filter: {}
             }, {
                 total: $scope.obtResultados.length,

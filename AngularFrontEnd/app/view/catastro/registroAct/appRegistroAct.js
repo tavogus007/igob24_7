@@ -692,20 +692,120 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 				$.blockUI();
 				$http({
 					method: 'POST',
-					url: CONFIG.SERVICE_SITOLextgen + 'Catastro/RegistrarIGOB',
+					url: CONFIG.SERVICE_SITOLextgen + 'Catastro/RegistrarIGOBObtenerParam',
 					data: Object.toparams(p),
 					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 				}).success(function (data, status, headers, config) {
 					$.unblockUI();
-					if(data.res == "OK")
+					console.log("Obteniendo parametros igob", data, $scope.solicitud);
+					if(data.res)
 					{
-						console.log("Crear en igob", data);
+						console.log("error crear en igob",data);
+						swal('', 'No se pudo registrar en IGOB: ' + data.valor, 'error');
+						$.unblockUI();
 					}
 					else
 					{
-						console.log("error crear en igob",data);
-						swal('', 'Error al registrar trámite en IGOB: '+data.valor, 'error');
-						$.unblockUI();
+						var credentials= {
+							"user": data.igobCredentialsUser,
+							"password": data.igobCredentialsPwd
+						}
+						$http({
+							method: 'POST',
+							url: data.igobCredentialsURL,
+							data: Object.toparams(credentials),
+							headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+						}).success(function (dataCre, status, headers, config) {
+							$.unblockUI();
+							console.log("Credentials igob", dataCre);
+							/// igob reg
+							$http({
+								method: 'POST',
+								url: data.igobServCreacionURL,
+								data: Object.toparams(data.data),
+								headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization':'Bearer ' + dataCre.token }
+							}).success(function (dataRegIgob, status, headers, config) {
+								$.unblockUI();
+								console.log("Crear en igob", dataRegIgob);
+								if(dataRegIgob.success){
+									if(dataRegIgob.success.length>0){
+										var id_form_tra = dataRegIgob.success[0].id_form_tra;
+										console.log("id_form_tra",id_form_tra);
+										//Actualizar idtramite en sitv2online
+										var dataSit= {
+											"q": param,
+											"idTramite": id_form_tra
+										}
+										$http({
+											method: 'POST',
+											url: CONFIG.SERVICE_SITOLextgen + 'Catastro/RegistrarIGOBActualizarIDtramite',
+											data: Object.toparams(dataSit),
+											headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+										}).success(function (dataActTram, status, headers, config) {
+											$.unblockUI();
+											console.log("Actualizar tramite en sitol", dataActTram);
+											if(dataActTram.res == "OK")
+											{
+												//Enviar notificacion
+												var msj = data.igobServNotificacionMsj.replace('{0}', data.idCatastroTramiteOL);
+												msj = msj.replace('{1}', data.profesional);
+												var dataSit= {
+													"idtramite":id_form_tra,
+													"notificacion":msj,
+													"sistema":data.igobServNotificacionSistema,
+													"usuario":"CIUDADANO",
+													"url_adjunto":""
+												}
+												$http({
+													method: 'POST',
+													url: data.igobServNotificacionURL,
+													data: Object.toparams(dataSit),
+													headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization':'Bearer ' + dataCre.token }
+												}).success(function (dataNotifIgob, status, headers, config) {
+													$.unblockUI();
+													console.log("Enviar notificacion", dataNotifIgob);
+													if(dataNotifIgob.success){
+
+													}
+													else{
+														swal('', 'No se pudo enviar la notificacion. '  + JSON.stringify(dataNotifIgob), 'error');
+														$.unblockUI();
+													}
+
+												}).error(function (data, status, headers, config) {
+													console.log("error email conexion",data, status, headers, config);
+													swal('', 'Error al registrar trámite en IGOB', 'error');
+													$.unblockUI();
+												});
+
+												//
+											}
+											else
+											{
+
+											}
+										}).error(function (data, status, headers, config) {
+											console.log("error email conexion",data, status, headers, config);
+											swal('', 'Error al registrar trámite en IGOB', 'error');
+											$.unblockUI();
+										});
+									}
+								}
+								else{
+									swal('', 'Error al registrar trámite en IGOB' + JSON.stringify(dataRegIgob), 'error');
+									$.unblockUI();
+								}
+							}).error(function (data, status, headers, config) {
+								console.log("error email conexion",data, status, headers, config);
+								swal('', 'Error al registrar trámite en IGOB', 'error');
+								$.unblockUI();
+							});
+							/// igob reg
+						}).error(function (data, status, headers, config) {
+							console.log("error credentials coneccion",data, status, headers, config);
+							swal('', 'Error al enviar credenciales al IGOB', 'error');
+							$.unblockUI();
+						});
 					}
 				}).error(function (data, status, headers, config) {
 					console.log("error email conexion",data, status, headers, config);
@@ -758,7 +858,8 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 				};
 				$http({
 					method: 'POST',
-					url: 'http://serviciosrs.lapaz.bo/wsSTTF/visualizarTramitesSITRAM',
+					//url: 'http://serviciosrs.lapaz.bo/wsSTTF/visualizarTramitesSITRAM',
+					url:'https://gamlpmotores.lapaz.bo/gamlp/wsSTTF/visualizarTramitesSITRAM',
 					data: Object.toparams(p),
 					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 				}).success(function (data, status, headers, config) {

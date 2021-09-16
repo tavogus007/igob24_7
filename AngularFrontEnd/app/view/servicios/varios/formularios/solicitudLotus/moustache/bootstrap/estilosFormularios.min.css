@@ -279,10 +279,6 @@ table.userAdm {
   position: relative;
   overflow: hidden;
 }
-.collapse.in {
-  display: block;
-  background: rgb(0, 185, 194, 0.8);
-}
 .btn-default1 {
   background: rgb(0, 185, 194, 0.6) !important;
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.34);

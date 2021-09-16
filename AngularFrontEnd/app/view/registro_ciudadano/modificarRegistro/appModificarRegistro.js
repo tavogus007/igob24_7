@@ -278,13 +278,6 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
         resultsProv = resultadoApi.success;
         if(resultsProv.length > 0){
             $scope.aProvincias = resultsProv;
-
-           /* if (typeof $scope.aProvincias !== 'undefined') {
-                $scope.aProvincias = resultsProv;
-            }else{
-                console.log("Error datos no definidos, cargar provincia");
-            }*/
-            
             $scope.deshabilitadoP = false;
             $scope.registro.provincia=0;
             $scope.$apply();
@@ -414,7 +407,6 @@ function modificarRegistroCiudadanoController($scope,$q, $rootScope, $routeParam
         datosCiudadano.oid=idCiudadano;
         datosCiudadano.datosCiudadanoNatural(function(resultado){ 
             results = JSON.parse(resultado);
-           // console.log('results',results);
             if (results[0].dtspsl_file_fotocopia_ci) {
                 $scope.btover=true;
             }
@@ -1634,7 +1626,7 @@ $scope.vias_v2= function(zona,tipo)
     //creando un nuevo registro 
     $scope.validacamposJuridico = function (){                 
         $scope.isDisabled = false;
-        $scope.getCaptchasX();
+        //$scope.getCaptchasX();
         if(tipoPersona == 'NATURAL'){
             $scope.opcionpersonaNatural = true;
             $scope.opcionpersonaJuridico = null;
@@ -2536,20 +2528,17 @@ $scope.vias_v2= function(zona,tipo)
           vectorLayer.getSource().clear();
 
           if (isNaN(latitud) && isNaN(longitud))
-          {
-              console.log("no existe Lat y Lon o son undefined");
+          {              
           }
           else
           {
               if(latitud === '' || longitud === '')
-              {
-                  console.log("lat y lon son cadena vacia");
+              {                  
                   map.getView().setCenter(ol.proj.fromLonLat([-68.133605,-16.495745]));
                   map.getView().setZoom(16);
               }
               else
               {
-                  console.log("existe lat y lon");
                   latitud = parseFloat(latitud);
                   longitud = parseFloat(longitud);
                   var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
@@ -2561,9 +2550,6 @@ $scope.vias_v2= function(zona,tipo)
           }
           ////////////////////////////////////////////////////////////////////////
           var n_genesis = geo_id_genesis.length;
-          //console.log("n_id_gene...",n_genesis);
-          //console.log("n_id_sit...",geo_id_sit.length);
-          console.log("n_id_serv...",geo_id_sit_servicio.length);
           $scope.mapa.on('click', function (evt)
           {
             vectorSource.clear();
@@ -2622,7 +2608,6 @@ $scope.vias_v2= function(zona,tipo)
                 ///////////////////////////////////////////////////////////
                 var cod = feature.properties;
                 var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                console.log("codigo zona tributaria: ",codigo_zona_tributaria);
                 ///////////////////////////////////////////////////////////
               });
               reqwest({
@@ -2638,17 +2623,12 @@ $scope.vias_v2= function(zona,tipo)
                 var cod_zona= cod.codigozona;
                 var distrito= cod.distrito;
                 /////////////////////////////////////////////
-                //console.log("hhhhh",n_genesis);
                 for (var i=0;i<n_genesis;i++) {
                     if(geo_id_sit_servicio[i ]=== cod_zona) {
                         cod_zona_genesis = geo_id_genesis[i];
-                        console.log("cod zona genesis: ",cod_zona_genesis);
                     }
                 }
                 /////////////////////////////////////////////
-                console.log("zona: ",zona);
-                console.log("macrodistrito: ",macrodistrito);
-                console.log("distrito: ",distrito);
               });
               
               reqwest({
@@ -2667,8 +2647,6 @@ $scope.vias_v2= function(zona,tipo)
                     var cod = feature.properties;
                     var nombre_via = cod.nombrevia;
                     var tipo_via = cod.tipovia;
-                    console.log("nombre via: ",nombre_via);
-                    console.log("tipo via: ",tipo_via);
                     //////////////////////////////////////////////////////////
                 }
               });
@@ -2758,13 +2736,11 @@ $scope.vias_v2= function(zona,tipo)
           {
               if(latitud === '' || longitud === '')
               {
-                  console.log("lat y lon son cadena vacia");
                   map.getView().setCenter(ol.proj.fromLonLat([-68.133605,-16.495745]));
                   map.getView().setZoom(16);
               }
               else
               {
-                  console.log("existe lat y lon");
                   latitud = parseFloat(latitud);
                   longitud = parseFloat(longitud);
                   var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([longitud, latitud])));
@@ -2786,10 +2762,6 @@ $scope.vias_v2= function(zona,tipo)
             var latitud = centro_1[1];
             var longitud = centro_1[0];
             wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
-            
-            console.log("latitud:",latitud);
-            console.log("longitud:",longitud);
-
             $scope.registro.longitud = longitud;
             $scope.registro.latitud = latitud;
             /////////////////////////////////////////////////////////////////////
@@ -2837,7 +2809,6 @@ $scope.vias_v2= function(zona,tipo)
                 ///////////////////////////////////////////////////////////
                 var cod = feature.properties;
                 var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                console.log("codigo zona tributaria: ",codigo_zona_tributaria);
                 ///////////////////////////////////////////////////////////
               });
               reqwest({
@@ -2852,19 +2823,13 @@ $scope.vias_v2= function(zona,tipo)
                 var macrodistrito = cod.macrodistrito;
                 var cod_zona= cod.codigozona;
                 var distrito= cod.distrito;
-                console.log("cod zona serv sit: ",cod_zona);
                 /////////////////////////////////////////////
-                //console.log("hhhhh",n_genesis);
                 for (var i=0;i<n_genesis;i++) {
                     if(geo_id_sit_servicio[i ]=== cod_zona) {
                         cod_zona_genesis = geo_id_genesis[i];
-                        console.log("cod zona genesis: ",cod_zona_genesis);
                     }
                 }
                 /////////////////////////////////////////////
-                console.log("zona: ",zona);
-                console.log("macrodistrito: ",macrodistrito);
-                console.log("distrito: ",distrito);
               });
               
               reqwest({
@@ -2883,8 +2848,6 @@ $scope.vias_v2= function(zona,tipo)
                     var cod = feature.properties;
                     var nombre_via = cod.nombrevia;
                     var tipo_via = cod.tipovia;
-                    console.log("nombre via: ",nombre_via);
-                    console.log("tipo via: ",tipo_via);
                     //////////////////////////////////////////////////////////
                 }
               });
@@ -2915,7 +2878,6 @@ $scope.vias_v2= function(zona,tipo)
         var nombre = nombre_j;
       }
       nombre = nombre.toUpperCase();
-      console.log(nombre);
       var ca = "CALLE ";
       ca = ca.concat(nombre);
       var c = 0;
@@ -2926,7 +2888,6 @@ $scope.vias_v2= function(zona,tipo)
       if(nombre==='')
       {
         var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
-        console.log("Vacio :",obj);
         //map.removeLayer(vectorLayerZonas);
         vectorLayerZonas.getSource().clear();
       }
@@ -3144,9 +3105,36 @@ $scope.vias_v2= function(zona,tipo)
             alert("Error ");
         }
     };
+
+    function validarFormatoDocumento(opcion, sformato) {
+        var s_formato = sformato.split('/')[1];
+        switch(opcion)
+        {
+          case "ADJ_IMG":
+            if(( s_formato == 'png' || s_formato == 'PNG' || s_formato == 'jpg' || s_formato == 'JPG') ||
+                ( s_formato == 'jpeg' || s_formato == 'JPEG' || s_formato == 'bmp' || s_formato == 'BMP') ||
+                ( s_formato == 'gif' || s_formato == 'GIF'))
+            {
+                return true
+            }
+            break;
+            case "ADJ_DOC":
+                if((s_formato == 'pdf' || s_formato == 'PDF') ||
+                    ( s_formato == 'docx' || s_formato == 'DOCX' || s_formato == 'docxlm' || s_formato == 'DOCXML'))
+                {
+                    return true
+                }
+            break;                      
+            return false
+        }
+    };    
         
     //Documentos Adjuntos
     $scope.cambiarFile = function(obj, valor){
+        var svalor  =   ((typeof(valor) == 'undefined' || valor == null) ? '' : valor);
+        if(svalor != ''){        
+        var stam_min = 5242880;//Bytes
+        var stam_max = 15728640;//Bytes
         var fechaNueva = "";
         var fechaserver = new fechaHoraServer(); 
         fechaserver.fechahora(function(resp){
@@ -3164,12 +3152,10 @@ $scope.vias_v2= function(zona,tipo)
             $scope.direccionvirtual = "RC_CLI";
             var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/" + oidCiudadano + "/";
             if (nombre == 'FILE_FOTOCOPIA_CI' && (typeof(obj.files[0]) != 'undefined')) {
-                var tipoDocci = obj.files[0].name;
-                var nameArrayci = tipoDocci.split('.');
-                tipoDocci = nameArrayci[1];
-                var nombreci = nameArrayci[0] + '.zip';
-                if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocci == "png" || tipoDocci == "jpg" || tipoDocci == "jpeg" || tipoDocci == "bmp" || tipoDocci == "gif") {
+                var s_formatodoc = obj.files[0].type;
+                s_formatodoc = s_formatodoc.split('/')[1];
+                if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
+                    if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
                         var filecompress = compressImage($scope.FILE_FOTOCOPIA_CI).then(function(respuestaci){
                             var imagenCia = respuestaci.name.split('.');
                             var tipoCia = imagenCia[1];
@@ -3181,7 +3167,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.btover=true;
                         });
                     } else{
-                        if (tipoDocci == 'pdf' ||  tipoDocci == 'docx' ||  tipoDocci == 'docxlm') {
+                        if (validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
                             var zipci = new JSZip();
                             zipci.file($scope.FILE_FOTOCOPIA_CI.name, $scope.FILE_FOTOCOPIA_CI);
                             zipci.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobci) {
@@ -3201,13 +3187,13 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_FOTOCOPIA_CI = '';
                             valor = '';
                             $.unblockUI();
-                        };                        
+                        };
                     };
                 }  
                 else{
-                    if (tamaniofile.size <= 500000) {
-                        if (tipoDocci == 'png' || tipoDocci == 'jpg' || tipoDocci == 'jpeg' || tipoDocci == 'bmp' || tipoDocci == 'gif' || tipoDocci == 'pdf' || tipoDocci == 'docx' || tipoDocci == 'docxlm') {
-                            nombreNuevoCIAnverso = 'CI_anverso_'+fechaNueva+'.'+tipoDocci;
+                    if (tamaniofile.size <= stam_min) {
+                        if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoCIAnverso = 'CI_anverso_'+fechaNueva+'.'+s_formatodoc;
                             fileUpload1.uploadFileToUrl1($scope.FILE_FOTOCOPIA_CI, uploadUrl,nombreNuevoCIAnverso);
                             $scope.registro.FILE_FOTOCOPIA_CI = nombreNuevoCIAnverso;
                             $scope.btover=true;
@@ -3223,7 +3209,7 @@ $scope.vias_v2= function(zona,tipo)
                             $.unblockUI();
                         };
                     };
-                    if (tamaniofile.size > 15000000) {
+                    if (tamaniofile.size > stam_max) {
                         swal('Advertencia', 'El tamaño de la imagen CEDULA DE IDENTIDAD es muy grande', 'error');
                         document.getElementById('txt_FILE_FOTOCOPIA_CI').value = '';
                         document.getElementById('FILE_FOTOCOPIA_CI').value = '';
@@ -3240,12 +3226,10 @@ $scope.vias_v2= function(zona,tipo)
                 document.getElementById("fechaVen").disabled=false;
             };
             if(nombre == 'FILE_FOTOCOPIA_CI_R' && (typeof(obj.files[0]) != 'undefined')){
-                var tipoDoccir = obj.files[0].name;
-                var nameArraycir = tipoDoccir.split('.');
-                tipoDoccir = nameArraycir[1];                
-                var nombrecir = nameArraycir[0] + '.zip';
-                if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDoccir == "png" || tipoDoccir == "jpg" || tipoDoccir == "jpeg" || tipoDoccir == "bmp" || tipoDoccir == "gif") {
+                var s_formatodoc = obj.files[0].type;
+                s_formatodoc = s_formatodoc.split('/')[1];
+                if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
+                    if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
                         var filecompress = compressImage($scope.FILE_FOTOCOPIA_CI_R).then(function(respuestacir){
                             var imagenCir = respuestacir.name.split('.');
                             var tipoCir = imagenCir[1];
@@ -3256,7 +3240,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.btover1=true;
                         });
                     } else{
-                        if (tipoDoccir == 'pdf' ||  tipoDoccir == 'docx' ||  tipoDoccir == 'docxlm') {
+                        if (validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
                             var zipcir = new JSZip();
                             zipcir.file($scope.FILE_FOTOCOPIA_CI_R.name, $scope.FILE_FOTOCOPIA_CI_R);
                             zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobcir) {
@@ -3279,9 +3263,9 @@ $scope.vias_v2= function(zona,tipo)
                     };
                 }
                 else{
-                    if (tamaniofile.size <= 500000) {
-                        if (tipoDoccir == 'png' || tipoDoccir == 'jpg' || tipoDoccir == 'jpeg' || tipoDoccir == 'bmp' || tipoDoccir == 'gif' || tipoDoccir == 'pdf' || tipoDoccir == 'docx' || tipoDoccir == 'docxlm') {
-                            nombreNuevoCIReverso = 'CI_reverso_'+fechaNueva+'.'+tipoDoccir;
+                    if (tamaniofile.size <= stam_min) {
+                        if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoCIReverso = 'CI_reverso_'+fechaNueva+'.'+s_formatodoc;
                             fileUpload1.uploadFileToUrl1($scope.FILE_FOTOCOPIA_CI_R, uploadUrl,nombreNuevoCIReverso);
                             $scope.registro.FILE_FOTOCOPIA_CI_R = nombreNuevoCIReverso;
                             $scope.btover1=true;
@@ -3296,7 +3280,7 @@ $scope.vias_v2= function(zona,tipo)
                             $.unblockUI();
                         };
                     };
-                    if (tamaniofile.size > 15000000) {
+                    if (tamaniofile.size > stam_max) {
                         swal('Advertencia', 'El tamaño de la imagen CEDULA DE IDENTIDAD es muy grande', 'error');
                         document.getElementById('txt_FILE_FOTOCOPIA_CI_R').value = '';
                         document.getElementById('FILE_FOTOCOPIA_CI_R').value = '';
@@ -3308,12 +3292,10 @@ $scope.vias_v2= function(zona,tipo)
                 }
             }
             if(nombre == 'FILE_PODER_LEGAL' && (typeof(obj.files[0]) != 'undefined')){
-                var tipoDocpl = obj.files[0].name;
-                var nameArraypl = tipoDocpl.split('.');
-                tipoDocpl = nameArraypl[1];
-                var nombrepl = nameArraypl[0] + '.zip';
-                if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocpl == "png" || tipoDocpl == "jpg" || tipoDocpl == "jpeg" || tipoDocpl == "bmp" || tipoDocpl == "gif") {
+                var s_formatodoc = obj.files[0].type;
+                s_formatodoc = s_formatodoc.split('/')[1];
+                if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
+                    if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
                         var filecompress = compressImage($scope.FILE_PODER_LEGAL).then(function(respuestapl){
                             var imagenPoder = respuestapl.name.split('.');
                             var tipoPoder = imagenPoder[1];
@@ -3323,18 +3305,10 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_PODER_LEGAL = respuestapl;
                         });
                     } else{
-                        if (tipoDocpl == 'pdf' ||  tipoDocpl == 'docx' ||  tipoDocpl == 'docxlm') {
-                            nombreNuevoPoderLegal = 'poder_'+fechaNueva+'.'+tipoDocpl;
+                        if (validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoPoderLegal = 'poder_'+fechaNueva+'.'+s_formatodoc;
                             fileUpload1.uploadFileToUrl1($scope.FILE_PODER_LEGAL, uploadUrl,nombreNuevoPoderLegal);
                             $scope.registro.FILE_PODER_LEGAL = nombreNuevoPoderLegal;
-                            /*var zippl = new JSZip();
-                            zippl.file($scope.FILE_PODER_LEGAL.name, $scope.FILE_PODER_LEGAL);
-                            zippl.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobpl) {
-                                nombreNuevoPoderLegal = 'poder_'+fechaNueva+'.zip';
-                                fileUpload1.uploadFileToUrl1(blobpl, uploadUrl,nombreNuevoPoderLegal);
-                                $scope.registro.FILE_PODER_LEGAL = blobpl.name;
-                                $scope.FILE_PODER_LEGAL = blobpl;                            
-                            })*/
                         }
                         else{
                             swal('Advertencia', 'El archivo PODER DEL REPRESENTANTE LEGAL no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
@@ -3348,9 +3322,9 @@ $scope.vias_v2= function(zona,tipo)
                     };  
                 }
                 else{
-                    if (tamaniofile.size <= 500000) {
-                        if (tipoDocpl == 'png' || tipoDocpl == 'jpg' || tipoDocpl == 'jpeg' || tipoDocpl == 'bmp' || tipoDocpl == 'gif' || tipoDocpl == 'pdf' || tipoDocpl == 'docx' || tipoDocpl == 'docxlm') {
-                            nombreNuevoPoderLegal = 'poder_'+fechaNueva+'.'+tipoDocpl;
+                    if (tamaniofile.size <= stam_min) {
+                        if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoPoderLegal = 'poder_'+fechaNueva+'.'+s_formatodoc;
                             fileUpload1.uploadFileToUrl1($scope.FILE_PODER_LEGAL, uploadUrl,nombreNuevoPoderLegal);
                             $scope.registro.FILE_PODER_LEGAL = nombreNuevoPoderLegal;
                             $.unblockUI();
@@ -3364,7 +3338,7 @@ $scope.vias_v2= function(zona,tipo)
                             $.unblockUI();
                         };
                     };
-                    if (tamaniofile.size > 15000000) {
+                    if (tamaniofile.size > stam_max) {
                         swal('Advertencia', 'El tamaño del archivo PODER DEL REPRESENTANTE LEGAL es muy grande', 'error');
                         document.getElementById('txt_FILE_PODER_LEGAL').value = '';
                         document.getElementById('FILE_PODER_LEGAL').value = '';
@@ -3376,12 +3350,10 @@ $scope.vias_v2= function(zona,tipo)
                 }
             }
             if(nombre == 'FILE_TEST_CONST' && (typeof(obj.files[0]) != 'undefined')){
-                var tipoDoctc = obj.files[0].name;
-                var nameArraytc = tipoDoctc.split('.');
-                tipoDoctc = nameArraytc[1];
-                var nombretc = nameArraytc[0] + '.zip';
-                if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDoctc == "png" || tipoDoctc == "jpg" || tipoDoctc == "jpeg" || tipoDoctc == "bmp" || tipoDoctc == "gif") {
+                var s_formatodoc_tes = obj.files[0].type;
+	            s_formatodoc_tes = s_formatodoc_tes.split('/')[1];
+                if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
+                    if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
                         var filecompress = compressImage($scope.FILE_TEST_CONST).then(function(respuestatc){
                             var imagenTestimonio = respuestatc.name.split('.');
                             var tipoT = imagenTestimonio[1];
@@ -3391,7 +3363,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_TEST_CONST = respuestatc;
                         });
                     } else{
-                        if (tipoDoctc == 'pdf' ||  tipoDoctc == 'docx' ||  tipoDoctc == 'docxlm') {
+                        if (validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
                             var ziptc = new JSZip();
                             ziptc.file($scope.FILE_TEST_CONST.name, $scope.FILE_TEST_CONST);
                             ziptc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobtc) {
@@ -3413,9 +3385,9 @@ $scope.vias_v2= function(zona,tipo)
                     };  
                 }
                 else{
-                    if (tamaniofile.size <= 500000) {
-                        if (tipoDoctc == 'png' || tipoDoctc == 'jpg' || tipoDoctc == 'jpeg' || tipoDoctc == 'bmp' || tipoDoctc == 'gif' || tipoDoctc == 'pdf' || tipoDoctc == 'docx' || tipoDoctc == 'docxlm') {
-                            nombreNuevoTestimonio = 'testimonio_'+fechaNueva+'.'+tipoDoctc;
+                    if (tamaniofile.size <= stam_min) {
+                        if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoTestimonio = 'testimonio_'+fechaNueva+'.'+s_formatodoc_tes;
                             fileUpload1.uploadFileToUrl1($scope.FILE_TEST_CONST, uploadUrl, nombreNuevoTestimonio);
                             $scope.registro.FILE_TEST_CONST = nombreNuevoTestimonio;
                             $.unblockUI();
@@ -3429,7 +3401,7 @@ $scope.vias_v2= function(zona,tipo)
                             $.unblockUI();
                         };
                     };
-                    if (tamaniofile.size > 15000000) {
+                    if (tamaniofile.size > stam_max) {
                         swal('Advertencia', 'El tamaño del archivo TESTIMONIO DE CONSTITUCION es muy grande', 'error');
                         document.getElementById('FILE_TEST_CONST').value = '';
                         document.getElementById('txt_FILE_TEST_CONST').value = '';
@@ -3440,13 +3412,11 @@ $scope.vias_v2= function(zona,tipo)
                     }
                 }
             }
-            if(nombre == 'FILE_NUM_IDENT' && (typeof(obj.files[0]) != 'undefined')){
-                var tipoDocnu = obj.files[0].name;
-                var nameArraynu = tipoDocnu.split('.');
-                tipoDocnu = nameArraynu[1];
-                var nombrenu = nameArraynu[0] + '.zip';
-                if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocnu == "png" || tipoDocnu == "jpg" || tipoDocnu == "jpeg" || tipoDocnu == "bmp" || tipoDocnu == "gif") {
+            if(nombre == 'FILE_NUM_IDENT' && (typeof(obj.files[0]) != 'undefined')){                
+                var s_formatodoc_nu = obj.files[0].type;
+                s_formatodoc_nu = s_formatodoc_nu.split('/')[1];                
+                if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
+                    if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
                         var filecompress = compressImage($scope.FILE_NUM_IDENT).then(function(respuestani){
                             var imagenNit = respuestani.name.split('.');
                             var tipoTest = imagenNit[1];
@@ -3456,8 +3426,8 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_NUM_IDENT = respuestani;
                         });
                     } else{
-                        if (tipoDocnu == 'pdf' ||  tipoDocnu == 'docx' ||  tipoDocnu == 'docxlm') {
-                            nombreNuevoNit = 'nit_'+fechaNueva+'.'+tipoDocnu;
+                        if (validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoNit = 'nit_'+fechaNueva+'.'+s_formatodoc_nu;
                             fileUpload1.uploadFileToUrl1($scope.FILE_NUM_IDENT, uploadUrl, nombreNuevoNit);
                             $scope.registro.FILE_NUM_IDENT = nombreNuevoNit;
                             $.unblockUI();
@@ -3482,9 +3452,9 @@ $scope.vias_v2= function(zona,tipo)
                     }; 
                 }
                 else{
-                    if (tamaniofile.size <= 500000) {
-                        if (tipoDocnu == 'png' || tipoDocnu == 'jpg' || tipoDocnu == 'jpeg' || tipoDocnu == 'bmp' || tipoDocnu == 'gif' || tipoDocnu == 'pdf' || tipoDocnu == 'docx' || tipoDocnu == 'docxlm') {
-                            nombreNuevoNit = 'nit_'+fechaNueva+'.'+tipoDocnu;
+                    if (tamaniofile.size <= stam_min) {
+                        if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoNit = 'nit_'+fechaNueva+'.'+s_formatodoc_nu;
                             fileUpload1.uploadFileToUrl1($scope.FILE_NUM_IDENT, uploadUrl, nombreNuevoNit);
                             $scope.registro.FILE_NUM_IDENT = nombreNuevoNit;
                             $.unblockUI();
@@ -3498,7 +3468,7 @@ $scope.vias_v2= function(zona,tipo)
                             $.unblockUI();
                         };
                     };
-                    if (tamaniofile.size > 15000000) {
+                    if (tamaniofile.size > stam_max) {
                         swal('Advertencia', 'El tamaño del archivo NUMERO DE IDENTIFICACION es muy grande', 'error');
                         document.getElementById('txt_FILE_NUM_IDENT').value = '';
                         document.getElementById('FILE_NUM_IDENT').value = '';
@@ -3510,12 +3480,10 @@ $scope.vias_v2= function(zona,tipo)
                 }
             }
             if(nombre == 'FILE_FUND_EMP' && (typeof(obj.files[0]) != 'undefined')){
-                var tipoDocfe = obj.files[0].name;
-                var nameArrayfe = tipoDocfe.split('.');
-                tipoDocfe = nameArrayfe[1];
-                var nombrefe = nameArrayfe[0] + '.zip';
-                if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocfe == "png" || tipoDocfe == "jpg" || tipoDocfe == "jpeg" || tipoDocfe == "bmp" || tipoDocfe == "gif") {
+                var s_formatodocfe = obj.files[0].type;
+                s_formatodocfe = s_formatodocfe.split('/')[1];
+                if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
+                    if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
                         var filecompress = compressImage($scope.FILE_FUND_EMP).then(function(respuestafe){
                             var imagenFun = respuestafe.name.split('.');
                             var tipoFun = imagenFun[1];
@@ -3525,7 +3493,7 @@ $scope.vias_v2= function(zona,tipo)
                             $scope.FILE_FUND_EMP = respuestafe;
                         });
                     } else{
-                        if (tipoDocfe == 'pdf' ||  tipoDocfe == 'docx' ||  tipoDocfe == 'docxlm') {
+                        if (validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
                             var zipfe = new JSZip();
                             zipfe.file($scope.FILE_FUND_EMP.name, $scope.FILE_FUND_EMP);
                             zipfe.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobfe) {
@@ -3547,9 +3515,9 @@ $scope.vias_v2= function(zona,tipo)
                     }; 
                 }
                 else{
-                    if (tamaniofile.size <= 500000) {
-                        if (tipoDocfe == 'png' || tipoDocfe == 'jpg' || tipoDocfe == 'jpeg' || tipoDocfe == 'bmp' || tipoDocfe == 'gif' || tipoDocfe == 'pdf' || tipoDocfe == 'docx' || tipoDocfe == 'docxlm') {
-                            nombreNuevoFundaempresa = 'fundempresa_'+fechaNueva+'.'+tipoDocfe;
+                    if (tamaniofile.size <= stam_min) {
+                        if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                            nombreNuevoFundaempresa = 'fundempresa_'+fechaNueva+'.'+s_formatodocfe;
                             fileUpload1.uploadFileToUrl1($scope.FILE_FUND_EMP, uploadUrl ,nombreNuevoFundaempresa);
                             $scope.registro.FILE_FUND_EMP = nombreNuevoFundaempresa;
                             $.unblockUI();
@@ -3563,7 +3531,7 @@ $scope.vias_v2= function(zona,tipo)
                             $.unblockUI();
                         };
                     };
-                    if (tamaniofile.size > 15000000) {
+                    if (tamaniofile.size > stam_max) {
                         swal('Advertencia', 'El tamaño del archivo FUNDEMPRESA es muy grande', 'error');
                         document.getElementById('FILE_FUND_EMP').value = '';
                         document.getElementById('txt_FILE_FUND_EMP').value = '';                        
@@ -3575,23 +3543,21 @@ $scope.vias_v2= function(zona,tipo)
                 }
             }
             if(nombre == 'FILE_REG_COMER' && (typeof(obj.files[0]) != 'undefined')){
-                var tipoDocrc = obj.files[0].name;
-                var nameArrayrc = tipoDocrc.split('.');
-                tipoDocrc = nameArrayrc[1];
-                var nombrerc = nameArrayrc[0] + '.zip';
-                if (tamaniofile.size > 500000 && tamaniofile.size <= 15000000) {
-                    if (tipoDocrc == "png" || tipoDocrc == "jpg" || tipoDocrc == "jpeg" || tipoDocrc == "bmp" || tipoDocrc == "gif") {
+                var s_formatodocrc = obj.files[0].type;
+                s_formatodocrc = s_formatodocrc.split('/')[1];                
+                if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
+                    if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
                         var filecompress = compressImage($scope.FILE_REG_COMER).then(function(respuestarc){
                             fileUpload.uploadFileToUrl(respuestarc, uploadUrl);
                             $scope.registro.FILE_REG_COMER = respuestarc.name;
                             $scope.FILE_REG_COMER = respuestarc;
                         });
                     } else{
-                        if (tipoDocrc == 'pdf' ||  tipoDocrc == 'docx' ||  tipoDocrc == 'docxlm') {
+                        if (validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
                             var ziprc = new JSZip();
                             ziprc.file($scope.FILE_REG_COMER.name, $scope.FILE_REG_COMER);
                             ziprc.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}}).then(function (blobrc) {
-                                blobrc.name = nombrerc;
+                                blobrc.name = 'fund_registro_comercio_'+fechaNueva+'.zip';
                                 fileUpload.uploadFileToUrl(blobrc, uploadUrl);
                                 $scope.registro.FILE_REG_COMER = blobrc.name;
                                 $scope.FILE_REG_COMER = blobrc;                            
@@ -3609,8 +3575,8 @@ $scope.vias_v2= function(zona,tipo)
                     }; 
                 }
                 else{
-                    if (tamaniofile.size <= 500000) {
-                        if (tipoDocrc == 'png' || tipoDocrc == 'jpg' || tipoDocrc == 'jpeg' || tipoDocrc == 'bmp' || tipoDocrc == 'gif' || tipoDocrc == 'pdf' || tipoDocrc == 'docx' || tipoDocrc == 'docxlm') {
+                    if (tamaniofile.size <= stam_min) {
+                        if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
                             fileUpload.uploadFileToUrl($scope.FILE_REG_COMER, uploadUrl);
                             $scope.registro.FILE_REG_COMER = $scope.FILE_REG_COMER.name;
                             $.unblockUI();
@@ -3624,7 +3590,7 @@ $scope.vias_v2= function(zona,tipo)
                             $.unblockUI();
                         };
                     };
-                    if (tamaniofile.size > 15000000) {
+                    if (tamaniofile.size > stam_max) {
                         swal('Advertencia', 'El tamaño del archivo REGISTRO COMERCIAL es muy grande', 'error');
                         document.getElementById('FILE_REG_COMER').value = '';
                         document.getElementById('txt_FILE_REG_COMER').value = '';                        
@@ -3637,6 +3603,7 @@ $scope.vias_v2= function(zona,tipo)
             }
         $.unblockUI();
         },1000);
+        }
     };
     ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
     try{ 

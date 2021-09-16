@@ -616,6 +616,7 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
             var notificaciones = aNotif.success.length;
             datoObjectNotiFinal = [];
             for(i = 0; i < notificaciones; i++){
+                try{
                 var fecharegistro = new Date(aNotif.success[i].obs_tra_registrado);
                 var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 if(aNotif.success[i].serdv_descripcion == 'ANTENA CIUDADANO'){      //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
@@ -844,7 +845,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
                 }
-                else{                                  //CASO CONTRARIO....
+                else{//CASO CONTRARIO....
+                    var sAdjunto = 'NO';
                     $scope.myObj = aNotif.success;
                     datoObjectNoti = new Object();
                     datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
@@ -860,12 +862,20 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNoti.obs_tra_tipo_resp = aNotif.success[i].obs_tra_tipo_resp; 
                     datoObjectNoti.obs_tra_id_tramite = aNotif.success[i].obs_tra_id_tramite;   
                     datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus; 
-                    datoObjectNoti.obj_url_ra = "noRA";
-                    datoObjectNoti.obj_url = "noSitram";
-                    datoObjectNoti.obj_url_AE = "noAE";
+                    try{//VALIDAMOS LOS ADJUNTOS SEGUN LOS NUEVOS CAMPOS
+                        datoObjectNoti.obj_url_ra = "noRA";
+                        datoObjectNoti.obj_url = "noSitram";
+                        datoObjectNoti.obj_url_AE = "noAE";                            
+                        sAdjunto = ((typeof(aNotif.success[i].adjuntos) == 'undefined' || aNotif.success[i].adjuntos == null) ? 'NO' : aNotif.success[i].adjuntos);                            
+                        if(sAdjunto != 'NO'){                                
+                            sAdjunto = aNotif.success[i].adjuntos[0].url;
+                            datoObjectNoti.adjunto = sAdjunto;                                
+                        }
+                    }catch(e){}
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal;
                 }
+                }catch(e){ console.log("NOTIFICACION N FALLIDA:",i + " " + aNotif.success[i].obs_tra_observaciones + " - " +  e.toString());}   
             }
         });
     }

@@ -329,18 +329,19 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                            <li ng-show="stiporol == '5' && sservicios  == 'SI'">
+
+                                            <li ng-show="stiporol == '4' || stiporol == '5'">
                                                 <a onclick="window.location.href.endsWith('general')==false?window.location='#catastro|general':'';"><i
                                                         class="fa fa-caret-right blanco"></i>{{translateTitulos.lbl_04_05}}<span
                                                         class="fa arrow blanco"></span></a>
                                                 <ul class="nav nav-third-level">
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#catastro|registro">Registro Catastral</a></li>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#catastro|registroAct">Actualización de Registro Catastral</a></li>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
+                                                    <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#catastro|registro">Registro Catastral</a></li>
+                                                    <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#catastro|registroAct">Actualización de Registro Catastral</a></li>
+                                                    <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click=""
                                                             href="#catastro|duplicado">{{translateTitulos.lbl_04_06}}</a>
                                                     </li>
                                                 </ul>
-                                            </li>
+                                            </li>                                            
                                             <li ng-show="stiporol == '5' && sservicios  == 'SI'">
                                                 <a><i class="fa fa-caret-right blanco"></i>Territorio<span
                                                         class="fa arrow"></span></a>
@@ -434,10 +435,10 @@
                                                     href="#registro_ciudadano|obito|index.html">{{translateTitulos.lbl_04_08}}</a>
                                             </li-->
 
-                                            <li ng-show="mostrarMenuMascotaNatural == 'SI'"
-                                                ng-show="stiporol == '5' && sservicios  == 'SI'"><a
+                                            <li> 
+                                               <a
                                                     href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotas/index.html'">Registro
-                                                    de Mascotas</a>
+                                                    de Animales de Compañia</a>
                                             </li>
                                             <li ng-show="mostrarMenuMascotaNatural == 'SI'"><a
                                                 href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroVoluntariosIndependientes/index.html'">Registro

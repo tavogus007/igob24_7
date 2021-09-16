@@ -10,6 +10,10 @@
 <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
 <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
 <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+<link href="../../libs/css/select2.min.css" rel="stylesheet" async/>
+<script src="../../libs/js/select2.min.js" async></script>
+
+
 </head>
 <style type="text/css">
 
@@ -173,10 +177,10 @@ function validateDecimal(valor) {
         }
     });
 
-    $('#ANTT_CON_ARR').change(function(e) {
+   /* $('#IMAGEN_MASCOTA').change(function(e) {
    var id = 0;
    angular.element(this).scope().addImage(e,id);
-   });
+   });*/
 </script>
 <script type="text/javascript">
     function filterFloat(evt,input){
@@ -214,7 +218,7 @@ function validateDecimal(valor) {
         
     }
 </script>
-<script type="text/javascript">
+<!--script type="text/javascript">
     $('.modal').on('shown.bs.modal', function() {
        $(this).before($('.modal-backdrop'));
        $(this).css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 1);
@@ -226,12 +230,17 @@ function validateDecimal(valor) {
            angular.element(this).scope().cambiarFile(this, $(this).val());
        }
    });
+</script-->
+<script type="application/javascript">
+    $(document).ready(function() { 
+        $('.js-example-basic-single').select2();
+    });
 </script>
 <div class="page-content" ng-controller="registroMascotasController" data-ng-init="inicioServicios();">
         <div class="col-md-12">
             <div class="ibox float-e-margins">
                 <div id="mostrar" class="ibox-title">
-                    <h5 class="ng-binding">Mis Mascotas</h5>
+                    <h5 class="ng-binding">Registro de Animales de Compañía</h5>
                     <a id="cerrar_rc" style="position: absolute; top: 5px;"><i class="fa-sort-desc fa fa-sort-asc" style="color: #00adb5" id="cerrar_i"></i></a>
                 </div>
                 <div class="ibox-content" id="caja">
@@ -323,9 +332,9 @@ function validateDecimal(valor) {
                                                 <div class="col-md-12" align="left">
                                                     <div class="form-group" class="col-md-12">
                                                         <font color="#FF0000"> * </font>
-                                                        <label for="url" >Nombre (mascota):</label>                                                    
+                                                        <label for="url" >Nombre (Animal de compañía):</label>                                                    
                                                         <div class="controls">
-                                                            <input  ng-model="datos.mascota_nombre" name="mascota_nombre" id="mascota_nombre" class="form-control" type="text" placeholder="Ingrese nombre de su mascota" onkeyUp="return conMayusculas(this);"  ng-disabled="desabilitado" required>
+                                                            <input  ng-model="datos.mascota_nombre" name="mascota_nombre" id="mascota_nombre" class="form-control" type="text" placeholder="Ingrese nombre del animal de compañía" onkeyup="mayus(this);" onkeypress="return validar(event);"  ng-disabled="desabilitado" required>
                                                             <span style="color:red" ng-show="signupForm.mascota_nombre.$invalid">
                                                                 <span ng-show="signupForm.mascota_nombre.$error.required">Nombre es requerido.</span>
                                                             </span>
@@ -356,10 +365,11 @@ function validateDecimal(valor) {
                                                     <div class="form-group" class="col-md-12"><font color="#FF0000"> * </font>
                                                         <label for="url" >Raza: </label>
                                                         <div class="controls">
-                                                            <select class="js-example-basic-single form-control" id="reg_raza"  name="reg_raza" ng-options="dato._raza_id as dato._raza_data for dato in mascotas_razas | orderBy:['nombre','_raza_id']" ng-model="datos.xmascota_raza_id" ng-change = "mostrarRaza(datos.xmascota_raza_id);" ng-disabled="dsaraza || desabilitado" required >
-                                                                <option value="">--Seleccione--</option>
-                                                            </select>                                                
-                                                            <span style="color:red" ng-show="signupForm.reg_raza.$invalid">
+                                                            <select class="js-example-basic-single form-control" id="xmascota_raza_id"  name="xmascota_raza_id" ng-options="dato._raza_id as dato._raza_data for dato in mascotas_razas" ng-model="datos.xmascota_raza_id" ng-change = "mostrarRaza(datos.xmascota_raza_id);"  ng-disabled="dsaraza || desabilitado" required >
+                                                                <option value="">Escriba el nombre de la raza </option>
+                                                            </select>  
+                                                                                                   
+                                                            <span style="color:red" ng-show="signupForm.xmascota_raza_id.$invalid">
                                                                 <span>Raza es requerido.</span>
                                                             </span>
                                                         </div>
@@ -556,9 +566,9 @@ function validateDecimal(valor) {
                                                 <div class="col-md-12" align="left">
                                                     <div class="form-group" class="col-md-12" >
                                                         <font color="#FF0000"> * </font>
-                                                        <label for="url" >Fecha de aplicacion  - Esterilización:</label >
+                                                        <label for="url" >Año de aplicación  - Esterilización:</label >
                                                         <div class="controls">
-                                                            <input  ng-model="datos.reg_feca" name="reg_feca" id="reg_feca" class="form-control" ng-disabled="desabilitado" type="date">
+                                                            <input  ng-model="datos.reg_feca" name="reg_feca" id="reg_feca" class="form-control" ng-disabled="desabilitado" type="number"  min="2010" max="2030">
                                                             <span style="color:red" ng-show="signupForm.reg_feca.$invalid">
                                                                 <span ng-show="signupForm.reg_feca.$error.required">
                                                                 </span>
@@ -590,38 +600,18 @@ function validateDecimal(valor) {
                                             <div class="col-md-4" ng-show = "estrilizacion">
                                                 <div class="col-md-12" align="left">
                                                     <div class="form-group" class="col-md-12">
-                                                        <font color="#FF0000"> * </font>
                                                         <label for="url" >Nº Certificado:</label>
                                                         <div class="controls">
                                                             <input  ng-model="datos.mascota_certificado" name="reg_certificado" id="reg_certificado" class="form-control" type="text" placeholder="Ingrese Nro de certificado" onkeyUp="return valNumero(this);" ng-disabled="desabilitado">
-                                                            <span style="color:red" ng-show="signupForm.reg_certificado.$invalid">
-                                                                <span ng-show="signupForm.reg_certificado.$error.required">{{translateTitulos.lbl_016_08_1}}
-                                                                </span>
-                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6" ng-show = "estrilizacion">
+                                            <div class="col-md-12" ng-show = "estrilizacion">
                                                 <div class="col-md-12" align="left">
                                                     <div class="form-group" class="col-md-12">
                                                         <font color="#FF0000"> * </font>
-                                                        <label for="url" >Nombre Veterinario:</label>
-                                                        <div class="controls">
-                                                            <input  ng-model="datos.mascota_veterinario" name="reg_veterinario" id="reg_veterinario" class="form-control" type="text" placeholder="Ingrese nombre de Veterinario"  onkeyup="mayus(this);" onkeypress="return validar(event);" ng-disabled="desabilitado">
-                                                            <span style="color:red" ng-show="signupForm.reg_veterinario.$invalid">
-                                                                <span ng-show="signupForm.reg_veterinario.$error.required">{{translateTitulos.lbl_016_06_1}}
-                                                                </span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6" ng-show = "estrilizacion">
-                                                <div class="col-md-12" align="left">
-                                                    <div class="form-group" class="col-md-12">
-                                                        <font color="#FF0000"> * </font>
-                                                        <label for="url" >Nombre de la institucion: </label>
+                                                        <label for="url" >Nombre de la institucion ó Centro Veterinario: </label>
                                                         <div class="controls">
                                                             <input  ng-model="datos.mascota_institucion" name="reg_institucion" id="reg_institucion" class="form-control" type="text"   onkeyup="mayus(this);" placeholder="Ingrese Institución" ng-disabled="desabilitado">
                                                             <span style="color:red" ng-show="signupForm.reg_institucion.$invalid">
@@ -637,13 +627,13 @@ function validateDecimal(valor) {
                                             <div class="col-md-12" ng-show = "desparasitacion">
                                                 <legend>Datos Desparasitación: </legend>
                                             </div>
-                                            <div class="col-md-4" ng-show = "desparasitacion">
+                                            <div class="col-md-6" ng-show = "desparasitacion">
                                                 <div class="col-md-12" align="left">
                                                     <div class="form-group" class="col-md-12" >
                                                         <font color="#FF0000"> * </font>
-                                                        <label for="url" >Fecha de aplicacion  - Desparasitación: </label >
+                                                        <label for="url" >Año de aplicacion  - Desparasitación: </label >
                                                         <div class="controls">
-                                                            <input  ng-model="datos.mascota_feca_desparasitacion" name="mascota_feca_desparasitacion" id="mascota_feca_desparasitacion" class="form-control" type="date" ng-disabled="desabilitado">
+                                                            <input  ng-model="datos.mascota_feca_desparasitacion" name="mascota_feca_desparasitacion" id="mascota_feca_desparasitacion" class="form-control" type="number"  min="2010" max="2030" ng-disabled="desabilitado">
                                                             <span style="color:red" ng-show="signupForm.mascota_feca_desparasitacion.$invalid">
                                                                 <span ng-show="signupForm.mascota_feca_desparasitacion.$error.required">
                                                                 </span>
@@ -652,26 +642,11 @@ function validateDecimal(valor) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4" ng-show = "desparasitacion">
+                                            <div class="col-md-6" ng-show = "desparasitacion">
                                                 <div class="col-md-12" align="left">
                                                     <div class="form-group" class="col-md-12">
                                                         <font color="#FF0000"> * </font>
-                                                        <label for="url" >Nombre Veterinario:</label >
-                                                        <div class="controls">
-                                                            <input  ng-model="datos.mascota_veterinario_desparasitacion" name="reg_veterinario" id="reg_veterinario" class="form-control" type="text" placeholder="Ingrese nombre de Veterinario"  onkeyup="mayus(this);" onkeypress="return validar(event);" ng-disabled="desabilitado">
-                                                            <span style="color:red" ng-show="signupForm.reg_veterinario.$invalid">
-                                                                <span ng-show="signupForm.reg_veterinario.$error.required">{{translateTitulos.lbl_016_06_1}}
-                                                                </span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4" ng-show = "desparasitacion">
-                                                <div class="col-md-12" align="left">
-                                                    <div class="form-group" class="col-md-12">
-                                                        <font color="#FF0000"> * </font>
-                                                        <label for="url" >Nombre de la institucion:</label>
+                                                        <label for="url" >Nombre de la institucion ó Centro Veterinario:</label>
                                                         <div class="controls">
                                                             <input  ng-model="datos.mascota_institucion_desparasitacion" name="reg_institucion" id="reg_institucion" class="form-control" type="text" placeholder="Ingrese Institución" onkeyup="mayus(this);" ng-disabled="desabilitado">
                                                             <span style="color:red" ng-show="signupForm.reg_institucion.$invalid">
@@ -688,7 +663,7 @@ function validateDecimal(valor) {
                             </div>
                             <!--vacunas-->
                             <div class="tab-pane" id="tabVacunas">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group" >
                                             <font color="#FF0000"> * </font>
                                             <label for="url">Tipo de Vacuna:</label>
@@ -697,7 +672,7 @@ function validateDecimal(valor) {
                                                     <option value="">--Seleccione--</option>
                                                     <option value="ANTIRABICA NACIONAL">ANTIRABICA NACIONAL</option>
                                                     <option value="ANTIRABICA AMERICANA">ANTIRABICA AMERICANA</option>
-                                                    <option value="OCTUPLE">OCTUPLE</option>
+                                                    <option value="OCTUPLE">OCTUPLE (ENFERMEDADES)</option>
                                                     <option value="TRIPLEFELINA">TRIPLEFELINA</option>
                                                 </select>
                                                 <span style="color:red" ng-show="signupForm.tipo_vacuna.$invalid">
@@ -706,20 +681,7 @@ function validateDecimal(valor) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group" >
-                                            <font color="#FF0000"> * </font>
-                                            <label for="url" >Número de Dosis:</label>
-                                            <div class="controls">
-                                                <input ng-model="datos.nro_dosis" id="nro_dosis" name="nro_dosis" class="form-control"  onkeyUp="return valNumero(this);" ng-disabled="desabilitado" placeholder=" Ingrese Nro. dosis"required>
-                                                <span style="color:red" ng-show="signupForm.nro_dosis.$invalid">
-                                                    <span> Es requerido Número de Dosis. </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group" >
                                             <font color="#FF0000"> * </font>
                                             <label for="url" >Fecha de Aplicación:</label>
@@ -731,22 +693,10 @@ function validateDecimal(valor) {
                                             </div>
                                         </div>
                                     </div>                                  
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-group" >
                                             <font color="#FF0000"> * </font>
-                                            <label for="url" >Nombre de veterinario/a:</label>
-                                            <div class="controls">
-                                                <input ng-model="datos.nomb_vete" id="nomb_vete" name="nomb_vete" class="form-control"  onkeyup="mayus(this);" onkeypress="return validar(event);" ng-disabled="desabilitado" placeholder="Ingrese nombre de veterinario" required>
-                                                <span style="color:red" ng-show="signupForm.nomb_vete.$invalid">
-                                                    <span> Es requerido Nombre de Veterinaria. </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group" >
-                                            <font color="#FF0000"> * </font>
-                                            <label for="url" >Institución / Nombre de Veterinaria:</label>
+                                            <label for="url" >Nombre de Institución ó Centro Veterinario:</label>
                                             <div class="controls">
                                                 <input ng-model="datos.inst_vete" id="inst_vete" name="inst_vete" class="form-control" onkeyup="mayus(this);" ng-disabled="desabilitado" placeholder="Ingrese Institución / Nombre de Veterinaria" required>
                                                 <span style="color:red" ng-show="signupForm.inst_vete.$invalid">
@@ -783,14 +733,8 @@ function validateDecimal(valor) {
                                                                 <td class="text-center" style="width:15%" data-title="'TIPO DE VACUNA'" >
                                                                 {{lstGrilla.tipo_vacuna}}
                                                                 </td>
-                                                                <td class="text-center" style="width:15%" data-title="'NRO. DE DOSIS'"  >
-                                                                {{lstGrilla.nro_dosis}}
-                                                                </td>
                                                                 <td class="text-center" style="width:15%" data-title="'FECHA'">
                                                                 {{lstGrilla.fecha_vacuna}}
-                                                                </td>
-                                                                <td class="text-center" style="width:15%" data-title="'VETERINARIO'">
-                                                                {{lstGrilla.nomb_vete}}
                                                                 </td>
                                                                 <td class="text-center" style="width:15%" data-title="'INSTITUCIÓN'">
                                                                 {{lstGrilla.inst_vete}}
@@ -974,10 +918,14 @@ function validateDecimal(valor) {
                                     </div>
                                 </div>
                             </div>
+                        <div>
+                            <label><h4>
+                                Nota: Las casillas con <font color="#FF0000"> * </font>  deben ser llenadas de forma obligatoria.</h4></label>
+                        </div>
                     </div><br><br>
                     <div class="col-md-12" align="right" ></p></p>
-                        <button id="miFormModificar" ng-show = "botonMod" ng-click="modificarInformacionMascota(datos);" type="button" class="btn btn-default ng-binding" name="miFormModificar" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || !swimagen"><i class="fa fa-edit"  style="color:white"></i><font color="white"> Modificar</font></button>
-                        <button id="miFormGuardar" name="formEnviar" ng-show="botonCrea" type="button" class="btn btn-default ng-binding" ng-click="verificarDatos();" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.reg_raza.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || signupForm.reg_sexo.$invalid || signupForm.reg_peso.$invalid || signupForm.reg_peso_des.$invalid || signupForm.reg_color.$invalid || signupForm.reg_tamanio.$invalid || signupForm.reg_esterilizacion.$invalid || signupForm.desparasitacion.$invalid || !swimagen"  tooltip="Guardar Datos" ng-disabled="desabilitado"><i class="fa fa-save"  style="color:white"></i><font color="white"> Guardar</font></button>
+                        <button id="miFormModificar" ng-show = "botonMod" ng-click="modificarInformacionMascota(datos);" type="button" class="btn btn-default ng-binding" name="miFormModificar" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.xmascota_raza_id.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || !swimagen"><i class="fa fa-edit"  style="color:white"></i><font color="white"> Modificar</font></button>
+                        <button id="miFormGuardar" name="formEnviar" ng-show="botonCrea" type="button" class="btn btn-default ng-binding" ng-click="verificarDatos();" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.xmascota_raza_id.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || signupForm.reg_sexo.$invalid || signupForm.reg_peso.$invalid || signupForm.reg_peso_des.$invalid || signupForm.reg_color.$invalid || signupForm.reg_tamanio.$invalid || signupForm.reg_esterilizacion.$invalid || signupForm.desparasitacion.$invalid || !swimagen"  tooltip="Guardar Datos" ng-disabled="desabilitado"><i class="fa fa-save"  style="color:white"></i><font color="white"> Guardar</font></button>
                     </div>
                 </div>
             </form>

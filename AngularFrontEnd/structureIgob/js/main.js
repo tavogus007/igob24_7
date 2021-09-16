@@ -1,6 +1,13 @@
 
 
 jQuery(document).ready(function($) {
+	$(".services-steps-carousel").owlCarousel({
+		autoplay: true,
+		autoplayTimeout:8000,
+		dots: true,
+		loop: true,
+		items: 1
+	});
 	AOS.init({
 		duration: 800,
 		easing: 'slide',
@@ -9,8 +16,7 @@ jQuery(document).ready(function($) {
 
 	window.setTimeout(function() {
 		$('#modalWarning').modal('show');
-	 }, 2000)
-
+	 }, 2000);
 
 	"use strict";
 

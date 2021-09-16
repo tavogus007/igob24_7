@@ -79,6 +79,16 @@ loginNodeApp.prototype.iniciarLoginApp = function (functionResp) {
     ejecutarAjaxLoginRc(urlComLogin, typeCallLogin, dataParamsLogin, functionResp);    
 };
 
+
+loginNode.prototype.iniciarLoginFG = function (functionResp) {
+    urlComLogin = "/loginOut";
+    typeCallLogin = "post";
+    dataParamsLogin = {
+        "correo":this.correo
+    };
+    ejecutarAjaxLoginRc(urlComLogin, typeCallLogin, dataParamsLogin, functionResp);    
+};
+
 function password() {
     this.usuario;
     this.correo;

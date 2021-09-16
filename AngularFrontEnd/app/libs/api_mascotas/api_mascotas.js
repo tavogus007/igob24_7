@@ -5,7 +5,8 @@ var typeCall;
 
 
 if(jsonURLS){
-    urlMaservicio    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "api/reglaNegocio/ejecutarWeb";
+    //urlMaservicio    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "api/reglaNegocio/ejecutarWeb";
+    urlMaservicio    =   jsonURLS.CONEXION_MOTOR_SERVICIO + "/api/reglaNegocio/ejecutarWeb";
     urlRCPG = jsonURLS.CONEXION_API_PG_RC + "wsRCPG";
     key = jsonURLS.KEY;
 

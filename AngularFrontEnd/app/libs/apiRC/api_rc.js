@@ -1,12 +1,6 @@
-//var urlRC = "http://23.96.28.144:90/wsRC";
-//var urlRCPG = "http://23.96.28.144:90/wsRCPG";
-var urlRC   = "";//"http://192.168.5.141:9098/wsRC";
-var urlRCPG = "";//"http://192.168.5.141:9098/wsRCPG";
-var urlMservicio    =    "";//"http://192.168.5.69/api/reglaNegocio/ejecutarWeb";
-
-//var urlMservicio="http://localhost:9000/api/reglaNegocio/ejecutarWeb";
-//var urlRCPG = "http://192.168.35.84:9098/wsRCPG";
-
+var urlRC   = "";
+var urlRCPG = "";
+var urlMservicio    =    "";
 var urlComp;
 var dataResp;
 var dataParams;
@@ -38,7 +32,6 @@ function ejecutarAjaxP(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
       dataResp = response;
       dataResp = CryptoJS.AES.decrypt(dataResp, key);
       dataResp =  dataResp.toString(CryptoJS.enc.Utf8);
-      //console.log(dataResp,'dataResp');
       vFunctionResp(dataResp);
     },
     error: function (response, status, error) {
@@ -199,7 +192,6 @@ function validarNatural(opcion, datos) {
             ( typeof(datos.ci) != 'undefined' && datos.ci != null && datos.ci != "") &&
             ( typeof(datos.expedido) != 'undefined' && datos.expedido != null && datos.expedido != "") )
         {
-            console.log("Entrando   al reducidooooooo");
             return true
         }
         break;
@@ -211,11 +203,10 @@ function validarNatural(opcion, datos) {
             ( typeof(datos.ci) != 'undefined' && datos.ci != null && datos.ci != "") &&
             ( typeof(datos.expedido) != 'undefined' && datos.expedido != null && datos.expedido != "") &&
             ( typeof(datos.fec_nacimiento) != 'undefined' && datos.fec_nacimiento != null && datos.fec_nacimiento != "") &&
-            ( typeof(datos.lugar_nacimiento) != 'undefined' && datos.lugar_nacimiento != null && datos.lugar_nacimiento != "") &&
-            ( typeof(datos.sexo) != 'undefined' && datos.sexo != null && datos.sexo != "") &&
-            ( typeof(datos.id_estado_civil) != 'undefined' && datos.id_estado_civil != null && datos.id_estado_civil != "") &&
+            //( typeof(datos.lugar_nacimiento) != 'undefined' && datos.lugar_nacimiento != null && datos.lugar_nacimiento != "") &&
+            //( typeof(datos.sexo) != 'undefined' && datos.sexo != null && datos.sexo != "") &&
+            //( typeof(datos.id_estado_civil) != 'undefined' && datos.id_estado_civil != null && datos.id_estado_civil != "") &&
             ( typeof(datos.profesion) != 'undefined' && datos.profesion != null && datos.profesion != "")
-
             // ( typeof(datos.pais) != 'undefined' && datos.pais != null && datos.pais != "") &&
             // ( typeof(datos.departamento) != 'undefined' && datos.departamento != null && datos.departamento != "") &&
             // ( typeof(datos.provincia) != 'undefined' && datos.provincia != null && datos.provincia != "") &&
@@ -229,6 +220,7 @@ function validarNatural(opcion, datos) {
         {
             return true
         }
+        //return true;
         break;
 
       case "DEL":
@@ -669,9 +661,6 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "activaciond": "NO",
           "tipo_documento": this.tipo_documento,
         };
-
-        console.log("PARAEMTRSO...:",dataParams);
-
         ejecutarAjax(urlComp_red, typeCall, dataParams, functionResp);
     }
     else
@@ -762,8 +751,7 @@ rcNatural.prototype.modificarNatural = function (functionResp)
           "sistema_modificador": 'IGOB_MOD',
           "dtspsl_acepta_servicios": ((typeof(this.dtspsl_acepta_servicios ) == 'undefined' || this.dtspsl_acepta_servicios  == null) ? "" : this.dtspsl_acepta_servicios )
 
-        };
-        console.log('dataParams NATURAL',dataParams);
+        };        
         ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
     }
     else
@@ -957,7 +945,6 @@ rcJuridico.prototype.modificarJuridico = function (functionResp)
         "dtspsl_acepta_servicios": ((typeof(this.dtspsl_acepta_servicios ) == 'undefined' || this.dtspsl_acepta_servicios  == null) ? "" : this.dtspsl_acepta_servicios )
 
     };
-    console.log('dataParams JURIDICO',dataParams);
     ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
 };
 
@@ -1667,7 +1654,6 @@ $.ajax({
     },
     error: function (response, status, error) {
         dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-        //console.log('RESPUESTA =========>',dataResp);
     }
 });
 urlComp = "/validarciudadano";
@@ -1698,7 +1684,6 @@ $.ajax({
     },
     error: function (response, status, error) {
         dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-        console.log(dataResp);
     }
 });
 urlComp = "/validarciudadano_n";
@@ -1728,7 +1713,6 @@ validarCiudadanoR_j.prototype.validar_CiudadanoR_j=function(functionResp){
       },
       error: function (response, status, error) {
           dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-          console.log(dataResp);
       }
   });
   urlComp = "/validarciudadano_j";

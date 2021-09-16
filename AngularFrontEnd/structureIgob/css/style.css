@@ -191,9 +191,9 @@
 
 /* Small Device = 320px */
 
-@media only screen and (max-width: 479px) {
+@media only screen and (min-width: 320px) and (max-width: 400px) {
   svg {
-    width: 300px;
+    width: 250px;
     height: 83px;
   }
 }
@@ -680,6 +680,41 @@ Other Latest News section
 }
 
 /*--------------------------------------------------------------
+# Igob SVG letter container
+--------------------------------------------------------------*/
+.letter_container {
+  position: absolute;
+  top: 35%;
+  left: 11.0%;
+  width: 80%;
+  height: 0%;
+  transform: translate(0,0);
+  z-index: 10;
+}
+/* Tablet Device = 768px */
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+
+}
+
+/* Wide Mobile = 480px */
+
+@media only screen and (max-width: 767px) {
+  .letter_container {
+    top: 30%;
+    left: 12.5%;
+  }
+}
+
+/* Small Device = 320px */
+
+@media only screen and (min-width: 320px) and (max-width: 400px) {
+  .letter_container {
+    top: 30%;
+    left: 12.0%;
+  }
+}
+/*--------------------------------------------------------------
 # Intro Section
 --------------------------------------------------------------*/
 #intro {
@@ -740,6 +775,23 @@ Other Latest News section
 @media (max-width: 768px) {
   #intro h2 {
     font-size: 25px;
+  }
+}
+/* Wide Mobile = 480px */
+
+@media only screen and (max-width: 767px) {
+  #intro h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+/* Small Device = 320px */
+
+@media only screen and (min-width: 320px) and (max-width: 400px) {
+  #intro h2 {
+    font-size: 18px;
+    margin-bottom: 18px;
   }
 }
 
@@ -982,6 +1034,73 @@ figure.effect-sarah:hover p {
 	transform: translate3d(0,0,0);
 }
 
+/* ================================
+Services-STEPS (OPTIONAL)
+================================= */
+/* #services-steps-section  {
+  background: #e71984;
+  background-size: cover;
+  padding: 60px 0 40px 0;
+} */
+.title-step h4{
+  color: #036b76;
+  font-weight: 600;
+}
+#services-steps-section  .box {
+  margin-top: 20px;
+}
+
+#services-steps-section  .icon {
+  float: left;
+}
+
+#services-steps-section  .icon i {
+  color: #e30613;
+  font-size: 36px;
+  line-height: 1;
+  transition: 0.5s;
+}
+
+#services-steps-section  .title {
+  margin-left: 60px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #e30613;
+}
+
+#services-steps-section  .title a {
+  color: #111;
+}
+
+#services-steps-section  .box:hover .title a {
+  color: #18d26e;
+}
+
+#services-steps-section  .description {
+  font-size: 14px;
+  margin-left: 60px;
+  line-height: 24px;
+  margin-bottom: 0;
+}
+
+#services-steps-section .owl-nav, #services-steps-section .owl-dots {
+  margin-top: 5px;
+  text-align: center;
+}
+
+#services-steps-section .owl-dot {
+  display: inline-block;
+  margin: 0 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ddd;
+}
+
+#services-steps-section .owl-dot.active {
+  background-color: #47d2cc;
+}
 
 /* ==========================
 Parallax
@@ -1667,7 +1786,11 @@ Fab Municipality
   background: #00000099;
   border-radius: 5px;
 }
-
+/* *******************MODAL CUSTOM BOOTSTRAP************************** */
+.header-modalCustom {
+  background: #e30613;
+}
+/* *******************END MODAL CUSTOM BOOTSTRAP************************** */
 .btn-modalCustom {
   font-size: 12px;
   font-weight: 500;
@@ -1687,7 +1810,7 @@ Fab Municipality
 
     .btn-modalCustom.btn-modalPrimary>i{
       position: absolute;
-      left: 0;
+      left: 5px;
       top: 0;
       width: 40px;
       height: 40px;
@@ -1701,7 +1824,7 @@ Fab Municipality
       background-color: #FFF;
       color: #D10024;
       border-color: #D10024;
-      padding: 10px 30px 10px 40px;}
+      padding: 10px 10px 10px 30px;}
       .btn-modalCustom.btn-modalPrimary:hover>i {
         opacity: 1;
         visibility: visible;
@@ -1749,7 +1872,6 @@ Fab Municipality
             background-color: #006e80;
             border-color: #eefeff;
           }
-
 
 
 

@@ -346,8 +346,11 @@
                                                 <a><i class="fa fa-caret-right blanco"></i>Territorio<span
                                                         class="fa arrow"></span></a>
                                                 <ul class="nav nav-third-level">
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                            href="#territorio|PC">Permisos de Construcción</a></li>
+                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click="" href="#territorio|PC">Permisos de Construcción 3D</a></li>
+													<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|AsbuiltFracCercat">Planos As Built, Fraccionamiento PH y Certificación Catastral</a></li>
+                                        			<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|FracCercat">Fraccionamiento PH y Certificación Catastral</a></li>
+                                        			<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|Asbuilt">Planos As Built</a></li>
+                                        			<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|autorizacionesMenores">Autorizaciones Menores</a></li>
                                                 </ul>
                                             </li>
                                             <li ng-show="stiporol == '5' && sservicios  == 'SI'">
@@ -818,7 +821,14 @@
     <script src="../../controller/catastro/actualizaciones/jspdf.debug.js"></script>
     <script src="../../view/catastro/duplicado/appDuplicado.js"></script>
     <script src="../../view/catastro/actualizaciones/appAct.js"></script>
+    <script src="../../view/catastro/registro/appRegistro.js?v=20210915"></script>
+    <script src="../../view/catastro/registroAct/appRegistroAct.js?v=20210915"></script>
+    <script src="../../view/catastro/general/appCatastroGeneral.js"></script>
     <script src="../../view/territorio/PC/appPC.js?v=20181018"></script>
+    <script src="../../view/territorio/AsbuiltFracCercat/appAsbuiltFracCercat.js"></script>
+    <script src="../../view/territorio/FracCercat/appFracCercat.js"></script>
+    <script src="../../view/territorio/Asbuilt/appAsbuilt.js"></script>
+    <script src="../../view/territorio/autorizacionesMenores/appAutorizaciones.js"></script>
     <!-- SMPD Fin-->
     <script src="../../libs/js_one/bootstrap.min.js"></script>
     <script src="../../libs/js_one/jquery.metisMenu.min.js"></script>

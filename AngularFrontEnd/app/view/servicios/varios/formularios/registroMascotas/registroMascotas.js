@@ -2,6 +2,14 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
  
   var hoy = new Date();
   var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
+  var vDia;
+  var vMes;
+  if ((hoy.getMonth()+1) < 10) { vMes = "0" + (hoy.getMonth()+1); }
+  else { vMes = (hoy.getMonth()+1); }
+  if (hoy.getDate() < 10) { vDia = "0" + hoy.getDate(); }
+  else{ vDia = hoy.getDate(); }
+
+  $scope.fechaHoy = hoy.getFullYear() + '-'+vMes + '-' + vDia;
   var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
   $scope.fechayhora = fecha + ' ' + hora;
   $scope.swimagen = '';
@@ -9,6 +17,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   var tit_nombre='';
   var tit_correo = '';
   var tit_numero='';
+  
   
   function cargando() {
     var texto = $("<div>", {
@@ -169,7 +178,9 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         if (results !== '"[{ }]"' && results !== '"[{}]"') {
           setTimeout(function(){
             $scope.tramitesMascota = JSON.parse(results);
+            $scope.detalle_url = jsonURLS.CONEXION_SIERRA;
             angular.forEach($scope.tramitesMascota, function (value, key) {
+              $scope.certificadoMascota = jsonURLS.CONEXION_SIERRA+value.xmascota_certdigital;
               value.xmascota_data = JSON.parse(value.xmascota_data);
             });
             $scope.$apply();
@@ -1499,8 +1510,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.resId = $scope.res.success[0].id;
     })
 }
-
-  $scope.inicioServicios = function () {
+$scope.inicioServicios = function () {
     var sTokenMascotas = sessionService.get('TOKEN_MOTORM');    
     sTokenMascotas = ((typeof(sTokenMascotas) == 'undefined' || sTokenMascotas == null) ? '' : sTokenMascotas);
     $scope.url_imagen = false;

@@ -2,6 +2,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
  
   var hoy = new Date();
   var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
+  $scope.gestion = hoy.getFullYear();
   var vDia;
   var vMes;
   if ((hoy.getMonth()+1) < 10) { vMes = "0" + (hoy.getMonth()+1); }
@@ -66,7 +67,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
           setTimeout(function () {
             swal({
               title: 'Editar su Información',
-              text: 'Estimado ciudadano debe completar los siguientes datos de su cuenta: ' + $scope.datosfalt + ', para poder realizar el trámite',
+              text: 'Estimado ciudadano debe completar los siguientes datos de su cuenta: ' + $scope.datosfalt + ', para registrar a su mascota',
               type: 'warning',
               showCancelButton: false,
               confirmButtonColor: '#DD6B55',
@@ -92,12 +93,12 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   $scope.validacionDatosNatural = function (datos) {
     var datosfaltantes = '';
     datosfaltantes = new Array();
-    if (datos.dtspsl_fec_nacimiento == '') {
+   /* if (datos.dtspsl_fec_nacimiento == '') {
       datosfaltantes.push(' FECHA DE NACIMIENTO');
     }
     if (datos.dtspsl_expedido == '' || datos.dtspsl_expedido == ' ') {
       datosfaltantes.push(' EXPEDIDO');
-    }
+    }*/
     if (datos.dtspsl_nombres == '' || datos.dtspsl_nombres == ' ') {
       datosfaltantes.push(' NOMBRES');
     }
@@ -110,12 +111,12 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     if ((datos.dtspsl_correo == '') || (datos.dtspsl_correo == ' ')) {
       datosfaltantes.push(' CORREO');
     }
-    if (datos.dtspsl_fec_nacimiento == '' || datos.dtspsl_fec_nacimiento == ' ') {
+    /*if (datos.dtspsl_fec_nacimiento == '' || datos.dtspsl_fec_nacimiento == ' ') {
       datosfaltantes.push('FECHA DE NACIMIENTO');
-    }
-    if (datos.dtspsl_pais == '' || datos.dtspsl_pais == ' ') {
+    }*/
+    /*if (datos.dtspsl_pais == '' || datos.dtspsl_pais == ' ') {
       datosfaltantes.push(' PAIS');
-    }
+    }*/
     if (datos.dtspsl_departamento == '' || datos.dtspsl_departamento == ' ') {
       datosfaltantes.push(' DEPARTAMENTO');
     }
@@ -131,7 +132,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     if ((datos.dtspsl_zona_desc == '' || datos.dtspsl_zona == '')) {
       datosfaltantes.push(' ZONA');
     }
-    if (datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0') {
+    /*if (datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0') {
       datosfaltantes.push(' NOMBRE DE VIA');
     }
     if (datos.dtspsl_numero_casa == '' || datos.dtspsl_nombre_via == '0') {
@@ -142,7 +143,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     }
     if (datos.dtspsl_file_fotocopia_ci_r == '' || datos.dtspsl_file_fotocopia_ci_r == ' ') {
       datosfaltantes.push(' DOCUMENTO DE IDENTIDAD REVERSO');
-    }
+    }*/
     $scope.datosfalt = datosfaltantes;
   }
   $("#mensaje1").hide();
@@ -190,7 +191,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         } else {
           $scope.$apply();
           $scope.tablaTramites.reload();
-          swal('Estimado Ciudadano', 'No tiene Mascotas registradas...','warning');
+          swal('Estimado Ciudadano', 'No tiene Mascotas inscritas, para registrar su(s) mascota(s), haga click en el boton REGISTRAR.','warning');
           $.LoadingOverlay("hide");
         }
         $.LoadingOverlay("hide");
@@ -232,7 +233,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.dataMascota.cod_chip = 'NO';
         $scope.insertarDataMascota(data);
         if($scope.datos.mascota_desparasitacion == 'si'){
-          if($scope.datos.mascota_feca_desparasitacion!='' && $scope.datos.mascota_veterinario_desparasitacion !='' && $scope.datos.mascota_institucion_desparasitacion !=''){
+          if($scope.datos.mascota_feca_desparasitacion!=''){
             if ($scope.vacunas.length == 0) {
               swal({
                 title: "Advertencia?",
@@ -327,12 +328,12 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         }
       }
       if($scope.datos.mascota_esterilizacion == "si") {
-        if($scope.datos.reg_feca!='' && $scope.datos.mascota_marca !='' && $scope.datos.mascota_institucion !=''){
+        if($scope.datos.reg_feca!='' && $scope.datos.mascota_marca !=''){
         $.blockUI();
         $scope.dataMascota.cod_chip = 'NO';
         $scope.insertarDataMascota(data);
         if($scope.datos.mascota_desparasitacion == 'si'){
-          if($scope.datos.mascota_feca_desparasitacion!='' && $scope.datos.mascota_institucion_desparasitacion !=''){
+          if($scope.datos.mascota_feca_desparasitacion!=''){
             if ($scope.vacunas.length == 0) {
               swal({
                 title: "Advertencia?",
@@ -591,20 +592,24 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.datos.xmascota_especie = $datos_mascota1.especie;
         $scope.datos.xmascota_raza = $datos_mascota1.raza;
         $scope.raza = $datos_mascota1.raza;
-        var indices10 = [], indices11 = [];
-        if ($datos_mascota1.edad != undefined) {
+        $scope.datos.mascota_edad = $datos_mascota1.edad;
+        $scope.datos.reg_edad_des = $datos_mascota1.edad_desc;
+        $scope.datos.mascota_peso = $datos_mascota1.peso;
+        $scope.datos.reg_peso_des = $datos_mascota1.peso_desc;
+       // var indices10 = [], indices11 = [];
+        /*if ($datos_mascota1.edad != undefined) {
           for (var i2 = 0; i2 < $datos_mascota1.edad.length; i2++) {
             if ($datos_mascota1.edad[i2].toLowerCase() == " ") {
               indices10.push(i2);
             }
           }
 
-        }
-        $scope.datos.mascota_edad = $datos_mascota1.edad.substring(0, indices10[0]);
+        }*/
+        //$scope.datos.mascota_edad = $datos_mascota1.edad.substring(0, indices10[0]);
 
-        var indices = [], indices2 = [];
+        //var indices = [], indices2 = [];
 
-        if ($datos_mascota1.edad_desc != undefined) {
+       /* if ($datos_mascota1.edad_desc != undefined) {
 
 
           for (var i2 = 0; i2 < $datos_mascota1.edad_desc.length; i2++) {
@@ -634,23 +639,23 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         }
         if (indices2.length > 0) {
           $scope.datos.reg_edad_des = "Meses";
-        }
+        }*/
 
         $scope.datos.reg_sexo = $datos_mascota1.sexo;
         $scope.sexo = $scope.datos.reg_sexo;
 
-        if ($datos_mascota1.peso != undefined) {
+       /* if ($datos_mascota1.peso != undefined) {
           for (var i2 = 0; i2 < $datos_mascota1.peso.length; i2++) {
             if ($datos_mascota1.peso[i2].toLowerCase() == " ") {
               indices11.push(i2);
             }
           }
 
-        }
+        }*/
 
-        $scope.datos.mascota_peso = $datos_mascota1.peso.substring(0, indices11[0]);
+       // $scope.datos.mascota_peso = $datos_mascota1.peso.substring(0, indices11[0]);
 
-        var indices3 = [], indices4 = [];
+      /*  var indices3 = [], indices4 = [];
         $scope.datos.reg_peso_des = $datos_mascota1.peso_desc;
 
         if ($datos_mascota1.peso_desc != undefined) {
@@ -683,7 +688,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         }
         if (indices4.length > 0) {
           $scope.datos.reg_peso_des = "Gramos";
-        }
+        }*/
         //////////////////////
         $scope.datos.imagen_png = $scope.respuesta[0].xmascota_imagen_url;
         $scope.datos.mascota_color = $datos_mascota1.color;
@@ -1509,6 +1514,16 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.res = JSON.parse(res);
         $scope.resId = $scope.res.success[0].id;
     })
+}
+$scope.verificaEdad = function(dato){
+  console.log('dato',dato);
+  if (dato == 'Años'){
+    $scope. cantidad_anios = 20;
+  }
+  if (dato == 'Meses'){
+    $scope. cantidad_anios = 240;
+  }
+
 }
 $scope.inicioServicios = function () {
     var sTokenMascotas = sessionService.get('TOKEN_MOTORM');    

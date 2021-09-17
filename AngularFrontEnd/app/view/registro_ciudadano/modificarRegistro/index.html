@@ -439,10 +439,10 @@
                                                 </div>
                                                 <div class="hr-line-dashed"></div>
                                                 <div class="form-group">
-													<label class="col-sm-3 control-label">{{translateTitulos.lbl_06_19}} *</label>
+													<label class="col-sm-3 control-label">{{translateTitulos.lbl_06_19}}</label>
 													<div class="col-sm-9">
 														<select id="prsProfesion" name="prsProfesion" placeholder="{{translateTitulos.lbl_06_19}}"
-														class="form-control" required  ng-model="registro.profesion" ng-options="obj.prf_profesion as obj.prf_profesion for obj in getpro" value="{{registro.prf_profesion}}">
+														class="form-control" ng-model="registro.profesion" ng-options="obj.prf_profesion as obj.prf_profesion for obj in getpro" value="{{registro.prf_profesion}}">
 														<option value="">--Selecccione--</option>
 														</select>
 													</div>
@@ -518,7 +518,7 @@
                                                 <a class="btn btn-default" style="color:#ffffff" href="#/dashboard">{{translateTitulos.lbl_06_24}}</a>
                                             </td>
                                              <td>
-                                                <button data-toggle="modal" ng-click="validacamposJuridico();" data-target="#formModal" type="submit" class="btn btn-success"  ng-disabled="signupForm.prsProfesion.$invalid || signupForm.prsFechaNac.$invalid">{{translateTitulos.lbl_06_25}}</button>
+                                                <button data-toggle="modal" ng-click="validacamposJuridico();" data-target="#formModal" type="submit" class="btn btn-success"  ng-disabled="">{{translateTitulos.lbl_06_25}}</button>
                                             </td>
                                         </tr>
                                     </div>                                    
@@ -712,7 +712,7 @@
                                                 <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_02}} </label>
                                                 <div class="col-sm-8">
                                                     <!--select id="paisN" name="paisN" placeholder="{{translateTitulos.lbl_07_02}}" ng-model="registro.pais" class="form-control" required  ng-change="actualizaDepartamento(registro.pais)" ng-model="registro.pais" ng-options="obj.pais_codigo as obj.pais_pais for obj in comdpais" value="{{obj.pais_codigo}}"></select-->
-                                                    <select  id="paisN" name="paisN"  placeholder="Pais" ng-model="registro.pais"  class="form-control"  value="{{registro.pais}}">
+                                                    <select  id="paisN" name="paisN"  placeholder="Pais" ng-model="registro.pais"  class="form-control"  value="{{registro.pais}}" ng-disabled="true">
                                                         <option value="">--Seleccionar--</option>
                                                         <option value="1">BOLIVIA</option>
                                                     </select>
@@ -723,10 +723,10 @@
                                             </div>
                                             <div class="hr-line-dashed"></div>
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_03}} *</label>
+                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_03}}</label>
                                                 <div class="col-sm-8">
                                                     <!--select id="departamentoN" name="departamentoN" placeholder="{{translateTitulos.lbl_07_03}}" ng-model="registro.departamento" class="form-control" required  ng-disabled="deshabilitadoD" ng-change="cargarProvincia_v2(registro.departamento);limpiarDepartamento();" ng-options="obj.dpto_codigo as obj.dpto_departamento for obj in comdepa" value="{{obj.dpto_codigo}}"></select-->
-                                                    <select  id="departamentoN" name="departamentoN"  placeholder="Pais" ng-model="registro.departamento"  class="form-control"  value="{{registro.departamento}}" ng-disabled="deshabilitadoD" ng-change="cargarProvincia_v2(registro.departamento);limpiarDepartamento(); required">
+                                                    <select  id="departamentoN" name="departamentoN"  placeholder="Pais" ng-model="registro.departamento"  class="form-control"  value="{{registro.departamento}}" ng-disabled="deshabilitadoD" ng-change="cargarProvincia_v2(registro.departamento);limpiarDepartamento();">
                                                         <option value="">--Seleccionar--</option>
                                                         <option value="LPZ">LA PAZ</option>
                                                         <option value="CHQ">CHUQUISACA</option>
@@ -746,7 +746,7 @@
                                             </div>
                                             <div class="hr-line-dashed"></div>
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_04}} *</label>
+                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_04}}</label>
                                                 <div class="col-sm-8">
                                                     <select id="provinciaN" name="provinciaN" placeholder="{{translateTitulos.lbl_07_04}}" ng-model="registro.provincia" class="form-control" required  ng-disabled="deshabilitadoP" ng-change="cargarMunicipio_v2(registro.provincia)" ng-model="registro.prv_codigo_compuesto" ng-options="obj.prv_codigo_compuesto as obj.prv_provincia for obj in aProvincias" value="{{obj.prv_codigo_compuesto}}" ng-selected="select">
                                                     </select>
@@ -757,9 +757,9 @@
                                             </div>
                                             <div class="hr-line-dashed"></div>
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_05}} *</label>
+                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_05}}</label>
                                                 <div class="col-sm-8">
-                                                    <select id="municipioN" name="municipioN" placeholder="{{translateTitulos.lbl_07_05}}" ng-model="registro.municipio" class="form-control"  ng-disabled="deshabilitadoM" ng-change="limpiarZona(); MacroZona()" ng-options="obj.mnc_codigo_compuesto as obj.mnc_municipio for obj in aMunicipios" value="{{obj.mnc_codigo_compuesto}}" required="true">
+                                                    <select id="municipioN" name="municipioN" placeholder="{{translateTitulos.lbl_07_05}}" ng-model="registro.municipio" class="form-control"  ng-disabled="deshabilitadoM" ng-change="limpiarZona(); MacroZona()" ng-options="obj.mnc_codigo_compuesto as obj.mnc_municipio for obj in aMunicipios" value="{{obj.mnc_codigo_compuesto}}">
                                                     </select>
                                                     <br>
                                                     <span style="color:red" ng-show="signupForm.provinciaN.$invalid">
@@ -770,7 +770,7 @@
                                             <div class="hr-line-dashed"></div>
                                             <div ng-show="registro.municipio == 20101">
                                                 <div class="form-group" >
-                                                    <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_08}} *</label>
+                                                    <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_08}}</label>
                                                     <div class="col-sm-8">
                                                         <select style="width:100% !important;" id="prsZona"
                                                                 name="prsZona"
@@ -779,7 +779,7 @@
                                                                 class="js-example-basic-single form-control"
                                                                 ng-options="disZona.dist_id as disZona.dist_nombre for disZona in aMacroZona | orderBy:['nombre','dist_nombre']"
                                                                 ng-change="macrodistritosidM(registro.zona); actulizarIdDistritoM(registro.zona);" 
-                                                                ng-required="true">
+                                                                >
                                                               <option value="">--Seleccionar--</option>
                                                         </select>
                                                         <span style="color:red" ng-show="signupForm.prsZona.$invalid">
@@ -839,9 +839,9 @@
                                         </div>
                                         <div class="col-sm-6 b-r">
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_09}} *</label>
+                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_09}}</label>
                                                 <div class="col-sm-8">
-                                                    <select  id="tipo_viaN" name="tipo_viaN"  placeholder="{{translateTitulos.lbl_07_09}}" ng-model="registro.tipo_via"  class="form-control" value="{{registro.tipovia}}" required="true">
+                                                    <select  id="tipo_viaN" name="tipo_viaN"  placeholder="{{translateTitulos.lbl_07_09}}" ng-model="registro.tipo_via"  class="form-control" value="{{registro.tipovia}}">
                                                         <option value="">--Seleccionar--</option>
                                                         <option value="AV">AVENIDA</option>
                                                         <option value="CA">CALLE</option>
@@ -858,7 +858,7 @@
                                             </div>
                                             <div class="hr-line-dashed"></div>
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_10}} *</label>
+                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_10}}</label>
                                                 <div class="col-sm-8">
                                                     <!--div class="controls">
                                                         <select ng-change="vias_v2(registro.zona,registro.tipo_via);"
@@ -871,7 +871,7 @@
                                                             <option value="OTROS">{{translateTitulos.lbl_07_10_10_1}}</option>
                                                         </select>
                                                     </div-->
-													<input id="nombreviaN" name="nombreviaN" type="text" class="form-control ng-pristine ng-valid" placeholder="Nombre de Vía" ng-model="registro.nombrevia" style="text-transform:uppercase;" required="true">
+													<input id="nombreviaN" name="nombreviaN" type="text" class="form-control ng-pristine ng-valid" placeholder="Nombre de Vía" ng-model="registro.nombrevia" style="text-transform:uppercase;">
                                                     <span style="color:red" ng-show="signupForm.nombreviaN.$invalid">
                                                     <span ng-show="signupForm.nombreviaN.$error.required">Llenar el nombre de via</span>
                                                 </div>
@@ -879,9 +879,9 @@
 
                                             <div class="hr-line-dashed"></div>
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_11}} *</label>
+                                                <label class="col-sm-4 control-label">{{translateTitulos.lbl_07_11}}</label>
                                                 <div class="col-sm-8">
-                                                    <input id="numeroc" name="numeroc" type="text" class="form-control" placeholder="{{translateTitulos.lbl_07_11}}" ng-model="registro.numero" style="text-transform:uppercase;" required="true" />
+                                                    <input id="numeroc" name="numeroc" type="text" class="form-control" placeholder="{{translateTitulos.lbl_07_11}}" ng-model="registro.numero" style="text-transform:uppercase;"/>
                                                     <br>
                                                     <span style="color:red" ng-show="signupForm.numeroc.$invalid">
                                                     <span ng-show="signupForm.numeroc.$error.required">Llenar el numero de casa</span>
@@ -927,7 +927,7 @@
                                                 <a class="btn btn-default" style="color:#ffffff" href="#/dashboard">{{translateTitulos.lbl_06_24}}</a>
                                             </td>
                                              <td>
-                                                <button data-toggle="modal" ng-click="validacamposJuridico();" data-target="#formModal" type="submit" class="btn btn-success"  ng-disabled="signupForm.provinciaN.$invalid || signupForm.municipioN.$invalid || signupForm.prsZona_d.$invalid || signupForm.tipo_viaN.$invalid || signupForm.nombreviaN.$invalid || signupForm.numeroc.$invalid">{{translateTitulos.lbl_06_25}}</button>
+                                                <button data-toggle="modal" ng-click="validacamposJuridico();" data-target="#formModal" type="submit" class="btn btn-success"  ng-disabled="">{{translateTitulos.lbl_06_25}}</button>
                                             </td>
                                         </tr>
                                     </div>                                       
@@ -1843,7 +1843,7 @@
                                 </td>
                                  <td>
 
-                                    <button id="grabar" data-toggle="modal" data-target="#formModal" type="submit" ng-click="validacamposJuridico();"  class="btn btn-success"  ng-disabled="signupFormJuridico.rlNom.$invalid ||signupFormJuridico.rlMaterno.$invalid||signupFormJuridico.nit.$invalid||signupFormJuridico.mprRazon.$invalid||signupFormJuridico.repCi.$invalid||signupFormJuridico.mprPoder.$invalid||signupFormJuridico.mprNotaria.$invalid || signupFormJuridico.pais.$invalid||signupFormJuridico.departamento.$invalid||signupFormJuridico.provincia.$invalid||signupFormJuridico.chkCondiciones_juridico.$invalid || signupFormJuridico.municipio.$invalid || signupFormJuridico.macrodistrito.$invalid || signupFormJuridico.distrito.$invalid || signupFormJuridico.zona.$invalid || signupFormJuridico.tipo_via.$invalid || signupFormJuridico.nombrevia.$invalid || signupFormJuridico.mprCorreo.$invalid || signupFormJuridico.mprCelular.$invalid">
+                                    <button id="grabar" data-toggle="modal" data-target="#formModal" type="submit" ng-click="validacamposJuridico();"  class="btn btn-success"  ng-disabled="">
                                         {{translateTitulos.lbl_03_03_03}}
                                     </button>
                                 </td>

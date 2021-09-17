@@ -592,20 +592,24 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.datos.xmascota_especie = $datos_mascota1.especie;
         $scope.datos.xmascota_raza = $datos_mascota1.raza;
         $scope.raza = $datos_mascota1.raza;
-        var indices10 = [], indices11 = [];
-        if ($datos_mascota1.edad != undefined) {
+        $scope.datos.mascota_edad = $datos_mascota1.edad;
+        $scope.datos.reg_edad_des = $datos_mascota1.edad_desc;
+        $scope.datos.mascota_peso = $datos_mascota1.peso;
+        $scope.datos.reg_peso_des = $datos_mascota1.peso_desc;
+       // var indices10 = [], indices11 = [];
+        /*if ($datos_mascota1.edad != undefined) {
           for (var i2 = 0; i2 < $datos_mascota1.edad.length; i2++) {
             if ($datos_mascota1.edad[i2].toLowerCase() == " ") {
               indices10.push(i2);
             }
           }
 
-        }
-        $scope.datos.mascota_edad = $datos_mascota1.edad.substring(0, indices10[0]);
+        }*/
+        //$scope.datos.mascota_edad = $datos_mascota1.edad.substring(0, indices10[0]);
 
-        var indices = [], indices2 = [];
+        //var indices = [], indices2 = [];
 
-        if ($datos_mascota1.edad_desc != undefined) {
+       /* if ($datos_mascota1.edad_desc != undefined) {
 
 
           for (var i2 = 0; i2 < $datos_mascota1.edad_desc.length; i2++) {
@@ -635,23 +639,23 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         }
         if (indices2.length > 0) {
           $scope.datos.reg_edad_des = "Meses";
-        }
+        }*/
 
         $scope.datos.reg_sexo = $datos_mascota1.sexo;
         $scope.sexo = $scope.datos.reg_sexo;
 
-        if ($datos_mascota1.peso != undefined) {
+       /* if ($datos_mascota1.peso != undefined) {
           for (var i2 = 0; i2 < $datos_mascota1.peso.length; i2++) {
             if ($datos_mascota1.peso[i2].toLowerCase() == " ") {
               indices11.push(i2);
             }
           }
 
-        }
+        }*/
 
-        $scope.datos.mascota_peso = $datos_mascota1.peso.substring(0, indices11[0]);
+       // $scope.datos.mascota_peso = $datos_mascota1.peso.substring(0, indices11[0]);
 
-        var indices3 = [], indices4 = [];
+      /*  var indices3 = [], indices4 = [];
         $scope.datos.reg_peso_des = $datos_mascota1.peso_desc;
 
         if ($datos_mascota1.peso_desc != undefined) {
@@ -684,7 +688,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         }
         if (indices4.length > 0) {
           $scope.datos.reg_peso_des = "Gramos";
-        }
+        }*/
         //////////////////////
         $scope.datos.imagen_png = $scope.respuesta[0].xmascota_imagen_url;
         $scope.datos.mascota_color = $datos_mascota1.color;

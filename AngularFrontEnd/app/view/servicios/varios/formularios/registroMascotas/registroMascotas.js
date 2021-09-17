@@ -63,11 +63,11 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       //fechactual = fecha.getFullYear() + "/" + fecha.getMonth() + "/" + fecha.getDate();
       if (sTipoPersona == 'NATURAL') {
         $scope.validacionDatosNatural(datos);
-        if ((datos.dtspsl_nombres == '' || datos.dtspsl_materno == '' || datos.dtspsl_expedido == '' || datos.dtspsl_zona_desc == '' || datos.dtspsl_numero_casa == '' || datos.dtspsl_tipo_via == '' || datos.dtspsl_nombre_via == '' || datos.dtspsl_correo == '' || datos.dtspsl_file_fotocopia_ci == '') || (datos.dtspsl_nombres == ' ' || datos.dtspsl_materno == ' ' || datos.dtspsl_expedido == ' ' || datos.dtspsl_zona_desc == ' ' || datos.dtspsl_numero_casa == ' ' || datos.dtspsl_correo == ' ' || datos.dtspsl_file_fotocopia_ci == ' ')) {
+        if ((datos.dtspsl_nombres == '' || datos.dtspsl_materno == '' || datos.dtspsl_zona_desc == '' || datos.dtspsl_correo == '' ) || (datos.dtspsl_nombres == ' ' || datos.dtspsl_materno == ' ' || datos.dtspsl_expedido == ' ' || datos.dtspsl_zona_desc == ' ' || datos.dtspsl_correo == ' ' )) {
           setTimeout(function () {
             swal({
               title: 'Editar su Información',
-              text: 'Estimado ciudadano debe completar los siguientes datos de su cuenta: ' + $scope.datosfalt + ', para registrar a su mascota',
+              text: 'Estimado ciudadano debe completar los siguientes datos de su cuenta: ' + $scope.datosfalt + ', para realizar el registro de su mascota',
               type: 'warning',
               showCancelButton: false,
               confirmButtonColor: '#DD6B55',

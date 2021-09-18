@@ -166,6 +166,8 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
   $scope.listarMascotasXci = function (ci) {
     cargando();
+    $scope.mostrarImagenR = true;
+    $scope.mostrarImagenI = false;
     $scope.tramitesMascota = [];
     ci = sessionService.get('CICIUDADANO');
     ///$scope.tipoR = tipo;
@@ -547,6 +549,8 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
   $scope.mostrarInformacionMascota = function (data) {
     cargando();
+    $scope.mostrarImagenI = false; 
+    $scope.mostrarImagenR = true; 
     $datos_mascota1 = {};
     $scope.estrilizacion = false;
     $scope.desparasitacion = false;
@@ -859,6 +863,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   // serializar informacion
   //modificar Informacion
   $scope.modificarInformacionMascota = function (data) {
+
     swal({
       title: 'Mensaje de Advertencia',
       text: 'Estimado Ciudadano, ¿Se encuentra seguro/a de modificar los datos de su mascota?',
@@ -879,6 +884,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
           var resp = JSON.parse(results);
           var sci = sessionService.get('CICIUDADANO');
         $scope.listarMascotasXci(sci);
+        $scope.cargarNuevaDataMascota();
           $scope.tablaTramites.reload();
           $scope.$apply();
           alertify.success('Datos de la Mascota fue Modificada');
@@ -952,6 +958,8 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   }
 
   $scope.cargarNuevaDataMascota = function () {
+    $scope.mostrarImagenI = false; 
+    $scope.mostrarImagenR = false; 
     $scope.desabilitado = false;
     $scope.datos.IMAGEN_MASCOTA = '';
      $scope.btover7 = false;
@@ -1374,6 +1382,8 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         var nombre = obj.getAttribute("name");
         var objarchivo = obj.files[0];
         $scope.IMAGEN_MASCOTA = obj.files[0];
+        $scope.mostrarImagenI = true;
+        $scope.mostrarImagenR = false;
         var ciCiudadano = sessionService.get('CICIUDADANO');
         $scope.direccionvirtual = "RC_CLI";
         //var sDirTramite = $scope.datos_responsable.ci;
@@ -1453,8 +1463,9 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         var datosMascota = new reglasnegocioM();
         datosMascota.identificador = 'SISTEMA_VALLE-CM-2053';
         datosMascota.parametros = JSON.stringify($scope.dataMascota);
-        $scope.dataServicioMascota=JSON.stringify($scope.dataMascota);
+        $scope.dataServicioMascota = JSON.stringify($scope.dataMascota);
         datosMascota.llamarregla(function (results) {
+          console.log('results',results);
           if (results.length == 0) {
             alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
           } else {
@@ -1462,6 +1473,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
             swal("Estimado ciudadano", "Su mascota fue registrada satisfatoriamente", "success");
             var sci = sessionService.get('CICIUDADANO');
             $scope.listarMascotasXci(sci);
+            $scope.cargarNuevaDataMascota();
             $scope.tablaTramites.reload();
             $scope.$apply();               
           }           
@@ -1515,20 +1527,47 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.resId = $scope.res.success[0].id;
     })
 }
-$scope.verificaEdad = function(dato){
-  console.log('dato',dato);
-  if (dato == 'Años'){
-    $scope. cantidad_anios = 20;
-  }
-  if (dato == 'Meses'){
-    $scope. cantidad_anios = 240;
-  }
 
+
+
+$scope.verCertificado = function (dato) {
+  cargando();
+  console.log(1111, dato);
+  $scope.certMascota = '';
+  $("#modalCErt").modal("show");
+  $scope.resultsCert = "data:application/pdf;base64,";
+
+  var datosMascota = new reglasnegocioM();
+  datosMascota.identificador = 'SISTEMA_VALLE-CM-CDIG';
+  datosMascota.parametros = '{"idCert":' + dato + '}';
+  datosMascota.llamarregla(function (results) {
+    try {
+      cargando();
+      if (results !== '"[{ }]"' && results !== '"[{}]"') {
+        setTimeout(function(){
+          $scope.certMascota = JSON.parse(results)[0].dataCert;
+          console.log("fdfdf",$scope.certMascota);
+          $scope.resultsCert = "data:application/pdf;base64,"+$scope.certMascota;
+          $scope.$apply();
+          
+          $.LoadingOverlay("hide");
+       }, 1000);
+      }
+      $.LoadingOverlay("hide");
+    } catch (e) {
+      console.log(e.toString());
+      
+      $.LoadingOverlay("hide");
+    }
+  });
 }
+
 $scope.inicioServicios = function () {
     var sTokenMascotas = sessionService.get('TOKEN_MOTORM');    
     sTokenMascotas = ((typeof(sTokenMascotas) == 'undefined' || sTokenMascotas == null) ? '' : sTokenMascotas);
     $scope.url_imagen = false;
+    $scope.mostrarImagenR = false;
+    $scope.mostrarImagenI = false;
     if(sTokenMascotas != ''){      
       $scope.recuperandoDatosInicialesCiudadano();
       id = 1;

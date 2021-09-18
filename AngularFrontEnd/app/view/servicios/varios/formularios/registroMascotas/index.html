@@ -175,10 +175,6 @@ function validateDecimal(valor) {
         }
     });
 
-   /* $('#IMAGEN_MASCOTA').change(function(e) {
-   var id = 0;
-   angular.element(this).scope().addImage(e,id);
-   });*/
 </script>
 <script type="text/javascript">
     function filterFloat(evt,input){
@@ -272,6 +268,24 @@ function validateDecimal(valor) {
                                                     <div class="modal-footer">
                                                         <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >Cancelar</button>
                                                         <button id="btnElimMas" type="button" class="btn btn-default" data-dismiss="modal" ng-click="eliminarMascota(tramite.xmascota_id,datos.eutanasia,datos.fallecido)">Eliminar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal fade" id="modalCErt"  role="dialog" aria-labelledby="exampleModalCenterTitle" >
+                                            <div class="modal-dialog modal-dialog-centered" role="document" style="width:1250px;">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 class="modal-title" id="exampleModalCenterTitle"><center><strong>Ver Carnet de la Mascota</strong></center></h2>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                            <object
+                                                            data="{{resultsCert}}"
+                                                            width=100% height=600></object>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -495,7 +509,8 @@ function validateDecimal(valor) {
                                             <div class="col-md-2" >
                                                 <div class="form-group">
                                                         <div class="controls">
-                                                            <img src="{{xmascota_imagen_url}}"  width="250" height="250" >                                                            
+                                                            <img ng-show ="mostrarImagenR" src="{{xmascota_imagen_url}}"  width="250" height="250" >   
+                                                            <img ng-show ="mostrarImagenI" src="{{datos.IMAGEN_MASCOTA}}"  width="250" height="250" >                                                            
                                                         </div>
                                                 </div>
                                             </div>

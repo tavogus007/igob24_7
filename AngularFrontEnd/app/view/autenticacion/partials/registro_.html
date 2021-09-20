@@ -26,6 +26,7 @@
         background:#39AB6F;
       }
     </style>
+    <link rel="icon" href="../../../../structureIgob/images/favicon.png">
     <link rel="stylesheet" href="../../../libs/css_one/registro.css"/>
     <link rel="stylesheet" href="../../../libs/css_one/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../../libs/css_one/styleinspinia.min.css"/>
@@ -2489,7 +2490,7 @@
                     <div class="col-sm-10">
                         <p>
                           <font color="#FF1100">
-                              Con esta opción podrá tener acceso limitado a los servicios en línea del Gobierno Autónomo Municipal de La Paz, si desea acceder a más servicios, le pedimos que pueda apersonarse por <strong>única</strong> vez a una de nuestras plataformas de atención presencial del GAMLP para realizar la validación de sus datos personales. Para ello usted debe llevar su Cédula de Identidad Original.
+                            Con esta opción podrá tener acceso a los trámites y servicios en línea del Gobierno Autónomo Municipal de La Paz.
                           </font>
                         </p>
                         <div class="form-group">
@@ -2500,9 +2501,7 @@
                           <div class="col-sm-12">
                             <span class="block input-icon input-icon-right" ng-show ="habilitarCondicion">
                               <span>
-                                <font color="#FF0000" size="5px"> * </font>
-                                <strong>Para continuar con el registro, debe aceptar las Condiciones de Uso, se recomienda leerlo atentamente.</strong>
-                                 <br><font color="blue" size="5px"> <strong>* Paso 2 Aceptar las:</strong></font>
+                                 <br><font color="blue" size="5px"> <strong>* Paso 2:<font color="#FF0000" size="5px"> * </font> <strong>Para continuar con el registro, debe aceptar las Condiciones de Uso, se recomienda leerlo atentamente.</strong><br> Aceptar las:</strong></font>
                                  <button data-toggle="modal" data-target="#formModalTrm" type="submit" class="btn btn-success" ng-disabled="signupForm.prsNom.$invalid || signupForm.materno.$invalid || signupForm.repCi.$error.required || signupForm.expedido.$error.required || signupForm.fecha_nacimiento.$error.required || signupForm.lugarNacimiento.$error.required || signupForm.genero.$invalid ||signupForm.direccion.$invalid || correoValido  || existeCi || existeCi2 || validaFono  || validaCel || signupForm.celular.$error.required || signupForm.fechaNac.$error.required || signupForm.tipoDoc.$error.required" style="background-color: #000;color:#FFFFFF">Condiciones de uso</button>
                                  <img src="../partials/img/manito.gif" alt="Presione el botón">
                               </span>
@@ -2848,7 +2847,7 @@
                     <div class="col-md-offset-2 col-md-8 col-md-offset-2">
                         <p>
                           <font color="#FF1100">
-                              Con esta opción podrá tener acceso limitado a los servicios en línea del Gobierno Autónomo Municipal de La Paz, si desea acceder a más servicios, le pedimos que pueda apersonarse por única vez a una de nuestras plataformas de atención presencial del GAMLP para realizar la validación de sus datos personales. Para ello usted debe llevar su Cédula de Identidad Original.
+                            Con esta opción podrá tener acceso a los trámites y servicios en línea del Gobierno Autónomo Municipal de La Paz.
                           </font>
                         </p>
                     </div>
@@ -2868,13 +2867,18 @@
                           <span class="block input-icon input-icon-right">
                             <center>
                               <div class="col-sm-12" ng-show = "habilitarCondicion">
-                                  <span>
+                                <span>
+                                   <br><font color="blue" size="5px"> <strong>* Paso 2:  <font color="#FF0000" size="5px"> * </font><strong>Para continuar con el registro, debe aceptar las Condiciones de Uso, se recomienda leerlo atentamente.</strong><br> Aceptar las:</strong></font>
+                                   <button data-toggle="modal" data-target="#formModalTrmJ" type="submit" class="btn btn-success" ng-disabled=" signupFormJuridico.nombre.$invalid || signupFormJuridico.tipoEmpresa.$invalid || signupFormJuridico.nit.$invalid || existeNit || existeNit2 || validaCelJ || signupFormJuridico.razonSocial.$invalid || signupFormJuridico.poder_rep.$invalid || signupFormJuridico.nroNotaria.$invalid || signupFormJuridico.correoEmp.$invalid" style="background-color: #000;color:#FFFFFF">Condiciones de uso</button>
+                                   <img src="../partials/img/manito.gif" alt="Presione el botón">
+                                </span>
+                                  <!-- <span>
                                     <font color="#FF0000" size="5px"> * </font>
                                     <strong>Para continuar con el registro, debe aceptar las Condiciones de Uso, se recomienda leerlo atentamente.</strong>
                                      <br><font color="blue" size="5px"> <strong>* Paso 2 Aceptar las:</strong></font>
                                      <button data-toggle="modal" data-target="#formModalTrmJ" type="submit" class="btn btn-success" ng-disabled=" signupFormJuridico.nombre.$invalid || signupFormJuridico.tipoEmpresa.$invalid || signupFormJuridico.nit.$invalid || existeNit || existeNit2 || validaCelJ || signupFormJuridico.razonSocial.$invalid || signupFormJuridico.poder_rep.$invalid || signupFormJuridico.nroNotaria.$invalid || signupFormJuridico.correoEmp.$invalid" style="background-color: #000;color:#FFFFFF">Condiciones de uso</button>
                                      <img src="../partials/img/manito.gif" alt="Presione el botón">
-                                  </span>
+                                  </span> -->
                                   <div class="hr-line-dashed"></div>
                               </div>
                               <img src="../partials/img/comuniquese.png" alt="Contacto">

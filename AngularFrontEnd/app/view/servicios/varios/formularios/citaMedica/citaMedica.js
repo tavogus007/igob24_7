@@ -32,7 +32,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
         var urlPagoClick = CONFIG.CONEXION_PAGOS + 'envioPagoClickGamlp';
         var urlPagoQR = CONFIG.CONEXION_PAGOS + 'generarQrBcpGamlp';
         var urlCorreoAdjunto = 'http://200.105.139.183:9090/smsemail/email/mailFileGamlp.php';
-
+        //var urlCorreo = 'http://172.18.26.174/dreamfactory/dist/PROYECTOS/phpmailer/index.php';
+        var urlCorreo = 'http://200.105.139.183:9090/smsemail/email/mailSalud2_0_BORRAR.php';
       }
     $scope.get_renderizarHospitales = function(x){
         return $sce.trustAsHtml(x);
@@ -264,9 +265,86 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
     }
 
     $scope.reservarFicha = function(){
+        //var printContents = "<html>" +
+        /*var printContents = "<html>" +
+            "<head>" +
+            "</head>" +
+            "<body>" +
+                "<table width='100%' border='0' cellspacing='0' cellpadding='0'>" +
+                    "<tr>" +
+                        "<td align='center'>" +
+                            "<table width='100%' border='0' cellspacing='0' cellpadding='5'>" +
+                                "<tr>" +
+                                    "<td>" +
+                                        "<center><strong>" + $scope.datosHospital.vhsp_nombre_hospital + "</strong></center>" +
+                                    "</td>" +
+                                "</tr>" +
+                                "<tr>" +
+                                    "<td>" +
+                                        "<h5><center><strong>FICHA DE ATENCIÓN CONSULTA EXTERNA</strong></center></h5>" +
+                                    "</td>" +
+                                "</tr>" +
+                            "</table>" +
+                        "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><strong><center>--------------------------------------------------------------</center></strong></td>" +
+                    "</tr>" + 
+                    "<tr>" +
+                        //"<td width='20%' height='3px;' align='left' style='border-width:0px; border-style: solid'><strong>Nro. de liquidación:</strong></td>" +
+                        "<td width='20%'><center><strong>"+ $scope.codigo_ficha2 +"</strong></center></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><center><strong>SERVICIO "+ $scope.especialidad_nombre +"</strong></center></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><center><strong>Doctor:</strong>"+ $scope.doctor_nombre +"</center></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><center><strong>Fecha Atencion:</strong>"+ $scope.fechaDisponible +"</center></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><center><strong>Turno:</strong>"+ $scope.tipoTurno +"</center></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><center><strong>Hora:</strong>"+ $scope.horario_ficha +"</center></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><center><strong>Historia Clínica SICE:</strong>"+ $scope.historia_clinica +"</center></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><center><strong>Paciente:</strong>"+ $scope.paciente_nombre +"</center></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><center><strong>Tipo Paciente:</strong>INSTITUCIONAL</center></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><strong><center>--------------------------------------------------------------</center></strong></td>" +
+                    "</tr>" + 
+                    "<tr>" +
+                        "<td width='20%'><strong><center>CONSULTA "+ $scope.precioM +" Bs.</center></strong></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><strong><center>Paciente Antiguo</center></strong></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td width='20%'><strong><center>--------------------------------------------------------------</center></strong></td>" +
+                    "</tr>" +    
+                    "<tr>" +
+                        "<td width='20%'><strong><center>Se sugiere que todo paciente debe estar como minimo 15 min antes de la atencion reservada y recomendable al menos 30 min.Para solicitar su Cita Medica por Internet ingrese al iGob 24/7 en www.lapaz.bo</center></strong></td>" +
+                    "</tr>" +
+                "</table>" +
+            "</body>" +
+		"</html>";
+        console.log(printContents);
+        var popupWin = window.open('', '_blank', 'width=1000,height=1000');
+		popupWin.document.open();
+		popupWin.document.write('<html><head></head><body onload="window.print()">' + printContents + '<br><br></html>');
+		popupWin.document.close();*/
+
         swal({
          title: " Atención !!",
-         text: "Favor tomar nota de lo siguiente: \n Con esta ficha debe pasar 30 minutos antes de la atención, directamente por Caja del Hospital y realizar la cancelación del servicio. \n También en el dispensador de fichas del Hospital puede imprimir su ficha con su Carnet de identidad y fecha de nacimiento.",
+         text: "Favor tomar nota de lo siguiente: \n El día de la cita médica programada debe estar 45 minutos antes de la hora de atención reservada, para realizar el pago en el servicio de Cajas del Hospital. Para contar con la ficha en físico desde el Dispensador de Fichas, seleccione la opción Más opciones en la Reimprimir ficha pendiente,  debe ingresar su número de CI y fecha de nacimiento. \n ¿Desea continuar?",
          type: "warning",
          showCancelButton: true,
          confirmButtonColor: "#55DD6B",confirmButtonText: "SI",
@@ -276,6 +354,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
          },
       function(isConfirm){
          if (isConfirm) {
+            console.log("RESERVAR FICHA CONFIRMACION INSTITUCIONAL");
             $scope.entregarFicha();
             $scope.$apply();
             swal.close();
@@ -298,6 +377,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
          },
       function(isConfirm){
          if (isConfirm) {
+            console.log("RESERVAR FICHA CONFIRMACION SUS - 1125");
             $scope.reservarInternetley();
             swal.close();
             $scope.$apply();
@@ -469,7 +549,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
         $scope.fecha_creacion_sice =  responseiNSERTA[0].fecha_creada;
         var historiaSIIS = new historiaClinica();
             historiaSIIS.nombres = response.dtspsl_nombres;
-            historiaSIIS.paterno = response.dtspsl_materno;
+            historiaSIIS.paterno = response.dtspsl_paterno;
             historiaSIIS.materno = response.dtspsl_materno;
             historiaSIIS.ci = response.dtspsl_ci;
             historiaSIIS.complemento = "";
@@ -512,6 +592,15 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
             historiaSIIS.vcelular = response.dtspsl_movil;
             historiaSIIS.vlugarnac = lugarNacimiento;
             historiaSIIS.fecha_creacion_sice = $scope.fecha_creacion_sice;
+            historiaSIIS.vconyuge = "";
+            historiaSIIS.votras_personas = "";
+            historiaSIIS.vpaterno_proximo = "";
+            historiaSIIS.vmaterno_proximo = "";
+            historiaSIIS.vnombre_proximo = "";
+            historiaSIIS.vciudad_proximo = "";
+            historiaSIIS.vzona_proximo = "";
+            historiaSIIS.vcalle_proximo = "";
+            historiaSIIS.vtelefono_proximo = "";
             historiaSIIS.crearHistoriaClinicaWeb(function(res){
                 var x = JSON.parse(res);
                 var resultado = x.success.data;
@@ -698,6 +787,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
             if( typeof(resultadoApi.success) != 'undefined')
             {
                 respuestaFichas = resultadoApi.success.data;
+                console.log("respuestaFichas", resultadoApi, respuestaFichas);
                 if(respuestaFichas.length>0)
                 {
                     console.log('se va por verdad');
@@ -1158,6 +1248,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
     };
 
     $scope.listar_medicos_turno_combo = function (fechaInicio){
+        console.log("fechaInicio", fechaInicio);
         cargando();
         $scope.medicos = [];
         $scope.medicos = '';
@@ -1198,6 +1289,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
             $scope.precioM = '0';
         }
         cargando();
+        console.log("DATOS", datos);
         var horas = datos.Hora.split('a');
         $scope.hora_inicio = horas[0];
         $scope.hora_fin = horas[1];
@@ -1311,6 +1403,11 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
         }
     };
 
+
+
+   
+
+
     $scope.entregarFicha = function(){
         cargando();
         var x = $scope.codigo_ficha.split('-');
@@ -1338,14 +1435,17 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
             if( typeof(resultadoApi.success) != 'undefined')
             {
                 respuestaFicha = resultadoApi.success.data;
+                console.log("RESPUESTA DE LA FICHA", resultadoApi, respuestaFicha);   
+                
                 if(respuestaFicha.length>0)
                 {
-                   alertify.success('Generación de Ficha exitoso Señor ciudadano,su código de Ficha es '+x[1]+'. \n\n Gracias por usar nuestro servicio.');
+                    alertify.success('Generación de Ficha exitoso Señor ciudadano,su código de Ficha es '+x[1]+'. \n\n Gracias por usar nuestro servicio.');
                     setTimeout(function () {
                     $scope.$apply(function () {
-                        alertify.success('Generación de Ficha exitoso Señor ciudadano,su código de Ficha es '+x[1]+'. \n\n Gracias por usar nuestro servicio.');
+                    alertify.success('Generación de Ficha exitoso Señor ciudadano,su código de Ficha es '+x[1]+'. \n\n Gracias por usar nuestro servicio.');
                          });
                      }, 5500);
+                    $scope.envioCorreo();
                     $scope.cargarFichasReservadas();
                 }
                 $.LoadingOverlay("hide");
@@ -1838,8 +1938,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
 
     $scope.pagarOnlinePreguntarQR1 = function(){
         swal({
-            title: "Atención!!",
-            text: "Favor tomar nota de lo siguiente: \n Con esta ficha debe pasar 30 minutos antes, directamente por enfermeria del para su control médico. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
+            title: "¡Atención!",
+            text: "Favor tomar nota de lo siguiente: \n El día de la atención médica usted deberá acudir a su cita al menos 45 minutos antes de la hora programada y pasar por enfermería para la toma de sus signos vitales. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#55DD6B",confirmButtonText: "Continuar",
@@ -1971,8 +2071,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
 
     $scope.pagarOnlinePreguntarClick1 = function(){
         swal({
-            title: "Atención!!",
-            text: "Favor tomar nota de lo siguiente: \n Con esta ficha debe pasar 30 minutos antes, directamente por enfermeria del para su control médico. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
+            title: "¡Atención!",
+            text: "Favor tomar nota de lo siguiente: \n El día de la atención médica usted deberá acudir a su cita al menos 45 minutos antes de la hora programada y pasar por enfermería para la toma de sus signos vitales. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#55DD6B",confirmButtonText: "Continuar",
@@ -2053,8 +2153,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
 
     $scope.pagarOnlinePreguntar1 = function(){
         swal({
-            title: "Atención!!",
-            text: "Favor tomar nota de lo siguiente: \n Con esta ficha debe pasar 30 minutos antes, directamente por enfermeria del para su control médico. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
+            title: "¡Atención!",
+            text: "Favor tomar nota de lo siguiente: \n El día de la atención médica usted deberá acudir a su cita al menos 45 minutos antes de la hora programada y pasar por enfermería para la toma de sus signos vitales. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#55DD6B",confirmButtonText: "Continuar",
@@ -2075,6 +2175,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
     }
 
     $scope.revertirFicha = function(datos){
+        console.log("datos",datos);
         swal({
          title: "Atención!!",
          text: "¿Está seguro de revertir la ficha.?",
@@ -2100,8 +2201,9 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
                         var respuesta = resultado[0].sp_dinamico;
                         console.log(respuesta);
                         $.LoadingOverlay("hide");
-                         alertify.success('Se revirtio la ficha con exito');
-                         $scope.cargarFichasReservadas();
+                        alertify.success('Se revirtio la ficha con exito');
+                        $scope.envioCorreoReversion(datos);
+                        $scope.cargarFichasReservadas();
                       }
                       else
                       {
@@ -2217,7 +2319,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
             console.log($scope.datosPaciente.dtspsl_correo);
             var fd = new FormData();
             fd.set('auto', 'xcampi3570@gmail.com');
-            fd.set('nombreEnvia', 'CITA MÉDICA');
+            //fd.set('nombreEnvia', 'CITA MÉDICA');
+            fd.set('nombreEnvia', 'FACTURA RESERVA MÉDICA');
             fd.set('para', $scope.datosPaciente.dtspsl_correo);
             fd.set('asunto', 'CITA MÉDICA');
             fd.set('cuerpo', '<h3>Estimad@ Ciudadan@ su ficha fue cancelada y reservada con exito a continuación le mostramos un detalle de su cita medica:'  +
@@ -2502,7 +2605,113 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
         popupWin.document.close();*/
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////  ENVIO DE CORREOS  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    $scope.envioCorreo = function(){
+        var doc = new jsPDF('p','mm',[350, 230]);
+        doc.setTextColor(0,0,0);
+        doc.setFont("helvetica");
+        doc.setFontType("bold");
+        doc.setDrawColor(100, 100, 0);
+        doc.setFont("Noto Sans CJK TC Black");
+        doc.setFontSize(12);
+        doc.setFontType("bold");
+        doc.text(95, 30, $scope.nombreHospital);
+        doc.setFontSize(14);
+        doc.setFontType("bold");
+        doc.text(70, 35,'FICHA DE ATENCIÓN CONSULTA EXTERNA');              
+        doc.text(55, 40, '---------------------------------------------------------------------------------');
+        doc.setFontSize(14);
+        doc.setFontType("bold");
+        doc.text(110, 45, $scope.codigo_ficha2);
+        doc.text(95, 50, $scope.especialidad_nombre);
+        doc.setFontSize(12);
+        doc.setFontType("");
+        doc.text(70, 55,  'Doctor: '+ $scope.doctor_nombre);
+        doc.text(70, 60, 'Fecha Atencion: ' + $scope.fechaDisponible); 
+        doc.text(70, 65, 'Turno: '+ $scope.tipoTurno );
+        doc.text(70, 70, 'Hora: ' + $scope.horario_ficha);
+        doc.text(70, 75, 'Historia Clínica SICE:' + $scope.historia_clinica);      //doc.text(30, 34,  $scope.datos.g_fecha);        
+        doc.text(70, 80, 'Paciente: '+ $scope.paciente_nombre);
+        doc.text(70, 85,'Tipo Paciente: '+$scope.datosPacienteSalud[0].tipopaciente);
+        doc.setFontSize(12);
+        doc.setFontType("bold");
+        doc.text(55, 90, '----------------------------------------------------------------------------------------------');
+        doc.text(110, 95, 'CONSULTA: '+ $scope.precioM +' Bs.');
+        doc.text(55, 100,'----------------------------------------------------------------------------------------------');
+        doc.text(55, 105, 'Se sugiere que todo paciente debe estar como minimo 15 min antes de la ');
+        doc.text(55, 110, 'atencion reservada y recomendable al menos 30 min.Para solicitar su Cita ');
+        doc.text(55, 115, 'Medica por Internet ingrese al iGob 24/7 en www.lapaz.bo');
+        doc.setFontType("normal");
+        //doc.save('_TMOV.pdf');  
+        var fileEncode = btoa(doc.output());
+        console.log("url",fileEncode);
+        var data = {
+            "de": $scope.nombreHospital,
+            "correo_para": $scope.email,
+            "tipo":"Recordatorio de reserva de ficha",
+            "nombre_para": $scope.paciente_nombre,
+            "body": "Se le recuerda que reservo una ficha en el Hospital Los Pinos para el "+$scope.medicos[0].vfechaatencion+" para "+$scope.medicos[0].consultoriodoctor+", con el Medic@: "+$scope.doctor_nombre+" a las. "+$scope.horario_ficha+" , por favor pase por Caja 45 minutos antes de la Hora reservada, en el caso de no asistir le solicitamos pueda revertir su ficha, llamando al "+$scope.datosHospital.vhsp_telefono+", o mediante el Histórico de Atenciones del Módulo Salud del Igob 24/7.",
+            "telefono_de": $scope.datosHospital.vhsp_telefono,
+            "atte": $scope.nombreHospital,
+            "direccion_de": $scope.datosHospital.vhsp_direccion,
+            "files":[{"base":"data:application/pdf;base64,"+fileEncode,"nombre":"ficha.pdf"}]    
+        };
+        $.ajax({
+            type: "POST",
+            url: urlCorreo,
+            data: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            timeout: 0,
+            async: false,
+            success: function(response) {
+              dataResprcp = JSON.stringify(response);
+              console.log(dataResprcp);
+            },
+            error: function (response, status, error) {
+              dataResprcp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+              console.log(dataResprcp);
+            }
+        });
+    }
 
+
+
+    $scope.envioCorreoReversion = function(datos){
+        console.log("datos",datos);
+        var detalle = "Estimado ciudadano su ficha reservada fue revertida con exito";
+        var data = {
+            "de": datos.vhsp_nombre_hospital,
+            "correo_para": $scope.email,
+            "tipo":"Recordatorio de reserva de ficha",
+            "nombre_para": datos.vpaciente_siis,
+            "body": detalle,
+            "telefono_de": datos.vhsp_telefono,
+            "atte": datos.vhsp_nombre_hospital,
+            "direccion_de": datos.vhsp_direccion,
+            "files":[]    
+        };
+        $.ajax({
+            type: "POST",
+            url: urlCorreo,
+            data: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            timeout: 0,
+            async: false,
+            success: function(response) {
+              console.log(response);
+            },
+            error: function (response, status, error) {
+              dataResprcp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+              console.log(dataResprcp);
+            }
+        });
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $scope.$on('api:ready',function(){
         $scope.lstatencionesvacias = true;

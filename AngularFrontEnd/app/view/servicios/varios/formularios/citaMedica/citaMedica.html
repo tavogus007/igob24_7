@@ -256,11 +256,12 @@ select:required:valid {
       <a class="btn btn-lg btn-success" ng-click="cargarFichasReservadas()" >
           <i class="fa fa-table fa-3x pull-left"></i> {{translateTitulos.lbl_019_06}}<br></a>
       <a class="btn btn-lg btn-success" ng-click="lstHospital();limpiarTodo();" >
-          <i class="fa fa-hospital-o  fa-3x pull-left"></i> {{translateTitulos.lbl_019_16}}<br></a>
+          <!--i class="fa fa-hospital-o  fa-3x pull-left"></i> {{translateTitulos.lbl_019_16}}<br></a-->
+          <i class="fa fa-hospital-o  fa-3x pull-left"></i> {{translateTitulos.lbl_019_16}} de Fichas <br></a>
 
       <!--a class="btn btn-lg btn-success" ng-click="cargarFichasReservadas()" >
           <i class="fa fa-square-o fa-stack-2x" aria-hidden="true"></i><h3> {{translateTitulos.lbl_019_06}} </h3></a-->
-      <!--a class="btn btn-lg btn-success" ng-click="lstHospital();limpiarTodo();">
+      <!--a class="btn btn-lg btn-success" ng-click="();limpiarTodo();">
           <i class="fa fa-ticket fa-stack-1x" aria-hidden="true"></i><h3> {{translateTitulos.lbl_019_16}} de Fichas </h3></a-->
       <!--a class="btn btn-lg btn-success" >
           <i class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i><h3> Refrescar Atenciones </h3></a-->
@@ -277,25 +278,22 @@ select:required:valid {
                         <div class="ibox float-e-margins" >
                             <div class="ibox-content" id="caja">
                               <div >
-                                - L@s ciudadan@s que no cuenten con la cobertura del seguro de salud deberán efectuar el pago de la atención médica en el establecimiento de salud, hasta media hora antes del horario de atención.
+                                - L@s ciudadan@s que no cuenten con la cobertura del Seguro Universal de Salud (SUS) deberán efectuar el pago de la atención médica en el hospital municipal, hasta media hora antes del horario de atención.
                                  <br>
                                  <br>
-                                - L@s ciudadan@s que cuenten con la cobertura del seguro de salud, deben presentar la hoja de transferencia al llegar al establecimiento de salud.
+                                - L@s ciudadan@s que cuenten con la cobertura del Seguro Universal de Salud (SUS), deben presentar la Hoja de Referencia al personal de admisiones al ingreso del hospital municipal.
                                  <br>
                                  <br>
-                                - El día de la atención deberán acudir a su cita, al menos 30 minutos antes de la hora programada.
+                                - El día de la atención médica deberá acudir a su cita al menos 30 minutos antes de la hora programada.
                                  <br>
                                  <br>
-                                - El ciudadano que reservó la atención en línea y no acudió a su cita, ingresará a la central de riesgos y no podrá solicitar la ficha desde internet, para poder habilitarse debe recurrir a Admisiones del hospital y solicitar la habilitación.
+                                - En caso que usted no pueda asistir a su cita reservada deberá realizar la reversión de la cita por esta misma plataforma.
                                  <br>
                                  <br>
-                                - Al llegar al hospital debe imprimir su ficha de atención utilizando:
-                                <br>
-                                <br>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Su cédula de identidad ó su número de historia clínica.
-                                <br>
-                                <br>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Fecha de nacimiento.
+                                - En caso que usted hubiese reservado su cita médica en línea y no hubiese acudió a su atención, ingresará a la central de riesgos y no podrá solicitar la ficha desde el IGob 24/7, para poder habilitarse nuevamente debe recurrir a Admisiones del hospital municipal y solicitar su habilitación para la reserva de fichas en línea.
+                                 <br>
+                                 <br> 
+                                - Al ingreso al hospital municipal desde el dispensador de fichas usted puede imprimir su ficha de atención registrando su cédula de identidad ó su número de historia clínica y su fecha de nacimiento.
                               </div>
 
                             </div>
@@ -303,7 +301,7 @@ select:required:valid {
 
                     </div>
                     <div class="col-sm-12" ng-show="lstatencionesvacias">
-                        <div>
+                        <!--div>
                           - L@s ciudadan@s que no cuenten con la cobertura del seguro de salud deberán efectuar el pago de la atención médica en el establecimiento de salud, hasta media hora antes del horario de atención.
                            <br>
                            <br>
@@ -326,6 +324,24 @@ select:required:valid {
                           <br>
                           <br>
                           <br>
+                        </div-->
+                        <div >
+                            - L@s ciudadan@s que no cuenten con la cobertura del Seguro Universal de Salud (SUS) deberán efectuar el pago de la atención médica en el hospital municipal, hasta media hora antes del horario de atención.
+                             <br>
+                             <br>
+                            - L@s ciudadan@s que cuenten con la cobertura del Seguro Universal de Salud (SUS), deben presentar la Hoja de Referencia al personal de admisiones al ingreso del hospital municipal.
+                             <br>
+                             <br>
+                            - El día de la atención médica deberá acudir a su cita al menos 30 minutos antes de la hora programada.
+                             <br>
+                             <br>
+                            - En caso que usted no pueda asistir a su cita reservada deberá realizar la reversión de la cita por esta misma plataforma.
+                             <br>
+                             <br>
+                            - En caso que usted hubiese reservado su cita médica en línea y no hubiese acudió a su atención, ingresará a la central de riesgos y no podrá solicitar la ficha desde el IGob 24/7, para poder habilitarse nuevamente debe recurrir a Admisiones del hospital municipal y solicitar su habilitación para la reserva de fichas en línea.
+                             <br>
+                             <br> 
+                            - Al ingreso al hospital municipal desde el dispensador de fichas usted puede imprimir su ficha de atención registrando su cédula de identidad ó su número de historia clínica y su fecha de nacimiento.
                         </div>
                         <div class="main1" id="main1" style="font-size: 20px;">
                             <center class="ng-binding"><i class="fa fa-warning" style="color: #4bafb4;"></i> ¡ Estimado ciudadano, usted no tiene atenciones médicas hasta la fecha !</center>
@@ -350,28 +366,28 @@ select:required:valid {
                               <table ng-table="tablareservas" class="table table-hover table-striped table-bordered todolist" >
                                 <tr ng-repeat="fichas in $data"  >
                                     <td data-title="'Hospital'">{{fichas.vhsp_nombre_hospital }}</td>
-                                    <td data-title="'Hístorial Clínico'" >{{fichas.vhcl_codigoseg}}</td>
+                                    <td data-title="'Hístoria Clínica'" >{{fichas.vhcl_codigoseg}}</td>
                                     <td data-title="'Especialidad'" >{{fichas.espdesc_especialidad}}</td>
-                                    <td data-title="'Doctor'" >{{fichas.paciente_nombre}}</td>
+                                    <td data-title="'Médico'" >{{fichas.paciente_nombre}}</td>
                                     <td data-title="'Ficha'" >{{fichas.prescodigo_ficha}}</td>
                                     <td data-title="'Fecha y hora de Atención'" >{{fichas.presfecha_atencion}}&nbsp;&nbsp;{{fichas.preshora_inicio_ficha}}  {{fichas.preshora_fin_ficha}}</td>
-                                    <td data-title="'Estado Ficha'" >{{fichas.vficha_pagada}}</td>
-                                    <td data-title="'Estado'">
+                                    <td data-title="'Estado de la Ficha'" >{{fichas.vficha_pagada}}</td>
+                                    <td data-title="'Estado de la Atención'">
                                         <p ng-if="fichas.presestado_prestacion == 'PENDIENTE VALIDACION'">VALIDACION PENDIENTE <br> EN ADMISIONES</p>
                                         <p ng-if="fichas.presestado_prestacion == 'PENDIENTE ATENCION'">ATENCION PENDIENTE</p>
                                         <p ng-if="fichas.presestado_prestacion == 'ATENDIDO'">ATENCION FINALIZADO</p>
-                                        <p ng-if="fichas.presestado_prestacion == 'PENDIENTE PAGO'">
+                                        <!--p ng-if="fichas.presestado_prestacion == 'PENDIENTE PAGO'">
                                           <button ng-click="pagarCertificado2();" type="button" class="btn btn-oscuro ng-binding">PAGAR</button>
-                                        </p>
+                                        </p-->
                                     </td>
                                     <td data-title="'Opciones'">
-                                        <button  class="btn btn-oscuro ng-binding" ng-if="fichas.presestado_prestacion == 'PENDIENTE ATENCION' && fichas.preshabilitacion == 'SI'" ng-click="imprimirFactura(fichas)" >
+                                        <button  class="btn btn-oscuro ng-binding" ng-if="fichas.presestado_prestacion == 'PENDIENTE ATENCION' && fichas.preshabilitacion == 'SI'" ng-click="imprimirFactura(fichas)" title="Imprimir Factura">
                                             <i style="color:#ffffff" class="fa fa-print"></i>
                                         </button>
-                                        <button  class="btn btn-oscuro ng-binding" ng-if="fichas.presestado_prestacion == 'PENDIENTE ATENCION' && fichas.preshabilitacion == 'SI'" ng-click="enviarCorreo(fichas)" >
+                                        <button  class="btn btn-oscuro ng-binding" ng-if="fichas.presestado_prestacion == 'PENDIENTE ATENCION' && fichas.preshabilitacion == 'SI'" ng-click="enviarCorreo(fichas)" title="Enviar Correo">
                                             <i style="color:#ffffff" class="fa fa-send"></i>
                                         </button>
-                                        <button  class="btn btn-oscuro ng-binding"  ng-if="fichas.vpres_revertir == 'SI' && fichas.presestado_prestacion == 'PENDIENTE PAGO'" class="btn btn-danger" ng-click="revertirFicha(fichas)">
+                                        <button  class="btn btn-oscuro ng-binding"  ng-if="fichas.vpres_revertir == 'SI' && fichas.presestado_prestacion == 'PENDIENTE PAGO'" class="btn btn-danger" ng-click="revertirFicha(fichas)" title="Revertir Ficha">
                                             <i style="color:#ffffff" class="fa fa-undo"></i>
                                         </button>
                                     </td>
@@ -757,18 +773,16 @@ select:required:valid {
                                     </div>
                                     <form method="get" class="form-horizontal ng-pristine ng-valid" name="formulario" readOnly="true" novalidate>
                                         <div class="form-group" align="center">
-                                          <a ng-show = "institucional" type="button" class="btn btn-success center-block fa fa fa-hospital-o " data-dismiss="modal" ng-click="reservarFicha()" ng-disabled="formulario.resultadoC.$invalid && btnCambiar"><span> PAGAR EN HOSPITAL</span></a>
-                                          <a ng-show = "institucional" type="button" class="btn btn-success center-block fa fa-credit-card" data-dismiss="modal" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30" ng-click="limpiarmodal()"><span> PAGAR CON TARJETA</span></a>
-                                          <!--a ng-click="ocultarIframe()"  ng-show = "institucional" type="button" class="btn btn-success center-block fa fa-credit-card" data-dismiss="modal" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR CON TARJETA</span></a-->
-                                          <!--a ng-show = "institucional" type="button" class="btn btn-success center-block fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntarClick()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR POR CLICK</span></a-->
-                                          <a ng-show = "institucional" type="button" class="btn btn-success center-block fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntarQR()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR POR QR</span></a>
-                                          <!--a ng-show = "institucional" type="button" class="btn btn-success center-block fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntar()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR EN LINEA</span></a-->
-                                          <a ng-show = "ley" type="button" class="btn btn-success center-block fa fa-save " data-dismiss="modal" ng-click="reservarFichaLey()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> RESERVAR</span></a>
-                                          <a ng-show = " mostrartarjeta" type="button" class="btn btn-success center-block fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntar1()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR CON TARJETA</span></a>
-                                          <a ng-show = " mostrarclick" type="button" class="btn btn-success center-block fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntarClick1()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR POR CLICK</span></a>
-                                          <a ng-show = " volverPago" ng-click="volverPagar()" type="button"class="btn btn-success center-block fa fa-reply" data-dismiss="modal"  ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> VOLVER</span></a>
-                                          <a ng-show = " mostrarqr" type="button" class="btn btn-success center-block fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntarQR1()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span>GENERAR CÓDIGO QR</span></a>
-                                          <a ng-show = " mostrarqr" type="button" class="btn btn-success center-block fa fa-qr" data-dismiss="modal" ng-click="cargarFichasReservadas()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span>YA PAGUE EL QR</span></a>
+                                          <a ng-show = "institucional" type="button" class="btn btn-success center-block btn-lg fa fa fa-hospital-o " data-dismiss="modal" ng-click="reservarFicha()" ng-disabled="formulario.resultadoC.$invalid && btnCambiar"><span> PAGAR EN HOSPITAL</span></a>
+                                          
+                                          <!--a ng-show = "institucional" type="button" class="btn btn-success center-block btn-lg fa fa-credit-card" data-dismiss="modal" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30" ng-click="limpiarmodal()"><span> PAGAR CON TARJETA</span></a-->
+                                          <!--a ng-show = "institucional" type="button" class="btn btn-success center-block btn-lg fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntarQR()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR POR QR</span></a-->
+                                          <a ng-show = "ley" type="button" class="btn btn-success center-block btn-lg fa fa-save " data-dismiss="modal" ng-click="reservarFichaLey()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> RESERVAR</span></a>
+                                          <!--a ng-show = " mostrartarjeta" type="button" class="btn btn-success center-block btn-lg fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntar1()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR CON TARJETA</span></a-->
+                                          <!--a ng-show = " mostrarclick" type="button" class="btn btn-success center-block btn-lg fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntarClick1()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR POR CLICK</span></a-->
+                                          <a ng-show = " volverPago" ng-click="volverPagar()" type="button"class="btn btn-success center-block btn-lg fa fa-reply" data-dismiss="modal"  ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> VOLVER</span></a>
+                                          <!--a ng-show = " mostrarqr" type="button" class="btn btn-success center-block btn-lg fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntarQR1()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span>GENERAR CÓDIGO QR</span></a-->
+                                          <a ng-show = " mostrarqr" type="button" class="btn btn-success center-block btn-lg fa fa-qr" data-dismiss="modal" ng-click="cargarFichasReservadas()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span>YA PAGUE EL QR</span></a>
                                         </div>
                                     </form>
                                 </div>
@@ -874,7 +888,8 @@ select:required:valid {
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                        <h4 class="modal-title" id="myModalLabel">¿ES DERIVADO DE UN CENTRO DE SALUD Y CUENTA CON SU HOJA DE REFERENCIA?</h4>
+                        <!--h4 class="modal-title" id="myModalLabel">¿ES DERIVADO DE UN CENTRO DE SALUD Y CUENTA CON SU HOJA DE REFERENCIA?</h4-->
+                        <h4 class="modal-title" id="myModalLabel">¿Usted es un paciente que cuenta con el Seguro Universal de Salud (SUS) ha sido derivado de un establecimiento de salud y cuenta con su Hoja de Referencia?</h4>
                     </div>
                     <div class="modal-body" >
                         <div align="center">
@@ -884,11 +899,13 @@ select:required:valid {
                     </div>
                     <div class="modal-footer">
                         <div class="row">
-                        <div class="col-md-12" align="center">&nbsp;
-                        <button data-dismiss="modal" type="button" class="btn btn-default pull-left">Cancelar</button>
-                        <button ng-click="confirmacionSI(); " data-dismiss="modal" type="button" class="btn btn-success">SI</button>
-                        <button ng-click="confirmacionNO(); " data-dismiss="modal" type="button" class="btn btn-success">NO</button>
-                        </div>
+                            <div class="col-md-3">&nbsp;
+                                <button data-dismiss="modal" type="button" class="btn btn-default pull-left">Cancelar</button>
+                            </div>
+                            <div class="col-md-9">&nbsp;
+                                <button ng-click="confirmacionSI(); " data-dismiss="modal" type="button" class="btn btn-success btn-lg">SI</button>
+                                <button ng-click="confirmacionNO(); " data-dismiss="modal" type="button" class="btn btn-success btn-lg">NO</button>
+                            </div>    
                         </div>
                     </div>
                 </div>

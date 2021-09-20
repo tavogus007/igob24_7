@@ -245,6 +245,8 @@ function validateDecimal(valor) {
                                         <td data-title="'Edad'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad}}</td>   
                                         <td data-title="'Meses/Años'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad_desc}}</td>   
                                         <td data-title="'Estado'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_estado}}</td> 
+                                        <td data-title="'Carnet'" ng-click="verCertificado(tramite.xmascota_id)" class="btn btn-default btn-circle" ><i class="fa fa-newspaper-o" style="color:rgb(247, 33, 9)" ></i></a></td>
+
                                         <!--td data-title="'Carnet'"><a href={{detalle_url}}{{tramite.xmascota_certdigital}} target="_blank" title="Ver/Descargar" class="btn btn-default btn-circle" ><i class="fa fa-newspaper-o" style="color:rgb(247, 33, 9)" ></i></a></td-->
                                         <td data-title="'Opciones'"><a class="btn btn-default btn-circle" data-target="#formModalElim" ng-click="llamModEli(tramite.xmascota_id)" data-toggle="modal"><i class="fa fa-trash-o" style="color:rgb(15, 15, 15)"></i></a></td>
 

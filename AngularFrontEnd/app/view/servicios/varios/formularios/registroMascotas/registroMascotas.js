@@ -1561,6 +1561,38 @@ $scope.verCertificado = function (dato) {
     }
   });
 }
+$scope.verCertificado = function (dato) {
+  cargando();
+  console.log(1111, dato);
+  $scope.certMascota = '';
+  $("#modalCErt").modal("show");
+  $scope.resultsCert = "data:application/pdf;base64,";
+
+  var datosMascota = new reglasnegocioM();
+  datosMascota.identificador = 'SISTEMA_VALLE-CM-CDIG';
+  datosMascota.parametros = '{"idCert":' + dato + '}';
+  datosMascota.llamarregla(function (results) {
+    try {
+      cargando();
+      if (results !== '"[{ }]"' && results !== '"[{}]"') {
+        setTimeout(function(){
+          $scope.certMascota = JSON.parse(results)[0].dataCert;
+          console.log("fdfdf",$scope.certMascota);
+          $scope.resultsCert = "data:application/pdf;base64,"+$scope.certMascota;
+          //console.log(0000,$scope.resultsCert);
+          $scope.$apply();
+          
+          $.LoadingOverlay("hide");
+       }, 1000);
+      }
+      $.LoadingOverlay("hide");
+    } catch (e) {
+      console.log(e.toString());
+      
+      $.LoadingOverlay("hide");
+    }
+  });
+}
 
 $scope.inicioServicios = function () {
     var sTokenMascotas = sessionService.get('TOKEN_MOTORM');    

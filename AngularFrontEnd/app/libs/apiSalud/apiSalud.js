@@ -308,7 +308,16 @@ historiaClinica.prototype.crearHistoriaClinicaWeb = function (functionResp) {
         "vorigen":this.vorigen,
         "vcelular":this.vcelular,
         "vlugarnac":this.vlugarnac,
-        "fecha_creacion_sice":this.fecha_creacion_sice              
+        "fecha_creacion_sice":this.fecha_creacion_sice,
+        "vconyuge":this.vconyuge,
+        "votras_personas":this.votras_personas,
+        "vpaterno_proximo":this.vpaterno_proximo,
+        "vmaterno_proximo":this.vmaterno_proximo,
+        "vnombre_proximo":this.vnombre_proximo,
+        "vciudad_proximo":this.vciudad_proximo,
+        "vzona_proximo":this.vzona_proximo,
+        "vcalle_proximo":this.vcalle_proximo,
+        "vtelefono_proximo":this.vtelefono_proximo
     };
     ejecutarAjaxSalud(urlComp, typeCall, dataParams, functionResp);
 };
@@ -585,7 +594,6 @@ function guardarSalud(){
     this.codmunicipNac
     this.macrodistritoVive
     this.distritoVive
-
     this.lugarTrabajo
     this.direccionTrabajo
     this.telefonoTrabajo

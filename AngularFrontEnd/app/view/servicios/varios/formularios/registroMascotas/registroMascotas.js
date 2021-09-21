@@ -181,10 +181,10 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         if (results !== '"[{ }]"' && results !== '"[{}]"') {
           setTimeout(function(){
             $scope.tramitesMascota = JSON.parse(results);
-            $scope.detalle_url = jsonURLS.CONEXION_SIERRA;
+            //$scope.detalle_url = jsonURLS.CONEXION_SIERRA;
             angular.forEach($scope.tramitesMascota, function (value, key) {
-              $scope.certificadoMascota = jsonURLS.CONEXION_SIERRA+value.xmascota_certdigital;
-              value.xmascota_data = JSON.parse(value.xmascota_data);
+              //$scope.certificadoMascota = jsonURLS.CONEXION_SIERRA+value.xmascota_certdigital;
+              //value.xmascota_data = JSON.parse(value.xmascota_data);
             });
             $scope.$apply();
             $scope.tablaTramites.reload();
@@ -1465,7 +1465,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         datosMascota.parametros = JSON.stringify($scope.dataMascota);
         $scope.dataServicioMascota = JSON.stringify($scope.dataMascota);
         datosMascota.llamarregla(function (results) {
-          console.log('results',results);
           if (results.length == 0) {
             alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
           } else {
@@ -1532,7 +1531,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
 $scope.verCertificado = function (dato) {
   cargando();
-  console.log(1111, dato);
   $scope.certMascota = '';
   $("#modalCErt").modal("show");
   $scope.resultsCert = "data:application/pdf;base64,";
@@ -1546,12 +1544,14 @@ $scope.verCertificado = function (dato) {
       if (results !== '"[{ }]"' && results !== '"[{}]"') {
         setTimeout(function(){
           $scope.certMascota = JSON.parse(results)[0].dataCert;
-          console.log("fdfdf",$scope.certMascota);
           $scope.resultsCert = "data:application/pdf;base64,"+$scope.certMascota;
           $scope.$apply();
           
           $.LoadingOverlay("hide");
        }, 1000);
+      }
+      else{
+        swal('Estimado Ciudadano', 'Hubo un problema al desplegar el Carnet, intente mas tarde por favor.','error');
       }
       $.LoadingOverlay("hide");
     } catch (e) {
@@ -1563,7 +1563,6 @@ $scope.verCertificado = function (dato) {
 }
 $scope.verCertificado = function (dato) {
   cargando();
-  console.log(1111, dato);
   $scope.certMascota = '';
   $("#modalCErt").modal("show");
   $scope.resultsCert = "data:application/pdf;base64,";
@@ -1577,9 +1576,7 @@ $scope.verCertificado = function (dato) {
       if (results !== '"[{ }]"' && results !== '"[{}]"') {
         setTimeout(function(){
           $scope.certMascota = JSON.parse(results)[0].dataCert;
-          console.log("fdfdf",$scope.certMascota);
           $scope.resultsCert = "data:application/pdf;base64,"+$scope.certMascota;
-          //console.log(0000,$scope.resultsCert);
           $scope.$apply();
           
           $.LoadingOverlay("hide");

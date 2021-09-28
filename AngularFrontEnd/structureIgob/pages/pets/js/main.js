@@ -14,11 +14,11 @@ jQuery(document).ready(function($) {
 		margin:100,
 		items:1,
 		autoplay:true,
+		autoplayTimeout:3000,
+		autoplayHoverPause: true,
 		navText:['<i class="icofont-arrow-left"></i>','<i class="icofont-arrow-right"></i>'],
 		nav:true,
 		dots:false,
-		autoplayHoverPause: true,
-		autoplayTimeout:5000,
 		responsive:{
 			0:{
 				items:1,

@@ -467,7 +467,51 @@
   overflow: visible;
   -webkit-transform: translate3d(0, 0, 0);
 }
-/*=============================section new_start===============================*/
+/*=============================section new_end===============================*/
+
+
+/*=============================section about_us_zoon start===============================*/
+.bg_cusZoonosis {
+  background: #00b3ba;
+}
+/* Img_front */
+.front-img-animal {
+  position: absolute;
+  top: -100px;
+  left: 0px;
+  z-index:99;
+}
+.sub-title-cusZoonosis {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.featured-text {
+  font-size:17px;
+  font-weight:500;
+  letter-spacing: 0.2px;
+  line-height:26px;
+}
+/* Big Triangle */
+svg#bigTriangleColor {
+  filter: invert(45%) sepia(84%) saturate(1465%) hue-rotate(147deg) brightness(97%) contrast(101%);
+  pointer-events: none;
+  margin-top: -1px;
+}
+.res-margin{
+  margin-top:50px;
+}
+/* Large devices (large desktops, max 1200px) */
+@media (max-width: 1200px) {
+/* Img_front */
+.front-img-animal {
+       margin: 0 auto;
+       display: -webkit-box;
+       top:0;
+       position: relative;
+  }
+}
+/*=============================section about_us_zoon end===============================*/
+
 
 /*card_information*/
 
@@ -2450,14 +2494,14 @@ body:after {
       font-size: 20px;
       top: -.3rem;
       font-family: "Icofont";
-      content: "\eed7";
+      content: "\e878";
       position: absolute; }
   .ul-check.white li:before {
     color: #fff; }
   .ul-check.success li:before {
     color: #71bc42; }
   .ul-check.primary li:before {
-    color: #FBCC00; }
+    color: #e30613; }
   .ul-check li.remove {
     text-decoration: line-through;
     color: #dee2e6; }

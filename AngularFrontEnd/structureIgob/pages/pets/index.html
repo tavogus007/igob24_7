@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="vendor/swiper/swiper-bundle.min.css"/>
 
     <link rel="stylesheet" href="css/jquery.fancybox.min.css">
 
@@ -104,7 +105,7 @@
 
 		<!-- Modal bootstrap Comunicado 3 ========== -->
 
-		<div id="modalWarning" class="modal fade" data-keyboard="false" data-backdrop="static">
+		<!-- <div id="modalWarning" class="modal fade" data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-lg modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header header-modalCustom">
@@ -115,13 +116,13 @@
 						<img src="images/publicNews/pub1.webp" alt="" style="width: 100%; margin: 0 0 15px 0;">
 						<div class="mt-lg-3 text-center">
 							<a href="#optional-services" target="" class="btn-modalCustom btn-modalPrimary"><i class="icofont-mail"></i> Ver más...</a>
-							<!-- <a href="app/view/autenticacion/partials/login_.html" target="_self" class="btn-modalCustom btn-modalPrimary mr-2 mb-2"><i class="icofont-user"></i> Iniciar sesión</a>
-							<a href="app/view/autenticacion/partials/registro_.html#/registro" target="_blank" class="btn-modalCustom btn-modalPrimary mr-2 mb-2"><i class="icofont-clip-board"></i> Registrarse</a> -->
+							<a href="app/view/autenticacion/partials/login_.html" target="_self" class="btn-modalCustom btn-modalPrimary mr-2 mb-2"><i class="icofont-user"></i> Iniciar sesión</a>
+							<a href="app/view/autenticacion/partials/registro_.html#/registro" target="_blank" class="btn-modalCustom btn-modalPrimary mr-2 mb-2"><i class="icofont-clip-board"></i> Registrarse</a>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 	<!-- End Modal bootstrap Comunicado 3 ========== -->
 
@@ -154,17 +155,17 @@
 					<ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block" style="font-size: 15px; font-weight: 600; font-style: italic;">
 					  <li><a href="#intro" class="nav-link">Inicio</a></li>
 					  <li class="has-children">
-						<a href="#about-section" class="nav-link">Características</a>
+						<a href="#about_us_zoon" class="nav-link">Características</a>
 						<ul class="dropdown">
-						  <li><a href="#services-section" class="nav-link">Servicios</a></li>
-						  <li><a href="#online-municipality" class="nav-link">Municipio en línea</a></li>
-						  <li><a href="#carousel-municipality" class="nav-link">Comunicados</a></li>
-						  <li><a href="#blog-section" class="nav-link">¿Cómo registrarme?</a></li>
-						  <li><a href="#links-interest" class="nav-link">Enlaces de interés</a></li>
+						  <li><a href="#about-section" class="nav-link">¿Qué hacemos?</a></li>
+						  <li><a href="#pet-house-section" class="nav-link">Casa de la mascota</a></li>
+						  <li><a href="#adopters-section" class="nav-link">Testimonios</a></li>
+						  <li><a href="#volunteering-section" class="nav-link">Voluntariado</a></li>
+						  <li><a href="#optional-services" class="nav-link">Vectores</a></li>
 						</ul>
 					  </li>
 					  
-					  <li><a href="#carousel-municipality" class="nav-link">Comunicados</a></li>
+					  <li><a href="#adoptions-section" class="nav-link">Adopciones</a></li>
 					  <li><a href="#contact-section" class="nav-link">Contactos</a></li>
 					  <li class="social"><a href="https://www.facebook.com/MunicipioLaPaz" class="nav-link" target="_blank"><span class="icofont-facebook"></span></a></li>
 					  <li class="social"><a href="https://twitter.com/LaPazAlcaldia" class="nav-link" target="_blank"><span class="icofont-twitter"></span></a></li>
@@ -190,28 +191,28 @@
 
 					<div class="carousel-inner" role="listbox">
 
-						<div class="carousel-item active" style="background-image: url(images/bannerPrin/background_computer.webp)">
+						<div class="carousel-item active" style="background-image: url(images/bannerPrin/slide1_animal_alt.webp)">
 							<div class="carousel-container">
 							<div class="container">
 							</div>
 							</div>
 						</div>
 
-						<div class="carousel-item" style="background-image: url(images/bannerPrin/mascotas.webp)">
+						<div class="carousel-item" style="background-image: url(images/bannerPrin/slide2_animal.webp)">
 							<div class="carousel-container">
 							<div class="container">
 							</div>
 							</div>
 						</div>
 
-						<div class="carousel-item" style="background-image: url(images/bannerPrin/citaMedica.webp)">
+						<div class="carousel-item" style="background-image: url(images/bannerPrin/slide3_animal.webp)">
 							<div class="carousel-container">
 							<div class="container">
 							</div>
 							</div>
 						</div>
 
-						<div class="carousel-item" style="background-image: url(images/bannerPrin/estacionamiento.webp)">
+						<div class="carousel-item" style="background-image: url(images/bannerPrin/slide4_animal.webp)">
 							<div class="carousel-container">
 							<div class="container">
 							</div>
@@ -230,7 +231,7 @@
 					<span class="sr-only">Next</span>
 					</a>
 
-					<a href="#next" class="mouse smoothscroll" title="Ver Cararcteristicas">
+					<a href="#news-section" class="mouse smoothscroll" title="VER NOTICIAS">
 					<span class="mouse-icon">
 						<span class="mouse-wheel"></span>
 					</span>
@@ -256,8 +257,14 @@
     	<!-- Seccion de noticias y/o comunicados -->
 
 		<!-- carrusel_noticia_start -->
-		<div class="news_pub">
+		<div class="news_pub" id="news-section">
 			<div class="container">
+				<div class="row mb-5 justify-content-center">
+					<div class="col-md-8 text-center">
+					  <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="">NOTICIAS</h2>
+					  <p class="lead" data-aos="fade-up" data-aos-delay="100">Nuestros servicios están disponibles con una cuenta, si no dispone de una <a href="app/view/autenticacion/partials/registro_.html#/registro" style="color: #e30613; font-weight: 700;">Regístrese aquí...</a></p>
+					</div>
+				</div>
 				<div class="row justify-content-center">
 					<div class="col-lg-10">
 						<div class="textmonial_active owl-carousel">
@@ -306,30 +313,34 @@
     	<!-- carrusel_noticia_end  -->
 
 		<!-- Section about_us_zoonosis -->
-		<section id="about_us_zoon" class="bg_cusZoonosis text-light">
-			<div class="container">
-			<div class="row">
-				<div class="col-xl-8">
-					<img src="images/dog-and-cat-3.png" class="img-fluid front-img-animal" alt="" />
+		<section id="about_us_zoon" class="site-section-custom">
+			<div class="bg_cusZoonosis text-light">
+				<div class="container">
+				<div class="row">
+					<div class="col-xl-8">
+						<img src="images/dog-and-cat-3.png" class="img-fluid front-img-animal" alt="" />
+					</div>
+					<div class="col-xl-4" data-aos="fade-down" >
+						<h2 class="res-margin sub-title-cusZoonosis">¿QUIÉNES SOMOS?</h2>
+						<p class="featured-text">La unidad de Zoonosis es la encargada del control y la inspección, prevención y control sanitario de todas las patologías infectocontagiosas transmitidas naturalmente del animal al hombre como la rabia, triquinosis, hidatidosis, brucelosis, entre otros y su impacto en la salud de las personas.</p>
+	
+						<a href="app/view/autenticacion/partials/login_.html" target="_self" class="btn btn-primary mr-2 mb-2"><i class="icofont-user"></i> Iniciar Sesión</a>
+					</div>
 				</div>
-				<div class="col-xl-4" data-aos="fade-down" >
-					<h2 class="res-margin sub-title-cusZoonosis">¿QUIÉNES SOMOS?</h2>
-					<p class="featured-text">La unidad de Zoonosis es la encargada del control y la inspección, prevención y control sanitario de todas las patologías infectocontagiosas transmitidas naturalmente del animal al hombre como la rabia, triquinosis, hidatidosis, brucelosis, entre otros y su impacto en la salud de las personas.</p>
-
-					<a href="app/view/autenticacion/partials/login_.html" target="_self" class="btn btn-primary mr-2 mb-2"><i class="icofont-user"></i> Iniciar Sesión</a>
 				</div>
 			</div>
-			</div>
+			<svg id="bigTriangleColor" class="d-none d-sm-block" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100" viewBox="0 0 100 102" preserveAspectRatio="none">
+				<path d="M0 0 L50 100 L100 0 Z" />
+			</svg>
 		</section>
 
-		<svg id="bigTriangleColor" class="d-none d-sm-block" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100" viewBox="0 0 100 102" preserveAspectRatio="none">
-			<path d="M0 0 L50 100 L100 0 Z" />
-		</svg>
+
+
 		<!-- / Section about_us_zoonosis Ends -->
 
 		<!-- Fin de Seccion de noticias y/o comunicados -->
 
-		<div class="site-section cta-big-image" id="about-section">
+		<div class="site-section cta-big-image dogCat_bg" id="about-section">
 			<div class="container">
 			  <div class="row mb-5 justify-content-center">
 				<div class="col-md-8 text-center">
@@ -356,8 +367,8 @@
 					</div>
 				</div>
 
-				<div class="col-lg-6 mb-5" data-aos="fade-up" data-aos-delay="" style="box-shadow: 15px 10px 5px #00000052;">
-				  <figure class="circle-bg">
+				<div class="col-lg-6 mb-5" data-aos="fade-up" data-aos-delay="">
+				  <figure class="paws-bg">
 				  <img src="images/dog-and-cat-5.png" alt="Imágen Igob24/7" class="img-fluid">
 				  </figure>
 				</div>
@@ -366,338 +377,382 @@
 			</div>  
 		</div>
 
-		<section class="site-section bg-wave ftco-intro">
+		<section class="site-section bg-wave ftco-intro" id="pet-house-section">
 			<div class="container">
+				<div class="row mb-5 justify-content-center">
+					<div class="col-md-8 text-center">
+					  <h2 class="mb-3 ftco-title" data-aos="fade-up" data-aos-delay="">LA CASA DE LA MASCOTA</h2>
+					  <p class="ftco-subtitle" data-aos="fade-up" data-aos-delay="100">Entidad correspondiente al Gobierno Autónomo Municipal de La Paz.</p>
+					</div>
+				</div>
+
 				<div class="row">
-			  <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
-				<div class="d-block services active text-center">
-				  <div class="icon d-flex align-items-center justify-content-center">
-						<span class="icofont-paw"></span>
-				  </div>
-				  <div class="media-body">
-					<h3 class="heading">Caninos y felinos</h3>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right.</p>
-					<a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
-				  </div>
-				</div>      
-			  </div>
-			  <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
-				<div class="d-block services text-center">
-				  <div class="icon d-flex align-items-center justify-content-center">
-						<span class="icofont-dog-alt"></span>
-				  </div>
-				  <div class="media-body">
-					<h3 class="heading">Cuidados</h3>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right.</p>
-					<a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
-				  </div>
-				</div>    
-			  </div>
-			  <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
-				<div class="d-block services text-center">
-				  <div class="icon d-flex align-items-center justify-content-center">
-						<span class="icofont-cat-alt-2"></span>
-				  </div>
-				  <div class="media-body">
-					<h3 class="heading">Alimentación</h3>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right.</p>
-					<a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
-				  </div>
-				</div>      
-			  </div>
-			</div>
+					<div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+						<div class="d-block services text-center">
+						<div class="icon d-flex align-items-center justify-content-center">
+								<span class="icofont-paw"></span>
+						</div>
+						<div class="media-body">
+							<h3 class="heading">¿QUÉ HACEMOS?</h3>
+							<p>Nos ocupamos de atender las necesidades médicas de animales caninos y felinos a bajo costo.</p>
+							<!-- <a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="icofont-hand-right"></span><i class="sr-only">leer más</i></a> -->
+						</div>
+						</div>      
+					</div>
+					<div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+						<div class="d-block services active text-center">
+						<div class="icon d-flex align-items-center justify-content-center">
+								<span class="icofont-dog-alt"></span>
+						</div>
+						<div class="media-body">
+							<h3 class="heading">LA CASA DE LA MASCOTA</h3>
+							<p>Es un centro de atención integral de mascotas donde se brinda atención veterinaria como ser vacunas, desparasitaciones, vitaminizaciones, tratamientos y esterilizaciones y cirugías a bajo costo.</p>
+							<a href="" class="btn-custom d-flex align-items-center justify-content-center"><span class="icofont-check-circled icofont-2x"></span><i class="sr-only">leer más</i></a>
+						</div>
+						</div>    
+					</div>
+					<div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+						<div class="d-block services text-center">
+						<div class="icon d-flex align-items-center justify-content-center">
+								<span class="icofont-cat-alt-2"></span>
+						</div>
+						<div class="media-body">
+							<h3 class="heading">¿QUÉ SERVICIOS BRINDA?</h3>
+							<p>Vacunación, desparasitación, vitaminización, esterilización, y cirugías y servicio de peluquería a bajo costo.</p>
+							<!-- <a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="icofont-hand-right"></span><i class="sr-only">leer más</i></a> -->
+						</div>
+						</div>      
+					</div>
+				</div>
 			</div>
 		</section>
-	  
-		<div class="site-section" id="next">
+
+		<section class="site-section border-bottom" id="adoptions-section">
 			<div class="container">
-			  <div class="row">
-	  
-				  <div class="card" data-aos="fade-up" data-aos-delay="100">
-					  <input type="checkbox" id="card1" class="more" aria-hidden="true">
-					  <div class="content">
-						  <div class="front" style="background-image: url(images/card1.png)">
-							  <div class="inner">
-								  <h2>¿Qué es?</h2>
-								  <label for="card1" class="button" aria-hidden="true">
-									  Leer más...
-								  </label>
-							  </div>
-						  </div>
-						  <div class="back">
-							  <div class="inner">
-								  <div class="description">
-									  <p>Desarrollada para satisfacer las necesidades de la ciudadanía, modernizando la Gestión Pública, universalizando el acceso, optimizando los tiempos de interacción, información y diversificando los servicios para la ciudadanía.</p>
-									  <p>Buscando los mayores índices de eficiencia, calidad y transparencia dentro de los servicios que se brindan.</p>
-									  <p>Construyendo un gobierno eco-eficiente, que reduce el consumo de papel y energía en beneficio de nuestro medioambiente.</p>
-									  <p>La plataforma iGob 24/7 promueve la modernización de la gestión pública municipal y la mejora en la atención ciudadana, universalizando el acceso a la información, a los servicios en línea y optimizando los tiempos de interacción, propiciando la construcción de una Ciudad Inteligente.</p>
-								  </div>
-								  <div class="title1">¿QUÉ ES?</div>
-								  <div class="title2">IGOB 24/7</div>
-								  <label for="card1" class="button return" aria-hidden="true">
-									  <i class="fas icofont-arrow-left"></i>
-								  </label>
-							  </div>
-						  </div>
-					  </div>
-				  </div>
-				  <div class="card" data-aos="fade-up" data-aos-delay="200">
-					  <input type="checkbox" id="card2" class="more">
-					  <div class="content">
-						  <div class="front" style="background-image: url('images/card2.png')">
-							  <div class="inner">
-								  <h2>¿Qué servicios me brinda?</h2>
-								  <label for="card2" class="button" aria-hidden="true">
-									  Leer más...
-								  </label>
-							  </div>
-						  </div>
-						  <div class="back">
-							  <div class="inner">
-								  <div class="description">
-									  <p>La plataforma iGob 24/7 sustenta la implementación del nuevo modelo integral de atención ciudadana, ampliando e innovando los canales NO presenciales a través de servicios en línea:</p>
-									  <ol start="1" type="1" style="list-style: inside;">
-										  <li>Registro ciudadano.</li>
-										  <li>Reserva de cita médica.</li>
-										  <li>Reserva y pago de estacionamientos en vía pública.</li>
-										  <li>Registro de mascotas e historial de vacunas.</li>
-										  <li>Solicitud de catastro para duplicados y actualizaciones.</li>
-										  <li>Solicitud de permisos de construcción.</li>
-										  <li>Solicitud de licencias de funcionamiento para actividades económicas.</li>
-										  <li>Solicitud de permisos para radio taxis, taxis, transporte escolar, turismo y carga.</li>
-										  <li>Verificación de documentos para autorización de viaje.</li>
-										  <li>Pagos en línea de los servicios municipales.</li>
-										  <li>Registro de radio bases de telecomunicaciones.</li>
-										  <li>Inicio y seguimiento de trámites y servicios.</li>
-										  <li>Seguimiento a fichas de atención ciudadana.</li>
-										  <li>Bandeja de notificaciones.</li>
-										  <li>Descargas de aplicaciones móviles.</li>
-									  </ol>
-								  </div>
-								  <div class="title1">NUESTROS SERVICIOS</div>
-								  <div class="title2">IGOB24/7</div>
-								  <label for="card2" class="button return" aria-hidden="true">
-									  <i class="fas icofont-arrow-left"></i>
-								  </label>
-							  </div>
-						  </div>
-					  </div>
-				  </div>
-				  <div class="card" data-aos="fade-up" data-aos-delay="300">
-					  <input type="checkbox" id="card3" class="more">
-					  <div class="content">
-						  <div class="front" style="background-image: url('images/card3.png')">
-							  <div class="inner">
-								  <h2>¿Cómo me registro?</h2>
-								  <label for="card3" class="button" aria-hidden="true">
-									  Leer más...
-								  </label>
-							  </div>
-						  </div>
-						  <div class="back">
-							  <div class="inner">
-								  <div class="description">
-									  <p>A través del Registro Ciudadano, llenando un formulario en línea con sus datos personales.<a href="https://igob247.lapaz.bo/app/view/autenticacion/partials/registro_.html#/registro.html"  style="color: #e41b25;">Ingresar</a></p>
-									  <p>Con esta opción podrá tener acceso limitado a los servicios en línea del Gobierno Autónomo Municipal de La Paz, si desea acceder a más servicios, le pedimos que pueda apersonarse por única vez a una de nuestras
-										<a href="#contact-section" class="smoothscroll" style="color: #e41b25;">plataformas de atención presencial</a> del GAMLP para realizar la validación de sus datos personales. Para ello usted debe llevar:
-									  </p>
-									  <ul>
-										<li>1. Cédula de Identidad Original.</li>
-										<li>2. Última factura original de algún servicio del domicilio declarado (luz/agua/gas/teléfono).</li>
-									  </ul>
-									  <p>En caso de requerir ayuda en su registro puede aproximarse a nuestras Plataformas de Atención Ciudadana para ser asistido.</p>
-								  </div>
-								  <div class="title1">DATOS DE REGISTRO</div>
-								  <div class="title2">IGOB 24/7</div>
-								  <label for="card3" class="button return" aria-hidden="true">
-									  <i class="fas icofont-arrow-left"></i>
-								  </label>
-							  </div>
-						  </div>
-					  </div>
-				  </div>
-			  
-			  </div>
-	  
-			</div>
-		</div>
-	  
-	  
-		<section class="site-section border-bottom" id="services-section">
-			<div class="container">
-			  <div class="row mb-5">
+			  <div class="row mb-2">
 				<div class="col-12 text-center" data-aos="fade">
-				  <h2 class="section-title mb-3">NUESTROS SERVICIOS</h2>
-				  <p class="lead" data-aos="fade-up" data-aos-delay="100">Todos nuestros servicios están disponibles con una cuenta, si no dispone de una <a href="https://igob247.lapaz.bo/app/view/autenticacion/partials/registro_.html#/registro.html" style="color: #e30613; font-weight: 700;">Regístrese aquí...</a></p>
+				  <h2 class="section-title mb-3">ADOPCIONES</h2>
+				  <p class="lead" data-aos="fade-up" data-aos-delay="100">¡ADOPTAR ES UN ACTO <a href="#" style="color: #e30613; font-weight: 700;">AMOR!</a></p>
 				</div>
 			  </div>
-	  
-			  <div class="row align-items-stretch">
-
-				  <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/permises.webp" alt="img20"/>
-						<figcaption>
-						  <h2 class="title_grid">Permisos de<span> Circulación</span></h2>
-						  <p>Permite obtener el documento de PERMISO DE CIRCULACIÓN para aplicar las medidas de restricciones definidas por la COEM en fecha 15 de Junio de 2021.
-							Debe <a style="color: #eefeff; border: 2px solid #eefeff;" href="#">Iniciar Sesión</a> o <a style="color: #eefeff; border: 2px solid #eefeff;" href="#">REGISTRARSE</a> en iGOB 24/7 (PROXIMAMENTE)</p>
-						  <!-- <a href="app/view/autenticacion/partials/login_.html">Ver más</a> -->
-						</figcaption>			
-					  </figure>
+				 <!-- First row: Adopt a pet -->
+				 <div class="row align-items-stretch">
+					<!-- Pet  -->
+					<div class="adopt-card col-md-6 col-xl-3 mov-margin">
+					   <div class="card card-adoption card-bg">
+						  <div class="thumbnail text-center">
+							 <!-- Image -->
+							 <img src="images/adoptions/choque.jpg" class="border-irregular1 img-fluid" alt="">
+							 <!-- Name -->
+							 <div class="caption-adoption">
+								<h6 class="adoption-header">Choque</h6>
+								<!-- List -->
+								<ul class="list-unstyled">
+								   <li><strong>Sexo:</strong> Hembra</li>
+								   <li><strong>Esterilización: </strong> No</li>
+								   <li><strong>Edad:</strong> 3 a 4 meses</li>
+								   <li><strong>Vacunación:</strong> Si</li>
+								   <li><strong>Información:</strong>12345678</li>
+								</ul>
+								<!-- Buttons -->								  
+								<div class="text-center">
+								   <!-- <a href="#" class="btn btn-primary">Más Info</a> -->
+								</div>
+							 </div>
+						  </div>
+						  <!-- /thumbnail -->
+					   </div>
+					   <!-- /card -->
 					</div>
-				  </div>
-
-				  <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/appointment.webp" alt="img13"/>
-						<figcaption>
-						  <h2 class="title_grid">Cita <span>Médica</span></h2>
-						  <p>Permite solicitar la Cita Médica desde cualquier lugar o comodidad de su hogar.
-							- Solicitar ficha de acuerdo a disponibilidad de
-							horarios.</p>
-						  <a href="app/view/autenticacion/partials/login_.html">ver más</a>
-						</figcaption>			
-					  </figure>
+					<!-- /adopt-card -->
+					<!-- /pet -->
+					<!-- Pet  -->
+					<div class="adopt-card col-md-6 col-xl-3 mov-margin">
+					   <div class="card card-adoption card-bg">
+						  <div class="thumbnail text-center">
+							 <!-- Image -->
+							 <img src="images/adoptions/lizzi.jpg" class="border-irregular1 img-fluid" alt="">
+							 <!-- Name -->
+							 <div class="caption-adoption">
+								<h6 class="adoption-header">Lizzi</h6>
+								<!-- List -->
+								<ul class="list-unstyled">
+                                    <li><strong>Sexo:</strong> Hembra</li>
+                                    <li><strong>Esterilización: </strong> Si</li>
+                                    <li><strong>Edad:</strong> 1 y 6 meses</li>
+                                    <li><strong>Vacunación:</strong> Si</li>
+                                    <li><strong>Información:</strong>12345678</li>
+                                </ul>
+								<!-- Buttons -->								  
+								<div class="text-center">
+									<!-- <a href="#" class="btn btn-primary">Más Info</a> -->
+								</div>
+							 </div>
+						  </div>
+						  <!-- /thumbnail -->
+					   </div>
+					   <!-- /card -->
 					</div>
-				  </div>
-	  
-				  <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="100">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/cadastral.webp" alt="img20"/>
-						<figcaption>
-						  <h2 class="title_grid">Duplicado <span>Catastral</span></h2>
-						  <p>	El Duplicado del Certificado de Registro Catastral es un documento técnico que avala la existencia del Registro de un bien inmueble en el Módulo Catastro del Sistema de Información Territorial del Gobierno Autónomo Municipal de La Paz (SIT V2).</p>
-						  <a href="app/view/autenticacion/partials/login_.html">Ver más</a>
-						</figcaption>			
-					  </figure>
+					<!-- /adopt-card -->
+					<!-- /pet -->
+					<!-- Pet  -->
+					<div class="adopt-card col-md-6 col-xl-3 mov-margin">
+					   <div class="card card-adoption card-bg">
+						  <div class="thumbnail text-center">
+							 <!-- Image -->
+							 <img src="images/adoptions/luna.jpg" class="border-irregular1 img-fluid" alt="">
+							 <!-- Name -->
+							 <div class="caption-adoption">
+								<h6 class="adoption-header">Luna</h6>
+								<!-- List -->
+								<ul class="list-unstyled">
+                                    <li><strong>Sexo:</strong> Hembra</li>
+                                    <li><strong>Esterilización: </strong> No</li>
+                                    <li><strong>Edad:</strong> 5 meses</li>
+                                    <li><strong>Vacunación:</strong> Si</li>
+                                    <li><strong>Información:</strong>12345678</li>
+                                </ul>
+								<!-- Buttons -->								  
+								<div class="text-center">
+									<!-- <a href="#" class="btn btn-primary">Más Info</a> -->
+								</div>
+							 </div>
+						  </div>
+						  <!-- /thumbnail -->
+					   </div>
+					   <!-- /card -->
 					</div>
-				  </div>
-	  
-				  <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="200">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/license.webp" alt="img20"/>
-						<figcaption>
-						  <h2 class="title_grid">Trámite de <span>Licencias de Funcionamiento</span></h2>
-						  <p>Las Licencias de Funcionamiento son de aplicación exclusiva dentro del Gobierno Autónomo Municipal de La Paz y va dirigida a toda persona que realice alguna actividad comercial, industrial o de servicio dentro de este territorio.</p>
-						  <a href="app/view/autenticacion/partials/login_.html">Ver más</a>
-						</figcaption>			
-					  </figure>
+					<!-- /adopt-card -->
+					<!-- /pet -->
+					<!-- Pet  -->
+					<div class="adopt-card col-md-6 col-xl-3 mov-margin">
+					   <div class="card card-adoption card-bg">
+						  <div class="thumbnail text-center">
+							 <!-- Image -->
+							 <img src="images/adoptions/tania.jpg" class="border-irregular1 img-fluid" alt="">
+							 <!-- Name -->
+							 <div class="caption-adoption">
+								<h6 class="adoption-header">Tania</h6>
+								<!-- List -->
+								<ul class="list-unstyled">
+                                    <li><strong>Sexo:</strong> Hembra</li>
+                                    <li><strong>Esterilización: </strong> Si</li>
+                                    <li><strong>Edad:</strong> 3 años</li>
+                                    <li><strong>Vacunación:</strong> Si</li>
+                                    <li><strong>Información:</strong>12345678</li>
+                                </ul>
+								<!-- Buttons -->								  
+								<div class="text-center">
+									<!-- <a href="#" class="btn btn-primary">Más Info</a> -->
+								</div>
+							 </div>
+						  </div>
+						  <!-- /thumbnail -->
+					   </div>
+					   <!-- /card -->
 					</div>
-				  </div>
-	  	  
-				  <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="300">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/traveling.webp" alt="img20"/>
-						<figcaption>
-						  <h2 class="title_grid">Permisos de <span>Viaje</span></h2>
-						  <p>Consiste en obtener la legalización de un documento “autorización de viaje”, dada por uno o ambos padres, que permite viajar a otras regiones a un menor de 18 años.</p>
-						  <a href="app/view/autenticacion/partials/login_.html">Ver más</a>
-						</figcaption>			
-					  </figure>
+					<!-- /adopt-card -->
+					<!-- /pet -->
+				 </div>
+				 <!-- /row -->      
+                 <!-- Second row: Adopt a pet -->
+				 <div class="row align-items-stretch mt-5">
+					<!-- Pet  -->
+					<div class="adopt-card col-md-6 col-xl-3 mov-margin">
+					   <div class="card card-adoption card-bg">
+						  <div class="thumbnail text-center">
+							 <!-- Image -->
+							 <img src="images/adoptions/magdalena.jpg" class="border-irregular1 img-fluid" alt="">
+							 <!-- Name -->
+							 <div class="caption-adoption">
+								<h6 class="adoption-header">Magdalena</h6>
+								<!-- List -->
+								<ul class="list-unstyled">
+                                    <li><strong>Sexo:</strong> Hembra</li>
+                                    <li><strong>Esterilización: </strong> No</li>
+                                    <li><strong>Edad:</strong> 6 meses</li>
+                                    <li><strong>Vacunación:</strong> Si</li>
+                                    <li><strong>Información:</strong>12345678</li>
+                                </ul>
+								<!-- Buttons -->								  
+								<div class="text-center">
+									<!-- <a href="#" class="btn btn-primary">Más Info</a> -->
+								</div>
+							 </div>
+						  </div>
+						  <!-- /thumbnail -->
+					   </div>
+					   <!-- /card -->
 					</div>
-				  </div>
-	  
-				  <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="400">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/complaint.webp" alt="img20"/>
-						<figcaption>
-						  <h2 class="title_grid">Reclamos y/o <span>Quejas</span></h2>
-						  <p>Puede enviar su disconformidad relacionada directamente con los bienes o servicios adquiridos, lo se busca es que se solucione el problema rápidamente y de manera directa entre el ciudadano y el funcionario.</p>
-						  <a href="app/view/autenticacion/partials/login_.html">Ver más</a>
-						</figcaption>			
-					  </figure>
+					<!-- /adopt-card -->
+					<!-- Pet  -->
+					<div class="adopt-card col-md-6 col-xl-3 mov-margin">
+					   <div class="card card-adoption card-bg">
+						  <div class="thumbnail text-center">
+							 <!-- Image -->
+							 <img src="images/adoptions/cutesy.jpg" class="border-irregular1 img-fluid" alt="">
+							 <!-- Name -->
+							 <div class="caption-adoption">
+								<h6 class="adoption-header">Cutesy</h6>
+								<!-- List -->
+								<ul class="list-unstyled">
+                                    <li><strong>Sexo:</strong> Macho</li>
+                                    <li><strong>Esterilización: </strong> no</li>
+                                    <li><strong>Edad:</strong> 10 meses</li>
+                                    <li><strong>Vacunación:</strong> Si</li>
+                                    <li><strong>Información:</strong>12345678</li>
+                                </ul>
+								<!-- Buttons -->								  
+								<div class="text-center">
+									<!-- <a href="#" class="btn btn-primary">Más Info</a> -->
+								</div>
+							 </div>
+						  </div>
+						  <!-- /thumbnail -->
+					   </div>
+					   <!-- /card -->
 					</div>
-				  </div>
-
-
-				  <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="500">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/correspondence.webp" alt="img13"/>
-						<figcaption>
-						  <h2 class="title_grid" style="font-size: 1.4em !important;">Correspondencia Ciudadana y <span> Concejo Municipal</span></h2>
-						  <p>Creado para que los ciudadanos puedan acceder desde cualquier lugar del mundo y en particular la jurisdicción del municipio en forma sencilla.</p>
-						  <a href="app/view/autenticacion/partials/login_.html">ver más</a>
-						</figcaption>			
-					  </figure>
+					<!-- /adopt-card -->
+					<!-- Pet  -->
+					<div class="adopt-card col-md-6 col-xl-3 mov-margin">
+					   <div class="card card-adoption card-bg">
+						  <div class="thumbnail text-center">
+							 <!-- Image -->
+							 <img src="images/adoptions/chato.jpg" class="border-irregular1 img-fluid" alt="">
+							 <!-- Name -->
+							 <div class="caption-adoption">
+								<h6 class="adoption-header">Chato</h6>
+								<!-- List -->
+								<ul class="list-unstyled">
+                                    <li><strong>Sexo:</strong> Macho</li>
+                                    <li><strong>Esterilización: </strong> No</li>
+                                    <li><strong>Edad:</strong> 1 año</li>
+                                    <li><strong>Vacunación:</strong> Si</li>
+                                    <li><strong>Información:</strong>12345678</li>
+                                </ul>
+								<!-- Buttons -->								  
+								<div class="text-center">
+									<!-- <a href="#" class="btn btn-primary">Más Info</a> -->
+								</div>
+							 </div>
+						  </div>
+						  <!-- /thumbnail -->
+					   </div>
+					   <!-- /card -->
 					</div>
-				  </div>
-	  
-				  <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="600">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/radioBase.webp" alt="img20"/>
-						<figcaption>
-						  <h2 class="title_grid" style="font-size: 1.3em !important;"> Registro de Radio Bases y/o <span>Gabinetes de Telecomunicaciones</span></h2>
-						  <p>Permite a las empresas de telecomunicaciones del municipio, el registro de Radio Bases y/o Gabinetes de manera múltiple o individual.</p>
-						  <a href="app/view/autenticacion/partials/login_.html">Ver más</a>
-						</figcaption>			
-					  </figure>
-					</div>
-				  </div>
-	  
-				  <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="700">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/registerPets.webp" alt="img20"/>
-						<figcaption>
-						  <h2 class="title_grid">Registro de <span>Mascotas</span></h2>
-						  <p>El registro de una mascota, canina o felina, contempla además de los datos generales como nombre, raza o edad, el tema de vacunas, desparasitación, esterilización y la inclusión de una foto del animal</p>
-						  <a href="app/view/autenticacion/partials/login_.html">Ver más</a>
-						</figcaption>			
-					  </figure>
-					</div>
-				  </div>
-	  	  
-				  <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="800">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/infractions.webp" alt="img20"/>
-						<figcaption>
-						  <h2 class="title_grid">Movilidad <span>Infracciones</span></h2>
-						  <p>Tiene el objetivo de brindar al ciudadano una forma rápida de realizar el pago de sus infracciones mediante las modalidades de pago con tarjeta de crédito y débito, click y QR.</p>
-						  <a href="app/view/autenticacion/partials/login_.html">Ver más</a>
-						</figcaption>			
-					  </figure>
-					</div>
-				  </div>
-	  
-				  <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="900">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/operators.webp" alt="img20"/>
-						<figcaption>
-						  <h2 class="title_grid">Movilidad <span>Operadores</span></h2>
-						  <p>Permite a los operadores de empresas o ciudadanos en general realizar solicitud en línea de permisos de Radio Taxis, Taxis, buses Escolares, Movilidades Turísticas, Movilidades de Carga y Traslado de Personal.</p>
-						  <a href="app/view/autenticacion/partials/login_.html">Ver más</a>
-						</figcaption>			
-					  </figure>
-					</div>
-				  </div>
-
-				  <!-- <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="1000">
-					<div class="grid">
-					  <figure class="effect-sarah">
-						<img src="images/delivery.webp" alt="img20"/>
-						<figcaption>
-						  <h2 class="title_grid">Registro Transitorio <span>Delivery</span></h2>
-						  <p>Brinda permisos de circulación a vehículos de servicio Delivery y agilizar los procesos de solicitud de permiso sin la necesidad de apersonarse a las oficinas del GAMLP.</p>
-						  <a href="app/view/autenticacion/partials/login_.html">Ver más</a>
-						</figcaption>			
-					  </figure>
-					</div>
-				  </div> -->
-	  	  
-			  </div>
+					<!-- /adopt-card -->
+					<!-- Pet  -->
+					<!-- <div class="adopt-card col-md-6 col-xl-3 res-margin">
+					   <div class="card bg-light-custom">
+						  <div class="thumbnail text-center">
+							 <img src="images/adoptions/adoption1.jpg" class="border-irregular1 img-fluid" alt="">
+							 <div class="caption-adoption">
+								<h6 class="adoption-header">Jack</h6>
+								<ul class="list-unstyled">
+                                    <li><strong>Sexo:</strong> Hembra</li>
+                                    <li><strong>Esterilización: </strong> No</li>
+                                    <li><strong>Edad:</strong> 3 a 4 meses</li>
+                                    <li><strong>Vacunación:</strong> Si</li>
+                                    <li><strong>N° referencia:</strong>?</li>
+                                </ul>
+							  
+								<div class="text-center">
+								   <a href="adoption-single.phtml" class="btn btn-primary">More Info</a>
+								</div>
+							 </div>
+						  </div>
+					   </div>
+					</div> -->
+					<!-- /adopt-card -->
+				 </div>
+				 <!-- /row -->
 			</div>
 		</section>
 
+		<!--Testimonial_Area-Start-->
+        <section class="testimonial__area site-section" id="adopters-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="section__heading pb-5 mb-n3  text-center text-lg-left">
+                            <h5 class="section__heading-sup-title">TESTIMONIOS</h5>
+                            <h2 class="section__heading-title">Felices de adoptar</h2>
+                            <div class="section__heading-desc">
+                                <p>La adopción es una alternativa que a la hora de adquirir un animal de compañía beneficia a todos: a la familia, a las entidades de protección animal y por supuesto, al propio perro o gato. Los adoptantes han manifestado que su motivo principal para hacerlo fue su sensibilización con el problema y para colaborar a la protección de los animales.</p>
+                            </div>
+                        </div>
+                        <div class="slider__arrows anim_top justify-content-lg-start justify-content-center mb-4 mb-lg-0" id="testimonial-arrow">
+                            <button class="slider__arrow arrow_prev"><i class="icofont-arrow-left"></i></button>
+                            <button class="slider__arrow arrow_next"><i class="icofont-arrow-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="swiper-container testimonial_slider anim_right">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <div class="testimonial__box">
+                                        <div class="testimonial__box-image">
+                                            <img src="images/testimonial/prof_photo.png" alt="" class="img-fluid">
+                                        </div>
+                                        <div class="testimonial__box-quote">
+                                            <i class="icofont-quote-right"></i>
+                                        </div>
+                                        <div class="testimonial__box-desc">
+                                            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum Excepteur sint occaecat cupidatat non proident, sunt in culpa </p>
+                                        </div>
+                                        <h5 class="testimonial__box-name">Gustavo Salcedo</h5>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="testimonial__box">
+                                        <div class="testimonial__box-image">
+                                            <img src="images/testimonial/prof_photo.png" alt="" class="img-fluid">
+                                        </div>
+                                        <div class="testimonial__box-quote">
+                                            <i class="icofont-quote-right"></i>
+                                        </div>
+                                        <div class="testimonial__box-desc">
+                                            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum Excepteur sint occaecat cupidatat non proident, sunt in culpa </p>
+                                        </div>
+                                        <h5 class="testimonial__box-name">Karla Blanco</h5>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="testimonial__box">
+                                        <div class="testimonial__box-image">
+                                            <img src="images/testimonial/prof_photo.png" alt="" class="img-fluid">
+                                        </div>
+                                        <div class="testimonial__box-quote">
+                                            <i class="icofont-quote-right"></i>
+                                        </div>
+                                        <div class="testimonial__box-desc">
+                                            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum Excepteur sint occaecat cupidatat non proident, sunt in culpa </p>
+                                        </div>
+                                        <h5 class="testimonial__box-name">Cinthia Torrez</h5>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="testimonial__box">
+                                        <div class="testimonial__box-image">
+                                            <img src="images/testimonial/prof_photo.png" alt="" class="img-fluid">
+                                        </div>
+                                        <div class="testimonial__box-quote">
+                                            <i class="icofont-quote-right"></i>
+                                        </div>
+                                        <div class="testimonial__box-desc">
+                                            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum Excepteur sint occaecat cupidatat non proident, sunt in culpa </p>
+                                        </div>
+                                        <h5 class="testimonial__box-name">Diego Mamani</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--Testimonial_Area-End-->
+	  	  
 		<!-- <section class="site-section border-bottom" id="services-steps-section">
 			<div class="container">
 				<div class="row mb-5">
@@ -817,8 +872,8 @@
 			  <div class="row">
 				<div class="col-md-12">
 				  <div class="color-light">
-					<h2>Estar conectados con usted es nuestra motivación</h2>
-					<p>Combinamos prioridad y seguridad en sus trámites</p>
+					<h2>ADOPTA, NO COMPRES</h2>
+					<p>MIENTRAS COMPRAS UN PERRO O UN GATO, OTRO MUERE EN LA CALLE</p>
 				  </div>
 				</div>
 			  </div>
@@ -826,68 +881,71 @@
 		</section>
 	  
 	  
-		<section class="site-section border-bottom" id="online-municipality">
+		<section class="site-section border-bottom" id="volunteering-section">
 			<div class="container">
 			  <div class="row mb-5 justify-content-center">
-				<div class="col-md-8 text-center">
-				  <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="">MUNICIPIO EN LÍNEA</h2>
-				  <p class="lead" data-aos="fade-up" data-aos-delay="100">Le permite estar conectado a otros servicios completamente en línea.</p>
+				<div class="col-md-10 text-center">
+				  <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="">VOLUNTARIADO</h2>
+				  <p class="lead" data-aos="fade-up" data-aos-delay="100">El programa de voluntariado dentro de Zoonosis esta dirigido a la capacitación de los mismos, para educar sobre las leyes referentes a la tenencia de animales, además de actividades de solidaridad con los animales menos afortunados.</p>
 				</div>
 			  </div>
 	  
 			  <div class="row align-items-stretch">
-				<div class="col-6 col-sm-6 col-md-4 mb-4 mb-lg-3 col-lg-3" data-aos="flip-left">
-				  <a href="https://www.lapaz.bo/municipioenlinea/consultaenlinea/" target="_blank" class="online-category h-100">
-					<span class="icon mt-5 mb-3"><span class="icofont-mouse"></span></span>
-					<span class="caption mb-1 d-block">CONSULTAS EN LÍNEA</span>
-				  </a>
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 mb-4 mb-lg-3 col-lg-3" data-aos="flip-left">
-				  <a href="https://www.lapaz.bo/municipioenlinea/servicios247/" target="_blank" class="online-category h-100">
-					<span class="icon mt-5 mb-3"><span class="icofont-wall-clock"></span></span>
-					<span class="caption mb-1 d-block">SERVICIOS ONLINE 24/7</span>
-				  </a>
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 mb-4 mb-lg-3 col-lg-3" data-aos="flip-left">
-				  <a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/inicio.html" target="_blank" class="online-category h-100">
-					<span class="icon mt-5 mb-3"><span class="icofont-map-pins"></span></span>
-					<span class="caption mb-1 d-block">SIT v3</span>
-					<p class="p_caption">SISTEMA DE INFORMACIÓN TERRITORIAL</p>
-				  </a>
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 mb-4 mb-lg-3 col-lg-3" data-aos="flip-left">
-				  <a href="http://wsservicios.lapaz.bo/cheques/" class="online-category h-100">
-					<span class="icon mt-5 mb-3"><span class="icofont-bill"></span></span>
-					<span class="caption mb-1 d-block">CHEQUES POR REGOGER</span>
-				  </a>
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 mb-4 mb-lg-3 col-lg-3" data-aos="flip-left">
-				  <a href="http://sim.lapaz.bo/nuevocatastro/sitv3/pages/territorio.html" target="_blank" class="online-category h-100">
-					<span class="icon mt-5 mb-3"><span class="icofont-cement-mix"></span></span>
-					<span class="caption mb-1 d-block">CONSTRUIR CON PERMISO ES FÁCIL</span>
-				  </a>
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 mb-4 mb-lg-3 col-lg-3" data-aos="flip-left">
-				  <a href="https://www.lapaz.bo/municipioenlinea/construccion/" target="_blank" class="online-category h-100">
-					<span class="icon mt-5 mb-3"><span class="icofont-industries-4"></span></span>
-					<span class="caption mb-1 d-block">EMPRESAS Y SERVICIOS</span>
-				  </a>
-				</div>
-	  
-				<div class="col-6 col-sm-6 col-md-4 mb-4 mb-lg-3 col-lg-3" data-aos="flip-left">
-				  <a href="https://www.lapaz.bo/municipioenlinea/aplicacionesmoviles/" target="_blank" class="online-category h-100">
-					<span class="icon mt-5 mb-3"><span class="icofont-brand-android-robot"></span></span>
-					<span class="caption mb-1 d-block">APLICACIONES MÓVILES</span>
-				  </a>
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 mb-4 mb-lg-3 col-lg-3" data-aos="flip-left">
-				  <a href="https://drive.google.com/drive/folders/0B_qt9Yc8icg_QWxHbFJydG5Ya1E" target="_blank" class="online-category h-100">
-					<span class="icon mt-5 mb-3"><span class="icofont-download-alt"></span></span>
-					<span class="caption mb-1 d-block">DESCARGAS DE PUBLICACIONES</span>
-				  </a>
-				</div>
+					<!-- Gallery item -->
+					<div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+					  <div class="bg-white rounded shadow-sm"><img src="images/volunteering/volun1.jpg" alt="" class="img-fluid card-img-top">
+						<div class="p-4">
+						  <h5> <a href="#" class="text-dark">PROGRAMA #1</a></h5>
+						  <ul class="blog-meta">
+							<li><span class="icofont-ui-calendar"></span> <a href="#">Sept 15, 2021</a></li>
+						  </ul>
+						  <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+						  <div class="d-flex align-items-center justify-content-between rounded-pill pill-bg px-3 py-2 mt-4">
+							<p class="small mb-0"><i class="icofont-info-square mr-2"></i><span class="font-weight-bold">INFO.</span></p>
+							<div class="badge badge-info px-3 rounded-pill font-weight-normal"><a href="#" class="badgeText">Ver</a></div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					<!-- End -->
+			  
+					<!-- Gallery item -->
+					<div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+					  <div class="bg-white rounded shadow-sm"><img src="images/volunteering/volun2.jpg" alt="" class="img-fluid card-img-top">
+						<div class="p-4">
+						  <h5> <a href="#" class="text-dark">PROGRAMA #2</a></h5>
+						  <ul class="blog-meta">
+							<li><span class="icofont-ui-calendar"></span> <a href="#">Sept 15, 2021</a></li>
+						  </ul>
+						  <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+						  <div class="d-flex align-items-center justify-content-between rounded-pill pill-bg px-3 py-2 mt-4">
+							<p class="small mb-0"><i class="icofont-info-square mr-2"></i><span class="font-weight-bold">INFO.</span></p>
+							<div class="badge badge-info px-3 rounded-pill font-weight-normal"><a href="#" class="badgeText">Ver</a></div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					<!-- End -->
+			  
+					<!-- Gallery item -->
+					<div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+					  <div class="bg-white rounded shadow-sm"><img src="images/volunteering/volun3.jpg" alt="" class="img-fluid card-img-top">
+						<div class="p-4">
+						  <h5> <a href="#" class="text-dark">PROGRAMA #3</a></h5>
+						  <ul class="blog-meta">
+							<li><span class="icofont-ui-calendar"></span> <a href="#">Sept 15, 2021</a></li>
+						  </ul>
+						  <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+						  <div class="d-flex align-items-center justify-content-between rounded-pill pill-bg px-3 py-2 mt-4">
+							<p class="small mb-0"><i class="icofont-info-square mr-2"></i><span class="font-weight-bold">INFO.</span></p>
+							<div class="badge badge-info px-3 rounded-pill font-weight-normal"> <a href="#" class="badgeText">Ver</a></div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					<!-- End -->			  		  
 			  </div>
-	  
+
 			</div>
 		</section>
 
@@ -896,8 +954,8 @@
 			<div class="container">
 				<div class="row mb-5 justify-content-center">
 					<div class="col-md-8 text-center">
-					  <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="100">CAMPAÑA DE VACUNACIÓN</h2>
-					  <p class="lead" data-aos="fade-up" data-aos-delay="200">¡TODOS CONTRA LA RABIA!</p>
+					  <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="100">VECTORES</h2>
+					  <p class="lead" data-aos="fade-up" data-aos-delay="200">El servicio de Control de Vectores nos permite el control de plagas </p>
 					</div>
 				</div>
 
@@ -905,13 +963,13 @@
 				  <div class="col-sm-5 col-lg-3">
 					 <ul class="nav nav-tabs flex-column mb-3">
 						<li class="nav-item">
-						   <a class="nav-link active show" data-toggle="tab" href="#tab-1">¿QUÉ ES LA RABIA?</a>
+						   <a class="nav-link active show" data-toggle="tab" href="#tab-1">CONTROL DE VECTORES</a>
 						</li>
 						<li class="nav-item">
 						   <a class="nav-link" data-toggle="tab" href="#tab-2">DETALLES</a>
 						</li>
 						<li class="nav-item">
-						   <a class="nav-link" data-toggle="tab" href="#tab-3">FECHA Y HORARIOS</a>
+						   <a class="nav-link" data-toggle="tab" href="#tab-3">PROCEDIMIENTO</a>
 						</li>
 						<li class="nav-item">
 						   <a class="nav-link" data-toggle="tab" href="#tab-4">RECOMENDACIONES</a>
@@ -923,20 +981,12 @@
 						<div class="tab-pane active show" id="tab-1">
 						   <div class="row">
 							  <div class="col-lg-8 details">
-								 <h3 class="mt-3">¿QUÉ ES LA RABIA?</h3>
-								 <p>Es una enfermedad causada por un virus que infecta a animales domesticos y salvajes</p>
-								 <ul>
-									<li>
-									<p><i class="icofont-checked"></i> Se transmite a las personas a traves de la saliva infectada vía mordedura o arañazos.</p>
-									</li>
-									<li>
-									<p><i class="icofont-checked"></i> Los perros son los principales transmisores de la rabia al humano.</p>
-									</li>
-								</ul>
+								 <h3 class="mt-3">CONTROL DE VECTORES</h3>
+								 <p>El servicio de Control de Vectores nos permite el control de plagas que se realizan mediante el requerimiento de mercados y barrios donde se requiere las fumigaciones para evitar la proliferación de plagas.</p>
 							  </div>
 							  <div class="col-lg-4">
 								<div class="feature-img">
-								   <img src="images/tabs_info/1.png" alt="" class="img-fluid">
+								   <img src="images/vectors/vect1.jpg" alt="" class="img-fluid">
 								</div>
 							 </div>
 						   </div>
@@ -945,19 +995,19 @@
 						   <div class="row">
 							  <div class="col-lg-8 details">
 								 <h3 class="mt-3">DETALLES</h3>
-								 <p>La vacunación masiva de Felinos🐱 y Caninos 🐶 se realizará en parques y plazas de todos los distritos y macro distritos de la ciudad de La Paz.</p>
+								 <p>Se llama vector a un organismo, que transmite un agente infeccioso desde los individuos afectados a otros que aún no portan ese agente.</p>
 								 <ul>
 									<li>
-									<p><i class="icofont-checked"></i> La actividad comenzará a horas 08:00 y concluira a las 16:00.</p>
+									<p><i class="icofont-checked"></i> Los vectores incluyen mosquitos, moscas, garrapatas, roedores, cucarachas y pulgas.</p>
 									</li>
 									<li>
-									<p><i class="icofont-checked"></i> Los puntos estarán ubicados en los lugares más concurridos:plazas, parques, etc.</p>
+									<p><i class="icofont-checked"></i> Muchas enfermedades se propagan por vectores.</p>
 									</li>
 								</ul>
 							  </div>
 							  <div class="col-lg-4">
 								<div class="feature-img">
-								   <img src="images/tabs_info/2.png" alt="" class="img-fluid">
+								   <img src="images/vectors/vect4.jpg" alt="" class="img-fluid">
 								</div>
 							 </div>
 						   </div>
@@ -965,17 +1015,15 @@
 						<div class="tab-pane" id="tab-3">
 						   <div class="row">
 							  <div class="col-lg-8 details">
-								 <h3 class="mt-3">FECHAS Y HORARIOS</h3>
-								 <p class="font-italic">La inmunización es gratuita y se realizará los dias<strong> Sábado 18 y Domingo 19 de Septiembre</strong> del año en curso.</p>
-								 <ul>
-									<li>
-									<p><i class="icofont-checked"></i> La actividad iniciará a <strong>las 08:00 AM. y concluira a las 16:00 PM.</strong></p>
-									</li>
-								</ul>
+								 <h3 class="mt-3">PROCEDIMIENTO</h3>
+								 <p>Centrarse en los vectores que transmiten los patógenos es un enfoque preventivo eficaz contra la mayoría de 
+									las enfermedades de transmisión vectorial. Las intervenciones que reducen el contacto entre el ser humano y 
+									los vectores y que disminuyen la supervivencia de los vectores pueden suprimir e incluso detener la 
+									transmisión.</p>
 							  </div>
 							  <div class="col-lg-4">
 								<div class="feature-img">
-								   <img src="images/tabs_info/3.png" alt="" class="img-fluid">
+								   <img src="images/vectors/vect3.jpg" alt="" class="img-fluid">
 								</div>
 							 </div>
 						   </div>
@@ -984,22 +1032,21 @@
 						   <div class="row">
 							  <div class="col-lg-8 details">
 								 <h3 class="mt-3">RECOMENDACIONES</h3>
-								 <p>Tomar en cuenta las siguientes recomendaciones:</p>
 								 <ul>
 									<li>
-									<p><i class="icofont-checked"></i> Transladar a la can con correa y/o asegurado.</p>
+									<p><i class="icofont-checked"></i> SIEMPRE pida a los profesionales que rocíen contra los vectores. (Solo ayude si está capacitado o es guiado por una persona bien entrenada).</p>
 									</li>
 									<li>
-									<p><i class="icofont-checked"></i> Si el perro es grande, debe estar acompañado por adultos.</p>
+									<p><i class="icofont-checked"></i> Hable con las personas de su comunidad sobre el almacenamiento adecuado de alimentos y agua, manteniendo limpios los recintos.</p>
 									</li>
 									<li>
-									<p><i class="icofont-checked"></i> El animal debe permanecer en casa 21 días posteriores a la vacuna para que ésta haga efecto.</p>
+									<p><i class="icofont-checked"></i> Es muy importante recordar que rociar químicos para deshacerse de los vectores puede ser peligroso, especialmente si no tiene el equipo o los materiales adecuados y no sabe cómo rociar de manera segura.</p>
 									</li>
 								</ul>
 							  </div>
 							  <div class="col-lg-4">
 								<div class="feature-img">
-								   <img src="images/tabs_info/4.png" alt="" class="img-fluid">
+								   <img src="images/vectors/vect2.jpg" alt="" class="img-fluid">
 								</div>
 							 </div>
 						   </div>
@@ -1009,285 +1056,7 @@
 			   </div>
 			</div>
 		 </section>
-
-
-		
 		<!--======= END OPTIONAL SERVICES (NOT DELETE) =========-->
-	  
-		<section class="site-section border-bottom" id="carousel-municipality">
-			<div class="container-fluid mt-100">
-			  <div class="row mb-5 justify-content-center">
-				<div class="col-md-8 text-center">
-				  <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="">COMUNICADOS</h2>
-				  <p class="lead" data-aos="fade-up" data-aos-delay="100">Todos nuestros servicios están disponibles con una cuenta, si no dispone de una <a href="app/view/autenticacion/partials/registro_.html#/registro" style="color: #e30613; font-weight: 700;">Regístrese aquí...</a></p>
-				</div>
-			  </div>
-	  
-			  <div class="row">
-				  <div class="col-md-12 mr-auto ml-auto">
-					  <div class="card-raised card-carousel">
-						  <div id="carouselindicators" class="carousel slide" data-ride="carousel" data-interval="4000">
-							  <ol class="carousel-indicators">
-								  <li data-target="#carouselindicators" data-slide-to="0" class="active"></li>
-								  <li data-target="#carouselindicators" data-slide-to="1" class=""></li>
-								  <li data-target="#carouselindicators" data-slide-to="2" class=""></li>
-							  </ol>
-							  <div class="carousel-inner">
-								  <div class="carousel-item active carousel-item-left"> <img class="d-block w-100" src="images/publicNews/pub3.webp" alt="First slide">
-									  <!-- <div class="carousel-caption d-none d-md-block">
-										  <h4> <i class="icofont-chat"></i> SliderComunicado1</h4>
-									  </div> -->
-								  </div>
-								  <div class="carousel-item carousel-item-next carousel-item-left"> <img class="d-block w-100" src="images/publicNews/pub5.webp" alt="Second slide">
-									<div class="carousel-caption d-none d-md-block" style="background: linear-gradient(to left, #0000001c 5%, #000000ba 50%, #0000001c 90%); border-radius: 5px;">
-										<a href="https://play.google.com/store/apps/details?id=com.gamlp.moviendonos_x_lp" class="btn btn-outline-light btn-icon-text" target="_blank"> 
-											<i class="icofont-brand-android-robot btn-icon-prepend" style="font-size: 39px; margin-right: 10px;"></i> 
-											<span class="d-inline-block text-left"> <small class="font-weight-light d-block">Descargar en</small> Google Play </span>
-										</a> 
-										<!-- <a href="app/view/autenticacion/partials/login_.html" target="_self" class="btn btn-primary mr-2 mb-2"><i class="icofont-user"></i> IR A PLAY STORE</a> -->
-										<!-- <h4> <i class="icofont-chat"></i> SliderComunicado2 </h4> -->
-									</div>
-								  </div>
-								  <div class="carousel-item carousel-item-next carousel-item-left"> <img class="d-block w-100" src="images/publicNews/pub2.webp" alt="Third slide">
-									  <!-- <div class="carousel-caption d-none d-md-block">
-										  <h4> <i class="icofont-chat"></i> SliderComunicado2 </h4>
-									  </div> -->
-								  </div>
-							  </div> <a class="carousel-control-prev" href="#carouselindicators" role="button" data-slide="prev" data-abc="true"> <i class="icofont-hand-drawn-left icofont-3x" style="color: #e41b25;"></i> <span class="sr-only">Anterior</span> </a> <a class="carousel-control-next" href="#carouselindicators" role="button" data-slide="next" data-abc="true"> <i class="icofont-hand-drawn-right icofont-3x" style="color: #e41b25;"></i> <span class="sr-only">Siguiente</span> </a>
-						  </div>
-					  </div>
-				  </div>
-			  </div>
-			</div>
-		</section>
-	  
-		<section class="site-section" id="blog-section">
-			<div class="container">
-			  <div class="row mb-5">
-				<div class="col-12 text-center" data-aos="fade">
-				  <h2 class="section-title mb-3">¿CÓMO ME REGISTRO?</h2>
-				</div>
-			  </div>
-	  
-			  <div class="row">
-				<div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="">
-				  <div class="h-entry">
-					<a href="#">
-					  <img src="images/steps/port01.jpg" alt="Image" class="img-fluid">
-					  <p class="rating">1</p>
-					</a>
-					<h2 class="font-size-regular">Acceder a la plataforma iGob 24/7</h2>
-					<div class="meta mb-4">Modo de registro <span class="mx-2">&bullet;</span> Actualizado </div>
-					<p>Para comenzar a hacer uso de la plataforma debe ingresar al link https://igob247.lapaz.bo/ y presionar el botón REGISTRARSE.</p>
-					<p class="linkAccess"><a href="app/view/autenticacion/partials/registro_.html#/registro">Acceder a registrarse...</a></p>
-				  </div> 
-				</div>
-				<div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="100">
-				  <div class="h-entry">
-					<a href="#">
-					  <img src="images/steps/port02.jpg" alt="Image" class="img-fluid">
-					  <p class="rating">2</p>
-					</a>
-					<h2 class="font-size-regular">Complete el formulario de registro</h2>
-					<div class="meta mb-4">Modo de registro <span class="mx-2">&bullet;</span> Actualizado </div>
-					<p>Elige la opción “Registrarse” y completa los datos requeridos, recibirás un mensaje de confirmación con usuario y contraseña.</p>
-				  </div>
-				</div>
-				<div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="200">
-				  <div class="h-entry">
-					<a href="#">
-					  <img src="images/steps/port03.jpg" alt="Image" class="img-fluid">
-					  <p class="rating">3</p>
-					</a>
-					<h2 class="font-size-regular">Inicie sesión</h2>
-					<div class="meta mb-4">Modo de registro <span class="mx-2">&bullet;</span> Actualizado </div>
-					<p>Una vez registrado debe de iniciar sesión con su usuario y contraseña asignados (enviado a su correo) y acceder a la plataforma.</p>
-					<p class="linkAccess"><a href="app/view/autenticacion/partials/login_.html">Acceder a inicio de sesión...</a></p>
-				  </div> 
-				</div>
-			  </div>
-	  
-			  <div class="row">
-				<div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="300">
-				  <div class="h-entry">
-					<a href="#">
-					  <img src="images/steps/port04.jpg" alt="Image" class="img-fluid">
-					  <p class="rating">4</p>
-					</a>
-					<h2 class="font-size-regular">Verificación de datos</h2>
-					<div class="meta mb-4">Modo de registro <span class="mx-2">&bullet;</span> Actualizado </div>
-					<p>Para una mayor seguridad y veracidad en sus trámites, un operador de plataforma verificará sus credenciales presentadas.</p>
-				  </div> 
-				</div>
-				<div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="400">
-				  <div class="h-entry">
-					<a href="#">
-					  <img src="images/steps/port05.jpg" alt="Image" class="img-fluid">
-					  <p class="rating">5</p>
-					</a>
-					<h2 class="font-size-regular">Verificación de datos II</h2>
-					<div class="meta mb-4">Modo de registro <span class="mx-2">&bullet;</span> Actualizado </div>
-					<p>El operador de plataforma permite al ciudadano revisar los datos registrados y condiciones de uso.</p>
-				  </div>
-				</div>
-				<div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="500">
-				  <div class="h-entry">
-					<a href="#">
-					  <img src="images/steps/port06.jpg" alt="Image" class="img-fluid">
-					  <p class="rating">6</p>
-					</a>
-					<h2 class="font-size-regular">Verificación de datos III</h2>
-					<div class="meta mb-4">Modo de registro <span class="mx-2">&bullet;</span> Actualizado </div>
-					<p>El operador de plataforma activa usuario y PIN luego entrega al ciudadano mediante email y se deja una copia para el G.A.M.L.P</p>
-				  </div> 
-				</div>
-			  </div>
-			</div>
-		</section>
-	  
-		<section class="site-section" id="links-interest">
-			<div class="container">
-	  
-			  <div class="row mb-5 justify-content-center">
-				<div class="col-md-7 text-center">
-				  <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="">ENLACES DE INTERÉS</h2>
-				  <p class="lead" data-aos="fade-up" data-aos-delay="100">Puede visitar estas plataformas y/o en casos primordiales consultar los números telefónicos</p>
-				</div>
-			  </div>
-			  
-	  
-			  <div class="row align-items-lg-center">
-				<div class="col-lg-2 col-md-4 col-sm-2 col-6 col-sm-offset-0 col-md-offset-1" data-aos="flip-right" data-aos-delay="200">
-				  <div class="partner-logo to-animate-2">
-					  <a href="http://www.amn.bo" target="_blank">
-						  <img src="images/linksInterest/logo1.png" alt="Partners" class="img-responsive">
-					  </a>
-				  </div>
-				</div>
-				 <div class="col-lg-2 col-md-4 col-sm-2 col-6" data-aos="flip-right" data-aos-delay="300">
-				   <div class="partner-logo to-animate-2">
-					  <a href="http://www.lapazbus.bo/" target="_blank">
-						  <img src="images/linksInterest/logo2.png" alt="Partners" class="img-responsive">
-					  </a>
-				 </div>
-				 </div>
-				 <div class="col-lg-2 col-md-4 col-sm-2 col-6" data-aos="flip-right" data-aos-delay="400">
-				   <div class="partner-logo to-animate-2">
-					  <a href="http://www.concejomunicipal.bo" target="_blank">
-							 <img src="images/linksInterest/logo3.png" alt="Partners" class="img-responsive">
-					  </a>
-				   </div>
-				 </div>
-				 <div class="col-lg-2 col-md-4 col-sm-2 col-6" data-aos="flip-right" data-aos-delay="500">
-				   <div class="partner-logo to-animate-2">
-					  <a href="http://www.emaverde.com.bo/index.php/es/" target="_blank">
-						  <img src="images/linksInterest/logo4.png" alt="Partners" class="img-responsive">
-					  </a>
-				   </div>
-				 </div>
-				 <div class="col-lg-2 col-md-4 col-sm-2 col-6" data-aos="flip-right" data-aos-delay="600">
-				   <div class="partner-logo to-animate-2">
-					  <a href="http://www.emavias.com.bo/" target="_blank">
-							 <img src="images/linksInterest/logo5.png" alt="Partners" class="img-responsive">
-					  </a>
-				   </div>
-				 </div>
-				 <div class="col-lg-2 col-md-4 col-sm-2 col-6" data-aos="flip-right" data-aos-delay="700">
-				  <div class="partner-logo to-animate-2">
-					  <a href="https://www.lapaz.bo/transparencia/" target="_blank">
-							<img src="images/linksInterest/logo6.png" alt="Partners" class="img-responsive">
-					  </a>
-				  </div>
-				</div>
-			  </div>
-	  
-			  <div class="row features-inner">
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="">
-				  <div class="single-features">
-					<div class="f-icon">
-					  <img src="images/features/f-icon1.png" alt="">
-					</div>
-					<h6>114</h6>
-					<p>RETÉN DE EMERGENCIA</p>
-				  </div>
-				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="100">
-				  <div class="single-features">
-					<div class="f-icon">
-					  <img src="images/features/f-icon2.png" alt="">
-					</div>
-					<h6>165</h6>
-					<p>RED DE AMBULANCIAS</p>
-				  </div>
-				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="200">
-				  <div class="single-features">
-					<div class="f-icon">
-					  <img src="images/features/f-icon3.png" alt="">
-					</div>
-					<h6>800 16 1777</h6>
-					<p>QUEJAS DE RECOJO DE BASURA</p>
-				  </div>
-				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-down" data-aos-delay="300">
-				  <div class="single-features">
-					<div class="f-icon">
-					  <img src="images/features/f-icon4.png" alt="">
-					</div>
-					<h6>156</h6>
-					<p>DEFENSORIA DE LA NIÑEZ</p>
-				  </div>
-				</div>
-			  </div>
-	  
-			  <div class="row features-inner">
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="400">
-				  <div class="single-features">
-					<div class="f-icon">
-					  <img src="images/features/f-icon5.png" alt="">
-					</div>
-					<h6>800 13 4444</h6>
-					<p>SAC LA PAZ BUS</p>
-				  </div>
-				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="500">
-				  <div class="single-features">
-					<div class="f-icon">
-					  <img src="images/features/f-icon6.png" alt="">
-					</div>
-					<h6>800 13 6666</h6>
-					<p>GUARDA DEL TRANSPORTE</p>
-				  </div>
-				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="600">
-				  <div class="single-features">
-					<div class="f-icon">
-					  <img src="images/features/f-icon7.png" alt="">
-					</div>
-					<h6>800 16 1010</h6>
-					<p>ALUMBRADO/SEMAFORIZACIÓN</p>
-				  </div>
-				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="700">
-				  <div class="single-features">
-					<div class="f-icon">
-					  <img src="images/features/f-icon8.png" alt="">
-					</div>
-					<h6>800 14 0217</h6>
-					<p>INTENDENCIA MUNICIPAL</p>
-				  </div>
-				</div>
-			  </div>
-			</div>
-		</section>
 
 		<footer class="site-footer" id="contact-section">
 			<div class="container">
@@ -1990,6 +1759,7 @@
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
+<script src="vendor/swiper/swiper-bundle.min.js"></script>
 <script src="js/jquery.countdown.min.js"></script>
 <script src="js/jquery.easing.1.3.js"></script>
 <script src="js/aos.js"></script>

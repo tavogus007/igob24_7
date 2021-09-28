@@ -760,7 +760,10 @@
                   <script type="text/javascript">
                      document.write(elArray["lbl_02_04"]);
                   </script></label>
-                  <input class="form-control" type="text" id="usuario" tabindex="1" name="usuario" ng-model="login.usuario" placeholder="USUARIO" maxlength="">
+                  <div class="input-group">
+                    <input class="form-control" type="text" id="usuario" tabindex="1" name="usuario" ng-model="login.usuario" placeholder="CÉDULA DE IDENTIDAD o NIT" maxlength="">
+                    <button class="btn btn-default btn-circle" type="button" data-toggle="popover" data-trigger="focus" title="Tipos de usuario" data-content="Si esta registrado como persona natural, utilice su CÉDULA DE IDENTIDAD o si esta registrado como persona jurídica, utilice el n° de NIT."><i class="icofont-info"></i></button>
+                  </div>
                   <p class="form-alert" id="name-form-alert" style="display:none;color:#e41b25;">El Usuario es requerido</p>
                   <p class="form-alert" id="namelengthMin-form-alert" style="display:none;color:#e41b25;">La longitud del campo es muy corto</p>
                   <p class="form-alert" id="namelengthMax-form-alert" style="display:none;color:#e41b25;">La longitud del campo es muy largo</p>
@@ -793,6 +796,10 @@
               <script type="text/javascript">
                      document.write(elArray["lbl_02_09"]);
               </script> ¡Presione aqui!</small></a></p>
+              <p><a href="../../autenticacion/partials/registro_.html" class="aEnlaceCustom"><small>
+                No posee una cuenta ¡Registrese aqui!
+              </small><div class="ripple-container"></div></a>
+              </p>
               <p><a href="../../../../index.html" ui-sref="forgot_password" href="/forgot_password" class="aEnlaceCustom"><small>
               <script type="text/javascript">
                    document.write(elArray["lbl_02_10"]);
@@ -1027,6 +1034,7 @@
 
 <script src="../../../../structureIgob/js/popper.min.js"></script>
 <script src="../../../../structureIgob/js/bootstrap.min.js"></script>
+<script src="../../../../structureIgob/js/login/login.js"></script>
 
 <script type="text/javascript" src="../../../libs/js/jquery.blockUI.min.js"></script>
 <!-- <script type="text/javascript" src="../../../libs/js_one/bootstrap.min.js"></script> -->

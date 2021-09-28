@@ -33,6 +33,40 @@ jQuery(document).ready(function($) {
 			}
 		}
 	});
+
+    /*====== Testimonial_Slider-Active ======*/
+        var testimonialSlider = new Swiper(".testimonial_slider", {
+            loop: true,
+            spaceBetween: 30,
+            slidesPerView: 2,
+            freeMode: true,
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+			autoplay: {
+				delay: 2500,
+				disableOnInteraction: false,
+			},
+            navigation: {
+                nextEl: "#testimonial-arrow .arrow_next",
+                prevEl: "#testimonial-arrow .arrow_prev",
+            },
+            pagination: {
+                el: ".testimonial-slider .slider-custom-pagination",
+                clickable: true,
+            },
+            breakpoints: {
+                0: {
+                    slidesPerView: 1,
+                },
+                768: {
+                    slidesPerView: 1,
+                },
+                992: {
+                    slidesPerView: 2,
+                },
+            },
+        });
+
 	
 	AOS.init({
 		duration: 800,

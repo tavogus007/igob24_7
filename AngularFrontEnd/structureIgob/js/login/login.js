@@ -1,3 +1,3 @@
-AOS.init({
-    once:true
-});
+$(function () {
+    $('[data-toggle="popover"]').popover()
+})

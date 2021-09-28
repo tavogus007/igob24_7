@@ -318,6 +318,27 @@ padding: 20px;
      object-position: left; }
 
 /*# sourceMappingURL=login.css.map */
+.btn:hover {
+  color: #00f5ff;
+  text-decoration: none;
+}
+.btn-circle {
+  color: #eefeff;
+  background: #036b76;
+  border: 2px solid #eefeff;
+
+  width: 40px;
+  height: 40px;
+  padding: 6px 0;
+  border-radius: 25px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.428571429;
+}
+.popover-header {
+background-color: #23a0af;
+color: #eefeff;
+}
 
 
 .button-basic {

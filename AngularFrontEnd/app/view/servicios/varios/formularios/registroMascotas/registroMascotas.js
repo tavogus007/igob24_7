@@ -126,13 +126,13 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     if ((datos.dtspsl_macrodistrito == '' || datos.dtspsl_macrodistrito_desc == '')) {
       datosfaltantes.push(' MACRODISTRITO');
     }
-    if ((datos.dtspsl_distrito == '' || datos.dtspsl_distrito_desc == '')) {
+    /*if ((datos.dtspsl_distrito == '' || datos.dtspsl_distrito_desc == '')) {
       datosfaltantes.push(' DISTRITO');
     }
     if ((datos.dtspsl_zona_desc == '' || datos.dtspsl_zona == '')) {
       datosfaltantes.push(' ZONA');
     }
-    /*if (datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0') {
+    if (datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0') {
       datosfaltantes.push(' NOMBRE DE VIA');
     }
     if (datos.dtspsl_numero_casa == '' || datos.dtspsl_nombre_via == '0') {

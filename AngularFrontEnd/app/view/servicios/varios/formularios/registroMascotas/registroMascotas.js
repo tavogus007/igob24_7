@@ -184,7 +184,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
             //$scope.detalle_url = jsonURLS.CONEXION_SIERRA;
             angular.forEach($scope.tramitesMascota, function (value, key) {
               //$scope.certificadoMascota = jsonURLS.CONEXION_SIERRA+value.xmascota_certdigital;
-              //value.xmascota_data = JSON.parse(value.xmascota_data);
+              value.xmascota_data = JSON.parse(value.xmascota_data);
             });
             $scope.$apply();
             $scope.tablaTramites.reload();

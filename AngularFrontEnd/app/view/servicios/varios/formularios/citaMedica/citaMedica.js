@@ -23,18 +23,13 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
     
     $scope.vectorMensaje = ['Nro. de Proforma:','Nombres:','Apellidos:','Correo Electrónico:','Ciudad:','País:','Especialidad:','Precio (Bs):'];
     if(jsonURLS){
-        //var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";
-        //var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";
         var urlFum = CONFIG.CONEXION_ODM;
-        //var urlPagoTarjetaX = CONFIG.CONEXION_PAGOS + 'registroDataPagoCheckout';
         var urlPagoTarjetaX = CONFIG.SERVICE_PAGOS_TARJETA;
         var urlPagoTarjetaY = CONFIG.CONEXION_PAGOS + 'pago-checkout';
         var urlPagoTarjeta = CONFIG.CONEXION_PAGOS + 'pago-checkoutWeb';
         var urlPagoClick = CONFIG.CONEXION_PAGOS + 'envioPagoClickGamlp';
         var urlPagoQR = CONFIG.CONEXION_PAGOS + 'generarQrBcpGamlp';
-        var urlCorreoAdjunto = 'http://200.105.139.183:9090/smsemail/email/mailFileGamlp.php';
-        //var urlCorreo = 'http://172.18.26.174/dreamfactory/dist/PROYECTOS/phpmailer/index.php';
-        var urlCorreo = 'http://200.105.139.183:9090/smsemail/email/mailSalud2_0_BORRAR.php';
+        var urlCorreo = CONFIG.CONEXION_CORREOS;
       }
     $scope.get_renderizarHospitales = function(x){
         return $sce.trustAsHtml(x);

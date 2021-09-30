@@ -40,7 +40,7 @@ var jsonURLS    =   {
         'usr_clave'     : '123456'
     },
     KEY: 'igob24_7',
-    SERVICE_ENVIO_CORREO: "http://200.105.139.183:9090/smsemail/email/mail.php",
+    SERVICE_ENVIO_CORREO: "http://200.105.139.183:9090/" + "smsemail/email/mail.php",
     CONEXION_API_PG_IF: "http://192.168.5.141:9091/",
     CONEXION_API_PG_GENESIS: "http://192.168.5.141:9097/",
     CONEXION_API_PG_RC: "http://192.168.5.141:8003/",
@@ -77,7 +77,7 @@ var jsonURLS    =   {
     SERVICE_GIS_AE_DZ:"https://servmonitoreo.lapaz.bo/",
     CONEXION_PAGOS: "http://52.226.130.135:5433/api/",
     CONEXION_ODM : "http://200.105.139.183:9090/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php",
-    CONEXION_CORREOS : "http://200.105.139.183:9090/smsemail/email/mailSalud2_0_BORRAR.php",
+    CONEXION_CORREOS : "http://200.105.139.183:9090/" + "smsemail/email/mailSalud2_0_BORRAR.php",
     SERVICE_PAGOS_TARJETA:"http://172.18.2.194:4500/api/registrarTrx"
     
     

@@ -40,10 +40,9 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     });
 }
 
-
-  $scope.recuperandoDatosInicialesCiudadano = function () {
+$scope.recuperandoDatosInicialesCiudadano = function () {
+	var nDatosF = "";
     $rootScope.datosIniciales = "";
-
     var idCiudadano = sessionService.get('IDUSUARIO');
     $scope.habGuardar1 = true;
     $scope.datosIniciales = "";
@@ -63,7 +62,12 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       //fechactual = fecha.getFullYear() + "/" + fecha.getMonth() + "/" + fecha.getDate();
       if (sTipoPersona == 'NATURAL') {
         $scope.validacionDatosNatural(datos);
-        if ((datos.dtspsl_nombres == '' || datos.dtspsl_materno == '' || datos.dtspsl_zona_desc == '' || datos.dtspsl_correo == '' ) || (datos.dtspsl_nombres == ' ' || datos.dtspsl_materno == ' ' || datos.dtspsl_expedido == ' ' || datos.dtspsl_zona_desc == ' ' || datos.dtspsl_correo == ' ' )) {
+		try{
+			nDatosF = Object.keys($scope.datosfalt).length;
+			nDatosF = parseInt(nDatosF);
+		}catch(e){}			
+        
+		if (nDatosF = "" || nDatosF > 0) {
           setTimeout(function () {
             swal({
               title: 'Editar su Información',
@@ -77,8 +81,8 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
               window.location.href = "#servicios|varios|index.html?url='app/view/registro_ciudadano/modificarRegistro/index.html'";
               //$.unblockUI();
             });
-          }, 300);
-        } else {
+          }, 1800);
+        } else {			
           // $scope.via = datos.dtspsl_nombre_via;
           $scope.direccion = datos.dtspsl_direccion;
           $scope.nro = datos.dtspsl_numero_casa;

@@ -26,7 +26,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
         //var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";
         //var urlFum = jsonURLS.CONEXION_GENERAR_FUM+"igob247/generarFumOficial.php";
         var urlFum = CONFIG.CONEXION_ODM;
-        var urlPagoTarjetaX = CONFIG.CONEXION_PAGOS + 'registroDataPagoCheckout';
+        //var urlPagoTarjetaX = CONFIG.CONEXION_PAGOS + 'registroDataPagoCheckout';
+        var urlPagoTarjetaX = CONFIG.SERVICE_PAGOS_TARJETA;
         var urlPagoTarjetaY = CONFIG.CONEXION_PAGOS + 'pago-checkout';
         var urlPagoTarjeta = CONFIG.CONEXION_PAGOS + 'pago-checkoutWeb';
         var urlPagoClick = CONFIG.CONEXION_PAGOS + 'envioPagoClickGamlp';
@@ -1518,9 +1519,13 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
                               console.log('------ CODIGO DE FACTURA  -----');
                               console.log(response);
                               $scope.codigoFactura = response[0].sp_insertar_controlador_pruebas;
-                                var formDataPago = '{"odm":"'+odm+'","total":"'+$scope.datosIntermedio.itm_monto+'","nombres":"'+$scope.datosPaciente.dtspsl_nombres+'","apellidos":"'+$scope.datosPaciente.dtspsl_paterno+' '+$scope.datosPaciente.dtspsl_materno+'","direccion":"'+$scope.datosPaciente.dtspsl_direccion+'","email":"xcampi3570@gmail.com","celular":"'+$scope.datosPaciente.dtspsl_movil+'","sistema":"IGOB WEB","ci_nit":"'+$scope.datosPaciente.dtspsl_ci+'","uid_ciudadano":"'+$scope.datosPaciente._id+'","sucursal_facturacion":'+$scope.datosIntermedio.itm_sucursal+',"id_usuario_facturacion":0,"cantidad_item1":"","descripcion_item1":"","descripcion_item2":"","cantidad_item2":"","monto_item2":"","descripcion_item3":"","cantidad_item3":"","monto_item3":"","codigo_item1":"","codigo_item2":"","codigo_item3":"'+$scope.datosIntermedio.itm_cod_ur+'","estado_facturacion":"","monto_item1":"","reservado18":"","servicio":"HOSPITAL_IGOB","card_type":"001","card_number":"'+$scope.datosT.num_tajeta+'","card_expiry_month":"'+$scope.datosT.mes_tajeta+'","card_expiry_year":"20'+$scope.datosT.anio+'","card_cvn":"'+$scope.datosT.cvn_tarjeta+'","items":[{"concepto":"CONSULTA EXTERNA '+$scope.especialidad_nombre+' ","cantidad":1,"monto":"'+$scope.datosIntermedio.itm_monto+'","item_recaudador":'+$scope.datosIntermedio.itm_cod_item+',"unidad_recaudadora":'+$scope.datosIntermedio.itm_cod_ur+'}],"data_opcional":[{"vidpaciente":'+$scope.datosPacienteSalud[0].idpersona+',"vidservicio":'+$scope.idServicio+',"vfechaatencion":"'+$scope.fechaDisponible+'","vnumeroficha":'+$scope.numero_ficha+',"vhospitalid":'+$scope.idHospital+',"vmedicoid":'+$scope.idDoctorUsuario+',"vturnoid":'+$scope.idTurnoFicha+',"vcodigoficha":"'+ficha[1]+'","vhorainicioficha":"'+$scope.hora_inicio+'","vhorafinficha":"'+$scope.hora_fin+'","vtipoconsulta":"C","vtipoconsulta":"C","vorigen_atencion":"IGOB WEB","vnroodm":"'+odm+'","vhistoria_sice":"'+$scope.historia_clinica+'","codigo_generado":"'+$scope.codigoFactura+'","usr_usuario":"'+$scope.datosHospital.vhsp_usuario+'","usr_clave":"'+$scope.datosHospital.vhsp_contrasenia+'","tipoPago":"TARJETA"}]}';
+                                //var formDataPago = '{"odm":"'+odm+'","total":"'+$scope.datosIntermedio.itm_monto+'","nombres":"'+$scope.datosPaciente.dtspsl_nombres+'","apellidos":"'+$scope.datosPaciente.dtspsl_paterno+' '+$scope.datosPaciente.dtspsl_materno+'","direccion":"'+$scope.datosPaciente.dtspsl_direccion+'","email":"xcampi3570@gmail.com","celular":"'+$scope.datosPaciente.dtspsl_movil+'","sistema":"IGOB WEB","ci_nit":"'+$scope.datosPaciente.dtspsl_ci+'","uid_ciudadano":"'+$scope.datosPaciente._id+'","sucursal_facturacion":'+$scope.datosIntermedio.itm_sucursal+',"id_usuario_facturacion":0,"cantidad_item1":"","descripcion_item1":"","descripcion_item2":"","cantidad_item2":"","monto_item2":"","descripcion_item3":"","cantidad_item3":"","monto_item3":"","codigo_item1":"","codigo_item2":"","codigo_item3":"'+$scope.datosIntermedio.itm_cod_ur+'","estado_facturacion":"","monto_item1":"","reservado18":"","servicio":"HOSPITAL_IGOB","card_type":"001","card_number":"'+$scope.datosT.num_tajeta+'","card_expiry_month":"'+$scope.datosT.mes_tajeta+'","card_expiry_year":"20'+$scope.datosT.anio+'","card_cvn":"'+$scope.datosT.cvn_tarjeta+'","items":[{"concepto":"CONSULTA EXTERNA '+$scope.especialidad_nombre+' ","cantidad":1,"monto":"'+$scope.datosIntermedio.itm_monto+'","item_recaudador":'+$scope.datosIntermedio.itm_cod_item+',"unidad_recaudadora":'+$scope.datosIntermedio.itm_cod_ur+'}],"data_opcional":[{"vidpaciente":'+$scope.datosPacienteSalud[0].idpersona+',"vidservicio":'+$scope.idServicio+',"vfechaatencion":"'+$scope.fechaDisponible+'","vnumeroficha":'+$scope.numero_ficha+',"vhospitalid":'+$scope.idHospital+',"vmedicoid":'+$scope.idDoctorUsuario+',"vturnoid":'+$scope.idTurnoFicha+',"vcodigoficha":"'+ficha[1]+'","vhorainicioficha":"'+$scope.hora_inicio+'","vhorafinficha":"'+$scope.hora_fin+'","vtipoconsulta":"C","vtipoconsulta":"C","vorigen_atencion":"IGOB WEB","vnroodm":"'+odm+'","vhistoria_sice":"'+$scope.historia_clinica+'","codigo_generado":"'+$scope.codigoFactura+'","tipoPago":"TARJETA"}]}';
+                                //var formDataPago = '{"odm":"'+odm+'","total":"'+$scope.datosIntermedio.itm_monto+'","nombres":"'+$scope.datosPaciente.dtspsl_nombres+'","apellidos":"'+$scope.datosPaciente.dtspsl_paterno+' '+$scope.datosPaciente.dtspsl_materno+'","direccion":"'+$scope.datosPaciente.dtspsl_direccion+'","email":"xcampi3570@gmail.com","celular":"'+$scope.datosPaciente.dtspsl_movil+'","sistema":"IGOB WEB","ci_nit":"'+$scope.datosPaciente.dtspsl_ci+'","uid_ciudadano":"'+$scope.datosPaciente._id+'","sucursal_facturacion":'+$scope.datosIntermedio.itm_sucursal+',"id_usuario_facturacion":0,"servicio":"HOSPITAL_IGOB","items":[{"concepto":"CONSULTA EXTERNA '+$scope.especialidad_nombre+' ","cantidad":1,"monto":"'+$scope.datosIntermedio.itm_monto+'","item_recaudador":'+$scope.datosIntermedio.itm_cod_item+',"unidad_recaudadora":'+$scope.datosIntermedio.itm_cod_ur+'}],"data_opcional":[{"vidpaciente":'+$scope.datosPacienteSalud[0].idpersona+',"vidservicio":'+$scope.idServicio+',"vfechaatencion":"'+$scope.fechaDisponible+'","vnumeroficha":'+$scope.numero_ficha+',"vhospitalid":'+$scope.idHospital+',"vmedicoid":'+$scope.idDoctorUsuario+',"vturnoid":'+$scope.idTurnoFicha+',"vcodigoficha":"'+ficha[1]+'","vhorainicioficha":"'+$scope.hora_inicio+'","vhorafinficha":"'+$scope.hora_fin+'","vtipoconsulta":"C","vtipoconsulta":"C","vorigen_atencion":"IGOB WEB","vnroodm":"'+odm+'","vhistoria_sice":"'+$scope.historia_clinica+'","codigo_generado":"'+$scope.codigoFactura+'","usr_usuario":"'+$scope.datosHospital.vhsp_usuario+'","usr_clave":"'+$scope.datosHospital.vhsp_contrasenia+'","tipoPago":"TARJETA"}]}';
+                                var formDataPago = '{"odm":"'+odm+'","total":"'+$scope.datosIntermedio.itm_monto+'","nombres":"'+$scope.datosPaciente.dtspsl_nombres+'","apellidos":"'+$scope.datosPaciente.dtspsl_paterno+' '+$scope.datosPaciente.dtspsl_materno+'","direccion":"'+$scope.datosPaciente.dtspsl_direccion+'","email":"elnuevovirus2@gmail.com","celular":"'+$scope.datosPaciente.dtspsl_movil+'","sistema":"IGOB","ci_nit":"'+$scope.datosPaciente.dtspsl_ci+'","oid_ciudadano":"'+$scope.datosPaciente._id+'","sucursal_facturacion":'+$scope.datosIntermedio.itm_sucursal+',"id_usuario_facturacion":0, "reprogramacion":"NO", "servicio":"HOSPITAL_IGOB","usuario_fac":"'+$scope.datosHospital.vhsp_usuario+'","clave_fac":"'+$scope.datosHospital.vhsp_contrasenia+'", "nit_factura":"'+$scope.datosPaciente.dtspsl_ci+'","nombre_factura":"'+$scope.datosPaciente.dtspsl_ci+' '+$scope.datosPaciente.dtspsl_paterno+' '+$scope.datosPaciente.dtspsl_materno+'","data_opcional":[{"vidpaciente":'+$scope.datosPacienteSalud[0].idpersona+',"vidservicio":'+$scope.idServicio+',"vfechaatencion":"'+$scope.fechaDisponible+'","vnumeroficha":'+$scope.numero_ficha+',"vhospitalid":'+$scope.idHospital+',"vmedicoid":'+$scope.idDoctorUsuario+',"vturnoid":'+$scope.idTurnoFicha+',"vcodigoficha":"'+ficha[1]+'","vhorainicioficha":"'+$scope.hora_inicio+'","vhorafinficha":"'+$scope.hora_fin+'","vtipoconsulta":"C","vorigen_atencion":"IGOB WEB","vnroodm":"'+odm+'","vhistoria_sice":"'+$scope.historia_clinica+'","codigo_generado":"'+$scope.codigoFactura+'","tipoPago":"TARJETA"}],"items":[{"concepto":"CONSULTA EXTERNA '+$scope.especialidad_nombre+' ","cantidad":1,"monto":"'+$scope.datosIntermedio.itm_monto+'","item_recaudador":'+$scope.datosIntermedio.itm_cod_item+',"unidad_recaudadora":'+$scope.datosIntermedio.itm_cod_ur+'}]}'
+                                console.log("formDataPago------",formDataPago);
                                 $.ajax({
                                     type        : 'POST',
+                                    //url         : 'http://localhost:9898/wsSalud/dinamico_qry',//panchito
                                     url         : urlPagoTarjetaX,//panchito
                                     data        : formDataPago,
                                     dataType    : 'json',
@@ -1530,9 +1535,11 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
                                     },
                                     success: function(data) {
                                         console.log('hola mundooooo');
-                                        console.log(data);
-                                        var idTransaccion = data.id_transaccion;
-                                        setTimeout(function () {
+                                        console.log("123------",data);
+                                        var respon = data;
+                                        response = respon.formulario;
+                                        //var idTransaccion = data.id_transaccion;
+                                        /*setTimeout(function () {
                                             var settings = {
                                               "url": urlPagoTarjetaY,
                                               "method": "POST",
@@ -1545,8 +1552,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
                                               }),
                                             };
                                             console.log(settings);
-                                            $.ajax(settings).done(function (response) {
-                                                console.log(response)
+                                            $.ajax(settings).done(function (response) {*/
+                                                console.log("----",response)
 
                                                 console.log("-------------------");
                                                 var printContenidos = "<html>" +  response + "</html>";
@@ -1558,8 +1565,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
                                                 $scope.cargarFichasReservadas();
                                                 $scope.$apply();
                                                 $.LoadingOverlay("hide");
-                                            });
-                                        }, 1000);
+                                            //});
+                                        //}, 1000);
                                     },
                                     error: function (xhr, status, error) {
                                         alertify.error('Error Intente de nuevo !!');
@@ -1813,7 +1820,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
         });
     }
 
-    $scope.pagarCertificado2 = function(){
+    $scope.pagarCertificado2 = function(dato){
+        console.log("dato----*-*-*-*-*-*-*--------->",dato);
         swal({
          title: "¿Está seguro de realizar el Pago?",
          text: "Recordarle que su tarjeta debe estar habilitada para el pago en linea.",

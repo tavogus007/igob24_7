@@ -80,7 +80,9 @@ var jsonURLS    =   {
         'usr_usuario'   : 'administrador',
         'usr_clave'     : '123456'
     },	
-    SERVICE_GIS_AE_DZ:"https://servmonitoreo.lapaz.bo/"
+    SERVICE_GIS_AE_DZ:"https://servmonitoreo.lapaz.bo/",
+    SERVICE_PAGOS_TARJETA:"http://172.18.2.194:4500/api/registrarTrx"
+    
 };
 try{
     if(app){

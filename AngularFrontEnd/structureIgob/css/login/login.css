@@ -577,6 +577,131 @@ color: #eefeff;
   font-size: 39px;
   margin-right: 10px
 }
+
+/*========================buttons media social login=============================*/
+.button-ms-igob {
+  position: relative;
+  background: #00b3ba;
+  border-color: #006e80;
+  border: 2px solid transparent;
+  height: 35px;
+  padding: 0 30px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all; }
+
+  .button-ms-igob>i{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50px;
+    height: 31px;
+    font-size: 25px;
+    line-height: 35px;
+    background: #00b3ba;
+    color: #fff;
+    opacity: 0;
+    visibility: hidden;
+  }
+  .button-ms-igob:hover {
+    background-color: #FFF;
+    color: #00b3ba;
+    border-color: #006e80;
+    padding: 5px 30px 5px 40px;}
+    .button-ms-igob:hover>i {
+      opacity: 1;
+      visibility: visible;
+    }
+    .button-ms-igob:not(:disabled):not(.disabled):active {
+      background-color: #eefeff;
+      border-color: #006e80;
+    }
+
+  
+.button-ms-gmail {
+  position: relative;
+  background: #d44638;
+  border-color: #b23121;
+  border: 2px solid transparent;
+  height: 35px;
+  padding: 0 30px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all; }
+
+  .button-ms-gmail>i{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50px;
+    height: 31px;
+    font-size: 25px;
+    line-height: 35px;
+    background: #d44638;
+    color: #fff;
+    opacity: 0;
+    visibility: hidden;
+  }
+  .button-ms-gmail:hover {
+    background-color: #FFF;
+    color: #d44638;
+    border-color: #b23121;
+    padding: 5px 30px 5px 40px;}
+    .button-ms-gmail:hover>i {
+      opacity: 1;
+      visibility: visible;
+    }
+    .button-ms-gmail:not(:disabled):not(.disabled):active {
+      background-color: #eefeff;
+      border-color: #b23121;
+    }
+
+
+.button-ms-facebook {
+  position: relative;
+  background: #078086;
+  border-color: #29487D;
+  border: 2px solid transparent;
+  height: 35px;
+  padding: 0 30px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all; }
+
+  .button-ms-facebook>i{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50px;
+    height: 31px;
+    font-size: 25px;
+    line-height: 35px;
+    background: #078086;
+    color: #fefefe;
+    opacity: 0;
+    visibility: hidden;
+  }
+  .button-ms-facebook:hover {
+    background-color: #FFF;
+    color: #078086;
+    border-color: #166a7e;
+    padding: 5px 30px 5px 40px;}
+    .button-ms-facebook:hover>i {
+      opacity: 1;
+      visibility: visible;
+    }
+    .button-ms-facebook:not(:disabled):not(.disabled):active {
+      background-color: #eefeff;
+      border-color: #29487D;
+    }
+/*=====================end buttons media social login=============================*/
+
 /* Old Desktops and laptops ------------------ */
 @media only screen 
 and (min-width : 1025px) 

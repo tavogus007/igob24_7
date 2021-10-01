@@ -1,0 +1,3000 @@
+<script type="text/javascript">
+  function valor(a){
+    $("#titulo").text(a);
+  }
+</script>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>iGob 24/7</title>
+    <style>
+      .ng-table tr.colorInactivo td { background-color: #F9EFE0; font-weight: bold; }
+      .ng-table tr.colorBloqueado td { background-color: #D9E9F7; font-weight: bold; }
+      .offNav{
+        display: none;
+      }
+      .onNav{
+        display: block !important;
+      }
+      .fondo_menu
+      {
+        position: relative;
+        height: 100%;
+        width: 200px;
+        background:#39AB6F;
+      }
+    </style>
+    <link rel="stylesheet" href="../../../libs/css_one/registro.css"/>
+    <link rel="stylesheet" href="../../../libs/css_one/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../../libs/css_one/styleinspinia.min.css"/>
+    <link rel="stylesheet" href="../../../libs/css_one/styleinspinia.css"/>
+    <link rel="stylesheet" href="../../../libs/css/sweetalert.min.css">
+    <link rel="stylesheet" href="../../../libs/css/angular-bootstrap-calendar.min.css">
+    <link rel="stylesheet" href="../../../libs/css_one/animate.min.css"/>
+    <script type="text/javascript" src="../../../libs/js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="../../../libs/js/jquery.blockUI.min.js"></script>
+    <script type="text/javascript" src="../../../libs/js_one/bootstrap.min.js"></script>
+    
+    <script type="text/javascript" src="../../../libs/js/sweetalert.min.js"></script>      
+    <script type="text/javascript" src="../../../libs/jss/angular.min.js"></script>
+    <script type="text/javascript" src="../../../libs/jss/angular-animate.min.js" ></script>
+    <script type="text/javascript" src="../../../libs/components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="../../../libs/js/angular-bootstrap-calendar-tpls.min.js"></script>
+    <script type="text/javascript" src="../../../controller/autenticacion/config.js"></script>    
+    <script type="text/javascript" src="../../../libs/login/login.js"></script>
+    <script type="text/javascript" src="../../../libs/apiRC/api_rc.js"></script>    
+    <script type="text/javascript" src="../../../libs/js/aes.js"></script> 
+    <script type="text/javascript">
+      function valor(a){
+        $("#titulo").text(a);
+      }
+    </script>
+  </head>
+<script>
+      function placeholderIsSupported() {
+        test = document.createElement('input');
+        return ('placeholder' in test);
+      }
+
+      $(document).ready(function(){
+        placeholderSupport = placeholderIsSupported() ? 'placeholder' : 'no-placeholder';
+        $('html').addClass(placeholderSupport);  
+      });
+
+      function signOutGoogle() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        console.log("AUTH2...",auth2);
+        auth2.signOut().then(function () {
+          console.log('User signed out....!!!');
+        });
+        auth2.disconnect();
+      }
+
+      var GoogleAuth; // Google Auth object.
+      function onLoadFunction() {
+        console.log("onLoadFunction ..");
+        gapi.client.init({
+          'clientId': '816192004370-9uk1774kues8bp41pged0gp8v613kpfj.apps.googleusercontent.com',
+          'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
+          'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
+        }).then(function () {
+          GoogleAuth = gapi.auth2.getAuthInstance();
+          console.log("OAUT :", GoogleAuth);
+        });
+      }   
+
+      function autenticacionGoogle()
+      {
+        console.log("autenticacionGoogle ..");
+        var gmail = {
+          username:"",
+          email:""
+        }
+        var params = {
+          'clientid' : '816192004370-9uk1774kues8bp41pged0gp8v613kpfj.apps.googleusercontent.com',
+          'cookiepolicy':'single_host_origin',
+          'callback':function(result){  
+            if(result['status']['signed_in']){
+              var request = gapi.client.plus.people.get({
+                'userId':'me'
+              });
+              request.execute(function(resp){
+              });
+            }
+          },
+          'approvalprompt': 'force',
+          'scope': 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/user.emails.read'
+        }
+        gapi.auth.signIn(params);
+        //console.log("PARAMETROS DE ENTRADA :", params);
+      }    
+
+      /*LOGIN GOOGLE*/
+      var GoogleAuth;
+      var SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+      function handleClientLoad() {
+        gapi.load('client:auth2', initClient);
+      }
+
+      function initClient() {
+        var discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
+        gapi.client.init({
+          'clientId': '816192004370-9uk1774kues8bp41pged0gp8v613kpfj.apps.googleusercontent.com',
+          'discoveryDocs': [discoveryUrl],
+          'scope': SCOPE
+        }).then(function () {
+          GoogleAuth = gapi.auth2.getAuthInstance();
+          GoogleAuth.isSignedIn.listen(updateSigninStatus);
+          var user = GoogleAuth.currentUser.get();
+          setSigninStatus();
+          handleAuthClick();
+        });
+      }
+
+      function handleAuthClick() {
+        if (GoogleAuth.isSignedIn.get()) {
+          GoogleAuth.signOut();
+        } else {
+          GoogleAuth.signIn();
+        }
+      }
+
+      function revokeAccess() {
+        console.log("revokeAccess ..");
+        GoogleAuth.disconnect();
+      }
+
+      
+      var sw = 0;
+      function setSigninStatus() {
+        var user = GoogleAuth.currentUser.get();
+        var isAuthorized = user.hasGrantedScopes(SCOPE);
+        if (isAuthorized) {
+          console.log("DATOS GOOGLE...",user);
+          var scorreo = user.it.Tt;
+          console.log("correo google...",scorreo);
+          //var scorreo = "anakinjdk62@gmail.com";
+          //console.log("correo hardcore...",scorreo);
+          //document.getElementById("nombreCompleto").value = user.dt.Ve;
+          localStorage.setItem('gNombreCompleto', user.it.Se);
+          scorreo = ((typeof(scorreo) == 'undefined' || scorreo == null) ? '' : scorreo);
+          if (scorreo != '') {
+            var buscarCiudadano = new rcNatural();
+            buscarCiudadano.correo = scorreo;
+            buscarCiudadano.buscarNatural_mail(function(resultado){
+              resp = (JSON.parse(resultado)).error;
+              if (resp){
+                var snombres = user.it.HU;
+                document.getElementById("nombre_n").value = snombres;
+                snombres = ((typeof(snombres) == 'undefined' || snombres == null) ? '' : snombres);
+                if (snombres != '') {
+                  localStorage.setItem('gNombres', snombres)
+                }else{
+                  console.log("snombres no valido !!");
+                }
+                var sapellidos = user.it.YS;
+                sapellidos = ((typeof(sapellidos) == 'undefined' || sapellidos == null) ? '' : sapellidos);
+                if (sapellidos != '') {
+                  var ap = sapellidos.split(" ");
+                  if(ap[0]== undefined){
+                    document.getElementById("paterno_n").value = "";
+                  }
+                  else{
+                    document.getElementById("paterno_n").value = ap[0];
+                  }
+                  if(ap[1]== undefined){
+                    document.getElementById("materno_n").value = "";
+                  }
+                  else{
+                    document.getElementById("materno_n").value = ap[1];
+                  }
+
+                  localStorage.setItem('gPaterno', ap[0]);
+                  localStorage.setItem('gMaterno', ap[1]);
+                }else{
+                  console.log("Corrreo no valido !!");
+                }
+                var sid = user.it.sT;
+                sid = ((typeof(sid) == 'undefined' || sid == null) ? '' : sid);
+                if (sid != '') {
+                  localStorage.setItem('idRedSosial', sid);
+                }else{
+                  console.log("ID no valido !!");
+                }
+                if(sw == 0)
+                {
+                  //window.open('app/view/autenticacion/partials/registro_gmail.html#/registro', '_blank');
+                  document.getElementById("registration-form").style.display="block";
+                  sw = 1;
+                } 
+              } else {
+                sweetAlert('ESTIMADO CIUDADANO', 'El correo electronico '+scorreo+' ya se encuentra registrado en el Registro Ciudadano', 'warning');
+                signOutGoogle();
+                setTimeout(function(){  window.close(); }, 5000);
+                
+              }
+            });
+            localStorage.setItem('gCorreo', scorreo)
+          }else{
+            console.log("Corrreo no valido !!");
+          }
+        } else {
+          sw = 0;
+        }
+      }
+
+      function updateSigninStatus() {
+        setSigninStatus();
+      }
+
+    /*FIN LOGIN GOOGLE*/
+
+
+      var app = angular.module('myApp',['ngAnimate','mwl.calendar','ui.bootstrap']);
+      app.controller('rCiudadanoController', function($scope,$rootScope) {
+
+        var vAsunto = "Registro_GAMLP";
+        var vMensaje = "Con_esta_opción_podrá_tener_acceso_<b>limitado_a_los_servicios_en_línea</b>_del_Gobierno_Autónomo_Municipal_de_La_Paz,_si_desea_acceder_a_más_servicios,_le_pedimos_que_pueda_apersonarse_por_única_vez_a_una_de_nuestras_plataformas_de_atención_presencial_del_GAMLP,_para_realizar_la_validación_de_sus_datos_personales._Para_ello_usted_debe_llevar_<br><br>_Cédula_de_Identidad_Original._<br>_Certificado_de_Nacimiento_Original_(opcional)._<br>_Última_Factura_original_de_algún_servicio_del_domicilio_declarado_(luz/agua/teléfono/etc.)._<br><br>_No_olvide_de_actualizar_sus_datos_personales_con_tu_cuenta.";
+        $("#mensaje1").hide();
+        $("#mensaje2").hide();
+        $("#mensaje3").hide();
+        $("#mensaje4").hide();
+        $("#mensaje5").hide();
+        $("#mensaje6").hide();
+        $("#mensaje7").hide();
+        $("#mensaje8").hide();
+        $("#mensaje9").hide();
+        $("#mensaje10").hide();
+        $("#mensaje11").hide();
+        $("#mensaje12").hide();
+        $("#mensaje13").hide();
+        $("#mensaje14").hide();
+        $("#mensaje15").hide();
+        $("#mensaje16").hide();
+        $("#mensaje17").hide();
+        $("#mensaje18").hide();
+        $("#mensaje19").hide();
+        $("#mensaje20").hide();
+        $("#mensaje21").hide();
+        $("#mensaje22").hide();
+        $("#mensaje23").hide();
+        $("#mensaje24").hide();
+        $("#mensaje25").hide();
+        $("#mensaje26").hide();
+        $("#mensaje29").hide();
+        $("#mensaje30").hide();
+        var sFono = "";
+        var sCelular = "";
+        var sCorreoEmp = "";
+        var sCorreo = "";
+        var sCi = "";
+        var sw=0;
+        var sw2=1;
+        var sNumeroAleatorio = ""; 
+        $scope.imageCST = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
+        $scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
+        $scope.ErrorCapcha='';
+        $scope.deshabilitadoD = true;
+        $scope.deshabilitadoP = true;
+        $scope.deshabilitadoM = true;
+        $scope.deshabilitadoMc = true;
+        $scope.deshabilitadoDs = true;
+        $scope.deshabilitadoZ = true;  
+        $scope.panelGoogle = true;  
+        $scope.mostrar = false; 
+        $scope.selecteIdi="NATURAL";
+        $scope.tipo="NATURAL";
+        $scope.pais="1";
+        $scope.tipo2="JURIDICO";
+        $scope.stiloFecha = "border: 1px solid #FF4040;"; 
+        $scope.ciValido = null; 
+        $scope.habilitarCondicion = true;
+        $scope.validarTipoEmpresa = false;
+        $scope.aceptoCodiciones = false;
+        var fecha= new Date();
+        $scope.hora = fecha.getHours()+":"+fecha.getMinutes()+":"+fecha.getSeconds(); 
+        var mes=fecha.getMonth()+1;
+        if(mes.toString().length==1)
+          mes='0'+mes;
+        var dia=fecha.getDate();
+        if(dia.toString().length==1)
+          dia='0'+dia;
+        var fechactual=fecha.getFullYear() + "-" + mes + "-" + dia; 
+        $scope.fechactual=fecha.getFullYear() + "-" + mes + "-" + dia;
+        var numero = "";
+        var captchaerror="";
+        if(sessionStorage.getItem("Idioma") != null) {
+          var idioma = sessionStorage.getItem("Idioma");
+        } else {
+          sessionStorage.setItem("Idioma", "C");
+          idioma = sessionStorage.getItem("Idioma", "C"); //sessionStorage.getItem("Idioma", "C");
+        }
+        var verTitulos = new idiomaPlat();
+        verTitulos.idioma = sessionStorage.getItem("Idioma");
+        var elArray = new Array();
+        $scope.translateIdioma={};
+
+        verTitulos.obtenerTitulos(function(resultado){
+            a = JSON.parse(resultado);
+            $.each( a.success, function( key, value ) {
+              $scope.translateIdioma[value.idm_label] = value.idm_contenido;
+            });
+        });
+
+        $scope.google = function() {
+          $scope.panelGoogle = true;
+        }
+
+        $scope.atrasGoogle = function() {
+          $scope.panelGoogle = false;
+        }
+
+        $scope.verificar = function(reg) {
+          $scope.swjur = null;
+          if($scope.tipoDoc == 'solo_ci'){
+            var lonCi = reg.cedula.length;
+            var buscarCiudadano = new validarCiudadanoR_n();
+            buscarCiudadano.ci = reg.cedula;
+            $scope.cedulaCondR = buscarCiudadano.ci;
+            buscarCiudadano.tipo_documento = $rootScope.tipoDocumento;
+            buscarCiudadano.validar_CiudadanoR_n(function(resultado){
+              resultadoApi = JSON.parse(resultado);
+              if(resultadoApi.length > 0){
+                  var repLegalmongo = resultadoApi;
+                  if(repLegalmongo[0].dtspsl_activaciond == "SI" && repLegalmongo[0].dtspsl_activacionf == "SI"){
+                    $scope.show_juridico_bloque_0();
+                    $scope.show_juridico_bloque_1();
+                    if(repLegalmongo[0].dtspsl_tercerapellido === "" || repLegalmongo[0].dtspsl_tercerapellido === undefined){
+                      $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres;
+                      $scope.registro.nombre_j = repLegalmongo[0].dtspsl_nombres+" "+repLegalmongo[0].dtspsl_paterno+" "+repLegalmongo[0].dtspsl_materno;
+                    }
+                    else{
+                      $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres;
+                      $scope.registro.nombre_j = repLegalmongo[0].dtspsl_nombres+" "+repLegalmongo[0].dtspsl_paterno+" "+repLegalmongo[0].dtspsl_materno+" DE "+repLegalmongo[0].dtspsl_tercerapellido;
+                    }
+                    $scope.registro.paterno = repLegalmongo[0].dtspsl_paterno;
+                    $scope.registro.materno = repLegalmongo[0].dtspsl_materno;
+                    $scope.registro.tercer = repLegalmongo[0].dtspsl_tercerapellido; 
+                    $scope.registro.cedula = repLegalmongo[0].ci;
+                    $scope.registro.celular = repLegalmongo[0].dtspsl_movil;
+                    $scope.registro.telefono = repLegalmongo[0].telefono;
+                    $scope.registro.correo = repLegalmongo[0].mail;
+                    $scope.registro.direccion = repLegalmongo[0].dtspsl_direccion;
+                    $scope.registro.expedido = repLegalmongo[0].dtspsl_expedido;
+                    $scope.registro.fecha_nacimiento = repLegalmongo[0].dtspsl_fec_nacimiento;
+                    $scope.registro.estado_civil = repLegalmongo[0].dtspsl_id_estado_civil;
+                    $scope.registro.sexo = repLegalmongo[0].dtspsl_sexo;
+                    $scope.registro.ocupacion = repLegalmongo[0].dtspsl_ocupacion;
+                    $scope.registro.otra_profesion = repLegalmongo[0].dtspsl_otra_profesion;
+                    $scope.registro.profesion = repLegalmongo[0].dtspsl_profesion;
+                    $scope.registro.lugarNacimiento = repLegalmongo[0].dtspsl_lugar_nacimiento;
+                    $scope.bloquear3 = true;
+                    $scope.bloquearCi = true;
+                  }
+                  else {
+                    $scope.swjur = 'mostrar';
+                    sweetAlert('ESTIMADO CIUDADANO', 'Para registrarse como PERSONA JURÍDICA, requiere activar su cuenta, para ello por única vez debe apersonarse a una Plataforma del G.A.M.L.P., para más información contáctese con nuestra linea gratuita 800 13 5555', 'warning');
+                    $scope.obtDatos="";
+                    $scope.tablaCiudadanos = null;
+                    $scope.tablaEmpresas = null;
+                    $scope.bloquear3 = false;
+                  } 
+              } else {
+                //alert(1111111);
+                sweetAlert('ESTIMADO CIUDADANO', 'Para registrar a una Persona Jurídica, previamente el Representante Legal debe estar registrado como Persona Natural.', 'warning');
+                $scope.obtDatos="";
+                $scope.tablaCiudadanos = null;
+                $scope.tablaEmpresas = null;
+              }
+            });
+          }
+          if($scope.tipoDoc == 'ci_compl'){
+            if(reg.cedulaC == '' || reg.cedulaC == 'undefined' || reg.cedulaC == undefined){
+                  $("#mensaje26").show();
+            }else{
+                var lonCi = reg.cedula.length;
+                var aux1 = reg.cedula;
+                $scope.ciCompl = reg.cedula+'-'+reg.cedulaC;
+                reg.cedula = $scope.ciCompl;
+                var buscarCiudadano = new validarCiudadanoR_n();
+                buscarCiudadano.ci = $scope.ciCompl;
+                $scope.cedulaCondR = $scope.ciCompl;
+                reg.cedula = $scope.ciCompl;
+                buscarCiudadano.tipo_documento = $rootScope.tipoDocumento;
+                buscarCiudadano.validar_CiudadanoR_n(function(resultado){
+                  resultadoApi = JSON.parse(resultado);
+                  if(resultadoApi.length > 0){
+                      var repLegalmongo = resultadoApi;
+                      if(repLegalmongo[0].dtspsl_activaciond == "SI" && repLegalmongo[0].dtspsl_activacionf == "SI"){
+                        $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres;
+                        $scope.registro.paterno = repLegalmongo[0].dtspsl_paterno;
+                        $scope.registro.materno = repLegalmongo[0].dtspsl_materno;
+                        $scope.registro.tercer = repLegalmongo[0].dtspsl_tercerapellido; 
+                        $scope.registro.cedula = repLegalmongo[0].ci;
+                        $scope.registro.celular = repLegalmongo[0].dtspsl_movil;
+                        $scope.registro.telefono = repLegalmongo[0].telefono;
+                        $scope.registro.correo = repLegalmongo[0].mail;
+                        $scope.registro.direccion = repLegalmongo[0].dtspsl_direccion;
+                        $scope.registro.expedido = repLegalmongo[0].dtspsl_expedido;
+                        $scope.registro.fecha_nacimiento = repLegalmongo[0].dtspsl_fec_nacimiento;
+                        $scope.registro.estado_civil = repLegalmongo[0].dtspsl_id_estado_civil;
+                        $scope.registro.sexo = repLegalmongo[0].dtspsl_sexo;
+                        $scope.registro.ocupacion = repLegalmongo[0].dtspsl_ocupacion;
+                        $scope.registro.otra_profesion = repLegalmongo[0].dtspsl_otra_profesion;
+                        $scope.registro.profesion = repLegalmongo[0].dtspsl_profesion;
+                        $scope.registro.lugarNacimiento = repLegalmongo[0].dtspsl_lugar_nacimiento;
+                        $scope.bloquear3 = true;
+                        $scope.bloquearCi = true;
+                      }
+                      else {
+                        $scope.swjur = 'mostrar';
+                        sweetAlert('ESTIMADO CIUDADANO', 'Para registrarse como PERSONA JURÍDICA, requiere activar su cuenta, para ello por única vez debe apersonarse a una Plataforma del G.A.M.L.P., para más información contáctese con nuestra linea gratuita 800 13 5555', 'warning');
+                        $scope.obtDatos="";
+                        $scope.tablaCiudadanos = null;
+                        $scope.tablaEmpresas = null;
+                        $scope.bloquear3 = false;
+                      } 
+                  } else {
+                    sweetAlert('ESTIMADO CIUDADANO', 'Para registrar a una Persona Jurídica, previamente el Representante Legal debe estar registrado como Persona Natural.', 'warning');
+                    $scope.obtDatos="";
+                    $scope.tablaCiudadanos = null;
+                    $scope.tablaEmpresas = null;
+                  }
+                });
+                reg.cedula = aux1;
+                $("#mensaje26").hide();
+            }
+          }
+          if($scope.tipoDoc == 'extr'){
+            var lonCi = reg.cedula.length;
+            var aux1 = reg.cedula;
+            $scope.ciExt = 'E'+'-'+reg.cedula;
+            reg.cedula = $scope.ciExt;
+            var buscarCiudadano = new validarCiudadanoR_n();
+            buscarCiudadano.ci = $scope.ciExt;   
+            $scope.cedulaCondR = $scope.ciExt ; 
+            buscarCiudadano.tipo_documento = $rootScope.tipoDocumento;
+            buscarCiudadano.validar_CiudadanoR_n(function(resultado){
+            resultadoApi = JSON.parse(resultado);
+            if(resultadoApi.length > 0){
+                var repLegalmongo = resultadoApi;
+                if(repLegalmongo[0].dtspsl_activaciond == "SI" && repLegalmongo[0].dtspsl_activacionf == "SI"){
+                  $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres;
+                  $scope.registro.paterno = repLegalmongo[0].dtspsl_paterno;
+                  $scope.registro.materno = repLegalmongo[0].dtspsl_materno;
+                  $scope.registro.tercer = repLegalmongo[0].dtspsl_tercerapellido; 
+                  $scope.registro.cedula = repLegalmongo[0].ci;
+                  $scope.registro.celular = repLegalmongo[0].dtspsl_movil;
+                  $scope.registro.telefono = repLegalmongo[0].telefono;
+                  $scope.registro.correo = repLegalmongo[0].mail;
+                  $scope.registro.direccion = repLegalmongo[0].dtspsl_direccion;
+                  $scope.registro.expedido = repLegalmongo[0].dtspsl_expedido;
+                  $scope.registro.fecha_nacimiento = repLegalmongo[0].dtspsl_fec_nacimiento;
+                  $scope.registro.estado_civil = repLegalmongo[0].dtspsl_id_estado_civil;
+                  $scope.registro.sexo = repLegalmongo[0].dtspsl_sexo;
+                  $scope.registro.ocupacion = repLegalmongo[0].dtspsl_ocupacion;
+                  $scope.registro.otra_profesion = repLegalmongo[0].dtspsl_otra_profesion;
+                  $scope.registro.profesion = repLegalmongo[0].dtspsl_profesion;
+                  $scope.registro.lugarNacimiento = repLegalmongo[0].dtspsl_lugar_nacimiento;
+                  $scope.bloquear3 = true;
+                  $scope.bloquearCi = true;
+                }
+                else {
+                  $scope.swjur = 'mostrar';
+                   sweetAlert('ESTIMADO CIUDADANO', 'Para registrarse como PERSONA JURÍDICA, requiere activar su cuenta, para ello por única vez debe apersonarse a una Plataforma del G.A.M.L.P., para más información contáctese con nuestra linea gratuita 800 13 5555', 'warning');
+                  $scope.obtDatos="";
+                  $scope.tablaCiudadanos = null;
+                  $scope.tablaEmpresas = null;
+                  $scope.bloquear3 = false;
+                } 
+            } else {
+              sweetAlert('ESTIMADO CIUDADANO', 'Para registrar a una Persona Jurídica, previamente el Representante Legal debe estar registrado como Persona Natural.', 'warning');
+              $scope.obtDatos="";
+              $scope.tablaCiudadanos = null;
+              $scope.tablaEmpresas = null;
+            }  
+            });
+            reg.cedula = aux1;
+          }
+          if($scope.tipoDoc == 'pasaporte'){
+            var lonCi = reg.cedula.length;
+            var aux1 = reg.cedula;
+            var buscarCiudadano = new validarCiudadanoR_n();
+            buscarCiudadano.ci = aux1;   
+            $scope.cedulaCondR = aux1; 
+            buscarCiudadano.tipo_documento = $rootScope.tipoDocumento;
+            buscarCiudadano.validar_CiudadanoR_n(function(resultado){
+            resultadoApi = JSON.parse(resultado);
+            if(resultadoApi.length > 0){
+                var repLegalmongo = resultadoApi;
+                if(repLegalmongo[0].dtspsl_activaciond == "SI" && repLegalmongo[0].dtspsl_activacionf == "SI"){
+                  $scope.registro.nombre = repLegalmongo[0].dtspsl_nombres;
+                  $scope.registro.paterno = repLegalmongo[0].dtspsl_paterno;
+                  $scope.registro.materno = repLegalmongo[0].dtspsl_materno;
+                  $scope.registro.tercer = repLegalmongo[0].dtspsl_tercerapellido; 
+                  $scope.registro.cedula = repLegalmongo[0].ci;
+                  $scope.registro.celular = repLegalmongo[0].dtspsl_movil;
+                  $scope.registro.telefono = repLegalmongo[0].telefono;
+                  $scope.registro.correo = repLegalmongo[0].mail;
+                  $scope.registro.direccion = repLegalmongo[0].dtspsl_direccion;
+                  $scope.registro.expedido = repLegalmongo[0].dtspsl_expedido;
+                  $scope.registro.fecha_nacimiento = repLegalmongo[0].dtspsl_fec_nacimiento;
+                  $scope.registro.estado_civil = repLegalmongo[0].dtspsl_id_estado_civil;
+                  $scope.registro.sexo = repLegalmongo[0].dtspsl_sexo;
+                  $scope.registro.ocupacion = repLegalmongo[0].dtspsl_ocupacion;
+                  $scope.registro.otra_profesion = repLegalmongo[0].dtspsl_otra_profesion;
+                  $scope.registro.profesion = repLegalmongo[0].dtspsl_profesion;
+                  $scope.registro.lugarNacimiento = repLegalmongo[0].dtspsl_lugar_nacimiento;
+                  $scope.bloquear3 = true;
+                  $scope.bloquearCi = true;
+                }
+                else {
+                  $scope.swjur = 'mostrar';
+                   sweetAlert('ESTIMADO CIUDADANO', 'Para registrarse como PERSONA JURÍDICA, requiere activar su cuenta, para ello por única vez debe apersonarse a una Plataforma del G.A.M.L.P., para más información contáctese con nuestra linea gratuita 800 13 5555', 'warning');
+                  $scope.obtDatos="";
+                  $scope.tablaCiudadanos = null;
+                  $scope.tablaEmpresas = null;
+                  $scope.bloquear3 = false;
+                } 
+            } else {
+              sweetAlert('ESTIMADO CIUDADANO', 'Para registrar a una Persona Jurídica, previamente el Representante Legal debe estar registrado como Persona Natural.', 'warning');
+              $scope.obtDatos="";
+              $scope.tablaCiudadanos = null;
+              $scope.tablaEmpresas = null;
+            }  
+            });
+            reg.cedula = aux1;
+          }
+        };
+
+        $scope.btnCambiar = true;
+        $scope.btnCondicion = true;
+        $scope.ErrorCapcha='';
+
+        $scope.VerificarCapchaR = function(datos){
+          var captch  = $("#resultadoC").val();
+          var id = numero;
+          var verCaptcha = new captcha();
+          verCaptcha.identificador = id;
+          verCaptcha.respuesta = captch;
+          verCaptcha.verificarCaptcha(function(resultado){
+            json = JSON.parse(resultado);
+            if(json.success[0] == undefined){
+              $scope.getCaptchasX();
+              $scope.ErrorCapcha='Error en el captcha intentar de nuevo por favor';
+              $scope.resultadoC = "";
+            }else{
+              $scope.ErrorCapcha='';
+              $scope.validarDataCiudadano(datos);
+              $scope.resultadoC = "";
+            }
+          });
+        };
+
+        $scope.VerificarCapcha = function(datos, prsCI) { 
+          var captch  = $("#resultadoC").val();
+          if(captch.length == 0)
+              $scope.ErrorCapchasX = "";
+          if(captch.length > 4){
+              clearTimeout(tiemporespuesta);
+              tiemporespuesta = setTimeout(verificarKeyPress.bind(undefined, captch), 1500);
+          }
+        };
+
+        $scope.cuentaDigTel = function(response){
+          if(tipoPersona == "NATURAL") {
+            var longtel = response.telefono.length;
+            if(longtel == 7){
+              $("#mensaje13").show();
+              $("#mensaje14").hide();
+              $scope.validaFono = false;
+            }
+            if(longtel == 0 || response.telefono == ''){
+              $("#mensaje13").hide();
+              $("#mensaje14").hide();
+              $scope.validaFono = false;
+            }
+            if(longtel >0 && longtel < 7) {
+              $("#mensaje13").hide();
+              $("#mensaje14").show();
+              $scope.validaFono = true;
+            }
+          }
+          if(tipoPersona == "JURIDICO") {
+            var longtelJ = response.telefonoEmp.length;
+            if(longtelJ == 7){
+              $("#mensaje17").show();
+              $("#mensaje18").hide();
+              $scope.validaFonoJ = false;
+            }
+            if(longtelJ == 0 || response.telefonoEmp == ''){
+              $("#mensaje17").hide();
+              $("#mensaje18").hide();
+              $scope.validaFonoJ = false;
+            }
+            if(longtelJ > 0 && longtelJ < 7) {
+              $("#mensaje17").hide();
+              $("#mensaje18").show();
+              $scope.validaFonoJ = true;
+            }
+          }  
+        }
+
+        $scope.cuentaDigCel = function(response){
+          if(tipoPersona == "NATURAL") {
+            var longCel = response.celular.length;
+            if(longCel == 8){
+              $("#mensaje15").show();
+              $("#mensaje16").hide();
+              $scope.validaCel = false;
+            }
+            if(longCel < 8) {
+              $("#mensaje15").hide();
+              $("#mensaje16").show();
+              $scope.validaCel = true;
+            }
+          }
+          if(tipoPersona == "JURIDICO") {
+            var longCelJ = response.celularEmp.length;
+            if(longCelJ == 8){
+              $("#mensaje21").show();
+              $("#mensaje22").hide();
+              $scope.validaCelJ = false;
+            }
+            if(longCelJ < 8) {
+              $("#mensaje21").hide();
+              $("#mensaje22").show();
+              $scope.validaCelJ = true;
+            }
+          }  
+        }
+
+        var tiemporespuestaCi = null;
+        $scope.VerificarCiNit = function(response) { 
+          clearTimeout(tiemporespuestaCi);
+          tiemporespuestaCi = setTimeout(cuentaDigCi.bind(undefined, response), 1000);
+        };
+        
+        //function cuentaDigCi(response){
+        $scope.cuentaDigCi = function(response) {
+          if(tipoPersona == "NATURAL"){
+            $scope.registro.expedido = 'LPZ';
+            console.log("$scope.tipoDoc: ", $scope.tipoDoc);
+            $scope.inicioVariablesSesion();
+            if($scope.tipoDoc == 'solo_ci'){
+              $scope.cedulaCond = response.cedula;
+              $scope.cedula = response.cedula;
+              var lonCi = response.cedula.length;
+              if(lonCi >= 6){
+                $scope.verificarCiudadano(response);
+                $("#mensaje23").hide();
+                $("#mensaje30").hide();
+                $scope.existeCi2 = false;
+                response.tipo_documento = $rootScope.tipoDocumento;
+              }
+              else{
+                 $("#mensaje30").hide();
+                 $("#mensaje23").show();
+                 $("#mensaje24").hide();
+                 $("#mensaje25").hide();
+                 $("#mensaje26").hide();
+                 $scope.existeCi2 = true;
+                 $scope.bloquear1 = true;
+              }
+            }
+            if($scope.tipoDoc == 'ci_compl'){
+              var aux = response.cedula;
+                if(response.cedulaC == '' || response.cedulaC == 'undefined' || response.cedulaC == undefined){
+                  $("#mensaje26").show();
+                  $("#mensaje25").hide();
+                }else{
+                  $scope.ciCompl = response.cedula+'-'+response.cedulaC;
+                  var lonCi = response.cedula.length;
+                  response.cedula = $scope.ciCompl;
+                  $scope.cedulaCond = $scope.ciCompl;
+                  $scope.cedula = response.cedula;
+                  if(lonCi >= 6){
+                    $scope.verificarCiudadano(response);
+                    $scope.cedulaCond = $scope.ciCompl;
+                    response.cedula = aux;
+                    response.tipo_documento = $rootScope.tipoDocumento;
+                    $scope.existeCi2 = false;
+                    $("#mensaje23").hide();
+                    $("#buscarN").hide();
+                    $("#mensaje26").hide();
+                    $("#mensaje30").hide();
+                  }
+                  else{
+                     $("#mensaje30").hide();
+                     $("#mensaje23").show();
+                     $("#mensaje24").hide();
+                     $("#mensaje25").hide();
+                     $("#mensaje26").hide();
+                     $scope.existeCi2 = true;
+                     $scope.bloquear1 = true;
+                  }
+                }
+              }
+            if($scope.tipoDoc == 'extr'){
+              var aux = response.cedula;
+                $scope.ciExt = 'E'+'-'+response.cedula;
+                var lonCi = response.cedula.length;
+                if(lonCi >= 6){
+                  response.cedula = $scope.ciExt;
+                  $scope.cedulaCond = response.cedula;
+                  $scope.cedula = response.cedula;
+                  $scope.verificarCiudadano(response);
+                  response.cedula = aux;
+                  response.tipo_documento = $rootScope.tipoDocumento;
+                  $scope.existeCi2 = false;
+                  $("#mensaje23").hide();
+                  $("#mensaje26").hide();
+                  $("#mensaje30").hide();
+                }
+                else{
+                   $("#mensaje30").hide();
+                   $("#mensaje23").show();
+                   $("#mensaje24").hide();
+                   $("#mensaje25").hide();
+                   $("#mensaje26").hide();
+                   $scope.existeCi2 = true;
+                   $scope.bloquear1 = true;
+                }
+            }
+            if($scope.tipoDoc == 'pasaporte'){
+              var aux = response.cedula;
+              var lonCi = aux.length;
+              if(lonCi >= 6){
+                $scope.cedulaCond = response.cedula;
+                $scope.cedula = response.cedula;
+                response.cedula2 = aux;
+                $scope.verificarCiudadano(response);
+                response.tipo_documento = $rootScope.tipoDocumento;
+                $scope.existeCi2 = false;
+                $("#mensaje23").hide();
+                $("#mensaje26").hide();
+              }
+              else{
+                  $("#mensaje30").show();
+                  $("#mensaje23").hide();
+                  $("#mensaje24").hide();
+                  $("#mensaje25").hide();
+                  $("#mensaje26").hide();
+                  $scope.existeCi2 = true;
+                  $scope.bloquear1 = true;
+              }
+            }
+          }
+          if(tipoPersona == "JURIDICO") {
+            //var nit = response.nit.toString();
+            var lonNit = response.nit.length;
+            if(lonNit >= 9){
+              $scope.verificarCiudadano(response);
+              $("#mensaje24").hide();
+              $scope.show_juridico_bloque_2();
+              $scope.existeNit2 = false;
+            }
+            else{
+              $("#mensaje24").show();
+              $("#mensaje23").hide();
+              $("#mensaje25").hide();
+              $scope.existeNit2 = true;
+            }
+          }
+        }
+        
+        $scope.verificarCiudadano = function (response) {
+          var a = "";
+          if(tipoPersona == "JURIDICO") {
+            var cnit=response.nit;
+            if(response.nit !='' && response.nit != undefined && response.nit != 'undefined'){
+                var buscarCiudadano = new validarCiudadanoR_j();
+                buscarCiudadano.nit = cnit;
+                buscarCiudadano.tipo_persona = "JURIDICO";
+                buscarCiudadano.validar_CiudadanoR_j(function(resultado){
+                  resultadoApi = JSON.parse(resultado);
+                  if(resultadoApi.length > 0){
+                    if (resultadoApi[0].nit !='' && resultadoApi[0].nit.length >= 9){
+                      $scope.hide_juridico_bloque_2();
+                      $scope.existeNit = true; 
+                      $scope.cisw2 = 'mostrar';
+                      $scope.cisw3 = null;
+                      $scope.bloquear2 = true;
+                    }
+                    else{
+                        $scope.existeNit = false;
+                        $scope.show_juridico_bloque_2();
+                    }
+                  }else{
+                    $.unblockUI(); 
+                    $scope.cisw3 = 'mostrar';
+                    $scope.cisw2 = null;
+                    $scope.existeNit = false; 
+                    $scope.bloquear2 = false;
+                    $scope.hide_juridico_bloque_2();
+                  } 
+                });    
+              }
+          } else {
+            a = response.cedula;
+            if(response.cedula != '' && response.cedula != undefined && response.cedula != 'undefined'){
+              var buscarCiudadano = new validarCiudadanoR();
+              buscarCiudadano.ci = a;
+              buscarCiudadano.tipo_documento = $rootScope.tipoDocumento;
+              buscarCiudadano.validar_CiudadanoR(function(resultado){
+                resultadoApi = JSON.parse(resultado);
+                if(resultadoApi.length > 0) {
+                  //correccion para usuarios validados
+                  if (resultadoApi[0]) {
+                    $scope.existeCi = true;
+                    $scope.cisw = 'mostrar';
+                    $scope.cisw1 = null;
+                    $scope.bloquear1 = true;
+                  }
+                } else {
+                  $.unblockUI();  
+                  $scope.cisw = null;
+                  $scope.cisw1 = 'mostrar'; 
+                  $scope.existeCi = false;
+                  $scope.bloquear1 = false;
+                }
+              });
+            }
+          }        
+        }
+
+        $scope.validarDataCiudadano = function(response){
+          console.log("validarDataCiudadano",response);
+          var sTipoPersona  =  $scope.tipo;  
+          if(response && (sTipoPersona = 'NATURAL')){        
+            response.correo  = ((typeof(response.correo) == 'undefined' || response.correo == null) ? ""   : response.correo);
+            if(response.celular>=0){
+              response.celular  = ((typeof(response.celular) == 'undefined' || response.celular == null) ? ""   : response.celular);
+            } else {
+              response.celular="";
+            }
+            if(response.telefono>=7){
+              response.telefono  = ((typeof(response.telefono) == 'undefined' || response.telefono == null) ? ""   : response.telefono);
+            } else {
+
+              response.telefono="";
+            }
+            response.direccion  = ((typeof(response.direccion) == 'undefined' || response.direccion == null) ? ""   : response.direccion.toUpperCase());
+            response.complemento  = ((typeof(response.complemento) == 'undefined' || response.complemento == null) ? ""   : response.complemento.toUpperCase());
+            response.complemento2  = ((typeof(response.complemento2) == 'undefined' || response.complemento2 == null) ? ""   : response.complemento2.toUpperCase());
+            response.materno    = ((typeof(response.materno) == 'undefined' || response.materno == null) ? ""   : response.materno.toUpperCase());
+            response.nombre     = ((typeof(response.nombre) == 'undefined' || response.nombre == null) ? ""     : response.nombre.toUpperCase());
+            response.ocupacion  = ((typeof(response.ocupacion) == 'undefined' || response.ocupacion == null) ? ""   : response.ocupacion.toUpperCase());
+            response.paterno    = ((typeof(response.paterno) == 'undefined' || response.paterno == null) ? ""   : response.paterno.toUpperCase());
+          } else if(response && (sTipoPersona =   'JURIDICO')){
+            response.direccion      = ((typeof(response.direccion) == 'undefined' || response.direccion == null) ? ""   : response.direccion.toUpperCase());            
+            response.materno        = ((typeof(response.materno) == 'undefined' || response.materno == null) ? ""   : response.materno.toUpperCase());            
+            response.nombre         = ((typeof(response.nombre) == 'undefined' || response.nombre == null) ? ""     : response.nombre.toUpperCase());            
+            response.ocupacion      = ((typeof(response.ocupacion) == 'undefined' || response.ocupacion == null) ? ""   : response.ocupacion.toUpperCase());
+            response.razonSocial    = ((typeof(response.razonSocial) == 'undefined' || response.razonSocial == null) ? ""   : response.razonSocial.toUpperCase());
+            response.tipo_empresa    = ((typeof(response.tipoEmpresa) == 'undefined' || response.tipoEmpresa == null) ? ""   : response.tipoEmpresa.toUpperCase());
+          } 
+          var responseJuridico = response;
+          $scope.nitt = response.nit;
+          $scope.razonSocialValor=response.razonSocial;
+          sCorreoEmp = response.correoEmp;
+          $scope.dataDatospersonales = response;        
+          $scope.entcedula =response.cedula;
+          $scope.entcomplemento =response.complemento;
+          if(response.selecteIdi == "JURIDICO") {
+            estcivil = 0;
+          } else { 
+            estcivil = response.estado_civil;
+          }        
+          var ci1=response.cedula;
+          var ci2=response.cedula2;
+          if(tipoPersona == "JURIDICO") {
+            var cnit=response.nit;
+            var cnit2=response.nit2;
+            var ci11 = response.cedula;
+            var c1111 = ci11[0];
+            if(cnit==cnit) {
+              var buscarCiudadano = new rcNatural();
+              buscarCiudadano.nit = cnit;
+              buscarCiudadano.tipo_persona = "JURIDICO";
+              buscarCiudadano.buscarPersona(function(resultado){
+                resultadoApi = JSON.parse(resultado);
+                if(resultadoApi.length > 0){
+                  $scope.tablaEmpresas = "mostrar";
+                  $scope.obtDatos = resultadoApi;
+                  sweetAlert('NIT ya registrado', "Dirijase a la plataforma de atención mas cercana, para activar su cuenta", 'warning');
+                } else {
+                  $scope.registroCiudadano(responseJuridico);
+                }      
+                $.unblockUI();  
+              });    
+            } else{
+              sweetAlert('', "El número de NIT no concuerda con el anterior formulario, favor revisar ", 'warning');
+              $scope.getCaptchasX();
+            }
+          }else {
+            if($scope.tipoDoc == 'solo_ci'){
+              if(ci1==ci1){
+                var buscarCiudadano = new rcNatural();
+                buscarCiudadano.ci = response.cedula;
+                console.log("aaaaaaaa",response.cedula);
+                buscarCiudadano.buscarNatural(function(resultado){
+                  resultadoApi = JSON.parse(resultado);
+                  console.log("resultadoApi...",resultadoApi);
+                  if(resultadoApi.length > 0) {
+                    //correccion para usuarios validados
+                      if(resultadoApi[0].dtspsl_verificado == 'SI'){
+                          sweetAlert('¡El número de Cédula de Identidad ya se encuentra registrado!', "Estimado Ciudadano, favor ingresar con su usuario y contraseña proporcionado o verificar que el número de Cédula de Identidad sea el correcto y si usted no realizó dicho registro, puede apersonarse por las Plataformas de Atención Ciudadana del GAMLP para realizar su registro.", 'warning');
+                      } else {
+                        console.log("apiiiii",resultadoApi[0]);
+                        sUsuario = resultadoApi[0].dtspsl_ci;
+                        descripcionNombre = resultadoApi[0].dtspsl_nombres;
+                        sPin = sUsuario;
+                        var detalleMensaje  =  " Usuario : " + sUsuario + "<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Contraseña : " + sPin;
+                        if (resultadoApi[0].dtspsl_correo) {
+                          sCorreo = resultadoApi[0].dtspsl_correo;
+                          if (resultadoApi[0].dtspsl_correo.trim().length > 0) {
+                            //actualizar estado de verificado
+                            var ciudadanoUpd = new rcNatural();
+                            ciudadanoUpd.oid = resultadoApi[0]._id;
+                            ciudadanoUpd.pin = sUsuario;
+                            ciudadanoUpd.correo = sCorreo;
+                            ciudadanoUpd.verificado = "SI";
+                            ciudadanoUpd.modificarRegistro(function(resultado){
+                              $scope.envioMensajes(detalleMensaje, sCorreo, descripcionNombre);
+                              sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                            });
+                          } else {
+                            if(response.correo) {
+                              //actualizar estado a verificado + correo
+                              var ciudadanoUpd = new rcNatural();
+                              ciudadanoUpd.oid = resultadoApi[0]._id;
+                              ciudadanoUpd.pin = sUsuario;
+                              ciudadanoUpd.correo = response.correo;
+                              sCorreo = response.correo;
+                              ciudadanoUpd.verificado = "SI";
+                              ciudadanoUpd.modificarRegistro(function(resultado){
+                                sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                              });
+                            } else {
+                              //actualizar estado a verificado + correo
+                              var ciudadanoUpd = new rcNatural();
+                              ciudadanoUpd.oid = resultadoApi[0]._id;
+                              ciudadanoUpd.pin = sUsuario;
+                              ciudadanoUpd.correo = "";
+                              ciudadanoUpd.verificado = "SI";
+                              ciudadanoUpd.modificarRegistro(function(resultado){
+                                sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+sUsuario+"\n Contraseña : "+sPin+"\n  No olvide actualizar sus datos personales ingresando a su cuenta.", 'success');
+                              });
+                            }
+                          }
+                        } else {
+                          if(response.correo) {
+                            //actualizar estado a verificado + correo
+                            var ciudadanoUpd = new rcNatural();
+                            ciudadanoUpd.oid = resultadoApi[0]._id;
+                            ciudadanoUpd.pin = sUsuario;
+                            ciudadanoUpd.correo = response.correo;
+                            sCorreo = response.correo;
+                            ciudadanoUpd.verificado = "SI";
+                            ciudadanoUpd.modificarRegistro(function(resultado){
+                              $scope.envioMensajes(detalleMensaje, response.correo, descripcionNombre);
+                              sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                            });
+                          } else {
+                            //actualizar estado a verificado + correo
+                            var ciudadanoUpd = new rcNatural();
+                            ciudadanoUpd.oid = resultadoApi[0]._id;
+                            ciudadanoUpd.pin = sUsuario;
+                            ciudadanoUpd.correo = "";
+                            ciudadanoUpd.verificado = "SI";
+                            ciudadanoUpd.modificarRegistro(function(resultado){
+                                sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+sUsuario+"\n Contraseña : "+sPin+"\n  No olvide actualizar sus datos personales ingresando a su cuenta.", 'success');
+                            });
+                          }                           
+                        }
+                      }
+                    $("#cerrar").click();
+                    $('#formModal').modal('hide');
+                    $scope.limpiarFormRegistro();
+                  } else {
+                    $.unblockUI();                    
+                    $scope.getCaptchasX();    
+                    $scope.registroCiudadano(response);
+                  }
+                });
+              }else {
+                $.unblockUI();
+                console.log("11111");
+                sweetAlert('ESTIMADO CIUDADANO', "El número de C.I. no concuerda con el anterior formulario, favor revisar.", 'warning');
+                $scope.getCaptchasX();
+              }
+            }
+            if($scope.tipoDoc == 'ci_compl'){
+              ci1 = $scope.ciCompl;
+              $scope.ciCompl2 = response.cedula2+'-'+response.cedulaC2;
+              var ci2 = $scope.ciCompl2;
+              if(ci1==ci2){
+                var buscarCiudadano = new rcNatural();
+                response.cedula2 = $scope.ciCompl2;
+                buscarCiudadano.ci = response.cedula2;
+                buscarCiudadano.buscarNatural(function(resultado){
+                  resultadoApi = JSON.parse(resultado);
+                  if(resultadoApi.length > 0) {
+                    //correccion para usuarios validados
+                    if(resultadoApi[0].dtspsl_verificado == 'SI'){
+                        sweetAlert('¡El número de Cédula de Identidad ya se encuentra registrado!', "Estimado Ciudadano, favor ingresar con su usuario y contraseña proporcionado o verificar que el número de Cédula de Identidad sea el correcto y si usted no realizó dicho registro, puede apersonarse por las Plataformas de Atención Ciudadana del GAMLP para realizar su registro.", 'warning');
+                    } else {
+                      sUsuario = resultadoApi[0].dtspsl_ci;
+                      descripcionNombre = resultadoApi[0].dtspsl_nombres;
+                      sPin = sUsuario;
+                      var detalleMensaje  =  " Usuario : " + sUsuario + "<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Contraseña : " + sPin;
+                      if (resultadoApi[0].dtspsl_correo) {
+                        sCorreo = resultadoApi[0].dtspsl_correo;
+                        if (resultadoApi[0].dtspsl_correo.trim().length > 0) {
+                          //actualizar estado de verificado
+                          var ciudadanoUpd = new rcNatural();
+                          ciudadanoUpd.oid = resultadoApi[0]._id;
+                          ciudadanoUpd.pin = sUsuario;
+                          ciudadanoUpd.correo = sCorreo;
+                          ciudadanoUpd.verificado = "SI";
+                          ciudadanoUpd.modificarRegistro(function(resultado){
+                            $scope.envioMensajes(detalleMensaje, sCorreo, descripcionNombre);
+                            sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                          });
+                        } else {
+                          if(response.correo) {
+                            //actualizar estado a verificado + correo
+                            var ciudadanoUpd = new rcNatural();
+                            ciudadanoUpd.oid = resultadoApi[0]._id;
+                            ciudadanoUpd.pin = sUsuario;
+                            ciudadanoUpd.correo = response.correo;
+                            sCorreo = response.correo;
+                            ciudadanoUpd.verificado = "SI";
+                            ciudadanoUpd.modificarRegistro(function(resultado){
+                            sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                            });
+                          } else {
+                            //actualizar estado a verificado + correo
+                            var ciudadanoUpd = new rcNatural();
+                            ciudadanoUpd.oid = resultadoApi[0]._id;
+                            ciudadanoUpd.pin = sUsuario;
+                            ciudadanoUpd.correo = "";
+                            ciudadanoUpd.verificado = "SI";
+                            ciudadanoUpd.modificarRegistro(function(resultado){
+                                sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+sUsuario+"\n Contraseña : "+sPin+"\n  No olvide actualizar sus datos personales ingresando a su cuenta.", 'success');
+                            });
+                          }
+                        }
+                      } else {
+                        if(response.correo) {
+                          //actualizar estado a verificado + correo
+                          var ciudadanoUpd = new rcNatural();
+                          ciudadanoUpd.oid = resultadoApi[0]._id;
+                          ciudadanoUpd.pin = sUsuario;
+                          ciudadanoUpd.correo = response.correo;
+                          sCorreo = response.correo;
+                          ciudadanoUpd.verificado = "SI";
+                          ciudadanoUpd.modificarRegistro(function(resultado){
+                            $scope.envioMensajes(detalleMensaje, response.correo, descripcionNombre);
+                            sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                          });
+                        } else {
+                          //actualizar estado a verificado + correo
+                          var ciudadanoUpd = new rcNatural();
+                          ciudadanoUpd.oid = resultadoApi[0]._id;
+                          ciudadanoUpd.pin = sUsuario;
+                          ciudadanoUpd.correo = "";
+                          ciudadanoUpd.verificado = "SI";
+                          ciudadanoUpd.modificarRegistro(function(resultado){
+                            sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+sUsuario+"\n Contraseña : "+sPin+"\n  No olvide actualizar sus datos personales ingresando a su cuenta.", 'success');
+                          });
+                        }
+                      }
+                    }
+                    $("#cerrar").click();
+                    $('#formModal').modal('hide');
+                    $scope.limpiarFormRegistro();
+                  } else {
+                    $.unblockUI();
+                    $scope.getCaptchasX();
+                    $scope.registroCiudadano(response);
+                  }
+                });
+              }else {
+                //alert(44444);
+                $.unblockUI();
+                sweetAlert('ESTIMADO CIUDADANO', "El número de C.I. no concuerda con el anterior formulario, favor revisar.", 'warning');
+                $scope.getCaptchasX();
+              }
+            }
+            if($scope.tipoDoc == 'extr'){
+              ci1 = $scope.ciExt;
+              $scope.ciExt2 = 'E'+'-'+response.cedula2;
+              ci2 = $scope.ciExt2;
+              if(ci1==ci2){
+                var buscarCiudadano = new rcNatural();
+                response.cedula2 = $scope.ciExt2;
+                buscarCiudadano.ci = response.cedula2;
+                buscarCiudadano.buscarNatural(function(resultado){
+                  resultadoApi = JSON.parse(resultado);
+                  if(resultadoApi.length > 0) {
+                    //correccion para usuarios validados
+                    if(resultadoApi[0].dtspsl_verificado == 'SI'){
+                        sweetAlert('¡El número de Cédula de Identidad ya se encuentra registrado!', "Estimado Ciudadano, favor ingresar con su usuario y contraseña proporcionado o verificar que el número de Cédula de Identidad sea el correcto y si usted no realizó dicho registro, puede apersonarse por las Plataformas de Atención Ciudadana del GAMLP para realizar su registro.", 'warning');
+                    } else {
+                      sUsuario = resultadoApi[0].dtspsl_ci;
+                      descripcionNombre = resultadoApi[0].dtspsl_nombres;
+                      sPin = sUsuario;
+                      var detalleMensaje  =  " Usuario : " + sUsuario + "<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Contraseña : " + sPin;
+                      if (resultadoApi[0].dtspsl_correo) {
+                        sCorreo = resultadoApi[0].dtspsl_correo;
+                        if (resultadoApi[0].dtspsl_correo.trim().length > 0) {
+                          //actualizar estado de verificado
+                          var ciudadanoUpd = new rcNatural();
+                          ciudadanoUpd.oid = resultadoApi[0]._id;
+                          ciudadanoUpd.pin = sUsuario;
+                          ciudadanoUpd.correo = sCorreo;
+                          ciudadanoUpd.verificado = "SI";
+                          ciudadanoUpd.modificarRegistro(function(resultado){
+                            $scope.envioMensajes(detalleMensaje, sCorreo, descripcionNombre);
+                            sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                          });
+                        } else {
+                          if(response.correo) {
+                            //actualizar estado a verificado + correo
+                            var ciudadanoUpd = new rcNatural();
+                            ciudadanoUpd.oid = resultadoApi[0]._id;
+                            ciudadanoUpd.pin = sUsuario;
+                            ciudadanoUpd.correo = response.correo;
+                            sCorreo = response.correo;
+                            ciudadanoUpd.verificado = "SI";
+                            ciudadanoUpd.modificarRegistro(function(resultado){
+                              sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                            });
+                          } else {
+                            //actualizar estado a verificado + correo
+                            var ciudadanoUpd = new rcNatural();
+                            ciudadanoUpd.oid = resultadoApi[0]._id;
+                            ciudadanoUpd.pin = sUsuario;
+                            ciudadanoUpd.correo = "";
+                            ciudadanoUpd.verificado = "SI";
+                            ciudadanoUpd.modificarRegistro(function(resultado){
+                                sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+sUsuario+"\n Contraseña : "+sPin+"\n  No olvide actualizar sus datos personales ingresando a su cuenta.", 'success');
+                            });
+                          }
+                        }
+                      } else {
+                        if(response.correo) {
+                          //actualizar estado a verificado + correo
+                          var ciudadanoUpd = new rcNatural();
+                          ciudadanoUpd.oid = resultadoApi[0]._id;
+                          ciudadanoUpd.pin = sUsuario;
+                          ciudadanoUpd.correo = response.correo;
+                          sCorreo = response.correo;
+                          ciudadanoUpd.verificado = "SI";
+                          ciudadanoUpd.modificarRegistro(function(resultado){
+                            $scope.envioMensajes(detalleMensaje, response.correo, descripcionNombre);
+                            sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                          });
+                        } else {
+                          //actualizar estado a verificado + correo
+                          var ciudadanoUpd = new rcNatural();
+                          ciudadanoUpd.oid = resultadoApi[0]._id;
+                          ciudadanoUpd.pin = sUsuario;
+                          ciudadanoUpd.correo = "";
+                          ciudadanoUpd.verificado = "SI";
+                          ciudadanoUpd.modificarRegistro(function(resultado){
+                              sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+sUsuario+"\n Contraseña : "+sPin+"\n  No olvide actualizar sus datos personales ingresando a su cuenta.", 'success');
+                          });
+                        }
+                      }
+                    }
+                    $("#cerrar").click();
+                    $('#formModal').modal('hide');
+                    $scope.limpiarFormRegistro();
+                  } else {
+                    $.unblockUI();                    
+                    $scope.getCaptchasX();    
+                    $scope.registroCiudadano(response);
+                  }
+                });
+              }else{
+                $.unblockUI();
+                console.log("3333");
+                sweetAlert('ESTIMADO CIUDADANO', "El número de C.I. no concuerda con el anterior formulario, favor revisar.", 'warning');
+                $scope.getCaptchasX();
+              }
+            }
+            if($scope.tipoDoc == 'pasaporte'){
+              $scope.pasaP = response.cedula;
+              ci2 = $scope.pasaP;
+              if(ci1==ci2){
+                var buscarCiudadano = new rcNatural();
+                response.cedula2 = $scope.pasaP;
+                buscarCiudadano.ci = response.cedula2;
+                buscarCiudadano.tipo_documento = response.tipo_documento;
+                buscarCiudadano.buscarNatural(function(resultado){
+                  resultadoApi = JSON.parse(resultado);
+                  if(resultadoApi.length > 0) {
+                    //correccion para usuarios validados
+                    if(resultadoApi[0].dtspsl_verificado == 'SI'){
+                      sweetAlert('¡El número de Pasaporte ya se encuentra registrado!', "Estimado Ciudadano, favor ingresar con su usuario y contraseña proporcionado o verificar que el número de Cédula de Identidad sea el correcto y si usted no realizó dicho registro, puede apersonarse por las Plataformas de Atención Ciudadana del GAMLP para realizar su registro.", 'warning');
+                    } else {
+                        sUsuario = resultadoApi[0].dtspsl_ci;
+                        descripcionNombre = resultadoApi[0].dtspsl_nombres;
+                        sPin = sUsuario;
+                        var detalleMensaje  =  " Usuario : " + sUsuario + "<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Contraseña : " + sPin;
+                        if (resultadoApi[0].dtspsl_correo) {
+                          sCorreo = resultadoApi[0].dtspsl_correo;
+                          if (resultadoApi[0].dtspsl_correo.trim().length > 0) {
+                            //actualizar estado de verificado
+                            var ciudadanoUpd = new rcNatural();
+                            ciudadanoUpd.oid = resultadoApi[0]._id;
+                            ciudadanoUpd.pin = sUsuario;
+                            ciudadanoUpd.correo = sCorreo;
+                            ciudadanoUpd.verificado = "SI";
+                            ciudadanoUpd.modificarRegistro(function(resultado){
+                              $scope.envioMensajes(detalleMensaje, sCorreo, descripcionNombre);
+                              sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                            });
+                          } else {
+                            if(response.correo) {
+                              //actualizar estado a verificado + correo
+                              var ciudadanoUpd = new rcNatural();
+                              ciudadanoUpd.oid = resultadoApi[0]._id;
+                              ciudadanoUpd.pin = sUsuario;
+                              ciudadanoUpd.correo = response.correo;
+                              sCorreo = response.correo;
+                              ciudadanoUpd.verificado = "SI";
+                              ciudadanoUpd.modificarRegistro(function(resultado){
+                                sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                              });
+                            } else {
+                              //actualizar estado a verificado + correo
+                              var ciudadanoUpd = new rcNatural();
+                              ciudadanoUpd.oid = resultadoApi[0]._id;
+                              ciudadanoUpd.pin = sUsuario;
+                              ciudadanoUpd.correo = "";
+                              ciudadanoUpd.verificado = "SI";
+                              ciudadanoUpd.modificarRegistro(function(resultado){
+                                sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+sUsuario+"\n Contraseña : "+sPin+"\n  No olvide actualizar sus datos personales ingresando a su cuenta.", 'success');
+                              });
+                            }
+                          }
+                        } else {
+                          if(response.correo) {
+                            //actualizar estado a verificado + correo
+                            var ciudadanoUpd = new rcNatural();
+                            ciudadanoUpd.oid = resultadoApi[0]._id;
+                            ciudadanoUpd.pin = sUsuario;
+                            ciudadanoUpd.correo = response.correo;
+                            sCorreo = response.correo;
+                            ciudadanoUpd.verificado = "SI";
+                            ciudadanoUpd.modificarRegistro(function(resultado){
+                              $scope.envioMensajes(detalleMensaje, response.correo, descripcionNombre);
+                              sweetAlert("Ciudadano Registrado", "Señor/a ciudadano/a su usuario es: "+sUsuario+"\n y su contraseña es: "+sPin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                            });
+                          } else {
+                            //actualizar estado a verificado + correo
+                            var ciudadanoUpd = new rcNatural();
+                            ciudadanoUpd.oid = resultadoApi[0]._id;
+                            ciudadanoUpd.pin = sUsuario;
+                            ciudadanoUpd.correo = "";
+                            ciudadanoUpd.verificado = "SI";
+                            ciudadanoUpd.modificarRegistro(function(resultado){
+                              sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+sUsuario+"\n Contraseña : "+sPin+"\n  No olvide actualizar sus datos personales ingresando a su cuenta.", 'success');
+                            });
+                          }                           
+                        }
+                      }
+                    $("#cerrar").click();
+                    $('#formModal').modal('hide');
+                    $scope.limpiarFormRegistro();
+                  } else {
+                    $.unblockUI();                    
+                    $scope.getCaptchasX();    
+                    $scope.registroCiudadano(response);
+                  }
+                });
+              }else{
+                $.unblockUI();
+                sweetAlert('ESTIMADO CIUDADANO', "El número de Pasaporte no concuerda con el anterior formulario, favor revisar.", 'warning');
+                $scope.getCaptchasX();
+              }
+            }
+          }
+        };
+
+        $scope.envioMensajes = function(mensajeCorreo, email, ciudadano){
+          var sMensajeValidacion = mensajeCorreo.replace(/ /g, "_");
+          var parametros = {
+            "cuerpo" : sMensajeValidacion,
+            "asunto" : vAsunto,
+            "para" : email,
+            "ciudadano" : ciudadano,
+            "mensaje" : vMensaje
+          }
+          $.ajax({ 
+            data: parametros, 
+            url: jsonURLS.SERVICE_ENVIO_CORREO,
+            type: 'get', 
+            beforeSend: function () { 
+            }, 
+            success: function (response) { 
+            }
+          });
+        };
+
+        $scope.envioMensajej = function(mensajeCorreo, email, ciudadano){
+          var sMensajeValidacion = mensajeCorreo.replace(/ /g, "_");
+          var parametros = {
+            "cuerpo" : sMensajeValidacion,
+            "asunto" : vAsunto,
+            "para" : email,
+            "ciudadano" : ciudadano,
+            "mensaje": vMensaje
+          }
+          $.ajax({ 
+            data: parametros, 
+            url: jsonURLS.SERVICE_ENVIO_CORREO,
+            type: 'get', 
+            beforeSend: function () { 
+            }, 
+            success: function (response) { 
+            }
+          });
+        };
+        $scope.dataDatospersonales= '';
+
+        $scope.combprofesion = function(){
+          var profesion = new rcProfesion();
+          profesion.getProfesiones(function(resultado){
+              resultadoApi = JSON.parse(resultado);
+              $scope.combop=resultadoApi.success;
+          });   
+        };
+
+        $scope.registroCiudadano = function (response) {
+          console.log("response...",response);
+          var response = $scope.dataDatospersonales;
+          var response2 = response;
+          try{
+            for (var dato in response)
+            {
+              if(response[dato] && response[dato]!= null && typeof(response[dato]) != "undefined" && response[dato] != "")
+              {
+                if(typeof(response[dato]) == "string" && 
+                  dato != "correo" && 
+                  dato != "correoRep" &&
+                  dato != "dtspsl_file_fotocopia_ci" &&
+                  dato != "dtspsl_file_factura_luz" &&
+                  dato != "dtspsl_URL" &&
+                  dato != "FILE_FOTOCOPIA_CI" &&
+                  dato != "FILE_FACTURA_LUZ" ) 
+                {
+                  for (var i in response2) {
+                    if (response2[i] == response[dato]) 
+                    {
+                      response2[i] = response2[i].toUpperCase();
+                      break; 
+                    }
+                  } 
+                }
+              }
+            }
+          }
+          catch(e)
+          {
+          }
+          sDireccion = response.direccion.trim();
+          sFono = response.telefono.trim();
+          sCelular = response.celular.trim();
+          sCorreo = response.correo.trim();
+          descripcionNombre = response.nombre.trim();
+          descripcionPaterno = response.paterno.trim();
+          descripcionMaterno = response.materno.trim();
+          var datos = {};
+          if(response.estado_civil) {
+            datos['dtspsl_id_estado_civil'] = response.estado_civil;  
+          } else {   
+            datos['dtspsl_id_estado_civil'] = '';
+          }
+          if(response.estado_civil == " ") {
+            response.estado_civil = ""
+          }
+          if(tipoPersona == "NATURAL") {
+            sNumeroAleatorio = Math.round(Math.random()*100000) + response.cedula; 
+            var fechanacimiento = "";
+            var fechanac = "";
+            fechanacimiento = new Date(response.fecha_nacimiento);
+            var mesFechaNacimiento = "";
+            var diaFechaNacimiento = "";
+            if (fechanacimiento.getMonth()<10 ) 
+            {
+                mesFechaNacimiento = "0" + (fechanacimiento.getMonth()+1);
+            }
+            else
+            {
+                mesFechaNacimiento = fechanacimiento.getMonth()+1;
+            }
+            if (fechanacimiento.getUTCDate()<10) 
+            {
+                diaFechaNacimiento = "0" + (fechanacimiento.getUTCDate());
+            }
+            else{
+                diaFechaNacimiento = fechanacimiento.getUTCDate();
+            }
+
+            response.fecha_nacimiento = fechanacimiento.getFullYear() + "-" + mesFechaNacimiento + "-" +diaFechaNacimiento;
+
+            var registrarCiudadano = new rcNatural();
+            registrarCiudadano.ci = response.cedula;
+            registrarCiudadano.complemento = response.complemento;
+            registrarCiudadano.nombre = localStorage.getItem('gNombres');
+            registrarCiudadano.paterno = localStorage.getItem('gPaterno');
+            registrarCiudadano.materno = localStorage.getItem('gMaterno');
+            registrarCiudadano.tercer_apellido = response.tercer;
+            registrarCiudadano.expedido = response.expedido;
+            registrarCiudadano.fec_nacimiento = response.fecha_nacimiento;
+            registrarCiudadano.lugar_nacimiento = "LPZ";
+            registrarCiudadano.pais_origen = response.pais_origen;
+            registrarCiudadano.sexo = "undefined";
+            registrarCiudadano.id_estado_civil = "S";
+            registrarCiudadano.profesion = "OTROS";
+            registrarCiudadano.otra_profesion = response.otra_profesion;
+            registrarCiudadano.telefono = response.telefono;
+            registrarCiudadano.movil = response.celular;
+            registrarCiudadano.correo = localStorage.getItem('gCorreo');
+            registrarCiudadano.direccion = "AVENIDA LOS OLIVOS";
+            registrarCiudadano.usr_id = "0";
+            registrarCiudadano.tipo_documento = $rootScope.tipoDocumento;
+            registrarCiudadano.sistema_creado = 'IGOB247';
+            console.log("daaaaaaaaaaa",registrarCiudadano);
+            registrarCiudadano.crearNatural_redeSociales(function(resultado){
+              console.log("awawawa: ", resultado);
+              resultadoApi = JSON.parse(resultado);
+
+              if( typeof(resultadoApi.success) != 'undefined'){
+                  $scope.registroCiudadanoMensajes(resultadoApi);
+                  $scope.generarDocumentoPhpN(resultadoApi.success);
+                  $scope.habilitarCondicion = true;
+              } else {
+                  $.unblockUI();
+                  sweetAlert(resultadoApi.error.message);
+              }
+            }); 
+          }else{
+            var razonSocial = response.razonSocial;
+            sNumeroAleatorio = Math.round(Math.random()*100000) + response.nit; 
+            var registrarJuridico=new rcJuridico();
+            registrarJuridico.nit=response.nit;
+            registrarJuridico.id_estado_civil = 'PJ';
+            registrarJuridico.razonSocial=response.razonSocial;
+            registrarJuridico.telefono="2380122";
+            registrarJuridico.movil=response.celularEmp;
+            registrarJuridico.correo=response.correoEmp;
+            registrarJuridico.ci=$scope.cedulaCondR;
+            registrarJuridico.complemento=response.complemento;
+            registrarJuridico.nombre =response.nombre.trim();
+            registrarJuridico.paterno =response.paterno.trim();
+            registrarJuridico.materno =response.materno.trim();
+            registrarJuridico.poder_replegal =response.repLegal;
+            registrarJuridico.nro_notaria =response.nroNotaria;
+            registrarJuridico.usr_id="0";
+            registrarJuridico.tipo_documento = $rootScope.tipoDocumento;
+            registrarJuridico.sistema_creado = "IGOB247";  
+            registrarJuridico.tipo_empresa = response.tipoEmpresa;
+            registrarJuridico.crearJuridico_redeSociales(function(resultado){
+              resultadoApi = JSON.parse(resultado);
+              if( typeof(resultadoApi.success) != 'undefined')
+              {
+                $scope.registroCiudadanoMensajes(resultadoApi);
+                $scope.generarDocumentoPhpJ(resultadoApi.success)
+                $scope.habilitarCondicion = true;
+              }
+              else
+              {
+                $.unblockUI();
+              }
+            });
+          }
+        };
+
+        $scope.registroCiudadanoMensajes = function (resultado) {
+          console.log("resultado: ", resultado);
+          sCorreo = localStorage.getItem('gCorreo');
+          console.log("sCorreo: ", sCorreo);
+          $scope.registro = '';
+          if(tipoPersona == "NATURAL") {
+
+            $.unblockUI();
+            if ($scope.entcomplemento=="") {
+              var detalleMensaje  =  " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Usuario : " + resultado.success.usuario + "<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Contraseña : " + resultado.success.pin + "<br>Para poder realizar la activacion digital haga click <a href='http://172.18.27.222/activarD.php?oid=" + resultado.success.oid + "&pin=" + resultado.success.pin + "' target='_blank'>AQUI</a>"
+            }else{
+              var detalleMensaje  =  " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Usuario : " + resultado.success.usuario+"-"+$scope.entcomplemento + "<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Contraseña : " + resultado.success.pin + "<br>Para poder realizar la activacion digital haga click <a href='http://172.18.27.222/activarD.php?oid=" + resultado.success.oid + "&pin=" + resultado.success.pin + "' target='_blank'>AQUI</a>";
+            }
+            if (sCorreo=="" ) {
+              $("#cerrar").click();
+              $('#formModal').modal('hide');
+              var sReferencia ="warning";
+              if ($scope.entcomplemento=="") {
+                sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+resultado.success.usuario+"\n contraseña : "+resultado.success.pin+"\n  Se recomienda que tenga un correo electrónico para enviar una clave secreta más segura y no olvide de actualizar sus datos personales con su cuenta.", 'success');
+              }else{
+                sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+resultado.success.usuario+"-"+$scope.entcomplemento+"\n contraseña : "+resultado.success.pin+"\n  Se recomienda que tenga un correo electrónico para enviar una clave secreta más segura y no olvide de actualizar sus datos personales con su cuenta.", 'success');                            
+              }
+
+            } else {
+              if (sCorreo != "") {
+
+                if ($scope.entcomplemento=="") {
+                  sweetAlert("Ciudadano Registrado","Su usuario es: "+resultado.success.usuario+"\n y su Contraseña es: "+resultado.success.pin+"\n  Verifique sus datos en el mensaje enviado a su correo electrónico: "+sCorreo + " \n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                    /////////////////
+                    signOutGoogle();
+                    /////////////////
+                  
+                }else{
+                  sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+resultado.success.usuario+"-"+$scope.entcomplemento+"\n Contraseña : "+resultado.success.pin+"\n  Sus datos también fueron enviados al siguiente correo electrónico: "+sCorreo + "\n No olvide actualizar sus datos personales con su cuenta.", 'success');
+                }
+
+                $("#cerrar").click();
+                $('#formModal').modal('hide');
+                $scope.envioMensajes(detalleMensaje, sCorreo, descripcionNombre);
+              } 
+            }
+            $scope.limpiarFormRegistro();
+          }
+          else if(tipoPersona == "JURIDICO") {
+            $.unblockUI();
+            var detalleMensaje  =  " Usuario : " + $scope.nitt + "<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Contraseña : " + resultado.success.pin + "<br>Para poder realizar la activacion digital haga click <a href='http://172.18.27.222/activarD.php?oid=" + resultado.success.oid + "&pin=" + resultado.success.pin + "' target='_blank'>AQUI</a>";
+            if (sCorreoEmp=="") {
+              $("#cerrar").click();
+              $('#formModal').modal('hide');
+              var sReferencia ="warning";
+            } else {
+              if (sCorreoEmp) {
+                sweetAlert("Empresa Registrada", "Su usuario es:"+ $scope.nitt +"\n y su Contraseña es: "+resultado.success.pin+"\n Verifique sus datos en el mensaje enviado a su correo electrónico: "+ sCorreoEmp + "\n Cualquier consulta contáctese con la linea gratuita:800 13 5555.", 'success');
+                /////////////////
+                signOutGoogle();
+                /////////////////
+                $("#cerrar").click();
+                $('#formModal').modal('hide');
+                $scope.envioMensajej(detalleMensaje, sCorreoEmp,$scope.razonSocialValor);
+              } else {
+                sweetAlert("Estimado Ciudadano", "Para ingresar al sistema, debe tomar nota de la siguiente información: \n Usuario : "+$scope.nitt+"\n contraseña : "+resultado.success.pin+"\n  Se recomienda que tenga un correo electrónico para enviar una clave secreta más segura y no olvide de actualizar sus datos personales con su cuenta.", 'success');
+                $("#cerrar").click();
+                $('#formModal').modal('hide');
+              }
+            }
+            $scope.limpiarFormRegistro();
+          }else{
+            $.unblockUI();
+            $scope.msg = "Error !!";
+          }
+        }
+
+        $scope.lmpCaptcha = function(datos)
+        {
+            $scope.ErrorCapcha='';
+        }
+        
+        $scope.getCaptchasX=function(){
+            $scope.resultadoC="";
+          var objCaptcha = new captcha();
+            objCaptcha.obtcaptcha(function(resultado){
+            json = JSON.parse(resultado);
+            partes = json.success[0].sp_captcha_porx1.split(',');
+            numero = partes[0].substring(1);
+            i1=(partes[2]+ "," + partes[3]);
+            i2=(partes[4] + "," + partes[5]);
+            $scope.imageLNG = i1.substring(1, i1.length - 1);
+            $scope.imageCST = i2.substring(1, i2.length - 2);
+            var lengua = "";
+            if(partes[1] == 'A') {
+                lengua = 'AYMARA';
+            } else if(partes[1] == 'Q') {
+                lengua = 'QUECHUA';
+            } else if(partes[1] == 'G'){
+                lengua = 'GUARANI';
+            } else if(partes[1] == 'C'){
+                lengua = 'CASTELLANO';
+            } else {
+            }
+            $scope.toltipTt = "Palabra en " + lengua;
+            $scope.palabraT = "Ingrese texto: " + lengua + " CASTELLANO";
+          });
+        };
+
+        var tiemporespuesta = null;
+        function verificarKeyPress(captch){
+          var id = numero;
+          var verCaptcha = new captcha();
+          verCaptcha.identificador = id;
+          verCaptcha.respuesta = captch;
+          verCaptcha.verificarCaptcha(function(resultado){
+            json = JSON.parse(resultado);
+            var nroregsitros = json.success.length;
+            if(nroregsitros == 0){
+              $scope.btnCambiar = true;
+              $scope.ErrorCapchasXX = "Error en el captcha intentar de nuevo por favor";
+              $scope.SuccesCapchasxx="";
+              $scope.$apply();
+            } else {
+              $scope.btnCambiar = false;
+              $scope.ErrorCapchasXX = "";
+              $scope.SuccesCapchasxx="Capcha correcto.";
+              $scope.$apply();
+            }
+          });
+        }
+
+        $scope.asignarNombreApellidos = function (){
+          localStorage.setItem('gNombres', document.getElementById("nombre_n").value.toUpperCase());
+          localStorage.setItem('gPaterno', document.getElementById("paterno_n").value.toUpperCase());
+          localStorage.setItem('gMaterno', document.getElementById("materno_n").value.toUpperCase());
+        };
+
+
+        $scope.validacamposJuridico = function (){
+          $scope.btnCambiar = true;
+          $scope.registro.cedula2 = '';
+          $scope.registro.nit2 = '';
+          if(tipoPersona == 'NATURAL')
+          {
+            $scope.opcionpersonaNatural = true;
+            $scope.opcionpersonaJuridico = null;
+            $scope.tituloVentana = 'Verificación de número de documento de identidad';         
+          } 
+          else 
+          {
+            $scope.opcionpersonaJuridico = true;
+            $scope.opcionpersonaNatural = null;
+            $scope.tituloVentana = 'Verificación de número de NIT';                     
+          }   
+          $scope.getCaptchasX();
+        };
+
+        $scope.aceptar = function()
+        {
+          if($scope.aceptoCodiciones){
+            $scope.btnCondicion = false;
+          } else {
+            $scope.btnCondicion = true;
+          }
+        }
+
+        $scope.limpiarFormRegistro = function(){
+          $scope.registro.cedula = "";
+          $scope.registro.cedula2 = "";
+          $scope.registro.complemento = "";
+          $scope.registro.complemento2 = "";
+          $scope.mostrarNumComplemento2 = "";
+          $scope.registro.celular = "";
+          $scope.registro.correo = "";
+          $scope.registro.direccion = "";
+          $scope.registro.estado_civil = "";
+          $scope.registro.fecha_nacimiento = "";
+          $scope.registro.materno = "";
+          $scope.registro.nombre = "";
+          $scope.registro.ocupacion = "";
+          $scope.registro.otra_profesion = "";
+          $scope.registro.profesion = "";
+          $scope.registro.paterno = "";
+          $scope.registro.sexo = "";
+          $scope.registro.repLegal = "";
+          $scope.registro.nroDocumento = "";
+          $scope.registro.nroNotaria = "";
+          $scope.registro.nit = "";
+          $scope.registro.razonSocial = "";
+          $scope.registro.zona = "";
+          $scope.registro.zona_mdst_id = "";
+          $scope.registro.yzona_dst_id = "";
+          $scope.registro = "";     
+          $scope.stiloFecha   =  "border: 1px solid #FF4040;";
+        }
+        
+        $scope.limpiarFormRegistroBuscar = function(){
+          $scope.registro.complemento = "";
+          $scope.registro.complemento2 = "";
+          $scope.mostrarNumComplemento2 = "";
+          $scope.registro.celular = "";
+          $scope.registro.correo = "";
+          $scope.registro.direccion = "";
+          $scope.registro.estado_civil = "";
+          $scope.registro.fecha_nacimiento = "";
+          $scope.registro.materno = "";
+          $scope.registro.nombre = "";
+          $scope.registro.ocupacion = "";
+          $scope.registro.otra_profesion = "";
+          $scope.registro.profesion = "";
+          $scope.registro.paterno = "";
+          $scope.registro.sexo = "";
+          $scope.registro.repLegal = "";
+          $scope.registro.nroDocumento = "";
+          $scope.registro.nroNotaria = "";
+          $scope.registro.nit = "";
+          $scope.registro.telefono = "";
+          $scope.registro.razonSocial = "";
+          $scope.registro.zona = "";
+          $scope.registro.zona_mdst_id = "";
+          $scope.registro.yzona_dst_id = "";
+          //$scope.registro = "";     
+          $scope.stiloFecha   =  "border: 1px solid #FF4040;";
+        }
+
+        $scope.show_juridico_bloque_0 = function(){
+          $("#juridico_bloque_0").show();
+        };
+
+        $scope.show_juridico_bloque_1 = function(){
+          $("#juridico_bloque_1").show();
+          $scope.bloquearNombreCompleto = true;
+        };
+
+        $scope.show_juridico_bloque_2 = function(){
+          $("#juridico_bloque_2").show();
+        };
+
+        $scope.hide_juridico_bloque_0 = function(){
+          $("#juridico_bloque_0").hide();
+        };
+        $scope.hide_juridico_bloque_1 = function(){
+          $("#juridico_bloque_1").hide();
+        };
+
+        $scope.hide_juridico_bloque_2 = function(){
+          $("#juridico_bloque_2").hide();
+        };
+
+        $scope.getTipoPersona = function (val) {
+          $scope.hide_juridico_bloque_0();
+          $scope.hide_juridico_bloque_1();
+          $scope.hide_juridico_bloque_2();
+          $scope.bloquear1 = true;
+          $scope.bloquear2 = true;
+          $("#tipoDoc" ).val("");
+          if (val.tipoPersoneria == "NATURAL") {              
+            $scope.mostrarNatural = true;
+            $scope.mostrarJuridico = false;
+            tipoPersona = "NATURAL";
+            $scope.habilitarCondicion = true;
+          };
+          if (val.tipoPersoneria == "JURIDICO") {
+            $scope.mostrarNatural = false;
+            $scope.mostrarJuridico = true;
+            tipoPersona = "JURIDICO";
+            $scope.bloquear3 = false;
+            $scope.habilitarCondicion = true;
+            ////////////////*******************
+            $scope.bloquearCi = false;
+          };        
+          $scope.limpiarFormRegistro();
+          $scope.tipo = val.tipoPersoneria;
+          $scope.registro.tipoP = val.tipoPersoneria.toUpperCase();
+        };
+
+        $("#mensaje29").show();
+        $scope.getTipoDoc = function (val) {
+          $scope.inicioVariablesSesion();
+          $scope.tipoDoc = val.tipoDoc;
+          if (val.tipoDoc == 'undefined' || val.tipoDoc == undefined || val.tipoDoc == '') {   
+            $("#mensaje25").hide();
+            $scope.mostrarvacio = true;           
+            $scope.mostrarSoloCi = false;
+            $scope.mostrarCiCompl = false;
+            $scope.mostrarExtr = false;
+            $scope.mostrarPasaporte = false;
+            $("#mensaje26").hide();
+          };
+          if (val.tipoDoc == "solo_ci") {
+            $scope.hide_juridico_bloque_0();
+            $scope.hide_juridico_bloque_1();              
+            $scope.mostrarSoloCi = true;
+            $scope.mostrarCiCompl = false;
+            $scope.mostrarExtr = false;
+            $scope.mostrarvacio = false;   
+            $scope.mostrarPasaporte = false;
+            $("#mensaje26").hide();
+            $scope.bloquearCi = false;
+            $rootScope.tipoDocumento= "carnet";
+          };
+          if (val.tipoDoc == "ci_compl") {
+            $scope.hide_juridico_bloque_0();
+            $scope.hide_juridico_bloque_1(); 
+            $scope.mostrarSoloCi = false;
+            $scope.mostrarCiCompl = true;
+            $scope.mostrarExtr = false;
+            $scope.mostrarvacio = false;
+            $scope.mostrarPasaporte = false;
+            $("#mensaje26").show();
+            $scope.bloquearCi = false;
+            $rootScope.tipoDocumento= "carnet";
+          };
+          if (val.tipoDoc == "extr") {
+            $scope.hide_juridico_bloque_0();
+            $scope.hide_juridico_bloque_1(); 
+            $scope.mostrarSoloCi = false;
+            $scope.mostrarCiCompl = false;
+            $scope.mostrarExtr = true;
+            $scope.mostrarvacio = false;
+            $scope.mostrarPasaporte = false;
+            $("#mensaje26").hide();
+            $scope.bloquearCi = false;
+            $rootScope.tipoDocumento= "extranjero";
+          }; 
+          if (val.tipoDoc == "pasaporte") {
+            $scope.hide_juridico_bloque_0();
+            $scope.hide_juridico_bloque_1(); 
+            $scope.mostrarSoloCi = false;
+            $scope.mostrarCiCompl = false;
+            $scope.mostrarExtr = false;
+            $scope.mostrarvacio = false;
+            $scope.mostrarPasaporte = true;
+            $("#mensaje26").hide();
+            $scope.bloquearCi = false;
+            $rootScope.tipoDocumento = "pasaporte";
+          };                
+          $scope.limpiarFormRegistro();
+          $scope.tipo = val.tipoDoc;
+        };
+        var aRegistro = {"cedula": "","complemento": "","celular":"","correo":"","direccion":"","estado_civil":"","fecha_nacimiento":"",
+        "materno":"","nombre":"","ocupacion":"","paterno":"","sexo":"","telefono":"","cedula2": "","complemento2": "","repLegal": "","nroDocumento": "","nroNotaria": "",
+        "nit": "","razonSocial": "","tipoP": ""};
+        $scope.registro = aRegistro;
+        $scope.mostrarNatural = true;
+
+        $scope.model = {
+          startDate: new Date('09/21/2015'),
+          endDate: new Date()
+        };
+
+        $scope.gargarTipoPersona    =   function(){
+          $scope.datos    =   {};
+          $scope.datos.tipoPersoneria = "NATURAL";
+          tipoPersona = "NATURAL";
+        };
+
+        $scope.inicioEstadoCivil = function () {
+            $scope.mostrarvacio = true;
+            $("#mensaje25").hide();
+            $scope.bloquear1 = true;
+            $scope.bloquear2 = true;
+            $scope.bloquear3 = false;
+            $scope.bloquearCi = false;
+            $scope.gargarTipoPersona();
+            $scope.inciarValoresFormulario();
+            $scope.combprofesion();
+            $scope.registrado = $scope.obtenerFecha();
+            var str = $scope.registrado;
+            var res = str.split(" ");  
+            var res1 = res[0];
+            $scope.hora = res[1];
+            var resh = res1.split("-"); 
+            var anio = resh[0];
+            var mes = resh[1];
+            var dia = resh[2];
+            $scope.fecha = dia+'/'+mes+'/'+anio;
+            $scope.activarEstCivil = false
+            $scope.activarCasada = false;
+            $scope.datos.tipoDoc = 'solo_ci';
+            $scope.getTipoDoc($scope.datos);
+        };
+
+        $scope.asignarNombreApellidos1 =   function(){
+          $scope.nombre_may  =  document.getElementById("nombre_n").value.toUpperCase(); 
+          $scope.paterno_may =  document.getElementById("paterno_n").value.toUpperCase(); 
+          $scope.materno_may =  document.getElementById("materno_n").value.toUpperCase(); 
+          //$scope.registro.nombre  = $scope.nombre_may;
+          //$scope.registro.paterno = $scope.paterno_may;
+          //$scope.registro.materno = $scope.materno_may;
+        };
+
+        $scope.inicioVariablesSesion =   function(){
+          $("#email").val(localStorage.getItem('gCorreo'));
+          $("#prsNom").val(localStorage.getItem('gNombres'));
+          $("#paterno").val(localStorage.getItem('gPaterno'));
+          $("#materno").val(localStorage.getItem('gMaterno'));
+
+          $scope.nombre_may  =  document.getElementById("nombre_n").value.toUpperCase(); 
+          $scope.paterno_may =  document.getElementById("paterno_n").value.toUpperCase(); 
+          $scope.materno_may =  document.getElementById("materno_n").value.toUpperCase(); 
+
+          $scope.registro.nombre  = $scope.nombre_may;
+          $scope.registro.paterno = $scope.paterno_may;
+          $scope.registro.materno = $scope.materno_may;
+          document.getElementById("nombreCompleto").value = localStorage.getItem('gNombreCompleto');
+          document.getElementById("nombreCompletoJ").value = localStorage.getItem('gNombreCompleto');
+        }
+
+        $scope.inciarValoresFormulario =   function(){
+          $scope.habilitarFiles   =   true;
+        };
+
+        //fecha y hra del servidor
+        $scope.obtenerFecha = function(){
+          var sfecha = "";
+          try{
+            var fechaactualn = new fechaHoraServer();
+            fechaactualn.fechahora(function(resultado){
+              sfecha = JSON.parse(resultado).success.fecha;
+            });
+            return sfecha;
+          }catch(e){
+            $.unblockUI();
+          }
+        };
+        $scope.generarDocumentoPhpN = function (result){
+          $.blockUI();
+          var tipoPersona = '';
+          var oidCiudadano = '';
+          var datosCiudadano = '';
+          var datosci = '';
+          var datosexpedido = '';
+          var dEmpresa = '';
+          var dnit = '';
+          $scope.oidCiudadano = result.oid;
+          datosci = result.usuario;
+          //busca ciudadano para PDF ///
+          var buscarCiudadanoPdf = new validarCiudadanoR_n();
+          buscarCiudadanoPdf.ci = datosci;
+          buscarCiudadanoPdf.validar_CiudadanoR_n(function(resultado){
+            resultadoApi = JSON.parse(resultado);
+            datosCiudadano  = resultadoApi[0].dtspsl_nombres+' '+resultadoApi[0].dtspsl_paterno+' '+resultadoApi[0].dtspsl_materno;
+            datosexpedido = resultadoApi[0].dtspsl_expedido;
+          });
+            //datosexpedido   = registro.expedido;
+          $.ajax({
+            url:jsonURLS.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf.php',
+            type:"post",
+            data:{
+                "soid": $scope.oidCiudadano,
+                "sorigen": "IGOB24/7",
+                "stipo": 'NATURAL',
+                "usuario": datosCiudadano,
+                "cedula":  datosci,
+                "expedido": datosexpedido,
+                "empresa": '',
+                "nit": '',
+                "fecha": $scope.fecha,
+                "hora": $scope.hora
+            },
+            success:function(response){
+                var urlData = response;
+                $scope.InsertarDocumento(response);
+                //MODIFICA JSON CON CONDICIONES DE USO
+                var condiciones =  new rcCondicionesUso();
+                condiciones.oid_ciudadano   =   $scope.oidCiudadano;
+                condiciones.aceptacion      =   'SI';
+                condiciones.mostrarCondicionesUso(function(resp){
+                var resultadoCond = JSON.parse(resp);
+              });
+                $.unblockUI();
+            }
+          });  
+        };
+        $scope.generarDocumentoPhpJ = function (result){
+          $.blockUI();
+          var tipoPersona = '';
+          var oidCiudadano = '';
+          var datosCiudadano = '';
+          var datosci = '';
+          var datosexpedido = '';
+          var dEmpresa = '';
+          var dnit = '';
+          $scope.oidCiudadano = result.oid;
+          dnit         = result.usuario;
+          //busca ciudadano para PDF ///
+          var buscarCiudadanoPdf = new validarCiudadanoR_j();
+          buscarCiudadanoPdf.nit = dnit;
+          buscarCiudadanoPdf.validar_CiudadanoR_j(function(resultado){
+            resultadoApi = JSON.parse(resultado);
+            datosCiudadano =  resultadoApi[0].representante; 
+            dEmpresa = resultadoApi[0].razon_social;
+            dnit = resultadoApi[0].nit;
+            datosci = resultadoApi[0].representante_ci;
+          });
+          $.ajax({
+            url:jsonURLS.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf.php',
+            type:"post",
+            data:{
+              "soid": $scope.oidCiudadano,
+              "sorigen": "IGOB24/7",
+              "stipo": 'JURIDICO',
+              "usuario": datosCiudadano,
+              "cedula":  datosci,
+              "expedido": datosexpedido,
+              "empresa": dEmpresa,
+              "nit": dnit,
+              "fecha": $scope.fecha,
+              "hora": $scope.hora
+            },
+            success:function(response){
+              var urlData = response;
+              $scope.InsertarDocumento(response);
+              //MODIFICA JSON CON CONDICIONES DE USO
+              var condiciones =   new rcCondicionesUso();
+              condiciones.oid_ciudadano   =   $scope.oidCiudadano;
+              condiciones.aceptacion      =   'SI';
+              condiciones.mostrarCondicionesUso(function(resp){
+                var resultadoCond = JSON.parse(resp);
+              });
+              $.unblockUI();
+            }
+          });  
+        };
+       
+        $scope.InsertarDocumento = function(urlData){
+            var sDocSistema     =   "IGOB247";
+            var sDocProceso     =   "CONDICIONES DE USO";
+            var sDocId          =   1;
+            var sDocCiNodo      =   "CU";
+            var sDocDatos       =   "";
+            var sDocUrl         =   urlData;
+            var sDocVersion     =   1;
+            var sDocTiempo      =   400;
+            var sDocFirmaDigital=   0;
+            var sDocUsuario     =   $scope.oidCiudadano;
+            var sDocTipoDoc     =   "pdf";
+            var sDocTamDoc      =   "";
+            var sDocNombre      =   "CONDICIONES DE USO";
+            var sDocTpsId       =   0;
+            var sDocUrlLogica   =   urlData;
+            var sDocAcceso      =   "";
+            var sDocTipoExt     =   "";
+            var sDocNroTramNexo =   "";
+            var sCasoCodigo     =   "0";
+            var documento  =   new gDocumentosIgob();
+            documento.doc_sistema = sDocSistema;
+            documento.doc_proceso = sDocProceso;
+            documento.doc_id = sDocId;
+            documento.doc_ci_nodo = sDocCiNodo;
+            documento.doc_datos = sDocDatos;
+            documento.doc_url = sDocUrl;
+            documento.doc_version = sDocVersion;
+            documento.doc_tiempo = sDocTiempo;
+            documento.doc_firma_digital = sDocFirmaDigital;
+            documento.doc_usuario = sDocUsuario;
+            documento.doc_tipo_documento = sDocTipoDoc;
+            documento.doc_tamanio_documento = sDocTamDoc;
+            documento.doc_nombre = sDocNombre;
+            documento.doc_tps_doc_id = sDocTpsId;
+            documento.doc_url_logica = sDocUrlLogica;
+            documento.doc_acceso = sDocAcceso;
+            documento.doc_tipo_documento_ext = sDocTipoExt;
+            documento.doc_nrotramite_nexo = sDocNroTramNexo;
+            documento.doc_id_codigo = sCasoCodigo;
+            documento.insertarDocIgob(function(resultado){
+            resultadoApi = JSON.parse(resultado);
+            if (resultadoApi.success) {
+                srespuesta  =   "TRUE";
+                var nomArchivo = urlData.split("?")[0];
+                var nomArchivo2 = nomArchivo.split("/");
+                var nombreArchivo = nomArchivo2[nomArchivo2.length-1];
+                var datosCondicionUso = new guardarCondicionUso();
+                datosCondicionUso.nombreCU = nombreArchivo;
+                datosCondicionUso.oid = sDocUsuario;
+                datosCondicionUso.guardarCondicion_deUso(function(resultadoCU){
+                    var resultadoApiCU = JSON.parse(resultadoCU);
+                    if( typeof(resultadoApiCU.success) != 'undefined') {
+                        var mensajeExito = "Condición de Uso almacenada correctamente.";
+                    }
+                    else {
+                        var mensajeExito = resultadoApi.error.message;
+                    }
+                })
+                return srespuesta;
+            } else {
+                $.unblockUI();
+                sweet.show(resultadoApi.error.message);
+                srespuesta  =   "FALSE";
+                return srespuesta;
+            }
+          });
+        }
+      });
+
+      function display(obj,id1,id2) {
+        txt = obj.options[obj.selectedIndex].value;
+        document.getElementById(id1).style.display = 'block';
+        document.getElementById(id1).style.display = 'none';
+        document.getElementById(id2).style.display = 'none';
+        if ( txt.match(id1) ) {
+          document.getElementById(id1).style.display = 'block';
+        }
+        if ( txt.match(id2) ) {
+          document.getElementById(id2).style.display = 'block';
+        }
+      }
+
+      function soloNumericoCelular(sValor){
+        Numer=parseInt(sValor);
+        if (isNaN(Numer)){
+          return "";
+        }else{
+          var digits = ("" + Numer).split("");
+          if(digits.length > 0 && (digits[0] == 7 || digits[0] == 6)){
+            $("#mensaje4").show();
+            $("#mensaje5").hide();
+            $("#mensaje6").hide();
+            $("#mensaje8").show();
+            $("#mensaje9").hide();
+            $("#mensaje10").hide();
+            if(digits.length == 8){
+              $("#mensaje6").show();
+              $("#mensaje5").hide();
+              $("#mensaje4").hide();
+              $("#mensaje10").show();
+              $("#mensaje9").hide();
+              $("#mensaje8").hide();
+            }
+            return Numer;
+          }else{
+            $("#mensaje5").show();
+            $("#mensaje4").hide();
+            $("#mensaje6").hide();
+            $("#mensaje9").show();
+            $("#mensaje8").hide();
+            $("#mensaje10").hide();
+            return "";
+          }
+        }
+      }
+
+      function valNumeroCelular(Control){
+        Control.value = soloNumericoCelular(Control.value);
+      }
+
+      function soloNumerico(variable){
+        Numer=parseInt(variable);
+        if (isNaN(Numer)){
+          return "";
+        }
+        return Numer;
+      }
+
+      function valNumero(Control){
+        Control.value=soloNumerico(Control.value);
+      }
+
+      function checkCi(ob){
+        var invalidChars = /[ÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ¡!@#\$%\^&\*\¿?_~();:{}'"|<>´ñ,.?`=+-0*Ç·]/;
+        var cad = ob.value;
+        var cad2 = cad.toUpperCase();
+        if(cad2) {
+          ob.value =cad2.replace(invalidChars,"");
+        }
+      };
+
+      function validar(e) { 
+        tecla = (document.all) ? e.keyCode : e.which;
+        if (tecla==8) return true; 
+        patron =/[A-Za-zñÑ\s]/; 
+        te = String.fromCharCode(tecla); 
+        return patron.test(te);
+      }
+</script>      
+    <div ng-app="myApp">
+
+    <div id="registration-form" class="contenedor" ng-controller="rCiudadanoController" data-ng-init="inicioEstadoCivil();" style="display: none;">
+      <div class="fieldset" class="form-control">
+        <legend>Registro iGob 24/7</legend>
+        <div class="col-md-10 col-md-offset-1">
+          <div class="page-content">
+            <div class="ibox-content" class="fieldset">
+              <br>
+              <div class="row">
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-5">
+                  <div class="form-group" style="margin-bottom: 40px;" >
+                    <label class="col-sm-4 control-label" for="tipo_persona"> {{translateIdioma.lbl_03_02}}: </label>
+                    <div class="col-sm-8">
+                      <select id="tipoPersoneria" class="form-control" ng-model="datos.tipoPersoneria"  name="tipoPersoneria" ng-disabled="desabilitado" ng-required="true" ng-change="getTipoPersona(datos);">
+                        <option  value="NATURAL">Persona Natural</option>
+                        <option  value="JURIDICO">Persona Jurídica</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <!--
+                  <button id="btnIngresarGoogle" class="btn btn-secondary mr-2 mb-2" style="display:block" ><i class="icofont-google-plus"></i> <i class="fab fa-google-plus-g"></i>Continuar con Google</button>-->
+                </div>
+              </div>
+              <!--NATURAL-->
+              <div ng-show = "mostrarNatural" id="Natural">
+                <div class="col-sm-3">
+                </div>
+                <div class="col-12 col-md-8">
+                  <form name="signupForm" class="form-horizontal ng-pristine ng-valid" role="form" novalidate>
+                    <div class="row">
+                      <div class="col-sm-1">
+                      </div>
+                      <div class="col-sm-10">
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label"> Nombre:</label>
+                          <div class="col-sm-10">
+                            <input id="nombre_n" name="nombre_n" type="text" class="cajatexto" style="text-transform:uppercase;"/>
+                            <input id="nombreCompleto" name="nombreCompleto" type="text" class="cajatexto" style="text-transform:uppercase;display:none;"/>
+
+                          </div><br>
+                          <label class="col-sm-2 control-label"> Paterno:</label>
+                          <div class="col-sm-10">
+                            <input id="paterno_n" name="paterno_n" type="text" class="cajatexto" style="text-transform:uppercase;"  />
+                          </div><br>
+                          <label class="col-sm-2 control-label"> Materno:</label>
+                          <div class="col-sm-10">
+                            <input id="materno_n" name="materno_n" type="text" class="cajatexto" style="text-transform:uppercase;" />
+                          </div><br>
+                          <h4 class="header blue lighter bigger"><br>
+                            ESTIMADO CIUDADANO: Llenar los datos requeridos faltantes por favor.
+                          </h4>
+                        </div>
+                        <span style="color:blue">
+                          <span align = "right"><strong>Paso 1:</strong> Elija su Tipo de Documento, pulse el boton </strong>Buscar</strong>, si es la primera vez que ingresa, se  hablitarán las casillas para ser correctamente llenadas.
+                        </span>
+                      </div> 
+                      <div class="col-sm-1">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-1">
+                      </div>
+                      <div class="col-sm-10">
+                        <div class="hr-line-dashed"></div>
+                        <h4 class="header blue lighter bigger">
+                            Datos Persona Natural
+                        </h4>
+                        <div class="form-group">
+                          <label class="col-sm-4 control-label" for="tipo_persona">Tipo de Documento: </label>
+                          <div class="col-sm-8">
+                            <select id="tipoDoc" class="form-control" ng-model="datos.tipoDoc" placeholder="Seleccione" name="tipoDoc" ng-disabled="desabilitado" ng-change="getTipoDoc(datos);"required>
+                              <option value="">--Seleccione--</option>
+                              <option value="solo_ci" selected >Cédula de Identidad</option>
+                              <option value="ci_compl">C.I. con complemento</option>
+                              <option value="extr">Extranjero</option>
+                              <option value="pasaporte">Pasaporte</option>
+                            </select>
+                            <span style="color:blue" ng-show="signupForm.tipoDoc.$invalid">
+                              <span align="right"><strong>Paso 1:</strong> Seleccione su Tipo de Documento. </span>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_03_09}}:</label>
+                          <div class="col-sm-8" class="form-group">
+                            <div ng-show = "mostrarvacio">
+                              <div><input type="text" class="cajatexto" id="repCi1" name="repCi1" minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-disabled="bloquear1"/></div>
+                              <span style="color:red" ng-show="signupForm.repCi.$invalid">
+                                <span ng-show="signupForm.repCi.$error.required">Nro. de Documento es requerido </span>
+                              </span>
+                            </div>
+                            <div ng-show="mostrarSoloCi" >
+                              <input type="text" class="cajatexto" class="form-control"  id="repCi"  name="repCi"   minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-model="registro.cedula" onkeyup="return valNumero(this);" ng-keyup="cuentaDigCi(registro);limpiarFormRegistroBuscar();" required/>
+                            </div>
+                            <div class="input-group col-sm-12" ng-show="mostrarCiCompl" >
+                                <div class="col-sm-6"><input type="text" class="cajatexto" id="repCi"  name="repCi" minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-model="registro.cedula" onkeyup="return valNumero(this);" required/>
+                                <span id ="mensaje26" style = "color:red;font-weight:bold; font-size:12px">Debe Introducir Complemento...</span>
+                                </div>
+                                <div class="col-sm-1">-</div>
+                                <div class="col-sm-3"><input class="cajatexto" type="text" id="repCiC"  name="repCiC" minlength="1" maxlength="3" placeholder="COMP" ng-model="registro.cedulaC"  onkeyup="return checkCi(this);" required/>
+                                </div>
+                                <div class="col-sm-1"> 
+                                  <button ng-click="cuentaDigCi(registro);limpiarFormRegistroBuscar();" id="buscarN1" class="btn btn-default" type="button">Buscar</button>
+                                </div>
+                            </div>
+                            <div class="input-group col-sm-12" ng-show="mostrarExtr">
+                                <div class="col-sm-3"><input type="text" class="cajatexto" class="col-sm-1" id="repCiE"  name="repCiE" minlength="1" maxlength="1" ng-model="registro.cedulaE" placeholder="E" readonly required/></div>
+                                <div class="col-sm-1">-</div>
+                                <div class="col-sm-6"><input type="text" class="cajatexto" class="col-sm-3" id="repCi" name="repCi" minlength="6" maxlength="12" placeholder="Nro. Doc." ng-model="registro.cedula" onkeyup="return valNumero(this);" required/></div>
+                                <div class="col-sm-2">
+                                  <button ng-click="cuentaDigCi(registro);limpiarFormRegistroBuscar();" id="buscarN2" class="btn btn-default" type="button">Buscar</button>
+                                </div>
+                            </div>
+                            <div class="input-group" ng-show="mostrarPasaporte" >
+                              <input type="text" class="cajatexto" class="col-sm-7"  id="repCiPasaporte"  name="repCiPasaporte"   minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-model="registro.cedula" onkeyup="return checkCi(this);" required/>
+                              <span ng-show = "mostrarPasaporte" class="input-group-btn">
+                                <button ng-click="cuentaDigCi(registro);limpiarFormRegistroBuscar();" class="btn btn-default" type="button">Buscar</button>
+                              </span>
+                            </div>
+                            <br>
+                            <span id ="mensaje25" align="right" style = "color:red;font-weight:bold; font-size:12px" ng-if="cisw != null">¡El número de Cédula de Identidad ya se encuentra registrado!,Si Ud. no realizó el registro favor apersonarse por Plataforma del GAMLP ó contáctese con nuestra linea gratuita 800 13 5555. </span>
+                            <span id ="mensaje23" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es válido para un C.I.</span>
+                            <span id ="mensaje30" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es válido para un Pasaporte</span>
+                          </div>
+                        </div>
+                        <div class="hr-line-dashed">{{registro.expedido}}
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_08}}:</label>
+                          <div class="col-sm-8">
+                            <select id="expedido" name="expedido" placeholder="Expedido" ng-model="registro.expedido" class="form-control" ng-disabled="bloquear1" required>
+                              <option value="">--Seleccione--</option>
+                              <option value="LPZ">LA PAZ</option>
+                              <option value="CBB">COCHABAMBA</option>
+                              <option value="SCZ">SANTA CRUZ</option>
+                              <option value="CHQ">CHUQUISACA</option>
+                              <option value="TJA">TARIJA</option>
+                              <option value="PTS">POTOSI</option>
+                              <option value="ORU">ORURO</option>
+                              <option value="BNI">BENI</option>
+                              <option value="PND">PANDO</option>
+                              <option value="EXT">EXTRANJERO</option>
+                            </select>
+                            <span style="color:red" ng-show="signupForm.expedido.$invalid">
+                              <span align = "right" ng-show="signupForm.expedido.$error.required">{{translateIdioma.lbl_20_22}}</span>
+                            </span>
+                          </div>
+                        </div>
+                        <!--div class="hr-line-dashed"></div-->
+                        <div class="form-group" ng-show="false">
+                          <label class="col-sm-4 control-label"> {{translateIdioma.lbl_06_02}}:</label>
+                          <div class="col-sm-8">
+                            <input id="prsNom" name="prsNom" type="text" class="cajatexto" style="text-transform:uppercase;" placeholder="{{translateIdioma.lbl_06_02}}" ng-model="registro.nombre" />
+                            <span style="color:red" ng-show="signupForm.prsNom.$invalid">
+                              <span align = "right" ng-show="signupForm.prsNom.$error.required">{{translateIdioma.lbl_20_23}}</span>
+                            </span>
+                          </div>
+                        </div>
+                        <!--div class="hr-line-dashed"></div-->
+                        <div class="form-group" ng-show = "otroLugar">
+                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_11}}</label>
+                          <div class="col-sm-8">
+                            <input id="paisOrigen" name="paisOrigen" type="text" class="form-control" style="text-transform:uppercase;" placeholder="País Origen" ng-model="registro.pais_origen"/>
+                          </div>
+                        </div>
+                        <div class="form-group" ng-show="activarEstCivil==true && activarCasada==true">
+                          <label class="col-sm-3 control-label">Apellido Cónyugue:</label>
+                          <div class="col-sm-8">
+                            <input class="form-control" id="tercer" name="tercer" type="text" class="cajatexto" placeholder="Apellido Cónyugue" onkeypress="return validar(event);" ng-model="registro.tercer" style="text-transform:uppercase;" ng-disabled="bloquear1"/>
+                          </div>
+                        </div>
+                        <div class="form-group" ng-if = "registro.profesion == 'OTROS'">
+                          <label class="col-sm-3 control-label"></label>
+                          <div class="col-sm-8">
+                            <span class="block input-icon input-icon-right">
+                              <input type="text" class="form-control" placeholder="Otra Profesion" ng-model="registro.otra_profesion" style="text-transform:uppercase;" />
+                            </span>
+                          </div>
+                        </div>
+                        <!--div class="hr-line-dashed"></div-->
+                          <div class="form-group" ng-show="false">
+                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_03}}:</label>
+                          <div class="col-sm-8">
+                            <input type="text" id="paterno" name="paterno" class="cajatexto" placeholder="{{translateIdioma.lbl_06_03}}" ng-model="registro.paterno" style="text-transform:uppercase;" />
+                          </div>
+                        </div>
+                        <div class="form-group" ng-show="false">
+                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_04}}:</label>
+                          <div class="col-sm-8">
+                            <input type="text" id="materno" name="materno" class="cajatexto" placeholder="{{translateIdioma.lbl_06_04}}" ng-model="registro.materno" style="text-transform:uppercase;" />
+                          </div>
+                        </div> 
+                        <!--div class="hr-line-dashed"></div-->
+                        <div class="form-group" ng-show="false">
+                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_08_08}}:</label>
+                          <div class="col-sm-8">
+                            <span class="block input-icon input-icon-right">
+                              <input type="tel" class="form-control" placeholder="{{translateIdioma.lbl_06_08_08}}" ng-model="registro.telefono" minlength="7" maxlength="7" onkeyUp="valNumeroTelefono(this);" ng-keyUp="cuentaDigTel(registro);" ng-disabled="bloquear1" style="text-transform:uppercase;"/>
+                              <span id ="mensaje14" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es correcto.</span>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="hr-line-dashed">
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_18}}:</label>
+                          <div class="col-sm-8">
+                            <span class="block input-icon input-icon-right">
+                              <input type="tel" id="celular" name="celular" title="En lo posible introduzca su celular" class="form-control" placeholder="{{translateIdioma.lbl_06_12_18}}" ng-model="registro.celular" maxlength="8" onkeyUp="valNumeroCelular(this);" ng-keyUp="cuentaDigCel(registro);" ng-disabled="bloquear1" style="text-transform:uppercase;" required/>
+                              <span style="color:red" ng-show="signupForm.celular.$invalid">
+                                <span align = "right" ng-show="signupForm.celular.$error.required">{{translateIdioma.lbl_20_31}}</span>
+                              </span>
+                            </span> 
+                            <span id ="mensaje4" style = "color:red;font-weight:bold; font-size:12px">¡Debe introducir como mínimo 8 dígitos!</span>
+                            <span id ="mensaje5" style = "color:red;font-weight:bold; font-size:12px">¡Este dato es obligatorio.!</span>
+                            <span id ="mensaje16" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es correcto.</span>
+                          </div>
+                        </div>
+                        <div class="hr-line-dashed" ng-show="false">
+                        </div>
+                        <div class="form-group" ng-show="false">
+                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_18}}:</label>
+                          <div class="col-sm-8 correo">
+                              <input type="email" id = "email" class="form-control" placeholder="{{translateIdioma.lbl_06_18}}" name="correo" ng-model="registro.correo" ng-disabled="bloquear1" required focus/>
+                              <span style="color:red" ng-show="signupForm.correo.$invalid">
+                                <span align = "right" ng-show="signupForm.correo.$error.required">{{translateIdioma.lbl_20_32}}</span>
+                              </span>
+                              <br><span id ="mensaje1" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
+                              <span id ="mensaje2" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span>
+                            <input id="idcorreo" name="idcorreo" type="hidden" value="false">
+                            <span style="color:red" ng-show="signupForm.idcorreo.$invalid">
+                            <span align = "right" ng-show="signupForm.idcorreo.$error.required">{{translateIdioma.lbl_20_32}}</span>
+                          </div>
+                        </div>
+                        <div class="hr-line-dashed">
+                        </div>
+                      </div>
+                      <div class="col-sm-1">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-1">
+                          &nbsp; &nbsp;
+                      </div>
+                      <div class="col-sm-10">
+                          <p>
+                            <font color="#FF1100">
+                                Con esta opción podrá tener acceso limitado a los servicios en línea del Gobierno Autónomo Municipal de La Paz, si desea acceder a más servicios, le pedimos que pueda apersonarse por <strong>única</strong> vez a una de nuestras plataformas de atención presencial del GAMLP para realizar la validación de sus datos personales. Para ello usted debe llevar su Cédula de Identidad Original.
+                            </font>
+                          </p>
+                          <div class="form-group">
+                          <label class="col-sm-4 control-label no-padding-right" for="ocupacion">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          </label>
+                          <center>
+                            <div class="col-sm-12">
+                              <span class="block input-icon input-icon-right">
+                                <font color="#FF0000" size="5px"> * </font>
+                                <strong>Para continuar con el registro, debe aceptar las Condiciones de Uso, se recomienda leerlo atentamente
+                                  <button ng-show="panelGoogle" ng-click="asignarNombreApellidos1();" data-toggle="modal" data-target="#formModalTrm" type="submit" class="btn btn-success" style="background-color: #000;color:#FFFFFF">Aqui</button>
+                                </strong><br>
+                                <font color="blue" size="5px"> <strong>* Paso 2 Aceptar las Condiciones de Uso:</strong></font>
+                                <input type="checkbox" class="form-check-input" ng-change="aceptar()" ng-model="aceptoCodiciones" ng-disabled="signupForm.repCi.$error.required || signupForm.expedido.$error.required || signupForm.fecha_nacimiento.$error.required || signupForm.lugarNacimiento.$error.required || signupForm.genero.$invalid ||signupForm.direccion.$invalid || correoValido  || existeCi || existeCi2 || validaFono  || validaCel || signupForm.celular.$error.required || signupForm.fechaNac.$error.required || signupForm.tipoDoc.$error.required" style="background-color: #000;color:#FFFFFF"> Acepto
+                                <img src="../partials/img/manito.gif" alt="Presione el botón">
+                              </span>
+                              
+                            </div>
+                          </center>
+                        </div>
+                      </div>
+                      <div class="col-sm-1">
+                          &nbsp; &nbsp;
+                      </div>
+
+
+                      <div class="col-md-12" align="center" ng-init="getCaptchasX()">
+                        <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                        <div class="hr-line-dashed"></div>
+                          <tr class="color">
+                            <div style="background: #ffffff;" >
+                              <div class="box2">
+                                <img id="img1" class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
+                              </div>
+                              <div class="box2">
+                                <img id="img2"class="img-responsive" src="{{imageLNG}}"  title="Palabra en CASTELLANO">
+                              </div>
+                            </div>
+                          </tr>
+                          <tr class="color">
+                              <td class="color22" colspan="3" width="70"  align="center">
+                                <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="cajatexto" ng-change ="lmpCaptcha()" placeholder="{{palabraT}}" ng-model="resultadoC" ng-keyup="VerificarCapcha();" required/>
+                                <span  ng-show="formulario.palabraT.$invalid">
+                                    <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                </span>
+                                <label >{{palabraT}}</label>
+                              </td>
+                              <td class="color2" width="30"  align="center">
+                                <img type ="button"src="data:image/png;base64,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" style="color:#6F7072" class="btn btn-default btn-circle" ng-click="getCaptchasX()">
+                              </td>
+                            </tr>
+                        </table>
+                        <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
+                        <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b>
+                        
+                        <div class="form-group" align="right">
+                          <span class="lbl col-sm-5"> </span>
+                          <tr>
+                            <td>
+                              <a href="../../../../index.html" class="btn btn-default" onclick="signOutGoogle();" >{{translateIdioma.lbl_03_40_40}}</a>
+                            </td>
+                            <td>
+                              <button type="submit" class="btn btn-success" ng-click="VerificarCapchaR(registro); convertirPdf();" ng-disabled="btnCambiar || correoValido || validaCel || btnCondicion || signupForm.celular.$error.required " style="background-color: #000;color:#FFFFFF">
+                                {{translateIdioma.lbl_03_41_41}}
+                              </button>
+                            </td>
+                          </tr>
+                        </div>
+                      </div>
+
+                      <center>
+                        <div class="col-sm-12">
+                          <div class="hr-line-dashed"></div>
+                          <img src="../partials/img/comuniquese.png" alt="Contacto">
+                        </div>
+                      </center>
+
+
+                    </div>
+                    <div class="ibox-content">
+                        <div class="col-md-12">
+                        </div>
+                        <div class="col-md-6" >
+                          <div class="form-group" >
+                            <div class="col-sm-8">
+                              <span class="block input-icon input-icon-right">
+                                <input type="hidden" class="form-control" placeholder="Tipo Persona Legal"  ng-model="registro.tipoP"/>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group" align="right">
+                          <span class="lbl col-sm-5"> </span>
+                          <div class="col-sm-7">
+                          </div>
+                        </div>
+                        <!--
+                        <div class="form-group" align="right">
+                          <span class="lbl col-sm-5"> </span>
+                          <tr>
+                            <td>
+                              <a href="../../../../index.html" class="btn btn-default">{{translateIdioma.lbl_03_40_40}}</a>
+                            </td>
+                            <td>
+                              <button ng-show="panelGoogle" data-toggle="modal" data-target="#formModal" type="submit" class="btn btn-success" ng-click="asignarNombreApellidos();validacamposJuridico();" ng-disabled="signupForm.repCi.$error.required || signupForm.expedido.$error.required || signupForm.fecha_nacimiento.$error.required || signupForm.lugarNacimiento.$error.required || signupForm.genero.$invalid ||signupForm.direccion.$invalid || correoValido  || existeCi || existeCi2 || validaFono  || validaCel || btnCondicion || signupForm.celular.$error.required || signupForm.fechaNac.$error.required || signupForm.tipoDoc.$error.required" style="background-color: #000;color:#FFFFFF">
+                                {{translateIdioma.lbl_03_41_41}} ttttttttttttt
+                              </button>
+                            </td>
+                          </tr>
+                        </div>
+                        -->
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- JURIDICO -->
+              <div ng-show="mostrarJuridico" id="Juridica">
+                <div class="col-sm-3">
+                </div>
+                <div class="col-12 col-md-8">
+                  <form name="signupFormJuridico" class="form-horizontal ng-pristine ng-valid" role="form" novalidate>
+                    <div class="row">
+                      <div class="col-sm-1">
+                      </div>
+                      <div class="col-sm-10">
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label"> Ciudadano:</label>
+                          <div class="col-sm-10">
+                            <input id="nombreCompletoJ" name="nombreCompleto" type="text" class="cajatexto" style="text-transform:uppercase;" ng-disabled="true" />
+                          </div><br>
+                          <h4 class="header blue lighter bigger"><br>
+                            ESTIMADO CIUDADANO: Para realizar el registro de Persona Jurídica, primero debe buscar al Representante Legal, el cual debe estar registrado como PERSONA NATURAL y siga los pasos 1 y 2.
+                          </h4>
+                        </div>
+                        <span style="color:blue" align = "right">
+                          <strong>Paso 1:</strong> Elija su Tipo de Documento, pulse el boton <strong>Buscar</strong>, si el Representante Legal está correctamente registrado, se desplegará sus correspondientes datos. Posteriormente debe registrar el NIT y pulsar el botón <strong>Buscar</strong> y se habilitarán las casillas para los datos de la empresa, para ser correctamente llenadas.
+                        </span>
+                        <div class="form-group">
+                          <div class="hr-line-dashed"></div>
+                          <h4 class="header blue lighter bigger">
+                            Datos del Representante Legal
+                          </h4><br>
+                          <label class="col-sm-4 control-label" for="tipo_persona">Tipo de Documento: </label>
+                          <div class="col-sm-8" class="fieldset">
+                            <select id="tipoDoc" class="form-control" ng-model="datos.tipoDoc" placeholder="Seleccione" name="tipoDoc" ng-disabled="desabilitado" ng-change="getTipoDoc(datos);"required>
+                              <option value="">--Seleccione--</option>
+                              <option value="solo_ci" selected >Cédula de Identidad</option>
+                              <option value="ci_compl">C.I. con complemento</option>
+                              <option value="extr">Extranjero</option>
+                              <option value="pasaporte">Pasaporte</option>
+                            </select>
+                            <span style="color:red" ng-show="signupForm.tipoDoc.$invalid">
+                                <span align="right" ng-show="signupForm.tipoDoc.$error.required"><strong>Paso 1:</strong> Seleccione su Tipo de Documento. </span>
+                              </span>
+                          </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-sm-4 control-label">{{translateIdioma.lbl_03_09}}:</label>
+                            <div class="col-sm-8" class="form-group">
+                              <div ng-show = "mostrarvacio">
+                                  <div><input type="text"  class="cajatexto" id="repCi1" name="repCi1" minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-disabled="bloquear1"/></div>
+                                  <span style="color:red" ng-show="signupForm.repCi.$invalid">
+                                    <span ng-show="signupForm.repCi.$error.required">Nro. de Documento es requerido</span>
+                                  </span>
+                              </div>
+                              <div class="input-group" ng-show="mostrarSoloCi" >
+                                  <input type="text" class="cajatexto" class="col-sm-7"  id="repCi"  name="repCi"   minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-model="registro.cedula" onkeyup="return valNumero(this);" ng-disabled = "bloquearCi" required/>
+                                  <span class="input-group-btn">
+                                    <button ng-click="limpiarFormRegistroBuscar();verificar(registro);" class="btn btn-default" type="button">Buscar</button>
+                                  </span>
+                              </div>
+                              <div class="input-group" class="col-sm-12" ng-show="mostrarCiCompl">
+                                <div class="col-sm-6"><input type="text" class="cajatexto" class="col-sm-7" id="repCi"  name="repCi"  minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-model="registro.cedula" onkeyup="return valNumero(this);"  ng-disabled = "bloquearCi" required/>
+                                  <span id ="mensaje26" style = "color:red;font-weight:bold; font-size:12px">Debe Introducir Complemento...</span>
+                                </div>
+                                <div class="col-sm-1">-</div>
+                                <div class="col-sm-3"><input class="cajatexto" class="col-sm-3" type="text" id="repCiC"  style="text-transform:uppercase;"  name="repCiC"   minlength="1" maxlength="3" placeholder="COMP" ng-model="registro.cedulaC" onkeyup="return checkCi(this);"  ng-disabled = "bloquearCi" required/></div>
+                                <div class="col-sm-1">
+                                  <button ng-click="limpiarFormRegistroBuscar();verificar(registro);" class="btn btn-default" type="button">Buscar</button></div>
+                              </div>
+                              <div class="input-group" class="col-sm-12" ng-show="mostrarExtr">
+                                <div class = "col-sm-3"><input type="text" class="cajatexto" class="col-sm-3" id="repCiE"  name="repCiE" minlength="1" maxlength="1" ng-model="registro.cedulaE" placeholder="E"  readonly required/></div>
+                                <div class = "col-sm-1">-</div>
+                                <div class = "col-sm-6"><input type="text" class="cajatexto" class="col-sm-7" id="repCi"  name="repCi" minlength="6" maxlength="12" placeholder="Nro. Doc." ng-model="registro.cedula" onkeyup="return valNumero(this);" ng-disabled = "bloquearCi" required/></div>
+                                <div class = "col-sm-1">
+                                <button ng-click="limpiarFormRegistroBuscar();verificar(registro);" class="btn btn-default" type="button">Buscar</button>
+                                </div>
+                              </div>
+                              <div class="input-group" ng-show="mostrarPasaporte" >
+                                <input type="text" class="cajatexto" class="col-sm-7"  id="repCiPasaporte"  name="repCiPasaporte"   minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-model="registro.cedula" onkeyup="return checkCi(this);" required/>
+                                <span ng-show = "mostrarPasaporte" class="input-group-btn">
+                                  <button ng-click="limpiarFormRegistroBuscar();verificar(registro);" class="btn btn-default" type="button">Buscar</button>
+                                </span>
+                              </div>
+                            </div>                      
+                        </div>
+                        <div class="hr-line-dashed">
+                        </div>
+                        <div class="form-group" id="juridico_bloque_0" style="display: none" >
+                          <label class="col-sm-4 control-label">Nombre completo:</label>
+                          <div class="col-sm-8">
+                            <input id="nombre" name="nombre" type="text" class="cajatexto" placeholder="NOMBRE COMPLETO" ng-model="registro.nombre_j"  style="text-transform:uppercase; background:#DFE9F4 " ng-disabled = "bloquearNombreCompleto"  required/>
+                            <span style="color:red" ng-show="signupFormJuridico.nombre.$invalid">
+                            <span align = "right" ng-show="signupFormJuridico.nombre.$error.required">Para registrar una persona Jurídica, primero debe buscar a la Persona Natural</span>
+                          </div>
+                        </div>
+                        <div id="juridico_bloque_1" style="display: none">
+                          <h4 class="header blue lighter bigger">
+                            {{translateIdioma.lbl_09_16}}
+                          </h4>
+                            <div class="form-group">
+                              <label class="col-sm-4 control-label" for="tipo_persona">Tipo de Empresa: </label>
+                              <div class="col-sm-8">
+                                <select id="tipoEmpresa" class="form-control" ng-model="registro.tipoEmpresa" placeholder="Seleccione" name="tipoEmpresa" ng-disabled="desabilitado" ng-change="" required>
+                                  <option value="0">--Seleccione--</option>
+                                  <option value="1">Comunicación</option>
+                                  <option value="2">Animalista</option>
+                                  <option value="3">Operador Radio Taxi</option>
+                                  <option value="4">Veterinaria</option>
+                                  <option value="0">Otro</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                              <label class="col-sm-4 control-label">{{translateIdioma.lbl_03_27_27}}:</label>
+                              <div class="col-sm-8">
+                                <input class="cajatexto" type="text" id="nit" name="nit" placeholder="{{translateIdioma.lbl_03_27_27}}" maxlength="12" ng-model="registro.nit" onkeyUp="return valNumero(this);" ng-keyup="cuentaDigCi(registro);" required />
+                                <div>
+                                  <span style="color:red" ng-show="signupFormJuridico.nit.$invalid">
+                                    <span align="right" ng-show="signupFormJuridico.nit.$error.required">{{translateIdioma.lbl_20_34}}</span>
+                                  </span>
+                                  <span id="cisw2" style="color:red;font-weight:bold; font-size:12px" ng-if="cisw2 != null">¡El número de N.I.T. ya se encuentra registrado!</span>
+                                  <span id="mensaje24" style="color:red;font-weight:bold; font-size:12px">El número de dígitos no es válido para un N.I.T.</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="hr-line-dashed">
+                            </div>
+                            <div id="juridico_bloque_2" style="display: none">
+                              <div class="form-group">
+                                <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_14}}:</label>
+                                <div class="col-sm-8">
+                                  <input type="text" id="razonSocial" name="razonSocial" class="cajatexto" placeholder="{{translateIdioma.lbl_06_12_14}}" ng-model="registro.razonSocial" style="text-transform:uppercase;" ng-change = "conv_Mayus_rs()" ng-disabled = "bloquear2" required />
+                                  <span style="color:red" ng-show="signupFormJuridico.razonSocial.$invalid">
+                                    <span align = "right" ng-show="signupFormJuridico.razonSocial.$error.required">{{translateIdioma.lbl_20_35}}</span>
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="hr-line-dashed">
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_15}}:</label>
+                                <div class="col-sm-8">
+                                  <input  type="text" id="poder_rep" name="poder_rep" class="cajatexto" placeholder="{{translateIdioma.lbl_06_12_15}}" ng-model="registro.repLegal" onkeyUp="checkInput(this);" onChange="checkInput(this);" ng-disabled = "bloquear2" required/>
+                                  <span style="color:red" ng-show="signupFormJuridico.poder_rep.$invalid">
+                                    <span align = "right" ng-show="signupFormJuridico.poder_rep.$error.required">{{translateIdioma.lbl_20_36}}</span>
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="hr-line-dashed">
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_16}}:</label>
+                                <div class="col-sm-8">
+                                  <input type="text" id="nroNotaria" name="nroNotaria" class="cajatexto" placeholder="{{translateIdioma.lbl_06_12_16}}" ng-model="registro.nroNotaria" onkeyUp="return valNumero(this);" ng-disabled = "bloquear2" required/>
+                                  <span style="color:red" ng-show="signupFormJuridico.nroNotaria.$invalid">
+                                    <span align = "right" ng-show="signupFormJuridico.nroNotaria.$error.required">{{translateIdioma.lbl_20_37}}</span>
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="hr-line-dashed">
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_12_18}}:</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" placeholder="{{translateIdioma.lbl_06_12_18}}" ng-model="registro.celularEmp" minlength="8" maxlength="8" onkeyUp="return valNumeroCelular(this);" ng-disabled = "bloquear2"/>
+                                  <span id ="mensaje8" style = "color:red;font-weight:bold; font-size:12px">¡Debe introducir como mínimo 8 dígitos!.</span>
+                                  <br><span id ="mensaje9" style = "color:red;font-weight:bold; font-size:12px">¡Este dato es obligatorio.!</span>
+                                  <span id ="mensaje20" style = "color:red;font-weight:bold; font-size:12px">El número de dígitos no es correcto.</span>
+                                </div>
+                              </div>
+                              <div class="hr-line-dashed">
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-4 control-label">{{translateIdioma.lbl_06_18}}:</label>
+                                <div class="col-sm-8">
+                                  <input type="email" class="form-control" placeholder="{{translateIdioma.lbl_06_18}}" id="correoEmp" name="correoEmp" ng-model="registro.correoEmp" ng-keyup="validaCorreoJ();" ng-disabled = "bloquear2" required focus/>
+                                  <span style="color:red" ng-show="signupFormJuridico.correoEmp.$invalid">
+                                    <span align = "right" ng-show="signupFormJuridico.correoEmp.$error.required">{{translateIdioma.lbl_20_32}}</span>
+                                  </span>
+                                  <br><span id ="mensaje11" style = "color:green;font-weight:bold; font-size:12px">El correo es válido.</span>
+                                  <span id ="mensaje12" style = "color:red;font-weight:bold; font-size:12px">El correo No es válido.</span>
+                                </div>
+                              </div>
+                            </div>
+                        </div> 
+                      </div> 
+                      <div class="col-sm-1">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-offset-2 col-md-8 col-md-offset-2">
+                          <p>
+                            <font color="#FF1100">
+                                Con esta opción podrá tener acceso limitado a los servicios en línea del Gobierno Autónomo Municipal de La Paz, si desea acceder a más servicios, le pedimos que pueda apersonarse por única vez a una de nuestras plataformas de atención presencial del GAMLP para realizar la validación de sus datos personales. Para ello usted debe llevar su Cédula de Identidad Original.
+                            </font>
+                          </p>
+                      </div>
+                      <div class="col-sm-1">
+                          &nbsp; &nbsp;
+                      </div>
+                    </div>
+                    <div class="ibox-content">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="col-sm-4 control-label no-padding-right" for="ocupacion">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          </label>
+                          <center>
+                            <div class="col-sm-12">
+                              <span class="block input-icon input-icon-right">
+                                <center>
+                                  <div class="col-sm-12" ng-show = "habilitarCondicion">
+                                    <span>
+                                      <font color="#FF0000" size="5px"> * </font>
+                                      <strong>Para continuar con el registro, debe aceptar las Condiciones de Uso, se recomienda leerlo atentamente.</strong>
+                                      <button data-toggle="modal" data-target="#formModalTrmJ" type="submit" class="btn btn-success" style="background-color: #000;color:#FFFFFF">Aqui</button>
+                                      <br><font color="blue" size="5px"> <strong>* Paso 2 Aceptar las:</strong></font>
+                                      <input type="checkbox" class="form-check-input" ng-change="aceptar()" ng-model="aceptoCodiciones" ng-disabled=" signupFormJuridico.nombre.$invalid || signupFormJuridico.nit.$invalid || existeNit || existeNit2 " style="background-color: #000;color:#FFFFFF"> Acepto
+                                      <img src="../partials/img/manito.gif" alt="Presione el botón">
+                                    </span>
+                                    <div class="hr-line-dashed"></div>
+                                  </div>
+                                </center>
+                              </span>
+                            </div>
+                          </center>
+                        </div>
+                      </div>
+
+                     
+                      <div class="form-group" align="right">
+                        
+                        <div class="col-md-12" align="center" ng-init="getCaptchasX()">
+                        <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                        <div class="hr-line-dashed"></div>
+                          <tr class="color">
+                            <div style="background: #ffffff;" >
+                              <div class="box2">
+                                <img id="img1" class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
+                              </div>
+                              <div class="box2">
+                                <img id="img2"class="img-responsive" src="{{imageLNG}}"  title="Palabra en CASTELLANO">
+                              </div>
+                            </div>
+                          </tr>
+                          <tr class="color">
+                              <td class="color22" colspan="3" width="70"  align="center">
+                                <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="cajatexto" ng-change ="lmpCaptcha()" placeholder="{{palabraT}}" ng-model="resultadoC" ng-keyup="VerificarCapcha();" required/>
+                                <span  ng-show="formulario.palabraT.$invalid">
+                                    <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                </span>
+                                <label >{{palabraT}}</label>
+                              </td>
+                              <td class="color2" width="30"  align="center">
+                                <img type ="button"src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAACQxJREFUeJztnWuMVdUVgL87Awxoy5SC1YLUsT6pD0SKia0/WlMFiZHER4ggCVbr44caW5Pyo6lNNcakpWkqyrS1QpT4iDFNmihqIjE+Y1slQEUBefnAETBVHAeEzkx/rDvplc6du+9Za+99zj37S9afm3POXmvvdc7dj7XXhkQikUgkEolEIpFIJBJloRJbAU90ANOA04ATgC5gKjAJmAiMr14zBqmDQ8ABYB/wb6AH2AVsB94BNgJvVa/xzQzgeuB84LjqbzuANUA3sC6ADoVjCrAIWI5U0CFg0Fj+U312N7AQ+KaxDeOA+xvoMFAtf6xx2YVkFnA3sB77xnaVdcCdwNlKW8YBLzRR7vOU1Am6gDuArcRr9HqyBbid/322m6HRmz+cLM9QTiGpAHOBp5FPYOyGbiT9wJPAbNz6WDMyljMATHd4fmFpBxYjHbDYjZpV1gNXAm0j2NmteP69blVZLCrAAmAz8RvQSt4ELq1jr8bOt1wrtSicC/yd+A3mS14EZh5m8xeK54UYlgbha8BfiN9AIaQfWIbMRWDwvMIzD/iQ+A0TWt4FLjR4TmE5kmzDnySGDjBK+4CMTAP+CpwSqfxElZGGJ764DOnopcYvIUsoxmROkaQQtKGb8EhSYAcYBTxM/IpqVVHhuxM4CniM+rNgvvkI+CewAZlx246s9e8FeoGD1etGI+PyicBk4HikjzIdmbiZGFTrFqGN8G9+L/AEcC3wbSM7Ksio5SZgNbqZu9x9AXwS6j+/H3gKuAJZV/dNJ3AN8FIg+wrpAEvwb/g+YCnZ1t+tOBNYifyVJAeochl+h3qfA3cBE0IZ5EAXspbRT8kdYBrwGf6MXYXE/+WVM5BwrVI6wJHA2/gxchvwo3CmqLka+ISSOcCf8WPgSuCr4cwwYyphvga5YB72hu1HQsLyxgxkhLOZfAwJozMB+/X8HuCckEY44BK3X0oHsI7k2YL0qvNEs3H7pXGAc7E1ZiP2O24syOObH90BKtgGcG4hn42fNW6/5R1gwQhKNSs95O+zP0Tel7Gj0I5d3P5+8tfhqyXv+xOisNhRORdZHFTz5snDUC9XDlDBbrvWyrCqZyLPDhBlY8jcjMoeLtsoxgzfJuI3dD3ZqDUuS1TwzdpCq1yHLBzlnTWxFRiB50IX2IXNUu+qwHprmE4+I5kHkNXHoNxhoHgv+V7SHY48DgWXebW4DtsyKlsrdwXXWs9Ywq/zjyRrkCRXQZlloPg+4OuhFTdiLPIliPl3MIC8+cEbHyQhk9aApcG1tmc6kpljKG2c70Y/gPT27yHCf34t2mxc/cQN4EwomILek58KrnWiIa7zAOcblLXC4BmJSCxH9/b3AkcE1zrRENcvwPeU5TwD9CmfkfCAiwN0AN9RlrNaeX8iImeh7wBabdRMGOPyBThNWUYPMoOYyCEuDnCCsozXlfcnPOLiAF3KMjYo7094xMUBpirL2Ky8P+ERFweYpCxju/L+hEdcHECbH6dHeX/CIy4OML7xJSOyV3l/wiOuE0EaepX3JzzicqRJP7qUsu1IIEMih8TIFZzQcQGSfm8HkpzqIDLS6ub/D6MwYT+6aeBSHm/mgU7gbzSu75VIuh4ztLlutMPIhCylN7MT+xUMl9/fbaLg4eRUK0VKzL00X+9/sip8bYbCa+WHVoqUlJOQY2ubrfcBHBbyXDqBe7JoXUOX8v6ycwMykmqWCg47r10c4P0MhddysvL+sjNPcW/Dr6+LA2jn8s9U3l9mjkW3HH9iowtcHEAbzOFlbFoStP2nrzS6wMUB3lQqcTT6oJKyMkd5v8n2+zHAIXQjgessFCkZo9HPwaxtVIjLF+Ag+q+A1pPLyBxk9k/D+kYXuK4FvKJUZDZpY0izLDJ4xqsGzwBgIbpP0SAw30qZEvANbJJTmR3OOdlAmaetlCkBv0Bf31utlVqnVKgfOY4tMTJjkTA6rQP8xqWwZuIBtNu727DLMNbKXI0MnbU8ZvCMLzETvVd+RjqEcSQ6gPfQ17N21FaXdwyUu9uXci3Az9HX7yDwU18K/tpAuT70m01akWOAT7GpX29H6h2Hzdl4j/hSsMA8hM3b3+1b0dVGis72rWiBmINNnfYjASReuchI2Z3oN520AhOQmAuLOg32Zf2XkcJFyhnsi8exe/unhVJ6kZHSg8BPQimdQ27Crh4fCKl4O3bHxB5ATh8rGz9Av8w+JH1I9FBQ5hsoPiS7KVfQyKnAx9jV36+Cal+lgiw3WhmxleKlkc/Csci2Lqt624EcbBmFc7DNnv02re0Ek7E/YX1uUAuG4Y/YGrSV1kwr14XNVHqtPBzSgHp0Ah9ga9huWqtjeDb2B2zvIkdnL1yMrXGDyOigFYaI84HPsa+fi0Ia4YKvc3VWUcwZww7kkAcfdfK7gHY4cwSyDu3D4J0UK7J4JpIf0UddvIaEjOeSk7FZ0qwnjwLfCmZN84wHfk+23bwu0kOECZ9mmYffg5X6kHi3PCWeGIOEu+3Gn90HgfNCGaTlNvxVxJD0An8gbqBpJ3Ardqt59WQAuCqQTWYsw78TDFXOs8ACHDZDGtCGzOPfjzhhCBuXBLDLnDbsolxcpQ9JpHQjhpsigKOAS5FG3xXYJq8xlC55AjW0Ix23yz2XU489SLr6DUgqte1IR2oP8vZ+Ub2uAxnFTEIauwuZjTwDyW/gPcqmDvfQAqH07cCDhH1rWkF+m6Wy80qFcH2CVpBfZqvm/PMz8nkUe17kEPDjzLVbEC7B72RRUeVjJA1sKTgJf1OlRZQ3KOHG2XHAfcSv/NhyHxEjevLAxdjHExRBPqrankCmVLspTwdxBWmX9LB8F3iZ+A3kSzZgcxJ7y3MFsJH4DWYlPUh0U5acv6WlDUlOtZ74DZhV3gduoeSdPAtmIylqLLamh5B/IJm6x3ioi1IzFbgd2ET8Rj5c9gDLgVnerE98ibOAO5HVvlijh53Ivog5wCi/5vrB93JwKI5BgjTOA76PnJThI3ByCxKU+RqwBumoFppWcYDDGY0EhJyOrOsfj/x9TELG351IDMDQoZgHamQvMknTg3TiNtXIJ8EsSCQSiUQikUgkEolEIpEw5r/eVKfMjOxrywAAAABJRU5ErkJggg==" style="color:#6F7072" class="btn btn-default btn-circle" ng-click="getCaptchasX()">
+                              </td>
+                            </tr>
+                        </table>
+                        <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
+                        <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b>
+                        
+                        <div class="form-group" align="right">
+                          <span class="lbl col-sm-5"> </span>
+                          <tr>
+                            <td>
+                              <a href="../../../../index.html" class="btn btn-default" onclick="signOutGoogle();">{{translateIdioma.lbl_03_40_40}}</a>
+                            </td>
+                            <td>
+                              <button type="submit" class="btn btn-success" ng-click="VerificarCapchaR(registro); convertirPdf();" ng-disabled="btnCambiar || correoValido || validaCel || btnCondicion || signupForm.celular.$error.required " style="background-color: #000;color:#FFFFFF">
+                                {{translateIdioma.lbl_03_41_41}}
+                              </button>
+                            </td>
+                          </tr>
+                        </div>
+                      </div>
+
+                      <center>
+                        <div class="col-sm-12">
+                          <div class="hr-line-dashed"></div>
+                          <img src="../partials/img/comuniquese.png" alt="Contacto">
+                        </div>
+                      </center>
+                        
+                      </div>
+                  
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="formModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog  modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{translateIdioma.lbl_01_01_05}}</span></button>
+                <h4 id="myModalLabel" tabindex="-1"><center>Verificación de Datos</center></h4>
+              </div>
+              <div class="modal-body" role="document">
+                <form name="formularioUsuarios" readOnly="true" novalidate>
+                  <div class="row">
+                    <div class="col-md-12" ng-show = "opcionpersonaNatural != null">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                            <label class="col-sm-12 control-label no-padding-right" for="cedula">{{translateTitulos.lbl_09_22}}</label>
+                        </div>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                                              
+                      <div class="form-group">  
+                        <!--Carga rtipo de documento para verificar identidad --> 
+                        <div class="col-sm-12" align="center">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <h4 class="header blue lighter bigger">
+                              ESTIMADO CIUDADANO: Introduzca su Número de Documento
+                              </h4>
+                            </div>
+                          </div>
+                          <div class="input-group" ng-show="mostrarSoloCi" >
+                            <input type="text"  class="cajatexto" class="col-sm-7"  id="repCi"  style="text-transform:uppercase;" name="repCi"   minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-model="registro.cedula2" onkeyup="return valNumero(this);" required/>
+                          </div>
+                          <div class = "col-sm-12" class="input-group" ng-show="mostrarCiCompl">
+                            <div class = "col-sm-8">
+                              <input type="text"  class="cajatexto" id="repCi" name="repCi" minlength="6" maxlength="12" placeholder="{{translateIdioma.lbl_03_09}}" ng-model="registro.cedula2" onkeyup="return valNumero(this);" required/></div>
+                              <div class="col-sm-1">-</div>
+                              <div class = "col-sm-3"><input class="cajatexto" type="text"  id="repCiC2"  style="text-transform:uppercase;" name="repCiC2" minlength="1" maxlength="3" placeholder="COMPLEMENTO" ng-model="registro.cedulaC2" onkeyup="return checkCi(this);" required/></div>
+                          </div>
+                          <div class = "col-sm-12" class="input-group" ng-show="mostrarExtr">
+                            <div class = "col-sm-3"> <input type="text" class="cajatexto"class="col-sm-3" id="repCiE2"  name="repCiE2" minlength="1" maxlength="1" ng-model="registro.cedulaE2" placeholder="E"  readonly required/></div>
+                            <div class = "col-sm-1">-</div>
+                            <div class = "col-sm-8"><input type="text" class="cajatexto" class="col-sm-7" id="repCi2"  name="repCi2" minlength="6" maxlength="12" placeholder="Nro. Doc." ng-model="registro.cedula2" onkeyup="return valNumero(this);" required/></div>
+                          </div>
+                          <div class="input-group" ng-show="mostrarPasaporte">
+                            <div><input type="text" class="cajatexto" class="col-sm-7" id="repCiPasaporte"  name="repCiPasaporte" minlength="6" maxlength="12" placeholder="Nro. Doc." ng-model="registro.cedula2" onkeyup="return checkCi(this);" required/></div>
+                          </div>
+                          <span style="color:red" ng-show="signupForm.repCi.$invalid">
+                            <span ng-show="signupForm.repCi.$error.required">{{translateIdioma.lbl_20_21}}</span>
+                          </span>
+                        </div>                   
+                      </div>
+                    </div>
+                    <div class="col-md-12" ng-show = "opcionpersonaJuridico != null">
+                      <div class="form-group">
+                        <label class="col-sm-12" for="cedula">Introducir Nro. N.I.T.:</label>
+                        <div class="col-sm-12">
+                          <input id="nit2" name="nit2" type="text"  class="cajatexto" placeholder="NIT" minlength="7" maxlength="15" ng-model="registro.nit2" onkeyUp="return valNumero(this);" required/>
+                          <span style="color:red" ng-show="signupForm.nit2.$invalid">
+                            <span ng-show="signupForm.nit2.$error.required">{{translateIdioma.lbl_09_25}}
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12" align="center" >
+                      <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                      <div class="hr-line-dashed"></div>
+                        <tr class="color">
+                            <div style="background: #ffffff;" >
+                                <div class="box2">
+                                    <img id="img1" class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
+                                </div>
+                                <div class="box2">
+                                    <img id="img2"class="img-responsive" src="{{imageLNG}}"  title="Palabra en CASTELLANO">
+                                </div>
+                            </div>
+                        </tr>
+                        <tr class="color">
+                            <td class="color22" colspan="3" width="70"  align="center">
+                              <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="cajatexto" ng-change ="lmpCaptcha()" placeholder="{{palabraT}}" ng-model="resultadoC" ng-keyup="VerificarCapcha();" required/>
+                              <span  ng-show="formulario.palabraT.$invalid">
+                                  <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                              </span>
+                              <label >{{palabraT}}</label>
+                            </td>
+
+                            <td class="color2" width="30" align="center">
+                                <img type ="button"src="data:image/png;base64,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" style="color:#6F7072" class="btn btn-default btn-circle" ng-click="getCaptchasX()">
+                            </td>
+                        </tr>
+                      </table>
+                      <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
+                      <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button id="cerrar" name="cerrar" type="button" class="btn btn-default" style="color:#ffffff" data-dismiss="modal">{{translateIdioma.lbl_05_05_05}}</button>
+                <button ng-click="VerificarCapchaR(registro); convertirPdf();" ng-disabled="formularioUsuarios.resultadoC.$invalid || btnCambiar || btnCondicion"  type="button" class="btn btn-success">{{translateIdioma.lbl_11_11_11}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal condiciones de uso NATURAL-->   
+      <div class="modal fade" class="modal-body"  ng-show = "mostrarNatural" id="formModalTrm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title" id="exampleModalLongTitleN"><center><strong>CONDICIONES DE USO</strong></center></h2>
+            </div>
+            <div class="modal-body">
+              <p style="text-align:center"><strong>CONDICIONES DE USO PLATAFORMA iGob 24/7</strong></p>
+              <p>&nbsp;</p>
+              <p style="text-align:justify">Yo, <strong>{{nombre_may}} {{paterno_may}} {{materno_may}} {{casada_may}}</strong> con C&eacute;dula de Identidad N&ordm; <strong>{{cedulaCond}}</strong>&nbsp;<strong>{{registro.expedido}}</strong>, manifiesto haber tomado conocimiento y haber aceptado hoy, {{fecha}} a horas {{hora}}, todas y cada una de las siguientes condiciones de uso: para obtener las credenciales de acceso a la plataforma iGob 24/7, a trav&eacute;s de la cual tendr&eacute; acceso a todos los tr&aacute;mites y servicios en l&iacute;nea que el GAMLP haya puesto o ponga a disposici&oacute;n m&iacute;a para uso personal.</p>
+      
+              <p style="text-align:justify">&nbsp;</p>
+      
+              <p style="text-align:justify">1.- Las credenciales de acceso que recibir&eacute;; usuario y contrase&ntilde;a, tiene car&aacute;cter totalmente confidencial, y son de mi exclusivo uso. Esta informaci&oacute;n no ser&aacute; puesta en conocimiento de ninguna persona, y en caso que sospechara que mi clave secreta pudiera ser conocida por terceros, la modificar&eacute; inmediatamente, para garantizar la seguridad en la utilizaci&oacute;n de la plataforma.</p>
+      
+              <p style="text-align:justify">2.- En relaci&oacute;n a cualquiera de los servicios de car&aacute;cter administrativo, territorial, tributario u otros habilitados en la plataforma iGob 24/7, cualquier informaci&oacute;n que se me pida, como parte de los requisitos exigidos para un tr&aacute;mite, ser&aacute; registrada en apego absoluto a la verdad, dado que estos formularios estar&aacute;n consignados como declaraciones juradas, en virtud de lo dispuesto en normativa vigente, adquiriendo plena validez legal, incluyendo cualquier requisito documental, que deba ser digitalizado y cargado en la plataforma.</p>
+      
+              <p style="text-align:justify">3.- Asimismo, el espacio de trabajo que se me asigne dentro de la plataforma iGob 24/7, se constituir&aacute; en el medio oficial, mediante el cual, cualquiera de las unidades organizacionales del GAMLP podr&aacute; notificarme sobre actos y actuaciones administrativas, as&iacute; como cualquier env&iacute;o de comunicados e informaci&oacute;n emitida, particularmente respecto a plazos administrativos, tributarios y de cualquier otra &iacute;ndole, estipulados en normativa espec&iacute;fica, en m&eacute;rito a lo cual asumo entera responsabilidad y me comprometo a realizar el seguimiento continuo y permanente a cualquier alerta o notificaci&oacute;n que pudiera recibir por este medio.</p>
+      
+              <p style="text-align:justify">4.- Despu&eacute;s de finalizar el trabajo dentro de la plataforma iGob 24/7 me asegurar&eacute; de cerrar mi sesi&oacute;n, para que no exista la posibilidad de que terceros ingresen a la misma.</p>
+            </div>
+            <div class="modal-footer">
+              <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal condiciones de uso JURIDICA-->   
+      <div class="modal fade" class="modal-body" id="formModalTrmJ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title" id="exampleModalLongTitle"><center><strong>CONDICIONES DE USO</strong></center></h2>
+            </div>
+            <div class="modal-body">
+              <p style="text-align:center"><strong>CONDICIONES DE USO PLATAFORMA iGob 24/7</strong></p>
+              <p>&nbsp;</p>
+              <p style="text-align:justify">Yo, <strong>{{registro.nombre}} {{registro.paterno}} {{registro.materno}}</strong> con C&eacute;dula de Identidad N&ordm; <strong>{{cedulaCondR}}</strong>, y en representación legal de la empresa <strong>{{rs_may}}</strong> con NIT <strong>{{registro.nit}}</strong>, manifiesto haber tomado conocimiento y haber aceptado hoy, {{fecha}} a horas {{hora}}, todas y cada una de las siguientes condiciones de uso: para obtener las credenciales de acceso a la plataforma iGob 24/7, a trav&eacute;s de la cual tendr&eacute; acceso a todos los tr&aacute;mites y servicios en l&iacute;nea que el GAMLP haya puesto o ponga a disposici&oacute;n m&iacute;a para uso personal.</p>
+              <p style="text-align:justify">&nbsp;</p>
+              <p style="text-align:justify">1.- Las credenciales de acceso que recibir&eacute;; usuario y contrase&ntilde;a, tiene car&aacute;cter totalmente confidencial, y son de mi exclusivo uso. Esta informaci&oacute;n no ser&aacute; puesta en conocimiento de ninguna persona, y en caso que sospechara que mi clave secreta pudiera ser conocida por terceros, la modificar&eacute; inmediatamente, para garantizar la seguridad en la utilizaci&oacute;n de la plataforma.</p>
+              <p style="text-align:justify">2.- En relaci&oacute;n a cualquiera de los servicios de car&aacute;cter administrativo, territorial, tributario u otros habilitados en la plataforma iGob 24/7, cualquier informaci&oacute;n que se me pida, como parte de los requisitos exigidos para un tr&aacute;mite, ser&aacute; registrada en apego absoluto a la verdad, dado que estos formularios estar&aacute;n consignados como declaraciones juradas, en virtud de lo dispuesto en normativa vigente, adquiriendo plena validez legal, incluyendo cualquier requisito documental, que deba ser digitalizado y cargado en la plataforma.</p>
+              <p style="text-align:justify">3.- Asimismo, el espacio de trabajo que se me asigne dentro de la plataforma iGob 24/7, se constituir&aacute; en el medio oficial, mediante el cual, cualquiera de las unidades organizacionales del GAMLP podr&aacute; notificarme sobre actos y actuaciones administrativas, as&iacute; como cualquier env&iacute;o de comunicados e informaci&oacute;n emitida, particularmente respecto a plazos administrativos, tributarios y de cualquier otra &iacute;ndole, estipulados en normativa espec&iacute;fica, en m&eacute;rito a lo cual asumo entera responsabilidad y me comprometo a realizar el seguimiento continuo y permanente a cualquier alerta o notificaci&oacute;n que pudiera recibir por este medio.</p>
+              <p style="text-align:justify">4.- Despu&eacute;s de finalizar el trabajo dentro de la plataforma iGob 24/7 me asegurar&eacute; de cerrar mi sesi&oacute;n, para que no exista la posibilidad de que terceros ingresen a la misma.</p>
+            </div>
+            <div class="modal-footer">
+              <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script async defer src="https://apis.google.com/js/api.js" 
+      onload="this.onload=function(){};handleClientLoad()" 
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+</body>
+</html>

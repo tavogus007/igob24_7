@@ -26,7 +26,8 @@
     <link rel="stylesheet" href="../servicios/varios/formularios/solicitudLotus/moustache/bootstrap/csshake.min.css" />
     <link rel="stylesheet" href="../../../nuevoIgob/css/iconos_flotantes.css" />
 
-   
+    <meta name="google-signin-client_id" content="816192004370-9uk1774kues8bp41pged0gp8v613kpfj.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>   
 
 </head>
 <script type="text/javascript">
@@ -896,6 +897,32 @@
             iframe.src = iframe.src;
         });
     </script>
+    <script>
+        window.onload = onLoadG;
+        function onLoadG() {
+            gapi.load('auth2', function() {
+                gapi.auth2.init();
+            });
+        }
+        
+        function signOutGoogle() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {   
+                console.log('User signed out.........ffff');    
+            }); 
+            auth2.disconnect();
+        };
+
+        window.onbeforeunload = closingCode;
+        function closingCode(){
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {   
+                console.log('User signed out.........ffff');   
+            }); 
+            auth2.disconnect();
+        }
+
+    </script>    
 </body>
 
 </html>

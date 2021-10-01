@@ -218,12 +218,15 @@ function validateDecimal(valor) {
     });
 </script>
 <div class="page-content" ng-controller="registroMascotasController" data-ng-init="inicioServicios();">
-        <div class="col-md-12">
-            <div class="ibox float-e-margins">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+            <div class="ibox ">
                 <div id="mostrar" class="ibox-title">
                     <h5 class="ng-binding">Registro de Animales de Compañía</h5>
                     <a id="cerrar_rc" style="position: absolute; top: 5px;"><i class="fa-sort-desc fa fa-sort-asc" style="color: #00adb5" id="cerrar_i"></i></a>
                 </div>
+
                 <div class="ibox-content" id="caja">
                     <div class="row">
                         <div class="col-md-12">
@@ -236,71 +239,78 @@ function validateDecimal(valor) {
                                         </div>
                                     </div>
                                 </div>
-                                <table  ng-table="tablaTramites"  class="table table-striped table-hover">
-                                    <tr style="cursor: pointer;text-align: center;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.xmascota_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
-                                        <td data-title="'Imagen'" ng-click="seleccionarMascota(tramite);"><img src={{tramite.xmascota_imagen_url}} alt=" Imagen" height="42" width="42"></td>
-                                        <td data-title="'Mascota'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.nombre_mas}}</td>
-                                        <td data-title="'Raza'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.raza}}</td>
-                                        <td data-title="'Sexo'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.sexo}}</td>                             
-                                        <td data-title="'Edad'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad}}</td>   
-                                        <td data-title="'Meses/Años'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad_desc}}</td>   
-                                        <td data-title="'Estado'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_estado}}</td> 
-                                        <td data-title="'Carnet'" ng-click="verCertificado(tramite.xmascota_id)" class="btn btn-default btn-circle" ><i class="fa fa-newspaper-o" style="color:rgb(247, 33, 9)" ></i></a></td>
-
-                                        <!--td data-title="'Carnet'"><a href={{detalle_url}}{{tramite.xmascota_certdigital}} target="_blank" title="Ver/Descargar" class="btn btn-default btn-circle" ><i class="fa fa-newspaper-o" style="color:rgb(247, 33, 9)" ></i></a></td-->
-                                        <td data-title="'Opciones'"><a class="btn btn-default btn-circle" data-target="#formModalElim" ng-click="llamModEli(tramite.xmascota_id)" data-toggle="modal"><i class="fa fa-trash-o" style="color:rgb(15, 15, 15)"></i></a></td>
-
-                                        <!-- Modal ELIMINAR-->   
-                                        <div class="modal fade" id="formModalElim"  role="dialog" aria-labelledby="exampleModalCenterTitle">
-                                            <div class="modal-dialog modal-dialog-centered" role="document" id = "mdialTamanio">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h2 class="modal-title" id="exampleModalCenterTitle"><center><strong>MOTIVO DE ELIMINACIÓN</strong></center></h2>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div>
-                                                            <label><h3><center>
-                                                            <input ng-model="datos.eutanasia" value="eutanasia" type="radio" name="eutanasia" ng-blur="verElim(datos.eutanasia,datos.fallecido)"> EUTANASIA</center></h3></label>
+                                <div class="table-responsive">
+                                    <table  ng-table="tablaTramites"  class="table table-striped table-hover">
+                                        <tr style="cursor: pointer;text-align: center;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.xmascota_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                                            <td data-title="'Imagen'" ng-click="seleccionarMascota(tramite);"><img src={{tramite.xmascota_imagen_url}} alt=" Imagen" height="42" width="42"></td>
+                                            <td data-title="'Mascota'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.nombre_mas}}</td>
+                                            <td data-title="'Raza'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.raza}}</td>
+                                            <td data-title="'Sexo'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.sexo}}</td>                             
+                                            <td data-title="'Edad'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad}}</td>   
+                                            <td data-title="'Meses/Años'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad_desc}}</td>   
+                                            <td data-title="'Estado'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_estado}}</td> 
+                                            <td data-title="'Carnet'" ng-click="verCertificado(tramite.xmascota_id)" class="btn btn-default btn-circle" title="VER CARNET DE REGISTRO"><i class="fa fa-newspaper-o" style="color:#033b4a" ></i></a></td>
+    
+                                            <!--td data-title="'Carnet'"><a href={{detalle_url}}{{tramite.xmascota_certdigital}} target="_blank" title="Ver/Descargar" class="btn btn-default btn-circle" ><i class="fa fa-newspaper-o" style="color:rgb(247, 33, 9)" ></i></a></td-->
+                                            <td data-title="'Opciones'"><a class="btn btn-default btn-circle" data-target="#formModalElim" ng-click="llamModEli(tramite.xmascota_id)" data-toggle="modal" title="ELIMINAR"><i class="fa fa-trash-o" style="color:rgb(15, 15, 15)"></i></a></td>
+    
+                                            <!-- Modal ELIMINAR-->   
+                                            <div class="modal fade" id="formModalElim"  role="dialog" aria-labelledby="exampleModalCenterTitle">
+                                                <div class="modal-dialog modal-dialog-centered" role="document" id = "mdialTamanio">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title" id="exampleModalCenterTitle"><center><strong>MOTIVO DE ELIMINACIÓN</strong></center></h2>
                                                         </div>
-                                                        <div >
-                                                            <label><h3><center>
-                                                            <input ng-model="datos.fallecido" value="fallecido" type="radio" name="fallecido" ng-blur="verElim(datos.eutanasia,datos.fallecido)"> FALLECIMIENTO</center></h3></label>
+                                                        <div class="modal-body">
+                                                            <div>
+                                                                <label><h3><center>
+                                                                <input ng-model="datos.eutanasia" value="eutanasia" type="radio" name="eutanasia" ng-blur="verElim(datos.eutanasia,datos.fallecido)"> EUTANASIA</center></h3></label>
+                                                            </div>
+                                                            <div >
+                                                                <label><h3><center>
+                                                                <input ng-model="datos.fallecido" value="fallecido" type="radio" name="fallecido" ng-blur="verElim(datos.eutanasia,datos.fallecido)"> FALLECIMIENTO</center></h3></label>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >Cancelar</button>
-                                                        <button id="btnElimMas" type="button" class="btn btn-default" data-dismiss="modal" ng-click="eliminarMascota(tramite.xmascota_id,datos.eutanasia,datos.fallecido)">Eliminar</button>
+                                                        <div class="modal-footer">
+                                                            <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >Cancelar</button>
+                                                            <button id="btnElimMas" type="button" class="btn btn-default" data-dismiss="modal" ng-click="eliminarMascota(tramite.xmascota_id,datos.eutanasia,datos.fallecido)">Eliminar</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="modal fade" id="modalCErt"  role="dialog" aria-labelledby="exampleModalCenterTitle" >
-                                            <div class="modal-dialog modal-dialog-centered" role="document" style="width:1250px;">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h2 class="modal-title" id="exampleModalCenterTitle"><center><strong>Ver Carnet de la Mascota</strong></center></h2>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                            <object
-                                                            data="{{resultsCert}}"
-                                                            width=100% height=600></object>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+    
+                                            <div class="modal fade" id="modalCErt"  role="dialog" aria-labelledby="exampleModalCenterTitle" >
+                                                <div class="modal-dialog modal-dialog-centered" role="document" style="width:1250px;">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title" id="exampleModalCenterTitle"><center><strong>Ver Carnet de la Mascota</strong></center></h2>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                                <object
+                                                                data="{{resultsCert}}"
+                                                                width=100% height=600></object>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button id="btncerrarmodal" type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </tr>
-                                </table>
+                                        </tr>
+                                    </table>
+                                </div>
+
                                 </form>
                             </form>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
+        </div>
+    </div>
+
     <!--MASCOTAS-->
     <div ng-show="mostrar_form_mascotas" class="ibox float-e-margins col-md-12">
         <div>
@@ -656,6 +666,7 @@ function validateDecimal(valor) {
                             </div>
                             <!--vacunas-->
                             <div class="tab-pane" id="tabVacunas">
+                                <div class="panel-body" style="padding: 0;">
                                     <div class="col-md-6">
                                         <div class="form-group" >
                                             <font color="#FF0000"> * </font>
@@ -697,13 +708,12 @@ function validateDecimal(valor) {
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="col-md-12">
                                             <legend> Detalle de las Vacunas:</legend>
                                             <div align=right >
                                                 <button type="button" class="btn btn-default ng-binding" ng-click="guarda_grilla(datos);"ng-disabled="signupForm.tipo_vacuna.$invalid"><i class="fa fa-plus"  style="color:white"></i><font color="white"> Registrar Vacuna</font></button>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12" class="form-control">
+                                    </div>
+                                    <div class="col-md-12" class="form-control">
                                             <div class="form-group" >
                                                 <label class="col-sm-12 control-label no-padding-right" for="url"></label>
                                                 <div class="col-sm-12" align="left">
@@ -712,31 +722,30 @@ function validateDecimal(valor) {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default">
-                                                <div class="panel-body">
-                                                    <div class="table-responsive">
-                                                        <table ng-table="tablalstSoporte" show-filter="true" class="table table-striped table-bordered">
-                                                            <tr ng-repeat="lstGrilla in data1" style="background-color:mintcream">
-                                                                <td align="center" style="width:5%" data-title="'#'">{{$index+1}}</td>
-                                                                <td class="text-center" style="width:15%" data-title="'TIPO DE VACUNA'" >
-                                                                {{lstGrilla.tipo_vacuna}}
-                                                                </td>
-                                                                <td class="text-center" style="width:15%" data-title="'FECHA'">
-                                                                {{lstGrilla.fecha_vacuna}}
-                                                                </td>
-                                                                <td class="text-center" style="width:15%" data-title="'INSTITUCIÓN'">
-                                                                {{lstGrilla.inst_vete}}
-                                                                </td>
-                                                            </tr>
-                                                        </table>  
-                                                    </div>
-                                                </div>  
-                                            </div>
+                                    </div>
+                                    <div class="ibox">
+                                        <div class="table-responsive">
+                                            <table ng-table="tablalstSoporte" show-filter="true" class="table table-striped table-bordered">
+                                                <tr ng-repeat="lstGrilla in data1" style="background-color:mintcream">
+                                                    <td align="center" style="width:5%" data-title="'#'">{{$index+1}}</td>
+                                                    <td class="text-center" style="width:15%" data-title="'TIPO DE VACUNA'" >
+                                                    {{lstGrilla.tipo_vacuna}}
+                                                    </td>
+                                                    <td class="text-center" style="width:15%" data-title="'FECHA'">
+                                                    {{lstGrilla.fecha_vacuna}}
+                                                    </td>
+                                                    <td class="text-center" style="width:15%" data-title="'INSTITUCIÓN'">
+                                                    {{lstGrilla.inst_vete}}
+                                                    </td>
+                                                </tr>
+                                            </table>  
                                         </div>
                                     </div>
-                                </div> 
+
+                                </div>  
+
+
+                            </div> 
                         </div> 
                         <!-- Modal COMPROMISO-->   
                         <div class="modal fade" class="modal-body" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -232,7 +232,7 @@ padding: 20px;
       min-height: 100vh; } }
 
 .login-wrapper {
-  width: 300px;
+  width: 330px;
   max-width: 100%;
   padding-top: 24px;
   padding-bottom: 24px; }
@@ -319,7 +319,7 @@ padding: 20px;
 
 /*# sourceMappingURL=login.css.map */
 .btn:hover {
-  color: #00f5ff;
+  color: #17a2b8;
   text-decoration: none;
 }
 .btn-circle {
@@ -332,7 +332,7 @@ padding: 20px;
   padding: 6px 0;
   border-radius: 25px;
   text-align: center;
-  font-size: 15px;
+  font-size: 20px;
   line-height: 1.428571429;
 }
 .popover-header {
@@ -389,8 +389,8 @@ color: #eefeff;
   }
   
   .card1 {
-      border-bottom-left-radius: 10px;
-      border-top-left-radius: 10px;
+      /* border-bottom-left-radius: 10px;
+      border-top-left-radius: 10px; */
       /* background-color: #FBCC00; */
       background: url("../../images/formLogin.jpg") no-repeat;
       background-size: cover;

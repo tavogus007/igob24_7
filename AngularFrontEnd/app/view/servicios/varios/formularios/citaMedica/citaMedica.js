@@ -1007,13 +1007,15 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
 
             try{
                 var sql = new dataDinamic();
-                sql.consulta = 'select itm_sucursal,itm_cod_ur,itm_cod_item,itm_monto from facturacion._tabla_intermedia where itm_hospital_id = '+$scope.datosHospital.vhsp_id_hospital+' and itm_estado = $$A$$ and itm_id_esp_siis = $$'+especialidades.hspcatid+'$$ and itm_idmodulo = $$1$$';
+                //sql.consulta = 'select itm_sucursal,itm_cod_ur,itm_cod_item,itm_monto from facturacion._tabla_intermedia where itm_hospital_id = '+$scope.datosHospital.vhsp_id_hospital+' and itm_estado = $$A$$ and itm_id_esp_siis = $$'+especialidades.hspcatid+'$$ and itm_idmodulo = $$1$$';
+                sql.consulta = 'select * from facturacion.sp_lst_datos_servicio('+$scope.datosHospital.vhsp_id_hospital+',$$'+especialidades.hspcatid+'$$,$$1$$)';
                 sql.SqlDinamic(function(res){
                     var x = JSON.parse(res);
                     var resultado = x.success.data;
                     if (resultado[0].sp_dinamico != null)
                     {
                         $scope.datosIntermedio = resultado[0].sp_dinamico[0];
+                        console.log("DATOS........ ", $scope.datosIntermedio);
                     }
                     else
                     {
@@ -1401,7 +1403,9 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
              $.LoadingOverlay("hide");
         }
         else{
-            var formData = '{"Tipo": "generarOdm","razon_social": "'+$scope.datosPaciente.dtspsl_paterno+'","ci_nit": "'+$scope.datosPaciente.dtspsl_ci+'","unidad_recaudadora": "'+$scope.datosIntermedio.itm_cod_ur+'","sucursal": "'+$scope.datosIntermedio.itm_sucursal+'","monto_total": "'+$scope.datosIntermedio.itm_monto+'","detalles": [{    "odm_item_recaudador": "'+$scope.datosIntermedio.itm_cod_item+'",    "odm_pre_unitario": "'+$scope.datosIntermedio.itm_monto+'",    "odm_cantidad": "1",    "odm_sub_total": "'+$scope.datosIntermedio.itm_monto+'"  }],"data": [{}]}';
+            var det = '[{"odm_item_recaudador": "' + $scope.datosIntermedio.itm_cod_item + '","odm_pre_unitario": "' + $scope.datosIntermedio.itm_monto + '","odm_cantidad": "'+ 1 +'","odm_sub_total": "' + $scope.datosIntermedio.itm_monto + '"}]';
+			var formData = '{"Tipo": "generarOdm","razon_social": "GOBIERNO AUTONOMO MUNICIPAL DE LA PAZ","ci_nit": "1029241022","unidad_recaudadora": "' + $scope.datosIntermedio.itm_cod_ur + '","sucursal": "' + $scope.datosIntermedio.itm_sucursal + '","monto_total": "' + $scope.datosIntermedio.itm_monto + '","detalles": '+ det +',"data": {"gestion ": 2021,"fecha_recaudacion": "' + $scope.datosIntermedio.vfecha_actual + '","idUsuario": "' + $scope.datosIntermedio.vsucrl_idusuario + '","nameUsuario": "' + $scope.datosIntermedio.vnombre + '","ID_CIUDADANO": "' + sessionService.get("IDCIUDADANO") + '","tipo_actividad": "' + $scope.datosIntermedio.vactividad + '"}}';
+            console.log(formData);
             $.ajax({
                 type        : 'POST',
                 url         : urlFum,

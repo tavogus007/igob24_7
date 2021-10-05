@@ -1403,8 +1403,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
              $.LoadingOverlay("hide");
         }
         else{
-            var det = '[{"odm_item_recaudador": "' + $scope.datosIntermedio.itm_cod_item + '","odm_pre_unitario": "' + $scope.datosIntermedio.itm_monto + '","odm_cantidad": "'+ 1 +'","odm_sub_total": "' + $scope.datosIntermedio.itm_monto + '"}]';
-			var formData = '{"Tipo": "generarOdm","razon_social": "GOBIERNO AUTONOMO MUNICIPAL DE LA PAZ","ci_nit": "1029241022","unidad_recaudadora": "' + $scope.datosIntermedio.itm_cod_ur + '","sucursal": "' + $scope.datosIntermedio.itm_sucursal + '","monto_total": "' + $scope.datosIntermedio.itm_monto + '","detalles": '+ det +',"data": {"gestion ": 2021,"fecha_recaudacion": "' + $scope.datosIntermedio.vfecha_actual + '","idUsuario": "' + $scope.datosIntermedio.vsucrl_idusuario + '","nameUsuario": "' + $scope.datosIntermedio.vnombre + '","ID_CIUDADANO": "' + sessionService.get("IDCIUDADANO") + '","tipo_actividad": "' + $scope.datosIntermedio.vactividad + '"}}';
+            var det = '[{"odm_item_recaudador": "' + $scope.datosIntermedio.vitm_cod_item + '","odm_pre_unitario": "' + $scope.datosIntermedio.vitm_monto + '","odm_cantidad": "'+ 1 +'","odm_sub_total": "' + $scope.datosIntermedio.vitm_monto + '"}]';
+			var formData = '{"Tipo": "generarOdm","razon_social": "GOBIERNO AUTONOMO MUNICIPAL DE LA PAZ","ci_nit": "1029241022","unidad_recaudadora": "' + $scope.datosIntermedio.vitm_cod_ur + '","sucursal": "' + $scope.datosIntermedio.vitm_sucursal + '","monto_total": "' + $scope.datosIntermedio.vitm_monto + '","detalles": '+ det +',"data": {"gestion ": 2021,"fecha_recaudacion": "' + $scope.datosIntermedio.vfecha_actual + '","idUsuario": "' + $scope.datosIntermedio.vsucrl_idusuario + '","nameUsuario": "' + $scope.datosIntermedio.vnombre + '","ID_CIUDADANO": "' + sessionService.get("IDCIUDADANO") + '","tipo_actividad": "' + $scope.datosIntermedio.vactividad + '"}}';
             console.log(formData);
             $.ajax({
                 type        : 'POST',

@@ -798,12 +798,14 @@ function PCController($scope, $rootScope, $routeParams, $location, $http, Data, 
                 }
                 else if(resApi.success.dataSql.length == 0){
                     $scope.predioSeleccionado = null;
-                    swal('', 'Error no se encontró el predio con Código Catastral' + codCat+ " en la tabla consolidada", 'error');
+                    //swal('', 'Error no se encontró el predio con Código Catastral' + codCat+ " en la tabla consolidada", 'error');
+                    swal('', 'El código Catastral '+ codCat +' no tiene un Patrón de Asentamiento o Cartilla de Uso de Suelo.', 'error');
                     console.log("Error no se encontró el predio con Cód Catastral:" + codCat);
                 }
                 else{
                     $scope.predioSeleccionado = null;
-                    swal('', 'Error se encontró más de un registro con el mismo Código Catastral: '+ codCat +' en la tabla consolidada', 'error');
+                    //swal('', 'Error se encontró más de un registro con el mismo Código Catastral: '+ codCat +' en la tabla consolidada', 'error');
+                    swal('', 'El código Catastral '+ codCat +' tiene más de un Patrón de Asentamiento o Cartilla de Uso de Suelo.\n\nDebe verificar el mismo en la Unidad de Desarrollo Urbano y Rural (DPE-UDOUR, Calle Potosí esquina Colón, Edificio Tobia, Piso 7)', 'error');
                     console.log("Error se encontró más de un registro con el mismo Código Catastral:" + codCat);
                 }
                 $.unblockUI();

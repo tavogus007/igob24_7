@@ -16,61 +16,17 @@
     input[type=number] {
         -moz-appearance: textfield;
     }
-    /*
-    .img1{
-        position: absolute;
-        top:  65%;
-        left: 45%;
-    }
-    {box-sizing: border-box;}
-    .pdf-controls { width: 100%; display: block; background: #eee; padding: 1em;}
-    .rotate0 {-webkit-transform: rotate(0deg); transform: rotate(0deg); }
-    .rotate90 {-webkit-transform: rotate(90deg); transform: rotate(90deg); }
-    .rotate180 {-webkit-transform: rotate(180deg); transform: rotate(180deg); }
-    .rotate270 {-webkit-transform: rotate(270deg); transform: rotate(270deg); }
-    .fixed { position: fixed; top: 0; left: calc(50% - 480px); z-index: 100; width: 100%; padding: 1em; background: rgba(238, 238, 238,.9); width: 960px; }
-    */
-    /*si necesitas que sea responsive*/
-    /*
-    canvas {
-        width: 100%;
-        height: auto;
-    }
-
-
-
-    #caja {
-        display: block;
-    }
-    #mostrar{
-        display:block;
-    }
-    #cerrar_rc{
-        position: absolute;
-        top: 5px;
-        left: 92%;
-        font-size: 38px;
-        color: #FFCB05 !important;
-    }
-        */
-
-
 
     .alert-info-lite{
         color: #31708f;
         background-color: #eef7fb;
         border-color: #bce8f1;
     }
-
-
-
-
     .alert-info-dark{
         color: #31708f;
         background-color: #c5e4f1;
         border-color: #87c7e2;
     }
-
     .alert-orange{
         color: #d96a06;
         background-color: #fde1c7;
@@ -123,11 +79,6 @@
         position: absolute;
         left: 35%;
     }
-
-
-
-
-
     .ibox-title-cat {
         -moz-border-bottom-colors: none;
         -moz-border-left-colors: none;
@@ -231,7 +182,6 @@
 
 </style>
 <script type="text/javascript" class="ng-scope">
-    //$('#divPopup2').modal('show');
     $( document ).ready(function()
     {
         //$('#divPopup2').modal('show');
@@ -242,7 +192,6 @@
 
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
-            <!--Pantalla de Inicio-->
             <!--Servicio seleccionado-->
             <div ng-show="servicioCatastral.seleccionado != null">
                 <!--duplicado-->
@@ -383,7 +332,7 @@
                         <div ng-show="servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.solicitar.codigo" class="separadorTab">
                             <div>
                                 <br>
-                                <div class="row">
+                                <div class="row" ng-hide="true">
                                     <div class="col-sm-2"></div>
                                     <div class="col-sm-4">
                                         <button class="btn btn-info btn-width-total" data-toggle="modal" data-target="#divPopup" ng-click="CargarPopupBuscador()" ><span></span>Solicitar duplicado</button>
@@ -398,14 +347,20 @@
                                     </div>
                                     <div class="col-sm-2"></div>
                                 </div>
-
-
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-striped table-hover">
+                                            <tr><th>C&oacute;digo Catastral</th><th>Zona</th><th>Direcci&oacute;n</th><th>Seleccionar Predio</th></tr>
+                                            <tr ng-repeat="cc in lstCCciudadano"><td width="150px">{{cc.CodigoCatastral | FormatoSercat}}</td><td>{{cc.Zona}}</td><td>{{cc.Direccion}}</td>
+                                                <td><button type="button" class="btn btn-primary" ng-click="seleccionarPredio(cc)" data-toggle="modal" data-target="#divPopup7" data-backdrop="static" data-keyboard="false">Seleccionar</button></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -1115,10 +1070,12 @@
                     <h3 class="modal-title">Predios del Ciudadano</h3>
                 </div>
                 <div class="modal-body">
+                    <!--
                     <table class="table table-striped table-hover">
                         <tr><th>C&oacute;digo Catastral</th><th>Zona</th><th>Direcci&oacute;n</th></tr>
                         <tr ng-repeat="cc in lstCCciudadano"><td width="150px">{{cc.CodigoCatastral | FormatoSercat}}</td><td>{{cc.Zona}}</td><td>{{cc.Direccion}}</td></tr>
                     </table>
+                    -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

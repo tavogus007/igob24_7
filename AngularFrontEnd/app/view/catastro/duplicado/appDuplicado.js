@@ -48,11 +48,20 @@ function Padleft(pad,valor) {
 	return ans = pad.substring(0, pad.length - str.length) + str;
 };
 app.filter('unsafe', function($sce) { return $sce.trustAsHtml; });
+
 function DuplicadosController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad,$timeout,$window) 
 {
+	$scope.NuevoTipoSolicitud=0;
+	$scope.diasImpresion=60;
+	$scope.varSpin = false;
+	$scope.RegistroFUM={
+		registrado:null,
+		mensaje:null
+	};
+
 	$scope.configParametros = {
 		documentoSolicitud:{
-			idTipoDocIfile : 0, //Actualizar para PRODUCCION
+			idTipoDocIfile : 0,
 			acciones:{
 				obtener:function () {
 					var conf = new dataSITOL();
@@ -162,342 +171,10 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 	$scope.servicioCatastral.acciones.seleccionar($scope.servicioCatastral.duplicado);
 	$scope.configParametros.tasas.acciones.obtener();
 
-
-
-	$scope.tablaSolicitudes   = {};
-	$scope.solicitudesUsuario = [];
-	$scope.RegistroFUM={
-		registrado:null,
-		mensaje:null
-	};
-    $scope.srcTutorial="../catastro/img/Infografia.png";
-    $scope.cambiarImagen=function(idImg){
-        if(idImg==0){
-            $scope.srcTutorial="../catastro/img/Infografia.png";
-        }
-        else{
-            $scope.srcTutorial="../catastro/img/paso"+idImg+".png";
-        }
-		$scope.idNav=idImg;
-    };
-
-	$scope.navegarGuiaTramite=function () {
-		switch ($scope.idNav){
-			case 1:
-				$('#divPopup').modal('show');
-				break;
-			case 2:
-				$('#divPopup7').modal('show');
-				break;
-			case 3:
-				$('#divPopup9').modal('show');
-				break;
-			case 4:
-				$('#divPopupTipoPago').modal('show');
-				break;
-			case 5:
-				$('#divPopup4').modal('show');
-				break;
-			case 6:
-				$('#divPopup7').modal('show');
-				break;
-			case 7:
-				$('#divPopup8').modal('show');
-				break;
-			default:
-		}
-	};
-	$scope.ConfIntegra = {
-		idServicio : 8, //1
-		idProcodigo:'AE-RAJ',
-		idTramite : 0
-	};
-	$scope.varSpin = false;
 	var aReg = { "cedula": "","complemento": "","celular":"","correo":"","direccion":"","estado_civil":"",
 		"fecha_nacimiento":"","materno":"","nombre":"","ocupacion":"","paterno":"","sexo":"","telefono":"",
 		"cedula2": "","nit2": "","complemento2": "","repLegal": "","nroDocumento": "","nroNotaria": "",
 		"nit": "","razonSocial": "","tipoP": "","cestcivil_id": "","expedido":""};
-	var motivo1={};
-    monthNames = [
-        "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
-        "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
-    ];
-    $scope.diasImpresion=60;
-	$scope.NuevoTipoSolicitud=0;
-	/*$scope.inicioSolicitudes = function () 
-	{
-		//if (DreamFactory.isReady()) {
-			$scope.loginPagoEnLinea();
-			$scope.recuperarDatosRegistro();
-			$scope.CargarComboMotivos();
-			$scope.CargarComboMotivosDetalle();
-			$scope.lstCC();
-			$scope.registro3 = aReg;
-			$scope.solicitudesCiudadano();
-		//}
-	};*/
-
-    $scope.inicioSolicitudes = function () 
-    {
-		//$('html, body').animate({scrollTop:0}, 'slow');
-		$.blockUI({ css: { 
-                    border: 'none', 
-                    padding: '10px', 
-
-                    backgroundColor: '#000', 
-                    '-webkit-border-radius': '10px', 
-                    '-moz-border-radius': '10px', 
-                    opacity: .5, 
-                    color: '#fff' 
-                },message: "Espere un momento porfavor..." }); 
-        setTimeout(function()
-        {
-        	try{
-        		//if (DreamFactory.isReady()) {
-				$scope.loginPagoEnLinea();
-				$scope.recuperarDatosRegistro();
-				$scope.CargarComboMotivos();
-				$scope.CargarComboMotivosDetalle();
-				$scope.lstCC();
-				$scope.registro3 = aReg;
-				$scope.solicitudesCiudadano();
-				//$('#divPopup2').modal('show');
-				//}
-        	}catch(e)
-	        {
-	            console.log("error", e);
-	        }
-         },500);
-    };
-
-
-
-
-	//Inicio
-	$scope.loginPagoEnLinea   =   function(){
-		var formData = {
-			'usr_usuario'   : 'tecnico',
-			'usr_clave'     :   '123456'
-		};
-		$.ajax({
-			dataType: "json",
-			type: "POST",
-			url : 'https://pagonline.lapaz.bo/api/logueo',
-			data: formData,
-			async: false,
-			success: function(response) {
-				sessionService.set('TOKEN', response.token);
-			},
-			error: function (response, status, error) {
-				dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-				console.log("Error login pago en linea", response);
-			}
-		});
-	};
-
-
-
-	$scope.gDpl=function (objFum) {
-		var p = {q: objFum.f};
-		$http({
-			method: 'POST',
-			url: CONFIG.SERVICE_SITOLext + 'gdpl',
-			data: Object.toparams(p),
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-		}).success(function (data, status, headers, config) {
-			if(data.res == "OK")
-			{
-				$scope.lstSolUnico();
-			}
-		}).error(function (data, status, headers, config) {
-			sweet.show('', 'Error al gen dpl', 'error');
-			console.log("Error gDpl", data);
-		});
-	};
-
-	$scope.vdplepago = function(objFum){
-		var idFum = objFum.FUM;
-		var formData = {
-			'idfum':idFum
-		};
-		var idtoken =   sessionService.get('TOKEN');
-		var stoquen =  'Bearer <\\\"' + idtoken + '\\\">';
-		$.ajax({
-			"async": true,
-			type        : 'POST',
-			url         : 'https://pagonline.lapaz.bo/api/comprobantedepago',
-			data        : formData,
-			dataType    : 'json',
-			crossDomain : true,
-			"headers": {
-				"cache-control": "no-cache",
-			},
-			headers: {
-				'authorization': stoquen
-			},
-			success     : function(data) {
-				var res = JSON.stringify(data);
-				var res2 = res.replace("Respuesta enviada","Respuestaenviada");
-				var res3 = JSON.parse(res2);
-				joao = res3;
-				if(res3.Respuestaenviada.idFum)
-				{
-					$scope.gDpl(objFum);
-				}
-			},error: function (data) 
-			{
-				console.log("Error en funcion vdplepago", data);
-			}
-		});
-	};
-
-	$scope.vgDpl=function (objFum) {
-		var p = {q: objFum.f};
-		$http({
-			method: 'POST',
-			url: CONFIG.SERVICE_SITOLext + 'vgdpl',
-			data: Object.toparams(p),
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-		}).success(function (data, status, headers, config) 
-		{
-			if(data.res == "OK")
-			{
-				$scope.lstSolUnico();
-			}
-		}).error(function (data, status, headers, config) {
-			sweet.show('', 'Error al gen dpl', 'error');
-			console.log("Error en la funcion vgDpl",data)
-		});
-	};
-
-	$scope.vlFum = function () {
-		if(sessionService.get('TOKEN')){}
-		else{ $scope.loginPagoEnLinea(); }
-		for(var i = 0; i< $scope.solicitudesUsuario.length; i++)
-		{
-			if($scope.solicitudesUsuario[i].idEstado == 1 && $scope.solicitudesUsuario[i].idTipoPago == 2)
-			{
-				$scope.vdplepago($scope.solicitudesUsuario[i]);
-			}
-			else if($scope.solicitudesUsuario[i].idEstado == 1 && $scope.solicitudesUsuario[i].idTipoPago == 1)
-			{
-				$scope.vgDpl($scope.solicitudesUsuario[i]);
-			}
-		}
-
-	};
-
-	$scope.lstSolUnico = function () {
-		var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-		var sNroDocCiudadano = sessionService.get('CICIUDADANO');
-		if(sessionService.get('TIPO_PERSONA') == 'JURIDICO')
-		{
-			sNroDocCiudadano = sessionService.get('NITCIUDADANO');
-		}
-		var lstSol = new dataSITOL();
-		lstSol.dplLstSol( sNroDocCiudadano, 1, function(resultado){
-			var resApi = JSON.parse(resultado);
-			if(resApi.success)
-			{
-				$scope.solicitudesUsuario = resApi.success.dataSql;
-				var data = resApi.success.dataSql;//grabamos la respuesta para el paginado
-				$scope.tablaSolicitudes.reload();
-			}
-			else
-			{
-				sweet.show('', 'Error al recuperar datos', 'error');
-				console.log("Error en la funcion lstSolUnico", resApi.error.message);
-			}
-		});
-	};
-
-	$scope.continuarPagoOL = function(sol)
-	{
-		sessionService.set('IDFUM', sol.FUM);
-		window.location.href = "#servicios|epagos";
-	};
-
-	$scope.solicitudesCiudadano = function(){
-		//$.blockUI();
-		//$('#divPopup2').modal('show');
-		var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-		var sNroDocCiudadano = sessionService.get('CICIUDADANO');
-		if(sessionService.get('TIPO_PERSONA') == 'JURIDICO')
-		{
-			sNroDocCiudadano = sessionService.get('NITCIUDADANO');
-		}
-		var lstSol = new dataSITOL();
-		lstSol.dplLstSol( sNroDocCiudadano, 1, function(resultado){
-			var resApi = JSON.parse(resultado);
-			if(resApi.success)
-			{
-				$scope.solicitudesUsuario = resApi.success.dataSql;
-				var data = resApi.success.dataSql;//grabamos la respuesta para el paginado
-				$scope.tablaSolicitudes.reload();
-				$scope.vlFum();
-			}
-			else
-			{
-				sweet.show('', 'Error al recuperar datos', 'error');
-				console.log("Error en la funcion solicitudesCiudadano", resApi.error.message);
-			}
-			$.unblockUI();
-		});
-	};
-
-	$scope.tablaSolicitudes = new ngTableParams({
-		page: 1,
-		count: 4,
-		filter: {},
-		sorting: {
-			FechaRegistro: 'desc'
-		}
-	}, {
-		total: $scope.solicitudesUsuario.length,
-		getData: function($defer, params) {
-			var filteredData = params.filter() ?
-				$filter('filter')($scope.solicitudesUsuario, params.filter()) :
-				$scope.solicitudesUsuario;
-			var orderedData = params.sorting() ?
-				$filter('orderBy')(filteredData, params.orderBy()) :
-				$scope.solicitudesUsuario;
-			params.total($scope.solicitudesUsuario.length);
-			$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-		}
-	});
-	//$scope.mot={}; //DEPURAR
-	$scope.CargarComboMotivos = function () {
-
-		var lstMotivos = new dataSITOL();
-		lstMotivos.dplLstMotivos( function(resultado){
-			var resApi = JSON.parse(resultado);
-			if(resApi.success)
-			{
-				$scope.Motivos =   resApi.success.dataSql;
-			}
-			else
-			{
-				sweet.show('', 'Error al recuperar datos', 'error');
-				console.log("Error en la funcion CargarComboMotivos", resApi.error.message);
-			}
-		});
-	};
-	$scope.CargarComboMotivosDetalle = function () {
-		$scope.idMotivoDetalle=0;
-		var lstMotivosDet = new dataSITOL();
-		lstMotivosDet.dplLstMotivosDet( $scope.idMotivo , function(resultado){
-			var resApi = JSON.parse(resultado);
-			if(resApi.success)
-			{
-				$scope.MotivosDetalle =   resApi.success.dataSql;
-			}
-			else
-			{
-				sweet.show('', 'Error al recuperar datos', 'error');
-				console.log("Error en la funcion CargarComboMotivosDetalle", resApi.error.message);
-			}
-		});
-	};
 	$scope.recuperarDatosRegistro = function(){
 		var datosCiudadano=new rcNatural();
 		datosCiudadano.oid=sessionService.get('IDCIUDADANO');
@@ -578,8 +255,38 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			}
 		});
 	};
-
-	$scope.lstCC = function () {
+	$scope.CargarComboMotivos = function () {
+		var lstMotivos = new dataSITOL();
+		lstMotivos.dplLstMotivos( function(resultado){
+			var resApi = JSON.parse(resultado);
+			if(resApi.success)
+			{
+				$scope.Motivos =   resApi.success.dataSql;
+			}
+			else
+			{
+				sweet.show('', 'Error al recuperar datos', 'error');
+				console.log("Error en la funcion CargarComboMotivos", resApi.error.message);
+			}
+		});
+	};
+	$scope.CargarComboMotivosDetalle = function () {
+		$scope.idMotivoDetalle=0;
+		var lstMotivosDet = new dataSITOL();
+		lstMotivosDet.dplLstMotivosDet( $scope.idMotivo , function(resultado){
+			var resApi = JSON.parse(resultado);
+			if(resApi.success)
+			{
+				$scope.MotivosDetalle =   resApi.success.dataSql;
+			}
+			else
+			{
+				sweet.show('', 'Error al recuperar datos', 'error');
+				console.log("Error en la funcion CargarComboMotivosDetalle", resApi.error.message);
+			}
+		});
+	};
+	$scope.CargarLstCC = function () {
 		$scope.lstCCciudadano = [];
 		var sNroDocCiudadano = sessionService.get('CICIUDADANO');
 		if(sessionService.get('TIPO_PERSONA') == 'JURIDICO')
@@ -599,47 +306,152 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			}
 		});
 	};
+	$scope.CargarSolicitudesCiudadano = function(){
+		var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+		var sNroDocCiudadano = sessionService.get('CICIUDADANO');
+		if(sessionService.get('TIPO_PERSONA') == 'JURIDICO')
+		{
+			sNroDocCiudadano = sessionService.get('NITCIUDADANO');
+		}
+		var lstSol = new dataSITOL();
+		lstSol.dplLstSol( sNroDocCiudadano, 1, function(resultado){
+			var resApi = JSON.parse(resultado);
+			if(resApi.success)
+			{
+				$scope.solicitudesUsuario = resApi.success.dataSql;
+				var data = resApi.success.dataSql;//grabamos la respuesta para el paginado
+				$scope.tablaSolicitudes.reload();
+				$scope.vlFum();
+			}
+			else
+			{
+				sweet.show('', 'Error al recuperar datos', 'error');
+				console.log("Error en la funcion solicitudesCiudadano", resApi.error.message);
+			}
+			$.unblockUI();
+		});
+	};
 
-	//Verificacines
-	$scope.VerificarDespliegueFUM = function (sol) {
-		//return sol.idEstado == 1;
-		return sol.idEstado == 1 & sol.idTipoPago == 1;
+	$scope.solicitudesUsuario = [];
+	//$scope.tablaSolicitudes = {};
+	$scope.tablaSolicitudes = new ngTableParams({
+		page: 1,
+		count: 8,
+		filter: {},
+		sorting: {
+			FechaRegistro: 'desc'
+		}
+	}, {
+		total: $scope.solicitudesUsuario.length,
+		getData: function($defer, params) {
+			var filteredData = params.filter() ?
+				$filter('filter')($scope.solicitudesUsuario, params.filter()) :
+				$scope.solicitudesUsuario;
+			var orderedData = params.sorting() ?
+				$filter('orderBy')(filteredData, params.orderBy()) :
+				$scope.solicitudesUsuario;
+			params.total($scope.solicitudesUsuario.length);
+			$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		}
+	});
+
+	//Imagen tutorial
+	$scope.srcTutorial="../catastro/img/Infografia.png";
+	$scope.cambiarImagen=function(idImg){
+		if(idImg==0){
+			$scope.srcTutorial="../catastro/img/Infografia.png";
+		}
+		else{
+			$scope.srcTutorial="../catastro/img/paso"+idImg+".png";
+		}
+		$scope.idNav=idImg;
 	};
-	$scope.VerificarDespliegueEpago = function (sol) {
-		return sol.idEstado == 1 & sol.idTipoPago == 2;
-		//return true;
+	$scope.navegarGuiaTramite=function () {
+		switch ($scope.idNav){
+			case 1:
+				$('#divPopup').modal('show');
+				break;
+			case 2:
+				$('#divPopup7').modal('show');
+				break;
+			case 3:
+				$('#divPopup9').modal('show');
+				break;
+			case 4:
+				$('#divPopupTipoPago').modal('show');
+				break;
+			case 5:
+				$('#divPopup4').modal('show');
+				break;
+			case 6:
+				$('#divPopup7').modal('show');
+				break;
+			case 7:
+				$('#divPopup8').modal('show');
+				break;
+			default:
+		}
 	};
-	$scope.VerificarDespliegueCC = function (sol) {
-		return sol.idEstado == 2 || sol.idEstado == 3;
+	
+	$scope.inicioSolicitudes = function (){
+		//$('html, body').animate({scrollTop:0}, 'slow');
+		$.blockUI({ css: {
+			border: 'none',
+			padding: '10px',
+			backgroundColor: '#000',
+			'-webkit-border-radius': '10px',
+			'-moz-border-radius': '10px',
+			opacity: .5,
+			color: '#fff'
+		},message: "Espere un momento porfavor..." });
+		setTimeout(function()
+		{
+			try{
+				$scope.loginPagoEnLinea();//Revisar
+				$scope.recuperarDatosRegistro();
+				$scope.CargarComboMotivos();
+				$scope.CargarComboMotivosDetalle();
+				$scope.CargarLstCC();
+				$scope.registro3 = aReg;
+				$scope.CargarSolicitudesCiudadano();
+			}catch(e)
+			{
+				console.log("error", e);
+			}
+		},500);
 	};
 
-	function MouseWheelHandler(e) {
-		var e = window.event || e; // old IE support
-		var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-		return false;
-	}
-	//Buscador Inicio
-	$scope.codigoCatastral={
-		distrito:null,
-		manzana:null,
-		predio:null,
-		subpredio:null
-	};
-	$scope.CargarPopupBuscador=function () 
-	{
+	//------------------------  Flujo Registro INICIO -----------------------------------------
+	//Paso 1 Seleccion de predio
+	$scope.seleccionarPredio = function (cc1) {
+
 		$scope.codigoCatastral={};
 		$scope.resultadoBusqueda = {};
 		$scope.confirmacionCiudadano = null;
 		$scope.observacion.codigoCatastral='';
 		$scope.observacion.obs='';
 		$scope.cerrarProforma();
-		$scope.getCaptchasX();
+		//$scope.getCaptchasX();
+		
+		console.log("sass",cc1);
+		var cc = cc1.CodigoCatastral;
+		$scope.codigoCatastral.distrito=cc.substring(0,3);
+		$scope.codigoCatastral.manzana=cc.substring(3,7);
+		$scope.codigoCatastral.predio=cc.substring(7,11);
+		$scope.codigoCatastral.subpredio=cc.substring(11,15);
+		//$('#divPopup').modal('hide');
+		//$('#divPopup7').modal('show');
+		$scope.BuscarCertificado(cc);
+	}
+	
+	//Paso 2 buscador
+	$scope.codigoCatastral={
+		distrito:null,
+		manzana:null,
+		predio:null,
+		subpredio:null
 	};
-	/*
-	 * Catastro Duplicado visualizar imagen
-	 */
-	$scope.BuscarCertificado = function (codcat) 
-	{
+	$scope.BuscarCertificado = function (codcat){
 		var myimage = document.getElementById("pdfView");
 		if (myimage.addEventListener) {
 			// IE9, Chrome, Safari, Opera
@@ -659,15 +471,15 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			$scope.codigoCatastral.subpredio = 0;
 		var sp = Padleft('0000',$scope.codigoCatastral.subpredio);
 		var cc = d+m+p+sp;
-        $scope.observacion.codigoCatastral = d + '-' + m + '-' + p + '-' + sp ;
-        var nrodoc =  sessionService.get('CICIUDADANO');
+		$scope.observacion.codigoCatastral = d + '-' + m + '-' + p + '-' + sp ;
+		var nrodoc =  sessionService.get('CICIUDADANO');
 
-        //Verificar tipo personeria
-        if(sessionService.get('TIPO_PERSONA') == 'JURIDICO')
-        {
-            nrodoc = sessionService.get('NITCIUDADANO');
-        }
-        $scope.resetUrl();
+		//Verificar tipo personeria
+		if(sessionService.get('TIPO_PERSONA') == 'JURIDICO')
+		{
+			nrodoc = sessionService.get('NITCIUDADANO');
+		}
+		$scope.resetUrl();
 
 		//Verificamos en sitram si el predio tiene tramites pendientes
 		console.log("verificar en sitram", cc);
@@ -748,15 +560,13 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			console.log("Error de conección al verificar tramites Sitram del predio:", data);
 		});
 	};
-
 	$scope.solicitudAntigua=function() {
-        var urlPreview  = CONFIG.SERVICE_SITOLext + 'DesplegarPreviewDpl?Dpl=' + $scope.resultadoBusqueda.Dpl;
-        $('#PDFtoPrint').attr('src',urlPreview);
-        $scope.RefreshUrl(urlPreview);
-        $timeout(function(){$scope.varSpin=false}, 2800);
-        $scope.fit();
+		var urlPreview  = CONFIG.SERVICE_SITOLext + 'DesplegarPreviewDpl?Dpl=' + $scope.resultadoBusqueda.Dpl;
+		$('#PDFtoPrint').attr('src',urlPreview);
+		$scope.RefreshUrl(urlPreview);
+		$timeout(function(){$scope.varSpin=false}, 2800);
+		$scope.fit();
 	};
-
 	$scope.solicitudNueva=function (){
 		var urlPreview = CONFIG.SERVICE_SITOLextgen + 'DuplicadosPh/DesplegarPreviewDplNuevo?Dpl=' + $scope.resultadoBusqueda.Dpl;
 		$('#PDFtoPrint').attr('src', urlPreview);
@@ -765,10 +575,252 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			$scope.varSpin = false
 		}, 2800);
 		$scope.fit();
-    };
-	// Buscador Fin
+	};
 
-	//Observaciones
+	//Paso 3 Seleccion Motivos 
+	//funciones proforma de pago
+	$scope.proforma=false;
+	$scope.idMotivo=0;
+	$scope.idMotivoDetalle=0;
+	$scope.detalle={vista:false,datos:{}};
+	$scope.usuario={ap:'',am:'',nombre:'',email:'',ci:'',cel:''};
+	$scope.scroll = 0;
+	$scope.loading = 'loading';
+	$scope.getNavStyle = function(scroll) {
+		if(scroll > 100) return 'pdf-controls fixed';
+		else return 'pdf-controls';
+	};
+	$scope.tipoVisor=1;
+	$scope.onError = function(error){};
+	$scope.onLoad = function() {
+		$scope.loading = '';
+	};
+	$scope.onProgress = function(progress) {};
+	$scope.resetUrl=function () {
+		$scope.pdfUrl = '../catastro/img/Default.pdf';
+		var url = '../catastro/img/Default.pdf';
+		$('#PDFtoPrint').attr('src',url);
+		$scope.RefreshUrl(url);
+		//$scope.servicioCatastral.seleccionado.vistas.seleccionado = angular.copy($scope.servicioCatastral.seleccionado.vistas.solicitar);
+		$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
+	};
+	$scope.pdfUrl = '../catastro/img/Default.pdf';
+
+	$scope.ProformaPago=function (resBusquedaDato) {
+		$scope.codigoCatastral={};
+		$scope.idMotivo=0;
+		$scope.idMotivoDetalle=0;
+		$scope.descMotivo="";
+		$scope.descMotivoDetalle="";
+		//$scope.resultadoBusqueda = {};
+		if(resBusquedaDato.res == "OK")
+		{
+			$scope.proforma=true;
+		}
+	};
+	$scope.cerrarProforma=function(){
+		$scope.proforma=false;
+		$scope.idMotivoDetalle =0;
+		$scope.idMotivo =0;
+	};
+	$scope.cerrarDetalle=function(){
+		$scope.detalle.vista=false;
+	};
+	$scope.verDetalle=function(id){
+		$scope.detalle.vista=true;
+	};
+
+	//Paso 3.1 Visualizacion de descripcion de motivos
+	$scope.cargarDescripcionMotivos=function(){
+		for(var i=0; i< $scope.Motivos.length; i++){
+			var itemM = $scope.Motivos[i];
+			if(itemM.IdMotivo == $scope.idMotivo){
+				$scope.descMotivo = itemM.descripcion;
+				break;
+			}
+		}
+		for(var i=0; i< $scope.MotivosDetalle.length; i++){
+			var itemD = $scope.MotivosDetalle[i];
+			if(itemD.IdMotivoDetalle == $scope.idMotivoDetalle){
+				$scope.descMotivoDetalle = itemD.Descripcion;
+				break;
+			}
+		}
+	};
+
+	//Paso 4 Seleccion tipo pago
+	//Se setea la variable de tipo de pago
+	//Se registra en IGOB
+
+
+
+	//Paso Final Ver Duplicado
+	$scope.DeplegarDpl = function (sol)
+	{
+		//$scope.resetUrl();
+		var myimage = document.getElementById("pdfView");
+		if (myimage.addEventListener) {
+			// IE9, Chrome, Safari, Opera
+			myimage.addEventListener("mousewheel", MouseWheelHandler, false);
+			// Firefox
+			myimage.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+		}
+		// IE 6/7/8
+		else myimage.attachEvent("onmousewheel", MouseWheelHandler);
+
+		$scope.tipoVisor=2;
+		$scope.varSpin = true;
+		var url = CONFIG.SERVICE_SITOLext + 'DesplegarDuplicado?a=' + sol.a;
+		$scope.RefreshUrl(url);
+		$timeout(function(){$scope.varSpin=false}, 1000);
+
+		if(sol.idEstado == 2){
+			$scope.dspl = true;
+			$('#PDFtoPrint').attr('src',url);
+		}
+		else{
+			$scope.dspl=false;
+		}
+		//para el adjunto
+		$scope.dplUrl = url;
+		$scope.fit();
+	};
+
+
+	//------------------------Flujo registro - FIN -----------------------------
+
+	//------------------------ Verificar pago - Inicio ---------------------------
+	//Verifica si cada una de las solicitudes fue pagada
+	$scope.vlFum = function () {
+		if(sessionService.get('TOKEN')){}
+		else{ $scope.loginPagoEnLinea(); }
+		for(var i = 0; i< $scope.solicitudesUsuario.length; i++)
+		{
+			if($scope.solicitudesUsuario[i].idEstado == 1 && $scope.solicitudesUsuario[i].idTipoPago == 2)
+			{
+				$scope.vdplepago($scope.solicitudesUsuario[i]);
+			}
+			else if($scope.solicitudesUsuario[i].idEstado == 1 && $scope.solicitudesUsuario[i].idTipoPago == 1)
+			{
+				$scope.vgDpl($scope.solicitudesUsuario[i]);
+			}
+		}
+
+	};
+	//Verifica solicitud pagada por banco y genera duplicado
+	$scope.vgDpl=function (objFum) {
+		var p = {q: objFum.f};
+		$http({
+			method: 'POST',
+			url: CONFIG.SERVICE_SITOLext + 'vgdpl',
+			data: Object.toparams(p),
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		}).success(function (data, status, headers, config)
+		{
+			if(data.res == "OK")
+			{
+				$scope.lstSolUnico();
+			}
+		}).error(function (data, status, headers, config) {
+			sweet.show('', 'Error al gen dpl', 'error');
+			console.log("Error en la funcion vgDpl",data)
+		});
+	};
+	//Verifica solicitud pagada en linea y llama a servicio para generar duplicado
+	$scope.vdplepago = function(objFum){
+		var idFum = objFum.FUM;
+		var formData = {
+			'idfum':idFum
+		};
+		var idtoken =   sessionService.get('TOKEN');
+		var stoquen =  'Bearer <\\\"' + idtoken + '\\\">';
+		$.ajax({
+			"async": true,
+			type        : 'POST',
+			url         : 'https://pagonline.lapaz.bo/api/comprobantedepago',
+			data        : formData,
+			dataType    : 'json',
+			crossDomain : true,
+			"headers": {
+				"cache-control": "no-cache",
+			},
+			headers: {
+				'authorization': stoquen
+			},
+			success     : function(data) {
+				var res = JSON.stringify(data);
+				var res2 = res.replace("Respuesta enviada","Respuestaenviada");
+				var res3 = JSON.parse(res2);
+				joao = res3;
+				if(res3.Respuestaenviada.idFum)
+				{
+					$scope.gDpl(objFum);
+				}
+			},error: function (data)
+			{
+				console.log("Error en funcion vdplepago", data);
+			}
+		});
+	};
+	$scope.gDpl=function (objFum) {
+		var p = {q: objFum.f};
+		$http({
+			method: 'POST',
+			url: CONFIG.SERVICE_SITOLext + 'gdpl',
+			data: Object.toparams(p),
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		}).success(function (data, status, headers, config) {
+			if(data.res == "OK")
+			{
+				$scope.lstSolUnico();
+			}
+		}).error(function (data, status, headers, config) {
+			sweet.show('', 'Error al gen dpl', 'error');
+			console.log("Error gDpl", data);
+		});
+	};
+
+	$scope.lstSolUnico = function () {
+		var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+		var sNroDocCiudadano = sessionService.get('CICIUDADANO');
+		if(sessionService.get('TIPO_PERSONA') == 'JURIDICO')
+		{
+			sNroDocCiudadano = sessionService.get('NITCIUDADANO');
+		}
+		var lstSol = new dataSITOL();
+		lstSol.dplLstSol( sNroDocCiudadano, 1, function(resultado){
+			var resApi = JSON.parse(resultado);
+			if(resApi.success)
+			{
+				$scope.solicitudesUsuario = resApi.success.dataSql;
+				var data = resApi.success.dataSql;//grabamos la respuesta para el paginado
+				$scope.tablaSolicitudes.reload();
+			}
+			else
+			{
+				sweet.show('', 'Error al recuperar datos', 'error');
+				console.log("Error en la funcion lstSolUnico", resApi.error.message);
+			}
+		});
+	};
+
+	//------------------------ Verificar pago - FIN -----------------------------------------------
+
+	//------------------------ Verificacines botones de acciones bandeja - Inicio --------------------
+	$scope.VerificarDespliegueFUM = function (sol) {
+		//return sol.idEstado == 1;
+		return sol.idEstado == 1 & sol.idTipoPago == 1;
+	};
+	$scope.VerificarDespliegueEpago = function (sol) {
+		return sol.idEstado == 1 & sol.idTipoPago == 2;
+		//return true;
+	};
+	$scope.VerificarDespliegueCC = function (sol) {
+		return sol.idEstado == 2 || sol.idEstado == 3;
+	};
+	//------------------------- Verificacines botones de acciones bandeja - FIN  ----------------------
+
+	//------------------------ Observaciones  - Inicio -------------
 	$scope.observacion={
 		nomCiudadanoOEmpresa:sessionService.get('US_NOMBRE') + ' ' + sessionService.get('US_PATERNO') + ' ' + sessionService.get('US_MATERNO')  ,
 		nroDocumento:sessionService.get('CICIUDADANO'),
@@ -794,118 +846,60 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		$scope.observacion.obs='';
 		sweet.show('', 'Problemas de visualización enviados', 'success');
 	};
-
-	$scope.cargarDescripcionMotivos=function(){
-		for(var i=0; i< $scope.Motivos.length; i++){
-			var itemM = $scope.Motivos[i];
-			if(itemM.IdMotivo == $scope.idMotivo){
-				$scope.descMotivo = itemM.descripcion;
-				break;
+	//------------------------ Observaciones  - FIN -------------
+	
+	
+	//Revisar
+	/*********************************** Registro en Integra *******************************************/
+	$scope.ConfIntegra = {
+		idServicio : 8, //1
+		idProcodigo:'AE-RAJ',
+		idTramite : 0
+	};
+	//Registro en igob
+	$scope.AddIntegra = function(){
+		$scope.RegistroFUM.mensaje = "Generando... espere por favor.";
+		var fecha = new Date();
+		var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+		$scope.day = fecha.getDate();
+		var mes = fecha.getMonth()+2;
+		if(mes>11){mes = mes-12}
+		$scope.month = monthNames[mes];
+		$scope.year = fecha.getFullYear();
+		var sIdServicio = $scope.ConfIntegra.idServicio;
+		var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+		var sFechaTramite = fechactual;
+		var aServicio = {};
+		var datosServicio   = new reglasnegocio();
+		datosServicio.identificador = 'RCCIUDADANO_68';
+		datosServicio.parametros = '{"frm_tra_dvser_id":"'+ sIdServicio +'","frm_tra_id_ciudadano":"'+ sIdCiudadano +'","frm_tra_fecha":"'+ sFechaTramite +'","frm_tra_enviado":"SI","frm_tra_id_usuario":"3"}';
+		$.blockUI();
+		console.log("addintegra",datosServicio);
+		datosServicio.llamarregla(function(data){
+			console.log("addintegra res",data);
+			data = JSON.parse(data);
+			$scope.ConfIntegra.idTramite = data.frm_tra_id;
+			if($scope.idTipoPago == 1) {
+				$('#divPopup4').modal('show');
+				$scope.genProforma();
 			}
-		}
-		for(var i=0; i< $scope.MotivosDetalle.length; i++){
-			var itemD = $scope.MotivosDetalle[i];
-			if(itemD.IdMotivoDetalle == $scope.idMotivoDetalle){
-				$scope.descMotivoDetalle = itemD.Descripcion;
-				break;
+			else {
+				$scope.genProformaPagoOL();
+				$('#divPopupPagoTarjeta').modal('show');
 			}
-		}
+			$.unblockUI();
+		});
 	};
 
-	$scope.ImprimirProforma = function (fum) {
-		$scope.varSpin = true;
-		$scope.RegistroFUM={
-			registrado:'OK',
-			mensaje:''
-		};
-		var urlFum = CONFIG.SERVICE_SITOLext + 'DesplegarFum?q=' + fum;
-		$('#visorFum object').attr("data",urlFum);
-		$timeout(function(){$scope.varSpin=false}, 1000);
-	};
-
-	//////////////
-
-
-	$scope.impDpl= function (elementId) {
-		document.getElementById(elementId).focus();
-		document.getElementById(elementId).contentWindow.print();
-	};
-	$scope.ImprimirDpl = function (aa) {
-		var url2 = CONFIG.SERVICE_SITOLext + 'DesplegarDuplicado?a=' + aa;
-		$('#visorDuplicado object').attr("data",url2);
-	};
-	$scope.PrevCert = function () {
-
-	};
-
-	$scope.ConfimarcionCiudadano=function () {
-		$scope.confirmacionCiudadano = 'OK';
-	};
-    
-    //funciones proforma de pago
-
-    $scope.proforma=false;
-    $scope.idMotivo=0;
-    $scope.idMotivoDetalle=0;
-    $scope.detalle={vista:false,datos:{}};
-    $scope.usuario={ap:'',am:'',nombre:'',email:'',ci:'',cel:''};
-
-    $scope.scroll = 0;
-    $scope.loading = 'loading';
-    $scope.getNavStyle = function(scroll) {
-        if(scroll > 100) return 'pdf-controls fixed';
-        else return 'pdf-controls';
-    };
-    
-    $scope.tipoVisor=1;
-
-    $scope.onError = function(error){};
-    $scope.onLoad = function() {
-        $scope.loading = '';
-    };
-    $scope.onProgress = function(progress) {};
-    $scope.resetUrl=function () {
-        $scope.pdfUrl = '../catastro/img/Default.pdf';
-        var url = '../catastro/img/Default.pdf';
-        $('#PDFtoPrint').attr('src',url);
-        $scope.RefreshUrl(url);
-		//$scope.servicioCatastral.seleccionado.vistas.seleccionado = angular.copy($scope.servicioCatastral.seleccionado.vistas.solicitar);
-		$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
-    };
-    $scope.pdfUrl = '../catastro/img/Default.pdf';
-
-    $scope.ProformaPago=function (resBusquedaDato) {
-        $scope.codigoCatastral={};
-        $scope.idMotivo=0;
-        $scope.idMotivoDetalle=0;
-        $scope.descMotivo="";
-        $scope.descMotivoDetalle="";
-        //$scope.resultadoBusqueda = {};
-        if(resBusquedaDato.res == "OK")
-		{
-			$scope.proforma=true;
-		}
-    };
-    $scope.cerrarProforma=function(){
-        $scope.proforma=false;
-		$scope.idMotivoDetalle =0;
-		$scope.idMotivo =0;
-    };
-    $scope.cerrarDetalle=function(){
-        $scope.detalle.vista=false;
-    };
-    $scope.verDetalle=function(id){
-        $scope.detalle.vista=true;
-    };
-
+	//Genera proforma para pago en  banco
 	$scope.genProforma = function(){
-        $scope.Imp=false;
-        if(	$scope.idMotivo==0 || $scope.idMotivoDetalle==0){
+		$scope.Imp=false;
+		if(	$scope.idMotivo==0 || $scope.idMotivoDetalle==0){
 			$scope.RegistroFUM = {
 				registrado:null,
 				mensaje:'Debe seleccionar motivo y motivo detalle'
 			};
-        }
+		}
 		else
 		{
 			//Registro FUM Inicio
@@ -946,11 +940,12 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 				data: Object.toparams(p),
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function (data, status, headers, config) {
+				console.log("RegFUM res:",data);
 				if(data.res == 'OK')
 				{
 					//Registro tramite - Inicio
 					var fumb = data.fum;
-					var fumc = data.msg; 
+					var fumc = data.msg;
 					var ccb = $scope.resultadoBusqueda.codCat;
 
 					var xTipoTra=$scope.NuevoTipoSolicitud==1?"DUPLICADO_NUEVO":"DUPLICADO";
@@ -980,10 +975,11 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 					}
 					var regFum = new dataSITOL();
 					regFum.dplRegFum( xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){ //xtipoPago,xcodPago,
+						console.log("Registro solicitud",resultado);
 						var resApi = JSON.parse(resultado);
 						if(resApi.success)
 						{
-							$scope.solicitudesCiudadano();
+							$scope.CargarSolicitudesCiudadano();
 							$scope.idMotivo=0;
 							$scope.idMotivoDetalle=0;
 							$scope.RegistroFUM={
@@ -991,8 +987,10 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 								mensaje:'Señor usuario, debe imprimir esta Proforma de Pago y apersonarse a cualquier entidad financiera autorizada en los siguientes 7 días calendario.'
 							};
 							var urlFum2 = CONFIG.SERVICE_SITOLext + 'DesplegarFum?q=' + fumc;
-							$( "object").css('display', 'none');
-							$( "object").attr('data',  urlFum2).css('display', '');
+							//$( "object").css('display', 'none');
+							//$( "object").attr('data',  urlFum2).css('display', '');
+							$('#visorFum object').attr("data",urlFum2);
+							$('#visorFum object').load(urlFum2);
 
 							//Registrando en integra
 							var di={};
@@ -1063,6 +1061,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		}
 	};
 
+	//Genera proforma para pago en  linea
 	$scope.genProformaPagoOL = function(){
 		$scope.Imp=false;
 		if(	$scope.idMotivo==0 || $scope.idMotivoDetalle==0){
@@ -1148,7 +1147,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 						var resApi = JSON.parse(resultado);
 						if(resApi.success)
 						{
-							$scope.solicitudesCiudadano();
+							$scope.CargarSolicitudesCiudadano();
 							$scope.idMotivo=0;
 							$scope.idMotivoDetalle=0;
 							$scope.RegistroFUM={
@@ -1195,7 +1194,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 						{
 							sweet.show('', 'Error al registrar proforma de pago', 'error');
 							console.log("Error al registrar proforma de pago", resApi.error.message);
-						
+
 							$scope.idMotivoDetalle =0;
 							$scope.idMotivo =0;
 							$scope.RegistroFUM={
@@ -1227,37 +1226,138 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 
 	};
 
-	$scope.DeplegarDpl = function (sol) 
-	{
-		//$scope.resetUrl();
-	    var myimage = document.getElementById("pdfView");
-	    if (myimage.addEventListener) {
-	    	// IE9, Chrome, Safari, Opera
-	            myimage.addEventListener("mousewheel", MouseWheelHandler, false);
-	            // Firefox
-	            myimage.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
-	        }
-	      // IE 6/7/8
-	    else myimage.attachEvent("onmousewheel", MouseWheelHandler);
-
-		$scope.tipoVisor=2;
-		$scope.varSpin = true;
-		var url = CONFIG.SERVICE_SITOLext + 'DesplegarDuplicado?a=' + sol.a;
-		$scope.RefreshUrl(url);
-		$timeout(function(){$scope.varSpin=false}, 1000);
-
-		if(sol.idEstado == 2){
-			$scope.dspl = true;
-			$('#PDFtoPrint').attr('src',url);
-		}
-		else{
-			$scope.dspl=false;
-		}
-		//para el adjunto
-		$scope.dplUrl = url;
-		$scope.fit();
+	$scope.UpdateIntegra = function(obj){
+		var fechactual          = obtFechaActual.obtenerFechaActual();
+		var datosSerializados   =  JSON.stringify(obj);
+		var idCiudadano         = sessionService.get('IDSOLICITANTE');
+		var idTramite           = $scope.ConfIntegra.idTramite;
+		var idServicio          = $scope.ConfIntegra.idServicio;
+		var updInt   = new reglasnegocio();
+		updInt.identificador = 'RCCIUDADANO_80';
+		updInt.parametros = '{}';
+		updInt.llamarregla(function(results){
+			console.log("upd integra", results);
+			results = JSON.parse(results);
+			$scope.AddIF(obj);
+		});
 	};
 
+	$scope.AddIF = function(paramForm){
+		var idProcodigo = $scope.ConfIntegra.idProcodigo;
+		var datosSerializados = JSON.stringify(paramForm);
+		var serIF = new gCrearCaso();
+		serIF.usr_id=1;
+		serIF.datos=datosSerializados;
+		serIF.procodigo=$scope.ConfIntegra.idProcodigo;
+		console.log("addif",serIF);
+		serIF.crearCasoAeLinea( function(resultado)
+		{
+			console.log("addif res",resultado);
+			$.unblockUI();
+		});
+	};
+
+    
+
+
+
+	var motivo1={};
+    monthNames = [
+        "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
+        "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
+    ];
+
+
+
+	//Inicio configuracion pago en linea
+	$scope.loginPagoEnLinea   =   function(){
+		var formData = {
+			'usr_usuario'   : 'tecnico',
+			'usr_clave'     :   '123456'
+		};
+		$.ajax({
+			dataType: "json",
+			type: "POST",
+			url : 'https://pagonline.lapaz.bo/api/logueo',
+			data: formData,
+			async: false,
+			success: function(response) {
+				sessionService.set('TOKEN', response.token);
+			},
+			error: function (response, status, error) {
+				dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+				console.log("Error login pago en linea", response);
+			}
+		});
+	};
+	$scope.continuarPagoOL = function(sol){
+		sessionService.set('IDFUM', sol.FUM);
+		window.location.href = "#servicios|epagos";
+	};
+
+	function MouseWheelHandler(e) {
+		var e = window.event || e; // old IE support
+		var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+		return false;
+	}
+
+	
+	/*
+	 * Catastro Duplicado visualizar imagen
+	 */
+
+
+
+
+	
+
+
+	$scope.ImprimirProforma = function (fum) {
+		$scope.varSpin = true;
+		$scope.RegistroFUM={
+			registrado:'OK',
+			mensaje:''
+		};
+		var urlFum = CONFIG.SERVICE_SITOLext + 'DesplegarFum?q=' + fum;
+		$('#visorFum object').attr("data",urlFum);
+		$('#visorFum object').load(urlFum);
+		$timeout(function(){$scope.varSpin=false}, 1000);
+	};
+
+	//////////////
+
+
+	$scope.impDpl= function (elementId) {
+		document.getElementById(elementId).focus();
+		document.getElementById(elementId).contentWindow.print();
+	};
+	$scope.ImprimirDpl = function (aa) {
+		var url2 = CONFIG.SERVICE_SITOLext + 'DesplegarDuplicado?a=' + aa;
+		$('#visorDuplicado object').attr("data",url2);
+	};
+	$scope.PrevCert = function () {
+
+	};
+
+	$scope.ConfimarcionCiudadano=function () {
+		$scope.confirmacionCiudadano = 'OK';
+	};
+    
+
+
+
+
+	/*
+	 $scope.CargarPopupBuscador=function ()
+	 {
+	 $scope.codigoCatastral={};
+	 $scope.resultadoBusqueda = {};
+	 $scope.confirmacionCiudadano = null;
+	 $scope.observacion.codigoCatastral='';
+	 $scope.observacion.obs='';
+	 $scope.cerrarProforma();
+	 $scope.getCaptchasX();
+	 };
     // ******INICIO DE CAPCHA****************
 	$scope.ErrorCapcha='';
 	$scope.getlimpiareRROR=function(){
@@ -1291,6 +1391,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			document.getElementById('lbllengua').placeholder = "Ingrese texto: " + lengua + " CASTELLANO";
 		});
     };
+	
     $scope.VerificarCapcha = function(codigoCatastral){
 		// var captch  = $("#resultadoC").val();
 		// var id = numero;
@@ -1316,81 +1417,27 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
         $('#divPopup7').modal('show');
         $scope.BuscarCertificado(codigoCatastral);
     };
+    
     // ******FIN DE CAPCHA****************
+	*/
+	
 
-    /*********************************** Registro en Integra *******************************************/
-    $scope.AddIntegra = function()
-    {
-    	$scope.RegistroFUM.mensaje = "Generando... espere por favor.";
-    	var fecha = new Date();
-    	var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-    	$scope.day = fecha.getDate();
-    	var mes = fecha.getMonth()+2;
-    	if(mes>11){mes = mes-12}
-    		$scope.month = monthNames[mes];
-    	$scope.year = fecha.getFullYear();
-    	var sIdServicio = $scope.ConfIntegra.idServicio;
-    	var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-    	var sFechaTramite = fechactual;
-		var aServicio = {};
-		var datosServicio   = new reglasnegocio();
-		datosServicio.identificador = 'RCCIUDADANO_68';
-		datosServicio.parametros = '{"frm_tra_dvser_id":"'+ sIdServicio +'","frm_tra_id_ciudadano":"'+ sIdCiudadano +'","frm_tra_fecha":"'+ sFechaTramite +'","frm_tra_enviado":"SI","frm_tra_id_usuario":"3"}';	
-		$.blockUI();
-		datosServicio.llamarregla(function(data){
-			data = JSON.parse(data);
-			$scope.ConfIntegra.idTramite = data.frm_tra_id;
-			if($scope.idTipoPago == 1) {
-				$('#divPopup4').modal('show');
-				$scope.genProforma();
-			}
-			else {
-				$scope.genProformaPagoOL();
-				$('#divPopupPagoTarjeta').modal('show');
-			}
-			$.unblockUI();
-		});
-	};
  	/********************************************************************************************/
- 	$scope.UpdateIntegra = function(obj){ 
-        var fechactual          = obtFechaActual.obtenerFechaActual();
-        var datosSerializados   =  JSON.stringify(obj);
-        var idCiudadano         = sessionService.get('IDSOLICITANTE');
-        var idTramite           = $scope.ConfIntegra.idTramite;
-        var idServicio          = $scope.ConfIntegra.idServicio;
-        var updInt   = new reglasnegocio();
-     	updInt.identificador = 'RCCIUDADANO_80';
-     	updInt.parametros = '{}';
-        updInt.llamarregla(function(results){																																						
-        results = JSON.parse(results);
-        	$scope.AddIF(obj);
-        });
-    };
+
  	/********************************************************************************************/
-	$scope.AddIF = function(paramForm)
-	{
-		var idProcodigo = $scope.ConfIntegra.idProcodigo;
-        var datosSerializados = JSON.stringify(paramForm);
-        var serIF = new gCrearCaso();
-		serIF.usr_id=1;
-		serIF.datos=datosSerializados;
-		serIF.procodigo=$scope.ConfIntegra.idProcodigo;
 
-		serIF.crearCasoAeLinea( function(resultado)
-		{
-			$.unblockUI();
-		});
-    };
 
+	/* Se comento recien
     $scope.$on('api:ready',function(){
 		$scope.loginPagoEnLinea();
 		$scope.recuperarDatosRegistro();
 		$scope.CargarComboMotivos();
 		$scope.CargarComboMotivosDetalle();
-		$scope.solicitudesCiudadano();
+		$scope.CargarSolicitudesCiudadano();
 		$scope.registro3 = aReg;
-
+		console.log("entra al api ready")
     });
+	*/
 
 	$scope.genAdj = function()
 	{

@@ -179,8 +179,22 @@
         border-color: #e30613!important;
         color: #e30613!important;
     }
+        .glyphicon-refresh-animate {
+        -animation: spin .7s infinite linear;
+        -webkit-animation: spin2 .7s infinite linear;
+    }
 
+    @-webkit-keyframes spin2 {
+        from { -webkit-transform: rotate(0deg);}
+        to { -webkit-transform: rotate(360deg);}
+    }
+
+    @keyframes spin {
+        from { transform: scale(1) rotate(0deg);}
+        to { transform: scale(1) rotate(360deg);}
+    }
 </style>
+<script src="../../libs/apiPagos/api_pagos.js"></script>
 <script type="text/javascript" class="ng-scope">
     $( document ).ready(function()
     {
@@ -302,6 +316,10 @@
                         </div>
                         <div ng-show="servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.tramites.codigo" class="separadorTab">
                             <div>
+                                <div class="row justify-content-right" align="right">
+                                    
+                                    <button type="button" class="btn btn-primary btn-circle btn-lg" ng-click="CargarSolicitudesCiudadano()" title="Refrescar tramites"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span></button>
+                                </div>
                                 <div class="panel ">
                                     <table  ng-table="tablaSolicitudes"  class="table table-striped">
                                         <tr ng-repeat="solicitud in $data  | filter:query " ng-style="solicitud.idEstado === '5' && {'background-color':'#fdeedc'} || solicitud.idEstado === '2' && {'background-color':'#ccf5f6'} || solicitud.idEstado === '4' && {'background-color':'#f8c7db'}" >
@@ -816,7 +834,7 @@
                                         </table>
                                 </div>
                             </div>
-                            <!-- Comentado por JFC 2021 06 25 - Se deshabilita el pago en linea Falla el metodo de pago enlinea
+                            <!-- Comentado por JFC 2021 06 25 - Se deshabilita el pago en linea Falla el metodo de pago enlinea-->
                             <div class="col-xs-12">
                                 <div class="table">
                                     <table>
@@ -843,7 +861,7 @@
                                   Seleccione una opci&oacute;n.
                                 </div>
                             </div>
-                            -->
+                            
                         </div>
                         </div>
                     </div>
@@ -868,12 +886,46 @@
                 </div>
                 <form name="formPagoTarjeta" id="formPagoTarjeta">
                     <div class="modal-body">
-                        <h3>Procesando...</h3>
+
+                        <p style="font-size: 18px;"><b>La Factura se imprimira con estos datos:</b></p>
+                        <div class="form-group row">
+                            <label for="input" class="col-sm-2 col-form-label">Razon Social</label>
+                            <div class="col-sm-4">
+                                <label for="input" class="col-form-label">{{razonSocialFac}}</label>
+                            </div>
+                          
+                            <label for="input" class="col-sm-2 col-form-label">Nit/CI</label>
+                            <div class="col-sm-4">
+                                <label for="input" class="col-form-label">{{nitCiFac}}</label>
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Cambiar datos para la Factura&nbsp;&nbsp; 
+                            </label>
+                            <input class="form-check-input" type="checkbox" ng-model="dataFAC.checkFac" id="defaultCheck1" ng-click="controlDataFac(dataFAC.checkFac)">
+                        </div>
+                        <div class="form-group row" ng-show="dataFactura">
+                            <div class="col-xs-6 col-sm-6">
+                                <label>Razon Social:</label>
+                                <input type="text" class="form-control" onkeyUp="return conMayusculas(this);" placeholder="Ingrese la Razon Social" ng-model="dataFAC.razonSocial" >
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <label >Nit/CI:</label>
+                                <input type="text" class="form-control" placeholder="Ingrese la Razon Social" ng-model="dataFAC.nitCi">
+                            </div>
+                        </div>
+                        <div class="row justify-content-center" align="center">
+                            <img class="img1" src="../catastro/img/spin.gif" ng-show="SpinFactura == true" alt="No se completo el pago">
+                        </div>
+                        <div class="row align-items-center justify-content-center" ng-show="SpinFactura == true" align="center">
+                            <div class="col">Procesando Pago...</div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-info pull-left" data-toggle="modal" href="#divPopup12" data-toggle="modal" ng-click="cambiarImagen(0)" ng-if="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el codigo catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
                         <button class="btn btn-default"  data-dismiss="modal" data-toggle="modal" data-target="#divPopupTipoPago" ng-click="idTipoPago=0"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Retroceder"></span>&nbsp;Atr&aacute;s</button>
-                        <button type="button" form="formPagoTarjeta" class="btn btn-primary" data-dismiss="modal" ng-disabled="fromTipoPago.$invalid"> Siguiente<span class="glyphicon glyphicon-chevron-right " aria-hidden="true" title="Siguiente"></span></button>
+                        <button type="button" form="formPagoTarjeta" class="btn btn-primary" ng-click="pagarDuplicado()" ng-disabled="fromTipoPago.$invalid"> Realizar Pago<span class="glyphicon glyphicon-chevron-right " aria-hidden="true" title="Siguiente"></span></button>
                     </div>
                 </form>
             </div>

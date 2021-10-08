@@ -4,7 +4,8 @@ var dataParamsPago;
 var typeCallPago;
 
 if(jsonURLS){
-  var urlPagos = jsonURLS.CONEXION_PAGOS+"api"; 
+  var urlPagos = jsonURLS.CONEXION_PAGOS; 
+ // var urlPagosHTML = "http://172.18.2.194:4500/api";
 }
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
@@ -25,6 +26,80 @@ function ejecutarAjaxPago(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
     });
     return dataResp;
 };
+
+/*COMANDO PARA GENERAR HTML PAGO */
+/* function ejecutarAjaxPagoHTML(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+  $.ajax({
+    type: vTypeCall,
+    url: urlPagosHTML + vUrlComp,
+    data: vDataCall,
+    async: false,
+    success: function(response) {
+      dataResp = JSON.stringify(response);
+      vFunctionResp(dataResp);
+    },
+    error: function (response, status, error) {
+      dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+      vFunctionResp(dataResp);
+    }
+  });
+  return dataResp;
+}; */
+/*///////////////GUARDAR ATC//////////////////////*/
+function datahtml() {
+  
+  this.odm;
+  this.total;
+  this.nombres;
+  this.apellidos;
+  this.direccion;
+  this.email;
+  this.celular;
+  this.sistema;
+  this.ci_nit;
+  this.oid_ciudadano;
+  this.sucursal_facturacion;
+  this.id_usuario_facturacion;
+  this.servicio;
+  
+  this.usuario_fac;
+  this.clave_fac ;
+  this.nit_factura ;
+  this.nombre_factura;
+  this.data_opcional;
+  this.items;
+
+};
+
+datahtml.prototype.generacionHtml = function (functionResp) {
+  urlCompPago = "registrarTrx";
+  typeCallPago = "post";
+  dataParamsPago = {
+    "odm":this.odm,
+    "total":this.total,
+    "nombres":this.nombres,
+    "apellidos":this.apellidos,
+    "direccion":this.direccion,
+    "email":this.email,
+    "celular":this.celular,
+    "sistema":this.sistema,
+    "ci_nit":this.ci_nit,
+    "oid_ciudadano":this.oid_ciudadano,
+    "sucursal_facturacion":this.sucursal_facturacion,
+    "id_usuario_facturacion":this.id_usuario_facturacion,
+    "servicio":this.servicio,
+
+    "usuario_fac":this.usuario_fac,
+    "clave_fac":this.clave_fac,
+    "nit_factura":this.nit_factura,
+    "nombre_factura":this.nombre_factura,
+    "data_opcional":this.data_opcional,
+    "items":this.items
+   
+  };
+  ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
+};
+/*FIM DATA HTML */
 
 /*///////////////GUARDAR ATC//////////////////////*/
 function atc() {

@@ -1,4 +1,4 @@
-function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $rootScope, sessionService, ngTableParams, $filter, $route, sweet, $http, FileUploader, $sce, fileUpload, filterFilter, $routeParams, $location, Data, $q, obtFechaActual,fileUpload1) {
+function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $rootScope, sessionService, ngTableParams, $filter, $route, sweet, $http, FileUploader, $sce, fileUpload, filterFilter, $routeParams, $location, Data, $q, obtFechaActual,fileUpload1,fileUploadcorr) {
  
   var hoy = new Date();
   var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
@@ -1367,10 +1367,103 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
         alert("Error ");
     }
   };
- 
+  function validarFormatoDocumento(opcion, sformato) {
+    var s_formato = sformato.split('/')[1];
+    switch(opcion)
+    {
+      case "ADJ_IMG":
+        if(( s_formato == 'png' || s_formato == 'PNG' || s_formato == 'jpg' || s_formato == 'JPG') ||
+            ( s_formato == 'jpeg' || s_formato == 'JPEG' || s_formato == 'bmp' || s_formato == 'BMP') ||
+            ( s_formato == 'gif' || s_formato == 'GIF'))
+        {
+            return true
+        }
+        break;
+        case "ADJ_DOC":
+            if((s_formato == 'pdf' || s_formato == 'PDF') ||
+                ( s_formato == 'docx' || s_formato == 'DOCX' || s_formato == 'docxlm' || s_formato == 'DOCXML'))
+            {
+                return true
+            }
+        break;                      
+        return false
+    }
+  };
+      //UPLOAD  FILES
+      var uploader = $scope.uploader = new FileUploader({
+        url: CONFIG.UPLOAD_URL
+    });
+       uploader.filters.push({
+           name: 'customFilter',
+           fn: function(item , options) {
+               return this.queue.length < 10;
+           }
+       });
+       // END UPLOAD  
+  var uploader = $scope.uploader;
+    
+  uploader.filters.push({
+      name: 'customFilter',
+      fn: function(item, options) {
+          return this.queue.length < 10;
+      }
+  });
+  uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options){};
+
+  uploader.onAfterAddingFile = function(fileItem) {
+      tipoDocumento = fileItem._file.type;
+      var nameArray = tipoDocumento.split('/');
+      tipoDocumento = nameArray[1];
+      //var count = 0;
+      var target_img, output;
+      if(fileItem._file.size <= 500000){            
+          if(tipoDocumento == "png" || tipoDocumento == "jpg" || tipoDocumento == "jpeg" || tipoDocumento == "bmp")
+          {
+              $scope.botonSubirOriginal = null; 
+              $scope.botonSubirError = "oculta";
+              $scope.imgmenos = 'mostrar';
+          }else{
+              swal('Advertencia', 'Seleccione un archivo de tipo imagen', 'error');
+              $scope.botonSubirError = null; 
+              $scope.botonSubirOriginal = "oculta";   
+              $.unblockUI();                  
+          }
+          $scope.subir="ok";
+      }else{
+          if (fileItem._file.size <= 15000000) {
+              if(tipoDocumento == "png" || tipoDocumento == "jpg" || tipoDocumento == "jpeg" || tipoDocumento == "bmp")
+              {
+                  $scope.botonSubirOriginal = null; 
+                  $scope.botonSubirError = "oculta";
+                  $scope.imgmenos = null;
+                  var current_file = fileItem._file;
+                  if (current_file.size > 500000) {
+                  /////////////////////COMPRESION DE IMAGENES//////////////////////////////
+                      var filecompress = compressImage(current_file).then(function(respuesta){
+                          $scope.myFile1 = respuesta;
+                      });
+                  /////////////////////////////////////////////////////
+                  }
+              }else{
+                  swal('Advertencia', 'Seleccione un archivo de tipo imagen', 'error');
+                  $scope.botonSubirError = null; 
+                  $scope.botonSubirOriginal = "oculta";
+                  $.unblockUI();                                       
+              }
+          }
+          else{
+              swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+              $.unblockUI();                  
+          };
+          $scope.subir="ok";
+      }
+  };    
+    
   $scope.cambiarFile = function(obj, valor){
     var arraydoc = ["pdf", "doc", "docx", ".docx",".docxlm"];
     $scope.registroAdj  = [];
+    var stam_min = 5242880;//Bytes
+    var stam_max = 15728640;//Bytes
     var fechaNueva      = "";
     var fechaserver = new fechaHoraServer(); 
     fechaserver.fechahora(function(resp){
@@ -1380,12 +1473,14 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
         var hora_       = fechaServ[1].split(':');
         fechaNueva      = fecha_[0] + fecha_[1] +   fecha_[2]   +   '_' +   hora_[0]    +   hora_[1];
     }); 
-  //  $.blockUI();
+    $.blockUI();
     setTimeout(function(){         
         //contadorAdjunto ++;
         var nombre = obj.getAttribute("name");
         var objarchivo = obj.files[0];
         $scope.IMAGEN_MASCOTA = obj.files[0];
+        var tamaniofile = obj.files[0];
+     
         $scope.mostrarImagenI = true;
         $scope.mostrarImagenR = false;
         var ciCiudadano = sessionService.get('CICIUDADANO');
@@ -1393,11 +1488,68 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
         //var sDirTramite = $scope.datos_responsable.ci;
         var uploadUrl = CONFIG.APIURL + "/files/IMAGENESMASCOTAS/" + ciCiudadano + "/" + $scope.fechayhora + "/";
         if (nombre == 'IMAGEN_MASCOTA' && (typeof(obj.files[0]) != 'undefined')) 
-        {   
-            var nomdocumento = obj.files[0].name;
-            var docextension = nomdocumento.split('.');
-            var ext_doc = docextension[docextension.length - 1].toLowerCase();
-            if ( ext_doc == "jpg" || ext_doc == "png" || ext_doc == "jpeg") {
+        {    
+          var s_formatodoc = obj.files[0].type;
+          s_formatodoc = s_formatodoc.split('/')[1];
+          var nomdocumento = obj.files[0].name;
+          var docextension = nomdocumento.split('.');
+          var ext_doc = docextension[docextension.length - 1].toLowerCase();
+          if((ext_doc == 'pdf' || ext_doc == 'PDF') || ( ext_doc == 'docx' || ext_doc == 'DOCX' || ext_doc == 'docxlm' || ext_doc == 'DOCXML') || ( ext_doc == 'xlsx' || ext_doc == 'XLSX' || ext_doc == 'XLS' || ext_doc == 'xls')){ 
+            swal('Estimado Ciudadano', 'Debe adjuntar un archivo tipo imagen (png,jpg,jpeg)','error');
+          }else{
+            if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
+
+              if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type)) {
+                var filecompress = compressImage($scope.IMAGEN_MASCOTA).then(function(respuestapl){
+                  var nombreNuevo = nombre+'_' + '_'+fechaNueva+'.'+ext_doc;                      
+                  fileUploadcorr.uploadFileToUrl1(respuestapl, uploadUrl, nombreNuevo);
+                  $scope.datos.IMAGEN_MASCOTA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                  $scope.IMAGEN_MASCOTA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                  document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                  document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                  $scope.swimagen = true;
+                  $scope.url_imagen = true; //cuando cambia imagen
+                  $scope.btover7 = true;
+                });
+              }
+            } else{
+              if (tamaniofile.size <= stam_min) {
+                if (validarFormatoDocumento("ADJ_IMG",obj.files[0].type) || validarFormatoDocumento("ADJ_DOC",obj.files[0].type)) {
+                  var nombreNuevo = nombre+'_' + '_'+fechaNueva+'.'+ext_doc;                      
+                  fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                  $scope.datos.IMAGEN_MASCOTA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                  $scope.IMAGEN_MASCOTA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                  document.getElementById("txt_" + nombre).value  = nombreNuevo;
+                  document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                  $scope.swimagen = true;
+                  $scope.url_imagen = true; //cuando cambia imagen
+                  $scope.btover7 = true;
+                  $.unblockUI();
+              } else{
+                  swal('Advertencia', 'El archivo IMAGEN MASCOTA no es valido, seleccione un archivo de tipo imagen', 'error');
+                  document.getElementById('IMAGEN_MASCOTA').value = '';
+                  document.getElementById('txt_IMAGEN_MASCOTA').value = '';                            
+                  $scope.datos.IMAGEN_MASCOTA = '';
+                  $scope.IMAGEN_MASCOTA = '';                            
+                  valor = '';
+                  $.unblockUI();
+              };
+              }
+              if (tamaniofile.size > stam_max) {
+                swal('Advertencia', 'El tamaño de la imagen IMAGEN MASCOTA es muy grande', 'error');
+                        document.getElementById('txt_IMAGEN_MASCOTA').value = '';
+                        document.getElementById('IMAGEN_MASCOTA').value = '';
+                        $scope.registro.IMAGEN_MASCOTA = '';
+                        $scope.IMAGEN_MASCOTA = '';
+                        valor = '';
+                        $.unblockUI();
+              }
+            }
+
+          }
+          
+          
+            /*if ( ext_doc == "jpg" || ext_doc == "png" || ext_doc == "jpeg") {
                     if (objarchivo.size <= 15000000) {
                         var nombreNuevo = nombre+'_' + '_'+fechaNueva+'.'+ext_doc;                      
                         fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
@@ -1431,7 +1583,7 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
                 $scope.adjunto = '';
                 valor = '';
                 //$.unblockUI();
-            }
+            }*/
 
         }
     },1000);

@@ -176,10 +176,12 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		"cedula2": "","nit2": "","complemento2": "","repLegal": "","nroDocumento": "","nroNotaria": "",
 		"nit": "","razonSocial": "","tipoP": "","cestcivil_id": "","expedido":""};
 	$scope.recuperarDatosRegistro = function(){
+		
 		var datosCiudadano=new rcNatural();
 		datosCiudadano.oid=sessionService.get('IDCIUDADANO');
 		datosCiudadano.datosCiudadanoNatural(function(resultado){
 			var response = JSON.parse(resultado);
+			console.log("datpos del ciudadano", response);
 			if (response.length > 0) {
 				var results = response;
 				tipoPersona = results[0].dtspsl_tipo_persona;
@@ -733,11 +735,11 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			'idfum':idFum
 		};
 		var idtoken =   sessionService.get('TOKEN');
-		var stoquen =  'Bearer <\\\"' + idtoken + '\\\">';
+		var stoquen =  'Bearer ' + idtoken ;
 		$.ajax({
 			"async": true,
 			type        : 'POST',
-			url         : 'https://pagonline.lapaz.bo/api/comprobantedepago',
+			url         : CONFIG.CONEXION_PAGOS +'comprobantedepago',
 			data        : formData,
 			dataType    : 'json',
 			crossDomain : true,
@@ -857,40 +859,43 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		idTramite : 0
 	};
 	//Registro en igob
-	$scope.AddIntegra = function(){
-		$scope.RegistroFUM.mensaje = "Generando... espere por favor.";
-		var fecha = new Date();
-		var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-		$scope.day = fecha.getDate();
-		var mes = fecha.getMonth()+2;
-		if(mes>11){mes = mes-12}
-		$scope.month = monthNames[mes];
-		$scope.year = fecha.getFullYear();
-		var sIdServicio = $scope.ConfIntegra.idServicio;
-		var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-		var sFechaTramite = fechactual;
-		var aServicio = {};
+	$scope.AddIntegra = function()
+    {
+    	$scope.RegistroFUM.mensaje = "Generando... espere por favor.";
+    	var fecha = new Date();
+    	var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+    	$scope.day = fecha.getDate();
+    	var mes = fecha.getMonth()+2;
+    	if(mes>11){mes = mes-12}
+    		$scope.month = monthNames[mes];
+    	$scope.year = fecha.getFullYear();
+    	var sIdServicio = $scope.ConfIntegra.idServicio;
+    	var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+    	var sFechaTramite = fechactual;		
 		var datosServicio   = new reglasnegocio();
 		datosServicio.identificador = 'RCCIUDADANO_68';
-		datosServicio.parametros = '{"frm_tra_dvser_id":"'+ sIdServicio +'","frm_tra_id_ciudadano":"'+ sIdCiudadano +'","frm_tra_fecha":"'+ sFechaTramite +'","frm_tra_enviado":"SI","frm_tra_id_usuario":"3"}';
+		datosServicio.parametros = '{"frm_tra_dvser_id":"'+ sIdServicio +'","frm_tra_id_ciudadano":"'+ sIdCiudadano +'","frm_tra_fecha":"'+ sFechaTramite +'","frm_tra_enviado":"SI","frm_tra_id_usuario":"3"}';	
 		$.blockUI();
-		console.log("addintegra",datosServicio);
-		datosServicio.llamarregla(function(data){
-			console.log("addintegra res",data);
-			data = JSON.parse(data);
-			$scope.ConfIntegra.idTramite = data.frm_tra_id;
-			if($scope.idTipoPago == 1) {
+		if($scope.idTipoPago == 1) {
+			datosServicio.llamarregla(function(data){
+				data = JSON.parse(data);
+				$scope.ConfIntegra.idTramite = data.frm_tra_id;
 				$('#divPopup4').modal('show');
 				$scope.genProforma();
-			}
-			else {
-				$scope.genProformaPagoOL();
-				$('#divPopupPagoTarjeta').modal('show');
-			}
-			$.unblockUI();
-		});
-	};
+				$.unblockUI();
+			});
 
+		}else{
+			$.unblockUI();
+			$scope.datosServicioOnline = datosServicio;  
+			$scope.razonSocialFac = sessionService.get('US_PATERNO');
+			$scope.nitCiFac       = sessionService.get('CICIUDADANO');
+			/*  $scope.loginPagoEnLinea();
+				$scope.genProformaPagoOL(); */
+			$('#divPopupPagoTarjeta').modal('show');
+		}
+		
+	};
 	//Genera proforma para pago en  banco
 	$scope.genProforma = function(){
 		$scope.Imp=false;
@@ -940,7 +945,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 				data: Object.toparams(p),
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function (data, status, headers, config) {
-				console.log("RegFUM res:",data);
 				if(data.res == 'OK')
 				{
 					//Registro tramite - Inicio
@@ -975,7 +979,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 					}
 					var regFum = new dataSITOL();
 					regFum.dplRegFum( xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){ //xtipoPago,xcodPago,
-						console.log("Registro solicitud",resultado);
 						var resApi = JSON.parse(resultado);
 						if(resApi.success)
 						{
@@ -1063,6 +1066,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 
 	//Genera proforma para pago en  linea
 	$scope.genProformaPagoOL = function(){
+		
 		$scope.Imp=false;
 		if(	$scope.idMotivo==0 || $scope.idMotivoDetalle==0){
 			$scope.RegistroFUM = {
@@ -1142,12 +1146,12 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 						xExpedido=aReg.expedido;
 						xTipoDocumento="NIT";
 					}
+
 					var regFum = new dataSITOL();
 					regFum.dplRegFum( xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){
 						var resApi = JSON.parse(resultado);
 						if(resApi.success)
-						{
-							$scope.CargarSolicitudesCiudadano();
+						{							
 							$scope.idMotivo=0;
 							$scope.idMotivoDetalle=0;
 							$scope.RegistroFUM={
@@ -1167,7 +1171,8 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 									FUM: fumb,
 									IdMotivo: $scope.idMotivo,
 									IdMotivoDetalle: $scope.idMotivoDetalle,
-									CodigoCatastral: ccb
+									CodigoCatastral: ccb,
+									RegistroTramite: resApi.success.dataSql[0].idRegistro
 								};
 							}
 							else{
@@ -1182,19 +1187,21 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 									FUM: fumb,
 									IdMotivo: $scope.idMotivo,
 									IdMotivoDetalle: $scope.idMotivoDetalle,
-									CodigoCatastral: ccb
+									CodigoCatastral: ccb,
+									RegistroTramite: resApi.success.dataSql[0].idRegistro
 								};
 							}
-
-							$scope.UpdateIntegra(di);
+							//* Revisar funcion 
+							//$scope.UpdateIntegra(di);
 							sessionService.set('IDFUM', fumb);
-							window.location.href = "#servicios|epagos";
+							$scope.obtenerFumDatos(di);
+							//window.location.href = "#servicios|epagos";
 						}
 						else
 						{
 							sweet.show('', 'Error al registrar proforma de pago', 'error');
 							console.log("Error al registrar proforma de pago", resApi.error.message);
-
+						
 							$scope.idMotivoDetalle =0;
 							$scope.idMotivo =0;
 							$scope.RegistroFUM={
@@ -1222,9 +1229,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			});
 			//Registro Fum - Fin
 		}
-
-
-	};
+	};	
 
 	$scope.UpdateIntegra = function(obj){
 		var fechactual          = obtFechaActual.obtenerFechaActual();
@@ -1236,7 +1241,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		updInt.identificador = 'RCCIUDADANO_80';
 		updInt.parametros = '{}';
 		updInt.llamarregla(function(results){
-			console.log("upd integra", results);
 			results = JSON.parse(results);
 			$scope.AddIF(obj);
 		});
@@ -1249,7 +1253,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		serIF.usr_id=1;
 		serIF.datos=datosSerializados;
 		serIF.procodigo=$scope.ConfIntegra.idProcodigo;
-		console.log("addif",serIF);
 		serIF.crearCasoAeLinea( function(resultado)
 		{
 			console.log("addif res",resultado);
@@ -1257,17 +1260,12 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		});
 	};
 
-    
-
-
 
 	var motivo1={};
     monthNames = [
         "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
         "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
     ];
-
-
 
 	//Inicio configuracion pago en linea
 	$scope.loginPagoEnLinea   =   function(){
@@ -1278,7 +1276,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		$.ajax({
 			dataType: "json",
 			type: "POST",
-			url : 'https://pagonline.lapaz.bo/api/logueo',
+			url : CONFIG.CONEXION_PAGOS + 'logueo',
 			data: formData,
 			async: false,
 			success: function(response) {
@@ -1305,11 +1303,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 	/*
 	 * Catastro Duplicado visualizar imagen
 	 */
-
-
-
-
-	
 
 
 	$scope.ImprimirProforma = function (fum) {
@@ -1343,9 +1336,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		$scope.confirmacionCiudadano = 'OK';
 	};
     
-
-
-
 
 	/*
 	 $scope.CargarPopupBuscador=function ()
@@ -1494,4 +1484,125 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			$scope.dplUrl = "";
 		}
 	};
+
+	/* PAGOS EN LINEA 2021 */
+	$scope.dataFactura = false;	
+	$scope.controlDataFac	  = function(valor) {		
+		if(!$scope.dataFactura){
+			$scope.dataFactura = true;
+		}else{
+			$scope.dataFactura = false;
+		}
+	}
+	$scope.pagarDuplicado = function(){
+		if (typeof $scope.dataFAC === 'undefined') {
+			$scope.razonSocialFac = sessionService.get('US_PATERNO');
+			$scope.nitCiFac       = sessionService.get('CICIUDADANO');
+		}else{
+			if ($scope.dataFAC.checkFac) {
+				$scope.razonSocialFac = $scope.dataFAC.razonSocial; 
+				$scope.nitCiFac = $scope.dataFAC.nitCi;
+			}else{
+				$scope.razonSocialFac = sessionService.get('US_PATERNO');
+				$scope.nitCiFac       = sessionService.get('CICIUDADANO');
+			}
+		}		
+		$scope.dataCiud = JSON.parse($scope.datosServicioOnline.parametros);
+		$.blockUI();		
+
+		$scope.datosServicioOnline.llamarregla(function(data){
+			data = JSON.parse(data);
+			$scope.ConfIntegra.idTramite = data.frm_tra_id;
+			$scope.loginPagoEnLinea();
+			$scope.genProformaPagoOL();
+			$.unblockUI();
+		});				
+
+	}
+	$scope.SpinFactura = false;
+	$scope.obtenerFumDatos	  = function(dataFUMGEN) {
+		$scope.SpinFactura = true;
+        var idfum   =   sessionService.get('IDFUM');
+        var idtoken =   sessionService.get('TOKEN');
+        var stoquen =  'Bearer ' + idtoken;
+        
+        var formData = {
+        'idfum'	: idfum
+        };
+        
+        $.blockUI();
+		setTimeout(function()
+		{
+			$.ajax({
+				type        : 'POST',            
+				//url         : 'https://pagonline.lapaz.bo/api/datosContribuyente',
+				url         : CONFIG.CONEXION_PAGOS + 'datosContribuyente',
+				data        : formData,
+				crossDomain : true,
+				async:false,
+				headers: {
+					'authorization': stoquen
+				},
+				success     : function(data) {
+					var msg   =   data;
+					if (typeof msg.error === 'undefined') {
+						data = JSON.parse(data[0]);
+						$scope.objPagos = new datahtml();
+						$scope.objPagos.odm       = data.idFum;
+						$scope.objPagos.total     = data.AcctotalGeneral; 
+						$scope.objPagos.nombres   = dataFUMGEN.Nombres;
+						$scope.objPagos.apellidos = dataFUMGEN.Apellidos;
+						$scope.objPagos.direccion = data.zona + " " +data.nombreVia + " Nro. " + data.numeroPuerta;
+						$scope.objPagos.email     = aReg.correo;
+						$scope.objPagos.celular   = aReg.celular;
+						$scope.objPagos.sistema    = "IGOB";
+						$scope.objPagos.ci_nit    = dataFUMGEN.NumeroDocumento;
+						$scope.objPagos.oid_ciudadano = dataFUMGEN.OIDCiudadano;
+						$scope.objPagos.sucursal_facturacion = 170;
+						$scope.objPagos.id_usuario_facturacion = 0;
+						$scope.objPagos.servicio = "CATASTRO";
+						$scope.objPagos.usuario_fac = "angela.illanes";
+						$scope.objPagos.clave_fac = "123456";
+						$scope.objPagos.data_opcional = [{
+							"registroTramite": dataFUMGEN.RegistroTramite}];
+						$scope.objPagos.items = [{
+								"concepto": data.descripcion,
+								"cantidad": 1,
+								"monto": data.AcctotalGeneral,
+								"item_genesis":data.idItemRecaudador,
+								"item_recaudador":0
+							}
+						];
+						$scope.objPagos.nit_factura    = $scope.nitCiFac;
+						$scope.objPagos.nombre_factura = $scope.razonSocialFac;
+						$scope.objPagos.generacionHtml(function(resp){
+							$.unblockUI();
+							resp = JSON.parse(JSON.parse(resp));
+							$scope.body = resp.formulario;
+							$scope.openWindowWithPost();						
+							$('#divPopupPagoTarjeta').modal('hide');
+							$scope.SpinFactura = false;							
+							
+						});
+						
+					} else {
+						sweet.show('', 'Proforma pagada !!', 'error');                   
+					} 
+				},
+				error: function (xhr, status, error) {
+					$.unblockUI();
+					alert("Error Intente de nuevo !!");
+				}
+			});
+		},5000); 
+    };
+	
+	$scope.openWindowWithPost = function () {	
+		var printContenidos = "<html>" +  $scope.body + "</html>";
+		var popupWin = window.open('', '_blank', 'width=800,height=800');
+		popupWin.document.open();
+		popupWin.document.write('<html><head></head><body>' + printContenidos + '<br><br></html>');
+		popupWin.document.close();																				
+        
+    }
 }

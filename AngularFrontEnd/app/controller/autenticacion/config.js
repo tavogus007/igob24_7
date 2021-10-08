@@ -11,8 +11,8 @@ var jsonURLS    =   {
     SERVICE_SITOL: "wsSITOnline_",                                      //xxx
     //SERVICE_SITOLext: "http://sim.lapaz.bo/sitolservicios/Servicios/",  //xxx
     //SERVICE_SITOLextgen: "http://sim.lapaz.bo/sitolservicios/",         //xxx
-    SERVICE_SITOLext: "http://gmlpsr00035/sitolservicios/Servicios/",  
-    SERVICE_SITOLextgen: "http://gmlpsr00035/sitolservicios/",
+    SERVICE_SITOLext: "http://192.168.6.111/sitolservicios/Servicios/",  
+    SERVICE_SITOLextgen: "http://192.168.6.111/sitolservicios/",
     //AUTOCONSULTA CIUDADANO
     SERVICE_SIMGEP_AE: "wsSimgepAe",                                    //xxx
     SERVICE_SIMGEP_TERRITORIAL: "wsSimgepTerritorial",                  //xxx
@@ -57,7 +57,7 @@ var jsonURLS    =   {
     URL_FILES:"http://192.168.5.141",    
     CONEXION_MOVILIDAD: "http://192.168.5.141:2020/",
     CONEXION_SITV3: "http://192.168.6.111/SITv3Desarrollo/",
-    SIT_GEO: "http://192.168.5.84:8080/",
+    SIT_GEO: "http://192.168.5.84:8080",
     UDIT_GEO:"http://192.168.6.46:8080/",
     URL_SITRAM: "http://192.168.5.141",
     CONEXION_SITRAM: "http://192.168.5.141", 
@@ -75,11 +75,11 @@ var jsonURLS    =   {
         'usr_clave'     : '123456'
     },	
     SERVICE_GIS_AE_DZ:"https://servmonitoreo.lapaz.bo/",
-    CONEXION_PAGOS: "http://52.226.130.135:5433/api/",
+    //CONEXION_PAGOS: "http://52.226.130.135:5433/api/",
+    CONEXION_PAGOS: "http://172.18.2.194:4500/api/",
     CONEXION_ODM : "http://200.105.139.183:9090/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php",
     CONEXION_CORREOS : "http://200.105.139.183:9090/" + "smsemail/email/mailSalud2_0_BORRAR.php",
     SERVICE_PAGOS_TARJETA:"http://172.18.2.194:4500/api/registrarTrx"
-    
     
 };
 try{

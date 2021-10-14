@@ -721,6 +721,13 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		{
 			if(data.res == "OK")
 			{
+				try{
+					$scope.updateIGOB(objFum.IdRegistro);
+				}catch(e)
+				{
+					console.log("error al registrar sitram y actualizar en igob", e);
+				}
+
 				$scope.lstSolUnico();
 			}
 		}).error(function (data, status, headers, config) {
@@ -849,10 +856,359 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		sweet.show('', 'Problemas de visualización enviados', 'success');
 	};
 	//------------------------ Observaciones  - FIN -------------
-	
+
+	/*********************************** Registro en IGOB *******************************************/
+	$scope.GenerarProforma = function () {
+		$scope.Imp=false;
+		if(	$scope.idMotivo==0 || $scope.idMotivoDetalle==0){
+			$scope.RegistroFUM = {
+				registrado:null,
+				mensaje:'Debe seleccionar motivo y motivo detalle'
+			};
+		}
+		else
+		{
+			//Registro FUM Inicio
+			var p;
+			if (tipoPersona == 'NATURAL') {
+				p = {
+					tipoDoc: 'CEDULA DE IDENTIDAD',
+					nroDoc: aReg.cedula,
+					expedido: aReg.expedido,
+					nombres: aReg.nombre,
+					paterno: aReg.paterno,
+					materno: aReg.materno,
+					casada: '',//adefinir por  integra
+					fechanac: aReg.fecha_nacimiento,
+					razonsocial: 'RSN',
+					tkn:$scope.resultadoBusqueda.tkn,
+					cc:$scope.resultadoBusqueda.codCat
+				};
+			}
+			else{
+				p = {
+					tipoDoc: 'NIT',
+					nroDoc: aReg.nit,
+					expedido: aReg.expedido,//arreglar
+					nombres: aReg.razonSocial,
+					paterno: '',
+					materno: '',
+					casada: '',//adefinir por  integra
+					fechanac: aReg.fecha_nacimiento,
+					razonsocial: 'RSJ',
+					tkn:$scope.resultadoBusqueda.tkn,
+					cc:$scope.resultadoBusqueda.codCat
+				};
+			}
+			$.blockUI();
+			$http({
+				method: 'POST',
+				url: CONFIG.SERVICE_SITOLext + 'RegFUM',
+				data: Object.toparams(p),
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}).success(function (data, status, headers, config) {
+				console.log("RegFUM res:",data);
+				if(data.res == 'OK')
+				{
+					//Registro tramite - Inicio
+					var fumb = data.fum;
+					var fumc = data.msg;
+					var ccb = $scope.resultadoBusqueda.codCat;
+
+					var xTipoTra=$scope.NuevoTipoSolicitud==1?"DUPLICADO_NUEVO":"DUPLICADO";
+					var xIdCiudadano = "0";
+					var xOIDCiudadano = sessionService.get('IDUSUARIO');
+					var xApellidos = aReg.paterno + ' ' + aReg.materno;
+					var xNombres= aReg.nombre;
+					var xNumeroDocumento=aReg.cedula;
+					var xExpedido = aReg.expedido;
+					var xTipoDocumento = "CI";
+					var xFUM=fumb;
+					var xIdMotivo=$scope.idMotivo;
+					var xIdMotivoDetalle=$scope.idMotivoDetalle;
+					var xCodigoCatastral=ccb;
+					var xNumInmueble="0";
+					var xNumCertificado="0";
+					var xfumEnc=fumc;
+					var xidTipoPago=$scope.idTipoPago;
+					var xcodPago="0";
+					var xaccion="A";
+					if (tipoPersona != 'NATURAL') {
+						xApellidos=aReg.razonSocial;
+						xNombres=aReg.razonSocial;
+						xNumeroDocumento=aReg.nit;
+						xExpedido=aReg.expedido;
+						xTipoDocumento="NIT";
+					}
+					var regFum = new dataSITOL();
+					regFum.dplRegFum( xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){ //xtipoPago,xcodPago,
+						$.unblockUI();
+						var resApi = JSON.parse(resultado);
+						console.log("Registro solicitud",resApi);
+						if(resApi.success)
+						{
+
+							$scope.idMotivo=0;
+							$scope.idMotivoDetalle=0;
+							$scope.RegistroFUM={
+								registrado:'OK',
+								mensaje:'Señor usuario, debe imprimir esta Proforma de Pago y apersonarse a cualquier entidad financiera autorizada en los siguientes 7 días calendario.'
+							};
+							try{
+								$scope.registrarIGOB(resApi.success.dataSql[0].idRegEnc);
+							}catch(e)
+							{
+								console.log("error al registrar en igob", e);
+							}
+							setTimeout(function(){
+								$scope.CargarSolicitudesCiudadano();
+							},100);
+
+							if($scope.idTipoPago == 1) {
+								$('#divPopup4').modal('show');
+								//$scope.genProforma();
+								var urlFum2 = CONFIG.SERVICE_SITOLext + 'DesplegarFum?q=' + fumc;
+								//$( "object").css('display', 'none');
+								//$( "object").attr('data',  urlFum2).css('display', '');
+								$('#visorFum object').attr("data",urlFum2);
+								$('#visorFum object').load(urlFum2);
+							}
+							else {
+								//$scope.genProformaPagoOL();
+								$('#divPopupPagoTarjeta').modal('show');
+								sessionService.set('IDFUM', fumb);
+								window.location.href = "#servicios|epagos";
+							}
+						}
+						else
+						{
+							sweet.show('', 'Error al registrar proforma de pago', 'error');
+							console.log("Error al registrar proforma de pago", resApi.error.message);
+
+							$scope.idMotivoDetalle =0;
+							$scope.idMotivo =0;
+							$scope.RegistroFUM={
+								registrado:null,
+								mensaje:'Surgió un error al registrar la solicitud, por favor vuelva a intentar'
+							};
+						}
+					});
+
+					$scope.proforma=false;
+					$scope.resultadoBusqueda={};
+				}
+				else
+				{
+					$.unblockUI();
+					$scope.idMotivoDetalle =0;
+					$scope.idMotivo =0;
+					$scope.RegistroFUM = {
+						registrado:null,
+						mensaje:'Surgió un error al registrar la proforma de pago, por favor vuelva a intentar'
+					};
+				}
+			}).error(function (data, status, headers, config) {
+				$.unblockUI();
+				sweet.show('', 'Error al registrar proforma de pago', 'error');
+				console.log("Error registro fum SIT ext, datos devueltos:", data);
+			});
+		}
+
+	}
+
+	$scope.registrarIGOB = function (param) {
+		console.log("param",param);
+		var p = {q: param};
+		$.blockUI();
+		$http({
+			method: 'POST',
+			url: CONFIG.SERVICE_SITOLextgen + 'Servicios/RegistrarIGOBObtenerParam',
+			data: Object.toparams(p),
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		}).success(function (data, status, headers, config) {
+			$.unblockUI();
+			console.log("Obteniendo parametros igob", data);
+			if(data.res)
+			{
+				console.log("error crear en igob",data);
+				swal('', 'No se pudo registrar en IGOB: ' + data.valor, 'error');
+				$.unblockUI();
+			}
+			else
+			{
+				var credentials= {
+					"user": data.igobCredentialsUser,
+					"password": data.igobCredentialsPwd
+				}
+				$http({
+					method: 'POST',
+					url: data.igobCredentialsURL,
+					data: Object.toparams(credentials),
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				}).success(function (dataCre, status, headers, config) {
+					$.unblockUI();
+					console.log("Credentials igob", dataCre);
+					/// igob reg
+					console.log("data igob",data );
+					$http({
+						method: 'POST',
+						url: data.igobServCreacionURL,
+						data: Object.toparams(data.data),
+						headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization':'Bearer ' + dataCre.token }
+					}).success(function (dataRegIgob, status, headers, config) {
+						$.unblockUI();
+						console.log("Crear en igob", dataRegIgob);
+						if(dataRegIgob.success){
+							if(dataRegIgob.success.length>0){
+								console.log("dataRegIgob",dataRegIgob);
+								var id_form_tra = dataRegIgob.success[0].id_form_tra;
+								console.log("id_form_tra",id_form_tra);
+								//Actualizar idtramite en sitv2online
+
+								var dataSit= {
+									"q": param,
+									"idTramite": id_form_tra
+								}
+								$http({
+									method: 'POST',
+									url: CONFIG.SERVICE_SITOLextgen + 'Servicios/RegistrarIGOBActualizarIDtramite',
+									data: Object.toparams(dataSit),
+									headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+								}).success(function (dataActTram, status, headers, config) {
+									$.unblockUI();
+									console.log("Actualizar tramite en sitol", dataActTram);
+
+								}).error(function (data, status, headers, config) {
+									console.log("error email conexion",data, status, headers, config);
+									swal('', 'Error al registrar trámite en IGOB', 'error');
+									$.unblockUI();
+								});
+
+							}
+						}
+						else{
+							swal('', 'Error al registrar trámite en IGOB' + JSON.stringify(dataRegIgob), 'error');
+							$.unblockUI();
+						}
+					}).error(function (data, status, headers, config) {
+						console.log("error email conexion",data, status, headers, config);
+						swal('', 'Error al registrar trámite en IGOB', 'error');
+						$.unblockUI();
+					});
+					/// igob reg
+				}).error(function (data, status, headers, config) {
+					console.log("error credentials coneccion",data, status, headers, config);
+					swal('', 'Error al enviar credenciales al IGOB', 'error');
+					$.unblockUI();
+				});
+			}
+		}).error(function (data, status, headers, config) {
+			console.log("error email conexion",data, status, headers, config);
+			swal('', 'Error al registrar trámite en IGOB', 'error');
+			$.unblockUI();
+		});
+	}
+
+	$scope.updateIGOB = function (idRegistro) {
+		console.log("update Idregistro", idRegistro);
+		var p = {
+			idRegistro: idRegistro
+		};
+		$http({
+			method: 'POST',
+			url: CONFIG.SERVICE_SITOLextgen + 'Servicios/RegSitram',
+			data: Object.toparams(p),
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		}).success(function (data, status, headers, config) {
+			console.log("sitram res:",data);
+			if(data.res == 'OK')
+			{
+				var idRegEnc = data.resultado;
+				var matValue = data.valor.split('-');
+				var idIgob =matValue[0];
+				var sitramNro =matValue[1];
+				var p1 = {q: idRegEnc};
+				$http({
+					method: 'POST',
+					url: CONFIG.SERVICE_SITOLextgen + 'Servicios/RegistrarIGOBObtenerParam',
+					data: Object.toparams(p1),
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				}).success(function (dataParam, status, headers, config) {
+					$.unblockUI();
+					console.log("Obteniendo parametros igob", dataParam);
+					if(dataParam.res){
+						console.log("error crear en igob",dataParam);
+						swal('', 'No se pudo obtener params para actualizar IGOB: ' + dataParam.valor, 'error');
+						$.unblockUI();
+					}
+					else{
+						var credentials= {
+							"user": dataParam.igobCredentialsUser,
+							"password": dataParam.igobCredentialsPwd
+						}
+						$http({
+							method: 'POST',
+							url: dataParam.igobCredentialsURL,
+							data: Object.toparams(credentials),
+							headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+						}).success(function (dataCre, status, headers, config) {
+							$.unblockUI();
+							console.log("Credentials igob", dataCre);
+							/// igob upd
+							var dataigobupd = {
+								"codigo": dataParam.igobCodigo,
+								"id_form_tra":idIgob,
+								"codigo_tramite":sitramNro
+							}
+							$http({
+								method: 'POST',
+								url: dataParam.igobServActualizacionURL,
+								data: Object.toparams(dataigobupd),
+								headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization':'Bearer ' + dataCre.token }
+							}).success(function (dataRegIgob, status, headers, config) {
+								$.unblockUI();
+								console.log("Update en igob", dataRegIgob);
+								if(dataRegIgob.success){
+
+								}
+								else{
+									swal('', 'Error al actualizar trámite en IGOB' + JSON.stringify(dataRegIgob), 'error');
+									$.unblockUI();
+								}
+							}).error(function (data, status, headers, config) {
+								console.log("error email conexion",data, status, headers, config);
+								swal('', 'Error al registrar trámite en IGOB', 'error');
+								$.unblockUI();
+							});
+							/// igob reg
+						}).error(function (data, status, headers, config) {
+							console.log("error credentials coneccion",data, status, headers, config);
+							swal('', 'Error al enviar credenciales al IGOB', 'error');
+							$.unblockUI();
+						});
+					}
+				}).error(function (data, status, headers, config) {
+					console.log("error email conexion",data, status, headers, config);
+					swal('', 'Error al registrar trámite en IGOB', 'error');
+					$.unblockUI();
+				});
+			}
+			else
+			{
+				console.log("sitram no se pudo registrar",data);
+			}
+		}).error(function (data, status, headers, config) {
+			$.unblockUI();
+			sweet.show('', 'Error al registrar en sitram' + JSON.stringify(data), 'error');
+			console.log("Error al registrar en sitram", data);
+		});
+	};
+
+	/*********************************** Registro en IGOB - FIN *******************************************/
 	
 	//Revisar
 	/*********************************** Registro en Integra *******************************************/
+	/*
 	$scope.ConfIntegra = {
 		idServicio : 8, //1
 		idProcodigo:'AE-RAJ',
@@ -1259,6 +1615,9 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			$.unblockUI();
 		});
 	};
+
+	 */
+
 
 
 	var motivo1={};

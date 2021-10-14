@@ -13,6 +13,8 @@ var jsonURLS    =   {
     //SERVICE_SITOLextgen: "http://sim.lapaz.bo/sitolservicios/",         //xxx
     SERVICE_SITOLext: "http://192.168.6.111/sitolservicios/Servicios/",  
     SERVICE_SITOLextgen: "http://192.168.6.111/sitolservicios/",
+    SERVICE_SITOL_IGOB_CREDENTRIALS: "http://192.168.5.141:8003/wsRC/apiLoginGamlp",         
+    SERVICE_SITOL_IGOB_REGISTRO: "http://192.168.5.141:8003/wsRCPG/addSolicitudTCatastro",
     //AUTOCONSULTA CIUDADANO
     SERVICE_SIMGEP_AE: "wsSimgepAe",                                    //xxx
     SERVICE_SIMGEP_TERRITORIAL: "wsSimgepTerritorial",                  //xxx

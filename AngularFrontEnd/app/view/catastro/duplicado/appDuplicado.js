@@ -1246,8 +1246,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			$scope.datosServicioOnline = datosServicio;  
 			$scope.razonSocialFac = sessionService.get('US_PATERNO');
 			$scope.nitCiFac       = sessionService.get('CICIUDADANO');
-			/*  $scope.loginPagoEnLinea();
-				$scope.genProformaPagoOL(); */
 			$('#divPopupPagoTarjeta').modal('show');
 		}
 		
@@ -1615,7 +1613,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			$.unblockUI();
 		});
 	};
-
 	 */
 
 

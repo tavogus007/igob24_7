@@ -868,6 +868,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		}
 		else
 		{
+			
 			//Registro FUM Inicio
 			var p;
 			if (tipoPersona == 'NATURAL') {
@@ -901,117 +902,128 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 				};
 			}
 			$.blockUI();
-			$http({
-				method: 'POST',
-				url: CONFIG.SERVICE_SITOLext + 'RegFUM',
-				data: Object.toparams(p),
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-			}).success(function (data, status, headers, config) {
-				console.log("RegFUM res:",data);
-				if(data.res == 'OK')
-				{
-					//Registro tramite - Inicio
-					var fumb = data.fum;
-					var fumc = data.msg;
-					var ccb = $scope.resultadoBusqueda.codCat;
-
-					var xTipoTra=$scope.NuevoTipoSolicitud==1?"DUPLICADO_NUEVO":"DUPLICADO";
-					var xIdCiudadano = "0";
-					var xOIDCiudadano = sessionService.get('IDUSUARIO');
-					var xApellidos = aReg.paterno + ' ' + aReg.materno;
-					var xNombres= aReg.nombre;
-					var xNumeroDocumento=aReg.cedula;
-					var xExpedido = aReg.expedido;
-					var xTipoDocumento = "CI";
-					var xFUM=fumb;
-					var xIdMotivo=$scope.idMotivo;
-					var xIdMotivoDetalle=$scope.idMotivoDetalle;
-					var xCodigoCatastral=ccb;
-					var xNumInmueble="0";
-					var xNumCertificado="0";
-					var xfumEnc=fumc;
-					var xidTipoPago=$scope.idTipoPago;
-					var xcodPago="0";
-					var xaccion="A";
-					if (tipoPersona != 'NATURAL') {
-						xApellidos=aReg.razonSocial;
-						xNombres=aReg.razonSocial;
-						xNumeroDocumento=aReg.nit;
-						xExpedido=aReg.expedido;
-						xTipoDocumento="NIT";
-					}
-					var regFum = new dataSITOL();
-					regFum.dplRegFum( xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){ //xtipoPago,xcodPago,
-						$.unblockUI();
-						var resApi = JSON.parse(resultado);
-						console.log("Registro solicitud",resApi);
-						if(resApi.success)
-						{
-
-							$scope.idMotivo=0;
-							$scope.idMotivoDetalle=0;
-							$scope.RegistroFUM={
-								registrado:'OK',
-								mensaje:'Señor usuario, debe imprimir esta Proforma de Pago y apersonarse a cualquier entidad financiera autorizada en los siguientes 7 días calendario.'
-							};
-							try{
-								$scope.registrarIGOB(resApi.success.dataSql[0].idRegEnc);
-							}catch(e)
+			if($scope.idTipoPago == 1) {
+				$http({
+					method: 'POST',
+					url: CONFIG.SERVICE_SITOLext + 'RegFUM',
+					data: Object.toparams(p),
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				}).success(function (data, status, headers, config) {
+					console.log("RegFUM res:",data);
+					if(data.res == 'OK')
+					{
+						//Registro tramite - Inicio
+						var fumb = data.fum;
+						var fumc = data.msg;
+						var ccb = $scope.resultadoBusqueda.codCat;
+	
+						var xTipoTra=$scope.NuevoTipoSolicitud==1?"DUPLICADO_NUEVO":"DUPLICADO";
+						var xIdCiudadano = "0";
+						var xOIDCiudadano = sessionService.get('IDUSUARIO');
+						var xApellidos = aReg.paterno + ' ' + aReg.materno;
+						var xNombres= aReg.nombre;
+						var xNumeroDocumento=aReg.cedula;
+						var xExpedido = aReg.expedido;
+						var xTipoDocumento = "CI";
+						var xFUM=fumb;
+						var xIdMotivo=$scope.idMotivo;
+						var xIdMotivoDetalle=$scope.idMotivoDetalle;
+						var xCodigoCatastral=ccb;
+						var xNumInmueble="0";
+						var xNumCertificado="0";
+						var xfumEnc=fumc;
+						var xidTipoPago=$scope.idTipoPago;
+						var xcodPago="0";
+						var xaccion="A";
+						if (tipoPersona != 'NATURAL') {
+							xApellidos=aReg.razonSocial;
+							xNombres=aReg.razonSocial;
+							xNumeroDocumento=aReg.nit;
+							xExpedido=aReg.expedido;
+							xTipoDocumento="NIT";
+						}
+						var regFum = new dataSITOL();
+						regFum.dplRegFum( xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){ //xtipoPago,xcodPago,
+							$.unblockUI();
+							var resApi = JSON.parse(resultado);
+							console.log("Registro solicitud",resApi);
+							if(resApi.success)
 							{
-								console.log("error al registrar en igob", e);
+	
+								$scope.idMotivo=0;
+								$scope.idMotivoDetalle=0;
+								$scope.RegistroFUM={
+									registrado:'OK',
+									mensaje:'Señor usuario, debe imprimir esta Proforma de Pago y apersonarse a cualquier entidad financiera autorizada en los siguientes 7 días calendario.'
+								};
+								try{
+									$scope.registrarIGOB(resApi.success.dataSql[0].idRegEnc);
+								}catch(e)
+								{
+									console.log("error al registrar en igob", e);
+								}
+								setTimeout(function(){
+									$scope.CargarSolicitudesCiudadano();
+								},100);
+	
+								if($scope.idTipoPago == 1) {
+									$('#divPopup4').modal('show');
+									//$scope.genProforma();
+									var urlFum2 = CONFIG.SERVICE_SITOLext + 'DesplegarFum?q=' + fumc;
+									//$( "object").css('display', 'none');
+									//$( "object").attr('data',  urlFum2).css('display', '');
+									$('#visorFum object').attr("data",urlFum2);
+									$('#visorFum object').load(urlFum2);
+								}
+								/* else {
+									//$scope.genProformaPagoOL();
+									$('#divPopupPagoTarjeta').modal('show');
+									sessionService.set('IDFUM', fumb);
+									window.location.href = "#servicios|epagos";
+								} */
 							}
-							setTimeout(function(){
-								$scope.CargarSolicitudesCiudadano();
-							},100);
-
-							if($scope.idTipoPago == 1) {
-								$('#divPopup4').modal('show');
-								//$scope.genProforma();
-								var urlFum2 = CONFIG.SERVICE_SITOLext + 'DesplegarFum?q=' + fumc;
-								//$( "object").css('display', 'none');
-								//$( "object").attr('data',  urlFum2).css('display', '');
-								$('#visorFum object').attr("data",urlFum2);
-								$('#visorFum object').load(urlFum2);
+							else
+							{
+								sweet.show('', 'Error al registrar proforma de pago', 'error');
+								console.log("Error al registrar proforma de pago", resApi.error.message);
+	
+								$scope.idMotivoDetalle =0;
+								$scope.idMotivo =0;
+								$scope.RegistroFUM={
+									registrado:null,
+									mensaje:'Surgió un error al registrar la solicitud, por favor vuelva a intentar'
+								};
 							}
-							else {
-								//$scope.genProformaPagoOL();
-								$('#divPopupPagoTarjeta').modal('show');
-								sessionService.set('IDFUM', fumb);
-								window.location.href = "#servicios|epagos";
-							}
-						}
-						else
-						{
-							sweet.show('', 'Error al registrar proforma de pago', 'error');
-							console.log("Error al registrar proforma de pago", resApi.error.message);
-
-							$scope.idMotivoDetalle =0;
-							$scope.idMotivo =0;
-							$scope.RegistroFUM={
-								registrado:null,
-								mensaje:'Surgió un error al registrar la solicitud, por favor vuelva a intentar'
-							};
-						}
-					});
-
-					$scope.proforma=false;
-					$scope.resultadoBusqueda={};
-				}
-				else
-				{
+						});
+	
+						$scope.proforma=false;
+						$scope.resultadoBusqueda={};
+					}
+					else
+					{
+						$.unblockUI();
+						$scope.idMotivoDetalle =0;
+						$scope.idMotivo =0;
+						$scope.RegistroFUM = {
+							registrado:null,
+							mensaje:'Surgió un error al registrar la proforma de pago, por favor vuelva a intentar'
+						};
+					}
+				}).error(function (data, status, headers, config) {
 					$.unblockUI();
-					$scope.idMotivoDetalle =0;
-					$scope.idMotivo =0;
-					$scope.RegistroFUM = {
-						registrado:null,
-						mensaje:'Surgió un error al registrar la proforma de pago, por favor vuelva a intentar'
-					};
-				}
-			}).error(function (data, status, headers, config) {
+					sweet.show('', 'Error al registrar proforma de pago', 'error');
+					console.log("Error registro fum SIT ext, datos devueltos:", data);
+				});
+			
+			}else{
 				$.unblockUI();
-				sweet.show('', 'Error al registrar proforma de pago', 'error');
-				console.log("Error registro fum SIT ext, datos devueltos:", data);
-			});
+				$scope.datosServicioOnline = "";//datosServicio;  
+				$scope.razonSocialFac = sessionService.get('US_PATERNO');
+				$scope.nitCiFac       = sessionService.get('CICIUDADANO');
+				/*  $scope.loginPagoEnLinea();
+					$scope.genProformaPagoOL(); */
+				$('#divPopupPagoTarjeta').modal('show');
+			}
 		}
 
 	}
@@ -1862,8 +1874,191 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 				$scope.razonSocialFac = sessionService.get('US_PATERNO');
 				$scope.nitCiFac       = sessionService.get('CICIUDADANO');
 			}
-		}		
-		$scope.dataCiud = JSON.parse($scope.datosServicioOnline.parametros);
+		}
+		var p;
+		if (tipoPersona == 'NATURAL') {
+			p = {
+				tipoDoc: 'CEDULA DE IDENTIDAD',
+				nroDoc: aReg.cedula,
+				expedido: aReg.expedido,
+				nombres: aReg.nombre,
+				paterno: aReg.paterno,
+				materno: aReg.materno,
+				casada: '',//adefinir por  integra
+				fechanac: aReg.fecha_nacimiento,
+				razonsocial: 'RSN',
+				tkn:$scope.resultadoBusqueda.tkn,
+				cc:$scope.resultadoBusqueda.codCat
+			};
+		}
+		else{
+			p = {
+				tipoDoc: 'NIT',
+				nroDoc: aReg.nit,
+				expedido: aReg.expedido,//arreglar
+				nombres: aReg.razonSocial,
+				paterno: '',
+				materno: '',
+				casada: '',//adefinir por  integra
+				fechanac: aReg.fecha_nacimiento,
+				razonsocial: 'RSJ',
+				tkn:$scope.resultadoBusqueda.tkn,
+				cc:$scope.resultadoBusqueda.codCat
+			};
+		}
+		$http({
+			method: 'POST',
+			url: CONFIG.SERVICE_SITOLext + 'RegFUM',
+			data: Object.toparams(p),
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		}).success(function (data, status, headers, config) {
+			console.log("RegFUM res:",data);
+			if(data.res == 'OK')
+			{
+				//Registro tramite - Inicio
+				var fumb = data.fum;
+				var fumc = data.msg;
+				var ccb = $scope.resultadoBusqueda.codCat;
+
+				var xTipoTra=$scope.NuevoTipoSolicitud==1?"DUPLICADO_NUEVO":"DUPLICADO";
+				var xIdCiudadano = "0";
+				var xOIDCiudadano = sessionService.get('IDUSUARIO');
+				var xApellidos = aReg.paterno + ' ' + aReg.materno;
+				var xNombres= aReg.nombre;
+				var xNumeroDocumento=aReg.cedula;
+				var xExpedido = aReg.expedido;
+				var xTipoDocumento = "CI";
+				var xFUM=fumb;
+				var xIdMotivo=$scope.idMotivo;
+				var xIdMotivoDetalle=$scope.idMotivoDetalle;
+				var xCodigoCatastral=ccb;
+				var xNumInmueble="0";
+				var xNumCertificado="0";
+				var xfumEnc=fumc;
+				var xidTipoPago=$scope.idTipoPago;
+				var xcodPago="0";
+				var xaccion="A";
+				if (tipoPersona != 'NATURAL') {
+					xApellidos=aReg.razonSocial;
+					xNombres=aReg.razonSocial;
+					xNumeroDocumento=aReg.nit;
+					xExpedido=aReg.expedido;
+					xTipoDocumento="NIT";
+				}
+				var regFum = new dataSITOL();
+				regFum.dplRegFum( xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){ //xtipoPago,xcodPago,
+					$.unblockUI();
+					var resApi = JSON.parse(resultado);
+					console.log("Registro solicitud",resApi);
+					if(resApi.success)
+					{
+
+						
+						$scope.RegistroFUM={
+							registrado:'OK',
+							mensaje:'Señor usuario, debe imprimir esta Proforma de Pago y apersonarse a cualquier entidad financiera autorizada en los siguientes 7 días calendario.'
+						};
+						try{
+							$scope.registrarIGOB(resApi.success.dataSql[0].idRegEnc);
+							var di={};
+							if (tipoPersona != 'NATURAL') {
+								di = {
+									TipoTra: "DUPLICADO",
+									OIDCiudadano: sessionService.get('IDUSUARIO'),
+									Apellidos:aReg.razonSocial,
+									Nombres: aReg.razonSocial,
+									NumeroDocumento: aReg.nit,
+									Expedido: aReg.expedido,
+									TipoDocumento: "NIT",
+									FUM: fumb,
+									IdMotivo: $scope.idMotivo,
+									IdMotivoDetalle: $scope.idMotivoDetalle,
+									CodigoCatastral: ccb,
+									RegistroTramite: resApi.success.dataSql[0].idRegistro
+								};
+							}
+							else{
+								di = {
+									TipoTra: "DUPLICADO",
+									OIDCiudadano: sessionService.get('IDUSUARIO'),
+									Apellidos: aReg.paterno + ' ' + aReg.materno,
+									Nombres: aReg.nombre,
+									NumeroDocumento: aReg.cedula,
+									Expedido: aReg.expedido,
+									TipoDocumento: "CI",
+									FUM: fumb,
+									IdMotivo: $scope.idMotivo,
+									IdMotivoDetalle: $scope.idMotivoDetalle,
+									CodigoCatastral: ccb,
+									RegistroTramite: resApi.success.dataSql[0].idRegistro
+								};
+							}
+							//* Revisar funcion 
+							//$scope.UpdateIntegra(di);
+							sessionService.set('IDFUM', fumb);
+							$scope.loginPagoEnLinea();
+							$scope.obtenerFumDatos(di);
+							
+							
+
+							$.unblockUI();
+
+						}catch(e)
+						{
+							console.log("error al registrar en igob", e);
+						}
+
+						$scope.idMotivo=0;
+						$scope.idMotivoDetalle=0;
+
+						
+					}
+					else
+					{
+						sweet.show('', 'Error al registrar proforma de pago', 'error');
+						console.log("Error al registrar proforma de pago", resApi.error.message);
+
+						$scope.idMotivoDetalle =0;
+						$scope.idMotivo =0;
+						$scope.RegistroFUM={
+							registrado:null,
+							mensaje:'Surgió un error al registrar la solicitud, por favor vuelva a intentar'
+						};
+					}
+				});
+
+				$scope.proforma=false;
+				$scope.resultadoBusqueda={};
+			}
+			else
+			{
+				$.unblockUI();
+				$scope.idMotivoDetalle =0;
+				$scope.idMotivo =0;
+				$scope.RegistroFUM = {
+					registrado:null,
+					mensaje:'Surgió un error al registrar la proforma de pago, por favor vuelva a intentar'
+				};
+			}
+		}).error(function (data, status, headers, config) {
+			$.unblockUI();
+			sweet.show('', 'Error al registrar proforma de pago', 'error');
+			console.log("Error registro fum SIT ext, datos devueltos:", data);
+		});
+
+
+
+
+
+
+
+
+
+
+
+
+
+		$scope.dataCiud = "";//JSON.parse($scope.datosServicioOnline.parametros);
 		$.blockUI();		
 
 		$scope.datosServicioOnline.llamarregla(function(data){
@@ -1917,8 +2112,8 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 						$scope.objPagos.sucursal_facturacion = 170;
 						$scope.objPagos.id_usuario_facturacion = 0;
 						$scope.objPagos.servicio = "CATASTRO";
-						$scope.objPagos.usuario_fac = "angela.illanes";
-						$scope.objPagos.clave_fac = "123456";
+						$scope.objPagos.usuario_fac = "angela.illanes";//"plataforma.igob"
+						$scope.objPagos.clave_fac = "123456";// "pl4t4f0rm1st4";
 						$scope.objPagos.data_opcional = [{
 							"registroTramite": dataFUMGEN.RegistroTramite}];
 						$scope.objPagos.items = [{
@@ -1937,7 +2132,10 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 							$scope.body = resp.formulario;
 							$scope.openWindowWithPost();						
 							$('#divPopupPagoTarjeta').modal('hide');
-							$scope.SpinFactura = false;							
+							$scope.SpinFactura = false;	
+							setTimeout(function(){
+								$scope.CargarSolicitudesCiudadano();
+							},100);						
 							
 						});
 						
@@ -1950,7 +2148,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 					alert("Error Intente de nuevo !!");
 				}
 			});
-		},5000); 
+		},2000); 
     };
 	
 	$scope.openWindowWithPost = function () {	

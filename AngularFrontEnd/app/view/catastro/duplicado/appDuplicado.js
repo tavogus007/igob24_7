@@ -1705,8 +1705,8 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 							$scope.objPagos.sucursal_facturacion = 170;
 							$scope.objPagos.id_usuario_facturacion = 0;
 							$scope.objPagos.servicio = "CATASTRO";
-							$scope.objPagos.usuario_fac = "angela.illanes";//"plataforma.igob"
-							$scope.objPagos.clave_fac = "123456";// "pl4t4f0rm1st4";
+							$scope.objPagos.usuario_fac = "ciudadano.igob";//"angela.illanes";
+							$scope.objPagos.clave_fac = "c1ud4d4n0iGob";//"123456;;
 							$scope.objPagos.data_opcional = [{
 								"registroTramite": dataFUMGEN.IdRegistro}];
 							$scope.objPagos.items = [{
@@ -2134,8 +2134,8 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 												$scope.objPagos.sucursal_facturacion = 170;
 												$scope.objPagos.id_usuario_facturacion = 0;
 												$scope.objPagos.servicio = "CATASTRO";
-												$scope.objPagos.usuario_fac = "angela.illanes";//"plataforma.igob"
-												$scope.objPagos.clave_fac = "123456";// "pl4t4f0rm1st4";
+												$scope.objPagos.usuario_fac = "ciudadano.igob";//"angela.illanes"
+												$scope.objPagos.clave_fac = "c1ud4d4n0iGob";//123456
 												$scope.objPagos.data_opcional = [{
 													"registroTramite": dataFUMGEN.RegistroTramite}];
 												$scope.objPagos.items = [{
@@ -2274,8 +2274,8 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 						$scope.objPagos.sucursal_facturacion = 170;
 						$scope.objPagos.id_usuario_facturacion = 0;
 						$scope.objPagos.servicio = "CATASTRO";
-						$scope.objPagos.usuario_fac = "angela.illanes";//"plataforma.igob"
-						$scope.objPagos.clave_fac = "123456";// "pl4t4f0rm1st4";
+						$scope.objPagos.usuario_fac = "ciudadano.igob";//"angela.illanes";
+						$scope.objPagos.clave_fac = "c1ud4d4n0iGob";// "pl4t4f0rm1st4";
 						$scope.objPagos.data_opcional = [{
 							"registroTramite": dataFUMGEN.RegistroTramite}];
 						$scope.objPagos.items = [{

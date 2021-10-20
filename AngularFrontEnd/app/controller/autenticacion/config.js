@@ -81,7 +81,8 @@ var jsonURLS    =   {
     CONEXION_PAGOS: "http://172.18.2.194:4500/",
     CONEXION_ODM : "http://200.105.139.183:9090/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php",
     CONEXION_CORREOS : "http://200.105.139.183:9090/" + "smsemail/email/mailSalud2_0_BORRAR.php",
-    SERVICE_PAGOS_TARJETA:"http://172.18.2.194:4500/api/registrarTrx"
+    SERVICE_PAGOS_TARJETA:"http://172.18.2.194:4500/api/registrarTrx",
+    CONEXION_FACPUENTE : "http://172.18.2.228/"
     
 };
 try{

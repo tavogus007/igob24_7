@@ -746,7 +746,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		$.ajax({
 			"async": true,
 			type        : 'POST',
-			url         : CONFIG.CONEXION_PAGOS +'comprobantedepago',
+			url         : CONFIG.CONEXION_PAGOS +'api/comprobantedepago',
 			data        : formData,
 			dataType    : 'json',
 			crossDomain : true,
@@ -826,6 +826,11 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 	};
 	$scope.VerificarDespliegueCC = function (sol) {
 		return sol.idEstado == 2 || sol.idEstado == 3;
+	};
+
+	$scope.VerificarEstadoFacturado = function (sol) {
+		
+		return sol.idEstado == 2 && sol.urlFactuta !== 'null';
 	};
 	//------------------------- Verificacines botones de acciones bandeja - FIN  ----------------------
 
@@ -1644,7 +1649,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		$.ajax({
 			dataType: "json",
 			type: "POST",
-			url : CONFIG.CONEXION_PAGOS + 'logueo',
+			url : CONFIG.CONEXION_PAGOS + 'api/logueo',
 			data: formData,
 			async: false,
 			success: function(response) {
@@ -1657,92 +1662,78 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		});
 	};
 	$scope.continuarPagoOL = function(dataFUMGEN){
-		var popupWin = window.open('', '_blank', 'width=800,height=800,toolbar=no,menubar=no,location=0');
-		//printContenidos = '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>';
-		printContenidos = "<html lang='en'> <head> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1'> <style> .principal { display: flex; justify-content: center; } .secundario { padding: 10px; margin: 10px; } .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #09f; animation: spin 1s ease infinite; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } </style> <body style='background-color:#c9e5e9;'> <div class='principal'> <div class='spinner'></div> </div> <div class='principal'>Procesando el pago...</div> </div> </body> </html>";
-
-		popupWin.document.write('<html><head></head><body>' + printContenidos + '<br><br></html>');
-		if (popupWin == null || typeof(popupWin)=='undefined') {  
-			//alert('Please disable your pop-up blocker and click the "Open" link again.'); 
-			swal('Desactive su bloqueador de ventanas emergentes y vuelva a hacer clic en el boton "Realizar Pago".', 'Error al registrar trámite en IGOB', 'info');
-		} 
-		else { 
-			sessionService.set('IDFUM', dataFUMGEN.FUM);
-			var idtoken =   sessionService.get('TOKEN');
-			var stoquen =  'Bearer ' + idtoken;
-			
-			var formData = {
-			'idfum'	: dataFUMGEN.FUM
-			};
-			
-			$.blockUI();
-			setTimeout(function()
-			{
-				$.ajax({
-					type        : 'POST',            
-					url         : CONFIG.CONEXION_PAGOS + 'datosContribuyente',
-					data        : formData,
-					crossDomain : true,
-					async:false,
-					headers: {
-						'authorization': stoquen
-					},
-					success     : function(data) {
-						var msg   =   data;
-						if (typeof msg.error === 'undefined') {
-							data = JSON.parse(data[0]);
-							$scope.objPagos = new datahtml();
-							$scope.objPagos.odm       = data.idFum;
-							$scope.objPagos.total     = data.AcctotalGeneral; 
-							$scope.objPagos.nombres   = dataFUMGEN.Nombres;
-							$scope.objPagos.apellidos = dataFUMGEN.Apellidos;
-							$scope.objPagos.direccion = data.zona + " " +data.nombreVia + " Nro. " + data.numeroPuerta;
-							$scope.objPagos.email     = aReg.correo;
-							$scope.objPagos.celular   = aReg.celular;
-							$scope.objPagos.sistema    = "IGOB";
-							$scope.objPagos.ci_nit    = dataFUMGEN.NumeroDocumento;
-							$scope.objPagos.oid_ciudadano = dataFUMGEN.OIDCiudadano;
-							$scope.objPagos.sucursal_facturacion = 170;
-							$scope.objPagos.id_usuario_facturacion = 0;
-							$scope.objPagos.servicio = "CATASTRO";
-							$scope.objPagos.usuario_fac = "ciudadano.igob";//"angela.illanes";
-							$scope.objPagos.clave_fac = "c1ud4d4n0iGob";//"123456;;
-							$scope.objPagos.data_opcional = [{
-								"registroTramite": dataFUMGEN.IdRegistro}];
-							$scope.objPagos.items = [{
-									"concepto": data.descripcion,
-									"cantidad": 1,
-									"monto": data.AcctotalGeneral,
-									"item_genesis":data.idItemRecaudador,
-									"item_recaudador":0
-								}
-							];
-							$scope.objPagos.nit_factura    = dataFUMGEN.NumeroDocumento;
-							$scope.objPagos.nombre_factura = dataFUMGEN.Apellidos;
-							$scope.objPagos.generacionHtml(function(resp){
-								$.unblockUI();
-								resp = JSON.parse(JSON.parse(resp));
-								$scope.body = resp.formulario;
-								var printContenidos = "<html>" +  $scope.body + "</html>";
-								popupWin.document.open();
-								popupWin.document.write('<html><head></head><body>' + printContenidos + '<br><br></html>');
-								//popupWin.document.close();														
-								$scope.CargarSolicitudesCiudadano();
-							});
-							
-						} else {
-							sweet.show('', 'Proforma pagada !!', 'error');                   
-						} 
-					},
-					error: function (xhr, status, error) {
+		
+		sessionService.set('IDFUM', dataFUMGEN.FUM);
+		var idtoken =   sessionService.get('TOKEN');
+		var stoquen =  'Bearer ' + idtoken;		
+		var formData = {
+		'idfum'	: dataFUMGEN.FUM
+		};	
+		var importantStuff1 = window.open('../../../loadingPagosGAMLP.html', '_blank','width=800,height=800,toolbar=no,menubar=no,location=0');	
+		$.blockUI();		
+		$.ajax({
+			type        : 'POST',            
+			url         : CONFIG.CONEXION_PAGOS + 'api/datosContribuyente',
+			data        : formData,
+			crossDomain : true,
+			async:false,
+			headers: {
+				'authorization': stoquen
+			},
+			success     : function(data) {
+				var msg   =   data;
+				if (typeof msg.error === 'undefined') {
+					data = JSON.parse(data[0]);
+					$scope.objPagos = new datahtml();
+					$scope.objPagos.odm       = data.idFum;
+					$scope.objPagos.total     = data.AcctotalGeneral; 
+					$scope.objPagos.nombres   = dataFUMGEN.Nombres;
+					$scope.objPagos.apellidos = dataFUMGEN.Apellidos;
+					$scope.objPagos.direccion = data.zona + " " +data.nombreVia + " Nro. " + data.numeroPuerta;
+					$scope.objPagos.email     = aReg.correo;
+					$scope.objPagos.celular   = aReg.celular;
+					$scope.objPagos.sistema    = "IGOB";
+					$scope.objPagos.ci_nit    = dataFUMGEN.NumeroDocumento;
+					$scope.objPagos.oid_ciudadano = dataFUMGEN.OIDCiudadano;
+					$scope.objPagos.sucursal_facturacion = 170;
+					$scope.objPagos.id_usuario_facturacion = 0;
+					$scope.objPagos.servicio = "CATASTRO";
+					$scope.objPagos.usuario_fac = "ciudadano.igob";
+					$scope.objPagos.clave_fac = "c1ud4d4n0iGob";					
+					$scope.objPagos.data_opcional = [{
+						"registroTramite": dataFUMGEN.IdRegistro}];
+					$scope.objPagos.items = [{
+							"concepto": data.descripcion,
+							"cantidad": 1,
+							"monto": data.AcctotalGeneral,
+							"item_genesis":data.idItemRecaudador,
+							"item_recaudador":0
+						}
+					];
+					$scope.objPagos.nit_factura    = dataFUMGEN.NumeroDocumento;
+					$scope.objPagos.nombre_factura = dataFUMGEN.Apellidos;
+					$scope.objPagos.generacionHtml(function(resp){
 						$.unblockUI();
-						alert("Error Intente de nuevo !!");
-					}
-				});
-			},2000);
-
-		}				
-		//window.location.href = "#servicios|epagos";
+						setTimeout(function()
+						{
+							resp = JSON.parse(JSON.parse(resp));
+							var respURLPagos = CONFIG.CONEXION_PAGOS;
+							importantStuff1.location.href = respURLPagos + resp.formulario;
+						},2000);
+						setTimeout(function()
+						{	
+							$scope.CargarSolicitudesCiudadano();																												
+						},40000);
+					});					
+				} else {
+					sweet.show('', 'Proforma pagada !!', 'error');                   
+				} 
+			},
+			error: function (xhr, status, error) {
+				$.unblockUI();
+				alert("Error Intente de nuevo !!");
+			}
+		});		
 	};
 
 	function MouseWheelHandler(e) {
@@ -1947,382 +1938,288 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		}
 	}
 	$scope.SpinFactura = false;
-	$scope.pagarDuplicado = function(){
-		var popupWin = window.open('', '_blank', 'width=800,height=800,toolbar=no,menubar=no,location=0');
-		//printContenidos = '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>';
-		printContenidos = "<html lang='en'> <head> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1'> <style> .principal { display: flex; justify-content: center; } .secundario { padding: 10px; margin: 10px; } .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #09f; animation: spin 1s ease infinite; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } </style> <body style='background-color:#c9e5e9;'> <div class='principal'> <div class='spinner'></div> </div> <div class='principal'>Procesando el pago...</div> </div> </body> </html>";
-
-		popupWin.document.write('<html><head></head><body>' + printContenidos + '<br><br></html>');
-		if (popupWin == null || typeof(popupWin)=='undefined') {  
-			//alert('Please disable your pop-up blocker and click the "Open" link again.'); 
-			swal('Desactive su bloqueador de ventanas emergentes y vuelva a hacer clic en el boton "Realizar Pago".', 'Error al registrar trámite en IGOB', 'info');
-		} 
-		else {  
-			
-			if (typeof $scope.dataFAC === 'undefined') {
+	$scope.pagarDuplicado = function(){				
+		if (typeof $scope.dataFAC === 'undefined') {
+			$scope.razonSocialFac = sessionService.get('US_PATERNO');
+			$scope.nitCiFac       = sessionService.get('CICIUDADANO');
+		}else{
+			if ($scope.dataFAC.checkFac) {
+				$scope.razonSocialFac = $scope.dataFAC.razonSocial; 
+				$scope.nitCiFac = $scope.dataFAC.nitCi;
+			}else{
 				$scope.razonSocialFac = sessionService.get('US_PATERNO');
 				$scope.nitCiFac       = sessionService.get('CICIUDADANO');
-			}else{
-				if ($scope.dataFAC.checkFac) {
-					$scope.razonSocialFac = $scope.dataFAC.razonSocial; 
-					$scope.nitCiFac = $scope.dataFAC.nitCi;
-				}else{
-					$scope.razonSocialFac = sessionService.get('US_PATERNO');
-					$scope.nitCiFac       = sessionService.get('CICIUDADANO');
-				}
 			}
-			var p;
-			if (tipoPersona == 'NATURAL') {
-				p = {
-					tipoDoc: 'CEDULA DE IDENTIDAD',
-					nroDoc: aReg.cedula,
-					expedido: aReg.expedido,
-					nombres: aReg.nombre,
-					paterno: aReg.paterno,
-					materno: aReg.materno,
-					casada: '',//adefinir por  integra
-					fechanac: aReg.fecha_nacimiento,
-					razonsocial: 'RSN',
-					tkn:$scope.resultadoBusqueda.tkn,
-					cc:$scope.resultadoBusqueda.codCat
-				};
-			}
-			else{
-				p = {
-					tipoDoc: 'NIT',
-					nroDoc: aReg.nit,
-					expedido: aReg.expedido,//arreglar
-					nombres: aReg.razonSocial,
-					paterno: '',
-					materno: '',
-					casada: '',//adefinir por  integra
-					fechanac: aReg.fecha_nacimiento,
-					razonsocial: 'RSJ',
-					tkn:$scope.resultadoBusqueda.tkn,
-					cc:$scope.resultadoBusqueda.codCat
-				};
-			}
-			$http({
-				method: 'POST',
-				url: CONFIG.SERVICE_SITOLext + 'RegFUM',
-				data: Object.toparams(p),
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-			}).success(function (data, status, headers, config) {
-				console.log("RegFUM res:",data);
-				if(data.res == 'OK')
-				{
-					//Registro tramite - Inicio
-					var fumb = data.fum;
-					var fumc = data.msg;
-					var ccb = $scope.resultadoBusqueda.codCat;
-	
-					var xTipoTra=$scope.NuevoTipoSolicitud==1?"DUPLICADO_NUEVO":"DUPLICADO";
-					var xIdCiudadano = "0";
-					var xOIDCiudadano = sessionService.get('IDUSUARIO');
-					var xApellidos = aReg.paterno + ' ' + aReg.materno;
-					var xNombres= aReg.nombre;
-					var xNumeroDocumento=aReg.cedula;
-					var xExpedido = aReg.expedido;
-					var xTipoDocumento = "CI";
-					var xFUM=fumb;
-					var xIdMotivo=$scope.idMotivo;
-					var xIdMotivoDetalle=$scope.idMotivoDetalle;
-					var xCodigoCatastral=ccb;
-					var xNumInmueble="0";
-					var xNumCertificado="0";
-					var xfumEnc=fumc;
-					var xidTipoPago=$scope.idTipoPago;
-					var xcodPago="0";
-					var xaccion="A";
-					if (tipoPersona != 'NATURAL') {
-						xApellidos=aReg.razonSocial;
-						xNombres=aReg.razonSocial;
-						xNumeroDocumento=aReg.nit;
-						xExpedido=aReg.expedido;
-						xTipoDocumento="NIT";
-					}
-					var regFum = new dataSITOL();
-					regFum.dplRegFum( xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){ //xtipoPago,xcodPago,
-						$.unblockUI();
-						var resApi = JSON.parse(resultado);
-						console.log("Registro solicitud",resApi);
-						if(resApi.success)
-						{
-	
-							
-							$scope.RegistroFUM={
-								registrado:'OK',
-								mensaje:'Señor usuario, debe imprimir esta Proforma de Pago y apersonarse a cualquier entidad financiera autorizada en los siguientes 7 días calendario.'
-							};
-							try{
-								$scope.registrarIGOB(resApi.success.dataSql[0].idRegEnc);
-								var di={};
-								if (tipoPersona != 'NATURAL') {
-									di = {
-										TipoTra: "DUPLICADO",
-										OIDCiudadano: sessionService.get('IDUSUARIO'),
-										Apellidos:aReg.razonSocial,
-										Nombres: aReg.razonSocial,
-										NumeroDocumento: aReg.nit,
-										Expedido: aReg.expedido,
-										TipoDocumento: "NIT",
-										FUM: fumb,
-										IdMotivo: $scope.idMotivo,
-										IdMotivoDetalle: $scope.idMotivoDetalle,
-										CodigoCatastral: ccb,
-										RegistroTramite: resApi.success.dataSql[0].idRegistro
-									};
-								}
-								else{
-									di = {
-										TipoTra: "DUPLICADO",
-										OIDCiudadano: sessionService.get('IDUSUARIO'),
-										Apellidos: aReg.paterno + ' ' + aReg.materno,
-										Nombres: aReg.nombre,
-										NumeroDocumento: aReg.cedula,
-										Expedido: aReg.expedido,
-										TipoDocumento: "CI",
-										FUM: fumb,
-										IdMotivo: $scope.idMotivo,
-										IdMotivoDetalle: $scope.idMotivoDetalle,
-										CodigoCatastral: ccb,
-										RegistroTramite: resApi.success.dataSql[0].idRegistro
-									};
-								}
-								//* Revisar funcion//
-								sessionService.set('IDFUM', fumb);
-								$scope.loginPagoEnLinea();
-
-								var dataFUMGEN = di;
-
-								$scope.SpinFactura = true;
-								var idfum   =   sessionService.get('IDFUM');
-								var idtoken =   sessionService.get('TOKEN');
-								var stoquen =  'Bearer ' + idtoken;
-								
-								var formData = {
-								'idfum'	: idfum
-								};
-								
-								$.blockUI();
-								setTimeout(function()
-								{
-									$.ajax({
-										type        : 'POST',            
-										url         : CONFIG.CONEXION_PAGOS + 'datosContribuyente',
-										data        : formData,
-										crossDomain : true,
-										async:false,
-										headers: {
-											'authorization': stoquen
-										},
-										success     : function(data) {
-											var msg   =   data;
-											if (typeof msg.error === 'undefined') {
-												data = JSON.parse(data[0]);
-												$scope.objPagos = new datahtml();
-												$scope.objPagos.odm       = data.idFum;
-												$scope.objPagos.total     = data.AcctotalGeneral; 
-												$scope.objPagos.nombres   = dataFUMGEN.Nombres;
-												$scope.objPagos.apellidos = dataFUMGEN.Apellidos;
-												$scope.objPagos.direccion = data.zona + " " +data.nombreVia + " Nro. " + data.numeroPuerta;
-												$scope.objPagos.email     = aReg.correo;
-												$scope.objPagos.celular   = aReg.celular;
-												$scope.objPagos.sistema    = "IGOB";
-												$scope.objPagos.ci_nit    = dataFUMGEN.NumeroDocumento;
-												$scope.objPagos.oid_ciudadano = dataFUMGEN.OIDCiudadano;
-												$scope.objPagos.sucursal_facturacion = 170;
-												$scope.objPagos.id_usuario_facturacion = 0;
-												$scope.objPagos.servicio = "CATASTRO";
-												$scope.objPagos.usuario_fac = "ciudadano.igob";//"angela.illanes"
-												$scope.objPagos.clave_fac = "c1ud4d4n0iGob";//123456
-												$scope.objPagos.data_opcional = [{
-													"registroTramite": dataFUMGEN.RegistroTramite}];
-												$scope.objPagos.items = [{
-														"concepto": data.descripcion,
-														"cantidad": 1,
-														"monto": data.AcctotalGeneral,
-														"item_genesis":data.idItemRecaudador,
-														"item_recaudador":0
-													}
-												];
-												$scope.objPagos.nit_factura    = $scope.nitCiFac;
-												$scope.objPagos.nombre_factura = $scope.razonSocialFac;
-												$scope.objPagos.generacionHtml(function(resp){
-													$.unblockUI();
-													resp = JSON.parse(JSON.parse(resp));
-													$scope.body = resp.formulario;
-													var printContenidos = "<html>" +  $scope.body + "</html>";
-													//var popupWin = window.open('', '_blank', 'width=800,height=800');
-													popupWin.document.open();
-													popupWin.document.write('<html><head></head><body>' + printContenidos + '<br><br></html>');
-													//popupWin.document.close();						
-													$('#divPopupPagoTarjeta').modal('hide');
-													$scope.SpinFactura = false;	
-													$scope.CargarSolicitudesCiudadano();
-													/* setTimeout(function(){
-													},100); */						
-													
-												});
-												
-											} else {
-												sweet.show('', 'Proforma pagada !!', 'error');                   
-											} 
-										},
-										error: function (xhr, status, error) {
-											$.unblockUI();
-											alert("Error Intente de nuevo !!");
-										}
-									});
-								},2000); 
-
-
-
-
-
-								//$scope.obtenerFumDatos(di);
-														
-								$.unblockUI();
-	
-							}catch(e)
-							{
-								console.log("error al registrar en igob", e);
-							}
-	
-							$scope.idMotivo=0;
-							$scope.idMotivoDetalle=0;
-	
-							
-						}
-						else
-						{
-							sweet.show('', 'Error al registrar proforma de pago', 'error');
-							console.log("Error al registrar proforma de pago", resApi.error.message);
-	
-							$scope.idMotivoDetalle =0;
-							$scope.idMotivo =0;
-							$scope.RegistroFUM={
-								registrado:null,
-								mensaje:'Surgió un error al registrar la solicitud, por favor vuelva a intentar'
-							};
-						}
-					});
-	
-					$scope.proforma=false;
-					$scope.resultadoBusqueda={};
-				}
-				else
-				{
-					$.unblockUI();
-					$scope.idMotivoDetalle =0;
-					$scope.idMotivo =0;
-					$scope.RegistroFUM = {
-						registrado:null,
-						mensaje:'Surgió un error al registrar la proforma de pago, por favor vuelva a intentar'
-					};
-				}
-			}).error(function (data, status, headers, config) {
-				$.unblockUI();
-				sweet.show('', 'Error al registrar proforma de pago', 'error');
-				console.log("Error registro fum SIT ext, datos devueltos:", data);
-			});
-	
-			$.blockUI();		
-
-
 		}
+		var p;
+		if (tipoPersona == 'NATURAL') {
+			p = {
+				tipoDoc: 'CEDULA DE IDENTIDAD',
+				nroDoc: aReg.cedula,
+				expedido: aReg.expedido,
+				nombres: aReg.nombre,
+				paterno: aReg.paterno,
+				materno: aReg.materno,
+				casada: '',//adefinir por  integra
+				fechanac: aReg.fecha_nacimiento,
+				razonsocial: 'RSN',
+				tkn:$scope.resultadoBusqueda.tkn,
+				cc:$scope.resultadoBusqueda.codCat
+			};
+		}
+		else{
+			p = {
+				tipoDoc: 'NIT',
+				nroDoc: aReg.nit,
+				expedido: aReg.expedido,//arreglar
+				nombres: aReg.razonSocial,
+				paterno: '',
+				materno: '',
+				casada: '',//adefinir por  integra
+				fechanac: aReg.fecha_nacimiento,
+				razonsocial: 'RSJ',
+				tkn:$scope.resultadoBusqueda.tkn,
+				cc:$scope.resultadoBusqueda.codCat
+			};
+		}
+		$http({
+			method: 'POST',
+			url: CONFIG.SERVICE_SITOLext + 'RegFUM',
+			data: Object.toparams(p),
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		}).success(function (data, status, headers, config) {
+			console.log("RegFUM res:",data);
+			if(data.res == 'OK')
+			{
+				//Registro tramite - Inicio
+				var fumb = data.fum;
+				var fumc = data.msg;
+				var ccb = $scope.resultadoBusqueda.codCat;
+
+				var xTipoTra=$scope.NuevoTipoSolicitud==1?"DUPLICADO_NUEVO":"DUPLICADO";
+				var xIdCiudadano = "0";
+				var xOIDCiudadano = sessionService.get('IDUSUARIO');
+				var xApellidos = aReg.paterno + ' ' + aReg.materno;
+				var xNombres= aReg.nombre;
+				var xNumeroDocumento=aReg.cedula;
+				var xExpedido = aReg.expedido;
+				var xTipoDocumento = "CI";
+				var xFUM=fumb;
+				var xIdMotivo=$scope.idMotivo;
+				var xIdMotivoDetalle=$scope.idMotivoDetalle;
+				var xCodigoCatastral=ccb;
+				var xNumInmueble="0";
+				var xNumCertificado="0";
+				var xfumEnc=fumc;
+				var xidTipoPago=$scope.idTipoPago;
+				var xcodPago="0";
+				var xaccion="A";
+				if (tipoPersona != 'NATURAL') {
+					xApellidos=aReg.razonSocial;
+					xNombres=aReg.razonSocial;
+					xNumeroDocumento=aReg.nit;
+					xExpedido=aReg.expedido;
+					xTipoDocumento="NIT";
+				}
+				var regFum = new dataSITOL();
+				regFum.dplRegFum( xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){ //xtipoPago,xcodPago,
+					$.unblockUI();
+					var resApi = JSON.parse(resultado);
+					console.log("Registro solicitud",resApi);
+					if(resApi.success)
+					{
+						$scope.RegistroFUM={
+							registrado:'OK',
+							mensaje:'Señor usuario, debe imprimir esta Proforma de Pago y apersonarse a cualquier entidad financiera autorizada en los siguientes 7 días calendario.'
+						};
+						try{
+							$scope.registrarIGOB(resApi.success.dataSql[0].idRegEnc);
+							var di={};
+							if (tipoPersona != 'NATURAL') {
+								di = {
+									TipoTra: "DUPLICADO",
+									OIDCiudadano: sessionService.get('IDUSUARIO'),
+									Apellidos:aReg.razonSocial,
+									Nombres: aReg.razonSocial,
+									NumeroDocumento: aReg.nit,
+									Expedido: aReg.expedido,
+									TipoDocumento: "NIT",
+									FUM: fumb,
+									IdMotivo: $scope.idMotivo,
+									IdMotivoDetalle: $scope.idMotivoDetalle,
+									CodigoCatastral: ccb,
+									RegistroTramite: resApi.success.dataSql[0].idRegistro
+								};
+							}
+							else{
+								di = {
+									TipoTra: "DUPLICADO",
+									OIDCiudadano: sessionService.get('IDUSUARIO'),
+									Apellidos: aReg.paterno + ' ' + aReg.materno,
+									Nombres: aReg.nombre,
+									NumeroDocumento: aReg.cedula,
+									Expedido: aReg.expedido,
+									TipoDocumento: "CI",
+									FUM: fumb,
+									IdMotivo: $scope.idMotivo,
+									IdMotivoDetalle: $scope.idMotivoDetalle,
+									CodigoCatastral: ccb,
+									RegistroTramite: resApi.success.dataSql[0].idRegistro
+								};
+							}
+							sessionService.set('IDFUM', fumb);
+							$scope.loginPagoEnLinea();
+
+							var dataFUMGEN = di;
+
+							$scope.SpinFactura = true;
+							var idfum   =   sessionService.get('IDFUM');
+							var idtoken =   sessionService.get('TOKEN');
+							var stoquen =  'Bearer ' + idtoken;
+							
+							var formData = {
+							'idfum'	: idfum
+							};							
+							var importantStuff = window.open('../../../loadingPagosGAMLP.html', '_blank','width=800,height=800,toolbar=no,menubar=no,location=0');
+							$.blockUI();							
+							$.ajax({
+								type        : 'POST',            
+								url         : CONFIG.CONEXION_PAGOS + 'api/datosContribuyente',
+								data        : formData,
+								crossDomain : true,
+								async:false,
+								headers: {
+									'authorization': stoquen
+								},
+								success     : function(data) {
+									var msg   =   data;
+									if (typeof msg.error === 'undefined') {
+										
+										data = JSON.parse(data[0]);
+										$scope.objPagos = new datahtml();
+										$scope.objPagos.odm       = data.idFum;
+										$scope.objPagos.total     = data.AcctotalGeneral; 
+										$scope.objPagos.nombres   = dataFUMGEN.Nombres;
+										$scope.objPagos.apellidos = dataFUMGEN.Apellidos;
+										$scope.objPagos.direccion = data.zona + " " +data.nombreVia + " Nro. " + data.numeroPuerta;
+										$scope.objPagos.email     = aReg.correo;
+										$scope.objPagos.celular   = aReg.celular;
+										$scope.objPagos.sistema    = "IGOB";
+										$scope.objPagos.ci_nit    = dataFUMGEN.NumeroDocumento;
+										$scope.objPagos.oid_ciudadano = dataFUMGEN.OIDCiudadano;
+										$scope.objPagos.sucursal_facturacion = 170;
+										$scope.objPagos.id_usuario_facturacion = 0;
+										$scope.objPagos.servicio = "CATASTRO";
+										$scope.objPagos.usuario_fac = "ciudadano.igob";
+										$scope.objPagos.clave_fac = "c1ud4d4n0iGob";										
+										$scope.objPagos.data_opcional = [{
+											"registroTramite": dataFUMGEN.RegistroTramite}];
+										$scope.objPagos.items = [{
+												"concepto": data.descripcion,
+												"cantidad": 1,
+												"monto": data.AcctotalGeneral,
+												"item_genesis":data.idItemRecaudador,
+												"item_recaudador":0
+											}
+										];
+										$scope.objPagos.nit_factura    = $scope.nitCiFac;
+										$scope.objPagos.nombre_factura = $scope.razonSocialFac;
+										$scope.objPagos.generacionHtml(function(resp){
+											$.unblockUI();
+											setTimeout(function()
+											{
+												resp = JSON.parse(JSON.parse(resp));
+												$scope.$apply();
+												var respURLPagos = CONFIG.CONEXION_PAGOS;												
+												$('#divPopupPagoTarjeta').modal('hide');
+												$scope.SpinFactura = false;													
+												importantStuff.location.href = respURLPagos + resp.formulario;
+											},3000);
+
+											setTimeout(function()
+											{	
+												$scope.CargarSolicitudesCiudadano();																												
+											},40000);											
+										});
+										
+									} else {
+										sweet.show('', 'Proforma pagada !!', 'error');                   
+									} 
+								},
+								error: function (xhr, status, error) {
+									$.unblockUI();
+									alert("Error Intente de nuevo !!");
+								}
+							});							 													
+							$.unblockUI();
+
+						}catch(e)
+						{
+							console.log("error al registrar en igob", e);
+						}
+
+						$scope.idMotivo=0;
+						$scope.idMotivoDetalle=0;
+
+						
+					}
+					else
+					{
+						sweet.show('', 'Error al registrar proforma de pago', 'error');
+						console.log("Error al registrar proforma de pago", resApi.error.message);
+
+						$scope.idMotivoDetalle =0;
+						$scope.idMotivo =0;
+						$scope.RegistroFUM={
+							registrado:null,
+							mensaje:'Surgió un error al registrar la solicitud, por favor vuelva a intentar'
+						};
+					}
+				});
+
+				$scope.proforma=false;
+				$scope.resultadoBusqueda={};
+			}
+			else
+			{
+				$.unblockUI();
+				$scope.idMotivoDetalle =0;
+				$scope.idMotivo =0;
+				$scope.RegistroFUM = {
+					registrado:null,
+					mensaje:'Surgió un error al registrar la proforma de pago, por favor vuelva a intentar'
+				};
+			}
+		}).error(function (data, status, headers, config) {
+			$.unblockUI();
+			sweet.show('', 'Error al registrar proforma de pago', 'error');
+			console.log("Error registro fum SIT ext, datos devueltos:", data);
+		});
+
+		$.blockUI();			
 
 	}
-	
-	$scope.obtenerFumDatos	  = function(dataFUMGEN) {
-		$scope.SpinFactura = true;
-        var idfum   =   sessionService.get('IDFUM');
-        var idtoken =   sessionService.get('TOKEN');
-        var stoquen =  'Bearer ' + idtoken;
-        
-        var formData = {
-        'idfum'	: idfum
-        };
-        
-        $.blockUI();
-		setTimeout(function()
-		{
-			$.ajax({
-				type        : 'POST',            
-				url         : CONFIG.CONEXION_PAGOS + 'datosContribuyente',
-				data        : formData,
-				crossDomain : true,
-				async:false,
-				headers: {
-					'authorization': stoquen
-				},
-				success     : function(data) {
-					var msg   =   data;
-					if (typeof msg.error === 'undefined') {
-						data = JSON.parse(data[0]);
-						$scope.objPagos = new datahtml();
-						$scope.objPagos.odm       = data.idFum;
-						$scope.objPagos.total     = data.AcctotalGeneral; 
-						$scope.objPagos.nombres   = dataFUMGEN.Nombres;
-						$scope.objPagos.apellidos = dataFUMGEN.Apellidos;
-						$scope.objPagos.direccion = data.zona + " " +data.nombreVia + " Nro. " + data.numeroPuerta;
-						$scope.objPagos.email     = aReg.correo;
-						$scope.objPagos.celular   = aReg.celular;
-						$scope.objPagos.sistema    = "IGOB";
-						$scope.objPagos.ci_nit    = dataFUMGEN.NumeroDocumento;
-						$scope.objPagos.oid_ciudadano = dataFUMGEN.OIDCiudadano;
-						$scope.objPagos.sucursal_facturacion = 170;
-						$scope.objPagos.id_usuario_facturacion = 0;
-						$scope.objPagos.servicio = "CATASTRO";
-						$scope.objPagos.usuario_fac = "ciudadano.igob";//"angela.illanes";
-						$scope.objPagos.clave_fac = "c1ud4d4n0iGob";// "pl4t4f0rm1st4";
-						$scope.objPagos.data_opcional = [{
-							"registroTramite": dataFUMGEN.RegistroTramite}];
-						$scope.objPagos.items = [{
-								"concepto": data.descripcion,
-								"cantidad": 1,
-								"monto": data.AcctotalGeneral,
-								"item_genesis":data.idItemRecaudador,
-								"item_recaudador":0
-							}
-						];
-						$scope.objPagos.nit_factura    = $scope.nitCiFac;
-						$scope.objPagos.nombre_factura = $scope.razonSocialFac;
-						$scope.objPagos.generacionHtml(function(resp){
-							$.unblockUI();
-							resp = JSON.parse(JSON.parse(resp));
-							$scope.body = resp.formulario;
-							var printContenidos = "<html>" +  $scope.body + "</html>";
-							//var popupWin = window.open('', '_blank', 'width=800,height=800');
-							$scope.popupWin.document.open();
-							$scope.popupWin.document.write('<html><head></head><body>' + printContenidos + '<br><br></html>');
-							//$scope.popupWin.document.close();						
-							$('#divPopupPagoTarjeta').modal('hide');
-							$scope.SpinFactura = false;	
-							setTimeout(function(){
-								$scope.CargarSolicitudesCiudadano();
-							},100);						
-							
-						});
-						
-					} else {
-						sweet.show('', 'Proforma pagada !!', 'error');                   
-					} 
-				},
-				error: function (xhr, status, error) {
-					$.unblockUI();
-					alert("Error Intente de nuevo !!");
-				}
+	$scope.mostrarFactura = function (datosFac) {		
+		$.blockUI();
+		$scope.objFactura = new datafactura();
+		$scope.objFactura.operacion = "login";
+		$scope.objFactura.usr_usuario = "ciudadano.igob";
+		$scope.objFactura.usr_clave = "c1ud4d4n0iGob";
+		$scope.objFactura.dataFactura(function(resp){
+			$.unblockUI();
+			resp = JSON.parse(JSON.parse(resp));
+			$scope.objFacturaPdf = new datafactura();
+			$scope.objFacturaPdf.operacion = "getFacturaBase64";
+			$scope.objFacturaPdf.tokenFactura = resp.dataResp.token;
+			$scope.objFacturaPdf.idSucursal = "170";
+			$scope.objFacturaPdf.codigo = datosFac.FUM+"PO-DC";
+			$scope.objFacturaPdf.dataFactura(function(respPDF){
+				respPDF = JSON.parse(JSON.parse(respPDF));
+				$('#divPopupfactura').modal('show');
+				$scope.cerFactura = respPDF.dataResp.resp.facBase64;
+				$scope.resultFactura = "data:application/pdf;base64,"+$scope.cerFactura;
+				$.unblockUI();
 			});
-		},2000); 
-    };
-	
-	$scope.openWindowWithPost = function () {	
-		var printContenidos = "<html>" +  $scope.body + "</html>";
-		var popupWin = window.open('', '_blank', 'width=800,height=800');
-		popupWin.document.open();
-		popupWin.document.write('<html><head></head><body>' + printContenidos + '<br><br></html>');
-		popupWin.document.close();																				
-        
-    }
+		});								
+	}
 }

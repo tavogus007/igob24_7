@@ -5,7 +5,7 @@ var typeCallPago;
 
 if(jsonURLS){
   var urlPagos = jsonURLS.CONEXION_PAGOS + 'api/'; 
-  var urlPagosHTML = jsonURLS.CONEXION_FacPuente;
+  var urlPagosHTML = jsonURLS.CONEXION_FACPUENTE;
 }
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/

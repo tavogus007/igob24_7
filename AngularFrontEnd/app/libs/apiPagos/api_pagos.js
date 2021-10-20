@@ -4,8 +4,8 @@ var dataParamsPago;
 var typeCallPago;
 
 if(jsonURLS){
-  var urlPagos = jsonURLS.CONEXION_PAGOS; 
- // var urlPagosHTML = "http://172.18.2.194:4500/api";
+  var urlPagos = jsonURLS.CONEXION_PAGOS + 'api/'; 
+  var urlPagosHTML = jsonURLS.CONEXION_FacPuente;
 }
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
@@ -28,11 +28,11 @@ function ejecutarAjaxPago(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
 };
 
 /*COMANDO PARA GENERAR HTML PAGO */
-/* function ejecutarAjaxPagoHTML(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+function ejecutarAjaxPagoHTML(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
   $.ajax({
     type: vTypeCall,
     url: urlPagosHTML + vUrlComp,
-    data: vDataCall,
+    data:  JSON.stringify(vDataCall),
     async: false,
     success: function(response) {
       dataResp = JSON.stringify(response);
@@ -44,7 +44,30 @@ function ejecutarAjaxPago(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
     }
   });
   return dataResp;
-}; */
+};
+/*///////////////GUARDAR factura//////////////////////*/
+function datafactura() {
+  this.operacion;
+  this.usr_usuario;
+  this.usr_clave;
+  this.idSucursal;
+  this.tokenFactura;  
+  this.codigo;  
+}
+datafactura.prototype.dataFactura = function (functionResp) {
+  urlCompPago = "factura.php";
+  typeCallPago = "post";
+  dataParamsPago = {
+    "operacion":this.operacion,
+    "usr_usuario":this.usr_usuario,
+    "usr_clave":this.usr_clave,
+    "idSucursal":this.idSucursal,
+    "tokenFactura":this.tokenFactura,
+    "codigo":this.codigo    
+  };
+  ejecutarAjaxPagoHTML(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
+};
+
 /*///////////////GUARDAR ATC//////////////////////*/
 function datahtml() {
   

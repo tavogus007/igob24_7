@@ -78,7 +78,7 @@ var jsonURLS    =   {
     },	
     SERVICE_GIS_AE_DZ:"https://servmonitoreo.lapaz.bo/",
     //CONEXION_PAGOS: "http://52.226.130.135:5433/api/",
-    CONEXION_PAGOS: "http://172.18.2.194:4500/api/",
+    CONEXION_PAGOS: "http://172.18.2.194:4500/",
     CONEXION_ODM : "http://200.105.139.183:9090/poss_pruebas/servicios/ODM_Controller_PRUEBAS.php",
     CONEXION_CORREOS : "http://200.105.139.183:9090/" + "smsemail/email/mailSalud2_0_BORRAR.php",
     SERVICE_PAGOS_TARJETA:"http://172.18.2.194:4500/api/registrarTrx"

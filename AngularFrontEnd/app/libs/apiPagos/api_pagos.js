@@ -5,7 +5,7 @@ var typeCallPago;
 
 if(jsonURLS){
   var urlPagos = jsonURLS.CONEXION_PAGOS + 'api/'; 
-  var urlPagosHTML = jsonURLS.CONEXION_FACPUENTE;
+  var urlFacPuente = jsonURLS.CONEXION_FACPUENTE;
 }
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
@@ -31,7 +31,7 @@ function ejecutarAjaxPago(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
 function ejecutarAjaxPagoHTML(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
   $.ajax({
     type: vTypeCall,
-    url: urlPagosHTML + vUrlComp,
+    url: urlFacPuente + vUrlComp,
     data:  JSON.stringify(vDataCall),
     async: false,
     success: function(response) {

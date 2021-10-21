@@ -1663,13 +1663,13 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 	};
 	$scope.continuarPagoOL = function(dataFUMGEN){
 		
+		var importantStuff1 = window.open('../../../loading.html', '_blank','width=800,height=800,toolbar=no,menubar=no,location=0');	
 		sessionService.set('IDFUM', dataFUMGEN.FUM);
 		var idtoken =   sessionService.get('TOKEN');
 		var stoquen =  'Bearer ' + idtoken;		
 		var formData = {
 		'idfum'	: dataFUMGEN.FUM
 		};	
-		var importantStuff1 = window.open('../../../loadingPagosGAMLP.html', '_blank','width=800,height=800,toolbar=no,menubar=no,location=0');	
 		$.blockUI();		
 		$.ajax({
 			type        : 'POST',            
@@ -2068,6 +2068,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 								};
 							}
 							sessionService.set('IDFUM', fumb);
+							var importantStuff = window.open('../../../loading.html', '_blank','width=800,height=800,toolbar=no,menubar=no,location=0');
 							$scope.loginPagoEnLinea();
 
 							var dataFUMGEN = di;
@@ -2080,7 +2081,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 							var formData = {
 							'idfum'	: idfum
 							};							
-							var importantStuff = window.open('../../../loadingPagosGAMLP.html', '_blank','width=800,height=800,toolbar=no,menubar=no,location=0');
 							$.blockUI();							
 							$.ajax({
 								type        : 'POST',            

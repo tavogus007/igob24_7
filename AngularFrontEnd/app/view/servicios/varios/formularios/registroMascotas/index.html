@@ -161,6 +161,18 @@ function validateDecimal(valor) {
     te = String.fromCharCode(tecla); 
     return patron.test(te);
     }
+    function soloNumerico(variable){
+        Numer=parseInt(variable);
+        if (isNaN(Numer)){
+          return "";
+        }
+        return Numer;
+      }
+
+      function valNumero(Control){
+        Control.value=soloNumerico(Control.value);
+      }
+
 </script>
  <script type="text/javascript">
      $('.modal').on('shown.bs.modal', function() {
@@ -278,11 +290,13 @@ function validateDecimal(valor) {
                                                     </div>
                                                 </div>
                                             </div>
+                                          
     
-                                            <div class="modal fade" id="modalCErt"  role="dialog" aria-labelledby="exampleModalCenterTitle" >
+                                            <!--div class="modal fade" id="modalCErt"  role="dialog" aria-labelledby="exampleModalCenterTitle" >
                                                 <div class="modal-dialog modal-dialog-centered" role="document" style="width:1250px;">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             <h2 class="modal-title" id="exampleModalCenterTitle"><center><strong>Ver Carnet de la Mascota</strong></center></h2>
                                                         </div>
                                                         <div class="modal-body">
@@ -295,7 +309,9 @@ function validateDecimal(valor) {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div-->
+
+                                                
                                         </tr>
                                     </table>
                                 </div>
@@ -310,7 +326,26 @@ function validateDecimal(valor) {
         </div>
         </div>
     </div>
-
+       <!-- Modal CERTIFICADO-->  
+       <div class="modal fade" id="modalCErt" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="mcModalTitulo">CARNET DE LA MASCOTA</h4>
+            </div>
+            <div class="modal-body">
+                <object
+                data="{{resultsCert}}"
+                width="100%" height="600">
+            </object>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        </div>
+    </div>
     <!--MASCOTAS-->
     <div ng-show="mostrar_form_mascotas" class="ibox float-e-margins col-md-12">
         <div>
@@ -398,8 +433,10 @@ function validateDecimal(valor) {
                                                             <select id="reg_edad_des" 
                                                                 name="reg_edad_des"  
                                                                 ng-model="datos.reg_edad_des"  
-                                                                class="form-control" 
-                                                                placeholder="-- Seleccione --" ng-disabled="desabilitado">
+                                                                class="form-control"
+                                                                ng-change="verificarEdad(datos.reg_edad_des)"
+                                                                ng-disabled="desabilitado"
+                                                                placeholder="-- Seleccione --">
                                                                 <option value="">--Seleccione--</option>
                                                                 <option value="Años"> Años  </option>
                                                                 <option value="Meses"> Meses  </option>
@@ -413,7 +450,10 @@ function validateDecimal(valor) {
                                                     <div class="form-group" class="col-md-12">
                                                         <label for="url" >Edad :</label>
                                                         <div class="controls">
-                                                            <input  ng-model="datos.mascota_edad" name="reg_edad" id="reg_edad" class="form-control" type="text" placeholder="Ingrese Edad" onkeyUp="return valNumero(this);" ng-disabled="desabilitado">
+                                                            <input  ng-model="datos.mascota_edad" name="reg_edad" id="reg_edad" class="form-control" type="text" placeholder="Ingrese Edad" onkeyUp="return valNumero(this);" ng-keyup="verEdad(datos.mascota_edad);" ng-disabled="desabilitado || desabilitadoEdad">
+                                                            <span style="color:red" ng-show="!desabilitadoEdad1">
+                                                                <span>Edad es requerido si seleccionó Edad en:</span>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -440,10 +480,9 @@ function validateDecimal(valor) {
                                             <div class="col-md-2">
                                                 <div class="col-md-12" align="left">
                                                     <div class="form-group" class="col-md-12">
-                                                        <font color="#FF0000"> * </font>
                                                         <label for="url" >Peso en : </label>
                                                         <div class="controls">
-                                                            <select id="reg_peso_des" name="reg_peso_des" ng-model="datos.reg_peso_des" class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado">
+                                                            <select id="reg_peso_des" name="reg_peso_des" ng-model="datos.reg_peso_des" class="form-control"  ng-change="verificarpeso(datos.reg_peso_des)" ng-disabled="desabilitado">
                                                                 <option value="">--Seleccione--</option>
                                                                 <option value="Kilos"> Kilos  </option>
                                                                 <option value="Gramos"> Gramos  </option>
@@ -455,9 +494,12 @@ function validateDecimal(valor) {
                                             <div class="col-md-2">
                                                 <div class="col-md-12" align="left">
                                                     <div class="form-group" class="col-md-12">
-                                                        <label for="url" >Peso (Kgs / grs.): </label>
+                                                        <label for="url" >Peso (Kgs. / grs.): </label>
                                                         <div class="controls">
-                                                            <input  ng-model="datos.mascota_peso" name="reg_peso" id="reg_peso" class="form-control" type="text" onkeypress="return filterFloat(event,this);" placeholder="Ingrese Peso" ng-disabled="desabilitado">
+                                                            <input  ng-model="datos.mascota_peso" name="reg_peso" id="reg_peso" class="form-control" type="text" onkeypress="return filterFloat(event,this);" ng-keyup="verPeso(datos.mascota_peso)" placeholder="Ingrese Peso" ng-disabled="desabilitado || desabilitadoPeso">
+                                                            <span style="color:red" ng-show="desabilitadoPeso1">
+                                                                <span>Peso es requerido si seleccionó Peso en:</span>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -747,6 +789,8 @@ function validateDecimal(valor) {
 
                             </div> 
                         </div> 
+
+                        
                         <!-- Modal COMPROMISO-->   
                         <div class="modal fade" class="modal-body" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -917,14 +961,15 @@ function validateDecimal(valor) {
                                     </div>
                                 </div>
                             </div>
+                            
                         <div>
                             <label><h4>
                                 Nota: Las casillas con <font color="#FF0000"> * </font>  deben ser llenadas de forma obligatoria.</h4></label>
                         </div>
                     </div><br><br>
                     <div class="col-md-12" align="right" ></p></p>
-                        <button id="miFormModificar" ng-show = "botonMod" ng-click="modificarInformacionMascota(datos);" type="button" class="btn btn-default ng-binding" name="miFormModificar" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.xmascota_raza_id.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || !swimagen"><i class="fa fa-edit"  style="color:white"></i><font color="white"> Modificar</font></button>
-                        <button id="miFormGuardar" name="formEnviar" ng-show="botonCrea" type="button" class="btn btn-default ng-binding" ng-click="verificarDatos();" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.xmascota_raza_id.$invalid || signupForm.reg_color.$invalid || signupForm.reg_tamanio.$invalid || signupForm.reg_esterilizacion.$invalid || signupForm.desparasitacion.$invalid || !swimagen"  tooltip="Guardar Datos" ng-disabled="desabilitado"><i class="fa fa-save"  style="color:white"></i><font color="white"> Guardar</font></button>
+                        <button id="miFormModificar" ng-show = "botonMod" ng-click="validarMEP(datos);" type="button" class="btn btn-default ng-binding" name="miFormModificar" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.xmascota_raza_id.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || !swimagen"><i class="fa fa-edit"  style="color:white"></i><font color="white"> Modificar</font></button>
+                        <button id="miFormGuardar" name="formEnviar" ng-show="botonCrea" type="button" class="btn btn-default ng-binding" ng-click="validarEP();" ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.xmascota_raza_id.$invalid || signupForm.reg_color.$invalid || signupForm.reg_tamanio.$invalid || signupForm.reg_esterilizacion.$invalid || signupForm.desparasitacion.$invalid || !swimagen"  tooltip="Guardar Datos" ng-disabled="desabilitado"><i class="fa fa-save"  style="color:white"></i><font color="white"> Guardar</font></button>
                     </div>
                 </div>
             </form>

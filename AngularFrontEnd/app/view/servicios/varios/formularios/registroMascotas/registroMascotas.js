@@ -97,12 +97,6 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
   $scope.validacionDatosNatural = function (datos) {
     var datosfaltantes = '';
     datosfaltantes = new Array();
-   /* if (datos.dtspsl_fec_nacimiento == '') {
-      datosfaltantes.push(' FECHA DE NACIMIENTO');
-    }
-    if (datos.dtspsl_expedido == '' || datos.dtspsl_expedido == ' ') {
-      datosfaltantes.push(' EXPEDIDO');
-    }*/
     if (datos.dtspsl_nombres == '' || datos.dtspsl_nombres == ' ') {
       datosfaltantes.push(' NOMBRES');
     }
@@ -115,12 +109,6 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
     if ((datos.dtspsl_correo == '') || (datos.dtspsl_correo == ' ')) {
       datosfaltantes.push(' CORREO');
     }
-    /*if (datos.dtspsl_fec_nacimiento == '' || datos.dtspsl_fec_nacimiento == ' ') {
-      datosfaltantes.push('FECHA DE NACIMIENTO');
-    }*/
-    /*if (datos.dtspsl_pais == '' || datos.dtspsl_pais == ' ') {
-      datosfaltantes.push(' PAIS');
-    }*/
     if (datos.dtspsl_departamento == '' || datos.dtspsl_departamento == ' ') {
       datosfaltantes.push(' DEPARTAMENTO');
     }
@@ -130,24 +118,6 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
     if ((datos.dtspsl_macrodistrito == '' || datos.dtspsl_macrodistrito_desc == '')) {
       datosfaltantes.push(' MACRODISTRITO');
     }
-    /*if ((datos.dtspsl_distrito == '' || datos.dtspsl_distrito_desc == '')) {
-      datosfaltantes.push(' DISTRITO');
-    }
-    if ((datos.dtspsl_zona_desc == '' || datos.dtspsl_zona == '')) {
-      datosfaltantes.push(' ZONA');
-    }
-    if (datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0') {
-      datosfaltantes.push(' NOMBRE DE VIA');
-    }
-    if (datos.dtspsl_numero_casa == '' || datos.dtspsl_nombre_via == '0') {
-      datosfaltantes.push(' NUMERO DE DOMICILIO');
-    }
-    if (datos.dtspsl_file_fotocopia_ci == '' || datos.dtspsl_file_fotocopia_ci == ' ') {
-      datosfaltantes.push(' DOCUMENTO DE IDENTIDAD ANVERSO');
-    }
-    if (datos.dtspsl_file_fotocopia_ci_r == '' || datos.dtspsl_file_fotocopia_ci_r == ' ') {
-      datosfaltantes.push(' DOCUMENTO DE IDENTIDAD REVERSO');
-    }*/
     $scope.datosfalt = datosfaltantes;
   }
   $("#mensaje1").hide();
@@ -174,10 +144,8 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
     $scope.mostrarImagenI = false;
     $scope.tramitesMascota = [];
     ci = sessionService.get('CICIUDADANO');
-    ///$scope.tipoR = tipo;
     var datosMascota = new reglasnegocioM();
     datosMascota.identificador = 'SISTEMA_VALLE-CM-2043';
-    //datosMascota.identificador = 'CASA_MASCOTA-8';
     datosMascota.parametros = '{"xcarnet":' + ci + '}';
     datosMascota.llamarregla(function (results) {
       try {
@@ -185,10 +153,15 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
         if (results !== '"[{ }]"' && results !== '"[{}]"') {
           setTimeout(function(){
             $scope.tramitesMascota = JSON.parse(results);
-            //$scope.detalle_url = jsonURLS.CONEXION_SIERRA;
             angular.forEach($scope.tramitesMascota, function (value, key) {
-              //$scope.certificadoMascota = jsonURLS.CONEXION_SIERRA+value.xmascota_certdigital;
               value.xmascota_data = JSON.parse(value.xmascota_data);
+              $scope.xmascota_imagen_urlM = value.xmascota_imagen_url;
+              $scope.convertirUrl = $scope.xmascota_imagen_urlM.split("files");
+              if(($scope.convertirUrl[0]=='http://40.117.46.159//rest/') || ($scope.convertirUrl[0]=='https://40.117.46.159//rest/')){
+                value.xmascota_imagen_url = CONFIG.APIURL+'/files'+$scope.convertirUrl[1];
+              }else{
+                value.xmascota_imagen_url = value.xmascota_imagen_url;
+              }
             });
             $scope.$apply();
             $scope.tablaTramites.reload();
@@ -563,7 +536,6 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
     datosMascota.llamarregla(function (results) {
       $scope.$apply();
       $scope.respuesta = JSON.parse(results);
-      console.log('$scope.respuesta ===>',$scope.respuesta);
       $datos_mascota = $scope.respuesta[0].xmascota_data;
       $datos_mascota1 = JSON.parse($datos_mascota);
       alertify.success('Datos de la Mascota fue Recuperada');
@@ -589,14 +561,11 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
         $scope.comp_peli = $datos_mascota1.comp_peli;
         $scope.compromiso = $datos_mascota1.compromiso;
         $scope.xmascota_imagen_urlM = $scope.respuesta[0].xmascota_imagen_url;
-        //console.log('$scope.xmascota_imagen_url',$scope.xmascota_imagen_url);
         $scope.convertirUrl = $scope.xmascota_imagen_urlM.split("files");
         if(($scope.convertirUrl[0]=='http://40.117.46.159//rest/') || ($scope.convertirUrl[0]=='https://40.117.46.159//rest/')){
           $scope.xmascota_imagen_url = CONFIG.APIURL+'/files'+$scope.convertirUrl[1];
-          console.log('$scope.xmascota_imagen_url app',$scope.xmascota_imagen_url);
         }else{
           $scope.xmascota_imagen_url = $scope.respuesta[0].xmascota_imagen_url;
-          console.log('$scope.xmascota_imagen_url web',$scope.xmascota_imagen_url);
         }
         if($scope.respuesta[0].xmascota_imagen_url){
           $scope.swimagen = true;
@@ -1560,47 +1529,8 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
             }
 
           }
-          
-          
-            /*if ( ext_doc == "jpg" || ext_doc == "png" || ext_doc == "jpeg") {
-                    if (objarchivo.size <= 15000000) {
-                        var nombreNuevo = nombre+'_' + '_'+fechaNueva+'.'+ext_doc;                      
-                        fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
-                        $scope.datos.IMAGEN_MASCOTA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                        $scope.IMAGEN_MASCOTA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                        document.getElementById("txt_" + nombre).value  = nombreNuevo;
-                        document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                        $scope.swimagen = true;
-                        $scope.url_imagen = true; //cuando cambia imagen
-                        $scope.btover7 = true;
-                       // $.unblockUI();
-                    }else{
-                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
-                        document.getElementById("txt_" + nombre).value  = "";
-                        document.getElementById("href_" + nombre).href = "";
-                        $scope.registroAdj.adjunto = '';
-                        $scope.adjunto = '';
-                        valor = '';
-                        $scope.datos.IMAGEN_MASCOTA = "";
-                        $scope.IMAGEN_MASCOTA = "";
-                        $scope.swimagen = false;
-                        $scope.url_imagen = false; //cuando cambia imagen
-                        $scope.btover7 = false;
-                       // $.unblockUI();
-                    }
-            } else{
-                swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo imagen', 'error');
-                document.getElementById("txt_" + nombre).value  = "";
-                document.getElementById("href_" + nombre).href = "";
-                $scope.registroAdj.adjunto = '';
-                $scope.adjunto = '';
-                valor = '';
-                //$.unblockUI();
-            }*/
-
         }
     },1000);
-    //$.unblockUI();
   }
 
   $scope.actualiza = function (nombre) {

@@ -2114,6 +2114,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
         RO_ZONA_POO  : $scope.datos.RO_ZONA_POO,      
         RO_CALL_POO  : $scope.datos.RO_CALL_POO,
         RO_NRO_POO   : $scope.datos.RO_NRO_POO,
+        RO_OTRA_RAD  :  $scope.datos.RO_OTRA_RAD,
         RO_VEH_ADJ : $scope.datos.fileRequisitosVeh
 
       };
@@ -2144,6 +2145,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
   }
 
   $scope.modificarVehiculo = function(data){
+    console.log('data',data);
     $scope.crear(2);
     $scope.datos.RO_PLA_V = data.veh_placa;
     $scope.datos.RO_TIP_V = data.veh_datos.RO_TIP_V;
@@ -2192,6 +2194,13 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     }
     $scope.distritoZonasTipo($scope.datos.RO_MAC_P,'Prop')
     $scope.distritoZonasTipo($scope.datos.RO_MAC_POO,'Pos')
+    if($scope.datos.RO_RAD_V == 'OTRO'){
+      $scope.datos.RO_OTRA_RAD = data.veh_datos.RO_OTRA_RAD;  
+      $scope.MostrarOR = true;       
+    }else{
+      $scope.datos.RO_OTRA_RAD = 'SIN DATOS'; 
+      $scope.MostrarOR = false;     
+    }
   }
 
   $scope.limpiar = function(){
@@ -2228,6 +2237,7 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
     $scope.mostrarZonaPoo = false;
     $scope.mostrarZonaProp = false;   
     $scope.tab1 = true;
+    $scope.MostrarOR = false;
   }
 
   $scope.verificaPlaca = function(placa){
@@ -3738,4 +3748,14 @@ function registroOperadoresController($scope, $rootScope, $routeParams, $locatio
    
   }
 //***************************************************************
+
+  $scope.registraOtraRadicaoria= function(rad){
+   console.log('rad',rad); 
+   if(rad == 'OTRO'){
+     $scope.MostrarOR = true;
+
+   }else{
+    $scope.MostrarOR = false;
+   }
+  }
 }

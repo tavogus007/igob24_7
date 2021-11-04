@@ -320,25 +320,6 @@ function validaSuperficie(sup)
         </div>
       </div>
     </div>
-    <!--div class="col-md-12" ng-show="mostrarTipo">
-      <div class="panel panel-default">
-        <div class="container"> 
-          <div class="col-md-12" >
-            <div class="form-group" >
-              <font color="#FF0000" size="4px"> * </font>     
-              <label for="url" >Tipo de Solicitud:</label>
-              <div class="controls">
-                <select id="RO_TIP_SOL" class="form-control" ng-model="datos.RO_TIP_SOL" ng-disabled="desabilita" name="RO_TIP_SOL" >
-                  <option value="">Seleccionar</option>
-                  <option value="1">Nueva Habilitación  de Operador</option>
-                  <option value="2">Modificación de Operador</option> 
-                </select>
-              </div>
-            </div>
-          </div>                   
-        </div><br>
-      </div>
-    </div-->
     <div ng-show="mostrar_form_ope == true" class="col-lg-12">
       <div  class="ibox-content" id="caja"> 
         <div  class="row">                
@@ -971,9 +952,12 @@ function validaSuperficie(sup)
                               <div class="col-md-4">
                                 <div class="form-group">
                                   <font color="#FF0000" size="4px"> * </font>
-                                  <label for="url" >Espacios Reales Disponibles en Garage: </label>
+                                  <label for="url" >Espacios Reales Disponibles en Garaje: </label>
                                   <div class="form-controls">
-                                    <input id="RO_ESP_DIS" type="number" onkeyup="validaNumero(this);" min="1" max="" name="RO_ESP_DIS" style="text-transform:uppercase;" ng-model="datos.RO_ESP_DIS" ng-disabled="desabilita" class="form-control" required>
+                                    <input id="RO_ESP_DIS" type="number" ng-keyup="validaEspacios(datos.RO_ESP_DIS);" min="1" max="" name="RO_ESP_DIS" style="text-transform:uppercase;" ng-model="datos.RO_ESP_DIS" ng-disabled="desabilita" class="form-control" required>
+                                    <span style="color:red" ng-show="mensaje">
+                                      <span>Espacios deben ser mayor o igual a: {{espaciosDisponibles}}</span>
+                                  </span>
                                   </div>
                                 </div>
                               </div>
@@ -2121,7 +2105,7 @@ function validaSuperficie(sup)
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">C.I.:</label>
                                           <div class="col-sm-9">
-                                          <input id="RO_CI_P" name="RO_CI_P" type="number"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_P" ng-disabled="desabilitaVeh"  /></div>
+                                          <input id="RO_CI_P" name="RO_CI_P" type="text"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_P"  onkeyup="mayus(this)" ng-disabled="desabilitaVeh"  /></div>
                                       </div>
                                     </div>
                                     <div class="col-sm-5">  
@@ -2247,7 +2231,7 @@ function validaSuperficie(sup)
                                     <div class="form-group">
                                       <label class="col-sm-3 control-label">C.I.:</label>
                                         <div class="col-sm-9">
-                                        <input id="RO_CI_POO" name="RO_CI_POO" type="text"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_POO" ng-disabled="desabilitaVeh" /></div>
+                                        <input id="RO_CI_POO" name="RO_CI_POO" type="text"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_POO" onkeyup="mayus(this)" ng-disabled="desabilitaVeh" /></div>
                                     </div>
                                   </div>
                                   <div class="col-sm-5">  

@@ -62,6 +62,44 @@
 .text {
   vertical-align: top;
 }
+
+.txtSubtitulo{
+        color: #00b3ba;
+        font-size: 20px !important;
+        font-weight: bold;
+    }
+    .txtSubtituloIcon {
+        font-size: 20px!important;
+        color: #00b3ba;
+        cursor: auto!important;
+        display: inline-block;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .txtParrafo{
+        font-size: 14px;
+    }
+    .txtResaltado{
+        color: #00b3ba;
+    }
+    .separador{
+        padding: 3px;
+        border-top: 1px #00b3ba dashed;
+    }
 </style>
 <script type="text/javascript">
 
@@ -238,6 +276,43 @@ function validateDecimal(valor) {
                     <h5 class="ng-binding">Registro de Animales de Compañía</h5>
                     <a id="cerrar_rc" style="position: absolute; top: 5px;"><i class="fa-sort-desc fa fa-sort-asc" style="color: #00adb5" id="cerrar_i"></i></a>
                 </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox ">
+                            <div class="ibox-content">
+                                <h2 class="txtSubtitulo">
+                                    <a class="txtSubtituloIcon">
+                                        <span class="glyphicon glyphicon-check txtSubtituloIcon"></span>
+                                    </a>
+                                    Recomendaciones<br/>
+                                </h2>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <p style="margin: 10px 0 10px 0;">
+                                            <strong>Para tener una mejor experiencia</strong>
+                                             al utilizar este servicio mediante dispositivos móviles, se recomienda encarecidamente realizarlo a través de nuestra <strong>aplicación móvil Igob 24/7</strong> disponible para android y iOS.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="https://play.google.com/store/apps/details?id=com.gamlp.igob247" target="_blank" class="btn btn-success btn-facebook">
+                                            <i class="fa fa-play"> </i> Google Play
+                                        </a>
+                                        <a href="https://apps.apple.com/us/app/igob-24-7/id1413515752" target="_blank" class="btn btn-success btn-facebook">
+                                            <i class="fa fa-apple"> </i> APP Store
+                                        </a>
+                                    </div>
+                                </div>
+                                <p>
+                                    <small>
+                                        Tambien puede utilizar otros navegadores como <strong>Mozilla Firefox</strong>, <strong>Microsoft EDGE</strong>, <strong>Opera Browser</strong>, etc. Tanto para PC o dispositivos móviles.
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
 
                 <div class="ibox-content" id="caja">
                     <div class="row">
@@ -261,7 +336,7 @@ function validateDecimal(valor) {
                                             <td data-title="'Edad'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad}}</td>   
                                             <td data-title="'Meses/Años'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_data.edad_desc}}</td>   
                                             <td data-title="'Estado'" ng-click="seleccionarMascota(tramite);">{{tramite.xmascota_estado}}</td> 
-                                            <td data-title="'Carnet'" ng-click="verCertificado(tramite.xmascota_id)" class="btn btn-default btn-circle" title="VER CARNET DE REGISTRO"><i class="fa fa-newspaper-o" style="color:#033b4a" ></i></a></td>
+                                            <td data-title="'Carnet'"> <a ng-click="verCertificado(tramite.xmascota_id)" class="btn btn-default btn-circle" title="VER CARNET DE REGISTRO"><i class="fa fa-newspaper-o" style="color:#033b4a" ></i></a></td>
     
                                             <!--td data-title="'Carnet'"><a href={{detalle_url}}{{tramite.xmascota_certdigital}} target="_blank" title="Ver/Descargar" class="btn btn-default btn-circle" ><i class="fa fa-newspaper-o" style="color:rgb(247, 33, 9)" ></i></a></td-->
                                             <td data-title="'Opciones'"><a class="btn btn-default btn-circle" data-target="#formModalElim" ng-click="llamModEli(tramite.xmascota_id)" data-toggle="modal" title="ELIMINAR"><i class="fa fa-trash-o" style="color:rgb(15, 15, 15)"></i></a></td>
@@ -331,7 +406,7 @@ function validateDecimal(valor) {
         <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <button type="button" class="close" style="opacity: 1; color: #fff;" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             <h4 class="modal-title" id="mcModalTitulo">CARNET DE LA MASCOTA</h4>
             </div>
             <div class="modal-body">

@@ -67,7 +67,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 					var conf = new dataSITOL();
 					conf.catObtenerParam("CatastroDocIDRegistro",function(resultado){
 						var resApi = JSON.parse(resultado);
-						//console.log("datos param--->",resApi);
 						if(resApi.success)
 						{
 							$scope.configParametros.documentoSolicitud.idTipoDocIfile = parseInt(resApi.success.dataSql[0].valorParametro);
@@ -95,7 +94,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 					var conf = new dataSIT();
 					conf.catTasasCatastro(function(resultado){
 						var resApi = JSON.parse(resultado);
-						console.log("datos param tasas--->",resApi);
 						if(resApi.success){
 							//$scope.configParametros.documentoSolicitud.idTipoDocIfile = parseInt(resApi.success.dataSql[0].valorParametro);
 							var data = resApi.success.dataSql;
@@ -181,7 +179,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		datosCiudadano.oid=sessionService.get('IDCIUDADANO');
 		datosCiudadano.datosCiudadanoNatural(function(resultado){
 			var response = JSON.parse(resultado);
-			console.log("datpos del ciudadano", response);
 			if (response.length > 0) {
 				var results = response;
 				tipoPersona = results[0].dtspsl_tipo_persona;
@@ -435,7 +432,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		$scope.cerrarProforma();
 		//$scope.getCaptchasX();
 		
-		console.log("sass",cc1);
 		var cc = cc1.CodigoCatastral;
 		$scope.codigoCatastral.distrito=cc.substring(0,3);
 		$scope.codigoCatastral.manzana=cc.substring(3,7);
@@ -484,7 +480,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		$scope.resetUrl();
 
 		//Verificamos en sitram si el predio tiene tramites pendientes
-		console.log("verificar en sitram", cc);
 		p = {
 			codcat: cc
 		};
@@ -495,7 +490,6 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 		}).success(function (data, status, headers, config) {
 			if (data.res == 'OK') {
-				console.log(data);
 				if(data.resultado ==""){
 					var busCodCat = new dataSIT();
 					busCodCat.dplBusCodCat( cc, nrodoc, 1, function(resultado){
@@ -2199,7 +2193,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		$.blockUI();			
 
 	}
-	$scope.mostrarFactura = function (datosFac) {		
+	$scope.mostrarFactura = function (datosFac) {				
 		$.blockUI();
 		$scope.objFactura = new datafactura();
 		$scope.objFactura.operacion = "login";
@@ -2212,7 +2206,13 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			$scope.objFacturaPdf.operacion = "getFacturaBase64";
 			$scope.objFacturaPdf.tokenFactura = resp.dataResp.token;
 			$scope.objFacturaPdf.idSucursal = "170";
-			$scope.objFacturaPdf.codigo = datosFac.FUM+"PO-DC";
+			$scope.tipoCodFactura = "";
+			if(datosFac.idTipoPago === 2 ){
+				$scope.tipoCodFactura = datosFac.FUM+"PO-DC";
+			}else{
+				$scope.tipoCodFactura = datosFac.FUM+"-SITDC";
+			}
+			$scope.objFacturaPdf.codigo = $scope.tipoCodFactura;
 			$scope.objFacturaPdf.dataFactura(function(respPDF){
 				respPDF = JSON.parse(JSON.parse(respPDF));
 				$('#divPopupfactura').modal('show');

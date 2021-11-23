@@ -898,6 +898,15 @@
           }
           else
           {
+            if(response.error.code == 123)
+            {
+              sessionStorage.setItem("oid_c",response.error.oid);
+              sessionStorage.setItem("ci_c",response.error.ci);
+              sessionStorage.setItem("email_c",response.error.email);
+              sessionStorage.setItem("nombre_c",response.error.nombre);
+              sessionStorage.setItem("TOKEN_API",response.error.token);
+              location.href = "../../autenticacion/partials/cambio.html";
+            }
             if(response.error.code == 703)
             {
                 sweetAlert("", response.error.message, "warning");

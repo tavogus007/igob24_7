@@ -1,0 +1,643 @@
+<script type="text/javascript">
+  function valor(a){
+    $("#titulo").text(a);
+  }
+</script>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>iGob 24/7</title>
+    <style>
+      .ng-table tr.colorInactivo td { background-color: #F9EFE0; font-weight: bold; }
+      .ng-table tr.colorBloqueado td { background-color: #D9E9F7; font-weight: bold; }
+      .offNav{
+        display: none;
+      }
+      .onNav{
+        display: block !important;
+      }
+      .fondo_menu
+      {
+        position: relative;
+        height: 100%;
+        width: 200px;
+        background:#39AB6F;
+      }
+    </style>
+    <link rel="icon" href="../../../../structureIgob/images/favicon.png">
+    <link rel="stylesheet" href="../../../libs/css_one/registro.css"/>
+    <link rel="stylesheet" href="../../../libs/css_one/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../../libs/css_one/styleinspinia.min.css"/>
+    <link rel="stylesheet" href="../../../libs/css_one/styleinspinia.css"/>
+    <link rel="stylesheet" href="../../../libs/css/sweetalert.min.css">
+    <link rel="stylesheet" href="../../../libs/css/angular-bootstrap-calendar.min.css">
+    <link rel="stylesheet" href="../../../libs/css_one/animate.min.css"/>
+    <script type="text/javascript" src="../../../libs/js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="../../../libs/js/jquery.blockUI.min.js"></script>
+    <script type="text/javascript" src="../../../libs/js_one/bootstrap.min.js"></script>
+    
+    <script type="text/javascript" src="../../../libs/js/sweetalert.min.js"></script>      
+    <script type="text/javascript" src="../../../libs/jss/angular.min.js"></script>
+    <script type="text/javascript" src="../../../libs/jss/angular-animate.min.js" ></script>
+    <script type="text/javascript" src="../../../libs/components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="../../../libs/js/angular-bootstrap-calendar-tpls.min.js"></script>
+    <script type="text/javascript" src="../../../controller/autenticacion/config.js"></script>    
+    <script type="text/javascript" src="../../../libs/login/login.js"></script>
+    <script type="text/javascript" src="../../../libs/apiRC/api_rc.js"></script>    
+    <script type="text/javascript" src="../../../libs/js/aes.js"></script> 
+
+    <script type="text/javascript" src="../../../controller/autenticacion/app.js"></script>
+    <script type="text/javascript" src="../../../controller/log/serviceLogEventos.js"></script>
+    <script type="text/javascript" src="../../../controller/autenticacion/data.js"></script>
+    <script type="text/javascript" src="../../../controller/autenticacion/directives.js"></script>
+    <script type="text/javascript" src="../../../controller/autenticacion/authCtrl.js"></script>
+    <script type="text/javascript" src="../../../controller/autenticacion/sessionService.js"></script>
+    <script type="text/javascript" src="../../../controller/autenticacion/config.js"></script>
+
+    <script type="text/javascript" src="../../../view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+    <link rel="stylesheet" href="../../../view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+    <link rel="stylesheet" href="../../../view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+
+    <script type="text/javascript">
+    function valor(a){
+        $("#titulo").text(a);
+      }
+    </script>
+  </head>
+
+  <script>
+    function placeholderIsSupported() {
+      test = document.createElement('input');
+      return ('placeholder' in test);
+    };
+
+    $(document).ready(function(){
+      placeholderSupport = placeholderIsSupported() ? 'placeholder' : 'no-placeholder';
+      $('html').addClass(placeholderSupport);  
+    });
+
+    var app = angular.module('myApp',['ngAnimate','mwl.calendar','ui.bootstrap']);
+    app.controller('cambioPinController1', function($scope,$rootScope) {
+        
+      if(sessionStorage.getItem("Idioma") != null) {
+        var idioma = sessionStorage.getItem("Idioma");
+      }
+      else {
+        sessionStorage.setItem("Idioma", "C");
+        idioma = sessionStorage.getItem("Idioma", "C"); //sessionStorage.getItem("Idioma", "C");
+      }
+      var verTitulos = new idiomaPlat();
+      verTitulos.idioma = sessionStorage.getItem("Idioma");
+      var elArray = new Array();
+      $scope.translateTitulos={};
+      verTitulos.obtenerTitulos(function(resultado){
+          a = JSON.parse(resultado);
+          $.each( a.success, function( key, value ) {
+            $scope.translateTitulos[value.idm_label] = value.idm_contenido;
+          });
+      });
+    
+      $scope.btnCambiar = true;
+      $scope.btnCondicion = true;
+      $scope.ErrorCapcha='';
+      $scope.VerificarCapchaR = function(datos){
+        var captch  = $("#resultadoC").val();
+        var id = numero;
+        var verCaptcha = new captcha();
+        verCaptcha.identificador = id;
+        verCaptcha.respuesta = captch;
+        verCaptcha.verificarCaptcha(function(resultado){
+          json = JSON.parse(resultado);
+          if(json.success[0] == undefined){
+            $scope.getCaptchasX();
+            $scope.ErrorCapcha='Error en el captcha intentar de nuevo por favor';
+            $scope.resultadoC = "";
+          }else{
+            $scope.ErrorCapcha='';
+            $scope.validarDataCiudadano(datos);
+            $scope.resultadoC = "";
+          }
+        });
+      };
+
+          
+      $scope.VerificarCapcha = function(datos, prsCI) {  
+        var captch  = $("#resultadoC").val();
+        if(captch.length == 0)
+            $scope.ErrorCapchasX = "";
+        if(captch.length > 4){
+            clearTimeout(tiemporespuesta);
+            tiemporespuesta = setTimeout(verificarKeyPress.bind(undefined, captch), 1500);
+        }
+      };
+
+      $scope.lmpCaptcha = function(datos)
+      {
+          $scope.ErrorCapcha='';
+      }
+      $scope.getCaptchasX=function(){
+          $scope.resultadoC="";
+        var objCaptcha = new captcha();
+          objCaptcha.obtcaptcha(function(resultado){
+          json = JSON.parse(resultado);
+          partes = json.success[0].sp_captcha_porx1.split(',');
+          numero = partes[0].substring(1);
+          i1=(partes[2]+ "," + partes[3]);
+          i2=(partes[4] + "," + partes[5]);
+          $scope.imageLNG = i1.substring(1, i1.length - 1);
+          $scope.imageCST = i2.substring(1, i2.length - 2);
+          var lengua = "";
+          if(partes[1] == 'A') {
+              lengua = 'AYMARA';
+          } else if(partes[1] == 'Q') {
+              lengua = 'QUECHUA';
+          } else if(partes[1] == 'G'){
+              lengua = 'GUARANI';
+          } else if(partes[1] == 'C'){
+              lengua = 'CASTELLANO';
+          } else {
+          }
+          $scope.toltipTt = "Palabra en " + lengua;
+          $scope.palabraT = "Ingrese texto: " + lengua + " CASTELLANO";
+        });
+      };
+      var tiemporespuesta = null;
+
+      /////////////////////////////////////////////////////////////////////////////////////////    
+      $scope.btnCambiar = true;
+      $scope.imageCST = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
+      $scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
+      $scope.ErrorCapcha='';
+
+      var SERVICE_ENVIO_CORREO = "http://200.105.139.183:9090/smsemail/email/mail.php";
+      var CONEXION_API_PG_RC = "http://localhost:9091/";
+      
+      $scope.getlimpiareRROR=function() {
+          $scope.ErrorCapcha='';
+      }
+
+      $scope.getCaptchasX=function() {
+        $scope.valorrandom = Math.floor(Math.random() * (224 - 1) + 1); 
+        $scope.resultadoC="";
+        var objCaptcha = new captcha();
+        objCaptcha.obtcaptcha(function(resultado){
+            json = JSON.parse(resultado);
+            partes = json.success[0].sp_captcha_porx1.split(',');
+            numero = partes[0].substring(1);
+            i1=(partes[2]+ "," + partes[3]);
+            i2=(partes[4] + "," + partes[5]);
+            $scope.imageLNG = i1.substring(1, i1.length - 1);
+            $scope.imageCST = i2.substring(1, i2.length - 2);
+            var lengua = "";
+            if(partes[1] == 'A') {
+                lengua = 'AYMARA';
+            } else if(partes[1] == 'Q') {
+                lengua = 'QUECHUA';
+            } else if(partes[1] == 'G'){
+                lengua = 'GUARANI';
+            } else if(partes[1] == 'C'){
+                lengua = 'CASTELLANO';
+            } else {
+              console.log("error", partes[1]);
+            }
+            $scope.toltipTt = "Palabra en " + lengua;
+            $scope.palabraT = "Ingrese texto: " + lengua + " CASTELLANO";
+        });
+      };
+      
+      var tiemporespuesta = null;
+      
+      function verificarKeyPress(captch){
+        var id = numero;
+        var verCaptcha = new captcha();
+        verCaptcha.identificador = id;
+        verCaptcha.respuesta = captch;
+        verCaptcha.verificarCaptcha(function(resultado){
+            json = JSON.parse(resultado);
+            var nroregsitros = json.success.length;
+            if(nroregsitros == 0){
+                $scope.btnCambiar = true;
+                $scope.ErrorCapchasXX = "Error en el captcha intentar de nuevo por favor";
+                $scope.SuccesCapchasxx="";
+                $scope.$apply();
+            } else {
+                $scope.btnCambiar = false;
+                $scope.ErrorCapchasXX = "";
+                $scope.SuccesCapchasxx="Capcha correcto puede cambiar su PIN";
+                $scope.$apply();
+            }
+        });
+      }
+      
+      $scope.VerificarCapcha = function(datos, prsCI) {  
+        var captch  = $("#resultadoC").val();
+        if(captch.length == 0)
+            $scope.ErrorCapchasX = "";
+        if(captch.length > 4){
+            clearTimeout(tiemporespuesta);
+            tiemporespuesta = setTimeout(verificarKeyPress.bind(undefined, captch), 1000);
+        }
+      };
+
+      $scope.almacenarLog = function(sIdUsuario, sIdCiudadano, sIdFormulario, sEvento){
+        var fecha= new Date();
+        var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+        var datos = {
+            "logs_usr_id": sIdUsuario,
+            "logs_dtspsl_id": sIdCiudadano,
+            "logs_frm_id": sIdFormulario,
+            "logs_evento": sEvento,
+            "logs_registrado": fechactual,
+            "logs_modificado": fechactual
+        };
+        console.log("URL LOGS ",CONEXION_API_PG_RC+'wsRCPG/addLogs');
+        $.ajax({
+            data: datos,
+             url:CONEXION_API_PG_RC+'wsRCPG/addLogs',
+            type: 'POST',
+            success: function (response) {
+                var datos = JSON.stringify(response);
+                var resp = JSON.parse(datos).success[0]._log_sp_adicionar;
+                if(resp == true){
+                    console.log("Se almaceno al historico",resp);
+                }else{
+                    console.log("Error al almacenar historico");
+                }
+            }
+        });
+      };
+
+      $scope.cambioPin = function (datos, prsCI) {
+        if (datos.prsPinN == datos.prsPinC) {         
+            setTimeout(function(){
+                $.blockUI();
+            },50);  
+            setTimeout(function(){
+                var modificarPIN=new rcNatural();
+                modificarPIN.oid= sessionStorage.getItem("oid_c");
+                modificarPIN.pinAnterior=datos.prsPinA;
+                modificarPIN.pinNuevo=datos.prsPinN;
+                modificarPIN.modificarCambioPinNatural(function(resultado){
+                    setTimeout(function(){
+                        $.unblockUI();
+                    },500);                
+                    resultadoApi = JSON.parse(resultado);
+                    if( typeof(resultadoApi.success) != 'undefined') {
+                        alertify.success('Actualizacion correcta');  
+                        //swal('', 'Actualizacion correcta', 'success'); 
+                        $scope.almacenarLog(4,$rootScope.vid,0, "se modifico el Pin");  
+                        if(sessionStorage.getItem("email_c")==""){
+                            var npin = datos.prsPinN;
+                            var sms = "_Estimado_Ciudadano_su_Nuevo_PIN_es_:_<b>_" + npin + "_</b>";
+                            alertify.success(sms);  
+                            //swal('', sms, 'success');
+                        } else {
+                            $scope.envioMensaje(datos.prsPinN, sessionStorage.getItem("email_c"));
+                        }
+                        $scope.datos='';
+                    } else {
+                        setTimeout(function(){
+                            $.unblockUI();
+                        },500);  
+                        alertify.error(resultadoApi.error.message);  
+                        //swal('', resultadoApi.error.message, 'error');
+                    }
+                });
+            },200);
+        }
+        else {
+          alertify.warning('No Concuerdan Pin Nuevo y su Confirmación');  
+          //swal('', 'No Concuerdan Pin Nuevo y su Confirmación', 'warning'); 
+        }
+      };
+
+      $scope.envioMensaje = function(mensaje, mail){
+        var sMensajeValidacion = "_Estimado_Ciudadano_su_Nuevo_PIN_es_:_<b>_" + mensaje + "_</b>";
+        var sCorreo = mail;
+        var sAsunto = "Cambio_de_PIN_24/7";
+        var parametros = {
+            "cuerpo" : sMensajeValidacion,
+            "asunto" : sAsunto,
+            "ciudadano" : sessionStorage.getItem("nombre_c"),            
+            "para" : sCorreo
+        };
+        console.log("URL CORREO...",SERVICE_ENVIO_CORREO);
+        $.ajax({ 
+            data: parametros, 
+            url: SERVICE_ENVIO_CORREO,
+            type: 'get', 
+            beforeSend: function () { 
+                //$("#resultado").html("Procesando, espere por favor..."); 
+            }, 
+            success: function (response) { 
+                //$("#resultado").html(response); 
+            }
+        }); 
+        alertify.success("Se envió su Nuevo PIN a su correo electrónico");  
+        //swal('', "Se envió su Nuevo PIN a su correo electrónico", 'success'); 
+        $scope.getCaptchasX();
+      };
+
+      $scope.$on('api:ready',function(){      
+          $scope.getCaptchasX();
+      });
+      
+      $scope.inicioCapcha = function () {
+          $scope.getCaptchasX();
+      };   
+    });
+  </script>  
+  <!---------------------------------------------------------------------------------------------------------->
+
+  <style>
+    input:required:invalid {
+        border: 1px solid red;
+    }
+    input:required:valid {
+        border: 1px solid green;
+    }
+    .form-group {
+        padding-left: 8px;
+    }
+    .box2 {
+        display: inline-block;
+        width: 190px;
+        margin: 2px;
+    }
+  </style>
+
+  <script type="text/javascript">
+    $(document).ready(function()
+    {
+      var ca = $("#prsPinA").val();
+      var cn = $("#prsPinN").val();
+      var cc = $("#prsPinC").val();
+      if(ca == 0 &&  cn == 0 &&  cc == 0)
+      {
+        $("#btnprsCI").css("display","none");
+        $("#btnprsPinN").css("display","none");
+        $("#btnprsPinC").css("display","none");
+      }
+      $("#prsPinA").keyup(function()
+      {
+        var va = $(this).val();
+        $("#prsPinAV").val(va);
+        ca = $("#prsPinA").val();
+
+        if(ca.length==0)
+        {
+          $("#prsPinAV").css({'display': 'none'});
+          $("#btnprsCI").css("display","none");
+          $('#btnprsCI').html('Mostrar');
+          $("#btnprsCI").css({'color': 'green'});
+          $("#btnprsCI").val(1);
+        }
+        else
+        {
+          $("#btnprsCI").css({'display': 'block'});
+        }
+      });
+      
+      $("#prsPinN").keyup(function()
+      {
+        var vn = $(this).val();
+        $("#prsPinNV").val(vn);
+        cn = $("#prsPinN").val();
+
+        if(cn.length==0)
+        {
+          $("#prsPinNV").css({'display': 'none'});
+          $("#btnprsPinN").css("display","none");
+          $("#btnprsPinN").css("display","none");
+          $('#btnprsPinN').html('Mostrar');
+          $("#btnprsPinN").css({'color': 'green'});
+          $("#btnprsPinN").val(1);
+        }
+        else
+        {
+          $("#btnprsPinN").css({'display': 'block'});
+        }
+      });
+      
+      $("#prsPinC").keyup(function()
+      {
+        var vc = $(this).val();
+        $("#prsPinCV").val(vc);
+        cn = $("#prsPinC").val();
+
+        if(cn.length==0)
+        {
+          $("#prsPinCV").css({'display': 'none'});
+          $("#btnprsPinC").css("display","none");
+          $('#btnprsPinC').html('Mostrar');
+          $("#btnprsPinC").css({'color': 'green'});
+          $("#btnprsPinC").val(1);
+        }
+        else
+        {
+          $("#btnprsPinC").css({'display': 'block'});
+        }
+      });
+    }); 
+    
+    function FunctionprsCI()
+    {
+      var btnprsCI = $("#btnprsCI").val();
+      if(btnprsCI == 1)
+      { 
+        $("#prsPinAV").fadeIn( "slow", function()
+        {
+          $("#prsPinAV").css("display","block");
+          $('#btnprsCI').val(0);
+          $('#btnprsCI').html('Ocultar');
+          $("#btnprsCI").css({'color': 'red'});
+        });
+      }
+      else
+      {
+        $("#prsPinAV").fadeOut( "slow", function() 
+        {
+          $("#prsPinAV").css("display","none");
+          $('#btnprsCI').val(1);
+          $('#btnprsCI').html('Mostrar');
+          $("#btnprsCI").css({'color': 'green'});
+        });
+      }
+    }
+    function FunctionprsPinN()
+    {
+      var btnprsPinN = $("#btnprsPinN").val();
+      if(btnprsPinN == 1)
+      { 
+        $("#prsPinNV").fadeIn( "slow", function() 
+        {
+          $("#prsPinNV").css("display","block");
+          $("#btnprsPinN").val(0);
+          $("#btnprsPinN").html('Ocultar');
+          $("#btnprsPinN").css({'color': 'red'});
+        });
+      }
+      else
+      {
+        $("#prsPinNV").fadeOut( "slow", function() 
+        {
+          $("#prsPinNV").css("display","none");
+          $('#btnprsPinN').val(1);
+          $('#btnprsPinN').html('Mostrar');
+          $("#btnprsPinN").css({'color': 'green'});
+        });
+      }
+    }
+    function FunctionprsPinC()
+    {
+      var btnprsPinC = $("#btnprsPinC").val();
+      if(btnprsPinC == 1)
+      { 
+        $("#prsPinCV").fadeIn( "slow", function() 
+        {
+          $("#prsPinCV").css("display","block");
+          $("#btnprsPinC").val(0);
+          $("#btnprsPinC").html('Ocultar');
+          $("#btnprsPinC").css({'color': 'red'});
+        });
+      }
+      else
+      {
+        $("#prsPinCV").fadeOut( "slow", function() 
+        {
+          $("#prsPinCV").css("display","none");
+          $('#btnprsPinC').val(1);
+          $('#btnprsPinC').html('Mostrar');
+          $("#btnprsPinC").css({'color': 'green'});
+        });
+      }
+    }
+  </script>
+
+  <!---------------------------------------------------------------------------------------------------------->    
+
+  <div ng-app="myApp">
+    <div id="registration-form" class="contenedor">
+      <div class="fieldset" class="form-control">
+        <legend>Cambio de contraseña iGob 24/7</legend>
+        <div class="col-md-10 col-md-offset-1">
+          <div class="page-content" ng-controller="cambioPinController1" ng-init="inicioCapcha();">
+            <div class="col-lg-12">
+              <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                  <h5>{{translateTitulos.lbl_05_01}}</h5>
+                </div>
+                <div class="ibox-content">
+                  <form method="get" class="form-horizontal ng-pristine ng-valid" name="formulario" readOnly="true" novalidate>
+                    <div class="form-group">
+                      <label for="url">{{translateTitulos.lbl_05_02}}</label> 
+                        <button id="btnprsCI" name="btnprsCI" onClick="FunctionprsCI();" value="1" 
+                          style="float: right; color: rgb(21, 32, 48);
+                          background-color: rgb(255, 255, 255);
+                          border: 0px solid rgb(60, 52, 27);
+                          padding: 0px;
+                          font-size: 12px;
+                          color: green;">Mostrar</button>
+
+                      <input  cols="10" rows="5" ng-model="prsCI" id="prsCI" name="prsCI" class="form-control" type="hidden" placeholder="ingrese CI" ng-disabled="desabilitado" required value="{$scope.ci}">
+                      <div class="controls">
+                        <input  ng-model="datos.prsPinA" id="prsPinA" name="prsPinA" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_02}}" ng-disabled="desabilitado" required ng-keyup="">
+                        <span style="color:red" ng-show="formulario.prsPinA.$invalid">
+                          <span ng-show="formulario.prsPinA.$error.required">{{translateIdioma.lbl_05_04}}</span>
+                        </span>
+                        <input style="display:none;" type="" id="prsPinAV" name="prsPinAV" class="form-control"  type="text" placeholder="" maxlength="" disabled>
+                      </div>
+                    </div>      
+                    <div class="row">
+                      <div class="col-md-5">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_05_05}}</label>
+                            <button id="btnprsPinN" name="btnprsPinN" onClick="FunctionprsPinN();" value="1" 
+                              style="float: right; color: rgb(21, 32, 48);
+                              background-color: rgb(255, 255, 255);
+                              border: 0px solid rgb(60, 52, 27);
+                              padding: 0px;
+                              font-size: 12px;
+                              color: green;">Mostrar</button>
+                          <div class="controls">
+                            <input  ng-model="datos.prsPinN" id="prsPinN" name="prsPinN" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_05}}" ng-disabled="desabilitado" required>
+                            <span style="color:red" ng-show="formulario.prsPinN.$invalid">
+                              <span ng-show="formulario.prsPinN.$error.required">{{translateTitulos.lbl_05_07}}</span>
+                            </span>
+                            <input style="display:none;" type="" id="prsPinNV" name="prsPinNV" class="form-control"  type="text" placeholder="" maxlength="" disabled>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-1"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">{{translateTitulos.lbl_05_08}}</label>
+                             <button id="btnprsPinC" name="btnprsPinC" onClick="FunctionprsPinC();" value="1" 
+                              style="float: right; color: rgb(21, 32, 48);
+                              background-color: rgb(255, 255, 255);
+                              border: 0px solid rgb(60, 52, 27);
+                              padding: 0px;
+                              font-size: 12px;
+                              color: green;">Mostrar</button>
+                          <div class="controls">
+                            <input  ng-model="datos.prsPinC" id="prsPinC" name="prsPinC" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_08}}" ng-disabled="desabilitado" required>
+                            <span style="color:red" ng-show="formulario.prsPinC.$invalid">
+                              <span ng-show="formulario.prsPinC.$error.required">{{translate.Titulo.lbl_05_10}}</span>
+                            </span>
+                            <input style="display:none;" type="" id="prsPinCV" name="prsPinCV" class="form-control"  type="text" placeholder="" maxlength="" disabled>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>                
+                    <!-- GENERADOR DE CAPCHA -->
+                    <div class="col-md-12" align="center" >
+                      <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                        <tr class="color">
+                          <div style="background: #ffffff;" >
+                            <div class="box2">
+                              <img class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
+                            </div>
+                            <div class="box2">
+                              <img class="img-responsive" src="{{imageLNG}}"  title="Palabra en CASTELLANO">
+                            </div>
+                          </div>
+                        </tr>
+                        <tr class="color">
+                          <td class="color22" colspan="3" width="70"  align="center">
+                            <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" placeholder="{{palabraT}}" ng-model="resultadoC" ng-keyup="VerificarCapcha()" required/>
+                            <label >{{palabraT}}</label>
+                            <span  ng-show="formulario.palabraT.$invalid">
+                              <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                            </span>
+                          </td>
+                          <td class="color2" width="30"  align="center">
+                            <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                      <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
+                      <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b>
+                    </div>
+                    <!-- ********************* -->
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group" align="right">
+                      <a href="../../../../index.html" class="btn btn-default">{{translateTitulos.lbl_03_40_40}}</a>
+                      
+                      <!--button ng-click="cambioPin(datos, prsCI)" data-dismiss="modal" type="button" class="btn btn-success" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'" ng-disabled="formulario.prsCI.$invalid || formulario.prsPinA.$invalid || formulario.prsPinN.$invalid || formulario.prsPinC.$invalid || formulario.resultadoC.$invalid || btnCambiar" class="btn btn-success">{{translateTitulos.lbl_05_13}}</button-->
+                      <button ng-click="cambioPin(datos, prsCI)" data-dismiss="modal" type="button" class="btn btn-success" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'" class="btn btn-success">{{translateTitulos.lbl_05_13}}</button>
+                    </div>
+                  </form> 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

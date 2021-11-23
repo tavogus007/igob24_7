@@ -534,6 +534,7 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "sistema":"IGOB247",
           "sistema_creado":"IGOB247",
           "tipo_persona": "NATURAL",
+          "estado_creado": "NUEVO",
           "usr_id": this.usr_id,
           "activacionf": "NO",
           "activaciond": "NO",

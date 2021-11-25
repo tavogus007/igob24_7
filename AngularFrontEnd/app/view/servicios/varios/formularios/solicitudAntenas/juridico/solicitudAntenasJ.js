@@ -784,7 +784,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
       $scope.lstSoporteprevio = $scope.soporteActualizar;
       $scope.lstSoportes();
       $rootScope.soporteRU = true;
-      swal("Ok!", "La actualización del soporte fue exitoso", "success");
+      swal("", "Se actualizó la informacion del soporte con exito", "success");
       $scope.mostrar_ActualizarRequisitos();
       $scope.torres_torretas_monoposte = null;
       $scope.mastiles_postes = null;
@@ -843,7 +843,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
   $scope.reg_soporte = function (data) {
     try {
       if ($("#tp_prop").val() == "") {
-        swal("Nota", "Para completar el registro del soporte es necesario selecionar el tipo de propiedad Gracias", "error");
+        swal("", "Para completar el registro del soporte selecione un tipo de propiedad", "info");
 
       } else {
         if ($("#categoria").val() != "" && $("#forma_sj").val() != "" && $("#tipo_sop").val() != "") {
@@ -878,7 +878,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
 
               }
             }
-            swal("Ok!", "Se registro el soporte con exitó Gracias", "success");
+            swal("", "Soporte adicionado con exitó.", "success");
             $scope.arrayfiles = [];
             $("#tipo_sop").val("");
             $("#categoria").val("");
@@ -3877,15 +3877,15 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
 
         } else {
           if ($scope.tipoReg == "R_UNICO" || $scope.tipoReg == "G_UNICO") {
-            swal("Error!", "Para guardar el formulario por favor completar todos los campos y los documentos gracias...", "error");
-
+            
+            swal("", "Para guardar el formulario se requiere completar todos los campos y los documentos.", "info");
+            
           } else if ($scope.tipoReg == "R_MULTIPLE") {
-            swal("Error!", "Para guardar el formulario por favor registrar una radio base gracias...", "error");
-
+            swal("", "Pa ra registrar el formulario se requiere registrar minimo una radio base.", "info");
+            
           } else if ($scope.tipoReg == "G_MULTIPLE") {
-
-            swal("Error!", "Para guardar el formulario por favor registrar un gabinete gracias...", "error");
-
+            
+            swal("", "Para registrar el formulario se requiere registrar minimo un gabinete.", "info");
           }
           $scope.estadoTramite = "NO";
         }
@@ -4731,7 +4731,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
               fileUpload1.uploadFileToUrl1(respuesta, uploadUrl, nombreNuevo);
               document.getElementById(nombrecampo + '_campo').value = nombreNuevo;
               var urlImagen = url_img + nombreNuevo + "?app_name=todoangular";
-              UrlExists(urlImagen);
+              //UrlExists(urlImagen);
               $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
               //$.unblockUI();
             });
@@ -4745,7 +4745,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
                 var resp = fileUpload1.uploadFileToUrl1(blob, uploadUrl, nombreNuevo);
                 document.getElementById(nombrecampo + '_campo').value = nombreNuevo;
                 var urlImagen = url_img + nombreNuevo + "?app_name=todoangular";
-                UrlExists(urlImagen);
+                //UrlExists(urlImagen);
                 $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
               });
               //$.unblockUI();
@@ -4755,7 +4755,7 @@ function solicitudJAntenasController($scope, $timeout, CONFIG, $window, $rootSco
               fileUpload1.uploadFileToUrl1(aArchivos[0], uploadUrl, nombreNuevo);
               document.getElementById(nombrecampo + '_campo').value = nombreNuevo;
               var urlImagen = url_img + nombreNuevo + "?app_name=todoangular";
-              UrlExists(urlImagen);
+              //UrlExists(urlImagen);
               $scope.registroFileobjImg(nombreNuevo, nombrecampo, urlImagen);
               //$.unblockUI();
             }

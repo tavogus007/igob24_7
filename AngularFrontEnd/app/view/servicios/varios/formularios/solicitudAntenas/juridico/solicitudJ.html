@@ -243,6 +243,13 @@
             ob.value = ob.value.replace(invalidChars, "");
         };
     }
+
+    function validaInput(ob) {
+        var invalidChars = /[ÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ¡!@#/\$%\^&\*\¿?_~();:{}'"|<>´ñ?`=]/;
+        if (invalidChars.test(ob.value)) {
+            ob.value = ob.value.replace(invalidChars, "");
+        };
+    }
 </script>
 
 <div class="row principal" id="outerMapaActividad" ng-controller="solicitudJAntenasController" ng-init="iniAntenas()">
@@ -554,7 +561,7 @@
                                                                         type="text"
                                                                         placeholder="Denominación del Registro"
                                                                         ng-disabled="false" ng-value="den_rbase"
-                                                                        required onkeyUp="return conMayusculas(this);">
+                                                                        required onkeyUp="validaInput(this);return conMayusculas(this);">
 
                                                                 </div>
                                                             </div>
@@ -567,7 +574,7 @@
                                                                         name="ub_rbase" class="form-control" type="text"
                                                                         placeholder="Ubicación del Registro"
                                                                         ng-disabled="false" required
-                                                                        onkeyUp="return conMayusculas(this);">
+                                                                        onkeyUp="validaInput(this);return conMayusculas(this);">
 
                                                                 </div>
                                                             </div>
@@ -643,7 +650,7 @@
                                                                         id="latitud_reg" name="latitud_reg"
                                                                         class="form-control" type="yexy"
                                                                         placeholder="Latitud" ng-disabled="false"
-                                                                        onkeyUp="return conMayusculas(this);" min="1">
+                                                                        onkeyUp="validaInput(this);return conMayusculas(this);" min="1">
 
                                                                 </div>
                                                             </div>
@@ -656,7 +663,7 @@
                                                                         id="longitud_reg" name="longitud_reg"
                                                                         class="form-control" type="text"
                                                                         placeholder="Longitud" ng-disabled="false"
-                                                                        onkeyUp="return conMayusculas(this);" min="1">
+                                                                        onkeyUp="validaInput(this);return conMayusculas(this);" min="1">
 
                                                                 </div>
                                                             </div>
@@ -668,8 +675,9 @@
                                                                     <input ng-model="dataAnt.observacion"
                                                                         id="observacion" name="observacion"
                                                                         class="form-control" type="text"
-                                                                        placeholder="Observación"
-                                                                        onkeyUp="return conMayusculas(this);">
+                                                                        placeholder="Observación"                                                                                                                                                
+                                                                        onkeyUp="validaInput(this);return conMayusculas(this);"
+                                                                        >
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -172,7 +172,7 @@
       $scope.ErrorCapcha='';
 
       var SERVICE_ENVIO_CORREO = "http://200.105.139.183:9090/smsemail/email/mail.php";
-      var CONEXION_API_PG_RC = "http://localhost:9091/";
+      var CONEXION_API_PG_RC = "http://192.168.5.141:8003/";
       
       $scope.getlimpiareRROR=function() {
           $scope.ErrorCapcha='';
@@ -521,18 +521,16 @@
   <div ng-app="myApp">
     <div id="registration-form" class="contenedor">
       <div class="fieldset" class="form-control">
-        <legend>Cambio de contraseña iGob 24/7</legend>
+        <legend>Por seguridad debe cambiar la contraseña asignada por una nueva, esta acción se realizará por única vez. A continuación registre la información correspondiente en los siguientes campos.</legend>
         <div class="col-md-10 col-md-offset-1">
           <div class="page-content" ng-controller="cambioPinController1" ng-init="inicioCapcha();">
             <div class="col-lg-12">
               <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                  <h5>{{translateTitulos.lbl_05_01}}</h5>
-                </div>
                 <div class="ibox-content">
                   <form method="get" class="form-horizontal ng-pristine ng-valid" name="formulario" readOnly="true" novalidate>
                     <div class="form-group">
-                      <label for="url">{{translateTitulos.lbl_05_02}}</label> 
+                      <!--label for="url">{{translateTitulos.lbl_05_02}}</label-->
+                      <label for="url">Contraseña asignada por el sistema:</label>  
                         <button id="btnprsCI" name="btnprsCI" onClick="FunctionprsCI();" value="1" 
                           style="float: right; color: rgb(21, 32, 48);
                           background-color: rgb(255, 255, 255);
@@ -543,7 +541,8 @@
 
                       <input  cols="10" rows="5" ng-model="prsCI" id="prsCI" name="prsCI" class="form-control" type="hidden" placeholder="ingrese CI" ng-disabled="desabilitado" required value="{$scope.ci}">
                       <div class="controls">
-                        <input  ng-model="datos.prsPinA" id="prsPinA" name="prsPinA" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_02}}" ng-disabled="desabilitado" required ng-keyup="">
+                        <!--input  ng-model="datos.prsPinA" id="prsPinA" name="prsPinA" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_02}}" ng-disabled="desabilitado" required ng-keyup=""-->
+                        <input  ng-model="datos.prsPinA" id="prsPinA" name="prsPinA" class="form-control" type="password" placeholder="Contraseña actual" ng-disabled="desabilitado" required ng-keyup="">
                         <span style="color:red" ng-show="formulario.prsPinA.$invalid">
                           <span ng-show="formulario.prsPinA.$error.required">{{translateIdioma.lbl_05_04}}</span>
                         </span>
@@ -553,7 +552,8 @@
                     <div class="row">
                       <div class="col-md-5">
                         <div class="form-group">
-                          <label for="url">{{translateTitulos.lbl_05_05}}</label>
+                          <!--label for="url">{{translateTitulos.lbl_05_05}}</label-->
+                          <label for="url">Nueva contraseña:</label>
                             <button id="btnprsPinN" name="btnprsPinN" onClick="FunctionprsPinN();" value="1" 
                               style="float: right; color: rgb(21, 32, 48);
                               background-color: rgb(255, 255, 255);
@@ -562,9 +562,11 @@
                               font-size: 12px;
                               color: green;">Mostrar</button>
                           <div class="controls">
-                            <input  ng-model="datos.prsPinN" id="prsPinN" name="prsPinN" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_05}}" ng-disabled="desabilitado" required>
+                            <!--input  ng-model="datos.prsPinN" id="prsPinN" name="prsPinN" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_05}}" ng-disabled="desabilitado" required-->
+                            <input  ng-model="datos.prsPinN" id="prsPinN" name="prsPinN" class="form-control" type="password" placeholder="Contraseña nueva" ng-disabled="desabilitado" required>
                             <span style="color:red" ng-show="formulario.prsPinN.$invalid">
-                              <span ng-show="formulario.prsPinN.$error.required">{{translateTitulos.lbl_05_07}}</span>
+                              <!--span ng-show="formulario.prsPinN.$error.required">{{translateTitulos.lbl_05_07}}</span-->
+                              <span ng-show="formulario.prsPinN.$error.required">Nueva contraseña es requerida</span>
                             </span>
                             <input style="display:none;" type="" id="prsPinNV" name="prsPinNV" class="form-control"  type="text" placeholder="" maxlength="" disabled>
                           </div>
@@ -573,7 +575,8 @@
                       <div class="col-md-1"></div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="url">{{translateTitulos.lbl_05_08}}</label>
+                          <!--label for="url">{{translateTitulos.lbl_05_08}}</label-->
+                          <label for="url">Repita la nueva contraseña:</label>
                              <button id="btnprsPinC" name="btnprsPinC" onClick="FunctionprsPinC();" value="1" 
                               style="float: right; color: rgb(21, 32, 48);
                               background-color: rgb(255, 255, 255);
@@ -582,7 +585,8 @@
                               font-size: 12px;
                               color: green;">Mostrar</button>
                           <div class="controls">
-                            <input  ng-model="datos.prsPinC" id="prsPinC" name="prsPinC" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_08}}" ng-disabled="desabilitado" required>
+                            <!--input  ng-model="datos.prsPinC" id="prsPinC" name="prsPinC" class="form-control" type="password" placeholder="{{translateTitulos.lbl_05_08}}" ng-disabled="desabilitado" required-->
+                            <input  ng-model="datos.prsPinC" id="prsPinC" name="prsPinC" class="form-control" type="password" placeholder="Contraseña confirmada" ng-disabled="desabilitado" required>
                             <span style="color:red" ng-show="formulario.prsPinC.$invalid">
                               <span ng-show="formulario.prsPinC.$error.required">{{translate.Titulo.lbl_05_10}}</span>
                             </span>
@@ -607,6 +611,7 @@
                         </tr>
                         <tr class="color">
                           <td class="color22" colspan="3" width="70"  align="center">
+                            <!--input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" placeholder="{{palabraT}}" ng-model="resultadoC" ng-keyup="VerificarCapcha()" required/-->
                             <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control" placeholder="{{palabraT}}" ng-model="resultadoC" ng-keyup="VerificarCapcha()" required/>
                             <label >{{palabraT}}</label>
                             <span  ng-show="formulario.palabraT.$invalid">
@@ -625,10 +630,12 @@
                     <!-- ********************* -->
                     <div class="hr-line-dashed"></div>
                     <div class="form-group" align="right">
-                      <a href="../../../../index.html" class="btn btn-default">{{translateTitulos.lbl_03_40_40}}</a>
+                      <!--a href="../../../../index.html" class="btn btn-default">{{translateTitulos.lbl_03_40_40}}</a-->
+                      <a href="../../../../index.html" class="btn btn-default">CANCELAR</a>
                       
-                      <!--button ng-click="cambioPin(datos, prsCI)" data-dismiss="modal" type="button" class="btn btn-success" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'" ng-disabled="formulario.prsCI.$invalid || formulario.prsPinA.$invalid || formulario.prsPinN.$invalid || formulario.prsPinC.$invalid || formulario.resultadoC.$invalid || btnCambiar" class="btn btn-success">{{translateTitulos.lbl_05_13}}</button-->
-                      <button ng-click="cambioPin(datos, prsCI)" data-dismiss="modal" type="button" class="btn btn-success" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'" class="btn btn-success">{{translateTitulos.lbl_05_13}}</button>
+        
+                      <!--button ng-click="cambioPin(datos, prsCI)" data-dismiss="modal" type="button" class="btn btn-success" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'" class="btn btn-success">{{translateTitulos.lbl_05_13}}</button-->
+                      <button ng-click="cambioPin(datos, prsCI)" data-dismiss="modal" type="button" class="btn btn-success" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'" class="btn btn-success">GUARDAR</button>
                     </div>
                   </form> 
                 </div>
